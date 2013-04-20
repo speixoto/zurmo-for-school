@@ -34,22 +34,16 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class MergeTagsUtilFactory
+    class EmailListViewColumnAdapter extends TextListViewColumnAdapter
     {
-        public static function make($emailTemplateType, $language, $content)
+        public function renderGridViewData()
         {
-            if($emailTemplateType == EmailTemplate::TYPE_WORKFLOW)
-            {
-                return new WorkflowMergeTagsUtil($language, $content);
-            }
-            elseif($emailTemplateType == EmailTemplate::TYPE_CONTACT)
-            {
-                return new ContactMergeTagsUtil($language, $content);
-            }
-            else
-            {
-                throw new NotSupportedException();
-            }
+            return array(
+                'name'  => $this->attribute,
+                'value' => 'Yii::app()->format->email($data->' . $this->attribute . ')',
+                'type'  => 'raw',
+                'htmlOptions' => array( 'class' => 'email')
+            );
         }
     }
 ?>

@@ -33,23 +33,27 @@
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
-
-    class MergeTagsUtilFactory
+    class MergeTagsUtilFactoryTest extends ZurmoBaseTest
     {
-        public static function make($emailTemplateType, $language, $content)
+        public static function setUpBeforeClass()
         {
-            if($emailTemplateType == EmailTemplate::TYPE_WORKFLOW)
-            {
-                return new WorkflowMergeTagsUtil($language, $content);
-            }
-            elseif($emailTemplateType == EmailTemplate::TYPE_CONTACT)
-            {
-                return new ContactMergeTagsUtil($language, $content);
-            }
-            else
-            {
-                throw new NotSupportedException();
-            }
+            parent::setUpBeforeClass();
+            SecurityTestHelper::createSuperAdmin();
+        }
+
+        public function setUp()
+        {
+            parent::setUp();
+            Yii::app()->user->userModel = User::getByUsername('super');
+        }
+
+        public function testMake()
+        {
+            Yii::app()->languageHelper->load();
+            $util = MergeTagsUtilFactory::make(EmailTemplate::TYPE_CONTACT,  'en', 'test');
+            $this->assertTrue($util instanceof ContactMergeTagsUtil);
+            $util = MergeTagsUtilFactory::make(EmailTemplate::TYPE_WORKFLOW, 'en', 'test');
+            $this->assertTrue($util instanceof WorkflowMergeTagsUtil);
         }
     }
 ?>

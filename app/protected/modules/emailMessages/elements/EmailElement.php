@@ -34,22 +34,18 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class MergeTagsUtilFactory
+    /**
+     * Display the email address
+     */
+    class EmailElement extends TextElement
     {
-        public static function make($emailTemplateType, $language, $content)
+        /**
+         * Renders the attribute from the model as an email address formatted string
+         * @return The element's content.
+         */
+        protected function renderControlNonEditable()
         {
-            if($emailTemplateType == EmailTemplate::TYPE_WORKFLOW)
-            {
-                return new WorkflowMergeTagsUtil($language, $content);
-            }
-            elseif($emailTemplateType == EmailTemplate::TYPE_CONTACT)
-            {
-                return new ContactMergeTagsUtil($language, $content);
-            }
-            else
-            {
-                throw new NotSupportedException();
-            }
+            return Yii::app()->format->email($this->model->{$this->attribute});
         }
     }
 ?>
