@@ -35,22 +35,17 @@
      ********************************************************************************/
 
     /**
-     * Helper class to show the marketing list's member name and status in a column in a list view
+     * Display the email address
      */
-    class MarketingListMemberNameAndStatusListViewColumnAdapter extends TextListViewColumnAdapter
+    class EmailElement extends TextElement
     {
-        public function renderGridViewData()
+        /**
+         * Renders the attribute from the model as an email address formatted string
+         * @return The element's content.
+         */
+        protected function renderControlNonEditable()
         {
-            $memberName         = 'strval($data->contact)';
-            $memberStatusPrefix = ' ."\t(" . ';
-            $memberStatus       = 'Zurmo::t("' . $this->view->getContainerModuleClassName() . '", (($data->unsubscribed == true)? "Unsubscribed" : "Subscribed"))';
-            $memberStatusSuffix = ' . ")"';
-            $value              = $memberName . $memberStatusPrefix . $memberStatus . $memberStatusSuffix;
-            return array(
-                'name'  => 'Name',
-                'value' => $value,
-                'type'  => 'raw',
-            );
+            return Yii::app()->format->email($this->model->{$this->attribute});
         }
     }
 ?>

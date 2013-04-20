@@ -34,22 +34,15 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * Helper class to show the marketing list's member name and status in a column in a list view
-     */
-    class MarketingListMemberNameAndStatusListViewColumnAdapter extends TextListViewColumnAdapter
+    class EmailListViewColumnAdapter extends TextListViewColumnAdapter
     {
         public function renderGridViewData()
         {
-            $memberName         = 'strval($data->contact)';
-            $memberStatusPrefix = ' ."\t(" . ';
-            $memberStatus       = 'Zurmo::t("' . $this->view->getContainerModuleClassName() . '", (($data->unsubscribed == true)? "Unsubscribed" : "Subscribed"))';
-            $memberStatusSuffix = ' . ")"';
-            $value              = $memberName . $memberStatusPrefix . $memberStatus . $memberStatusSuffix;
             return array(
-                'name'  => 'Name',
-                'value' => $value,
+                'name'  => $this->attribute,
+                'value' => 'Yii::app()->format->email($data->' . $this->attribute . ')',
                 'type'  => 'raw',
+                'htmlOptions' => array( 'class' => 'email')
             );
         }
     }
