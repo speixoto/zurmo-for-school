@@ -309,8 +309,6 @@
 
 	public function actionUpdate($attribute)
         {
-	    print_r($_POST);
-	    exit;
 	    $id = Yii::app()->request->getParam('item');
 	    $value = Yii::app()->request->getParam('value');
 	    $product = Product::getById($id);
@@ -321,6 +319,9 @@
 		                  break;
 	    }
             $product->save();
+	    header('Content-type: application/json');
+	    echo json_encode(array('status' => 'success'));
+	    die();
         }
     }
 ?>
