@@ -32,7 +32,7 @@
 		    'class' => 'phaEditColumn',
                     'name'  => $this->attribute,
                     'value' => 'strval($data->' . $this->attribute . ')',
-                    'actionUrl' => Yii::app()->createUrl('products/default/updateQuantity'),
+                    'actionUrl' => Yii::app()->createUrl('products/default/update', array('attribute' => 'quantity')),
                 );
         }
     }

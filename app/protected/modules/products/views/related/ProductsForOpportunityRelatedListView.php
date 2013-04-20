@@ -93,5 +93,65 @@
             }
             return $columns;
         }
+
+	protected function renderContent()
+        {
+            $cClipWidget = new CClipWidget();
+            $cClipWidget->beginClip("ListView");
+            $cClipWidget->widget($this->getGridViewWidgetPath(), $this->getCGridViewParams());
+            $cClipWidget->endClip();
+            $content	= $this->renderViewToolBar();
+            $content	.= $this->renderAddProductLink();
+	    $content	.= $this->renderConfigurationForm();
+	    $content	.= $cClipWidget->getController()->clips['ListView'] . "\n";
+            if ($this->rowsAreSelectable)
+            {
+                $content .= ZurmoHtml::hiddenField($this->gridId . $this->gridIdSuffix . '-selectedIds', implode(",", $this->selectedIds)) . "\n"; // Not Coding Standard
+            }
+            $content .= $this->renderScripts();
+            return $content;
+        }
+
+	protected function renderAddProductLink()
+	{
+	    $title = Zurmo::t('ProductsModule', 'Add ProductsModuleSingularLabel',
+                            LabelUtil::getTranslationParamsForAllModules());
+	    $string  = "<p>" . ZurmoHtml::link($title, "#", array('id' => 'addProductPortletLink')) . "</p>";
+            return $string;
+	}
+
+	protected function renderAddProductContent($form)
+	{
+	    $productElement = new ProductElement(new Product(), 'opportunity', $form, array('inputIdPrefix' => 'product', 'htmlOptions' => array('display' => 'none')));
+	    $content = $productElement->render();
+	    return $content;
+        }
+
+	protected function renderScripts()
+	{
+	    parent::renderScripts();
+	    Yii::app()->clientScript->registerScript("AddProductElementToggleDisplay",
+		    "$(function () {
+		    $('#addProductPortletLink').click(function (e) {
+			    e.preventDefault();
+			    if($('#product-configuration-form').css('display') == 'none')
+			    {
+				$('#product-configuration-form').show('slow');
+				$('#product-portlet-grid-view').hide('slow');
+			    }
+			    else
+			    {
+				$('#product-configuration-form').hide('slow');
+				$('#product-portlet-grid-view').show('slow');
+			    }
+			})
+			})
+		    ");
+	}
+
+	public function getGridViewId()
+        {
+            return 'product-portlet-grid-view';
+        }
     }
 ?>

@@ -306,5 +306,21 @@
                                          makeStandardViewForCurrentUser($this, $titleBarAndEditView));
             echo $view->render();
         }
+
+	public function actionUpdate($attribute)
+        {
+	    print_r($_POST);
+	    exit;
+	    $id = Yii::app()->request->getParam('item');
+	    $value = Yii::app()->request->getParam('value');
+	    $product = Product::getById($id);
+            ControllerSecurityUtil::resolveAccessCanCurrentUserWriteModel($product);
+	    switch($attribute)
+	    {
+		case 'quantity' : $product->quantity = $value;
+		                  break;
+	    }
+            $product->save();
+        }
     }
 ?>

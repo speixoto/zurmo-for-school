@@ -26,14 +26,6 @@
 
     class ProductsConfigurationForm extends CFormModel
     {
-        const VIEW_DETAILS     = 'Details';
-
-        const VIEW_EDIT_MODE   = 'Edit Mode';
-
-        const VIEW_ADD_PRODUCT = 'Add Product';
-
-        public $view = self::VIEW_ADD_PRODUCT;
-
         public $mashableModelClassNamesAndDisplayLabels;
     }
 ?>
