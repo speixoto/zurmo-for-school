@@ -34,45 +34,37 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class OpportunitiesModuleForm extends GlobalSearchEnabledModuleForm
+    class IntegerForReportListViewColumnAdapter extends IntegerListViewColumnAdapter
     {
-        public $stageToProbabilityMapping;
-
-        public function rules()
+        public function renderGridViewData()
         {
-            return array_merge(parent::rules(), array(
-                array('stageToProbabilityMapping', 'validateStageToProbabilityMapping'),
-            ));
+            return array(
+                'name'  => $this->attribute,
+                'value' => 'IntegerForReportListViewColumnAdapter::renderNonEditableStatically($data, "' . $this->attribute . '")',
+                'type'  => 'raw',
+            );
         }
 
-        public function attributeLabels()
+        public static function renderNonEditableStatically($model, $attribute)
         {
-            return array_merge(parent::attributeLabels(), array(
-                'stageToProbabilityMapping' => Zurmo::t('OpportunitiesModule', 'Probability Mapping'),
-            ));
-        }
-
-        public function validateStageToProbabilityMapping()
-        {
-            $validator = new RedBeanModelTypeValidator();
-            $validator->type = 'integer';
-            $valid     = true;
-            if(!is_array($this->stageToProbabilityMapping))
+            assert('$model instanceof ReportResultsRowData');
+            if(null === $displayAttributeKey = $model::resolveKeyByAttributeName($attribute))
             {
-                $this->addError('stageToProbabilityMapping', Zurmo::t('Core', '{attribute} must be {type}.',
-                                array('{type}' => 'integer')));
-                $valid = false;
+                return $model->{$attribute};
             }
-            foreach($this->stageToProbabilityMapping as $probability)
+            $displayAttributes = $model->getDisplayAttributes();
+            $displayAttribute  = $displayAttributes[$displayAttributeKey];
+            $realAttributeName = $displayAttribute->getResolvedAttribute();
+            if($model->getModel($attribute) instanceof RedBeanModel &&
+               $model->getModel($attribute)->isAttributeFormattedAsProbability($realAttributeName))
             {
-                if(!$validator->validateValue($probability))
-                {
-                    $this->addError('stageToProbabilityMapping',
-                                    Zurmo::t('OpportunitiesModule', 'Mapped Probabilities must be integers'));
-                    $valid = false;
-                }
+                $resolvedValue = NumberUtil::divisionForZero($model->{$attribute}, 100);
+                return Yii::app()->numberFormatter->formatPercentage($resolvedValue);
             }
-            return $valid;
+            else
+            {
+                return $model->{$attribute};
+            }
         }
     }
 ?>

@@ -34,45 +34,29 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class OpportunitiesModuleForm extends GlobalSearchEnabledModuleForm
+    /**
+     * Helper functionality for use working with numbers
+     */
+    class NumberUtil
     {
-        public $stageToProbabilityMapping;
-
-        public function rules()
+        /**
+         * Given a number and a number to divide by, resolve if 0 since you can't divide when 0.
+         * @param numeric | string $dividend
+         * @param numeric | string  $divisor
+         * @return int
+         */
+        public static function divisionForZero($dividend, $divisor)
         {
-            return array_merge(parent::rules(), array(
-                array('stageToProbabilityMapping', 'validateStageToProbabilityMapping'),
-            ));
-        }
-
-        public function attributeLabels()
-        {
-            return array_merge(parent::attributeLabels(), array(
-                'stageToProbabilityMapping' => Zurmo::t('OpportunitiesModule', 'Probability Mapping'),
-            ));
-        }
-
-        public function validateStageToProbabilityMapping()
-        {
-            $validator = new RedBeanModelTypeValidator();
-            $validator->type = 'integer';
-            $valid     = true;
-            if(!is_array($this->stageToProbabilityMapping))
+            assert('is_numeric($dividend) || is_string($dividend)');
+            if($dividend == 0)
             {
-                $this->addError('stageToProbabilityMapping', Zurmo::t('Core', '{attribute} must be {type}.',
-                                array('{type}' => 'integer')));
-                $valid = false;
+                return 0;
             }
-            foreach($this->stageToProbabilityMapping as $probability)
+            else
             {
-                if(!$validator->validateValue($probability))
-                {
-                    $this->addError('stageToProbabilityMapping',
-                                    Zurmo::t('OpportunitiesModule', 'Mapped Probabilities must be integers'));
-                    $valid = false;
-                }
+                return $dividend / $divisor;
             }
-            return $valid;
+
         }
     }
 ?>

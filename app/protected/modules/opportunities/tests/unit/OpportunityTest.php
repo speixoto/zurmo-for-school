@@ -72,8 +72,10 @@
             $opportunity->amount         = $currencyValue;
             $opportunity->closeDate      = '2011-01-01';
             $opportunity->stage->value   = 'Verbal';
+            $this->assertEquals(0, $opportunity->probability);
             $saved                       = $opportunity->save();
             $this->assertTrue($saved);
+            $this->assertEquals(75, $opportunity->probability);
             $opportunity1Id              = $opportunity->id;
             $opportunity->forget();
 

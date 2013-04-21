@@ -34,45 +34,19 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class OpportunitiesModuleForm extends GlobalSearchEnabledModuleForm
+    /**
+     * Pseudo-validator. Used to mark an attribute
+     * as being a probability attribute. This means it would be formatted as 52% for example.
+     */
+    class RedBeanModelProbabilityValidator extends CValidator
     {
-        public $stageToProbabilityMapping;
-
-        public function rules()
+        /**
+         * See the yii documentation.
+         */
+        // The RedBeanModel is commented out here because the method
+        // definition must match that of the base class.
+        protected function validateAttribute(/*RedBeanModel*/ $model, $attributeName)
         {
-            return array_merge(parent::rules(), array(
-                array('stageToProbabilityMapping', 'validateStageToProbabilityMapping'),
-            ));
-        }
-
-        public function attributeLabels()
-        {
-            return array_merge(parent::attributeLabels(), array(
-                'stageToProbabilityMapping' => Zurmo::t('OpportunitiesModule', 'Probability Mapping'),
-            ));
-        }
-
-        public function validateStageToProbabilityMapping()
-        {
-            $validator = new RedBeanModelTypeValidator();
-            $validator->type = 'integer';
-            $valid     = true;
-            if(!is_array($this->stageToProbabilityMapping))
-            {
-                $this->addError('stageToProbabilityMapping', Zurmo::t('Core', '{attribute} must be {type}.',
-                                array('{type}' => 'integer')));
-                $valid = false;
-            }
-            foreach($this->stageToProbabilityMapping as $probability)
-            {
-                if(!$validator->validateValue($probability))
-                {
-                    $this->addError('stageToProbabilityMapping',
-                                    Zurmo::t('OpportunitiesModule', 'Mapped Probabilities must be integers'));
-                    $valid = false;
-                }
-            }
-            return $valid;
         }
     }
 ?>
