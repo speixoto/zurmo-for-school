@@ -57,13 +57,12 @@
             $filtersForReportWizardView           = new FiltersForReportWizardView($this->model, $form, true);
             $groupBysForReportWizardView          = new GroupBysForReportWizardView($this->model, $form, true);
             $displayAttributesForReportWizardView = new DisplayAttributesForReportWizardView($this->model, $form, true);
-            $drillDownDisplayAttributesForReportWizardView =
-                                           new DrillDownDisplayAttributesForReportWizardView($this->model, $form, true);
+            $drillDownDisplayAttributesForReportWizardView = new DrillDownDisplayAttributesForReportWizardView($this->model, $form, true);
             $orderBysForReportWizardView          = new OrderBysForReportWizardView($this->model, $form, true);
             $chartForReportWizardView             = new ChartForReportWizardView($this->model, $form, true);
             $generalDataForReportWizardView       = new GeneralDataForReportWizardView($this->model, $form, true);
 
-            $gridView = new GridView(8,1);
+            $gridView = new GridView(8, 1);
             $gridView->setView($moduleForReportWizardView, 0, 0);
             $gridView->setView($filtersForReportWizardView, 1, 0);
             $gridView->setView($groupBysForReportWizardView, 2, 0);

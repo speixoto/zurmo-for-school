@@ -261,12 +261,12 @@
         {
             $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
             $content = $this->runControllerWithNoExceptionsAndGetContent('zurmo/default/about');
-            $this->assertNotContains('startAutoUpdater',$content);
+            $this->assertNotContains('startAutoUpdater', $content);
             ZurmoConfigurationUtil::setByModuleName('ZurmoModule',
                                                     'realtimeUpdatesEnabled',
                                                     (boolean) true);
             $content = $this->runControllerWithNoExceptionsAndGetContent('zurmo/default/about');
-            $this->assertContains('startAutoUpdater',$content);
+            $this->assertContains('startAutoUpdater', $content);
         }
     }
 ?>

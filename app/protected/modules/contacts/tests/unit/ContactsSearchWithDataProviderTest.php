@@ -37,7 +37,7 @@
     /**
      * Tests on contact pecific search permutations.
      */
-    class ContactsSearchWithDataProviderTest extends ZurmoDataProviderBaseTest
+    class ContactsSearchWithDataProviderTest extends ZurmoBaseTest
     {
         public static function setUpBeforeClass()
         {

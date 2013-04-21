@@ -65,29 +65,6 @@
                             )
                         )
                     ),
-                    /*
-                     // TODO: @Shoaibi: Low: We won't need anything in rightTopView perhaps.
-                    'rightTopView' => array(
-                        'columns' => array(
-                            array(
-                                'rows' => array(
-                                    array(
-                                        'type' => 'UpcomingMeetingsForAccountCalendar',
-                                    ),
-                                    array(
-                                        'type' => 'OpenTasksForAccountRelatedList',
-                                    ),
-                                    array(
-                                        'type' => 'ContactsForAccountRelatedList',
-                                    ),
-                                    array(
-                                        'type' => 'OpportunitiesForAccountRelatedList',
-                                    )
-                                )
-                            )
-                        )
-                    )
-                    */
                 )
             );
             return $metadata;

@@ -105,5 +105,30 @@
             }
             return $savedReport;
         }
+
+        public static function makeSimpleContactRowsAndColumnsReport()
+        {
+            $report                  = new Report();
+            $report->setDescription    ('A test contact report');
+            $report->setModuleClassName('ContactsModule');
+            $report->setName           ('A rows and columns report');
+            $report->setType           (Report::TYPE_ROWS_AND_COLUMNS);
+            $report->setOwner          (Yii::app()->user->userModel);
+            $report->setCurrencyConversionType(Report::CURRENCY_CONVERSION_TYPE_BASE);
+            $report->setFiltersStructure('');
+
+            $displayAttribute = new DisplayAttributeForReportForm('ContactsModule', 'Contact', $report->getType());
+            $displayAttribute->attributeIndexOrDerivedType = 'lastName';
+            $report->addDisplayAttribute($displayAttribute);
+
+            $savedReport = new SavedReport();
+            SavedReportToReportAdapter::resolveReportToSavedReport($report, $savedReport);
+            $saved       = $savedReport->save();
+            if (!$saved)
+            {
+                throw new FailedToSaveModelException();
+            }
+            return $savedReport;
+        }
     }
 ?>

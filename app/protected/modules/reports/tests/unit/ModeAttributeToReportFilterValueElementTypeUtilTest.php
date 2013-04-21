@@ -34,7 +34,7 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class ModeAttributeToReportFilterValueElementTypeUtilTest extends BaseTest
+    class ModeAttributeToReportFilterValueElementTypeUtilTest extends ZurmoBaseTest
     {
         public static function setUpBeforeClass()
         {

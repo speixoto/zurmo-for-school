@@ -100,16 +100,18 @@
                 ),
                 'tabMenuItems' => array(
                     array(
-                        'label' => "eval:Zurmo::t('LeadsModule', 'LeadsModulePluralLabel', \$translationParams)",
-                        'url'   => array('/leads/default'),
-                        'right' => self::RIGHT_ACCESS_LEADS,
+                        'label'  => "eval:Zurmo::t('LeadsModule', 'LeadsModulePluralLabel', \$translationParams)",
+                        'url'    => array('/leads/default'),
+                        'right'  => self::RIGHT_ACCESS_LEADS,
+                        'mobile' => true,
                     ),
                 ),
                 'shortcutsCreateMenuItems' => array(
                     array(
-                        'label' => "eval:Zurmo::t('LeadsModule', 'LeadsModuleSingularLabel', \$translationParams)",
-                        'url'   => array('/leads/default/create'),
-                        'right' => self::RIGHT_CREATE_LEADS
+                        'label'  => "eval:Zurmo::t('LeadsModule', 'LeadsModuleSingularLabel', \$translationParams)",
+                        'url'    => array('/leads/default/create'),
+                        'right'  => self::RIGHT_CREATE_LEADS,
+                        'mobile' => true,
                     ),
                 ),
             );

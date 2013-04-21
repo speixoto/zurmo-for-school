@@ -253,7 +253,8 @@
         {
             $script = "
                 var empty = $('#" . $this->getSearchFormId(). "').find('.anyMixedAttributes-input').val() == '';
-                $(this).closest('form').find('.search-view-1').find(':input').each(function() {
+                $(this).closest('form').find('.search-view-1').find(':input').each(function()
+                {
                     if ($(this).val() != '')
                     {
                         empty = false;

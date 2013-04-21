@@ -34,7 +34,18 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class ZurmoDataProviderBaseTest extends DataProviderBaseTest
+    /**
+     * Display the email address
+     */
+    class EmailElement extends TextElement
     {
+        /**
+         * Renders the attribute from the model as an email address formatted string
+         * @return The element's content.
+         */
+        protected function renderControlNonEditable()
+        {
+            return Yii::app()->format->email($this->model->{$this->attribute});
+        }
     }
 ?>

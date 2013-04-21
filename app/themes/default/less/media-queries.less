@@ -61,3 +61,40 @@
 		}
 	}
 }
+
+@media all and (max-width: 900px) {
+	.AppContainer{
+		min-width:0 !important;
+	}
+	#HeaderView{
+		width:100%;
+		min-width:0 !important;
+	}
+	#HomeDashboardView{
+		padding-right: 20px;
+		.juiportlet-column{
+			width:100%;
+			float:none;
+		}
+		.juiportlet-widget{
+			min-width:auto;
+			margin-right:0px;
+		}
+	}
+	//Details View
+	.DetailsAndRelationsView{
+		> div{
+			float:none;
+			width:100% !important;
+		}
+	}
+	.breadcrumbs{
+		padding-bottom:10px;
+	}
+	.details-table{
+		margin-right:0;
+	}
+	.juiportlet-widget{
+		margin-right:0 !important;
+	}
+}

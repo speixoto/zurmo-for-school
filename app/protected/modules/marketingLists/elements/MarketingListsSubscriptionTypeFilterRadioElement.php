@@ -88,11 +88,12 @@
 
         protected function getArray()
         {
-            $data = array(
-                        MarketingListMembersConfigurationForm::FILTERED_USER_ALL => Zurmo::t('MarketingListsModule', 'All'),
-                        MarketingListMembersConfigurationForm::FILTER_USER_SUBSCRIBERS => Zurmo::t('MarketingListsModule', 'Subscribers'),
-                        MarketingListMembersConfigurationForm::FILTER_USER_UNSUBSCRIBERS => Zurmo::t('MarketingListsModule', 'Unsubscribers')
-                    );
+            $data = array(MarketingListMembersConfigurationForm::FILTERED_USER_ALL =>
+                            Zurmo::t('MarketingListsModule', 'All'),
+                          MarketingListMembersConfigurationForm::FILTER_USER_SUBSCRIBERS =>
+                            Zurmo::t('MarketingListsModule', 'Subscribed'),
+                          MarketingListMembersConfigurationForm::FILTER_USER_UNSUBSCRIBERS =>
+                            Zurmo::t('MarketingListsModule', 'Unsubscribed'));
             return $data;
         }
     }

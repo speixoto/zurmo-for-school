@@ -353,9 +353,9 @@
             {
                 if (in_array($_GET['userInterface'], array(UserInterface::DESKTOP, UserInterface::MOBILE, UserInterface::TABLET)))
                 {
-                    Yii::app()->userInterface->setSelectedUserInterfaceType($_GET['userInterface']);
+                    Yii::app()->userInterface->resolveSelectedUserInterfaceType($_GET['userInterface']);
                 }
-                $this->redirect('/');
+                $this->redirect(Yii::app()->createUrl('home/default/'));
             }
         }
 
@@ -396,7 +396,7 @@
                                       'type'            => $uploadedFile->getType(),
                                       'size'            => $uploadedFile->getSize(),
                                       'thumbnail_url'   => Yii::app()->createUrl('zurmo/default/thumbnail/',
-                                                                                 array('filePath'=>$thumbFilePath)));
+                                                                                 array('filePath' => $thumbFilePath)));
             }
             catch (FailedFileUploadException $e)
             {

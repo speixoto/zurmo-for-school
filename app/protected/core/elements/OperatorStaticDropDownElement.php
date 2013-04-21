@@ -137,7 +137,7 @@
                                 {
                                     $(this).parent().parent().parent().find('.value-data').find('.flexible-drop-down')
                                     .prop('multiple', false).removeClass('multiple').removeClass('ignore-style')
-                                    .attr('name', newName.replace('[]',''));
+                                    .attr('name', newName.replace('[]', ''));
                                 }
                             }
                         }

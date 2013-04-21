@@ -38,7 +38,7 @@
      * Test class to illustrate a bug related to nested search from a many-many relationship when searching a
      * dropdown field.  This test which now works, shows that this bug is fixed.
      */
-    class SearchOwnedCustomFieldRecursiveDataTest extends BaseTest
+    class SearchOwnedCustomFieldRecursiveDataTest extends ZurmoBaseTest
     {
         public static function setUpBeforeClass()
         {

@@ -207,7 +207,7 @@
             $savedWorkflow                = $savedWorkflows[0];
             $workflow                     = SavedWorkflowToWorkflowAdapter::makeWorkflowBySavedWorkflow($savedWorkflow);
             $triggers                    = $workflow->getTriggers();
-            $this->assertEquals    	      ('WorkflowsTestModule',         $workflow->getModuleClassName());
+            $this->assertEquals           ('WorkflowsTestModule',         $workflow->getModuleClassName());
             $this->assertEquals           ('myFirstWorkflow',               $workflow->getName());
             $this->assertEquals           ('aDescription',                $workflow->getDescription());
             $this->assertTrue             ($workflow->getIsActive());

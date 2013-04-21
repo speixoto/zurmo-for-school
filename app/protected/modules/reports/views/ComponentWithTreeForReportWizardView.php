@@ -197,13 +197,16 @@
         {
             parent::registerScripts();
             $script = '
-                $(".droppable-dynamic-rows-container.' . static::getTreeType() . '").live("drop",function(event, ui){
+                $(".droppable-dynamic-rows-container.' . static::getTreeType() . '").live("drop", function(event, ui)
+                {
                     ' . $this->getAjaxForDroppedAttribute() . '
                 });
-                $(".item-to-place", "#' . static::getTreeType() . 'TreeArea").live("dblclick",function(event){
+                $(".item-to-place", "#' . static::getTreeType() . 'TreeArea").live("dblclick", function(event)
+                {
                     ' . $this->getAjaxForDoubleClickedAttribute() . '
                 });
-                $(".remove-dynamic-row-link.' . static::getTreeType() . '").live("click", function(){
+                $(".remove-dynamic-row-link.' . static::getTreeType() . '").live("click", function()
+                {
                     size = $(this).parent().parent().parent().find("li").size();
                     $(this).parent().parent().remove(); //removes the <li>
                     if (size < 2)
@@ -239,21 +242,23 @@
                     'url'      => 'js:$.param.querystring("' .
                                   $this->getAddAttributeUrl() .
                                   '", "nodeId=" + ui.helper.attr("id") + "&rowNumber="  + $(\'#' . $rowCounterInputId . '\').val())',
-                    'beforeSend' => 'js:function(){
+                    'beforeSend' => 'js:function()
+                    {
                         $(".ui-overlay-block").fadeIn(50);
                         makeLargeLoadingSpinner(true, ".ui-overlay-block"); //- add spinner to block anything else
                     }',
-                    'success' => 'js:function(data){
-                    var ul = $(".droppable-dynamic-rows-container.' . static::getTreeType() . '").parent().find(".dynamic-rows").find("ul:first");
-                    $(\'#' . $rowCounterInputId . '\').val(parseInt($(\'#' . $rowCounterInputId . '\').val()) + 1);
-                    ul.append(data);
-                    ' . $this->getReportAttributeRowAddOrRemoveExtraScript() . '
-                    $(".' . static::getZeroComponentsClassName() . '").fadeOut(150);
-                    makeLargeLoadingSpinner(false, ".ui-overlay-block");
-                    $(".ui-overlay-block").fadeOut(50);
-                    window.scrollTo(0, ul.find("li:last-child > div").offset().top);
-                    ul.find("li:last-child > div").addClass("glow").animate({backgroundColor:"#f0f0f0"}, 2000);
-                }'
+                    'success' => 'js:function(data)
+                    {
+                        var ul = $(".droppable-dynamic-rows-container.' . static::getTreeType() . '").parent().find(".dynamic-rows").find("ul:first");
+                        $(\'#' . $rowCounterInputId . '\').val(parseInt($(\'#' . $rowCounterInputId . '\').val()) + 1);
+                        ul.append(data);
+                        ' . $this->getReportAttributeRowAddOrRemoveExtraScript() . '
+                        $(".' . static::getZeroComponentsClassName() . '").fadeOut(150);
+                        makeLargeLoadingSpinner(false, ".ui-overlay-block");
+                        $(".ui-overlay-block").fadeOut(50);
+                        window.scrollTo(0, ul.find("li:last-child > div").offset().top);
+                        ul.find("li:last-child > div").addClass("glow").animate({backgroundColor:"#f0f0f0"}, 2000);
+                    }'
             ));
         }
 
@@ -268,11 +273,13 @@
                     'data'     => 'js:$("#' . $this->form->getId() . '").serialize()',
                     'url'      => 'js:$.param.querystring("' . $this->getAddAttributeUrl() . '",
                                         "nodeId=" + event.currentTarget.id + "&rowNumber=" + $(\'#' . $rowCounterInputId . '\').val())',
-                    'beforeSend' => 'js:function(){
+                    'beforeSend' => 'js:function()
+                    {
                         $(".ui-overlay-block").fadeIn(50);
                         makeLargeLoadingSpinner(true, ".ui-overlay-block"); //- add spinner to block anything else
                     }',
-                    'success' => 'js:function(data){
+                    'success' => 'js:function(data)
+                    {
                         var ul = $(".droppable-dynamic-rows-container.' . static::getTreeType() . '").parent().find(".dynamic-rows").find("ul:first");
                         $(\'#' . $rowCounterInputId . '\').val(parseInt($(\'#' . $rowCounterInputId . '\').val()) + 1);
                         ul.append(data);
@@ -282,7 +289,7 @@
                         $(".ui-overlay-block").fadeOut(50);
                         window.scrollTo(0, ul.find("li:last-child > div").offset().top);
                         ul.find("li:last-child > div").addClass("glow").animate({backgroundColor:"#f0f0f0"}, 2000);
-                }'
+                    }'
             ));
         }
 

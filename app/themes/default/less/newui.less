@@ -787,6 +787,7 @@ body > .ui-autocomplete{
 #HeaderView{
 	position:relative;
 	z-index:9999;
+	min-width:900px;
 }
 
 .TitleBarView{
@@ -837,11 +838,12 @@ body > .ui-autocomplete{
 #nav-trigger{
 	display:none;
 	float: left;
-	text-align:left;
-	padding:0 10px 0 10px;
+	text-align:center;
+	padding:0;
 	margin-right:15px;
 	line-height: 38px;
 	height:38px;
+	width: 44px;
 	font-size: 24px;
 	font-weight: normal;
 	.symbly(30px);
@@ -965,6 +967,9 @@ body > .ui-autocomplete{
 
 #MenuView.hasNoHiddenItems{
 	padding-bottom: 20px;
+	.toggle-hidden-nav-items{
+		display: none;
+	}
 }
 
 .hidden-nav-item{
@@ -1205,6 +1210,7 @@ body > .ui-autocomplete{
 	position: relative;
 //z-index: 9999;
 	float: left;
+	width: 100%;
 }
 
 #MashableInboxActionBarForViews,
@@ -1371,13 +1377,6 @@ form,
 }
 
 .portlet-view-toolbar{
-	//margin-bottom: 0;
-	//display: block;
-	//float: none;
-	//border:none;
-	//border-bottom:1px solid #DFDFDF;
-	//.radius(0);
-	//.b-shadow(none);
 	.parent{
 		position: relative;
 	}
@@ -1705,9 +1704,10 @@ form,
 
 .xhtml-validation-info,
 .performance-info{
-	text-align: right;
+	text-align: left;
 	margin:0 3% 15px 3%;
 	font-style: italic;
+	.smaller();
 }
 
 #credit-link{
@@ -1848,8 +1848,8 @@ caption, th, td {
 	td{
 		padding-left:0;// !important;
 		div.button-column{
+			display:none;
 			float:right;
-			display:block;
 			margin:5px 0 0 0;
 			line-height: 100%;
 		}
@@ -1862,6 +1862,7 @@ caption, th, td {
 			}
 			~ div{
 				padding-left:25px;
+				++.border-box;
 			 }
 		}
 		> div{
@@ -2167,6 +2168,20 @@ a.simple-link{
 }
 
 /*=Popup Modals*/
+
+/*
+@-webkit-keyframes growDialog {
+	to { -webkit-transform:scale(1, 1) }
+}
+*/
+.openingModal{
+	-o-animation: growDialog 0.25s;
+	-ms-animation: growDialog 0.25s;
+	-moz-animation: growDialog 0.25s;
+	-webkit-animation: growDialog 0.25s;
+	animation: growDialog 0.25s;
+}
+
 .ui-dialog{
 	min-width: 600px;
 	max-width: 50%;
@@ -2181,6 +2196,7 @@ a.simple-link{
 		margin:0;
 		border:none;
 		.b-shadow(none);
+		float:none;
 		form{
 			border:none;
 			.b-shadow(none);
@@ -2307,6 +2323,8 @@ label.hasCheckBox{
 
 div.wide.form{
 	position: relative;
+	width: 100%;
+	float: left;
 	label.hasCheckBox{
 		margin-top:0 !important; //was !important
 	}
@@ -2525,13 +2543,19 @@ div.wide.form{
 }
 
 #search-form{
+	border:1px solid #dfdfdf;
+	border-bottom: none;
 	position: relative;
-	border: 1px solid #DFDFDF;
-	border-bottom:none;
-	#gradient > .vertical(#f6f6f6, #ededed);
-	.b-shadow(none);
-	box-shadow:inset 0 1px 0 0 #ffffff;
+	#gradient > .vertical( #f5f5f5, #ebebeb );
+	.b-shadow(0 0 20px 5px rgba(153, 153, 153, 0.12)); /*999*/
+	.smaller();
+	float: left;
+	width: 100%;
+	.box-sizing();
 	.clearfix();
+	.form-toolbar, .z-button{
+		font-size:12px;
+	}
 	table{
 		border-bottom:none;
 	}
@@ -2560,9 +2584,9 @@ div.wide.form{
 	background: none !important;
 	.b-shadow(none);
 	.border-box();
-	> div{
+	> div + div{
 		display: inline-block;
-		margin-right: 15px;
+		margin-left: 15px;
 	}
 }
 
@@ -2625,20 +2649,7 @@ div.wide.form{
 	}
 }
 
-#search-form{
-	border-color: #dfdfdf;
-	border-bottom: none;
-	position: relative;
-	#gradient > .vertical( #f5f5f5, #ebebeb );
-	.smaller();
-	float: left;
-	width: 100%;
-	.box-sizing();
-	.clearfix();
-	.form-toolbar, .z-button{
-		font-size:12px;
-	}
-}
+
 
 .search-form-tools{
 	position: absolute;
@@ -2721,6 +2732,10 @@ div.wide.form{
 	}
 	#clear-search-linkmodal{
 		margin-left:10px;
+		color: #fff;
+		padding: 3px;
+		.radius(3px);
+		.smaller();
 	}
 	.items{
 		border: none;
@@ -2996,10 +3011,6 @@ div.wide.form{
 	.col-1{
 		width:70%;
 	}
-}
-
-.AdministrativeArea .panel{
-	width:100% !important;
 }
 
 .attributesContainer{
@@ -3350,7 +3361,7 @@ div.wide.form{
 	p{
 		width:100%;
 		a{
-			++.themeColor-important;
+			//++.themeColor-important;
 		}
 	}
 	.panelTitle{
@@ -3358,7 +3369,7 @@ div.wide.form{
 		padding-left:10px;
 	}
 	a{
-		++.themeColor;
+		//++.themeColor;
 	}
 	.map-link{
 		display: inline-block;
@@ -3538,6 +3549,14 @@ div.wide.form{
 	}
 }
 
+.clickable-mbmenu{
+	&.nav-open{
+		ul{
+			display: block;
+		}
+	}
+}
+
 .DetailsAndRelationsView,
 #AccountDetailsAndRelationsView{
 	.clearfix();
@@ -3654,6 +3673,7 @@ div.wide.form{
 
 #NoteInlineEditForPortletView .wide.form{
 	++.unstyle-panel;
+	float: none;
 }
 
 #inline-edit-form{
@@ -3820,14 +3840,16 @@ div.radio-input{
 			display: block;
 			margin-left: 10px;
 			width:13px;
-			height: 13px;
+			padding: 1px;
+			//height: 13px;
 			text-align: center;
-			vertical-align: middle;
+			line-height: 1;
+			//vertical-align: middle;
 			color: #666;
 			border:1px solid #fff;
 			.b-shadow(inset 0 0 0 1px #ddd);
 			.t-shadow(0 1px 0 #fff);
-			.radius(3px);
+			.radius(2px);
 			#gradient > .vertical(#e8e8e8, #f5f5f5);
 			.symbly(14px);
 		}
@@ -3836,7 +3858,7 @@ div.radio-input{
 			display: none;
 			list-style: none;
 			position: absolute;
-			margin-top:5px;
+			margin-top:3px;
 			margin-left:11px;
 			padding-top:3px;
 			padding-bottom:3px;

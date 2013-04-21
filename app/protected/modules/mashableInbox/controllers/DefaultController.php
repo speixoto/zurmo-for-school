@@ -69,7 +69,8 @@
             );
         }
 
-        public function actionList($modelClassName = null) {
+        public function actionList($modelClassName = null)
+        {
             assert('is_string($modelClassName) || $modelClassName == null');
             $this->pageSize     = Yii::app()->pagination->resolveActiveForCurrentUserByType(
                                         'listPageSize', get_class($this->getModule()));
@@ -191,7 +192,7 @@
         {
             if ($modelClassName !== null)
             {
-                $selectedIds        = explode(',', $mashableInboxForm->selectedIds);
+                $selectedIds        = explode(',', $mashableInboxForm->selectedIds); // Not Coding Standard
                 foreach ($selectedIds as $modelId)
                 {
                    $this->resolveMassActionByModel($mashableInboxForm->massAction,
@@ -201,7 +202,7 @@
             }
             else
             {
-                $selectedIds        = explode(',', $mashableInboxForm->selectedIds);
+                $selectedIds        = explode(',', $mashableInboxForm->selectedIds); // Not Coding Standard
                 foreach ($selectedIds as $selectedId)
                 {
                    list($modelClassNameForMassAction, $modelId) = explode("_", $selectedId);

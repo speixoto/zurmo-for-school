@@ -34,7 +34,7 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class RedBeanRelatedModelsTest extends BaseTest
+    class RedBeanRelatedModelsTest extends ZurmoBaseTest
     {
         const CONTACTS = 10;
 

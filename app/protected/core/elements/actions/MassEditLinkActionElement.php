@@ -43,6 +43,7 @@
         {
             return 'MassEdit';
         }
+
         protected function getSelectedMenuNameSuffix()
         {
             return '-massActionSelected';

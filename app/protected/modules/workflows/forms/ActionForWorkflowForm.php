@@ -69,6 +69,7 @@
          * Utilized by arrays to define the element that is for the actionAttributes
          */
         const ACTION_ATTRIBUTES     = 'ActionAttributes';
+
         /**
          * Type of action
          * @var string

@@ -158,13 +158,16 @@
         {
             parent::registerScripts();
             $script = '
-                $(".droppable-dynamic-rows-container.' . static::getTreeType() . '").live("drop",function(event, ui){
+                $(".droppable-dynamic-rows-container.' . static::getTreeType() . '").live("drop", function(event, ui)
+                {
                     ' . $this->getAjaxForDroppedAttribute() . '
                 });
-                $(".item-to-place", "#' . static::getTreeType() . 'TreeArea").live("dblclick",function(event){
+                $(".item-to-place", "#' . static::getTreeType() . 'TreeArea").live("dblclick", function(event)
+                {
                     ' . $this->getAjaxForDoubleClickedAttribute() . '
                 });
-                $(".remove-dynamic-row-link.' . static::getTreeType() . '").live("click", function(){
+                $(".remove-dynamic-row-link.' . static::getTreeType() . '").live("click", function()
+                {
                     size = $(this).parent().parent().parent().find("li").size();
                     $(this).parent().parent().remove(); //removes the <li>
                     if (size < 2)
@@ -200,15 +203,17 @@
                     'url'      => 'js:$.param.querystring("' .
                                   $this->getAddAttributeUrl() .
                                   '", "nodeId=" + ui.helper.attr("id") + "&rowNumber="  + $(\'#' . $rowCounterInputId . '\').val())',
-                    'beforeSend' => 'js:function(){
+                    'beforeSend' => 'js:function()
+                    {
                        // attachLoadingSpinner("' . $this->form->getId() . '", true, "dark"); - add spinner to block anything else
                     }',
-                    'success' => 'js:function(data){
-                    $(\'#' . $rowCounterInputId . '\').val(parseInt($(\'#' . $rowCounterInputId . '\').val()) + 1);
-                    $(".droppable-dynamic-rows-container.' . static::getTreeType() . '").parent().find(".dynamic-rows").find("ul:first").append(data);
-                    ' . $this->getWorkflowAttributeRowAddOrRemoveExtraScript() . '
-                    $(".' . static::getZeroComponentsClassName() . '").hide();
-                }'
+                    'success' => 'js:function(data)
+                    {
+                        $(\'#' . $rowCounterInputId . '\').val(parseInt($(\'#' . $rowCounterInputId . '\').val()) + 1);
+                        $(".droppable-dynamic-rows-container.' . static::getTreeType() . '").parent().find(".dynamic-rows").find("ul:first").append(data);
+                        ' . $this->getWorkflowAttributeRowAddOrRemoveExtraScript() . '
+                        $(".' . static::getZeroComponentsClassName() . '").hide();
+                    }'
             ));
         }
 
@@ -223,15 +228,17 @@
                     'data'     => 'js:$("#' . $this->form->getId() . '").serialize()',
                     'url'      => 'js:$.param.querystring("' . $this->getAddAttributeUrl() . '",
                                         "nodeId=" + event.currentTarget.id + "&rowNumber=" + $(\'#' . $rowCounterInputId . '\').val())',
-                    'beforeSend' => 'js:function(){
+                    'beforeSend' => 'js:function()
+                    {
                        // attachLoadingSpinner("' . $this->form->getId() . '", true, "dark"); - add spinner to block anything else
                     }',
-                    'success' => 'js:function(data){
+                    'success' => 'js:function(data)
+                    {
                         $(\'#' . $rowCounterInputId . '\').val(parseInt($(\'#' . $rowCounterInputId . '\').val()) + 1);
                         $(".droppable-dynamic-rows-container.' . static::getTreeType() . '").parent().find(".dynamic-rows").find("ul:first").append(data);
                         ' . $this->getWorkflowAttributeRowAddOrRemoveExtraScript() . '
                         $(".' . static::getZeroComponentsClassName() . '").hide();
-                }'
+                    }'
             ));
         }
 

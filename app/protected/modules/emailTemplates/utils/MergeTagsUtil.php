@@ -71,7 +71,7 @@
             $this->content  = $content;
         }
 
-        public function resolveMergeTagsArrayToAttributes($model, & $invalidTags = array(), $language = null)
+        public function resolveMergeTagsArrayToAttributes($model, & $invalidTags = array(), $language = null, $errorOnFirstMissing = false)
         {
             $language = ($language)? $language : $this->language;
             if (empty($this->mergeTags))
@@ -81,14 +81,14 @@
             else
             {
                 return MergeTagsToModelAttributesAdapter::resolveMergeTagsArrayToAttributesFromModel($this->mergeTags[1],
-                                        $model, $invalidTags, $language);
+                                        $model, $invalidTags, $language, $errorOnFirstMissing);
             }
         }
 
-        public function resolveMergeTags($model, & $invalidTags = array(), $language = null)
+        public function resolveMergeTags($model, & $invalidTags = array(), $language = null, $errorOnFirstMissing = false)
         {
             if (!$this->extractMergeTagsPlaceHolders() ||
-                    $this->resolveMergeTagsArrayToAttributes($model, $invalidTags, $language) &&
+                    $this->resolveMergeTagsArrayToAttributes($model, $invalidTags, $language, $errorOnFirstMissing) &&
                     $this->resolveMergeTagsInTemplateToAttributes())
             {
                 return $this->content;
@@ -101,12 +101,11 @@
 
         public function extractMergeTagsPlaceHolders()
         {
-            // Current RE: /((WAS\%)?((\^|__)?([A-Z]))+)/ // Not Coding Standard
+            // Current RE: /((WAS\%)?(([A-Z0-9])(\^|__)?)+)/ // Not Coding Standard
             $pattern = '/' . preg_quote(static::TAG_PREFIX) .
                 '((WAS' . preg_quote(static::TIME_DELIMITER) . ')?' .
-                '((' . preg_quote(static::CAPITAL_DELIMITER) . '|' .
-                preg_quote(static::PROPERTY_DELIMITER) . ')?' . // Not Coding Standard
-                '([A-Z]))+)' .
+                '(([A-Z0-9])' . '(' . preg_quote(static::CAPITAL_DELIMITER) . '|' .
+                preg_quote(static::PROPERTY_DELIMITER) . ')?)+)' . // Not Coding Standard
                 preg_quote(static::TAG_SUFFIX) .
                 '/';
             // $this->mergeTags index 0 = with tag prefix and suffix, index 1 = without tag prefix and suffix

@@ -164,7 +164,7 @@
                                           'savedWorkflowIds' => array($savedWorkflows[1]->id, $savedWorkflows[0]->id)
             )));
             $content = $this->runControllerWithExitExceptionAndGetContent('workflows/default/saveOrder');
-            $this->assertEquals('{"message":"Order saved successfully.","type":"message"}', $content);
+            $this->assertEquals('{"message":"Order saved successfully.","type":"message"}', $content); // Not Coding Standard
             $this->assertEquals($firstOrder,  SavedWorkflow::getById($savedWorkflows[1]->id)->order);
             $this->assertEquals($secondOrder, SavedWorkflow::getById($savedWorkflows[0]->id)->order);
         }
@@ -198,7 +198,7 @@
                                                         'moduleClassName'   => 'WorkflowsTestModule');
             $this->setPostArray($data);
             $content = $this->runControllerWithExitExceptionAndGetContent('workflows/default/relationsAndAttributesTree');
-            $this->assertTrue(strpos($content, '{"id":"Triggers_hasOne___createdByUser__User",') !== false);
+            $this->assertTrue(strpos($content, '{"id":"Triggers_hasOne___createdByUser__User",') !== false); // Not Coding Standard
         }
 
         /**
@@ -250,7 +250,7 @@
                                                         'moduleClassName'   => 'WorkflowsTestModule');
             $this->setPostArray($data);
             $content = $this->runControllerWithNoExceptionsAndGetContent('workflows/default/getAvailableAttributesForTimeTrigger');
-            $this->assertTrue(strpos($content, '{"":"(None)","likeContactState":"A name for a state","boolean":"Boolean",') !== false);
+            $this->assertTrue(strpos($content, '{"":"(None)","likeContactState":"A name for a state","boolean":"Boolean",') !== false); // Not Coding Standard
         }
 
         /**

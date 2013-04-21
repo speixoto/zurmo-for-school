@@ -86,8 +86,7 @@
 
         public static function getUnreadCountForCurrentUserByModelClassName($modelClassName)
         {
-            $mashableInboxRules =
-                    static::createMashableInboxRulesByModel($modelClassName);
+            $mashableInboxRules = static::createMashableInboxRulesByModel($modelClassName);
             return (int)$mashableInboxRules->getUnreadCountForCurrentUser();
         }
 
@@ -137,8 +136,7 @@
             $modelClassNamesAndSortAttributes = array();
             foreach ($modelClassNames as $modelClassName)
             {
-                $mashableActivityRules =
-                        static::createMashableInboxRulesByModel($modelClassName);
+                $mashableActivityRules = static::createMashableInboxRulesByModel($modelClassName);
                 $modelClassNamesAndSortAttributes[$modelClassName] =
                         $mashableActivityRules->getMachableInboxOrderByAttributeName();
             }
@@ -251,7 +249,7 @@
 
         public static function saveSelectedOptionsAsStickyData(MashableInboxForm $mashableInboxForm, $modelClassName)
         {
-            assert('strlen($modelClassName) > 0 || is_null($modelClassName)');
+            assert('strlen($modelClassName) > 0 || ($modelClassName === null)');
             $key = self::resolveKeyByModuleAndModel('MashableInboxModule', $modelClassName);
             StickyUtil::setDataByKeyAndData($key, $mashableInboxForm->getAttributes(
                                                         array('optionForModel', 'filteredBy', 'searchTerm')));
@@ -259,7 +257,7 @@
 
         public static function restoreSelectedOptionsAsStickyData($modelClassName)
         {
-            assert('strlen($modelClassName) > 0 || is_null($modelClassName)');
+            assert('strlen($modelClassName) > 0 || ($modelClassName === null)');
             $key  = self::resolveKeyByModuleAndModel('MashableInboxModule', $modelClassName);
             $data = StickyUtil::getDataByKey($key);
             $mashableInboxForm = new MashableInboxForm();

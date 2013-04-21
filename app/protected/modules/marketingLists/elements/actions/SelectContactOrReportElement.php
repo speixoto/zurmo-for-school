@@ -99,7 +99,7 @@
             $element            = new $elementClassName($this->model, $attribute, $this->form, $params);
             $content            = ZurmoHtml::tag('div', array('id' => $searchBoxDivId,
                                                                 'class' => static::SEARCH_BOX_MAGNIFIER_CLASS),
-                                                        $element->render());
+                                                        $element->render() . $this->renderAutoCompleteSpinner());
             return $content;
         }
 
@@ -111,6 +111,11 @@
                                                                         $params);
             return ZurmoHtml::tag('div', array('id' => static::SELECT_CONTACT_OR_REPORT_RADIO_ID),
                                                                         $selectRadio->render());
+        }
+
+        protected function renderAutoCompleteSpinner()
+        {
+            return '<span class="z-spinner"></span>';
         }
     }
 ?>

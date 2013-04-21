@@ -617,8 +617,8 @@
                 $moduleAndDependenciesRootModelNames = $module->getRootModelNamesIncludingDependencies();
                 $rootModels = array_merge($rootModels, array_diff($moduleAndDependenciesRootModelNames, $rootModels));
             }
-            RedBeanDatabaseBuilderUtil::autoBuildModels($rootModels, $messageLogger);
             ZurmoDatabaseCompatibilityUtil::createStoredFunctionsAndProcedures();
+            RedBeanDatabaseBuilderUtil::autoBuildModels($rootModels, $messageLogger);
             ZurmoDatabaseCompatibilityUtil::createIndexes();
         }
 

@@ -60,7 +60,7 @@
             $emailMessagesForWorkflowWizardView   = new EmailMessagesForWorkflowWizardView($this->model,     $form, true);
             $generalDataForWorkflowWizardView   = new GeneralDataForWorkflowWizardView($this->model, $form, true);
 
-            $gridView = new GridView(6,1);
+            $gridView = new GridView(6, 1);
             $gridView->setView($moduleForWorkflowWizardView, 0, 0);
             $gridView->setView($timeTriggerForWorkflowWizardView, 1, 0);
             $gridView->setView($triggersForWorkflowWizardView, 2, 0);
@@ -101,8 +101,10 @@
                             $('#TriggersForWorkflowWizardView').hide();
                             $('#ActionsForWorkflowWizardView').show();
                             var actionsList = $('#ActionsForWorkflowWizardView').find('ul:first').children();
-                            $.each(actionsList, function(){
-                                if ( $(this).hasClass('expanded-row') ){
+                            $.each(actionsList, function()
+                            {
+                                if ( $(this).hasClass('expanded-row') )
+                                {
                                     $(this).toggleClass('expanded-row');
                                     $('.edit-dynamic-row-link', this).toggle();
                                     $('.toggle-me', this).toggle();
@@ -125,7 +127,8 @@
                         }
 
                         var rowData = $('#" . $formName . "').find('.attachLoadingTarget').data() || {};
-                        if (rowData.purpose === 'validate-action'){
+                        if (rowData.purpose === 'validate-action')
+                        {
                             $('#' + rowData.row.toString()).toggleClass('expanded-row');
                             $('#' + rowData.row.toString() + ' .toggle-me').toggle();
                             $('#' + rowData.row.toString() + ' .edit-dynamic-row-link').toggle();

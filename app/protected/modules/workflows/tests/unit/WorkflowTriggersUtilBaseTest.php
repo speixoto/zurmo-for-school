@@ -65,10 +65,10 @@
                                                                             $modelClassName  = 'WorkflowModelTestItem',
                                                                             $secondValue     = null)
         {
-            assert('is_string($attributeIndexOrDerivedType)');
-            assert('is_string($operator)');
-            assert('is_string($moduleClassName)');
-            assert('is_string($modelClassName)');
+            assert('is_string($attributeIndexOrDerivedType)'); // Not Coding Standard
+            assert('is_string($operator)');                    // Not Coding Standard
+            assert('is_string($moduleClassName)');             // Not Coding Standard
+            assert('is_string($modelClassName)');              // Not Coding Standard
             $workflow = new Workflow();
             $workflow->setType(Workflow::TYPE_ON_SAVE);
             $workflow->setTriggersStructure('1');
@@ -88,11 +88,11 @@
                                                                                 $modelClassName    = 'WorkflowModelTestItem',
                                                                                 $secondValue       = null)
         {
-            assert('is_string($attributeIndexOrDerivedType)');
-            assert('is_string($operator)');
-            assert('is_int($durationSeconds)');
-            assert('is_string($moduleClassName)');
-            assert('is_string($modelClassName)');
+            assert('is_string($attributeIndexOrDerivedType)'); // Not Coding Standard
+            assert('is_string($operator)');                    // Not Coding Standard
+            assert('is_int($durationSeconds)');                // Not Coding Standard
+            assert('is_string($moduleClassName)');             // Not Coding Standard
+            assert('is_string($modelClassName)');              // Not Coding Standard
             $workflow = new Workflow();
             $workflow->setType(Workflow::TYPE_BY_TIME);
             $workflow->setTriggersStructure('1');
@@ -112,10 +112,10 @@
                                                                                  $modelClassName  = 'WorkflowModelTestItem',
                                                                                  $secondValue     = null)
         {
-            assert('is_string($attributeIndexOrDerivedType)');
-            assert('is_string($valueType)');
-            assert('is_string($moduleClassName)');
-            assert('is_string($modelClassName)');
+            assert('is_string($attributeIndexOrDerivedType)'); // Not Coding Standard
+            assert('is_string($valueType)');                   // Not Coding Standard
+            assert('is_string($moduleClassName)');             // Not Coding Standard
+            assert('is_string($modelClassName)');              // Not Coding Standard
             $workflow = new Workflow();
             $workflow->setType(Workflow::TYPE_ON_SAVE);
             $workflow->setTriggersStructure('1');
@@ -135,11 +135,11 @@
                                                                                  $modelClassName  = 'WorkflowModelTestItem',
                                                                                  $secondValue     = null)
         {
-            assert('is_string($attributeIndexOrDerivedType)');
-            assert('is_string($valueType)');
-            assert('is_int($durationSeconds)');
-            assert('is_string($moduleClassName)');
-            assert('is_string($modelClassName)');
+            assert('is_string($attributeIndexOrDerivedType)'); // Not Coding Standard
+            assert('is_string($valueType)');                   // Not Coding Standard
+            assert('is_int($durationSeconds)');                // Not Coding Standard
+            assert('is_string($moduleClassName)');             // Not Coding Standard
+            assert('is_string($modelClassName)');              // Not Coding Standard
             $workflow = new Workflow();
             $workflow->setType(Workflow::TYPE_BY_TIME);
             $workflow->setTriggersStructure('1');

@@ -59,6 +59,7 @@
          * @var string
          */
         public $currencyIdType = self::CURRENCY_ID_TYPE_STATIC;
+
         /**
          * Override to make sure value is a float and adding in additional attribute rules
          */

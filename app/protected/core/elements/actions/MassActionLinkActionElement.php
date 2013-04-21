@@ -176,6 +176,7 @@
             }
             else
             {
+                // Begin Not Coding Standard
                 Yii::app()->clientScript->registerScript($scriptName, "
                         $('#" . $dropDownId . "').unbind('change.action').bind('change.action', function()
                         {
@@ -207,6 +208,7 @@
                         }
                         );
                     ");
+                // End Not Coding Standard
             }
         }
 
@@ -253,6 +255,7 @@
 
         protected function getEventHandlerScriptContentForMenuType($menuType)
         {
+            // Begin Not Coding Standard
             return "massActionLinkActionElementEventHandler(" .
                             $menuType . ",".
                             " '" . $this->gridId. "',".
@@ -260,6 +263,7 @@
                             " '" . $this->getActionId(). "',".
                             " '" . $this->getPageVarName() ."'".
                             ")";
+            // End Not Coding Standard
         }
 
         protected function getMenuItems()

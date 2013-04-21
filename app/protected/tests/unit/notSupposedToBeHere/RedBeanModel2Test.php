@@ -39,7 +39,7 @@
     // put back in core/test/unit.
     // These tests need to be put in the right places given
     // what they depend on.
-    class RedBeanModel2Test extends BaseTest
+    class RedBeanModel2Test extends ZurmoBaseTest
     {
         public static function setUpBeforeClass()
         {

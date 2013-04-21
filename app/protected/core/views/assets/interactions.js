@@ -35,7 +35,7 @@
 
 $(window).ready(function(){
     //main menu flyouts or mbmenu releacment
-    $('.nav:not(.user-menu-item) > .parent').live({
+    $('.nav:not(.user-menu-item):not(.clickable-mbmenu) > .parent').live({
         mouseenter: function() {
             if ( $(this).find('ul').length > 0 ){
                 $(this).find('ul').stop(true, true).delay(0).fadeIn(100);
@@ -59,8 +59,19 @@ $(window).ready(function(){
         }
     );
 
+    $('.clickable-mbmenu').find('a').click(
+        function(){
+            var parentUl = $(this).parentsUntil('clickable-mbmenu').parent();
+            if ( parentUl.hasClass('nav-open') === false ){
+                parentUl.addClass('nav-open');
+            } else {
+                parentUl.removeClass('nav-open');
+            }
+        }
+    );
+
     //Main nav hover
-     $('#MenuView a, #RecentlyViewedView a').hover(
+     $('#MenuView > ul > li > a, #RecentlyViewedView  > ul > li > a').hover(
         function(){
             $('> span:first-child', this).stop(true, true).fadeTo( 50, 1, 'linear' );
             $('> span:last-child', this).stop(true, true).animate({ color : '#555', color: '#fff' }, 50, 'linear');
@@ -100,7 +111,7 @@ $(window).ready(function(){
             appChromeHeight = 80 + $('#FooterView').outerHeight(true);
             if ( wrapperDivHeight < viewportHeight  ){
                 bufferHeight = viewportHeight - appChromeHeight;
-                $('.AppContainer').css('min-height',  bufferHeight);
+                $('.AppContent').css('min-height',  bufferHeight);
             }
         //rest of app
         } else {
@@ -108,7 +119,11 @@ $(window).ready(function(){
             appChromeHeight = recentlyViewedHeight + $('#MenuView').outerHeight(true) + $('#HeaderView').outerHeight(true) + $('#FooterView').outerHeight(true);
             if ( wrapperDivHeight < viewportHeight  ){
                 bufferHeight = viewportHeight - appChromeHeight;
-                $('#RecentlyViewedView').css('min-height', $('#RecentlyViewedView').height() + bufferHeight);
+                if ($('#RecentlyViewedView').length > 0){
+                    $('#RecentlyViewedView').css('min-height', $('#RecentlyViewedView').height() + bufferHeight);
+                } else {
+                    $('.AppContent').css('min-height', $('.AppContainer').height() + 30);
+                }
             }
         }
     }
@@ -193,14 +208,16 @@ $(window).ready(function(){
 var windowTop, diff;
 
 function dockFloatingBar(){
-    if ($('.float-bar').find('.disable-float-bar').length == 0) {
-        windowTop = $(window).scrollTop();
-        diff = $(document).height() - $(window).height() - 100; //100px is to dock it before scrolling all the way to the bottom
-        if( windowTop > diff ) {
-            $('.float-bar .view-toolbar-container').addClass('dock');
-        } else {
-            if( $('.wrapper').height() > $('.AppNavigation').height() ) {
-                $('.float-bar .view-toolbar-container').removeClass('dock');
+    if ($('body').hasClass('mobile-app') === false){
+        if ($('.float-bar').find('.disable-float-bar').length == 0) {
+            windowTop = $(window).scrollTop();
+            diff = $(document).height() - $(window).height() - 100; //100px is to dock it before scrolling all the way to the bottom
+            if( windowTop > diff ) {
+                $('.float-bar .view-toolbar-container').addClass('dock');
+            } else {
+                if( $('.wrapper').height() > $('.AppNavigation').height() ) {
+                    $('.float-bar .view-toolbar-container').removeClass('dock');
+                }
             }
         }
     }
@@ -747,6 +764,8 @@ Autogrow textfields from https://github.com/rumpl/jquery.autogrow
                 minHeight = $this.height(),
                 shadow = $('<div></div>').css({
                     position   :   'absolute',
+                    top        : -50000,
+                    left       : -50000,
                     visibility : 'hidden',
                     width      : $(this).width(),
                     fontSize   : $this.css('fontSize'),

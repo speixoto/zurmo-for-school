@@ -683,6 +683,7 @@
                         assert('in_array($relationType, array(self::HAS_ONE_BELONGS_TO, self::HAS_MANY_BELONGS_TO, ' .
                                                              'self::HAS_ONE, self::HAS_MANY, self::MANY_MANY))');
                         $this->attributeNameToBeanAndClassName[$relationName] = array($bean, $modelClassName);
+
                         /**
                         $this->relationNameToRelationTypeModelClassNameAndOwns[$relationName] = array($relationType,
                                                                                                 $relationModelClassName,
@@ -1755,8 +1756,9 @@
                                 $linkName = strtolower(static::getRelationLinkName($relationName));
                             }
                             ZurmoRedBeanLinkManager::breakLink($bean, $relatedTableName, $linkName);
-                            if ($this->{$relationName} !== null &&
-                               isset($this->unlinkedOwnedRelatedModelsToRemove[$relationName]))
+                            //Check the $this->{$relationName} second in the if clause to avoid accidentially getting
+                            //a relation to now save. //todo: this needs to be properly handled.
+                            if (isset($this->unlinkedOwnedRelatedModelsToRemove[$relationName]) && $this->{$relationName} !== null)
                             {
                                 //Remove hasOne owned related models that are no longer needed because they have
                                 //been replaced with another hasOne owned model.
@@ -1835,7 +1837,7 @@
                                     //Exclude HAS_MANY_BELONGS_TO because if the existing relation is unlinked, then
                                     //this link should not be reactivated, because it will improperly create the bean
                                     //in the database.
-                                    if(!($relationType == RedBeanModel::HAS_MANY_BELONGS_TO && $this->{$relationName}->id < 0))
+                                    if (!($relationType == RedBeanModel::HAS_MANY_BELONGS_TO && $this->{$relationName}->id < 0))
                                     {
                                         ZurmoRedBeanLinkManager::link($bean, $relatedBean, $linkName);
                                     }

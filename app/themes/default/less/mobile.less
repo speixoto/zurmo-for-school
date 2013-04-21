@@ -44,14 +44,15 @@
 @import 'mixins.less';
 @recentlyViewedIconSize : 24px;
 
-@media all and (max-width: 800px) {
+//@media all and (max-width: 800px) {} not used finally since included when php refreshes teh app and loads mobile version.
+
 	html, body {
 		margin: 0;
 		width: 100%;
 		width: 100%;
 	}
+
 	body{
-		//padding-bottom:160px;
 		height: 100%;
 		> div{
 			height:100%;
@@ -130,45 +131,68 @@
 	#login-form{
 		padding:0 20px !important;
 	}
+
 	#nav-trigger{
 		display:block;
 	}
+
 	#corp-logo span{
 		display:none;
 	}
+
 	#corp-logo img{
 		max-width:50px;
 		margin-top:10px;
 	}
+
 	#HeaderView{
-		position:fixed;
+		//position:fixed;
 		width:100%;
+		min-width:0 !important;
 	}
-	#HeaderLinksView + div{
-		height:0;
+
+	#HeaderLinksView{
+		max-width: 100%;
+		margin:0 auto;
+		+ div{
+			height:0;
+		}
+		> div {
+			margin: 0 10px;
+		}
 	}
+
 	#GlobalSearchAndShortcutsCreateMenuView{
 		display:none;
 	}
+
 	#FooterView {
 		margin:10px 10px 5px 10px;
 		padding-bottom: 5px;
 	}
+
 	#credit-link{
 		margin-left:0;
 		span{
 			margin-left:65px;
 		}
 	}
+
+	.performance-info {
+		margin: 0 10px 10px 10px;
+	}
+
 	.social-links{
 		display: none;
 	}
+
 	#MobileWelcomeView{
 		h1{
 			font-size: 30px;
 			text-align: center;
 		}
 	}
+
 	#welcome-gallery{
 		display: block;
 		margin-bottom: 15px;
@@ -182,9 +206,11 @@
 			display: none;
 		}
 	}
+
 	.dashboard-link{
 		margin: 30px 0 0 0 !important;
 	}
+
 	#instructions{
 		padding-bottom: 30px;
 		text-align: center;
@@ -192,12 +218,26 @@
 			padding: 0;
 		}
 	}
+
 	.help-section{
 		width: 100%;
 		float: none;
 	}
+
 	.hide-welcome {
 		top: 10px;
+	}
+
+	#AboutView{
+		#rightCol,
+		#leftCol{
+			width: 100%;
+			float: none;
+			padding: 15px 15px 0 15px;
+			> div{
+				float: none;
+			}
+		}
 	}
 
 	.view-toolbar{
@@ -207,6 +247,7 @@
 		.b-shadow(none);
 		width: 100%;
 		.icon-create{
+			margin-right:10px;
 			float: left;
 			border:1px solid #b7b7b7;
 			border-top-color: #e7e7e7;
@@ -218,19 +259,35 @@
 		}
 		.mobile-view-toolbar-container{
 			float: left;
-			margin: 1px 0 0 10px;
+			margin: 1px 0 0 0;
+		}
+	}
+
+	.mobile-view-toolbar-container{
+		.hasDropDown{
+			span.select-arrow{
+				z-index:0;
+				background: none;
+				&:before{
+					content: "n";
+					.symbly(30px);
+					line-height: 26px;
+					margin-left: -1px;
+					background: none;
+				}
+			}
 		}
 		select{
-			width: 25px;
-			height:25px;
-			border: none;
-			margin: 3px 0 0 3px;
-			padding: 0;
-			.b-shadow(none);
-		}
-		.select-arrow{
+			-ms-appearance:none;
+			-o-appearance:none;
+			-webkit-appearance:none;
+			-moz-appearance:none !important;
+			appearance: none;
+			background: transparent;
+			z-index:10;
 			top: 0;
 			left: 0;
+			width: 30px;
 			height: 30px;
 			border:1px solid #b7b7b7;
 			border-top-color: #e7e7e7;
@@ -238,61 +295,68 @@
 			border-right-color:#d7d7d7;
 			border-radius:4px;
 			.b-shadow(0 0 9px 5px rgba(153, 153, 153, 0.12));
-			background:url(../images/view-toolbar-gradient.png) left bottom repeat-x;
-			&:after{
-				content: "n";
-				.symbly(30px);
-				line-height: 28px;
-				margin-left: -1px;
-			}
 		}
 	}
 
 	.AppContainer{
 		min-width:0 !important; /* should be 100% but i need to put box-sizing on top level nodes */
-		/*background-image:none;*/
 		margin:0 10px;
-		overflow-y: scroll;
+		//overflow-y: scroll;
+		overflow: hidden;
 		-webkit-overflow-scrolling: touch;
+		max-width: 100%;
+	}
+
+	@media screen and (min-width: 1601px) {
+		.AppContainer{
+			margin:0 10px !important;
+		}
+		#HeaderLinksView > div {
+			margin: 0 !important;
+		}
 	}
 
 	.AppContent{
 		position:relative;
-		top:20px;
-		padding-top:30px;
+		//top:20px;           //add when position fixed for blue bar is possible
+		padding-top:10px;     //add when position fixed for blue bar is possible
 		padding-left:10px;
 		padding-right:10px;
 		margin-left:0;
+		margin-bottom: 0;
 		.radius(0 0 5px 5px);
-		-webkit-transition: all 0.22s ease-in 0;
 
-		transform: translate3d(0, 0, 0);
+		-webkit-transition: all 0.22s ease-in 0;
+		-moz-transition: all 0.22s ease-in 0;
+		-ms-transition: all 0.22s ease-in 0;
+		-o-transition: all 0.22s ease-in 0;
+		transition: all 0.22s ease-in 0;
+
 		-webkit-transform: translate3d(0, 0, 0);
+		-moz-transform: translate3d(0, 0, 0);
+		-ms-transform: translate3d(0, 0, 0);
+		-o-transform: translate3d(0, 0, 0);
+		transform: translate3d(0, 0, 0);
 	}
 
 	#HomePageView .AppContent {
-		padding-right: 10px;
+		padding-right: 10px !important;
 	}
 
-	.AppContainer .nav-open{
-		transform: translate3d(45px, 0, 0);
+	.AppContent.nav-open{
 		-webkit-transform: translate3d(45px, 0, 0);
-		//.b-shadow(-1px 0 15px 0 #ccc);
-	}
-
-	.AppContent{
-		//transform: translate3d(45px, 0, 0);
-		//-webkit-transform: translate3d(45px, 0, 0);
-	}
-
-	#settings-header-menu{
-		//display: none;
+		-moz-transform: translate3d(45px, 0, 0);
+		-ms-transform: translate3d(45px, 0, 0);
+		-o-transform: translate3d(45px, 0, 0);
+		transform: translate3d(45px, 0, 0);
 	}
 
 	.AppNavigation{
+		left: 10px;
+		top: 45px;
 		width: 45px;
 		.unstyle-panel();
-		position:absolute;
+		position:fixed;
 		padding:0 0 0 0;
 		margin: 0;
 		z-index: 0;
@@ -304,16 +368,26 @@
 		z-index: 10;
 	}
 
+	.AppNavigation.nav-open{
+		#MenuView{
+			.opacity(100);
+		}
+	}
+
 	#MenuView{
+		position: static;
+		margin: 0 !important;
+		padding: 0 0 0 10px !important;
+		top: 0 !important;
+		.opacity(0);
 		++.border-box;
-		padding-top: 50px;
-		padding:50px 9px 0 19px;
+		//padding:40px 9px 0 19px; //add padding-top:50px when position fixed for blue bar is possible
 		left: 0;
-		position: fixed;
+		//position: fixed;
 		width:auto;
-		#gradient > .vertical(#f6f6f6, #f4f4f4);
-		border-right:1px solid #eee;
-		border-left:1px solid #eee;
+		height: 100%;
+		border: none;
+		background: none;
 		.radius(0 0 0 5px);
 		> ul > li{
 			.clearfix();
@@ -377,7 +451,24 @@
 		#recently-viewed > a > em:before{
 			content:  "{";
 		}
+		#mashableInbox > a > em:before{
+			content:  "g";
+		}
+		#marketing > a > em:before{
+			content:  '\00B6';
+		}
+		#reports > a > em:before{
+			content:  "V";
+		}
     }
+
+	.toggle-hidden-nav-items{
+		display: none;
+	}
+
+	.hidden-nav-item{
+		display: block;
+	}
 
 	#search{
 		position: relative;
@@ -400,22 +491,12 @@
 		}
 	}
 
-	#shortcuts{
-		position: relative;
-		> ul{
-			++.headerDropDown;
-			position: absolute;
-			margin: 0;
-			left: 43px;
-			top:-7px;
-			width: auto;
-		}
-	}
-
 	#MenuView #shortcuts,
 	#MenuView #recently-viewed{
 		position: relative;
 		> ul{
+			width: auto;
+			++.headerDropDown;
 			border:1px solid #b6b6b6;
 			#gradient > .vertical( #f5f5f5, #ebebeb );
 			.b-shadow(~"inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12)");
@@ -424,9 +505,8 @@
 			display:none;
 			position:absolute;
 			left:43px !important;
-			top:0 !important;
-			padding-top:3px;
-			padding-bottom:3px;
+			top:-75px !important;
+			padding:3px 0 !important;
 			li{
 				line-height: 100%;
 			}
@@ -435,10 +515,11 @@
 				.smaller() !important;
 				display:block;
 				margin:0 2px;
-				padding: 0 !important;
+				padding:3px 0 !important;
 				height: auto !important;
 				float: none !important;
-				span, em{
+				width: auto !important;
+				em{
 					display: none !important;
 				}
 				em + span{
@@ -456,7 +537,7 @@
 					font-weight:normal !important;
 				}
 			}
-			a:hover{
+			a:hover, a:hover span{
 				color:#fff !important;
 			}
 		}
@@ -464,16 +545,10 @@
 
 	#RecentlyViewedView{
 		display: none;
-		h3, ul{
-			//display:none;
-		}
-		ul{
-			max-height:200px;
-			overflow:scroll;
-		}
 	}
 
 	#HomeDashboardView{
+		padding-right: 0;
 		.juiportlet-column{
 			width:100%;
 			float:none;
@@ -486,10 +561,12 @@
 
 	#credit-link {
 		line-height: 17px;
+		line-height: 17px;
 		font-size: 10px;
 	}
 
-	.BreadCrumbView + div{
+	//Details View
+	.DetailsAndRelationsView{
 		> div{
 			float:none;
 			width:100% !important;
@@ -500,10 +577,6 @@
 		padding-bottom:10px;
 	}
 
-	.BreadCrumbView #StickyListMenu > li > a > span{
-		top:2px;
-	}
-
 	.details-table{
 		margin-right:0;
 	}
@@ -512,17 +585,41 @@
 		margin-right:0 !important;
 	}
 
+	.latest-activity-toolbar{
+		padding: 10px 5px !important;
+	}
+
+	#filter-latest-activities-link{
+		margin-left: 5px !important;
+	}
+
+	.filter-portlet-model-bar{
+		padding-left:3px;
+		padding-bottom: 10px;
+		height: auto;
+		++.clearfix;
+		label{
+			line-height: 1;
+			float: left;
+			margin: 10px 0 0 2px;
+		}
+	}
+
 	//List View
-    .search-form-tools,
+    #more-search-link,
+    #select-list-attributes-link,
     .list-view-items-summary-clone,
     .button-column{
 	    display: none;
     }
+
     .SearchView{
 	    width: 100%;
     }
-    #search-form{
-	    width: 100%;
+
+    .search-form-tools{
+	    left: auto;
+	    right: 10px;
     }
 
 	//Edit View
@@ -531,6 +628,10 @@
 	#delete-form .panel {
 		float: none;
 		width: 100%;
+		th > label{
+			position: relative;
+			top: 6px;
+		}
 	}
 
 	.right-side-edit-view-panel{
@@ -543,9 +644,16 @@
 			padding-left:0;
 			> div{
 				padding:0;
+				background: none;
 			}
 		}
 	}
+
+    .hasParallelFields > div{
+	    width: 100% !important;
+	    display: block;
+	    float: none;
+    }
 
 	//Thread View
 	#ModelDetailsSummaryView,
@@ -556,11 +664,13 @@
 		float:none;
 		padding:0 10px;
 	}
+
 	#ConversationDetailsView{
 		.right-side-edit-view-panel{
 			display:none;
 		}
 	}
+
 	.model-details-summary {
 		padding-left: 65px;
 		padding-top: 10px;
@@ -574,10 +684,14 @@
 	#CommentList, .CommentList{
 		margin-left:0;
 	}
+
 	#CommentInlineEditForModelView{
 		padding:0 10px 0 0;
 	}
 
+
+div:not(#LeaderboardView),
+div:not(#MashableInboxActionBarForViews){
 	.toolbar-mbmenu{
 		right:10px;
 		.view-toolbar{
@@ -606,20 +720,15 @@
 			}
 		}
 	}
+}
 
 	#NoUserEmailConfigurationYetView,
 	#NoGlobalEmailConfigurationYetView,
-	.ZeroModelsYetView{
+	.ZeroModelsYetView,
+	.splash-view{
 		> div{
-		   display: -webkit-box;
-			display: -moz-box;
-			display: box;
-			-webkit-box-orient: vertical;
-			-moz-box-orient: vertical;
-			box-orient: vertical;
-			-webkit-box-align: center;
-			-moz-box-align: center;
-			box-align: center;
+			padding: 0 10%;
+			text-align: center;
 		}
 		h2{
 			font-size:20px;
@@ -634,7 +743,7 @@
 		.large-icon{
 			width: 100%;
 			text-align: center;
-			margin-top: 0;
+			margin-top: 10px;
 			border-right:none;
 			float: none;
 		}
@@ -649,6 +758,7 @@
 		a{
 			margin:15px auto;
 			padding:0;
+			float: none;
 		}
 	}
 
@@ -657,17 +767,18 @@
 		right: 5px;
 		top: 5px;
 	}
+
 	.ui-dialog{
 		width: 98%;
 		min-width: 98%;
 		max-width: 98%;
 	}
+
     .ModalGameNotification{
 	    padding-bottom: 60px;
     }
 
-
-    //Inbox
+	//inbox + leaderboard toolbar
 	.model-tag{
 		float: none;
 		margin: 0 0 5px 0 !important;
@@ -675,5 +786,76 @@
 		top: -2px;
 	}
 
-//closing media query bracket
-}
+	div#MashableInboxActionBarForViews,
+	div#LeaderboardView{
+		.view-toolbar-container{
+			width: auto;
+		}
+	}
+
+	div#LeaderboardView > .view-toolbar-container > .view-toolbar,
+	div#MashableInboxActionBarForViews > .view-toolbar-container > .view-toolbar{
+		border:1px solid #b7b7b7;
+		border-top-color: #e7e7e7;
+		border-left-color:#d7d7d7;
+		border-right-color:#d7d7d7;
+		border-radius:4px;
+		float:left;
+		margin:0 0 15px 0;
+		.b-shadow(0 0 9px 5px rgba(153, 153, 153, 0.12));
+		background:url(../images/view-toolbar-gradient.png) left bottom repeat-x;
+		.unread-count{
+			display: none;
+		}
+		.z-label{
+			display: none;
+		}
+		> a,
+		.parent > a {
+			padding:0 0 0 0;
+			&:before{
+				display: inline-block;
+				margin: 0 5px 0 5px;
+			}
+			&:after{
+				margin-left: 5px;
+			}
+		}
+		.parent > a {
+			padding:0 5px 0 0;
+		}
+	}
+
+	div#LeaderboardView > .view-toolbar-container > .view-toolbar{
+		.z-label{
+			display: inline-block;
+			margin-right: 8px;
+		}
+	}
+
+	#LeaderboardView .items{
+		margin-bottom: 10px;
+	}
+
+	#MashableInboxActionBarForViews{
+		.filters-bar{
+			position: relative;
+			top: -5px;
+			left: 0;
+		}
+	}
+
+	//profile
+	.gravatar-container{
+		float: left;
+		margin: 15px;
+		width: 100%;
+	}
+
+
+	//Flash MSG
+	#FlashMessageView{
+		width: 100%;
+		top: 50px;
+		right: 0;
+	}

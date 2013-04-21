@@ -125,20 +125,23 @@
                 ),
                 'headerMenuItems' => array(
                     array(
-                        'label' => "eval:Zurmo::t('ZurmoModule', 'Settings')",
-                        'url' => array('/configuration'),
-                        'right' => self::RIGHT_ACCESS_ADMINISTRATION,
-                        'order' => 6,
+                        'label'  => "eval:Zurmo::t('ZurmoModule', 'Settings')",
+                        'url'    => array('/configuration'),
+                        'right'  => self::RIGHT_ACCESS_ADMINISTRATION,
+                        'order'  => 6,
+                        'mobile' => false,
                     ),
                     array(
-                        'label' => "eval:Zurmo::t('ZurmoModule', 'Need Support?')",
-                        'url' => 'http://www.zurmo.com/needSupport.php',
-                        'order' => 9,
+                        'label'  => "eval:Zurmo::t('ZurmoModule', 'Need Support?')",
+                        'url'    => 'http://www.zurmo.com/needSupport.php',
+                        'order'  => 9,
+                        'mobile' => true,
                     ),
                     array(
-                        'label' => "eval:Zurmo::t('ZurmoModule', 'About Zurmo')",
-                        'url' => array('/zurmo/default/about'),
-                        'order' => 10,
+                        'label'  => "eval:Zurmo::t('ZurmoModule', 'About Zurmo')",
+                        'url'    => array('/zurmo/default/about'),
+                        'order'  => 10,
+                        'mobile' => true,
                     ),
                 ),
                 'configureSubMenuItems' => array(

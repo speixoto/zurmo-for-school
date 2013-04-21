@@ -1352,7 +1352,7 @@
             $compareContent = "(1 = (select 1 from {$q}customfieldvalue{$q} customfieldvalue where " .
                               "{$q}customfieldvalue{$q}.{$q}multiplevaluescustomfield_id{$q} = {$q}" .
                               "multiplevaluescustomfield{$q}.id and {$q}customfieldvalue{$q}.{$q}value{$q}" .
-                              " IN('a','b') limit 1))";
+                              " IN('a','b') limit 1))"; // Not Coding Standard
             $this->assertEquals($compareContent, $content);
             $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(1, $joinTablesAdapter->getLeftTableJoinCount());

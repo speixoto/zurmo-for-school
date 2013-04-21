@@ -219,7 +219,7 @@
             $groupByY->attributeIndexOrDerivedType = 'string';
             $this->assertEquals('x', $groupByY->axis);
             $groupByY->axis                        = 'y';
-            $summationReportWizardForm->groupBys   = array($groupByX,$groupByY);
+            $summationReportWizardForm->groupBys   = array($groupByX, $groupByY);
             $content = $summationReportWizardForm->validateGroupBys();
             $errors  = $summationReportWizardForm->getErrors();
             $compareErrors                         = array('groupBys'     => array('Each grouping must be unique'));
@@ -231,7 +231,7 @@
         {
             $summationReportWizardForm          = new SummationReportWizardForm();
             $drillDownDisplayAttributes         = new DrillDownDisplayAttributeForReportForm('ReportsTestModule',
-                                                        'ReportModelTestItem',Report::TYPE_SUMMATION);
+                                                        'ReportModelTestItem', Report::TYPE_SUMMATION);
             $drillDownDisplayAttributes->attributeIndexOrDerivedType    = 'integer__Maximum';
             $drillDownDisplayAttributes->madeViaSelectInsteadOfViaModel = true;
             $this->assertEquals('col0', $drillDownDisplayAttributes->columnAliasName);
@@ -244,7 +244,7 @@
         {
             $summationReportWizardForm          = new SummationReportWizardForm();
             $drillDownDisplayAttributes         = new DrillDownDisplayAttributeForReportForm('ReportsTestModule',
-                                                        'ReportModelTestItem',Report::TYPE_SUMMATION);
+                                                        'ReportModelTestItem', Report::TYPE_SUMMATION);
             $summationReportWizardForm->drillDownDisplayAttributes         = array($drillDownDisplayAttributes);
             $content = $summationReportWizardForm->validateDrillDownDisplayAttributes();
             $errors  = $drillDownDisplayAttributes->getErrors();

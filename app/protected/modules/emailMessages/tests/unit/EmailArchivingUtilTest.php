@@ -34,7 +34,7 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class EmailArchivingUtilTest extends BaseTest
+    class EmailArchivingUtilTest extends ZurmoBaseTest
     {
         public static function setUpBeforeClass()
         {
@@ -550,9 +550,9 @@ Cc: 'John Wein' <john@example.com>, Peter Smith <peter@example.com>
             $subjectKOI8R = '=?KOI8-R?Q?=F4=C5=D3=D4=CF=D7=CF=C5_=D0=C9=D3=D8=CD=CF=2E_Te?= =?KOI8-R?Q?st_email?='; // Not Coding Standard
             $emailMessage = new EmailMessage();
             $emailMessage->subject = $subjectKOI8R;
-            $this->assertEquals($subjectKOI8R,$emailMessage->subject);
+            $this->assertEquals($subjectKOI8R, $emailMessage->subject);
             EmailArchivingUtil::resolveSanitizeFromImapToUtf8($emailMessage);
-            $this->assertEquals($subjectUTF8,$emailMessage->subject);
+            $this->assertEquals($subjectUTF8, $emailMessage->subject);
             //$this->assertTrue($emailMessage->save(false));
         }
     }

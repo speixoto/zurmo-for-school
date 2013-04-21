@@ -109,6 +109,7 @@
             parent::__construct($moduleClassName, $modelClassName, $reportType, $rowKey);
             $this->columnAliasName = self::COLUMN_ALIAS_PREFIX . static::$count++;
         }
+
         /**
          * Makes sure the attributeIndexOrDerivedType always populates first before label otherwise any
          * custom label gets wiped out.

@@ -376,7 +376,8 @@
             }
             else
             {
-                return $dataProvider->getData();
+                $data = $dataProvider->getData();
+                return $data;
             }
         }
 

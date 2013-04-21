@@ -118,7 +118,6 @@ a:link, a:active, a:visited{
     .after-form-details-content a,
     .ui-dialog-title,
     .show-file-upload-box,
-    #clear-search-linkmodal,
     .z-action-link,
     .showAllCommentsLink,
     .treeview span:hover
@@ -187,7 +186,8 @@ a:link, a:active, a:visited{
     #clear-search-link,
     #show-filters-structure-div-link,
     .filters-bar .ui-state-active,
-    .filters-bar label:hover
+    .filters-bar label:hover,
+    #clear-search-linkmodal
     {
         background-color: @themeColor;
     }
@@ -237,7 +237,7 @@ a:link, a:active, a:visited{
     #HeaderLinksView + div{
         #gradient > .vertical( @themeColorHeader, @themeColorHeader2 );
     }
-    #HeaderLinksView ul  ul a:hover{
+    #HeaderLinksView ul ul a:hover{
         color:#fff !important;
         #gradient > .vertical( @themeColor2, darken(@themeColor2, 15%) );
     }
@@ -265,6 +265,9 @@ a:link, a:active, a:visited{
         color:@themeColor !important;
         .t-shadow( 0px 1px 0 lighten(@themeColorBtn, 10%) );
     }
+	#MenuView ul ul li a:hover{
+		#gradient > .vertical( @themeColor2, darken(@themeColor2, 15%) );
+	}
 
     @themeColorBtnDefault     : #97c43d;
     @themeColorBtn2Default    : darken(@themeColorBtnDefault, 10%);
@@ -280,8 +283,7 @@ a:link, a:active, a:visited{
     .zButton:hover .z-label,
     .z-button:hover .z-label,
     .zButton:active .z-label,
-    .z-button:active .z-label,
-    {
+    .z-button:active .z-label{
         color: darken(@themeColorBtnDefault, 40%) !important;
         #gradient > .vertical( @themeColorBtnDefault, darken(@themeColorBtn2Default, 10%) );
         .t-shadow( 0px 1px 0 lighten(@themeColorBtnDefault, 15%) ) !important;
@@ -306,16 +308,15 @@ a:link, a:active, a:visited{
     .form-toolbar a:not(.z-button):hover .z-label,
     .configuration-list li a:hover .z-label,
     .white-button:hover .z-label,
-    .white-button:hover .z-label
-    {
+    .white-button:hover .z-label{
         color: @themeColor2 !important;
         #gradient > .vertical( #fefefe, #ededed ) !important;
         .t-shadow( 0px 1px 0 rgba(255, 255, 255, 0.75) ) !important;
     }
     
     
-    .green-button .z-label,
-    .dashboard-link .z-label{
+    a.green-button > .z-label,
+    a.dashboard-link > .z-label{
         color:#fff !important;
         #gradient > .vertical( @themeColorBtnDefault, @themeColorBtn2Default ) !important;
         .t-shadow( 0px -1px 0 rgba(0, 0, 0, 0.2) ) !important;

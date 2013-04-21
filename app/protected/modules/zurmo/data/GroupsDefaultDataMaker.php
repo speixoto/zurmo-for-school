@@ -69,8 +69,8 @@
             $everyone->setRight('OpportunitiesModule', OpportunitiesModule::RIGHT_DELETE_OPPORTUNITIES, Right::ALLOW);
             $everyone->setRight('MarketingModule',      MarketingModule::RIGHT_ACCESS_MARKETING, Right::ALLOW);
             $everyone->setRight('MarketingListsModule', MarketingListsModule::RIGHT_ACCESS_MARKETING_LISTS, Right::ALLOW);
-            $everyone->setRight('MarketingListsModule', MarketingListsModule::RIGHT_ACCESS_MARKETING_LISTS, Right::ALLOW);
-            $everyone->setRight('MarketingListsModule', MarketingListsModule::RIGHT_ACCESS_MARKETING_LISTS, Right::ALLOW);
+            $everyone->setRight('MarketingListsModule', MarketingListsModule::RIGHT_CREATE_MARKETING_LISTS, Right::ALLOW);
+            $everyone->setRight('MarketingListsModule', MarketingListsModule::RIGHT_DELETE_MARKETING_LISTS, Right::ALLOW);
             $everyone->setRight('MeetingsModule',      MeetingsModule::RIGHT_ACCESS_MEETINGS, Right::ALLOW);
             $everyone->setRight('MeetingsModule',      MeetingsModule::RIGHT_CREATE_MEETINGS, Right::ALLOW);
             $everyone->setRight('MeetingsModule',      MeetingsModule::RIGHT_DELETE_MEETINGS, Right::ALLOW);
@@ -80,6 +80,9 @@
             $everyone->setRight('NotesModule',         NotesModule::RIGHT_ACCESS_NOTES, Right::ALLOW);
             $everyone->setRight('NotesModule',         NotesModule::RIGHT_CREATE_NOTES, Right::ALLOW);
             $everyone->setRight('NotesModule',         NotesModule::RIGHT_DELETE_NOTES, Right::ALLOW);
+            $everyone->setRight('ReportsModule',       ReportsModule::RIGHT_ACCESS_REPORTS, Right::ALLOW);
+            $everyone->setRight('ReportsModule',       ReportsModule::RIGHT_CREATE_REPORTS, Right::ALLOW);
+            $everyone->setRight('ReportsModule',       ReportsModule::RIGHT_DELETE_REPORTS, Right::ALLOW);
             $everyone->setRight('TasksModule',         TasksModule::RIGHT_ACCESS_TASKS, Right::ALLOW);
             $everyone->setRight('TasksModule',         TasksModule::RIGHT_CREATE_TASKS, Right::ALLOW);
             $everyone->setRight('TasksModule',         TasksModule::RIGHT_DELETE_TASKS, Right::ALLOW);

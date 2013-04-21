@@ -118,7 +118,7 @@
             $first = true;
             $dropDownId = null;
             $dropDownItems = array();
-            $dropDownItemHtmlOptions = array('prompt' => Zurmo::t('Core', 'Select Action')); // we need this so we have a default one to select at the end of operation.
+            $dropDownItemHtmlOptions = array('prompt' => ''); // we need this so we have a default one to select at the end of operation.
             if (isset($metadata['global']['toolbar']) && is_array($metadata['global']['toolbar']['elements']))
             {
                 foreach ($metadata['global']['toolbar']['elements'] as $elementInformation)
@@ -187,7 +187,9 @@
         protected function resolveMassActionLinkActionElementDuringRender($elementClassName, & $element, & $dropDownItems, & $dropDownItemHtmlOptions)
         {
             $class = new ReflectionClass($elementClassName);
-            if ($class->implementsInterface('SupportsRenderingDropDownInterface') && Yii::app()->userInterface->isMobile())
+            if ($class->implementsInterface('SupportsRenderingDropDownInterface') &&
+                $elementClassName::shouldRenderAsDropDownWhenRequired() &&
+                Yii::app()->userInterface->isMobile())
             {
                 if (empty($dropDownItems))
                 {
@@ -197,10 +199,19 @@
                 $items = (array_key_exists('label', $items))? array($items) : $items;
                 foreach ($items as $item)
                 {
-                    $value      = $element->getElementValue();
+                    if($element::useItemUrlAsElementValue())
+                    {
+                        $value      = $item['url'];
+                    }
+                    else
+                    {
+                        $value      = $element->getElementValue();
+                    }
+
                     if (!$value)
                     {
                         $value      = $element->getActionNameForCurrentElement() . '_' . $item['label'];
+
                     }
                     $optGroup   = $element->getOptGroup();
                     if ($optGroup)

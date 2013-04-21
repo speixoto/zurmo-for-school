@@ -51,6 +51,7 @@
         {
             $this->savedWorkflows = $savedWorkflows;
         }
+
         /**
          * @return string
          */

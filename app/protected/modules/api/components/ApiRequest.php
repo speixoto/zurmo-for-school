@@ -57,8 +57,9 @@
         protected $requestClass;
 
         protected $resultClassName;
+
         /**
-         * To be redeclared in children classes.
+         * To be re-declared in children classes.
          */
         public static function getParamsFromRequest()
         {

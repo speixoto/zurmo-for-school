@@ -37,7 +37,7 @@
     /**
      * Tests on users with data provider
      */
-    class UsersSearchWithDataProviderTest extends ZurmoDataProviderBaseTest
+    class UsersSearchWithDataProviderTest extends ZurmoBaseTest
     {
         public static function setUpBeforeClass()
         {

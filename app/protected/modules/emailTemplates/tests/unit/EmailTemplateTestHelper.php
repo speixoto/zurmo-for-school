@@ -38,13 +38,7 @@
     {
         public static function createEmailTemplateByName($type, $subject, $modelClassName, $name, $htmlContent, $textContent)
         {
-            $emailTemplate = new EmailTemplate();
-            $emailTemplate->type            = $type;
-            $emailTemplate->subject         = $subject;
-            $emailTemplate->modelClassName  = $modelClassName;
-            $emailTemplate->name            = $name;
-            $emailTemplate->htmlContent     = $htmlContent;
-            $emailTemplate->textContent     = $textContent;
+            $emailTemplate                  = static::fillEmailTemplateByName($type, $subject, $modelClassName, $name, $htmlContent, $textContent);
             $saved                          = $emailTemplate->save();
             assert('$saved');
             return $emailTemplate;

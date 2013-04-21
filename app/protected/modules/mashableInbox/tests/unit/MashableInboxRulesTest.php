@@ -43,7 +43,8 @@
             Yii::app()->user->userModel = User::getByUsername('super');
         }
 
-        private function getNewStub() {
+        private function getNewStub()
+        {
             $stub = $this->getMockForAbstractClass('MashableInboxRules');
             return $stub;
         }

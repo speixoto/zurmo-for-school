@@ -80,6 +80,7 @@
             $validated = $attributeForm->validate();
             $this->assertTrue($validated);
         }
+
         /**
          * Test if we don't receive error related to database rowsize limit
          */
