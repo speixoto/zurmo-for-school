@@ -47,11 +47,29 @@
             $stageValues = array(
                 'Prospecting',
                 'Negotiating',
-                'Close Won',
+                'Closed Won',
             );
             $stageFieldData = CustomFieldData::getByName('SalesStages');
             $stageFieldData->serializedData = serialize($stageValues);
             $this->assertTrue($stageFieldData->save());
+        }
+
+        /**
+         * @depends testCreateStageValues
+         */
+        public function testGetStageToProbabilityMappingData()
+        {
+            $this->assertEquals(6, count(OpportunitiesModule::getStageToProbabilityMappingData()));
+        }
+
+        /**
+         * @depends testGetStageToProbabilityMappingData
+         */
+        public function testGetProbabilityByStageValue()
+        {
+            $this->assertEquals(10,  OpportunitiesModule::getProbabilityByStageValue ('Prospecting'));
+            $this->assertEquals(50,  OpportunitiesModule::getProbabilityByStageValue ('Negotiating'));
+            $this->assertEquals(100, OpportunitiesModule::getProbabilityByStageValue ('Closed Won'));
         }
 
         /**
@@ -309,7 +327,7 @@
             $stageValues = array(
                 'Prospecting',
                 'Negotiating',
-                'Close Won',
+                'Closed Won',
             );
             $stageFieldData = CustomFieldData::getByName('SalesStages');
             $stageFieldData->serializedData = serialize($stageValues);

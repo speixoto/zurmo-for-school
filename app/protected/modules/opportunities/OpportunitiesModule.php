@@ -187,7 +187,7 @@
         public static function getProbabilityByStageValue($value)
         {
             assert('is_string($value) || $value == null');
-            $stageToProbabilityMapping = getStageToProbabilityMappingData();
+            $stageToProbabilityMapping = self::getStageToProbabilityMappingData();
             if (isset($stageToProbabilityMapping[$value]))
             {
                 return $stageToProbabilityMapping[$value];
