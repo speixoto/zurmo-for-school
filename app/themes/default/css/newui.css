@@ -15537,6 +15537,10 @@ a.dashboard-link .z-label {
 #ConversationEditView textarea {
   line-height: 130%;
 }
+#ConversationEditView .right-side-edit-view-panel {
+  display: inline-block;
+  float: none;
+}
 .single-coloumn-details-view.AppContent,
 #ConversationDetailsView.AppContent,
 #ConversationDetailsAndRelationsView.AppContent {
