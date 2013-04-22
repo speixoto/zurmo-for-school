@@ -28,7 +28,7 @@
     {
         public function filters()
         {
-            $modelClassName   = $this->getModule()->getPrimaryModelName();
+	    $modelClassName   = $this->getModule()->getPrimaryModelName();
             $viewClassName    = $modelClassName . 'EditAndDetailsView';
             return array_merge(parent::filters(),
                 array(
@@ -79,6 +79,26 @@
         public function actionDetails($id)
         {
             $product = static::getModelAndCatchNotFoundAndDisplayError('Product', intval($id));
+	    if(Yii::app()->request->isAjaxRequest)
+	    {
+		$relatedField = Yii::app()->request->getParam('relatedField');
+		$relatedFieldId = intval(Yii::app()->request->getParam('relatedFieldId'));
+		switch($relatedField)
+		{
+		    case 'opportunity' : $opportunity = Opportunity::getById($relatedFieldId);
+					 $product->opportunity = $opportunity;
+					 $product->save();
+					 break;
+		}
+		$output = array('id'			=> $product->id,
+				'name'			=> $product->name,
+				'quantity'		=> $product->quantity,
+				'productSellPriceValue' => $product->sellPrice->value
+				);
+
+		echo json_encode($output);
+		die();
+	    }
             ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($product);
 	    $detailsView	    = new ProductDetailsView($this->getId(), $this->getModule()->getId(), $product);
             $view		    = new ProductsPageView(ZurmoDefaultViewUtil::
@@ -263,9 +283,11 @@
 
         public function actionModalList()
         {
-            $modalListLinkProvider = new SelectFromRelatedEditModalListLinkProvider(
+            $modalListLinkProvider = new ProductSelectFromRelatedEditModalListLinkProvider(
                                             $_GET['modalTransferInformation']['sourceIdFieldId'],
-                                            $_GET['modalTransferInformation']['sourceNameFieldId']
+                                            $_GET['modalTransferInformation']['sourceNameFieldId'],
+					    $_GET['modalTransferInformation']['relatedField'],
+					    $_GET['modalTransferInformation']['relatedFieldId']
             );
             echo ModalSearchListControllerUtil::
                  setAjaxModeAndRenderModalSearchList($this, $modalListLinkProvider);
@@ -311,16 +333,21 @@
         {
 	    $id = Yii::app()->request->getParam('item');
 	    $value = Yii::app()->request->getParam('value');
+	    assert('$id != null && $id != ""');
+	    assert('$value != null && $value != ""');
+	    $id = intval($id);
+	    $value = intval($value);
 	    $product = Product::getById($id);
             ControllerSecurityUtil::resolveAccessCanCurrentUserWriteModel($product);
 	    switch($attribute)
 	    {
-		case 'quantity' : $product->quantity = $value;
-		                  break;
+		case 'quantity'	    : $product->quantity = $value;
+				      break;
+		case 'sellPrice'    : $product->sellPrice->value = $value;
+				      break;
 	    }
             $product->save();
 	    header('Content-type: application/json');
-	    echo json_encode(array('status' => 'success'));
 	    die();
         }
     }

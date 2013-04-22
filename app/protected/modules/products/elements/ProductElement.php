@@ -35,6 +35,14 @@
     {
         protected static $moduleId = 'products';
 
+	protected $relatedFieldId;
+
+	public function __construct($model, $attribute, $form = null, array $params = array(), $relatedFieldId = null)
+	{
+	    $this->relatedFieldId = $relatedFieldId;
+	    parent::__construct($model, $attribute, $form, $params);
+	}
+
         /**
          * Render a hidden input, a text input with an auto-complete
          * event, and a select button. These three items together
@@ -50,6 +58,23 @@
 	protected function renderLabel()
 	{
 	    return '';
+	}
+
+	protected function getModalTransferInformation()
+        {
+            $defaultModelTransferInformationArray =  array_merge(array(
+									'sourceIdFieldId' => $this->getIdForHiddenField(),
+									'sourceNameFieldId' => $this->getIdForTextField()
+								), $this->resolveSourceModelIdForModalTransferInformation());
+	    return array_merge($defaultModelTransferInformationArray, $this->resolveRelatedModelIdForModalTransferInformation());
+        }
+
+	protected function resolveRelatedModelIdForModalTransferInformation()
+	{
+	    return array(
+			    'relatedFieldId' => $this->relatedFieldId,
+			    'relatedField'   => $this->attribute
+			);
 	}
     }
 ?>

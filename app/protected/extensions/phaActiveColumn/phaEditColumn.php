@@ -112,12 +112,11 @@ class phaEditColumn extends phaAbsActiveColumn {
             phaACOpenEditGrid = "";
         }
         function phaACEditFieldSend( itemValue, gridUID ) {
-            var id = $(itemValue).parents(".grid-view").attr("id");
-            $.ajax({
-                type: "POST",
+	    var id = $(itemValue).parents(".cgrid-view").attr("id");
+	    $.ajax({
+                type: "GET",
                 dataType: "json",
-                cache: false,
-                url: phaACActionUrls[gridUID],
+		url: phaACActionUrls[gridUID],
                 data: {
                     item: phaACOpenEditItem,
                     value: $("#field-"+phaACOpenEditGrid+"-"+phaACOpenEditItem+" input").val()

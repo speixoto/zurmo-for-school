@@ -122,7 +122,8 @@
 
 	protected function renderAddProductContent($form)
 	{
-	    $productElement = new ProductElement(new Product(), 'opportunity', $form, array('inputIdPrefix' => 'product', 'htmlOptions' => array('display' => 'none')));
+	    $routeParams = $this->getCreateLinkRouteParameters();
+	    $productElement = new ProductElement(new Product(), $this->getRelationAttributeName(), $form, array('inputIdPrefix' => 'product', 'htmlOptions' => array('display' => 'none')), $routeParams['relationModelId']);
 	    $content = $productElement->render();
 	    return $content;
         }
@@ -137,12 +138,12 @@
 			    if($('#product-configuration-form').css('display') == 'none')
 			    {
 				$('#product-configuration-form').show('slow');
-				$('#product-portlet-grid-view').hide('slow');
+				//$('#product-portlet-grid-view').hide('slow');
 			    }
 			    else
 			    {
 				$('#product-configuration-form').hide('slow');
-				$('#product-portlet-grid-view').show('slow');
+				//$('#product-portlet-grid-view').show('slow');
 			    }
 			})
 			})
