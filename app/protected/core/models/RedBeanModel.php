@@ -123,6 +123,7 @@
         protected $isValidating           = false;
         protected $isSaving               = false;
         protected $isNewModel             = false;
+        protected $isCopied               = false;
 
         /**
          * Can this model be saved when save is called from a related model?  True if it can, false if it cannot.
@@ -3020,6 +3021,22 @@
         public static function getSortAttributesByAttribute($attribute)
         {
             return array($attribute);
+        }
+
+        /**
+         * Utilized by copy mechanism, helps elements, views, understand the model better before the new model is saved.
+         */
+        public function setIsCopied()
+        {
+            $this->isCopied = true;
+        }
+
+        /**
+         * @return bool
+         */
+        public function isCopied()
+        {
+            return $this->isCopied;
         }
     }
 ?>

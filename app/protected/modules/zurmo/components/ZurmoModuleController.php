@@ -143,6 +143,16 @@
             return $model;
         }
 
+        /**
+         * Override to implement
+         * @param $id
+         * @throws NotImplementedException
+         */
+        public function actionCopy($id)
+        {
+            throw new NotImplementedException();
+        }
+
         public function actionAuditEventsModalList($id)
         {
             $modelClassName = $this->getModule()->getPrimaryModelName();

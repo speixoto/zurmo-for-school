@@ -82,7 +82,7 @@
 
             $contact        = Contact::getById($contactId);
             $contact->state = $contactStates[1];
-            $compareData    = array('state' => array('ContactState', 1, 'New'));
+            $compareData    = array('state' => array('ContactState', $contactStates[0]->id, 'New'));
             $this->assertEquals($compareData, $contact->originalAttributeValues);
             $deleted = $contact->delete();
             $this->assertTrue($deleted);
