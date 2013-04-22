@@ -85,7 +85,11 @@
                     ),
                     'rowMenu' => array(
                         'elements' => array(
-                            array('type'                      => 'RelatedDeleteLink'),
+                            array('type'                      => 'RelatedUnlink',
+                                  'relationModelClassName'    => 'eval:get_class($this->params["relationModel"])',
+                                  'relationModelId'           => 'eval:$this->params["relationModel"]->id',
+                                  'relationModelRelationName' => 'products',
+                                  'userHasRelatedModelAccess' => 'eval:ActionSecurityUtil::canCurrentUserPerformAction( "Edit", $this->params["relationModel"])')
                         ),
                     ),
                     'derivedAttributeTypes' => array(
