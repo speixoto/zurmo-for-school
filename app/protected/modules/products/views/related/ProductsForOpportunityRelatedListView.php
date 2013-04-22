@@ -154,5 +154,16 @@
         {
             return 'product-portlet-grid-view';
         }
+
+	protected function getCGridViewAfterAjaxUpdate()
+        {
+            // Begin Not Coding Standard
+            return 'js:function(id, data) {
+                        processAjaxSuccessError(id, data);
+                        var $data = $(data);
+                        jQuery.globalEval($data.filter("script").last().text());
+                    }';
+            // End Not Coding Standard
+        }
     }
 ?>

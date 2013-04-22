@@ -116,7 +116,7 @@
                     'account'       => array(RedBeanModel::HAS_ONE,   'Account'),
                     'amount'        => array(RedBeanModel::HAS_ONE,   'CurrencyValue',    RedBeanModel::OWNED,
                                              RedBeanModel::LINK_TYPE_SPECIFIC, 'amount'),
-                    'products'      => array(RedBeanModel::MANY_MANY, 'Product'),
+                    'products'      => array(RedBeanModel::HAS_MANY, 'Product'),
                     'contacts'      => array(RedBeanModel::MANY_MANY, 'Contact'),
                     'stage'         => array(RedBeanModel::HAS_ONE,   'OwnedCustomField', RedBeanModel::OWNED,
                                              RedBeanModel::LINK_TYPE_SPECIFIC, 'stage'),

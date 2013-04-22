@@ -26,12 +26,6 @@
 
     abstract class ProductsRelatedListView extends SecuredRelatedListView
     {
-        protected $controllerId;
-
-        protected $moduleId;
-
-        protected $dataProvider;
-
         /**
          * Form that has the information for how to display the latest products view.
          * @var object LatestActivitiesConfigurationForm
