@@ -33,24 +33,27 @@
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
-
-    /**
-     * Helper class to show the marketing list's member name and status in a column in a list view
-     */
-    class MarketingListMemberNameAndStatusListViewColumnAdapter extends TextListViewColumnAdapter
+    class MergeTagsUtilFactoryTest extends ZurmoBaseTest
     {
-        public function renderGridViewData()
+        public static function setUpBeforeClass()
         {
-            $memberName         = 'strval($data->contact)';
-            $memberStatusPrefix = ' ."\t(" . ';
-            $memberStatus       = 'Zurmo::t("' . $this->view->getContainerModuleClassName() . '", (($data->unsubscribed == true)? "Unsubscribed" : "Subscribed"))';
-            $memberStatusSuffix = ' . ")"';
-            $value              = $memberName . $memberStatusPrefix . $memberStatus . $memberStatusSuffix;
-            return array(
-                'name'  => 'Name',
-                'value' => $value,
-                'type'  => 'raw',
-            );
+            parent::setUpBeforeClass();
+            SecurityTestHelper::createSuperAdmin();
+        }
+
+        public function setUp()
+        {
+            parent::setUp();
+            Yii::app()->user->userModel = User::getByUsername('super');
+        }
+
+        public function testMake()
+        {
+            Yii::app()->languageHelper->load();
+            $util = MergeTagsUtilFactory::make(EmailTemplate::TYPE_CONTACT,  'en', 'test');
+            $this->assertTrue($util instanceof ContactMergeTagsUtil);
+            $util = MergeTagsUtilFactory::make(EmailTemplate::TYPE_WORKFLOW, 'en', 'test');
+            $this->assertTrue($util instanceof WorkflowMergeTagsUtil);
         }
     }
 ?>
