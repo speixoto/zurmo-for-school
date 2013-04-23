@@ -34,7 +34,7 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class MarketingListDefaultPortletControllerSuperUserWalkthroughTest extends ZurmoWalkthroughBaseTest
+    class MarketingListDefaultPortletControllerRegularUserWalkthroughTest extends ZurmoWalkthroughBaseTest
     {
         protected $user;
 
@@ -43,17 +43,21 @@
             parent::setUpBeforeClass();
             SecurityTestHelper::createSuperAdmin();
             SecurityTestHelper::createUsers();
-            $super = User::getByUsername('super');
-            Yii::app()->user->userModel = $super;
+            $nobody = UserTestHelper::createBasicUser('nobody');
+            $nobody->setRight('MarketingListsModule', MarketingListsModule::getAccessRight());
+            $saved = $nobody->save();
+            assert('$saved');
+            Yii::app()->user->userModel = $nobody;
+
 
             //Setup test data owned by the super user.
-            $account    = AccountTestHelper::createAccountByNameForOwner('superAccount', $super);
-            $account2   = AccountTestHelper::createAccountByNameForOwner('superAccount2', $super);
-            $contact1   = ContactTestHelper::createContactWithAccountByNameForOwner('superContact', $super, $account);
-            $contact2   = ContactTestHelper::createContactWithAccountByNameForOwner('superContact2', $super, $account2);
-            $contact3   = ContactTestHelper::createContactWithAccountByNameForOwner('superContact3', $super, $account);
-            $contact4   = ContactTestHelper::createContactWithAccountByNameForOwner('superContact4', $super, $account2);
-            $contact5   = ContactTestHelper::createContactWithAccountByNameForOwner('superContact5', $super, $account);
+            $account    = AccountTestHelper::createAccountByNameForOwner('nobodyAccount', $nobody);
+            $account2   = AccountTestHelper::createAccountByNameForOwner('nobodyAccount2', $nobody);
+            $contact1   = ContactTestHelper::createContactWithAccountByNameForOwner('nobodyContact', $nobody, $account);
+            $contact2   = ContactTestHelper::createContactWithAccountByNameForOwner('nobodyContact2', $nobody, $account2);
+            $contact3   = ContactTestHelper::createContactWithAccountByNameForOwner('nobodyContact3', $nobody, $account);
+            $contact4   = ContactTestHelper::createContactWithAccountByNameForOwner('nobodyContact4', $nobody, $account2);
+            $contact5   = ContactTestHelper::createContactWithAccountByNameForOwner('nobodyContact5', $nobody, $account);
 
             $marketingList1 = MarketingListTestHelper::createMarketingListByName('MarketingList1', 'MarketingList Description1');
             $marketingList2 = MarketingListTestHelper::createMarketingListByName('MarketingList2', 'MarketingList Description2');
@@ -69,7 +73,7 @@
         public function setUp()
         {
             parent::setUp();
-            $this->user = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
+            $this->user = $this->logoutCurrentUserLoginNewUserAndGetByUsername('nobody');
         }
 
         public function testDelete()
@@ -130,8 +134,8 @@
         public function testSubscribeContactsForContactType()
         {
             $type                       = 'contact';
-            $account                    = AccountTestHelper::createAccountByNameForOwner('superAccount3', $this->user);
-            $contact                    = ContactTestHelper::createContactWithAccountByNameForOwner('superContact6',
+            $account                    = AccountTestHelper::createAccountByNameForOwner('nobodyAccount3', $this->user);
+            $contact                    = ContactTestHelper::createContactWithAccountByNameForOwner('nobodyContact6',
                                                                                                     $this->user,
                                                                                                     $account);
             $contactId                  = $contact->id;
@@ -161,6 +165,9 @@
 
         public function testSubscribeContactsForReportType()
         {
+            $this->user->setRight('ReportsModule', ReportsModule::getAccessRight());
+            $this->user->setRight('ContactsModule', ContactsModule::getAccessRight()); // or leads. Else PartialRightsForReportSecurityException
+            $this->assertTrue($this->user->save());
             $type                       = 'report';
             $report                     = SavedReportTestHelper::makeSimpleContactRowsAndColumnsReport();
             $marketingList              = MarketingListTestHelper::createMarketingListByName('MarketingList5', 'MarketingList Description5');

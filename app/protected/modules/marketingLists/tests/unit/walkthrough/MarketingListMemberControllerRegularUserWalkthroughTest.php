@@ -34,7 +34,7 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class MarketingListMemberControllerSuperUserWalkthroughTest extends ZurmoWalkthroughBaseTest
+    class MarketingListMemberControllerRegularUserWalkthroughTest extends ZurmoWalkthroughBaseTest
     {
         protected $user;
 
@@ -42,11 +42,14 @@
         {
             parent::setUpBeforeClass();
             SecurityTestHelper::createSuperAdmin();
-            $super = User::getByUsername('super');
-            Yii::app()->user->userModel = $super;
+            $nobody = UserTestHelper::createBasicUser('nobody');
+            $nobody->setRight('MarketingListsModule', MarketingListsModule::getAccessRight());
+            $saved = $nobody->save();
+            assert('$saved');
+            Yii::app()->user->userModel = $nobody;
 
             //Setup test data owned by the super user.
-            $account        = AccountTestHelper::createAccountByNameForOwner('superAccount', $super);
+            $account        = AccountTestHelper::createAccountByNameForOwner('nobodyAccount', $nobody);
             $marketingList1 = MarketingListTestHelper::createMarketingListByName('MarketingList1',
                                                                                             'MarketingList Description1');
             $marketingList2 = MarketingListTestHelper::createMarketingListByName('MarketingList2',
@@ -62,8 +65,8 @@
                 {
                     $unsubscribed = 1;
                 }
-                $contact1    = ContactTestHelper::createContactWithAccountByNameForOwner('superContact1' . $i, $super, $account);
-                $contact2    = ContactTestHelper::createContactWithAccountByNameForOwner('superContact2' . $i, $super, $account);
+                $contact1    = ContactTestHelper::createContactWithAccountByNameForOwner('nobodyContact1' . $i, $nobody, $account);
+                $contact2    = ContactTestHelper::createContactWithAccountByNameForOwner('nobodyContact2' . $i, $nobody, $account);
                 MarketingListMemberTestHelper::createMarketingListMember($unsubscribed, $marketingList1, $contact1);
                 MarketingListMemberTestHelper::createMarketingListMember($unsubscribed, $marketingList2, $contact2);
             }
@@ -72,7 +75,7 @@
         public function setUp()
         {
             parent::setUp();
-            $this->user = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
+            $this->user = $this->logoutCurrentUserLoginNewUserAndGetByUsername('nobody');
         }
 
         public function testMassSubscribeActionsForSelectedIds()

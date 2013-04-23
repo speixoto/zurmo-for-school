@@ -34,12 +34,27 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    define('MAJOR_VERSION', 1);                           // Update for marketing purposes.
-    define('MINOR_VERSION', 5);                           // Update when functionality changes.
-    define('PATCH_VERSION', 13);                          // Update when fixes are made that does not change functionality.
-    define('REPO_ID',       '$Revision$'); // Updated by Mercurial. Numbers like 3650 have no meaning across
-                                                          // clones. This tells us the actual changeset that is universally
-                                                          // meaningful.
+    /**
+     * Filter used by marketingList controller to ascertain if the user can access contacts/leads, which is a requirement
+     * to use marketingLists
+     */
+    class UserCanAccessContactsOrLeadsForMarketingListControllerFilter extends CFilter
+    {
+        public $controller;
 
-    define('VERSION', join('.', array(MAJOR_VERSION, MINOR_VERSION, PATCH_VERSION)) . ' (' . substr(REPO_ID, strlen('$Revision: '), -2) . ')');
+        protected function preFilter($filterChain)
+        {
+            if (!RightsUtil::canUserAccessModule('ContactsModule', Yii::app()->user->userModel) &&
+                                !RightsUtil::canUserAccessModule('LeadsModule', Yii::app()->user->userModel))
+            {
+                $messageView        = new UserIsMissingContactAccessToUseMarketingListSplashView();
+                $pageViewClassName  = $this->controller->getModule()->getPluralCamelCasedName() . 'PageView';
+                $view               = new $pageViewClassName(ZurmoDefaultAdminViewUtil::
+                                      makeStandardViewForCurrentUser($this->controller, $messageView));
+                echo $view->render();
+                return false;
+            }
+            return true;
+        }
+    }
 ?>

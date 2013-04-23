@@ -35,14 +35,16 @@
      ********************************************************************************/
 
     /**
-     * EmailTemplates Module Super User Walkthrough.
+     * EmailTemplates Module Regular User Walkthrough.
      * Walkthrough for the super user of all possible controller actions.
      * Since this is a super user, he should have access to all controller actions
      * without any exceptions being thrown.
      */
-    class EmailTemplatesSuperUserWalkthroughTest extends ZurmoWalkthroughBaseTest
+    class EmailTemplatesRegularUserWalkthroughTest extends ZurmoWalkthroughBaseTest
     {
-        protected $super;
+        protected $user;
+
+        protected static $templateOwnedBySuper;
 
         public static function setUpBeforeClass()
         {
@@ -50,69 +52,147 @@
             SecurityTestHelper::createSuperAdmin();
             $super = User::getByUsername('super');
             Yii::app()->user->userModel = $super;
+            UserTestHelper::createBasicUser('nobody');
 
             // Setup test data owned by the super user.
-            EmailTemplateTestHelper::createEmailTemplateByName(EmailTemplate::TYPE_WORKFLOW, 'Test Subject', 'Contact',
-                                                                    'Test Name', 'Test HtmlContent', 'Test TextContent');
-            EmailTemplateTestHelper::createEmailTemplateByName(EmailTemplate::TYPE_CONTACT, 'Test Subject1', 'Contact',
-                                                                    'Test Name1', 'Test HtmlContent1', 'Test TextContent1');
+            static::$templateOwnedBySuper = EmailTemplateTestHelper::createEmailTemplateByName(EmailTemplate::TYPE_CONTACT,
+                                                                                                    'Test Subject1',
+                                                                                                    'Contact',
+                                                                                                    'Test Name1',
+                                                                                                    'Test HtmlContent1',
+                                                                                                    'Test TextContent1');
         }
 
         public function setUp()
         {
             parent::setUp();
-            $this->super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
+            $this->user = $this->logoutCurrentUserLoginNewUserAndGetByUsername('nobody');
         }
 
-        public function testSuperUserAllDefaultControllerActions()
+        public function testRegularUserAllDefaultControllerActions()
         {
-            // Test all default controller actions that do not require any POST/GET variables to be passed.
-            // This does not include portlet controller actions.
+            $emailTemplate = EmailTemplateTestHelper::createEmailTemplateByName(EmailTemplate::TYPE_CONTACT,
+                                                                                'Test Subject Regular 01',
+                                                                                'Contact',
+                                                                                'Test Name Regular 01',
+                                                                                'Test HtmlContent Regular 01',
+                                                                                'Test TextContent Regular 01');
+
+            $this->runControllerShouldResultInAccessFailureAndGetContent('emailTemplates/default');
+            $this->runControllerShouldResultInAccessFailureAndGetContent('emailTemplates/default/index');
+            $this->runControllerShouldResultInAccessFailureAndGetContent('emailTemplates/default/listForMarketing');
+            $this->runControllerShouldResultInAccessFailureAndGetContent('emailTemplates/default/listForWorkflow');
+            $this->setGetArray(array('type' => EmailTemplate::TYPE_CONTACT));
+            $this->runControllerShouldResultInAccessFailureAndGetContent('emailTemplates/default/create');
+            $this->setGetArray(array('id' => $emailTemplate->id));
+            $this->runControllerShouldResultInAccessFailureAndGetContent('emailTemplates/default/edit');
+            $this->runControllerShouldResultInAccessFailureAndGetContent('emailTemplates/default/details');
+            $this->runControllerShouldResultInAccessFailureAndGetContent('emailTemplates/default/delete');
+            $this->resetGetArray();
+
+            $nobody = User::getByUsername('nobody');
+            $nobody->setRight('EmailTemplatesModule', EmailTemplatesModule::getAccessRight());
+            $this->assertTrue($nobody->save());
             $this->runControllerWithNoExceptionsAndGetContent('emailTemplates/default');
             $this->runControllerWithNoExceptionsAndGetContent('emailTemplates/default/index');
+            $this->runControllerWithNoExceptionsAndGetContent('emailTemplates/default/listForMarketing');
+            $this->runControllerWithNoExceptionsAndGetContent('emailTemplates/default/listForWorkflow');
+            $this->setGetArray(array('id' => $emailTemplate->id));
+            $this->runControllerWithNoExceptionsAndGetContent('emailTemplates/default/details');
+            $this->resetGetArray();
+
+            $nobody->setRight('EmailTemplatesModule', EmailTemplatesModule::getCreateRight());
+            $this->assertTrue($nobody->save());
             $this->setGetArray(array('type' => EmailTemplate::TYPE_CONTACT));
             $this->runControllerWithNoExceptionsAndGetContent('emailTemplates/default/create');
+            $this->setGetArray(array('type' => EmailTemplate::TYPE_WORKFLOW));
+            $this->runControllerWithNoExceptionsAndGetContent('emailTemplates/default/create');
+            $this->setGetArray(array('id' => $emailTemplate->id));
+            $this->runControllerWithNoExceptionsAndGetContent('emailTemplates/default/edit');
+
+
+            $nobody->setRight('EmailTemplatesModule', EmailTemplatesModule::getDeleteRight());
+            $this->assertTrue($nobody->save());
+            $this->runControllerWithRedirectExceptionAndGetUrl('emailTemplates/default/delete');
+
+            $this->setGetArray(array('id' => static::$templateOwnedBySuper->id));
+            $this->runControllerShouldResultInAccessFailureAndGetContent('emailTemplates/default/edit');
+            $this->runControllerShouldResultInAccessFailureAndGetContent('emailTemplates/default/details');
+            $this->runControllerShouldResultInAccessFailureAndGetContent('emailTemplates/default/delete');
         }
 
         /**
-         * @depends testSuperUserAllDefaultControllerActions
+         * @depends testRegularUserAllDefaultControllerActions
          */
-        public function testSuperUserListForMarketingAction()
+        public function testRegularUserListForMarketingAction()
         {
             $content = $this->runControllerWithNoExceptionsAndGetContent('emailTemplates/default/listForMarketing');
             $this->assertTrue   (strpos($content,       'Email Templates</title></head>') !== false);
+            $this->assertTrue   (strpos($content,       '1 result') === false);
+            $this->assertEquals (substr_count($content, 'Test Name Regular 02'), 0);
+            $this->assertEquals (substr_count($content, 'nobody nobodyson'), 0);
+            $emailTemplates = EmailTemplate::getByType(EmailTemplate::TYPE_CONTACT);
+            $this->assertEquals (0,                     count($emailTemplates));
+            EmailTemplateTestHelper::createEmailTemplateByName(EmailTemplate::TYPE_CONTACT,
+                                                                'Test Subject Regular 02',
+                                                                'Contact',
+                                                                'Test Name Regular 02',
+                                                                'Test HtmlContent Regular 02',
+                                                                'Test TextContent Regular 02');
+            $content = $this->runControllerWithNoExceptionsAndGetContent('emailTemplates/default/listForMarketing');
+            $this->assertTrue   (strpos($content,       'Email Templates</title></head>') !== false);
             $this->assertTrue   (strpos($content,       '1 result') !== false);
-            $this->assertEquals (substr_count($content, 'Test Name1'), 1);
-            $this->assertEquals (substr_count($content, 'Clark Kent'), 1);
+            $this->assertEquals (substr_count($content, 'Test Name Regular 02'), 1);
+            $this->assertEquals (substr_count($content, 'nobody nobodyson'), 1);
             $emailTemplates = EmailTemplate::getByType(EmailTemplate::TYPE_CONTACT);
             $this->assertEquals (1,                     count($emailTemplates));
         }
 
         /**
-         * @depends testSuperUserListForMarketingAction
+         * @depends testRegularUserListForMarketingAction
          */
-        public function testSuperUserListForWorkflowAction()
+        public function testRegularUserListForWorkflowAction()
         {
+            $content = $this->runControllerWithNoExceptionsAndGetContent('emailTemplates/default/listForWorkflow');
+            $this->assertTrue   (strpos($content,       ' - Workflows</title></head>') !== false);
+            $this->assertTrue   (strpos($content,       '1 result') === false);
+            $this->assertEquals (substr_count($content, 'Test Name Regular 03'), 0);
+            $this->assertEquals (substr_count($content, 'nobody nobodyson'), 0);
+            $emailTemplates = EmailTemplate::getByType(EmailTemplate::TYPE_WORKFLOW);
+            $this->assertEquals (0,                     count($emailTemplates));
+            EmailTemplateTestHelper::createEmailTemplateByName(EmailTemplate::TYPE_WORKFLOW,
+                                                                'Test Subject Regular 03',
+                                                                'Contact',
+                                                                'Test Name Regular 03',
+                                                                'Test HtmlContent Regular 03',
+                                                                'Test TextContent Regular 03');
             $content = $this->runControllerWithNoExceptionsAndGetContent('emailTemplates/default/listForWorkflow');
             $this->assertTrue   (strpos($content,       'Email Templates</title></head>') !== false);
             $this->assertTrue   (strpos($content,       '1 result') !== false);
-            $this->assertEquals (substr_count($content, 'Test Name'), 1);
-            $this->assertEquals (substr_count($content, 'Clark Kent'), 1);
+            $this->assertEquals (substr_count($content, 'Test Name Regular 03'), 1);
+            $this->assertEquals (substr_count($content, 'nobody nobodyson'), 1);
             $emailTemplates = EmailTemplate::getByType(EmailTemplate::TYPE_WORKFLOW);
             $this->assertEquals (1,                     count($emailTemplates));
         }
 
         /**
-         * @depends testSuperUserListForWorkflowAction
+         * @depends testRegularUserListForWorkflowAction
          */
-        public function testSuperUserCreateActionForWorkflow()
+        public function testRegularUserCreateActionForWorkflow()
         {
+            // TODO: @Shoaibi/@Jason: Medium: Even if a user doesn't have module permission he can sent that modelClassName in POST
+            // nobody needs access to meetings ans contact to have that in ddl.
+            $nobody = User::getByUsername('nobody');
+            $nobody->setRight('ContactsModule', ContactsModule::getAccessRight());
+            $nobody->setRight('MeetingsModule', MeetingsModule::getAccessRight());
+            $this->assertTrue($nobody->save());
+
             // Create a new emailTemplate and test validator.
             $this->setGetArray(array('type' => EmailTemplate::TYPE_WORKFLOW));
             $this->setPostArray(array('EmailTemplate' => array(
-                'type'              => EmailTemplate::TYPE_WORKFLOW,
-                'name'              => 'New Test Workflow EmailTemplate',
-                'subject'           => 'New Test Subject')));
+                                            'type'              => EmailTemplate::TYPE_WORKFLOW,
+                                            'name'              => 'New Test Workflow EmailTemplate',
+                                            'subject'           => 'New Test Subject')));
             $content = $this->runControllerWithNoExceptionsAndGetContent('emailTemplates/default/create');
             $this->assertTrue(strpos($content, 'Create Email Template') !== false);
             $this->assertFalse(strpos($content, '<select name="EmailTemplate[type]" id="EmailTemplate_type">') !== false);
@@ -122,14 +202,15 @@
 
             // Create a new emailTemplate and test merge tags validator.
             $this->setPostArray(array('EmailTemplate' => array(
-                'type'              => EmailTemplate::TYPE_WORKFLOW,
-                'modelClassName'    => 'Meeting',
-                'name'              => 'New Test Workflow EmailTemplate',
-                'subject'           => 'New Test Subject',
-                'textContent'       => 'This is text content [[INVALID^TAG]]',
-                'htmlContent'       => 'This is Html content [[INVALIDTAG]]',
-            )));
+                                            'type'              => EmailTemplate::TYPE_WORKFLOW,
+                                            'modelClassName'    => 'Meeting',
+                                            'name'              => 'New Test Workflow EmailTemplate',
+                                            'subject'           => 'New Test Subject',
+                                            'textContent'       => 'This is text content [[INVALID^TAG]]',
+                                            'htmlContent'       => 'This is Html content [[INVALIDTAG]]',
+                                        )));
             $content = $this->runControllerWithNoExceptionsAndGetContent('emailTemplates/default/create');
+            //static::printContentAndDie($content);
             $this->assertTrue(strpos($content, 'Create Email Template') !== false);
             $this->assertFalse(strpos($content, '<select name="EmailTemplate[type]" id="EmailTemplate_type">') !== false);
             $this->assertTrue(strpos($content, '<select name="EmailTemplate[modelClassName]" id="EmailTemplate_modelClassName_value">') !== false);
@@ -141,18 +222,18 @@
 
             // Create a new emailTemplate and save it.
             $this->setPostArray(array('EmailTemplate' => array(
-                'type'              => EmailTemplate::TYPE_WORKFLOW,
-                'name'              => 'New Test Workflow EmailTemplate',
-                'modelClassName'    => 'Contact',
-                'subject'           => 'New Test Subject [[FIRST^NAME]]',
-                'textContent'       => 'New Text Content [[FIRST^NAME]]')));
+                                            'type'              => EmailTemplate::TYPE_WORKFLOW,
+                                            'name'              => 'New Test Workflow EmailTemplate',
+                                            'modelClassName'    => 'Contact',
+                                            'subject'           => 'New Test Subject [[FIRST^NAME]]',
+                                            'textContent'       => 'New Text Content [[FIRST^NAME]]')));
             $redirectUrl = $this->runControllerWithRedirectExceptionAndGetUrl('emailTemplates/default/create');
             $emailTemplateId = self::getModelIdByModelNameAndName ('EmailTemplate', 'New Test Workflow EmailTemplate');
             $emailTemplate = EmailTemplate::getById($emailTemplateId);
             $this->assertTrue  ($emailTemplate->id > 0);
             $this->assertEquals('New Test Subject [[FIRST^NAME]]', $emailTemplate->subject);
             $this->assertEquals('New Text Content [[FIRST^NAME]]', $emailTemplate->textContent);
-            $this->assertTrue  ($emailTemplate->owner == $this->super);
+            $this->assertTrue  ($emailTemplate->owner == $this->user);
             $compareRedirectUrl = Yii::app()->createUrl('emailTemplates/default/details', array('id' => $emailTemplate->id));
             $this->assertEquals($compareRedirectUrl, $redirectUrl);
             $emailTemplates = EmailTemplate::getAll();
@@ -160,16 +241,16 @@
         }
 
         /**
-         * @depends testSuperUserCreateActionForWorkflow
+         * @depends testRegularUserCreateActionForWorkflow
          */
-        public function testSuperUserCreateActionForMarketing()
+        public function testRegularUserCreateActionForMarketing()
         {
             // Create a new emailTemplate and test validator.
             $this->setGetArray(array('type' => EmailTemplate::TYPE_CONTACT));
             $this->setPostArray(array('EmailTemplate' => array(
-                'type'              => EmailTemplate::TYPE_CONTACT,
-                'name'              => 'New Test EmailTemplate',
-                'subject'           => 'New Test Subject')));
+                                            'type'              => EmailTemplate::TYPE_CONTACT,
+                                            'name'              => 'New Test EmailTemplate',
+                                            'subject'           => 'New Test Subject')));
             $content = $this->runControllerWithNoExceptionsAndGetContent('emailTemplates/default/create');
             $this->assertTrue(strpos($content, 'Create Email Template') !== false);
             $this->assertFalse(strpos($content, '<select name="EmailTemplate[type]" id="EmailTemplate_type">') !== false);
@@ -178,13 +259,13 @@
 
             // Create a new emailTemplate and test merge tags validator.
             $this->setPostArray(array('EmailTemplate' => array(
-                'type'              => EmailTemplate::TYPE_CONTACT,
-                'modelClassName'    => 'Contact',
-                'name'              => 'New Test EmailTemplate',
-                'subject'           => 'New Test Subject',
-                'textContent'       => 'This is text content [[INVALID^TAG]]',
-                'htmlContent'       => 'This is Html content [[INVALIDTAG]]',
-                )));
+                                            'type'              => EmailTemplate::TYPE_CONTACT,
+                                            'modelClassName'    => 'Contact',
+                                            'name'              => 'New Test EmailTemplate',
+                                            'subject'           => 'New Test Subject',
+                                            'textContent'       => 'This is text content [[INVALID^TAG]]',
+                                            'htmlContent'       => 'This is Html content [[INVALIDTAG]]',
+                                            )));
             $content = $this->runControllerWithNoExceptionsAndGetContent('emailTemplates/default/create');
             $this->assertTrue(strpos($content, 'Create Email Template') !== false);
             $this->assertFalse(strpos($content, '<select name="EmailTemplate[type]" id="EmailTemplate_type">') !== false);
@@ -195,18 +276,18 @@
 
             // Create a new emailTemplate and save it.
             $this->setPostArray(array('EmailTemplate' => array(
-                'type'              => EmailTemplate::TYPE_CONTACT,
-                'name'              => 'New Test EmailTemplate',
-                'modelClassName'    => 'Contact',
-                'subject'           => 'New Test Subject [[FIRST^NAME]]',
-                'textContent'       => 'New Text Content [[FIRST^NAME]]')));
+                                            'type'              => EmailTemplate::TYPE_CONTACT,
+                                            'name'              => 'New Test EmailTemplate',
+                                            'modelClassName'    => 'Contact',
+                                            'subject'           => 'New Test Subject [[FIRST^NAME]]',
+                                            'textContent'       => 'New Text Content [[FIRST^NAME]]')));
             $redirectUrl = $this->runControllerWithRedirectExceptionAndGetUrl('emailTemplates/default/create');
             $emailTemplateId    = self::getModelIdByModelNameAndName ('EmailTemplate', 'New Test EmailTemplate');
             $emailTemplate      = EmailTemplate::getById($emailTemplateId);
             $this->assertTrue  ($emailTemplateId > 0);
             $this->assertEquals('New Test Subject [[FIRST^NAME]]', $emailTemplate->subject);
             $this->assertEquals('New Text Content [[FIRST^NAME]]', $emailTemplate->textContent);
-            $this->assertTrue  ($emailTemplate->owner == $this->super);
+            $this->assertTrue  ($emailTemplate->owner == $this->user);
             $compareRedirectUrl = Yii::app()->createUrl('emailTemplates/default/details', array('id' => $emailTemplateId));
             $this->assertEquals($compareRedirectUrl, $redirectUrl);
             $emailTemplates = EmailTemplate::getAll();
@@ -214,9 +295,9 @@
         }
 
         /**
-         * @depends testSuperUserCreateActionForMarketing
+         * @depends testRegularUserCreateActionForMarketing
          */
-        public function testSuperUserEditActionForMarketing()
+        public function testRegularUserEditActionForMarketing()
         {
             $emailTemplateId = self::getModelIdByModelNameAndName ('EmailTemplate', 'New Test EmailTemplate');
             $emailTemplate = EmailTemplate::getById($emailTemplateId);
@@ -241,11 +322,11 @@
 
             // Send a valid post and verify saved data.
             $this->setPostArray(array('EmailTemplate' => array(
-                                    'name' => 'New Test Email Template 00',
-                                    'subject' => 'New Subject 00',
-                                    'type' => EmailTemplate::TYPE_CONTACT,
-                                    'htmlContent' => 'New HTML Content 00',
-                                    'textContent' => 'New Text Content 00')));
+                                            'name' => 'New Test Email Template 00',
+                                            'subject' => 'New Subject 00',
+                                            'type' => EmailTemplate::TYPE_CONTACT,
+                                            'htmlContent' => 'New HTML Content 00',
+                                            'textContent' => 'New Text Content 00')));
             $redirectUrl = $this->runControllerWithRedirectExceptionAndGetUrl('emailTemplates/default/edit');
             $emailTemplate = EmailTemplate::getById($emailTemplateId);
             $this->assertEquals('New Subject 00', $emailTemplate->subject);
@@ -256,9 +337,9 @@
         }
 
         /**
-         * @depends testSuperUserCreateActionForMarketing
+         * @depends testRegularUserCreateActionForMarketing
          */
-        public function testSuperUserEditActionForWorkflow()
+        public function testRegularUserEditActionForWorkflow()
         {
             $emailTemplateId = self::getModelIdByModelNameAndName ('EmailTemplate', 'New Test Workflow EmailTemplate');
             $emailTemplate = EmailTemplate::getById($emailTemplateId);
@@ -283,11 +364,11 @@
 
             // Send a valid post and verify saved data.
             $this->setPostArray(array('EmailTemplate' => array(
-                'name' => 'New Test Workflow Email Template 00',
-                'subject' => 'New Subject 00',
-                'type' => EmailTemplate::TYPE_WORKFLOW,
-                'htmlContent' => 'New HTML Content 00',
-                'textContent' => 'New Text Content 00')));
+                                            'name' => 'New Test Workflow Email Template 00',
+                                            'subject' => 'New Subject 00',
+                                            'type' => EmailTemplate::TYPE_WORKFLOW,
+                                            'htmlContent' => 'New HTML Content 00',
+                                            'textContent' => 'New Text Content 00')));
             $redirectUrl = $this->runControllerWithRedirectExceptionAndGetUrl('emailTemplates/default/edit');
             $emailTemplate = EmailTemplate::getById($emailTemplateId);
             $this->assertEquals('New Subject 00', $emailTemplate->subject);
@@ -298,13 +379,12 @@
         }
 
         /**
-         * @depends testSuperUserEditActionForMarketing
+         * @depends testRegularUserEditActionForMarketing
          */
-        public function testSuperUserDetailsActionForMarketing()
+        public function testRegularUserDetailsActionForMarketing()
         {
             $emailTemplateId = self::getModelIdByModelNameAndName ('EmailTemplate', 'New Test Email Template 00');
             $emailTemplate = EmailTemplate::getById($emailTemplateId);
-            $types = EmailTemplate::getTypeDropDownArray();
             $this->setGetArray(array('id' => $emailTemplateId));
             $content = $this->runControllerWithNoExceptionsAndGetContent('emailTemplates/default/details');
             $this->assertTrue(strpos($content, '<span class="ellipsis-content">' . $emailTemplate->name . '</span>') !== false);
@@ -318,13 +398,12 @@
         }
 
         /**
-         * @depends testSuperUserEditActionForWorkflow
+         * @depends testRegularUserEditActionForWorkflow
          */
-        public function testSuperUserDetailsActionForWorkflow()
+        public function testRegularUserDetailsActionForWorkflow()
         {
             $emailTemplateId = self::getModelIdByModelNameAndName ('EmailTemplate', 'New Test Workflow Email Template 00');
             $emailTemplate = EmailTemplate::getById($emailTemplateId);
-            $types = EmailTemplate::getTypeDropDownArray();
             $this->setGetArray(array('id' => $emailTemplateId));
             $content = $this->runControllerWithNoExceptionsAndGetContent('emailTemplates/default/details');
             $this->assertTrue(strpos($content, '<span class="ellipsis-content">' . $emailTemplate->name . '</span>') !== false);
@@ -338,9 +417,9 @@
         }
 
         /**
-         * @depends testSuperUserDetailsActionForMarketing
+         * @depends testRegularUserDetailsActionForMarketing
          */
-        public function testSuperUserDeleteAction()
+        public function testRegularUserDeleteAction()
         {
             $emailTemplateId = self::getModelIdByModelNameAndName ('EmailTemplate', 'New Test Email Template 00');
             // Delete an emailTemplate.
