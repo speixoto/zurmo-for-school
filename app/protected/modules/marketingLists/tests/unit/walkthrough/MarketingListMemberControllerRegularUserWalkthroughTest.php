@@ -494,8 +494,6 @@
 
         public function testMassDeleteActionsForSelectedIds()
         {
-            $this->user->setRight('ZurmoModule', ZurmoModule::RIGHT_BULK_DELETE);
-            $this->assertTrue($this->user->save());
             // MassDelete view for selected ids
             $listId             = self::getModelIdByModelNameAndName('MarketingList', 'MarketingList1');
             $this->assertNotEmpty($listId);
