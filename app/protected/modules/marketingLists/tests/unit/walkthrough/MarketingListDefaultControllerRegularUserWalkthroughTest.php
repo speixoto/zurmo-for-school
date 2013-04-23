@@ -34,9 +34,11 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class MarketingListDefaultControllerSuperUserWalkthroughTest extends ZurmoWalkthroughBaseTest
+    class MarketingListDefaultControllerRegularUserWalkthroughTest extends ZurmoWalkthroughBaseTest
     {
         protected $user;
+
+        protected static $listOwnedBySuper;
 
         public static function setUpBeforeClass()
         {
@@ -44,35 +46,73 @@
             SecurityTestHelper::createSuperAdmin();
             $super = User::getByUsername('super');
             Yii::app()->user->userModel = $super;
+            UserTestHelper::createBasicUser('nobody');
 
-            MarketingListTestHelper::createMarketingListByName('MarketingListName', 'MarketingList Description');
-            MarketingListTestHelper::createMarketingListByName('MarketingListName2', 'MarketingList Description2');
+            static::$listOwnedBySuper = MarketingListTestHelper::createMarketingListByName('MarketingListName',
+                                                                                            'MarketingList Description');
         }
 
         public function setUp()
         {
             parent::setUp();
-            $this->user = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
+            $this->user = $this->logoutCurrentUserLoginNewUserAndGetByUsername('nobody');
         }
 
-        public function testSuperUserAllDefaultControllerActions()
+        public function testRegularUserAllDefaultControllerActions()
         {
-            // Test all default controller actions that do not require any POST/GET variables to be passed.
+            $marketingList = MarketingListTestHelper::createMarketingListByName('MarketingListName 01',
+                                                                                'MarketingListDescription 01');
+            $this->runControllerShouldResultInAccessFailureAndGetContent('marketingLists/default');
+            $this->runControllerShouldResultInAccessFailureAndGetContent('marketingLists/default/index');
+            $this->runControllerShouldResultInAccessFailureAndGetContent('marketingLists/default/list');
+            $this->runControllerShouldResultInAccessFailureAndGetContent('marketingLists/default/create');
+            $this->setGetArray(array('id' => $marketingList->id));
+            $this->runControllerShouldResultInAccessFailureAndGetContent('marketingLists/default/edit');
+            $this->runControllerShouldResultInAccessFailureAndGetContent('marketingLists/default/details');
+            $this->resetGetArray();
+
+            $nobody = User::getByUsername('nobody');
+            $nobody->setRight('MarketingListsModule', MarketingListsModule::getAccessRight());
+            $this->assertTrue($nobody->save());
             $this->runControllerWithNoExceptionsAndGetContent('marketingLists/default');
             $this->runControllerWithNoExceptionsAndGetContent('marketingLists/default/index');
             $this->runControllerWithNoExceptionsAndGetContent('marketingLists/default/list');
+            $this->setGetArray(array('id' => $marketingList->id));
+            $this->runControllerWithNoExceptionsAndGetContent('marketingLists/default/details');
+            $this->resetGetArray();
+
+            $nobody->setRight('MarketingListsModule', MarketingListsModule::getCreateRight());
+            $this->assertTrue($nobody->save());
             $this->runControllerWithNoExceptionsAndGetContent('marketingLists/default/create');
+            $this->setGetArray(array('id' => $marketingList->id));
+            $this->runControllerWithNoExceptionsAndGetContent('marketingLists/default/edit');
+
+            $nobody->setRight('MarketingListsModule', MarketingListsModule::getDeleteRight());
+            $this->assertTrue($nobody->save());
+            $this->runControllerWithRedirectExceptionAndGetUrl('marketingLists/default/delete');
+
+            $this->setGetArray(array('id' => static::$listOwnedBySuper->id));
+            $this->runControllerShouldResultInAccessFailureAndGetContent('emailTemplates/default/edit');
+            $this->runControllerShouldResultInAccessFailureAndGetContent('emailTemplates/default/details');
+            $this->runControllerShouldResultInAccessFailureAndGetContent('emailTemplates/default/delete');
+
         }
 
         /**
-         * @depends testSuperUserAllDefaultControllerActions
+         * @depends testRegularUserAllDefaultControllerActions
          */
-        public function testSuperUserListAction()
+        public function testRegularUserListAction()
         {
             $content = $this->runControllerWithNoExceptionsAndGetContent('marketingLists/default/list');
+            $this->assertTrue(strpos($content, 'anyMixedAttributes') === false);
+            $this->assertTrue(strpos($content, 'MarketingListName') === false);
+            $this->assertTrue(strpos($content, 'MarketingListName2') === false);
+            MarketingListTestHelper::createMarketingListByName('MarketingListName 02', 'MarketingListDescription 02');
+            MarketingListTestHelper::createMarketingListByName('MarketingListName 03', 'MarketingListDescription 03');
+            $content = $this->runControllerWithNoExceptionsAndGetContent('marketingLists/default/list');
             $this->assertTrue(strpos($content, 'anyMixedAttributes') !== false);
-            $this->assertTrue(strpos($content, 'MarketingListName') !== false);
-            $this->assertTrue(strpos($content, 'MarketingListName2') !== false);
+            $this->assertTrue(strpos($content, 'MarketingListName 02') !== false);
+            $this->assertTrue(strpos($content, 'MarketingListName 03') !== false);
             $this->assertEquals(2, substr_count($content, 'MarketingListName'));
             //Test the search or paging of the listview.
             Yii::app()->clientScript->reset(); //to make sure old js doesn't make it to the UI
@@ -83,9 +123,9 @@
         }
 
         /**
-         * @depends testSuperUserListAction
+         * @depends testRegularUserListAction
          */
-        public function testSuperUserCreateAction()
+        public function testRegularUserCreateAction()
         {
             // TODO: @Shoaibi: Low: Add test with different permissions
             $content = $this->runControllerWithNoExceptionsAndGetContent('marketingLists/default/create');
@@ -100,11 +140,11 @@
 
             $this->resetGetArray();
             $this->setPostArray(array('MarketingList' => array(
-                'name'          => '',
-                'description'   => '',
-                'fromName'      => '',
-                'fromAddress'   => '',
-                )));
+                                            'name'          => '',
+                                            'description'   => '',
+                                            'fromName'      => '',
+                                            'fromAddress'   => '',
+                                            )));
             $content = $this->runControllerWithNoExceptionsAndGetContent('marketingLists/default/create');
             $this->assertTrue(strpos($content, 'class="errorMessage">Name cannot be blank.</div>') !== false);
             $this->assertTrue(strpos($content, '<input id="MarketingList_name" name="MarketingList[name]" type="text"' .
@@ -113,11 +153,11 @@
                                                                  '<span class="required">*</span></label>') !== false);
             $this->resetGetArray();
             $this->setPostArray(array('MarketingList' => array(
-                'name'            => 'New MarketingListName using Create',
-                'description'     => 'New MarketingList Description using Create',
-                'fromName'        => 'Zurmo Sales',
-                'fromAddress'     => 'sales@zurmo.com',
-                )));
+                                            'name'            => 'New MarketingListName using Create',
+                                            'description'     => 'New MarketingList Description using Create',
+                                            'fromName'        => 'Zurmo Sales',
+                                            'fromAddress'     => 'sales@zurmo.com',
+                                            )));
             $redirectUrl    = $this->runControllerWithRedirectExceptionAndGetUrl('marketingLists/default/create');
             $marketingList = MarketingList::getByName('New MarketingListName using Create');
             $this->assertEquals(1, count($marketingList));
@@ -132,19 +172,19 @@
             $this->assertEquals(3, count($marketingList));
         }
 
-        public function testSuperUserDetailsAction()
+        public function testRegularUserDetailsAction()
         {
-            $marketingListId = self::getModelIdByModelNameAndName ('MarketingList', 'MarketingListName2');
+            $marketingListId = self::getModelIdByModelNameAndName('MarketingList', 'New MarketingListName using Create');
             $this->setGetArray(array('id' => $marketingListId));
             $content = $this->runControllerWithNoExceptionsAndGetContent('marketingLists/default/details');
-            $this->assertTrue(strpos($content, 'MarketingListName2') !== false);
-            $this->assertEquals(3, substr_count($content, 'MarketingListName2'));
+            $this->assertTrue(strpos($content, 'New MarketingListName using Create') !== false);
+            $this->assertTrue(strpos($content, 'New MarketingList Description using Create') !== false);
+            $this->assertEquals(3, substr_count($content, 'New MarketingListName using Create'));
             $this->assertTrue(strpos($content, '<span>Details</span></a>') !== false);
             $this->assertTrue(strpos($content, '<strong class="marketing-list-subscribers-stats">' .
                                                                                     '0 Subscribed</strong>') !== false);
             $this->assertTrue(strpos($content, '<strong class="marketing-list-unsubscribers-stats">' .
                                                                                     '0 Unsubscribed</strong>') !== false);
-            $this->assertTrue(strpos($content, 'MarketingList Description2') !== false);
             $this->assertTrue(strpos($content, '<span>Options</span></a>') !== false);
             $this->assertTrue(strpos($content, '<span>Edit</span></a></li>') !== false);
             $this->assertTrue(strpos($content, '<span>Delete</span></a></li>') !== false);
@@ -158,26 +198,26 @@
         }
 
         /**
-         * @depends testSuperUserCreateAction
+         * @depends testRegularUserCreateAction
          */
-        public function testSuperUserEditAction()
+        public function testRegularUserEditAction()
         {
             $marketingListId = self::getModelIdByModelNameAndName ('MarketingList', 'New MarketingListName using Create');
             $this->setGetArray(array('id' => $marketingListId));
             $content = $this->runControllerWithNoExceptionsAndGetContent('marketingLists/default/edit');
             $this->assertTrue(strpos($content, 'New MarketingListName using Create') !== false);
-            $this->assertEquals(2, substr_count($content, 'New MarketingListName using Create'));
+            $this->assertEquals(3, substr_count($content, 'New MarketingListName using Create'));
             $this->assertTrue(strpos($content, 'New MarketingList Description using Create') !== false);
             $this->assertTrue(strpos($content, 'Zurmo Sales') !== false);
             $this->assertTrue(strpos($content, 'sales@zurmo.com') !== false);
             $this->assertTrue(strpos($content, 'Create Marketing List') === false);
 
             $this->setPostArray(array('MarketingList' => array(
-                'name'            => 'New MarketingListName',
-                'description'     => 'New MarketingList Description',
-                'fromName'        => 'Zurmo Support',
-                'fromAddress'     => 'support@zurmo.com',
-            )));
+                                            'name'            => 'New MarketingListName',
+                                            'description'     => 'New MarketingList Description',
+                                            'fromName'        => 'Zurmo Support',
+                                            'fromAddress'     => 'support@zurmo.com',
+                                        )));
             $redirectUrl    = $this->runControllerWithRedirectExceptionAndGetUrl('marketingLists/default/edit');
             $marketingList = MarketingList::getByName('New MarketingListName');
             $this->assertEquals(1, count($marketingList));
@@ -192,9 +232,9 @@
         }
 
         /**
-         * @depends testSuperUserEditAction
+         * @depends testRegularUserEditAction
          */
-        public function testSuperUserDeleteAction()
+        public function testRegularUserDeleteAction()
         {
             $marketingListId = self::getModelIdByModelNameAndName ('MarketingList', 'New MarketingListName');
 

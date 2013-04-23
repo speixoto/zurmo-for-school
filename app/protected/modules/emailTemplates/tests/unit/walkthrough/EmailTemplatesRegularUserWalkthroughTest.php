@@ -97,6 +97,9 @@
             $this->runControllerWithNoExceptionsAndGetContent('emailTemplates/default/index');
             $this->runControllerWithNoExceptionsAndGetContent('emailTemplates/default/listForMarketing');
             $this->runControllerWithNoExceptionsAndGetContent('emailTemplates/default/listForWorkflow');
+            $this->setGetArray(array('id' => $emailTemplate->id));
+            $this->runControllerWithNoExceptionsAndGetContent('emailTemplates/default/details');
+            $this->resetGetArray();
 
             $nobody->setRight('EmailTemplatesModule', EmailTemplatesModule::getCreateRight());
             $this->assertTrue($nobody->save());
@@ -106,7 +109,7 @@
             $this->runControllerWithNoExceptionsAndGetContent('emailTemplates/default/create');
             $this->setGetArray(array('id' => $emailTemplate->id));
             $this->runControllerWithNoExceptionsAndGetContent('emailTemplates/default/edit');
-            $this->runControllerWithNoExceptionsAndGetContent('emailTemplates/default/details');
+
 
             $nobody->setRight('EmailTemplatesModule', EmailTemplatesModule::getDeleteRight());
             $this->assertTrue($nobody->save());
