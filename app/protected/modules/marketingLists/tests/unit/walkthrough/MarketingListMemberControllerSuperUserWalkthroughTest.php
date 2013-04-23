@@ -36,6 +36,8 @@
 
     class MarketingListMemberControllerSuperUserWalkthroughTest extends ZurmoWalkthroughBaseTest
     {
+        protected $user;
+
         public static function setUpBeforeClass()
         {
             parent::setUpBeforeClass();
@@ -67,10 +69,14 @@
             }
         }
 
+        public function setUp()
+        {
+            parent::setUp();
+            $this->user = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
+        }
+
         public function testMassSubscribeActionsForSelectedIds()
         {
-            $super              = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
-
             // MassSubscribe view for selected ids
             $listId             = self::getModelIdByModelNameAndName('MarketingList', 'MarketingList1');
             $this->assertNotEmpty($listId);
@@ -181,8 +187,6 @@
          */
         public function testMassSubscribePagesProperlyAndSubscribesAllSelected()
         {
-            $super          = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
-
             // MassSubscribe for selected Record Count
             $listId         = self::getModelIdByModelNameAndName('MarketingList', 'MarketingList2');
             $this->assertNotEmpty($listId);
@@ -281,8 +285,6 @@
          */
         public function testMassUnsubscribeActionsForSelectedIds()
         {
-            $super              = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
-
             // MassUnsubscribe view for selected ids
             $listId             = self::getModelIdByModelNameAndName('MarketingList', 'MarketingList1');
             $this->assertNotEmpty($listId);
@@ -393,8 +395,6 @@
          */
         public function testMassUnsubscribePagesProperlyAndUnsubscribesAllSelected()
         {
-            $super          = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
-
             // MassUnsubscribe for selected Record Count
             $listId         = self::getModelIdByModelNameAndName('MarketingList', 'MarketingList2');
             $this->assertNotEmpty($listId);
@@ -491,8 +491,6 @@
 
         public function testMassDeleteActionsForSelectedIds()
         {
-            $super              = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
-
             // MassDelete view for selected ids
             $listId             = self::getModelIdByModelNameAndName('MarketingList', 'MarketingList1');
             $this->assertNotEmpty($listId);
@@ -608,8 +606,6 @@
          */
         public function testMassDeletePagesProperlyAndRemovesAllSelected()
         {
-            $super          = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
-
             // MassDelete for selected Record Count
             $listId         = self::getModelIdByModelNameAndName('MarketingList', 'MarketingList2');
             $this->assertNotEmpty($listId);

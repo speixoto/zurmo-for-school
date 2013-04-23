@@ -92,9 +92,9 @@
             $this->runControllerWithRedirectExceptionAndGetUrl('marketingLists/default/delete');
 
             $this->setGetArray(array('id' => static::$listOwnedBySuper->id));
-            $this->runControllerShouldResultInAccessFailureAndGetContent('emailTemplates/default/edit');
-            $this->runControllerShouldResultInAccessFailureAndGetContent('emailTemplates/default/details');
-            $this->runControllerShouldResultInAccessFailureAndGetContent('emailTemplates/default/delete');
+            $this->runControllerShouldResultInAccessFailureAndGetContent('marketingLists/default/edit');
+            $this->runControllerShouldResultInAccessFailureAndGetContent('marketingLists/default/details');
+            $this->runControllerShouldResultInAccessFailureAndGetContent('marketingLists/default/delete');
 
         }
 

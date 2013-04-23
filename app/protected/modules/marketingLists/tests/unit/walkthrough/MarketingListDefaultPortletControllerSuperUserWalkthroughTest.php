@@ -36,6 +36,8 @@
 
     class MarketingListDefaultPortletControllerSuperUserWalkthroughTest extends ZurmoWalkthroughBaseTest
     {
+        protected $user;
+
         public static function setUpBeforeClass()
         {
             parent::setUpBeforeClass();
@@ -64,9 +66,14 @@
             MarketingListMemberTestHelper::createMarketingListMember(1, $marketingList2, $contact2);
         }
 
+        public function setUp()
+        {
+            parent::setUp();
+            $this->user = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
+        }
+
         public function testDelete()
         {
-            $super                  = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
             $marketingList          = MarketingListTestHelper::createMarketingListByName('MarketingList3', 'MarketingList Description3');
             $this->assertNotNull($marketingList);
             $contact                = RandomDataUtil::getRandomValueFromArray(Contact::getAll());
@@ -83,7 +90,6 @@
 
         public function testToggleUnsubscribed()
         {
-            $super                      = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
             $marketingList              = MarketingListTestHelper::createMarketingListByName('MarketingList4',
                                                                                             'MarketingList Description4');
             $this->assertNotNull($marketingList);
@@ -107,7 +113,6 @@
 
         public function testCountMembers()
         {
-            $super                      = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
             $marketingLists             = MarketingList::getByName('MarketingList1');
             $marketingListId            = $marketingLists[0]->id;
             $subscriberCount            = 3;
@@ -124,11 +129,10 @@
 
         public function testSubscribeContactsForContactType()
         {
-            $super                      = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
             $type                       = 'contact';
-            $account                    = AccountTestHelper::createAccountByNameForOwner('superAccount3', $super);
+            $account                    = AccountTestHelper::createAccountByNameForOwner('superAccount3', $this->user);
             $contact                    = ContactTestHelper::createContactWithAccountByNameForOwner('superContact6',
-                                                                                                    $super,
+                                                                                                    $this->user,
                                                                                                     $account);
             $contactId                  = $contact->id;
             $marketingList              = RandomDataUtil::getRandomValueFromArray(MarketingList::getAll());
@@ -157,7 +161,6 @@
 
         public function testSubscribeContactsForReportType()
         {
-            $super                      = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
             $type                       = 'report';
             $report                     = SavedReportTestHelper::makeSimpleContactRowsAndColumnsReport();
             $marketingList              = MarketingListTestHelper::createMarketingListByName('MarketingList5', 'MarketingList Description5');
