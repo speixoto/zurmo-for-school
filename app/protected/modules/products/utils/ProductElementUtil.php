@@ -24,16 +24,18 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class ProductSellPriceRelatedListViewColumnAdapter extends TextListViewColumnAdapter
+    /**
+     * Helper class used by product template elements.
+     */
+    class ProductElementUtil
     {
-        public function renderGridViewData()
+        public static function getProductPortletSellPrice($data, $row)
         {
-	    return array(
-		    'class' => 'phaEditColumn',
-                    'name'  => $this->attribute,
-                    'value' => array('ProductElementUtil' ,'getProductPortletSellPrice'),
-                    'actionUrl' => Yii::app()->createUrl('products/default/update', array('attribute' => 'sellPrice')),
-                );
+	    assert('$data->sellPrice instanceof CurrencyValue');
+            $currencyValueModel = $data->sellPrice;
+            return Yii::app()->numberFormatter->formatCurrency( $currencyValueModel->value,
+                                                                $currencyValueModel->currency->code);
+
         }
     }
 ?>

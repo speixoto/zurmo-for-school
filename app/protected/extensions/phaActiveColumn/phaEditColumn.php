@@ -14,7 +14,6 @@ class phaEditColumn extends phaAbsActiveColumn {
      * @var array Additional HTML attributes. See details {@link CHtml::inputField}
      */
     public $htmlEditFieldOptions = array();
-//    public $data;
 
     /**
      * Renders the data cell content.
@@ -24,7 +23,12 @@ class phaEditColumn extends phaAbsActiveColumn {
      * @param mixed $data the data associated with the row
      */
     protected function renderDataCellContent($row,$data) {
-        $value = CHtml::value($data, $this->name);
+
+	if($this->value!==null)
+	    $value=$this->evaluateExpression($this->value,array('data'=>$data,'row'=>$row));
+	elseif($this->name!==null)
+	    $value = CHtml::value($data, $this->name);
+
         $valueId = $data->{$this->modelId};
         $this->htmlEditFieldOptions['itemId'] = $valueId;
         $fieldUID = $this->getViewDivClass();
@@ -117,6 +121,7 @@ class phaEditColumn extends phaAbsActiveColumn {
                 type: "GET",
                 dataType: "json",
 		url: phaACActionUrls[gridUID],
+		cache: false,
                 data: {
                     item: phaACOpenEditItem,
                     value: $("#field-"+phaACOpenEditGrid+"-"+phaACOpenEditItem+" input").val()
