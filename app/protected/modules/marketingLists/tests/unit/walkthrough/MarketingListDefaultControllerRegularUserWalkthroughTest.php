@@ -71,31 +71,51 @@
             $this->runControllerShouldResultInAccessFailureAndGetContent('marketingLists/default/details');
             $this->resetGetArray();
 
-            $nobody = User::getByUsername('nobody');
-            $nobody->setRight('MarketingListsModule', MarketingListsModule::getAccessRight());
-            $this->assertTrue($nobody->save());
+
+            $this->user->setRight('MarketingListsModule', MarketingListsModule::getAccessRight());
+            $this->assertTrue($this->user->save());
             $this->runControllerWithNoExceptionsAndGetContent('marketingLists/default');
             $this->runControllerWithNoExceptionsAndGetContent('marketingLists/default/index');
             $this->runControllerWithNoExceptionsAndGetContent('marketingLists/default/list');
+
             $this->setGetArray(array('id' => $marketingList->id));
-            $this->runControllerWithNoExceptionsAndGetContent('marketingLists/default/details');
+            $content = $this->runControllerWithNoExceptionsAndGetContent('marketingLists/default/details');
+            $this->assertTrue(strpos($content, '<p>To manage Marketing Lists you must have access to either contacts' .
+                ' or leads. Contact the CRM administrator about this issue.</p>') !== false);
             $this->resetGetArray();
 
-            $nobody->setRight('MarketingListsModule', MarketingListsModule::getCreateRight());
-            $this->assertTrue($nobody->save());
-            $this->runControllerWithNoExceptionsAndGetContent('marketingLists/default/create');
+            $this->user->setRight('MarketingListsModule', MarketingListsModule::getCreateRight());
+            $this->assertTrue($this->user->save());
+            $content = $this->runControllerWithNoExceptionsAndGetContent('marketingLists/default/create');
+            $this->assertTrue(strpos($content, '<p>To manage Marketing Lists you must have access to either contacts' .
+                ' or leads. Contact the CRM administrator about this issue.</p>') !== false);
+
+            $this->user->setRight('ContactsModule', ContactsModule::getAccessRight());
+            $this->user->setRight('LeadsModule', LeadsModule::getAccessRight());
+            $this->assertTrue($this->user->save());
+            $this->setGetArray(array('id' => $marketingList->id));
+            $content = $this->runControllerWithNoExceptionsAndGetContent('marketingLists/default/details');
+            $this->assertTrue(strpos($content, '<p>To manage Marketing Lists you must have access to either contacts' .
+                ' or leads. Contact the CRM administrator about this issue.</p>') === false);
+            $this->resetGetArray();
+
+            $this->user->setRight('MarketingListsModule', MarketingListsModule::getCreateRight());
+            $this->assertTrue($this->user->save());
+            $content = $this->runControllerWithNoExceptionsAndGetContent('marketingLists/default/create');
+            $this->assertTrue(strpos($content, '<p>To manage Marketing Lists you must have access to either contacts' .
+                ' or leads. Contact the CRM administrator about this issue.</p>') === false);
+
             $this->setGetArray(array('id' => $marketingList->id));
             $this->runControllerWithNoExceptionsAndGetContent('marketingLists/default/edit');
 
-            $nobody->setRight('MarketingListsModule', MarketingListsModule::getDeleteRight());
-            $this->assertTrue($nobody->save());
+            $this->user->setRight('MarketingListsModule', MarketingListsModule::getDeleteRight());
+            $this->assertTrue($this->user->save());
             $this->runControllerWithRedirectExceptionAndGetUrl('marketingLists/default/delete');
 
             $this->setGetArray(array('id' => static::$listOwnedBySuper->id));
             $this->runControllerShouldResultInAccessFailureAndGetContent('marketingLists/default/edit');
             $this->runControllerShouldResultInAccessFailureAndGetContent('marketingLists/default/details');
             $this->runControllerShouldResultInAccessFailureAndGetContent('marketingLists/default/delete');
-
         }
 
         /**
@@ -172,6 +192,9 @@
             $this->assertEquals(3, count($marketingList));
         }
 
+        /**
+         * @depends testRegularUserCreateAction
+         */
         public function testRegularUserDetailsAction()
         {
             $marketingListId = self::getModelIdByModelNameAndName('MarketingList', 'New MarketingListName using Create');
