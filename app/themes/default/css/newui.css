@@ -9922,18 +9922,6 @@ div.hasHalfs .twoThirds {
 .LatestActivitiesListView form,
 .LatestActivitiesView form {
   position: relative;
-  zoom: 1;
-}
-.LatestActivitiesListView form:before,
-.LatestActivitiesView form:before {
-  content: "";
-  display: table;
-}
-.LatestActivitiesListView form:after,
-.LatestActivitiesView form:after {
-  content: "";
-  display: table;
-  clear: both;
 }
 .LatestActivitiesListView .latest-activity-toolbar,
 .LatestActivitiesView .latest-activity-toolbar {
