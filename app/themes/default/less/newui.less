@@ -2604,7 +2604,7 @@ div.wide.form{
 .juiportlet-widget-content .cgrid-view{
 	width: 100%;
 	.b-shadow(none);
-	.clearfix();
+	//.clearfix();
 }
 
 .search-view-0{
@@ -4041,18 +4041,20 @@ div.hasHalfs{
 
 /*Upcoming Meeting Pager*/
 .pager{
-	.box-sizing();
+	++.border-box;
 	width:100%;
 	text-align:center;
 	background: #fff url(../images/view-toolbar-gradient.png) left bottom repeat-x;
 	.b-shadow(inset 0 1px 0 #DFDFDF );
+	overflow: hidden;
 	ul{
+		display: block;
 		width:50%;
 		margin:0 auto;
-		.box-sizing();
+		++.border-box;
 		list-style: none;
 		border-left: 1px solid #DFDFDF;
-		.clearfix();
+		++.clearfix;
 	}
 	.endless-list-pager{
 		width:100%;
@@ -4073,7 +4075,7 @@ div.hasHalfs{
 		}
 	}
 	li{
-		.box-sizing();
+		++.border-box;
 		float:left;
 		width:30%;
 		padding:0;
@@ -4090,9 +4092,6 @@ div.hasHalfs{
 				color:#656565;
 				.b-shadow(~"inset 0 5px 10px 0px rgba(153, 153, 153, 0.45)");
 			}
-		}
-		> a:hover{
-			++.themeColor2-important;
 		}
 	}
 	.refresh{
