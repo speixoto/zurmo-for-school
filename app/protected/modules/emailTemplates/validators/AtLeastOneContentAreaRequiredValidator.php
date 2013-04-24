@@ -55,7 +55,15 @@
                 // ensure we don't add a duplicate error message.
                 if ($attribute == $textContent || !$object->hasErrors())
                 {
-                    $this->addError($object, $attribute, Zurmo::t('EmailTemplatesModule', 'Please provide at least one of the contents field.'));
+                    if ($this->message !== null)
+                    {
+                        $message = $this->message;
+                    }
+                    else
+                    {
+                        $message = Zurmo::t('EmailTemplatesModule', 'Please provide at least one of the contents field.');
+                    }
+                    $this->addError($object, $attribute, $message);
                 }
                 return false;
             }

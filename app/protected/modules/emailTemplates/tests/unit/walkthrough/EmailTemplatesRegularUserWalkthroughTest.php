@@ -142,7 +142,6 @@
                                                                                     'Test HtmlContent Regular 02',
                                                                                     'Test TextContent Regular 02');
             $this->assertNotNull($emailTemplate);
-            // TODO: @Shoaibi: Critical: --no-freeze fails here.
             $content = $this->runControllerWithNoExceptionsAndGetContent('emailTemplates/default/listForMarketing');
             $this->assertTrue   (strpos($content,       'Email Templates</title></head>') !== false);
             $this->assertTrue   (strpos($content,       '1 result') !== false);
