@@ -25,8 +25,8 @@
      ********************************************************************************/
 
     /**
-     * Class for showing a message and create link when there are no product templates visible to the logged in user when
-     * going to the product templates list view.
+     * Class for showing a message and create link when there are no product categories visible to the logged in user when
+     * going to the product categories list view.
      */
     class ProductCategoriesZeroModelsYetView extends ZeroModelsYetView
     {

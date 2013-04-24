@@ -29,9 +29,9 @@
      * categories that is used for selecting a parent
      * role.  Does not allow picking of a category
      * that has the same modelId or is downstream
-     * from that modelId in the role heirarchy.
+     * from that modelId in the category hierarchy.
      */
-    class SelectParentCategoryModalTreeListView extends RolesModalTreeListView
+    class SelectParentCategoryModalTreeListView extends ProductCategoriesModalTreeListView
     {
         /**
          * Override to ensure that the modelId is not null
@@ -53,7 +53,7 @@
         }
 
         /**
-         * Only display node as linkable if the roleId does not
+         * Only display node as linkable if the categoryId does not
          * match the $this->modelId
          */
         protected function resolveIsNodeLinkableById($id, $name)

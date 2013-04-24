@@ -169,9 +169,9 @@
 	public static function getProductTemplatePriceFrequencyDropdownArray()
         {
             return array(
-                ProductTemplate::PRICE_FREQUENCY_ONE_TIME       => Yii::t('Default', 'One Time'),
-                ProductTemplate::PRICE_FREQUENCY_MONTHLY        => Yii::t('Default', 'Monthly'),
-                ProductTemplate::PRICE_FREQUENCY_ANNUALLY       => Yii::t('Default', 'Annually'),
+                ProductTemplate::PRICE_FREQUENCY_ONE_TIME  => Yii::t('Default', 'One Time'),
+                ProductTemplate::PRICE_FREQUENCY_MONTHLY   => Yii::t('Default', 'Monthly'),
+                ProductTemplate::PRICE_FREQUENCY_ANNUALLY  => Yii::t('Default', 'Annually'),
             );
         }
 

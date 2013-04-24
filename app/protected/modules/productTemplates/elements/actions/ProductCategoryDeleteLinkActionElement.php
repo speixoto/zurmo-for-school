@@ -29,7 +29,7 @@
         protected function resolveConfirmAlertInHtmlOptions($htmlOptions)
         {
             $htmlOptions['confirm'] = Zurmo::t('ProductTemplatesModule', 'Are you sure you want to delete this {modelLabel}?',
-                                      array('{modelLabel}' => LabelUtil::getUncapitalizedModelLabelByCountAndModelClassName(1, 'ProductCategory')));
+                                      array('{modelLabel}' => ProductCategory::getModelLabelByTypeAndLanguage('Singular')));
             return $htmlOptions;
         }
     }

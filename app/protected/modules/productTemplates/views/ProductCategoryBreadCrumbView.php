@@ -29,9 +29,10 @@
      */
     class ProductCategoryBreadCrumbView extends BreadCrumbView
     {
-            protected function getHomeLinkLabel()
+        protected function getHomeLinkLabel()
         {
-            return Zurmo::t('ProductTemplatesModule', 'Product Categories Home');
+	    $pluralLabel = ProductCategory::getModelLabelByTypeAndLanguage('Plural');
+            return Zurmo::t('ProductTemplatesModule', $pluralLabel . ' Home');
         }
     }
 ?>

@@ -68,7 +68,7 @@
          */
         protected static function getLabel()
         {
-            return 'ProductCatalogsModuleSingularLabel';
+            return 'Product Catalog';
         }
 
         /**
@@ -77,7 +77,7 @@
          */
         protected static function getPluralLabel()
         {
-            return 'ProductCatalogsModulePluralLabel';
+            return 'Product Catalogs';
         }
 
         public static function canSaveMetadata()

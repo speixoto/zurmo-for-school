@@ -154,11 +154,11 @@
 	protected static function translatedAttributeLabels($language)
         {
             return array_merge(parent::translatedAttributeLabels($language), array(
-                'productCategory'   => Zurmo::t('ProductTemplatesModule', 'Parent Category', array(), null, $language),
-                'productCategories' => Zurmo::t('ProductTemplatesModule', 'Categories', array(), null, $language),
-                'productCatalogs'   => Zurmo::t('ProductTemplatesModule', 'Product Catalogs', array(), null, $language),
-                'products'	    => Zurmo::t('ProductTemplatesModule', 'Products', array(), null, $language),
-		'productTemplates'  => Zurmo::t('ProductTemplatesModule', 'Product Templates', array(), null, $language)
+                'productCategory'   => Zurmo::t('ProductTemplatesModule', 'Parent ' . self::getModelLabelByTypeAndLanguage('Singular', $language), array(), null, $language),
+                'productCategories' => self::getModelLabelByTypeAndLanguage('Plural', $language),
+                'productCatalogs'   => ProductCatalog::getModelLabelByTypeAndLanguage('Plural', $language),
+                'products'	    => Zurmo::t('ProductTemplatesModule', 'ProductsModulePluralLabel', array(), null, $language),
+		'productTemplates'  => Zurmo::t('ProductTemplatesModule', 'ProductTemplatesModulePluralLabel', array(), null, $language)
             ));
         }
     }

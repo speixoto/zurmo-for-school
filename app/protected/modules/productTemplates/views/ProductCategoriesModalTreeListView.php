@@ -25,8 +25,7 @@
      ********************************************************************************/
 
     /**
-     * View that renders a list in the form of a
-     * tree widget.
+     * View that renders a list in the form of a tree widget.
      */
     class ProductCategoriesModalTreeListView extends ProductCategoriesTreeListView
     {
@@ -71,7 +70,7 @@
          */
         protected function renderContent()
         {
-            return $this->renderTreeMenu('productCategory', 'productCategories', Zurmo::t('ProductTemplatesModule', 'Product Categories'));
+            return $this->renderTreeMenu('productCategory', 'productCategories', ProductCategory::getModelLabelByTypeAndLanguage('Plural'));
         }
 
         protected function makeTreeMenuNodeLink($label, $action, $roleId)

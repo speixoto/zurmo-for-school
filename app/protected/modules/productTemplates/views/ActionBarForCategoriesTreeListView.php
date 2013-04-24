@@ -25,7 +25,7 @@
      ********************************************************************************/
 
     /**
-     * Renders an action bar specifically for the search and listview.
+     * Renders an action bar specifically for the listview.
      */
     class ActionBarForCategoriesTreeListView extends ActionBarForSecurityTreeListView
     {

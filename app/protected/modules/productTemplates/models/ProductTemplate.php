@@ -195,7 +195,7 @@
                 array(
                     'products'		  => Zurmo::t('ProductTemplatesModule', 'ProductsModulePluralLabel',  $params, null, $language),
                     'sellPriceFormula'	  => Zurmo::t('ProductTemplatesModule', 'Sell Price Formula',  array(), null, $language),
-                    'productCategories'   => Zurmo::t('ProductTemplatesModule', 'Product Categories',  array(), null, $language),
+                    'productCategories'   => ProductCategory::getModelLabelByTypeAndLanguage('Plural', $language),
                     'cost'		  => Zurmo::t('ProductTemplatesModule', 'Cost',  array(), null, $language),
 		    'listPrice'		  => Zurmo::t('ProductTemplatesModule', 'List Price',  array(), null, $language),
 		    'sellPrice'		  => Zurmo::t('ProductTemplatesModule', 'Sell Price',  array(), null, $language),

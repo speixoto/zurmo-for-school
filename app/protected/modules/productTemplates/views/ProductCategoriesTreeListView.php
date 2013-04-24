@@ -32,11 +32,13 @@
     {
         protected function renderContent()
         {
-            $content  = $this->renderViewToolBar(false); //why do we need it if its empty?
-            $content .= '<div>';
-            $content .= '<h1>' . Zurmo::t('ProductTemplatesModule', 'Product Categories') . '</h1>';
-            $content .= $this->renderTreeMenu('productCategory', 'productCategories', Zurmo::t('ProductTemplatesModule', 'Product Category'));
-            $content .= '</div>';
+	    $singularLabel  = ProductCategory::getModelLabelByTypeAndLanguage('Singular');
+	    $pluralLabel    = ProductCategory::getModelLabelByTypeAndLanguage('Plural');
+            $content	    = $this->renderViewToolBar(false);
+            $content	    .= '<div>';
+            $content	    .= '<h1>' . $pluralLabel . '</h1>';
+            $content	    .= $this->renderTreeMenu('productCategory', 'productCategories', $singularLabel);
+            $content	    .= '</div>';
             return $content;
         }
 
