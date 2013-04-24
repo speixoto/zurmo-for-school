@@ -61,12 +61,16 @@ a.z-button,
 .default-btn .white-button,
 .default-btn,
 .z-label,
+.float-bar,
 .hasDetailsFlyout ul,
 .stacked-list td div.checkbox-column ~ div,
 .search-form-tools input[type="submit"],
 a.search-form-tools input[type="submit"],
 .default-btn .search-form-tools input[type="submit"],
 .default-btn a.search-form-tools input[type="submit"],
+.left-column,
+.right-column,
+.right-side-edit-view-panel,
 .after-form-details-content,
 .LatestActivitiesListView .activity-item,
 .LatestActivitiesView .activity-item,
@@ -293,14 +297,26 @@ a.ModalGameNotification a,
 .workflow-order-module-selector-container {
   zoom: 1;
 }
-.clearfix {
+.clearfix,
+#modal-edit-form,
+#edit-form,
+#delete-form,
+.right-side-edit-view-panel {
   zoom: 1;
 }
-.clearfix:before {
+.clearfix:before,
+#modal-edit-form:before,
+#edit-form:before,
+#delete-form:before,
+.right-side-edit-view-panel:before {
   content: "";
   display: table;
 }
-.clearfix:after {
+.clearfix:after,
+#modal-edit-form:after,
+#edit-form:after,
+#delete-form:after,
+.right-side-edit-view-panel:after {
   content: "";
   display: table;
   clear: both;
@@ -6103,6 +6119,8 @@ body > .ui-autocomplete {
   height: 40px;
   display: block;
   z-index: 10;
+  padding: 0 15px 0 15px;
+  margin-bottom: 15px;
 }
 .float-bar .view-toolbar-container {
   z-index: 222222;
@@ -7248,7 +7266,6 @@ td.empty {
   padding-left: 15px;
 }
 .form form {
-  padding: 0 15px 15px 15px;
   border: 1px solid #CCC;
   -webkit-box-shadow: 0 0 20px 5px rgba(153, 153, 153, 0.12);
   -moz-box-shadow: 0 0 20px 5px rgba(153, 153, 153, 0.12);
@@ -7886,6 +7903,7 @@ div.wide.form label.hasCheckBox {
   width: 100%;
 }
 #search-form {
+  padding: 0 10px 15px 10px;
   border: 1px solid #dfdfdf;
   border-bottom: none;
   position: relative;
@@ -8417,28 +8435,20 @@ div.wide.form label.hasCheckBox {
   display: block;
 }
 /*=Edit + Add Account View*/
-.buffer {
-  zoom: 1;
-  padding-left: 30px;
+/*
+.buffer{
+	//.clearfix();
+	//padding-left:30px;
+
+	> div{
+		float:left;
+		padding:8px 10px;
+		background:#F4F4F4;
+		width:100%;
+		.box-sizing();
+	}
 }
-.buffer:before {
-  content: "";
-  display: table;
-}
-.buffer:after {
-  content: "";
-  display: table;
-  clear: both;
-}
-.buffer > div {
-  float: left;
-  padding: 8px 10px;
-  background: #F4F4F4;
-  width: 100%;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-}
+*/
 .double-column .panel {
   float: left;
   width: 100% !important;
@@ -8481,46 +8491,27 @@ div.wide.form label.hasCheckBox {
   display: table;
   clear: both;
 }
+.left-column {
+  padding: 15px 15px 15px 15px;
+  float: left;
+  width: 70%;
+}
+.left-column.full-width {
+  width: 100%;
+  float: none;
+}
+.left-column.full-width + .right-column {
+  display: none;
+}
+.right-column {
+  float: right;
+  width: 30%;
+  padding: 15px 15px 15px 15px;
+}
 #modal-edit-form,
 #edit-form,
 #delete-form {
-  zoom: 1;
   position: relative;
-  padding-top: 15px;
-}
-#modal-edit-form:before,
-#edit-form:before,
-#delete-form:before {
-  content: "";
-  display: table;
-}
-#modal-edit-form:after,
-#edit-form:after,
-#delete-form:after {
-  content: "";
-  display: table;
-  clear: both;
-}
-#modal-edit-form .panel,
-#edit-form .panel,
-#delete-form .panel {
-  float: left;
-  width: 70%;
-  display: block;
-  zoom: 1;
-}
-#modal-edit-form .panel:before,
-#edit-form .panel:before,
-#delete-form .panel:before {
-  content: "";
-  display: table;
-}
-#modal-edit-form .panel:after,
-#edit-form .panel:after,
-#delete-form .panel:after {
-  content: "";
-  display: table;
-  clear: both;
 }
 #modal-edit-form .panel table,
 #edit-form .panel table,
@@ -8530,7 +8521,7 @@ div.wide.form label.hasCheckBox {
 #modal-edit-form h3,
 #edit-form h3,
 #delete-form h3 {
-  margin-bottom: 8px;
+  margin: 15px 0 10px 15px;
 }
 #modal-edit-form table,
 #edit-form table,
@@ -8579,9 +8570,6 @@ div.wide.form label.hasCheckBox {
 #delete-form .hasCheckBox input[type="checkbox"] {
   margin-bottom: 0 !important;
 }
-#modal-edit-form .panel {
-  width: 100%;
-}
 .more-panels-link {
   font-size: 11px;
 }
@@ -8617,14 +8605,15 @@ div.wide.form label.hasCheckBox {
   margin-left: 10px;
 }
 .right-side-edit-view-panel {
-  width: 30%;
-  float: right;
+  padding: 8px 10px;
+  background: #F4F4F4;
+  width: 100%;
 }
 .right-side-edit-view-panel p {
   line-height: 140%;
 }
 .right-side-edit-view-panel h3 {
-  margin-bottom: 8px;
+  margin: 0 0 10px 0 !important;
 }
 .right-side-edit-view-panel label {
   width: 100%;
@@ -9512,15 +9501,6 @@ div.radio-input .hasDropDown {
   -ms-text-shadow: none;
   text-shadow: none;
 }
-/*
-.back-to-inbox-link{
-    .smaller();
-    .opacity(50);
-    &:hover{
-        .opacity(100);
-    }
-}
-*/
 /*=Madlib*/
 .mad-lib input {
   width: auto !important;
@@ -11385,9 +11365,6 @@ table.configuration-list td:last-child a .z-label:before {
 }
 .AdministrativeArea .panel {
   width: 100% !important;
-}
-#EmailTemplateEditAndDetailsView .panel {
-  width: 70% !important;
 }
 #ModulePermissionsEditAndDetailsView table tr:first-child th {
   padding-left: 15px;
@@ -15525,10 +15502,6 @@ a.dashboard-link .z-label {
 #ConversationEditView textarea {
   line-height: 130%;
 }
-#ConversationEditView .right-side-edit-view-panel {
-  display: inline-block;
-  float: none;
-}
 .single-coloumn-details-view.AppContent,
 #ConversationDetailsView.AppContent,
 #ConversationDetailsAndRelationsView.AppContent {
@@ -15556,11 +15529,6 @@ a.dashboard-link .z-label {
 #ConversationDetailsAndRelationsView .panel > table {
   border-bottom: none;
 }
-.single-coloumn-details-view .right-side-edit-view-panel,
-#ConversationDetailsView .right-side-edit-view-panel,
-#ConversationDetailsAndRelationsView .right-side-edit-view-panel {
-  margin-right: 15px;
-}
 .single-coloumn-details-view .details-table,
 #ConversationDetailsView .details-table,
 #ConversationDetailsAndRelationsView .details-table {
@@ -15580,22 +15548,22 @@ a.dashboard-link .z-label {
   clear: both;
 }
 /*Sidebar*/
-.thred-details {
-  margin: 0 0 0 0 !important;
+.thread-details {
+  margin: 0 0 10px 0 !important;
   width: 100%;
 }
-.thred-details td + th {
+.thread-details td + th {
   padding-left: 0 !important;
 }
-.thred-details th,
-.thred-details td {
+.thread-details th,
+.thread-details td {
   text-align: left;
   padding: 5px 0;
 }
-.thred-details th {
+.thread-details th {
   color: #545454;
 }
-.thred-details .attachments {
+.thread-details .attachments {
   margin: 0;
   font-weight: normal;
 }
@@ -15648,7 +15616,7 @@ a.dashboard-link .z-label {
   left: 15px;
 }
 .conversationStatusChangeArea {
-  margin: 15px 0;
+  margin: 0 0 15px 0;
   padding: 0;
 }
 .conversationStatusChangeArea > span {
@@ -15795,7 +15763,7 @@ a.dashboard-link .z-label {
 }
 #CommentList,
 .CommentList {
-  margin-left: 130px;
+  margin-left: 115px;
 }
 #CommentList .comment,
 .CommentList .comment {
@@ -15842,8 +15810,7 @@ a.dashboard-link .z-label {
 }
 .model-details-summary {
   font-size: 12px !important;
-  padding-left: 130px;
-  padding-top: 15px;
+  padding-left: 115px;
 }
 .model-details-summary .gravatar {
   margin-left: -115px;
@@ -15897,13 +15864,13 @@ a.dashboard-link .z-label {
 }
 #CommentInlineEditForModelView {
   margin-top: 0;
-  padding-left: 120px;
+  padding-left: 115px;
 }
 #CommentInlineEditForModelView td {
-  padding: 0 0 0 10px !important;
+  padding: 0 0 0 0 !important;
 }
 #CommentInlineEditForModelView h2 {
-  margin: 0 0 13px 10px;
+  margin: 0 0 0 0;
 }
 #CommentInlineEditForModelView .wide.form {
   padding: 0;
@@ -16084,9 +16051,13 @@ a.user-link {
 #AllSocialItemsForPortletView .comment-content {
   padding-right: 15px;
 }
+#ConversationsPageView #comment-inline-edit-form .left-column,
+#ConversationsPageView #social-item-inline-edit-form .left-column {
+  padding: 0;
+}
 #comment-inline-edit-form,
 #social-item-inline-edit-form {
-  padding-top: 15px;
+  padding-bottom: 15px;
   border: none;
   border-bottom: 1px solid #ccc;
   background: none !important;
@@ -16111,8 +16082,8 @@ a.user-link {
 #social-item-inline-edit-form .form-toolbar {
   text-align: right;
   border-top: none;
-  padding-top: 0;
-  margin-top: 2px;
+  padding: 0 15px;
+  margin-top: 0;
 }
 #comment-inline-edit-form .form-toolbar a,
 #social-item-inline-edit-form .form-toolbar a {
@@ -16480,17 +16451,21 @@ a.user-link {
 #ModuleForReportWizardView table td {
   padding-left: 0;
 }
-#GeneralDataForReportWizardView .panel {
-  width: 70%;
-  float: left;
+/*
+#GeneralDataForReportWizardView{
+    .panel{
+        width: 70%;
+        float: left;
+    }
+    .right-side-edit-view-panel{
+        width: 30%;
+        float: right;
+        position: relative;
+        top:-2px;
+        right:0;
+    }
 }
-#GeneralDataForReportWizardView .right-side-edit-view-panel {
-  width: 30%;
-  float: right;
-  position: relative;
-  top: -2px;
-  right: 0;
-}
+*/
 .hasTree {
   width: 25%;
   float: left;
@@ -17505,8 +17480,8 @@ a.user-link {
   position: relative;
   top: 0;
 }
-.details-table .email-template-combined-content {
-  margin: 15px;
+.email-template-combined-content {
+  padding: 0 15px;
 }
 .tabs-nav {
   border-bottom: 1px solid #dfdfdf;
@@ -17815,5 +17790,14 @@ a.user-link {
   }
   .juiportlet-widget {
     margin-right: 0 !important;
+  }
+  .right-column,
+  .left-column {
+    width: 100%;
+  }
+  .right-side-edit-view-panel {
+    padding: 0;
+    padding: 0 0 0 0;
+    background: none;
   }
 }
