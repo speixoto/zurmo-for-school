@@ -85,22 +85,27 @@
                 ),
                 'tabMenuItems' => array(
                     array(
-                        'label' => 'Reports',
-                        'url'   => array('/reports/default'),
-                        'right' => self::RIGHT_ACCESS_REPORTS,
+                        'label'  => 'Reports',
+                        'url'    => array('/reports/default'),
+                        'right'  => self::RIGHT_ACCESS_REPORTS,
+                        'mobile' => false,
                     ),
                 ),
                 'shortcutsCreateMenuItems' => array(
                     array(
-                        'label' => 'Report',
-                        'url'   => array('/reports/default/selectType'),
-                        'right' => self::RIGHT_CREATE_REPORTS,
+                        'label'  => 'Report',
+                        'url'    => array('/reports/default/selectType'),
+                        'right'  => self::RIGHT_CREATE_REPORTS,
+                        'mobile' => false,
                     ),
                 ),
             );
             return $metadata;
         }
 
+        /**
+         * @return string
+         */
         public static function getPrimaryModelName()
         {
             return 'SavedReport';

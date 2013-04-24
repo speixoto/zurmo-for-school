@@ -49,7 +49,6 @@
             assert('is_string($columnName)');
             assert('is_string($mappingRuleType)');
             assert('is_array($mappingRuleData)');
-            assert('is_int($mappingRuleData["type"])');
             assert('$mappingRuleData["type"] == UserValueTypeModelAttributeMappingRuleForm::ZURMO_USER_ID ||
                     $mappingRuleData["type"] == UserValueTypeModelAttributeMappingRuleForm::EXTERNAL_SYSTEM_USER_ID ||
                     $mappingRuleData["type"] == UserValueTypeModelAttributeMappingRuleForm::ZURMO_USERNAME');

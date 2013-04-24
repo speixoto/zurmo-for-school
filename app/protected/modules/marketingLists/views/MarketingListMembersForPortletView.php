@@ -122,7 +122,7 @@
 
         public function getTitle()
         {
-            return null;
+            return Zurmo::t('MarketingListsModule', 'Members');
         }
 
         public function renderContent()

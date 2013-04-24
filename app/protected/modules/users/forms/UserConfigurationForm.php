@@ -110,7 +110,7 @@
                 array('defaultPermissionSetting',       'numerical', 'min' => self::DEFAULT_PERMISSIONS_SETTING_OWNER,
                                                         'max' => self::DEFAULT_PERMISSIONS_SETTING_EVERYONE),
                 array('defaultPermissionGroupSetting',  'numerical', 'min' => 1),
-                array('selectedVisibleAndOrderedTabMenuItems',  'type', 'type'=>'array'),
+                array('selectedVisibleAndOrderedTabMenuItems',  'type', 'type' => 'array'),
             );
         }
 

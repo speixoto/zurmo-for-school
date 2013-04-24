@@ -69,18 +69,31 @@
 
 #marketing-list-member-select-contact-or-report-form{
 	padding:15px;
+	.search-without-scope{
+		margin-top: 10px;
+		border:1px solid #d5d4d4;
+		position: relative;
+		background: url(../images/search-bar-loopa.png) left top no-repeat;
+		.z-spinner{
+			top: 2px;
+			right: 0;
+			left:auto;
+			display:block;
+		}
+	}
 	input[type="text"]{
 		.border-box();
-		width:250px;
-		margin:10px 0 0 0;
+		width:300px;
+		margin:0 0 0 23px;
 		.radius(0);
 		.b-shadow(none);
 		font-style: italic;
 		color: #999;
 		text-indent: 5px;
-		line-height: 25px;
-		height: 25px !important;
-		border: 1px solid #d5d4d4;
+		line-height: 23px;
+		height: 23px !important;
+		//border: 1px solid #d5d4d4;
+		border: none;
 		background: url(../images/search-bar-gradient.png) left top repeat-x;
 		&:focus{
 			outline: none !important;
@@ -112,6 +125,31 @@
 	background: linear-gradient(to bottom,    #f6f6f6 0, #ededed 110px, transparent 110px, transparent 100%); /* W3C */
 }
 
+#MarketingListMembersConfigurationForm_filteredBySearchTerm_area{
+	margin-right: 15px;
+	float: left;
+	border:1px solid #d5d4d4;
+	background: url(../images/search-bar-loopa.png) left top no-repeat;
+
+	input[type="text"]{
+		.border-box();
+		margin:0 0 0 23px;
+		text-indent: 5px;
+		line-height: 23px;
+		height: 23px !important;
+		border: none;
+		left:0;
+		&:focus{
+			outline: none !important;
+			box-shadow:none !important;
+		}
+	}
+}
+
+#MarketingListMembersConfigurationForm_filteredBySubscriptionType_area{
+	margin-left: 15px;
+}
+
 .marketing-list-member-stats{
 	margin: 5px 0 0 0;
 	font-size: 12px;
@@ -123,7 +161,7 @@
 
 .portlet-with-toolbar{
 	.view-toolbar{
-		margin: 10px 0 0 10px;
+		margin: 15px 0 0 15px;
 		.parent > ul{
 			top: auto;
 		}

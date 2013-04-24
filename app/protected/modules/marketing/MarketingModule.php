@@ -59,8 +59,9 @@
             $metadata['global'] = array(
                 'tabMenuItems' => array(
                     array(
-                        'label' => "eval:Zurmo::t('MarketingModule', 'Marketing')",
-                        'url'   => array('/emailTemplates/default/listForMarketing'),
+                        'label'  => "eval:Zurmo::t('MarketingModule', 'Marketing')",
+                        'url'    => array('/emailTemplates/default/listForMarketing'),
+                        'mobile' => false,
                     ),
                 ),
             );

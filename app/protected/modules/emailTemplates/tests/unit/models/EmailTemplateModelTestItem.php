@@ -100,7 +100,6 @@
                     'dateTime4',
                     'float',
                     'integer',
-                    'cannotTrigger',
                     'phone',
                     'string',
                     'textArea',
@@ -148,8 +147,6 @@
                     array('float',     'length',  'min'  => 2, 'max' => 64),
                     array('integer',   'type',    'type' => 'integer'),
                     array('integer',   'length',  'min'  => 2, 'max' => 64),
-                    array('cannotTrigger',    'type',  'type' => 'string'),
-                    array('cannotTrigger',    'length',  'min'  => 3, 'max' => 64),
                     array('phone',     'type',    'type' => 'string'),
                     array('phone',     'length',  'min'  => 1, 'max' => 14),
                     array('string',    'required'),
@@ -185,10 +182,10 @@
                     'user2'               => 'User',
                 ),
                 'customFields' => array(
-                    'dropDown'        => 'WorkflowTestDropDown',
-                    'radioDropDown'   => 'WorkflowTestRadioDropDown',
-                    'multiDropDown'   => 'WorkflowTestMultiDropDown',
-                    'tagCloud'        => 'WorkflowTestTagCloud',
+                    'dropDown'        => 'EmailTemplateTestDropDown',
+                    'radioDropDown'   => 'EmailTemplateTestRadioDropDown',
+                    'multiDropDown'   => 'EmailTemplateTestMultiDropDown',
+                    'tagCloud'        => 'EmailTemplateTestTagCloud',
                 ),
             );
             return $metadata;

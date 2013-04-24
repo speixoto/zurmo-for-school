@@ -48,7 +48,7 @@
         public function render()
         {
             $items = array();
-            if (RightsUtil::doesUserHaveAllowByRightName('MarketingListsModule', WorkflowsModule::getCreateRight(),
+            if (RightsUtil::doesUserHaveAllowByRightName('MarketingListsModule', MarketingListsModule::getCreateRight(),
                                                         Yii::app()->user->userModel))
             {
                 $items[] = array('label'   => Zurmo::t('MarketingListsModule', 'Create List'),

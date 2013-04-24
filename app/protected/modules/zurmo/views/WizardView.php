@@ -214,7 +214,8 @@
                                             'data'     => 'js:$("#' . $formName . '").serialize()',
                                             'url'      =>  $this->getFormActionUrl(),
                                             'dataType' => 'json',
-                                            'success'  => 'js:function(data){
+                                            'success'  => 'js:function(data)
+                                            {
                                                 if (data.redirectToList)
                                                 {
                                                     url = "' . $saveRedirectToListUrl . '";

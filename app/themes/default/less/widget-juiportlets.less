@@ -204,19 +204,14 @@ a.remove {
     }
 }
 
-.juiportlet-widget-content table.items tbody tr:last-child td{
+.juiportlet-widget-content table.items tbody tr:last-child > td{
 	border-bottom:none;
+}
+.juiportlet-widget-content table.items tbody tr:first-child > td{
+	//border-top:none;
 }
 
 /*ICONS..*/
-.juiportlet-header-icon{
-	.symbly(32px);
-	color:#7A7A7A;
-	text-indent:-30px;
-	line-height: 100%;
-	position:absolute;
-	top:6px;
-}
 
 .juiportlet-widget.OpportunitiesForContactRelatedListView,
 .juiportlet-widget.OpportunitiesForAccountRelatedListView{
@@ -236,9 +231,15 @@ a.remove {
 .juiportlet-widget.ContactsForOpportunityRelatedListView,
 .juiportlet-widget.ContactsForAccountRelatedListView{
     h3{
-		text-indent:30px;
+	    padding-left: 30px;
+	    position: relative;
 		&:before{
-			.juiportlet-header-icon();			
+			.symbly(32px);
+			color:#7A7A7A;
+			line-height: 100%;
+			position: absolute;
+			top: 6px;
+			left: 0;
 		}
 	}
 }

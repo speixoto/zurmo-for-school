@@ -80,16 +80,18 @@
                 ),
                 'tabMenuItems' => array(
                     array(
-                        'label' => "eval:Zurmo::t('AccountsModule', 'AccountsModulePluralLabel', \$translationParams)",
-                        'url'   => array('/accounts/default'),
-                        'right' => self::RIGHT_ACCESS_ACCOUNTS,
+                        'label'  => "eval:Zurmo::t('AccountsModule', 'AccountsModulePluralLabel', \$translationParams)",
+                        'url'    => array('/accounts/default'),
+                        'right'  => self::RIGHT_ACCESS_ACCOUNTS,
+                        'mobile' => true,
                     ),
                 ),
                 'shortcutsCreateMenuItems' => array(
                     array(
-                        'label' => "eval:Zurmo::t('AccountsModule', 'AccountsModuleSingularLabel', \$translationParams)",
-                        'url'   => array('/accounts/default/create'),
-                        'right' => self::RIGHT_CREATE_ACCOUNTS,
+                        'label'  => "eval:Zurmo::t('AccountsModule', 'AccountsModuleSingularLabel', \$translationParams)",
+                        'url'    => array('/accounts/default/create'),
+                        'right'  => self::RIGHT_CREATE_ACCOUNTS,
+                        'mobile' => true,
                     ),
                 )
             );

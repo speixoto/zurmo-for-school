@@ -79,7 +79,16 @@
             $this->registerTabbedContentScripts();
             $textTabHyperLink   = ZurmoHtml::link($this->renderTextContentAreaLabel(), '#tab1', array('class' => 'active-tab'));
             $htmlTabHyperLink   = ZurmoHtml::link($this->renderHtmlContentAreaLabel(), '#tab2');
-            $tagsGuideLink      = ZurmoHtml::link('Tag Guide', '#', array('class' => 'simple-link'));
+            $tagsGuideLink      = null;
+            if ($this->form)
+            {
+                $controllerId           = Yii::app()->getController()->getId();
+                $moduleId               = Yii::app()->getController()->getModule()->getId();
+                $modelId                = $this->model->id;
+                $params                 = array('htmlOptions' => array('id' => 'mergetag-guide', 'class' => 'simple-link'));
+                $tagsGuideLinkElement   = new MergeTagGuideAjaxLinkActionElement($controllerId, $moduleId, $modelId, $params);
+                $tagsGuideLink          = $tagsGuideLinkElement->render();
+            }
             $tabContent         = ZurmoHtml::tag('div', array('class' => 'tabs-nav'), $textTabHyperLink . $htmlTabHyperLink . $tagsGuideLink);
 
             $plainTextDiv       = ZurmoHtml::tag('div',

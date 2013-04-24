@@ -62,11 +62,14 @@ a.z-button,
 .default-btn,
 .z-label,
 .hasDetailsFlyout ul,
+.stacked-list td div.checkbox-column ~ div,
 .search-form-tools input[type="submit"],
 a.search-form-tools input[type="submit"],
 .default-btn .search-form-tools input[type="submit"],
 .default-btn a.search-form-tools input[type="submit"],
 .after-form-details-content,
+.LatestActivitiesListView .activity-item,
+.LatestActivitiesView .activity-item,
 #progressBar-links a,
 a#progressBar-links a,
 .default-btn #progressBar-links a,
@@ -1039,6 +1042,17 @@ body.blue #RecentlyViewedView a:hover em {
   -ms-text-shadow: 0px 1px 0 #acd064;
   text-shadow: 0px 1px 0 #acd064;
 }
+body.blue #MenuView ul ul li a:hover {
+  background-color: #537b20;
+  background-repeat: repeat-x;
+  background-image: -moz-linear-gradient(top, #7cb830, #537b20);
+  background-image: -ms-linear-gradient(top, #7cb830, #537b20);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #7cb830), color-stop(100%, #537b20));
+  background-image: -webkit-linear-gradient(top, #7cb830, #537b20);
+  background-image: -o-linear-gradient(top, #7cb830, #537b20);
+  background-image: linear-gradient(top, #7cb830, #537b20);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#7cb830', endColorstr='#537b20', GradientType=0);
+}
 body.blue .ZeroModelsYetView a .z-label,
 body.blue .dashboard-link .z-label,
 body.blue .attachLoading .z-label {
@@ -1117,8 +1131,8 @@ body.blue .white-button:hover .z-label {
   -ms-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
   text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
 }
-body.blue .green-button .z-label,
-body.blue .dashboard-link .z-label {
+body.blue a.green-button > .z-label,
+body.blue a.dashboard-link > .z-label {
   color: #fff !important;
   background-color: #799e30 !important;
   background-repeat: repeat-x !important;
@@ -1592,6 +1606,17 @@ body.brown #RecentlyViewedView a:hover em {
   -ms-text-shadow: 0px 1px 0 #64c1bd;
   text-shadow: 0px 1px 0 #64c1bd;
 }
+body.brown #MenuView ul ul li a:hover {
+  background-color: #7b6020;
+  background-repeat: repeat-x;
+  background-image: -moz-linear-gradient(top, #b88f30, #7b6020);
+  background-image: -ms-linear-gradient(top, #b88f30, #7b6020);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #b88f30), color-stop(100%, #7b6020));
+  background-image: -webkit-linear-gradient(top, #b88f30, #7b6020);
+  background-image: -o-linear-gradient(top, #b88f30, #7b6020);
+  background-image: linear-gradient(top, #b88f30, #7b6020);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#b88f30', endColorstr='#7b6020', GradientType=0);
+}
 body.brown .ZeroModelsYetView a .z-label,
 body.brown .dashboard-link .z-label,
 body.brown .attachLoading .z-label {
@@ -1670,8 +1695,8 @@ body.brown .white-button:hover .z-label {
   -ms-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
   text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
 }
-body.brown .green-button .z-label,
-body.brown .dashboard-link .z-label {
+body.brown a.green-button > .z-label,
+body.brown a.dashboard-link > .z-label {
   color: #fff !important;
   background-color: #799e30 !important;
   background-repeat: repeat-x !important;
@@ -2145,6 +2170,17 @@ body.lime #RecentlyViewedView a:hover em {
   -ms-text-shadow: 0px 1px 0 #d0d9b1;
   text-shadow: 0px 1px 0 #d0d9b1;
 }
+body.lime #MenuView ul ul li a:hover {
+  background-color: #9db05a;
+  background-repeat: repeat-x;
+  background-image: -moz-linear-gradient(top, #bcc98e, #9db05a);
+  background-image: -ms-linear-gradient(top, #bcc98e, #9db05a);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #bcc98e), color-stop(100%, #9db05a));
+  background-image: -webkit-linear-gradient(top, #bcc98e, #9db05a);
+  background-image: -o-linear-gradient(top, #bcc98e, #9db05a);
+  background-image: linear-gradient(top, #bcc98e, #9db05a);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#bcc98e', endColorstr='#9db05a', GradientType=0);
+}
 body.lime .ZeroModelsYetView a .z-label,
 body.lime .dashboard-link .z-label,
 body.lime .attachLoading .z-label {
@@ -2223,8 +2259,8 @@ body.lime .white-button:hover .z-label {
   -ms-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
   text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
 }
-body.lime .green-button .z-label,
-body.lime .dashboard-link .z-label {
+body.lime a.green-button > .z-label,
+body.lime a.dashboard-link > .z-label {
   color: #fff !important;
   background-color: #799e30 !important;
   background-repeat: repeat-x !important;
@@ -2698,6 +2734,17 @@ body.cherry #RecentlyViewedView a:hover em {
   -ms-text-shadow: 0px 1px 0 #b93e51;
   text-shadow: 0px 1px 0 #b93e51;
 }
+body.cherry #MenuView ul ul li a:hover {
+  background-color: #5a1e27;
+  background-repeat: repeat-x;
+  background-image: -moz-linear-gradient(top, #933140, #5a1e27);
+  background-image: -ms-linear-gradient(top, #933140, #5a1e27);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #933140), color-stop(100%, #5a1e27));
+  background-image: -webkit-linear-gradient(top, #933140, #5a1e27);
+  background-image: -o-linear-gradient(top, #933140, #5a1e27);
+  background-image: linear-gradient(top, #933140, #5a1e27);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#933140', endColorstr='#5a1e27', GradientType=0);
+}
 body.cherry .ZeroModelsYetView a .z-label,
 body.cherry .dashboard-link .z-label,
 body.cherry .attachLoading .z-label {
@@ -2776,8 +2823,8 @@ body.cherry .white-button:hover .z-label {
   -ms-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
   text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
 }
-body.cherry .green-button .z-label,
-body.cherry .dashboard-link .z-label {
+body.cherry a.green-button > .z-label,
+body.cherry a.dashboard-link > .z-label {
   color: #fff !important;
   background-color: #799e30 !important;
   background-repeat: repeat-x !important;
@@ -3251,6 +3298,17 @@ body.turquoise #RecentlyViewedView a:hover em {
   -ms-text-shadow: 0px 1px 0 #6ccad7;
   text-shadow: 0px 1px 0 #6ccad7;
 }
+body.turquoise #MenuView ul ul li a:hover {
+  background-color: #2a8c9a;
+  background-repeat: repeat-x;
+  background-image: -moz-linear-gradient(top, #44bbcc, #2a8c9a);
+  background-image: -ms-linear-gradient(top, #44bbcc, #2a8c9a);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #44bbcc), color-stop(100%, #2a8c9a));
+  background-image: -webkit-linear-gradient(top, #44bbcc, #2a8c9a);
+  background-image: -o-linear-gradient(top, #44bbcc, #2a8c9a);
+  background-image: linear-gradient(top, #44bbcc, #2a8c9a);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#44bbcc', endColorstr='#2a8c9a', GradientType=0);
+}
 body.turquoise .ZeroModelsYetView a .z-label,
 body.turquoise .dashboard-link .z-label,
 body.turquoise .attachLoading .z-label {
@@ -3329,8 +3387,8 @@ body.turquoise .white-button:hover .z-label {
   -ms-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
   text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
 }
-body.turquoise .green-button .z-label,
-body.turquoise .dashboard-link .z-label {
+body.turquoise a.green-button > .z-label,
+body.turquoise a.dashboard-link > .z-label {
   color: #fff !important;
   background-color: #799e30 !important;
   background-repeat: repeat-x !important;
@@ -3804,6 +3862,17 @@ body.violet #RecentlyViewedView a:hover em {
   -ms-text-shadow: 0px 1px 0 #b8c2e8;
   text-shadow: 0px 1px 0 #b8c2e8;
 }
+body.violet #MenuView ul ul li a:hover {
+  background-color: #576fca;
+  background-repeat: repeat-x;
+  background-image: -moz-linear-gradient(top, #91a1dc, #576fca);
+  background-image: -ms-linear-gradient(top, #91a1dc, #576fca);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #91a1dc), color-stop(100%, #576fca));
+  background-image: -webkit-linear-gradient(top, #91a1dc, #576fca);
+  background-image: -o-linear-gradient(top, #91a1dc, #576fca);
+  background-image: linear-gradient(top, #91a1dc, #576fca);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#91a1dc', endColorstr='#576fca', GradientType=0);
+}
 body.violet .ZeroModelsYetView a .z-label,
 body.violet .dashboard-link .z-label,
 body.violet .attachLoading .z-label {
@@ -3882,8 +3951,8 @@ body.violet .white-button:hover .z-label {
   -ms-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
   text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
 }
-body.violet .green-button .z-label,
-body.violet .dashboard-link .z-label {
+body.violet a.green-button > .z-label,
+body.violet a.dashboard-link > .z-label {
   color: #fff !important;
   background-color: #799e30 !important;
   background-repeat: repeat-x !important;
@@ -4357,6 +4426,17 @@ body.honey #RecentlyViewedView a:hover em {
   -ms-text-shadow: 0px 1px 0 #bcca67;
   text-shadow: 0px 1px 0 #bcca67;
 }
+body.honey #MenuView ul ul li a:hover {
+  background-color: #77832e;
+  background-repeat: repeat-x;
+  background-image: -moz-linear-gradient(top, #abbc42, #77832e);
+  background-image: -ms-linear-gradient(top, #abbc42, #77832e);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #abbc42), color-stop(100%, #77832e));
+  background-image: -webkit-linear-gradient(top, #abbc42, #77832e);
+  background-image: -o-linear-gradient(top, #abbc42, #77832e);
+  background-image: linear-gradient(top, #abbc42, #77832e);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#abbc42', endColorstr='#77832e', GradientType=0);
+}
 body.honey .ZeroModelsYetView a .z-label,
 body.honey .dashboard-link .z-label,
 body.honey .attachLoading .z-label {
@@ -4435,8 +4515,8 @@ body.honey .white-button:hover .z-label {
   -ms-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
   text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
 }
-body.honey .green-button .z-label,
-body.honey .dashboard-link .z-label {
+body.honey a.green-button > .z-label,
+body.honey a.dashboard-link > .z-label {
   color: #fff !important;
   background-color: #799e30 !important;
   background-repeat: repeat-x !important;
@@ -5486,6 +5566,7 @@ body > .ui-autocomplete {
 #HeaderView {
   position: relative;
   z-index: 9999;
+  min-width: 900px;
 }
 .TitleBarView {
   margin-bottom: 15px;
@@ -5553,11 +5634,12 @@ body > .ui-autocomplete {
 #nav-trigger {
   display: none;
   float: left;
-  text-align: left;
-  padding: 0 10px 0 10px;
+  text-align: center;
+  padding: 0;
   margin-right: 15px;
   line-height: 38px;
   height: 38px;
+  width: 44px;
   font-size: 24px;
   font-weight: normal;
   font-size: 30px;
@@ -5696,6 +5778,9 @@ body > .ui-autocomplete {
 }
 #MenuView.hasNoHiddenItems {
   padding-bottom: 20px;
+}
+#MenuView.hasNoHiddenItems .toggle-hidden-nav-items {
+  display: none;
 }
 .hidden-nav-item {
   display: none;
@@ -5969,6 +6054,7 @@ body > .ui-autocomplete {
 .DynamicSearchView {
   position: relative;
   float: left;
+  width: 100%;
 }
 #MashableInboxActionBarForViews > div,
 #ActionBarSearchAndListView > div {
@@ -6989,8 +7075,8 @@ td {
   padding-left: 0;
 }
 .stacked-list td div.button-column {
+  display: none;
   float: right;
-  display: block;
   margin: 5px 0 0 0;
   line-height: 100%;
 }
@@ -7382,11 +7468,11 @@ a.simple-link:before {
 }
 */
 .openingModal {
-  filter: alpha(opacity=100) !important;
-  -khtml-opacity: 1 !important;
-  -moz-opacity: 1 !important;
-  opacity: 1 !important;
-  -webkit-animation: growDialog 2s;
+  -o-animation: growDialog 0.25s;
+  -ms-animation: growDialog 0.25s;
+  -moz-animation: growDialog 0.25s;
+  -webkit-animation: growDialog 0.25s;
+  animation: growDialog 0.25s;
 }
 .ui-dialog {
   min-width: 600px;
@@ -7413,6 +7499,7 @@ a.simple-link:before {
   -o-box-shadow: none;
   -ms-box-shadow: none;
   box-shadow: none;
+  float: none;
 }
 .ui-dialog .wide.form form {
   border: none;
@@ -7549,6 +7636,8 @@ label.hasCheckBox + label {
 }
 div.wide.form {
   position: relative;
+  width: 100%;
+  float: left;
 }
 div.wide.form label.hasCheckBox {
   margin-top: 0 !important;
@@ -7797,24 +7886,31 @@ div.wide.form label.hasCheckBox {
   width: 100%;
 }
 #search-form {
-  position: relative;
-  border: 1px solid #DFDFDF;
+  border: 1px solid #dfdfdf;
   border-bottom: none;
-  background-color: #ededed;
+  position: relative;
+  background-color: #ebebeb;
   background-repeat: repeat-x;
-  background-image: -moz-linear-gradient(top, #f6f6f6, #ededed);
-  background-image: -ms-linear-gradient(top, #f6f6f6, #ededed);
-  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #f6f6f6), color-stop(100%, #ededed));
-  background-image: -webkit-linear-gradient(top, #f6f6f6, #ededed);
-  background-image: -o-linear-gradient(top, #f6f6f6, #ededed);
-  background-image: linear-gradient(top, #f6f6f6, #ededed);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f6f6f6', endColorstr='#ededed', GradientType=0);
-  -webkit-box-shadow: none;
-  -moz-box-shadow: none;
-  -o-box-shadow: none;
-  -ms-box-shadow: none;
-  box-shadow: none;
-  box-shadow: inset 0 1px 0 0 #ffffff;
+  background-image: -moz-linear-gradient(top, #f5f5f5, #ebebeb);
+  background-image: -ms-linear-gradient(top, #f5f5f5, #ebebeb);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #f5f5f5), color-stop(100%, #ebebeb));
+  background-image: -webkit-linear-gradient(top, #f5f5f5, #ebebeb);
+  background-image: -o-linear-gradient(top, #f5f5f5, #ebebeb);
+  background-image: linear-gradient(top, #f5f5f5, #ebebeb);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f5f5f5', endColorstr='#ebebeb', GradientType=0);
+  -webkit-box-shadow: 0 0 20px 5px rgba(153, 153, 153, 0.12);
+  -moz-box-shadow: 0 0 20px 5px rgba(153, 153, 153, 0.12);
+  -o-box-shadow: 0 0 20px 5px rgba(153, 153, 153, 0.12);
+  -ms-box-shadow: 0 0 20px 5px rgba(153, 153, 153, 0.12);
+  box-shadow: 0 0 20px 5px rgba(153, 153, 153, 0.12);
+  /*999*/
+
+  font-size: 11px;
+  float: left;
+  width: 100%;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
   zoom: 1;
 }
 #search-form:before {
@@ -7825,6 +7921,10 @@ div.wide.form label.hasCheckBox {
   content: "";
   display: table;
   clear: both;
+}
+#search-form .form-toolbar,
+#search-form .z-button {
+  font-size: 12px;
 }
 #search-form table {
   border-bottom: none;
@@ -7915,9 +8015,9 @@ div.wide.form label.hasCheckBox {
   padding: 0;
   margin: 0;
 }
-.filters-bar > div {
+.filters-bar > div + div {
   display: inline-block;
-  margin-right: 15px;
+  margin-left: 15px;
 }
 .cgrid-view {
   position: relative;
@@ -7996,40 +8096,6 @@ div.wide.form label.hasCheckBox {
 .search-view-0 input[type="text"]:focus {
   outline: none !important;
   box-shadow: none !important;
-}
-#search-form {
-  border-color: #dfdfdf;
-  border-bottom: none;
-  position: relative;
-  background-color: #ebebeb;
-  background-repeat: repeat-x;
-  background-image: -moz-linear-gradient(top, #f5f5f5, #ebebeb);
-  background-image: -ms-linear-gradient(top, #f5f5f5, #ebebeb);
-  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #f5f5f5), color-stop(100%, #ebebeb));
-  background-image: -webkit-linear-gradient(top, #f5f5f5, #ebebeb);
-  background-image: -o-linear-gradient(top, #f5f5f5, #ebebeb);
-  background-image: linear-gradient(top, #f5f5f5, #ebebeb);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f5f5f5', endColorstr='#ebebeb', GradientType=0);
-  font-size: 11px;
-  float: left;
-  width: 100%;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-  zoom: 1;
-}
-#search-form:before {
-  content: "";
-  display: table;
-}
-#search-form:after {
-  content: "";
-  display: table;
-  clear: both;
-}
-#search-form .form-toolbar,
-#search-form .z-button {
-  font-size: 12px;
 }
 .search-form-tools {
   position: absolute;
@@ -8401,9 +8467,6 @@ div.wide.form label.hasCheckBox {
 }
 .wide.form .col-1 {
   width: 70%;
-}
-.AdministrativeArea .panel {
-  width: 100% !important;
 }
 .attributesContainer {
   padding-bottom: 15px;
@@ -9047,6 +9110,9 @@ div.wide.form label.hasCheckBox {
 .AttributeDetailsView .toolbar-mbmenu {
   top: 8px;
 }
+.clickable-mbmenu.nav-open ul {
+  display: block;
+}
 .DetailsAndRelationsView,
 #AccountDetailsAndRelationsView {
   zoom: 1;
@@ -9209,6 +9275,9 @@ div.wide.form label.hasCheckBox {
 }
 #NoteInlineEditView .form-toolbar {
   border-top: none;
+}
+#NoteInlineEditForPortletView .wide.form {
+  float: none;
 }
 #inline-edit-form {
   padding: 15px 15px 15px 0;
@@ -9381,9 +9450,9 @@ div.radio-input .hasDropDown {
   display: block;
   margin-left: 10px;
   width: 13px;
-  height: 13px;
+  padding: 1px;
   text-align: center;
-  vertical-align: middle;
+  line-height: 1;
   color: #666;
   border: 1px solid #fff;
   -webkit-box-shadow: inset 0 0 0 1px #dddddd;
@@ -9396,11 +9465,11 @@ div.radio-input .hasDropDown {
   -o-text-shadow: 0 1px 0 #ffffff;
   -ms-text-shadow: 0 1px 0 #ffffff;
   text-shadow: 0 1px 0 #ffffff;
-  -webkit-border-radius: 3px;
-  -moz-border-radius: 3px;
-  -ms-border-radius: 3px;
-  -o-border-radius: 3px;
-  border-radius: 3px;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  -ms-border-radius: 2px;
+  -o-border-radius: 2px;
+  border-radius: 2px;
   background-color: #f5f5f5;
   background-repeat: repeat-x;
   background-image: -moz-linear-gradient(top, #e8e8e8, #f5f5f5);
@@ -9418,7 +9487,7 @@ div.radio-input .hasDropDown {
   display: none;
   list-style: none;
   position: absolute;
-  margin-top: 5px;
+  margin-top: 3px;
   margin-left: 11px;
   padding-top: 3px;
   padding-bottom: 3px;
@@ -9950,12 +10019,14 @@ div.hasHalfs .twoThirds {
 }
 .LatestActivitiesListView .activity-item,
 .LatestActivitiesView .activity-item {
+  width: 100%;
   padding-left: 40px;
   position: relative;
 }
 .LatestActivitiesListView .activity-item span,
 .LatestActivitiesView .activity-item span {
   line-height: 140%;
+  word-break: break-all;
 }
 .LatestActivitiesListView .items em,
 .LatestActivitiesView .items em {
@@ -10915,20 +10986,10 @@ a.remove .icon:after {
 .juiportlet-widget-content .items thead > tr td {
   border-top: none;
 }
-.juiportlet-widget-content table.items tbody tr:last-child td {
+.juiportlet-widget-content table.items tbody tr:last-child > td {
   border-bottom: none;
 }
 /*ICONS..*/
-.juiportlet-header-icon {
-  font-weight: normal;
-  font-size: 32px;
-  font-family: "ZurmoGamificationSymblyReguRg";
-  color: #7A7A7A;
-  text-indent: -30px;
-  line-height: 100%;
-  position: absolute;
-  top: 6px;
-}
 .juiportlet-widget.OpportunitiesForContactRelatedListView h3:before,
 .juiportlet-widget.OpportunitiesForAccountRelatedListView h3:before {
   content: "9";
@@ -10941,7 +11002,8 @@ a.remove .icon:after {
 .juiportlet-widget.OpportunitiesForAccountRelatedListView h3,
 .juiportlet-widget.ContactsForOpportunityRelatedListView h3,
 .juiportlet-widget.ContactsForAccountRelatedListView h3 {
-  text-indent: 30px;
+  padding-left: 30px;
+  position: relative;
 }
 .juiportlet-widget.OpportunitiesForContactRelatedListView h3:before,
 .juiportlet-widget.OpportunitiesForAccountRelatedListView h3:before,
@@ -10951,10 +11013,10 @@ a.remove .icon:after {
   font-size: 32px;
   font-family: "ZurmoGamificationSymblyReguRg";
   color: #7A7A7A;
-  text-indent: -30px;
   line-height: 100%;
   position: absolute;
   top: 6px;
+  left: 0;
 }
 #ZurmoLogo {
   background: url(../images/ZurmoLogo.png) left top no-repeat;
@@ -11023,6 +11085,9 @@ a.remove .icon:after {
 }
 #InstallPageView .AppContainer a {
   margin: auto 10px;
+}
+#InstallPageView div.wide.form {
+  float: none;
 }
 #InstallPageView #save {
   color: #fff !important;
@@ -11330,6 +11395,12 @@ table.configuration-list td:last-child a .z-label:before {
 .AdministrativeArea .view-toolbar {
   margin-top: 0;
 }
+.AdministrativeArea .panel {
+  width: 100% !important;
+}
+#EmailTemplateEditAndDetailsView .panel {
+  width: 70% !important;
+}
 #ModulePermissionsEditAndDetailsView table tr:first-child th {
   padding-left: 15px;
   padding-bottom: 10px;
@@ -11628,6 +11699,9 @@ table.configuration-list td:last-child a .z-label:before {
   text-decoration: underline !important;
 }
 /*Jobs*/
+#JobsCollectionView div.wide.form {
+  float: none;
+}
 #JobsCollectionView .form form {
   padding: 0;
 }
@@ -11782,9 +11856,6 @@ table.configuration-list td:last-child a .z-label:before {
   -ms-box-shadow: none;
   box-shadow: none;
   background: none;
-}
-#CurrencyCreateView #edit-form:after {
-  display: none !important;
 }
 /*Breadcrumbs*/
 .breadcrumbs {
@@ -12393,47 +12464,6 @@ table.configuration-list td:last-child a .z-label:before {
   width: 100% !important;
 }
 /*Missions*/
-#MyMissionsForPortletView {
-  /*
-    .filter-portlet-model-bar{
-        border-bottom:1px solid #DFDFDF;
-        //padding:10px 15px 10px 5px;
-        //#gradient > .vertical(#f6f6f6, #ededed);
-        //.b-shadow(inset 0 1px 0 0 #ffffff);
-        label{
-            cursor:pointer;
-            border:none;
-            background:none;
-            font-size:11px !important;
-            padding:3px !important;
-            margin:0 3px;
-            ++.themeColor;
-            span{
-                font-size: 11px;
-            }
-        }
-        label:hover{
-            color:#FFF;
-            .radius(3px) !important;
-            border:none;
-        }
-        input[type="radio"], input[type="checkbox"]{
-            visibility:hidden;
-            display:none;
-        }
-        .ui-state-active{
-            color:#FFF;
-            .radius(3px) !important;
-            border:none;
-        }
-        .ui-button-text{
-            padding:0;
-            margin:0;
-        }
-    }
-    */
-
-}
 #MyMissionsForPortletView > div {
   float: none;
   margin-bottom: 0;
@@ -15243,6 +15273,7 @@ a.close-ModalGameNotification.simple-link {
   -o-box-shadow: none;
   -ms-box-shadow: none;
   box-shadow: none;
+  float: none;
 }
 #UserDetailsView .details-table {
   zoom: 1;
@@ -15281,6 +15312,9 @@ a.close-ModalGameNotification.simple-link {
 }
 .gravatar-container:hover span {
   display: block;
+}
+.gravatar-container + .panel {
+  float: left;
 }
 #UserChangeAvatarView {
   zoom: 1;
@@ -15357,6 +15391,7 @@ a.dashboard-link {
   margin-top: 30px;
   margin-left: 0;
   font-size: 14px !important;
+  cursor: pointer;
 }
 a.dashboard-link .z-label {
   line-height: 36px !important;
@@ -15973,6 +16008,9 @@ a.dashboard-link .z-label {
 .actions-column .missionStatusChangeArea {
   margin-top: 0;
 }
+.comment-content {
+  font-weight: normal;
+}
 .comment-content .missionStatusChangeArea a:first-child {
   margin-left: 15px;
 }
@@ -16048,6 +16086,7 @@ a.user-link {
   -o-box-shadow: none;
   -ms-box-shadow: none;
   box-shadow: none;
+  float: none;
 }
 .SocialItemsListView .comment-content,
 #AllSocialItemsForPortletView .comment-content {
@@ -17509,6 +17548,22 @@ a.user-link {
   position: relative;
   top: 1px;
 }
+.mergetag-guide-modal {
+  padding: 15px;
+  line-height: 140%;
+}
+.mergetag-guide-modal > div {
+  margin-top: 15px;
+}
+.mergetag-guide-modal h4 {
+  margin-bottom: 5px;
+}
+.mergetag-guide-modal ul {
+  padding-left: 16px;
+}
+.mergetag-guide-modal li {
+  margin-bottom: 4px;
+}
 #marketing-list-member-configuration-form {
   position: relative;
   padding: 15px;
@@ -17567,12 +17622,24 @@ a.user-link {
 #marketing-list-member-select-contact-or-report-form {
   padding: 15px;
 }
+#marketing-list-member-select-contact-or-report-form .search-without-scope {
+  margin-top: 10px;
+  border: 1px solid #d5d4d4;
+  position: relative;
+  background: url(../images/search-bar-loopa.png) left top no-repeat;
+}
+#marketing-list-member-select-contact-or-report-form .search-without-scope .z-spinner {
+  top: 2px;
+  right: 0;
+  left: auto;
+  display: block;
+}
 #marketing-list-member-select-contact-or-report-form input[type="text"] {
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
-  width: 250px;
-  margin: 10px 0 0 0;
+  width: 300px;
+  margin: 0 0 0 23px;
   -webkit-border-radius: 0;
   -moz-border-radius: 0;
   -ms-border-radius: 0;
@@ -17586,9 +17653,9 @@ a.user-link {
   font-style: italic;
   color: #999;
   text-indent: 5px;
-  line-height: 25px;
-  height: 25px !important;
-  border: 1px solid #d5d4d4;
+  line-height: 23px;
+  height: 23px !important;
+  border: none;
   background: url(../images/search-bar-gradient.png) left top repeat-x;
 }
 #marketing-list-member-select-contact-or-report-form input[type="text"]:focus {
@@ -17627,6 +17694,30 @@ a.user-link {
   /* W3C */
 
 }
+#MarketingListMembersConfigurationForm_filteredBySearchTerm_area {
+  margin-right: 15px;
+  float: left;
+  border: 1px solid #d5d4d4;
+  background: url(../images/search-bar-loopa.png) left top no-repeat;
+}
+#MarketingListMembersConfigurationForm_filteredBySearchTerm_area input[type="text"] {
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  margin: 0 0 0 23px;
+  text-indent: 5px;
+  line-height: 23px;
+  height: 23px !important;
+  border: none;
+  left: 0;
+}
+#MarketingListMembersConfigurationForm_filteredBySearchTerm_area input[type="text"]:focus {
+  outline: none !important;
+  box-shadow: none !important;
+}
+#MarketingListMembersConfigurationForm_filteredBySubscriptionType_area {
+  margin-left: 15px;
+}
 .marketing-list-member-stats {
   margin: 5px 0 0 0;
   font-size: 12px;
@@ -17636,7 +17727,7 @@ a.user-link {
   margin-bottom: 3px;
 }
 .portlet-with-toolbar .view-toolbar {
-  margin: 10px 0 0 10px;
+  margin: 15px 0 0 15px;
 }
 .portlet-with-toolbar .view-toolbar .parent > ul {
   top: auto;
@@ -17699,5 +17790,38 @@ a.user-link {
   .view-toolbar > a:before,
   .view-toolbar .parent > a:before {
     display: none;
+  }
+}
+@media all and (max-width: 900px) {
+  .AppContainer {
+    min-width: 0 !important;
+  }
+  #HeaderView {
+    width: 100%;
+    min-width: 0 !important;
+  }
+  #HomeDashboardView {
+    padding-right: 20px;
+  }
+  #HomeDashboardView .juiportlet-column {
+    width: 100%;
+    float: none;
+  }
+  #HomeDashboardView .juiportlet-widget {
+    min-width: auto;
+    margin-right: 0px;
+  }
+  .DetailsAndRelationsView > div {
+    float: none;
+    width: 100% !important;
+  }
+  .breadcrumbs {
+    padding-bottom: 10px;
+  }
+  .details-table {
+    margin-right: 0;
+  }
+  .juiportlet-widget {
+    margin-right: 0 !important;
   }
 }

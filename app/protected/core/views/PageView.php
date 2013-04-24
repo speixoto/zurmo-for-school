@@ -249,12 +249,18 @@
             $theme        = 'themes/' . Yii::app()->theme->name;
             $cs = Yii::app()->getClientScript();
             //$cs->registerMetaTag('UTF-8', null, 'charset'); // Not Coding Standard
+            $cs->registerCssFile(Yii::app()->baseUrl . '/' . $theme . '/css/keyframes.css');
 
             $specialCssContent = null;
             if (!MINIFY_SCRIPTS && Yii::app()->isApplicationInstalled())
             {
                 $specialCssContent .= '<link rel="stylesheet/less" type="text/css" id="newui" href="' .
                                       Yii::app()->baseUrl . '/' . $theme . '/less/newui.less"/>';
+                if (Yii::app()->userInterface->isMobile())
+                {
+                    $specialCssContent .= '<link rel="stylesheet/less" type="text/css" id="mobile" href="' .
+                        Yii::app()->baseUrl . '/' . $theme . '/less/mobile.less"/>';
+                }
                 $specialCssContent .= '<!--[if lt IE 9]><link rel="stylesheet/less" type="text/css" href="' .
                                       Yii::app()->baseUrl . '/' . $theme . '/less/ie.less"/><![endif]-->';
             }
@@ -338,6 +344,10 @@
             if ($backgroundTexture != null)
             {
                 $classContent .= ' ' . $backgroundTexture;
+            }
+            if (Yii::app()->userInterface->isMobile())
+            {
+                $classContent .= ' mobile-app';
             }
             return '<body class="' . $classContent . '">';
         }

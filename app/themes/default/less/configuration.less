@@ -240,6 +240,15 @@ table.configuration-list{
     .view-toolbar{
         margin-top:0;
     }
+	.panel{
+		width:100% !important;
+	}
+}
+
+#EmailTemplateEditAndDetailsView{
+	.panel{
+		width: 70% !important;
+	}
 }
 
 #ModulePermissionsEditAndDetailsView{
@@ -437,6 +446,9 @@ table.configuration-list{
 
 /*Jobs*/
 #JobsCollectionView{
+	div.wide.form{
+		float: none;
+	}
     .form form{
         padding: 0;
     }
@@ -601,9 +613,6 @@ table.configuration-list{
     border:none;
     .b-shadow(none);
     background:none;
-    #edit-form:after{
-        display:none !important;
-    }
 }
 
 /*Breadcrumbs*/

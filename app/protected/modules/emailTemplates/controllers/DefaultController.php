@@ -254,5 +254,12 @@
                 throw new NotSupportedException();
             }
         }
+
+        public function actionMergeTagGuide()
+        {
+            Yii::app()->getClientScript()->setToAjaxMode();
+            $view = new ModalView($this, new MergeTagGuideView());
+            echo $view->render();
+        }
     }
 ?>

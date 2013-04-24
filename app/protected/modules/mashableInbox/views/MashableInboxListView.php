@@ -101,10 +101,9 @@
             {
                 $unread = 'unread';
             }
-            $params =
-                array(
-                    "class" => $unread
-                );
+            $params = array(
+                        "class" => $unread
+                      );
             return $params;
         }
     }

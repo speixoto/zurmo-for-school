@@ -181,8 +181,8 @@
             => 'Konfigurieren',
         'Convert'
             => 'Konvertieren',
-        'Copyright &#169; Zurmo Inc., 2012. All Rights reserved.'
-            => 'Copyright © Zurmo Inc., 2012. Alle Rechte vorbehalten.',
+        'Copyright &#169; Zurmo Inc., 2013. All Rights reserved.'
+            => 'Copyright © Zurmo Inc., 2013. Alle Rechte vorbehalten.',
         'Could not remove relation.'
             => 'Unfähig, die Beziehung zu löschen.',
         'Could not save relation.'
