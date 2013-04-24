@@ -35,44 +35,45 @@
      ********************************************************************************/
 
     /**
-     * Renders an action bar, search view, and list view.
+     * Helper class to work with KanbanBoard views
      */
-    class ActionBarSearchAndListView extends GridView
+    class KanbanBoard
     {
-        public function __construct($controllerId, $moduleId, ModelForm $searchModel, RedBeanModel $listModel,
-                                    $viewPrefixName, CDataProvider $dataProvider, $selectedIds,
-                                    $actionBarViewClassName, $activeActionElementType = null)
+        protected $model;
+
+        protected $groupByAttribute;
+
+        /**
+         * @param RedBeanModel $model
+         * @param string $groupByAttribute
+         */
+        public function __construct(RedBeanModel $model, $groupByAttribute)
         {
-            assert('is_string($controllerId)');
-            assert('is_string($moduleId)');
-            assert('is_string($actionBarViewClassName)');
-            assert('is_string($activeActionElementType) || $activeActionElementType == null');
-            parent::__construct(3, 1);
-            $searchViewClassName = $viewPrefixName . 'SearchView';
-            $searchView          = new $searchViewClassName($searchModel, get_class($listModel));
-            $listViewClassName   = $viewPrefixName . 'ListView';
-            $listView            = new $listViewClassName($controllerId, $moduleId,
-                                                          get_class($listModel), $dataProvider,
-                                                          $selectedIds, null, array(),
-                                                          $searchModel->getListAttributesSelector(),
-                                                          $this->resolveKanbanBoard($searchModel));
-            $actionBarView       = new $actionBarViewClassName($controllerId, $moduleId, $listModel,
-                                                               $listView->getGridViewId(),
-                                                               $dataProvider->getPagination()->pageVar,
-                                                               $listView->getRowsAreSelectable(), $activeActionElementType);
-            $this->setView($actionBarView, 0, 0);
-            $this->setView($searchView, 1, 0);
-            $this->setView($listView, 2, 0);
+            $this->model            = $model;
+            $this->groupByAttribute = $groupByAttribute;
+            if(!$this->model->{$this->groupByAttribute} instanceof CustomField)
+            {
+                throw new NotSupportedException();
+            }
+        }
+        //todo: kill checkbox column on kanban. and mass export/update.... i think for kanban.
+        public static function getGridViewWidgetPath()
+        {
+            return 'application.core.kanbanBoard.widgets.KanbanExtendedGridView';
         }
 
-        public function isUniqueToAPage()
+        public function getGridViewParams()
         {
-            return true;
+            //todo: groupByAttributeVisibleValues
+            return array('groupByAttribute'               => $this->groupByAttribute,
+                         'groupByAttributeVisibleValues'  => array('Negotiating', 'Prospecting'),
+                         'groupByDataAndTranslatedLabels' => $this->resolveGroupByDataAndTranslatedLabels());
         }
 
-        protected function resolveKanbanBoard(SearchForm $searchModel)
+        protected function resolveGroupByDataAndTranslatedLabels()
         {
-            return $searchModel->getKanbanBoard();
+            $dropDownModel = $this->model->{$this->groupByAttribute};
+            return CustomFieldDataUtil::getDataIndexedByDataAndTranslatedLabelsByLanguage($dropDownModel->data, Yii::app()->language);
         }
-    }
+}
 ?>

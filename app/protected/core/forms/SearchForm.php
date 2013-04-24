@@ -72,6 +72,12 @@
          */
         private $listAttributesSelector;
 
+        /**
+         * When utilized, shows a kanban board view instead of a listview
+         * @var null | object KanbanBoard
+         */
+        private $kanbanBoard;
+
         public function __construct(RedBeanModel $model)
         {
             parent::__construct($model);
@@ -583,6 +589,22 @@
         public function getListAttributesSelector()
         {
             return $this->listAttributesSelector;
+        }
+
+        /**
+         * @see KanbanBoard class
+         */
+        public function setKanbanBoard(KanbanBoard $kanbanBoard)
+        {
+            $this->kanbanBoard = $kanbanBoard;
+        }
+
+        /**
+         * @return null|object KanbanBoard
+         */
+        public function getKanbanBoard()
+        {
+            return $this->kanbanBoard;
         }
     }
 ?>

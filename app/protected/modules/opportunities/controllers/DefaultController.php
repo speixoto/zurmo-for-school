@@ -61,6 +61,7 @@
                             'listPageSize', get_class($this->getModule()));
             $opportunity                    = new Opportunity(false);
             $searchForm                     = new OpportunitiesSearchForm($opportunity);
+            $searchForm->setKanbanBoard(new KanbanBoard($opportunity, 'stage'));
             $listAttributesSelector         = new ListAttributesSelector('OpportunitiesListView', get_class($this->getModule()));
             $searchForm->setListAttributesSelector($listAttributesSelector);
             $dataProvider = $this->resolveSearchDataProvider(
