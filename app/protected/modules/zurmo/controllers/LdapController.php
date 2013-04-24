@@ -51,6 +51,7 @@
                 )
             );
         }
+        
         public function actionConfigurationEditLdap()
         {
             $configurationForm = LdapConfigurationFormAdapter::makeFormFromGlobalConfiguration();
