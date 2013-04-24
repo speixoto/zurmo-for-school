@@ -53,7 +53,11 @@
 
         protected function renderFormLayout($form = null)
         {
-            //override since the details are done @see renderConversationContent
+            $content  = $this->renderConversationContent();
+            $content .= $this->renderConversationCommentsContent();
+            $content .= $this->renderConversationCreateCommentContent();
+            $content  = ZurmoHtml::tag('div', array('class' => 'left-column'), $content);
+            return $content;
         }
 
         public function getTitle()
@@ -78,15 +82,6 @@
         {
             $element = new ConversationOpenCloseElement($this->model, 'isClosed');
             $content = $element->render();
-            return $content;
-        }
-
-        protected function renderAfterFormLayoutForDetailsContent()
-        {
-            $content  = $this->renderConversationContent();
-            $content .= $this->renderConversationCommentsContent();
-            $content .= $this->renderConversationCreateCommentContent();
-            $content  = ZurmoHtml::tag('div', array('class' => 'left-column'), $content);
             return $content;
         }
 

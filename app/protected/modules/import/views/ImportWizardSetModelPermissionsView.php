@@ -58,13 +58,7 @@
             $element->editableTemplate = $label . '{content}';
 
             $content  = $form->errorSummary($this->model);
-            $content .= '<table>'     . "\n";
-            $content .= '<tbody>'     . "\n";
-            $content .= '<tr><td>'    . "\n";
             $content .= ZurmoHtml::tag('div', array('class' => 'right-side-edit-view-panel'), $element->render());
-            $content .= '</td></tr>'  . "\n";
-            $content .= '</tbody>'    . "\n";
-            $content .= '</table>'    . "\n";
             return $content;
         }
 

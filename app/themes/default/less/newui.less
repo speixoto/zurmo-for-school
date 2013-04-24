@@ -142,43 +142,46 @@ footer, header, hgroup, menu, nav, section {
 	.form{
 		width:50%;
 		float:right;
-		form{
-			padding-top:0 !important;
-			padding-bottom:0 !important;
-			background:none !important;
-			border-top:none !important;
-			border-right:none !important;
-			border-bottom:none !important;
-			.b-shadow(~"none !important");
-			.reset-filter();
-			> div{
-				margin-bottom:15px;
-			}
-			> div.clearfix{
-				margin-bottom:0;
-			}
-			label{
-				display:inline-block;
-				margin-bottom:5px;
-			}
-			input[type="password"], input[type="text"]{
-				background:#fff !important;
-				margin:0 !important;
-			}
-			input[type="checkbox"]{
-				float:left;
-				margin-right:10px !important;
-				margin-top:1px !important;
-				clear:both;
-			}
-			.errorMessage{
-				font-size:11px;
-				padding-top:4px
-			}
-		}
 	}
 	.error{
 		margin-bottom: 40px !important;
+	}
+}
+
+#login-form{
+	padding:5px 0 5px 15px;
+	background:none !important;
+	border-top:none !important;
+	border-right:none !important;
+	border-bottom:none !important;
+	.b-shadow(~"none !important");
+	.reset-filter();
+	> div{
+		margin-bottom:15px;
+	}
+	> div:last-child{
+		margin-bottom: 0;
+	}
+	> div.clearfix{
+		margin-bottom:0;
+	}
+	label{
+		display:inline-block;
+		margin-bottom:5px;
+	}
+	input[type="password"], input[type="text"]{
+		background:#fff !important;
+		margin:0 !important;
+	}
+	input[type="checkbox"]{
+		float:left;
+		margin-right:10px !important;
+		margin-top:1px !important;
+		clear:both;
+	}
+	.errorMessage{
+		font-size:11px;
+		padding-top:4px
 	}
 }
 

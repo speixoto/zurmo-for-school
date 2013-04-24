@@ -4862,9 +4862,11 @@ section {
   width: 50%;
   float: right;
 }
-#LoginView .form form {
-  padding-top: 0 !important;
-  padding-bottom: 0 !important;
+#LoginView .error {
+  margin-bottom: 40px !important;
+}
+#login-form {
+  padding: 5px 0 5px 15px;
   background: none !important;
   border-top: none !important;
   border-right: none !important;
@@ -4876,33 +4878,33 @@ section {
   box-shadow: none !important;
   filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
 }
-#LoginView .form form > div {
+#login-form > div {
   margin-bottom: 15px;
 }
-#LoginView .form form > div.clearfix {
+#login-form > div:last-child {
   margin-bottom: 0;
 }
-#LoginView .form form label {
+#login-form > div.clearfix {
+  margin-bottom: 0;
+}
+#login-form label {
   display: inline-block;
   margin-bottom: 5px;
 }
-#LoginView .form form input[type="password"],
-#LoginView .form form input[type="text"] {
+#login-form input[type="password"],
+#login-form input[type="text"] {
   background: #fff !important;
   margin: 0 !important;
 }
-#LoginView .form form input[type="checkbox"] {
+#login-form input[type="checkbox"] {
   float: left;
   margin-right: 10px !important;
   margin-top: 1px !important;
   clear: both;
 }
-#LoginView .form form .errorMessage {
+#login-form .errorMessage {
   font-size: 11px;
   padding-top: 4px;
-}
-#LoginView .error {
-  margin-bottom: 40px !important;
 }
 #Login {
   margin-left: 0;
@@ -12019,18 +12021,19 @@ table.configuration-list td:last-child a .z-label:before {
   float: right;
 }
 /*Import window*/
+.AppContent.ImportWizardView #edit-form h3 {
+  margin-top: 0;
+  margin-left: 0;
+}
 .AppContent.ImportWizardView #edit-form table {
   width: 100%;
 }
 .AppContent.ImportWizardView #edit-form table td {
   padding-left: 0;
 }
-.AppContent.ImportWizardView h3 {
-  margin-bottom: 15px;
-}
 .AppContent.ImportWizardView .right-side-edit-view-panel {
-  width: 60% !important;
-  float: none !important;
+  background: none;
+  padding: 0;
 }
 .AppContent.ImportWizardView #addExtraColumnButton {
   -moz-box-sizing: border-box;
@@ -12097,11 +12100,6 @@ table.configuration-list td:last-child a .z-label:before {
   margin: 5px 0 0 10px !important;
 }
 /*= Step 3*/
-#ImportWizardSetModelPermissionsView .right-side-edit-view-panel {
-  position: relative !important;
-  top: 0 !important;
-  right: 0 !important;
-}
 /*=Step 4,Mapping view*/
 #ImportWizardMappingView > .wrapper {
   padding-bottom: 10px;
@@ -12114,6 +12112,10 @@ table.configuration-list td:last-child a .z-label:before {
 }
 #ImportWizardMappingView .required-fields {
   margin: 5px 0 0 15px;
+}
+#ImportWizardMappingView table {
+  border-left: 1px solid #DFDFDF;
+  border-right: 1px solid #DFDFDF;
 }
 #ImportWizardMappingView table tr:first-child th {
   color: #545454;
@@ -12139,12 +12141,8 @@ table.configuration-list td:last-child a .z-label:before {
 #ImportWizardMappingView tr td:last-child {
   padding-right: 15px;
 }
-#ImportWizardMappingView table tr:last-child td {
-  border-bottom: none;
-  padding-bottom: 0;
-}
-#ImportWizardMappingView .view-toolbar-container {
-  padding-bottom: 15px;
+#ImportWizardMappingView .mapping-rules table {
+  border: none;
 }
 #ImportWizardMappingView .mapping-rules table,
 #ImportWizardMappingView .mapping-rules td,
@@ -12209,13 +12207,17 @@ table.configuration-list td:last-child a .z-label:before {
 .process-container-view {
   padding: 15px 15px 0 15px;
 }
+#sequenceProcess {
+  padding: 15px 0 0 0;
+}
+.process-message {
+  margin-left: 15px;
+}
 #ImportSequentialProcessContainerView > div {
   float: left;
   width: 100%;
-  padding-bottom: 15px;
 }
 #ImportSequentialProcessContainerView #edit-form {
-  padding: 0 0 15px 0 !important;
   border: 0 !important;
   background: none !important;
   -webkit-box-shadow: none;
@@ -12227,8 +12229,11 @@ table.configuration-list td:last-child a .z-label:before {
 #ImportSequentialProcessContainerView #edit-form table {
   width: 100%;
 }
-#ImportSequentialProcessContainerView #edit-form table td {
-  padding-left: 0;
+#ImportSequentialProcessContainerView td {
+  padding: 0;
+}
+#ImportSequentialProcessContainerView td h3 {
+  margin: 0 !important;
 }
 #ImportSequentialProcessContainerView h3,
 #ImportSequentialProcessContainerView h3 + span {
@@ -12279,6 +12284,9 @@ table.configuration-list td:last-child a .z-label:before {
   font-size: 12px !important;
   color: #666;
   font-weight: 400 !important;
+}
+#ImportWizardCreateUpdateModelsCompleteView h3 {
+  margin: 0 0 10px 0 !important;
 }
 .import-summary {
   margin: 0 0 15px 15px;
@@ -12513,7 +12521,7 @@ div.form select.error {
 }
 div.form .errorSummary {
   position: relative;
-  margin: 15px;
+  margin: 0 0 15px 0;
   padding: 10px;
   border-radius: 5px !important;
   border: 1px solid #cc0000;
