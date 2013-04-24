@@ -80,10 +80,10 @@
         public function actionCreate()
         {
             $productCategory		= new ProductCategory();
-            $productCatalog		= ProductCatalog::getByName(ProductCatalog::DEFAULT_NAME);
+            $productCatalog		= ProductCatalog::resolveAndGetByName(ProductCatalog::DEFAULT_NAME);
 	    if(!empty($productCatalog))
 	    {
-		$productCategory->productCatalogs->add($productCatalog[0]);
+		$productCategory->productCatalogs->add($productCatalog);
 	    }
             $editAndDetailsView		= $this->makeEditAndDetailsView(
                                             $this->attemptToSaveModelFromPost($productCategory), 'Edit');

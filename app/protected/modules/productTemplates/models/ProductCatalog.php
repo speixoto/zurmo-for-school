@@ -30,8 +30,46 @@
 
         public static function getByName($name)
         {
-            return self::getByNameOrEquivalent('name', $name);
+	    assert('is_string($name)');
+            assert('$name != ""');
+            $bean = R::findOne(ProductCatalog::getTableName('ProductCatalog'), "name = :name ", array(':name' => $name));
+            assert('$bean === false || $bean instanceof RedBean_OODBBean');
+            if ($bean === false)
+            {
+                throw new NotFoundException();
+            }
+            else
+            {
+                $catalog = self::makeModel($bean);
+            }
+            return $catalog;
         }
+
+	public static function resolveAndGetByName($name)
+        {
+            assert('is_string($name)');
+            assert('$name != ""');
+            try
+            {
+		$catalog = self::getByName($name);
+	    }
+	    catch (NotFoundException $e)
+	    {
+		if ($name == self::DEFAULT_NAME)
+                {
+		    $catalog	   = new ProductCatalog();
+		    $catalog->name = self::DEFAULT_NAME;
+		    $saved	   = $catalog->save();
+		    assert('$saved');
+		}
+		else
+                {
+                    throw new NotFoundException();
+                }
+	    }
+
+	    return $catalog;
+	}
 
         protected function untranslatedAttributeLabels()
         {
