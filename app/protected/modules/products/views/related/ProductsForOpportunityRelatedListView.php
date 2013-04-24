@@ -96,14 +96,14 @@
 
 	protected function renderContent()
         {
-            $cClipWidget = new CClipWidget();
-            $cClipWidget->beginClip("ListView");
-            $cClipWidget->widget($this->getGridViewWidgetPath(), $this->getCGridViewParams());
-            $cClipWidget->endClip();
             $content	= $this->renderViewToolBar();
             $content	.= $this->renderAddProductLink();
 	    $content	.= $this->renderConfigurationForm();
-	    $content	.= $cClipWidget->getController()->clips['ListView'] . "\n";
+	    $cClipWidget = new CClipWidget();
+            $cClipWidget->beginClip("ListView");
+            $cClipWidget->widget($this->getGridViewWidgetPath(), $this->getCGridViewParams());
+            $cClipWidget->endClip();
+            $content	.= $cClipWidget->getController()->clips['ListView'] . "\n";
             if ($this->rowsAreSelectable)
             {
                 $content .= ZurmoHtml::hiddenField($this->gridId . $this->gridIdSuffix . '-selectedIds', implode(",", $this->selectedIds)) . "\n"; // Not Coding Standard
@@ -138,12 +138,10 @@
 			    if($('#product-configuration-form').css('display') == 'none')
 			    {
 				$('#product-configuration-form').show('slow');
-				//$('#product-portlet-grid-view').hide('slow');
 			    }
 			    else
 			    {
 				$('#product-configuration-form').hide('slow');
-				//$('#product-portlet-grid-view').show('slow');
 			    }
 			})
 			})
@@ -153,17 +151,6 @@
 	public function getGridViewId()
         {
             return 'product-portlet-grid-view';
-        }
-
-	protected function getCGridViewAfterAjaxUpdate()
-        {
-            // Begin Not Coding Standard
-            return 'js:function(id, data) {
-                        processAjaxSuccessError(id, data);
-                        var $data = $(data);
-                        jQuery.globalEval($data.filter("script").last().text());
-                    }';
-            // End Not Coding Standard
         }
     }
 ?>

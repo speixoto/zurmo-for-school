@@ -28,11 +28,8 @@
     {
         protected function resolveConfirmAlertInHtmlOptions($htmlOptions)
         {
-            //TODO When language one is merged this needs to be corrected
-//            $htmlOptions['confirm'] = Zurmo::t('ProductTemplatesModule', 'Are you sure you want to delete this {modelLabel}?',
-//                                      array('{modelLabel}' => ProductTemplatesModule::getModuleLabelByTypeAndLanguage('SingularLowerCase')));
             $htmlOptions['confirm'] = Zurmo::t('ProductTemplatesModule', 'Are you sure you want to delete this {modelLabel}?',
-                                      array('{modelLabel}' => 'product category'));
+                                      array('{modelLabel}' => LabelUtil::getUncapitalizedModelLabelByCountAndModelClassName(1, 'ProductCategory')));
             return $htmlOptions;
         }
     }

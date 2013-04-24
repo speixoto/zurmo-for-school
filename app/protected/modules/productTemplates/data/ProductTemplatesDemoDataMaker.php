@@ -50,9 +50,9 @@
                 $productTemplate->listPrice      = $currencyValue;
                 $productTemplate->sellPrice      = $currencyValue;
                 $this->populateModel($productTemplate);
-                $saved = $productTemplate->save();
+                $saved				 = $productTemplate->save();
                 assert('$saved');
-                $productTemplates[] = $productTemplate->id;
+                $productTemplates[]		 = $productTemplate->id;
             }
             $demoDataHelper->setRangeByModelName('ProductTemplate', $productTemplates[0], $productTemplates[count($productTemplates)-1]);
         }

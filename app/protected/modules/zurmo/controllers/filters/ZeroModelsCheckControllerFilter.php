@@ -34,13 +34,25 @@
 
         public $stateMetadataAdapterClassName = null;
 
+	public $zeroModelsYetViewClassName = null;
+
+	public $modelClassName = null;
+
+	public $pageViewClassName = null;
+
         protected function preFilter($filterChain)
         {
-            if (isset($_POST['ajax']))
+	    if (isset($_POST['ajax']))
             {
                 return true;
             }
-            $modelClassName    = $this->controller->getModule()->getPrimaryModelName();
+
+	    $modelClassName = $this->modelClassName;
+
+	    if($modelClassName == null)
+	    {
+		$modelClassName    = $this->controller->getModule()->getPrimaryModelName();
+	    }
 
             if ($this->stateMetadataAdapterClassName != null)
             {
@@ -60,11 +72,22 @@
             {
                 return true;
             }
-            $messageViewClassName         = $this->controller->getModule()->getPluralCamelCasedName() . 'ZeroModelsYetView';
+
+	    $messageViewClassName = $this->zeroModelsYetViewClassName;
+	    if($messageViewClassName == null)
+	    {
+		$messageViewClassName     = $this->controller->getModule()->getPluralCamelCasedName() . 'ZeroModelsYetView';
+	    }
+
             $messageView                  = new $messageViewClassName($this->controller->getId(),
                                                                       $this->controller->getModule()->getId(),
                                                                       $modelClassName);
-            $pageViewClassName            = $this->controller->getModule()->getPluralCamelCasedName() . 'PageView';
+	    $pageViewClassName		  = $this->pageViewClassName;
+	    if($pageViewClassName == null)
+	    {
+		$pageViewClassName            = $this->controller->getModule()->getPluralCamelCasedName() . 'PageView';
+	    }
+
             $view                         = new $pageViewClassName(ZurmoDefaultViewUtil::
                                                  makeStandardViewForCurrentUser($this->controller, $messageView));
             echo $view->render();

@@ -52,14 +52,14 @@
             $cClipWidget = new CClipWidget();
             $cClipWidget->beginClip("ModelElement");
             $cClipWidget->widget('application.core.widgets.MultiSelectAutoComplete', array(
-                'name'        => $this->getNameForIdField(),
-                'id'          => $this->getIdForIdField(),
+                'name'			    => $this->getNameForIdField(),
+                'id'			    => $this->getIdForIdField(),
                 'jsonEncodedIdsAndLabels'   => CJSON::encode($this->getExistingProductCategoriesRelationsIdsAndLabels()),
-                'sourceUrl'   => Yii::app()->createUrl('productTemplates/default/autoCompleteAllProductCategoriesForMultiSelectAutoComplete'),
-                'htmlOptions' => array(
-                    'disabled' => $this->getDisabledValue(),
-                    ),
-                'hintText' => Zurmo::t('ProductTemplatesModule', 'Type a ProductCategoriesModuleSingularLowerCaseLabel',
+                'sourceUrl'		    => Yii::app()->createUrl('productTemplates/default/autoCompleteAllProductCategoriesForMultiSelectAutoComplete'),
+                'htmlOptions'		    => array(
+							'disabled' => $this->getDisabledValue(),
+						    ),
+                'hintText' => Zurmo::t('ProductTemplatesModule', 'Type a ' . LabelUtil::getUncapitalizedModelLabelByCountAndModelClassName(1, 'ProductCategory'),
                                 LabelUtil::getTranslationParamsForAllModules())
             ));
             $cClipWidget->endClip();

@@ -25,40 +25,24 @@
      ********************************************************************************/
 
     /**
-     * Class that builds demo product catalogs.
+     * Class for showing a message and create link when there are no product templates visible to the logged in user when
+     * going to the product templates list view.
      */
-    class ProductCatalogsDemoDataMaker extends DemoDataMaker
+    class ProductCategoriesZeroModelsYetView extends ZeroModelsYetView
     {
-        protected $ratioToLoad = 1;
-
-        public static function getDependencies()
+        protected function getCreateLinkDisplayLabel()
         {
-            return array('productCategories');
+	    $singularLabel = ProductCategory::getModelLabelByTypeAndLanguage('Singular');
+            return Zurmo::t('ProductTemplatesModule', 'Create ' . $singularLabel, LabelUtil::getTranslationParamsForAllModules());
         }
 
-        public function makeAll(& $demoDataHelper)
+        protected function getMessageContent()
         {
-            assert('$demoDataHelper instanceof DemoDataHelper');
-            $productCatalogs = array();
-            for ($i = 0; $i < $this->resolveQuantityToLoad(); $i++)
-            {
-                $productCatalog = new ProductCatalog();
-                $this->populateModel($productCatalog);
-                $saved = $productCatalog->save();
-                assert('$saved');
-                $productCatalogs[] = $productCatalog->id;
-            }
-            $demoDataHelper->setRangeByModelName('ProductCatalog', $productCatalogs[0], $productCatalogs[count($productCatalogs)-1]);
-        }
-
-        public function populateModel(& $model)
-        {
-            assert('$model instanceof ProductCatalog');
-            parent::populateModel($model);
-            $productCatalogRandomData = ZurmoRandomDataUtil::getRandomDataByModuleAndModelClassNames('
-                                        ProductTemplatesModule', 'ProductCatalog');
-            $name        = RandomDataUtil::getRandomValueFromArray($productCatalogRandomData['names']);
-            $model->name = $name;
+	    //TODO Need to ask the message from Jason
+            return Zurmo::t('ProductTemplatesModule', '<h2>"As we must ProductCategory for every idle word, so must we ProductTemplate for every idle ' .
+                                     'silence."</h2><i>- Benjamin Franklin</i></i><div class="large-icon"></div><p>Be the first to create an ProductTemplate and, ' .
+                                     'as Ben would say, "So must we ProductTemplate for every company, organization, or ' .
+                                     'customer we interact with."</p>');
         }
     }
 ?>

@@ -26,7 +26,8 @@
 
     /**
      * Display active currencies from the currency model.  This is specifically used when the user interface has
-     * a currency attribute that requires a dropdown to select the currency to enter the value in.
+     * a sell price currency attribute that requires a dropdown to select the currency to enter the value in.
+     * This would remain disabled if sell price is not editable
      */
     class SellPriceCurrencyIdForAModelsRelatedCurrencyValueDropDownElement extends CurrencyIdForAModelsRelatedCurrencyValueDropDownElement
     {
@@ -37,10 +38,10 @@
          */
         protected function renderControlEditable()
         {
-	    $defaultHtmlOptions = $this->getEditableHtmlOptions();
-	    $sellPriceFormulaModel = $this->model->sellPriceFormula;
-            $type = $sellPriceFormulaModel->type;
-	    $additionalHtmlOptions = array();
+	    $defaultHtmlOptions	    = $this->getEditableHtmlOptions();
+	    $sellPriceFormulaModel  = $this->model->sellPriceFormula;
+            $type		    = $sellPriceFormulaModel->type;
+	    $additionalHtmlOptions  = array();
 	    if($type != null)
 	    {
 		if($type != SellPriceFormula::TYPE_EDITABLE)

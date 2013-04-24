@@ -25,8 +25,8 @@
      ********************************************************************************/
 
     /**
-     * Renders currencyValue input/display and currency code information.  This element is used to input
-     * currency attribute type values in the user interface on a model.
+     * Renders currencyValue input/display and currency code information for sell price.  This element is used to input
+     * sell price currency attribute type values in the user interface on a model.
      */
     class SellPriceCurrencyValueElement extends CurrencyValueElement
     {

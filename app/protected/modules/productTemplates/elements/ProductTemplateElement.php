@@ -38,7 +38,7 @@
         /**
          * Render a hidden input, a text input with an auto-complete
          * event, and a select button. These three items together
-         * form the Opportunity Editable Element
+         * form the Template Editable Element
          * @return The element's content as a string.
          */
         protected function renderControlEditable()

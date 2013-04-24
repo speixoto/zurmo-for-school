@@ -28,8 +28,10 @@
     {
         public function filters()
         {
-            $modelClassName   = $this->getModule()->getPrimaryModelName();
-            $viewClassName    = $modelClassName . 'EditAndDetailsView';
+            $modelClassName		= 'ProductCategory';
+            $viewClassName		= $modelClassName . 'EditAndDetailsView';
+	    $zeroModelsYetViewClassName = 'ProductCategoriesZeroModelsYetView';
+	    $pageViewClassName		= 'ProductCategoriesPageView';
             return array_merge(parent::filters(),
                 array(
                     array(
@@ -39,58 +41,65 @@
                    ),
                     array(
                         ZurmoModuleController::ZERO_MODELS_CHECK_FILTER_PATH . ' + list, index',
-                        'controller' => $this,
+                        'controller'		     => $this,
+			'zeroModelsYetViewClassName' => $zeroModelsYetViewClassName,
+			'modelClassName'	     => $modelClassName,
+			'pageViewClassName'	     => $pageViewClassName
                    ),
                )
             );
         }
 
+	protected function getModelName()
+	{
+	    return 'ProductCategory';
+	}
+
         public function actionList()
         {
-            $breadcrumbLinks = array();
-            $actionBarAndTreeView = new CategoriesActionBarAndTreeListView(
-                $this->getId(),
-                $this->getModule()->getId(),
-                ProductCategory::getAll('name')
-            );
-            $view = new ProductCategoriesPageView(ZurmoDefaultViewUtil::
+	    $breadcrumbLinks	    = array();
+            $actionBarAndTreeView   = new CategoriesActionBarAndTreeListView(
+										$this->getId(),
+										$this->getModule()->getId(),
+										ProductCategory::getAll('name')
+									    );
+            $view		    = new ProductCategoriesPageView(ZurmoDefaultViewUtil::
                                          makeViewWithBreadcrumbsForCurrentUser($this, $actionBarAndTreeView, $breadcrumbLinks, 'ProductCategoryBreadCrumbView'));
             echo $view->render();
         }
 
         public function actionDetails($id)
         {
-            $productCategory = static::getModelAndCatchNotFoundAndDisplayError('ProductCategory', intval($id));
+            $productCategory	    = static::getModelAndCatchNotFoundAndDisplayError('ProductCategory', intval($id));
             ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($productCategory);
-            $detailsView           = new ProductCategoryDetailsView($this->getId(), $this->getModule()->getId(), $productCategory);
-            $view = new ProductCategoriesPageView(ZurmoDefaultViewUtil::
-                                         makeStandardViewForCurrentUser($this, $detailsView));
+            $detailsView	    = new ProductCategoryDetailsView($this->getId(), $this->getModule()->getId(), $productCategory);
+            $view		    = new ProductCategoriesPageView(ZurmoDefaultViewUtil::makeStandardViewForCurrentUser($this, $detailsView));
             echo $view->render();
         }
 
         public function actionCreate()
         {
-            $productCategory = new ProductCategory();
-            $productCatalog = ProductCatalog::getByName(ProductCatalog::DEFAULT_NAME);
+            $productCategory		= new ProductCategory();
+            $productCatalog		= ProductCatalog::getByName(ProductCatalog::DEFAULT_NAME);
 	    if(!empty($productCatalog))
 	    {
 		$productCategory->productCatalogs->add($productCatalog[0]);
 	    }
-            $editAndDetailsView = $this->makeEditAndDetailsView(
+            $editAndDetailsView		= $this->makeEditAndDetailsView(
                                             $this->attemptToSaveModelFromPost($productCategory), 'Edit');
             $view = new ProductCategoriesPageView(ZurmoDefaultViewUtil::
-                                         makeStandardViewForCurrentUser($this, $editAndDetailsView));
+						    makeStandardViewForCurrentUser($this, $editAndDetailsView));
             echo $view->render();
         }
 
         public function actionEdit($id, $redirectUrl = null)
         {
-            $productCategory = ProductCategory::getById(intval($id));
+            $productCategory	    = ProductCategory::getById(intval($id));
             ControllerSecurityUtil::resolveAccessCanCurrentUserWriteModel($productCategory);
-            $view = new ProductCategoriesPageView(ZurmoDefaultViewUtil::
-                                         makeStandardViewForCurrentUser($this,
-                                             $this->makeEditAndDetailsView(
-                                                 $this->attemptToSaveModelFromPost($productCategory, $redirectUrl), 'Edit')));
+            $view		    = new ProductCategoriesPageView(ZurmoDefaultViewUtil::
+							makeStandardViewForCurrentUser($this,
+							    $this->makeEditAndDetailsView(
+								    $this->attemptToSaveModelFromPost($productCategory, $redirectUrl), 'Edit')));
             echo $view->render();
         }
 
