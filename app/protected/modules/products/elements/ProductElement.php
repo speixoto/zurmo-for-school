@@ -43,19 +43,7 @@
 	    parent::__construct($model, $attribute, $form, $params);
 	}
 
-        /**
-         * Render a hidden input, a text input with an auto-complete
-         * event, and a select button. These three items together
-         * form the Product Editable Element
-         * @return The element's content as a string.
-         */
-        protected function renderControlEditable()
-        {
-            //assert('$this->model->{$this->attribute} instanceof Product');
-            return parent::renderControlEditable();
-        }
-
-	protected function renderLabel()
+        protected function renderLabel()
 	{
 	    return '';
 	}

@@ -25,7 +25,7 @@
      ********************************************************************************/
 
     /**
-     * Helper class used by product template elements.
+     * Helper class used by product elements.
      */
     class ProductElementUtil
     {

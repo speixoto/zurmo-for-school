@@ -63,7 +63,7 @@
         {
             assert('$model instanceof Product');
             parent::populateModel($model);
-            $stage   = RandomDataUtil::getRandomValueFromArray(static::getCustomFieldDataByName('ProductStages'));
+            $stage		   = RandomDataUtil::getRandomValueFromArray(static::getCustomFieldDataByName('ProductStages'));
             $productRandomData     = ZurmoRandomDataUtil::getRandomDataByModuleAndModelClassNames('ProductsModule', 'Product');
             $name                  = RandomDataUtil::getRandomValueFromArray($productRandomData['names']);
 

@@ -52,10 +52,5 @@
                                                                $postData[$this->productCategoryFormName]);
             }
         }
-
-        protected function checkProductsMassDeletion()
-        {
-
-        }
     }
 ?>

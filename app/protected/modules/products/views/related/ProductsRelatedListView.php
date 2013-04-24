@@ -28,15 +28,8 @@
     {
         /**
          * Form that has the information for how to display the latest products view.
-         * @var object LatestActivitiesConfigurationForm
          */
         protected $configurationForm;
-
-        /**
-         * Ajax url to use after actions are completed from the user interface for a portlet.
-         * @var string
-         */
-        protected $portletDetailsUrl;
 
         /**
          * The url to use as the redirect url when going to another action. This will return the user
@@ -51,17 +44,7 @@
          */
         protected $uniquePageId;
 
-        /**
-         * True to show the owned by filter option.
-         * @var boolean
-         */
-        protected $showView = true;
-
         protected $params;
-
-        protected static $persistantUserPortletConfigs = array(
-            'view',
-        );
 
         public static function getDefaultMetadata()
         {
@@ -157,17 +140,15 @@
          */
         protected function getCGridViewAfterAjaxUpdate()
         {
-            // Begin Not Coding Standard
             return 'js:function(id, data) {
                         processAjaxSuccessError(id, data);
                     }';
-            // End Not Coding Standard
         }
 
         protected function renderConfigurationForm()
         {
-            $formName   = 'product-configuration-form';
-            $clipWidget = new ClipWidget();
+            $formName		    = 'product-configuration-form';
+            $clipWidget		    = new ClipWidget();
             list($form, $formStart) = $clipWidget->renderBeginWidget(
                 'ZurmoActiveForm',
                 array(
@@ -175,42 +156,146 @@
 		    'htmlOptions'   => array('style' => 'display:none')
                 )
             );
-            $content  = $formStart;
-            $content .= $this->renderConfigurationFormLayout($form);
-            $formEnd  = $clipWidget->renderEndWidget();
-            $content .= $formEnd;
-            $this->registerConfigurationFormLayoutScripts($form);
+            $content		    = $formStart;
+            $content		    .= $this->renderConfigurationFormLayout($form);
+            $formEnd		    = $clipWidget->renderEndWidget();
+            $content		    .= $formEnd;
             return $content;
         }
 
         protected function renderConfigurationFormLayout($form)
         {
-            $this->uniquePageId = 'OpportunityProductsForPortletView';
-
-            $mashableModelClassNamesAndDisplayLabels = LatestActivitiesUtil::getMashableModelDataForCurrentUser(false);
+            $this->uniquePageId = $this->getUniquePageId();
 
             $this->configurationForm = new ProductsConfigurationForm();
-            $this->configurationForm->mashableModelClassNamesAndDisplayLabels = $mashableModelClassNamesAndDisplayLabels;
 
             assert('$form instanceof ZurmoActiveForm');
             $content      = null;
             $innerContent = null;
-	    $content = $this->renderAddProductContent($form);
-            $content .= '</div>' . "\n";
+	    $content	  = $this->renderAddProductContent($form);
+            $content	  .= '</div>' . "\n";
             return $content;
         }
 
-        protected function registerConfigurationFormLayoutScripts($form)
-        {
-            assert('$form instanceof ZurmoActiveForm');
-	    Yii::app()->clientScript->registerScript('addProductPortletAction', "
-            $('#ProductsConfigurationForm_view_2').click(function()
-                {
-                   $('#ProductsConfigurationForm_name').show();
-                }
-            );
+        protected function getUniquePageId()
+	{
+	    return null;
+	}
 
-            ");
+	protected static function resolveAjaxOptionsForSelectList()
+        {
+            $title = Zurmo::t('ProductsModule', 'ProductsModuleSingularLabel Search',
+                            LabelUtil::getTranslationParamsForAllModules());
+            return ModalView::getAjaxOptionsForModalLink($title);
+        }
+
+	/**
+         * Get the meta data and merge with standard CGridView column elements
+         * to create a column array that fits the CGridView columns API
+         */
+         protected function getCGridViewColumns()
+         {
+            $columns	     = array();
+            if ($this->rowsAreSelectable)
+            {
+                $firstColumn = $this->getCGridViewFirstColumn();
+                array_push($columns, $firstColumn);
+            }
+
+            $metadata = $this->getResolvedMetadata();
+            foreach ($metadata['global']['panels'] as $panel)
+            {
+                foreach ($panel['rows'] as $row)
+                {
+                    foreach ($row['cells'] as $cell)
+                    {
+                        foreach ($cell['elements'] as $columnInformation)
+                        {
+                            $columnClassName	= 'Product' . ucfirst($columnInformation['attributeName']) . 'RelatedListViewColumnAdapter';
+                            $columnAdapter	= new $columnClassName($columnInformation['attributeName'], $this, array_slice($columnInformation, 1));
+                            $column = $columnAdapter->renderGridViewData();
+                            if (!isset($column['class']))
+                            {
+                                $column['class'] = 'DataColumn';
+                            }
+                            array_push($columns, $column);
+                        }
+                    }
+                }
+            }
+            $menuColumn = $this->getGridViewMenuColumn();
+            if ($menuColumn == null)
+            {
+                $lastColumn = $this->getCGridViewLastColumn();
+                if (!empty($lastColumn))
+                {
+                    array_push($columns, $lastColumn);
+                }
+            }
+            else
+            {
+                array_push($columns, $menuColumn);
+            }
+            return $columns;
+        }
+
+	protected function renderContent()
+        {
+            $content	    = $this->renderViewToolBar();
+            $content	    .= $this->renderAddProductLink();
+	    $content	    .= $this->renderConfigurationForm();
+	    $cClipWidget    = new CClipWidget();
+            $cClipWidget->beginClip("ListView");
+            $cClipWidget->widget($this->getGridViewWidgetPath(), $this->getCGridViewParams());
+            $cClipWidget->endClip();
+            $content	    .= $cClipWidget->getController()->clips['ListView'] . "\n";
+            if ($this->rowsAreSelectable)
+            {
+                $content    .= ZurmoHtml::hiddenField($this->gridId . $this->gridIdSuffix . '-selectedIds', implode(",", $this->selectedIds)) . "\n"; // Not Coding Standard
+            }
+            $content	    .= $this->renderScripts();
+            return $content;
+        }
+
+	protected function renderAddProductLink()
+	{
+	    $title = Zurmo::t('ProductsModule', 'Add ProductsModuleSingularLabel',
+                            LabelUtil::getTranslationParamsForAllModules());
+	    $string  = "<p>" . ZurmoHtml::link($title, "#", array('id' => 'addProductPortletLink')) . "</p>";
+            return $string;
+	}
+
+	protected function renderAddProductContent($form)
+	{
+	    $routeParams    = $this->getCreateLinkRouteParameters();
+	    $productElement = new ProductElement(new Product(), $this->getRelationAttributeName(), $form, array('inputIdPrefix' => 'product', 'htmlOptions' => array('display' => 'none')), $routeParams['relationModelId']);
+	    $content	    = $productElement->render();
+	    return $content;
+        }
+
+	protected function renderScripts()
+	{
+	    parent::renderScripts();
+	    Yii::app()->clientScript->registerScript("AddProductElementToggleDisplay",
+		    "$(function () {
+		    $('#addProductPortletLink').click(function (e) {
+			    e.preventDefault();
+			    if($('#product-configuration-form').css('display') == 'none')
+			    {
+				$('#product-configuration-form').show('slow');
+			    }
+			    else
+			    {
+				$('#product-configuration-form').hide('slow');
+			    }
+			})
+			})
+		    ");
+	}
+
+	public function getGridViewId()
+        {
+            return 'product-portlet-grid-view';
         }
     }
 ?>

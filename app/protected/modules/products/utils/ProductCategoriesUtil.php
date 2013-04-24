@@ -25,7 +25,7 @@
      ********************************************************************************/
 
     /**
-     * Helper class for product category logic.
+     * Helper class for product category functionality.
      */
     class ProductCategoriesUtil
     {
@@ -33,9 +33,7 @@
                                     Product $product, $postData)
         {
             $newCategory = array();
-	    //print $product->productCategories->count();
-	    //exit;
-            if (isset($postData['categoryIds']) && strlen($postData['categoryIds']) > 0)
+	    if (isset($postData['categoryIds']) && strlen($postData['categoryIds']) > 0)
             {
                 $categoryIds = explode(",", $postData['categoryIds']);  // Not Coding Standard
                 foreach ($categoryIds as $categoryId)
@@ -44,15 +42,6 @@
                 }
                 if ($product->productCategories->count() > 0)
                 {
-//                    $categoriesToRemove = array();
-//                    foreach ($product->productCategories as $index => $existingCategory)
-//                    {
-//                        $categoriesToRemove[] = $existingCategory;
-//                    }
-//                    foreach ($categoriesToRemove as $categoryToRemove)
-//                    {
-//                        $product->productCategories->remove($categoryToRemove);
-//                    }
 		    $product->productCategories->removeAll();
                 }
                 //Now add missing categories
@@ -66,8 +55,6 @@
                 //remove all categories
                 $product->productCategories->removeAll();
             }
-//	    print $product->productCategories->count();
-//	    exit;
             return $newCategory;
         }
     }
