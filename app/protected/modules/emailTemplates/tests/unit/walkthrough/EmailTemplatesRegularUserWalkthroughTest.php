@@ -61,12 +61,14 @@
                                                                                                     'Test Name1',
                                                                                                     'Test HtmlContent1',
                                                                                                     'Test TextContent1');
+            ReadPermissionsOptimizationUtil::rebuild();
         }
 
         public function setUp()
         {
             parent::setUp();
             $this->user = $this->logoutCurrentUserLoginNewUserAndGetByUsername('nobody');
+            Yii::app()->user->userModel = $this->user;
         }
 
         public function testRegularUserAllDefaultControllerActions()
@@ -133,12 +135,14 @@
             $this->assertEquals (substr_count($content, 'nobody nobodyson'), 0);
             $emailTemplates = EmailTemplate::getByType(EmailTemplate::TYPE_CONTACT);
             $this->assertEquals (0,                     count($emailTemplates));
-            EmailTemplateTestHelper::createEmailTemplateByName(EmailTemplate::TYPE_CONTACT,
-                                                                'Test Subject Regular 02',
-                                                                'Contact',
-                                                                'Test Name Regular 02',
-                                                                'Test HtmlContent Regular 02',
-                                                                'Test TextContent Regular 02');
+            $emailTemplate = EmailTemplateTestHelper::createEmailTemplateByName(EmailTemplate::TYPE_CONTACT,
+                                                                                    'Test Subject Regular 02',
+                                                                                    'Contact',
+                                                                                    'Test Name Regular 02',
+                                                                                    'Test HtmlContent Regular 02',
+                                                                                    'Test TextContent Regular 02');
+            $this->assertNotNull($emailTemplate);
+            // TODO: @Shoaibi: Critical: --no-freeze fails here.
             $content = $this->runControllerWithNoExceptionsAndGetContent('emailTemplates/default/listForMarketing');
             $this->assertTrue   (strpos($content,       'Email Templates</title></head>') !== false);
             $this->assertTrue   (strpos($content,       '1 result') !== false);
@@ -160,12 +164,13 @@
             $this->assertEquals (substr_count($content, 'nobody nobodyson'), 0);
             $emailTemplates = EmailTemplate::getByType(EmailTemplate::TYPE_WORKFLOW);
             $this->assertEquals (0,                     count($emailTemplates));
-            EmailTemplateTestHelper::createEmailTemplateByName(EmailTemplate::TYPE_WORKFLOW,
-                                                                'Test Subject Regular 03',
-                                                                'Contact',
-                                                                'Test Name Regular 03',
-                                                                'Test HtmlContent Regular 03',
-                                                                'Test TextContent Regular 03');
+            $emailTemplate = EmailTemplateTestHelper::createEmailTemplateByName(EmailTemplate::TYPE_WORKFLOW,
+                                                                                        'Test Subject Regular 03',
+                                                                                        'Contact',
+                                                                                        'Test Name Regular 03',
+                                                                                        'Test HtmlContent Regular 03',
+                                                                                        'Test TextContent Regular 03');
+            $this->assertNotNull($emailTemplate);
             $content = $this->runControllerWithNoExceptionsAndGetContent('emailTemplates/default/listForWorkflow');
             $this->assertTrue   (strpos($content,       'Email Templates</title></head>') !== false);
             $this->assertTrue   (strpos($content,       '1 result') !== false);
