@@ -13,14 +13,14 @@
 </thead>
 <tbody>
 <tr>
-	<td>setSpeed</td>
-	<td>3000</td>
-	<td></td>
-</tr>
-<tr>
 	<td>setTimeout</td>
 	<td>45000</td>
 	<td></td>
+</tr>
+<tr>
+	<td>storeGlobal</td>
+	<td>javascript{Math.floor(Math.random()*11000)}</td>
+	<td>randomSuffix</td>
 </tr>
 <tr>
 	<td>open</td>
@@ -143,6 +143,11 @@
 	<td></td>
 </tr>
 <tr>
+	<td>waitForCondition</td>
+	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+	<td>30000</td>
+</tr>
+<tr>
 	<td>select</td>
 	<td>//div[@id='action-type-related-model-selector']/div/select</td>
 	<td>label=Accounts</td>
@@ -156,6 +161,11 @@
 	<td>type</td>
 	<td>id=OnSaveWorkflowWizardForm_Actions_0_ActionAttributes_name_value</td>
 	<td>test</td>
+</tr>
+<tr>
+	<td>waitForCondition</td>
+	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+	<td>30000</td>
 </tr>
 <tr>
 	<td>focus</td>
@@ -208,6 +218,11 @@
 	<td></td>
 </tr>
 <tr>
+	<td>waitForCondition</td>
+	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+	<td>30000</td>
+</tr>
+<tr>
 	<td>click</td>
 	<td>//a[@id='saveAction0']/span[3]</td>
 	<td></td>
@@ -237,7 +252,6 @@
 	<td>//a[@id='AddEmailMessageLink']/span[3]</td>
 	<td></td>
 </tr>
-//*[@id='EmailMessagesForWorkflowWizardView']/div[1]/div[3]/div/ul/li[2]/div
 <tr>
 	<td>waitForElementPresent</td>
 	<td>//div[@id='EmailMessagesForWorkflowWizardView']/div[1]/div[3]/div/ul/li/div/div[2]/div[1]/div/table/tbody/tr[1]/th/label</td>
@@ -252,6 +266,11 @@
 	<td>click</td>
 	<td>//select[@id='addRecipientType_0']/option[2]</td>
 	<td></td>
+</tr>
+<tr>
+	<td>waitForCondition</td>
+	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+	<td>30000</td>
 </tr>
 <tr>
 	<td>click</td>
@@ -276,7 +295,7 @@
 <tr>
 	<td>type</td>
 	<td>OnSaveWorkflowWizardForm_name</td>
-	<td>WorkflowTest</td>
+	<td>WorkflowTest ${randomSuffix}</td>
 </tr>
 <tr>
 	<td>click</td>
