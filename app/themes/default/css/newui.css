@@ -102,6 +102,7 @@ atable.configuration-list td:last-child a,
 a.multiselect-holder input[type="button"],
 .default-btn .multiselect-holder input[type="button"],
 .default-btn a.multiselect-holder input[type="button"],
+.has-lang-label input + span,
 .EmailTestingButton,
 a.EmailTestingButton,
 .default-btn .EmailTestingButton,
@@ -11846,8 +11847,8 @@ table.configuration-list td:last-child a .z-label:before {
   left: 1px;
   line-height: 24px;
   top: 1px;
-  width: 80px;
-  text-align: center;
+  min-width: 80px;
+  text-align: left;
   border-right: 1px solid #cccccc;
   -webkit-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -moz-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
@@ -11860,6 +11861,7 @@ table.configuration-list td:last-child a .z-label:before {
   -ms-border-radius: 1px 0 0 1px;
   -o-border-radius: 1px 0 0 1px;
   border-radius: 1px 0 0 1px;
+  padding: 0 10px;
 }
 .has-lang-label .errorMessage {
   margin-bottom: 15px;

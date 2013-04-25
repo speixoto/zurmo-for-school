@@ -56,8 +56,10 @@
                     'name'   => $this->getNameForInputField($stage),
                     'value'  => $probability,
                 );
-                $content  .= $stage;
-                $content  .= $this->form->textField($this->model, $this->attribute, $htmlOptions);
+
+                $element  = $this->form->textField($this->model, $this->attribute, $htmlOptions);
+                $element .= ZurmoHtml::tag('span', array(), $stage);
+                $content .= ZurmoHtml::tag('div', array('class' => 'has-lang-label'), $element);
             }
             return $content;
         }
