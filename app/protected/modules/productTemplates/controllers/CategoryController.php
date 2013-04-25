@@ -65,7 +65,8 @@
 	    $actionBarAndTreeView	    = new CategoriesActionBarAndTreeListView(
 										$this->getId(),
 										$this->getModule()->getId(),
-										ProductCategory::getAll('name')
+										ProductCategory::getAll('name'),
+										'ProductCategoriesLink'
 									    );
             $view			    = new ProductCategoriesPageView(ZurmoDefaultViewUtil::
 									    makeViewWithBreadcrumbsForCurrentUser(

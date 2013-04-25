@@ -29,5 +29,32 @@
      */
     class ActionBarForCategoriesTreeListView extends ActionBarForSecurityTreeListView
     {
+	public static function getDefaultMetadata()
+        {
+            $metadata = array(
+                'global' => array(
+                    'toolbar' => array(
+                        'elements' => array(
+                            array('type'	  => 'ProductCreateLink',
+                                'htmlOptions'	  => array('class' => 'icon-create'),
+                            ),
+                            array(
+                                'type'            => 'ProductsLink',
+                                'htmlOptions'     => array( 'class' => 'icon-workflows' )
+                            ),
+                            array(
+                                'type'            => 'ProductTemplatesLink',
+                                'htmlOptions'     => array( 'class' => 'icon-by-time-workflow-in-queues' )
+                            ),
+                            array(
+                                'type'            => 'ProductCategoriesLink',
+                                'htmlOptions'     => array( 'class' => 'icon-by-workflow-message-in-queues' )
+                            ),
+                        ),
+                    ),
+                ),
+            );
+            return $metadata;
+        }
     }
 ?>

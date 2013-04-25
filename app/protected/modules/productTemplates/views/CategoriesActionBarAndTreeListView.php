@@ -26,13 +26,13 @@
 
     class CategoriesActionBarAndTreeListView extends GridView
     {
-        public function __construct($controllerId, $moduleId, $categories)
+        public function __construct($controllerId, $moduleId, $categories, $activeActionElementType = null)
         {
             assert('$controllerId != null');
             assert('$moduleId != null');
             assert('is_array($categories)');
             parent::__construct(2, 1);
-            $this->setView(new ActionBarForCategoriesTreeListView ($controllerId, $moduleId), 0, 0);
+            $this->setView(new ActionBarForCategoriesTreeListView ($controllerId, $moduleId, $activeActionElementType), 0, 0);
             $categoriesTreeListView = new ProductCategoriesTreeListView($controllerId, $moduleId, $categories);
             $categoriesTreeListView->setCssClasses(array('DetailsView'));
             $this->setView($categoriesTreeListView, 1, 0);
