@@ -148,7 +148,7 @@
                     {
                         $moduleMenuItemsInOrder[$order] = self::resolveMenuItemsForLanguageLocalization(
                                                           $moduleMenuItems, get_class($module));
-                        $moduleMenuItemsInOrder[$order][0]['moduleId'] = $moduleId;
+                        $moduleMenuItemsInOrder[$order][0]['moduleId']    = $moduleId;
                         $moduleMenuItemsInOrder[$order][0]['itemOptions'] = array('id' => $moduleId);
                     }
                 }
@@ -156,15 +156,15 @@
             ksort($moduleMenuItemsInOrder);
             foreach ($moduleMenuItemsInOrder as $menuItems)
             {
-                foreach ($menuItems as $itemKey => $item)
+                foreach ($menuItems as $item)
                 {
                     $tabMenuItems[$item['moduleId']] = $item;
                 }
             }
-            // clean up $tabMenuItems to remove empty arrays (i.e. access denied)
             foreach($tabMenuItems as $key => $menuItem)
             {
-                if (!is_array($menuItem)){
+                if (!is_array($menuItem))
+                {
                     unset($tabMenuItems[$key]);
                 }
             }

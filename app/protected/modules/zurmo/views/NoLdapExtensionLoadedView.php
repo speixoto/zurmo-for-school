@@ -48,7 +48,7 @@
         protected function getMessageContent()
         {
             return Zurmo::t('ZurmoModule', '<h2>LDAP is not enabled in PHP</h2><div class="large-icon"></div>' .
-            '<p>The administrator must first enable LDAP for PHP to configure the LDAP authentication</p>');
+            '<p>LDAP must for be enabled for PHP to configure LDAP authentication</p>');
         }
     }
 ?>

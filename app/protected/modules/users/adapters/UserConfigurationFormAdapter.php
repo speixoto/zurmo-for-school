@@ -144,7 +144,7 @@
         public static function getVisibleAndOrderedTabMenuItemsByUser($user, $selected = false)
         {
             $visibleAndOrderedTabMenuItems = array();
-            $tabMenuItems = MenuUtil::getVisibleAndOrderedTabMenuByUser($user);
+            $tabMenuItems                  = MenuUtil::getVisibleAndOrderedTabMenuByUser($user);
             foreach ($tabMenuItems as $menuItem)
             {
                 if ($selected === true)
@@ -153,7 +153,7 @@
                 }
                 else
                 {
-                    $moduleId = $menuItem['moduleId'];
+                    $moduleId                                 = $menuItem['moduleId'];
                     $visibleAndOrderedTabMenuItems[$moduleId] = $menuItem['label'];
                 }
             }

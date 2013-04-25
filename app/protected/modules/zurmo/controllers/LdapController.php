@@ -41,7 +41,7 @@
     class ZurmoLdapController extends ZurmoModuleController
     {
         const LDAP_CONFIGURATION_FILTER_PATH =
-              'application.modules.zurmo.controllers.filters.LDAPExtensionCheckControllerFilter';
+              'application.modules.zurmo.controllers.filters.LdapExtensionCheckControllerFilter';
               
         public function filters()
         {
