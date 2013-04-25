@@ -34,31 +34,33 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * Filter used by LDAP controller to ascertain whether the LDAP extension loaded or not.
-     * If not, then the user is instructed to contact the administrator for them to set this up.
-     */
-    class LdapExtensionCheckControllerFilter extends CFilter
+    class LdapUtilTest extends ZurmoBaseTest
     {
-        public $controller;
-
-        protected function preFilter($filterChain)
+        public static function setUpBeforeClass()
         {
-            if (isset($_POST['ajax']))
+            parent::setUpBeforeClass();  
+            SecurityTestHelper::createSuperAdmin();            
+        }
+
+        public function testResolveBindRegisteredDomain()
+        {
+            Yii::app()->user->userModel = User::getByUsername('super');
+            if (!ZurmoTestHelper::isAuthenticationLdapTestConfigurationSet())
             {
-                return true;
+                $this->markTestSkipped(Zurmo::t('ZurmoModule', 'Test Ldap settings are not configured in perInstanceTest.php file.'));
             }
-            $isLdapExtensionLoaded = InstallUtil::isLdapInstalled();
-            if($isLdapExtensionLoaded)
-            {
-                return true;
-            }
-            $messageView                  = new NoLdapExtensionLoadedView();
-            $pageViewClassName            = $this->controller->getModule()->getPluralCamelCasedName() . 'PageView';
-            $view                         = new $pageViewClassName(ZurmoDefaultViewUtil::
-                                                 makeStandardViewForCurrentUser($this->controller, $messageView));
-            echo $view->render();
-            return false;
+            //to show the fix for resolveBindRegisteredDomain with incorrect Base Domain
+            $bindRegisteredDomain = LdapUtil::resolveBindRegisteredDomain(
+                                    Yii::app()->params['authenticationTestSettings']
+                                    ['ldapSettings']['ldapBindRegisteredDomain'], 
+                                    'test');
+            $this->assertEquals(Yii::app()->params['authenticationTestSettings']
+                                ['ldapSettings']['ldapBindRegisteredDomain'], $bindRegisteredDomain);                        
+            //to show the fix for resolveBindRegisteredDomain with correct Base Domain
+            $bindRegisteredDomain   = LdapUtil::resolveBindRegisteredDomain(
+                                      Yii::app()->params['authenticationTestSettings']['ldapSettings']['ldapBindRegisteredDomain'], 
+                                      Yii::app()->params['authenticationTestSettings']['ldapSettings']['ldapBaseDomain']);            
+            $this->assertEquals('admin@zurmo.local', $bindRegisteredDomain);
         }
     }
 ?>
