@@ -25,24 +25,16 @@
      ********************************************************************************/
 
     /**
-     * Link element to take you to a list of product templates models
+     * View that renders products module breadcrumb content
      */
-    class ProductTemplatesLinkActionElement extends EditLinkActionElement
+    class ProductBreadCrumbView extends BreadCrumbView
     {
         /**
          * @return string
          */
-        protected function getDefaultLabel()
+        protected function getHomeLinkLabel()
         {
-            return Zurmo::t('ProductTemplatesModule', 'Catalog Items');
-        }
-
-        /**
-         * @return string
-         */
-        protected function getDefaultRoute()
-        {
-            return Yii::app()->createUrl('productTemplates/default/list/');
+            return Zurmo::t('ProductsModule', 'Products');
         }
     }
 ?>

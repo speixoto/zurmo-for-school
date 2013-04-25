@@ -60,6 +60,10 @@
 										null,
 										'ProductsSearchView'
 										);
+	    $title           = Zurmo::t('ProductsModule', 'Products');
+            $breadcrumbLinks = array(
+                 $title,
+            );
             if (isset($_GET['ajax']) && $_GET['ajax'] == 'list-view')
             {
                 $mixedView  = $this->makeListView(
@@ -71,9 +75,11 @@
             else
             {
                 $mixedView  = $this->makeActionBarSearchAndListView($searchForm, $dataProvider,
-								    'SecuredActionBarForProductsSearchAndListView', null, $activeActionElementType);
+								    'SecuredActionBarForProductsSearchAndListView',
+								    null, $activeActionElementType);
                 $view	    = new ProductsPageView(ZurmoDefaultViewUtil::
-                                         makeStandardViewForCurrentUser($this, $mixedView));
+						   makeViewWithBreadcrumbsForCurrentUser(
+							  $this, $mixedView, $breadcrumbLinks, 'ProductBreadCrumbView'));
             }
             echo $view->render();
         }

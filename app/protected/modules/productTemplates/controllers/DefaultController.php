@@ -49,15 +49,20 @@
         {
             $pageSize                       = Yii::app()->pagination->resolveActiveForCurrentUserByType(
                                               'listPageSize', get_class($this->getModule()));
+	    $activeActionElementType        = 'ProductTemplatesLink';
             $productTemplate                = new ProductTemplate(false);
             $searchForm                     = new ProductTemplatesSearchForm($productTemplate);
             $listAttributesSelector         = new ListAttributesSelector('ProductTemplatesListView', get_class($this->getModule()));
             $searchForm->setListAttributesSelector($listAttributesSelector);
             $dataProvider = $this->resolveSearchDataProvider(
-                $searchForm,
-                $pageSize,
-                null,
-                'ProductTemplatesSearchView'
+								$searchForm,
+								$pageSize,
+								null,
+								'ProductTemplatesSearchView'
+							    );
+	    $title           = Zurmo::t('ProductTemplatesModule', 'Catalog Items');
+            $breadcrumbLinks = array(
+                 $title,
             );
             if (isset($_GET['ajax']) && $_GET['ajax'] == 'list-view')
             {
@@ -69,9 +74,12 @@
             }
             else
             {
-                $mixedView  = $this->makeActionBarSearchAndListView($searchForm, $dataProvider);
+                $mixedView  = $this->makeActionBarSearchAndListView($searchForm, $dataProvider,
+								    'SecuredActionBarForProductsSearchAndListView',
+								    null, $activeActionElementType);
                 $view	    = new ProductTemplatesPageView(ZurmoDefaultViewUtil::
-                                         makeStandardViewForCurrentUser($this, $mixedView));
+							   makeViewWithBreadcrumbsForCurrentUser(
+							   $this, $mixedView, $breadcrumbLinks, 'ProductBreadCrumbView'));
             }
             echo $view->render();
         }

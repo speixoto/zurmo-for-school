@@ -26,28 +26,48 @@
 
     class ProductCreateLinkActionElement extends CreateLinkActionElement
     {
+        /**
+         * Manage security check during render since you have multiple modules to check against
+         * @return null|string
+         */
         public function getActionType()
         {
-            return 'Create';
+            return null;
         }
 
-        protected function getDefaultLabel()
+        public function render()
         {
-            return Zurmo::t('Core', 'Create');
-        }
+            $items = array();
+            if (RightsUtil::doesUserHaveAllowByRightName('ProductsModule', ProductsModule::getCreateRight(),
+                                                        Yii::app()->user->userModel))
+            {
+                $items[] = array('label'   => Zurmo::t('ProductsModule', 'Create Product'),
+                                  'url'     => Yii::app()->createUrl('products/default/create'));
+            }
+            if (RightsUtil::doesUserHaveAllowByRightName('ProductTemplatesModule', ProductTemplatesModule::getCreateRight(),
+                                                        Yii::app()->user->userModel))
+            {
+                $items[] = array('label'   => Zurmo::t('ProductTemplatesModule', 'Create Catalog Item'),
+                                 'url'     => Yii::app()->createUrl('productTemplates/default/create'));
 
-        protected function getDefaultRoute()
-        {
-            $params = array();
-            if (Yii::app()->request->getParam('redirectUrl') != null)
-            {
-                $params = array_merge($params, array('redirectUrl' => Yii::app()->request->getParam('redirectUrl')));
+                $items[] = array('label'   => Zurmo::t('ProductTemplatesModule', 'Create Category'),
+                                 'url'     => Yii::app()->createUrl('productTemplates/category/create'));
             }
-            elseif ($this->getRedirectUrl() != null)
+            if (!empty($items))
             {
-                $params = array_merge($params, array('redirectUrl' => $this->getRedirectUrl()));
+                $menuItems = array( 'label' => $this->getLabel(),
+                                    'url'   => null,
+                                    'items' => $items);
+                $cClipWidget = new CClipWidget();
+                $cClipWidget->beginClip("ActionMenu");
+                $cClipWidget->widget('application.core.widgets.MbMenu', array(
+                    'htmlOptions' => array('id' => 'MashableInboxCreateDropdown'),
+                    'items'       => array($menuItems),
+                ));
+                $cClipWidget->endClip();
+                return $cClipWidget->getController()->clips['ActionMenu'];
             }
-            return Yii::app()->createUrl($this->moduleId . '/default/create/', $params);
+            return null;
         }
     }
 ?>

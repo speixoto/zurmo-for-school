@@ -34,7 +34,7 @@
          */
         protected function getDefaultLabel()
         {
-            return Zurmo::t('ProductTemplatesModule', 'Product Categories');
+            return Zurmo::t('ProductTemplatesModule', 'Categories');
         }
 
         /**

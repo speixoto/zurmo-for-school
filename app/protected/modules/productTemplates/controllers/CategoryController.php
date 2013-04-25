@@ -57,14 +57,20 @@
 
         public function actionList()
         {
-	    $breadcrumbLinks	    = array();
-            $actionBarAndTreeView   = new CategoriesActionBarAndTreeListView(
+	    $activeActionElementType        = 'ProductTemplatesLink';
+	    $title			    = Zurmo::t('ProductTemplatesModule', 'Categories');
+            $breadcrumbLinks = array(
+                 $title,
+            );
+	    $actionBarAndTreeView	    = new CategoriesActionBarAndTreeListView(
 										$this->getId(),
 										$this->getModule()->getId(),
 										ProductCategory::getAll('name')
 									    );
-            $view		    = new ProductCategoriesPageView(ZurmoDefaultViewUtil::
-                                         makeViewWithBreadcrumbsForCurrentUser($this, $actionBarAndTreeView, $breadcrumbLinks, 'ProductCategoryBreadCrumbView'));
+            $view			    = new ProductCategoriesPageView(ZurmoDefaultViewUtil::
+									    makeViewWithBreadcrumbsForCurrentUser(
+										$this, $actionBarAndTreeView,
+										    $breadcrumbLinks, 'ProductBreadCrumbView'));
             echo $view->render();
         }
 
