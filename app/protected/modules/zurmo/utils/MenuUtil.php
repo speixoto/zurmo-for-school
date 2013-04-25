@@ -161,6 +161,13 @@
                     $tabMenuItems[$item['moduleId']] = $item;
                 }
             }
+            // clean up $tabMenuItems to remove empty arrays (i.e. access denied)
+            foreach($tabMenuItems as $key => $menuItem)
+            {
+                if (!is_array($menuItem)){
+                    unset($tabMenuItems[$key]);
+                }
+            }
             return $tabMenuItems;
         }
 
