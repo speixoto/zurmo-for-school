@@ -40,10 +40,15 @@
      */
     class NoLdapExtensionLoadedView extends SplashView
     {
+        protected function getIconName()
+        {
+            return 'Zurmo';
+        }
+
         protected function getMessageContent()
         {
-            return Zurmo::t('ZurmoModule', '<h2>LDAP Protocol is not enabled</h2>' .
-            '<p>The administrator must first enable LDAP protocol to configure LDAP Authentication</p>');
+            return Zurmo::t('ZurmoModule', '<h2>LDAP is not enabled in PHP</h2><div class="large-icon"></div>' .
+            '<p>The administrator must first enable LDAP for PHP to configure the LDAP authentication</p>');
         }
     }
 ?>

@@ -34,31 +34,33 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * Filter used by LDAP controller to ascertain whether the LDAP extension loaded or not.
-     * If not, then the user is instructed to contact the administrator for them to set this up.
-     */
-    class LdapExtensionCheckControllerFilter extends CFilter
+    class AutoresponderItemTestHelper
     {
-        public $controller;
-
-        protected function preFilter($filterChain)
+        public static function createAutoresponderItem($processed, $processDateTime, $autoresponder = null, $contact = null)
         {
-            if (isset($_POST['ajax']))
+            $autoresponderItem  = static::fillAutoresponderItem($processed, $processDateTime, $autoresponder, $contact);
+            $saved              = $autoresponderItem->unrestrictedSave();
+            assert('$saved');
+            return $autoresponderItem;
+        }
+
+        public static function fillAutoresponderItem($processed, $processDateTime, $autoresponder = null, $contact = null)
+        {
+            if (empty($autoresponder))
             {
-                return true;
+                $autoresponder  = RandomDataUtil::getRandomValueFromArray(Autoresponder::getAll());
             }
-            $isLdapExtensionLoaded = InstallUtil::isLdapInstalled();
-            if($isLdapExtensionLoaded)
+            if (empty($contact))
             {
-                return true;
+                $contact        = RandomDataUtil::getRandomValueFromArray(Contact::getAll());
             }
-            $messageView                  = new NoLdapExtensionLoadedView();
-            $pageViewClassName            = $this->controller->getModule()->getPluralCamelCasedName() . 'PageView';
-            $view                         = new $pageViewClassName(ZurmoDefaultViewUtil::
-                                                 makeStandardViewForCurrentUser($this->controller, $messageView));
-            echo $view->render();
-            return false;
+
+            $autoresponderItem                              = new AutoresponderItem();
+            $autoresponderItem->processed                   = $processed;
+            $autoresponderItem->processDateTime             = $processDateTime;
+            $autoresponderItem->autoresponder               = $autoresponder;
+            $autoresponderItem->contact                     = $contact;
+            return $autoresponderItem;
         }
     }
 ?>

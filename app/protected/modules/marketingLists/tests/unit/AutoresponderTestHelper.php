@@ -34,31 +34,35 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * Filter used by LDAP controller to ascertain whether the LDAP extension loaded or not.
-     * If not, then the user is instructed to contact the administrator for them to set this up.
-     */
-    class LdapExtensionCheckControllerFilter extends CFilter
+    class AutoresponderTestHelper
     {
-        public $controller;
-
-        protected function preFilter($filterChain)
+        public static function createAutoresponder($name, $subject, $textContent, $htmlContent, $secondsFromOperation,
+                                                                                  $operationType, $marketingList = null)
         {
-            if (isset($_POST['ajax']))
+            $autoresponder  = static::fillAutoresponder($name, $subject, $textContent, $htmlContent,
+                                                                    $secondsFromOperation, $operationType, $marketingList);
+            $saved          = $autoresponder->unrestrictedSave();
+            assert('$saved');
+            return $autoresponder;
+        }
+
+        public static function fillAutoresponder($name, $subject, $textContent, $htmlContent, $secondsFromOperation,
+                                                                                $operationType, $marketingList = null)
+        {
+            if (empty($marketingList))
             {
-                return true;
+                $marketingLists = MarketingList::getAll();
+                $marketingList  = RandomDataUtil::getRandomValueFromArray($marketingLists);
             }
-            $isLdapExtensionLoaded = InstallUtil::isLdapInstalled();
-            if($isLdapExtensionLoaded)
-            {
-                return true;
-            }
-            $messageView                  = new NoLdapExtensionLoadedView();
-            $pageViewClassName            = $this->controller->getModule()->getPluralCamelCasedName() . 'PageView';
-            $view                         = new $pageViewClassName(ZurmoDefaultViewUtil::
-                                                 makeStandardViewForCurrentUser($this->controller, $messageView));
-            echo $view->render();
-            return false;
+            $autoresponder                          = new Autoresponder();
+            $autoresponder->name                    = $name;
+            $autoresponder->subject                 = $subject;
+            $autoresponder->textContent             = $textContent;
+            $autoresponder->htmlContent             = $htmlContent;
+            $autoresponder->secondsFromOperation    = $secondsFromOperation;
+            $autoresponder->operationType           = $operationType;
+            $autoresponder->marketingList           = $marketingList;
+            return $autoresponder;
         }
     }
 ?>

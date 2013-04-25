@@ -34,31 +34,40 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * Filter used by LDAP controller to ascertain whether the LDAP extension loaded or not.
-     * If not, then the user is instructed to contact the administrator for them to set this up.
-     */
-    class LdapExtensionCheckControllerFilter extends CFilter
+    class AtLeastOneContentAreaRequiredValidator extends CValidator
     {
-        public $controller;
+        public $textContentPropertyName     = 'textContent';
 
-        protected function preFilter($filterChain)
+        public $htmlContentPropertyName     = 'htmlContent';
+
+        /**
+         * Validates the attribute of the model.
+         * If there is any error, the error message is added to the model.
+         * @param RedBeanModel $model the model being validated
+         * @param string $attribute the attribute being validated
+         */
+        protected function validateAttribute($object, $attribute)
         {
-            if (isset($_POST['ajax']))
+            $textContent = $this->textContentPropertyName;
+            $htmlContent = $this->htmlContentPropertyName;
+            if ((empty($object->$textContent) && empty($object->$htmlContent)))
             {
-                return true;
+                // ensure we don't add a duplicate error message.
+                if ($attribute == $textContent || !$object->hasErrors())
+                {
+                    if ($this->message !== null)
+                    {
+                        $message = $this->message;
+                    }
+                    else
+                    {
+                        $message = Zurmo::t('EmailTemplatesModule', 'Please provide at least one of the contents field.');
+                    }
+                    $this->addError($object, $attribute, $message);
+                }
+                return false;
             }
-            $isLdapExtensionLoaded = InstallUtil::isLdapInstalled();
-            if($isLdapExtensionLoaded)
-            {
-                return true;
-            }
-            $messageView                  = new NoLdapExtensionLoadedView();
-            $pageViewClassName            = $this->controller->getModule()->getPluralCamelCasedName() . 'PageView';
-            $view                         = new $pageViewClassName(ZurmoDefaultViewUtil::
-                                                 makeStandardViewForCurrentUser($this->controller, $messageView));
-            echo $view->render();
-            return false;
+            return true;
         }
     }
 ?>

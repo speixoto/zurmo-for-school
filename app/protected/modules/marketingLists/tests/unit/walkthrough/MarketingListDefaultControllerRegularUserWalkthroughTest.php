@@ -50,12 +50,14 @@
 
             static::$listOwnedBySuper = MarketingListTestHelper::createMarketingListByName('MarketingListName',
                                                                                             'MarketingList Description');
+            ReadPermissionsOptimizationUtil::rebuild();
         }
 
         public function setUp()
         {
             parent::setUp();
             $this->user = $this->logoutCurrentUserLoginNewUserAndGetByUsername('nobody');
+            Yii::app()->user->userModel = $this->user;
         }
 
         public function testRegularUserAllDefaultControllerActions()

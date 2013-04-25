@@ -47,12 +47,14 @@
 
             MarketingListTestHelper::createMarketingListByName('MarketingListName', 'MarketingList Description');
             MarketingListTestHelper::createMarketingListByName('MarketingListName2', 'MarketingList Description2');
+            ReadPermissionsOptimizationUtil::rebuild();
         }
 
         public function setUp()
         {
             parent::setUp();
             $this->user = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
+            Yii::app()->user->userModel = $this->user;
         }
 
         public function testSuperUserAllDefaultControllerActions()
