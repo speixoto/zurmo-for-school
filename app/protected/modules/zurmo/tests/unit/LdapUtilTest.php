@@ -50,17 +50,11 @@
                 $this->markTestSkipped(Zurmo::t('ZurmoModule', 'Test Ldap settings are not configured in perInstanceTest.php file.'));
             }
             //to show the fix for resolveBindRegisteredDomain with incorrect Base Domain
-            $bindRegisteredDomain = LdapUtil::resolveBindRegisteredDomain(
-                                    Yii::app()->params['authenticationTestSettings']
-                                    ['ldapSettings']['ldapBindRegisteredDomain'], 
-                                    'test');
-            $this->assertEquals(Yii::app()->params['authenticationTestSettings']
-                                ['ldapSettings']['ldapBindRegisteredDomain'], $bindRegisteredDomain);                        
+            $bindRegisteredDomain = LdapUtil::resolveBindRegisteredDomain('testUser', 'test');
+            $this->assertEquals('testUser', $bindRegisteredDomain);                                
             //to show the fix for resolveBindRegisteredDomain with correct Base Domain
-            $bindRegisteredDomain   = LdapUtil::resolveBindRegisteredDomain(
-                                      Yii::app()->params['authenticationTestSettings']['ldapSettings']['ldapBindRegisteredDomain'], 
-                                      Yii::app()->params['authenticationTestSettings']['ldapSettings']['ldapBaseDomain']);            
-            $this->assertEquals('admin@zurmo.local', $bindRegisteredDomain);
+            $bindRegisteredDomain = LdapUtil::resolveBindRegisteredDomain('test', 'dc=server,dc=local');            
+            $this->assertEquals('test@server.local', $bindRegisteredDomain);
         }
     }
 ?>
