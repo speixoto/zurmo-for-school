@@ -37,8 +37,15 @@
     /**
      * Extends the StackedExtendedGridView to provide a 'stacked' Kanban Board format for viewing lists of data.
      */
-    class KanbanExtendedGridView extends StackedExtendedGridView
+    class KanbanBoardExtendedGridView extends StackedExtendedGridView
     {
+        /**
+         * Override since Kanban Board does not support pagination. It would always show all available regardless of
+         * pagination.
+         * @var bool
+         */
+        public $enablePagination = false;
+
         /**
          * @var string
          */
@@ -54,6 +61,12 @@
          */
         public $groupByDataAndTranslatedLabels = array();
 
+        public function init()
+        {
+            $this->registerScripts();
+            parent::init();
+        }
+
         /**
          * Renders the table body.
          */
@@ -62,30 +75,26 @@
             $data        = $this->dataProvider->getData();
             $n           = count($data);
             $columnsData = $this->resolveDataIntoKanbanColumns();
-
-
             echo "<tbody>\n";
             echo "<tr><td>\n";
-
             if ($n > 0)
             {
                 echo "<div>\n";
                 foreach($columnsData as $attributeValue => $attributeValueAndData)
                 {
-                    echo "<div>\n";
+                    echo "<div style='float:left;'>\n";
+                    echo "<div data-value='" . $attributeValue . "' class='droppable-dynamic-rows-container'>\n";
                     echo ZurmoHtml::tag('div', array(), $this->resolveGroupByColumnHeaderLabel($attributeValue));
-                    //todo: need to make sortable , we aren't using widget so this can be problematic.
                     //todo: swap all these declarations with ZurmoHtml::tag and maybe also in stacked Extended do the same thing?
                     echo "<ul>\n";
                     foreach($attributeValueAndData as $row)
                     {
-                        echo "<li>\n";
-                        //todo: i could pass to juisortable maybe.
-                        //todo: i don't really want sortable, i want just droppable i guess.
+                        echo "<li data-id='" . $this->dataProvider->data[$row]->id . "' class='item-to-place'>\n";
                         $this->renderRowAsTableCellOrDiv($row, self::ROW_TYPE_DIV);
                         echo "</li>\n";
                     }
                     echo "</ul>\n";
+                    echo "</div>\n";
                     echo "</div>\n";
                 }
                 echo "</div>\n";
@@ -96,7 +105,6 @@
                 $this->renderEmptyText();
 
             }
-            //todO: also kill paging since it is not needed. well we might need the pager for refreshing not sure.
             echo "</td></tr>\n";
             echo "</tbody>\n";
         }
@@ -131,6 +139,54 @@
                 $columnsData[$value] = array();
             }
             return $columnsData;
+        }
+
+        protected function registerScripts()
+        {
+            Yii::app()->clientScript->registerScriptFile(
+                Yii::app()->getAssetManager()->publish(
+                    Yii::getPathOfAlias('application.core.kanbanBoard.widgets.assets')) . '/KanbanUtils.js');
+            $script = '
+                $(".droppable-dynamic-rows-container").live("drop", function(event, ui)
+                {
+                   ' . $this->getAjaxForDroppedAttribute() . '
+                   $(this).append(ui.draggable);
+                });
+            ';
+            Yii::app()->getClientScript()->registerScript('KanbanDragDropScript', $script);
+        }
+
+        /**
+         * @return string
+         */
+        protected function getAjaxForDroppedAttribute()
+        {
+            return ZurmoHtml::ajax(array(
+                'type'     => 'GET',
+                'url'      => 'js:$.param.querystring("' . $this->getUpdateAttributeValueUrl() .
+                              '", "id=" + ui.helper.attr("id") + "&value=" + $(this).data("value"))',
+                'beforeSend' => 'js:function()
+                    {
+                        $(".ui-overlay-block").fadeIn(50);
+                        makeLargeLoadingSpinner(true, ".ui-overlay-block"); //- add spinner to block anything else
+                    }',
+                'success' => 'js:function(data)
+                    {
+                        makeLargeLoadingSpinner(false, ".ui-overlay-block");
+                        $(".ui-overlay-block").fadeOut(50);
+                    }'
+            ));
+        }
+
+        /**
+         * @return string
+         */
+        protected function getUpdateAttributeValueUrl()
+        {
+            $modelClassName  = $this->dataProvider->getModelClassName();
+            $moduleClassName = $modelClassName::getModuleClassName();
+            $moduleId        = $moduleClassName::getDirectoryName();
+            return  Yii::app()->createUrl($moduleId . '/default/updateAttributeValue', array('attribute' => $this->groupByAttribute));
         }
     }
 ?>

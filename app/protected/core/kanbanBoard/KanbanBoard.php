@@ -56,17 +56,17 @@
                 throw new NotSupportedException();
             }
         }
-        //todo: kill checkbox column on kanban. and mass export/update.... i think for kanban.
+        //todo: kill mass export/update.... i think for kanban.
         public static function getGridViewWidgetPath()
         {
-            return 'application.core.kanbanBoard.widgets.KanbanExtendedGridView';
+            return 'application.core.kanbanBoard.widgets.KanbanBoardExtendedGridView';
         }
 
         public function getGridViewParams()
         {
             //todo: groupByAttributeVisibleValues
             return array('groupByAttribute'               => $this->groupByAttribute,
-                         'groupByAttributeVisibleValues'  => array('Negotiating', 'Prospecting'),
+                         'groupByAttributeVisibleValues'  => array('Negotiating', 'Qualification', 'Prospecting', 'Verbal'),
                          'groupByDataAndTranslatedLabels' => $this->resolveGroupByDataAndTranslatedLabels());
         }
 

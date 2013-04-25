@@ -48,6 +48,31 @@
             $this->actionList();
         }
 
+        /**
+         * Currently supports an attribute that is a CustomField
+         * @param string $id
+         * @param string $attribute
+         * @param string $value
+         * @throws NotSupportedException
+         * @throws FailedToSaveModelException
+         */
+        public function actionUpdateAttributeValue($id, $attribute, $value)
+        {
+            $modelClassName = $this->getModule()->getPrimaryModelName();
+            $model          = $modelClassName::getById(intval($id));
+            ControllerSecurityUtil::resolveAccessCanCurrentUserWriteModel($model);
+            if(!$model->isAttribute($attribute) || !$model->{$attribute} instanceof CustomField)
+            {
+                throw new NotSupportedException();
+            }
+            $model->{$attribute}->value = $value;
+            $saved                      = $model->save();
+            if(!$saved)
+            {
+                throw new FailedToSaveModelException();
+            }
+        }
+
         public function actionLoadSavedSearch($id, $redirectAction = 'list')
         {
             $savedSearch = SavedSearch::getById((int)$id);
