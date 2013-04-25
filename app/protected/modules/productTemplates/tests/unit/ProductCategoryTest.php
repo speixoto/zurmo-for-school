@@ -158,28 +158,28 @@
 
         public function testCategoryProductTemplates()
         {
-           $user                  = UserTestHelper::createBasicUser('Steven 1');
-           $productCategory       = new ProductCategory();
-           $productCategory->name = "My Test Category";
-           $productTemplate       = ProductTemplateTestHelper::createProductTemplateByName("Test Template");
+           $user			= UserTestHelper::createBasicUser('Steven 1');
+           $productCategory		= new ProductCategory();
+           $productCategory->name	= "My Test Category";
+           $productTemplate		= ProductTemplateTestHelper::createProductTemplateByName("Test Template");
 
            $productCategory->productTemplates->add($productTemplate);
            $this->assertTrue($productCategory->save());
-           $id                         = $productCategory->id;
+           $id				= $productCategory->id;
            unset($productCategory);
-           $productCategory            = ProductCategory::getById($id);
+           $productCategory		= ProductCategory::getById($id);
            $this->assertEquals(1, count($productCategory->productTemplates));
            $this->assertEquals($productTemplate, $productCategory->productTemplates[0]);
         }
 
 	public function testChildProductCategories()
         {
-           $childProductCategory       = new ProductCategory();
+           $childProductCategory	    = new ProductCategory();
            $childProductCategory->name      = "My Test Category Child";
-	   $existingCats = ProductCategory::getByName('My Test Category');
+	   $existingCats		    = ProductCategory::getByName('My Test Category');
 	   $childProductCategory->productCategory = $existingCats[0];
            $this->assertTrue($childProductCategory->save());
-           $id                         = $childProductCategory->id;
+           $id				    = $childProductCategory->id;
            unset($childProductCategory);
            $childProductCategory            = ProductCategory::getById($id);
 	   $this->assertEquals("My Test Category Child", $childProductCategory->name);
