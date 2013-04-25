@@ -49,6 +49,7 @@
         {
             $pageSize                       = Yii::app()->pagination->resolveActiveForCurrentUserByType(
                                               'listPageSize', get_class($this->getModule()));
+	    $activeActionElementType        = 'ProductsLink';
             $product                        = new Product(false);
             $searchForm                     = new ProductsSearchForm($product);
             $listAttributesSelector         = new ListAttributesSelector('ProductsListView', get_class($this->getModule()));
@@ -69,7 +70,8 @@
             }
             else
             {
-                $mixedView  = $this->makeActionBarSearchAndListView($searchForm, $dataProvider);
+                $mixedView  = $this->makeActionBarSearchAndListView($searchForm, $dataProvider,
+								    'SecuredActionBarForProductsSearchAndListView', null, $activeActionElementType);
                 $view	    = new ProductsPageView(ZurmoDefaultViewUtil::
                                          makeStandardViewForCurrentUser($this, $mixedView));
             }

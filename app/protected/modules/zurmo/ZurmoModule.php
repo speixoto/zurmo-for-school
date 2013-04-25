@@ -159,7 +159,6 @@
                     'opportunities',
                     'reports',
                     'products',
-                    'productTemplates',
                 )
             );
             return $metadata;
