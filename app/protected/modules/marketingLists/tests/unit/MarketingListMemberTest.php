@@ -116,15 +116,15 @@
             $this->assertNotNull($marketingList);
             $contact                            = RandomDataUtil::getRandomValueFromArray(Contact::getAll());
             $this->assertNotNull($contact);
-            $added                              = MarketingListMember::addNewMember($marketingList, $contact->id, false, $contact);
+            $added                              = $marketingList->addNewMember($contact->id, false, $contact);
             $this->assertTrue($added);
-            $added                              = MarketingListMember::addNewMember($marketingList, $contact->id, false, $contact);
+            $added                              = $marketingList->addNewMember($contact->id, false, $contact);
             $this->assertFalse($added);
-            $memberCount                        = MarketingListMember::memberAlreadyExists($marketingList->id, $contact->id);
+            $memberCount                        = $marketingList->memberAlreadyExists($contact->id);
             $this->assertEquals(1, $memberCount);
             $marketingList                     = MarketingListTestHelper::createMarketingListByName('test marketing List 04');
             $this->assertNotNull($marketingList);
-            $added                              = MarketingListMember::addNewMember($marketingList, $contact->id, false, $contact);
+            $added                              = $marketingList->addNewMember($contact->id, false, $contact);
             $this->assertTrue($added);
         }
 

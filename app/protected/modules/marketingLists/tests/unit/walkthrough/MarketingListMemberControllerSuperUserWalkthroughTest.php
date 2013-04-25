@@ -66,6 +66,8 @@
                 $contact2    = ContactTestHelper::createContactWithAccountByNameForOwner('superContact2' . $i, $super, $account);
                 MarketingListMemberTestHelper::createMarketingListMember($unsubscribed, $marketingList1, $contact1);
                 MarketingListMemberTestHelper::createMarketingListMember($unsubscribed, $marketingList2, $contact2);
+
+                ReadPermissionsOptimizationUtil::rebuild();
             }
         }
 
@@ -73,6 +75,7 @@
         {
             parent::setUp();
             $this->user = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
+            Yii::app()->user->userModel = $this->user;
         }
 
         public function testMassSubscribeActionsForSelectedIds()
