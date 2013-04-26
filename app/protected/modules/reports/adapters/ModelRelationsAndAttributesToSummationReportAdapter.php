@@ -94,7 +94,19 @@
                 if ($addAttribute)
                 {
                     $resolvedAttribute = $groupBy->getResolvedAttribute();
-                    $attributes[$resolvedAttribute] = array('label' => $groupBy->getDisplayLabel());
+                    if ($this->isAttributeACalculationOrModifier($resolvedAttribute))
+                    {
+                        $realAttributeName = static::resolveRealAttributeName($resolvedAttribute);
+                        $attributes[$resolvedAttribute] = array('label' =>
+                        $this->resolveDisplayCalculationLabel($realAttributeName,
+                            $this->getCalculationOrModifierType($resolvedAttribute)));
+                    }
+                    else
+                    {
+                        $realAttributeName = static::resolveRealAttributeName($resolvedAttribute);
+                        $attributes[$resolvedAttribute] = array('label' => $this->model->getAttributeLabel($realAttributeName));
+                    }
+
                 }
             }
             foreach ($existingDisplayAttributes as $displayAttribute)
@@ -109,7 +121,10 @@
                     if (!$displayAttribute->hasRelatedData() &&
                         $displayAttribute->getResolvedAttributeModelClassName() == get_class($this->model))
                     {
-                        $attributes[$resolvedAttribute] = array('label' => $displayAttribute->getDisplayLabel());
+                        $realAttributeName = static::resolveRealAttributeName($resolvedAttribute);
+                        $attributes[$resolvedAttribute] = array('label' =>
+                            $this->resolveDisplayCalculationLabel($realAttributeName,
+                                $this->getCalculationOrModifierType($resolvedAttribute)));
                     }
                 }
             }
