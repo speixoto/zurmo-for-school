@@ -73,7 +73,6 @@
             $this->runControllerShouldResultInAccessFailureAndGetContent('marketingLists/default/details');
             $this->resetGetArray();
 
-
             $this->user->setRight('MarketingListsModule', MarketingListsModule::getAccessRight());
             $this->assertTrue($this->user->save());
             $this->runControllerWithNoExceptionsAndGetContent('marketingLists/default');

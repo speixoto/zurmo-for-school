@@ -37,11 +37,12 @@
     class AutoresponderTestHelper
     {
         public static function createAutoresponder($name, $subject, $textContent, $htmlContent, $secondsFromOperation,
-                                                                                  $operationType, $marketingList = null)
+                                                                                  $operationType, $marketingList = null,
+                                                                                  $runValidation = true)
         {
             $autoresponder  = static::fillAutoresponder($name, $subject, $textContent, $htmlContent,
                                                                     $secondsFromOperation, $operationType, $marketingList);
-            $saved          = $autoresponder->unrestrictedSave();
+            $saved          = $autoresponder->unrestrictedSave($runValidation);
             assert('$saved');
             return $autoresponder;
         }
@@ -52,7 +53,10 @@
             if (empty($marketingList))
             {
                 $marketingLists = MarketingList::getAll();
-                $marketingList  = RandomDataUtil::getRandomValueFromArray($marketingLists);
+                if  (!empty($marketingLists))
+                {
+                    $marketingList  = RandomDataUtil::getRandomValueFromArray($marketingLists);
+                }
             }
             $autoresponder                          = new Autoresponder();
             $autoresponder->name                    = $name;

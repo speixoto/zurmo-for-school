@@ -185,7 +185,6 @@
             return true;
         }
 
-
         /**
          * @param $type
          * @return Array of EmailTemplate models

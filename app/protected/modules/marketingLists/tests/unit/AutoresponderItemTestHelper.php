@@ -48,13 +48,20 @@
         {
             if (empty($autoresponder))
             {
-                $autoresponder  = RandomDataUtil::getRandomValueFromArray(Autoresponder::getAll());
+                $autoresponders = Autoresponder::getAll();
+                if (!empty($autoresponders))
+                {
+                    $autoresponder  = RandomDataUtil::getRandomValueFromArray($autoresponders);
+                }
             }
             if (empty($contact))
             {
-                $contact        = RandomDataUtil::getRandomValueFromArray(Contact::getAll());
+                $contacts       = Contact::getAll();
+                if (!empty($contacts))
+                {
+                    $contact        = RandomDataUtil::getRandomValueFromArray($contacts);
+                }
             }
-
             $autoresponderItem                              = new AutoresponderItem();
             $autoresponderItem->processed                   = $processed;
             $autoresponderItem->processDateTime             = $processDateTime;

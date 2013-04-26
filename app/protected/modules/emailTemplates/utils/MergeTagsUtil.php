@@ -125,6 +125,11 @@
             return $resolvedMergeTagsCount;
         }
 
+        public function getContent()
+        {
+            return $this->content;
+        }
+
         protected function resolveFullyQualifiedMergeTagsRegularExpression(& $mergeTags)
         {
             array_walk($mergeTags, 'static::resolveFullyQualifiedMergeTagRegularExpression');

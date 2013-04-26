@@ -111,7 +111,6 @@
             $this->setGetArray(array('id' => $emailTemplate->id));
             $this->runControllerWithNoExceptionsAndGetContent('emailTemplates/default/edit');
 
-
             $this->user->setRight('EmailTemplatesModule', EmailTemplatesModule::getDeleteRight());
             $this->assertTrue($this->user->save());
             $this->assertTrue($this->user->save());

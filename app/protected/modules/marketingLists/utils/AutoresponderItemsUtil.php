@@ -39,12 +39,10 @@
      */
     class AutoresponderItemsUtil
     {
-        // TODO: @Shoaibi: Critical99: These needs tests.
-
         public static function processDueAutoresponderItem(AutoresponderItem $autoresponderItem)
         {
             $contact                                = $autoresponderItem->contact;
-            if ($contact->id < 0)
+            if (empty($contact) || $contact->id < 0)
             {
                 throw new NotFoundException();
             }
@@ -76,41 +74,23 @@
             $invalidTags            = array();
             $textMergeTagsUtil      = MergeTagsUtilFactory::make($templateType, $language, $textContent);
             $htmlMergeTagsUtil      = MergeTagsUtilFactory::make($templateType, $language, $htmlContent);
-            $textMergeTagsCount     = $textMergeTagsUtil->extractMergeTagsPlaceHolders();
-            $htmlMergeTagsCount     = $htmlMergeTagsUtil->extractMergeTagsPlaceHolders();
+            $resolvedTextContent    = $textMergeTagsUtil->resolveMergeTags($contact,
+                                                                            $invalidTags,
+                                                                            $language,
+                                                                            $errorOnFirstMissing);
+            $resolvedHtmlContent    = $htmlMergeTagsUtil->resolveMergeTags($contact,
+                                                                            $invalidTags,
+                                                                            $language,
+                                                                            $errorOnFirstMissing);
 
-            if ($textMergeTagsCount)
+            if ($resolvedTextContent && $resolvedHtmlContent)
             {
-                $mergeTagsResolvedSuccessfully = $textMergeTagsUtil->resolveMergeTagsArrayToAttributes(
-                                                                                                    $contact,
-                                                                                                    $invalidTags,
-                                                                                                    $language,
-                                                                                                    $errorOnFirstMissing);
-                if ($mergeTagsResolvedSuccessfully)
-                {
-                    $textContent    = $textMergeTagsUtil->resolveMergeTagsInTemplateToAttributes();
-                }
-                else
-                {
-                    throw new NotSupportedException(Zurmo::t('EmailTemplatesModule', 'Provided content contains few invalid merge tags.'));
-                }
+                $textContent    = $resolvedTextContent;
+                $htmlContent    = $resolvedHtmlContent;
             }
-
-            if ($htmlMergeTagsCount)
+            else
             {
-                $mergeTagsResolvedSuccessfully = $htmlMergeTagsUtil->resolveMergeTagsArrayToAttributes(
-                                                                                                    $contact,
-                                                                                                    $invalidTags,
-                                                                                                    $language,
-                                                                                                    $errorOnFirstMissing);
-                if ($mergeTagsResolvedSuccessfully)
-                {
-                    $htmlContent    = $htmlMergeTagsUtil->resolveMergeTagsInTemplateToAttributes();
-                }
-                else
-                {
-                    throw new NotSupportedException(Zurmo::t('EmailTemplatesModule', 'Provided content contains few invalid merge tags.'));
-                }
+                throw new NotSupportedException(Zurmo::t('EmailTemplatesModule', 'Provided content contains few invalid merge tags.'));
             }
         }
 

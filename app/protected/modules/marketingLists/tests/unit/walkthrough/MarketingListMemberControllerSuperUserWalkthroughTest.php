@@ -52,7 +52,7 @@
             $marketingList2 = MarketingListTestHelper::createMarketingListByName('MarketingList2',
                                                                                         'MarketingList Description2');
 
-            for($i = 0; $i < 17; $i++)
+            for ($i = 0; $i < 17; $i++)
             {
                 if ($i%2)
                 {
@@ -91,7 +91,7 @@
             $subscribedCount    = MarketingListMember::getCountByMarketingListIdAndUnsubscribed($listId, 0);
 
             $selectedIdsArray   = array();
-            foreach($members as $member)
+            foreach ($members as $member)
             {
                 if ($member->unsubscribed == 1)
                 {
@@ -128,7 +128,7 @@
 
             // Mass Subscribe, multiple pages subscribe, first page
             $selectedIdsArray   = array();
-            foreach($members as $member)
+            foreach ($members as $member)
             {
                 if ($member->unsubscribed == 1)
                 {
@@ -162,7 +162,6 @@
             $expectedSubscribedCountAfterFirstRequest   = $subscribedCount + $pageSize;
             $actualSubscribedCountAfterFirstRequest     = MarketingListMember::getCountByMarketingListIdAndUnsubscribed($listId, 0);
             $this->assertEquals($expectedSubscribedCountAfterFirstRequest, $actualSubscribedCountAfterFirstRequest);
-
 
             // Mass Subscribe, multiple pages subscribe, second page
             $this->setGetArray(
@@ -299,7 +298,7 @@
             $unsubscribedCount    = MarketingListMember::getCountByMarketingListIdAndUnsubscribed($listId, 1);
 
             $selectedIdsArray   = array();
-            foreach($members as $member)
+            foreach ($members as $member)
             {
                 if ($member->unsubscribed == 0)
                 {
@@ -336,7 +335,7 @@
 
             // Mass Unsubscribe, multiple pages unsubscribe, first page
             $selectedIdsArray   = array();
-            foreach($members as $member)
+            foreach ($members as $member)
             {
                 if ($member->unsubscribed == 0)
                 {
@@ -370,7 +369,6 @@
             $expectedUnsubscribedCountAfterFirstRequest   = $unsubscribedCount + $pageSize;
             $actualUnsubscribedCountAfterFirstRequest     = MarketingListMember::getCountByMarketingListIdAndUnsubscribed($listId, 1);
             $this->assertEquals($expectedUnsubscribedCountAfterFirstRequest, $actualUnsubscribedCountAfterFirstRequest);
-
 
             // Mass Unsubscribe, multiple pages unsubscribe, second page
             $this->setGetArray(
@@ -504,7 +502,7 @@
             $this->assertCount(17, $members);
 
             $selectedIdsArray   = array();
-            foreach($members as $member)
+            foreach ($members as $member)
             {
                 $selectedIdsArray[]     = $member->id;
                 if (count($selectedIdsArray) === 4)
@@ -543,7 +541,7 @@
             $this->assertNotEmpty($members);
             $this->assertEquals(17, count($members));
             $selectedIdsArray   = array();
-            foreach($members as $member)
+            foreach ($members as $member)
             {
                 $selectedIdsArray[]     = $member->id;
                 if (count($selectedIdsArray) === 7)
@@ -577,7 +575,6 @@
             $members        = $list->marketingListMembers;
             $this->assertNotEmpty($members);
             $this->assertEquals(12, count($members));
-
 
             // Mass delete, multiple pages delete, second page
             $this->setGetArray(

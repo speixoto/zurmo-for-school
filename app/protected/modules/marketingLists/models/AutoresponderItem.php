@@ -207,7 +207,7 @@
         {
             $autoresponders = Autoresponder::getByOperationTypeAndMarketingListId($operation, $marketingListId);
             $now = time();
-            foreach($autoresponders as $autoresponder)
+            foreach ($autoresponders as $autoresponder)
             {
                 $processTimestamp = $now + $autoresponder->secondsFromOperation;
                 $processDateTime = DateTimeUtil::convertTimestampToDbFormatDateTime($processTimestamp);

@@ -46,9 +46,8 @@
             $nobody = UserTestHelper::createBasicUser('nobody');
             $nobody->setRight('MarketingListsModule', MarketingListsModule::getAccessRight());
             $saved = $nobody->save();
-            assert('$saved');
+            static::assertTrue($saved);
             Yii::app()->user->userModel = $nobody;
-
 
             //Setup test data owned by the super user.
             $account    = AccountTestHelper::createAccountByNameForOwner('nobodyAccount', $nobody);

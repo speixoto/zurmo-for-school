@@ -35,7 +35,6 @@
      ********************************************************************************/
     class AutoresponderItemTest extends ZurmoBaseTest
     {
-
         public static function setUpBeforeClass()
         {
             parent::setUpBeforeClass();
@@ -93,7 +92,7 @@
          */
         public function testGetByProcessed()
         {
-            for($i = 0; $i < 5; $i++)
+            for ($i = 0; $i < 5; $i++)
             {
                 $time                               = DateTimeUtil::convertTimestampToDbFormatDateTime(strtotime('+1 day'));
                 $processed                          = AutoresponderItem::NOT_PROCESSED;
@@ -137,7 +136,7 @@
                                                                                     Autoresponder::OPERATION_SUBSCRIBE,
                                                                                     $marketingList);
             $this->assertNotNull($autoresponderTenDaysFromNow);
-            for($i = 0; $i < 10; $i++)
+            for ($i = 0; $i < 10; $i++)
             {
                 $contact = ContactTestHelper::createContactByNameForOwner('contact ' . $i, Yii::app()->user->userModel);
                 $this->assertNotNull($contact);
@@ -167,8 +166,7 @@
 
             $autoresponderItems         = AutoresponderItem::getAll();
             $this->assertNotEmpty($autoresponderItems);
-            $this->assertCount(17, $autoresponderItems)
-            ;
+            $this->assertCount(17, $autoresponderItems);
             $autoresponderTodayProcessed  = AutoresponderItem::getByProcessedAndAutoresponderId(AutoresponderItem::PROCESSED,
                                                                                                 $autoresponderToday->id);
             $this->assertNotEmpty($autoresponderTodayProcessed);
@@ -200,7 +198,7 @@
             $autoresponder2     = AutoresponderTestHelper::createAutoresponder('autoresponder 02', 'subject 02', 'text 02',
                                                     'html 02', 20, Autoresponder::OPERATION_SUBSCRIBE,  $marketingList);
             $this->assertNotNull($autoresponder2);
-            for($i = 0; $i < 10; $i++)
+            for ($i = 0; $i < 10; $i++)
             {
                 $contact = ContactTestHelper::createContactByNameForOwner('contact 0' . $i, Yii::app()->user->userModel);
                 $this->assertNotNull($contact);
@@ -259,7 +257,7 @@
             $autoresponder4     = AutoresponderTestHelper::createAutoresponder('autoresponder 04', 'subject 04', 'text 04',
                                                     'html 04', 20, Autoresponder::OPERATION_SUBSCRIBE,  $marketingList[0]);
             $this->assertNotNull($autoresponder4);
-            for($i = 0; $i < 10; $i++)
+            for ($i = 0; $i < 10; $i++)
             {
                 if ($i % 3)
                 {
@@ -332,7 +330,6 @@
             $this->assertCount(2, $autoresponder4NotProcessedFiveDaysFromNow);
         }
 
-
         /**
          * @depends testCreateAndGetAutoresponderItemById
          */
@@ -380,7 +377,6 @@
                                                                                         $autoresponder->id);
             $this->assertNotEmpty($autoresponderItems);
             $this->assertCount(1, $autoresponderItems);
-
         }
 
         /**
