@@ -587,8 +587,6 @@
                     case 'UsernameLengthValidator':
                     case 'ValidateTimeZone':
                     case 'AtLeastOneContentAreaRequiredValidator':
-                    case 'AutoresponderMergeTagsValidator':
-                    case 'EmailTemplateMergeTagsValidator':
                         break;
 
                     case 'RedBeanModelTypeValidator':
