@@ -33,10 +33,10 @@
         protected function renderContent()
         {
 	    $singularLabel  = ProductCategory::getModelLabelByTypeAndLanguage('Singular');
-	    $pluralLabel    = ProductCategory::getModelLabelByTypeAndLanguage('Plural');
+	    $pluralLabel    = Zurmo::t('ProductTemplatesModule', 'Categories');
             $content	    = $this->renderViewToolBar(false);
             $content	    .= '<div>';
-            $content	    .= '<h1>' . $pluralLabel . '</h1>';
+            //$content	    .= '<h1>' . $pluralLabel . '</h1>';
             $content	    .= $this->renderTreeMenu('productCategory', 'productCategories', $singularLabel);
             $content	    .= '</div>';
             return $content;

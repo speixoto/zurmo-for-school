@@ -33,7 +33,7 @@
 
         public static function getDisplayLabel()
         {
-            return Zurmo::t('ProductTemplatesModule', 'Markup Over Cost');
+            return Zurmo::t('ProductTemplatesModule', 'Markup Over Cost Percent');
         }
 
         public static function getType()

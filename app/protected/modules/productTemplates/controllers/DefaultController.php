@@ -77,7 +77,7 @@
                 $mixedView  = $this->makeActionBarSearchAndListView($searchForm, $dataProvider,
 								    'SecuredActionBarForProductsSearchAndListView',
 								    null, $activeActionElementType);
-                $view	    = new ProductTemplatesPageView(ZurmoDefaultViewUtil::
+                $view	    = new ProductTemplatesPageView(ProductDefaultViewUtil::
 							   makeViewWithBreadcrumbsForCurrentUser(
 							   $this, $mixedView, $breadcrumbLinks, 'ProductBreadCrumbView'));
             }
@@ -86,6 +86,10 @@
 
         public function actionDetails($id)
         {
+	    $title           = Zurmo::t('ProductTemplatesModule', 'Catalog Item Detail');
+            $breadcrumbLinks = array(
+                 $title,
+            );
             $productTemplate = static::getModelAndCatchNotFoundAndDisplayError('ProductTemplate', intval($id));
 	    if(Yii::app()->request->isAjaxRequest)
 	    {
@@ -110,28 +114,39 @@
 	    }
             ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($productTemplate);
             $detailsView        = new ProductTemplateDetailsView($this->getId(), $this->getModule()->getId(), $productTemplate);
-            $view		= new ProductTemplatesPageView(ZurmoDefaultViewUtil::
-									makeStandardViewForCurrentUser($this, $detailsView));
+            $view		= new ProductTemplatesPageView(ProductDefaultViewUtil::
+									makeViewWithBreadcrumbsForCurrentUser(
+										$this, $detailsView, $breadcrumbLinks, 'ProductBreadCrumbView'));
             echo $view->render();
         }
 
         public function actionCreate()
         {
+	    $title           = Zurmo::t('ProductTemplatesModule', 'Create Catalog Item');
+            $breadcrumbLinks = array(
+                 $title,
+            );
             $editAndDetailsView = $this->makeEditAndDetailsView(
                                             $this->attemptToSaveModelFromPost(new ProductTemplate()), 'Edit');
-            $view		= new ProductTemplatesPageView(ZurmoDefaultViewUtil::
-									makeStandardViewForCurrentUser($this, $editAndDetailsView));
+            $view		= new ProductTemplatesPageView(ProductDefaultViewUtil::
+									makeViewWithBreadcrumbsForCurrentUser(
+										$this, $editAndDetailsView, $breadcrumbLinks, 'ProductBreadCrumbView'));
             echo $view->render();
         }
 
         public function actionEdit($id, $redirectUrl = null)
         {
+	    $title           = Zurmo::t('ProductTemplatesModule', 'Edit Catalog Item');
+            $breadcrumbLinks = array(
+                 $title,
+            );
             $productTemplate = ProductTemplate::getById(intval($id));
             ControllerSecurityUtil::resolveAccessCanCurrentUserWriteModel($productTemplate);
-            $view = new ProductTemplatesPageView(ZurmoDefaultViewUtil::
-                                         makeStandardViewForCurrentUser($this,
-                                             $this->makeEditAndDetailsView(
-                                                 $this->attemptToSaveModelFromPost($productTemplate, $redirectUrl), 'Edit')));
+            $view = new ProductTemplatesPageView(ProductDefaultViewUtil::
+						     makeViewWithBreadcrumbsForCurrentUser($this,
+							 $this->makeEditAndDetailsView(
+							     $this->attemptToSaveModelFromPost(
+								     $productTemplate, $redirectUrl), 'Edit'), $breadcrumbLinks, 'ProductBreadCrumbView'));
             echo $view->render();
         }
 

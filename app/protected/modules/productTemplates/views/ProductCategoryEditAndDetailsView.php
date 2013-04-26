@@ -72,8 +72,7 @@
 
         protected function getNewModelTitleLabel()
         {
-	    $singularLabel = ProductCategory::getModelLabelByTypeAndLanguage('Singular');
-	    return Zurmo::t('ProductTemplatesModule', 'Create ' . $singularLabel,  array());
+	    return Zurmo::t('ProductTemplatesModule', 'Create Category',  array());
         }
 
 	public static function getDesignerRulesType()

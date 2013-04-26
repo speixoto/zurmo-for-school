@@ -33,7 +33,7 @@
 
         public static function getDisplayLabel()
         {
-            return Zurmo::t('ProductTemplatesModule', 'Profit Margin');
+            return Zurmo::t('ProductTemplatesModule', 'Profit Margin Percent');
         }
 
         public static function getType()

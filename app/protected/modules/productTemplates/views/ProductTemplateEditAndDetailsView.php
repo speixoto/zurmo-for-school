@@ -147,7 +147,7 @@
 
         protected function getNewModelTitleLabel()
         {
-            return Zurmo::t('ProductTemplatesModule', 'Create ProductTemplatesModuleSingularLabel',
+            return Zurmo::t('ProductTemplatesModule', 'Create Catalog Item',
                                      LabelUtil::getTranslationParamsForAllModules());
         }
     }

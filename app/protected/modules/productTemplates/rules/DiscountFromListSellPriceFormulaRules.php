@@ -33,7 +33,7 @@
 
         public static function getDisplayLabel()
         {
-            return Zurmo::t('ProductTemplatesModule', 'Discount From List');
+            return Zurmo::t('ProductTemplatesModule', 'Discount From List Percent');
         }
 
         public static function getType()

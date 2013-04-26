@@ -86,6 +86,10 @@
 
         public function actionDetails($id)
         {
+	    $title           = Zurmo::t('ProductsModule', 'Product Detail');
+            $breadcrumbLinks = array(
+                 $title,
+            );
             $product = static::getModelAndCatchNotFoundAndDisplayError('Product', intval($id));
 	    if(Yii::app()->request->isAjaxRequest)
 	    {
@@ -109,28 +113,39 @@
 	    }
             ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($product);
 	    $detailsView	    = new ProductDetailsView($this->getId(), $this->getModule()->getId(), $product);
-            $view		    = new ProductsPageView(ZurmoDefaultViewUtil::
-                                         makeStandardViewForCurrentUser($this, $detailsView));
+            $view		    = new ProductsPageView(ProductDefaultViewUtil::
+							    makeViewWithBreadcrumbsForCurrentUser(
+								    $this, $detailsView, $breadcrumbLinks, 'ProductBreadCrumbView'));
             echo $view->render();
         }
 
         public function actionCreate()
         {
+	    $title           = Zurmo::t('ProductsModule', 'Create Product');
+            $breadcrumbLinks = array(
+                 $title,
+            );
             $editAndDetailsView = $this->makeEditAndDetailsView(
                                             $this->attemptToSaveModelFromPost(new Product()), 'Edit');
-            $view		= new ProductsPageView(ZurmoDefaultViewUtil::
-					    makeStandardViewForCurrentUser($this, $editAndDetailsView));
+            $view		= new ProductsPageView(ProductDefaultViewUtil::
+							makeViewWithBreadcrumbsForCurrentUser(
+								$this, $editAndDetailsView, $breadcrumbLinks, 'ProductBreadCrumbView'));
             echo $view->render();
         }
 
         public function actionEdit($id, $redirectUrl = null)
         {
+	    $title           = Zurmo::t('ProductsModule', 'Edit Product');
+            $breadcrumbLinks = array(
+                 $title,
+            );
 	    $product = Product::getById(intval($id));
             ControllerSecurityUtil::resolveAccessCanCurrentUserWriteModel($product);
-            $view    = new ProductsPageView(ZurmoDefaultViewUtil::
-					    makeStandardViewForCurrentUser($this,
+            $view    = new ProductsPageView(ProductDefaultViewUtil::
+					    makeViewWithBreadcrumbsForCurrentUser($this,
 						$this->makeEditAndDetailsView(
-						    $this->attemptToSaveModelFromPost($product, $redirectUrl), 'Edit')));
+						    $this->attemptToSaveModelFromPost(
+							    $product, $redirectUrl), 'Edit'), $breadcrumbLinks, 'ProductBreadCrumbView'));
             echo $view->render();
         }
 

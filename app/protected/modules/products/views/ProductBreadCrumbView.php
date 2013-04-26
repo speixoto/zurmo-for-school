@@ -36,5 +36,10 @@
         {
             return Zurmo::t('ProductsModule', 'Products');
         }
+
+	protected function getHomeUrl()
+        {
+            return Yii::app()->createUrl('products/default/list');
+        }
     }
 ?>
