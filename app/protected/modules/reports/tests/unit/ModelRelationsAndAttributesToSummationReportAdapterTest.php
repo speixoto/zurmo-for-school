@@ -85,6 +85,31 @@
         /**
          * @depends testGetAttributesForOrderBys
          */
+        public function testGetAttributesForOrderBysOnUser()
+        {
+            $model              = new ReportModelTestItem();
+            $rules              = new ReportsTestReportRules();
+            $report             = new Report();
+            $report->setType(Report::TYPE_SUMMATION);
+            $report->setModuleClassName('ReportsTestModule');
+            $groupBy            = new GroupByForReportForm('ReportsTestModule', 'ReportModelTestItem', $report->getType());
+            $groupBy->attributeIndexOrDerivedType = 'owner__User';
+            $groupBy->axis                        = 'x';
+            $report->addGroupBy($groupBy);
+
+            $displayAttribute   = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem', $report->getType());
+            $displayAttribute->attributeIndexOrDerivedType = 'owner__User';
+            $report->addDisplayAttribute($displayAttribute);
+            $adapter            = new ModelRelationsAndAttributesToSummationReportAdapter($model, $rules, $report->getType());
+            $attributes         = $adapter->getAttributesForOrderBys($report->getGroupBys(), $report->getDisplayAttributes());
+            $this->assertEquals(1, count($attributes));
+            $this->assertTrue(isset($attributes['owner__User']));
+            $this->assertEquals('Owner', $attributes['owner__User']['label']);
+        }
+
+        /**
+         * @depends testGetAttributesForOrderBysOnUser
+         */
         public function testGetAttributesForChartSeries()
         {
             $model              = new ReportModelTestItem();

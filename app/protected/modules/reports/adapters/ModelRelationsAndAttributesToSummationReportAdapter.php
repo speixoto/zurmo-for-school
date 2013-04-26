@@ -94,13 +94,12 @@
                 if ($addAttribute)
                 {
                     $resolvedAttribute = $groupBy->getResolvedAttribute();
-                    $attributes[$resolvedAttribute] =
-                        array('label' => $this->model->getAttributeLabel($resolvedAttribute));
+                    $attributes[$resolvedAttribute] = array('label' => $groupBy->getDisplayLabel());
                 }
             }
             foreach ($existingDisplayAttributes as $displayAttribute)
             {
-                $resolvedAttribute    = $displayAttribute->getResolvedAttribute();
+                $resolvedAttribute = $displayAttribute->getResolvedAttribute();
                 if ($this->isAttributeACalculationOrModifier($resolvedAttribute))
                 {
                     //We don't have to check penultimate information like GroupBys, because all display calculations are
@@ -110,10 +109,7 @@
                     if (!$displayAttribute->hasRelatedData() &&
                         $displayAttribute->getResolvedAttributeModelClassName() == get_class($this->model))
                     {
-                        $realAttributeName = static::resolveRealAttributeName($resolvedAttribute);
-                        $attributes[$resolvedAttribute] = array('label' =>
-                        $this->resolveDisplayCalculationLabel($realAttributeName,
-                                $this->getCalculationOrModifierType($resolvedAttribute)));
+                        $attributes[$resolvedAttribute] = array('label' => $displayAttribute->getDisplayLabel());
                     }
                 }
             }
