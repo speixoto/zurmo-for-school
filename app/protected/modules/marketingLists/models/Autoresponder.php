@@ -114,10 +114,10 @@
                     array('subject',                'length',  'min'  => 3, 'max' => 64),
                     array('htmlContent',            'type',    'type' => 'string'),
                     array('textContent',            'type',    'type' => 'string'),
-                    array('htmlContent',            'AtLeastOneContentAreaRequiredValidator', 'except' => 'autoBuildDatabase'),
-                    array('textContent',            'AtLeastOneContentAreaRequiredValidator', 'except' => 'autoBuildDatabase'),
-                    array('htmlContent',            'AutoresponderMergeTagsValidator', 'except' => 'autoBuildDatabase'),
-                    array('textContent',            'AutoresponderMergeTagsValidator', 'except' => 'autoBuildDatabase'),
+                    array('htmlContent',            'AtLeastOneContentAreaRequiredValidator'),
+                    array('textContent',            'AtLeastOneContentAreaRequiredValidator'),
+                    array('htmlContent',            'AutoresponderMergeTagsValidator'),
+                    array('textContent',            'AutoresponderMergeTagsValidator'),
                     array('secondsFromOperation',   'required'),
                     array('secondsFromOperation',   'type',    'type' => 'integer'),
                     array('operationType',          'required'),
@@ -126,7 +126,7 @@
                 'relations' => array(
                     'autoresponderItems'            => array(RedBeanModel::HAS_MANY,   'AutoresponderItem'),
                     'marketingList'                 => array(RedBeanModel::HAS_ONE,     'MarketingList'),
-                    // TODO: @Shoaibi: High: emailMessageUrl
+                    // TODO: @Shoaibi: Critical: emailMessageUrl
                 ),
                 'elements' => array(
                     'htmlContent'                   => 'TextArea',
@@ -147,7 +147,7 @@
             return true;
         }
 
-        public static function getByOperationType($operationType)
+        public static function getByOperationType($operationType, $pageSize = null)
         {
             assert('is_int($operationType)');
             $searchAttributeData = array();
@@ -161,10 +161,10 @@
             $searchAttributeData['structure'] = '1';
             $joinTablesAdapter                = new RedBeanModelJoinTablesQueryAdapter(get_called_class());
             $where = RedBeanModelDataProvider::makeWhere(get_called_class(), $searchAttributeData, $joinTablesAdapter);
-            return self::getSubset($joinTablesAdapter, null, null, $where, 'name');
+            return self::getSubset($joinTablesAdapter, null, $pageSize, $where, 'name');
         }
 
-        public static function getByOperationTypeAndMarketingListId($operationType, $marketingListId)
+        public static function getByOperationTypeAndMarketingListId($operationType, $marketingListId, $pageSize = null)
         {
             assert('is_int($operationType)');
             assert('is_int($marketingListId)');
@@ -185,7 +185,7 @@
             $searchAttributeData['structure'] = '(1 and 2)';
             $joinTablesAdapter                = new RedBeanModelJoinTablesQueryAdapter(get_called_class());
             $where = RedBeanModelDataProvider::makeWhere(get_called_class(), $searchAttributeData, $joinTablesAdapter);
-            return self::getSubset($joinTablesAdapter, null, null, $where, 'name');
+            return self::getSubset($joinTablesAdapter, null, $pageSize, $where, 'name');
         }
     }
 ?>

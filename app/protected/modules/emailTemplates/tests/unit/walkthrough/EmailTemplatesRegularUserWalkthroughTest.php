@@ -92,9 +92,8 @@
             $this->runControllerShouldResultInAccessFailureAndGetContent('emailTemplates/default/delete');
             $this->resetGetArray();
 
-            $nobody = User::getByUsername('nobody');
-            $nobody->setRight('EmailTemplatesModule', EmailTemplatesModule::getAccessRight());
-            $this->assertTrue($nobody->save());
+            $this->user->setRight('EmailTemplatesModule', EmailTemplatesModule::getAccessRight());
+            $this->assertTrue($this->user->save());
             $this->runControllerWithNoExceptionsAndGetContent('emailTemplates/default');
             $this->runControllerWithNoExceptionsAndGetContent('emailTemplates/default/index');
             $this->runControllerWithNoExceptionsAndGetContent('emailTemplates/default/listForMarketing');
@@ -103,8 +102,8 @@
             $this->runControllerWithNoExceptionsAndGetContent('emailTemplates/default/details');
             $this->resetGetArray();
 
-            $nobody->setRight('EmailTemplatesModule', EmailTemplatesModule::getCreateRight());
-            $this->assertTrue($nobody->save());
+            $this->user->setRight('EmailTemplatesModule', EmailTemplatesModule::getCreateRight());
+            $this->assertTrue($this->user->save());
             $this->setGetArray(array('type' => EmailTemplate::TYPE_CONTACT));
             $this->runControllerWithNoExceptionsAndGetContent('emailTemplates/default/create');
             $this->setGetArray(array('type' => EmailTemplate::TYPE_WORKFLOW));
@@ -113,8 +112,9 @@
             $this->runControllerWithNoExceptionsAndGetContent('emailTemplates/default/edit');
 
 
-            $nobody->setRight('EmailTemplatesModule', EmailTemplatesModule::getDeleteRight());
-            $this->assertTrue($nobody->save());
+            $this->user->setRight('EmailTemplatesModule', EmailTemplatesModule::getDeleteRight());
+            $this->assertTrue($this->user->save());
+            $this->assertTrue($this->user->save());
             $this->runControllerWithRedirectExceptionAndGetUrl('emailTemplates/default/delete');
 
             $this->setGetArray(array('id' => static::$templateOwnedBySuper->id));
@@ -186,10 +186,9 @@
         {
             // TODO: @Shoaibi/@Jason: Medium: Even if a user doesn't have module permission he can sent that modelClassName in POST
             // nobody needs access to meetings ans contact to have that in ddl.
-            $nobody = User::getByUsername('nobody');
-            $nobody->setRight('ContactsModule', ContactsModule::getAccessRight());
-            $nobody->setRight('MeetingsModule', MeetingsModule::getAccessRight());
-            $this->assertTrue($nobody->save());
+            $this->user->setRight('ContactsModule', ContactsModule::getAccessRight());
+            $this->user->setRight('MeetingsModule', MeetingsModule::getAccessRight());
+            $this->assertTrue($this->user->save());
 
             // Create a new emailTemplate and test validator.
             $this->setGetArray(array('type' => EmailTemplate::TYPE_WORKFLOW));

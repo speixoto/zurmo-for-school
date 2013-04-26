@@ -122,5 +122,27 @@
             $this->unrestrictedSet('createdDateTime',  DateTimeUtil::convertTimestampToDbFormatDateTime(time()));
             $this->unrestrictedSet('modifiedDateTime', DateTimeUtil::convertTimestampToDbFormatDateTime(time()));
         }
+
+        public function beforeSave()
+        {
+            if ($this->id < 0 || (isset($this->originalAttributeValues['unsubscribed']) &&
+                                            $this->originalAttributeValues['unsubscribed'] != $this->unsubscribed))
+            {
+                $operation = Autoresponder::OPERATION_SUBSCRIBE;
+                if ($this->unsubscribed)
+                {
+                    $operation = Autoresponder::OPERATION_UNSUBSCRIBE;
+                }
+                AutoresponderItem::registerAutoresponderItemsByAutoresponderOperation($operation, $this->marketingList->id, $this->contact);
+            }
+            return true;
+        }
+
+        public function beforeDelete()
+        {
+            $operation = Autoresponder::OPERATION_REMOVE;
+            AutoresponderItem::registerAutoresponderItemsByAutoresponderOperation($operation, $this->marketingList->id, $this->contact);
+            return true;
+        }
     }
 ?>

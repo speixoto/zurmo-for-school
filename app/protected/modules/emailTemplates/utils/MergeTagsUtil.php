@@ -114,7 +114,7 @@
             return $matchesCounts;
         }
 
-        protected function resolveMergeTagsInTemplateToAttributes()
+        public function resolveMergeTagsInTemplateToAttributes()
         {
             $resolvedMergeTagsCount     = 0;
             $mergeTags                  = $this->mergeTags[0];

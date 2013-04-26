@@ -101,7 +101,7 @@
             return true;
         }
 
-        public static function getByProcessed($processed)
+        public static function getByProcessed($processed, $pageSize = null)
         {
             assert('is_int($processed)');
             $searchAttributeData = array();
@@ -115,10 +115,37 @@
             $searchAttributeData['structure'] = '1';
             $joinTablesAdapter                = new RedBeanModelJoinTablesQueryAdapter(get_called_class());
             $where = RedBeanModelDataProvider::makeWhere(get_called_class(), $searchAttributeData, $joinTablesAdapter);
-            return self::getSubset($joinTablesAdapter, null, null, $where, 'processDateTime');
+            return self::getSubset($joinTablesAdapter, null, $pageSize, $where, 'processDateTime');
         }
 
-        public static function getByProcessedAndAutoresponderId($processed, $autoresponderId)
+        public static function getByProcessedAndProcessDateTime($processed, $timestamp = null, $pageSize = null)
+        {
+            if (empty($timestamp))
+            {
+                $timestamp = time();
+            }
+            $dateTime = DateTimeUtil::convertTimestampToDbFormatDateTime($timestamp);
+            assert('is_int($processed)');
+            $searchAttributeData = array();
+            $searchAttributeData['clauses'] = array(
+                1 => array(
+                    'attributeName'             => 'processed',
+                    'operatorType'              => 'equals',
+                    'value'                     => intval($processed),
+                ),
+                2 => array(
+                    'attributeName'             => 'processDateTime',
+                    'operatorType'              => 'lessThan',
+                    'value'                     => $dateTime,
+                ),
+            );
+            $searchAttributeData['structure'] = '(1 and 2)';
+            $joinTablesAdapter                = new RedBeanModelJoinTablesQueryAdapter(get_called_class());
+            $where = RedBeanModelDataProvider::makeWhere(get_called_class(), $searchAttributeData, $joinTablesAdapter);
+            return self::getSubset($joinTablesAdapter, null, $pageSize, $where, 'processDateTime');
+        }
+
+        public static function getByProcessedAndAutoresponderId($processed, $autoresponderId, $pageSize = null)
         {
             assert('is_int($processed)');
             assert('is_int($autoresponderId) || is_string($autoresponderId)');
@@ -139,10 +166,10 @@
             $searchAttributeData['structure'] = '(1 and 2)';
             $joinTablesAdapter                = new RedBeanModelJoinTablesQueryAdapter(get_called_class());
             $where = RedBeanModelDataProvider::makeWhere(get_called_class(), $searchAttributeData, $joinTablesAdapter);
-            return self::getSubset($joinTablesAdapter, null, null, $where, 'processDateTime');
+            return self::getSubset($joinTablesAdapter, null, $pageSize, $where, 'processDateTime');
         }
 
-        public static function getByProcessedAndAutoresponderIdAndTime($processed, $autoresponderId, $timestamp = null)
+        public static function getByProcessedAndAutoresponderIdWithProcessDateTime($processed, $autoresponderId, $timestamp = null, $pageSize = null)
         {
             if (empty($timestamp))
             {
@@ -173,7 +200,36 @@
             $searchAttributeData['structure'] = '(1 and 2 and 3)';
             $joinTablesAdapter                = new RedBeanModelJoinTablesQueryAdapter(get_called_class());
             $where = RedBeanModelDataProvider::makeWhere(get_called_class(), $searchAttributeData, $joinTablesAdapter);
-            return self::getSubset($joinTablesAdapter, null, null, $where, 'processDateTime');
+            return self::getSubset($joinTablesAdapter, null, $pageSize, $where, 'processDateTime');
+        }
+
+        public static function registerAutoresponderItemsByAutoresponderOperation($operation, $marketingListId, $contact)
+        {
+            $autoresponders = Autoresponder::getByOperationTypeAndMarketingListId($operation, $marketingListId);
+            $now = time();
+            foreach($autoresponders as $autoresponder)
+            {
+                $processTimestamp = $now + $autoresponder->secondsFromOperation;
+                $processDateTime = DateTimeUtil::convertTimestampToDbFormatDateTime($processTimestamp);
+                $processed = false;
+                static::addNewItem($processed, $processDateTime, $contact, $autoresponder);
+            }
+        }
+
+        public static function addNewItem($processed, $processDateTime, $contact, $autoresponder)
+        {
+            $autoresponderItem = new self;
+            $autoresponderItem->processed = $processed;
+            $autoresponderItem->processDateTime = $processDateTime;
+            $autoresponderItem->contact = $contact;
+            $autoresponderItem->autoresponder = $autoresponder;
+            $saved = $autoresponderItem->unrestrictedSave();
+            assert('$saved');
+            if (!$saved)
+            {
+                throw new FailedToSaveModelException();
+            }
+            return $saved;
         }
     }
 ?>
