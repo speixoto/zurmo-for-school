@@ -612,8 +612,20 @@
                 }
                 if ($addAttribute)
                 {
-                    $resolvedAttribute              = $groupBy->getResolvedAttribute();
-                    $attributes[$resolvedAttribute] = array('label' => $groupBy->getDisplayLabel());
+                    $resolvedAttribute = $groupBy->getResolvedAttribute();
+                    $calculationOrModifierType = $this->getCalculationOrModifierType($resolvedAttribute);
+                    if($this->isAttributeACalculationOrModifier($resolvedAttribute) && $calculationOrModifierType !== $resolvedAttribute)
+                    {
+                        $realAttributeName = static::resolveRealAttributeName($resolvedAttribute);
+                        $label = $this->resolveDisplayCalculationLabel($realAttributeName,
+                            $this->getCalculationOrModifierType($calculationOrModifierType));
+                    }
+                    else
+                    {
+                        $realAttributeName = static::resolveRealAttributeName($resolvedAttribute);
+                        $label = $this->model->getAttributeLabel($realAttributeName);
+                    }
+                    $attributes[$resolvedAttribute] = array('label' => $label);
                 }
             }
         }
