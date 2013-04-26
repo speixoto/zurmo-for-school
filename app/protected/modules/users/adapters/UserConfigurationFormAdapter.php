@@ -141,6 +141,11 @@
             }
         }
 
+        /**
+         * @param $user
+         * @param bool $selected
+         * @return array
+         */
         public static function getVisibleAndOrderedTabMenuItemsByUser($user, $selected = false)
         {
             $visibleAndOrderedTabMenuItems = array();
