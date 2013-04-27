@@ -89,6 +89,7 @@
             $searchAttributes          = $dataCollection->resolveSearchAttributesFromSourceData();
             $dataCollection->resolveAnyMixedAttributesScopeForSearchModelFromSourceData();
             $dataCollection->resolveSelectedListAttributesForSearchModelFromSourceData();
+            $dataCollection->resolveKanbanBoardOptionsForSearchModelFromSourceData();
             $sanitizedSearchAttributes = GetUtil::sanitizePostByDesignerTypeForSavingModel($searchModel,
                                                                                            $searchAttributes);
             $sortAttribute             = $dataCollection->resolveSortAttributeFromSourceData($listModelClassName);

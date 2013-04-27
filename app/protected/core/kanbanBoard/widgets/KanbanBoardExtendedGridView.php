@@ -39,6 +39,8 @@
      */
     class KanbanBoardExtendedGridView extends StackedExtendedGridView
     {
+        public static $maxCount = 50;
+
         /**
          * Override since Kanban Board does not support pagination. It would always show all available regardless of
          * pagination.
@@ -61,6 +63,15 @@
          */
         public $groupByDataAndTranslatedLabels = array();
 
+        /**
+         * Need to grab one more than max count to check if we are over the max so we can properly display a message
+         * @return int
+         */
+        public static function resolvePageSizeForMaxCount()
+        {
+            return static::$maxCount + 1;
+        }
+
         public function init()
         {
             $this->registerScripts();
@@ -77,7 +88,11 @@
             $columnsData = $this->resolveDataIntoKanbanColumns();
             echo "<tbody>\n";
             echo "<tr><td>\n";
-            if ($n > 0)
+            if ($n > static::$maxCount)
+            {
+                $this->renderOverMaxCountText();
+            }
+            elseif($n > 0)
             {
                 echo "<div>\n";
                 foreach($columnsData as $attributeValue => $attributeValueAndData)
@@ -101,12 +116,20 @@
             }
             else
             {
-                //todo: figure out. should look nice
                 $this->renderEmptyText();
 
             }
             echo "</td></tr>\n";
             echo "</tbody>\n";
+        }
+
+        /**
+         * Renders the empty message when there is no data.
+         */
+        public function renderOverMaxCountText()
+        {
+            $label = Zurmo::t('Core', 'There are too many results to display. Try filtering your search or switching to the grid view.');
+            echo CHtml::tag('span', array('class'=>'empty'), $label);
         }
 
         protected function resolveGroupByColumnHeaderLabel($value)

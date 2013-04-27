@@ -118,7 +118,7 @@
          */
         protected function renderRowAsTableCellOrDiv($row, $type)
         {
-            assert('$type == "self::ROW_TYPE_TD" || $type == "self::ROW_TYPE_DIV"');
+            assert('$type == self::ROW_TYPE_TD || $type == self::ROW_TYPE_DIV');
             echo static::renderRowTypeForOpenTag($type);
             foreach ($this->columns as $column)
             {

@@ -93,9 +93,13 @@
 
         protected function renderContent()
         {
-            $content  = '<div class="view-toolbar-container clearfix"><div class="view-toolbar">';
-            $content .= $this->renderActionElementBar(false);
-            $content .= '</div></div>';
+            $content  = '<div class="view-toolbar-container clearfix">';
+            $content .= '<div class="view-toolbar">' . $this->renderActionElementBar(false) . '</div>';
+            if (!Yii::app()->userInterface->isMobile())
+            {
+                $content .= '<div class="view-toolbar">' . $this->renderSecondActionElementBar(false) . '</div>';
+            }
+            $content .= '</div>';
             return $content;
         }
 
@@ -141,6 +145,13 @@
             assert('$element instanceof ActionElement');
             assert('is_array($elementInformation)');
             if (!parent::shouldRenderToolBarElement($element, $elementInformation))
+            {
+                return false;
+            }
+            if($this->activeActionElementType == ListViewTypesToggleLinkActionElement::TYPE_KANBAN_BOARD &&
+                ($elementInformation['type'] == 'MassEditLink' ||
+                $elementInformation['type'] == 'MassDeleteLink' ||
+                $elementInformation['type'] == 'ExportLink'))
             {
                 return false;
             }

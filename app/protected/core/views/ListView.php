@@ -144,13 +144,17 @@
             {
                 $widget = 'application.core.widgets.StackedExtendedGridView';
             }
-            elseif($this->kanbanBoard === null)
+            elseif($this->kanbanBoard === null || !$this->kanbanBoard->getIsActive())
             {
                 $widget = 'application.core.widgets.ExtendedGridView';
             }
-            else
+            elseif($this->kanbanBoard->getIsActive())
             {
                 $widget = $this->kanbanBoard->getGridViewWidgetPath();
+            }
+            else
+            {
+                throw new NotSupportedException();
             }
             return $widget;
         }
@@ -523,7 +527,7 @@
 
         private function resolveCGridViewParamsForKanbanBoard(array $params)
         {
-            if($this->kanbanBoard === null)
+            if($this->kanbanBoard === null || !$this->kanbanBoard->getIsActive())
             {
                 return $params;
             }

@@ -278,6 +278,14 @@
                 {
                     unset($_POST[$formModelClassName][SearchForm::SELECTED_LIST_ATTRIBUTES]);
                 }
+                if (isset($_POST[$formModelClassName][KanbanBoard::GROUP_BY_ATTRIBUTE_VISIBLE_VALUES]))
+                {
+                    unset($_POST[$formModelClassName][KanbanBoard::GROUP_BY_ATTRIBUTE_VISIBLE_VALUES]);
+                }
+                if (isset($_POST[$formModelClassName][KanbanBoard::SELECTED_THEME]))
+                {
+                    unset($_POST[$formModelClassName][KanbanBoard::SELECTED_THEME]);
+                }
                 $sanitizedSearchData = $this->resolveAndSanitizeDynamicSearchAttributesByPostData(
                                                                 $_POST[$formModelClassName], $searchForm);
                 $searchForm->setAttributes($sanitizedSearchData);

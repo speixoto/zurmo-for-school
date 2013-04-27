@@ -45,7 +45,7 @@
             form: 'form',
             bind: 'click',
             clear: "input[type!='submit'][type!='button'][type!='hidden'][type!='reset'][type!=checkbox], textarea, select",
-            clearCheckbox: "input[type=checkbox][class!='ignoreclearform']",
+            clearCheckbox: "input[type=checkbox][class!='ignore-clearform']",
             css: {},
             complete: function () {}
         };
