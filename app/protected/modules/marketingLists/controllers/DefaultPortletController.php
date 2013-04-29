@@ -87,7 +87,7 @@
             $marketingList         = MarketingList::getById($marketingListId);
             foreach ($contactIds as $contactId)
             {
-                if (MarketingListMember::addNewMember($marketingList, $contactId, false))
+                if ($marketingList->addNewMember($contactId, false))
                 {
                     $subscriberInformation['subscribedCount']++;
                 }

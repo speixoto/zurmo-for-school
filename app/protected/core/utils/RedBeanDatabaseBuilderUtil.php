@@ -587,6 +587,7 @@
                     case 'RedBeanModelProbabilityValidator':
                     case 'UsernameLengthValidator':
                     case 'ValidateTimeZone':
+                    case 'AtLeastOneContentAreaRequiredValidator':
                         break;
 
                     case 'RedBeanModelTypeValidator':
