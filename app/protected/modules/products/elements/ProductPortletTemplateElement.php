@@ -25,16 +25,16 @@
      ********************************************************************************/
 
     /**
-     * Display the product selection. This is a
+     * Display the product template selection. This is a
      * combination of a type-ahead input text field
      * and a selection button which renders a modal list view
      * to search on product.  Also includes a hidden input for the user
      * id.
      */
-    class ProductElement extends ModelElement
+    class ProductPortletTemplateElement extends ModelElement
     {
-        protected static $moduleId = 'products';
-
+        protected static $moduleId = 'productTemplates';
+	protected static $modalActionId = 'modalListForProductPortlet';
 	protected $relatedFieldId;
 
 	public function __construct($model, $attribute, $form = null, array $params = array(), $relatedFieldId = null)

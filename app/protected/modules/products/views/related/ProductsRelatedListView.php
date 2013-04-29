@@ -259,7 +259,7 @@
 
 	protected function renderAddProductLink()
 	{
-	    $title = Zurmo::t('ProductsModule', 'Add ProductsModuleSingularLabel',
+	    $title = Zurmo::t('ProductsModule', 'Select from catalog',
                             LabelUtil::getTranslationParamsForAllModules());
 	    $string  = "<p>" . ZurmoHtml::link($title, "#", array('id' => 'addProductPortletLink')) . "</p>";
             return $string;
@@ -268,7 +268,7 @@
 	protected function renderAddProductContent($form)
 	{
 	    $routeParams    = $this->getCreateLinkRouteParameters();
-	    $productElement = new ProductElement(new Product(), $this->getRelationAttributeName(), $form, array('inputIdPrefix' => 'product', 'htmlOptions' => array('display' => 'none')), $routeParams['relationModelId']);
+	    $productElement = new ProductPortletTemplateElement(new Product(), $this->getRelationAttributeName(), $form, array('inputIdPrefix' => 'product', 'htmlOptions' => array('display' => 'none')), $routeParams['relationModelId']);
 	    $content	    = $productElement->render();
 	    return $content;
         }

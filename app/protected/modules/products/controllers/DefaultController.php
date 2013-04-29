@@ -91,26 +91,6 @@
                  $title,
             );
             $product = static::getModelAndCatchNotFoundAndDisplayError('Product', intval($id));
-	    if(Yii::app()->request->isAjaxRequest)
-	    {
-		$relatedField = Yii::app()->request->getParam('relatedField');
-		$relatedFieldId = intval(Yii::app()->request->getParam('relatedFieldId'));
-		switch($relatedField)
-		{
-		    case 'opportunity' : $opportunity = Opportunity::getById($relatedFieldId);
-					 $product->opportunity = $opportunity;
-					 $product->save();
-					 break;
-		}
-		$output = array('id'			=> $product->id,
-				'name'			=> $product->name,
-				'quantity'		=> $product->quantity,
-				'productSellPriceValue' => $product->sellPrice->value
-				);
-
-		echo json_encode($output);
-		die();
-	    }
             ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($product);
 	    $detailsView	    = new ProductDetailsView($this->getId(), $this->getModule()->getId(), $product);
             $view		    = new ProductsPageView(ProductDefaultViewUtil::
@@ -369,5 +349,39 @@
 	    header('Content-type: application/json');
 	    die();
         }
+
+	public function actionCreateProductFromProductTemplate($id)
+	{
+	    if(Yii::app()->request->isAjaxRequest)
+	    {
+		$productTemplate = static::getModelAndCatchNotFoundAndDisplayError('ProductTemplate', intval($id));
+		$product	 = new Product();
+		$product->name		    = $productTemplate->name;
+		$product->description	    = $productTemplate->description;
+		$product->quantity	    = 1;
+		$product->stage->value	    = Product::OPEN_STAGE;
+		$product->productTemplate   = $productTemplate;
+		$product->pricefrequency    = $productTemplate->priceFrequency;
+		$product->sellPrice->value  = $productTemplate->sellPrice->value;
+		$product->type		    = $productTemplate->type;
+		$relatedField = Yii::app()->request->getParam('relatedField');
+		$relatedFieldId = intval(Yii::app()->request->getParam('relatedFieldId'));
+		switch($relatedField)
+		{
+		    case 'opportunity' : $opportunity = Opportunity::getById($relatedFieldId);
+					 $product->opportunity = $opportunity;
+					 $product->save();
+					 break;
+		}
+		$output = array('id'			=> $product->id,
+				'name'			=> $product->name,
+				'quantity'		=> $product->quantity,
+				'productSellPriceValue' => $product->sellPrice->value
+				);
+
+		echo json_encode($output);
+		die();
+	    }
+	}
     }
 ?>

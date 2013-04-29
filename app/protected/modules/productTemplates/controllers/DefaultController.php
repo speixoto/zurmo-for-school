@@ -323,6 +323,18 @@
                  setAjaxModeAndRenderModalSearchList($this, $modalListLinkProvider);
         }
 
+	public function actionModalListForProductPortlet()
+        {
+	    $modalListLinkProvider = new ProductTemplateSelectForPortletFromRelatedEditModalListLinkProvider(
+                                            $_GET['modalTransferInformation']['sourceIdFieldId'],
+                                            $_GET['modalTransferInformation']['sourceNameFieldId'],
+					    $_GET['modalTransferInformation']['relatedField'],
+					    $_GET['modalTransferInformation']['relatedFieldId']
+            );
+            echo ModalSearchListControllerUtil::
+                 setAjaxModeAndRenderModalSearchList($this, $modalListLinkProvider);
+        }
+
         public function actionDelete($id)
         {
             $productTemplate = ProductTemplate::GetById(intval($id));

@@ -27,7 +27,7 @@
     /**
      * Class utilized by 'select' modal popup in the edit view
      */
-    class ProductSelectFromRelatedEditModalListLinkProvider extends ModalListLinkProvider
+    class ProductTemplateSelectForPortletFromRelatedEditModalListLinkProvider extends ModalListLinkProvider
     {
 	/**
          * Id of input field in display for saving back a selected
@@ -75,7 +75,7 @@
 
         public function getLinkString($attributeString)
         {
-	    $url = Yii::app()->createUrl("products/default/details");
+	    $url = Yii::app()->createUrl("products/default/createProductFromProductTemplate");
             $string  = 'ZurmoHtml::link(';
             $string .= $attributeString . ', ';
             $string .= '"javascript:transferModalValues(\"#modalContainer\", " . CJavaScript::encode(array(\'' . $this->sourceIdFieldId . '\' => $data->id, \'' . $this->sourceNameFieldId . '\' => strval(' . $attributeString . '))) . ");

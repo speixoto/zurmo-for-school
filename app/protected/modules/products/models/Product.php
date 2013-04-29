@@ -26,6 +26,8 @@
 
     class Product extends OwnedSecurableItem
     {
+	const OPEN_STAGE	= 'Open';
+
         public static function getByName($name)
         {
             return self::getByNameOrEquivalent('name', $name);
@@ -35,7 +37,7 @@
         {
             return array_merge(parent::untranslatedAttributeLabels(),
                 array(
-			'productTemplate' => 'ProductTemplatesModuleSingularLabel',
+			'productTemplate' => 'Catalog Item',
 			'contact'         => 'ContactsModuleSingularLabel',
 			'account'         => 'AccountsModuleSingularLabel',
 			'opportunity'     => 'OpportunitiesModuleSingularLabel',
@@ -95,7 +97,7 @@
 		'account'	    => Zurmo::t('AccountsModule', 'AccountsModuleSingularLabel', $params, null, $language),
                 'contact'	    => Zurmo::t('ContactsModule', 'ContactsModuleSingularLabel', $params, null, $language),
                 'opportunity'	    => Zurmo::t('OpportunitiesModule', 'OpportunitiesModuleSingularLabel', $params, null, $language),
-                'productTemplate'   => Zurmo::t('ProductTemplatesModule', 'ProductTemplatesModuleSingularLabel', $params, null, $language),
+                'productTemplate'   => Zurmo::t('ProductTemplatesModule', 'Catalog Item', $params, null, $language),
 		'productCategories' => Zurmo::t('ProductTemplatesModule', 'Product Categories', array(), null, $language),
 		'sellPrice'	    => Zurmo::t('ProductTemplatesModule', 'Sell Price', array(), null, $language),
 		'stage'		    => Zurmo::t('ProductsModule', 'Stage', array(), null, $language)
@@ -130,11 +132,14 @@
                     array('name',		'type',    'type' => 'string'),
                     array('name',		'length',  'min'  => 3, 'max' => 64),
                     array('description',	'type',    'type' => 'string'),
-                    array('quantity',		'type',    'type' => 'integer'),
+                    array('quantity',		'numerical',  'integerOnly' => true, 'allowEmpty' => false, 'min' => 1),
                     array('stage',		'required'),
+		    array('quantity',		'required'),
 		    array('type',		'type',    'type' => 'integer'),
                     array('pricefrequency',	'type',    'type' => 'integer'),
 		    array('sellPrice',		'required'),
+		    array('type',		'required'),
+		    array('pricefrequency',	'required'),
                 ),
                 'elements' => array(
 		    'account'	     => 'Account',

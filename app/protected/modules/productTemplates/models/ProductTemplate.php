@@ -37,7 +37,7 @@
         const PRICE_FREQUENCY_MONTHLY = 7;
         const PRICE_FREQUENCY_ANNUALLY = 8;
 
-        public static function getByName($name)
+	public static function getByName($name)
         {
             return self::getByNameOrEquivalent('name', $name);
         }
@@ -197,6 +197,7 @@
             $params = LabelUtil::getTranslationParamsForAllModules();
             return array_merge(parent::translatedAttributeLabels($language),
                 array(
+		    'productTemplate'	  => Zurmo::t('ProductTemplatesModule', 'Catalog Item',  $params, null, $language),
                     'products'		  => Zurmo::t('ProductTemplatesModule', 'ProductsModulePluralLabel',  $params, null, $language),
                     'sellPriceFormula'	  => Zurmo::t('ProductTemplatesModule', 'Sell Price Formula',  array(), null, $language),
                     'productCategories'   => ProductCategory::getModelLabelByTypeAndLanguage('Plural', $language),

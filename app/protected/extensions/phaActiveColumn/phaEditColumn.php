@@ -86,8 +86,11 @@ class phaEditColumn extends phaAbsActiveColumn {
         function phaACOpenEditField(itemValue, gridUID, grid ) {
             phaACHideEditField( phaACOpenEditItem, phaACOpenEditGrid );
             var id   = $(itemValue).attr("valueid");
-
+	    phaACOpenEditItem = id;
             $("#viewValue-" + gridUID + "-"+id).hide();
+	    var inputValue = $("#field-" + gridUID + "-" + phaACOpenEditItem+" input").val();
+	    inputValue = inputValue.replace("$","");
+	    $("#field-" + gridUID + "-" + phaACOpenEditItem+" input").val(inputValue);
             $("#field-" + gridUID + "-" + id).show();
             $("#field-" + gridUID + "-" + id+" input")
                 .focus()
@@ -103,7 +106,7 @@ class phaEditColumn extends phaAbsActiveColumn {
                     }
                 });
 
-            phaACOpenEditItem = id;
+
             phaACOpenEditGrid = gridUID;
         }
         function phaACHideEditField( itemId, gridUID ) {

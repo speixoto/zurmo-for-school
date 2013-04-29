@@ -142,7 +142,7 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'stage', 'type' => 'DropDown', 'addBlank' => true),
+                                                array('attributeName' => 'stage', 'type' => 'DropDown'),
                                             ),
                                         ),
                                     )
