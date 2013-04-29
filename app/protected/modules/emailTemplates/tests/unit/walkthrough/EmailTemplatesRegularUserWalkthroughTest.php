@@ -61,12 +61,14 @@
                                                                                                     'Test Name1',
                                                                                                     'Test HtmlContent1',
                                                                                                     'Test TextContent1');
+            ReadPermissionsOptimizationUtil::rebuild();
         }
 
         public function setUp()
         {
             parent::setUp();
             $this->user = $this->logoutCurrentUserLoginNewUserAndGetByUsername('nobody');
+            Yii::app()->user->userModel = $this->user;
         }
 
         public function testRegularUserAllDefaultControllerActions()
@@ -90,9 +92,8 @@
             $this->runControllerShouldResultInAccessFailureAndGetContent('emailTemplates/default/delete');
             $this->resetGetArray();
 
-            $nobody = User::getByUsername('nobody');
-            $nobody->setRight('EmailTemplatesModule', EmailTemplatesModule::getAccessRight());
-            $this->assertTrue($nobody->save());
+            $this->user->setRight('EmailTemplatesModule', EmailTemplatesModule::getAccessRight());
+            $this->assertTrue($this->user->save());
             $this->runControllerWithNoExceptionsAndGetContent('emailTemplates/default');
             $this->runControllerWithNoExceptionsAndGetContent('emailTemplates/default/index');
             $this->runControllerWithNoExceptionsAndGetContent('emailTemplates/default/listForMarketing');
@@ -101,8 +102,8 @@
             $this->runControllerWithNoExceptionsAndGetContent('emailTemplates/default/details');
             $this->resetGetArray();
 
-            $nobody->setRight('EmailTemplatesModule', EmailTemplatesModule::getCreateRight());
-            $this->assertTrue($nobody->save());
+            $this->user->setRight('EmailTemplatesModule', EmailTemplatesModule::getCreateRight());
+            $this->assertTrue($this->user->save());
             $this->setGetArray(array('type' => EmailTemplate::TYPE_CONTACT));
             $this->runControllerWithNoExceptionsAndGetContent('emailTemplates/default/create');
             $this->setGetArray(array('type' => EmailTemplate::TYPE_WORKFLOW));
@@ -110,9 +111,9 @@
             $this->setGetArray(array('id' => $emailTemplate->id));
             $this->runControllerWithNoExceptionsAndGetContent('emailTemplates/default/edit');
 
-
-            $nobody->setRight('EmailTemplatesModule', EmailTemplatesModule::getDeleteRight());
-            $this->assertTrue($nobody->save());
+            $this->user->setRight('EmailTemplatesModule', EmailTemplatesModule::getDeleteRight());
+            $this->assertTrue($this->user->save());
+            $this->assertTrue($this->user->save());
             $this->runControllerWithRedirectExceptionAndGetUrl('emailTemplates/default/delete');
 
             $this->setGetArray(array('id' => static::$templateOwnedBySuper->id));
@@ -133,12 +134,13 @@
             $this->assertEquals (substr_count($content, 'nobody nobodyson'), 0);
             $emailTemplates = EmailTemplate::getByType(EmailTemplate::TYPE_CONTACT);
             $this->assertEquals (0,                     count($emailTemplates));
-            EmailTemplateTestHelper::createEmailTemplateByName(EmailTemplate::TYPE_CONTACT,
-                                                                'Test Subject Regular 02',
-                                                                'Contact',
-                                                                'Test Name Regular 02',
-                                                                'Test HtmlContent Regular 02',
-                                                                'Test TextContent Regular 02');
+            $emailTemplate = EmailTemplateTestHelper::createEmailTemplateByName(EmailTemplate::TYPE_CONTACT,
+                                                                                    'Test Subject Regular 02',
+                                                                                    'Contact',
+                                                                                    'Test Name Regular 02',
+                                                                                    'Test HtmlContent Regular 02',
+                                                                                    'Test TextContent Regular 02');
+            $this->assertNotNull($emailTemplate);
             $content = $this->runControllerWithNoExceptionsAndGetContent('emailTemplates/default/listForMarketing');
             $this->assertTrue   (strpos($content,       'Email Templates</title></head>') !== false);
             $this->assertTrue   (strpos($content,       '1 result') !== false);
@@ -160,12 +162,13 @@
             $this->assertEquals (substr_count($content, 'nobody nobodyson'), 0);
             $emailTemplates = EmailTemplate::getByType(EmailTemplate::TYPE_WORKFLOW);
             $this->assertEquals (0,                     count($emailTemplates));
-            EmailTemplateTestHelper::createEmailTemplateByName(EmailTemplate::TYPE_WORKFLOW,
-                                                                'Test Subject Regular 03',
-                                                                'Contact',
-                                                                'Test Name Regular 03',
-                                                                'Test HtmlContent Regular 03',
-                                                                'Test TextContent Regular 03');
+            $emailTemplate = EmailTemplateTestHelper::createEmailTemplateByName(EmailTemplate::TYPE_WORKFLOW,
+                                                                                        'Test Subject Regular 03',
+                                                                                        'Contact',
+                                                                                        'Test Name Regular 03',
+                                                                                        'Test HtmlContent Regular 03',
+                                                                                        'Test TextContent Regular 03');
+            $this->assertNotNull($emailTemplate);
             $content = $this->runControllerWithNoExceptionsAndGetContent('emailTemplates/default/listForWorkflow');
             $this->assertTrue   (strpos($content,       'Email Templates</title></head>') !== false);
             $this->assertTrue   (strpos($content,       '1 result') !== false);
@@ -182,10 +185,9 @@
         {
             // TODO: @Shoaibi/@Jason: Medium: Even if a user doesn't have module permission he can sent that modelClassName in POST
             // nobody needs access to meetings ans contact to have that in ddl.
-            $nobody = User::getByUsername('nobody');
-            $nobody->setRight('ContactsModule', ContactsModule::getAccessRight());
-            $nobody->setRight('MeetingsModule', MeetingsModule::getAccessRight());
-            $this->assertTrue($nobody->save());
+            $this->user->setRight('ContactsModule', ContactsModule::getAccessRight());
+            $this->user->setRight('MeetingsModule', MeetingsModule::getAccessRight());
+            $this->assertTrue($this->user->save());
 
             // Create a new emailTemplate and test validator.
             $this->setGetArray(array('type' => EmailTemplate::TYPE_WORKFLOW));

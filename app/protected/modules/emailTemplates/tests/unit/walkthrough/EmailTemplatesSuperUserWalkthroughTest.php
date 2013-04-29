@@ -56,6 +56,7 @@
                                                                     'Test Name', 'Test HtmlContent', 'Test TextContent');
             EmailTemplateTestHelper::createEmailTemplateByName(EmailTemplate::TYPE_CONTACT, 'Test Subject1', 'Contact',
                                                                     'Test Name1', 'Test HtmlContent1', 'Test TextContent1');
+            ReadPermissionsOptimizationUtil::rebuild();
         }
 
         public function setUp()

@@ -64,12 +64,15 @@
             MarketingListMemberTestHelper::createMarketingListMember(0, $marketingList1, $contact5);
             MarketingListMemberTestHelper::createMarketingListMember(0, $marketingList2, $contact1);
             MarketingListMemberTestHelper::createMarketingListMember(1, $marketingList2, $contact2);
+
+            ReadPermissionsOptimizationUtil::rebuild();
         }
 
         public function setUp()
         {
             parent::setUp();
             $this->user = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
+            Yii::app()->user->userModel = $this->user;
         }
 
         public function testDelete()
@@ -84,7 +87,7 @@
             $this->setGetArray(array('id' => $id));
             $content                = $this->runControllerWithNoExceptionsAndGetContent('marketingLists/defaultPortlet/delete', true);
             $this->assertEmpty($content);
-            $memberCount            = MarketingListMember::memberAlreadyExists($marketingList->id, $contact->id);
+            $memberCount            = $marketingList->memberAlreadyExists($contact->id);
             $this->assertEquals(0, $memberCount);
         }
 
