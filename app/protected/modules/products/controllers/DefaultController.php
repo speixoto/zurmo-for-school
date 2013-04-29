@@ -354,8 +354,8 @@
 	{
 	    if(Yii::app()->request->isAjaxRequest)
 	    {
-		$productTemplate = static::getModelAndCatchNotFoundAndDisplayError('ProductTemplate', intval($id));
-		$product	 = new Product();
+		$productTemplate	    = static::getModelAndCatchNotFoundAndDisplayError('ProductTemplate', intval($id));
+		$product		    = new Product();
 		$product->name		    = $productTemplate->name;
 		$product->description	    = $productTemplate->description;
 		$product->quantity	    = 1;
@@ -364,12 +364,12 @@
 		$product->pricefrequency    = $productTemplate->priceFrequency;
 		$product->sellPrice->value  = $productTemplate->sellPrice->value;
 		$product->type		    = $productTemplate->type;
-		$relatedField = Yii::app()->request->getParam('relatedField');
-		$relatedFieldId = intval(Yii::app()->request->getParam('relatedFieldId'));
+		$relatedField		    = Yii::app()->request->getParam('relatedField');
+		$relatedFieldId		    = intval(Yii::app()->request->getParam('relatedFieldId'));
 		switch($relatedField)
 		{
-		    case 'opportunity' : $opportunity = Opportunity::getById($relatedFieldId);
-					 $product->opportunity = $opportunity;
+		    case 'opportunity' : $opportunity		= Opportunity::getById($relatedFieldId);
+					 $product->opportunity	= $opportunity;
 					 $product->save();
 					 break;
 		}
