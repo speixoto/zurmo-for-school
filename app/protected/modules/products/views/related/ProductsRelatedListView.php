@@ -130,7 +130,7 @@
         protected static function getGridTemplate()
         {
             $preloader = '<div class="list-preloader"><span class="z-spinner"></span></div>';
-            return "\n{items}\n{pager}" . $preloader;
+            return "\n{items}\n{pager}\n{totalBarDetails}" . $preloader;
         }
 
         /**
@@ -253,7 +253,7 @@
             {
                 $content    .= ZurmoHtml::hiddenField($this->gridId . $this->gridIdSuffix . '-selectedIds', implode(",", $this->selectedIds)) . "\n"; // Not Coding Standard
             }
-            $content	    .= $this->renderScripts();
+	    $content	    .= $this->renderScripts();
             return $content;
         }
 
@@ -296,6 +296,39 @@
 	public function getGridViewId()
         {
             return 'product-portlet-grid-view';
+        }
+
+	protected function getGridViewWidgetPath()
+        {
+            return 'application.modules.products.widgets.ProductPortletExtendedGridView';
+        }
+
+	protected function getCGridViewParams()
+        {
+            $columns = $this->getCGridViewColumns();
+            assert('is_array($columns)');
+
+	    return array(
+                'id' => $this->getGridViewId(),
+                'htmlOptions' => array(
+                    'class' => 'cgrid-view'
+                ),
+                'loadingCssClass'      => 'loading',
+                'dataProvider'         => $this->getDataProvider(),
+                'selectableRows'       => $this->getCGridViewSelectableRowsCount(),
+                'pager'                => $this->getCGridViewPagerParams(),
+                'beforeAjaxUpdate'     => $this->getCGridViewBeforeAjaxUpdate(),
+                'afterAjaxUpdate'      => $this->getCGridViewAfterAjaxUpdate(),
+                'columns'              => $columns,
+                'nullDisplay'          => '&#160;',
+                'pagerCssClass'        => static::getPagerCssClass(),
+                'showTableOnEmpty'     => $this->getShowTableOnEmpty(),
+                'emptyText'            => $this->getEmptyText(),
+                'template'             => static::getGridTemplate(),
+                'summaryText'          => static::getSummaryText(),
+                'summaryCssClass'      => static::getSummaryCssClass(),
+		'params'	       => $this->params
+            );
         }
     }
 ?>
