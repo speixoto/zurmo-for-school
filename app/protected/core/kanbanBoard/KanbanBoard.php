@@ -192,6 +192,46 @@
             return $this->clearSticky;
         }
 
+        public function resolveVisibleValuesForAdaptedMetadata(& $metadata)
+        {
+            $clauseCount = count($metadata['clauses']);
+            $startingCount = $clauseCount + 1;
+            $structure = '';
+            $first = true;
+            //No StateIds mean the list should come up empty
+            if (count($this->groupByAttributeVisibleValues) == 0)
+            {
+                return;
+            }
+            else
+            {
+                foreach ($this->groupByAttributeVisibleValues as $value)
+                {
+                    $metadata['clauses'][$startingCount] = array(
+                        'attributeName'        => $this->groupByAttribute,
+                        'relatedAttributeName' => 'value',
+                        'operatorType'         => 'equals',
+                        'value'                => $value
+                    );
+                    if (!$first)
+                    {
+                        $structure .= ' or ';
+                    }
+                    $first = false;
+                    $structure .= $startingCount;
+                    $startingCount++;
+                }
+            }
+            if (empty($metadata['structure']))
+            {
+                $metadata['structure'] = '(' . $structure . ')';
+            }
+            else
+            {
+                $metadata['structure'] = '(' . $metadata['structure'] . ') and (' . $structure . ')';
+            }
+        }
+
         protected function resolveGroupByDataAndTranslatedLabels()
         {
             $dropDownModel = $this->model->{$this->groupByAttribute};

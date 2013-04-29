@@ -177,6 +177,10 @@
                 $searchModel->getKanbanBoard()->setIsNotActive();
                 $searchModel->getKanbanBoard()->setClearSticky();
             }
+            elseif(Yii::app()->userInterface->isMobile())
+            {
+                $searchModel->getKanbanBoard()->setIsNotActive();
+            }
         }
 
         private function resolvePageSizeForKanbanBoard($searchModel, $pageSize)

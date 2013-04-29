@@ -527,7 +527,7 @@
 
         private function resolveCGridViewParamsForKanbanBoard(array $params)
         {
-            if($this->kanbanBoard === null || !$this->kanbanBoard->getIsActive())
+            if(Yii::app()->userInterface->isMobile() || $this->kanbanBoard === null || !$this->kanbanBoard->getIsActive())
             {
                 return $params;
             }
