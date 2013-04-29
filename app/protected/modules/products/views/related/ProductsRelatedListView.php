@@ -259,7 +259,7 @@
 
 	protected function renderAddProductLink()
 	{
-	    $title = Zurmo::t('ProductsModule', 'Select from catalog',
+	    $title = Zurmo::t('ProductsModule', 'Select from Catalog',
                             LabelUtil::getTranslationParamsForAllModules());
 	    $string  = "<p>" . ZurmoHtml::link($title, "#", array('id' => 'addProductPortletLink')) . "</p>";
             return $string;

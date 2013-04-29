@@ -46,5 +46,10 @@
 	    assert('$this->model->{$this->attribute} instanceof ProductTemplate');
             return parent::renderControlEditable();
         }
+
+	protected function getModalTitleForSelectingModel()
+        {
+            return Zurmo::t('ProductTemplatesModule', 'Catalog Item Search');
+        }
     }
 ?>

@@ -64,5 +64,10 @@
 			    'relatedField'   => $this->attribute
 			);
 	}
+
+	protected function getModalTitleForSelectingModel()
+        {
+            return Zurmo::t('ProductTemplatesModule', 'Catalog Item Search');
+        }
     }
 ?>
