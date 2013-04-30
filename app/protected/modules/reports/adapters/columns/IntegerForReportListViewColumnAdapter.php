@@ -34,64 +34,37 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * View class for selecting the module for the workflow wizard user interface
-     */
-    class ModuleForWorkflowWizardView extends ComponentForWorkflowWizardView
+    class IntegerForReportListViewColumnAdapter extends IntegerListViewColumnAdapter
     {
-        /**
-         * @return string
-         */
-        public static function getWizardStepTitle()
+        public function renderGridViewData()
         {
-            return Zurmo::t('Core', 'Select Module');
+            return array(
+                'name'  => $this->attribute,
+                'value' => 'IntegerForReportListViewColumnAdapter::renderNonEditableStatically($data, "' . $this->attribute . '")',
+                'type'  => 'raw',
+            );
         }
 
-        /**
-         * @return string
-         */
-        public static function getPreviousPageLinkId()
+        public static function renderNonEditableStatically($model, $attribute)
         {
-            return 'moduleCancelLink';
-        }
-
-        /**
-         * @return string
-         */
-        public static function getNextPageLinkId()
-        {
-            return 'moduleNextLink';
-        }
-
-        /**
-         * @return string
-         */
-        protected function renderFormContent()
-        {
-            $element                   = new ModuleForWorkflowRadioDropDownElement($this->model, 'moduleClassName',
-                $this->form);
-            $element->editableTemplate = '{label}{content}';
-
-            $content  = $this->form->errorSummary($this->model);
-            $content .= $element->render();
-            $content  = ZurmoHtml::tag('div', array('class' => 'left-column full-width'), $content);
-            return $content;
-        }
-
-        /**
-         * @return string
-         */
-        protected function renderPreviousPageLinkContent()
-        {
-            if ($this->model->isNew())
+            assert('$model instanceof ReportResultsRowData');
+            if(null === $displayAttributeKey = $model::resolveKeyByAttributeName($attribute))
             {
-                $label = Zurmo::t('Core', 'Cancel');
+                return $model->{$attribute};
+            }
+            $displayAttributes = $model->getDisplayAttributes();
+            $displayAttribute  = $displayAttributes[$displayAttributeKey];
+            $realAttributeName = $displayAttribute->getResolvedAttribute();
+            if($model->getModel($attribute) instanceof RedBeanModel &&
+               $model->getModel($attribute)->isAttributeFormattedAsProbability($realAttributeName))
+            {
+                $resolvedValue = NumberUtil::divisionForZero($model->{$attribute}, 100);
+                return Yii::app()->numberFormatter->formatPercentage($resolvedValue);
             }
             else
             {
-                $label = Zurmo::t('Core', 'Cancel Changes');
+                return $model->{$attribute};
             }
-            return ZurmoHtml::link(ZurmoHtml::tag('span', array('class' => 'z-label'), $label), '#', array('id' => static::getPreviousPageLinkId()));
         }
     }
 ?>

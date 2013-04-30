@@ -35,63 +35,28 @@
      ********************************************************************************/
 
     /**
-     * View class for selecting the module for the workflow wizard user interface
+     * Helper functionality for use working with numbers
      */
-    class ModuleForWorkflowWizardView extends ComponentForWorkflowWizardView
+    class NumberUtil
     {
         /**
-         * @return string
+         * Given a number and a number to divide by, resolve if 0 since you can't divide when 0.
+         * @param numeric | string $dividend
+         * @param numeric | string  $divisor
+         * @return int
          */
-        public static function getWizardStepTitle()
+        public static function divisionForZero($dividend, $divisor)
         {
-            return Zurmo::t('Core', 'Select Module');
-        }
-
-        /**
-         * @return string
-         */
-        public static function getPreviousPageLinkId()
-        {
-            return 'moduleCancelLink';
-        }
-
-        /**
-         * @return string
-         */
-        public static function getNextPageLinkId()
-        {
-            return 'moduleNextLink';
-        }
-
-        /**
-         * @return string
-         */
-        protected function renderFormContent()
-        {
-            $element                   = new ModuleForWorkflowRadioDropDownElement($this->model, 'moduleClassName',
-                $this->form);
-            $element->editableTemplate = '{label}{content}';
-
-            $content  = $this->form->errorSummary($this->model);
-            $content .= $element->render();
-            $content  = ZurmoHtml::tag('div', array('class' => 'left-column full-width'), $content);
-            return $content;
-        }
-
-        /**
-         * @return string
-         */
-        protected function renderPreviousPageLinkContent()
-        {
-            if ($this->model->isNew())
+            assert('is_numeric($dividend) || is_string($dividend)');
+            if($dividend == 0)
             {
-                $label = Zurmo::t('Core', 'Cancel');
+                return 0;
             }
             else
             {
-                $label = Zurmo::t('Core', 'Cancel Changes');
+                return $dividend / $divisor;
             }
-            return ZurmoHtml::link(ZurmoHtml::tag('span', array('class' => 'z-label'), $label), '#', array('id' => static::getPreviousPageLinkId()));
+
         }
     }
 ?>

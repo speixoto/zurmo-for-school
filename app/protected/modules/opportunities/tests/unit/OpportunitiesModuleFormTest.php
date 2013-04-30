@@ -34,64 +34,28 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * View class for selecting the module for the workflow wizard user interface
-     */
-    class ModuleForWorkflowWizardView extends ComponentForWorkflowWizardView
+    class OpportunitiesModuleFormTest extends ZurmoBaseTest
     {
-        /**
-         * @return string
-         */
-        public static function getWizardStepTitle()
+        public static function setUpBeforeClass()
         {
-            return Zurmo::t('Core', 'Select Module');
+            parent::setUpBeforeClass();
+            SecurityTestHelper::createSuperAdmin();
         }
 
-        /**
-         * @return string
-         */
-        public static function getPreviousPageLinkId()
+        public function testValidateStageToProbabilityMapping()
         {
-            return 'moduleCancelLink';
-        }
+            $form      = new OpportunitiesModuleForm();
+            $form->stageToProbabilityMapping = array('a' => 'a');
+            $validated = $form->validateStageToProbabilityMapping();
+            $this->assertFalse($validated);
+            $compareErrors = array('stageToProbabilityMapping' => array('Mapped Probabilities must be integers'));
+            $this->assertEquals($compareErrors, $form->getErrors());
 
-        /**
-         * @return string
-         */
-        public static function getNextPageLinkId()
-        {
-            return 'moduleNextLink';
-        }
-
-        /**
-         * @return string
-         */
-        protected function renderFormContent()
-        {
-            $element                   = new ModuleForWorkflowRadioDropDownElement($this->model, 'moduleClassName',
-                $this->form);
-            $element->editableTemplate = '{label}{content}';
-
-            $content  = $this->form->errorSummary($this->model);
-            $content .= $element->render();
-            $content  = ZurmoHtml::tag('div', array('class' => 'left-column full-width'), $content);
-            return $content;
-        }
-
-        /**
-         * @return string
-         */
-        protected function renderPreviousPageLinkContent()
-        {
-            if ($this->model->isNew())
-            {
-                $label = Zurmo::t('Core', 'Cancel');
-            }
-            else
-            {
-                $label = Zurmo::t('Core', 'Cancel Changes');
-            }
-            return ZurmoHtml::link(ZurmoHtml::tag('span', array('class' => 'z-label'), $label), '#', array('id' => static::getPreviousPageLinkId()));
+            $form->stageToProbabilityMapping = array('a' => '55', 'b' => 65, 'c' => 0);
+            $form->clearErrors();
+            $validated = $form->validateStageToProbabilityMapping();
+            $this->assertTrue($validated);
+            $this->assertEquals(0, count($form->getErrors()));
         }
     }
 ?>

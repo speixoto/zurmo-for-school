@@ -35,63 +35,21 @@
      ********************************************************************************/
 
     /**
-     * View class for selecting the module for the workflow wizard user interface
+     * Adds extra support for activity specific relation activityItems
      */
-    class ModuleForWorkflowWizardView extends ComponentForWorkflowWizardView
+    class ActivityCopyModelUtil extends ZurmoCopyModelUtil
     {
         /**
-         * @return string
+         * @param RedBeanModel $model
+         * @param RedBeanModel $copyToModel
          */
-        public static function getWizardStepTitle()
+        public static function copy(RedBeanModel $model, RedBeanModel $copyToModel)
         {
-            return Zurmo::t('Core', 'Select Module');
-        }
-
-        /**
-         * @return string
-         */
-        public static function getPreviousPageLinkId()
-        {
-            return 'moduleCancelLink';
-        }
-
-        /**
-         * @return string
-         */
-        public static function getNextPageLinkId()
-        {
-            return 'moduleNextLink';
-        }
-
-        /**
-         * @return string
-         */
-        protected function renderFormContent()
-        {
-            $element                   = new ModuleForWorkflowRadioDropDownElement($this->model, 'moduleClassName',
-                $this->form);
-            $element->editableTemplate = '{label}{content}';
-
-            $content  = $this->form->errorSummary($this->model);
-            $content .= $element->render();
-            $content  = ZurmoHtml::tag('div', array('class' => 'left-column full-width'), $content);
-            return $content;
-        }
-
-        /**
-         * @return string
-         */
-        protected function renderPreviousPageLinkContent()
-        {
-            if ($this->model->isNew())
+            parent::copy($model, $copyToModel);
+            foreach($model->activityItems as $activityItem)
             {
-                $label = Zurmo::t('Core', 'Cancel');
+                $copyToModel->activityItems->add($activityItem);
             }
-            else
-            {
-                $label = Zurmo::t('Core', 'Cancel Changes');
-            }
-            return ZurmoHtml::link(ZurmoHtml::tag('span', array('class' => 'z-label'), $label), '#', array('id' => static::getPreviousPageLinkId()));
         }
     }
 ?>

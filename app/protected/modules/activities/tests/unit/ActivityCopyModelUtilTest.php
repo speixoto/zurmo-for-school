@@ -34,64 +34,35 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * View class for selecting the module for the workflow wizard user interface
-     */
-    class ModuleForWorkflowWizardView extends ComponentForWorkflowWizardView
+    class ActivityCopyModelUtilTest extends ZurmoBaseTest
     {
-        /**
-         * @return string
-         */
-        public static function getWizardStepTitle()
+        public static function setUpBeforeClass()
         {
-            return Zurmo::t('Core', 'Select Module');
+            parent::setUpBeforeClass();
+            SecurityTestHelper::createSuperAdmin();
+            $super = User::getByUsername('super');
+            Yii::app()->user->userModel = $super;
+            AccountTestHelper::createAccountByNameForOwner('anAccount', $super);
         }
 
-        /**
-         * @return string
-         */
-        public static function getPreviousPageLinkId()
+        public function testCopy()
         {
-            return 'moduleCancelLink';
-        }
-
-        /**
-         * @return string
-         */
-        public static function getNextPageLinkId()
-        {
-            return 'moduleNextLink';
-        }
-
-        /**
-         * @return string
-         */
-        protected function renderFormContent()
-        {
-            $element                   = new ModuleForWorkflowRadioDropDownElement($this->model, 'moduleClassName',
-                $this->form);
-            $element->editableTemplate = '{label}{content}';
-
-            $content  = $this->form->errorSummary($this->model);
-            $content .= $element->render();
-            $content  = ZurmoHtml::tag('div', array('class' => 'left-column full-width'), $content);
-            return $content;
-        }
-
-        /**
-         * @return string
-         */
-        protected function renderPreviousPageLinkContent()
-        {
-            if ($this->model->isNew())
-            {
-                $label = Zurmo::t('Core', 'Cancel');
-            }
-            else
-            {
-                $label = Zurmo::t('Core', 'Cancel Changes');
-            }
-            return ZurmoHtml::link(ZurmoHtml::tag('span', array('class' => 'z-label'), $label), '#', array('id' => static::getPreviousPageLinkId()));
+            Yii::app()->user->userModel = User::getByUsername('super');
+            $accounts                   = Account::getByName('anAccount');
+            $task                       = new Task();
+            $task->name                 = 'My Task';
+            $task->owner                = Yii::app()->user->userModel;
+            $task->completedDateTime    = '0000-00-00 00:00:00';
+            $task->activityItems->add($accounts[0]);
+            $saved = $task->save();
+            $this->assertTrue($saved);
+            $taskId = $task->id;
+            $task->forget();
+            unset($task);
+            $task       = Task::getById($taskId);
+            $copyToTask = new Task();
+            ActivityCopyModelUtil::copy($task, $copyToTask);
+            $this->assertEquals('My Task', $copyToTask->name);
+            $this->assertEquals(1, $copyToTask->activityItems->count());
         }
     }
-?>

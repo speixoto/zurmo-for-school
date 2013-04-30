@@ -34,64 +34,30 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * View class for selecting the module for the workflow wizard user interface
-     */
-    class ModuleForWorkflowWizardView extends ComponentForWorkflowWizardView
+    class CopyLinkActionElement extends LinkActionElement
     {
-        /**
-         * @return string
-         */
-        public static function getWizardStepTitle()
+        public function getActionType()
         {
-            return Zurmo::t('Core', 'Select Module');
+            return 'Create';
         }
 
-        /**
-         * @return string
-         */
-        public static function getPreviousPageLinkId()
+        protected function getDefaultLabel()
         {
-            return 'moduleCancelLink';
+            return Zurmo::t('Core', 'Clone');
         }
 
-        /**
-         * @return string
-         */
-        public static function getNextPageLinkId()
+        protected function getDefaultRoute()
         {
-            return 'moduleNextLink';
-        }
-
-        /**
-         * @return string
-         */
-        protected function renderFormContent()
-        {
-            $element                   = new ModuleForWorkflowRadioDropDownElement($this->model, 'moduleClassName',
-                $this->form);
-            $element->editableTemplate = '{label}{content}';
-
-            $content  = $this->form->errorSummary($this->model);
-            $content .= $element->render();
-            $content  = ZurmoHtml::tag('div', array('class' => 'left-column full-width'), $content);
-            return $content;
-        }
-
-        /**
-         * @return string
-         */
-        protected function renderPreviousPageLinkContent()
-        {
-            if ($this->model->isNew())
+            $params = array('id' => $this->modelId);
+            if (Yii::app()->request->getParam('redirectUrl') != null)
             {
-                $label = Zurmo::t('Core', 'Cancel');
+                $params = array_merge($params, array('redirectUrl' => Yii::app()->request->getParam('redirectUrl')));
             }
-            else
+            elseif ($this->getRedirectUrl() != null)
             {
-                $label = Zurmo::t('Core', 'Cancel Changes');
+                $params = array_merge($params, array('redirectUrl' => $this->getRedirectUrl()));
             }
-            return ZurmoHtml::link(ZurmoHtml::tag('span', array('class' => 'z-label'), $label), '#', array('id' => static::getPreviousPageLinkId()));
+            return Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/copy/', $params);
         }
     }
 ?>
