@@ -149,7 +149,6 @@
 
             $data['name']           = "Michael";
             $data['closeDate']            = "2002-04-03";
-            $data['probability']            = "10";
             $data['description']          = "Opportunity description";
 
             $data['source']['value']     = $sourceValues[1];
