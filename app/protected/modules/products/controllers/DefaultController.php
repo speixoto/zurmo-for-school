@@ -285,7 +285,7 @@
             $modalListLinkProvider = new ProductSelectFromRelatedEditModalListLinkProvider(
                                             $_GET['modalTransferInformation']['sourceIdFieldId'],
                                             $_GET['modalTransferInformation']['sourceNameFieldId'],
-					    $_GET['modalTransferInformation']['relatedField'],
+					    $_GET['modalTransferInformation']['relationModelId'],
 					    $_GET['modalTransferInformation']['relatedFieldId']
             );
             echo ModalSearchListControllerUtil::
@@ -350,38 +350,37 @@
 	    die();
         }
 
-	public function actionCreateProductFromProductTemplate($id)
+	public function actionCreateProductFromProductTemplate($relationModuleId, $portletId, $uniqueLayoutId, $id,
+								$relationModelId, $relationAttributeName, $relationModelClassName = null)
 	{
-	    if(Yii::app()->request->isAjaxRequest)
-	    {
-		$productTemplate	    = static::getModelAndCatchNotFoundAndDisplayError('ProductTemplate', intval($id));
-		$product		    = new Product();
-		$product->name		    = $productTemplate->name;
-		$product->description	    = $productTemplate->description;
-		$product->quantity	    = 1;
-		$product->stage->value	    = Product::OPEN_STAGE;
-		$product->productTemplate   = $productTemplate;
-		$product->pricefrequency    = $productTemplate->priceFrequency;
-		$product->sellPrice->value  = $productTemplate->sellPrice->value;
-		$product->type		    = $productTemplate->type;
-		$relatedField		    = Yii::app()->request->getParam('relatedField');
-		$relatedFieldId		    = intval(Yii::app()->request->getParam('relatedFieldId'));
-		switch($relatedField)
-		{
-		    case 'opportunity' : $opportunity		= Opportunity::getById($relatedFieldId);
-					 $product->opportunity	= $opportunity;
-					 $product->save();
-					 break;
-		}
-		$output = array('id'			=> $product->id,
-				'name'			=> $product->name,
-				'quantity'		=> $product->quantity,
-				'productSellPriceValue' => $product->sellPrice->value
-				);
+	    if($relationModelClassName == null)
+            {
+                $relationModelClassName = Yii::app()->getModule($relationModuleId)->getPrimaryModelName();
+            }
+	    $productTemplate		= static::getModelAndCatchNotFoundAndDisplayError('ProductTemplate', intval($id));
+	    $product			= new Product();
+	    $product->name		= $productTemplate->name;
+	    $product->description	= $productTemplate->description;
+	    $product->quantity		= 1;
+	    $product->stage->value	= Product::OPEN_STAGE;
+	    $product->productTemplate   = $productTemplate;
+	    $product->pricefrequency    = $productTemplate->priceFrequency;
+	    $product->sellPrice->value  = $productTemplate->sellPrice->value;
+	    $product->type		= $productTemplate->type;
+	    $redirectUrl		= $this->createUrl('/' . $relationModuleId . '/default/details',
+						    array('id' => $relationModelId));
 
-		echo json_encode($output);
-		die();
-	    }
+	    $relationModel		= $relationModelClassName::getById((int)$relationModelId);
+	    $product->$relationAttributeName = $relationModel;
+	    $product->save();
+	    $this->redirect(array('/' . $relationModuleId . '/defaultPortlet/modalRefresh',
+					'portletId'            => $portletId,
+					'uniqueLayoutId'       => $uniqueLayoutId,
+					'redirectUrl'          => $redirectUrl,
+					'portletParams'        => array(  'relationModuleId' => $relationModuleId,
+									  'relationModelId'  => $relationModelId),
+					//'portletsAreRemovable' => false //Not working Ask Jason
+				));
 	}
     }
 ?>

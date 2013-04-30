@@ -22,20 +22,33 @@ function copyProductTemplateDataForProduct(templateId, url)
     );
 }
 
-function addProductRowToPortletGridView(productId, url, relatedField, relatedFieldId)
+function addProductRowToPortletGridView(productTemplateId, url, relationAttributeName, relationModelId)
 {
-    url = url + "?id=" + productId + "&relatedFieldId=" + relatedFieldId + "&relatedField=" + relatedField;
+    url = url + "&id=" + productTemplateId + "&relationModelId=" + relationModelId + "&relationAttributeName=" + relationAttributeName;
     $.ajax(
         {
             type: 'GET',
             url: url,
             dataType: 'json',
+            beforeSend: function()
+                       {
+                           $('#modalContainer').html('');
+                           makeLargeLoadingSpinner(true, '#modalContainer');
+                       },
             success: function(data)
                      {
-                         $('#product_opportunity_name').val('');
-                         $('#product_opportunity_id').val('');
-                         $('#product-configuration-form').hide('slow');
-                         $("#product-portlet-grid-view").yiiGridView.update("product-portlet-grid-view");
+//                         $('#product_opportunity_name').val('');
+//                         $('#product_opportunity_id').val('');
+//                         $('#product-configuration-form').hide('slow');
+                         //$("#product-portlet-grid-view").yiiGridView.update("product-portlet-grid-view");
+                     },
+            complete:function()
+                     {
+                       $('#modalContainer').dialog('close');
+                       $('#product_opportunity_name').val('');
+                       $('#product_opportunity_id').val('');
+                       $('#product-configuration-form').hide('slow');
+                       juiPortlets.refresh();
                      }
         }
     );

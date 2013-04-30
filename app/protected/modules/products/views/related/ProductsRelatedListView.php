@@ -268,7 +268,16 @@
 	protected function renderAddProductContent($form)
 	{
 	    $routeParams    = $this->getCreateLinkRouteParameters();
-	    $productElement = new ProductPortletTemplateElement(new Product(), $this->getRelationAttributeName(), $form, array('inputIdPrefix' => 'product', 'htmlOptions' => array('display' => 'none')), $routeParams['relationModelId']);
+	    $productElement = new ProductPortletTemplateElement(new Product(),
+								    $this->getRelationAttributeName(),
+								    $form,
+								    array('inputIdPrefix'   => 'product',
+									  'htmlOptions'	    => array('display' => 'none')),
+								    $this->params["portletId"],
+								    $this->uniqueLayoutId,
+								    $routeParams['relationModelId'],
+								    $routeParams["relationModuleId"]
+								);
 	    $content	    = $productElement->render();
 	    return $content;
         }

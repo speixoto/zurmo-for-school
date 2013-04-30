@@ -133,6 +133,7 @@
                     array('name',		'length',  'min'  => 3, 'max' => 64),
                     array('description',	'type',    'type' => 'string'),
                     array('quantity',		'numerical',  'integerOnly' => true, 'allowEmpty' => false, 'min' => 1),
+		    array('sellPrice',		'CurrencyValuePriceValidator', 'allowZero' => true, 'allowEmpty' => false),
                     array('stage',		'required'),
 		    array('quantity',		'required'),
 		    array('type',		'type',    'type' => 'integer'),

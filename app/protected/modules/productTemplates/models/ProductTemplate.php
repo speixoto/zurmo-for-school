@@ -136,6 +136,9 @@
                     array('sellPrice',        'required'),
 		    array('sellPriceFormula', 'required'),
 		    array('priceFrequency',   'required'),
+		    array('sellPrice',	      'CurrencyValuePriceValidator', 'allowZero' => true, 'allowEmpty' => false),
+		    array('listPrice',	      'CurrencyValuePriceValidator', 'allowZero' => true, 'allowEmpty' => false),
+		    array('cost',	      'CurrencyValuePriceValidator', 'allowZero' => true, 'allowEmpty' => false),
                 ),
                 'elements' => array(
                     'product'             => 'Product',

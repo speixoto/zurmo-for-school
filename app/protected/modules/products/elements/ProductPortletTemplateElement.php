@@ -34,13 +34,28 @@
     class ProductPortletTemplateElement extends ModelElement
     {
         protected static $moduleId = 'productTemplates';
-	protected static $modalActionId = 'modalListForProductPortlet';
-	protected $relatedFieldId;
 
-	public function __construct($model, $attribute, $form = null, array $params = array(), $relatedFieldId = null)
+	protected static $modalActionId = 'modalListForProductPortlet';
+
+	protected $relationModelId;
+
+	protected $relationAttributeName;
+
+	protected $portletId;
+
+	protected $uniqueLayoutId;
+
+	protected $relationModuleId;
+
+	public function __construct($model, $relationAttributeName, $form, array $params, $portletId, $uniqueLayoutId,
+				    $relationModelId, $relationModuleId)
 	{
-	    $this->relatedFieldId = $relatedFieldId;
-	    parent::__construct($model, $attribute, $form, $params);
+	    $this->relationModelId	    = $relationModelId;
+	    $this->relationAttributeName    = $relationAttributeName;
+	    $this->portletId		    = $portletId;
+	    $this->uniqueLayoutId	    = $uniqueLayoutId;
+	    $this->relationModuleId	    = $relationModuleId;
+	    parent::__construct($model, $relationAttributeName, $form, $params);
 	}
 
         protected function renderLabel()
@@ -60,8 +75,11 @@
 	protected function resolveRelatedModelIdForModalTransferInformation()
 	{
 	    return array(
-			    'relatedFieldId' => $this->relatedFieldId,
-			    'relatedField'   => $this->attribute
+			    'relationModelId'		=> $this->relationModelId,
+			    'relationAttributeName'	=> $this->relationAttributeName,
+			    'portletId'			=> $this->portletId,
+			    'uniqueLayoutId'		=> $this->uniqueLayoutId,
+			    'relationModuleId'		=> $this->relationModuleId
 			);
 	}
 

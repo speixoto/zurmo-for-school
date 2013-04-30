@@ -328,8 +328,12 @@
 	    $modalListLinkProvider = new ProductTemplateSelectForPortletFromRelatedEditModalListLinkProvider(
                                             $_GET['modalTransferInformation']['sourceIdFieldId'],
                                             $_GET['modalTransferInformation']['sourceNameFieldId'],
-					    $_GET['modalTransferInformation']['relatedField'],
-					    $_GET['modalTransferInformation']['relatedFieldId']
+					    $_GET['modalTransferInformation']['relationAttributeName'],
+					    intval($_GET['modalTransferInformation']['relationModelId']),
+					    $_GET['modalTransferInformation']['relationModuleId'],
+					    $_GET['modalTransferInformation']['uniqueLayoutId'],
+					    intval($_GET['modalTransferInformation']['portletId']),
+					    'productTemplates'
             );
             echo ModalSearchListControllerUtil::
                  setAjaxModeAndRenderModalSearchList($this, $modalListLinkProvider);

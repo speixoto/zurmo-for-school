@@ -43,17 +43,7 @@
          */
         protected $sourceNameFieldId;
 
-	/**
-	 * Id of the related field having relation with product for e.g.
-	 * opportunity
-	 */
-	protected $relatedFieldId;
-
-	/**
-	 * Name of the related field having relation with product for e.g.
-	 * opportunity
-	 */
-	protected $relatedField;
+	protected $uniquePortletPageId;
 
         /**
          * sourceIdFieldName and sourceNameFieldId are needed to know
@@ -61,25 +51,36 @@
          * upon selecting a row in the listview
          *
          */
-        public function __construct($sourceIdFieldId, $sourceNameFieldId, $relatedField, $relatedFieldId)
+        public function __construct($sourceIdFieldId, $sourceNameFieldId, $relationAttributeName, $relationModelId, $relationModuleId,
+                                    $uniqueLayoutId, $portletId, $moduleId)
         {
             assert('is_string($sourceIdFieldId)');
             assert('is_string($sourceNameFieldId)');
-	    assert('is_string($relatedFieldId)');
-	    assert('is_string($relatedField)');
-            $this->sourceIdFieldId   = $sourceIdFieldId;
-            $this->sourceNameFieldId = $sourceNameFieldId;
-	    $this->relatedFieldId    = $relatedFieldId;
-	    $this->relatedField      = $relatedField;
+	    assert('is_string($relationAttributeName)');
+            assert('is_int($relationModelId)');
+            assert('is_string($relationModuleId)');
+            assert('is_string($uniqueLayoutId)');
+            assert('is_int($portletId)');
+            assert('is_string($moduleId)');
+	    $this->sourceIdFieldId	  = $sourceIdFieldId;
+            $this->sourceNameFieldId	  = $sourceNameFieldId;
+            $this->relationAttributeName  = $relationAttributeName;
+            $this->relationModelId        = $relationModelId;
+            $this->relationModuleId       = $relationModuleId;
+            $this->uniqueLayoutId         = $uniqueLayoutId;
+            $this->portletId              = $portletId;
+            $this->moduleId               = $moduleId;
         }
 
         public function getLinkString($attributeString)
         {
-	    $url = Yii::app()->createUrl("products/default/createProductFromProductTemplate");
+	    $url = Yii::app()->createUrl("products/default/createProductFromProductTemplate", array('relationModuleId' => $this->relationModuleId,
+												    'portletId' => $this->portletId,
+												    'uniqueLayoutId' => $this->uniqueLayoutId));
             $string  = 'ZurmoHtml::link(';
             $string .= $attributeString . ', ';
             $string .= '"javascript:transferModalValues(\"#modalContainer\", " . CJavaScript::encode(array(\'' . $this->sourceIdFieldId . '\' => $data->id, \'' . $this->sourceNameFieldId . '\' => strval(' . $attributeString . '))) . ");
-			addProductRowToPortletGridView(\'$data->id\', \'' . $url . '\', \'' . $this->relatedField . '\', \'' . $this->relatedFieldId . '\')"';
+			addProductRowToPortletGridView(\'$data->id\', \'' . $url . '\', \'' . $this->relationAttributeName . '\', \'' . $this->relationModelId . '\')"';
             $string .= ')';
             return $string;
         }
