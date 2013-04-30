@@ -86,29 +86,49 @@
             $data        = $this->dataProvider->getData();
             $n           = count($data);
             $columnsData = $this->resolveDataIntoKanbanColumns();
+            $width       = ' style="width:' . 100 / count($columnsData) . '%;"';
             echo "<tbody>\n";
-            echo "<tr><td>\n";
+            echo "<tr><td id=\"kanban-holder\">\n";
             if ($n > static::$maxCount)
             {
                 $this->renderOverMaxCountText();
             }
             elseif($n > 0)
             {
-                echo "<div>\n";
+                echo "<div id=\"kanban-board\">\n";
                 foreach($columnsData as $attributeValue => $attributeValueAndData)
                 {
-                    echo "<div style='float:left;'>\n";
+                    echo "<div class=\"kanban-column\" $width>\n";
                     echo "<div data-value='" . $attributeValue . "' class='droppable-dynamic-rows-container'>\n";
-                    echo ZurmoHtml::tag('div', array(), $this->resolveGroupByColumnHeaderLabel($attributeValue));
+                    echo ZurmoHtml::tag('div', array('class' => 'column-header'), $this->resolveGroupByColumnHeaderLabel($attributeValue));
                     //todo: swap all these declarations with ZurmoHtml::tag and maybe also in stacked Extended do the same thing?
                     echo "<ul>\n";
                     foreach($attributeValueAndData as $row)
                     {
-                        echo "<li data-id='" . $this->dataProvider->data[$row]->id . "' class='item-to-place'>\n";
+                        echo "<li data-id='" . $this->dataProvider->data[$row]->id . "' class='kanban-card item-to-place'>\n";
+
+                        //Amit's stuff from here
+                        $cardDetails = '';
+                        $cardDetails .= ZurmoHtml::tag('span', array('class' => 'opportunity-amount'), '$30,000');
+                        $cardDetails .= ZurmoHtml::tag('span', array('class' => 'opportunity-name'), 'Design Review Service');
+                        $cardDetails .= ZurmoHtml::tag('span', array('class' => 'account-name'), 'Bitburger Industries Ltd.');
+                        $ownerAvatar  = '<img src="http://glz.co.il/Sip_Storage/FILES/4/2964.jpg" width="20" height="20" alt="owner name" />';
+                        $ownerName    = ZurmoHtml::tag('span', array(), 'Jason Blue');
+                        $cardDetails .= ZurmoHtml::tag('a', array('class' => 'opportunity-owner'), $ownerName.$ownerAvatar);
+                        echo '<div>'; // we need this to wrap everything
+                        echo $cardDetails;
+                        echo '<div class="hidden-content">';
+                        echo '<a href="#" onclick="$(this).next().fadeToggle(); return false;">Toggle Details</a>';
                         $this->renderRowAsTableCellOrDiv($row, self::ROW_TYPE_DIV);
+                        echo '</div>';
+                        echo '</div>';
+                        //End Amit's stuff
+
                         echo "</li>\n";
                     }
                     echo "</ul>\n";
+                    $dropZone =  ZurmoHtml::tag('div', array('class' => 'drop-zone'), '');
+                    echo ZurmoHtml::tag('div', array('class' => 'drop-zone-container'), $dropZone);
                     echo "</div>\n";
                     echo "</div>\n";
                 }
@@ -173,7 +193,7 @@
                 $(".droppable-dynamic-rows-container").live("drop", function(event, ui)
                 {
                    ' . $this->getAjaxForDroppedAttribute() . '
-                   $(this).append(ui.draggable);
+                   $("ul", this).append(ui.draggable);
                 });
             ';
             Yii::app()->getClientScript()->registerScript('KanbanDragDropScript', $script);

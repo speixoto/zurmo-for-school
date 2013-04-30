@@ -1,0 +1,129 @@
+#kanban-holder{
+	margin: 0;
+	padding: 0;
+	background: #fff !important;
+	#kanban-board,
+	.kanban-column,
+	.kanban-column > div{
+		margin-bottom: 0 !important;
+	}
+}
+
+#kanban-board{
+	++.clearfix;
+	++.border-box;
+	.drop-zone-container{
+		padding: 37px 2px 2px 2px;
+		++.border-box;
+		position: absolute;
+		left: 0;
+		top: 0;
+		height: 100%;
+		width: 100%;
+	}
+	.drop-zone{
+		//.opacity(100) !important;
+		++.border-box;
+		position: relative;
+	}
+	.ui-state-active{
+
+	}
+}
+
+.kanban-column{
+	++.border-box;
+	float: left;
+	border-left: 1px solid #dfdfdf;
+	&:first-child{
+		border-left: none;
+	}
+	ul{
+		list-style: none;
+		padding: 5px 5px;
+		position: relative;
+		z-index: 5;
+	}
+}
+
+.column-header{
+	font-weight: bold !important;
+	height: 35px;
+	line-height: 35px;
+	background: url(../images/table-items-header.png) left top repeat-x;
+	padding: 0 0 0 5px;
+	white-space: nowrap;
+	border-bottom: 1px solid #dfdfdf;
+}
+/*
+@themeColor        : #282A76;
+    @themeColor2       : #7CB830;
+    @themeColorBtn     : #97c43d;
+    @themeColorBtn2    : darken(@themeColorBtn, 10%);
+    */
+
+.kanban-card{
+	> div{
+		position: relative;
+		width: 100%;
+		display: block;
+		margin:0 0 5px 0 !important;
+		background: #f0f0f0;
+		.radius(3px);
+		padding:5px 5px 15px 10px;
+		++.border-box;
+		.b-shadow(~'inset 0 0 0 1px rgba(204, 204, 204, 0.3) , 1px 1px 1px 0px rgba(153, 153, 153, 0.15)');
+	}
+	span{
+		display: block;
+		margin-bottom: 3px;
+	}
+	.opportunity-name{
+		font-size: 12px;
+		font-weight: normal;
+	}
+	.account-name{
+		font-size: 14px;
+		font-weight: bold;
+		color: #666;
+	}
+	.opportunity-amount{
+		font-size: 24px;
+		font-weight: bold;
+		text-align: right;
+		color: darken(#282A76, 10%);
+		.t-shadow(0 1px 0 rgba(255, 255, 255, 0.7));
+		//margin-bottom: 0;
+		line-height: 1;
+	}
+	.opportunity-owner{
+		position: absolute;
+		right: 5px;
+		bottom: 5px;
+		text-align: right;
+		display: block;
+		line-height: 1;
+		span{
+			display: inline-block;
+			top: -7px;
+			position: relative;
+			margin: 0 5px;
+		}
+		img{
+			background: #DFDFDF;
+			padding: 1px;
+		}
+	}
+	.hidden-content{
+		> a{
+			.smaller();
+			position: relative;
+			top: 5px;
+		}
+		> div{
+			display: none;
+			padding: 10px 0 5px 0;
+		}
+	}
+
+}

@@ -1382,6 +1382,10 @@ form,
 	}
 }
 
+.view-toolbar + .view-toolbar{
+	float: right;
+}
+
 .portlet-view-toolbar{
 	.parent{
 		position: relative;
@@ -1882,14 +1886,11 @@ caption, th, td {
 			float:left;
 		}
 	}
-	td:first-child{
-		div{
-			//.smaller();
-			&:first-child{
-				font-size: 13px;
-				font-weight: bold;
-				margin:0 0 3px 0;
-			}
+	tr:first-child{
+		> div:first-child{
+			font-size: 13px;
+			font-weight: bold;
+			margin:0 0 3px 0;
 		}
 	}
 }
@@ -4946,4 +4947,5 @@ div.hasHalfs{
 @import 'inbox.less';
 @import 'email-templates.less';
 @import 'marketing.less';
+@import 'kanban.less';
 @import 'media-queries.less';

@@ -1,12 +1,12 @@
 $(window).ready(function(){
     $(".item-to-place").live("mousemove",function(){
         $(this).draggable({
-            helper: function(event){
-                var label = $(event.target).html();
-                var width = $('.wrapper').width() * 0.5 - 55;
-                var clone = $('<div class="dynamic-row clone">' + label + '</div>');
-                //clone.width(width);
-                clone.animate({ width : width}, 250);
+            helper: function(event, ui){
+                var label = $(event.currentTarget).html();
+                var width = $(this).width();
+                var clone = $('<div class="kanban-card dynamic-row clone">' + label + '</div>');
+                clone.width(width);
+                //clone.animate({ width : width}, 250);
                 $('body').append(clone);
                 return clone;
             },

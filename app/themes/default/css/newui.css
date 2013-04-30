@@ -245,7 +245,12 @@ a.ModalGameNotification a,
 .tabs-container,
 .email-template-content,
 .tabs-container > .tab,
-.email-template-content > .tab {
+.email-template-content > .tab,
+#kanban-board,
+#kanban-board .drop-zone-container,
+#kanban-board .drop-zone,
+.kanban-column,
+.kanban-card > div {
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
@@ -306,7 +311,8 @@ a.ModalGameNotification a,
 #edit-form,
 #delete-form,
 .right-side-edit-view-panel,
-.pager ul {
+.pager ul,
+#kanban-board {
   zoom: 1;
 }
 .clearfix:before,
@@ -314,7 +320,8 @@ a.ModalGameNotification a,
 #edit-form:before,
 #delete-form:before,
 .right-side-edit-view-panel:before,
-.pager ul:before {
+.pager ul:before,
+#kanban-board:before {
   content: "";
   display: table;
 }
@@ -323,7 +330,8 @@ a.ModalGameNotification a,
 #edit-form:after,
 #delete-form:after,
 .right-side-edit-view-panel:after,
-.pager ul:after {
+.pager ul:after,
+#kanban-board:after {
   content: "";
   display: table;
   clear: both;
@@ -6285,6 +6293,9 @@ form .view-toolbar-container,
 .portlet-view-toolbar > a:first-child {
   border-left: none;
 }
+.view-toolbar + .view-toolbar {
+  float: right;
+}
 .portlet-view-toolbar .parent {
   position: relative;
 }
@@ -7127,7 +7138,7 @@ td {
   margin-top: 2px;
   float: left;
 }
-.stacked-list td:first-child div:first-child {
+.stacked-list tr:first-child > div:first-child {
   font-size: 13px;
   font-weight: bold;
   margin: 0 0 3px 0;
@@ -17695,6 +17706,125 @@ a.user-link {
 }
 .portlet-with-toolbar .view-toolbar .parent > ul {
   top: auto;
+}
+#kanban-holder {
+  margin: 0;
+  padding: 0;
+  background: #fff !important;
+}
+#kanban-holder #kanban-board,
+#kanban-holder .kanban-column,
+#kanban-holder .kanban-column > div {
+  margin-bottom: 0 !important;
+}
+#kanban-board .drop-zone-container {
+  padding: 37px 2px 2px 2px;
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 100%;
+}
+#kanban-board .drop-zone {
+  position: relative;
+}
+.kanban-column {
+  float: left;
+  border-left: 1px solid #dfdfdf;
+}
+.kanban-column:first-child {
+  border-left: none;
+}
+.kanban-column ul {
+  list-style: none;
+  padding: 5px 5px;
+  position: relative;
+  z-index: 5;
+}
+.column-header {
+  font-weight: bold !important;
+  height: 35px;
+  line-height: 35px;
+  background: url(../images/table-items-header.png) left top repeat-x;
+  padding: 0 0 0 5px;
+  white-space: nowrap;
+  border-bottom: 1px solid #dfdfdf;
+}
+/*
+@themeColor        : #282A76;
+    @themeColor2       : #7CB830;
+    @themeColorBtn     : #97c43d;
+    @themeColorBtn2    : darken(@themeColorBtn, 10%);
+    */
+.kanban-card > div {
+  position: relative;
+  width: 100%;
+  display: block;
+  margin: 0 0 5px 0 !important;
+  background: #f0f0f0;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  -ms-border-radius: 3px;
+  -o-border-radius: 3px;
+  border-radius: 3px;
+  padding: 5px 5px 15px 10px;
+  -webkit-box-shadow: inset 0 0 0 1px rgba(204, 204, 204, 0.3) , 1px 1px 1px 0px rgba(153, 153, 153, 0.15);
+  -moz-box-shadow: inset 0 0 0 1px rgba(204, 204, 204, 0.3) , 1px 1px 1px 0px rgba(153, 153, 153, 0.15);
+  -o-box-shadow: inset 0 0 0 1px rgba(204, 204, 204, 0.3) , 1px 1px 1px 0px rgba(153, 153, 153, 0.15);
+  -ms-box-shadow: inset 0 0 0 1px rgba(204, 204, 204, 0.3) , 1px 1px 1px 0px rgba(153, 153, 153, 0.15);
+  box-shadow: inset 0 0 0 1px rgba(204, 204, 204, 0.3) , 1px 1px 1px 0px rgba(153, 153, 153, 0.15);
+}
+.kanban-card span {
+  display: block;
+  margin-bottom: 3px;
+}
+.kanban-card .opportunity-name {
+  font-size: 12px;
+  font-weight: normal;
+}
+.kanban-card .account-name {
+  font-size: 14px;
+  font-weight: bold;
+  color: #666;
+}
+.kanban-card .opportunity-amount {
+  font-size: 24px;
+  font-weight: bold;
+  text-align: right;
+  color: #1b1c50;
+  -webkit-text-shadow: 0 1px 0 rgba(255, 255, 255, 0.7);
+  -moz-text-shadow: 0 1px 0 rgba(255, 255, 255, 0.7);
+  -o-text-shadow: 0 1px 0 rgba(255, 255, 255, 0.7);
+  -ms-text-shadow: 0 1px 0 rgba(255, 255, 255, 0.7);
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.7);
+  line-height: 1;
+}
+.kanban-card .opportunity-owner {
+  position: absolute;
+  right: 5px;
+  bottom: 5px;
+  text-align: right;
+  display: block;
+  line-height: 1;
+}
+.kanban-card .opportunity-owner span {
+  display: inline-block;
+  top: -7px;
+  position: relative;
+  margin: 0 5px;
+}
+.kanban-card .opportunity-owner img {
+  background: #DFDFDF;
+  padding: 1px;
+}
+.kanban-card .hidden-content > a {
+  font-size: 11px;
+  position: relative;
+  top: 5px;
+}
+.kanban-card .hidden-content > div {
+  display: none;
+  padding: 10px 0 5px 0;
 }
 /*********************************************************************************
  * Zurmo is a customer relationship management program developed by
