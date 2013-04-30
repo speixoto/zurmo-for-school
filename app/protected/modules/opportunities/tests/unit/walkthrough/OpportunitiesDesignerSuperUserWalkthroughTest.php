@@ -463,7 +463,7 @@
             $this->assertEquals($opportunity->amount->value              , '288000');
             $this->assertEquals($opportunity->amount->currency->id       , $baseCurrency->id);
             $this->assertEquals($opportunity->account->id                , $accountId);
-            $this->assertEquals($opportunity->probability                , '2');
+            $this->assertEquals($opportunity->probability                , '25');
             $this->assertEquals($opportunity->stage->value               , 'Qualification');
             $this->assertEquals($opportunity->source->value              , 'Inbound Call');
             $this->assertEquals($opportunity->description                , 'This is the Edit Description');
@@ -567,7 +567,7 @@
             $this->assertEquals($opportunity->amount->value              , '288000');
             $this->assertEquals($opportunity->amount->currency->id       , $baseCurrency->id);
             $this->assertEquals($opportunity->account->id                , $accountId);
-            $this->assertEquals($opportunity->probability                , '2');
+            $this->assertEquals($opportunity->probability                , '25');
             $this->assertEquals($opportunity->stage->value               , 'Qualification');
             $this->assertEquals($opportunity->source->value              , 'Inbound Call');
             $this->assertEquals($opportunity->description                , 'This is the Edit Description');
