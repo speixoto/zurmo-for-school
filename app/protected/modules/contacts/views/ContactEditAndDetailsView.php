@@ -217,8 +217,8 @@
             $successScript = null;
             foreach($this->model->primaryAddress->getAttributeNames() as $attribute)
             {
-                $successScript .= "$('#Contact_primaryAddress_" . $attribute . "').val(data.billingAddress_" . $attribute . "); \n";
-                $successScript .= "$('#Contact_secondaryAddress_" . $attribute . "').val(data.shippingAddress_" . $attribute . "); \n";
+                $successScript .= "$('#Contact_primaryAddress_" . $attribute . "').val(data.billingAddress_" . $attribute . ").trigger('change'); \n";
+                $successScript .= "$('#Contact_secondaryAddress_" . $attribute . "').val(data.shippingAddress_" . $attribute . ").trigger('change'); \n";
             }
             Yii::app()->clientScript->registerScript('copyAddressFromAccountToContactScript', "
                 $('#Contact_account_id').live('change', function()
