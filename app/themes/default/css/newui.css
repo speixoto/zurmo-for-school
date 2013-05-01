@@ -70,6 +70,9 @@ a.search-form-tools input[type="submit"],
 .default-btn a.search-form-tools input[type="submit"],
 .left-column,
 .right-column,
+#modal-edit-form,
+#edit-form,
+#delete-form,
 .right-side-edit-view-panel,
 .after-form-details-content,
 .pager,
@@ -8588,6 +8591,9 @@ div.wide.form label.hasCheckBox {
 #delete-form .hasCheckBox input[type="checkbox"] {
   margin-bottom: 0 !important;
 }
+#modal-edit-form {
+  padding: 15px 15px 12px 15px;
+}
 .more-panels-link {
   font-size: 11px;
 }
@@ -11364,9 +11370,6 @@ table.configuration-list td:last-child a .z-label:before {
 .AdministrativeArea .view-toolbar {
   margin-top: 0;
 }
-.AdministrativeArea .panel {
-  width: 100% !important;
-}
 #ModulePermissionsEditAndDetailsView table tr:first-child th {
   padding-left: 15px;
   padding-bottom: 10px;
@@ -11893,7 +11896,6 @@ table.configuration-list td:last-child a .z-label:before {
   margin-bottom: 20px;
 }
 #UsersPageView .panel {
-  width: 100% !important;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
@@ -15245,6 +15247,7 @@ a.close-ModalGameNotification.simple-link {
   -ms-box-shadow: none;
   box-shadow: none;
   float: none;
+  margin-bottom: 0;
 }
 #UserDetailsView .details-table {
   zoom: 1;
@@ -15286,6 +15289,9 @@ a.close-ModalGameNotification.simple-link {
 }
 .gravatar-container + .panel {
   float: left;
+}
+.gravatar-container + .panel + .panel {
+  clear: right;
 }
 #UserChangeAvatarView {
   zoom: 1;
