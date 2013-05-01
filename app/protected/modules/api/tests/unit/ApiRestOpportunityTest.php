@@ -179,6 +179,7 @@
             );
 
             // We need to unset some empty values from response.
+            $data['probability'] = '50';
             unset($response['data']['createdDateTime']);
             unset($response['data']['modifiedDateTime']);
             unset($response['data']['stage']['id']);
