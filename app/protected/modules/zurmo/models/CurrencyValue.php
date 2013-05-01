@@ -72,6 +72,7 @@
                     array('value',       'required'),
                     array('value',       'type',    'type' => 'float'),
                     array('value',       'default', 'value' => 0),
+		    array('value',       'numerical', 'min' => 0),
                 ),
                 'defaultSortAttribute' => 'value'
             );

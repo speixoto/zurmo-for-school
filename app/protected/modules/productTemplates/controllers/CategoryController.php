@@ -44,7 +44,8 @@
                         'controller'		     => $this,
 			'zeroModelsYetViewClassName' => $zeroModelsYetViewClassName,
 			'modelClassName'	     => $modelClassName,
-			'pageViewClassName'	     => $pageViewClassName
+			'pageViewClassName'	     => $pageViewClassName,
+			'defaultViewUtilClassName'   => 'ProductDefaultViewUtil'
                    ),
                )
             );

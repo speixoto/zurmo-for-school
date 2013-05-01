@@ -32,7 +32,7 @@
     {
         protected function getCreateLinkDisplayLabel()
         {
-            return Zurmo::t('ProductTemplatesModule', 'Create ProductTemplatesModuleSingularLabel', LabelUtil::getTranslationParamsForAllModules());
+            return Zurmo::t('ProductTemplatesModule', 'Create Catalog Item', LabelUtil::getTranslationParamsForAllModules());
         }
 
         protected function getMessageContent()

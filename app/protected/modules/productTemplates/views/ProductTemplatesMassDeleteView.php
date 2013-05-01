@@ -24,51 +24,17 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    /**
-     * Currency Value Price Validator to validate the value part in Currency Value Model
-     */
-    class CurrencyValuePriceValidator extends CValidator
+    class ProductTemplatesMassDeleteView extends MassDeleteView
     {
-	/**
-	 * @var boolean whether the attribute value can be zero. Defaults to false,
-	 * meaning that if the attribute is less than or equal to zero, it is considered invalid.
-	 */
-	public $allowZero=true;
-
-	/**
-	 * @var boolean whether the attribute value can be null or empty. Defaults to true,
-	 * meaning that if the attribute is empty, it is considered valid.
-	 */
-	public $allowEmpty=true;
-
-        /**
-         * Override existing method
-         * @param RedBeanModel $model the model being validated
-         * @param string $attribute the attribute being validated
-         */
-        protected function validateAttribute($object, $attribute)
+        protected function renderOperationDescriptionContent()
         {
-	    assert('$object instanceof RedBeanModel');
-	    $value = $object->$attribute->value;
-	    if($this->allowEmpty === false)
-	    {
-		if($this->allowZero === false)
-		{
-		    if($value <= 0)
-		    {
-			$message = $object->getAttributeLabel($attribute) . Zurmo::t('Core',' should be > 0');
-			$this->addError($object, $attribute, $message);
-		    }
-		}
-		else
-		{
-		    if($value < 0)
-		    {
-			$message = $object->getAttributeLabel($attribute) . Zurmo::t('Core',' should be >= 0');
-			$this->addError($object, $attribute, $message);
-		    }
-		}
-	    }
+            $highlight = ZurmoHtml::tag('em', array(), Zurmo::t('Core', 'Mass Delete is not reversable.'));
+            $message  = ZurmoHtml::tag('strong', array(), $highlight) .
+                        '<br />' . '<strong>' . $this->selectedRecordCount . '</strong>&#160;' .
+                        Zurmo::t('ProductTemplatesModule', 'Catalog Item|Catalog Items',
+                        array_merge(array($this->selectedRecordCount), LabelUtil::getTranslationParamsForAllModules())) .
+                        ' ' . Zurmo::t('Core', 'selected for removal.');
+            return ZurmoHtml::wrapLabel($message, 'operation-description');
         }
     }
 ?>

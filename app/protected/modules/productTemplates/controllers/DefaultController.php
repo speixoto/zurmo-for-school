@@ -39,7 +39,8 @@
                    ),
                     array(
                         ZurmoModuleController::ZERO_MODELS_CHECK_FILTER_PATH . ' + list, index',
-                        'controller' => $this,
+                        'controller'		    => $this,
+			'defaultViewUtilClassName'  => 'ProductDefaultViewUtil'
                    ),
                )
             );
@@ -264,13 +265,13 @@
                 $selectedRecordCount,
                 'ProductTemplatesPageView',
                 $productTemplate,
-                ProductTemplatesModule::getModuleLabelByTypeAndLanguage('Plural'),
+                Zurmo::t('ProductTemplatesModule', 'Catalog Items'),
                 $dataProvider
             );
 
             if($productTemplate === false)
             {
-                Yii::app()->user->setFlash('notification', Zurmo::t('ProductTemplatesModule', 'One of the product template selected is  associated to products in the system hence could not be deleted'));
+                Yii::app()->user->setFlash('notification', Zurmo::t('ProductTemplatesModule', 'One of the catalog item selected is  associated to products in the system hence could not be deleted'));
                 $this->redirect(Zurmo::app()->request->getUrlReferrer());
             }
             else
@@ -279,7 +280,8 @@
                     $productTemplate,
                     $activeAttributes,
                     $selectedRecordCount,
-                    ProductTemplatesModule::getModuleLabelByTypeAndLanguage('Plural')
+                    Zurmo::t('ProductTemplatesModule', 'Catalog Items'),
+		    'ProductTemplatesMassDeleteView'
                 );
                 $view = new ProductTemplatesPageView(ZurmoDefaultViewUtil::
                                              makeStandardViewForCurrentUser($this, $massDeleteView));
