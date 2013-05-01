@@ -93,7 +93,7 @@
             assert('is_numeric($longitude) || $longitude == null');
 
             $httpProtocol = 'http';
-            if ($_SERVER['HTTPS'] != '')
+            if (Yii::app()->request->getIsSecureConnection())
             {
                 $httpProtocol = 'https';
             }
