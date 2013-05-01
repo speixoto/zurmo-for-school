@@ -22,34 +22,35 @@ function copyProductTemplateDataForProduct(templateId, url)
     );
 }
 
-function addProductRowToPortletGridView(productTemplateId, url, relationAttributeName, relationModelId)
+function addProductRowToPortletGridView(productTemplateId, url, relationAttributeName, relationModelId, uniquePortletPageId, errorInProcess)
 {
     url = url + "&id=" + productTemplateId + "&relationModelId=" + relationModelId + "&relationAttributeName=" + relationAttributeName;
     $.ajax(
         {
             type: 'GET',
             url: url,
-            dataType: 'json',
-            beforeSend: function()
+            beforeSend: function(xhr)
                        {
                            $('#modalContainer').html('');
                            makeLargeLoadingSpinner(true, '#modalContainer');
                        },
-            success: function(data)
+            success: function(dataOrHtml, textStatus, xmlReq)
                      {
-//                         $('#product_opportunity_name').val('');
-//                         $('#product_opportunity_id').val('');
-//                         $('#product-configuration-form').hide('slow');
+                         processAjaxSuccessUpdateHtmlOrShowDataOnFailure(dataOrHtml, uniquePortletPageId);
                          //$("#product-portlet-grid-view").yiiGridView.update("product-portlet-grid-view");
                      },
-            complete:function()
+            complete:function(XMLHttpRequest, textStatus)
                      {
                        $('#modalContainer').dialog('close');
                        $('#product_opportunity_name').val('');
                        $('#product_opportunity_id').val('');
                        $('#product-configuration-form').hide('slow');
-                       juiPortlets.refresh();
-                     }
+                       //juiPortlets.refresh();
+                     },
+            error:function(xhr, textStatus, errorThrown)
+                  {
+                      alert(errorInProcess);
+                  }
         }
     );
 }

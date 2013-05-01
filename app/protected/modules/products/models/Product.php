@@ -133,7 +133,7 @@
                     array('name',		'length',  'min'  => 3, 'max' => 64),
                     array('description',	'type',    'type' => 'string'),
                     array('quantity',		'numerical',  'integerOnly' => true, 'allowEmpty' => false, 'min' => 1),
-		    array('sellPrice',		'CurrencyValuePriceValidator', 'allowZero' => true, 'allowEmpty' => false),
+		    array('sellPrice',		'validatePrice', 'skipOnError' => false),
                     array('stage',		'required'),
 		    array('quantity',		'required'),
 		    array('type',		'type',    'type' => 'integer'),
@@ -177,5 +177,13 @@
         {
             //return 'ProductGamification';
         }
+
+	public function validatePrice($attribute, $params)
+	{
+	    if($this->{$attribute}->value < 0)
+	    {
+		$this->{$attribute}->addError('value', $this->getAttributeLabel($attribute) . Zurmo::t('ProductsModule',' should be greater than 0'));
+	    }
+	}
     }
 ?>

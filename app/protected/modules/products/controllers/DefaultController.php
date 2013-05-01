@@ -367,8 +367,6 @@
 	    $product->pricefrequency    = $productTemplate->priceFrequency;
 	    $product->sellPrice->value  = $productTemplate->sellPrice->value;
 	    $product->type		= $productTemplate->type;
-	    $redirectUrl		= $this->createUrl('/' . $relationModuleId . '/default/details',
-						    array('id' => $relationModelId));
 
 	    $relationModel		= $relationModelClassName::getById((int)$relationModelId);
 	    $product->$relationAttributeName = $relationModel;
@@ -376,10 +374,9 @@
 	    $this->redirect(array('/' . $relationModuleId . '/defaultPortlet/modalRefresh',
 					'portletId'            => $portletId,
 					'uniqueLayoutId'       => $uniqueLayoutId,
-					'redirectUrl'          => $redirectUrl,
+					'redirectUrl'          => null,
 					'portletParams'        => array(  'relationModuleId' => $relationModuleId,
 									  'relationModelId'  => $relationModelId),
-					//'portletsAreRemovable' => false //Not working Ask Jason
 				));
 	}
     }

@@ -80,7 +80,7 @@ $(window).ready(function(){
     $(window).resize(function(){
       resizeWhiteArea();
     });
-    
+
     resizeWhiteArea();
 
     /*Autogrow text areas*/
@@ -224,11 +224,11 @@ function onAjaxSubmitRelatedListAction(confirmTitle, gridId){
 */
 
 function resolveSpinner(state, domObject, styleObject, spinnerClassName){
-    
+
     if(spinnerClassName === undefined){
         spinnerClassName = '.z-spinner';
     }
-    
+
     if(state === true){
         $( spinnerClassName, domObject).spin({
             lines     : styleObject.lines  || 9,      // The number of lines to draw
@@ -352,6 +352,7 @@ function makeOrRemoveTogglableSpinner(state, context){
 function processAjaxSuccessUpdateHtmlOrShowDataOnFailure(dataOrHtml, updateId){
     try{
         jsonData = jQuery.parseJSON(dataOrHtml);
+        console.log(jsonData);
         $('#FlashMessageBar').jnotifyAddMessage({
                  text: jsonData.message,
                  permanent: false,

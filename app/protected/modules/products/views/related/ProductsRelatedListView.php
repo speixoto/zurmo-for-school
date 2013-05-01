@@ -339,5 +339,19 @@
 		'params'	       => $this->params
             );
         }
+
+	protected function getCGridViewPagerParams()
+        {
+	    $defaultData = array('id' => $this->params["relationModel"]->id, 'stickyOffset' => 0);
+            return array(
+                    'firstPageLabel' => '<span>first</span>',
+                    'prevPageLabel'  => '<span>previous</span>',
+                    'nextPageLabel'  => '<span>next</span>',
+                    'lastPageLabel'  => '<span>last</span>',
+                    'class'          => 'SimpleListLinkPager',
+                    'paginationParams' => array_merge($defaultData, array('portletId' => $this->params['portletId'])),
+                    'route'         => 'defaultPortlet/details',
+                );
+        }
     }
 ?>
