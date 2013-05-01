@@ -38,11 +38,8 @@
 
         protected function getMessageContent()
         {
-	    //TODO Need to ask the message from Jason
-            return Zurmo::t('ProductTemplatesModule', '<h2>"As we must ProductCategory for every idle word, so must we ProductTemplate for every idle ' .
-                                     'silence."</h2><i>- Benjamin Franklin</i></i><div class="large-icon"></div><p>Be the first to create an ProductTemplate and, ' .
-                                     'as Ben would say, "So must we ProductTemplate for every company, organization, or ' .
-                                     'customer we interact with."</p>');
+	    return Zurmo::t('ProductTemplatesModule', '<h2>"I don\'t want to be lumped into any categories."</h2>
+		<i>- Corey Feldman</i><div class="large-icon"></div><p>Unlike Corey, Products love to be lumped into Categories. Why not be the first to create one?</p>');
         }
     }
 ?>

@@ -37,10 +37,9 @@
 
         protected function getMessageContent()
         {
-            return Zurmo::t('ProductTemplatesModule', '<h2>"As we must ProductTemplate for every idle word, so must we ProductTemplate for every idle ' .
-                                     'silence."</h2><i>- Benjamin Franklin</i></i><div class="large-icon"></div><p>Be the first to create an ProductTemplate and, ' .
-                                     'as Ben would say, "So must we ProductTemplate for every company, organization, or ' .
-                                     'customer we interact with."</p>');
+            return Zurmo::t('ProductTemplatesModule', '<h2>"I would sooner read a time-table or a catalog than nothing at all.
+		They are much more entertaining than half the novels that are written."</h2><i>- William Somerset Maugham</i>
+		<div class="large-icon"></div><p>Be the first to create a product Catalog Item, and entertain William at the same time.</p>');
         }
     }
 ?>

@@ -37,10 +37,10 @@
 
         protected function getMessageContent()
         {
-            return Zurmo::t('ProductsModule', '<h2>"As we must Product for every idle word, so must we Product for every idle ' .
-                                     'silence."</h2><i>- Benjamin Franklin</i></i><div class="large-icon"></div><p>Be the first to create an Product and, ' .
-                                     'as Ben would say, "So must we Product for every company, organization, or ' .
-                                     'customer we interact with."</p>');
+            return Zurmo::t('ProductsModule', '<h2>"A person buying ordinary products in a supermarket is in touch with his deepest emotions."</h2>' .
+			    '<i>- John Kenneth Galbraith</i>' .
+			    '<div class="large-icon"></div><p>' .
+			    'A CRM is sort of like a supermarket, so why not be in touch with your deepest emotions and be the first to create a Product?</p>');
         }
     }
 ?>
