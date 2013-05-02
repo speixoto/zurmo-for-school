@@ -41,19 +41,22 @@
 
         public function testDemoDataMaker()
         {
-            $productTemplate                         = new ProductTemplate();
-            $productTemplateRandomData               = ZurmoRandomDataUtil::getRandomDataByModuleAndModelClassNames(
+            $productTemplate                    = new ProductTemplate();
+            $productTemplateRandomData          = ZurmoRandomDataUtil::getRandomDataByModuleAndModelClassNames(
                                             'ProductTemplatesModule', 'ProductTemplate');
-            $name    = RandomDataUtil::getRandomValueFromArray($productTemplateRandomData['names']);
-            $productTemplate->name                   = $name;
-            $productTemplate->priceFrequency         = ProductTemplate::PRICE_FREQUENCY_ONE_TIME;
-            $productTemplate->cost->value            = 200;
-            $productTemplate->listPrice->value       = 200;
-            $productTemplate->sellPrice->value       = 200;
-            $productTemplate->type                   = ProductTemplate::TYPE_PRODUCT;
-            $productTemplate->status                 = ProductTemplate::STATUS_ACTIVE;
+            $name				= RandomDataUtil::getRandomValueFromArray($productTemplateRandomData['names']);
+            $productTemplate->name              = $name;
+            $productTemplate->priceFrequency    = ProductTemplate::PRICE_FREQUENCY_ONE_TIME;
+            $productTemplate->cost->value       = 200;
+            $productTemplate->listPrice->value  = 200;
+            $productTemplate->sellPrice->value  = 200;
+            $productTemplate->type              = ProductTemplate::TYPE_PRODUCT;
+            $productTemplate->status            = ProductTemplate::STATUS_ACTIVE;
+	    $sellPriceFormula			= new SellPriceFormula();
+            $sellPriceFormula->type             = SellPriceFormula::TYPE_EDITABLE;
+            $productTemplate->sellPriceFormula  = $sellPriceFormula;
             $this->assertTrue($productTemplate->save());
-            $productTemplates[]                      = $productTemplate->id;
+            $productTemplates[]                 = $productTemplate->id;
         }
 
         public function testCreateAndGetProductTemplateById()
@@ -126,7 +129,7 @@
             Yii::app()->user->userModel = User::getByUsername('super');
             $productTemplates           = ProductTemplate::getByName('Red Widget');
             $this->assertEquals(2, count($productTemplates));
-            $this->assertEquals('Product Template',   $productTemplates[0]::getModelLabelByTypeAndLanguage('Singular'));
+            $this->assertEquals('Product Template',  $productTemplates[0]::getModelLabelByTypeAndLanguage('Singular'));
             $this->assertEquals('Product Templates', $productTemplates[0]::getModelLabelByTypeAndLanguage('Plural'));
         }
 
@@ -259,20 +262,21 @@
             $this->assertEquals($productCategoryII, $productTemplate->productCategories[1]);
         }
 
-//	public function testPriceValidation()
-//        {
-//            $user				= UserTestHelper::createBasicUser('Steven3');
-//            $productTemplate			= ProductTemplateTestHelper::createProductTemplateByVariables($product, ProductTemplate::PRICE_FREQUENCY_ONE_TIME, ProductTemplate::TYPE_PRODUCT, ProductTemplate::STATUS_ACTIVE, SellPriceFormula::TYPE_EDITABLE);
-//            $productTemplate->cost->value	= -200;
-//	    $this->assertFalse($productTemplate->save());
-//            $productTemplate->sellPrice->value	= -200;
-//	    $this->assertFalse($productTemplate->save());
-//	    $productTemplate->listPrice->value	= -200;
-//	    $this->assertFalse($productTemplate->save());
-//	    $productTemplate->listPrice->value	= 100;
-//	    $productTemplate->sellPrice->value	= 100;
-//	    $productTemplate->cost->value	= 100;
-//	    $this->assertTrue($productTemplate->save());
-//        }
+	public function testPriceValidation()
+        {
+            $user				= UserTestHelper::createBasicUser('Steven3');
+	    $product				= ProductTestHelper::createProductByNameForOwner('Product 2', $user);
+            $productTemplate			= ProductTemplateTestHelper::createProductTemplateByVariables($product, ProductTemplate::PRICE_FREQUENCY_ONE_TIME, ProductTemplate::TYPE_PRODUCT, ProductTemplate::STATUS_ACTIVE, SellPriceFormula::TYPE_EDITABLE);
+            $productTemplate->cost->value	= -200;
+	    $this->assertFalse($productTemplate->save());
+            $productTemplate->sellPrice->value	= -200;
+	    $this->assertFalse($productTemplate->save());
+	    $productTemplate->listPrice->value	= -200;
+	    $this->assertFalse($productTemplate->save());
+	    $productTemplate->listPrice->value	= 100;
+	    $productTemplate->sellPrice->value	= 100;
+	    $productTemplate->cost->value	= 100;
+	    $this->assertTrue($productTemplate->save());
+        }
     }
 ?>
