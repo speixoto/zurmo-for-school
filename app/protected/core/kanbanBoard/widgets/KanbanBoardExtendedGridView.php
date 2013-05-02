@@ -110,6 +110,7 @@
                         //Amit's stuff from here
                         $cardDetails = '';
                         $cardDetails .= ZurmoHtml::tag('span', array('class' => 'opportunity-amount'), '$30,000');
+                        $cardDetails .= ZurmoHtml::tag('span', array('class' => 'closing-date'), '26/05/2013');
                         $cardDetails .= ZurmoHtml::tag('span', array('class' => 'opportunity-name'), 'Design Review Service');
                         $cardDetails .= ZurmoHtml::tag('span', array('class' => 'account-name'), 'Bitburger Industries Ltd.');
                         $ownerAvatar  = '<img src="http://glz.co.il/Sip_Storage/FILES/4/2964.jpg" width="20" height="20" alt="owner name" />';

@@ -17805,6 +17805,12 @@ a.user-link {
   text-shadow: 0 1px 0 rgba(255, 255, 255, 0.7);
   line-height: 1;
 }
+.kanban-card .closing-date {
+  font-size: 11px;
+  position: absolute;
+  top: 5px;
+  left: 10px;
+}
 .kanban-card .opportunity-owner {
   position: absolute;
   right: 5px;
