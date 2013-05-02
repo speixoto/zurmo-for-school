@@ -70,6 +70,9 @@ a.search-form-tools input[type="submit"],
 .default-btn a.search-form-tools input[type="submit"],
 .left-column,
 .right-column,
+#modal-edit-form,
+#edit-form,
+#delete-form,
 .right-side-edit-view-panel,
 .after-form-details-content,
 .pager,
@@ -8526,7 +8529,7 @@ div.wide.form label.hasCheckBox {
 #modal-edit-form h3,
 #edit-form h3,
 #delete-form h3 {
-  margin: 15px 0 10px 15px;
+  margin: 15px 0 0 15px;
 }
 #modal-edit-form table,
 #edit-form table,
@@ -8576,6 +8579,9 @@ div.wide.form label.hasCheckBox {
 #edit-form .hasCheckBox input[type="checkbox"],
 #delete-form .hasCheckBox input[type="checkbox"] {
   margin-bottom: 0 !important;
+}
+#modal-edit-form {
+  padding: 15px 15px 12px 15px;
 }
 .more-panels-link {
   font-size: 11px;
@@ -8746,6 +8752,7 @@ div.wide.form label.hasCheckBox {
   border: none;
   padding: 0;
   cursor: pointer;
+  z-index: 10005;
 }
 .has-date-select button:hover:before {
   color: #525252 !important;
@@ -11353,9 +11360,6 @@ table.configuration-list td:last-child a .z-label:before {
 .AdministrativeArea .view-toolbar {
   margin-top: 0;
 }
-.AdministrativeArea .panel {
-  width: 100% !important;
-}
 #ModulePermissionsEditAndDetailsView table tr:first-child th {
   padding-left: 15px;
   padding-bottom: 10px;
@@ -11499,154 +11503,82 @@ table.configuration-list td:last-child a .z-label:before {
 #JobsCollectionView td.level-1,
 .SecurityTreeListView td.level-1 {
   padding-left: 45px !important;
-}
-#LanguagesCollectionView td.level-1:before,
-#CurrenciesCollectionView td.level-1:before,
-#JobsCollectionView td.level-1:before,
-.SecurityTreeListView td.level-1:before {
-  content: "∟";
-  font-size: 30px;
-  position: relative;
-  top: -3px;
-  font-weight: 100 !important;
-  line-height: 100% !important;
+  background: url(../images/elbow.gif) 20px 10px no-repeat;
 }
 #LanguagesCollectionView td.level-2,
 #CurrenciesCollectionView td.level-2,
 #JobsCollectionView td.level-2,
 .SecurityTreeListView td.level-2 {
   padding-left: 75px !important;
-}
-#LanguagesCollectionView td.level-2:before,
-#CurrenciesCollectionView td.level-2:before,
-#JobsCollectionView td.level-2:before,
-.SecurityTreeListView td.level-2:before {
-  content: "∟";
-  font-size: 30px;
-  position: relative;
-  top: -3px;
+  background: url(../images/elbow.gif) 50px 10px no-repeat;
 }
 #LanguagesCollectionView td.level-3,
 #CurrenciesCollectionView td.level-3,
 #JobsCollectionView td.level-3,
 .SecurityTreeListView td.level-3 {
   padding-left: 105px !important;
-}
-#LanguagesCollectionView td.level-3:before,
-#CurrenciesCollectionView td.level-3:before,
-#JobsCollectionView td.level-3:before,
-.SecurityTreeListView td.level-3:before {
-  content: "∟";
-  font-size: 30px;
-  position: relative;
-  top: -3px;
+  background: url(../images/elbow.gif) 80px 10px no-repeat;
 }
 #LanguagesCollectionView td.level-4,
 #CurrenciesCollectionView td.level-4,
 #JobsCollectionView td.level-4,
 .SecurityTreeListView td.level-4 {
   padding-left: 135px !important;
-}
-#LanguagesCollectionView td.level-4:before,
-#CurrenciesCollectionView td.level-4:before,
-#JobsCollectionView td.level-4:before,
-.SecurityTreeListView td.level-4:before {
-  content: "∟";
-  font-size: 30px;
-  position: relative;
-  top: -3px;
+  background: url(../images/elbow.gif) 110px 10px no-repeat;
 }
 #LanguagesCollectionView td.level-5,
 #CurrenciesCollectionView td.level-5,
 #JobsCollectionView td.level-5,
 .SecurityTreeListView td.level-5 {
   padding-left: 165px !important;
-}
-#LanguagesCollectionView td.level-5:before,
-#CurrenciesCollectionView td.level-5:before,
-#JobsCollectionView td.level-5:before,
-.SecurityTreeListView td.level-5:before {
-  content: "∟";
-  font-size: 30px;
-  position: relative;
-  top: -3px;
+  background: url(../images/elbow.gif) 140px 10px no-repeat;
 }
 #LanguagesCollectionView td.level-6,
 #CurrenciesCollectionView td.level-6,
 #JobsCollectionView td.level-6,
 .SecurityTreeListView td.level-6 {
   padding-left: 195px !important;
-}
-#LanguagesCollectionView td.level-6:before,
-#CurrenciesCollectionView td.level-6:before,
-#JobsCollectionView td.level-6:before,
-.SecurityTreeListView td.level-6:before {
-  content: "∟";
-  font-size: 30px;
-  position: absolute;
-  left: 165px;
-  top: -1px;
+  background: url(../images/elbow.gif) 170px 10px no-repeat;
 }
 #LanguagesCollectionView td.level-7,
 #CurrenciesCollectionView td.level-7,
 #JobsCollectionView td.level-7,
 .SecurityTreeListView td.level-7 {
   padding-left: 225px !important;
-}
-#LanguagesCollectionView td.level-7:before,
-#CurrenciesCollectionView td.level-7:before,
-#JobsCollectionView td.level-7:before,
-.SecurityTreeListView td.level-7:before {
-  content: "∟";
-  font-size: 30px;
-  position: relative;
-  top: -3px;
+  background: url(../images/elbow.gif) 200px 10px no-repeat;
 }
 #LanguagesCollectionView td.level-8,
 #CurrenciesCollectionView td.level-8,
 #JobsCollectionView td.level-8,
 .SecurityTreeListView td.level-8 {
   padding-left: 255px !important;
-}
-#LanguagesCollectionView td.level-8:before,
-#CurrenciesCollectionView td.level-8:before,
-#JobsCollectionView td.level-8:before,
-.SecurityTreeListView td.level-8:before {
-  content: "∟";
-  font-size: 30px;
-  position: absolute;
-  left: 225px;
-  top: -1px;
+  background: url(../images/elbow.gif) 230px 10px no-repeat;
 }
 #LanguagesCollectionView td.level-9,
 #CurrenciesCollectionView td.level-9,
 #JobsCollectionView td.level-9,
 .SecurityTreeListView td.level-9 {
   padding-left: 285px !important;
-}
-#LanguagesCollectionView td.level-9:before,
-#CurrenciesCollectionView td.level-9:before,
-#JobsCollectionView td.level-9:before,
-.SecurityTreeListView td.level-9:before {
-  content: "∟";
-  font-size: 30px;
-  position: relative;
-  top: -3px;
+  background: url(../images/elbow.gif) 260px 10px no-repeat;
 }
 #LanguagesCollectionView td.level-10,
 #CurrenciesCollectionView td.level-10,
 #JobsCollectionView td.level-10,
 .SecurityTreeListView td.level-10 {
   padding-left: 315px !important;
+  background: url(../images/elbow.gif) 290px 10px no-repeat;
 }
-#LanguagesCollectionView td.level-10:before,
-#CurrenciesCollectionView td.level-10:before,
-#JobsCollectionView td.level-10:before,
-.SecurityTreeListView td.level-10:before {
-  content: "∟";
-  font-size: 30px;
-  position: relative;
-  top: -3px;
+#ModalView .SecurityTreeListView td.level-1,
+#ModalView .SecurityTreeListView td.level-2,
+#ModalView .SecurityTreeListView td.level-3,
+#ModalView .SecurityTreeListView td.level-4,
+#ModalView .SecurityTreeListView td.level-5,
+#ModalView .SecurityTreeListView td.level-6,
+#ModalView .SecurityTreeListView td.level-7,
+#ModalView .SecurityTreeListView td.level-8,
+#ModalView .SecurityTreeListView td.level-9,
+#ModalView .SecurityTreeListView td.level-10 {
+  background-position-y: 3px;
 }
 /*Roles*/
 #RolesTreeListView .z-action-link {
@@ -11882,7 +11814,6 @@ table.configuration-list td:last-child a .z-label:before {
   margin-bottom: 20px;
 }
 #UsersPageView .panel {
-  width: 100% !important;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
@@ -12910,14 +12841,14 @@ div.wide.form .errorMessage {
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
   cursor: pointer;
+  position: relative;
 }
 .ui-datepicker .ui-datepicker-next span {
   visibility: hidden;
 }
-.ui-datepicker .ui-datepicker-next:after {
+.ui-datepicker .ui-datepicker-next:before {
   content: "▶";
-  position: relative;
-  right: 10px;
+  margin-left: 10px;
 }
 .ui-datepicker .ui-datepicker-next :hover {
   cursor: pointer !important;
@@ -15234,6 +15165,7 @@ a.close-ModalGameNotification.simple-link {
   -ms-box-shadow: none;
   box-shadow: none;
   float: none;
+  margin-bottom: 0;
 }
 #UserDetailsView .details-table {
   zoom: 1;
@@ -15275,6 +15207,9 @@ a.close-ModalGameNotification.simple-link {
 }
 .gravatar-container + .panel {
   float: left;
+}
+.gravatar-container + .panel + .panel {
+  clear: right;
 }
 #UserChangeAvatarView {
   zoom: 1;
