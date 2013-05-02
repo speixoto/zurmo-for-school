@@ -3053,6 +3053,7 @@ div.wide.form{
 #edit-form,
 #delete-form{
 	++.clearfix;
+	++.border-box;
 	position: relative;
 	.panel{
 		table{
@@ -3095,8 +3096,12 @@ div.wide.form{
 	}
 }
 
+#modal-edit-form{
+	padding: 15px 15px 12px 15px;
+}
+
 .more-panels-link{
-	font-size:11px;
+	.smaller();
 }
 
 .ui-overlay-block{
