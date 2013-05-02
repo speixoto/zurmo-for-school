@@ -63,6 +63,8 @@
          */
         public $groupByDataAndTranslatedLabels = array();
 
+        public $cardColumns = array();
+
         /**
          * Need to grab one more than max count to check if we are over the max so we can properly display a message
          * @return int
@@ -106,24 +108,15 @@
                     foreach($attributeValueAndData as $row)
                     {
                         echo "<li data-id='" . $this->dataProvider->data[$row]->id . "' class='kanban-card item-to-place'>\n";
-
                         //Amit's stuff from here
-                        $cardDetails = '';
-                        $cardDetails .= ZurmoHtml::tag('span', array('class' => 'opportunity-amount'), '$30,000');
-                        $cardDetails .= ZurmoHtml::tag('span', array('class' => 'opportunity-name'), 'Design Review Service');
-                        $cardDetails .= ZurmoHtml::tag('span', array('class' => 'account-name'), 'Bitburger Industries Ltd.');
-                        $ownerAvatar  = '<img src="http://glz.co.il/Sip_Storage/FILES/4/2964.jpg" width="20" height="20" alt="owner name" />';
-                        $ownerName    = ZurmoHtml::tag('span', array(), 'Jason Blue');
-                        $cardDetails .= ZurmoHtml::tag('a', array('class' => 'opportunity-owner'), $ownerName.$ownerAvatar);
                         echo '<div>'; // we need this to wrap everything
-                        echo $cardDetails;
+                        echo $this->renderCardDetailsContent($row);
                         echo '<div class="hidden-content">';
                         echo '<a href="#" onclick="$(this).next().fadeToggle(); return false;">Toggle Details</a>';
                         $this->renderRowAsTableCellOrDiv($row, self::ROW_TYPE_DIV);
                         echo '</div>';
                         echo '</div>';
                         //End Amit's stuff
-
                         echo "</li>\n";
                     }
                     echo "</ul>\n";
@@ -151,6 +144,21 @@
             $label = Zurmo::t('Core', 'There are too many results to display. Try filtering your search or switching to the grid view.');
             echo CHtml::tag('span', array('class'=>'empty'), $label);
         }
+
+        protected function getOffset()
+        {
+            $pagination = $this->dataProvider->getPagination();
+            if (isset($pagination))
+            {
+                $offset = $pagination->getOffset();
+            }
+            else
+            {
+                $offset = 0;
+            }
+            return $offset;
+        }
+
 
         protected function resolveGroupByColumnHeaderLabel($value)
         {
@@ -230,6 +238,22 @@
             $moduleClassName = $modelClassName::getModuleClassName();
             $moduleId        = $moduleClassName::getDirectoryName();
             return  Yii::app()->createUrl($moduleId . '/default/updateAttributeValue', array('attribute' => $this->groupByAttribute));
+        }
+
+        protected function renderCardDetailsContent($row)
+        {
+            $cardDetails = null;
+            foreach($this->cardColumns as $cardData)
+            {
+                $content      = $this->evaluateExpression($cardData['value'], array('data' => $this->dataProvider->data[$row],
+                                                                                    'offset' => ($this->getOffset() + $row)));
+                $cardDetails .= ZurmoHtml::tag('span', array('class' => $cardData['class']), $content);
+
+            }
+            $userUrl      = Yii::app()->createUrl('/users/default/details', array('id' => $this->dataProvider->data[$row]->owner->id));
+            $cardDetails .= ZurmoHtml::link($this->dataProvider->data[$row]->owner->getAvatarImage(36), $userUrl,
+                                            array('class' => 'opportunity-owner'));
+            return $cardDetails;
         }
     }
 ?>

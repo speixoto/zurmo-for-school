@@ -531,7 +531,8 @@
             {
                 return $params;
             }
-            return array_merge($params, $this->kanbanBoard->getGridViewParams());
+            $params = array_merge($params, $this->kanbanBoard->getGridViewParams());
+            return array_merge($params, $this->resolveExtraParamsForKanbanBoard());
         }
     }
 ?>
