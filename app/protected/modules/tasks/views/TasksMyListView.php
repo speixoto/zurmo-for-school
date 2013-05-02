@@ -110,7 +110,9 @@
         protected function getSearchModel()
         {
             $modelClassName = $this->modelClassName;
-            return new TasksSearchForm(new $modelClassName(false));
+            $model = new $modelClassName(false);
+            $model->setScenario('search');
+            return new TasksSearchForm($model);
         }
 
         protected static function getConfigViewClassName()
