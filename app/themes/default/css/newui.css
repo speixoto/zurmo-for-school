@@ -12840,14 +12840,14 @@ div.wide.form .errorMessage {
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
   cursor: pointer;
+  position: relative;
 }
 .ui-datepicker .ui-datepicker-next span {
   visibility: hidden;
 }
-.ui-datepicker .ui-datepicker-next:after {
+.ui-datepicker .ui-datepicker-next:before {
   content: "▶";
-  position: relative;
-  right: 10px;
+  margin-left: 10px;
 }
 .ui-datepicker .ui-datepicker-next :hover {
   cursor: pointer !important;
