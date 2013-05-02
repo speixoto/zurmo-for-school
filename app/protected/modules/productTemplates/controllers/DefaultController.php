@@ -213,10 +213,9 @@
          */
         public function actionMassEditProgressSave()
         {
-            $pageSize = Yii::app()->pagination->resolveActiveForCurrentUserByType(
-                            'massEditProgressPageSize');
-            $productTemplate = new ProductTemplate(false);
-            $dataProvider = $this->getDataProviderByResolvingSelectAllFromGet(
+            $pageSize		= Yii::app()->pagination->resolveActiveForCurrentUserByType('massEditProgressPageSize');
+            $productTemplate	= new ProductTemplate(false);
+            $dataProvider	= $this->getDataProviderByResolvingSelectAllFromGet(
                 new ProductTemplatesSearchForm($productTemplate),
                 $pageSize,
                 Yii::app()->user->userModel->id,
