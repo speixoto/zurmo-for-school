@@ -80,7 +80,6 @@ function rebuildWorkflowActionRowNumbers(divId){
     structure = '';
     $('#' + divId).find('.dynamic-row-number-label').each(function(){
         $(this).html(rowCount + '.');
-        console.log(rowCount, $(this));
         rowCount ++;
     });
 }
@@ -98,7 +97,7 @@ function toggleWorkflowShouldSetValueWrapper(checkboxId)
 function rebuildWorkflowEmailMessageRowNumbers(divId){
     rowCount = 1;
     structure = '';
-    $('#' + divId).find('.dynamic-row-number-label').each(function(){
+    $('#' + divId).find('.dynamic-row-number-label:not(.dynamic-email-message-recipient-row-number-label)').each(function(){
         $(this).html(rowCount + '.');
         rowCount ++;
     });
