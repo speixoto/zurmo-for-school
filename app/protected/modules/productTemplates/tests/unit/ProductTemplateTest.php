@@ -258,5 +258,21 @@
             $this->assertEquals($productCategory, $productTemplate->productCategories[0]);
             $this->assertEquals($productCategoryII, $productTemplate->productCategories[1]);
         }
+
+//	public function testPriceValidation()
+//        {
+//            $user				= UserTestHelper::createBasicUser('Steven3');
+//            $productTemplate			= ProductTemplateTestHelper::createProductTemplateByVariables($product, ProductTemplate::PRICE_FREQUENCY_ONE_TIME, ProductTemplate::TYPE_PRODUCT, ProductTemplate::STATUS_ACTIVE, SellPriceFormula::TYPE_EDITABLE);
+//            $productTemplate->cost->value	= -200;
+//	    $this->assertFalse($productTemplate->save());
+//            $productTemplate->sellPrice->value	= -200;
+//	    $this->assertFalse($productTemplate->save());
+//	    $productTemplate->listPrice->value	= -200;
+//	    $this->assertFalse($productTemplate->save());
+//	    $productTemplate->listPrice->value	= 100;
+//	    $productTemplate->sellPrice->value	= 100;
+//	    $productTemplate->cost->value	= 100;
+//	    $this->assertTrue($productTemplate->save());
+//        }
     }
 ?>
