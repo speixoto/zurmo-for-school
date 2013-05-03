@@ -91,16 +91,24 @@
 		font-size: 24px;
 		font-weight: bold;
 		text-align: right;
-		color: darken(#282A76, 10%);
-		.t-shadow(0 1px 0 rgba(255, 255, 255, 0.7));
-		//margin-bottom: 0;
+		color: darken(#282A76, 5%);
+		.t-shadow(0 1px 0 rgba(255, 255, 255, 0.9));
 		line-height: 1;
+		margin-bottom:5px;
 	}
 	.closing-date{
 		.smaller();
-		position: absolute;
-		top: 5px;
-		left: 10px;
+		//position: absolute;
+		//top: 5px;
+		//left: 10px;
+		text-align: right;
+		i{
+			text-align: left;
+			.symbly(12px);
+			&:after{
+				content: "z";
+			}
+		}
 	}
 	.opportunity-owner{
 		position: absolute;

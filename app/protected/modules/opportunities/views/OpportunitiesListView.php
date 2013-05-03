@@ -94,10 +94,10 @@
         }
         protected function getCardColumns()
         {
-            return array('amount'  =>      array('value'  => 'Yii::app()->numberFormatter->formatCurrency($data->amount->value, $data->amount->currency->code)',
-                                                 'class'  => 'opportunity-amount'),
-                         'closedDate' =>   array('value'  =>  'DateTimeUtil::resolveValueForDateLocaleFormattedDisplay($data->closeDate)',
+            return array('closedDate' =>   array('value'  => 'DateTimeUtil::resolveValueForDateLocaleFormattedDisplay($data->closeDate)',
                                                  'class'  => 'closing-date'),
+                         'amount'  =>      array('value'  => 'Yii::app()->numberFormatter->formatCurrency($data->amount->value, $data->amount->currency->code)',
+                                                 'class'  => 'opportunity-amount'),
                          'name'         => array('value'  => $this->getLinkString('$data->name', 'name'), 'class' => 'opportunity-name'),
                          'account'      => array('value'  => $this->getRelatedLinkString('$data->account', 'account', 'accounts'),
                                                  'class'  => 'account-name'));

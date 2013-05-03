@@ -17797,19 +17797,27 @@ a.user-link {
   font-size: 24px;
   font-weight: bold;
   text-align: right;
-  color: #1b1c50;
-  -webkit-text-shadow: 0 1px 0 rgba(255, 255, 255, 0.7);
-  -moz-text-shadow: 0 1px 0 rgba(255, 255, 255, 0.7);
-  -o-text-shadow: 0 1px 0 rgba(255, 255, 255, 0.7);
-  -ms-text-shadow: 0 1px 0 rgba(255, 255, 255, 0.7);
-  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.7);
+  color: #222363;
+  -webkit-text-shadow: 0 1px 0 rgba(255, 255, 255, 0.9);
+  -moz-text-shadow: 0 1px 0 rgba(255, 255, 255, 0.9);
+  -o-text-shadow: 0 1px 0 rgba(255, 255, 255, 0.9);
+  -ms-text-shadow: 0 1px 0 rgba(255, 255, 255, 0.9);
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.9);
   line-height: 1;
+  margin-bottom: 5px;
 }
 .kanban-card .closing-date {
   font-size: 11px;
-  position: absolute;
-  top: 5px;
-  left: 10px;
+  text-align: right;
+}
+.kanban-card .closing-date i {
+  text-align: left;
+  font-weight: normal;
+  font-size: 12px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+}
+.kanban-card .closing-date i:after {
+  content: "z";
 }
 .kanban-card .opportunity-owner {
   position: absolute;

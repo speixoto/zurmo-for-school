@@ -111,10 +111,10 @@
                         //Amit's stuff from here
                         echo '<div>'; // we need this to wrap everything
                         echo $this->renderCardDetailsContent($row);
-                        echo '<div class="hidden-content">';
-                        echo '<a href="#" onclick="$(this).next().fadeToggle(); return false;">Toggle Details</a>';
-                        $this->renderRowAsTableCellOrDiv($row, self::ROW_TYPE_DIV);
-                        echo '</div>';
+                        //echo '<div class="hidden-content">';
+                        //echo '<a href="#" onclick="$(this).next().fadeToggle(); return false;">Toggle Details</a>';
+                        //$this->renderRowAsTableCellOrDiv($row, self::ROW_TYPE_DIV);
+                        //echo '</div>';
                         echo '</div>';
                         //End Amit's stuff
                         echo "</li>\n";
@@ -251,7 +251,7 @@
 
             }
             $userUrl      = Yii::app()->createUrl('/users/default/details', array('id' => $this->dataProvider->data[$row]->owner->id));
-            $cardDetails .= ZurmoHtml::link($this->dataProvider->data[$row]->owner->getAvatarImage(36), $userUrl,
+            $cardDetails .= ZurmoHtml::link($this->dataProvider->data[$row]->owner->getAvatarImage(20), $userUrl,
                                             array('class' => 'opportunity-owner'));
             return $cardDetails;
         }
