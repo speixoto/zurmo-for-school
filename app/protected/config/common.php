@@ -361,6 +361,7 @@
             'workflows',
             'socialItems',
             'tasks',
+            'tracking',
             'zurmo' => array(
                 'modules' => array(
                     'groups' => array('class' => 'zurmo.modules.GroupsModule'),

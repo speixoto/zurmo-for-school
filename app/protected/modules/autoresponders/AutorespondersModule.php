@@ -34,60 +34,51 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * Model for storing an email message item activity.
-     */
-    class EmailMessageItemActivity extends RedBeanModel
+    class AutorespondersModule extends Module
     {
-        public function __toString()
+        public function getDependencies()
         {
-            if (trim($this->subject) == '')
-            {
-                return Yii::t('Default', '(Unnamed)');
-            }
-            return $this->subject;
+            return array(
+                'marketingLists',
+            );
         }
 
-        public static function getModuleClassName()
+        public function getRootModelNames()
         {
-            return 'EmailMessagesModule';
+            return array('Autoresponder', 'AutoresponderItem', 'AutoresponderItemActivity');
         }
 
-        /**
-         * Returns the display name for plural of the model class.
-         * @return dynamic label name based on module.
-         */
-        protected static function getPluralLabel($language = null)
+        public static function getPrimaryModelName()
         {
-            return 'Emails';
+            return 'Autoresponder';
         }
 
-        public static function canSaveMetadata()
+        public static function getGlobalSearchFormClassName()
         {
-            return false;
+            return 'AutorespondersSearchForm';
+        }
+
+        public static function modelsAreNeverGloballySearched()
+        {
+            return true;
         }
 
         public static function getDefaultMetadata()
         {
-            $metadata = parent::getDefaultMetadata();
-            $metadata[__CLASS__] = array(
-                'members' => array(
-                    'type',
-                    'dateTime',
+            $metadata = array();
+            $metadata['global'] = array(
+                'globalSearchAttributeNames' => array(
+                    'name',
                 ),
-                'rules' => array(
-                    array('dateTime',  'type', 'type' => 'datetime'),
-                ),
-                'elements' => array(
-                    'dateTime'  => 'DateTime',
-                )
             );
             return $metadata;
         }
 
-        public static function isTypeDeletable()
+        public static function getDemoDataMakerClassNames()
         {
-            return true;
+            return array('AutorespondersDemoDataMaker',
+                            'AutoresponderItemsDemoDataMaker',
+                            'AutoresponderItemActivitiesDemoDataMaker');
         }
     }
 ?>

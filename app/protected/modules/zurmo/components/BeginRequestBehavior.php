@@ -39,6 +39,7 @@
         protected $allowedGuestUserRoutes = array(
                 'zurmo/default/unsupportedBrowser',
                 'zurmo/default/login',
+                'tracking/default/track',
                 'min/serve');
 
         public function attach($owner)
