@@ -226,7 +226,7 @@
         {
             assert('is_string($formId)');
             $title = $this->getModalTitleForSelectingModel();
-            return   ModalView::getAjaxOptionsForModalLink($title);
+            return   ModalView::getAjaxOptionsForModalLink($title, $this->getModalContainerId());
         }
 
         protected function getModalTitleForSelectingModel()
@@ -235,6 +235,11 @@
             $moduleSingularLabel = $module->getModuleLabelByTypeAndLanguage('Singular');
             return Zurmo::t('Core', '{moduleSingularLabel} Search',
                                       array('{moduleSingularLabel}' => $moduleSingularLabel));
+        }
+
+        protected function getModalContainerId()
+        {
+            return 'modalContainer-' . $this->form->id;
         }
 
         protected function getSelectLinkControllerId()
@@ -358,7 +363,8 @@
         {
             return array_merge(array(
                     'sourceIdFieldId' => $this->getIdForHiddenField(),
-                    'sourceNameFieldId' => $this->getIdForTextField()
+                    'sourceNameFieldId' => $this->getIdForTextField(),
+                    'modalId'           => $this->getModalContainerId(),
             ), $this->resolveSourceModelIdForModalTransferInformation());
         }
 

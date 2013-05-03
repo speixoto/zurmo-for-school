@@ -117,6 +117,7 @@
             $content .= $formEnd;
 
             $content .= '</div></div>';
+            $content .= ZurmoHtml::tag('div', array('id' => 'modalContainer-' . $this->getFormId()));
             return $content;
         }
 

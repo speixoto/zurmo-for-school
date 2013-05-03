@@ -57,7 +57,7 @@
             assert('isset($this->params["modalConfigSaveAction"])');
             assert('isset($this->params["uniquePortletPageId"])');
 
-            $formName = 'modal-edit-form';
+            $formName = $this->getFormId();
             $afterValidateAjax = $this->renderConfigSaveAjax(
                 $formName,
                 $this->params['moduleId'],
@@ -102,6 +102,7 @@
             $formEnd = $clipWidget->renderEndWidget();
             $content .= $formEnd;
             $content .= '</div>';
+            $content .= ZurmoHtml::tag('div', array('id' => 'modalContainer-' . $this->getFormId()));
             return $content;
         }
 
@@ -145,6 +146,11 @@
         protected static function getActiveFormClassName()
         {
             return 'ZurmoActiveForm';
+        }
+
+        protected static function getFormId()
+        {
+            return 'modal-edit-form';
         }
     }
 ?>
