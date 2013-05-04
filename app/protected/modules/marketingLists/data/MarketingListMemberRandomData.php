@@ -35,12 +35,7 @@
      ********************************************************************************/
 
     /**
-     * Note related array of random seed data parts.
+     * Marketing List Member array of random seed data parts.
      */
-    return array(
-        'unsubscribed'        => array(
-            0,
-            1
-        ),
-    );
+    return array('unsubscribed' => array(0, 1));
 ?>

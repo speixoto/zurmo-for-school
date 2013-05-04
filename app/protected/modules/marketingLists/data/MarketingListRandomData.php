@@ -35,7 +35,7 @@
      ********************************************************************************/
 
     /**
-     * Note related array of random seed data parts.
+     * Marketing List related array of random seed data parts.
      */
     return array(
         'name'                      => array(
