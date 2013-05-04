@@ -162,6 +162,7 @@
                 GroupUserMembershipFormUtil::setFormFromCastedPost($membershipForm, $castedPostData);
                 if (GroupUserMembershipFormUtil::setMembershipFromForm($membershipForm, $group))
                 {
+                        $this->clearCaches();
                         Yii::app()->user->setFlash('notification',
                             Zurmo::t('ZurmoModule', 'User Membership Saved Successfully.')
                         );
@@ -190,17 +191,18 @@
             $postVariableName = get_class($permissionsForm);
             if (isset($_POST[$postVariableName]))
             {
+                $this->clearCaches();
                 $castedPostData     = ModulePermissionsFormUtil::typeCastPostData(
                                         $_POST[$postVariableName]);
                 $readyToSetPostData = ModulePermissionsEditViewUtil::resolveWritePermissionsFromArray(
                                         $castedPostData);
                 if (ModulePermissionsFormUtil::setPermissionsFromCastedPost($readyToSetPostData, $group))
                 {
-                        Yii::app()->user->setFlash('notification',
-                            Zurmo::t('ZurmoModule', 'Module Permissions Saved Successfully.')
-                        );
-                        $this->redirect(array($this->getId() . '/details', 'id' => $group->id));
-                        Yii::app()->end(0, false);
+                    Yii::app()->user->setFlash('notification',
+                        Zurmo::t('ZurmoModule', 'Module Permissions Saved Successfully.')
+                    );
+                    $this->redirect(array($this->getId() . '/details', 'id' => $group->id));
+                    Yii::app()->end(0, false);
                 }
             }
             $permissionsData     = GroupModulePermissionsDataToEditViewAdapater::resolveData($data);
@@ -234,7 +236,7 @@
                 $castedPostData = RightsFormUtil::typeCastPostData($_POST[$postVariableName]);
                 if (RightsFormUtil::setRightsFromCastedPost($castedPostData, $group))
                 {
-                    PermissionsCache::forgetAll();
+                    $this->clearCaches();
                     $group->forget();
                     $group      = Group::getById(intval($id));
                     Yii::app()->user->setFlash('notification', Zurmo::t('ZurmoModule', 'Rights Saved Successfully.'));
@@ -275,7 +277,7 @@
                 {
                     if (PoliciesFormUtil::setPoliciesFromCastedPost($castedPostData, $group))
                     {
-                        PermissionsCache::forgetAll();
+                        $this->clearCaches();
                         Yii::app()->user->setFlash('notification',
                             Zurmo::t('ZurmoModule', 'Policies Saved Successfully.')
                         );
@@ -370,6 +372,13 @@
             $where    = Group::getTableName('Group') . ".name NOT IN( '" . Group::EVERYONE_GROUP_NAME . "', '" . Group::SUPER_ADMINISTRATORS_GROUP_NAME . "')";
             $orderBy  = Group::getTableName('Group') . '.name asc';
             return array_merge($groups, Group::getSubset(null, null, null, $where, $orderBy));
+        }
+
+        protected function clearCaches()
+        {
+            PermissionsCache::forgetAll();
+            RightsCache::forgetAll();
+            PoliciesCache::forgetAll();
         }
     }
 ?>
