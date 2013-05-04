@@ -78,7 +78,7 @@
 
         public function actionDetails($id)
         {
-	    $title           = Zurmo::t('ProductTemplatesModule', 'Category Detail');
+	    $title		    = Zurmo::t('ProductTemplatesModule', 'Category Detail');
             $breadcrumbLinks = array(
                  $title,
             );

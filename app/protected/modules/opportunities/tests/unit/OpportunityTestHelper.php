@@ -99,5 +99,23 @@
                 assert('$saved');
             }
         }
+
+	public static function createOpportunityWithProductsByNameForOwner($name, $owner, $account)
+        {
+            $currencies			= Currency::getAll();
+            $currencyValue		= new CurrencyValue();
+            $currencyValue->value	= 500.54;
+            $currencyValue->currency	= $currencies[0];
+            $opportunity		= new Opportunity();
+            $opportunity->owner		= $owner;
+            $opportunity->name		= $name;
+            $opportunity->account	= $account;
+            $opportunity->amount	= $currencyValue;
+            $opportunity->closeDate	= '2011-01-01'; //eventually fix to make correct format
+            $opportunity->stage->value	= 'Negotiating';
+            $saved			= $opportunity->save();
+            assert('$saved');
+            return $opportunity;
+        }
     }
 ?>
