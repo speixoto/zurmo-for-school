@@ -66,24 +66,6 @@
             return 'ProductsModule';
         }
 
-        /**
-         * Returns the display name for the model class.
-         * @return dynamic label name based on module.
-         */
-        protected static function getLabel()
-        {
-            return 'ProductsModuleSingularLabel';
-        }
-
-        /**
-         * Returns the display name for plural of the model class.
-         * @return dynamic label name based on module.
-         */
-        protected static function getPluralLabel()
-        {
-            return 'ProductsModulePluralLabel';
-        }
-
         public static function canSaveMetadata()
         {
             return true;
@@ -132,7 +114,7 @@
                     array('name',		'type',    'type' => 'string'),
                     array('name',		'length',  'min'  => 3, 'max' => 64),
                     array('description',	'type',    'type' => 'string'),
-                    array('quantity',		'numerical',  'integerOnly' => true, 'allowEmpty' => false, 'min' => 1),
+                    //array('quantity',		'numerical',  'integerOnly' => true, 'allowEmpty' => false, 'min' => 1),
 		    array('stage',		'required'),
 		    array('quantity',		'required'),
 		    array('type',		'type',    'type' => 'integer'),
