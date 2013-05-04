@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2012 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU General Public License version 3 as published by the
@@ -20,8 +20,18 @@
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
      *
-     * You can contact Zurmo, Inc. with a mailing address at 113 McHenry Road Suite 207,
-     * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
+     * You can contact Zurmo, Inc. with a mailing address at 27 North Wacker Drive
+     * Suite 370 Chicago, IL 60606. or at email address contact@zurmo.com.
+     *
+     * The interactive user interfaces in original and modified versions
+     * of this program must display Appropriate Legal Notices, as required under
+     * Section 5 of the GNU General Public License version 3.
+     *
+     * In accordance with Section 7(b) of the GNU General Public License version 3,
+     * these Appropriate Legal Notices must retain the display of the Zurmo
+     * logo and Zurmo copyright notice. If the display of the logo is not reasonably
+     * feasible for technical reasons, the Appropriate Legal Notices must display the words
+     * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -76,7 +86,7 @@
         {
             assert('$modelToReportAdapter instanceof ModelRelationsAndAttributesToReportAdapter');
             assert('is_string($attribute)');
-            if($modelToReportAdapter->relationIsReportedAsAttribute(
+            if ($modelToReportAdapter->relationIsReportedAsAttribute(
                 $modelToReportAdapter->resolveRealAttributeName($attribute)))
             {
                 return 'value';
@@ -107,11 +117,11 @@
         public function resolveComponentAttributeStringContent()
         {
             $attributeAndRelationData = $this->componentForm->getAttributeAndRelationData();
-            if(!is_array($attributeAndRelationData))
+            if (!is_array($attributeAndRelationData))
             {
                 return $this->resolveComponentAttributeStringContentForNonNestedAttribute();
             }
-            elseif(count($attributeAndRelationData) > 1)
+            elseif (count($attributeAndRelationData) > 1)
             {
                 return $this->resolveComponentAttributeStringContentForNestedAttribute();
             }
@@ -158,13 +168,13 @@
             $modelClassName           = $this->componentForm->getModelClassName();
             $onTableAliasName         = null;
             $startingModelClassName   = null;
-            foreach($attributeAndRelationData as $key => $relationOrAttribute)
+            foreach ($attributeAndRelationData as $key => $relationOrAttribute)
             {
                 $modelToReportAdapter = ModelRelationsAndAttributesToReportAdapter::
                     make($moduleClassName, $modelClassName, $this->componentForm->getReportType());
                 $modelAttributeToDataProviderAdapter  = $this->makeModelAttributeToDataProviderAdapter(
                                                         $modelToReportAdapter, $relationOrAttribute);
-                if($this->shouldPrematurelyStopBuildingJoinsForAttribute($modelToReportAdapter,
+                if ($this->shouldPrematurelyStopBuildingJoinsForAttribute($modelToReportAdapter,
                     $modelAttributeToDataProviderAdapter))
                 {
                     $attribute                            = 'id';
@@ -172,11 +182,11 @@
                                                             $modelToReportAdapter, $attribute);
                     break;
                 }
-                elseif($modelToReportAdapter->isReportedOnAsARelation($relationOrAttribute))
+                elseif ($modelToReportAdapter->isReportedOnAsARelation($relationOrAttribute))
                 {
                     $modelClassName   = $modelToReportAdapter->getRelationModelClassName($relationOrAttribute);
                     $moduleClassName  = $modelToReportAdapter->getRelationModuleClassName($relationOrAttribute);
-                    if($modelToReportAdapter->isInferredRelation($relationOrAttribute) ||
+                    if ($modelToReportAdapter->isInferredRelation($relationOrAttribute) ||
                         $modelToReportAdapter->isDerivedRelationsViaCastedUpModelRelation($relationOrAttribute))
                     {
                         static::resolveCastingHintForAttribute($modelToReportAdapter,
@@ -194,12 +204,12 @@
                 }
                 else
                 {
-                    if($count + 1 != count($attributeAndRelationData))
+                    if ($count + 1 != count($attributeAndRelationData))
                     {
                         throw new NotSupportedException('The final element in array must be an attribute, not a relation');
                     }
                 }
-                $count ++;
+                $count++;
             }
             $modelAttributeToDataProviderAdapter->setCastingHintStartingModelClassName($startingModelClassName);
             return $this->resolveFinalContent($modelAttributeToDataProviderAdapter, $onTableAliasName);
@@ -215,7 +225,7 @@
         {
             assert('$modelToReportAdapter instanceof ModelRelationsAndAttributesToReportAdapter');
             assert('is_string($attribute)');
-            if($modelToReportAdapter->isInferredRelation($attribute))
+            if ($modelToReportAdapter->isInferredRelation($attribute))
             {
                 return new InferredRedBeanModelAttributeToDataProviderAdapter(
                            $modelToReportAdapter->getModelClassName(),
@@ -223,27 +233,26 @@
                            $modelToReportAdapter->getRelationModelClassName($attribute),
                            $modelToReportAdapter->getRelationModuleClassName($attribute));
             }
-            elseif($modelToReportAdapter->isDerivedRelationsViaCastedUpModelRelation($attribute))
+            elseif ($modelToReportAdapter->isDerivedRelationsViaCastedUpModelRelation($attribute))
             {
                 return new DerivedRelationViaCastedUpRedBeanModelAttributeToDataProviderAdapter(
                     $modelToReportAdapter->getModelClassName(),
                     $attribute);
             }
             //Example is full name or calculated number
-            elseif($modelToReportAdapter->isDerivedAttribute($attribute))
+            elseif ($modelToReportAdapter->isDerivedAttribute($attribute))
             {
                 //Derived attributes are assumed to be made via model so we only need the id of the model here.
                 return new RedBeanModelAttributeToDataProviderAdapter($modelToReportAdapter->getModelClassName(), 'id');
             }
             //Example: createdUser__User
-            elseif($modelToReportAdapter->isDynamicallyDerivedAttribute($attribute))
+            elseif ($modelToReportAdapter->isDynamicallyDerivedAttribute($attribute))
             {
                 return static::makeModelAttributeToDataProviderAdapterForDynamicallyDerivedAttribute(
                                $modelToReportAdapter, $attribute);
-
             }
             //Example: CustomField, CurrencyValue, OwnedCustomField, or likeContactState
-            elseif($modelToReportAdapter->relationIsReportedAsAttribute($attribute))
+            elseif ($modelToReportAdapter->relationIsReportedAsAttribute($attribute))
             {
                 return $this->makeModelAttributeToDataProviderAdapterForRelationReportedAsAttribute(
                               $modelToReportAdapter, $attribute);
@@ -292,7 +301,7 @@
         protected function getAttributeClauseQueryStringExtraPart($tableAliasName)
         {
             assert('is_string($tableAliasName)');
-            if($this->componentForm->isATypeOfCurrencyValue() &&
+            if ($this->componentForm->isATypeOfCurrencyValue() &&
                 ($this->currencyConversionType == Report::CURRENCY_CONVERSION_TYPE_BASE ||
                     $this->currencyConversionType == Report::CURRENCY_CONVERSION_TYPE_SPOT))
             {

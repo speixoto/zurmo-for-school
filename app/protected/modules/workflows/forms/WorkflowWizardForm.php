@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2012 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU General Public License version 3 as published by the
@@ -20,8 +20,18 @@
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
      *
-     * You can contact Zurmo, Inc. with a mailing address at 113 McHenry Road Suite 207,
-     * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
+     * You can contact Zurmo, Inc. with a mailing address at 27 North Wacker Drive
+     * Suite 370 Chicago, IL 60606. or at email address contact@zurmo.com.
+     *
+     * The interactive user interfaces in original and modified versions
+     * of this program must display Appropriate Legal Notices, as required under
+     * Section 5 of the GNU General Public License version 3.
+     *
+     * In accordance with Section 7(b) of the GNU General Public License version 3,
+     * these Appropriate Legal Notices must retain the display of the Zurmo
+     * logo and Zurmo copyright notice. If the display of the logo is not reasonably
+     * feasible for technical reasons, the Appropriate Legal Notices must display the words
+     * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -111,22 +121,22 @@
         public function rules()
         {
             return array(
-                array('description', 	      'type',              'type' => 'string'),
+                array('description',          'type',              'type' => 'string'),
                 array('isActive',             'boolean'),
-                array('name', 			      'type',        	   'type' => 'string'),
-                array('name', 			      'length',   		   'max' => 64),
-                array('name', 			      'required', 		   'on' => self::GENERAL_DATA_VALIDATION_SCENARIO),
-                array('moduleClassName',      'type',     		   'type' => 'string'),
+                array('name',                 'type',              'type' => 'string'),
+                array('name',                 'length',            'max' => 64),
+                array('name',                 'required',          'on' => self::GENERAL_DATA_VALIDATION_SCENARIO),
+                array('moduleClassName',      'type',              'type' => 'string'),
                 array('moduleClassName',      'length',            'max' => 64),
-                array('moduleClassName',      'required', 		   'on' => self::MODULE_VALIDATION_SCENARIO),
-                array('triggerOn', 		      'type',     		   'type' => 'string'),
-                array('triggerOn', 			  'length',   		   'max' => 15),
-                array('triggerOn', 			  'required', 		   'on' => self::GENERAL_DATA_VALIDATION_SCENARIO),
-                array('type', 		          'type',     		   'type' => 'string'),
-                array('type', 			      'length',   		   'max' => 15),
-                array('type', 			      'required'),
-                array('timeTrigger', 		  'validateTimeTrigger', 'on' => self::TIME_TRIGGER_VALIDATION_SCENARIO),
-                array('triggersStructure', 	  'validateTriggersStructure', 'on' => self::TRIGGERS_VALIDATION_SCENARIO),
+                array('moduleClassName',      'required',          'on' => self::MODULE_VALIDATION_SCENARIO),
+                array('triggerOn',            'type',              'type' => 'string'),
+                array('triggerOn',            'length',            'max' => 15),
+                array('triggerOn',            'required',          'on' => self::GENERAL_DATA_VALIDATION_SCENARIO),
+                array('type',                 'type',              'type' => 'string'),
+                array('type',                 'length',            'max' => 15),
+                array('type',                 'required'),
+                array('timeTrigger',          'validateTimeTrigger', 'on' => self::TIME_TRIGGER_VALIDATION_SCENARIO),
+                array('triggersStructure',    'validateTriggersStructure', 'on' => self::TRIGGERS_VALIDATION_SCENARIO),
                 array('triggers',             'validateTriggers',  'on' => self::TRIGGERS_VALIDATION_SCENARIO),
                 array('actions',              'validateActions',   'on' => self::ACTIONS_VALIDATION_SCENARIO),
                 array('emailMessages',          'validateEmailMessages', 'on' => self::EMAIL_MESSAGES_VALIDATION_SCENARIO),
@@ -150,12 +160,12 @@
         public function validateTimeTrigger()
         {
             $passedValidation = true;
-            if($this->timeTrigger != null)
+            if ($this->timeTrigger != null)
             {
                 $validated = $this->timeTrigger->validate();
-                if(!$validated)
+                if (!$validated)
                 {
-                    foreach($this->timeTrigger->getErrors() as $attribute => $error)
+                    foreach ($this->timeTrigger->getErrors() as $attribute => $error)
                     {
                         $this->addError( ComponentForWorkflowForm::TYPE_TIME_TRIGGER . '_' . $attribute, $error);
                     }
@@ -178,9 +188,9 @@
          */
         public function validateTriggersStructure()
         {
-            if(count($this->triggers) > 0)
+            if (count($this->triggers) > 0)
             {
-                if(null != $errorMessage = PHPOperatorUtil::
+                if (null != $errorMessage = PHPOperatorUtil::
                            resolveValidationForATemplateSqlStatementAndReturnErrorMessage($this->triggersStructure,
                            count($this->triggers)))
                 {

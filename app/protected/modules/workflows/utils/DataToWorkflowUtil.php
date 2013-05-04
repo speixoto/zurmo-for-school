@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2012 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU General Public License version 3 as published by the
@@ -20,8 +20,18 @@
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
      *
-     * You can contact Zurmo, Inc. with a mailing address at 113 McHenry Road Suite 207,
-     * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
+     * You can contact Zurmo, Inc. with a mailing address at 27 North Wacker Drive
+     * Suite 370 Chicago, IL 60606. or at email address contact@zurmo.com.
+     *
+     * The interactive user interfaces in original and modified versions
+     * of this program must display Appropriate Legal Notices, as required under
+     * Section 5 of the GNU General Public License version 3.
+     *
+     * In accordance with Section 7(b) of the GNU General Public License version 3,
+     * these Appropriate Legal Notices must retain the display of the Zurmo
+     * logo and Zurmo copyright notice. If the display of the logo is not reasonably
+     * feasible for technical reasons, the Appropriate Legal Notices must display the words
+     * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -39,31 +49,31 @@
             assert('is_array($postData)');
             assert('is_string($wizardFormClassName)');
             $data = ArrayUtil::getArrayValue($postData, $wizardFormClassName);
-            if(isset($data['description']))
+            if (isset($data['description']))
             {
                 $workflow->setDescription($data['description']);
             }
-            if(isset($data['isActive']))
+            if (isset($data['isActive']))
             {
                 $workflow->setIsActive((bool)$data['isActive']);
             }
-            if(isset($data['moduleClassName']))
+            if (isset($data['moduleClassName']))
             {
                 $workflow->setModuleClassName($data['moduleClassName']);
             }
-            if(isset($data['name']))
+            if (isset($data['name']))
             {
                 $workflow->setName($data['name']);
             }
-            if(isset($data['triggerOn']))
+            if (isset($data['triggerOn']))
             {
                 $workflow->setTriggerOn($data['triggerOn']);
             }
-            if(isset($data['triggersStructure']))
+            if (isset($data['triggersStructure']))
             {
                 $workflow->setTriggersStructure($data['triggersStructure']);
             }
-            if(isset($data['timeTriggerAttribute']))
+            if (isset($data['timeTriggerAttribute']))
             {
                 $workflow->setTimeTriggerAttribute($data['timeTriggerAttribute']);
             }
@@ -82,10 +92,10 @@
             assert('is_array($data)');
             $workflow->removeAllTriggers();
             $moduleClassName = $workflow->getModuleClassName();
-            if(count($triggersData = ArrayUtil::getArrayValue($data, ComponentForWorkflowForm::TYPE_TRIGGERS)) > 0)
+            if (count($triggersData = ArrayUtil::getArrayValue($data, ComponentForWorkflowForm::TYPE_TRIGGERS)) > 0)
             {
                 $sanitizedTriggersData = self::sanitizeTriggersData($moduleClassName, $workflow->getType(), $triggersData);
-                foreach($sanitizedTriggersData as $key => $triggerData)
+                foreach ($sanitizedTriggersData as $key => $triggerData)
                 {
                     $trigger = new TriggerForWorkflowForm($moduleClassName, $moduleClassName::getPrimaryModelName(),
                                                           $workflow->getType(), $key);
@@ -110,7 +120,7 @@
             assert('is_string($moduleClassName)');
             assert('is_string($workflowType)');
             $sanitizedTriggersData = array();
-            foreach($triggersData as $key => $triggerData)
+            foreach ($triggersData as $key => $triggerData)
             {
                 $sanitizedTriggersData[$key] = static::sanitizeTriggerData($moduleClassName, $workflowType, $triggerData);
             }
@@ -127,9 +137,9 @@
             assert('is_array($data)');
             $workflow->removeAllActions();
             $moduleClassName = $workflow->getModuleClassName();
-            if(count($actionsData = ArrayUtil::getArrayValue($data, ComponentForWorkflowForm::TYPE_ACTIONS)) > 0)
+            if (count($actionsData = ArrayUtil::getArrayValue($data, ComponentForWorkflowForm::TYPE_ACTIONS)) > 0)
             {
-                foreach($actionsData as $key => $actionData)
+                foreach ($actionsData as $key => $actionData)
                 {
                     $sanitizedActionData = static::sanitizeActionData($moduleClassName::getPrimaryModelName(),
                                                                       $actionData, $workflow->type);
@@ -156,23 +166,23 @@
             assert('is_string($modelClassName)');
             assert('is_array($actionData)');
             assert('is_string($workflowType)');
-            if(!isset($actionData[ActionForWorkflowForm::ACTION_ATTRIBUTES]))
+            if (!isset($actionData[ActionForWorkflowForm::ACTION_ATTRIBUTES]))
             {
                 return $actionData;
             }
             $actionForSanitizing = new ActionForWorkflowForm($modelClassName, $workflowType);
             $actionForSanitizing->setAttributes($actionData);
-            foreach($actionData[ActionForWorkflowForm::ACTION_ATTRIBUTES] as $attribute => $attributeData)
+            foreach ($actionData[ActionForWorkflowForm::ACTION_ATTRIBUTES] as $attribute => $attributeData)
             {
-                if(isset($attributeData['value']))
+                if (isset($attributeData['value']))
                 {
                     $type = $actionForSanitizing->getActionAttributesAttributeFormType($attribute);
-                    if($type == 'Date' && $attributeData['type'] == DateWorkflowActionAttributeForm::TYPE_STATIC)
+                    if ($type == 'Date' && $attributeData['type'] == DateWorkflowActionAttributeForm::TYPE_STATIC)
                     {
                         $actionData[ActionForWorkflowForm::ACTION_ATTRIBUTES][$attribute]['value'] =
                             DateTimeUtil::resolveValueForDateDBFormatted($attributeData['value']);
                     }
-                    elseif($type == 'DateTime' && $attributeData['type'] == DateTimeWorkflowActionAttributeForm::TYPE_STATIC)
+                    elseif ($type == 'DateTime' && $attributeData['type'] == DateTimeWorkflowActionAttributeForm::TYPE_STATIC)
                     {
                         $actionData[ActionForWorkflowForm::ACTION_ATTRIBUTES][$attribute]['value'] =
                             DateTimeUtil::convertDateTimeLocaleFormattedDisplayToDbFormattedDateTimeWithSecondsAsZero($attributeData['value']);
@@ -192,9 +202,9 @@
             assert('is_array($data)');
             $workflow->removeAllEmailMessages();
             $moduleClassName = $workflow->getModuleClassName();
-            if(count($emailMessagesData = ArrayUtil::getArrayValue($data, ComponentForWorkflowForm::TYPE_EMAIL_MESSAGES)) > 0)
+            if (count($emailMessagesData = ArrayUtil::getArrayValue($data, ComponentForWorkflowForm::TYPE_EMAIL_MESSAGES)) > 0)
             {
-                foreach($emailMessagesData as $key => $emailMessageData)
+                foreach ($emailMessagesData as $key => $emailMessageData)
                 {
                     $emailMessage = new EmailMessageForWorkflowForm($moduleClassName::getPrimaryModelName(),
                                   $workflow->type, $key);
@@ -216,7 +226,7 @@
         public static function resolveTimeTrigger($data, Workflow $workflow)
         {
             assert('is_array($data)');
-            if($workflow->getType() != Workflow::TYPE_BY_TIME)
+            if ($workflow->getType() != Workflow::TYPE_BY_TIME)
             {
                 return;
             }
@@ -224,7 +234,7 @@
             $moduleClassName = $workflow->getModuleClassName();
             $timeTrigger     = new TimeTriggerForWorkflowForm($moduleClassName, $moduleClassName::getPrimaryModelName(),
                                                               $workflow->getType());
-            if(null != $timeTriggerData = ArrayUtil::getArrayValue($data, ComponentForWorkflowForm::TYPE_TIME_TRIGGER))
+            if (null != $timeTriggerData = ArrayUtil::getArrayValue($data, ComponentForWorkflowForm::TYPE_TIME_TRIGGER))
             {
                 $timeTrigger->setAttributes($timeTriggerData);
             }
@@ -247,13 +257,13 @@
             $triggerForSanitizing->setAttributes($triggerData);
             $valueElementType = null;
             $valueElementType    = $triggerForSanitizing->getValueElementType();
-            if($valueElementType == 'MixedDateTypesForWorkflow')
+            if ($valueElementType == 'MixedDateTypesForWorkflow')
             {
-                if(isset($triggerData['value']) && $triggerData['value'] !== null)
+                if (isset($triggerData['value']) && $triggerData['value'] !== null)
                 {
                     $triggerData['value']       = DateTimeUtil::resolveValueForDateDBFormatted($triggerData['value']);
                 }
-                if(isset($triggerData['secondValue']) && $triggerData['secondValue'] !== null)
+                if (isset($triggerData['secondValue']) && $triggerData['secondValue'] !== null)
                 {
                     $triggerData['secondValue'] = DateTimeUtil::resolveValueForDateDBFormatted($triggerData['secondValue']);
                 }

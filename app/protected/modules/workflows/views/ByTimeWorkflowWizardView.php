@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2012 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU General Public License version 3 as published by the
@@ -20,8 +20,18 @@
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
      *
-     * You can contact Zurmo, Inc. with a mailing address at 113 McHenry Road Suite 207,
-     * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
+     * You can contact Zurmo, Inc. with a mailing address at 27 North Wacker Drive
+     * Suite 370 Chicago, IL 60606. or at email address contact@zurmo.com.
+     *
+     * The interactive user interfaces in original and modified versions
+     * of this program must display Appropriate Legal Notices, as required under
+     * Section 5 of the GNU General Public License version 3.
+     *
+     * In accordance with Section 7(b) of the GNU General Public License version 3,
+     * these Appropriate Legal Notices must retain the display of the Zurmo
+     * logo and Zurmo copyright notice. If the display of the logo is not reasonably
+     * feasible for technical reasons, the Appropriate Legal Notices must display the words
+     * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -29,6 +39,14 @@
      */
     class ByTimeWorkflowWizardView extends WorkflowWizardView
     {
+        /**
+         * @return string
+         */
+        public function getTitle()
+        {
+            return parent::getTitle() . ' - ' . Zurmo::t('WorkflowsModule', 'Time-Based');
+        }
+
         /**
          * @param WizardActiveForm $form
          * @return string
@@ -42,7 +60,7 @@
             $emailMessagesForWorkflowWizardView   = new EmailMessagesForWorkflowWizardView($this->model,     $form, true);
             $generalDataForWorkflowWizardView   = new GeneralDataForWorkflowWizardView($this->model, $form, true);
 
-            $gridView = new GridView(6,1);
+            $gridView = new GridView(6, 1);
             $gridView->setView($moduleForWorkflowWizardView, 0, 0);
             $gridView->setView($timeTriggerForWorkflowWizardView, 1, 0);
             $gridView->setView($triggersForWorkflowWizardView, 2, 0);
@@ -60,16 +78,15 @@
         {
             assert('is_string($formName)');
             return     "linkId = $('#" . $formName . "').find('.attachLoadingTarget').attr('id');
-                        if(linkId == '" . ModuleForWorkflowWizardView::getNextPageLinkId() . "')
+                        if (linkId == '" . ModuleForWorkflowWizardView::getNextPageLinkId() . "')
                         {
                             $('#" . static::getValidationScenarioInputId() . "').val('" .
                                 WorkflowWizardForm::TIME_TRIGGER_VALIDATION_SCENARIO . "');
                             $('#ModuleForWorkflowWizardView').hide();
                              " . $this->renderLoadTimeTriggerAttributeScriptContent($formName) . "
                             $('#TimeTriggerForWorkflowWizardView').show();
-
                         }
-                        if(linkId == '" . TimeTriggerForWorkflowWizardView::getNextPageLinkId() . "')
+                        if (linkId == '" . TimeTriggerForWorkflowWizardView::getNextPageLinkId() . "')
                         {
                             $('#" . static::getValidationScenarioInputId() . "').val('" .
                                 WorkflowWizardForm::TRIGGERS_VALIDATION_SCENARIO . "');
@@ -77,29 +94,31 @@
                             " . $this->renderTreeViewAjaxScriptContent($formName, 'TriggersForWorkflowWizardView') . "
                             $('#TriggersForWorkflowWizardView').show();
                         }
-                        if(linkId == '" . TriggersForWorkflowWizardView::getNextPageLinkId() . "')
+                        if (linkId == '" . TriggersForWorkflowWizardView::getNextPageLinkId() . "')
                         {
                             $('#" . static::getValidationScenarioInputId() . "').val('" .
                                 WorkflowWizardForm::ACTIONS_VALIDATION_SCENARIO . "');
                             $('#TriggersForWorkflowWizardView').hide();
                             $('#ActionsForWorkflowWizardView').show();
                             var actionsList = $('#ActionsForWorkflowWizardView').find('ul:first').children();
-                            $.each(actionsList, function(){
-                                if ( $(this).hasClass('expanded-row') ){
+                            $.each(actionsList, function()
+                            {
+                                if ( $(this).hasClass('expanded-row') )
+                                {
                                     $(this).toggleClass('expanded-row');
                                     $('.edit-dynamic-row-link', this).toggle();
                                     $('.toggle-me', this).toggle();
                                 }
                             });
                         }
-                        if(linkId == '" . ActionsForWorkflowWizardView::getNextPageLinkId() . "')
+                        if (linkId == '" . ActionsForWorkflowWizardView::getNextPageLinkId() . "')
                         {
                             $('#" . static::getValidationScenarioInputId() . "').val('" .
                             WorkflowWizardForm::EMAIL_MESSAGES_VALIDATION_SCENARIO . "');
                             $('#ActionsForWorkflowWizardView').hide();
                             $('#EmailMessagesForWorkflowWizardView').show();
                         }
-                        if(linkId == '" . EmailMessagesForWorkflowWizardView::getNextPageLinkId() . "')
+                        if (linkId == '" . EmailMessagesForWorkflowWizardView::getNextPageLinkId() . "')
                         {
                             $('#" . static::getValidationScenarioInputId() . "').val('" .
                             WorkflowWizardForm::GENERAL_DATA_VALIDATION_SCENARIO . "');
@@ -108,15 +127,16 @@
                         }
 
                         var rowData = $('#" . $formName . "').find('.attachLoadingTarget').data() || {};
-                        if (rowData.purpose === 'validate-action'){
+                        if (rowData.purpose === 'validate-action')
+                        {
                             $('#' + rowData.row.toString()).toggleClass('expanded-row');
                             $('#' + rowData.row.toString() + ' .toggle-me').toggle();
                             $('#' + rowData.row.toString() + ' .edit-dynamic-row-link').toggle();
                             $('#' + rowData.row.toString()).siblings().show();
-                            $('#actionsNextLink').show();
+                            $('#actionsNextLink').parent().parent().show();
                         }
 
-                        if(linkId == '" . GeneralDataForWorkflowWizardView::getNextPageLinkId() . "')
+                        if (linkId == '" . GeneralDataForWorkflowWizardView::getNextPageLinkId() . "')
                         {
                             " . $this->getSaveAjaxString($formName) . "
                         }
@@ -206,6 +226,7 @@
             assert('is_string($formName)');
             $url    =  Yii::app()->createUrl('workflows/default/getAvailableAttributesForTimeTrigger',
                 array_merge($_GET, array('type' => $this->model->type)));
+            // Begin Not Coding Standard
             $script = "
                 $.ajax({
                     url : '" . $url . "',
@@ -222,6 +243,7 @@
                     }
                 });
             ";
+            // End Not Coding Standard
             return $script;
         }
 
@@ -239,10 +261,13 @@
                                  $("input:radio[name=\"ByTimeWorkflowWizardForm[moduleClassName]\"]:checked").val()',
                 'url'     =>  $url,
                 'beforeSend' => 'js:function(){
+                console.log("sending");
                         //$("#' . $inputDivId . '").html("<span class=\"loading z-spinner\"></span>");
                         //attachLoadingSpinner("' . $inputDivId . '", true, "dark");
                         }',
                 'success' => 'js:function(data){
+                                console.log("receiving");
+
                                 $(".' . TimeTriggerForWorkflowWizardView::getZeroComponentsClassName() . '").hide();
                                 $("#time-trigger-container").show();
                                 $("#' . $inputDivId . ' ul").html(data);
@@ -250,9 +275,10 @@
             ));
             $script = "$('#" . $id . "').unbind('change'); $('#" . $id . "').bind('change', function()
             {
-                if($('#" . $id . "').val() == '')
+                if ($('#" . $id . "').val() == '')
                 {
-                    $('#" . $inputDivId . "').html('');
+                    $('#" . $inputDivId . " ul').html('');
+                    $('.". TimeTriggerForWorkflowWizardView::getZeroComponentsClassName() . "').show();
                 }
                 else
                 {

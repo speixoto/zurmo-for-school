@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2012 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU General Public License version 3 as published by the
@@ -20,8 +20,18 @@
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
      *
-     * You can contact Zurmo, Inc. with a mailing address at 113 McHenry Road Suite 207,
-     * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
+     * You can contact Zurmo, Inc. with a mailing address at 27 North Wacker Drive
+     * Suite 370 Chicago, IL 60606. or at email address contact@zurmo.com.
+     *
+     * The interactive user interfaces in original and modified versions
+     * of this program must display Appropriate Legal Notices, as required under
+     * Section 5 of the GNU General Public License version 3.
+     *
+     * In accordance with Section 7(b) of the GNU General Public License version 3,
+     * these Appropriate Legal Notices must retain the display of the Zurmo
+     * logo and Zurmo copyright notice. If the display of the logo is not reasonably
+     * feasible for technical reasons, the Appropriate Legal Notices must display the words
+     * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -64,7 +74,6 @@
         public function __construct(WorkflowActionAttributeForm $model, WizardActiveForm $form,
                                     $actionType, $inputPrefixData, $isAttributeRequired)
         {
-
             assert('is_string($actionType)');
             assert('is_array($inputPrefixData)');
             assert('is_bool($isAttributeRequired)');
@@ -94,12 +103,12 @@
          */
         protected function isCreatingNewModel()
         {
-            if($this->actionType == ActionForWorkflowForm::TYPE_UPDATE_SELF ||
+            if ($this->actionType == ActionForWorkflowForm::TYPE_UPDATE_SELF ||
                $this->actionType == ActionForWorkflowForm::TYPE_UPDATE_RELATED)
             {
                 return false;
             }
-            elseif($this->actionType == ActionForWorkflowForm::TYPE_CREATE ||
+            elseif ($this->actionType == ActionForWorkflowForm::TYPE_CREATE ||
                    $this->actionType == ActionForWorkflowForm::TYPE_CREATE_RELATED)
             {
                 return true;
@@ -130,7 +139,7 @@
             $typeAndValueContent                 = null;
             ZurmoHtml::resolveDivWrapperForContent($typeContent, $typeAndValueContent, 'dynamic-action-attribute-type');
             $typeAndValueContent                .= $valueContent;
-            if($this->model->shouldSetValue)
+            if ($this->model->shouldSetValue)
             {
                 $style = null;
             }
@@ -148,7 +157,7 @@
         protected function renderShouldSetValueContent()
         {
             $params = array('inputPrefix' => $this->inputPrefixData);
-            if($this->isAttributeRequired)
+            if ($this->isAttributeRequired)
             {
                 $params['disabled'] = true;
             }
@@ -163,9 +172,8 @@
          */
         protected function renderTypeContent()
         {
-
             $typeValuesAndLabels = $this->model->getTypeValuesAndLabels($this->isCreatingNewModel(), $this->isAttributeRequired);
-            if(count($typeValuesAndLabels) > 1)
+            if (count($typeValuesAndLabels) > 1)
             {
                 $params                         = array('inputPrefix' => $this->inputPrefixData,
                                                         'typeValuesAndLabels' => $typeValuesAndLabels);
@@ -194,20 +202,20 @@
         {
             $params           = array('inputPrefix' => $this->inputPrefixData);
             $valueElementType = $this->model->getValueElementType();
-            if($valueElementType != null)
+            if ($valueElementType != null)
             {
                 $valueElementClassName = $valueElementType . 'Element';
                 $valueElement          = new $valueElementClassName($this->model, 'value', $this->form, $params);
-                if($valueElement instanceof NameIdElement)
+                if ($valueElement instanceof NameIdElement)
                 {
                     $valueElement->setIdAttributeId('value');
                     $valueElement->setNameAttributeName('stringifiedModelForValue');
                 }
-                if($valueElement instanceof MixedDropDownTypesForWorkflowActionAttributeElement)
+                if ($valueElement instanceof MixedDropDownTypesForWorkflowActionAttributeElement)
                 {
                     $valueElement->editableTemplate = '<div class="value-data">{content}{error}</div>';
                 }
-                elseif($valueElement instanceof MixedDateTypesForWorkflowActionAttributeElement ||
+                elseif ($valueElement instanceof MixedDateTypesForWorkflowActionAttributeElement ||
                        $valueElement instanceof MixedDateTimeTypesForWorkflowActionAttributeElement)
                 {
                     $valueElement->editableTemplate = '<div class="value-data has-date-inputs">{content}{error}</div>';

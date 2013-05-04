@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2012 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU General Public License version 3 as published by the
@@ -20,8 +20,18 @@
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
      *
-     * You can contact Zurmo, Inc. with a mailing address at 113 McHenry Road Suite 207,
-     * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
+     * You can contact Zurmo, Inc. with a mailing address at 27 North Wacker Drive
+     * Suite 370 Chicago, IL 60606. or at email address contact@zurmo.com.
+     *
+     * The interactive user interfaces in original and modified versions
+     * of this program must display Appropriate Legal Notices, as required under
+     * Section 5 of the GNU General Public License version 3.
+     *
+     * In accordance with Section 7(b) of the GNU General Public License version 3,
+     * these Appropriate Legal Notices must retain the display of the Zurmo
+     * logo and Zurmo copyright notice. If the display of the logo is not reasonably
+     * feasible for technical reasons, the Appropriate Legal Notices must display the words
+     * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -175,7 +185,7 @@
          */
         public function getData()
         {
-            if($this->formattedData == null)
+            if ($this->formattedData == null)
             {
                 $this->formattedData = $this->formatData($this->data);
             }
@@ -214,16 +224,15 @@
          */
         protected function formatData($data)
         {
-            if(!$this->isStacked())
+            if (!$this->isStacked())
             {
                 return $data;
             }
-            foreach($this->secondSeriesValueData as $secondSeriesKey)
+            foreach ($this->secondSeriesValueData as $secondSeriesKey)
             {
-
-                foreach($data as $firstSeriesDataKey => $firstSeriesData)
+                foreach ($data as $firstSeriesDataKey => $firstSeriesData)
                 {
-                    if(isset($firstSeriesData[self::resolveFirstSeriesValueName($secondSeriesKey)]) &&
+                    if (isset($firstSeriesData[self::resolveFirstSeriesValueName($secondSeriesKey)]) &&
                         !isset($firstSeriesData[self::resolveFirstSeriesFormattedValueName($secondSeriesKey)]))
                     {
                         $value            = $firstSeriesData[self::resolveFirstSeriesValueName($secondSeriesKey)];
@@ -231,7 +240,7 @@
                         $data[$firstSeriesDataKey][self::resolveFirstSeriesFormattedValueName($secondSeriesKey)] =
                             $this->formatValue($displayAttribute, $value);
                     }
-                    if(isset($firstSeriesData[self::resolveSecondSeriesValueName($secondSeriesKey)]) &&
+                    if (isset($firstSeriesData[self::resolveSecondSeriesValueName($secondSeriesKey)]) &&
                         !isset($firstSeriesData[self::resolveSecondSeriesFormattedValueName($secondSeriesKey)]))
                     {
                         $value            = $firstSeriesData[self::resolveSecondSeriesValueName($secondSeriesKey)];
@@ -253,17 +262,17 @@
          */
         protected function formatValue(DisplayAttributeForReportForm $displayAttribute, $value)
         {
-            if($displayAttribute->isATypeOfCurrencyValue())
+            if ($displayAttribute->isATypeOfCurrencyValue())
             {
-                if($this->report->getCurrencyConversionType() == Report::CURRENCY_CONVERSION_TYPE_ACTUAL)
+                if ($this->report->getCurrencyConversionType() == Report::CURRENCY_CONVERSION_TYPE_ACTUAL)
                 {
                     return Yii::app()->numberFormatter->formatDecimal($value);
                 }
-                elseif($this->report->getCurrencyConversionType() == Report::CURRENCY_CONVERSION_TYPE_BASE)
+                elseif ($this->report->getCurrencyConversionType() == Report::CURRENCY_CONVERSION_TYPE_BASE)
                 {
                     return Yii::app()->numberFormatter->formatCurrency($value, Yii::app()->currencyHelper->getBaseCode());
                 }
-                elseif($this->report->getCurrencyConversionType() == Report::CURRENCY_CONVERSION_TYPE_SPOT)
+                elseif ($this->report->getCurrencyConversionType() == Report::CURRENCY_CONVERSION_TYPE_SPOT)
                 {
                     return Yii::app()->numberFormatter->formatCurrency($value * $this->report->getFromBaseToSpotRate(),
                                                                        $this->report->getSpotConversionCurrencyCode());
@@ -273,19 +282,19 @@
                     throw new NotSupportedException();
                 }
             }
-            elseif($displayAttribute->getDisplayElementType() == 'Decimal')
+            elseif ($displayAttribute->getDisplayElementType() == 'Decimal')
             {
                 return Yii::app()->numberFormatter->formatDecimal($value);
             }
-            elseif($displayAttribute->getDisplayElementType() == 'Integer')
+            elseif ($displayAttribute->getDisplayElementType() == 'Integer')
             {
                 return Yii::app()->numberFormatter->formatDecimal($value);
             }
-            elseif($displayAttribute->getDisplayElementType()  == 'Date')
+            elseif ($displayAttribute->getDisplayElementType()  == 'Date')
             {
                 return DateTimeUtil::resolveValueForDateLocaleFormattedDisplay($value);
             }
-            elseif($displayAttribute->getDisplayElementType() == 'DateTime')
+            elseif ($displayAttribute->getDisplayElementType() == 'DateTime')
             {
                 return DateTimeUtil::convertDbFormattedDateTimeToLocaleFormattedDisplay($value);
             }

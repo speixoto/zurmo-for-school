@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2012 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU General Public License version 3 as published by the
@@ -20,8 +20,18 @@
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
      *
-     * You can contact Zurmo, Inc. with a mailing address at 113 McHenry Road Suite 207,
-     * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
+     * You can contact Zurmo, Inc. with a mailing address at 27 North Wacker Drive
+     * Suite 370 Chicago, IL 60606. or at email address contact@zurmo.com.
+     *
+     * The interactive user interfaces in original and modified versions
+     * of this program must display Appropriate Legal Notices, as required under
+     * Section 5 of the GNU General Public License version 3.
+     *
+     * In accordance with Section 7(b) of the GNU General Public License version 3,
+     * these Appropriate Legal Notices must retain the display of the Zurmo
+     * logo and Zurmo copyright notice. If the display of the logo is not reasonably
+     * feasible for technical reasons, the Appropriate Legal Notices must display the words
+     * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -39,23 +49,23 @@
             assert('is_array($postData)');
             assert('is_string($wizardFormClassName)');
             $data = ArrayUtil::getArrayValue($postData, $wizardFormClassName);
-            if(isset($data['description']))
+            if (isset($data['description']))
             {
                 $report->setDescription($data['description']);
             }
-            if(isset($data['moduleClassName']))
+            if (isset($data['moduleClassName']))
             {
                 $report->setModuleClassName($data['moduleClassName']);
             }
-            if(isset($data['name']))
+            if (isset($data['name']))
             {
                 $report->setName($data['name']);
             }
-            if(isset($data['filtersStructure']))
+            if (isset($data['filtersStructure']))
             {
                 $report->setFiltersStructure($data['filtersStructure']);
             }
-            if(null != ArrayUtil::getArrayValue($data, 'ownerId'))
+            if (null != ArrayUtil::getArrayValue($data, 'ownerId'))
             {
                 $owner = User::getById((int)$data['ownerId']);
                 $report->setOwner($owner);
@@ -64,11 +74,11 @@
             {
                 $report->setOwner(new User());
             }
-            if(isset($data['currencyConversionType']))
+            if (isset($data['currencyConversionType']))
             {
                 $report->setCurrencyConversionType((int)$data['currencyConversionType']);
             }
-            if(isset($data['spotConversionCurrencyCode']))
+            if (isset($data['spotConversionCurrencyCode']))
             {
                 $report->setSpotConversionCurrencyCode($data['spotConversionCurrencyCode']);
             }
@@ -88,10 +98,10 @@
         {
             $report->removeAllFilters();
             $moduleClassName = $report->getModuleClassName();
-            if(count($filtersData = ArrayUtil::getArrayValue($data, ComponentForReportForm::TYPE_FILTERS)) > 0)
+            if (count($filtersData = ArrayUtil::getArrayValue($data, ComponentForReportForm::TYPE_FILTERS)) > 0)
             {
                 $sanitizedFiltersData = self::sanitizeFiltersData($moduleClassName, $report->getType(), $filtersData);
-                foreach($sanitizedFiltersData as $key => $filterData)
+                foreach ($sanitizedFiltersData as $key => $filterData)
                 {
                     $filter = new FilterForReportForm($moduleClassName, $moduleClassName::getPrimaryModelName(),
                                                       $report->getType(), $key);
@@ -117,7 +127,7 @@
             assert('is_string($moduleClassName)');
             assert('is_string($reportType)');
             $sanitizedFiltersData = array();
-            foreach($filtersData as $key => $filterData)
+            foreach ($filtersData as $key => $filterData)
             {
                 $sanitizedFiltersData[$key] = static::sanitizeFilterData($moduleClassName,
                                                                      $moduleClassName::getPrimaryModelName(),
@@ -146,13 +156,13 @@
             $filterForSanitizing->setAttributes($filterData);
             $valueElementType = null;
             $valueElementType    = $filterForSanitizing->getValueElementType();
-            if($valueElementType == 'MixedDateTypesForReport')
+            if ($valueElementType == 'MixedDateTypesForReport')
             {
-                if(isset($filterData['value']) && $filterData['value'] !== null)
+                if (isset($filterData['value']) && $filterData['value'] !== null)
                 {
                     $filterData['value']       = DateTimeUtil::resolveValueForDateDBFormatted($filterData['value']);
                 }
-                if(isset($filterData['secondValue']) && $filterData['secondValue'] !== null)
+                if (isset($filterData['secondValue']) && $filterData['secondValue'] !== null)
                 {
                     $filterData['secondValue'] = DateTimeUtil::resolveValueForDateDBFormatted($filterData['secondValue']);
                 }
@@ -168,9 +178,9 @@
         {
             $report->removeAllOrderBys();
             $moduleClassName = $report->getModuleClassName();
-            if(count($orderBysData = ArrayUtil::getArrayValue($data, ComponentForReportForm::TYPE_ORDER_BYS)) > 0)
+            if (count($orderBysData = ArrayUtil::getArrayValue($data, ComponentForReportForm::TYPE_ORDER_BYS)) > 0)
             {
-                foreach($orderBysData as $key => $orderByData)
+                foreach ($orderBysData as $key => $orderByData)
                 {
                     $orderBy = new OrderByForReportForm($moduleClassName, $moduleClassName::getPrimaryModelName(),
                                                         $report->getType(), $key);
@@ -193,10 +203,9 @@
             $report->removeAllDisplayAttributes();
             DisplayAttributeForReportForm::resetCount();
             $moduleClassName = $report->getModuleClassName();
-            if(count($displayAttributesData =
-                     ArrayUtil::getArrayValue($data, ComponentForReportForm::TYPE_DISPLAY_ATTRIBUTES)) > 0)
+            if (count($displayAttributesData = ArrayUtil::getArrayValue($data, ComponentForReportForm::TYPE_DISPLAY_ATTRIBUTES)) > 0)
             {
-                foreach($displayAttributesData as $key => $displayAttributeData)
+                foreach ($displayAttributesData as $key => $displayAttributeData)
                 {
                     $displayAttribute = new DisplayAttributeForReportForm($moduleClassName,
                                                                           $moduleClassName::getPrimaryModelName(),
@@ -220,10 +229,9 @@
             $report->removeAllDrillDownDisplayAttributes();
             DrillDownDisplayAttributeForReportForm::resetCount();
             $moduleClassName = $report->getModuleClassName();
-            if(count($drillDownDisplayAttributesData =
-                     ArrayUtil::getArrayValue($data, ComponentForReportForm::TYPE_DRILL_DOWN_DISPLAY_ATTRIBUTES)) > 0)
+            if (count($drillDownDisplayAttributesData = ArrayUtil::getArrayValue($data, ComponentForReportForm::TYPE_DRILL_DOWN_DISPLAY_ATTRIBUTES)) > 0)
             {
-                foreach($drillDownDisplayAttributesData as $key => $drillDownDisplayAttributeData)
+                foreach ($drillDownDisplayAttributesData as $key => $drillDownDisplayAttributeData)
                 {
                     $drillDownDisplayAttribute = new DrillDownDisplayAttributeForReportForm($moduleClassName,
                                                                           $moduleClassName::getPrimaryModelName(),
@@ -246,9 +254,9 @@
         {
             $report->removeAllGroupBys();
             $moduleClassName = $report->getModuleClassName();
-            if(count($groupBysData = ArrayUtil::getArrayValue($data, ComponentForReportForm::TYPE_GROUP_BYS)) > 0)
+            if (count($groupBysData = ArrayUtil::getArrayValue($data, ComponentForReportForm::TYPE_GROUP_BYS)) > 0)
             {
-                foreach($groupBysData as $key => $groupByData)
+                foreach ($groupBysData as $key => $groupByData)
                 {
                     $groupBy = new GroupByForReportForm($moduleClassName, $moduleClassName::getPrimaryModelName(),
                                                         $report->getType(), $key);
@@ -268,12 +276,12 @@
          */
         protected static function resolveChart($data, Report $report)
         {
-            if($report->getType() != Report::TYPE_SUMMATION)
+            if ($report->getType() != Report::TYPE_SUMMATION)
             {
                 return;
             }
             $moduleClassName = $report->getModuleClassName();
-            if($moduleClassName != null)
+            if ($moduleClassName != null)
             {
                 $modelClassName      = $moduleClassName::getPrimaryModelName();
                 $adapter             = ModelRelationsAndAttributesToSummationReportAdapter::
@@ -291,7 +299,7 @@
             }
 
             $chart           = new ChartForReportForm($seriesDataAndLabels, $rangeDataAndLabels);
-            if(null != $chartData = ArrayUtil::getArrayValue($data, 'ChartForReportForm'))
+            if (null != $chartData = ArrayUtil::getArrayValue($data, 'ChartForReportForm'))
             {
                 $chart->setAttributes($chartData);
             }

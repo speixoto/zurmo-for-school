@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2012 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU General Public License version 3 as published by the
@@ -20,8 +20,18 @@
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
      *
-     * You can contact Zurmo, Inc. with a mailing address at 113 McHenry Road Suite 207,
-     * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
+     * You can contact Zurmo, Inc. with a mailing address at 27 North Wacker Drive
+     * Suite 370 Chicago, IL 60606. or at email address contact@zurmo.com.
+     *
+     * The interactive user interfaces in original and modified versions
+     * of this program must display Appropriate Legal Notices, as required under
+     * Section 5 of the GNU General Public License version 3.
+     *
+     * In accordance with Section 7(b) of the GNU General Public License version 3,
+     * these Appropriate Legal Notices must retain the display of the Zurmo
+     * logo and Zurmo copyright notice. If the display of the logo is not reasonably
+     * feasible for technical reasons, the Appropriate Legal Notices must display the words
+     * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -84,10 +94,10 @@
 
         public static function getLogoAttributes(& $form)
         {
-           if (!is_null(ZurmoConfigurationUtil::getByModuleName('ZurmoModule', 'logoThumbFileModelId')))
+           if (null !== ZurmoConfigurationUtil::getByModuleName('ZurmoModule', 'logoThumbFileModelId'))
            {
                $logoThumbFileId  = ZurmoConfigurationUtil::getByModuleName('ZurmoModule', 'logoThumbFileModelId');
-               $logoThumbFileSrc = Yii::app()->createUrl('zurmo/default/logo', array('id'=>$logoThumbFileId));
+               $logoThumbFileSrc = Yii::app()->createUrl('zurmo/default/logo', array('id' => $logoThumbFileId));
                $logoThumbFile    = FileModel::getById($logoThumbFileId);
                $logoFileData     = array('name'              => $logoThumbFile->name,
                                          'type'              => $logoThumbFile->type,
@@ -97,7 +107,7 @@
            else
            {
                $logoThumbFilePath = Yii::app()->theme->basePath . DIRECTORY_SEPARATOR . 'images' . DIRECTORY_SEPARATOR . 'Zurmo_logo.png';
-               $logoThumbFileSrc  = Yii::app()->baseUrl.'/themes/default/images/Zurmo_logo.png';
+               $logoThumbFileSrc  = Yii::app()->baseUrl . '/themes/default/images/Zurmo_logo.png';
                $logoFileData      = array('name'              => pathinfo($logoThumbFilePath, PATHINFO_FILENAME),
                                           'type'              => ZurmoFileHelper::getMimeType($logoThumbFilePath),
                                           'size'              => filesize($logoThumbFilePath),
@@ -120,7 +130,7 @@
                    Yii::app()->user->setState('deleteCustomLogo', null);
                }
            }
-           if (!is_null(Yii::app()->user->getState('logoFileName')))
+           if (null !== Yii::app()->user->getState('logoFileName'))
            {
                $logoFilePath = sys_get_temp_dir() . DIRECTORY_SEPARATOR . Yii::app()->user->getState('logoFileName');
                self::resizeLogoImageFile($logoFilePath, $logoFilePath, null, ZurmoConfigurationForm::DEFAULT_LOGO_HEIGHT);
@@ -138,7 +148,7 @@
 
         public static function resolveLogoWidth()
         {
-           if(!($logoWidth = ZurmoConfigurationUtil::getByModuleName('ZurmoModule', 'logoWidth')))
+           if (!($logoWidth = ZurmoConfigurationUtil::getByModuleName('ZurmoModule', 'logoWidth')))
            {
                $logoWidth = ZurmoConfigurationForm::DEFAULT_LOGO_WIDTH;
            }
@@ -147,7 +157,7 @@
 
         public static function resolveLogoHeight()
         {
-           if(!($logoHeight = ZurmoConfigurationUtil::getByModuleName('ZurmoModule', 'logoHeight')))
+           if (!($logoHeight = ZurmoConfigurationUtil::getByModuleName('ZurmoModule', 'logoHeight')))
            {
                $logoHeight = ZurmoConfigurationForm::DEFAULT_LOGO_HEIGHT;
            }

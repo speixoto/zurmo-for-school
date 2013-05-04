@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2012 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU General Public License version 3 as published by the
@@ -20,8 +20,18 @@
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
      *
-     * You can contact Zurmo, Inc. with a mailing address at 113 McHenry Road Suite 207,
-     * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
+     * You can contact Zurmo, Inc. with a mailing address at 27 North Wacker Drive
+     * Suite 370 Chicago, IL 60606. or at email address contact@zurmo.com.
+     *
+     * The interactive user interfaces in original and modified versions
+     * of this program must display Appropriate Legal Notices, as required under
+     * Section 5 of the GNU General Public License version 3.
+     *
+     * In accordance with Section 7(b) of the GNU General Public License version 3,
+     * these Appropriate Legal Notices must retain the display of the Zurmo
+     * logo and Zurmo copyright notice. If the display of the logo is not reasonably
+     * feasible for technical reasons, the Appropriate Legal Notices must display the words
+     * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -76,11 +86,11 @@
         {
             return array_merge(parent::rules(), array(
                 array('type',                    'type', 'type' => 'string'),
-                array('firstSeries',  	 		 'type', 'type' => 'string'),
-                array('firstRange',  	 		 'type', 'type' => 'string'),
-                array('secondSeries',  	 		 'type', 'type' => 'string'),
-                array('secondRange',  	 		 'type', 'type' => 'string'),
-                array('type',             		 'validateSeriesAndRange'),
+                array('firstSeries',             'type', 'type' => 'string'),
+                array('firstRange',              'type', 'type' => 'string'),
+                array('secondSeries',            'type', 'type' => 'string'),
+                array('secondRange',             'type', 'type' => 'string'),
+                array('type',                    'validateSeriesAndRange'),
             ));
         }
 
@@ -111,34 +121,34 @@
         public function validateSeriesAndRange()
         {
             $passedValidation = true;
-            if($this->type != null)
+            if ($this->type != null)
             {
-                if($this->firstSeries == null)
+                if ($this->firstSeries == null)
                 {
                     $this->addError('firstSeries', Zurmo::t('ReportsModule', 'First Series cannot be blank.'));
                     $passedValidation = false;
                 }
-                if($this->firstRange == null)
+                if ($this->firstRange == null)
                 {
                     $this->addError('firstRange', Zurmo::t('ReportsModule', 'First Range cannot be blank.'));
                     $passedValidation = false;
                 }
-                if(in_array($this->type, ChartRules::getChartTypesRequiringSecondInputs()) && $this->secondSeries == null)
+                if (in_array($this->type, ChartRules::getChartTypesRequiringSecondInputs()) && $this->secondSeries == null)
                 {
                     $this->addError('secondSeries', Zurmo::t('ReportsModule', 'Second Series cannot be blank.'));
                     $passedValidation = false;
                 }
-                if(in_array($this->type, ChartRules::getChartTypesRequiringSecondInputs()) && $this->secondRange == null)
+                if (in_array($this->type, ChartRules::getChartTypesRequiringSecondInputs()) && $this->secondRange == null)
                 {
                     $this->addError('secondRange', Zurmo::t('ReportsModule', 'Second Range cannot be blank.'));
                     $passedValidation = false;
                 }
-                if($this->firstSeries != null && $this->secondSeries != null && $this->firstSeries == $this->secondSeries)
+                if ($this->firstSeries != null && $this->secondSeries != null && $this->firstSeries == $this->secondSeries)
                 {
                     $this->addError('secondSeries', Zurmo::t('ReportsModule', 'Second Series must be unique.'));
                     $passedValidation = false;
                 }
-                if($this->firstRange != null && $this->secondRange != null && $this->firstRange == $this->secondRange)
+                if ($this->firstRange != null && $this->secondRange != null && $this->firstRange == $this->secondRange)
                 {
                     $this->addError('secondRange', Zurmo::t('ReportsModule', 'Second Range must be unique.'));
                     $passedValidation = false;
@@ -155,7 +165,7 @@
         {
             $data  = array();
             $types = ChartRules::availableTypes();
-            foreach($types as $type)
+            foreach ($types as $type)
             {
                  $data[$type] = ChartRules::getTranslatedTypeLabel($type);
             }

@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2012 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU General Public License version 3 as published by the
@@ -20,8 +20,18 @@
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
      *
-     * You can contact Zurmo, Inc. with a mailing address at 113 McHenry Road Suite 207,
-     * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
+     * You can contact Zurmo, Inc. with a mailing address at 27 North Wacker Drive
+     * Suite 370 Chicago, IL 60606. or at email address contact@zurmo.com.
+     *
+     * The interactive user interfaces in original and modified versions
+     * of this program must display Appropriate Legal Notices, as required under
+     * Section 5 of the GNU General Public License version 3.
+     *
+     * In accordance with Section 7(b) of the GNU General Public License version 3,
+     * these Appropriate Legal Notices must retain the display of the Zurmo
+     * logo and Zurmo copyright notice. If the display of the logo is not reasonably
+     * feasible for technical reasons, the Appropriate Legal Notices must display the words
+     * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
     class FilterForReportFormTest extends ZurmoBaseTest
@@ -94,7 +104,7 @@
             $this->assertEquals('ReportModelTestItem__reportItems__Inferred',
                                                                     $filter->getPenultimateRelation());
             $this->assertEquals('ReportModelTestItem',              $filter->getResolvedAttributeModelClassName());
-            $this->assertEquals('ReportModelTestItems >> Phone',    $filter->getDisplayLabel());
+            $this->assertEquals('Reports Tests >> Phone',           $filter->getDisplayLabel());
         }
 
         /**
@@ -131,7 +141,7 @@
             $this->assertEquals('ReportModelTestItem2',        $filter->getPenultimateModelClassName());
             $this->assertEquals('hasMany2',                    $filter->getPenultimateRelation());
             $this->assertEquals('ReportModelTestItem',         $filter->getResolvedAttributeModelClassName());
-            $this->assertEquals('ReportModelTestItems >> Drop Down', $filter->getDisplayLabel());
+            $this->assertEquals('Reports Tests >> Drop Down', $filter->getDisplayLabel());
 
             //test currencyValue
             $filter                              = new FilterForReportForm('ReportsTestModule', 'ReportModelTestItem2',
@@ -144,7 +154,7 @@
             $this->assertEquals('ReportModelTestItem2',        $filter->getPenultimateModelClassName());
             $this->assertEquals('hasMany2',                    $filter->getPenultimateRelation());
             $this->assertEquals('ReportModelTestItem',         $filter->getResolvedAttributeModelClassName());
-            $this->assertEquals('ReportModelTestItems >> Currency Value', $filter->getDisplayLabel());
+            $this->assertEquals('Reports Tests >> Currency Value', $filter->getDisplayLabel());
 
             //test reportedAsAttribute
             $filter                              = new FilterForReportForm('ReportsTestModule', 'ReportModelTestItem2',
@@ -157,7 +167,7 @@
             $this->assertEquals('ReportModelTestItem2',                   $filter->getPenultimateModelClassName());
             $this->assertEquals('hasMany2',                               $filter->getPenultimateRelation());
             $this->assertEquals('ReportModelTestItem',                    $filter->getResolvedAttributeModelClassName());
-            $this->assertEquals('ReportModelTestItems >> Reported As Attribute', $filter->getDisplayLabel());
+            $this->assertEquals('Reports Tests >> Reported As Attribute', $filter->getDisplayLabel());
 
             //test the likeContactState
             $filter                              = new FilterForReportForm('ReportsTestModule', 'ReportModelTestItem2',
@@ -170,7 +180,7 @@
             $this->assertEquals('ReportModelTestItem2',                       $filter->getPenultimateModelClassName());
             $this->assertEquals('hasMany2',                                   $filter->getPenultimateRelation());
             $this->assertEquals('ReportModelTestItem',                        $filter->getResolvedAttributeModelClassName());
-            $this->assertEquals('ReportModelTestItems >> A name for a state', $filter->getDisplayLabel());
+            $this->assertEquals('Reports Tests >> A name for a state', $filter->getDisplayLabel());
         }
 
         /**
@@ -189,7 +199,7 @@
             $this->assertEquals('ReportModelTestItem2',                $filter->getPenultimateModelClassName());
             $this->assertEquals('hasMany2',                            $filter->getPenultimateRelation());
             $this->assertEquals('ReportModelTestItem',                 $filter->getResolvedAttributeModelClassName());
-            $this->assertEquals('ReportModelTestItems >> Owner',       $filter->getDisplayLabel());
+            $this->assertEquals('Reports Tests >> Owner',       $filter->getDisplayLabel());
         }
 
         /**
@@ -354,7 +364,6 @@
                                                          'valueType' => array('Type cannot be blank.'));
             $this->assertEquals($compareErrors, $errors);
 
-
             //check Today
             $filter->valueType                   = 'Today';
             $validated                           = $filter->validate();
@@ -432,7 +441,6 @@
             $compareErrors                       = array('value'     => array('Value must be either 1 or 0.'));
             $this->assertEquals($compareErrors, $errors);
 
-
             $filter->value                       = '1';
             $validated = $filter->validate();
             $this->assertTrue($validated);
@@ -492,8 +500,6 @@
             $validated                           = $filter->validate();
             $this->assertTrue($validated);
         }
-
-
 
         /**
          * Same as testing reportedAsAttribute

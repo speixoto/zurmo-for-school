@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2012 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU General Public License version 3 as published by the
@@ -20,8 +20,18 @@
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
      *
-     * You can contact Zurmo, Inc. with a mailing address at 113 McHenry Road Suite 207,
-     * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
+     * You can contact Zurmo, Inc. with a mailing address at 27 North Wacker Drive
+     * Suite 370 Chicago, IL 60606. or at email address contact@zurmo.com.
+     *
+     * The interactive user interfaces in original and modified versions
+     * of this program must display Appropriate Legal Notices, as required under
+     * Section 5 of the GNU General Public License version 3.
+     *
+     * In accordance with Section 7(b) of the GNU General Public License version 3,
+     * these Appropriate Legal Notices must retain the display of the Zurmo
+     * logo and Zurmo copyright notice. If the display of the logo is not reasonably
+     * feasible for technical reasons, the Appropriate Legal Notices must display the words
+     * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -102,21 +112,21 @@
             assert('is_string($moduleClassName)');
             assert('is_string($modelClassName)');
             assert('is_string($reportType)');
-            if(!isset(self::$adaptersByModelClassNameAndType[$modelClassName . $reportType]))
+            if (!isset(self::$adaptersByModelClassNameAndType[$modelClassName . $reportType]))
             {
                 $rules                     = ReportRules::makeByModuleClassName($moduleClassName);
                 $model                     = new $modelClassName(false);
-                if($reportType == Report::TYPE_ROWS_AND_COLUMNS)
+                if ($reportType == Report::TYPE_ROWS_AND_COLUMNS)
                 {
                     $adapter       = new ModelRelationsAndAttributesToRowsAndColumnsReportAdapter($model, $rules,
                                                                                              $reportType, $moduleClassName);
                 }
-                elseif($reportType == Report::TYPE_SUMMATION)
+                elseif ($reportType == Report::TYPE_SUMMATION)
                 {
                     $adapter       = new ModelRelationsAndAttributesToSummationReportAdapter($model, $rules,
                                                                                              $reportType, $moduleClassName);
                 }
-                elseif($reportType == Report::TYPE_MATRIX)
+                elseif ($reportType == Report::TYPE_MATRIX)
                 {
                     $adapter       = new ModelRelationsAndAttributesToMatrixReportAdapter($model, $rules,
                                                                                              $reportType, $moduleClassName);
@@ -169,7 +179,7 @@
             $this->model      = $model;
             $this->rules      = $rules;
             $this->reportType = $reportType;
-            if($moduleClassName == null)
+            if ($moduleClassName == null)
             {
                 $moduleClassName   = $model::getModuleClassName();
             }
@@ -185,7 +195,7 @@
         public function getAttributeLabel($attribute)
         {
             assert('is_string($attribute)');
-            if($this->isDynamicallyDerivedAttribute($attribute))
+            if ($this->isDynamicallyDerivedAttribute($attribute))
             {
                 $resolvedAttribute = $attribute;
             }
@@ -194,12 +204,12 @@
                 $resolvedAttribute = static::resolveRealAttributeName($attribute);
             }
             $attributesData    = $this->getAttributesIncludingDerivedAttributesData();
-            if(!isset($attributesData[$resolvedAttribute]) && !$this->model->isAttribute($resolvedAttribute))
+            if (!isset($attributesData[$resolvedAttribute]) && !$this->model->isAttribute($resolvedAttribute))
             {
                 throw new NotSupportedException('Label not found for: ' . $resolvedAttribute);
             }
             //PrimaryAddress for example would not be an attribute that is reportable but is still required for getting labels
-            elseif($this->model->isAttribute($resolvedAttribute))
+            elseif ($this->model->isAttribute($resolvedAttribute))
             {
                 return $this->model->getAttributeLabel($resolvedAttribute);
             }
@@ -215,7 +225,7 @@
         {
             assert('is_string($relation)');
             $relationsData    = $this->getSelectableRelationsData();
-            if(!isset($relationsData[$relation]))
+            if (!isset($relationsData[$relation]))
             {
                 throw new NotSupportedException();
             }
@@ -232,7 +242,7 @@
         {
             assert('is_string($relationOrAttribute)');
             $relations = $this->getSelectableRelationsData();
-            if(isset($relations[$relationOrAttribute]))
+            if (isset($relations[$relationOrAttribute]))
             {
                 return true;
             }
@@ -253,18 +263,18 @@
             $delimiter                       = FormModelUtil::DELIMITER;
             $relationAndInferredData         = explode($delimiter, $relation);
             $derivedRelations                = $this->getDerivedRelationsViaCastedUpModelData();
-            if(count($relationAndInferredData) == 3)
+            if (count($relationAndInferredData) == 3)
             {
                 list($modelClassName, $notUsed, $notUsed2) = $relationAndInferredData;
                 return $modelClassName::getModuleClassName();
             }
-            elseif(count($relationAndInferredData) == 1 && isset($derivedRelations[$relation]))
+            elseif (count($relationAndInferredData) == 1 && isset($derivedRelations[$relation]))
             {
                 $modelClassName = get_class($this->model);
                 $modelClassName = $modelClassName::getDerivedRelationModelClassName($relation);
                 return $modelClassName::getModuleClassName();
             }
-            elseif(count($relationAndInferredData) == 1)
+            elseif (count($relationAndInferredData) == 1)
             {
                 $modelClassName = $this->model->getRelationModelClassName($relation);
                 return $modelClassName::getModuleClassName();
@@ -287,31 +297,33 @@
             $delimiter                       = FormModelUtil::DELIMITER;
             $relationAndInferredData         = explode($delimiter, $relation);
             $derivedRelations                = $this->getDerivedRelationsViaCastedUpModelData();
+
             /**
-            if(count($relationAndInferredOrViaData) == 4)
+            if (count($relationAndInferredOrViaData) == 4)
             {
                 list($modelClassName, $notUsed, $notUsed2, $notUsed3) = $relationAndInferredOrViaData;
                 return $modelClassName;
             }
              * **/
-            if(count($relationAndInferredData) == 3)
+            if (count($relationAndInferredData) == 3)
             {
                 list($modelClassName, $notUsed, $notUsed2) = $relationAndInferredData;
                 return $modelClassName;
             }
+
             /**
-            elseif(count($relationAndInferredOrViaData) == 2)
+            elseif (count($relationAndInferredOrViaData) == 2)
             {
                 list($relation, $notUsed) = $relationAndInferredOrViaData;
                 return $this->model->getRelationModelClassName($relation);
             }
              * **/
-            elseif(count($relationAndInferredData) == 1 && isset($derivedRelations[$relation]))
+            elseif (count($relationAndInferredData) == 1 && isset($derivedRelations[$relation]))
             {
                 $modelClassName = get_class($this->model);
                 return $modelClassName::getDerivedRelationModelClassName($relation);
             }
-            elseif(count($relationAndInferredData) == 1)
+            elseif (count($relationAndInferredData) == 1)
             {
                 return $this->model->getRelationModelClassName($relation);
             }
@@ -361,16 +373,16 @@
         public function getAvailableOperatorsType($attribute)
         {
             assert('is_string($attribute)');
-            if($this->isDynamicallyDerivedAttribute($attribute))
+            if ($this->isDynamicallyDerivedAttribute($attribute))
             {
                 return ModelAttributeToReportOperatorTypeUtil::AVAILABLE_OPERATORS_TYPE_HAS_ONE;
             }
-            if($this->isDerivedAttribute($attribute))
+            if ($this->isDerivedAttribute($attribute))
             {
                 throw new NotSupportedException();
             }
             $resolvedAttribute = static::resolveRealAttributeName($attribute);
-            if(null != $availableOperatorsTypeFromRule = $this->rules->getAvailableOperatorsTypes($this->model,
+            if (null != $availableOperatorsTypeFromRule = $this->rules->getAvailableOperatorsTypes($this->model,
                                                                                                   $resolvedAttribute))
             {
                 return $availableOperatorsTypeFromRule;
@@ -387,21 +399,21 @@
         public function getFilterValueElementType($attribute)
         {
             assert('is_string($attribute)');
-            if($this->isDerivedAttribute($attribute))
+            if ($this->isDerivedAttribute($attribute))
             {
                 return null;
             }
-            if($this->isDynamicallyDerivedAttribute($attribute))
+            if ($this->isDynamicallyDerivedAttribute($attribute))
             {
                 $parts = explode(FormModelUtil::DELIMITER, $attribute);
-                if($parts[1] != 'User')
+                if ($parts[1] != 'User')
                 {
                     throw new NotSupportedException();
                 }
                 return 'UserNameId';
             }
             $resolvedAttribute = static::resolveRealAttributeName($attribute);
-            if(null != $filterValueElementTypeFromRule = $this->rules->getFilterValueElementType($this->model,
+            if (null != $filterValueElementTypeFromRule = $this->rules->getFilterValueElementType($this->model,
                                                                                                  $resolvedAttribute))
             {
                 return $filterValueElementTypeFromRule;
@@ -419,14 +431,14 @@
         {
             assert('is_string($attribute)');
             $derivedAttributes = $this->getDerivedAttributesData();
-            if(isset($derivedAttributes[$attribute]))
+            if (isset($derivedAttributes[$attribute]))
             {
                 return $derivedAttributes[$attribute]['derivedAttributeType'];
             }
-            if($this->isDynamicallyDerivedAttribute($attribute))
+            if ($this->isDynamicallyDerivedAttribute($attribute))
             {
                 $parts = explode(FormModelUtil::DELIMITER, $attribute);
-                if($parts[1] != 'User')
+                if ($parts[1] != 'User')
                 {
                     throw new NotSupportedException();
                 }
@@ -473,11 +485,11 @@
         public function getSelectableRelationsDataResolvedForUserAccess(User $user, Array $relations)
         {
             assert('$user->id > 0');
-            foreach($relations as $relation => $data)
+            foreach ($relations as $relation => $data)
             {
-                if(null != $moduleClassName = $this->getRelationModuleClassName($relation))
+                if (null != $moduleClassName = $this->getRelationModuleClassName($relation))
                 {
-                    if($moduleClassName != 'UsersModule' && !RightsUtil::canUserAccessModule($moduleClassName , $user))
+                    if ($moduleClassName != 'UsersModule' && !RightsUtil::canUserAccessModule($moduleClassName , $user))
                     {
                         unset($relations[$relation]);
                     }
@@ -503,7 +515,7 @@
          */
         public function getSelectableRelationsData(RedBeanModel $precedingModel = null, $precedingRelation = null)
         {
-            if(($precedingModel != null && $precedingRelation == null) ||
+            if (($precedingModel != null && $precedingRelation == null) ||
                ($precedingModel == null && $precedingRelation != null))
             {
                 throw new NotSupportedException();
@@ -550,30 +562,29 @@
             $delimiter                       = FormModelUtil::DELIMITER;
             $relationAndInferredData         = explode($delimiter, $relation);
             $derivedRelations                = $this->getDerivedRelationsViaCastedUpModelData();
-            if(count($relationAndInferredData) == 3)
+            if (count($relationAndInferredData) == 3)
             {
                 list($modelClassNameNotUsed, $relation, $notUsed) = $relationAndInferredData;
                 $type = $modelClassName::getRelationType($relation);
             }
-            elseif(count($relationAndInferredData) == 2)
+            elseif (count($relationAndInferredData) == 2)
             {
                 list($relation, $notUsed) = $relationAndInferredData;
                 $type = $modelClassName::getRelationType($relation);
             }
-            elseif(count($relationAndInferredData) == 1 && isset($derivedRelations[$relation]))
+            elseif (count($relationAndInferredData) == 1 && isset($derivedRelations[$relation]))
             {
                 $type = $modelClassName::getDerivedRelationType($relation);
             }
-            elseif(count($relationAndInferredData) == 1)
+            elseif (count($relationAndInferredData) == 1)
             {
-
                 $type = $modelClassName::getRelationType($relation);
             }
             else
             {
                 throw new NotSupportedException();
             }
-            if( $type == RedBeanModel::HAS_ONE ||
+            if ( $type == RedBeanModel::HAS_ONE ||
                 $type == RedBeanModel::HAS_ONE_BELONGS_TO ||
                 $type == RedBeanModel::HAS_MANY_BELONGS_TO)
             {
@@ -594,19 +605,19 @@
             $delimiter                       = FormModelUtil::DELIMITER;
             $relationAndInferredData         = explode($delimiter, $relation);
             $derivedRelations                = $this->getDerivedRelationsViaCastedUpModelData();
-            if(count($relationAndInferredData) == 3)
+            if (count($relationAndInferredData) == 3)
             {
                 return false;
             }
-            elseif(count($relationAndInferredData) == 2)
+            elseif (count($relationAndInferredData) == 2)
             {
                 return false;
             }
-            elseif(count($relationAndInferredData) == 1 && isset($derivedRelations[$relation]))
+            elseif (count($relationAndInferredData) == 1 && isset($derivedRelations[$relation]))
             {
                 return false;
             }
-            elseif(count($relationAndInferredData) == 1)
+            elseif (count($relationAndInferredData) == 1)
             {
                 return $this->model->isOwnedRelation($relation);
             }
@@ -625,13 +636,13 @@
          */
         public function getInferredRelationsData(RedBeanModel $precedingModel = null, $precedingRelation = null)
         {
-            if(($precedingModel != null && $precedingRelation == null) ||
+            if (($precedingModel != null && $precedingRelation == null) ||
                ($precedingModel == null && $precedingRelation != null))
             {
                 throw new NotSupportedException();
             }
             $cacheKey = get_class($this->model) . $precedingModel . $precedingRelation;
-            if(isset(self::$inferredRelationsData[$cacheKey]))
+            if (isset(self::$inferredRelationsData[$cacheKey]))
             {
                 return self::$inferredRelationsData[$cacheKey];
             }
@@ -641,9 +652,9 @@
                 $inferredRelationModelClassNames = $this->getInferredRelationModelClassNamesForRelation($attribute);
                 if ($this->model->isRelation($attribute) && $inferredRelationModelClassNames != null)
                 {
-                    foreach($inferredRelationModelClassNames as $modelClassName)
+                    foreach ($inferredRelationModelClassNames as $modelClassName)
                     {
-                        if(!$this->inferredRelationLinksToPrecedingRelation($modelClassName, $attribute, $precedingModel, $precedingRelation))
+                        if (!$this->inferredRelationLinksToPrecedingRelation($modelClassName, $attribute, $precedingModel, $precedingRelation))
                         {
                             $attributes[$modelClassName  . FormModelUtil::DELIMITER .
                                     $attribute . FormModelUtil::DELIMITER . self::DYNAMIC_RELATION_INFERRED] =
@@ -665,15 +676,15 @@
         {
             $rules                        = array();
             $dynamicallyDerivedAttributes =  $this->getDynamicallyDerivedAttributesData();
-            if($this->model->isAttribute($attribute) && $this->model->{$attribute} instanceof CurrencyValue)
+            if ($this->model->isAttribute($attribute) && $this->model->{$attribute} instanceof CurrencyValue)
             {
                 $rules[]    = array($ruleAttributeName, 'type', 'type' => 'float');
             }
-            elseif(in_array($attribute, $dynamicallyDerivedAttributes))
+            elseif (in_array($attribute, $dynamicallyDerivedAttributes))
             {
                 $rules[]    = array($ruleAttributeName, 'type' => 'string');
             }
-            elseif($this->model->isAttribute($attribute))
+            elseif ($this->model->isAttribute($attribute))
             {
                 $rules      = ModelAttributeRulesToDefaultValueMappingRuleUtil::
                               getApplicableRulesByModelClassNameAndAttributeName(
@@ -694,15 +705,15 @@
         public function relationIsReportedAsAttribute($relation)
         {
             assert('is_string($relation)');
-            if($this->model->isAttribute($relation) && $this->isReportedOnAsARelation($relation))
+            if ($this->model->isAttribute($relation) && $this->isReportedOnAsARelation($relation))
             {
                 return false;
             }
-            if($this->model->isAttribute($relation) && !$this->model->isRelation($relation))
+            if ($this->model->isAttribute($relation) && !$this->model->isRelation($relation))
             {
                 return false;
             }
-            if($this->isDerivedAttribute($relation))
+            if ($this->isDerivedAttribute($relation))
             {
                 return false;
             }
@@ -717,7 +728,7 @@
         {
             assert('is_string($relation)');
             $relationsData = $this->getDerivedRelationsViaCastedUpModelData();
-            if(isset($relationsData[$relation]))
+            if (isset($relationsData[$relation]))
             {
                 return true;
             }
@@ -732,7 +743,7 @@
         {
             assert('is_string($relation)');
             $relationsData = $this->getInferredRelationsData();
-            if(isset($relationsData[$relation]))
+            if (isset($relationsData[$relation]))
             {
                 return true;
             }
@@ -747,7 +758,7 @@
         {
             assert('is_string($attribute)');
             $dynamicallyDerivedAttributes = $this->getDynamicallyDerivedAttributesData();
-            if(isset($dynamicallyDerivedAttributes[$attribute]))
+            if (isset($dynamicallyDerivedAttributes[$attribute]))
             {
                 return true;
             }
@@ -760,7 +771,7 @@
          */
         public function getRawValueRelatedAttribute($attribute)
         {
-            if($this->relationIsReportedAsAttribute($attribute))
+            if ($this->relationIsReportedAsAttribute($attribute))
             {
                 return $this->getRules()->getRawValueRelatedAttributeForRelationReportedAsAttribute(
                        $this->getModel(), $attribute);
@@ -773,7 +784,7 @@
          */
         public function isAttributeReadOptimization($attribute)
         {
-            if($attribute == 'ReadOptimization')
+            if ($attribute == 'ReadOptimization')
             {
                 return true;
             }
@@ -788,7 +799,7 @@
         {
             assert('is_string($attribute)');
             $derivedAttributes = $this->getDerivedAttributesData();
-            if(isset($derivedAttributes[$attribute]))
+            if (isset($derivedAttributes[$attribute]))
             {
                 return true;
             }
@@ -804,12 +815,12 @@
             assert('is_string($attribute)');
             $delimiter                       = FormModelUtil::DELIMITER;
             $attributeAndInferredData   = explode($delimiter, $attribute);
-            if(count($attributeAndInferredData) == 3)
+            if (count($attributeAndInferredData) == 3)
             {
                 list($modelClassName, $attribute, $notUsed) = $attributeAndInferredData;
                 return $attribute;
             }
-            elseif(count($attributeAndInferredData) == 2)
+            elseif (count($attributeAndInferredData) == 2)
             {
                 list($attribute, $notUsed) = $attributeAndInferredData;
                 return $attribute;
@@ -837,7 +848,7 @@
          */
         protected function getAttributesNotIncludingDerivedAttributesData()
         {
-            if(isset(self::$attributesNotIncludingDerivedAttributesData[get_class($this->model)]))
+            if (isset(self::$attributesNotIncludingDerivedAttributesData[get_class($this->model)]))
             {
                 return self::$attributesNotIncludingDerivedAttributesData[get_class($this->model)];
             }
@@ -868,11 +879,11 @@
         {
             assert('is_string($relationModelClassName)');
             assert('is_string($opposingRelation)');
-            if($precedingModel == null || $precedingRelation == null)
+            if ($precedingModel == null || $precedingRelation == null)
             {
                 return false;
             }
-            if($relationModelClassName == get_class($precedingModel) && $opposingRelation == $precedingRelation)
+            if ($relationModelClassName == get_class($precedingModel) && $opposingRelation == $precedingRelation)
             {
                 return true;
             }
@@ -890,16 +901,16 @@
                                                                     $precedingRelation = null)
         {
             assert('is_string($inferredModelClassName)');
-            if($precedingModel == null || $precedingRelation == null)
+            if ($precedingModel == null || $precedingRelation == null)
             {
                 return false;
             }
-            if($inferredModelClassName != get_class($precedingModel))
+            if ($inferredModelClassName != get_class($precedingModel))
             {
                 return false;
             }
             $modelClassName = get_class($precedingModel);
-            if($modelClassName::isADerivedRelationViaCastedUpModel($precedingRelation) &&
+            if ($modelClassName::isADerivedRelationViaCastedUpModel($precedingRelation) &&
                $modelClassName::getDerivedRelationViaCastedUpModelOpposingRelationName($precedingRelation) == $relation)
             {
                 return true;
@@ -916,7 +927,7 @@
         protected function relationLinksToPrecedingRelation($relation, RedBeanModel $precedingModel = null,
                                                             $precedingRelation = null)
         {
-            if($precedingModel == null || $precedingRelation == null)
+            if ($precedingModel == null || $precedingRelation == null)
             {
                 return false;
             }
@@ -924,21 +935,21 @@
             $precedingModelClassName = get_class($precedingModel);
             //Check if the relation is a derived relation in which case return false because it is handled by
             //@see self::inferredRelationLinksToPrecedingRelation
-            if(!$precedingModelClassName::isAnAttribute($precedingRelation))
+            if (!$precedingModelClassName::isAnAttribute($precedingRelation))
             {
                 return false;
             }
-            if($precedingModelClassName != $modelClassName::getRelationModelClassName($relation))
+            if ($precedingModelClassName != $modelClassName::getRelationModelClassName($relation))
             {
                 return false;
             }
-            if( $precedingModelClassName::getRelationLinkType($precedingRelation) == RedBeanModel::LINK_TYPE_ASSUMPTIVE &&
+            if ( $precedingModelClassName::getRelationLinkType($precedingRelation) == RedBeanModel::LINK_TYPE_ASSUMPTIVE &&
                 $modelClassName::getRelationLinkType($relation) == RedBeanModel::LINK_TYPE_ASSUMPTIVE)
             {
                 return true;
             }
             //Check for LINK_TYPE_SPECIFIC
-            if( $precedingModelClassName::getRelationLinkType($precedingRelation) == RedBeanModel::LINK_TYPE_SPECIFIC &&
+            if ( $precedingModelClassName::getRelationLinkType($precedingRelation) == RedBeanModel::LINK_TYPE_SPECIFIC &&
                 $modelClassName::getRelationLinkType($relation) == RedBeanModel::LINK_TYPE_SPECIFIC &&
                 $precedingModelClassName::getRelationLinkName($precedingRelation) == $modelClassName::getRelationLinkName($relation))
             {
@@ -956,7 +967,7 @@
          */
         protected function getDerivedRelationsViaCastedUpModelData(RedBeanModel $precedingModel = null, $precedingRelation = null)
         {
-            if(($precedingModel != null && $precedingRelation == null) ||
+            if (($precedingModel != null && $precedingRelation == null) ||
                ($precedingModel == null && $precedingRelation != null))
             {
                 throw new NotSupportedException();
@@ -967,10 +978,10 @@
             {
                 if (isset($metadata[$modelClassName]["derivedRelationsViaCastedUpModel"]))
                 {
-                    foreach($metadata[$modelClassName]["derivedRelationsViaCastedUpModel"] as $relation => $derivedRelationData)
+                    foreach ($metadata[$modelClassName]["derivedRelationsViaCastedUpModel"] as $relation => $derivedRelationData)
                     {
                         $modelClassName = get_class($this->model);
-                        if(!$this->derivedRelationLinksToPrecedingRelation(
+                        if (!$this->derivedRelationLinksToPrecedingRelation(
                             $modelClassName::getDerivedRelationModelClassName($relation),
                             $modelClassName::getDerivedRelationViaCastedUpModelOpposingRelationName($relation),
                             $precedingModel,
@@ -1010,7 +1021,7 @@
          */
         protected function getDynamicallyDerivedAttributesData()
         {
-            if(isset(self::$dynamicallyDerivedAttributesData[get_class($this->model)]))
+            if (isset(self::$dynamicallyDerivedAttributesData[get_class($this->model)]))
             {
                 return self::$dynamicallyDerivedAttributesData[get_class($this->model)];
             }

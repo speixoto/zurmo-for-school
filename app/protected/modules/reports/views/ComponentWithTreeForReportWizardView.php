@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2012 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU General Public License version 3 as published by the
@@ -20,8 +20,18 @@
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
      *
-     * You can contact Zurmo, Inc. with a mailing address at 113 McHenry Road Suite 207,
-     * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
+     * You can contact Zurmo, Inc. with a mailing address at 27 North Wacker Drive
+     * Suite 370 Chicago, IL 60606. or at email address contact@zurmo.com.
+     *
+     * The interactive user interfaces in original and modified versions
+     * of this program must display Appropriate Legal Notices, as required under
+     * Section 5 of the GNU General Public License version 3.
+     *
+     * In accordance with Section 7(b) of the GNU General Public License version 3,
+     * these Appropriate Legal Notices must retain the display of the Zurmo
+     * logo and Zurmo copyright notice. If the display of the logo is not reasonably
+     * feasible for technical reasons, the Appropriate Legal Notices must display the words
+     * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -62,9 +72,9 @@
          */
         protected function renderFormContent()
         {
-            $content              = $this->renderAttributesAndRelationsTreeContent();
-            $content             .= ZurmoHtml::tag('div', array('class' => 'dynamic-droppable-area'),
-                                                   $this->renderRightSideContent());
+            $content  = $this->renderAttributesAndRelationsTreeContent();
+            $content .= ZurmoHtml::tag('div', array('class' => 'dynamic-droppable-area'), $this->renderRightSideContent());
+            $content  = ZurmoHtml::tag('div', array('class' => 'left-column full-width'), $content);
             return $content;
         }
 
@@ -75,7 +85,7 @@
         {
             $rowCount                    = 0;
             $items                       = $this->getItemsContent($rowCount);
-            if($this->isListContentSortable())
+            if ($this->isListContentSortable())
             {
                 $itemsContent            = $this->getSortableListContent($items);
             }
@@ -124,7 +134,7 @@
             assert('is_bool($trackableStructurePosition)');
             $items                      = array();
             $wizardFormClassName        = get_class($this->model);
-            foreach($componentData as $component)
+            foreach ($componentData as $component)
             {
                 $nodeIdWithoutTreeType      = $component->attributeIndexOrDerivedType;
                 $inputPrefixData            = ReportRelationsAndAttributesToTreeAdapter::
@@ -139,7 +149,7 @@
                                               (bool)$trackableStructurePosition, true, static::getTreeType());
                 $view->addWrapper           = false;
                 $items[]                    = array('content' => $view->render());
-                $rowCount ++;
+                $rowCount++;
             }
             return $items;
         }
@@ -151,7 +161,7 @@
         protected function getNonSortableListContent(Array $items)
         {
             $content = null;
-            foreach($items as $item)
+            foreach ($items as $item)
             {
                 $content .= ZurmoHtml::tag('li', array(), $item['content']);
             }
@@ -187,16 +197,19 @@
         {
             parent::registerScripts();
             $script = '
-                $(".droppable-dynamic-rows-container.' . static::getTreeType() . '").live("drop",function(event, ui){
+                $(".droppable-dynamic-rows-container.' . static::getTreeType() . '").live("drop", function(event, ui)
+                {
                     ' . $this->getAjaxForDroppedAttribute() . '
                 });
-                $(".item-to-place", "#' . static::getTreeType() . 'TreeArea").live("dblclick",function(event){
+                $(".item-to-place", "#' . static::getTreeType() . 'TreeArea").live("dblclick", function(event)
+                {
                     ' . $this->getAjaxForDoubleClickedAttribute() . '
                 });
-                $(".remove-dynamic-row-link.' . static::getTreeType() . '").live("click", function(){
+                $(".remove-dynamic-row-link.' . static::getTreeType() . '").live("click", function()
+                {
                     size = $(this).parent().parent().parent().find("li").size();
                     $(this).parent().parent().remove(); //removes the <li>
-                    if(size < 2)
+                    if (size < 2)
                     {
                         $(".' . static::getZeroComponentsClassName() . '").fadeIn(400);
                     }
@@ -229,21 +242,23 @@
                     'url'      => 'js:$.param.querystring("' .
                                   $this->getAddAttributeUrl() .
                                   '", "nodeId=" + ui.helper.attr("id") + "&rowNumber="  + $(\'#' . $rowCounterInputId . '\').val())',
-                    'beforeSend' => 'js:function(){
+                    'beforeSend' => 'js:function()
+                    {
                         $(".ui-overlay-block").fadeIn(50);
                         makeLargeLoadingSpinner(true, ".ui-overlay-block"); //- add spinner to block anything else
                     }',
-                    'success' => 'js:function(data){
-                    var ul = $(".droppable-dynamic-rows-container.' . static::getTreeType() . '").parent().find(".dynamic-rows").find("ul:first");
-                    $(\'#' . $rowCounterInputId . '\').val(parseInt($(\'#' . $rowCounterInputId . '\').val()) + 1);
-                    ul.append(data);
-                    ' . $this->getReportAttributeRowAddOrRemoveExtraScript() . '
-                    $(".' . static::getZeroComponentsClassName() . '").fadeOut(150);
-                    makeLargeLoadingSpinner(false, ".ui-overlay-block");
-                    $(".ui-overlay-block").fadeOut(50);
-                    window.scrollTo(0, ul.find("li:last-child > div").offset().top);
-                    ul.find("li:last-child > div").addClass("glow").animate({backgroundColor:"#f0f0f0"}, 2000);
-                }'
+                    'success' => 'js:function(data)
+                    {
+                        var ul = $(".droppable-dynamic-rows-container.' . static::getTreeType() . '").parent().find(".dynamic-rows").find("ul:first");
+                        $(\'#' . $rowCounterInputId . '\').val(parseInt($(\'#' . $rowCounterInputId . '\').val()) + 1);
+                        ul.append(data);
+                        ' . $this->getReportAttributeRowAddOrRemoveExtraScript() . '
+                        $(".' . static::getZeroComponentsClassName() . '").fadeOut(150);
+                        makeLargeLoadingSpinner(false, ".ui-overlay-block");
+                        $(".ui-overlay-block").fadeOut(50);
+                        window.scrollTo(0, ul.find("li:last-child > div").offset().top);
+                        ul.find("li:last-child > div").addClass("glow").animate({backgroundColor:"#f0f0f0"}, 2000);
+                    }'
             ));
         }
 
@@ -258,11 +273,13 @@
                     'data'     => 'js:$("#' . $this->form->getId() . '").serialize()',
                     'url'      => 'js:$.param.querystring("' . $this->getAddAttributeUrl() . '",
                                         "nodeId=" + event.currentTarget.id + "&rowNumber=" + $(\'#' . $rowCounterInputId . '\').val())',
-                    'beforeSend' => 'js:function(){
+                    'beforeSend' => 'js:function()
+                    {
                         $(".ui-overlay-block").fadeIn(50);
                         makeLargeLoadingSpinner(true, ".ui-overlay-block"); //- add spinner to block anything else
                     }',
-                    'success' => 'js:function(data){
+                    'success' => 'js:function(data)
+                    {
                         var ul = $(".droppable-dynamic-rows-container.' . static::getTreeType() . '").parent().find(".dynamic-rows").find("ul:first");
                         $(\'#' . $rowCounterInputId . '\').val(parseInt($(\'#' . $rowCounterInputId . '\').val()) + 1);
                         ul.append(data);
@@ -272,7 +289,7 @@
                         $(".ui-overlay-block").fadeOut(50);
                         window.scrollTo(0, ul.find("li:last-child > div").offset().top);
                         ul.find("li:last-child > div").addClass("glow").animate({backgroundColor:"#f0f0f0"}, 2000);
-                }'
+                    }'
             ));
         }
 

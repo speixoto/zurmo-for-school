@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2012 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU General Public License version 3 as published by the
@@ -20,8 +20,18 @@
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
      *
-     * You can contact Zurmo, Inc. with a mailing address at 113 McHenry Road Suite 207,
-     * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
+     * You can contact Zurmo, Inc. with a mailing address at 27 North Wacker Drive
+     * Suite 370 Chicago, IL 60606. or at email address contact@zurmo.com.
+     *
+     * The interactive user interfaces in original and modified versions
+     * of this program must display Appropriate Legal Notices, as required under
+     * Section 5 of the GNU General Public License version 3.
+     *
+     * In accordance with Section 7(b) of the GNU General Public License version 3,
+     * these Appropriate Legal Notices must retain the display of the Zurmo
+     * logo and Zurmo copyright notice. If the display of the logo is not reasonably
+     * feasible for technical reasons, the Appropriate Legal Notices must display the words
+     * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -58,7 +68,7 @@
             parent::registerScripts();
             $chartTypesRequiringSecondInputs = ChartRules::getChartTypesRequiringSecondInputs();
             $script = '
-                if($(".chart-selector:checked").val() != "")
+                if ($(".chart-selector:checked").val() != "")
                 {
                     $("#series-and-range-areas").detach().insertAfter( $(".chart-selector:checked").parent()).removeClass("hidden-element");
                 }
@@ -71,7 +81,7 @@
                 {
                     $("#series-and-range-areas").detach().insertAfter( $(changedChartObject).parent()  ).removeClass("hidden-element");
                     arr = ' . CJSON::encode($chartTypesRequiringSecondInputs) . ';
-                    if($(changedChartObject).val() == "")
+                    if ($(changedChartObject).val() == "")
                     {
                         $("#series-and-range-areas").addClass("hidden-element")
                         $(".first-series-and-range-area").hide();
@@ -115,17 +125,26 @@
             $inputPrefixData   = array(get_class($this->model), get_class($this->model->chart));
             $this->form->setInputPrefixData($inputPrefixData);
             $params            = array('inputPrefix' => $inputPrefixData);
-            $content           = '<div class="attributesContainer">';
-            $element           = new ChartTypeRadioStaticDropDownForReportElement($this->model->chart, 'type', $this->form,
-                array_merge($params, array('addBlank' => true)));
-            $leftSideContent   = $element->render();
-            $element           = new MixedChartRangeAndSeriesElement($this->model->chart, null, $this->form, $params);
-            $content          .= ZurmoHtml::tag('div', array('class' => 'panel'), $leftSideContent);
-            $rightSideContent  = ZurmoHtml::tag('div', array(), $element->render());
-            $rightSideContent  = ZurmoHtml::tag('div', array('class' => 'buffer'), $rightSideContent);
-            $content          .= ZurmoHtml::tag('div', array('id' => 'series-and-range-areas', 'class' => 'right-side-edit-view-panel hidden-element'), $rightSideContent);
-            $content          .= '</div>';
-            $content          .= $this->renderChartTipContent();
+
+
+            $leftSideContent = null;
+            $element         = new ChartTypeRadioStaticDropDownForReportElement($this->model->chart, 'type', $this->form,
+                               array_merge($params, array('addBlank' => true)));
+            $leftSideContent = $element->render();
+            $element         = new MixedChartRangeAndSeriesElement($this->model->chart, null, $this->form, $params);
+            $leftSideContent = ZurmoHtml::tag('div', array('class' => 'panel'), $leftSideContent);
+            $leftSideContent = ZurmoHtml::tag('div', array('class' => 'left-column'), $leftSideContent);
+
+            $rightSideContent  = $element->render();
+            $rightSideContent  = ZurmoHtml::tag('div', array('id' => 'series-and-range-areas',
+                                 'class' => 'right-side-edit-view-panel hidden-element'), $rightSideContent);
+            $rightSideContent .= $this->renderChartTipContent();
+            $rightSideContent  = ZurmoHtml::tag('div', array('class' => 'right-column'), $rightSideContent);
+
+            $content  = '<div class="attributesContainer">';
+            $content .= $leftSideContent . $rightSideContent;
+            $content .= '</div>';
+
             $this->form->clearInputPrefixData();
             $this->registerScripts();
             return $content;
@@ -137,9 +156,7 @@
             $content .= ZurmoHtml::tag('p', array(),
                                        Zurmo::t('WorkflowsModule', 'In order to use a grouping as a series field, ' .
                                                     'the grouping must be added as a display column.'));
-            $content  = ZurmoHtml::tag('div', array(), $content);
-            $content  = ZurmoHtml::tag('div', array('class' => 'buffer'), $content);
-            $content  = ZurmoHtml::tag('div', array('class'    => 'right-side-edit-view-panel'), $content);
+            $content = ZurmoHtml::tag('div', array('class' => 'right-side-edit-view-panel'), $content);
             return $content;
         }
     }

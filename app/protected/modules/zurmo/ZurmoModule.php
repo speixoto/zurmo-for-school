@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2012 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU General Public License version 3 as published by the
@@ -20,8 +20,18 @@
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
      *
-     * You can contact Zurmo, Inc. with a mailing address at 113 McHenry Road Suite 207,
-     * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
+     * You can contact Zurmo, Inc. with a mailing address at 27 North Wacker Drive
+     * Suite 370 Chicago, IL 60606. or at email address contact@zurmo.com.
+     *
+     * The interactive user interfaces in original and modified versions
+     * of this program must display Appropriate Legal Notices, as required under
+     * Section 5 of the GNU General Public License version 3.
+     *
+     * In accordance with Section 7(b) of the GNU General Public License version 3,
+     * these Appropriate Legal Notices must retain the display of the Zurmo
+     * logo and Zurmo copyright notice. If the display of the logo is not reasonably
+     * feasible for technical reasons, the Appropriate Legal Notices must display the words
+     * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
     class ZurmoModule extends SecurableModule
@@ -115,27 +125,30 @@
                 ),
                 'headerMenuItems' => array(
                     array(
-                        'label' => "eval:Zurmo::t('ZurmoModule', 'Settings')",
-                        'url' => array('/configuration'),
-                        'right' => self::RIGHT_ACCESS_ADMINISTRATION,
-                        'order' => 6,
+                        'label'  => "eval:Zurmo::t('ZurmoModule', 'Settings')",
+                        'url'    => array('/configuration'),
+                        'right'  => self::RIGHT_ACCESS_ADMINISTRATION,
+                        'order'  => 6,
+                        'mobile' => false,
                     ),
                     array(
-                        'label' => "eval:Zurmo::t('ZurmoModule', 'Forums')",
-                        'url' => 'http://zurmo.org/forums/',
-                        'order' => 9,
+                        'label'  => "eval:Zurmo::t('ZurmoModule', 'Need Support?')",
+                        'url'    => 'http://www.zurmo.com/needSupport.php',
+                        'order'  => 9,
+                        'mobile' => true,
                     ),
                     array(
-                        'label' => "eval:Zurmo::t('ZurmoModule', 'About Zurmo')",
-                        'url' => array('/zurmo/default/about'),
-                        'order' => 10,
+                        'label'  => "eval:Zurmo::t('ZurmoModule', 'About Zurmo')",
+                        'url'    => array('/zurmo/default/about'),
+                        'order'  => 10,
+                        'mobile' => true,
                     ),
                 ),
                 'configureSubMenuItems' => array(
                     array(
                         'category'         => self::ADMINISTRATION_CATEGORY_GENERAL,
-                        'titleLabel'       => "eval:Zurmo::t('ZurmoModule', 'Ldap Configuration')",
-                        'descriptionLabel' => "eval:Zurmo::t('ZurmoModule', 'Manage Ldap Authentication')",
+                        'titleLabel'       => "eval:Zurmo::t('ZurmoModule', 'LDAP Configuration')",
+                        'descriptionLabel' => "eval:Zurmo::t('ZurmoModule', 'Manage LDAP Authentication')",
                         'route'            => '/zurmo/ldap/configurationEditLdap',
                         'right'            => self::RIGHT_ACCESS_GLOBAL_CONFIGURATION,
                     ),
@@ -157,6 +170,7 @@
                     'leads',
                     'contacts',
                     'opportunities',
+                    'marketing',
                     'reports',
                     'products',
                 )
@@ -221,9 +235,9 @@
             return $s;
         }
 
-        public static function getDemoDataMakerClassName()
+        public static function getDemoDataMakerClassNames()
         {
-            return 'ZurmoDemoDataMaker';
+            return array('ZurmoDemoDataMaker');
         }
 
         public static function getDefaultDataMakerClassName()

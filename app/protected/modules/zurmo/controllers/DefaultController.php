@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2012 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU General Public License version 3 as published by the
@@ -20,8 +20,18 @@
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
      *
-     * You can contact Zurmo, Inc. with a mailing address at 113 McHenry Road Suite 207,
-     * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
+     * You can contact Zurmo, Inc. with a mailing address at 27 North Wacker Drive
+     * Suite 370 Chicago, IL 60606. or at email address contact@zurmo.com.
+     *
+     * The interactive user interfaces in original and modified versions
+     * of this program must display Appropriate Legal Notices, as required under
+     * Section 5 of the GNU General Public License version 3.
+     *
+     * In accordance with Section 7(b) of the GNU General Public License version 3,
+     * these Appropriate Legal Notices must retain the display of the Zurmo
+     * logo and Zurmo copyright notice. If the display of the logo is not reasonably
+     * feasible for technical reasons, the Appropriate Legal Notices must display the words
+     * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
     class ZurmoDefaultController extends ZurmoBaseController
@@ -333,15 +343,31 @@
             StickySearchUtil::clearDataByKey($key);
         }
 
-        public function actionGetUpdatesForRefresh($unreadConversations)
+        /**
+         * Change user interface. Available options: desktop, mobile and tablet.
+         */
+        public function actionUserInterface()
         {
-            $newUnreadConversations = ConversationsUtil::getUnreadCountTabMenuContentForCurrentUser();
-            if ($newUnreadConversations > $unreadConversations)
+            Yii::import('application.extensions.userinterface.UserInterface');
+            if (isset($_GET['userInterface']))
             {
-                $data['unreadConversations'] = $newUnreadConversations;
+                if (in_array($_GET['userInterface'], array(UserInterface::DESKTOP, UserInterface::MOBILE, UserInterface::TABLET)))
+                {
+                    Yii::app()->userInterface->resolveSelectedUserInterfaceType($_GET['userInterface']);
+                }
+                $this->redirect(Yii::app()->createUrl('home/default/'));
+            }
+        }
+
+        public function actionGetUpdatesForRefresh($unreadMashableInbox)
+        {
+            $newUnreadMashableInbox = MashableUtil::getUnreadCountMashableInboxForCurrentUser();
+            if ($newUnreadMashableInbox > $unreadMashableInbox)
+            {
+                $data['unreadMashableInbox'] = $newUnreadMashableInbox;
                 $data['imgUrl']              = Yii::app()->request->hostinfo . Yii::app()->theme->baseUrl . '/images/z-logo-60x60.png';
-                $data['title']               = Zurmo::t('ZurmoModule', 'ZurmoCRM (New comment)');
-                $data['message']             = Zurmo::t('ZurmoModule', 'There is an unread conversation.');
+                $data['title']               = Zurmo::t('ZurmoModule', 'ZurmoCRM - Item update');
+                $data['message']             = Zurmo::t('ZurmoModule', 'There is an item with unread changes.');
                 echo CJSON::encode($data);
             }
             else
@@ -370,7 +396,7 @@
                                       'type'            => $uploadedFile->getType(),
                                       'size'            => $uploadedFile->getSize(),
                                       'thumbnail_url'   => Yii::app()->createUrl('zurmo/default/thumbnail/',
-                                                                                 array('filePath'=>$thumbFilePath)));
+                                                                                 array('filePath' => $thumbFilePath)));
             }
             catch (FailedFileUploadException $e)
             {

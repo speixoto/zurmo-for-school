@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2012 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU General Public License version 3 as published by the
@@ -20,8 +20,18 @@
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
      *
-     * You can contact Zurmo, Inc. with a mailing address at 113 McHenry Road Suite 207,
-     * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
+     * You can contact Zurmo, Inc. with a mailing address at 27 North Wacker Drive
+     * Suite 370 Chicago, IL 60606. or at email address contact@zurmo.com.
+     *
+     * The interactive user interfaces in original and modified versions
+     * of this program must display Appropriate Legal Notices, as required under
+     * Section 5 of the GNU General Public License version 3.
+     *
+     * In accordance with Section 7(b) of the GNU General Public License version 3,
+     * these Appropriate Legal Notices must retain the display of the Zurmo
+     * logo and Zurmo copyright notice. If the display of the logo is not reasonably
+     * feasible for technical reasons, the Appropriate Legal Notices must display the words
+     * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -57,7 +67,8 @@
         {
             parent::registerScripts();
             $script = '
-                $(".remove-dynamic-row-link.' . TimeTriggerForWorkflowForm::getType() . '").live("click", function(){
+                $(".remove-dynamic-row-link.' . TimeTriggerForWorkflowForm::getType() . '").live("click", function()
+                {
                     $(this).parent().remove();
                     $("#ByTimeWorkflowWizardForm_timeTriggerAttribute").val("");
                     $(".NoTimeTrigger").show();
@@ -89,11 +100,10 @@
          */
         protected function renderFormContent()
         {
-            $content  = '<div>';
-            $content .= $this->renderAttributeSelectorContentAndWrapper();
+            $content  = $this->renderAttributeSelectorContentAndWrapper();
             $content .= $this->renderZeroComponentsContentAndWrapper();
             $content .= $this->renderTimeTriggerContentAndWrapper();
-            $content .= '</div>';
+            $content  = ZurmoHtml::tag('div', array('class' => 'left-column full-width'), $content);
             $this->registerScripts();
             return $content;
         }
@@ -141,7 +151,7 @@
          */
         protected function renderTimeTriggerContentAndWrapper()
         {
-            if($this->model->timeTriggerAttribute != null)
+            if ($this->model->timeTriggerAttribute != null)
             {
                 $componentType       = TimeTriggerForWorkflowForm::getType();
                 $inputPrefixData     = array(get_class($this->model), $componentType);
@@ -152,12 +162,14 @@
                                        false, true, $componentType);
                 $timeTriggerContent  = ZurmoHtml::tag('div', array('class' => 'dynamic-rows'),
                                        ZurmoHtml::tag('ul', array(), $view->render()));
+                $htmlOptions         = array('id' => 'time-trigger-container');
             }
             else
             {
                 $timeTriggerContent = ZurmoHtml::tag('div', array('class' => 'dynamic-rows'), ZurmoHtml::tag('ul', array(), ''));
+                $htmlOptions         = array('id' => 'time-trigger-container', 'style' => 'display:none');
             }
-            return ZurmoHtml::tag('div', array('id' => 'time-trigger-container', 'style' => 'display:none'), $timeTriggerContent);
+            return ZurmoHtml::tag('div', $htmlOptions, $timeTriggerContent);
         }
     }
 ?>

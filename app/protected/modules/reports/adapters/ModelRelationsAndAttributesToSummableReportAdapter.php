@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2012 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU General Public License version 3 as published by the
@@ -20,8 +20,18 @@
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
      *
-     * You can contact Zurmo, Inc. with a mailing address at 113 McHenry Road Suite 207,
-     * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
+     * You can contact Zurmo, Inc. with a mailing address at 27 North Wacker Drive
+     * Suite 370 Chicago, IL 60606. or at email address contact@zurmo.com.
+     *
+     * The interactive user interfaces in original and modified versions
+     * of this program must display Appropriate Legal Notices, as required under
+     * Section 5 of the GNU General Public License version 3.
+     *
+     * In accordance with Section 7(b) of the GNU General Public License version 3,
+     * these Appropriate Legal Notices must retain the display of the Zurmo
+     * logo and Zurmo copyright notice. If the display of the logo is not reasonably
+     * feasible for technical reasons, the Appropriate Legal Notices must display the words
+     * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -80,8 +90,13 @@
         protected static function getTranslatedDisplayCalculationShortLabel($type)
         {
             assert('is_string($type)');
-            $labels = static::translatedDisplayCalculationShortLabels();
-            return $labels[$type];
+            $labels = array_merge(static::translatedDisplayCalculationShortLabels(),
+                                  static::translatedGroupByCalculationShortLabels());
+            if(isset($labels[$type]))
+            {
+                return $labels[$type];
+            }
+            return $type;
         }
 
         /**
@@ -156,11 +171,11 @@
             assert('is_string($attribute)');
             $calculatedDisplayAttributes = $this->getDisplayCalculationAttributes();
             $groupByModifierAttributes   = $this->getGroupByModifierAttributes();
-            if(isset($calculatedDisplayAttributes[$attribute]))
+            if (isset($calculatedDisplayAttributes[$attribute]))
             {
                 return $calculatedDisplayAttributes[$attribute]['label'];
             }
-            elseif(isset($groupByModifierAttributes[$attribute]))
+            elseif (isset($groupByModifierAttributes[$attribute]))
             {
                 return $groupByModifierAttributes[$attribute]['label'];
             }
@@ -179,12 +194,12 @@
                                                           RedBeanModel $precedingModel = null, $precedingRelation = null)
         {
             assert('is_array($existingGroupBys)');
-            if(($precedingModel != null && $precedingRelation == null) ||
+            if (($precedingModel != null && $precedingRelation == null) ||
                ($precedingModel == null && $precedingRelation != null))
             {
                 throw new NotSupportedException();
             }
-            if(empty($existingGroupBys))
+            if (empty($existingGroupBys))
             {
                 return array();
             }
@@ -212,47 +227,47 @@
             assert('is_string($columnAliasName)');
             assert('is_string($queryStringExtraPart) || $queryStringExtraPart == null');
             $type = $this->getDisplayAttributeForMakingViaSelectType($attribute);
-            if($type == ModelRelationsAndAttributesToSummableReportAdapter::DISPLAY_CALCULATION_COUNT)
+            if ($type == ModelRelationsAndAttributesToSummableReportAdapter::DISPLAY_CALCULATION_COUNT)
             {
                 $selectQueryAdapter->addCountClause($tableName, $columnName, $columnAliasName);
             }
-            elseif($type == ModelRelationsAndAttributesToSummableReportAdapter::DISPLAY_CALCULATION_SUMMMATION)
+            elseif ($type == ModelRelationsAndAttributesToSummableReportAdapter::DISPLAY_CALCULATION_SUMMMATION)
             {
                 $selectQueryAdapter->addSummationClause($tableName, $columnName, $columnAliasName, $queryStringExtraPart);
             }
-            elseif($type == ModelRelationsAndAttributesToSummableReportAdapter::DISPLAY_CALCULATION_AVERAGE)
+            elseif ($type == ModelRelationsAndAttributesToSummableReportAdapter::DISPLAY_CALCULATION_AVERAGE)
             {
                 $selectQueryAdapter->addAverageClause($tableName, $columnName, $columnAliasName, $queryStringExtraPart);
             }
-            elseif($type == ModelRelationsAndAttributesToSummableReportAdapter::DISPLAY_CALCULATION_MINIMUM)
+            elseif ($type == ModelRelationsAndAttributesToSummableReportAdapter::DISPLAY_CALCULATION_MINIMUM)
             {
                 $selectQueryAdapter->addMinimumClause($tableName, $columnName, $columnAliasName, $queryStringExtraPart);
             }
-            elseif($type == ModelRelationsAndAttributesToSummableReportAdapter::DISPLAY_CALCULATION_MAXIMUM)
+            elseif ($type == ModelRelationsAndAttributesToSummableReportAdapter::DISPLAY_CALCULATION_MAXIMUM)
             {
                 $selectQueryAdapter->addMaximumClause($tableName, $columnName, $columnAliasName, $queryStringExtraPart);
             }
-            elseif($type == ModelRelationsAndAttributesToSummableReportAdapter::GROUP_BY_CALCULATION_DAY)
+            elseif ($type == ModelRelationsAndAttributesToSummableReportAdapter::GROUP_BY_CALCULATION_DAY)
             {
                 $selectQueryAdapter->addDayClause($tableName, $columnName, $columnAliasName,
                                                   $this->shouldDoTimeZoneAdjustmentOnModifierClause($attribute));
             }
-            elseif($type == ModelRelationsAndAttributesToSummableReportAdapter::GROUP_BY_CALCULATION_WEEK)
+            elseif ($type == ModelRelationsAndAttributesToSummableReportAdapter::GROUP_BY_CALCULATION_WEEK)
             {
                 $selectQueryAdapter->addWeekClause($tableName, $columnName, $columnAliasName,
                                                    $this->shouldDoTimeZoneAdjustmentOnModifierClause($attribute));
             }
-            elseif($type == ModelRelationsAndAttributesToSummableReportAdapter::GROUP_BY_CALCULATION_MONTH)
+            elseif ($type == ModelRelationsAndAttributesToSummableReportAdapter::GROUP_BY_CALCULATION_MONTH)
             {
                 $selectQueryAdapter->addMonthClause($tableName, $columnName, $columnAliasName,
                                                     $this->shouldDoTimeZoneAdjustmentOnModifierClause($attribute));
             }
-            elseif($type == ModelRelationsAndAttributesToSummableReportAdapter::GROUP_BY_CALCULATION_QUARTER)
+            elseif ($type == ModelRelationsAndAttributesToSummableReportAdapter::GROUP_BY_CALCULATION_QUARTER)
             {
                 $selectQueryAdapter->addQuarterClause($tableName, $columnName, $columnAliasName,
                                                       $this->shouldDoTimeZoneAdjustmentOnModifierClause($attribute));
             }
-            elseif($type == ModelRelationsAndAttributesToSummableReportAdapter::GROUP_BY_CALCULATION_YEAR)
+            elseif ($type == ModelRelationsAndAttributesToSummableReportAdapter::GROUP_BY_CALCULATION_YEAR)
             {
                 $selectQueryAdapter->addYearClause($tableName, $columnName, $columnAliasName,
                                                    $this->shouldDoTimeZoneAdjustmentOnModifierClause($attribute));
@@ -277,47 +292,47 @@
             assert('is_string($columnName)');
             assert('is_string($queryStringExtraPart) || $queryStringExtraPart == null');
             $type = $this->getDisplayAttributeForMakingViaSelectType($attribute);
-            if($type == ModelRelationsAndAttributesToSummableReportAdapter::DISPLAY_CALCULATION_COUNT)
+            if ($type == ModelRelationsAndAttributesToSummableReportAdapter::DISPLAY_CALCULATION_COUNT)
             {
                 return RedBeanModelSelectQueryAdapter::makeCountString($tableName, $columnName);
             }
-            elseif($type == ModelRelationsAndAttributesToSummableReportAdapter::DISPLAY_CALCULATION_SUMMMATION)
+            elseif ($type == ModelRelationsAndAttributesToSummableReportAdapter::DISPLAY_CALCULATION_SUMMMATION)
             {
                 return RedBeanModelSelectQueryAdapter::makeSummationString($tableName, $columnName, $queryStringExtraPart);
             }
-            elseif($type == ModelRelationsAndAttributesToSummableReportAdapter::DISPLAY_CALCULATION_AVERAGE)
+            elseif ($type == ModelRelationsAndAttributesToSummableReportAdapter::DISPLAY_CALCULATION_AVERAGE)
             {
                 return RedBeanModelSelectQueryAdapter::makeAverageString($tableName, $columnName, $queryStringExtraPart);
             }
-            elseif($type == ModelRelationsAndAttributesToSummableReportAdapter::DISPLAY_CALCULATION_MINIMUM)
+            elseif ($type == ModelRelationsAndAttributesToSummableReportAdapter::DISPLAY_CALCULATION_MINIMUM)
             {
                 return RedBeanModelSelectQueryAdapter::makeMinimumString($tableName, $columnName, $queryStringExtraPart);
             }
-            elseif($type == ModelRelationsAndAttributesToSummableReportAdapter::DISPLAY_CALCULATION_MAXIMUM)
+            elseif ($type == ModelRelationsAndAttributesToSummableReportAdapter::DISPLAY_CALCULATION_MAXIMUM)
             {
                 return RedBeanModelSelectQueryAdapter::makeMaximumString($tableName, $columnName, $queryStringExtraPart);
             }
-            elseif($type == ModelRelationsAndAttributesToSummableReportAdapter::GROUP_BY_CALCULATION_DAY)
+            elseif ($type == ModelRelationsAndAttributesToSummableReportAdapter::GROUP_BY_CALCULATION_DAY)
             {
                 return RedBeanModelSelectQueryAdapter::makeDayModifierString($tableName, $columnName,
                         $this->shouldDoTimeZoneAdjustmentOnModifierClause($attribute));
             }
-            elseif($type == ModelRelationsAndAttributesToSummableReportAdapter::GROUP_BY_CALCULATION_WEEK)
+            elseif ($type == ModelRelationsAndAttributesToSummableReportAdapter::GROUP_BY_CALCULATION_WEEK)
             {
                 return RedBeanModelSelectQueryAdapter::makeWeekModifierString($tableName, $columnName,
                     $this->shouldDoTimeZoneAdjustmentOnModifierClause($attribute));
             }
-            elseif($type == ModelRelationsAndAttributesToSummableReportAdapter::GROUP_BY_CALCULATION_MONTH)
+            elseif ($type == ModelRelationsAndAttributesToSummableReportAdapter::GROUP_BY_CALCULATION_MONTH)
             {
                 return RedBeanModelSelectQueryAdapter::makeMonthModifierString($tableName, $columnName,
                     $this->shouldDoTimeZoneAdjustmentOnModifierClause($attribute));
             }
-            elseif($type == ModelRelationsAndAttributesToSummableReportAdapter::GROUP_BY_CALCULATION_QUARTER)
+            elseif ($type == ModelRelationsAndAttributesToSummableReportAdapter::GROUP_BY_CALCULATION_QUARTER)
             {
                 return RedBeanModelSelectQueryAdapter::makeQuarterModifierString($tableName, $columnName,
                     $this->shouldDoTimeZoneAdjustmentOnModifierClause($attribute));
             }
-            elseif($type == ModelRelationsAndAttributesToSummableReportAdapter::GROUP_BY_CALCULATION_YEAR)
+            elseif ($type == ModelRelationsAndAttributesToSummableReportAdapter::GROUP_BY_CALCULATION_YEAR)
             {
                 return RedBeanModelSelectQueryAdapter::makeYearModifierString($tableName, $columnName,
                     $this->shouldDoTimeZoneAdjustmentOnModifierClause($attribute));
@@ -335,7 +350,7 @@
         public function relationIsReportedAsAttribute($relation)
         {
             assert('is_string($relation)');
-            if($this->isAttributeACalculationOrModifier($relation))
+            if ($this->isAttributeACalculationOrModifier($relation))
             {
                 return false;
             }
@@ -351,7 +366,7 @@
             assert('is_string($attribute)');
             $displayCalculationAttributes = $this->getDisplayCalculationAttributes();
             $groupByModifiersAttributes   = $this->getGroupByCalculatedModifierAttributes();
-            if(isset($displayCalculationAttributes[$attribute]) || isset($groupByModifiersAttributes[$attribute]))
+            if (isset($displayCalculationAttributes[$attribute]) || isset($groupByModifiersAttributes[$attribute]))
             {
                 return true;
             }
@@ -366,7 +381,7 @@
         {
             assert('is_string($attribute)');
             $groupByModifiersAttributes   = $this->getGroupByCalculatedModifierAttributes();
-            if(isset($groupByModifiersAttributes[$attribute]))
+            if (isset($groupByModifiersAttributes[$attribute]))
             {
                 return true;
             }
@@ -380,7 +395,7 @@
         public static function resolveRealAttributeName($attribute)
         {
             assert('is_string($attribute)');
-            if($attribute == ModelRelationsAndAttributesToSummableReportAdapter::DISPLAY_CALCULATION_COUNT)
+            if ($attribute == ModelRelationsAndAttributesToSummableReportAdapter::DISPLAY_CALCULATION_COUNT)
             {
                 return 'id';
             }
@@ -394,7 +409,7 @@
         public function getCalculationOrModifierType($attribute)
         {
             $parts = explode(FormModelUtil::DELIMITER, $attribute);
-            if(count($parts) > 1)
+            if (count($parts) > 1)
             {
                 return $parts[1];
             }
@@ -407,7 +422,7 @@
         public function getAttributesForGroupBys()
         {
             $attributes       = array();
-            if($this->shouldIncludeIdAsGroupByAttribute)
+            if ($this->shouldIncludeIdAsGroupByAttribute)
             {
                 $attributes['id'] = array('label' => Zurmo::t('Core', 'Id'));
             }
@@ -425,11 +440,11 @@
         {
             assert('is_string($attributeIndexOrDerivedType)');
             $parts = explode(FormModelUtil::DELIMITER, $attributeIndexOrDerivedType);
-            if(count($parts) > 1 && in_array(array_pop($parts), static::getDisplayCalculationTypes()))
+            if (count($parts) > 1 && in_array(array_pop($parts), static::getDisplayCalculationTypes()))
             {
                 return true;
             }
-            elseif(count($parts) == 1 && $parts[0] == self::DISPLAY_CALCULATION_COUNT)
+            elseif (count($parts) == 1 && $parts[0] == self::DISPLAY_CALCULATION_COUNT)
             {
                 return true;
             }
@@ -444,7 +459,7 @@
         {
             $displayCalculationAttributes = $this->getDisplayCalculationAttributes();
             $groupByModifiersAttributes   = $this->getGroupByCalculatedModifierAttributes();
-            if(isset($displayCalculationAttributes[$attribute]) ||
+            if (isset($displayCalculationAttributes[$attribute]) ||
                 isset($groupByModifiersAttributes[$attribute]))
             {
                 return true;
@@ -460,9 +475,9 @@
         public function getDisplayElementType($attribute)
         {
             assert('is_string($attribute)');
-            if($this->isAttributeIndexOrDerivedTypeADisplayCalculation($attribute))
+            if ($this->isAttributeIndexOrDerivedTypeADisplayCalculation($attribute))
             {
-                if($attribute == self::DISPLAY_CALCULATION_COUNT)
+                if ($attribute == self::DISPLAY_CALCULATION_COUNT)
                 {
                     return 'Integer';
                 }
@@ -472,15 +487,15 @@
                 {
                     return 'Decimal';
                 }
-                elseif($attributeType == 'Date')
+                elseif ($attributeType == 'Date')
                 {
                     return 'Date';
                 }
-                elseif($attributeType == 'DateTime')
+                elseif ($attributeType == 'DateTime')
                 {
                     return 'DateTime';
                 }
-                elseif($this->model->isRelation($realAttribute) &&
+                elseif ($this->model->isRelation($realAttribute) &&
                        $this->model->getRelationModelClassName($realAttribute) == 'CurrencyValue')
                 {
                     return 'CalculatedCurrencyValue';
@@ -490,12 +505,12 @@
                     throw new NotSupportedException();
                 }
             }
-            elseif($this->isAttributeACalculatedGroupByModifier($attribute) &&
+            elseif ($this->isAttributeACalculatedGroupByModifier($attribute) &&
                    $this->getGroupByCalculationTypeByAttribute($attribute) == self::GROUP_BY_CALCULATION_MONTH)
             {
                 return 'GroupByModifierMonth';
             }
-            elseif($this->isAttributeACalculatedGroupByModifier($attribute))
+            elseif ($this->isAttributeACalculatedGroupByModifier($attribute))
             {
                 return 'Text';
             }
@@ -515,7 +530,7 @@
          */
         protected function getDisplayCalculationAttributes()
         {
-            if(isset(self::$displayCalculationAttributes[get_class($this->model)]))
+            if (isset(self::$displayCalculationAttributes[get_class($this->model)]))
             {
                 return self::$displayCalculationAttributes[get_class($this->model)];
             }
@@ -542,12 +557,12 @@
                 $this->resolveDisplayCalculationAttributeData($attributes, $attribute, self::DISPLAY_CALCULATION_MINIMUM);
                 $this->resolveDisplayCalculationAttributeData($attributes, $attribute, self::DISPLAY_CALCULATION_MAXIMUM);
             }
-            elseif($attributeType == 'Date' || $attributeType == 'DateTime')
+            elseif ($attributeType == 'Date' || $attributeType == 'DateTime')
             {
                 $this->resolveDisplayCalculationAttributeData($attributes, $attribute, self::DISPLAY_CALCULATION_MINIMUM);
                 $this->resolveDisplayCalculationAttributeData($attributes, $attribute, self::DISPLAY_CALCULATION_MAXIMUM);
             }
-            elseif($this->model->isRelation($attribute) &&
+            elseif ($this->model->isRelation($attribute) &&
                 $this->model->getRelationModelClassName($attribute) == 'CurrencyValue')
             {
                 $this->resolveDisplayCalculationAttributeData($attributes, $attribute, self::DISPLAY_CALCULATION_SUMMMATION);
@@ -570,13 +585,13 @@
         {
             assert('is_array($attributes)');
             assert('is_array($existingGroupBys)');
-            foreach($existingGroupBys as $groupBy)
+            foreach ($existingGroupBys as $groupBy)
             {
                 $addAttribute = false;
                 //is there is preceding model/relation info
-                if($precedingModel != null && $precedingRelation != null)
+                if ($precedingModel != null && $precedingRelation != null)
                 {
-                    if($groupBy->hasRelatedData() &&
+                    if ($groupBy->hasRelatedData() &&
                        $groupBy->getPenultimateModelClassName() == get_class($precedingModel) &&
                        $groupBy->getPenultimateRelation() == $precedingRelation &&
                        $groupBy->getResolvedAttributeModelClassName() == get_class($this->model))
@@ -589,16 +604,28 @@
                     //is there is no preceding model/relation info
                     //if the groupBy attribute is part of a related data chain, ignore,
                     //since must be at the wrong spot in the chain.
-                    if(!$groupBy->hasRelatedData() &&
+                    if (!$groupBy->hasRelatedData() &&
                        $groupBy->getResolvedAttributeModelClassName() == get_class($this->model))
                     {
                         $addAttribute = true;
                     }
                 }
-                if($addAttribute)
+                if ($addAttribute)
                 {
                     $resolvedAttribute = $groupBy->getResolvedAttribute();
-                    $attributes[$resolvedAttribute] = array('label' => $this->model->getAttributeLabel($resolvedAttribute));
+                    $calculationOrModifierType = $this->getCalculationOrModifierType($resolvedAttribute);
+                    if($this->isAttributeACalculationOrModifier($resolvedAttribute) && $calculationOrModifierType !== $resolvedAttribute)
+                    {
+                        $realAttributeName = static::resolveRealAttributeName($resolvedAttribute);
+                        $label = $this->resolveDisplayCalculationLabel($realAttributeName,
+                            $this->getCalculationOrModifierType($calculationOrModifierType));
+                    }
+                    else
+                    {
+                        $realAttributeName = static::resolveRealAttributeName($resolvedAttribute);
+                        $label = $this->model->getAttributeLabel($realAttributeName);
+                    }
+                    $attributes[$resolvedAttribute] = array('label' => $label);
                 }
             }
         }
@@ -638,7 +665,7 @@
             foreach ($this->getAttributesNotIncludingDerivedAttributesData() as $attribute => $data)
             {
                 $attributeType = ModelAttributeToMixedTypeUtil::getType($this->model, $attribute);
-                if(!in_array($attributeType, static::getAttributeTypesToExcludeAsGroupByModifiers()))
+                if (!in_array($attributeType, static::getAttributeTypesToExcludeAsGroupByModifiers()))
                 {
                     $attributes[$attribute] = $data;
                 }
@@ -651,7 +678,7 @@
          */
         protected function getGroupByCalculatedModifierAttributes()
         {
-            if(isset(self::$groupByCalculatedModifierAttributes[get_class($this->model)]))
+            if (isset(self::$groupByCalculatedModifierAttributes[get_class($this->model)]))
             {
                 return self::$groupByCalculatedModifierAttributes[get_class($this->model)];
             }
@@ -659,9 +686,8 @@
             foreach ($this->getAttributesNotIncludingDerivedAttributesData() as $attribute => $data)
             {
                 $attributeType = ModelAttributeToMixedTypeUtil::getType($this->model, $attribute);
-                if($attributeType == 'Date' || $attributeType == 'DateTime')
+                if ($attributeType == 'Date' || $attributeType == 'DateTime')
                 {
-
                     $this->resolveGroupByCalculationAttributeData($attributes, $attribute, self::GROUP_BY_CALCULATION_DAY);
                     $this->resolveGroupByCalculationAttributeData($attributes, $attribute, self::GROUP_BY_CALCULATION_WEEK);
                     $this->resolveGroupByCalculationAttributeData($attributes, $attribute, self::GROUP_BY_CALCULATION_MONTH);
@@ -719,11 +745,11 @@
             assert('is_string($attribute)');
             $displayCalculationAttributes = $this->getDisplayCalculationAttributes();
             $groupByModifiersAttributes   = $this->getGroupByCalculatedModifierAttributes();
-            if($attribute == ModelRelationsAndAttributesToSummableReportAdapter::DISPLAY_CALCULATION_COUNT)
+            if ($attribute == ModelRelationsAndAttributesToSummableReportAdapter::DISPLAY_CALCULATION_COUNT)
             {
                 return ModelRelationsAndAttributesToSummableReportAdapter::DISPLAY_CALCULATION_COUNT;
             }
-            elseif(isset($displayCalculationAttributes[$attribute]) || isset($groupByModifiersAttributes[$attribute]))
+            elseif (isset($displayCalculationAttributes[$attribute]) || isset($groupByModifiersAttributes[$attribute]))
             {
                 $parts = explode(FormModelUtil::DELIMITER, $attribute);
                 return $parts[1];
@@ -737,7 +763,7 @@
         private function shouldDoTimeZoneAdjustmentOnModifierClause($attribute)
         {
             assert('is_string($attribute)');
-            if($this->getRealModelAttributeType(static::resolveRealAttributeName($attribute)) == 'DateTime')
+            if ($this->getRealModelAttributeType(static::resolveRealAttributeName($attribute)) == 'DateTime')
             {
                 return true;
             }

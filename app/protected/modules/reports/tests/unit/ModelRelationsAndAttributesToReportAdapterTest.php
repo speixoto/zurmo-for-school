@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2012 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU General Public License version 3 as published by the
@@ -20,8 +20,18 @@
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
      *
-     * You can contact Zurmo, Inc. with a mailing address at 113 McHenry Road Suite 207,
-     * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
+     * You can contact Zurmo, Inc. with a mailing address at 27 North Wacker Drive
+     * Suite 370 Chicago, IL 60606. or at email address contact@zurmo.com.
+     *
+     * The interactive user interfaces in original and modified versions
+     * of this program must display Appropriate Legal Notices, as required under
+     * Section 5 of the GNU General Public License version 3.
+     *
+     * In accordance with Section 7(b) of the GNU General Public License version 3,
+     * these Appropriate Legal Notices must retain the display of the Zurmo
+     * logo and Zurmo copyright notice. If the display of the logo is not reasonably
+     * feasible for technical reasons, the Appropriate Legal Notices must display the words
+     * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
     class ModelRelationsAndAttributesToReportAdapterTest extends ZurmoBaseTest
@@ -283,7 +293,7 @@
             $adapter            = new ModelRelationsAndAttributesToReportAdapter($model, $rules, $report->getType());
             $relations = $adapter->getInferredRelationsData();
             $this->assertEquals(2, count($relations));
-            $compareData        = array('label' => 'ReportModelTestItems');
+            $compareData        = array('label' => 'Reports Tests');
             $this->assertEquals($compareData, $relations['ReportModelTestItem__reportItems__Inferred']);
             $compareData        = array('label' => 'ReportModelTestItem2s');
             $this->assertEquals($compareData, $relations['ReportModelTestItem2__reportItems__Inferred']);
@@ -292,7 +302,7 @@
             $adapter            = new ModelRelationsAndAttributesToReportAdapter($model, $rules, $report->getType());
             $relations = $adapter->getSelectableRelationsData();
             $this->assertEquals(6, count($relations));
-            $compareData        = array('label' => 'ReportModelTestItems');
+            $compareData        = array('label' => 'Reports Tests');
             $this->assertEquals($compareData, $relations['ReportModelTestItem__reportItems__Inferred']);
             $compareData        = array('label' => 'ReportModelTestItem2s');
             $this->assertEquals($compareData, $relations['ReportModelTestItem2__reportItems__Inferred']);
@@ -322,7 +332,7 @@
             $adapter            = new ModelRelationsAndAttributesToReportAdapter($model, $rules, $report->getType());
             $relations = $adapter->getSelectableRelationsData($precedingModel, 'model5');
             $this->assertEquals(6, count($relations));
-            $compareData        = array('label' => 'ReportModelTestItems');
+            $compareData        = array('label' => 'Reports Tests');
             $this->assertEquals($compareData, $relations['ReportModelTestItem__reportItems__Inferred']);
             $compareData        = array('label' => 'ReportModelTestItem2s');
             $this->assertEquals($compareData, $relations['ReportModelTestItem2__reportItems__Inferred']);
@@ -420,7 +430,6 @@
             $compareData        = array('label' => 'Modified By User');
             $this->assertEquals($compareData, $relations['modifiedByUser']);
         }
-
 
         /**
          * @depends testGetDerivedRelationsViaCastedUpModelDataWithPrecedingModel
@@ -718,7 +727,6 @@
             $compareData        = array('label' => 'Currency Value -(Avg)');
             $this->assertEquals($compareData, $attributes['currencyValue__Average']);
 
-
             //Add a second groupBy attribute radioDropDown on the same model
             $report             = new Report();
             $report->setType(Report::TYPE_SUMMATION);
@@ -844,6 +852,8 @@
             $this->assertEquals($compareData, $attributes['dropDown']);
 
             //Now test when a group by is also selected on the related ReportModelTestItem2
+            //Should return as phone, since the getAttributesForOrderBys is called from the
+            //@see ReportRelationsAndAttributesToTreeAdapter
             $groupBy            = new GroupByForReportForm('ReportsTestModule', 'ReportModelTestItem', $report->getType());
             $groupBy->attributeIndexOrDerivedType = 'hasOne___phone';
             $model              = new ReportModelTestItem2();
@@ -852,7 +862,7 @@
             $attributes = $adapter->getAttributesForOrderBys($report->getGroupBys(), array(), new ReportModelTestItem(), 'hasOne');
             $this->assertEquals(1, count($attributes));
             $compareData        = array('label' => 'Phone');
-            $this->assertEquals($compareData, $attributes['hasOne___phone']);
+            $this->assertEquals($compareData, $attributes['phone']);
 
             //Now test a third group by on the base model ReportModelTestItem
             $groupBy            = new GroupByForReportForm('ReportsTestModule', 'ReportModelTestItem', $report->getType());
@@ -909,7 +919,7 @@
 
             //This should not add because we are at the wrong point in the chain
             $displayAttribute   = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
-                Report::TYPE_SUMMATION);
+                                  Report::TYPE_SUMMATION);
             $this->assertNull($displayAttribute->label);
             $displayAttribute->attributeIndexOrDerivedType = 'hasOne___createdDateTime__Minimum';
             $report->addDisplayAttribute($displayAttribute);
@@ -918,7 +928,6 @@
             $this->assertEquals(2, count($attributes));
             $this->assertFalse(isset($attributes['hasOne___createdDateTime__Minimum']));
         }
-
 
         /**
          * @depends testGetAvailableAttributesForSummationOrderBysThatAreDisplayCalculations
@@ -1401,7 +1410,6 @@
             $rules              = new ReportsAlternateStateTestReportRules();
             $adapter            = new ModelRelationsAndAttributesToReportAdapter($model, $rules, Report::TYPE_ROWS_AND_COLUMNS);
             $this->assertEquals('AllContactStatesStaticDropDownForWizardModel', $adapter->getFilterValueElementType('likeContactState'));
-
         }
 
         /**
@@ -1453,7 +1461,6 @@
             $adapter            = new ModelRelationsAndAttributesToReportAdapter($model, $rules, Report::TYPE_ROWS_AND_COLUMNS);
             $this->assertEquals(ModelAttributeToReportOperatorTypeUtil::AVAILABLE_OPERATORS_TYPE_DROPDOWN,
                                 $adapter->getAvailableOperatorsType('likeContactState'));
-
         }
     }
 ?>

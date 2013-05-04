@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2012 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU General Public License version 3 as published by the
@@ -20,8 +20,18 @@
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
      *
-     * You can contact Zurmo, Inc. with a mailing address at 113 McHenry Road Suite 207,
-     * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
+     * You can contact Zurmo, Inc. with a mailing address at 27 North Wacker Drive
+     * Suite 370 Chicago, IL 60606. or at email address contact@zurmo.com.
+     *
+     * The interactive user interfaces in original and modified versions
+     * of this program must display Appropriate Legal Notices, as required under
+     * Section 5 of the GNU General Public License version 3.
+     *
+     * In accordance with Section 7(b) of the GNU General Public License version 3,
+     * these Appropriate Legal Notices must retain the display of the Zurmo
+     * logo and Zurmo copyright notice. If the display of the logo is not reasonably
+     * feasible for technical reasons, the Appropriate Legal Notices must display the words
+     * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -279,7 +289,7 @@
         public static function isRelationTypeAHasManyVariant($relationName)
         {
             assert('self::isRelation($relationName, get_called_class())');
-            if(static::getRelationType($relationName) == RedBeanModel::HAS_MANY  ||
+            if (static::getRelationType($relationName) == RedBeanModel::HAS_MANY  ||
                static::getRelationType($relationName) == RedBeanModel::HAS_MANY_BELONGS_TO ||
                static::getRelationType($relationName) == RedBeanModel::HAS_ONE_BELONGS_TO)
             {
@@ -295,7 +305,7 @@
         public static function isRelationTypeAHasOneVariant($relationName)
         {
             assert('self::isRelation($relationName, get_called_class())');
-            if(static::getRelationType($relationName) == RedBeanModel::HAS_MANY_BELONGS_TO ||
+            if (static::getRelationType($relationName) == RedBeanModel::HAS_MANY_BELONGS_TO ||
                static::getRelationType($relationName) == RedBeanModel::HAS_ONE)
             {
                 return true;
@@ -310,7 +320,7 @@
         public static function isADerivedRelationViaCastedUpModel($relationName)
         {
             $derivedRelations = static::getDerivedRelationNameToTypeModelClassNameAndOppposingRelationForModel();
-            if(array_key_exists($relationName, $derivedRelations))
+            if (array_key_exists($relationName, $derivedRelations))
             {
                 return true;
             }
@@ -462,7 +472,7 @@
          */
         protected static function getAttributeNamesToClassNamesForModel()
         {
-            if(!PHP_CACHING_ON || !isset(self::$attributeNamesToClassNames[get_called_class()]))
+            if (!PHP_CACHING_ON || !isset(self::$attributeNamesToClassNames[get_called_class()]))
             {
                 self::resolveCacheAndMapMetadataForAllClassesInHeirarchy();
             }
@@ -474,7 +484,7 @@
          */
         protected static function getAttributeNamesNotBelongsToOrManyManyForModel()
         {
-            if(!PHP_CACHING_ON || !isset(self::$attributeNamesNotBelongsToOrManyMany[get_called_class()]))
+            if (!PHP_CACHING_ON || !isset(self::$attributeNamesNotBelongsToOrManyMany[get_called_class()]))
             {
                 self::resolveCacheAndMapMetadataForAllClassesInHeirarchy();
             }
@@ -486,7 +496,7 @@
          */
         protected static function getRelationNameToRelationTypeModelClassNameAndOwnsForModel()
         {
-            if(!PHP_CACHING_ON || !isset(self::$relationNameToRelationTypeModelClassNameAndOwns[get_called_class()]))
+            if (!PHP_CACHING_ON || !isset(self::$relationNameToRelationTypeModelClassNameAndOwns[get_called_class()]))
             {
                 self::resolveCacheAndMapMetadataForAllClassesInHeirarchy();
             }
@@ -498,7 +508,7 @@
          */
         protected static function getDerivedRelationNameToTypeModelClassNameAndOppposingRelationForModel()
         {
-            if(!PHP_CACHING_ON || !isset(self::$derivedRelationNameToTypeModelClassNameAndOppposingRelation[get_called_class()]))
+            if (!PHP_CACHING_ON || !isset(self::$derivedRelationNameToTypeModelClassNameAndOppposingRelation[get_called_class()]))
             {
                 self::resolveCacheAndMapMetadataForAllClassesInHeirarchy();
             }
@@ -510,19 +520,19 @@
          */
         protected static function forgetBeanModel($modelClassName)
         {
-            if(isset(self::$attributeNamesToClassNames[$modelClassName]))
+            if (isset(self::$attributeNamesToClassNames[$modelClassName]))
             {
                 unset(self::$attributeNamesToClassNames[$modelClassName]);
             }
-            if(isset(self::$relationNameToRelationTypeModelClassNameAndOwns[$modelClassName]))
+            if (isset(self::$relationNameToRelationTypeModelClassNameAndOwns[$modelClassName]))
             {
                 unset(self::$relationNameToRelationTypeModelClassNameAndOwns[$modelClassName]);
             }
-            if(isset(self::$derivedRelationNameToTypeModelClassNameAndOppposingRelation[$modelClassName]))
+            if (isset(self::$derivedRelationNameToTypeModelClassNameAndOppposingRelation[$modelClassName]))
             {
                 unset(self::$derivedRelationNameToTypeModelClassNameAndOppposingRelation[$modelClassName]);
             }
-            if(isset(self::$attributeNamesNotBelongsToOrManyMany[$modelClassName]))
+            if (isset(self::$attributeNamesNotBelongsToOrManyMany[$modelClassName]))
             {
                 unset(self::$attributeNamesNotBelongsToOrManyMany[$modelClassName]);
             }
@@ -552,7 +562,7 @@
                 self::$derivedRelationNameToTypeModelClassNameAndOppposingRelation[get_called_class()]         =
                     $cachedData['derivedRelationNameToTypeModelClassNameAndOppposingRelation'][get_called_class()];
             }
-            catch(NotFoundException $e)
+            catch (NotFoundException $e)
             {
                 self::mapMetadataForAllClassesInHeirarchy();
                 $cachedData = array();
@@ -567,7 +577,6 @@
                 BeanModelCache::cacheEntry(self::CACHE_IDENTIFIER . get_called_class(), $cachedData);
             }
         }
-
 
         /**
          * Maps metadata for the class and all of the classes in the heirarchy up to the BeanModel
@@ -585,7 +594,7 @@
                     self::mapMetadataByModelClassName($modelClassName);
                 }
             }
-            foreach(static::getMixedInModelClassNames() as $modelClassName)
+            foreach (static::getMixedInModelClassNames() as $modelClassName)
             {
                 if ($modelClassName::getCanHaveBean())
                 {
@@ -609,7 +618,6 @@
                 {
                     foreach ($metadata[$modelClassName]['members'] as $memberName)
                     {
-
                         self::$attributeNamesToClassNames[get_called_class()][$memberName] = $modelClassName;
                         self::$attributeNamesNotBelongsToOrManyMany[get_called_class()][]  = $memberName;
                     }

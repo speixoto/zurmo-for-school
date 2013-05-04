@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2012 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU General Public License version 3 as published by the
@@ -20,8 +20,18 @@
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
      *
-     * You can contact Zurmo, Inc. with a mailing address at 113 McHenry Road Suite 207,
-     * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
+     * You can contact Zurmo, Inc. with a mailing address at 27 North Wacker Drive
+     * Suite 370 Chicago, IL 60606. or at email address contact@zurmo.com.
+     *
+     * The interactive user interfaces in original and modified versions
+     * of this program must display Appropriate Legal Notices, as required under
+     * Section 5 of the GNU General Public License version 3.
+     *
+     * In accordance with Section 7(b) of the GNU General Public License version 3,
+     * these Appropriate Legal Notices must retain the display of the Zurmo
+     * logo and Zurmo copyright notice. If the display of the logo is not reasonably
+     * feasible for technical reasons, the Appropriate Legal Notices must display the words
+     * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
     class MenuUtilTest extends ZurmoBaseTest
@@ -81,7 +91,7 @@
         {
             Yii::app()->user->userModel = User::getByUsername('super');
             $menu = MenuUtil::getVisibleAndOrderedTabMenuByCurrentUser();
-            $this->assertEquals(7, count($menu));
+            $this->assertEquals(8, count($menu));
             $menu = MenuUtil::getAccessibleModuleTabMenuByUser('AccountsModule', Yii::app()->user->userModel);
             $this->assertEquals(1, count($menu));
             Yii::app()->user->userModel = User::getByUsername('billy');
@@ -136,9 +146,10 @@
             $backupMetadata                           = $metadata;
             $metadata['global']['shortcutsCreateMenuItems'] = array(
                 array(
-                    'label' => "eval:Zurmo::t('AccountsModule', 'AccountsModulePluralLabel', \$translationParams)",
-                    'url'   => array('/accounts/default/create'),
-                    'right' => AccountsModule::RIGHT_CREATE_ACCOUNTS,
+                    'label'  => "eval:Zurmo::t('AccountsModule', 'AccountsModulePluralLabel', \$translationParams)",
+                    'url'    => array('/accounts/default/create'),
+                    'right'  => AccountsModule::RIGHT_CREATE_ACCOUNTS,
+                    'mobile' => true,
                 ),
             );
             AccountsModule::setMetadata($metadata);
@@ -148,39 +159,46 @@
                 'url'   => null,
                 'items' => array(
                         array(
-                            'label' => 'Accounts',
-                            'url'   => array('/accounts/default/create'),
-                            'right' => AccountsModule::RIGHT_CREATE_ACCOUNTS,
+                            'label'  => 'Accounts',
+                            'url'    => array('/accounts/default/create'),
+                            'right'  => AccountsModule::RIGHT_CREATE_ACCOUNTS,
+                            'mobile' => true,
                         ),
                         array(
-                            'label' => 'Contact',
-                            'url'   => array('/contacts/default/create'),
-                            'right' => ContactsModule::RIGHT_CREATE_CONTACTS,
+                            'label'  => 'Contact',
+                            'url'    => array('/contacts/default/create'),
+                            'right'  => ContactsModule::RIGHT_CREATE_CONTACTS,
+                            'mobile' => true,
                         ),
                         array(
-                            'label' => 'Conversation',
-                            'url'   => array('/conversations/default/create'),
-                            'right' => ConversationsModule::RIGHT_CREATE_CONVERSATIONS,
+                            'label'  => 'Conversation',
+                            'url'    => array('/conversations/default/create'),
+                            'right'  => ConversationsModule::RIGHT_CREATE_CONVERSATIONS,
+                            'mobile' => true,
                         ),
                         array(
-                            'label' => 'Lead',
-                            'url'   => array('/leads/default/create'),
-                            'right' => LeadsModule::RIGHT_CREATE_LEADS,
+                            'label'  => 'Lead',
+                            'url'    => array('/leads/default/create'),
+                            'right'  => LeadsModule::RIGHT_CREATE_LEADS,
+                            'mobile' => true,
                         ),
                         array(
-                            'label' => 'Mission',
-                            'url'   => array('/missions/default/create'),
-                            'right' => MissionsModule::RIGHT_CREATE_MISSIONS,
+                            'label'  => 'Mission',
+                            'url'    => array('/missions/default/create'),
+                            'right'  => MissionsModule::RIGHT_CREATE_MISSIONS,
+                            'mobile' => true,
                         ),
                         array(
-                            'label' => 'Opportunity',
-                            'url'   => array('/opportunities/default/create'),
-                            'right' => OpportunitiesModule::RIGHT_CREATE_OPPORTUNITIES,
+                            'label'  => 'Opportunity',
+                            'url'    => array('/opportunities/default/create'),
+                            'right'  => OpportunitiesModule::RIGHT_CREATE_OPPORTUNITIES,
+                            'mobile' => true,
                         ),
                         array(
-                            'label' => 'Report',
-                            'url'   => array('/reports/default/selectType'),
-                            'right' => ReportsModule::RIGHT_CREATE_REPORTS,
+                            'label'  => 'Report',
+                            'url'    => array('/reports/default/selectType'),
+                            'right'  => ReportsModule::RIGHT_CREATE_REPORTS,
+                            'mobile' => false,
                         ),
                 ),
             );

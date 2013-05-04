@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2012 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU General Public License version 3 as published by the
@@ -20,13 +20,22 @@
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
      *
-     * You can contact Zurmo, Inc. with a mailing address at 113 McHenry Road Suite 207,
-     * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
+     * You can contact Zurmo, Inc. with a mailing address at 27 North Wacker Drive
+     * Suite 370 Chicago, IL 60606. or at email address contact@zurmo.com.
+     *
+     * The interactive user interfaces in original and modified versions
+     * of this program must display Appropriate Legal Notices, as required under
+     * Section 5 of the GNU General Public License version 3.
+     *
+     * In accordance with Section 7(b) of the GNU General Public License version 3,
+     * these Appropriate Legal Notices must retain the display of the Zurmo
+     * logo and Zurmo copyright notice. If the display of the logo is not reasonably
+     * feasible for technical reasons, the Appropriate Legal Notices must display the words
+     * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
     class MashableUtil
     {
-
         /**
          * Create the MashableInboxRules for the model
          * @param type $modelClassName
@@ -77,8 +86,7 @@
 
         public static function getUnreadCountForCurrentUserByModelClassName($modelClassName)
         {
-            $mashableInboxRules =
-                    static::createMashableInboxRulesByModel($modelClassName);
+            $mashableInboxRules = static::createMashableInboxRulesByModel($modelClassName);
             return (int)$mashableInboxRules->getUnreadCountForCurrentUser();
         }
 
@@ -128,8 +136,7 @@
             $modelClassNamesAndSortAttributes = array();
             foreach ($modelClassNames as $modelClassName)
             {
-                $mashableActivityRules =
-                        static::createMashableInboxRulesByModel($modelClassName);
+                $mashableActivityRules = static::createMashableInboxRulesByModel($modelClassName);
                 $modelClassNamesAndSortAttributes[$modelClassName] =
                         $mashableActivityRules->getMachableInboxOrderByAttributeName();
             }
@@ -195,7 +202,7 @@
                     $string = Zurmo::t('MashableInboxModule', '{hours} hours ago', array('{hours}' => $timeForString['hours']));
                 }
             }
-            else if (($timeForString['days'] == 1))
+            elseif (($timeForString['days'] == 1))
             {
                 $string = Zurmo::t('MashableInboxModule', '{days} day ago', array('{days}' => $timeForString['days']));
             }
@@ -242,7 +249,7 @@
 
         public static function saveSelectedOptionsAsStickyData(MashableInboxForm $mashableInboxForm, $modelClassName)
         {
-            assert('strlen($modelClassName) > 0 || is_null($modelClassName)');
+            assert('strlen($modelClassName) > 0 || ($modelClassName === null)');
             $key = self::resolveKeyByModuleAndModel('MashableInboxModule', $modelClassName);
             StickyUtil::setDataByKeyAndData($key, $mashableInboxForm->getAttributes(
                                                         array('optionForModel', 'filteredBy', 'searchTerm')));
@@ -250,7 +257,7 @@
 
         public static function restoreSelectedOptionsAsStickyData($modelClassName)
         {
-            assert('strlen($modelClassName) > 0 || is_null($modelClassName)');
+            assert('strlen($modelClassName) > 0 || ($modelClassName === null)');
             $key  = self::resolveKeyByModuleAndModel('MashableInboxModule', $modelClassName);
             $data = StickyUtil::getDataByKey($key);
             $mashableInboxForm = new MashableInboxForm();

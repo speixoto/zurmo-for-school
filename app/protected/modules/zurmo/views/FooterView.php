@@ -47,7 +47,39 @@
             //logo and Zurmo copyright notice. If the display of the logo is not reasonably
             //feasible for technical reasons, the Appropriate Legal Notices must display the words
             //"Copyright Zurmo Inc. 2013. All rights reserved".
-            return Zurmo::t('ZurmoModule', 'Copyright &#169; Zurmo Inc., 2013. All rights reserved.');
+            $userInterfaceTypeSelectorHtml = $this->renderUserInterfaceTypeSelector();
+            $copyrightHtml = '<a href="http://www.zurmo.com" id="credit-link" class="clearfix"><span>' .
+                             'Copyright &#169; Zurmo Inc., 2013. All rights reserved.</span></a>';
+            return $copyrightHtml . $userInterfaceTypeSelectorHtml;
+        }
+
+        /**
+         * Render section for selection user interface type.
+         * Show only if user is using mobile and tablet devices.
+         */
+        protected function renderUserInterfaceTypeSelector()
+        {
+            if (Yii::app()->userInterface->isMobile())
+            {
+                $mobileActive  = ' active';
+                $desktopActive = null;
+            }
+            else
+            {
+                $mobileActive  = null;
+                $desktopActive = ' active';
+            }
+            $content  = '<div class="ui-chooser">';
+            $content .= ZurmoHtml::link(ZurmoHtml::tag('span', array(), Zurmo::t('Zurmo', 'Show Full')),
+                            Yii::app()->createUrl('zurmo/default/userInterface',
+                            array('userInterface' => UserInterface::DESKTOP)),
+                            array('class' => 'icon-desktop' . $desktopActive));
+            $content .= ZurmoHtml::link(ZurmoHtml::tag('span', array(), Zurmo::t('Default', 'Show Mobile')),
+                            Yii::app()->createUrl('zurmo/default/userInterface',
+                            array('userInterface' => UserInterface::MOBILE)),
+                            array('class' => 'icon-mobile' . $mobileActive));
+            $content .= '</div>';
+            return $content;
         }
     }
 ?>

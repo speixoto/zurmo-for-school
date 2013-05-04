@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2012 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU General Public License version 3 as published by the
@@ -20,34 +20,62 @@
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
      *
-     * You can contact Zurmo, Inc. with a mailing address at 113 McHenry Road Suite 207,
-     * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
+     * You can contact Zurmo, Inc. with a mailing address at 27 North Wacker Drive
+     * Suite 370 Chicago, IL 60606. or at email address contact@zurmo.com.
+     *
+     * The interactive user interfaces in original and modified versions
+     * of this program must display Appropriate Legal Notices, as required under
+     * Section 5 of the GNU General Public License version 3.
+     *
+     * In accordance with Section 7(b) of the GNU General Public License version 3,
+     * these Appropriate Legal Notices must retain the display of the Zurmo
+     * logo and Zurmo copyright notice. If the display of the logo is not reasonably
+     * feasible for technical reasons, the Appropriate Legal Notices must display the words
+     * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
     class WorkflowCreateLinkActionElement extends CreateLinkActionElement
     {
+        /**
+         * Manage security check during render since you have multiple modules to check against
+         * @return null|string
+         */
         public function getActionType()
         {
-            return 'Create';
+            return null;
         }
 
-        protected function getDefaultLabel()
+        public function render()
         {
-            return Zurmo::t('Core', 'Create');
-        }
-
-        protected function getDefaultRoute()
-        {
-            $params = array();
-            if (Yii::app()->request->getParam('redirectUrl') != null)
+            $items = array();
+            if (RightsUtil::doesUserHaveAllowByRightName('WorkflowsModule', WorkflowsModule::getCreateRight(),
+                                                        Yii::app()->user->userModel))
             {
-                $params = array_merge($params, array('redirectUrl' => Yii::app()->request->getParam('redirectUrl')));
+                $items[] = array('label'   => Zurmo::t('WorkflowsModule', 'Create Workflow'),
+                                  'url'     => Yii::app()->createUrl('workflows/default/create'));
             }
-            elseif ($this->getRedirectUrl() != null)
+            if (RightsUtil::doesUserHaveAllowByRightName('EmailTemplatesModule', EmailTemplatesModule::getCreateRight(),
+                                                        Yii::app()->user->userModel))
             {
-                $params = array_merge($params, array('redirectUrl' => $this->getRedirectUrl()));
+                $items[] = array('label'   => Zurmo::t('EmailTemplatesModule', 'Create Template'),
+                                 'url'     => Yii::app()->createUrl('emailTemplates/default/create',
+                                              array('type' => EmailTemplate::TYPE_WORKFLOW)));
             }
-            return Yii::app()->createUrl($this->moduleId . '/default/create/', $params);
+            if (!empty($items))
+            {
+                $menuItems = array( 'label' => $this->getLabel(),
+                                    'url'   => null,
+                                    'items' => $items);
+                $cClipWidget = new CClipWidget();
+                $cClipWidget->beginClip("ActionMenu");
+                $cClipWidget->widget('application.core.widgets.MbMenu', array(
+                    'htmlOptions' => array('id' => 'MashableInboxCreateDropdown'),
+                    'items'       => array($menuItems),
+                ));
+                $cClipWidget->endClip();
+                return $cClipWidget->getController()->clips['ActionMenu'];
+            }
+            return null;
         }
     }
 ?>

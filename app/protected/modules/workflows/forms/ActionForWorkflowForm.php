@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2012 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU General Public License version 3 as published by the
@@ -20,8 +20,18 @@
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
      *
-     * You can contact Zurmo, Inc. with a mailing address at 113 McHenry Road Suite 207,
-     * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
+     * You can contact Zurmo, Inc. with a mailing address at 27 North Wacker Drive
+     * Suite 370 Chicago, IL 60606. or at email address contact@zurmo.com.
+     *
+     * The interactive user interfaces in original and modified versions
+     * of this program must display Appropriate Legal Notices, as required under
+     * Section 5 of the GNU General Public License version 3.
+     *
+     * In accordance with Section 7(b) of the GNU General Public License version 3,
+     * these Appropriate Legal Notices must retain the display of the Zurmo
+     * logo and Zurmo copyright notice. If the display of the logo is not reasonably
+     * feasible for technical reasons, the Appropriate Legal Notices must display the words
+     * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -59,6 +69,7 @@
          * Utilized by arrays to define the element that is for the actionAttributes
          */
         const ACTION_ATTRIBUTES     = 'ActionAttributes';
+
         /**
          * Type of action
          * @var string
@@ -135,7 +146,7 @@
                               $modelClassName, $workflowType);
             $relationsData  = $adapter->getSelectableRelationsDataForActionTypeRelation();
             $dataAndLabels  = array();
-            foreach($relationsData as $relation => $data)
+            foreach ($relationsData as $relation => $data)
             {
                 $dataAndLabels[$relation] = $data['label'];
             }
@@ -163,7 +174,7 @@
                               $adapter->getRelationModelClassName($relation), $workflowType);
             $relationsData  = $relatedadapter->getSelectableRelationsDataForActionTypeRelation();
             $dataAndLabels  = array();
-            foreach($relationsData as $relation => $data)
+            foreach ($relationsData as $relation => $data)
             {
                 $dataAndLabels[$relation] = $data['label'];
             }
@@ -184,11 +195,11 @@
          */
         public function isTypeAnUpdateVariant()
         {
-            if($this->type == self::TYPE_UPDATE_SELF || $this->type == self::TYPE_UPDATE_RELATED)
+            if ($this->type == self::TYPE_UPDATE_SELF || $this->type == self::TYPE_UPDATE_RELATED)
             {
                 return true;
             }
-            elseif($this->type == self::TYPE_CREATE || $this->type == self::TYPE_CREATE_RELATED)
+            elseif ($this->type == self::TYPE_CREATE || $this->type == self::TYPE_CREATE_RELATED)
             {
                 return false;
             }
@@ -250,7 +261,7 @@
         public function hasActionAttributeFormByName($attribute)
         {
             assert('is_string($attribute)');
-            if(!isset($this->_actionAttributes[$attribute]))
+            if (!isset($this->_actionAttributes[$attribute]))
             {
                 return false;
             }
@@ -268,7 +279,7 @@
         public function getActionAttributeFormByName($attribute)
         {
             assert('is_string($attribute)');
-            if(!isset($this->_actionAttributes[$attribute]))
+            if (!isset($this->_actionAttributes[$attribute]))
             {
                 throw new NotFoundException();
             }
@@ -307,9 +318,9 @@
                 array('type',                    'required'),
                 array('type',                    'type', 'type' => 'string'),
                 array('type',                    'validateType'),
-                array('relation',  	 		     'type', 'type' => 'string'),
+                array('relation',                'type', 'type' => 'string'),
                 array('relation',                'validateRelation'),
-                array('relationFilter',  	 	 'type', 'type' => 'string'),
+                array('relationFilter',          'type', 'type' => 'string'),
                 array('relationFilter',          'validateRelationFilter'),
                 array('relatedModelRelation',    'type', 'type' => 'string'),
                 array('relatedModelRelation',    'validateRelatedModelRelation'),
@@ -332,23 +343,23 @@
         public function setAttributes($values, $safeOnly = true)
         {
             $valuesAttributes = null;
-            if(isset($values[self::ACTION_ATTRIBUTES]))
+            if (isset($values[self::ACTION_ATTRIBUTES]))
             {
                 $valuesAttributes = $values[self::ACTION_ATTRIBUTES];
                 unset($values[self::ACTION_ATTRIBUTES]);
                 $this->_actionAttributes = array();
             }
             parent::setAttributes($values, $safeOnly);
-            if($valuesAttributes != null)
+            if ($valuesAttributes != null)
             {
-                foreach($valuesAttributes as $attribute => $attributeData)
+                foreach ($valuesAttributes as $attribute => $attributeData)
                 {
                     $resolvedAttributeName  = static::resolveRealAttributeName($attribute);
                     $resolvedModelClassName = static::resolveRealModelClassName($attribute, $this->_modelClassName,
                                               $this->type, $this->relation, $this->relatedModelRelation);
                     $form = WorkflowActionAttributeFormFactory::make($resolvedModelClassName, $resolvedAttributeName);
                     $form->setAttributes($attributeData);
-                    if($form->shouldSetValue)
+                    if ($form->shouldSetValue)
                     {
                         $this->_actionAttributes[$attribute] = $form;
                     }
@@ -361,7 +372,7 @@
          */
         public function validateType()
         {
-            if($this->type == self::TYPE_UPDATE_SELF || $this->type == self::TYPE_CREATE ||
+            if ($this->type == self::TYPE_UPDATE_SELF || $this->type == self::TYPE_CREATE ||
                $this->type == self::TYPE_UPDATE_RELATED || $this->type == self::TYPE_CREATE_RELATED)
             {
                 return true;
@@ -375,10 +386,10 @@
          */
         public function validateRelation()
         {
-            if($this->type == self::TYPE_CREATE || $this->type == self::TYPE_UPDATE_RELATED ||
+            if ($this->type == self::TYPE_CREATE || $this->type == self::TYPE_UPDATE_RELATED ||
                $this->type == self::TYPE_CREATE_RELATED)
             {
-                if(!empty($this->relation))
+                if (!empty($this->relation))
                 {
                     return true;
                 }
@@ -393,9 +404,9 @@
          */
         public function validateRelationFilter()
         {
-            if($this->type == self::TYPE_UPDATE_RELATED || $this->type == self::TYPE_CREATE_RELATED)
+            if ($this->type == self::TYPE_UPDATE_RELATED || $this->type == self::TYPE_CREATE_RELATED)
             {
-                if($this->relationFilter == self::RELATION_FILTER_ALL)
+                if ($this->relationFilter == self::RELATION_FILTER_ALL)
                 {
                     return true;
                 }
@@ -410,9 +421,9 @@
          */
         public function validateRelatedModelRelation()
         {
-            if($this->type == self::TYPE_CREATE_RELATED)
+            if ($this->type == self::TYPE_CREATE_RELATED)
             {
-                if(!empty($this->relatedModelRelation))
+                if (!empty($this->relatedModelRelation))
                 {
                     return true;
                 }
@@ -427,7 +438,7 @@
          */
         public function beforeValidate()
         {
-            if(!$this->validateAttributes())
+            if (!$this->validateAttributes())
             {
                 return false;
             }
@@ -440,11 +451,11 @@
         public function validateAttributes()
         {
             $passedValidation = true;
-            foreach($this->_actionAttributes as $attributeName => $workflowActionAttributeForm)
+            foreach ($this->_actionAttributes as $attributeName => $workflowActionAttributeForm)
             {
-                if(!$workflowActionAttributeForm->validate())
+                if (!$workflowActionAttributeForm->validate())
                 {
-                    foreach($workflowActionAttributeForm->getErrors() as $attribute => $errorArray)
+                    foreach ($workflowActionAttributeForm->getErrors() as $attribute => $errorArray)
                     {
                         assert('is_array($errorArray)');
                         $attributePrefix = static::resolveErrorAttributePrefix($attributeName);
@@ -468,12 +479,12 @@
             assert('is_string($attribute)');
             $delimiter                  = FormModelUtil::RELATION_DELIMITER;
             $attributeAndRelationData   = explode($delimiter, $attribute);
-            if(count($attributeAndRelationData) == 2)
+            if (count($attributeAndRelationData) == 2)
             {
                 list($relation, $notUsed) =  $attributeAndRelationData;
                 return $relation;
             }
-            elseif(count( $attributeAndRelationData) == 1)
+            elseif (count( $attributeAndRelationData) == 1)
             {
                 return null;
             }
@@ -494,17 +505,17 @@
             assert('is_string($attribute)');
             $delimiter                  = FormModelUtil::RELATION_DELIMITER;
             $attributeAndRelationData   = explode($delimiter, $attribute);
-            if(count($attributeAndRelationData) == 2)
+            if (count($attributeAndRelationData) == 2)
             {
                 list($notUsed, $attribute) =  $attributeAndRelationData;
                 return $attribute;
             }
-            elseif(count( $attributeAndRelationData) == 1)
+            elseif (count( $attributeAndRelationData) == 1)
             {
                 //resolve for owner__User for example.
                 $delimiter                  = FormModelUtil::DELIMITER;
                 $attributeAndDynamicData    = explode($delimiter, $attribute);
-                if(count($attributeAndDynamicData) == 2)
+                if (count($attributeAndDynamicData) == 2)
                 {
                     list($attribute, $notUsed) =  $attributeAndDynamicData;
                     return $attribute;
@@ -527,21 +538,21 @@
         public function getDisplayLabel()
         {
             $typeDataAndLabels = ActionForWorkflowForm::getTypeDataAndLabels();
-            if($this->type == self::TYPE_UPDATE_SELF)
+            if ($this->type == self::TYPE_UPDATE_SELF)
             {
                 return $typeDataAndLabels[$this->type];
             }
-            elseif($this->type == self::TYPE_UPDATE_RELATED)
+            elseif ($this->type == self::TYPE_UPDATE_RELATED)
             {
                 $modelClassName = $this->resolveRealModelClassName($this->relation);
                 return $typeDataAndLabels[$this->type] . ' ' . $modelClassName::getModelLabelByTypeAndLanguage('Plural');
             }
-            elseif($this->type == self::TYPE_CREATE)
+            elseif ($this->type == self::TYPE_CREATE)
             {
                 $modelClassName = $this->resolveRealModelClassName($this->relation);
                 return $typeDataAndLabels[$this->type] . ' ' . $modelClassName::getModelLabelByTypeAndLanguage('Singular');
             }
-            elseif($this->type == self::TYPE_CREATE_RELATED)
+            elseif ($this->type == self::TYPE_CREATE_RELATED)
             {
                 $modelClassName        = $this->_modelClassName;
                 $relationModelAdapter  = ModelRelationsAndAttributesToWorkflowAdapter::make(
@@ -569,9 +580,9 @@
             $modelClassName                   = $this->getModelClassNameAndResolveForRelations();
             $adapter = ModelRelationsAndAttributesToWorkflowAdapter::make($modelClassName::getModuleClassName(),
                        $modelClassName, $this->_workflowType);
-            foreach($adapter->getRequiredAttributesForActions() as $attribute => $data)
+            foreach ($adapter->getRequiredAttributesForActions() as $attribute => $data)
             {
-                if(!$this->hasActionAttributeFormByName($attribute))
+                if (!$this->hasActionAttributeFormByName($attribute))
                 {
                     return true;
                 }
@@ -613,12 +624,12 @@
             $delimiter                  = FormModelUtil::RELATION_DELIMITER;
             $attributeAndRelationData   = explode($delimiter, $attribute);
             $model                      = $this->makeModelAndResolveForRelations();
-            if(count($attributeAndRelationData) == 2)
+            if (count($attributeAndRelationData) == 2)
             {
                 list($relation, $notUsed) =  $attributeAndRelationData;
                 return $model->getRelationModelClassName($relation);
             }
-            elseif(count( $attributeAndRelationData) == 1)
+            elseif (count( $attributeAndRelationData) == 1)
             {
                 return get_class($model);
             }
@@ -643,7 +654,7 @@
          */
         protected function getModelClassNameAndResolveForRelations()
         {
-            if($this->type == self::TYPE_UPDATE_SELF)
+            if ($this->type == self::TYPE_UPDATE_SELF)
             {
                 return $this->_modelClassName;
             }
@@ -651,11 +662,11 @@
             $adapter                = ModelRelationsAndAttributesToWorkflowAdapter::
                                       make($modelClassName::getModuleClassName(), $modelClassName, $this->_workflowType);
             $relationModelClassName = $adapter->getRelationModelClassName($this->relation);
-            if($this->type == self::TYPE_UPDATE_RELATED || $this->type == self::TYPE_CREATE)
+            if ($this->type == self::TYPE_UPDATE_RELATED || $this->type == self::TYPE_CREATE)
             {
                 return  $relationModelClassName;
             }
-            elseif($this->type == self::TYPE_CREATE_RELATED)
+            elseif ($this->type == self::TYPE_CREATE_RELATED)
             {
                 $relationModelAdapter = ModelRelationsAndAttributesToWorkflowAdapter::make(
                                         $relationModelClassName::getModuleClassName(),
@@ -678,9 +689,9 @@
             $attributeFormsIndexedByAttribute = array();
             $adapter = ModelRelationsAndAttributesToWorkflowAdapter::make($modelClassName::getModuleClassName(),
                                                                           $modelClassName, $this->_workflowType);
-            foreach($adapter->$methodToCall() as $attribute => $data)
+            foreach ($adapter->$methodToCall() as $attribute => $data)
             {
-                if($this->hasActionAttributeFormByName($attribute))
+                if ($this->hasActionAttributeFormByName($attribute))
                 {
                     $attributeFormsIndexedByAttribute[$attribute] = $this->getActionAttributeFormByName($attribute);
                 }
@@ -688,7 +699,7 @@
                 {
                     $attributeFormsIndexedByAttribute[$attribute] = $this->makeActionAttributeFormByAttribute($attribute);
                 }
-                if($methodToCall == 'getRequiredAttributesForActions')
+                if ($methodToCall == 'getRequiredAttributesForActions')
                 {
                     $attributeFormsIndexedByAttribute[$attribute]->shouldSetValue = true;
                 }

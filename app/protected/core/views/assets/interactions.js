@@ -1,7 +1,41 @@
-$(window).ready(function(){
+/*********************************************************************************
+ * Zurmo is a customer relationship management program developed by
+ * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+ *
+ * Zurmo is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License version 3 as published by the
+ * Free Software Foundation with the addition of the following permission added
+ * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
+ * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
+ * OF NON INFRINGEMENT OF THIRD PARTY RIGHTS.
+ *
+ * Zurmo is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+ * details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * this program; if not, see http://www.gnu.org/licenses or write to the Free
+ * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+ * 02110-1301 USA.
+ *
+ * You can contact Zurmo, Inc. with a mailing address at 27 North Wacker Drive
+ * Suite 370 Chicago, IL 60606. or at email address contact@zurmo.com.
+ *
+ * The interactive user interfaces in original and modified versions
+ * of this program must display Appropriate Legal Notices, as required under
+ * Section 5 of the GNU General Public License version 3.
+ *
+ * In accordance with Section 7(b) of the GNU General Public License version 3,
+ * these Appropriate Legal Notices must retain the display of the Zurmo
+ * logo and Zurmo copyright notice. If the display of the logo is not reasonably
+ * feasible for technical reasons, the Appropriate Legal Notices must display the words
+ * "Copyright Zurmo Inc. 2013. All rights reserved".
+ ********************************************************************************/
 
+$(window).ready(function(){
     //main menu flyouts or mbmenu releacment
-    $('.nav:not(.user-menu-item) > .parent').live({
+    $('.nav:not(.user-menu-item):not(.clickable-mbmenu) > .parent').live({
         mouseenter: function() {
             if ( $(this).find('ul').length > 0 ){
                 $(this).find('ul').stop(true, true).delay(0).fadeIn(100);
@@ -24,14 +58,20 @@ $(window).ready(function(){
             }
         }
     );
-    /*
-    $('body > div').click(function(){
-        $('.nav-open').removeClass('nav-open');
-    });
-    */
+
+    $('.clickable-mbmenu').find('a').click(
+        function(){
+            var parentUl = $(this).parentsUntil('clickable-mbmenu').parent();
+            if ( parentUl.hasClass('nav-open') === false ){
+                parentUl.addClass('nav-open');
+            } else {
+                parentUl.removeClass('nav-open');
+            }
+        }
+    );
 
     //Main nav hover
-     $('#MenuView a, #RecentlyViewedView a').hover(
+     $('#MenuView > ul > li > a, #RecentlyViewedView  > ul > li > a').hover(
         function(){
             $('> span:first-child', this).stop(true, true).fadeTo( 50, 1, 'linear' );
             $('> span:last-child', this).stop(true, true).animate({ color : '#555', color: '#fff' }, 50, 'linear');
@@ -44,6 +84,14 @@ $(window).ready(function(){
         }
     );
 
+    //Main nav toggle hidden items
+    $('.toggle-hidden-nav-items').click(
+        function(){
+            $('.hidden-nav-item').slideToggle(200);
+            $(this).toggleClass('point-up');
+        }
+    );
+
     function resizeWhiteArea(){
         /*Resizes the app to fill the browser's window case smaller'*/
         var viewportHeight = $(window).height();
@@ -51,20 +99,19 @@ $(window).ready(function(){
         var appChromeHeight = 0;
         var bufferHeight = 0;
         var recentlyViewedHeight = 0;
-
         //if login
         if ( $('#LoginPageView').length > 0 ) {
             appChromeHeight = 40 + $('#FooterView').outerHeight(true);
             if ( wrapperDivHeight < viewportHeight  ){
                 bufferHeight = viewportHeight - appChromeHeight;
-                $('#LoginView').height(  bufferHeight   );
+                $('#LoginView').css('min-height',  bufferHeight);
             }
-           //if admin area
+        //if admin area
         } else if ( $('.AdministrativeArea').length > 0 ) {
             appChromeHeight = 80 + $('#FooterView').outerHeight(true);
             if ( wrapperDivHeight < viewportHeight  ){
                 bufferHeight = viewportHeight - appChromeHeight;
-                $('.AppContainer').css('min-height', bufferHeight);
+                $('.AppContent').css('min-height',  bufferHeight);
             }
         //rest of app
         } else {
@@ -72,7 +119,11 @@ $(window).ready(function(){
             appChromeHeight = recentlyViewedHeight + $('#MenuView').outerHeight(true) + $('#HeaderView').outerHeight(true) + $('#FooterView').outerHeight(true);
             if ( wrapperDivHeight < viewportHeight  ){
                 bufferHeight = viewportHeight - appChromeHeight;
-                $('#RecentlyViewedView').css('min-height', $('#RecentlyViewedView').height() + bufferHeight);
+                if ($('#RecentlyViewedView').length > 0){
+                    $('#RecentlyViewedView').css('min-height', $('#RecentlyViewedView').height() + bufferHeight);
+                } else {
+                    $('.AppContent').css('min-height', $('.AppContainer').height() + 30);
+                }
             }
         }
     }
@@ -92,10 +143,19 @@ $(window).ready(function(){
     });
 
     $(".overlay-label-field > input").live('blur', function(){
-        if($(this).val() == "") {
+        if($(this).val() == "")
+        {
             $(this).prev().fadeIn(250);
         }
     });
+
+    $(".overlay-label-field input").live('change', function(){
+        if($(this).val() != "")
+        {
+            $(this).prev().fadeOut(250);
+        }
+    });
+
     $(".overlay-label-field > input").each( function(){
         if($(this).val() == "") {
             $('label', $(this)).fadeIn(250);
@@ -140,7 +200,6 @@ $(window).ready(function(){
         left : 0
     };
     resolveSpinner(true, '#stickyListLoadingArea', style, '.loading');
-
 });
 
 /*
@@ -149,14 +208,16 @@ $(window).ready(function(){
 var windowTop, diff;
 
 function dockFloatingBar(){
-    if ($('.float-bar').find('.disable-float-bar').length == 0) {
-        windowTop = $(window).scrollTop();
-        diff = $(document).height() - $(window).height() - 100; //100px is to dock it before scrolling all the way to the bottom
-        if( windowTop > diff ) {
-            $('.float-bar .view-toolbar-container').addClass('dock');
-        } else {
-            if( $('.wrapper').height() > $('.AppNavigation').height() ) {
-                $('.float-bar .view-toolbar-container').removeClass('dock');
+    if ($('body').hasClass('mobile-app') === false){
+        if ($('.float-bar').find('.disable-float-bar').length == 0) {
+            windowTop = $(window).scrollTop();
+            diff = $(document).height() - $(window).height() - 100; //100px is to dock it before scrolling all the way to the bottom
+            if( windowTop > diff ) {
+                $('.float-bar .view-toolbar-container').addClass('dock');
+            } else {
+                if( $('.wrapper').height() > $('.AppNavigation').height() ) {
+                    $('.float-bar .view-toolbar-container').removeClass('dock');
+                }
             }
         }
     }
@@ -703,15 +764,16 @@ Autogrow textfields from https://github.com/rumpl/jquery.autogrow
             var $this = $(this),
                 minHeight = $this.height(),
                 shadow = $('<div></div>').css({
-                    position:   'absolute',
-                    top: -10000,
-                    left: -10000,
-                    width: $(this).width(),
-                    fontSize: $this.css('fontSize'),
-                    fontFamily: $this.css('fontFamily'),
-                    lineHeight: $this.css('lineHeight'),
-                    resize: 'none'
-                }).addClass('shadow').appendTo(document.body),
+                    position   :   'absolute',
+                    top        : -50000,
+                    left       : -50000,
+                    visibility : 'hidden',
+                    width      : $(this).width(),
+                    fontSize   : $this.css('fontSize'),
+                    fontFamily : $this.css('fontFamily'),
+                    lineHeight : $this.css('lineHeight'),
+                    resize     : 'none'
+                }).addClass('shadow').appendTo($(this).parent()),
                 update = function () {
                     var t = this;
                     setTimeout(function () {
@@ -719,21 +781,54 @@ Autogrow textfields from https://github.com/rumpl/jquery.autogrow
                                 .replace(/>/g, '&gt;')
                                 .replace(/&/g, '&amp;')
                                 .replace(/\n/g, '<br/>&nbsp;');
-
                         if ($.trim(val) === '') {
                             val = 'a';
                         }
-
                         shadow.html(val);
-                        $(t).css('height', Math.max(shadow[0].offsetHeight + 15, minHeight));
+                        $(t).height(Math.max(shadow[0].offsetHeight + 15, minHeight));
                     }, 0);
                 };
-
             $this.change(update).keyup(update).keydown(update).focus(update);
             update.apply(this);
         });
-
         return this;
     };
-
 }(jQuery));
+
+// query string related functions
+$.extend({
+    getUrlVars: function() {
+        var vars = [], hash;
+        var q = document.URL.split('?')[1];
+        if(q != undefined){
+            q = q.split('&');
+            for(var i = 0; i < q.length; i++){
+                hash = q[i].split('=');
+                vars.push(hash[1]);
+                vars[hash[0]] = hash[1];
+            }
+        }
+        return vars;
+    },
+    getUrlVar: function(name) {
+        return $.getUrlVars()[name];
+    },
+    hasActiveAjaxRequests: function() {
+        return ($.active > 0);
+    }
+});
+
+// TODO: @Shoaibi: Medium: Ask Nabeel/Sergio on extending buttonset widget to add this functionality before _create
+function createButtonSetIfNotAlreadyExist(qualifier, classFlag) {
+    classFlag = typeof classFlag !== 'undefined' ? classFlag : 'ui-buttonset';
+    if ($(qualifier).hasClass(classFlag)) {
+        return false;
+    }
+    $(qualifier).buttonset();
+}
+
+function isValidUrl(url)
+{
+    var pattern = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/;
+    return pattern.test(url);
+}

@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2012 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU General Public License version 3 as published by the
@@ -20,8 +20,18 @@
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
      *
-     * You can contact Zurmo, Inc. with a mailing address at 113 McHenry Road Suite 207,
-     * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
+     * You can contact Zurmo, Inc. with a mailing address at 27 North Wacker Drive
+     * Suite 370 Chicago, IL 60606. or at email address contact@zurmo.com.
+     *
+     * The interactive user interfaces in original and modified versions
+     * of this program must display Appropriate Legal Notices, as required under
+     * Section 5 of the GNU General Public License version 3.
+     *
+     * In accordance with Section 7(b) of the GNU General Public License version 3,
+     * these Appropriate Legal Notices must retain the display of the Zurmo
+     * logo and Zurmo copyright notice. If the display of the logo is not reasonably
+     * feasible for technical reasons, the Appropriate Legal Notices must display the words
+     * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -33,50 +43,49 @@
         {
             switch($this->trigger->getOperator())
             {
-
                 case OperatorRules::TYPE_EQUALS:
-                    if($model->{$attribute}->id === $this->trigger->value)
+                    if ($model->{$attribute}->id === $this->trigger->value)
                     {
                         return true;
                     }
                     break;
                 case OperatorRules::TYPE_DOES_NOT_EQUAL:
-                    if($model->{$attribute}->id !== $this->trigger->value)
+                    if ($model->{$attribute}->id !== $this->trigger->value)
                     {
                         return true;
                     }
                     break;
                 case OperatorRules::TYPE_ONE_OF:
-                    if(!is_array($this->trigger->value))
+                    if (!is_array($this->trigger->value))
                     {
                         return false;
                     }
-                    if(in_array($model->{$attribute}->id, $this->trigger->value))
+                    if (in_array($model->{$attribute}->id, $this->trigger->value))
                     {
                         return true;
                     }
                     break;
                 case OperatorRules::TYPE_CHANGES:
-                    if(array_key_exists($attribute, $model->originalAttributeValues))
+                    if (array_key_exists($attribute, $model->originalAttributeValues))
                     {
                         return true;
                     }
                     break;
                 case OperatorRules::TYPE_DOES_NOT_CHANGE:
-                    if(!array_key_exists($attribute, $model->originalAttributeValues))
+                    if (!array_key_exists($attribute, $model->originalAttributeValues))
                     {
                         return true;
                     }
                     break;
                 case OperatorRules::TYPE_BECOMES:
-                    if(array_key_exists($attribute, $model->originalAttributeValues) &&
+                    if (array_key_exists($attribute, $model->originalAttributeValues) &&
                         $model->{$attribute}->id === $this->trigger->value)
                     {
                         return true;
                     }
                     break;
                 case OperatorRules::TYPE_WAS:
-                    if(array_key_exists($attribute, $model->originalAttributeValues) &&
+                    if (array_key_exists($attribute, $model->originalAttributeValues) &&
                         $model->originalAttributeValues[$attribute][1] ===
                         $this->trigger->value)
                     {
@@ -84,35 +93,35 @@
                     }
                     break;
                 case OperatorRules::TYPE_BECOMES_ONE_OF:
-                    if(!is_array($this->trigger->value))
+                    if (!is_array($this->trigger->value))
                     {
                         return false;
                     }
-                    if(array_key_exists($attribute, $model->originalAttributeValues) &&
+                    if (array_key_exists($attribute, $model->originalAttributeValues) &&
                        in_array($model->{$attribute}->id, $this->trigger->value))
                     {
                         return true;
                     }
                     break;
                 case OperatorRules::TYPE_WAS_ONE_OF:
-                    if(!is_array($this->trigger->value))
+                    if (!is_array($this->trigger->value))
                     {
                         return false;
                     }
-                    if(array_key_exists($attribute, $model->originalAttributeValues) &&
+                    if (array_key_exists($attribute, $model->originalAttributeValues) &&
                         in_array($model->originalAttributeValues[$attribute][1], $this->trigger->value))
                     {
                         return true;
                     }
                     break;
                 case OperatorRules::TYPE_IS_EMPTY:
-                    if(!($model->{$attribute}->id > 0))
+                    if (!($model->{$attribute}->id > 0))
                     {
                         return true;
                     }
                     break;
                 case OperatorRules::TYPE_IS_NOT_EMPTY:
-                    if($model->{$attribute}->id > 0)
+                    if ($model->{$attribute}->id > 0)
                     {
                         return true;
                     }

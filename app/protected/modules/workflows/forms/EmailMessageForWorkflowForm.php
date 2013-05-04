@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2012 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU General Public License version 3 as published by the
@@ -20,8 +20,18 @@
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
      *
-     * You can contact Zurmo, Inc. with a mailing address at 113 McHenry Road Suite 207,
-     * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
+     * You can contact Zurmo, Inc. with a mailing address at 27 North Wacker Drive
+     * Suite 370 Chicago, IL 60606. or at email address contact@zurmo.com.
+     *
+     * The interactive user interfaces in original and modified versions
+     * of this program must display Appropriate Legal Notices, as required under
+     * Section 5 of the GNU General Public License version 3.
+     *
+     * In accordance with Section 7(b) of the GNU General Public License version 3,
+     * these Appropriate Legal Notices must retain the display of the Zurmo
+     * logo and Zurmo copyright notice. If the display of the logo is not reasonably
+     * feasible for technical reasons, the Appropriate Legal Notices must display the words
+     * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -172,7 +182,7 @@
          */
         public function attributeLabels()
         {
-            return array('emailTemplateId'          => Zurmo::t('WorkflowsModule', 'Email Template'),
+            return array('emailTemplateId'          => Zurmo::t('WorkflowsModule', 'Template'),
                          'sendAfterDurationSeconds' => Zurmo::t('WorkflowsModule', 'Send'),
                          'sendFromType'             => Zurmo::t('WorkflowsModule', 'Send From'),
                          'sendFromName'             => Zurmo::t('WorkflowsModule', 'From Name'),
@@ -189,19 +199,19 @@
         public function setAttributes($values, $safeOnly = true)
         {
             $recipients = null;
-            if(isset($values[self::EMAIL_MESSAGE_RECIPIENTS]))
+            if (isset($values[self::EMAIL_MESSAGE_RECIPIENTS]))
             {
                 $recipients = $values[self::EMAIL_MESSAGE_RECIPIENTS];
                 unset($values[self::EMAIL_MESSAGE_RECIPIENTS]);
                 $this->_emailMessageRecipients = array();
             }
             parent::setAttributes($values, $safeOnly);
-            if($recipients != null)
+            if ($recipients != null)
             {
                 $count = 0;
-                foreach($recipients as $temporaryKey => $recipientData)
+                foreach ($recipients as $temporaryKey => $recipientData)
                 {
-                    if(!isset($recipientData['type']))
+                    if (!isset($recipientData['type']))
                     {
                         throw new NotSupportedException();
                     }
@@ -210,7 +220,7 @@
                     $form->setAttributes($recipientData);
                     $this->_emailMessageRecipients[] = $form;
                     $this->_emailMessageRecipientsRealToTemporaryKeyData[] = $temporaryKey;
-                    $count ++;
+                    $count++;
                 }
             }
         }
@@ -220,22 +230,22 @@
          */
         public function validateSendFromType()
         {
-            if($this->sendFromType == self::SEND_FROM_TYPE_CUSTOM)
+            if ($this->sendFromType == self::SEND_FROM_TYPE_CUSTOM)
             {
                 $validated = true;
-                if($this->sendFromName == null)
+                if ($this->sendFromName == null)
                 {
                     $this->addError('sendFromName', Zurmo::t('WorkflowsModule', 'From Name cannot be blank.'));
                     $validated = false;
                 }
-                if($this->sendFromAddress == null)
+                if ($this->sendFromAddress == null)
                 {
                     $this->addError('sendFromAddress', Zurmo::t('WorkflowsModule', 'From Email Address cannot be blank.'));
                     $validated = false;
                 }
                 return $validated;
             }
-            elseif($this->sendFromType != self::SEND_FROM_TYPE_DEFAULT)
+            elseif ($this->sendFromType != self::SEND_FROM_TYPE_DEFAULT)
             {
                 $this->addError('type', Zurmo::t('WorkflowsModule', 'Invalid Send From Type'));
             }
@@ -247,7 +257,7 @@
          */
         public function beforeValidate()
         {
-            if(!$this->validateRecipients())
+            if (!$this->validateRecipients())
             {
                 return false;
             }
@@ -260,17 +270,17 @@
         public function validateRecipients()
         {
             $passedValidation = true;
-            if(count($this->_emailMessageRecipients) == 0)
+            if (count($this->_emailMessageRecipients) == 0)
             {
                 $this->addError('recipientsValidation',
                                 Zurmo::t('WorkflowsModule', 'At least one recipient must be added'));
                 return false;
             }
-            foreach($this->_emailMessageRecipients as $key => $workflowEmailMessageRecipientForm)
+            foreach ($this->_emailMessageRecipients as $key => $workflowEmailMessageRecipientForm)
             {
-                if(!$workflowEmailMessageRecipientForm->validate())
+                if (!$workflowEmailMessageRecipientForm->validate())
                 {
-                    foreach($workflowEmailMessageRecipientForm->getErrors() as $attribute => $errorArray)
+                    foreach ($workflowEmailMessageRecipientForm->getErrors() as $attribute => $errorArray)
                     {
                         assert('is_array($errorArray)');
                         $attributePrefix = static::resolveErrorAttributePrefix($this->resolveTemporaryKeyByRealKey($key));
@@ -309,7 +319,7 @@
          */
         protected function resolveTemporaryKeyByRealKey($key)
         {
-            assert(is_int($key));
+            assert(is_int($key)); // Not Coding Standard
             return $this->_emailMessageRecipientsRealToTemporaryKeyData[$key];
         }
     }

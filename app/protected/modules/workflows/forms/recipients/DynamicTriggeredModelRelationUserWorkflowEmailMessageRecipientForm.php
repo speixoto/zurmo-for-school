@@ -1,28 +1,38 @@
 <?php
-/*********************************************************************************
- * Zurmo is a customer relationship management program developed by
- * Zurmo, Inc. Copyright (C) 2012 Zurmo Inc.
- *
- * Zurmo is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License version 3 as published by the
- * Free Software Foundation with the addition of the following permission added
- * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
- * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
- * OF NON INFRINGEMENT OF THIRD PARTY RIGHTS.
- *
- * Zurmo is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program; if not, see http://www.gnu.org/licenses or write to the Free
- * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
- * 02110-1301 USA.
- *
- * You can contact Zurmo, Inc. with a mailing address at 113 McHenry Road Suite 207,
- * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
- ********************************************************************************/
+    /*********************************************************************************
+     * Zurmo is a customer relationship management program developed by
+     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     *
+     * Zurmo is free software; you can redistribute it and/or modify it under
+     * the terms of the GNU General Public License version 3 as published by the
+     * Free Software Foundation with the addition of the following permission added
+     * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
+     * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
+     * OF NON INFRINGEMENT OF THIRD PARTY RIGHTS.
+     *
+     * Zurmo is distributed in the hope that it will be useful, but WITHOUT
+     * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+     * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+     * details.
+     *
+     * You should have received a copy of the GNU General Public License along with
+     * this program; if not, see http://www.gnu.org/licenses or write to the Free
+     * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+     * 02110-1301 USA.
+     *
+     * You can contact Zurmo, Inc. with a mailing address at 27 North Wacker Drive
+     * Suite 370 Chicago, IL 60606. or at email address contact@zurmo.com.
+     *
+     * The interactive user interfaces in original and modified versions
+     * of this program must display Appropriate Legal Notices, as required under
+     * Section 5 of the GNU General Public License version 3.
+     *
+     * In accordance with Section 7(b) of the GNU General Public License version 3,
+     * these Appropriate Legal Notices must retain the display of the Zurmo
+     * logo and Zurmo copyright notice. If the display of the logo is not reasonably
+     * feasible for technical reasons, the Appropriate Legal Notices must display the words
+     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     ********************************************************************************/
 
     /**
      * Form to work with dynamic triggered model relation users for an email message recipient
@@ -68,11 +78,11 @@
         {
             $existingItemIds = array();
             $resolvedRecipients = array();
-            foreach($existingRecipients as $recipient)
+            foreach ($existingRecipients as $recipient)
             {
-                if($recipient->personOrAccount->id > 0)
+                if ($recipient->personOrAccount->id > 0)
                 {
-                    if(!in_array($recipient->personOrAccount->getClassId('Item'), $existingItemIds))
+                    if (!in_array($recipient->personOrAccount->getClassId('Item'), $existingItemIds))
                     {
                         $existingItemIds[]    = $recipient->personOrAccount->getClassId('Item');
                         $resolvedRecipients[] = $recipient;
@@ -83,14 +93,13 @@
                     }
                 }
             }
-            foreach($newRecipients as $recipient)
+            foreach ($newRecipients as $recipient)
             {
-                if(!in_array($recipient->personOrAccount->getClassId('Item'), $existingItemIds))
+                if (!in_array($recipient->personOrAccount->getClassId('Item'), $existingItemIds))
                 {
                     $existingItemIds[]    = $recipient->personOrAccount->getClassId('Item');
                     $resolvedRecipients[] = $recipient;
                 }
-
             }
             return $resolvedRecipients;
         }
@@ -103,7 +112,7 @@
             return array_merge(parent::rules(), array(
                       array('relation',         'type', 'type' =>  'string'),
                       array('relation',         'required'),
-                      array('relationFilter',  	'type', 'type' => 'string'),
+                      array('relationFilter',   'type', 'type' => 'string'),
                       array('relationFilter',   'validateRelationFilter')));
         }
 
@@ -112,7 +121,7 @@
          */
         public function validateRelationFilter()
         {
-            if($this->relationFilter == self::RELATION_FILTER_ALL)
+            if ($this->relationFilter == self::RELATION_FILTER_ALL)
             {
                 return true;
             }
@@ -129,7 +138,7 @@
             $adapter        = ModelRelationsAndAttributesToWorkflowAdapter::make($modelClassName::getModuleClassName(),
                                                                                  $modelClassName, $this->workflowType);
             $valueAndLabels = array();
-            foreach($adapter->getSelectableRelationsDataForEmailMessageRecipientModelRelation() as $relation => $data)
+            foreach ($adapter->getSelectableRelationsDataForEmailMessageRecipientModelRelation() as $relation => $data)
             {
                 $valueAndLabels[$relation] = $data['label'];
             }
@@ -146,37 +155,37 @@
         {
             $modelClassName = $this->modelClassName;
             $recipients     = array();
-            if($model->isADerivedRelationViaCastedUpModel($this->relation) &&
+            if ($model->isADerivedRelationViaCastedUpModel($this->relation) &&
                 $model->getDerivedRelationType($this->relation) == RedBeanModel::MANY_MANY)
             {
-                foreach(WorkflowUtil::resolveDerivedModels($model, $this->relation) as $resolvedModel)
+                foreach (WorkflowUtil::resolveDerivedModels($model, $this->relation) as $resolvedModel)
                 {
                     $recipients = self::resolveRecipientsAsUniquePeople($recipients, parent::makeRecipients($resolvedModel, $triggeredByUser));
                 }
             }
-            elseif($modelClassName::getInferredRelationModelClassNamesForRelation(
+            elseif ($modelClassName::getInferredRelationModelClassNamesForRelation(
                 ModelRelationsAndAttributesToWorkflowAdapter::resolveRealAttributeName($this->relation)) !=  null)
             {
-                foreach(WorkflowUtil::
+                foreach (WorkflowUtil::
                         getInferredModelsByAtrributeAndModel($this->relation, $model) as $resolvedModel)
                 {
                     $recipients = self::resolveRecipientsAsUniquePeople($recipients, parent::makeRecipients($resolvedModel, $triggeredByUser));
                 }
             }
-            elseif($model->{$this->relation} instanceof RedBeanMutableRelatedModels)
+            elseif ($model->{$this->relation} instanceof RedBeanMutableRelatedModels)
             {
-                if(!$this->relationFilter == self::RELATION_FILTER_ALL)
+                if (!$this->relationFilter == self::RELATION_FILTER_ALL)
                 {
                     throw new NotSupportedException();
                 }
-                foreach($model->{$this->relation} as $resolvedModel)
+                foreach ($model->{$this->relation} as $resolvedModel)
                 {
                     $recipients = self::resolveRecipientsAsUniquePeople($recipients, parent::makeRecipients($resolvedModel, $triggeredByUser));
                 }
             }
-            elseif($modelClassName::isRelationTypeAHasOneVariant($this->relation))
+            elseif ($modelClassName::isRelationTypeAHasOneVariant($this->relation))
             {
-                if($model->{$this->relation}->id > 0)
+                if ($model->{$this->relation}->id > 0)
                 {
                     $recipients = parent::makeRecipients($model->{$this->relation}, $triggeredByUser);
                 }
@@ -195,17 +204,17 @@
         protected function resolveModelClassName()
         {
             $modelClassName = $this->modelClassName;
-            if($modelClassName::isADerivedRelationViaCastedUpModel($this->relation) &&
+            if ($modelClassName::isADerivedRelationViaCastedUpModel($this->relation) &&
                $modelClassName::getDerivedRelationType($this->relation) == RedBeanModel::MANY_MANY)
             {
                 return $modelClassName::getDerivedRelationModelClassName($this->relation);
             }
-            elseif($modelClassName::getInferredRelationModelClassNamesForRelation(
+            elseif ($modelClassName::getInferredRelationModelClassNamesForRelation(
                    ModelRelationsAndAttributesToWorkflowAdapter::resolveRealAttributeName($this->relation)) !=  null)
             {
                 return ModelRelationsAndAttributesToWorkflowAdapter::getInferredRelationModelClassName($this->relation);
             }
-            elseif($modelClassName::isRelationTypeAHasManyVariant($this->relation) ||
+            elseif ($modelClassName::isRelationTypeAHasManyVariant($this->relation) ||
                    $modelClassName::isRelationTypeAHasOneVariant($this->relation))
             {
                 return $modelClassName::getRelationModelClassName($this->relation);

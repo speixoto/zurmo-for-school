@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2012 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU General Public License version 3 as published by the
@@ -20,8 +20,18 @@
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
      *
-     * You can contact Zurmo, Inc. with a mailing address at 113 McHenry Road Suite 207,
-     * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
+     * You can contact Zurmo, Inc. with a mailing address at 27 North Wacker Drive
+     * Suite 370 Chicago, IL 60606. or at email address contact@zurmo.com.
+     *
+     * The interactive user interfaces in original and modified versions
+     * of this program must display Appropriate Legal Notices, as required under
+     * Section 5 of the GNU General Public License version 3.
+     *
+     * In accordance with Section 7(b) of the GNU General Public License version 3,
+     * these Appropriate Legal Notices must retain the display of the Zurmo
+     * logo and Zurmo copyright notice. If the display of the logo is not reasonably
+     * feasible for technical reasons, the Appropriate Legal Notices must display the words
+     * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -58,24 +68,25 @@
          */
         protected function renderFormContent()
         {
-            $content           = '<div class="attributesContainer">';
+            $leftSideContent   = null;
             $element           = new TextElement($this->model, 'name', $this->form);
-            $leftSideContent   = '<table><colgroup><col class="col-0"><col class="col-1">' .
-                                 '</colgroup><tr>' . $element->render() . '</tr>';
-            $element           = new TextAreaElement(
-                                 $this->model, 'description', $this->form, array('rows' => 2));
+            $leftSideContent   = '<table><colgroup><col class="col-0"><col class="col-1">' . '</colgroup><tr>' . $element->render() . '</tr>';
+            $element           = new TextAreaElement($this->model, 'description', $this->form, array('rows' => 5));
             $leftSideContent  .= '<tr>' . $element->render() . '</tr>';
-            $element           = new CurrencyConversionTypeStaticDropDownElement(
-                                 $this->model, 'currencyConversionType', $this->form);
+            $element           = new CurrencyConversionTypeStaticDropDownElement($this->model, 'currencyConversionType', $this->form);
             $leftSideContent  .= '<tr>' . $element->render() . '</tr>';
-            $element           = new CurrencyCodeStaticDropDownFormElement($this->model, 'spotConversionCurrencyCode',
-                                 $this->form, array('addBlank' => true));
+            $element           = new CurrencyCodeStaticDropDownFormElement($this->model, 'spotConversionCurrencyCode', $this->form, array('addBlank' => true));
             $leftSideContent  .= '<tr>' . $element->render() . '</tr></table>';
-            $content          .= ZurmoHtml::tag('div', array('class' => 'panel'), $leftSideContent);
-            $rightSideContent  = ZurmoHtml::tag('div', array(), $this->renderRightSideFormLayout());
-            $rightSideContent  = ZurmoHtml::tag('div', array('class' => 'buffer'), $rightSideContent);
-            $content          .= ZurmoHtml::tag('div', array('class' => 'right-side-edit-view-panel'), $rightSideContent);
-            $content          .= '</div>';
+            $leftSideContent   = ZurmoHtml::tag('div', array('class' => 'panel'), $leftSideContent);
+            $leftSideContent   = ZurmoHtml::tag('div', array('class' => 'left-column'), $leftSideContent);
+
+            $rightSideContent = ZurmoHtml::tag('div', array('class' => 'right-side-edit-view-panel'), $this->renderRightSideFormLayout());
+            $rightSideContent = ZurmoHtml::tag('div', array('class' => 'right-column'), $rightSideContent);
+
+            $content = '<div class="attributesContainer">';
+            $content .= $leftSideContent . $rightSideContent;
+            $content .= '</div>';
+
             return $content;
         }
 
@@ -116,13 +127,13 @@
                                                   resolveInputIdPrefixIntoString(
                                                   array(get_class($this->model), 'spotConversionCurrencyCode'));
             Yii::app()->clientScript->registerScript('currencyConversionTypeHelper', "
-                if($('#" . $currencyConversionTypeSelectId . "').val() != " . Report::CURRENCY_CONVERSION_TYPE_SPOT . ")
+                if ($('#" . $currencyConversionTypeSelectId . "').val() != " . Report::CURRENCY_CONVERSION_TYPE_SPOT . ")
                 {
                     $('#" . $spotConversionCurrencyCodeSelectId . "').parentsUntil('tr').parent().hide();
                 }
                 $('#" . $currencyConversionTypeSelectId . "').change( function()
                     {
-                        if($(this).val() == " . Report::CURRENCY_CONVERSION_TYPE_SPOT . ")
+                        if ($(this).val() == " . Report::CURRENCY_CONVERSION_TYPE_SPOT . ")
                         {
                             $('#" . $spotConversionCurrencyCodeSelectId . "').parentsUntil('tr').parent().show();
                         }

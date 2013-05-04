@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2012 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU General Public License version 3 as published by the
@@ -20,8 +20,18 @@
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
      *
-     * You can contact Zurmo, Inc. with a mailing address at 113 McHenry Road Suite 207,
-     * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
+     * You can contact Zurmo, Inc. with a mailing address at 27 North Wacker Drive
+     * Suite 370 Chicago, IL 60606. or at email address contact@zurmo.com.
+     *
+     * The interactive user interfaces in original and modified versions
+     * of this program must display Appropriate Legal Notices, as required under
+     * Section 5 of the GNU General Public License version 3.
+     *
+     * In accordance with Section 7(b) of the GNU General Public License version 3,
+     * these Appropriate Legal Notices must retain the display of the Zurmo
+     * logo and Zurmo copyright notice. If the display of the logo is not reasonably
+     * feasible for technical reasons, the Appropriate Legal Notices must display the words
+     * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -40,65 +50,64 @@
             assert('is_string($attribute)');
             switch($this->trigger->valueType)
             {
-
                 case MixedDateTypesSearchFormAttributeMappingRules::TYPE_AFTER:
-                    if(static::sanitize($model->$attribute) > static::sanitizeTriggerValue($this->trigger->value))
+                    if (static::sanitize($model->$attribute) > static::sanitizeTriggerValue($this->trigger->value))
                     {
                         return true;
                     }
                     break;
                 case MixedDateTypesSearchFormAttributeMappingRules::TYPE_BEFORE:
-                    if(static::sanitize($model->$attribute) < static::sanitizeTriggerValue($this->trigger->value))
+                    if (static::sanitize($model->$attribute) < static::sanitizeTriggerValue($this->trigger->value))
                     {
                         return true;
                     }
                     break;
                 case MixedDateTypesSearchFormAttributeMappingRules::TYPE_ON:
-                if(static::sanitize($model->$attribute) === static::sanitizeTriggerValue($this->trigger->value))
+                if (static::sanitize($model->$attribute) === static::sanitizeTriggerValue($this->trigger->value))
                 {
                     return true;
                 }
                     break;
                 case MixedDateTypesSearchFormAttributeMappingRules::TYPE_BETWEEN:
-                    if(static::sanitize($model->$attribute) > static::sanitizeTriggerValue($this->trigger->value) &&
+                    if (static::sanitize($model->$attribute) > static::sanitizeTriggerValue($this->trigger->value) &&
                        static::sanitize($model->$attribute) < static::sanitizeTriggerValue($this->trigger->secondValue))
                     {
                         return true;
                     }
                     break;
                 case MixedDateTypesSearchFormAttributeMappingRules::TYPE_IS_EMPTY:
-                    if(DateTimeUtil::isDateValueNull($model, $attribute))
+                    if (DateTimeUtil::isDateValueNull($model, $attribute))
                     {
                         return true;
                     }
                     break;
                 case MixedDateTypesSearchFormAttributeMappingRules::TYPE_IS_NOT_EMPTY:
-                    if(!DateTimeUtil::isDateValueNull($model, $attribute))
+                    if (!DateTimeUtil::isDateValueNull($model, $attribute))
                     {
                         return true;
                     }
                     break;
                 case MixedDateTypesSearchFormAttributeMappingRules::TYPE_CHANGES:
-                    if(array_key_exists($attribute, $model->originalAttributeValues))
+                    if (array_key_exists($attribute, $model->originalAttributeValues))
                     {
                         return true;
                     }
                     break;
                 case MixedDateTypesSearchFormAttributeMappingRules::TYPE_DOES_NOT_CHANGE:
-                    if(!array_key_exists($attribute, $model->originalAttributeValues))
+                    if (!array_key_exists($attribute, $model->originalAttributeValues))
                     {
                         return true;
                     }
                     break;
                 case MixedDateTypesSearchFormAttributeMappingRules::TYPE_BECOMES_ON:
-                    if(array_key_exists($attribute, $model->originalAttributeValues) &&
+                    if (array_key_exists($attribute, $model->originalAttributeValues) &&
                         static::sanitize($model->$attribute) === static::sanitizeTriggerValue($this->trigger->value))
                     {
                         return true;
                     }
                     break;
                 case MixedDateTypesSearchFormAttributeMappingRules::TYPE_WAS_ON:
-                    if(array_key_exists($attribute, $model->originalAttributeValues) &&
+                    if (array_key_exists($attribute, $model->originalAttributeValues) &&
                         static::sanitize($model->originalAttributeValues[$attribute]) ===
                             static::sanitizeTriggerValue($this->trigger->value))
                     {
@@ -123,7 +132,7 @@
         {
             assert('is_string($attribute)');
             assert('is_bool($changeRequiredToProcess)');
-            if($this->trigger->valueType != MixedDateTypesSearchFormAttributeMappingRules::TYPE_IS_TIME_FOR)
+            if ($this->trigger->valueType != MixedDateTypesSearchFormAttributeMappingRules::TYPE_IS_TIME_FOR)
             {
                 throw new NotSupportedException();
             }

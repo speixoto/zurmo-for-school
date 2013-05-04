@@ -1,7 +1,7 @@
 <?php
-    /* * *******************************************************************************
+    /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2012 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU General Public License version 3 as published by the
@@ -20,12 +20,22 @@
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
      *
-     * You can contact Zurmo, Inc. with a mailing address at 113 McHenry Road Suite 207,
-     * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
-     * ****************************************************************************** */
+     * You can contact Zurmo, Inc. with a mailing address at 27 North Wacker Drive
+     * Suite 370 Chicago, IL 60606. or at email address contact@zurmo.com.
+     *
+     * The interactive user interfaces in original and modified versions
+     * of this program must display Appropriate Legal Notices, as required under
+     * Section 5 of the GNU General Public License version 3.
+     *
+     * In accordance with Section 7(b) of the GNU General Public License version 3,
+     * these Appropriate Legal Notices must retain the display of the Zurmo
+     * logo and Zurmo copyright notice. If the display of the logo is not reasonably
+     * feasible for technical reasons, the Appropriate Legal Notices must display the words
+     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     ********************************************************************************/
 
-    class MashableInboxDefaultController extends ZurmoModuleController {
-
+    class MashableInboxDefaultController extends ZurmoModuleController
+    {
         const MASHABLE_INBOX_ZERO_MODELS_CHECK_FILTER_PATH =
               'application.modules.mashableInbox.controllers.filters.MashableInboxZeroModelsCheckControllerFilter';
 
@@ -57,16 +67,16 @@
                     ),
                 )
             );
-
         }
 
-        public function actionList($modelClassName = null) {
+        public function actionList($modelClassName = null)
+        {
             assert('is_string($modelClassName) || $modelClassName == null');
             $this->pageSize     = Yii::app()->pagination->resolveActiveForCurrentUserByType(
                                         'listPageSize', get_class($this->getModule()));
             $getData = GetUtil::getData();
             $mashableInboxForm  = $this->getMashableInboxFormWithDefaultValues($modelClassName, $getData);
-            if(Yii::app()->request->isAjaxRequest && isset($getData['ajax']))
+            if (Yii::app()->request->isAjaxRequest && isset($getData['ajax']))
             {
                 $this->renderListViewForAjax($mashableInboxForm, $modelClassName);
             }
@@ -119,14 +129,17 @@
         private function renderMashableInboxPageView($mashableInboxForm, $modelClassName)
         {
             $actionViewOptions  = array();
-            if ($modelClassName !== null) {
+            if ($modelClassName !== null)
+            {
                 $mashableUtilRules  = MashableUtil::createMashableInboxRulesByModel($modelClassName);
                 $listView           = $mashableUtilRules->getListView(
                                                 $mashableInboxForm->optionForModel,
                                                 $mashableInboxForm->filteredBy,
                                                 $mashableInboxForm->searchTerm);
                 $actionViewOptions  = $mashableUtilRules->getActionViewOptions();
-            } else {
+            }
+            else
+            {
                 $listView           = $this->getMashableInboxListView(
                                                 $mashableInboxForm,
                                                 $this->pageSize);
@@ -151,14 +164,17 @@
          */
         private function renderListViewForAjax($mashableInboxForm, $modelClassName)
         {
-            if ($modelClassName !== null) {
+            if ($modelClassName !== null)
+            {
                 $mashableUtilRules  = MashableUtil::createMashableInboxRulesByModel(
                                                       $modelClassName);
                 $listView           = $mashableUtilRules->getListView(
                                                       $mashableInboxForm->optionForModel,
                                                       $mashableInboxForm->filteredBy,
                                                       $mashableInboxForm->searchTerm);
-            } else {
+            }
+            else
+            {
                 $listView           = $this->getMashableInboxListView(
                                                       $mashableInboxForm,
                                                       $this->pageSize);
@@ -174,9 +190,9 @@
          */
         private function resolveAjaxMassAction($modelClassName, $mashableInboxForm)
         {
-            if($modelClassName !== null)
+            if ($modelClassName !== null)
             {
-                $selectedIds        = explode(',', $mashableInboxForm->selectedIds);
+                $selectedIds        = explode(',', $mashableInboxForm->selectedIds); // Not Coding Standard
                 foreach ($selectedIds as $modelId)
                 {
                    $this->resolveMassActionByModel($mashableInboxForm->massAction,
@@ -186,7 +202,7 @@
             }
             else
             {
-                $selectedIds        = explode(',', $mashableInboxForm->selectedIds);
+                $selectedIds        = explode(',', $mashableInboxForm->selectedIds); // Not Coding Standard
                 foreach ($selectedIds as $selectedId)
                 {
                    list($modelClassNameForMassAction, $modelId) = explode("_", $selectedId);
