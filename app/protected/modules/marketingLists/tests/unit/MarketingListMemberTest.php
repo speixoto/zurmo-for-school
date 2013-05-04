@@ -172,6 +172,7 @@
                                                                                         'This is <b>html</b> content Subscribe',
                                                                                         10,
                                                                                         Autoresponder::OPERATION_SUBSCRIBE,
+                                                                                        false,
                                                                                         $marketingList
                                                                                     );
             $this->assertNotNull($autoresponderSubscribe);
@@ -181,6 +182,7 @@
                                                                                         'This is <b>html</b> content Unsubscribe',
                                                                                         20,
                                                                                         Autoresponder::OPERATION_UNSUBSCRIBE,
+                                                                                        true,
                                                                                         $marketingList
                                                                                     );
             $this->assertNotNull($autoresponderUnsubscribe);
@@ -224,6 +226,7 @@
                                                                                             'This is <b>html</b> content Remove',
                                                                                             10,
                                                                                             Autoresponder::OPERATION_REMOVE,
+                                                                                            true,
                                                                                             $marketingList
                                                                                         );
             $this->assertNotNull($autoresponderRemove);

@@ -36,11 +36,15 @@
 
     class Autoresponder extends OwnedModel
     {
-        const OPERATION_SUBSCRIBE = 1;
+        const OPERATION_SUBSCRIBE   = 1;
 
         const OPERATION_UNSUBSCRIBE = 2;
 
-        const OPERATION_REMOVE = 3;
+        const OPERATION_REMOVE      = 3;
+
+        const TRACKING_ENABLED      = 1;
+
+        const TRACKING_DISABLED     = 0;
 
         public static function getByName($name)
         {
@@ -49,29 +53,29 @@
 
         public static function getModuleClassName()
         {
-            return 'MarketingListsModule';
+            return 'AutorespondersModule';
         }
 
         public static function getOperationTypeDropDownArray()
         {
             return array(
-                self::OPERATION_SUBSCRIBE       => Zurmo::t('MarketingListsModule', 'Subscription'),
-                self::OPERATION_UNSUBSCRIBE     => Zurmo::t('MarketingListsModule',  'Unsubscription'),
-                self::OPERATION_REMOVE          => Zurmo::t('MarketingListsModule', 'Removal'),
+                self::OPERATION_SUBSCRIBE       => Zurmo::t('AutorespondersModule', 'Subscription'),
+                self::OPERATION_UNSUBSCRIBE     => Zurmo::t('AutorespondersModule',  'Unsubscription'),
+                self::OPERATION_REMOVE          => Zurmo::t('AutorespondersModule', 'Removal'),
             );
         }
 
         public static function getIntervalDropDownArray()
         {
             return array(
-                60*60           =>  Zurmo::t('MarketingListsModule', '{hourCount} Hour', array('{hourCount}' => 1)),
-                60*60*6         =>  Zurmo::t('MarketingListsModule', '{hourCount} Hours', array('{hourCount}' => 6)),
-                60*60*12        =>  Zurmo::t('MarketingListsModule', '{hourCount} Hours', array('{hourCount}' => 12)),
-                60*60*24        =>  Zurmo::t('MarketingListsModule', '{dayCount} day', array('{dayCount}' => 1)),
-                60*60*24*3      =>  Zurmo::t('MarketingListsModule', '{dayCount} days', array('{dayCount}' => 3)),
-                60*60*24*7      =>  Zurmo::t('MarketingListsModule', '{weekCount} week', array('{weekCount}' => 1)),
-                60*60*24*14     =>  Zurmo::t('MarketingListsModule', '{weekCount} weeks', array('{weekCount}' => 2)),
-                60*60*24*30     =>  Zurmo::t('MarketingListsModule', '{monthCount} month', array('{monthCount}' => 1)),
+                60*60           =>  Zurmo::t('AutorespondersModule', '{hourCount} Hour', array('{hourCount}' => 1)),
+                60*60*6         =>  Zurmo::t('AutorespondersModule', '{hourCount} Hours', array('{hourCount}' => 6)),
+                60*60*12        =>  Zurmo::t('AutorespondersModule', '{hourCount} Hours', array('{hourCount}' => 12)),
+                60*60*24        =>  Zurmo::t('AutorespondersModule', '{dayCount} day', array('{dayCount}' => 1)),
+                60*60*24*3      =>  Zurmo::t('AutorespondersModule', '{dayCount} days', array('{dayCount}' => 3)),
+                60*60*24*7      =>  Zurmo::t('AutorespondersModule', '{weekCount} week', array('{weekCount}' => 1)),
+                60*60*24*14     =>  Zurmo::t('AutorespondersModule', '{weekCount} weeks', array('{weekCount}' => 2)),
+                60*60*24*30     =>  Zurmo::t('AutorespondersModule', '{monthCount} month', array('{monthCount}' => 1)),
             );
         }
 
@@ -81,7 +85,7 @@
          */
         protected static function getLabel($language = null)
         {
-            return Zurmo::t('MarketingListsModule', 'Autoresponder', array(), null, $language);
+            return Zurmo::t('AutorespondersModule', 'Autoresponder', array(), null, $language);
         }
 
         /**
@@ -90,7 +94,7 @@
          */
         protected static function getPluralLabel($language = null)
         {
-            return Zurmo::t('MarketingListsModule', 'Autoresponders', array(), null, $language);
+            return Zurmo::t('AutorespondersModule', 'Autoresponders', array(), null, $language);
         }
 
         public static function getDefaultMetadata()
@@ -103,7 +107,8 @@
                     'htmlContent',
                     'textContent',
                     'secondsFromOperation',
-                    'operationType'
+                    'operationType',
+                    'enableTracking',
                 ),
                 'rules' => array(
                     array('name',                   'required'),
@@ -122,15 +127,23 @@
                     array('secondsFromOperation',   'type',    'type' => 'integer'),
                     array('operationType',          'required'),
                     array('operationType',          'type',    'type' => 'integer'),
+                    array('operationType',          'in', 'range' => array_keys(static::getOperationTypeDropDownArray()),
+                                                                                        'except' => 'autoBuildDatabase'),
+                    array('enableTracking',          'type',    'type' => 'integer'),
+                    array('enableTracking',          'numerical', 'min' => static::TRACKING_DISABLED, // boolean gives error during schema build
+                                                                                'max' => static::TRACKING_ENABLED),
+                    array('enableTracking',          'default', 'value' => static::TRACKING_DISABLED),
+
                 ),
                 'relations' => array(
-                    'autoresponderItems'            => array(RedBeanModel::HAS_MANY,   'AutoresponderItem'),
-                    'marketingList'                 => array(RedBeanModel::HAS_ONE,     'MarketingList'),
-                    // TODO: @Shoaibi: Critical: emailMessageUrl
+                    'autoresponderItems'            => array(RedBeanModel::HAS_MANY, 'AutoresponderItem'),
+                    'marketingList'                 => array(RedBeanModel::HAS_ONE, 'MarketingList',
+                                                                                            RedBeanModel::NOT_OWNED),
                 ),
                 'elements' => array(
                     'htmlContent'                   => 'TextArea',
                     'textContent'                   => 'TextArea',
+                    'enableTracking'                => 'CheckBox',
                 ),
                 'defaultSortAttribute' => 'name',
             );

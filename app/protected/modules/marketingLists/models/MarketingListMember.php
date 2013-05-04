@@ -65,8 +65,8 @@
                     'unsubscribed',
                 ),
                 'relations' => array(
-                    'contact'       => array(RedBeanModel::HAS_ONE,                 'Contact'),
-                    'marketingList' => array(RedBeanModel::HAS_ONE,                 'MarketingList'),
+                    'contact'               => array(RedBeanModel::HAS_ONE, 'Contact', RedBeanModel::NOT_OWNED),
+                    'marketingList'         => array(RedBeanModel::HAS_ONE, 'MarketingList' , RedBeanModel::NOT_OWNED),
                 ),
                 'rules' => array(
                     array('createdDateTime',       'required'),
@@ -135,6 +135,7 @@
                 }
                 AutoresponderItem::registerAutoresponderItemsByAutoresponderOperation($operation, $this->marketingList->id, $this->contact);
             }
+            $this->modifiedDateTime     = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
             return true;
         }
 

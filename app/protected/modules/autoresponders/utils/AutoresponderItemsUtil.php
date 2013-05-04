@@ -50,6 +50,8 @@
             $textContent                            = $autoresponder->textContent;
             $htmlContent                            = $autoresponder->htmlContent;
             static::resolveContent($textContent, $htmlContent, $contact);
+            static::resolveContentForTracking($textContent, $htmlContent, $autoresponder->enableTracking,
+                                                    $autoresponderItem->id, get_class($autoresponderItem), $contact);
             try
             {
                 $autoresponderItem->emailMessage    = static::resolveEmailMessage($textContent,
@@ -92,6 +94,16 @@
             {
                 throw new NotSupportedException(Zurmo::t('EmailTemplatesModule', 'Provided content contains few invalid merge tags.'));
             }
+        }
+
+        protected static function resolveContentForTracking(& $textContent, & $htmlContent, $enableTracking, $modelId,
+                                                                                                    $modelType, $contact)
+        {
+            $personId                 = $contact->getClassId('Person');
+            AutoresponderItemActivityUtil::resolveContentForTracking($enableTracking, $textContent, $modelId, $modelType,
+                                                                                                        $personId, false);
+            AutoresponderItemActivityUtil::resolveContentForTracking($enableTracking, $htmlContent, $modelId, $modelType,
+                                                                                                        $personId, true);
         }
 
         protected static function resolveEmailMessage($textContent, $htmlContent, Autoresponder $autoresponder, Contact $contact)

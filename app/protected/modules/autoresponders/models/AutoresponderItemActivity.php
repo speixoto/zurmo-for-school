@@ -35,29 +35,57 @@
      ********************************************************************************/
 
     /**
-     * Class for showing a message and create link when there are no email templates visible to the logged in user when
-     * going to the email templates list view.
+     * Model for storing an autoresponder item activity.
      */
-    class EmailTemplatesZeroModelsYetView extends ZeroModelsYetView
+    class AutoresponderItemActivity extends EmailMessageActivity
     {
-        /**
-         * @return string
-         */
-        protected function getCreateLinkDisplayLabel()
+        public static function getModuleClassName()
         {
-            return Zurmo::t('EmailTemplatesModule', 'Create Template');
+            return 'AutorespondersModule';
+        }
+
+        public static function getDefaultMetadata()
+        {
+            $metadata = parent::getDefaultMetadata();
+            $metadata[__CLASS__] = array(
+                'relations' => array(
+                    'autoresponderItem'   => array(RedBeanModel::HAS_ONE, 'AutoresponderItem', RedBeanModel::NOT_OWNED),
+                ),
+            );
+            return $metadata;
+        }
+
+        public static function getByTypeAndModelIdAndPersonIdAndUrl($type, $modelId, $personId, $url = null,
+                                                                    $sortBy = 'latestDateTime', $pageSize = null)
+        {
+            $modelRelationName = 'autoresponderItem';
+            return parent::getChildActivityByTypeAndModelIdAndModelRelationNameAndPersonIdAndUrl($type, $modelId,
+                                                                $modelRelationName, $personId, $url, $sortBy, $pageSize);
+        }
+
+        public static function createNewActivity($type, $modelId, $personId, $url = null)
+        {
+            $relatedModel = AutoresponderItem::getById(intval($modelId));
+            if (!$relatedModel)
+            {
+                throw new NotFoundException();
+            }
+            $relationName = 'autoresponderItem';
+            return parent::createNewChildActivity($type, $personId, $url, $relationName, $relatedModel);
+        }
+
+        protected static function getLabel($language = null)
+        {
+            return Zurmo::t('AutorespondersModule', 'Autoresponder Item Activity', array(), null, $language);
         }
 
         /**
-         * @return string
+         * Returns the display name for plural of the model class.
+         * @return dynamic label name based on module.
          */
-        protected function getMessageContent()
+        protected static function getPluralLabel($language = null)
         {
-            return Zurmo::t('EmailTemplatesModule', '<h2>"The printing press is the greatest weapon in ' .
-                                               'the armoury of the modern commander."</h2><i>- T.E. Lawrence</i>' .
-                                               '</i><div class="large-icon"></div><p>Be a modern commander ' .
-                                               'like Lawrence of Arabia and create a great Email Template for others ' .
-                                               'to use.</p>');
+            return Zurmo::t('AutorespondersModule', 'Autoresponder Item Activities', array(), null, $language);
         }
     }
 ?>

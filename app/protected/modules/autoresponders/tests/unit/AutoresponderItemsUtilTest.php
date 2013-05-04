@@ -35,6 +35,8 @@
      ********************************************************************************/
     class AutoresponderItemsUtilTest extends ZurmoBaseTest
     {
+        // We don't need to add separate tests for tracking scenarios here because we have already gained more than
+        //  sufficient coverage in AutoresponderItemActivityUtilTest and EmailMessageActivityUtilTest for those.
         protected $user;
 
         public static function setUpBeforeClass()
@@ -74,6 +76,7 @@
                                                                                     '[[HTML^CONTENT]]',
                                                                                     1,
                                                                                     Autoresponder::OPERATION_SUBSCRIBE,
+                                                                                    true,
                                                                                     $marketingList,
                                                                                     false);
             $processed                  = AutoresponderItem::NOT_PROCESSED;
@@ -98,6 +101,7 @@
                                                                                     'html content',
                                                                                     1,
                                                                                     Autoresponder::OPERATION_SUBSCRIBE,
+                                                                                    false,
                                                                                     $marketingList);
             $processed                  = AutoresponderItem::NOT_PROCESSED;
             $processDateTime            = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
@@ -134,6 +138,7 @@
                                                                                     'html content',
                                                                                     1,
                                                                                     Autoresponder::OPERATION_SUBSCRIBE,
+                                                                                    true,
                                                                                     $marketingList);
             $processed                  = AutoresponderItem::NOT_PROCESSED;
             $processDateTime            = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
@@ -147,7 +152,7 @@
             $this->assertEquals($marketingList->owner, $emailMessage->owner);
             $this->assertEquals($autoresponder->subject, $emailMessage->subject);
             $this->assertEquals($autoresponder->textContent, $emailMessage->content->textContent);
-            $this->assertEquals($autoresponder->htmlContent, $emailMessage->content->htmlContent);
+            $this->assertTrue(strpos($emailMessage->content->htmlContent, $autoresponder->htmlContent) === 0);
             $userToSendMessagesFrom     = Yii::app()->emailHelper->getUserToSendNotificationsAs();
             $defaultFromAddress         = Yii::app()->emailHelper->resolveFromAddressByUser($userToSendMessagesFrom);
             $defaultFromName            = strval($userToSendMessagesFrom);
@@ -181,6 +186,7 @@
                                                                                     'html content',
                                                                                     1,
                                                                                     Autoresponder::OPERATION_SUBSCRIBE,
+                                                                                    false,
                                                                                     $marketingList);
             $processed                  = AutoresponderItem::NOT_PROCESSED;
             $processDateTime            = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
@@ -225,6 +231,7 @@
                                                                                         '<b>[[LAST^NAME]]</b>, [[FIRST^NAME]]',
                                                                                         1,
                                                                                         Autoresponder::OPERATION_SUBSCRIBE,
+                                                                                        true,
                                                                                         $marketingList);
             $processed                  = AutoresponderItem::NOT_PROCESSED;
             $processDateTime            = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
@@ -240,7 +247,7 @@
             $this->assertNotEquals($autoresponder->textContent, $emailMessage->content->textContent);
             $this->assertNotEquals($autoresponder->htmlContent, $emailMessage->content->htmlContent);
             $this->assertEquals('Dr. contact 05 contact 05son', $emailMessage->content->textContent);
-            $this->assertEquals('<b>contact 05son</b>, contact 05', $emailMessage->content->htmlContent);
+            $this->assertTrue(strpos($emailMessage->content->htmlContent, '<b>contact 05son</b>, contact 05') === 0);
             $this->assertEquals($marketingList->fromAddress, $emailMessage->sender->fromAddress);
             $this->assertEquals($marketingList->fromName, $emailMessage->sender->fromName);
             $this->assertEquals(1, $emailMessage->recipients->count());

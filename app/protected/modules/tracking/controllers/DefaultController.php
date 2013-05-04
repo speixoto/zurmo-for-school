@@ -34,30 +34,66 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * Cancel Email Template link.
-     */
-    class EmailTemplateCancelLinkActionElement extends LinkActionElement
+    class TrackingDefaultController extends ZurmoModuleController
     {
-        protected function getDefaultLabel()
+        public function filters()
         {
-            return Zurmo::t('Default', 'Cancel');
+            return array();
         }
 
-        public function getActionType()
+        public function actionTrack()
         {
-            return 'Details';
-        }
-
-        protected function getDefaultRoute()
-        {
-            if (!empty($this->modelId))
+            Yii::app()->user->userModel = static::getUserToRunTrackActionAs();
+            $response                   = EmailMessageActivityUtil::resolveQueryStringFromUrlAndCreateOrUpdateActivity();
+            if ($response['redirect'])
             {
-                return Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId);
+                $this->redirect($response['url']);
+            }
+            elseif (isset($response['imagePath']))
+            {
+                $mime               = ZurmoFileHelper::getMimeType($response['imagePath']);
+                $size               = filesize($response['imagePath']);
+                $name               = pathinfo($response['imagePath'], PATHINFO_FILENAME);
+                header('Content-Type: '     .   $mime);
+                header('Content-Length: '   .   $size);
+                header('Content-Name: '     .   $name);
+                readfile($response['imagePath']);
+                Yii::app()->end(0, false);
             }
             else
             {
                 throw new NotSupportedException();
+            }
+        }
+
+        protected static function getUserToRunTrackActionAs()
+        {
+            $keyName      = 'UserIdOfUserToRunTrackingAs';
+            $superGroup   = Group::getByName(Group::SUPER_ADMINISTRATORS_GROUP_NAME);
+            if (null != $userId = ZurmoConfigurationUtil::getByModuleName('TrackingModule', $keyName))
+            {
+                try
+                {
+                    $user  = User::getById($userId);
+
+                    if ($user->groups->contains($superGroup))
+                    {
+                        return $user;
+                    }
+                }
+                catch (NotFoundException $e)
+                {
+                }
+            }
+            if ($superGroup->users->count() == 0)
+            {
+                throw new MissingASuperAdministratorException();
+            }
+            else
+            {
+                $user = $superGroup->users->offsetGet(0);
+                ZurmoConfigurationUtil::setByModuleName('TrackingModule', $keyName, $user->id);
+                return $userId;
             }
         }
     }

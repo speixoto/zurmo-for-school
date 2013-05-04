@@ -180,5 +180,5 @@
         {
             return 'MarketingListsSearchForm';
         }
-  }
+    }
 ?>

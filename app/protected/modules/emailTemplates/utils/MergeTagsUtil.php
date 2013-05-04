@@ -65,7 +65,7 @@
             $value = '/' . preg_quote($value) . '/';
         }
 
-        public function __construct($language, $content) // TODO: @Shoaibi/@Jason probably change it to locale object
+        public function __construct($language, $content) // TODO: @Shoaibi/@Jason Low: probably change it to locale object
         {
             $this->language = $language;
             $this->content  = $content;

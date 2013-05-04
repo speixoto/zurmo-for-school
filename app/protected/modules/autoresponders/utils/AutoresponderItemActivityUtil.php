@@ -35,29 +35,9 @@
      ********************************************************************************/
 
     /**
-     * Class for showing a message and create link when there are no email templates visible to the logged in user when
-     * going to the email templates list view.
+     * Helper class for working with autoresponderItemActivity
      */
-    class EmailTemplatesZeroModelsYetView extends ZeroModelsYetView
+    class AutoresponderItemActivityUtil extends EmailMessageActivityUtil
     {
-        /**
-         * @return string
-         */
-        protected function getCreateLinkDisplayLabel()
-        {
-            return Zurmo::t('EmailTemplatesModule', 'Create Template');
-        }
-
-        /**
-         * @return string
-         */
-        protected function getMessageContent()
-        {
-            return Zurmo::t('EmailTemplatesModule', '<h2>"The printing press is the greatest weapon in ' .
-                                               'the armoury of the modern commander."</h2><i>- T.E. Lawrence</i>' .
-                                               '</i><div class="large-icon"></div><p>Be a modern commander ' .
-                                               'like Lawrence of Arabia and create a great Email Template for others ' .
-                                               'to use.</p>');
-        }
     }
 ?>

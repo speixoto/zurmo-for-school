@@ -213,7 +213,7 @@
 
         /**
          * Helper method to run a controller action that is
-         * expected produce a redirect exception.
+         * expected produce a NotSupported exception.
          */
         protected function runControllerWithNotSupportedExceptionAndGetContent($route)
         {
@@ -225,6 +225,27 @@
                 $this->endPrintOutputBufferAndFail();
             }
             catch (NotSupportedException $e)
+            {
+                $content = $this->endAndGetOutputBuffer();
+                $this->doApplicationScriptPathsAllExist();
+                return $content;
+            }
+        }
+
+        /**
+         * Helper method to run a controller action that is
+         * expected produce a NotFound exception.
+         */
+        protected function runControllerWithNotFoundExceptionAndGetContent($route)
+        {
+            $_SERVER['REQUEST_URI'] = '/index.php';
+            $this->startOutputBuffer();
+            try
+            {
+                Yii::app()->runController($route);
+                $this->endPrintOutputBufferAndFail();
+            }
+            catch (NotFoundException $e)
             {
                 $content = $this->endAndGetOutputBuffer();
                 $this->doApplicationScriptPathsAllExist();

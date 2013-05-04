@@ -42,7 +42,7 @@
 
         public static function getModuleClassName()
         {
-            return 'MarketingListsModule';
+            return 'AutorespondersModule';
         }
 
         /**
@@ -51,7 +51,7 @@
          */
         protected static function getLabel($language = null)
         {
-            return Zurmo::t('MarketingListsModule', 'Autoresponder Item', array(), null, $language);
+            return Zurmo::t('AutorespondersModule', 'Autoresponder Item', array(), null, $language);
         }
 
         /**
@@ -60,7 +60,7 @@
          */
         protected static function getPluralLabel($language = null)
         {
-            return Zurmo::t('MarketingListsModule', 'Autoresponder Items', array(), null, $language);
+            return Zurmo::t('AutorespondersModule', 'Autoresponder Items', array(), null, $language);
         }
 
         public static function getDefaultMetadata()
@@ -72,10 +72,10 @@
                     'processed',
                 ),
                 'relations' => array(
-                    'contact'                               => array(RedBeanModel::HAS_ONE,     'Contact'),
-                    'emailMessage'                          => array(RedBeanModel::HAS_ONE,     'EmailMessage'),
-                    'autoresponderItemActivities'           => array(RedBeanModel::HAS_MANY,    'AutoresponderItemActivity'),
-                    'autoresponder'                         => array(RedBeanModel::HAS_ONE,     'Autoresponder'),
+                    'contact'                     => array(RedBeanModel::HAS_ONE, 'Contact', RedBeanModel::NOT_OWNED),
+                    'emailMessage'                => array(RedBeanModel::HAS_ONE, 'EmailMessage'),
+                    'autoresponderItemActivities' => array(RedBeanModel::HAS_MANY, 'AutoresponderItemActivity'),
+                    'autoresponder'               => array(RedBeanModel::HAS_ONE, 'Autoresponder', RedBeanModel::NOT_OWNED),
                 ),
                 'rules' => array(
                     array('processDateTime',        'required'),

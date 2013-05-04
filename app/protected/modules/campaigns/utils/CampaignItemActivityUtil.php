@@ -35,37 +35,11 @@
      ********************************************************************************/
 
     /**
-     * Model for storing an autoresponder item activity.
+     * Helper class for working with CampaignItemActivity
      */
-    class AutoresponderItemActivity extends EmailMessageItemActivity
+    class CampaignItemActivityUtil extends EmailMessageActivityUtil
     {
-        public function __toString()
-        {
-            if (trim($this->subject) == '')
-            {
-                return Zurmo::t('Default', '(Unnamed)');
-            }
-            return $this->subject;
-        }
-
-        public static function getModuleClassName()
-        {
-            return 'MarketingListsModule';
-        }
-
-        public static function canSaveMetadata()
-        {
-            return false;
-        }
-
-        public static function getDefaultMetadata()
-        {
-        //todo
-        }
-
-        public static function isTypeDeletable()
-        {
-            return true;
-        }
+        // TODO: @Shoaibi: Critical: Test resolveQueryStringFromUrlAndCreateOrUpdateActivity()
+        // check AutoresponderItemActivityUtilTest, need exact same tests here with different model though
     }
 ?>

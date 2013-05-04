@@ -37,20 +37,49 @@
     /**
      * Model for storing an campaign item activity.
      */
-    class CampaignItemActivity extends EmailMessageItemActivity
+    class CampaignItemActivity extends EmailMessageActivity
     {
-        public function __toString()
-        {
-            if (trim($this->subject) == '')
-            {
-                return Yii::t('Default', '(Unnamed)');
-            }
-            return $this->subject;
-        }
-
+        // TODO: @Shoaibi: Critical: Tests?
         public static function getModuleClassName()
         {
             return 'CampaignsModule';
+        }
+
+        public static function getDefaultMetadata()
+        {
+            $metadata = parent::getDefaultMetadata();
+            $metadata[__CLASS__] = array(
+                'relations' => array(
+                    'campaignItem'                     => array(RedBeanModel::HAS_ONE,     'CampaignItem'),
+                ),
+            );
+            return $metadata;
+        }
+
+        public static function getByTypeAndModelIdAndPersonIdAndUrl($type, $modelId, $personId, $url = null,
+                                                                    $sortBy = 'latestDateTime', $pageSize = null)
+        {
+            // TODO: @Shoaibi: Critical: Tests?
+            $modelRelationName = 'campaignItem';
+            return parent::getChildActivityByTypeAndModelIdAndModelRelationNameAndPersonIdAndUrl($type, $modelId,
+                                                                $modelRelationName, $personId, $url, $sortBy, $pageSize);
+        }
+
+        public static function createNewActivity($type, $modelId, $personId, $url = null)
+        {
+            // TODO: @Shoaibi: Critical: Tests?
+            $relatedModel = CampaignItem::getById(intval($modelId));
+            if (!$relatedModel)
+            {
+                throw new NotFoundException();
+            }
+            $relationName = 'campaignItem';
+            return parent::createNewChildActivity($type, $personId, $url, $relationName, $relatedModel);
+        }
+
+        protected static function getLabel($language = null)
+        {
+            return Zurmo::t('CampaignsModule', 'Campaign Item Activity', array(), null, $language);
         }
 
         /**
@@ -59,11 +88,7 @@
          */
         protected static function getPluralLabel($language = null)
         {
-            return 'Campaigns';
-        }
-
-        public static function getDefaultMetadata()
-        {
+            return Zurmo::t('CampaignsModule', 'Campaign Item Activities', array(), null, $language);
         }
     }
 ?>

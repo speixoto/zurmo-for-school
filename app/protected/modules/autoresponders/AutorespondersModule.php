@@ -34,39 +34,55 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class AutoresponderTestHelper
+    class AutorespondersModule extends Module
     {
-        public static function createAutoresponder($name, $subject, $textContent, $htmlContent, $secondsFromOperation,
-                                                                                  $operationType, $marketingList = null,
-                                                                                  $runValidation = true)
+        public function getDependencies()
         {
-            $autoresponder  = static::fillAutoresponder($name, $subject, $textContent, $htmlContent,
-                                                                    $secondsFromOperation, $operationType, $marketingList);
-            $saved          = $autoresponder->unrestrictedSave($runValidation);
-            assert('$saved');
-            return $autoresponder;
+            return array(
+                'marketingLists',
+            );
         }
 
-        public static function fillAutoresponder($name, $subject, $textContent, $htmlContent, $secondsFromOperation,
-                                                                                $operationType, $marketingList = null)
+        public function getRootModelNames()
         {
-            if (empty($marketingList))
-            {
-                $marketingLists = MarketingList::getAll();
-                if  (!empty($marketingLists))
-                {
-                    $marketingList  = RandomDataUtil::getRandomValueFromArray($marketingLists);
-                }
-            }
-            $autoresponder                          = new Autoresponder();
-            $autoresponder->name                    = $name;
-            $autoresponder->subject                 = $subject;
-            $autoresponder->textContent             = $textContent;
-            $autoresponder->htmlContent             = $htmlContent;
-            $autoresponder->secondsFromOperation    = $secondsFromOperation;
-            $autoresponder->operationType           = $operationType;
-            $autoresponder->marketingList           = $marketingList;
-            return $autoresponder;
+            return array('Autoresponder', 'AutoresponderItem', 'AutoresponderItemActivity');
         }
+
+        public static function getPrimaryModelName()
+        {
+            return 'Autoresponder';
+        }
+
+        /*
+        public static function getGlobalSearchFormClassName()
+        {
+            return 'AutorespondersSearchForm';
+        }
+        */
+
+        public static function modelsAreNeverGloballySearched()
+        {
+            return true;
+        }
+
+        public static function getDefaultMetadata()
+        {
+            $metadata = array();
+            $metadata['global'] = array(
+                'globalSearchAttributeNames' => array(
+                    'name',
+                ),
+            );
+            return $metadata;
+        }
+
+        /*
+        public static function getDemoDataMakerClassNames()
+        {
+            return array('AutorespondersDemoDataMaker',
+                            'AutoresponderItemsDemoDataMaker',
+                            'AutoresponderItemActivitiesDemoDataMaker');
+        }
+        */
     }
 ?>

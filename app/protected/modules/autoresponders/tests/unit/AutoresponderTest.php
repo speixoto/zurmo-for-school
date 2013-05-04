@@ -35,7 +35,6 @@
      ********************************************************************************/
     class AutoresponderTest extends ZurmoBaseTest
     {
-
         public static function setUpBeforeClass()
         {
             parent::setUpBeforeClass();
@@ -69,6 +68,7 @@
             $this->assertEquals('Test TextContent 01'               ,   $autoresponder->textContent);
             $this->assertEquals($intervalArray['1 week']            ,   $autoresponder->secondsFromOperation);
             $this->assertEquals(Autoresponder::OPERATION_SUBSCRIBE  ,   $autoresponder->operationType);
+            $this->assertEquals(Autoresponder::TRACKING_DISABLED    ,   $autoresponder->enableTracking);
         }
 
         /**
@@ -99,6 +99,7 @@
             $autoresponder->textContent             = 'Test TextContent 02';
             $autoresponder->secondsFromOperation    = $intervalArray['1 month'];
             $autoresponder->operationType           = Autoresponder::OPERATION_UNSUBSCRIBE;
+            $autoresponder->enableTracking          = Autoresponder::TRACKING_ENABLED;
             $this->assertTrue($autoresponder->unrestrictedSave());
             $id = $autoresponder->id;
             unset($autoresponder);
@@ -109,6 +110,7 @@
             $this->assertEquals('Test TextContent 02'                  ,   $autoresponder->textContent);
             $this->assertEquals($intervalArray['1 month']              ,   $autoresponder->secondsFromOperation);
             $this->assertEquals(Autoresponder::OPERATION_UNSUBSCRIBE   ,   $autoresponder->operationType);
+            $this->assertEquals(Autoresponder::TRACKING_ENABLED        ,   $autoresponder->enableTracking);
         }
 
         /**
@@ -131,13 +133,13 @@
         {
             $marketingList = MarketingListTestHelper::createMarketingListByName('MarketingList Name 01');
             AutoresponderTestHelper::createAutoresponder('Autoresponder 01', 'subject 01', 'text 01', null, 10,
-                                                                    Autoresponder::OPERATION_SUBSCRIBE, $marketingList);
+                                                                    Autoresponder::OPERATION_SUBSCRIBE, true, $marketingList);
             AutoresponderTestHelper::createAutoresponder('Autoresponder 02', 'subject 02', 'text 02', null, 20,
-                                                                        Autoresponder::OPERATION_SUBSCRIBE, $marketingList);
+                                                                        Autoresponder::OPERATION_SUBSCRIBE, false, $marketingList);
             AutoresponderTestHelper::createAutoresponder('Autoresponder 03', 'subject 03', 'text 03', null, 30,
-                                                                    Autoresponder::OPERATION_UNSUBSCRIBE, $marketingList);
+                                                                    Autoresponder::OPERATION_UNSUBSCRIBE, true, $marketingList);
             AutoresponderTestHelper::createAutoresponder('Autoresponder 04', 'subject 04', 'text 04', null, 40,
-                                                                        Autoresponder::OPERATION_REMOVE, $marketingList);
+                                                                        Autoresponder::OPERATION_REMOVE, false, $marketingList);
 
             $autoresponders = Autoresponder::getByOperationTypeAndMarketingListId(Autoresponder::OPERATION_SUBSCRIBE, $marketingList->id);
             $this->assertCount(2, $autoresponders);

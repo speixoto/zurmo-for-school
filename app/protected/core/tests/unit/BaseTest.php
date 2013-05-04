@@ -170,5 +170,12 @@
             $property->setAccessible(true);
             return $property->getValue($object);
         }
+
+        protected static function getProtectedMethod($className, $methodName) {
+            $class = new ReflectionClass($className);
+            $method = $class->getMethod($methodName);
+            $method->setAccessible(true);
+            return $method;
+        }
     }
 ?>

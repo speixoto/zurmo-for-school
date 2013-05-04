@@ -89,6 +89,7 @@
                                                                                         'html content',
                                                                                         1,
                                                                                         Autoresponder::OPERATION_SUBSCRIBE,
+                                                                                        false,
                                                                                         $marketingList);
             $processed                  = AutoresponderItem::NOT_PROCESSED;
             $processDateTime            = DateTimeUtil::convertTimestampToDbFormatDateTime(time()-10);
@@ -112,6 +113,7 @@
                                                                                         'html content',
                                                                                         1,
                                                                                         Autoresponder::OPERATION_SUBSCRIBE,
+                                                                                        true,
                                                                                         $marketingList);
             $processed                  = AutoresponderItem::NOT_PROCESSED;
             $processDateTime            = DateTimeUtil::convertTimestampToDbFormatDateTime(time()-10);
@@ -143,6 +145,7 @@
                                                                                         'html content',
                                                                                         1,
                                                                                         Autoresponder::OPERATION_SUBSCRIBE,
+                                                                                        false,
                                                                                         $marketingList);
             $processed                  = AutoresponderItem::NOT_PROCESSED;
             $processDateTime            = DateTimeUtil::convertTimestampToDbFormatDateTime(time()-10);
@@ -177,6 +180,7 @@
                                                                                         'html content',
                                                                                         1,
                                                                                         Autoresponder::OPERATION_SUBSCRIBE,
+                                                                                        true,
                                                                                         $marketingList);
             $processed                  = AutoresponderItem::NOT_PROCESSED;
             $processDateTime            = DateTimeUtil::convertTimestampToDbFormatDateTime(time()-10);
@@ -211,6 +215,7 @@
                                                                                             '[[HTML^CONTENT]]',
                                                                                             1,
                                                                                             Autoresponder::OPERATION_SUBSCRIBE,
+                                                                                            false,
                                                                                             $marketingList,
                                                                                             false);
             $processed                  = AutoresponderItem::NOT_PROCESSED;
@@ -251,6 +256,7 @@
                                                                                         '[[LAST^NAME]]',
                                                                                         1,
                                                                                         Autoresponder::OPERATION_SUBSCRIBE,
+                                                                                        true,
                                                                                         $marketingList);
             $processed                  = AutoresponderItem::NOT_PROCESSED;
             $processDateTime            = DateTimeUtil::convertTimestampToDbFormatDateTime(time()-10);

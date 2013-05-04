@@ -35,22 +35,53 @@
      ********************************************************************************/
 
     /**
-     * Model for storing an email message item activity.
+     * Model for storing an email message urls.
      */
-    class EmailMessageItemActivity extends RedBeanModel
+    class EmailMessageUrl extends RedBeanModel
     {
-        public function __toString()
-        {
-            if (trim($this->subject) == '')
-            {
-                return Yii::t('Default', '(Unnamed)');
-            }
-            return $this->subject;
-        }
-
         public static function getModuleClassName()
         {
             return 'EmailMessagesModule';
+        }
+
+        public static function canSaveMetadata()
+        {
+            return false;
+        }
+
+        public static function getByUrl($url)
+        {
+            return static::getSubset(null, null, null, "url = '" . DatabaseCompatibilityUtil::escape($url) . "'");
+        }
+
+        public static function getDefaultMetadata()
+        {
+            $metadata = parent::getDefaultMetadata();
+            $metadata[__CLASS__] = array(
+                'members' => array(
+                    'url',
+                ),
+                'rules' => array(
+                    array('url',                    'required'),
+                    array('url',                    'url'),
+                ),
+                'relations' => array(
+                    'emailMessageActivity'          => array(RedBeanModel::HAS_ONE, 'EmailMessageActivity',
+                                                                                            RedBeanModel::NOT_OWNED),
+                ),
+                'defaultSortAttribute' => 'url',
+            );
+            return $metadata;
+        }
+
+        public static function isTypeDeletable()
+        {
+            return true;
+        }
+
+        protected static function getLabel($language = null)
+        {
+            return Zurmo::t('EmailMessagesModule', 'Email Message Url', array(), null, $language);
         }
 
         /**
@@ -59,35 +90,12 @@
          */
         protected static function getPluralLabel($language = null)
         {
-            return 'Emails';
+            return Zurmo::t('EmailMessagesModule', 'Email Message Urls', array(), null, $language);
         }
 
-        public static function canSaveMetadata()
+        public function __toString()
         {
-            return false;
-        }
-
-        public static function getDefaultMetadata()
-        {
-            $metadata = parent::getDefaultMetadata();
-            $metadata[__CLASS__] = array(
-                'members' => array(
-                    'type',
-                    'dateTime',
-                ),
-                'rules' => array(
-                    array('dateTime',  'type', 'type' => 'datetime'),
-                ),
-                'elements' => array(
-                    'dateTime'  => 'DateTime',
-                )
-            );
-            return $metadata;
-        }
-
-        public static function isTypeDeletable()
-        {
-            return true;
+            return strval($this->url);
         }
     }
 ?>

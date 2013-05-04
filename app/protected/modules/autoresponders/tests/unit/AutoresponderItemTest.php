@@ -126,6 +126,7 @@
                                                                                     'html Today',
                                                                                     1,
                                                                                     Autoresponder::OPERATION_UNSUBSCRIBE,
+                                                                                    true,
                                                                                     $marketingList);
             $this->assertNotNull($autoresponderToday);
             $autoresponderTenDaysFromNow    = AutoresponderTestHelper::createAutoresponder('autoresponder Ten Days',
@@ -134,6 +135,7 @@
                                                                                     'html Ten Days',
                                                                                     60*60*24*10,
                                                                                     Autoresponder::OPERATION_SUBSCRIBE,
+                                                                                    false,
                                                                                     $marketingList);
             $this->assertNotNull($autoresponderTenDaysFromNow);
             for ($i = 0; $i < 10; $i++)
@@ -193,10 +195,10 @@
             $marketingList      = MarketingListTestHelper::createMarketingListByName('marketingList 02');
             $this->assertNotNull($marketingList);
             $autoresponder1     = AutoresponderTestHelper::createAutoresponder('autoresponder 01', 'subject 01', 'text 01',
-                                                    'html 01', 10, Autoresponder::OPERATION_UNSUBSCRIBE,  $marketingList);
+                                                'html 01', 10, Autoresponder::OPERATION_UNSUBSCRIBE, true, $marketingList);
             $this->assertNotNull($autoresponder1);
             $autoresponder2     = AutoresponderTestHelper::createAutoresponder('autoresponder 02', 'subject 02', 'text 02',
-                                                    'html 02', 20, Autoresponder::OPERATION_SUBSCRIBE,  $marketingList);
+                                                'html 02', 20, Autoresponder::OPERATION_SUBSCRIBE, false,  $marketingList);
             $this->assertNotNull($autoresponder2);
             for ($i = 0; $i < 10; $i++)
             {
@@ -252,10 +254,10 @@
             $marketingList      = MarketingList::getByName('marketingList 01');
             $this->assertNotEmpty($marketingList);
             $autoresponder3     = AutoresponderTestHelper::createAutoresponder('autoresponder 03', 'subject 03', 'text 03',
-                                                'html 03', 10, Autoresponder::OPERATION_UNSUBSCRIBE,  $marketingList[0]);
+                                            'html 03', 10, Autoresponder::OPERATION_UNSUBSCRIBE, true, $marketingList[0]);
             $this->assertNotNull($autoresponder3);
             $autoresponder4     = AutoresponderTestHelper::createAutoresponder('autoresponder 04', 'subject 04', 'text 04',
-                                                    'html 04', 20, Autoresponder::OPERATION_SUBSCRIBE,  $marketingList[0]);
+                                            'html 04', 20, Autoresponder::OPERATION_SUBSCRIBE, false, $marketingList[0]);
             $this->assertNotNull($autoresponder4);
             for ($i = 0; $i < 10; $i++)
             {
@@ -369,6 +371,7 @@
                                                                                 'This is <b>html</b> content 01',
                                                                                 10,
                                                                                 Autoresponder::OPERATION_SUBSCRIBE,
+                                                                                true,
                                                                                 $marketingList
                                                                             );
             $saved              = AutoresponderItem::addNewItem($processed, $processDateTime, $contact, $autoresponder);
@@ -391,6 +394,7 @@
                                                                                         'This is <b>html</b> content Subscribe',
                                                                                         10,
                                                                                         Autoresponder::OPERATION_SUBSCRIBE,
+                                                                                        true,
                                                                                         $marketingList
                                                                                     );
             $this->assertNotNull($autoresponderSubscribe);
@@ -400,6 +404,7 @@
                                                                                         'This is <b>html</b> content Unsubscribe',
                                                                                         20,
                                                                                         Autoresponder::OPERATION_UNSUBSCRIBE,
+                                                                                        true,
                                                                                         $marketingList
                                                                                     );
             $this->assertNotNull($autoresponderUnsubscribe);
@@ -409,6 +414,7 @@
                                                                                         'This is <b>html</b> content Remove',
                                                                                         10,
                                                                                         Autoresponder::OPERATION_REMOVE,
+                                                                                        false,
                                                                                         $marketingList
                                                                                     );
             $this->assertNotNull($autoresponderRemove);
