@@ -95,9 +95,10 @@
         {
             $content  = '<div class="view-toolbar-container clearfix">';
             $content .= '<div class="view-toolbar">' . $this->renderActionElementBar(false) . '</div>';
-            if (!Yii::app()->userInterface->isMobile())
+            if (!Yii::app()->userInterface->isMobile() &&
+                null != $secondActionElementBarContent = $this->renderSecondActionElementBar(false))
             {
-                $content .= '<div class="view-toolbar">' . $this->renderSecondActionElementBar(false) . '</div>';
+                $content .= '<div class="view-toolbar">' . $secondActionElementBarContent . '</div>';
             }
             $content .= '</div>';
             return $content;

@@ -92,6 +92,7 @@
         {
             return array('cardColumns' => $this->getCardColumns());
         }
+
         protected function getCardColumns()
         {
             return array('closedDate' =>   array('value'  => 'DateTimeUtil::resolveValueForDateLocaleFormattedDisplay($data->closeDate)',
