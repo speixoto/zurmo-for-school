@@ -40,11 +40,19 @@
     class EmailFolder extends Item
     {
         const TYPE_INBOX               = 'Inbox';
+
         const TYPE_SENT                = 'Sent';
+
         const TYPE_OUTBOX              = 'Outbox';
+
         const TYPE_DRAFT               = 'Draft';
+
         const TYPE_OUTBOX_ERROR        = 'OutboxError';
+
+        const TYPE_OUTBOX_FAILURE      = 'OutboxFailure';
+
         const TYPE_ARCHIVED            = 'Archived';
+
         const TYPE_ARCHIVED_UNMATCHED  = 'ArchivedUnmatched';
 
         public static function getDefaultDraftName()
@@ -70,6 +78,11 @@
         public static function getDefaultOutboxErrorName()
         {
             return Zurmo::t('EmailMessagesModule', 'Outbox Error');
+        }
+
+        public static function getDefaultOutboxFailureName()
+        {
+            return Zurmo::t('EmailMessagesModule', 'Outbox Failure');
         }
 
         public static function getDefaultArchivedName()
@@ -104,6 +117,10 @@
             elseif ($type == self::TYPE_OUTBOX_ERROR)
             {
                 return self::getDefaultOutboxErrorName();
+            }
+            elseif ($type == self::TYPE_OUTBOX_FAILURE)
+            {
+                return self::getDefaultOutboxFailureName();
             }
             elseif ($type == self::TYPE_ARCHIVED)
             {
