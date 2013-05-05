@@ -48,77 +48,77 @@
 
         public static function getDefaultMetadata()
         {
-	    $metadata = array(
-                'perUser' => array(
-                    'title' => "eval:Zurmo::t('ProductsModule', 'ProductsModulePluralLabel', LabelUtil::getTranslationParamsForAllModules())",
-                ),
-                'global' => array(
-                    'toolbar' => array(
-                        'elements' => array(
-                            array(  'type'            => 'CreateFromRelatedListLink',
-                                    'routeModuleId'   => 'eval:$this->moduleId',
-                                    'routeParameters' => 'eval:$this->getCreateLinkRouteParameters()'),
+            $metadata = array(
+                    'perUser' => array(
+                        'title' => "eval:Zurmo::t('ProductsModule', 'ProductsModulePluralLabel', LabelUtil::getTranslationParamsForAllModules())",
+                    ),
+                    'global' => array(
+                        'toolbar' => array(
+                            'elements' => array(
+                                array(  'type'            => 'CreateFromRelatedListLink',
+                                        'routeModuleId'   => 'eval:$this->moduleId',
+                                        'routeParameters' => 'eval:$this->getCreateLinkRouteParameters()'),
+                            ),
                         ),
-                    ),
-                    'rowMenu' => array(
-                        'elements' => array(
-			    array('type'                      => 'EditLink'),
-			    array('type'                      => 'RelatedDeleteLink'),
-                            array('type'                      => 'RelatedUnlink',
-                                  'relationModelClassName'    => 'eval:get_class($this->params["relationModel"])',
-                                  'relationModelId'           => 'eval:$this->params["relationModel"]->id',
-                                  'relationModelRelationName' => 'products',
-                                  'userHasRelatedModelAccess' => 'eval:ActionSecurityUtil::canCurrentUserPerformAction( "Edit", $this->params["relationModel"])')
+                        'rowMenu' => array(
+                            'elements' => array(
+                                                    array('type'                      => 'EditLink'),
+                                                    array('type'                      => 'RelatedDeleteLink'),
+                                                    array('type'                      => 'RelatedUnlink',
+                                                          'relationModelClassName'    => 'eval:get_class($this->params["relationModel"])',
+                                                          'relationModelId'           => 'eval:$this->params["relationModel"]->id',
+                                                          'relationModelRelationName' => 'products',
+                                                          'userHasRelatedModelAccess' => 'eval:ActionSecurityUtil::canCurrentUserPerformAction( "Edit", $this->params["relationModel"])')
+                            ),
                         ),
-                    ),
-                    'derivedAttributeTypes' => array(
-                        'FullName',
-                    ),
-                    'gridViewType' => RelatedListView::GRID_VIEW_TYPE_NORMAL,
-                    'panels' => array(
-                        array(
-                            'rows' => array(
-                                array('cells' =>
-                                    array(
+                        'derivedAttributeTypes' => array(
+                            'FullName',
+                        ),
+                        'gridViewType' => RelatedListView::GRID_VIEW_TYPE_NORMAL,
+                        'panels' => array(
+                            array(
+                                'rows' => array(
+                                    array('cells' =>
                                         array(
-                                            'elements' => array(
-                                                array('attributeName' => 'name', 'type' => 'Text'),
+                                            array(
+                                                'elements' => array(
+                                                    array('attributeName' => 'name', 'type' => 'Text'),
+                                                ),
                                             ),
-                                        ),
-                                    )
-                                ),
-				array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'quantity', 'type' => 'Text'),
-                                            ),
-                                        ),
-                                    )
-                                ),
-				array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'sellPrice', 'type' => 'CurrencyValue'),
-                                            ),
-                                        ),
-                                    )
-                                ),
-				array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'total', 'type' => 'CurrencyValue'),
-                                            ),
-                                        ),
-                                    )
-                                )
+                                        )
+                                    ),
+                                    array('cells' =>
+                                            array(
+                                                array(
+                                                    'elements' => array(
+                                                        array('attributeName' => 'quantity', 'type' => 'Text'),
+                                                 ),
+                                             ),
+                                         )
+                                    ),
+                                    array('cells' =>
+                                            array(
+                                                array(
+                                                    'elements' => array(
+                                                        array('attributeName' => 'sellPrice', 'type' => 'CurrencyValue'),
+                                                    ),
+                                              ),
+                                          )
+                                    ),
+                                    array('cells' =>
+                                            array(
+                                                array(
+                                                    'elements' => array(
+                                                        array('attributeName' => 'total', 'type' => 'CurrencyValue'),
+                                                    ),
+                                                ),
+                                            )
+                                         )
+                                    ),
                             ),
                         ),
                     ),
-                ),
-            );
+                );
             return $metadata;
         }
 
@@ -172,24 +172,24 @@
             assert('$form instanceof ZurmoActiveForm');
             $content      = null;
             $innerContent = null;
-	    $content	  = $this->renderAddProductContent($form);
+            $content	  = $this->renderAddProductContent($form);
             $content	  .= '</div>' . "\n";
             return $content;
         }
 
         protected function getUniquePageId()
-	{
-	    return null;
-	}
+        {
+            return null;
+        }
 
-	protected static function resolveAjaxOptionsForSelectList()
+        protected static function resolveAjaxOptionsForSelectList()
         {
             $title = Zurmo::t('ProductsModule', 'ProductsModuleSingularLabel Search',
                             LabelUtil::getTranslationParamsForAllModules());
             return ModalView::getAjaxOptionsForModalLink($title);
         }
 
-	/**
+        /**
          * Get the meta data and merge with standard CGridView column elements
          * to create a column array that fits the CGridView columns API
          */
@@ -239,12 +239,12 @@
             return $columns;
         }
 
-	protected function renderContent()
+        protected function renderContent()
         {
             $content	    = $this->renderViewToolBar();
             $content	    .= $this->renderAddProductLink();
-	    $content	    .= $this->renderConfigurationForm();
-	    $cClipWidget    = new CClipWidget();
+            $content	    .= $this->renderConfigurationForm();
+            $cClipWidget    = new CClipWidget();
             $cClipWidget->beginClip("ListView");
             $cClipWidget->widget($this->getGridViewWidgetPath(), $this->getCGridViewParams());
             $cClipWidget->endClip();
@@ -253,22 +253,22 @@
             {
                 $content    .= ZurmoHtml::hiddenField($this->gridId . $this->gridIdSuffix . '-selectedIds', implode(",", $this->selectedIds)) . "\n"; // Not Coding Standard
             }
-	    $content	    .= $this->renderScripts();
+            $content	    .= $this->renderScripts();
             return $content;
         }
 
-	protected function renderAddProductLink()
-	{
-	    $title = Zurmo::t('ProductsModule', 'Select from Catalog',
+        protected function renderAddProductLink()
+        {
+            $title = Zurmo::t('ProductsModule', 'Select from Catalog',
                             LabelUtil::getTranslationParamsForAllModules());
-	    $string  = "<p>" . ZurmoHtml::link($title, "#", array('id' => 'addProductPortletLink')) . "</p>";
+            $string  = "<p>" . ZurmoHtml::link($title, "#", array('id' => 'addProductPortletLink')) . "</p>";
             return $string;
-	}
+        }
 
-	protected function renderAddProductContent($form)
-	{
-	    $routeParams    = $this->getCreateLinkRouteParameters();
-	    $productElement = new ProductPortletTemplateElement(new Product(),
+        protected function renderAddProductContent($form)
+        {
+            $routeParams    = $this->getCreateLinkRouteParameters();
+            $productElement = new ProductPortletTemplateElement(new Product(),
 								    $this->getRelationAttributeName(),
 								    $form,
 								    array('inputIdPrefix'   => 'product',
@@ -278,46 +278,46 @@
 								    $routeParams['relationModelId'],
 								    $routeParams["relationModuleId"]
 								);
-	    $content	    = $productElement->render();
-	    return $content;
+            $content	    = $productElement->render();
+            return $content;
         }
 
-	protected function renderScripts()
-	{
-	    parent::renderScripts();
-	    Yii::app()->clientScript->registerScript("AddProductElementToggleDisplay",
-		    "$(function () {
-		    $('#addProductPortletLink').click(function (e) {
-			    e.preventDefault();
-			    if($('#product-configuration-form').css('display') == 'none')
-			    {
-				$('#product-configuration-form').show('slow');
-			    }
-			    else
-			    {
-				$('#product-configuration-form').hide('slow');
-			    }
-			})
-			})
-		    ");
-	}
+        protected function renderScripts()
+        {
+            parent::renderScripts();
+            Yii::app()->clientScript->registerScript("AddProductElementToggleDisplay",
+                "$(function () {
+                $('#addProductPortletLink').click(function (e) {
+                    e.preventDefault();
+                    if($('#product-configuration-form').css('display') == 'none')
+                    {
+                    $('#product-configuration-form').show('slow');
+                    }
+                    else
+                    {
+                    $('#product-configuration-form').hide('slow');
+                    }
+                })
+                })
+                ");
+        }
 
-	public function getGridViewId()
+        public function getGridViewId()
         {
             return 'product-portlet-grid-view';
         }
 
-	protected function getGridViewWidgetPath()
+        protected function getGridViewWidgetPath()
         {
             return 'application.modules.products.widgets.ProductPortletExtendedGridView';
         }
 
-	protected function getCGridViewParams()
+        protected function getCGridViewParams()
         {
             $columns = $this->getCGridViewColumns();
             assert('is_array($columns)');
 
-	    return array(
+            return array(
                 'id' => $this->getGridViewId(),
                 'htmlOptions' => array(
                     'class' => 'cgrid-view'
@@ -336,13 +336,13 @@
                 'template'             => static::getGridTemplate(),
                 'summaryText'          => static::getSummaryText(),
                 'summaryCssClass'      => static::getSummaryCssClass(),
-		'params'	       => $this->params
+                'params'	       => $this->params
             );
         }
 
-	protected function getCGridViewPagerParams()
+        protected function getCGridViewPagerParams()
         {
-	    $defaultData = array('id' => $this->params["relationModel"]->id, 'stickyOffset' => 0);
+            $defaultData = array('id' => $this->params["relationModel"]->id, 'stickyOffset' => 0);
             return array(
                     'firstPageLabel' => '<span>first</span>',
                     'prevPageLabel'  => '<span>previous</span>',

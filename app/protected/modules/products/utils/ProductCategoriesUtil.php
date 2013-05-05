@@ -33,7 +33,7 @@
                                     Product $product, $postData)
         {
             $newCategory = array();
-	    if (isset($postData['categoryIds']) && strlen($postData['categoryIds']) > 0)
+            if (isset($postData['categoryIds']) && strlen($postData['categoryIds']) > 0)
             {
                 $categoryIds = explode(",", $postData['categoryIds']);  // Not Coding Standard
                 foreach ($categoryIds as $categoryId)
@@ -42,7 +42,7 @@
                 }
                 if ($product->productCategories->count() > 0)
                 {
-		    $product->productCategories->removeAll();
+                    $product->productCategories->removeAll();
                 }
                 //Now add missing categories
                 foreach ($newCategory as $category)

@@ -45,7 +45,6 @@
                         array_merge(array($this->selectedRecordCount), LabelUtil::getTranslationParamsForAllModules())) .
                         ' ' . Zurmo::t('Core', 'selected for removal.');
             return ZurmoHtml::wrapLabel($message, 'operation-description');
-                        'probability',
         }
     }
 ?>

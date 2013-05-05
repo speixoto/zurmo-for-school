@@ -47,10 +47,11 @@
             return Zurmo::t('ProductsModule', 'Products');
         }
 
-	protected function getHomeUrl()
+        protected function getHomeUrl()
         {
             return Yii::app()->createUrl('products/default/list');
-         */
+        }
+
         protected function resolveModuleId()
         {
             return 'workflows';

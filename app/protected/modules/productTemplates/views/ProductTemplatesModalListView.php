@@ -87,10 +87,10 @@
             return $metadata;
         }
 
-	protected function renderScripts()
+        protected function renderScripts()
         {
-	   parent::renderScripts();
-           Yii::app()->clientScript->registerScriptFile(Yii::app()->getAssetManager()->publish(
+            parent::renderScripts();
+            Yii::app()->clientScript->registerScriptFile(Yii::app()->getAssetManager()->publish(
                     Yii::getPathOfAlias('application.modules.productTemplates.elements.assets')
                     ) . '/Modal.js',
                 CClientScript::POS_END);

@@ -41,7 +41,7 @@
             if (RightsUtil::doesUserHaveAllowByRightName('ProductsModule', ProductsModule::getCreateRight(),
                                                         Yii::app()->user->userModel))
             {
-                $items[] = array('label'   => Zurmo::t('ProductsModule', 'Create Product'),
+                $items[] = array('label'    => Zurmo::t('ProductsModule', 'Create Product'),
                                   'url'     => Yii::app()->createUrl('products/default/create'));
             }
             if (RightsUtil::doesUserHaveAllowByRightName('ProductTemplatesModule', ProductTemplatesModule::getCreateRight(),
@@ -55,10 +55,10 @@
             }
             if (!empty($items))
             {
-                $menuItems = array( 'label' => $this->getLabel(),
-                                    'url'   => null,
-                                    'items' => $items);
-                $cClipWidget = new CClipWidget();
+                $menuItems      = array( 'label' => $this->getLabel(),
+                                         'url'   => null,
+                                         'items' => $items);
+                $cClipWidget    = new CClipWidget();
                 $cClipWidget->beginClip("ActionMenu");
                 $cClipWidget->widget('application.core.widgets.MbMenu', array(
                     'htmlOptions' => array('id' => 'MashableInboxCreateDropdown'),

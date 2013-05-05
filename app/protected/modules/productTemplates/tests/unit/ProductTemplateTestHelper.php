@@ -28,27 +28,27 @@
     {
         public static function createProductTemplateByName($name)
         {
-            $currencies				= Currency::getAll();
-            $currencyValue			= new CurrencyValue();
-            $currencyValue->value		= 500.54;
-            $currencyValue->currency		= $currencies[0];
-            $productTemplate			= new ProductTemplate();
-            $productTemplate->name		= $name;
-            $productTemplate->description	= 'Description';
-	    $productTemplate->priceFrequency	= 2;
-            $productTemplate->cost		= $currencyValue;
-            $productTemplate->listPrice		= $currencyValue;
+            $currencies                         = Currency::getAll();
+            $currencyValue                      = new CurrencyValue();
+            $currencyValue->value               = 500.54;
+            $currencyValue->currency            = $currencies[0];
+            $productTemplate                    = new ProductTemplate();
+            $productTemplate->name              = $name;
+            $productTemplate->description       = 'Description';
+            $productTemplate->priceFrequency    = 2;
+            $productTemplate->cost              = $currencyValue;
+            $productTemplate->listPrice         = $currencyValue;
 
-	    $currencyValue			= new SellPriceCurrencyValue();
-            $currencyValue->value		= 500.54;
-            $currencyValue->currency		= $currencies[0];
-            $productTemplate->sellPrice		= $currencyValue;
-            $productTemplate->type		= ProductTemplate::TYPE_PRODUCT;
-            $productTemplate->status		= ProductTemplate::STATUS_ACTIVE;
-	    $sellPriceFormula                   = new SellPriceFormula();
+            $currencyValue                      = new SellPriceCurrencyValue();
+            $currencyValue->value               = 500.54;
+            $currencyValue->currency            = $currencies[0];
+            $productTemplate->sellPrice         = $currencyValue;
+            $productTemplate->type              = ProductTemplate::TYPE_PRODUCT;
+            $productTemplate->status            = ProductTemplate::STATUS_ACTIVE;
+            $sellPriceFormula                   = new SellPriceFormula();
             $sellPriceFormula->type             = SellPriceFormula::TYPE_EDITABLE;
             $productTemplate->sellPriceFormula  = $sellPriceFormula;
-            $saved				= $productTemplate->save();
+            $saved                              = $productTemplate->save();
             assert('$saved');
             return $productTemplate;
         }
@@ -82,7 +82,7 @@
 
         public static function createProductTemplateByVariables($product, $priceFrequency, $type, $status, $sellPriceFormulaType)
         {
-            $currencyArray = ProductTemplateTestHelper::getCurrencyData();
+            $currencyArray                              = ProductTemplateTestHelper::getCurrencyData();
 
             $productTemplate                            = new ProductTemplate();
             $productTemplate->name                      = 'Red Widget';

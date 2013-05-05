@@ -31,16 +31,16 @@
     {
         public static function getProductPortletSellPrice($data, $row)
         {
-	    assert('$data->sellPrice instanceof CurrencyValue');
+            assert('$data->sellPrice instanceof CurrencyValue');
             $currencyValueModel = $data->sellPrice;
             return Yii::app()->numberFormatter->formatCurrency( $currencyValueModel->value,
                                                                 $currencyValueModel->currency->code);
 
         }
 
-	public static function getProductPortletTotalPrice($data, $row)
+        public static function getProductPortletTotalPrice($data, $row)
         {
-	    assert('$data->sellPrice instanceof CurrencyValue');
+            assert('$data->sellPrice instanceof CurrencyValue');
             $currencyValueModel = $data->sellPrice;
             return Yii::app()->numberFormatter->formatCurrency( $currencyValueModel->value * $data->quantity,
                                                                 $currencyValueModel->currency->code);

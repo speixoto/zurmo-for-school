@@ -26,9 +26,11 @@
 
     class ProductCategory extends Item
     {
-        const EVERYONE_CATEGORY_NAME           = 'Everyone';
-	const ERROR_EXIST_TEMPLATE	       = 1;
-	const ERROR_EXIST_CHILD_CATEGORIES     = 2;
+        const EVERYONE_CATEGORY_NAME            = 'Everyone';
+
+        const ERROR_EXIST_TEMPLATE              = 1;
+
+        const ERROR_EXIST_CHILD_CATEGORIES      = 2;
 
         public static function getByName($name)
         {
@@ -96,7 +98,7 @@
                 ),
                 'relations' => array(
                     'productTemplates'  => array(RedBeanModel::MANY_MANY, 'ProductTemplate'),
-		    'products'		=> array(RedBeanModel::MANY_MANY, 'Product'),
+                    'products'          => array(RedBeanModel::MANY_MANY, 'Product'),
                     'productCatalogs'   => array(RedBeanModel::MANY_MANY, 'ProductCatalog'),
                     'productCategory'   => array(RedBeanModel::HAS_MANY_BELONGS_TO, 'ProductCategory'),
                     'productCategories' => array(RedBeanModel::HAS_MANY, 'ProductCategory'),
@@ -145,20 +147,20 @@
             {
                 return false;
             }
-	    else
+            else
             {
                 return true;
             }
         }
 
-	protected static function translatedAttributeLabels($language)
+        protected static function translatedAttributeLabels($language)
         {
             return array_merge(parent::translatedAttributeLabels($language), array(
                 'productCategory'   => Zurmo::t('ProductTemplatesModule', 'Parent ' . self::getModelLabelByTypeAndLanguage('Singular', $language), array(), null, $language),
                 'productCategories' => self::getModelLabelByTypeAndLanguage('Plural', $language),
                 'productCatalogs'   => ProductCatalog::getModelLabelByTypeAndLanguage('Plural', $language),
                 'products'	    => Zurmo::t('ProductTemplatesModule', 'ProductsModulePluralLabel', array(), null, $language),
-		'productTemplates'  => Zurmo::t('ProductTemplatesModule', 'ProductTemplatesModulePluralLabel', array(), null, $language)
+                'productTemplates'  => Zurmo::t('ProductTemplatesModule', 'ProductTemplatesModulePluralLabel', array(), null, $language)
             ));
         }
     }

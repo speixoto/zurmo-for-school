@@ -28,7 +28,7 @@
     {
         public function filters()
         {
-	    $modelClassName   = $this->getModule()->getPrimaryModelName();
+            $modelClassName   = $this->getModule()->getPrimaryModelName();
             $viewClassName    = $modelClassName . 'EditAndDetailsView';
             return array_merge(parent::filters(),
                 array(
@@ -49,21 +49,21 @@
         {
             $pageSize                       = Yii::app()->pagination->resolveActiveForCurrentUserByType(
                                               'listPageSize', get_class($this->getModule()));
-	    $activeActionElementType        = 'ProductsLink';
+            $activeActionElementType        = 'ProductsLink';
             $product                        = new Product(false);
             $searchForm                     = new ProductsSearchForm($product);
             $listAttributesSelector         = new ListAttributesSelector('ProductsListView', get_class($this->getModule()));
             $searchForm->setListAttributesSelector($listAttributesSelector);
-            $dataProvider		    = $this->resolveSearchDataProvider(
-										$searchForm,
-										$pageSize,
-										null,
-										'ProductsSearchView'
-										);
-	    $title           = Zurmo::t('ProductsModule', 'Products');
-            $breadcrumbLinks = array(
-                 $title,
-            );
+            $dataProvider                   = $this->resolveSearchDataProvider(
+                                                    $searchForm,
+                                                    $pageSize,
+                                                    null,
+                                                    'ProductsSearchView'
+                                                );
+            $title                          = Zurmo::t('ProductsModule', 'Products');
+            $breadcrumbLinks                = array(
+                                                    $title,
+                                                    );
             if (isset($_GET['ajax']) && $_GET['ajax'] == 'list-view')
             {
                 $mixedView  = $this->makeListView(
@@ -78,58 +78,58 @@
 								    'SecuredActionBarForProductsSearchAndListView',
 								    null, $activeActionElementType);
                 $view	    = new ProductsPageView(ZurmoDefaultViewUtil::
-						   makeViewWithBreadcrumbsForCurrentUser(
-							  $this, $mixedView, $breadcrumbLinks, 'ProductBreadCrumbView'));
+                                                    makeViewWithBreadcrumbsForCurrentUser(
+                                                        $this, $mixedView, $breadcrumbLinks, 'ProductBreadCrumbView'));
             }
             echo $view->render();
         }
 
         public function actionDetails($id)
         {
-	    $title           = Zurmo::t('ProductsModule', 'Product Detail');
-            $breadcrumbLinks = array(
-                 $title,
-            );
-            $product = static::getModelAndCatchNotFoundAndDisplayError('Product', intval($id));
+            $title              = Zurmo::t('ProductsModule', 'Product Detail');
+            $breadcrumbLinks    = array(
+                                        $title,
+                                        );
+            $product            = static::getModelAndCatchNotFoundAndDisplayError('Product', intval($id));
             ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($product);
-	    $detailsView	    = new ProductDetailsView($this->getId(), $this->getModule()->getId(), $product);
-            $view		    = new ProductsPageView(ProductDefaultViewUtil::
-							    makeViewWithBreadcrumbsForCurrentUser(
-								    $this, $detailsView, $breadcrumbLinks, 'ProductBreadCrumbView'));
+            $detailsView	    = new ProductDetailsView($this->getId(), $this->getModule()->getId(), $product);
+            $view               = new ProductsPageView(ProductDefaultViewUtil::
+                                                         makeViewWithBreadcrumbsForCurrentUser(
+                                                            $this, $detailsView, $breadcrumbLinks, 'ProductBreadCrumbView'));
             echo $view->render();
         }
 
         public function actionCreate()
         {
-	    $title           = Zurmo::t('ProductsModule', 'Create Product');
+            $title           = Zurmo::t('ProductsModule', 'Create Product');
             $breadcrumbLinks = array(
                  $title,
             );
             $editAndDetailsView = $this->makeEditAndDetailsView(
                                             $this->attemptToSaveModelFromPost(new Product()), 'Edit');
             $view		= new ProductsPageView(ProductDefaultViewUtil::
-							makeViewWithBreadcrumbsForCurrentUser(
-								$this, $editAndDetailsView, $breadcrumbLinks, 'ProductBreadCrumbView'));
+                                                makeViewWithBreadcrumbsForCurrentUser(
+                                                    $this, $editAndDetailsView, $breadcrumbLinks, 'ProductBreadCrumbView'));
             echo $view->render();
         }
 
         public function actionEdit($id, $redirectUrl = null)
         {
-	    $title           = Zurmo::t('ProductsModule', 'Edit Product');
+            $title           = Zurmo::t('ProductsModule', 'Edit Product');
             $breadcrumbLinks = array(
                  $title,
             );
-	    $product = Product::getById(intval($id));
+            $product         = Product::getById(intval($id));
             ControllerSecurityUtil::resolveAccessCanCurrentUserWriteModel($product);
-            $view    = new ProductsPageView(ProductDefaultViewUtil::
-					    makeViewWithBreadcrumbsForCurrentUser($this,
-						$this->makeEditAndDetailsView(
-						    $this->attemptToSaveModelFromPost(
-							    $product, $redirectUrl), 'Edit'), $breadcrumbLinks, 'ProductBreadCrumbView'));
+            $view            = new ProductsPageView(ProductDefaultViewUtil::
+                                                        makeViewWithBreadcrumbsForCurrentUser($this,
+                                                            $this->makeEditAndDetailsView(
+                                                                $this->attemptToSaveModelFromPost(
+                                                                    $product, $redirectUrl), 'Edit'), $breadcrumbLinks, 'ProductBreadCrumbView'                                                   ));
             echo $view->render();
         }
 
-	protected static function getZurmoControllerUtil()
+        protected static function getZurmoControllerUtil()
         {
             return new ProductZurmoControllerUtil('productItems', 'ProductItemForm',
                                                             'ProductCategoriesForm');
@@ -151,33 +151,33 @@
          */
         public function actionMassEdit()
         {
-            $pageSize		 = Yii::app()->pagination->resolveActiveForCurrentUserByType('massEditProgressPageSize');
-            $product		 = new Product(false);
-            $activeAttributes	 = $this->resolveActiveAttributesFromMassEditPost();
-            $dataProvider	 = $this->getDataProviderByResolvingSelectAllFromGet(
+            $pageSize           = Yii::app()->pagination->resolveActiveForCurrentUserByType('massEditProgressPageSize');
+            $product            = new Product(false);
+            $activeAttributes	= $this->resolveActiveAttributesFromMassEditPost();
+            $dataProvider       = $this->getDataProviderByResolvingSelectAllFromGet(
 										    new ProductsSearchForm($product),
 										    $pageSize,
 										    Yii::app()->user->userModel->id,
 										    null,
 										    'ProductsSearchView');
             $selectedRecordCount = $this->getSelectedRecordCountByResolvingSelectAllFromGet($dataProvider);
-            $product		 = $this->processMassEdit(
-							    $pageSize,
-							    $activeAttributes,
-							    $selectedRecordCount,
-							    'ProductsPageView',
-							    $product,
-							    ProductsModule::getModuleLabelByTypeAndLanguage('Plural'),
-							    $dataProvider
-							);
-            $massEditView	 = $this->makeMassEditView(
-							    $product,
-							    $activeAttributes,
-							    $selectedRecordCount,
-							    ProductsModule::getModuleLabelByTypeAndLanguage('Plural')
-							   );
-            $view		 = new ProductsPageView(ZurmoDefaultViewUtil::
-							    makeStandardViewForCurrentUser($this, $massEditView));
+            $product             = $this->processMassEdit(
+                                        $pageSize,
+                                        $activeAttributes,
+                                        $selectedRecordCount,
+                                        'ProductsPageView',
+                                        $product,
+                                        ProductsModule::getModuleLabelByTypeAndLanguage('Plural'),
+                                        $dataProvider
+                                    );
+            $massEditView       = $this->makeMassEditView(
+                                        $product,
+                                        $activeAttributes,
+                                        $selectedRecordCount,
+                                        ProductsModule::getModuleLabelByTypeAndLanguage('Plural')
+                                       );
+            $view               = new ProductsPageView(ZurmoDefaultViewUtil::
+                                                    makeStandardViewForCurrentUser($this, $massEditView));
             echo $view->render();
         }
 
@@ -233,24 +233,24 @@
 											Yii::app()->user->userModel->id,
 											null,
 											'ProductsSearchView');
-            $selectedRecordCount    = $this->getSelectedRecordCountByResolvingSelectAllFromGet($dataProvider);
+            $selectedRecordCount= $this->getSelectedRecordCountByResolvingSelectAllFromGet($dataProvider);
             $product		    = $this->processMassDelete(
-								$pageSize,
-								$activeAttributes,
-								$selectedRecordCount,
-								'ProductsPageView',
-								$product,
-								ProductsModule::getModuleLabelByTypeAndLanguage('Plural'),
-								$dataProvider
-							      );
+                                                            $pageSize,
+                                                            $activeAttributes,
+                                                            $selectedRecordCount,
+                                                            'ProductsPageView',
+                                                            $product,
+                                                            ProductsModule::getModuleLabelByTypeAndLanguage('Plural'),
+                                                            $dataProvider
+                                                          );
             $massDeleteView	    = $this->makeMassDeleteView(
-								 $product,
-								 $activeAttributes,
-								 $selectedRecordCount,
-								 ProductsModule::getModuleLabelByTypeAndLanguage('Plural')
-								);
-            $view		    = new ProductsPageView(ZurmoDefaultViewUtil::
-								makeStandardViewForCurrentUser($this, $massDeleteView));
+                                                             $product,
+                                                             $activeAttributes,
+                                                             $selectedRecordCount,
+                                                             ProductsModule::getModuleLabelByTypeAndLanguage('Plural')
+                                                            );
+            $view               = new ProductsPageView(ZurmoDefaultViewUtil::
+                                                    makeStandardViewForCurrentUser($this, $massDeleteView));
             echo $view->render();
         }
 
@@ -273,11 +273,11 @@
 										  'ProductsSearchView'
 										);
             $this->processMassDeleteProgress(
-						'Product',
-						$pageSize,
-						ProductsModule::getModuleLabelByTypeAndLanguage('Plural'),
-						$dataProvider
-					    );
+                                                'Product',
+                                                $pageSize,
+                                                ProductsModule::getModuleLabelByTypeAndLanguage('Plural'),
+                                                $dataProvider
+                                             );
         }
 
         public function actionModalList()
@@ -285,8 +285,8 @@
             $modalListLinkProvider = new ProductSelectFromRelatedEditModalListLinkProvider(
                                             $_GET['modalTransferInformation']['sourceIdFieldId'],
                                             $_GET['modalTransferInformation']['sourceNameFieldId'],
-					    $_GET['modalTransferInformation']['relationModelId'],
-					    $_GET['modalTransferInformation']['relatedFieldId']
+                                            $_GET['modalTransferInformation']['relationModelId'],
+                                            $_GET['modalTransferInformation']['relatedFieldId']
             );
             echo ModalSearchListControllerUtil::
                  setAjaxModeAndRenderModalSearchList($this, $modalListLinkProvider);
@@ -310,7 +310,7 @@
             $this->export('ProductsSearchView');
         }
 
-	public function actionCreateFromRelation($relationAttributeName, $relationModelId, $relationModuleId, $redirectUrl)
+        public function actionCreateFromRelation($relationAttributeName, $relationModelId, $relationModuleId, $redirectUrl)
         {
             $product = $this->resolveNewModelByRelationInformation( new Product(),
                                                                                 $relationAttributeName,
@@ -319,7 +319,7 @@
             $this->actionCreateByModel($product, $redirectUrl);
         }
 
-	protected function actionCreateByModel(Product $product, $redirectUrl = null)
+        protected function actionCreateByModel(Product $product, $redirectUrl = null)
         {
             $titleBarAndEditView = $this->makeEditAndDetailsView(
                                             $this->attemptToSaveModelFromPost($product, $redirectUrl), 'Edit');
@@ -328,56 +328,56 @@
             echo $view->render();
         }
 
-	public function actionUpdate($attribute)
+        public function actionUpdate($attribute)
         {
-	    $id		= Yii::app()->request->getParam('item');
-	    $value	= Yii::app()->request->getParam('value');
-	    assert('$id != null && $id != ""');
-	    assert('$value != null && $value != ""');
-	    $id		= intval($id);
-	    $value	= intval($value);
-	    $product	= Product::getById($id);
+            $id		= Yii::app()->request->getParam('item');
+            $value	= Yii::app()->request->getParam('value');
+            assert('$id != null && $id != ""');
+            assert('$value != null && $value != ""');
+            $id		= intval($id);
+            $value	= intval($value);
+            $product	= Product::getById($id);
             ControllerSecurityUtil::resolveAccessCanCurrentUserWriteModel($product);
-	    switch($attribute)
-	    {
-		case 'quantity'	    : $product->quantity	 = $value;
-				      break;
-		case 'sellPrice'    : $product->sellPrice->value = $value;
-				      break;
-	    }
+            switch($attribute)
+            {
+                case 'quantity'	    : $product->quantity	 = $value;
+                                        break;
+                case 'sellPrice'    : $product->sellPrice->value = $value;
+                                        break;
+            }
             $product->save();
-	    header('Content-type: application/json');
-	    die();
+            header('Content-type: application/json');
+            die();
         }
 
-	public function actionCreateProductFromProductTemplate($relationModuleId, $portletId, $uniqueLayoutId, $id,
+        public function actionCreateProductFromProductTemplate($relationModuleId, $portletId, $uniqueLayoutId, $id,
 								$relationModelId, $relationAttributeName, $relationModelClassName = null)
-	{
-	    if($relationModelClassName == null)
+        {
+            if($relationModelClassName == null)
             {
                 $relationModelClassName = Yii::app()->getModule($relationModuleId)->getPrimaryModelName();
             }
-	    $productTemplate		= static::getModelAndCatchNotFoundAndDisplayError('ProductTemplate', intval($id));
-	    $product			= new Product();
-	    $product->name		= $productTemplate->name;
-	    $product->description	= $productTemplate->description;
-	    $product->quantity		= 1;
-	    $product->stage->value	= Product::OPEN_STAGE;
-	    $product->productTemplate   = $productTemplate;
-	    $product->pricefrequency    = $productTemplate->priceFrequency;
-	    $product->sellPrice->value  = $productTemplate->sellPrice->value;
-	    $product->type		= $productTemplate->type;
+            $productTemplate            = static::getModelAndCatchNotFoundAndDisplayError('ProductTemplate', intval($id));
+            $product                    = new Product();
+            $product->name              = $productTemplate->name;
+            $product->description       = $productTemplate->description;
+            $product->quantity          = 1;
+            $product->stage->value      = Product::OPEN_STAGE;
+            $product->productTemplate   = $productTemplate;
+            $product->pricefrequency    = $productTemplate->priceFrequency;
+            $product->sellPrice->value  = $productTemplate->sellPrice->value;
+            $product->type              = $productTemplate->type;
 
-	    $relationModel		= $relationModelClassName::getById((int)$relationModelId);
-	    $product->$relationAttributeName = $relationModel;
-	    $product->save();
-	    $this->redirect(array('/' . $relationModuleId . '/defaultPortlet/modalRefresh',
-					'portletId'            => $portletId,
-					'uniqueLayoutId'       => $uniqueLayoutId,
-					'redirectUrl'          => null,
-					'portletParams'        => array(  'relationModuleId' => $relationModuleId,
-									  'relationModelId'  => $relationModelId),
-				));
-	}
+            $relationModel              = $relationModelClassName::getById((int)$relationModelId);
+            $product->$relationAttributeName = $relationModel;
+            $product->save();
+            $this->redirect(array('/' . $relationModuleId . '/defaultPortlet/modalRefresh',
+                                    'portletId'            => $portletId,
+                                    'uniqueLayoutId'       => $uniqueLayoutId,
+                                    'redirectUrl'          => null,
+                                    'portletParams'        => array(  'relationModuleId' => $relationModuleId,
+                                                                      'relationModelId'  => $relationModelId),
+                            ));
+        }
     }
 ?>

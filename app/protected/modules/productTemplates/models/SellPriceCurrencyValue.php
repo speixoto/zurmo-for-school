@@ -29,7 +29,7 @@
      */
     class SellPriceCurrencyValue extends CurrencyValue
     {
-	public static function getDefaultMetadata()
+        public static function getDefaultMetadata()
         {
             $metadata[__CLASS__] = array(
                 'members' => array(

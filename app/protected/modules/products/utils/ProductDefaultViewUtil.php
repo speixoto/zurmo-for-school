@@ -41,23 +41,23 @@
     {
         protected static $activeModuleId = 'products';
 
-	protected static function resolveForActiveMenuItem(&$items, $controller)
+        protected static function resolveForActiveMenuItem(&$items, $controller)
         {
             assert('$controller == null || $controller instanceof CController');
             assert('is_array($items)');
             foreach ($items as $key => $item)
             {
-		$controllerModuleId = $controller->resolveAndGetModuleId();
+                $controllerModuleId = $controller->resolveAndGetModuleId();
                 if ($controller != null && isset($item['moduleId']))
                 {
-		    if($item['moduleId'] == 'products' && ($controllerModuleId == 'products' || $controllerModuleId == 'productTemplates'))
-		    {
-			$items[$key]['active'] = true;
-		    }
-		    elseif($item['moduleId'] == $controllerModuleId)
-		    {
-			$items[$key]['active'] = true;
-		    }
+                    if($item['moduleId'] == 'products' && ($controllerModuleId == 'products' || $controllerModuleId == 'productTemplates'))
+                    {
+                        $items[$key]['active'] = true;
+                    }
+                    elseif($item['moduleId'] == $controllerModuleId)
+                    {
+                        $items[$key]['active'] = true;
+                    }
                 }
             }
         }

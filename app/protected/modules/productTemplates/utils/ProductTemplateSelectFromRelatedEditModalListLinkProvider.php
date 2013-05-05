@@ -69,7 +69,7 @@
 
         public function getLinkString($attributeString)
         {
-	    $url = Yii::app()->createUrl("productTemplates/default/details");
+            $url = Yii::app()->createUrl("productTemplates/default/details");
             $string  = 'ZurmoHtml::link(';
             $string .= $attributeString . ', ';
             $string .= '"javascript:transferModalValues(\"#modalContainer\", " . CJavaScript::encode(array(\'' . $this->sourceIdFieldId . '\' => $data->id, \'' . $this->sourceNameFieldId . '\' => strval(' . $attributeString . '))) . ");

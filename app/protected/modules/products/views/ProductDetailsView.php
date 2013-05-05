@@ -97,7 +97,7 @@
                                         ),
                                     )
                                 ),
-				array('cells' =>
+                                array('cells' =>
                                     array(
                                         array(
                                             'elements' => array(
@@ -115,7 +115,7 @@
                                         ),
                                     )
                                 ),
-				array('cells' =>
+                                array('cells' =>
                                     array(
                                         array(
                                             'elements' => array(
@@ -124,7 +124,7 @@
                                         ),
                                     )
                                 ),
-				array('cells' =>
+                                array('cells' =>
                                     array(
                                         array(
                                             'elements' => array(

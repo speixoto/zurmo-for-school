@@ -38,18 +38,18 @@
          */
         protected function renderControlEditable()
         {
-	    $defaultHtmlOptions	    = $this->getEditableHtmlOptions();
-	    $sellPriceFormulaModel  = $this->model->sellPriceFormula;
-            $type		    = $sellPriceFormulaModel->type;
-	    $additionalHtmlOptions  = array();
-	    if($type != null)
-	    {
-		if($type != SellPriceFormula::TYPE_EDITABLE)
+            $defaultHtmlOptions	    = $this->getEditableHtmlOptions();
+            $sellPriceFormulaModel  = $this->model->sellPriceFormula;
+            $type                   = $sellPriceFormulaModel->type;
+            $additionalHtmlOptions  = array();
+            if($type != null)
+            {
+                if($type != SellPriceFormula::TYPE_EDITABLE)
                 {
-		    $additionalHtmlOptions = array('readonly' => 'readonly', 'class' => 'disabled');
-		}
-	    }
-	    $defaultHtmlOptions = array_merge($defaultHtmlOptions, $additionalHtmlOptions);
+                    $additionalHtmlOptions = array('readonly' => 'readonly', 'class' => 'disabled');
+                }
+            }
+            $defaultHtmlOptions = array_merge($defaultHtmlOptions, $additionalHtmlOptions);
 
             if (ArrayUtil::getArrayValue($this->params, 'defaultToBlank'))
             {

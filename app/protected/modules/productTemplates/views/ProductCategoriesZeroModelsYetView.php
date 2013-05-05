@@ -32,13 +32,13 @@
     {
         protected function getCreateLinkDisplayLabel()
         {
-	    $singularLabel = ProductCategory::getModelLabelByTypeAndLanguage('Singular');
+            $singularLabel = ProductCategory::getModelLabelByTypeAndLanguage('Singular');
             return Zurmo::t('ProductTemplatesModule', 'Create ' . $singularLabel, LabelUtil::getTranslationParamsForAllModules());
         }
 
         protected function getMessageContent()
         {
-	    return Zurmo::t('ProductTemplatesModule', '<h2>"I don\'t want to be lumped into any categories."</h2>
+            return Zurmo::t('ProductTemplatesModule', '<h2>"I don\'t want to be lumped into any categories."</h2>
 		<i>- Corey Feldman</i><div class="large-icon"></div><p>Unlike Corey, Products love to be lumped into Categories. Why not be the first to create one?</p>');
         }
     }

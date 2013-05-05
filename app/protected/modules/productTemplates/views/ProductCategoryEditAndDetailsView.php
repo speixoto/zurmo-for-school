@@ -72,12 +72,12 @@
 
         protected function getNewModelTitleLabel()
         {
-	    return Zurmo::t('ProductTemplatesModule', 'Create Category',  array());
+            return Zurmo::t('ProductTemplatesModule', 'Create Category',  array());
         }
 
-	public static function getDesignerRulesType()
-	{
-	    return 'ProductCategoryEditAndDetailView';
-	}
+        public static function getDesignerRulesType()
+        {
+            return 'ProductCategoryEditAndDetailView';
+        }
     }
 ?>

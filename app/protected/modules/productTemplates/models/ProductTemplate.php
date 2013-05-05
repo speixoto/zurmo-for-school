@@ -37,7 +37,7 @@
         const PRICE_FREQUENCY_MONTHLY = 7;
         const PRICE_FREQUENCY_ANNUALLY = 8;
 
-	public static function getByName($name)
+        public static function getByName($name)
         {
             return self::getByNameOrEquivalent('name', $name);
         }
@@ -126,16 +126,16 @@
                     array('name',             'type',    'type' => 'string'),
                     array('name',             'length',  'min'  => 3, 'max' => 64),
                     array('description',      'type',    'type' => 'string'),
-		    array('status',           'required'),
-		    array('type',             'required'),
+                    array('status',           'required'),
+                    array('type',             'required'),
                     array('status',           'type',    'type' => 'integer'),
                     array('type',             'type',    'type' => 'integer'),
                     array('priceFrequency',   'type',    'type' => 'integer'),
                     array('cost',             'required'),
                     array('listPrice',        'required'),
                     array('sellPrice',        'required'),
-		    array('sellPriceFormula', 'required'),
-		    array('priceFrequency',   'required'),
+                    array('sellPriceFormula', 'required'),
+                    array('priceFrequency',   'required'),
                 ),
                 'elements' => array(
                     'product'             => 'Product',
@@ -145,7 +145,7 @@
                     'sellPrice'           => 'SellPriceCurrencyValue',
                     'type'                => 'ProductTemplateTypeDropDown',
                     'status'              => 'ProductTemplateStatusDropDown',
-		    'priceFrequency'	  => 'ProductTemplatePriceFrequencyDropDown',
+                    'priceFrequency'	  => 'ProductTemplatePriceFrequencyDropDown',
                     'sellPriceFormula'	  => 'SellPriceFormulaInformation'
 
                 ),
@@ -154,7 +154,7 @@
                 'defaultSortAttribute' => 'name',
                 'noAudit' => array(
                 ),
-		'nonConfigurableAttributes' => array('sellPriceFormula', 'priceFrequency', 'type')
+                'nonConfigurableAttributes' => array('sellPriceFormula', 'priceFrequency', 'type')
             );
             return $metadata;
         }
@@ -192,22 +192,22 @@
             }
         }
 
-	protected static function translatedAttributeLabels($language)
-        {
-            $params = LabelUtil::getTranslationParamsForAllModules();
-            return array_merge(parent::translatedAttributeLabels($language),
-                array(
-		    'productTemplate'	  => Zurmo::t('ProductTemplatesModule', 'Catalog Item',  $params, null, $language),
-                    'products'		  => Zurmo::t('ProductTemplatesModule', 'ProductsModulePluralLabel',  $params, null, $language),
-                    'sellPriceFormula'	  => Zurmo::t('ProductTemplatesModule', 'Sell Price Formula',  array(), null, $language),
-                    'productCategories'   => ProductCategory::getModelLabelByTypeAndLanguage('Plural', $language),
-                    'cost'		  => Zurmo::t('ProductTemplatesModule', 'Cost',  array(), null, $language),
-		    'listPrice'		  => Zurmo::t('ProductTemplatesModule', 'List Price',  array(), null, $language),
-		    'sellPrice'		  => Zurmo::t('ProductTemplatesModule', 'Sell Price',  array(), null, $language),
-                    'type'		  => Zurmo::t('ProductTemplatesModule', 'Type',  array(), null, $language),
-                    'status'		  => Zurmo::t('ProductTemplatesModule', 'Status',  array(), null, $language),
-                )
-            );
+        protected static function translatedAttributeLabels($language)
+            {
+                $params = LabelUtil::getTranslationParamsForAllModules();
+                return array_merge(parent::translatedAttributeLabels($language),
+                    array(
+                        'productTemplate'       => Zurmo::t('ProductTemplatesModule', 'Catalog Item',  $params, null, $language),
+                        'products'              => Zurmo::t('ProductTemplatesModule', 'ProductsModulePluralLabel',  $params, null, $language),
+                        'sellPriceFormula'      => Zurmo::t('ProductTemplatesModule', 'Sell Price Formula',  array(), null, $language),
+                        'productCategories'     => ProductCategory::getModelLabelByTypeAndLanguage('Plural', $language),
+                        'cost'                  => Zurmo::t('ProductTemplatesModule', 'Cost',  array(), null, $language),
+                        'listPrice'             => Zurmo::t('ProductTemplatesModule', 'List Price',  array(), null, $language),
+                        'sellPrice'             => Zurmo::t('ProductTemplatesModule', 'Sell Price',  array(), null, $language),
+                        'type'                  => Zurmo::t('ProductTemplatesModule', 'Type',  array(), null, $language),
+                        'status'                => Zurmo::t('ProductTemplatesModule', 'Status',  array(), null, $language),
+                    )
+                );
+            }
         }
-    }
 ?>

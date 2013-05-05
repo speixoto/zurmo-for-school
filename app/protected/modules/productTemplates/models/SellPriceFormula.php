@@ -27,9 +27,13 @@
     class SellPriceFormula extends OwnedModel
     {
         const TYPE_EDITABLE           = 1;
+
         const TYPE_PROFIT_MARGIN      = 2;
+
         const TYPE_MARKUP_OVER_COST   = 3;
+
         const TYPE_DISCOUNT_FROM_LIST = 4;
+
         const TYPE_SAME_AS_LIST       = 5;
 
         public function __toString()

@@ -88,7 +88,7 @@
                                         ),
                                     )
                                 ),
-				array('cells' =>
+                                array('cells' =>
                                     array(
                                         array(
                                             'elements' => array(

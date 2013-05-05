@@ -45,55 +45,55 @@
     {
         protected static $moduleId = 'productTemplates';
 
-	protected static $modalActionId = 'modalListForProductPortlet';
+        protected static $modalActionId = 'modalListForProductPortlet';
 
-	protected $relationModelId;
+        protected $relationModelId;
 
-	protected $relationAttributeName;
+        protected $relationAttributeName;
 
-	protected $portletId;
+        protected $portletId;
 
-	protected $uniqueLayoutId;
+        protected $uniqueLayoutId;
 
-	protected $relationModuleId;
+        protected $relationModuleId;
 
-	public function __construct($model, $relationAttributeName, $form, array $params, $portletId, $uniqueLayoutId,
-				    $relationModelId, $relationModuleId)
-	{
-	    $this->relationModelId	    = $relationModelId;
-	    $this->relationAttributeName    = $relationAttributeName;
-	    $this->portletId		    = $portletId;
-	    $this->uniqueLayoutId	    = $uniqueLayoutId;
-	    $this->relationModuleId	    = $relationModuleId;
-	    parent::__construct($model, $relationAttributeName, $form, $params);
-	}
-
-        protected function renderLabel()
-	{
-	    return '';
-	}
-
-	protected function getModalTransferInformation()
+        public function __construct($model, $relationAttributeName, $form, array $params, $portletId, $uniqueLayoutId,
+                        $relationModelId, $relationModuleId)
         {
-            $defaultModelTransferInformationArray =  array_merge(array(
-									'sourceIdFieldId' => $this->getIdForHiddenField(),
-									'sourceNameFieldId' => $this->getIdForTextField()
-								), $this->resolveSourceModelIdForModalTransferInformation());
-	    return array_merge($defaultModelTransferInformationArray, $this->resolveRelatedModelIdForModalTransferInformation());
+            $this->relationModelId	    = $relationModelId;
+            $this->relationAttributeName    = $relationAttributeName;
+            $this->portletId		    = $portletId;
+            $this->uniqueLayoutId	    = $uniqueLayoutId;
+            $this->relationModuleId	    = $relationModuleId;
+            parent::__construct($model, $relationAttributeName, $form, $params);
         }
 
-	protected function resolveRelatedModelIdForModalTransferInformation()
-	{
-	    return array(
-			    'relationModelId'		=> $this->relationModelId,
-			    'relationAttributeName'	=> $this->relationAttributeName,
-			    'portletId'			=> $this->portletId,
-			    'uniqueLayoutId'		=> $this->uniqueLayoutId,
-			    'relationModuleId'		=> $this->relationModuleId
-			);
-	}
+        protected function renderLabel()
+        {
+            return '';
+        }
 
-	protected function getModalTitleForSelectingModel()
+        protected function getModalTransferInformation()
+            {
+                $defaultModelTransferInformationArray =  array_merge(array(
+                                        'sourceIdFieldId' => $this->getIdForHiddenField(),
+                                        'sourceNameFieldId' => $this->getIdForTextField()
+                                    ), $this->resolveSourceModelIdForModalTransferInformation());
+                return array_merge($defaultModelTransferInformationArray, $this->resolveRelatedModelIdForModalTransferInformation());
+            }
+
+        protected function resolveRelatedModelIdForModalTransferInformation()
+        {
+            return array(
+                    'relationModelId'		=> $this->relationModelId,
+                    'relationAttributeName'	=> $this->relationAttributeName,
+                    'portletId'			=> $this->portletId,
+                    'uniqueLayoutId'		=> $this->uniqueLayoutId,
+                    'relationModuleId'		=> $this->relationModuleId
+                );
+        }
+
+        protected function getModalTitleForSelectingModel()
         {
             return Zurmo::t('ProductTemplatesModule', 'Catalog Item Search');
         }

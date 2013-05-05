@@ -68,11 +68,11 @@
                                 'type'            => 'ProductCategoriesLink',
                                 'htmlOptions'     => array( 'class' => 'icon-by-workflow-message-in-queues' )
                             ),
-			    array(
+                            array(
                                 'type'            => 'MassDeleteLink',
-                                'htmlOptions' => array('class' => 'icon-delete'),
-                                'listViewGridId' => 'eval:$this->listViewGridId',
-                                'pageVarName' => 'eval:$this->pageVarName'
+                                'htmlOptions'     => array('class' => 'icon-delete'),
+                                'listViewGridId'  => 'eval:$this->listViewGridId',
+                                'pageVarName'     => 'eval:$this->pageVarName'
                             ),
                         ),
                     ),

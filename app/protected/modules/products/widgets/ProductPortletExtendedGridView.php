@@ -40,37 +40,37 @@
      */
     class ProductPortletExtendedGridView extends ExtendedGridView
     {
-	public $params;
+        public $params;
 
-	protected function renderTotalBarDetails()
-	{
-	    $relationModelClassName = get_class($this->params["relationModel"]);
-	    $relationModelId	    = $this->params["relationModel"]->id;
-	    $relationModel	    = $relationModelClassName::getById($relationModelId);
-	    $models		    = $relationModel->products;
-	    $oneTimeTotal	    = 0;
-	    $monthlyTotal	    = 0;
-	    $annualTotal	    = 0;
-	    foreach($models as $model)
-	    {
-		if($model->pricefrequency == ProductTemplate::PRICE_FREQUENCY_ONE_TIME)
-		{
-		    $oneTimeTotal += $model->sellPrice->value * $model->quantity;
-		}
+        protected function renderTotalBarDetails()
+        {
+            $relationModelClassName = get_class($this->params["relationModel"]);
+            $relationModelId	    = $this->params["relationModel"]->id;
+            $relationModel	    = $relationModelClassName::getById($relationModelId);
+            $models		    = $relationModel->products;
+            $oneTimeTotal	    = 0;
+            $monthlyTotal	    = 0;
+            $annualTotal	    = 0;
+            foreach($models as $model)
+            {
+            if($model->pricefrequency == ProductTemplate::PRICE_FREQUENCY_ONE_TIME)
+            {
+                $oneTimeTotal += $model->sellPrice->value * $model->quantity;
+            }
 
-		if($model->pricefrequency == ProductTemplate::PRICE_FREQUENCY_MONTHLY)
-		{
-		    $monthlyTotal += $model->sellPrice->value * $model->quantity;
-		}
+            if($model->pricefrequency == ProductTemplate::PRICE_FREQUENCY_MONTHLY)
+            {
+                $monthlyTotal += $model->sellPrice->value * $model->quantity;
+            }
 
-		if($model->pricefrequency == ProductTemplate::PRICE_FREQUENCY_ANNUALLY)
-		{
-		    $annualTotal += $model->sellPrice->value * $model->quantity;
-		}
-	    }
+            if($model->pricefrequency == ProductTemplate::PRICE_FREQUENCY_ANNUALLY)
+            {
+                $annualTotal += $model->sellPrice->value * $model->quantity;
+            }
+            }
 
-	    $currencySymbol	    = Yii::app()->locale->getCurrencySymbol(Yii::app()->currencyHelper->getCodeForCurrentUserForDisplay());
-	    echo Zurmo::t("Core", "Total: ") . $currencySymbol . $oneTimeTotal . Zurmo::t("Core", " One Time") . ", " . $currencySymbol . $monthlyTotal . Zurmo::t("Core", " Monthly") . ", " . $currencySymbol. $annualTotal . Zurmo::t("Core", " Annually");
-	}
+            $currencySymbol	    = Yii::app()->locale->getCurrencySymbol(Yii::app()->currencyHelper->getCodeForCurrentUserForDisplay());
+            echo Zurmo::t("Core", "Total: ") . $currencySymbol . $oneTimeTotal . Zurmo::t("Core", " One Time") . ", " . $currencySymbol . $monthlyTotal . Zurmo::t("Core", " Monthly") . ", " . $currencySymbol. $annualTotal . Zurmo::t("Core", " Annually");
+        }
     }
 ?>

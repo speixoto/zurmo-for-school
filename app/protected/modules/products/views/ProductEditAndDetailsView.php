@@ -41,7 +41,7 @@
                     'nonPlaceableAttributeNames' => array(
                         'owner',
                     ),
-		    'derivedAttributeTypes' => array(
+                    'derivedAttributeTypes' => array(
                         'MultipleProductCategoriesForProduct',
                     ),
                     'panelsDisplayType' => FormLayout::PANELS_DISPLAY_TYPE_ALL,
@@ -93,16 +93,7 @@
                                         ),
                                     )
                                 ),
-//                                array('cells' =>
-//                                    array(
-//                                        array(
-//                                            'elements' => array(
-//                                                array('attributeName' => 'productTemplate', 'type' => 'ProductTemplate'),
-//                                            ),
-//                                        ),
-//                                    )
-//                                ),
-				array('cells' =>
+                                array('cells' =>
                                     array(
                                         array(
                                             'elements' => array(
@@ -120,7 +111,7 @@
                                         ),
                                     )
                                 ),
-				array('cells' =>
+                                array('cells' =>
                                     array(
                                         array(
                                             'elements' => array(
@@ -129,7 +120,7 @@
                                         ),
                                     )
                                 ),
-				array('cells' =>
+                                array('cells' =>
                                     array(
                                         array(
                                             'elements' => array(
@@ -161,19 +152,19 @@
                                      LabelUtil::getTranslationParamsForAllModules());
         }
 
-	protected function renderRightSideFormLayoutForEdit($form)
+        protected function renderRightSideFormLayoutForEdit($form)
         {
             assert('$form instanceof ZurmoActiveForm');
-	    $content = '';
+            $content = '';
             if ($this->getModel() instanceof OwnedSecurableItem)
             {
                 $content .= "<h3>".Zurmo::t('ProductTemplatesModule', 'Select Catalog Item') . '</h3><div id="product-template-box">';
                 $element  = new ProductTemplateElement($this->getModel(), 'productTemplate', $form);
-		$element->editableTemplate = '{content}{error}';
+                $element->editableTemplate = '{content}{error}';
                 $content .= $element->render().'</div>';
             }
 
-	    $content = $content . "<br/>" . parent::renderRightSideFormLayoutForEdit($form);
+            $content = $content . "<br/>" . parent::renderRightSideFormLayoutForEdit($form);
 
             return $content;
         }

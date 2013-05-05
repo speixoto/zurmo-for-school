@@ -64,15 +64,15 @@
                     {
                         $('#' + elementId).attr('readonly', true);
                         $('#ProductTemplate_' + attribute + '_currency_id').attr('readonly', 'true');
-			$('#ProductTemplate_' + attribute + '_currency_id').addClass('disabled');
-			$('#' + elementId).addClass('disabled');
+                        $('#ProductTemplate_' + attribute + '_currency_id').addClass('disabled');
+                        $('#' + elementId).addClass('disabled');
                     }
                     else
                     {
                         $('#' + elementId).removeAttr('readonly');
                         $('#ProductTemplate_' + attribute + '_currency_id').removeAttr('readonly');
-			$('#ProductTemplate_' + attribute + '_currency_id').removeClass('disabled');
-			$('#' + elementId).removeClass('disabled');
+                        $('#ProductTemplate_' + attribute + '_currency_id').removeClass('disabled');
+                        $('#' + elementId).removeClass('disabled');
                     }
                 }
             ";
@@ -201,18 +201,18 @@
             }
         }
 
-	public static function getProductTemplatePriceFrequencyDisplayedGridValue($data, $row)
+        public static function getProductTemplatePriceFrequencyDisplayedGridValue($data, $row)
         {
             $frequencyDropdownData = self::getProductTemplatePriceFrequencyDropdownArray();
-	    //The field changes here for product
-	    if($data instanceof ProductTemplate)
-	    {
-		$attribute = 'priceFrequency';
-	    }
-	    elseif($data instanceof Product)
-	    {
-		$attribute = 'pricefrequency';
-	    }
+            //The field changes here for product
+            if($data instanceof ProductTemplate)
+            {
+                $attribute = 'priceFrequency';
+            }
+            elseif($data instanceof Product)
+            {
+                $attribute = 'pricefrequency';
+            }
             if(isset($frequencyDropdownData[$data->$attribute]))
             {
                 return $frequencyDropdownData[$data->$attribute];
@@ -223,24 +223,24 @@
             }
         }
 
-	public static function getSellPriceFormulaDisplayedGridValue($data, $row)
-	{
-	    $sellPriceFormulaModel = $data->sellPriceFormula;
-            $type = $sellPriceFormulaModel->type;
-            $discountOrMarkupPercentage = $sellPriceFormulaModel->discountOrMarkupPercentage;
-            $displayedSellPriceFormulaList = SellPriceFormula::getDisplayedSellPriceFormulaArray();
-            $content = '';
-            if($type != null)
-            {
-                $content = $displayedSellPriceFormulaList[$type];
-
-                if($type != SellPriceFormula::TYPE_EDITABLE)
+        public static function getSellPriceFormulaDisplayedGridValue($data, $row)
+        {
+            $sellPriceFormulaModel = $data->sellPriceFormula;
+                $type = $sellPriceFormulaModel->type;
+                $discountOrMarkupPercentage = $sellPriceFormulaModel->discountOrMarkupPercentage;
+                $displayedSellPriceFormulaList = SellPriceFormula::getDisplayedSellPriceFormulaArray();
+                $content = '';
+                if($type != null)
                 {
-                    $content = str_replace('{discount}', $discountOrMarkupPercentage/100, $content);
-                }
-            }
+                    $content = $displayedSellPriceFormulaList[$type];
 
-            return $content;
-	}
+                    if($type != SellPriceFormula::TYPE_EDITABLE)
+                    {
+                        $content = str_replace('{discount}', $discountOrMarkupPercentage/100, $content);
+                    }
+                }
+
+                return $content;
+        }
     }
 ?>

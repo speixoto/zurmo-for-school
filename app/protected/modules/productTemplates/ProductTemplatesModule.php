@@ -27,7 +27,9 @@
     class ProductTemplatesModule extends SecurableModule
     {
         const RIGHT_CREATE_PRODUCT_TEMPLATES = 'Create ProductTemplates';
+
         const RIGHT_DELETE_PRODUCT_TEMPLATES = 'Delete ProductTemplates';
+
         const RIGHT_ACCESS_PRODUCT_TEMPLATES = 'Access ProductTemplates Tab';
 
         public function getDependencies()
@@ -45,7 +47,7 @@
 
         public static function getUntranslatedRightsLabels()
         {
-	    $params					  = LabelUtil::getTranslationParamsForAllModules();
+            $params					  = LabelUtil::getTranslationParamsForAllModules();
             $labels					  = array();
             $labels[self::RIGHT_CREATE_PRODUCT_TEMPLATES] = Zurmo::t('ProductTemplatesModule', 'Create ProductTemplatesModulePluralLabel',     $params);
             $labels[self::RIGHT_DELETE_PRODUCT_TEMPLATES] = Zurmo::t('ProductTemplatesModule', 'Delete ProductTemplatesModulePluralLabel',     $params);
@@ -68,14 +70,14 @@
                 ),
                 'tabMenuItems' => array(
                     array(
-			'label' => "eval:Zurmo::t('ProductTemplatesModule', 'ProductTemplatesModulePluralLabel', \$translationParams)",
+                        'label' => "eval:Zurmo::t('ProductTemplatesModule', 'ProductTemplatesModulePluralLabel', \$translationParams)",
                         'url'   => array('/productTemplates/default'),
                         'right' => self::RIGHT_ACCESS_PRODUCT_TEMPLATES,
                     ),
                 ),
                 'shortcutsCreateMenuItems' => array(
                     array(
-			'label' => "eval:Zurmo::t('ProductTemplatesModule', 'Catalog Item', \$translationParams)",
+                        'label' => "eval:Zurmo::t('ProductTemplatesModule', 'Catalog Item', \$translationParams)",
                         'url'   => array('/productTemplates/default/create'),
                         'right' => self::RIGHT_CREATE_PRODUCT_TEMPLATES,
                     ),
@@ -89,7 +91,7 @@
             return 'ProductTemplate';
         }
 
-	public static function getSingularCamelCasedName()
+        public static function getSingularCamelCasedName()
         {
             return 'ProductTemplate';
         }

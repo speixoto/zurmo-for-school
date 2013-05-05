@@ -29,7 +29,6 @@
         protected function getDropDownArray()
         {
             return array(
-                null                                       => Yii::t('Default', '--'),
                 SellPriceFormula::TYPE_EDITABLE            => Yii::t('Default', 'Editable'),
                 SellPriceFormula::TYPE_DISCOUNT_FROM_LIST  => Yii::t('Default', 'Discount From List'),
                 SellPriceFormula::TYPE_MARKUP_OVER_COST    => Yii::t('Default', 'Markup Over Cost'),

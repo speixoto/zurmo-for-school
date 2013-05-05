@@ -50,30 +50,30 @@
             return $content;
         }
 
-	protected function renderEditableValueTextField($model, $form, $inputNameIdPrefix, $attribute, $parentModel = null)
+        protected function renderEditableValueTextField($model, $form, $inputNameIdPrefix, $attribute, $parentModel = null)
         {
-	    $sellPriceFormulaModel = $parentModel->sellPriceFormula;
-            $type = $sellPriceFormulaModel->type;
-	    $additionalHtmlOptions = array();
-	    if($type != null)
-	    {
-		if($type != SellPriceFormula::TYPE_EDITABLE)
+            $sellPriceFormulaModel          = $parentModel->sellPriceFormula;
+            $type                           = $sellPriceFormulaModel->type;
+            $additionalHtmlOptions          = array();
+            if($type != null)
+            {
+                if($type != SellPriceFormula::TYPE_EDITABLE)
                 {
-		    $additionalHtmlOptions = array('readonly' => 'readonly', 'class' => 'disabled');
-		}
-	    }
-	    //need to override a resolveValue to NOT default to 0 if not specifically null
-            $id =  $this->getEditableInputId($inputNameIdPrefix, $attribute);
-            $htmlOptions = array(
-                'name' =>  $this->getEditableInputName($inputNameIdPrefix, $attribute),
-                'id'   => $id,
-                'value' => $this->resolveAndGetEditableValue($model, $attribute),
-            );
+                    $additionalHtmlOptions  = array('readonly' => 'readonly', 'class' => 'disabled');
+                }
+            }
+            //need to override a resolveValue to NOT default to 0 if not specifically null
+            $id                             =  $this->getEditableInputId($inputNameIdPrefix, $attribute);
+            $htmlOptions                    = array(
+                                                        'name' =>  $this->getEditableInputName($inputNameIdPrefix, $attribute),
+                                                        'id'   => $id,
+                                                        'value' => $this->resolveAndGetEditableValue($model, $attribute),
+                                                    );
 
-	    $htmlOptions = array_merge($htmlOptions, $additionalHtmlOptions);
-            $textField = $form->textField($model, $attribute, $htmlOptions);
-            $error     = $form->error    ($model, $attribute, array('inputID' => $id), true, true,
-                                          $this->renderScopedErrorId($inputNameIdPrefix, $attribute));
+            $htmlOptions                    = array_merge($htmlOptions, $additionalHtmlOptions);
+            $textField                      = $form->textField($model, $attribute, $htmlOptions);
+            $error                          = $form->error($model, $attribute, array('inputID' => $id), true, true,
+                                                                $this->renderScopedErrorId($inputNameIdPrefix, $attribute));
             return $textField . $error;
         }
     }

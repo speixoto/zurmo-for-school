@@ -37,9 +37,9 @@
                         LabelUtil::getTranslationParamsForAllModules());
         }
 
-	protected function getUniquePageId()
-	{
-	    return 'OpportunityProductsForPortletView';
-	}
+        protected function getUniquePageId()
+        {
+            return 'OpportunityProductsForPortletView';
+        }
     }
 ?>

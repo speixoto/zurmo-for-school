@@ -64,13 +64,13 @@
         {
             assert('is_string($sourceIdFieldId)');
             assert('is_string($sourceNameFieldId)');
-	    assert('is_string($relationAttributeName)');
+            assert('is_string($relationAttributeName)');
             assert('is_int($relationModelId)');
             assert('is_string($relationModuleId)');
             assert('is_string($uniqueLayoutId)');
             assert('is_int($portletId)');
             assert('is_string($moduleId)');
-	    $this->sourceIdFieldId	  = $sourceIdFieldId;
+            $this->sourceIdFieldId	  = $sourceIdFieldId;
             $this->sourceNameFieldId	  = $sourceNameFieldId;
             $this->relationAttributeName  = $relationAttributeName;
             $this->relationModelId        = $relationModelId;
@@ -82,11 +82,11 @@
 
         public function getLinkString($attributeString)
         {
-	    $url = Yii::app()->createUrl("products/default/createProductFromProductTemplate", array('relationModuleId' => $this->relationModuleId,
+            $url = Yii::app()->createUrl("products/default/createProductFromProductTemplate", array('relationModuleId' => $this->relationModuleId,
 												    'portletId' => $this->portletId,
 												    'uniqueLayoutId' => $this->uniqueLayoutId));
             $errorInProcess = CJavaScript::quote(Zurmo::t('Core', 'There was an error processing your request'));
-	    $string  = 'ZurmoHtml::link(';
+            $string  = 'ZurmoHtml::link(';
             $string .= $attributeString . ', ';
             $string .= '"javascript:addProductRowToPortletGridView(\'$data->id\', \'' . $url . '\', \'' . $this->relationAttributeName . '\', \'' . $this->relationModelId . '\'
 			    , \'' . $this->uniqueLayoutId . '\', \'' . $errorInProcess . '\')"';

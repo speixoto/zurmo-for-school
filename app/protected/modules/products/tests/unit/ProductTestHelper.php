@@ -28,19 +28,19 @@
     {
         public static function createProductByNameForOwner($name, $owner)
         {
-	    $currencies			     = Currency::getAll('id');
-	    $currencyValue                   = new CurrencyValue();
+            $currencies                      = Currency::getAll('id');
+            $currencyValue                   = new CurrencyValue();
             $currencyValue->currency         = $currencies[array_rand($currencies)];
-	    $currencyValue->value	     = 500.54;
+            $currencyValue->value            = 500.54;
             $product                         = new Product();
             $product->name                   = $name;
             $product->owner                  = $owner;
             $product->description            = 'Description';
             $product->quantity               = 2;
-	    $product->type		     = ProductTemplate::TYPE_PRODUCT;
+            $product->type                   = ProductTemplate::TYPE_PRODUCT;
             $product->stage->value           = 'Open';
-	    $product->sellPrice		     = $currencyValue;
-	    $product->pricefrequency	     = ProductTemplate::PRICE_FREQUENCY_ONE_TIME;
+            $product->sellPrice              = $currencyValue;
+            $product->pricefrequency	     = ProductTemplate::PRICE_FREQUENCY_ONE_TIME;
             $saved                           = $product->save();
             assert('$saved');
             return $product;

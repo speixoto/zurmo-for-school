@@ -58,9 +58,9 @@
             $product->contact         = $contacts[0];
             $product->opportunity     = $opportunities[0];
             $product->productTemplate = $productTemplates[0];
-	    $product->pricefrequency  = ProductTemplate::PRICE_FREQUENCY_ONE_TIME;
-	    $product->sellPrice->value       = 200;
-	    $product->type            = ProductTemplate::TYPE_PRODUCT;
+            $product->pricefrequency  = ProductTemplate::PRICE_FREQUENCY_ONE_TIME;
+            $product->sellPrice->value= 200;
+            $product->type            = ProductTemplate::TYPE_PRODUCT;
 
             $this->assertTrue($product->save());
             $id                       = $product->id;
@@ -76,9 +76,9 @@
             $this->assertTrue($product->account->isSame($accounts[0]));
             $this->assertTrue($product->opportunity->isSame($opportunities[0]));
             $this->assertTrue($product->productTemplate->isSame($productTemplates[0]));
-	    $this->assertEquals(ProductTemplate::PRICE_FREQUENCY_ONE_TIME, $product->pricefrequency);
-	    $this->assertEquals(200, $product->sellPrice->value);
-	    $this->assertEquals(ProductTemplate::TYPE_PRODUCT, $product->type);
+            $this->assertEquals(ProductTemplate::PRICE_FREQUENCY_ONE_TIME, $product->pricefrequency);
+            $this->assertEquals(200, $product->sellPrice->value);
+            $this->assertEquals(ProductTemplate::TYPE_PRODUCT, $product->type);
         }
 
         /**
