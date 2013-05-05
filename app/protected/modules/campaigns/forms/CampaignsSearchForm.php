@@ -34,7 +34,7 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class CampaignssSearchForm extends OwnedSearchForm
+    class CampaignsSearchForm extends OwnedSearchForm
     {
         protected static function getRedBeanModelClassName()
         {
