@@ -217,7 +217,7 @@
                 return null;
             }
             $timestamp = self::convertDbFormatDateTimeToTimestamp($dbFormatDateTime);
-            return self::convertTimestampToDisplayFormat($timestamp, $dateWidth, $timeWidth);
+            return self::convertTimestampToDisplayFormat((int)$timestamp, $dateWidth, $timeWidth);
         }
 
         /**
