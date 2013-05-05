@@ -114,6 +114,7 @@
             }
             $formEnd = $clipWidget->renderEndWidget();
             $content .= $formEnd;
+            $content .= ZurmoHtml::tag('div', array('id' => 'modalContainer-' . $this->getFormName()));
             $content .= '</div>';
             return $content;
         }
