@@ -101,5 +101,13 @@
             $validated                = $message->validate();
             $this->assertTrue($validated);
         }
+
+        public function testSettingAttributesForStaticUserWorkflowEmailMessageRecipientForm()
+        {
+            $form = new StaticUserWorkflowEmailMessageRecipientForm('WorkflowModelTestItem', Workflow::TYPE_ON_SAVE);
+            $this->assertNull($form->userId);
+            $form->setAttributes(array('userId' => 5));
+            $this->assertEquals(5, $form->userId);
+        }
     }
 ?>
