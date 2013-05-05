@@ -65,5 +65,24 @@
             $data[static::TYPE_STATIC]      = Zurmo::t('WorkflowsModule', 'As');
             return $data;
         }
+
+        public function shouldSetNullAlternativeValue()
+        {
+            return true;
+        }
+
+        /**
+         * @param WorkflowActionProcessingModelAdapter $adapter
+         * @param $attribute
+         */
+        public function resolveNullAlternativeValueAndSetToModel(WorkflowActionProcessingModelAdapter $adapter, $attribute)
+        {
+            assert('is_string($attribute)');
+            parent::resolveNullAlternativeValueAndSetToModel($adapter, $attribute);
+            if($adapter->getModel()->{$attribute} === null)
+            {
+                $adapter->getModel()->{$attribute} = false;
+            }
+        }
     }
 ?>
