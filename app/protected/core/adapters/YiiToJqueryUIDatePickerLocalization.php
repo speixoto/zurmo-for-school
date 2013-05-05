@@ -81,7 +81,7 @@
                     return 'y-m-dd';
                 case 'yy/MM/dd':    //ja format
                 case 'yyyy/MM/dd':  //new ja format of Yii 1.11
-                    return 'y/mm/dd';
+                    return 'yy/mm/dd';
                 case 'dd-MM-yy':    //nl format
                         return 'dd-mm-y';
                 case 'd/MM/yy':     //en_au format
