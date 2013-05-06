@@ -130,21 +130,30 @@
         protected function renderReturnUrl()
         {
             $returnUrl = ArrayUtil::getArrayValue($this->params, 'returnUrl');
-            $returnUrl = ($returnUrl)? $returnUrl : Yii::app()->createUrl($this->moduleId);
+            if (!$returnUrl)
+            {
+                $returnUrl = Yii::app()->createUrl($this->moduleId);
+            }
             return $returnUrl;
         }
 
         protected function renderReturnMessage()
         {
             $returnMessage = ArrayUtil::getArrayValue($this->params, 'returnMessage');
-            $returnMessage = ($returnMessage) ? $returnMessage : Zurmo::t('Core', 'Return to List');
+            if (!$returnMessage)
+            {
+                $returnMessage = Zurmo::t('Core', 'Return to List');
+            }
             return $returnMessage;
         }
 
         protected function getDefaultInsufficientPermissionSkipSavingUtil()
         {
             $util = ArrayUtil::getArrayValue($this->params, 'insufficientPermissionSkipSavingUtil');
-            $util = ($util)? $util : $this->getInsufficientPermissionSkipSavingUtil();
+            if (!$util)
+            {
+                $util = $this->getInsufficientPermissionSkipSavingUtil();
+            }
             return $util;
         }
 

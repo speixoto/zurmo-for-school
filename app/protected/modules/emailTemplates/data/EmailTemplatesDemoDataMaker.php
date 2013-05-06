@@ -85,9 +85,11 @@
             $model->modelClassName      = $modelClassName;
             $model->name                = $this->seedData['name'][$this->index];
             $model->subject             = $this->seedData['subject'][$this->index];
-            $model->language            = (isset($this->seedData['language'][$this->index]))?
-                                                $this->seedData['language'][$this->index] :
-                                                $this->seedData['language'][0];
+            $model->language            = $this->seedData['language'][0];
+            if (isset($this->seedData['language'][$this->index]))
+            {
+                $model->language            = $this->seedData['language'][$this->index];
+            }
             $model->textContent         = $this->seedData['textContent'][0];
             $model->htmlContent         = $this->seedData['htmlContent'][0];
         }

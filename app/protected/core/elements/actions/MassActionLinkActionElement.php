@@ -168,8 +168,14 @@
 
         public function registerDropDownScripts($dropDownId = null, $scriptName = null)
         {
-            $dropDownId = ($dropDownId)? $dropDownId : static::getDropDownId();
-            $scriptName = ($scriptName)? $scriptName : $dropDownId;
+            if (!$dropDownId)
+            {
+                $dropDownId = static::getDropDownId();
+            }
+            if (!$scriptName)
+            {
+                $scriptName = $dropDownId;
+            }
             if (Yii::app()->clientScript->isScriptRegistered($scriptName))
             {
                 return;
@@ -324,7 +330,14 @@
         protected function getControllerId()
         {
             $controllerId = ArrayUtil::getArrayValue($this->params, 'controllerId');
-            return ($controllerId)? $controllerId : $this->controllerId;
+            if ($controllerId)
+            {
+                return $controllerId;
+            }
+            else
+            {
+                return $this->controllerId;
+            }
         }
     }
 ?>

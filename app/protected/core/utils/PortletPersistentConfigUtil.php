@@ -70,7 +70,10 @@
             $moduleName = static::getModuleName();
             $keyName = static::resolveKeyNameByPortletId($portletId, $keyName);
             $value = ZurmoConfigurationUtil::getForCurrentUserByModuleName($moduleName, $keyName);
-            $value = ($returnBoolean)? (boolean) $value: $value;
+            if ($returnBoolean)
+            {
+                $value = (boolean) $value;
+            }
             return $value;
         }
 
