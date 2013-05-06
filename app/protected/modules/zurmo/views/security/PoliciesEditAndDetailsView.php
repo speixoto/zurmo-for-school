@@ -75,8 +75,6 @@
                 'global' => array(
                     'toolbar' => array(
                         'elements' => array(
-                            //Customization Begin issue 114:
-                            //array('type' => 'CancelLink', 'renderType' => 'Edit'),
                             array('type' => 'CancelToListLink', 'renderType' => 'Edit'),
                             array('type' => 'SaveButton', 'renderType' => 'Edit'),
                         ),
