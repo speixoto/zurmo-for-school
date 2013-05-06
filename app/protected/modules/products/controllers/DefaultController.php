@@ -101,13 +101,13 @@
 
         public function actionCreate()
         {
-            $title           = Zurmo::t('ProductsModule', 'Create Product');
-            $breadcrumbLinks = array(
-                 $title,
-            );
-            $editAndDetailsView = $this->makeEditAndDetailsView(
+            $title                  = Zurmo::t('ProductsModule', 'Create Product');
+            $breadcrumbLinks        = array(
+                                              $title,
+                                            );
+            $editAndDetailsView     = $this->makeEditAndDetailsView(
                                             $this->attemptToSaveModelFromPost(new Product()), 'Edit');
-            $view		= new ProductsPageView(ProductDefaultViewUtil::
+            $view                   = new ProductsPageView(ProductDefaultViewUtil::
                                                 makeViewWithBreadcrumbsForCurrentUser(
                                                     $this, $editAndDetailsView, $breadcrumbLinks, 'ProductBreadCrumbView'));
             echo $view->render();
@@ -280,18 +280,6 @@
                                              );
         }
 
-        public function actionModalList()
-        {
-            $modalListLinkProvider = new ProductSelectFromRelatedEditModalListLinkProvider(
-                                            $_GET['modalTransferInformation']['sourceIdFieldId'],
-                                            $_GET['modalTransferInformation']['sourceNameFieldId'],
-                                            $_GET['modalTransferInformation']['relationModelId'],
-                                            $_GET['modalTransferInformation']['relatedFieldId']
-            );
-            echo ModalSearchListControllerUtil::
-                 setAjaxModeAndRenderModalSearchList($this, $modalListLinkProvider);
-        }
-
         public function actionDelete($id)
         {
             $product = Product::GetById(intval($id));
@@ -321,21 +309,21 @@
 
         protected function actionCreateByModel(Product $product, $redirectUrl = null)
         {
-            $titleBarAndEditView = $this->makeEditAndDetailsView(
-                                            $this->attemptToSaveModelFromPost($product, $redirectUrl), 'Edit');
-            $view		 = new ProductsPageView(ZurmoDefaultViewUtil::
-                                         makeStandardViewForCurrentUser($this, $titleBarAndEditView));
+            $titleBarAndEditView    = $this->makeEditAndDetailsView(
+                                                $this->attemptToSaveModelFromPost($product, $redirectUrl), 'Edit');
+            $view                   = new ProductsPageView(ZurmoDefaultViewUtil::
+                                                                makeStandardViewForCurrentUser($this, $titleBarAndEditView));
             echo $view->render();
         }
 
         public function actionUpdate($attribute)
         {
-            $id		= Yii::app()->request->getParam('item');
-            $value	= Yii::app()->request->getParam('value');
+            $id         = Yii::app()->request->getParam('item');
+            $value      = Yii::app()->request->getParam('value');
             assert('$id != null && $id != ""');
             assert('$value != null && $value != ""');
-            $id		= intval($id);
-            $value	= intval($value);
+            $id         = intval($id);
+            $value      = intval($value);
             $product	= Product::getById($id);
             ControllerSecurityUtil::resolveAccessCanCurrentUserWriteModel($product);
             switch($attribute)
