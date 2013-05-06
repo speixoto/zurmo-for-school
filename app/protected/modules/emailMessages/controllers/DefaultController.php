@@ -461,15 +461,6 @@
             }
             if (isset($postData[$postVariableName]))
             {
-                if ($relatedId != null && $relatedModelClassName != null && $toAddress != null)
-                {
-                    $messageRecipient                   = new EmailMessageRecipient();
-                    $messageRecipient->toName           = strval($personOrAccount);
-                    $messageRecipient->toAddress        = $toAddress;
-                    $messageRecipient->type             = EmailMessageRecipient::TYPE_TO;
-                    $messageRecipient->personOrAccount  = $personOrAccount;
-                    $emailMessage->recipients->add($messageRecipient);
-                }
                 EmailMessageUtil::resolveEmailMessageFromPostData($postData, $emailMessageForm, Yii::app()->user->userModel);
                 $this->actionValidateCreateEmailMessage($postData, $emailMessageForm);
                 $this->attemptToSaveModelFromPost($emailMessageForm, null, false);
