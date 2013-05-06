@@ -43,6 +43,7 @@
 
         /**
          * Returns the display name for plural of the model class.
+         * @param null | string $language
          * @return dynamic label name based on module.
          */
         protected static function getPluralLabel($language = null)
@@ -133,7 +134,8 @@
                 {
                     $operation = Autoresponder::OPERATION_UNSUBSCRIBE;
                 }
-                AutoresponderItem::registerAutoresponderItemsByAutoresponderOperation($operation, $this->marketingList->id, $this->contact);
+                AutoresponderItem::
+                    registerAutoresponderItemsByAutoresponderOperation($operation, $this->marketingList->id, $this->contact);
             }
             $this->modifiedDateTime     = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
             return true;
@@ -141,8 +143,8 @@
 
         public function beforeDelete()
         {
-            $operation = Autoresponder::OPERATION_REMOVE;
-            AutoresponderItem::registerAutoresponderItemsByAutoresponderOperation($operation, $this->marketingList->id, $this->contact);
+            AutoresponderItem::
+                registerAutoresponderItemsByAutoresponderOperation(Autoresponder::OPERATION_REMOVE, $this->marketingList->id, $this->contact);
             return true;
         }
     }

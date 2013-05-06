@@ -34,42 +34,11 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * Marketing List related array of random seed data parts.
-     */
-    return array(
-        'name'                      => array(
-            'Prospects',
-            'Sales',
-            'Clients',
-            'Companies',
-            'New Offers',
-            'Upgrades',
-            'Beta'
-        ),
-        'description'                  => array(
-            'Lorem ipsum dolor sit amet, consectetur adipiscing elit.'.
-            'Mauris gravida erat nec nulla pharetra et lacinia dolor eleifend.',
-            'Vivamus varius sagittis est in porta. Aenean ac elit eu metus accumsan elementum nec vel leo.',
-            'Cras tempus lectus sit amet elit pretium mollis. Morbi interdum posuere lorem et gravida.',
-            'Nulla tempor pretium eros, ut aliquet tellus faucibus et. Donec mattis justo sed ipsum ultrices venenatis.',
-            'Mauris ac laoreet dui. Phasellus placerat tincidunt varius.',
-            'Sed tempus, eros nec tempor pellentesque, tellus purus euismod urna, pellentesque placerat dui tortor vel nibh.'
-        ),
-        'fromName'                  => array(
-            'Marketing Team',
-            'Sales Team',
-            'Development Team',
-            'Special Offers',
-            'Support Team',
-        ),
-        'fromAddress'              => array(
-            'marketing@zurmo.com',
-            'sales@zurmo.com',
-            'development@zurmo.com',
-            'offers@zurmo.com',
-            'support@zurmo.com',
-            'info@zurmo.com',
-        ),
-    );
+    class CampaignsSearchForm extends OwnedSearchForm
+    {
+        protected static function getRedBeanModelClassName()
+        {
+            return 'Campaign';
+        }
+    }
 ?>

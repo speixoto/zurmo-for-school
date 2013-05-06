@@ -242,5 +242,27 @@
                 throw new NotSupportedException();
             }
         }
+
+        public function shouldSetNullAlternativeValue()
+        {
+            return false;
+        }
+
+        /**
+         * In the event that the value is not being set, sometimes an attribute still requires an alternative to null.
+         * An example is boolean where the default value should be 0 not NULL. Same is true with dateTime, and date
+         * where the default values should be 0000-00-00 00:00:00 and 0000-00-00 respectively.
+         * @param WorkflowActionProcessingModelAdapter $adapter
+         * @param $attribute
+         * @throws NotSupportedException
+         */
+        public function resolveNullAlternativeValueAndSetToModel(WorkflowActionProcessingModelAdapter $adapter, $attribute)
+        {
+            assert('is_string($attribute)');
+            if($this->shouldSetValue || !$this->shouldSetNullAlternativeValue())
+            {
+                throw new NotSupportedException();
+            }
+        }
     }
 ?>

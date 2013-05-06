@@ -207,7 +207,7 @@
                 foreach ($emailMessagesData as $key => $emailMessageData)
                 {
                     $emailMessage = new EmailMessageForWorkflowForm($moduleClassName::getPrimaryModelName(),
-                                  $workflow->type, $key);
+                                    $workflow->type, $key);
                     $emailMessage->setAttributes($emailMessageData);
                     $workflow->addEmailMessage($emailMessage);
                 }

@@ -599,6 +599,11 @@
          */
         protected function onCreated()
         {
+            if ($this->hasEventHandler('onCreated'))
+            {
+                $event = new CModelEvent($this);
+                $this->onCreated($event);
+            }
         }
 
         /**
@@ -606,6 +611,11 @@
          */
         protected function onLoaded()
         {
+            if ($this->hasEventHandler('onLoaded'))
+            {
+                $event = new CModelEvent($this);
+                $this->onLoaded($event);
+            }
         }
 
         /**

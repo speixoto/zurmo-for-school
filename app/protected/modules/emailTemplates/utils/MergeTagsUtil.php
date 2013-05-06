@@ -102,12 +102,12 @@
         public function extractMergeTagsPlaceHolders()
         {
             // Current RE: /((WAS\%)?(([A-Z0-9])(\^|__)?)+)/ // Not Coding Standard
-            $pattern = '/' . preg_quote(static::TAG_PREFIX) .
-                '((WAS' . preg_quote(static::TIME_DELIMITER) . ')?' .
-                '(([A-Z0-9])' . '(' . preg_quote(static::CAPITAL_DELIMITER) . '|' .
-                preg_quote(static::PROPERTY_DELIMITER) . ')?)+)' . // Not Coding Standard
-                preg_quote(static::TAG_SUFFIX) .
-                '/';
+            $pattern =  '/' . preg_quote(static::TAG_PREFIX) .
+                        '((WAS' . preg_quote(static::TIME_DELIMITER) . ')?' .
+                        '(([A-Z0-9])' . '(' . preg_quote(static::CAPITAL_DELIMITER) . '|' .
+                        preg_quote(static::PROPERTY_DELIMITER) . ')?)+)' . // Not Coding Standard
+                        preg_quote(static::TAG_SUFFIX) .
+                        '/';
             // $this->mergeTags index 0 = with tag prefix and suffix, index 1 = without tag prefix and suffix
             $matchesCounts = preg_match_all($pattern, $this->content, $this->mergeTags);
             array_walk($this->mergeTags, 'static::resolveUniqueMergeTags');

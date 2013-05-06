@@ -161,9 +161,6 @@
             {
                 $this->resolveElementDuringFormLayoutRender($element);
             }
-            else
-            {
-            }
             return ZurmoHtml::tag('div', array('class' => 'email-template-combined-content'), $element->render());
         }
 
@@ -172,9 +169,6 @@
             if ($this->alwaysShowErrorSummary())
             {
                 $element->editableTemplate = str_replace('{error}', '', $element->editableTemplate);
-            }
-            else
-            {
             }
         }
 

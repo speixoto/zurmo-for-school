@@ -76,6 +76,46 @@
             parent::teardown();
         }
 
+        /**
+         * Confirms that values for boolean, date, and dateTime get set on creating new records.
+         */
+        public function testCreateProperlySetsNullAlternativeValues()
+        {
+            $action                       = new ActionForWorkflowForm('WorkflowModelTestItem2', Workflow::TYPE_ON_SAVE);
+            $action->type                 = ActionForWorkflowForm::TYPE_CREATE;
+            $action->relation             = 'hasMany2';
+            $attributes                   = array(  'lastName'   => array('shouldSetValue'    => '1',
+                                                        'type'     => WorkflowActionAttributeForm::TYPE_STATIC,
+                                                        'value'    => 'some new better name'),
+                                                    'string'   => array('shouldSetValue'    => '1',
+                                                        'type'     => WorkflowActionAttributeForm::TYPE_STATIC,
+                                                        'value'    => 'some new better string'));
+            $action->setAttributes(array(ActionForWorkflowForm::ACTION_ATTRIBUTES => $attributes));
+            $model = new WorkflowModelTestItem2();
+            $model->name = 'some name';
+            $relatedModel = new WorkflowModelTestItem();
+            $relatedModel->lastName = 'some old name';
+            $relatedModel->string   = 'some old string';
+            $model->hasMany2->add($relatedModel);
+            $helper = new WorkflowActionProcessingHelper($action, $model, Yii::app()->user->userModel);
+            $helper->processNonUpdateSelfAction();
+            $this->assertEquals('some old name', $model->hasMany2[0]->lastName);
+            $this->assertEquals('some old string', $model->hasMany2[0]->string);
+            $this->assertTrue($model->id > 0);
+            $this->assertTrue($model->hasMany2[0]->id > 0);
+            $this->assertTrue($model->hasMany2[1]->id > 0);
+
+            $this->assertEquals('some new better name', $model->hasMany2[1]->lastName);
+            $this->assertEquals('some new better string', $model->hasMany2[1]->string);
+            $this->assertTrue($model->hasMany2[1]->boolean !== null);
+            $this->assertEquals('0000-00-00', $model->hasMany2[1]->date);
+            $this->assertEquals('0000-00-00 00:00:00', $model->hasMany2[1]->dateTime);
+            $this->assertEquals('0', $model->hasMany2[1]->boolean);
+        }
+
+        /**
+         * @depends testCreateProperlySetsNullAlternativeValues
+         */
         public function testUpdateSelf()
         {
             $action                       = new ActionForWorkflowForm('WorkflowModelTestItem', Workflow::TYPE_ON_SAVE);
