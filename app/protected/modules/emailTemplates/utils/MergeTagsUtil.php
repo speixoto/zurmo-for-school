@@ -73,7 +73,10 @@
 
         public function resolveMergeTagsArrayToAttributes($model, & $invalidTags = array(), $language = null, $errorOnFirstMissing = false)
         {
-            $language = ($language)? $language : $this->language;
+            if (!$language)
+            {
+                $language = $this->language;
+            }
             if (empty($this->mergeTags))
             {
                 return false;
@@ -121,7 +124,10 @@
             $attributes                 = array_values($this->mergeTags[1]);
             $this->resolveFullyQualifiedMergeTagsRegularExpression($mergeTags);
             $content                    = preg_replace($mergeTags, $attributes, $this->content, -1, $resolvedMergeTagsCount);
-            $this->content              = (!empty($content))? $content : $this->content;
+            if(!empty($content))
+            {
+                $this->content = $content;
+            }
             return $resolvedMergeTagsCount;
         }
 

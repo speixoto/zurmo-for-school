@@ -35,58 +35,65 @@
      ********************************************************************************/
 
     /**
-     * Helper class for working with portlets to maintain user configs across multiple sessions
+     * Helper class for encrypting/decrypting passwords
      */
-    class PortletPersistentConfigUtil
+    class ZurmoPasswordSecurityUtil
     {
-        // TODO: @Shoaibi: Low: Write unit tests
         /**
-         * Set a persistent config value for current user against portletId and keyName.
-         * @param $portletId integer Id of the portlet to set value against
-         * @param $keyName string Name of the key that should be set
-         * @param $value string|integer|boolean Value that should be assigned to keyName config
+         * Encrypt value, using CSecurityManager::encrypt method
+         * @param string $value
+         * @param string $salt
+         * @return string
          */
-        public static function setForCurrentUserByPortletIdAndKey($portletId, $keyName, $value)
+        public static function encrypt($value, $salt = ZURMO_PASSWORD_SALT)
         {
-            assert('is_int($portletId)');
-            assert('is_string($keyName)');
-            $moduleName = static::getModuleName();
-            $keyName = static::resolveKeyNameByPortletId($portletId, $keyName);
-            ZurmoConfigurationUtil::setForCurrentUserByModuleName($moduleName, $keyName, $value);
-            Yii::app()->user->setState($keyName, $value);
-        }
-
-        /**
-         * Get a persistent config value for current user against portletId and keyName.
-         * @param $portletId integer  Id of the portlet to get value against
-         * @param $keyName string Name of the key that should be returned
-         * @param bool $returnBoolean bool Force return value to be boolean (explicit type casting)
-         * @return bool|null|string
-         */
-        public static function getForCurrentUserByPortletIdAndKey($portletId, $keyName, $returnBoolean = false)
-        {
-            assert('is_int($portletId)');
-            assert('is_string($keyName)');
-            $moduleName = static::getModuleName();
-            $keyName = static::resolveKeyNameByPortletId($portletId, $keyName);
-            $value = ZurmoConfigurationUtil::getForCurrentUserByModuleName($moduleName, $keyName);
-            if ($returnBoolean)
+            if ($value == '' || $value == null)
             {
-                $value = (boolean) $value;
+                return $value;
             }
-            return $value;
+            return base64_encode(Yii::app()->getSecurityManager()->encrypt($value, $salt));
         }
 
-        protected static function resolveKeyNameByPortletId($portletId, $keyName)
+        /**
+         * Decrypt value, using CSecurityManager::decrypt method
+         * @param string $value
+         * @param string $salt
+         * @return mixed
+         */
+        public static function decrypt($value, $salt = ZURMO_PASSWORD_SALT)
         {
-            assert('is_int($portletId)');
-            assert('is_string($keyName)');
-            return $portletId . '_' . $keyName;
+            if ($value == '' || $value == null)
+            {
+                return $value;
+            }
+            return Yii::app()->getSecurityManager()->decrypt(base64_decode($value), $salt);
         }
 
-        protected static function getModuleName()
+        /**
+         * Generate zurmo password salt and write it to perInstance file.
+         * @param $instanceRoot
+         * @param string $perInstanceFilename
+         * @return string
+         */
+        public static function setPasswordSaltAndWriteToPerInstanceFile($instanceRoot, $perInstanceFilename = 'perInstance.php')
         {
-            throw new NotSupportedException();
+            assert('is_dir($instanceRoot)');
+
+            if (!defined('ZURMO_PASSWORD_SALT') || ZURMO_PASSWORD_SALT == 'defaultValue')
+            {
+                $perInstanceConfigFile     = "$instanceRoot/protected/config/$perInstanceFilename";
+                $contents = file_get_contents($perInstanceConfigFile);
+
+                $passwordSalt = substr(md5(microtime() * mt_rand()), 0, 15);
+
+                $contents = preg_replace('/define\(\'ZURMO_PASSWORD_SALT\', \'defaultValue\'\);/',
+                    "define('ZURMO_PASSWORD_SALT', '$passwordSalt');",
+                    $contents);
+
+                file_put_contents($perInstanceConfigFile, $contents);
+                return $passwordSalt;
+            }
+            return ZURMO_PASSWORD_SALT;
         }
     }
 ?>

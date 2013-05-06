@@ -34,64 +34,25 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class MergeTagGuideAjaxLinkActionElement extends AjaxLinkActionElement
+    /**
+     * Checks if Mcrypt extension is installed.
+     * Required by Yii framework.
+     */
+    class McryptServiceHelper extends ServiceHelper
     {
-        public function getActionType()
+        protected function checkService()
         {
-            return 'MergeTagGuide';
-        }
-
-        public function render()
-        {
-            $this->registerScript();
-            return parent::render();
-        }
-
-        public function renderMenuItem()
-        {
-            $this->registerScript();
-            return parent::renderMenuItem();
-        }
-
-        protected function getDefaultLabel()
-        {
-            return Zurmo::t('EmailTemplatesModule', 'MergeTag Guide');
-        }
-
-        protected function getDefaultRoute()
-        {
-            return Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/mergeTagGuide/');
-        }
-
-        protected function getAjaxOptions()
-        {
-            $parentAjaxOptions = parent::getAjaxOptions();
-            $modalViewAjaxOptions = ModalView::getAjaxOptionsForModalLink($this->getDefaultLabel());
-            if (!isset($this->params['ajaxOptions']))
+            $isMcryptInstalled =  InstallUtil::isMcryptInstalled();
+            if ($isMcryptInstalled)
             {
-                $this->params['ajaxOptions'] = array();
-            }
-            return CMap::mergeArray($parentAjaxOptions, $modalViewAjaxOptions, $this->params['ajaxOptions']);
-        }
-
-        protected function registerScript()
-        {
-            $eventHandlerName = get_class($this);
-            $ajaxOptions      = CMap::mergeArray($this->getAjaxOptions(), array('url' => $this->route));
-            if (Yii::app()->clientScript->isScriptRegistered($eventHandlerName))
-            {
-                return;
+                $this->message  = Zurmo::t('InstallModule', 'Mcrypt extension is loaded.');
+                return true;
             }
             else
             {
-                Yii::app()->clientScript->registerScript($eventHandlerName, "
-                    function ". $eventHandlerName ."()
-                    {
-                        " . ZurmoHtml::ajax($ajaxOptions)."
-                    }
-                ", CClientScript::POS_HEAD);
+                $this->message  = Zurmo::t('InstallModule', 'Mcrypt extension is not loaded.');
+                return false;
             }
-            return $eventHandlerName;
         }
     }
 ?>

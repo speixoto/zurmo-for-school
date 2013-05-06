@@ -41,6 +41,7 @@
     {
         public function renderGridViewData()
         {
+            // TODO: @Shoaibi/@Jason: Critical: Use eval() directly to populate the string to be translated inside if/else?
             $memberName         = 'strval($data->contact)';
             $memberStatusPrefix = ' ."\t(" . ';
             $memberStatus       = 'Zurmo::t("' . $this->view->getContainerModuleClassName() .
