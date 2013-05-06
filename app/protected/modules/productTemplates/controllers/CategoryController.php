@@ -113,20 +113,17 @@
 
         public function actionEdit($id, $redirectUrl = null)
         {
-            $title           = Zurmo::t('ProductTemplatesModule', 'Edit Category');
-            print_r($_POST);
-            exit;
-            
-            $breadcrumbLinks = array(
-                 $title,
-            );
+            $title                  = Zurmo::t('ProductTemplatesModule', 'Edit Category');
+            $breadcrumbLinks        = array(
+                                             $title,
+                                        );
             $productCategory	    = ProductCategory::getById(intval($id));
             ControllerSecurityUtil::resolveAccessCanCurrentUserWriteModel($productCategory);
-            $view		    = new ProductCategoriesPageView(ProductDefaultViewUtil::
-									makeViewWithBreadcrumbsForCurrentUser($this,
-									    $this->makeEditAndDetailsView(
-										$this->attemptToSaveModelFromPost(
-											$productCategory, $redirectUrl), 'Edit'), $breadcrumbLinks, 'ProductBreadCrumbView'));
+            $view                   = new ProductCategoriesPageView(ProductDefaultViewUtil::
+                                            makeViewWithBreadcrumbsForCurrentUser($this,
+                                                $this->makeEditAndDetailsView(
+                                                    $this->attemptToSaveModelFromPost(
+                                                        $productCategory, $redirectUrl), 'Edit'), $breadcrumbLinks, 'ProductBreadCrumbView'));
             echo $view->render();
         }
 
