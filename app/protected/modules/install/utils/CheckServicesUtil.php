@@ -76,7 +76,8 @@
                          'IMAP',
                          'Pdo',
                          'PdoMysql',
-                         'Ldap'
+                         'Ldap',
+                         'Mcrypt'
             );
         }
 

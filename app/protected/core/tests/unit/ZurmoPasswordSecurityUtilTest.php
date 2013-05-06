@@ -34,25 +34,28 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    require_once('testRoots.php');
-    require_once('TestConfigFileUtils.php');
+    class ZurmoPasswordSecurityUtilTest extends ZurmoBaseTest
+    {
+        public function testEncryptAndDecrypt()
+        {
+            // No need to encrypt empty string
+            $encryptedString = ZurmoPasswordSecurityUtil::encrypt('', 'someKey');
+            $this->assertEquals('', $encryptedString);
 
-    TestConfigFileUtils::configureConfigFiles();
+            // No need to decrypt empty string
+            $decryptedString = ZurmoPasswordSecurityUtil::decrypt('', 'someKey');
+            $this->assertEquals('', $decryptedString);
 
-    $debug          = INSTANCE_ROOT . '/protected/config/debugTest.php';
+            $string = '357';
+            $salt = "123";
+            $encryptedString = ZurmoPasswordSecurityUtil::encrypt($string, $salt);
+            $this->assertTrue($string != $encryptedString);
+            $decryptedString = ZurmoPasswordSecurityUtil::decrypt($encryptedString, $salt);
+            $this->assertEquals($string, $decryptedString);
 
-    $yiit   = COMMON_ROOT   . "/../yii/framework/yiit.php";
-    $config = INSTANCE_ROOT . "/protected/config/test.php";
-
-    require_once(COMMON_ROOT   . "/version.php");
-    require_once(COMMON_ROOT   . "/protected/modules/install/utils/InstallUtil.php");
-    require_once(COMMON_ROOT   . "/protected/core/utils/ZurmoPasswordSecurityUtil.php");
-    InstallUtil::setZurmoTokenAndWriteToPerInstanceFile(INSTANCE_ROOT, 'perInstanceTest.php');
-    ZurmoPasswordSecurityUtil::setPasswordSaltAndWriteToPerInstanceFile(INSTANCE_ROOT, 'perInstanceTest.php');
-
-    require_once($debug);
-    require_once($yiit);
-    require_once(COMMON_ROOT . '/protected/core/components/WebApplication.php');
-    require_once(COMMON_ROOT . '/protected/tests/WebTestApplication.php');
-    Yii::createApplication('WebTestApplication', $config);
+            // Ensure that data will not be decrypted with random salt
+            $decryptedString = ZurmoPasswordSecurityUtil::decrypt($encryptedString, '567');
+            $this->assertTrue($string != $decryptedString);
+        }
+    }
 ?>

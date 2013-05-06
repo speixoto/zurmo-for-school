@@ -34,25 +34,25 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    require_once('testRoots.php');
-    require_once('TestConfigFileUtils.php');
-
-    TestConfigFileUtils::configureConfigFiles();
-
-    $debug          = INSTANCE_ROOT . '/protected/config/debugTest.php';
-
-    $yiit   = COMMON_ROOT   . "/../yii/framework/yiit.php";
-    $config = INSTANCE_ROOT . "/protected/config/test.php";
-
-    require_once(COMMON_ROOT   . "/version.php");
-    require_once(COMMON_ROOT   . "/protected/modules/install/utils/InstallUtil.php");
-    require_once(COMMON_ROOT   . "/protected/core/utils/ZurmoPasswordSecurityUtil.php");
-    InstallUtil::setZurmoTokenAndWriteToPerInstanceFile(INSTANCE_ROOT, 'perInstanceTest.php');
-    ZurmoPasswordSecurityUtil::setPasswordSaltAndWriteToPerInstanceFile(INSTANCE_ROOT, 'perInstanceTest.php');
-
-    require_once($debug);
-    require_once($yiit);
-    require_once(COMMON_ROOT . '/protected/core/components/WebApplication.php');
-    require_once(COMMON_ROOT . '/protected/tests/WebTestApplication.php');
-    Yii::createApplication('WebTestApplication', $config);
+    /**
+     * Checks if Mcrypt extension is installed.
+     * Required by Yii framework.
+     */
+    class McryptServiceHelper extends ServiceHelper
+    {
+        protected function checkService()
+        {
+            $isMcryptInstalled =  InstallUtil::isMcryptInstalled();
+            if (isMcryptInstalled)
+            {
+                $this->message  = Zurmo::t('InstallModule', 'Mcrypt extension is loaded.');
+                return true;
+            }
+            else
+            {
+                $this->message  = Zurmo::t('InstallModule', 'Mcrypt extension is not loaded.');
+                return false;
+            }
+        }
+    }
 ?>
