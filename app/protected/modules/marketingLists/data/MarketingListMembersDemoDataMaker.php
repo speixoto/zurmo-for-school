@@ -75,9 +75,7 @@
         {
             assert('$model instanceof MarketingListMember');
             parent::populateModel($model);
-            $randomData             = ZurmoRandomDataUtil::getRandomDataByModuleAndModelClassNames('MarketingListsModule',
-                                                                                                'MarketingListMember');
-            $model->unsubscribed    = RandomDataUtil::getRandomValueFromArray($randomData['unsubscribed']);
+            $model->unsubscribed    = (rand() % 2);
         }
     }
 ?>
