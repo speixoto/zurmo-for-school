@@ -50,6 +50,8 @@
 
         public $pageViewClassName = null;
 
+        public $defaultViewUtilClassName = null;
+
         protected function preFilter($filterChain)
         {
             if (isset($_POST['ajax']))
@@ -123,7 +125,14 @@
             {
                 $pageViewClassName          = $this->controller->getModule()->getPluralCamelCasedName() . 'PageView';
             }
-            $view                           = new $pageViewClassName(ZurmoDefaultViewUtil::
+
+            if($this->defaultViewUtilClassName == null)
+            {
+                $this->defaultViewUtilClassName = 'ZurmoDefaultViewUtil';
+            }
+
+            $defaultViewUtilClassName       = $this->defaultViewUtilClassName;
+            $view                           = new $pageViewClassName($defaultViewUtilClassName::
                                                     makeStandardViewForCurrentUser($this->controller, $messageView));
             echo $view->render();
         }

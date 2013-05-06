@@ -49,21 +49,21 @@
             $super = User::getByUsername('super');
             Yii::app()->user->userModel = $super;
 
-	    ProductTemplateTestHelper::createProductTemplateByName("My Catalog Item 1");
-	    ProductTemplateTestHelper::createProductTemplateByName("My Catalog Item 2");
-	    ProductTemplateTestHelper::createProductTemplateByName("My Catalog Item 3");
-	    ProductTemplateTestHelper::createProductTemplateByName("My Catalog Item 4");
-	    ProductTemplateTestHelper::createProductTemplateByName("My Catalog Item 5");
-	    ProductTemplateTestHelper::createProductTemplateByName("My Catalog Item 6");
-	    ProductTemplateTestHelper::createProductTemplateByName("My Catalog Item 7");
-	    ProductTemplateTestHelper::createProductTemplateByName("My Catalog Item 8");
-	    ProductTemplateTestHelper::createProductTemplateByName("My Catalog Item 9");
-	    ProductTemplateTestHelper::createProductTemplateByName("My Catalog Item 10");
-	    ProductTemplateTestHelper::createProductTemplateByName("My Catalog Item 11");
-	    ProductTemplateTestHelper::createProductTemplateByName("My Catalog Item 12");
+            ProductTemplateTestHelper::createProductTemplateByName("My Catalog Item 1");
+            ProductTemplateTestHelper::createProductTemplateByName("My Catalog Item 2");
+            ProductTemplateTestHelper::createProductTemplateByName("My Catalog Item 3");
+            ProductTemplateTestHelper::createProductTemplateByName("My Catalog Item 4");
+            ProductTemplateTestHelper::createProductTemplateByName("My Catalog Item 5");
+            ProductTemplateTestHelper::createProductTemplateByName("My Catalog Item 6");
+            ProductTemplateTestHelper::createProductTemplateByName("My Catalog Item 7");
+            ProductTemplateTestHelper::createProductTemplateByName("My Catalog Item 8");
+            ProductTemplateTestHelper::createProductTemplateByName("My Catalog Item 9");
+            ProductTemplateTestHelper::createProductTemplateByName("My Catalog Item 10");
+            ProductTemplateTestHelper::createProductTemplateByName("My Catalog Item 11");
+            ProductTemplateTestHelper::createProductTemplateByName("My Catalog Item 12");
         }
 
-	public function testSuperUserAllDefaultControllerActions()
+        public function testSuperUserAllDefaultControllerActions()
         {
             $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
 
@@ -131,16 +131,16 @@
 
         public function testSuperUserCreateAction()
         {
-            $super					= $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
-            Yii::app()->user->userModel			= $super;
+            $super                                      = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
+            Yii::app()->user->userModel                 = $super;
             $this->resetGetArray();
 
-            $currency					= new Currency();
-            $currency->code				= 'USD';
-            $currency->rateToBase			= 1;
+            $currency                                   = new Currency();
+            $currency->code                             = 'USD';
+            $currency->rateToBase                       = 1;
             $currency->save();
 
-            $currencyRec				= Currency::getByCode('USD');
+            $currencyRec                                = Currency::getByCode('USD');
 
             $currencyValue1Array                        = array('currency' => array('id' => $currencyRec->id), 'value' => 500.54);
             $currencyValue2Array                        = array('currency' => array('id' => $currencyRec->id), 'value' => 400.54);
@@ -158,32 +158,32 @@
             $productTemplate['status']                  = ProductTemplate::STATUS_ACTIVE;
             $sellPriceFormulaArray                      = array('type' => SellPriceFormula::TYPE_DISCOUNT_FROM_LIST, 'discountOrMarkupPercentage' => 10 );
 
-            $productTemplate['sellPriceFormula']	= $sellPriceFormulaArray;
+            $productTemplate['sellPriceFormula']        = $sellPriceFormulaArray;
             $this->setPostArray(array('ProductTemplate' => $productTemplate));
-            $redirectUrl				= $this->runControllerWithRedirectExceptionAndGetUrl('productTemplates/default/create');
+            $redirectUrl                                = $this->runControllerWithRedirectExceptionAndGetUrl('productTemplates/default/create');
 
-            $productTemplates				= ProductTemplate::getByName('Red Widget');
+            $productTemplates                           = ProductTemplate::getByName('Red Widget');
             $this->assertEquals(1, count($productTemplates));
             $this->assertTrue  ($productTemplates[0]->id > 0);
             $this->assertEquals(400.54, $productTemplates[0]->listPrice->value);
             $this->assertEquals(500.54, $productTemplates[0]->cost->value);
             $this->assertEquals(300.54, $productTemplates[0]->sellPrice->value);
-	    $compareRedirectUrl				= Yii::app()->createUrl('productTemplates/default/details', array('id' => $productTemplates[0]->id));
+            $compareRedirectUrl                         = Yii::app()->createUrl('productTemplates/default/details', array('id' => $productTemplates[0]->id));
             $this->assertEquals($compareRedirectUrl, $redirectUrl);
         }
 
-	public function testSuperUserDeleteAction()
+        public function testSuperUserDeleteAction()
         {
-	    $super			= $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
+            $super                      = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
             Yii::app()->user->userModel = $super;
 
-            $productTemplate		= ProductTemplateTestHelper::createProductTemplateByName("My New Catalog Item");
+            $productTemplate            = ProductTemplateTestHelper::createProductTemplateByName("My New Catalog Item");
 
             //Delete a product template
             $this->setGetArray(array('id' => $productTemplate->id));
             $this->resetPostArray();
-	    $productTemplates		= ProductTemplate::getAll();
-	    $this->assertEquals(14, count($productTemplates));
+            $productTemplates		= ProductTemplate::getAll();
+            $this->assertEquals(14, count($productTemplates));
             $this->runControllerWithRedirectExceptionAndGetContent('productTemplates/default/delete');
             $productTemplates		= ProductTemplate::getAll();
             $this->assertEquals(13, count($productTemplates));
@@ -198,61 +198,60 @@
             }
         }
 
-	public function testSuperUserModalListForProductPortletAction()
+        public function testSuperUserModalListForProductPortletAction()
         {
             $super							    = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
-            Yii::app()->user->userModel					    = $super;
+            Yii::app()->user->userModel			= $super;
             $this->resetGetArray();
-	    $account							    = AccountTestHelper::createAccountByNameForOwner('superAccount', $super);
-	    OpportunityTestHelper::createOpportunityStagesIfDoesNotExist();
+            $account							    = AccountTestHelper::createAccountByNameForOwner('superAccount', $super);
+            OpportunityTestHelper::createOpportunityStagesIfDoesNotExist();
             $opportunity						    = OpportunityTestHelper::createOpportunityWithAccountByNameForOwner('superOpp', $super, $account);
 
-	    $_GET['modalTransferInformation']['sourceIdFieldId']	    = 'product_opportunity_id';
-	    $_GET['modalTransferInformation']['sourceNameFieldId']	    = 'product_opportunity_name';
-	    $_GET['modalTransferInformation']['sourceModelId']		    = -148;
-	    $_GET['modalTransferInformation']['relationModelId']	    = $opportunity->id;
-	    $_GET['modalTransferInformation']['relationAttributeName']	    = 'opportunity';
-	    $_GET['modalTransferInformation']['portletId']		    = 27;
-	    $_GET['modalTransferInformation']['uniqueLayoutId']		    = 'OpportunityDetailsAndRelationsViewRightBottomView_27';
-	    $_GET['modalTransferInformation']['relationModuleId']	    = 'opportunities';
+            $_GET['modalTransferInformation']['sourceIdFieldId']	    = 'product_opportunity_id';
+            $_GET['modalTransferInformation']['sourceNameFieldId']	    = 'product_opportunity_name';
+            $_GET['modalTransferInformation']['sourceModelId']		    = -148;
+            $_GET['modalTransferInformation']['relationModelId']	    = $opportunity->id;
+            $_GET['modalTransferInformation']['relationAttributeName']	= 'opportunity';
+            $_GET['modalTransferInformation']['portletId']              = 27;
+            $_GET['modalTransferInformation']['uniqueLayoutId']		    = 'OpportunityDetailsAndRelationsViewRightBottomView_27';
+            $_GET['modalTransferInformation']['relationModuleId']	    = 'opportunities';
 
-	    $this->runControllerWithNoExceptionsAndGetContent('productTemplates/default/modalListForProductPortlet');
+            $this->runControllerWithNoExceptionsAndGetContent('productTemplates/default/modalListForProductPortlet');
         }
 
-	/**
+        /**
          * @deletes selected product templates.
          */
         public function testMassDeleteActionsForSelectedIds()
         {
-            $super		= $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
-            $productTemplates	= ProductTemplate::getAll();
+            $super                  = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
+            $productTemplates       = ProductTemplate::getAll();
             $this->assertEquals(13, count($productTemplates));
-            $superTemplateId     = self::getModelIdByModelNameAndName('ProductTemplate', 'My Catalog Item 1');
-            $superTemplateId2    = self::getModelIdByModelNameAndName('ProductTemplate', 'My Catalog Item 2');
-            $superTemplateId3    = self::getModelIdByModelNameAndName('ProductTemplate', 'My Catalog Item 3');
-            $superTemplateId4    = self::getModelIdByModelNameAndName('ProductTemplate', 'My Catalog Item 4');
-            $superTemplateId5    = self::getModelIdByModelNameAndName('ProductTemplate', 'My Catalog Item 5');
-            $superTemplateId6    = self::getModelIdByModelNameAndName('ProductTemplate', 'My Catalog Item 6');
-            $superTemplateId7    = self::getModelIdByModelNameAndName('ProductTemplate', 'My Catalog Item 7');
-            $superTemplateId8    = self::getModelIdByModelNameAndName('ProductTemplate', 'My Catalog Item 8');
-            $superTemplateId9    = self::getModelIdByModelNameAndName('ProductTemplate', 'My Catalog Item 9');
-            $superTemplateId10   = self::getModelIdByModelNameAndName('ProductTemplate', 'My Catalog Item 10');
-            $superTemplateId11   = self::getModelIdByModelNameAndName('ProductTemplate', 'My Catalog Item 11');
-            $superTemplateId12   = self::getModelIdByModelNameAndName('ProductTemplate', 'My Catalog Item 12');
+            $superTemplateId        = self::getModelIdByModelNameAndName('ProductTemplate', 'My Catalog Item 1');
+            $superTemplateId2       = self::getModelIdByModelNameAndName('ProductTemplate', 'My Catalog Item 2');
+            $superTemplateId3       = self::getModelIdByModelNameAndName('ProductTemplate', 'My Catalog Item 3');
+            $superTemplateId4       = self::getModelIdByModelNameAndName('ProductTemplate', 'My Catalog Item 4');
+            $superTemplateId5       = self::getModelIdByModelNameAndName('ProductTemplate', 'My Catalog Item 5');
+            $superTemplateId6       = self::getModelIdByModelNameAndName('ProductTemplate', 'My Catalog Item 6');
+            $superTemplateId7       = self::getModelIdByModelNameAndName('ProductTemplate', 'My Catalog Item 7');
+            $superTemplateId8       = self::getModelIdByModelNameAndName('ProductTemplate', 'My Catalog Item 8');
+            $superTemplateId9       = self::getModelIdByModelNameAndName('ProductTemplate', 'My Catalog Item 9');
+            $superTemplateId10      = self::getModelIdByModelNameAndName('ProductTemplate', 'My Catalog Item 10');
+            $superTemplateId11      = self::getModelIdByModelNameAndName('ProductTemplate', 'My Catalog Item 11');
+            $superTemplateId12      = self::getModelIdByModelNameAndName('ProductTemplate', 'My Catalog Item 12');
             //Load Model MassDelete Views.
             //MassDelete view for single selected ids
             $this->setGetArray(array('selectedIds' => '5,6,7,8,9', 'selectAll' => '', ));  // Not Coding Standard
             $this->resetPostArray();
-            $content = $this->runControllerWithNoExceptionsAndGetContent('productTemplates/default/massDelete');
-	    print $content;
-	    exit;
-            $this->assertFalse(strpos($content, '<strong>5</strong>&#160;ProductTemplates selected for removal') === false);
+            $content                = $this->runControllerWithNoExceptionsAndGetContent('productTemplates/default/massDelete');
+
+            $this->assertFalse(strpos($content, '<strong>5</strong>&#160;Catalog Items selected for removal') === false);
 
              //MassDelete view for all result selected ids
             $this->setGetArray(array('selectAll' => '1'));
             $this->resetPostArray();
             $content = $this->runControllerWithNoExceptionsAndGetContent('productTemplates/default/massDelete');
-            $this->assertFalse(strpos($content, '<strong>13</strong>&#160;productTemplates selected for removal') === false);
+            $this->assertFalse(strpos($content, '<strong>13</strong>&#160;Catalog Items selected for removal') === false);
 
             //MassDelete for selected Record Count
             $productTemplates = ProductTemplate::getAll();
@@ -299,7 +298,46 @@
 
             //MassDelete for selected Record Count
             $productTemplates = ProductTemplate::getAll();
-            $this->assertEquals(7, count($productTemplates));
+            $this->assertEquals(6, count($productTemplates));
+        }
+
+        /**
+         *Test Bug with mass delete and multiple pages when using select all
+         */
+        public function testMassDeletePagesProperlyAndRemovesAllSelected()
+        {
+            $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
+
+            //MassDelete for selected Record Count
+            $productTemplates = ProductTemplate::getAll();
+            $this->assertEquals(6, count($productTemplates));
+
+            //save Model MassDelete for entire search result
+            $this->setGetArray(array(
+                'selectAll' => '1',           // Not Coding Standard
+                'ProductTemplate_page' => 1));
+            $this->setPostArray(array('selectedRecordCount' => 7));
+            //Run Mass Delete using progress save for page1.
+            $pageSize = Yii::app()->pagination->getForCurrentUserByType('massDeleteProgressPageSize');
+            $this->assertEquals(5, $pageSize);
+            $this->runControllerWithExitExceptionAndGetContent('productTemplates/default/massDelete');
+
+            //check for previous mass delete progress
+            $productTemplates = ProductTemplate::getAll();
+            $this->assertEquals(5, count($productTemplates));
+
+            $this->setGetArray(array(
+                'selectAll' => '1',           // Not Coding Standard
+                'ProductTemplate_page' => 2));
+            $this->setPostArray(array('selectedRecordCount' => 7));
+            //Run Mass Delete using progress save for page2.
+            $pageSize = Yii::app()->pagination->getForCurrentUserByType('massDeleteProgressPageSize');
+            $this->assertEquals(2, $pageSize);
+            $this->runControllerWithNoExceptionsAndGetContent('productTemplates/default/massDeleteProgress');
+
+            //calculating producttemplates count
+            $productTemplates = ProductTemplate::getAll();
+            $this->assertEquals(0, count($accounts));
         }
     }
 ?>

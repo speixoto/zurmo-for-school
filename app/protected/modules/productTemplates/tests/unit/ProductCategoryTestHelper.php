@@ -26,16 +26,21 @@
 
     class ProductCategoryTestHelper
     {
-        public static function createProductCategoryByName($name)
+        public static function createProductCategoryByName($name, $parentCategory = null)
         {
             $productCategory                 = new ProductCategory();
             $productCategory->name           = $name;
             $productCatalog                  = new ProductCatalog();
             $productCatalog->name            = ProductCatalog::DEFAULT_NAME;
             $productCatalog->save();
+
             $productCategory->productCatalogs->add($productCatalog);
 
             $saved                           = $productCategory->save();
+            if($parentCategory != null)
+            {
+                $productCategory->productCategories->add($parentCategory);
+            }
             assert('$saved');
             return $productCategory;
         }

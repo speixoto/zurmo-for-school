@@ -41,10 +41,10 @@
                    ),
                     array(
                         ZurmoModuleController::ZERO_MODELS_CHECK_FILTER_PATH . ' + list, index',
-                        'controller'		     => $this,
+                        'controller'                 => $this,
                         'zeroModelsYetViewClassName' => $zeroModelsYetViewClassName,
-                        'modelClassName'	     => $modelClassName,
-                        'pageViewClassName'	     => $pageViewClassName,
+                        'modelClassName'             => $modelClassName,
+                        'pageViewClassName'          => $pageViewClassName,
                         'defaultViewUtilClassName'   => 'ProductDefaultViewUtil'
                    ),
                )
@@ -114,6 +114,9 @@
         public function actionEdit($id, $redirectUrl = null)
         {
             $title           = Zurmo::t('ProductTemplatesModule', 'Edit Category');
+            print_r($_POST);
+            exit;
+            
             $breadcrumbLinks = array(
                  $title,
             );
