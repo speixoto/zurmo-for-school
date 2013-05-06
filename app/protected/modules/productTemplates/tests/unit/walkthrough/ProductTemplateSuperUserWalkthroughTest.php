@@ -100,12 +100,11 @@
             $superTemplateId12   = self::getModelIdByModelNameAndName('ProductTemplate', 'My Catalog Item 12');
             $this->setGetArray(array('id' => $superTemplateId));
             $this->runControllerWithNoExceptionsAndGetContent('productTemplates/default/edit');
-            //Save contact.
-            $superTemplate = ProductTemplate::getById($superTemplateId);
-            $this->assertEquals('Description', $superTemplate->description);
+            //Save template.
+            $superTemplate       = ProductTemplate::getById($superTemplateId);
             $this->setPostArray(array('ProductTemplate' => array('description' => 'Test Description')));
             $this->runControllerWithRedirectExceptionAndGetContent('productTemplates/default/edit');
-            $superTemplate = ProductTemplate::getById($superTemplateId);
+            $superTemplate       = ProductTemplate::getById($superTemplateId);
             $this->assertEquals('Test Description', $superTemplate->description);
             //Test having a failed validation on the contact during save.
             $this->setGetArray (array('id'		=> $superTemplateId));
@@ -324,7 +323,7 @@
 
             //check for previous mass delete progress
             $productTemplates = ProductTemplate::getAll();
-            $this->assertEquals(5, count($productTemplates));
+            $this->assertEquals(1, count($productTemplates));
 
             $this->setGetArray(array(
                 'selectAll' => '1',           // Not Coding Standard
@@ -332,12 +331,12 @@
             $this->setPostArray(array('selectedRecordCount' => 7));
             //Run Mass Delete using progress save for page2.
             $pageSize = Yii::app()->pagination->getForCurrentUserByType('massDeleteProgressPageSize');
-            $this->assertEquals(2, $pageSize);
+            $this->assertEquals(5, $pageSize);
             $this->runControllerWithNoExceptionsAndGetContent('productTemplates/default/massDeleteProgress');
 
             //calculating producttemplates count
             $productTemplates = ProductTemplate::getAll();
-            $this->assertEquals(0, count($accounts));
+            $this->assertEquals(0, count($productTemplates));
         }
     }
 ?>

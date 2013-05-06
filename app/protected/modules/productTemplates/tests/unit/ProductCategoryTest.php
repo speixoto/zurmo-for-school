@@ -183,6 +183,7 @@
             unset($childProductCategory);
             $childProductCategory                   = ProductCategory::getById($id);
             $this->assertEquals("My Test Category Child", $childProductCategory->name);
+            $this->assertEquals("My Test Category", $existingCats[0]->name);
         }
     }
 ?>

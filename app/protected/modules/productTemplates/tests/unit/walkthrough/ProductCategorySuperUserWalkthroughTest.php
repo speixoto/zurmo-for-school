@@ -52,7 +52,7 @@
             ProductCategoryTestHelper::createProductCategoryByName("My Category 1");
             $category1 = ProductCategory::getByName("My Category 1");
             ProductCategoryTestHelper::createProductCategoryByName("My Category 2");
-            ProductCategoryTestHelper::createProductCategoryByName("My Category 3", $category1);
+            ProductCategoryTestHelper::createProductCategoryByName("My Category 3", $category1[0]);
             ProductCategoryTestHelper::createProductCategoryByName("My Category 4");
             ProductCategoryTestHelper::createProductCategoryByName("My Category 5");
             ProductCategoryTestHelper::createProductCategoryByName("My Category 6");
@@ -74,15 +74,6 @@
             $this->runControllerWithNoExceptionsAndGetContent('productTemplates/category/index');
             $this->runControllerWithNoExceptionsAndGetContent('productTemplates/category/create');
 
-            $content = $this->runControllerWithNoExceptionsAndGetContent('productTemplates/category/list');
-            $this->assertFalse(strpos($content, 'anyMixedAttributes') === false);
-            //Test the search or paging of the listview.
-            Yii::app()->clientScript->reset(); //to make sure old js doesn't make it to the UI
-            $this->setGetArray(array('ajax' => 'list-view'));
-            $content = $this->runControllerWithNoExceptionsAndGetContent('productTemplates/category/list');
-            $this->assertTrue(strpos($content, 'anyMixedAttributes') === false);
-            $this->resetGetArray();
-
             //Default Controller actions requiring some sort of parameter via POST or GET
             //Load Model Edit Views
             $productTemplates	 = ProductCategory::getAll();
@@ -99,35 +90,31 @@
             $superCategoryId10   = self::getModelIdByModelNameAndName('ProductCategory', 'My Category 10');
             $superCategoryId11   = self::getModelIdByModelNameAndName('ProductCategory', 'My Category 11');
             $superCategoryId12   = self::getModelIdByModelNameAndName('ProductCategory', 'My Category 12');
-            $this->setGetArray(array('id' => $superCategoryId));
+            $this->setGetArray(array('id' => $superCategoryId2));
             $this->runControllerWithNoExceptionsAndGetContent('productTemplates/category/edit');
 
-            $superCategory = ProductCategory::getById($superCategoryId2);
-            $this->assertEquals(0, count($superCategory->productCategories));
+            $superCategory2      = ProductCategory::getById($superCategoryId2);
             $this->setPostArray(array('ProductCategory' => array('productCategory' => array('id' => $superCategoryId))));
-            $this->runControllerWithRedirectExceptionAndGetContent('productTemplates/default/edit');
-            $superCategory = ProductCategory::getById($superCategoryId2);
-            $this->assertEquals(1, count($superCategory->productCategories));
+            $this->runControllerWithRedirectExceptionAndGetContent('productTemplates/category/edit');
+            $superCategory2      = ProductCategory::getById($superCategoryId2);
+            $superCategory       = ProductCategory::getById($superCategoryId);
+            $this->assertEquals($superCategoryId, $superCategory2->productCategory->id);
             //Test having a failed validation on the contact during save.
             $this->setGetArray (array('id'		=> $superCategoryId2));
             $this->setPostArray(array('ProductCategory' => array('name' => '')));
-            $content = $this->runControllerWithNoExceptionsAndGetContent('productTemplates/default/edit');
+            $content = $this->runControllerWithNoExceptionsAndGetContent('productTemplates/category/edit');
             $this->assertFalse(strpos($content, 'Name cannot be blank') === false);
 
             //Load Model Detail Views
             $this->setGetArray(array('id' => $superCategoryId));
             $this->resetPostArray();
-            $this->runControllerWithNoExceptionsAndGetContent('productTemplates/default/details');
-
-            //Autocomplete for Product Template
-            $this->setGetArray(array('term' => 'super'));
-            $this->runControllerWithNoExceptionsAndGetContent('productTemplates/default/autoCompleteAllProductCategoriesForMultiSelectAutoComplete');
+            $this->runControllerWithNoExceptionsAndGetContent('productTemplates/category/details');
 
             //actionModalList
             $this->setGetArray(array(
-                'modalTransferInformation' => array('sourceIdFieldId' => 'x', 'sourceNameFieldId' => 'y')
+                'modalTransferInformation' => array('sourceIdFieldId' => 'x', 'sourceNameFieldId' => 'y', 'sourceModelId' => 66)
             ));
-            $this->runControllerWithNoExceptionsAndGetContent('productTemplates/default/modalList');
+            $this->runControllerWithNoExceptionsAndGetContent('productTemplates/category/modalList');
         }
 
         public function testSuperUserCreateAction()
@@ -135,41 +122,20 @@
             $super                                      = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
             Yii::app()->user->userModel                 = $super;
             $this->resetGetArray();
+            $superCategoryId                            = self::getModelIdByModelNameAndName('ProductCategory', 'My Category 1');
+            $productCategory                            = array();
+            $productCategory['name']                    = 'Red Widget';
+            $productCategoryParent                      = array('id' => $superCategoryId);
 
-            $currency                                   = new Currency();
-            $currency->code                             = 'USD';
-            $currency->rateToBase                       = 1;
-            $currency->save();
+            $productCategory['productCategory']         = $productCategoryParent;
+            $this->setPostArray(array('ProductCategory' => $productCategory));
+            $redirectUrl                                = $this->runControllerWithRedirectExceptionAndGetUrl('productTemplates/category/create');
 
-            $currencyRec                                = Currency::getByCode('USD');
-
-            $currencyValue1Array                        = array('currency' => array('id' => $currencyRec->id), 'value' => 500.54);
-            $currencyValue2Array                        = array('currency' => array('id' => $currencyRec->id), 'value' => 400.54);
-            $currencyValue3Array                        = array('currency' => array('id' => $currencyRec->id), 'value' => 300.54);
-
-            $productTemplate                            = array();
-            $productTemplate['name']                    = 'Red Widget';
-            $productTemplate['description']             = 'Description';
-            $productTemplate['priceFrequency']          = ProductCategory::PRICE_FREQUENCY_ONE_TIME;
-            $productTemplate['cost']                    = $currencyValue1Array;
-            $productTemplate['listPrice']               = $currencyValue2Array;
-            $productTemplate['sellPrice']               = $currencyValue3Array;
-
-            $productTemplate['type']                    = ProductCategory::TYPE_PRODUCT;
-            $productTemplate['status']                  = ProductCategory::STATUS_ACTIVE;
-            $sellPriceFormulaArray                      = array('type' => SellPriceFormula::TYPE_DISCOUNT_FROM_LIST, 'discountOrMarkupPercentage' => 10 );
-
-            $productTemplate['sellPriceFormula']        = $sellPriceFormulaArray;
-            $this->setPostArray(array('ProductCategory' => $productTemplate));
-            $redirectUrl                                = $this->runControllerWithRedirectExceptionAndGetUrl('productTemplates/default/create');
-
-            $productTemplates                           = ProductCategory::getByName('Red Widget');
-            $this->assertEquals(1, count($productTemplates));
-            $this->assertTrue  ($productTemplates[0]->id > 0);
-            $this->assertEquals(400.54, $productTemplates[0]->listPrice->value);
-            $this->assertEquals(500.54, $productTemplates[0]->cost->value);
-            $this->assertEquals(300.54, $productTemplates[0]->sellPrice->value);
-            $compareRedirectUrl                         = Yii::app()->createUrl('productTemplates/default/details', array('id' => $productTemplates[0]->id));
+            $productCategories                          = ProductCategory::getByName('Red Widget');
+            $this->assertEquals(1, count($productCategories));
+            $this->assertTrue  ($productCategories[0]->id > 0);
+            $this->assertEquals($superCategoryId, $productCategories[0]->productCategory->id);
+            $compareRedirectUrl                         = Yii::app()->createUrl('productTemplates/category/details', array('id' => $productCategories[0]->id));
             $this->assertEquals($compareRedirectUrl, $redirectUrl);
         }
 
@@ -183,11 +149,11 @@
             //Delete a product template
             $this->setGetArray(array('id' => $productCategory->id));
             $this->resetPostArray();
-            $productTemplates		= ProductCategory::getAll();
-            $this->assertEquals(14, count($productTemplates));
+            $productCategories          = ProductCategory::getAll();
+            $this->assertEquals(14, count($productCategories));
             $this->runControllerWithRedirectExceptionAndGetContent('productTemplates/category/delete');
-            $productTemplates		= ProductCategory::getAll();
-            $this->assertEquals(13, count($productTemplates));
+            $productCategories          = ProductCategory::getAll();
+            $this->assertEquals(13, count($productCategories));
             try
             {
                 ProductCategory::getById($productCategory->id);
