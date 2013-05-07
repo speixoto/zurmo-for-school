@@ -35,7 +35,7 @@
      ********************************************************************************/
 
     /**
-     * Helper class for ModalLIstViews.  This class provides routing information of where links should go and how they
+     * Helper class for ModalListViews.  This class provides routing information of where links should go and how they
      * should handle ajax request information.
      */
     abstract class ModalListLinkProvider
