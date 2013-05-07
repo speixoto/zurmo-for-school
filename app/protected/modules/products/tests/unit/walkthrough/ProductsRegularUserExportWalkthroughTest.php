@@ -130,6 +130,50 @@
                 'selectedIds' => "{$products[0]->id}, {$products[1]->id}")
             );
             $response = $this->runControllerWithExitExceptionAndGetContent('products/default/export');
+            $this->assertTrue(strstr($response, 'products/default/index') !== false);
+            $this->assertContains('There is no data to export.',
+            Yii::app()->user->getFlash('notification'));
+
+            //give nobody access to read and write
+            Yii::app()->user->userModel = $super;
+            foreach ($products as $product)
+            {
+                $product->addPermissions($nobody, Permission::READ_WRITE_CHANGE_PERMISSIONS);
+                ReadPermissionsOptimizationUtil::securableItemGivenPermissionsForUser($product, $nobody);
+                $this->assertTrue($product->save());
+            }
+            //Now the nobody user should be able to access the edit view and still the details view.
+            Yii::app()->user->userModel = $nobody;
+
+            $this->setGetArray(array(
+                'ProductsSearchForm' => array(
+                    'anyMixedAttributesScope' => array(0 => 'All'),
+                    'anyMixedAttributes'      => '',
+                    'name'                    => 'superProduct'
+                ),
+                'Product_page'   => '1',
+                'export'         => '',
+                'ajax'           => '',
+                'selectAll' => '1',
+                'selectedIds' => '')
+            );
+              //TODO Need to ask jason
+            $response = $this->runControllerWithExitExceptionAndGetContent('products/default/export');
+            $this->assertEquals('Testing download.', $response);
+
+            $this->setGetArray(array(
+                'ProductsSearchForm' => array(
+                    'anyMixedAttributesScope' => array(0 => 'All'),
+                    'anyMixedAttributes'      => '',
+                    'name'                    => 'superProduct'
+                ),
+                'Product_page'   => '1',
+                'export'         => '',
+                'ajax'           => '',
+                'selectAll' => '',
+                'selectedIds' => "{$products[0]->id}, {$products[1]->id}")
+            );
+            $response = $this->runControllerWithExitExceptionAndGetContent('products/default/export');
             $this->assertEquals('Testing download.', $response);
 
             // No mathces
