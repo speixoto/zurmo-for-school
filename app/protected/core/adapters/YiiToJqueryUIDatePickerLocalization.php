@@ -79,8 +79,9 @@
                     return 'dd/mm/yy';
                 case 'yy-M-d':      //zh_cn format
                     return 'y-m-dd';
-                case 'yy/MM/dd':    //ja format
-                case 'yyyy/MM/dd':  //new ja format of Yii 1.11
+                case 'yy/MM/dd':    //ja(old), az, tg, uz format
+                    return 'y/mm/dd';
+                case 'yyyy/MM/dd':  //ja(new), si, en_za format
                     return 'yy/mm/dd';
                 case 'dd-MM-yy':    //nl format
                         return 'dd-mm-y';
