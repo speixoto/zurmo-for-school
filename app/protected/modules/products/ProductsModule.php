@@ -43,7 +43,7 @@
             return array('Product');
         }
 
-        public static function getUntranslatedRightsLabels()
+        public static function getTranslatedRightsLabels()
         {
             $labels                              = array();
             $labels[self::RIGHT_CREATE_PRODUCTS] = Zurmo::t('ProductsModule', 'Create ProductsModulePluralLabel',     $params);

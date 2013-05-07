@@ -102,9 +102,7 @@
         public function actionCreate()
         {
             $title                  = Zurmo::t('ProductsModule', 'Create Product');
-            $breadcrumbLinks        = array(
-                                              $title,
-                                            );
+            $breadcrumbLinks        = array($title);
             $editAndDetailsView     = $this->makeEditAndDetailsView(
                                             $this->attemptToSaveModelFromPost(new Product()), 'Edit');
             $view                   = new ProductsPageView(ProductDefaultViewUtil::
