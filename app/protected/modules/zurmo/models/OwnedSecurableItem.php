@@ -39,6 +39,22 @@
      */
     class OwnedSecurableItem extends SecurableItem
     {
+        /**
+         * @var bool
+         */
+        private $treatCreatedByUserAsOwnerForPermissions = false;
+
+        /**
+         * Set when the createdByUser needs to operate like the owner. This can be when a user is creating a new model
+         * that he/she does not own.  The createdByUser still needs to be able to set permissions for example
+         * @param boolean $value
+         */
+        public function setTreatCreatedByUserAsOwnerForPermissions($value)
+        {
+            assert('is_bool($value)');
+            $this->treatCreatedByUserAsOwnerForPermissions = $value;
+        }
+
         protected function constructDerived($bean, $setDefaults)
         {
             assert('$bean === null || $bean instanceof RedBean_OODBBean');
@@ -70,13 +86,20 @@
                     throw new NoCurrentUserSecurityException();
                 }
             }
-            $owner = $this->unrestrictedGet('owner');
+            $owner         = $this->unrestrictedGet('owner');
+            $createdByUser = $this->unrestrictedGet('createdByUser');
             # If an owned securable item doesn't yet have an owner
             # then whoever is creating it has full access to it. If they
             # save it with the owner being someone else they are giving
             # it away and potentially lose access to it.
             if ($owner->id < 0 ||
                 $owner->isSame($permitable))
+            {
+                return Permission::ALL;
+            }
+            elseif($this->treatCreatedByUserAsOwnerForPermissions &&
+                   $createdByUser->id > 0 &&
+                   $createdByUser->isSame($permitable))
             {
                 return Permission::ALL;
             }

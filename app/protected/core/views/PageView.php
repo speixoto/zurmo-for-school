@@ -309,7 +309,7 @@
                    '<meta http-equiv="X-UA-Compatible" content="IE=edge" />' . // Not Coding Standard
                    '<meta name="viewport"  content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">' . // Not Coding Standard
                    '<meta name="apple-mobile-web-app-capable" content="yes" />' . // Not Coding Standard
-                   '<link rel="apple-touch-icon" sizes="144x144" href="/themes/default/images/touch-icon-iphone4.png" />'  . //also add 57px, 72px, 144px // Not Coding Standard
+                   '<link rel="apple-touch-icon" sizes="144x144" href="' . Yii::app()->baseUrl . '/themes/default/images/touch-icon-iphone4.png" />'  . //also add 57px, 72px, 144px // Not Coding Standard
                    $specialCssContent .
                    '<title>' . $title . '</title>'  .
                    '</head>';

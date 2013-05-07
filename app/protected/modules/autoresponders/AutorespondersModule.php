@@ -34,38 +34,55 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * Model for storing an autoresponder item activity.
-     */
-    class AutoresponderItemActivity extends EmailMessageItemActivity
+    class AutorespondersModule extends Module
     {
-        public function __toString()
+        public function getDependencies()
         {
-            if (trim($this->subject) == '')
-            {
-                return Zurmo::t('Default', '(Unnamed)');
-            }
-            return $this->subject;
+            return array(
+                'marketingLists',
+            );
         }
 
-        public static function getModuleClassName()
+        public function getRootModelNames()
         {
-            return 'MarketingListsModule';
+            return array('Autoresponder', 'AutoresponderItem', 'AutoresponderItemActivity');
         }
 
-        public static function canSaveMetadata()
+        public static function getPrimaryModelName()
         {
-            return false;
+            return 'Autoresponder';
+        }
+
+        /*
+        public static function getGlobalSearchFormClassName()
+        {
+            return 'AutorespondersSearchForm';
+        }
+        */
+
+        public static function modelsAreNeverGloballySearched()
+        {
+            return true;
         }
 
         public static function getDefaultMetadata()
         {
-        //todo
+            $metadata = array();
+            $metadata['global'] = array(
+                'globalSearchAttributeNames' => array(
+                    'name',
+                ),
+            );
+            return $metadata;
         }
 
-        public static function isTypeDeletable()
+        /*
+        public static function getDemoDataMakerClassNames()
         {
-            return true;
+            return array('AutorespondersDemoDataMaker',
+                            'AutoresponderItemsDemoDataMaker',
+                            'AutoresponderItemActivitiesDemoDataMaker');
         }
+        */
     }
 ?>

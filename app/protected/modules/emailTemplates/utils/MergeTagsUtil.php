@@ -65,7 +65,7 @@
             $value = '/' . preg_quote($value) . '/';
         }
 
-        public function __construct($language, $content) // TODO: @Shoaibi/@Jason probably change it to locale object
+        public function __construct($language, $content) // TODO: @Shoaibi/@Jason Low: probably change it to locale object
         {
             $this->language = $language;
             $this->content  = $content;
@@ -73,7 +73,10 @@
 
         public function resolveMergeTagsArrayToAttributes($model, & $invalidTags = array(), $language = null, $errorOnFirstMissing = false)
         {
-            $language = ($language)? $language : $this->language;
+            if (!$language)
+            {
+                $language = $this->language;
+            }
             if (empty($this->mergeTags))
             {
                 return false;
@@ -102,12 +105,12 @@
         public function extractMergeTagsPlaceHolders()
         {
             // Current RE: /((WAS\%)?(([A-Z0-9])(\^|__)?)+)/ // Not Coding Standard
-            $pattern = '/' . preg_quote(static::TAG_PREFIX) .
-                '((WAS' . preg_quote(static::TIME_DELIMITER) . ')?' .
-                '(([A-Z0-9])' . '(' . preg_quote(static::CAPITAL_DELIMITER) . '|' .
-                preg_quote(static::PROPERTY_DELIMITER) . ')?)+)' . // Not Coding Standard
-                preg_quote(static::TAG_SUFFIX) .
-                '/';
+            $pattern =  '/' . preg_quote(static::TAG_PREFIX) .
+                        '((WAS' . preg_quote(static::TIME_DELIMITER) . ')?' .
+                        '(([A-Z0-9])' . '(' . preg_quote(static::CAPITAL_DELIMITER) . '|' .
+                        preg_quote(static::PROPERTY_DELIMITER) . ')?)+)' . // Not Coding Standard
+                        preg_quote(static::TAG_SUFFIX) .
+                        '/';
             // $this->mergeTags index 0 = with tag prefix and suffix, index 1 = without tag prefix and suffix
             $matchesCounts = preg_match_all($pattern, $this->content, $this->mergeTags);
             array_walk($this->mergeTags, 'static::resolveUniqueMergeTags');
@@ -121,7 +124,10 @@
             $attributes                 = array_values($this->mergeTags[1]);
             $this->resolveFullyQualifiedMergeTagsRegularExpression($mergeTags);
             $content                    = preg_replace($mergeTags, $attributes, $this->content, -1, $resolvedMergeTagsCount);
-            $this->content              = (!empty($content))? $content : $this->content;
+            if(!empty($content))
+            {
+                $this->content = $content;
+            }
             return $resolvedMergeTagsCount;
         }
 

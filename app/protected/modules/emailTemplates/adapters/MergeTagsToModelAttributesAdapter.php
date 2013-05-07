@@ -67,7 +67,7 @@
                 }
             }
             $mergeTags = $resolvedMergeTags;
-            return (empty($invalidTags))? true: false;
+            return (empty($invalidTags));
         }
 
         protected static function stripTimeDelimiterAndReturnQualifier(& $mergeTag)
@@ -97,7 +97,11 @@
             {
                 $value = static::getAttributeValue($model->$attributeName, 'value', $timeQualifier);
                 // TODO: @Shoaibi/@Jason: Low: need to apply localizations(Date/time/currency formats, ...) here besides translation
-                return (isset($value)) ? Zurmo::t($model::getModuleClassName(), $value, array(), null, $language) : null;
+                if ($value)
+                {
+                    $value = Zurmo::t($model::getModuleClassName(), $value, array(), null, $language);
+                }
+                return $value;
             }
             elseif ($model->isRelation($attributeName))
             {
@@ -145,14 +149,26 @@
 
         protected static function getAttributeValue($model, $attributeName, $timeQualifier)
         {
-            return (empty($timeQualifier)) ?
-                        static::getAttributeCurrentValue($model, $attributeName) :
-                        static::getAttributePreviousValue($model, $attributeName);
+            if (empty($timeQualifier))
+            {
+               return static::getAttributeCurrentValue($model, $attributeName);
+            }
+            else
+            {
+                return static::getAttributePreviousValue($model, $attributeName);
+            }
         }
 
         protected static function getAttributeCurrentValue($model, $attributeName)
         {
-            return (isset($model->$attributeName))? $model->$attributeName : null;
+            if (isset($model->$attributeName))
+            {
+                return $model->$attributeName;
+            }
+            else
+            {
+                return null;
+            }
         }
 
         protected static function getAttributePreviousValue($model, $attributeName)
@@ -183,9 +199,9 @@
             return static::resolveStringToCamelCase(str_replace(MergeTagsUtil::PROPERTY_DELIMITER, '->', strtolower($string)));
         }
 
-        protected static function resolveStringToCamelCase($string, $capitaliseFirstChar = false )
+        protected static function resolveStringToCamelCase($string, $capitaliseFirstCharacter = false )
         {
-            if ($capitaliseFirstChar)
+            if ($capitaliseFirstCharacter)
             {
                 $string[0] = strtoupper($string[0]);
             }

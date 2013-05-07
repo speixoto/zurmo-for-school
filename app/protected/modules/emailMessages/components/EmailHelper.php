@@ -174,13 +174,16 @@
         /**
          * Send an email message. This will queue up the email to be sent by the queue sending process. If you want to
          * send immediately, consider using @sendImmediately
-         * @param EmailMessage $email
+         * @param EmailMessage $emailMessage
+         * @throws NotSupportedException
+         * @return boolean
          */
         public function send(EmailMessage $emailMessage)
         {
             if ($emailMessage->folder->type == EmailFolder::TYPE_OUTBOX ||
-               $emailMessage->folder->type == EmailFolder::TYPE_SENT ||
-               $emailMessage->folder->type == EmailFolder::TYPE_OUTBOX_ERROR)
+                $emailMessage->folder->type == EmailFolder::TYPE_SENT ||
+                $emailMessage->folder->type == EmailFolder::TYPE_OUTBOX_ERROR ||
+                $emailMessage->folder->type == EmailFolder::TYPE_OUTBOX_FAILURE)
             {
                 throw new NotSupportedException();
             }
@@ -218,7 +221,8 @@
 
         /**
          * Call this method to process all email Messages in the queue. This is typically called by a scheduled job
-         * or cron.  This will process all emails in a TYPE_OUTBOX folder or TYPE_OUTBOX_ERROR folder.
+         * or cron.  This will process all emails in a TYPE_OUTBOX folder or TYPE_OUTBOX_ERROR folder. If the message
+         * has already been sent 3 times then it will be moved to a failure folder.
          */
         public function sendQueued()
         {
@@ -234,8 +238,23 @@
                 {
                     $this->sendImmediately($emailMessage);
                 }
+                else
+                {
+                    $this->processMessageAsFailure($emailMessage);
+                }
             }
             return true;
+        }
+
+        protected function processMessageAsFailure(EmailMessage $emailMessage)
+        {
+            $emailMessage->folder = EmailFolder::getByBoxAndType($emailMessage->folder->emailBox,
+                                    EmailFolder::TYPE_OUTBOX_FAILURE);
+            $saved = $emailMessage->save();
+            if (!$saved)
+            {
+                throw new NotSupportedException();
+            }
         }
 
         protected function populateMailer(Mailer $mailer, EmailMessage $emailMessage)

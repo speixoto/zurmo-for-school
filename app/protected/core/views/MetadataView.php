@@ -222,7 +222,10 @@
                     $element->registerDropDownScripts();
                 }
                 $items = $element->getOptions();
-                $items = (array_key_exists('label', $items))? array($items) : $items;
+                if (array_key_exists('label', $items))
+                {
+                    $items = array($items);
+                }
                 foreach ($items as $item)
                 {
                     if($element::useItemUrlAsElementValue())
@@ -248,7 +251,11 @@
                     {
                         $dropDownItems[$value]              = $item['label'];
                     }
-                    $dropDownItemHtmlOptions['options'][$value] = (isset($item['itemOptions'])) ? $item['itemOptions'] : array();
+                    $dropDownItemHtmlOptions['options'][$value] = array();
+                    if (isset($item['itemOptions']))
+                    {
+                        $dropDownItemHtmlOptions['options'][$value] = $item['itemOptions'];
+                    }
                 }
                 return false;
             }

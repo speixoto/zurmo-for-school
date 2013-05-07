@@ -115,8 +115,8 @@
             }
             $formEnd = $clipWidget->renderEndWidget();
             $content .= $formEnd;
-
             $content .= '</div></div>';
+            $content .= $this->renderModalContainer();
             return $content;
         }
 
@@ -151,6 +151,11 @@
         protected function renderAfterFormLayout($form)
         {
             DropDownUtil::registerScripts();
+        }
+
+        protected function renderModalContainer()
+        {
+            return ZurmoHtml::tag('div', array('id' => ModelElement::MODAL_CONTAINER_PREFIX . '-' . $this->getFormId()));
         }
 
         protected function resolveActiveFormAjaxValidationOptions()

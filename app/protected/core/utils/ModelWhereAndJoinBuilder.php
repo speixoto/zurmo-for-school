@@ -59,6 +59,7 @@
          * @param $clausePosition
          * @param $where
          * @param null | string $onTableAliasName
+         * @param boolean | $resolveAsSubquery
          */
         public function resolveJoinsAndBuildWhere($operatorType, $value, & $clausePosition, & $where,
                                                   $onTableAliasName = null, $resolveAsSubquery = false)

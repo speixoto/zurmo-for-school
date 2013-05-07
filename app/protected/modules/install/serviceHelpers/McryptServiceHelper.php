@@ -35,59 +35,24 @@
      ********************************************************************************/
 
     /**
-     * Model for storing an email message item activity.
+     * Checks if Mcrypt extension is installed.
+     * Required by Yii framework.
      */
-    class EmailMessageItemActivity extends RedBeanModel
+    class McryptServiceHelper extends ServiceHelper
     {
-        public function __toString()
+        protected function checkService()
         {
-            if (trim($this->subject) == '')
+            $isMcryptInstalled =  InstallUtil::isMcryptInstalled();
+            if ($isMcryptInstalled)
             {
-                return Yii::t('Default', '(Unnamed)');
+                $this->message  = Zurmo::t('InstallModule', 'Mcrypt extension is loaded.');
+                return true;
             }
-            return $this->subject;
-        }
-
-        public static function getModuleClassName()
-        {
-            return 'EmailMessagesModule';
-        }
-
-        /**
-         * Returns the display name for plural of the model class.
-         * @return dynamic label name based on module.
-         */
-        protected static function getPluralLabel($language = null)
-        {
-            return 'Emails';
-        }
-
-        public static function canSaveMetadata()
-        {
-            return false;
-        }
-
-        public static function getDefaultMetadata()
-        {
-            $metadata = parent::getDefaultMetadata();
-            $metadata[__CLASS__] = array(
-                'members' => array(
-                    'type',
-                    'dateTime',
-                ),
-                'rules' => array(
-                    array('dateTime',  'type', 'type' => 'datetime'),
-                ),
-                'elements' => array(
-                    'dateTime'  => 'DateTime',
-                )
-            );
-            return $metadata;
-        }
-
-        public static function isTypeDeletable()
-        {
-            return true;
+            else
+            {
+                $this->message  = Zurmo::t('InstallModule', 'Mcrypt extension is not loaded.');
+                return false;
+            }
         }
     }
 ?>

@@ -43,6 +43,9 @@
      */
     abstract class ModelElement extends Element implements ElementActionTypeInterface
     {
+
+        const MODAL_CONTAINER_PREFIX = 'modalContainer';
+
         /**
          * Override in child element with a specific moduleId
          */
@@ -226,7 +229,7 @@
         {
             assert('is_string($formId)');
             $title = $this->getModalTitleForSelectingModel();
-            return   ModalView::getAjaxOptionsForModalLink($title);
+            return   ModalView::getAjaxOptionsForModalLink($title, $this->getModalContainerId());
         }
 
         protected function getModalTitleForSelectingModel()
@@ -235,6 +238,11 @@
             $moduleSingularLabel = $module->getModuleLabelByTypeAndLanguage('Singular');
             return Zurmo::t('Core', '{moduleSingularLabel} Search',
                                       array('{moduleSingularLabel}' => $moduleSingularLabel));
+        }
+
+        protected function getModalContainerId()
+        {
+            return self::MODAL_CONTAINER_PREFIX . '-' . $this->form->id;
         }
 
         protected function getSelectLinkControllerId()
@@ -358,7 +366,8 @@
         {
             return array_merge(array(
                     'sourceIdFieldId' => $this->getIdForHiddenField(),
-                    'sourceNameFieldId' => $this->getIdForTextField()
+                    'sourceNameFieldId' => $this->getIdForTextField(),
+                    'modalId'           => $this->getModalContainerId(),
             ), $this->resolveSourceModelIdForModalTransferInformation());
         }
 

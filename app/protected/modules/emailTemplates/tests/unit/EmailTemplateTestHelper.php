@@ -38,13 +38,14 @@
     {
         public static function createEmailTemplateByName($type, $subject, $modelClassName, $name, $htmlContent, $textContent)
         {
-            $emailTemplate                  = static::fillEmailTemplateByName($type, $subject, $modelClassName, $name, $htmlContent, $textContent);
+            $emailTemplate                  = static::populateEmailTemplateByName($type, $subject, $modelClassName,
+                                              $name, $htmlContent, $textContent);
             $saved                          = $emailTemplate->save();
             assert('$saved');
             return $emailTemplate;
         }
 
-        public static function fillEmailTemplateByName($type, $subject, $modelClassName, $name, $htmlContent, $textContent)
+        public static function populateEmailTemplateByName($type, $subject, $modelClassName, $name, $htmlContent, $textContent)
         {
             $emailTemplate = new EmailTemplate();
             $emailTemplate->type            = $type;

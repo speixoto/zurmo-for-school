@@ -34,39 +34,28 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class AutoresponderTestHelper
+    class ZurmoPasswordSecurityUtilTest extends ZurmoBaseTest
     {
-        public static function createAutoresponder($name, $subject, $textContent, $htmlContent, $secondsFromOperation,
-                                                                                  $operationType, $marketingList = null,
-                                                                                  $runValidation = true)
+        public function testEncryptAndDecrypt()
         {
-            $autoresponder  = static::fillAutoresponder($name, $subject, $textContent, $htmlContent,
-                                                                    $secondsFromOperation, $operationType, $marketingList);
-            $saved          = $autoresponder->unrestrictedSave($runValidation);
-            assert('$saved');
-            return $autoresponder;
-        }
+            // No need to encrypt empty string
+            $encryptedString = ZurmoPasswordSecurityUtil::encrypt('', 'someKey');
+            $this->assertEquals('', $encryptedString);
 
-        public static function fillAutoresponder($name, $subject, $textContent, $htmlContent, $secondsFromOperation,
-                                                                                $operationType, $marketingList = null)
-        {
-            if (empty($marketingList))
-            {
-                $marketingLists = MarketingList::getAll();
-                if  (!empty($marketingLists))
-                {
-                    $marketingList  = RandomDataUtil::getRandomValueFromArray($marketingLists);
-                }
-            }
-            $autoresponder                          = new Autoresponder();
-            $autoresponder->name                    = $name;
-            $autoresponder->subject                 = $subject;
-            $autoresponder->textContent             = $textContent;
-            $autoresponder->htmlContent             = $htmlContent;
-            $autoresponder->secondsFromOperation    = $secondsFromOperation;
-            $autoresponder->operationType           = $operationType;
-            $autoresponder->marketingList           = $marketingList;
-            return $autoresponder;
+            // No need to decrypt empty string
+            $decryptedString = ZurmoPasswordSecurityUtil::decrypt('', 'someKey');
+            $this->assertEquals('', $decryptedString);
+
+            $string = '357';
+            $salt = "123";
+            $encryptedString = ZurmoPasswordSecurityUtil::encrypt($string, $salt);
+            $this->assertTrue($string != $encryptedString);
+            $decryptedString = ZurmoPasswordSecurityUtil::decrypt($encryptedString, $salt);
+            $this->assertEquals($string, $decryptedString);
+
+            // Ensure that data will not be decrypted with random salt
+            $decryptedString = ZurmoPasswordSecurityUtil::decrypt($encryptedString, '567');
+            $this->assertTrue($string != $decryptedString);
         }
     }
 ?>

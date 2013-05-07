@@ -336,100 +336,54 @@ table.configuration-list{
     td.level-0{ padding-left:10px !important;}
     td.level-1{
         padding-left:45px !important;
-        &:before{
-            content: "∟";
-            font-size: 30px;
-            position: relative;
-            top:-3px;
-            font-weight:100 !important;
-            line-height:100% !important;
-        }
+	    background: url(../images/elbow.gif) 20px 10px no-repeat;
     }
     td.level-2{
         padding-left:75px !important;
-        &:before{
-            content: "∟";
-            font-size: 30px;
-            position: relative;
-            top:-3px;
-        }
+	    background: url(../images/elbow.gif) 50px 10px no-repeat;
     }
     td.level-3{
         padding-left:105px !important;
-        &:before{
-            content: "∟";
-            font-size: 30px;
-            position: relative;
-            top:-3px;
-        }
+	    background: url(../images/elbow.gif) 80px 10px no-repeat;
     }
     td.level-4{
         padding-left:135px !important;
-        &:before{
-            content: "∟";
-            font-size: 30px;
-            position: relative;
-            top:-3px;
-        }
+	    background: url(../images/elbow.gif) 110px 10px no-repeat;
     }
     td.level-5{
         padding-left:165px !important;
-        &:before{
-            content: "∟";
-            font-size: 30px;
-            position: relative;
-            top:-3px;
-        }
+	    background: url(../images/elbow.gif) 140px 10px no-repeat;
     }
     td.level-6{
         padding-left:195px !important;
-        &:before{
-            content: "∟";
-            font-size: 30px;
-            position: absolute;
-            left: 165px;
-            top:-1px;
-        }
+	    background: url(../images/elbow.gif) 170px 10px no-repeat;
     }
     td.level-7{
         padding-left:225px !important;
-        &:before{
-            content: "∟";
-            font-size: 30px;
-            position: relative;
-            top:-3px;
-        }
+	    background: url(../images/elbow.gif) 200px 10px no-repeat;
     }
     td.level-8{
         padding-left:255px !important;
-        &:before{
-            content: "∟";
-            font-size: 30px;
-            position: absolute;
-            left: 225px;
-            top:-1px;
-        }
+	    background: url(../images/elbow.gif) 230px 10px no-repeat;
     }
     td.level-9{
         padding-left:285px !important;
-        &:before{
-            content: "∟";
-            font-size: 30px;
-            position: relative;
-            top:-3px;
-        }
+	    background: url(../images/elbow.gif) 260px 10px no-repeat;
     }
     td.level-10{
         padding-left:315px !important;
-        &:before{
-            content: "∟";
-            font-size: 30px;
-            position: relative;
-            top:-3px;
-        }
+	    background: url(../images/elbow.gif) 290px 10px no-repeat;
     }
 }
 
+#ModalView{
+	.SecurityTreeListView{
+		td.level-1, td.level-2, td.level-3, td.level-4, td.level-5, td.level-6,
+		td.level-7, td.level-8, td.level-9, td.level-10{
+			background-position-y:3px;
+		}
+	}
+}
 /*Roles*/
 #RolesTreeListView{
     .z-action-link{
@@ -684,10 +638,8 @@ table.configuration-list{
             .box-sizing();
         }
     }
-    #edit-form{
-        //padding-right:30px;
-    }
 }
+
 #UserCreateView{
 	.panel{
         width:70% !important;

@@ -35,12 +35,11 @@
      ********************************************************************************/
 
     /**
-     * Note related array of random seed data parts.
+     * Helper class for working with CampaignItemActivity
      */
-    return array(
-        'unsubscribed'        => array(
-            0,
-            1
-        ),
-    );
+    class CampaignItemActivityUtil extends EmailMessageActivityUtil
+    {
+        // TODO: @Shoaibi: Critical: Test resolveQueryStringFromUrlAndCreateOrUpdateActivity()
+        // check AutoresponderItemActivityUtilTest, need exact same tests here with different model though
+    }
 ?>

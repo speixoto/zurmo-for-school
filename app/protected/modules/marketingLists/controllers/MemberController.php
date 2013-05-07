@@ -148,7 +148,11 @@
         {
             if (strpos($actionId, 'massSubscribe') === 0 || strpos($actionId, 'massUnsubscribe') === 0)
             {
-                $viewNameSuffix    = (!$returnProgressViewName)? 'View': 'ProgressView';
+                $viewNameSuffix    = 'View';
+                if ($returnProgressViewName)
+                {
+                    $viewNameSuffix    = 'ProgressView';
+                }
                 $viewNamePrefix    = static::resolveMassActionId($actionId, true);
                 $viewNamePrefix    = 'MarketingListMembers' . $viewNamePrefix;
                 return $viewNamePrefix . $viewNameSuffix;

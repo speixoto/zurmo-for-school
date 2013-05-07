@@ -333,7 +333,8 @@
             'accounts',
             'activities',
             'api',
-           // 'campaigns',
+            'autoresponders',
+            //'campaigns',
             'comments',
             'configuration',
             'contacts',
@@ -361,6 +362,7 @@
             'workflows',
             'socialItems',
             'tasks',
+            'tracking',
             'zurmo' => array(
                 'modules' => array(
                     'groups' => array('class' => 'zurmo.modules.GroupsModule'),

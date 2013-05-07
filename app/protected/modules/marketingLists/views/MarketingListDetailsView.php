@@ -75,8 +75,7 @@
             $content                        = $this->renderTitleContent();
             $content                       .= ZurmoHtml::tag('div', array('class' => 'view-toolbar-container clearfix'),
                                                 ZurmoHtml::tag('div', array('class' => 'view-toolbar'),
-                                                                                    $actionElementBarContent)
-                                                );
+                                                                                    $actionElementBarContent));
             return $content;
         }
     }

@@ -224,9 +224,9 @@
             $script = '
                 $(".remove-dynamic-row-link").live("click", function()
                 {
-                    size = $(this).parent().parent().parent().find("li").size();
-                    $(this).parent().parent().remove(); //removes the <li>
-                    if (size < 2)
+                    var size = $("#' . get_class($this) . ' .dynamic-rows > ul > li").length;
+                    $(this).parentsUntil("li").parent().remove(); //removes the <li>
+                    if (size < 1)
                     {
                         $(".' . static::getZeroComponentsClassName() . '").show();
                     }

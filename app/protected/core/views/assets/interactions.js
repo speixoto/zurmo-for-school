@@ -150,9 +150,9 @@ $(window).ready(function(){
     });
 
     $(".overlay-label-field input").live('change', function(){
-        if($(this).val() == "")
+        if($(this).val() != "")
         {
-            $(this).prev().fadeIn(250);
+            $(this).prev().fadeOut(250);
         }
     });
 
