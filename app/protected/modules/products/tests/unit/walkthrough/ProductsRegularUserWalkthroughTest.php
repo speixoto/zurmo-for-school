@@ -118,9 +118,10 @@
             //Test nobody with elevated rights.
             Yii::app()->user->userModel = $nobody;
             $content = $this->runControllerWithNoExceptionsAndGetContent('products/default/list');
+            
             $this->assertFalse(strpos($content, 'John Kenneth Galbraith') === false);
             //TODO Need to ask Jason
-            //$this->runControllerWithNoExceptionsAndGetContent('products/default/create');
+            $this->runControllerWithNoExceptionsAndGetContent('products/default/create');
 
             //Test nobody can view an existing product he owns.
             $product = ProductTestHelper::createProductByNameForOwner('productOwnedByNobody', $nobody);
