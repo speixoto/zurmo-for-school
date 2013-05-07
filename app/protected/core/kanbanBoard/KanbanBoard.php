@@ -92,7 +92,7 @@
                 }
                 if(isset($_GET[$getArrayName][self::SELECTED_THEME]))
                 {
-                    if (!is_array($_GET[$getArrayName][self::SELECTED_THEME]))
+                    if (empty($_GET[$getArrayName][self::SELECTED_THEME]))
                     {
                         $selectedTheme = null;
                     }
