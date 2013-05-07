@@ -334,7 +334,7 @@
             'activities',
             'api',
             'autoresponders',
-            'campaigns',
+            //'campaigns',
             'comments',
             'configuration',
             'contacts',
