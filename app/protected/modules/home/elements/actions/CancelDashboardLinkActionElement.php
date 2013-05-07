@@ -34,47 +34,39 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class DashboardEditView extends EditView
+    class CancelDashboardLinkActionElement extends LinkActionElement
     {
-        public static function getDefaultMetadata()
+        public function getActionType()
         {
-            $metadata = array(
-                'global' => array(
-                    'toolbar' => array(
-                        'elements' => array(
-                            array('type' => 'SaveButton'),
-                            //array('type' => 'CancelToListLink'),
-                            array('type' => 'CancelDashboardLink'),
-                        ),
-                    ),
-                    'panelsDisplayType' => FormLayout::PANELS_DISPLAY_TYPE_ALL,
-                    'panels' => array(
-                        array(
-                            'rows' => array(
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'name', 'type' => 'Text'),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'layoutType', 'type' => 'DashboardLayoutTypeStaticDropDown'),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                            ),
-                        ),
-                    ),
-                ),
-            );
-            return $metadata;
+            if (!empty($this->modelId) && $this->modelId > 0)
+            {
+                return 'Details';
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        protected function getDefaultLabel()
+        {
+            return Zurmo::t('Core', 'Cancel');
+        }
+
+        protected function getDefaultRoute()
+        {
+            if (Yii::app()->request->getParam('redirectUrl') != null)
+            {
+                return Yii::app()->request->getParam('redirectUrl');
+            }
+            elseif (!empty($this->modelId) && $this->modelId > 0)
+            {
+                return Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/dashboardDetails/', array('id' => $this->modelId));
+            }
+            else
+            {
+                return Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId);
+            }
         }
     }
 ?>
