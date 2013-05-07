@@ -66,13 +66,13 @@
          * upon selecting a row in the listview
          *
          */
-        public function __construct($sourceIdFieldId, $sourceNameFieldId, $modalId = "modalContainer")
+        public function __construct($sourceIdFieldId, $sourceNameFieldId, $modalId = ModelElement::MODAL_CONTAINER_PREFIX)
         {
             assert('is_string($sourceIdFieldId)');
             assert('is_string($sourceNameFieldId)');
             $this->sourceIdFieldId   = $sourceIdFieldId;
             $this->sourceNameFieldId = $sourceNameFieldId;
-            $this->modalId = $modalId;
+            $this->modalId           = $modalId;
         }
 
         public function getLinkString($attributeString)

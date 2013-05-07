@@ -43,6 +43,9 @@
      */
     abstract class ModelElement extends Element implements ElementActionTypeInterface
     {
+
+        const MODAL_CONTAINER_PREFIX = 'modalContainer';
+
         /**
          * Override in child element with a specific moduleId
          */
@@ -239,7 +242,7 @@
 
         protected function getModalContainerId()
         {
-            return 'modalContainer-' . $this->form->id;
+            return self::MODAL_CONTAINER_PREFIX . '-' . $this->form->id;
         }
 
         protected function getSelectLinkControllerId()

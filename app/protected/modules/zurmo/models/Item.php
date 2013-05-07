@@ -272,7 +272,7 @@
          */
         public function isAllowedToSetReadOnlyAttribute($attributeName)
         {
-            if ($this->getScenario() == 'importModel' || $this->getScenario() == 'search')
+            if ($this->getScenario() == 'importModel' || $this->getScenario() == 'searchModel')
             {
                 if ($this->unrestrictedGet('id') > 0)
                 {

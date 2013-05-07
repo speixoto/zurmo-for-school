@@ -108,7 +108,7 @@
             $formEnd  = $clipWidget->renderEndWidget();
             $content .= $formEnd;
             $content .= '</div>';
-            $content .= ZurmoHtml::tag('div', array('id' => 'modalContainer-' . $this->getFormId()));
+            $content .= $this->renderModalContainer();
             if ($this->wrapContentInWrapperDiv)
             {
                 return ZurmoHtml::tag('div', array('class' => 'wrapper'), $content);
@@ -140,6 +140,13 @@
             Yii::app()->clientScript->registerScriptFile(
                 Yii::app()->getAssetManager()->publish(
                     Yii::getPathOfAlias('application.core.views.assets')) . '/dropDownInteractions.js');
+        }
+
+        protected function renderModalContainer()
+        {
+            return ZurmoHtml::tag('div', array(
+                        'id' => ModelElement::MODAL_CONTAINER_PREFIX . '-' . $this->getFormId()
+                   ));
         }
 
         protected function resolveActiveFormAjaxValidationOptions()

@@ -114,12 +114,17 @@
             }
             $formEnd = $clipWidget->renderEndWidget();
             $content .= $formEnd;
-            $content .= ZurmoHtml::tag('div', array('id' => 'modalContainer-' . $this->getFormName()));
+            $content .= $this->renderModalContainer();
             $content .= '</div>';
             return $content;
         }
 
         public function getFormName()
+        {
+            return self::getFormId();
+        }
+
+        protected static function getFormId()
         {
             return "inline-edit-form";
         }
