@@ -38,13 +38,13 @@
     {
         public static function createMarketingListMember($unsubscribed = 0, $marketingList = null, $contact = null)
         {
-            $marketingListMember    = static::fillMarketingListMember($unsubscribed, $marketingList, $contact);
+            $marketingListMember    = static::populateMarketingListMember($unsubscribed, $marketingList, $contact);
             $saved                  = $marketingListMember->unrestrictedSave();
             assert('$saved');
             return $marketingListMember;
         }
 
-        public static function fillMarketingListMember($unsubscribed = 0, $marketingList = null, $contact = null)
+        public static function populateMarketingListMember($unsubscribed = 0, $marketingList = null, $contact = null)
         {
             if (empty($marketingList))
             {

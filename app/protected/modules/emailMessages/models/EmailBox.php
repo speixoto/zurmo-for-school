@@ -98,6 +98,11 @@
                     $folder->emailBox = $box;
                     $box->folders->add($folder);
                     $folder           = new EmailFolder();
+                    $folder->name     = EmailFolder::getDefaultOutboxFailureName();
+                    $folder->type     = EmailFolder::TYPE_OUTBOX_FAILURE;
+                    $folder->emailBox = $box;
+                    $box->folders->add($folder);
+                    $folder           = new EmailFolder();
                     $folder->name     = EmailFolder::getDefaultInboxName();
                     $folder->type     = EmailFolder::TYPE_INBOX;
                     $folder->emailBox = $box;

@@ -244,36 +244,59 @@
                 $user = User::getByUsername('steve');
                 $user->primaryEmail->emailAddress = Yii::app()->params['emailTestAccounts']['userImapSettings']['imapUsername'];
                 $this->assertTrue($user->save());
+
+
+                Yii::app()->imap->connect();
+                Yii::app()->imap->deleteMessages(true);
+                $imapStats = Yii::app()->imap->getMessageBoxStatsDetailed();
+                $this->assertEquals(0, $imapStats->Nmsgs);
+
+                $emailMessage = EmailMessageTestHelper::createOutboxEmail($super, 'Test email',
+                    'Raw content', ',b>html content</b>end.', // Not Coding Standard
+                    'Zurmo', Yii::app()->emailHelper->outboundUsername,
+                    'Ivica', Yii::app()->params['emailTestAccounts']['userImapSettings']['imapUsername']);
+
+                Yii::app()->imap->connect();
+                $imapStats = Yii::app()->imap->getMessageBoxStatsDetailed();
+                $this->assertEquals(0, $imapStats->Nmsgs);
+
+                $this->assertEquals(1, Yii::app()->emailHelper->getQueuedCount());
+                $this->assertEquals(3, Yii::app()->emailHelper->getSentCount());
+                Yii::app()->emailHelper->sendQueued($emailMessage);
+                $job = new ProcessOutboundEmailJob();
+                $this->assertTrue($job->run());
+                $this->assertEquals(0, Yii::app()->emailHelper->getQueuedCount());
+                $this->assertEquals(4, Yii::app()->emailHelper->getSentCount());
+
+                sleep(30);
+                Yii::app()->imap->connect();
+                $imapStats = Yii::app()->imap->getMessageBoxStatsDetailed();
+                $this->assertEquals(1, $imapStats->Nmsgs);
             }
+            Yii::app()->emailHelper->sendEmailThroughTransport = false;
+        }
 
-            Yii::app()->imap->connect();
-            Yii::app()->imap->deleteMessages(true);
-            $imapStats = Yii::app()->imap->getMessageBoxStatsDetailed();
-            $this->assertEquals(0, $imapStats->Nmsgs);
+        /**
+         * @depends testSendRealEmail
+         */
+        public function testTooManySendAttemptsResultingInFailure()
+        {
+            $super                      = User::getByUsername('super');
+            Yii::app()->user->userModel = $super;
 
-            $emailMessage = EmailMessageTestHelper::createOutboxEmail($super, 'Test email',
-                'Raw content', ',b>html content</b>end.', // Not Coding Standard
-                'Zurmo', Yii::app()->emailHelper->outboundUsername,
-                'Ivica', Yii::app()->params['emailTestAccounts']['userImapSettings']['imapUsername']);
-
-            Yii::app()->imap->connect();
-            $imapStats = Yii::app()->imap->getMessageBoxStatsDetailed();
-            $this->assertEquals(0, $imapStats->Nmsgs);
+            //add a message in the outbox_error folder.
+            $emailMessage = EmailMessageTestHelper::createDraftSystemEmail('a test email 2', $super);
+            $box                  = EmailBox::resolveAndGetByName(EmailBox::NOTIFICATIONS_NAME);
+            $emailMessage->folder = EmailFolder::getByBoxAndType($box, EmailFolder::TYPE_OUTBOX_ERROR);
+            $emailMessage->sendAttempts = 5;
+            $emailMessage->save();
 
             $this->assertEquals(1, Yii::app()->emailHelper->getQueuedCount());
-            $this->assertEquals(3, Yii::app()->emailHelper->getSentCount());
-            Yii::app()->emailHelper->sendQueued($emailMessage);
-            $job = new ProcessOutboundEmailJob();
-            $this->assertTrue($job->run());
+            $this->assertEquals(4, Yii::app()->emailHelper->getSentCount());
+            Yii::app()->emailHelper->sendQueued();
             $this->assertEquals(0, Yii::app()->emailHelper->getQueuedCount());
             $this->assertEquals(4, Yii::app()->emailHelper->getSentCount());
-
-            sleep(30);
-            Yii::app()->imap->connect();
-            $imapStats = Yii::app()->imap->getMessageBoxStatsDetailed();
-            $this->assertEquals(1, $imapStats->Nmsgs);
-
-            Yii::app()->emailHelper->sendEmailThroughTransport = false;
+            $this->assertTrue($emailMessage->folder->isSame(EmailFolder::getByBoxAndType($box, EmailFolder::TYPE_OUTBOX_FAILURE)));
         }
     }
 ?>

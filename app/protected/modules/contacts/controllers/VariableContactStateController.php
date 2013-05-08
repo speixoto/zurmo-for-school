@@ -102,7 +102,8 @@
         {
             $modalListLinkProvider = new SelectFromRelatedEditModalListLinkProvider(
                                             $_GET['modalTransferInformation']['sourceIdFieldId'],
-                                            $_GET['modalTransferInformation']['sourceNameFieldId']
+                                            $_GET['modalTransferInformation']['sourceNameFieldId'],
+                                            $_GET['modalTransferInformation']['modalId']
             );
             $adapterName  = ContactsUtil::resolveContactStateAdapterByModulesUserHasAccessTo('LeadsModule',
                                                                                         'ContactsModule',

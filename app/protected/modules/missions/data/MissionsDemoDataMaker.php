@@ -74,6 +74,10 @@
                 $mission->addPermissions(Group::getByName(Group::EVERYONE_GROUP_NAME), Permission::READ_WRITE);
                 $saved = $mission->save();
                 assert('$saved');
+                $mission = Mission::getById($mission->id);
+                ReadPermissionsOptimizationUtil::
+                        securableItemGivenPermissionsForGroup($mission, Group::getByName(Group::EVERYONE_GROUP_NAME));
+                $mission->save();
                 $missions[] = $mission->id;
             }
             $demoDataHelper->setRangeByModelName('Mission', $missions[0], $missions[count($missions)-1]);

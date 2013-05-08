@@ -97,8 +97,8 @@
                     'fromAddress',
                 ),
                 'relations' => array(
-                    'marketingListMembers'         => array(RedBeanModel::HAS_MANY,   'MarketingListMember'),
-                    'autoresponders'               => array(RedBeanModel::HAS_MANY,   'Autoresponder'),
+                    'marketingListMembers'         => array(RedBeanModel::HAS_MANY,   'MarketingListMember', RedBeanModel::OWNED),
+                    'autoresponders'               => array(RedBeanModel::HAS_MANY,   'Autoresponder', RedBeanModel::OWNED),
                 ),
                 'rules' => array(
                     array('name',          'required'),

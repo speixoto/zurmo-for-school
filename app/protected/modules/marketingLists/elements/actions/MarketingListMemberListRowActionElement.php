@@ -34,18 +34,21 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    abstract class MarketingListMemberLinkActionElement extends ListRowActionElement implements RowModelShouldRenderInterface
+    abstract class MarketingListMemberListRowActionElement extends ListRowActionElement implements RowModelShouldRenderInterface
     {
         const CONTROLLER_ID             = 'defaultPortlet';
 
         const LINK_ACTION_ELEMENT_CLASS = 'marketing-list-member-actions-link';
+
+        const JS_HANDLER_ID             = 'marketingListMemberLinkActionElementEventHandler';
 
         abstract protected function getActionId();
 
         public function getDefaultRoute()
         {
             $params = array('id' => $this->modelId);
-            return Yii::app()->createUrl($this->moduleId . '/' . static::CONTROLLER_ID . '/' . $this->getActionId() , $params);
+            return Yii::app()->createUrl($this->getModuleId() . '/' . static::CONTROLLER_ID
+                                                                                . '/' . $this->getActionId() , $params);
         }
 
         public function render()
@@ -83,16 +86,16 @@
 
         protected function registerUnifiedEventHander()
         {
-            if (Yii::app()->clientScript->isScriptRegistered('marketingListMemberLinkActionElementEventHandler'))
+            if (Yii::app()->clientScript->isScriptRegistered(static::JS_HANDLER_ID))
             {
                 return;
             }
             else
             {
-                $unlinkConfirmMessage   = CJavaScript::quote(Zurmo::t('MarketingListsModule', 'Are you sure you want to unlink this record?'));
+                $unlinkConfirmMessage   = CJavaScript::quote($this->getUnlinkTranslatedMessage());
                 $errorMessage           = CJavaScript::quote(Zurmo::t('Core', 'There was an error processing your request'));
                 // Begin Not Coding Standard
-                Yii::app()->clientScript->registerScript('marketingListMemberLinkActionElementEventHandler', '
+                Yii::app()->clientScript->registerScript(static::JS_HANDLER_ID, '
                     $("a.' . static::LINK_ACTION_ELEMENT_CLASS . '").unbind("click.action").bind("click.action", function(event)
                         {
                             linkUrl = $(this).attr("href");
@@ -100,6 +103,7 @@
                             if (linkId.indexOf("delete") !== -1 && !onAjaxSubmitRelatedListAction("' . $unlinkConfirmMessage . '", "' . $this->getGridId() . '"))
                             {
                                 event.preventDefault();
+                                return false
                             }
                             $.ajax({
                                 "error"     : function(xhr, textStatus, errorThrown)
@@ -114,11 +118,22 @@
                                 "cache"	    : false
                             });
                             event.preventDefault();
+                            return false;
                         }
                     );
                 ');
                 // End Not Coding Standard
             }
+        }
+
+        protected function getUnlinkTranslatedMessage()
+        {
+            return Zurmo::t('MarketingListsModule', 'Are you sure you want to unlink this record?');
+        }
+
+        protected function getModuleId()
+        {
+            return $this->moduleId;
         }
     }
 ?>

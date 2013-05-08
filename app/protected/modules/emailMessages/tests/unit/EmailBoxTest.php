@@ -69,13 +69,13 @@
             $this->assertEquals(0, count($boxes));
             $box = EmailBox::resolveAndGetByName(EmailBox::NOTIFICATIONS_NAME);
             $this->assertEquals(EmailBox::NOTIFICATIONS_NAME, $box->name);
-            $this->assertEquals(7, $box->folders->count());
+            $this->assertEquals(8, $box->folders->count());
             $this->assertFalse($box->isDeletable());
             $this->assertTrue($box->id > 0);
 
             //After it saves, it should create a Sent folder and an Outbox folder
             $box = EmailBox::getByName(EmailBox::NOTIFICATIONS_NAME);
-            $this->assertEquals(7, $box->folders->count());
+            $this->assertEquals(8, $box->folders->count());
             $folder1 = $box->folders->offsetGet(0);
             $folder2 = $box->folders->offsetGet(1);
             $folder3 = $box->folders->offsetGet(2);
@@ -83,12 +83,14 @@
             $folder5 = $box->folders->offsetGet(4);
             $folder6 = $box->folders->offsetGet(5);
             $folder7 = $box->folders->offsetGet(6);
+            $folder8 = $box->folders->offsetGet(7);
 
             $this->assertTrue($folder1->name == EmailFolder::getDefaultInboxName() ||
                               $folder1->name == EmailFolder::getDefaultSentName() ||
                               $folder1->name == EmailFolder::getDefaultOutboxName() ||
                               $folder1->name == EmailFolder::getDefaultDraftName() ||
                               $folder1->name == EmailFolder::getDefaultOutboxErrorName() ||
+                              $folder1->name == EmailFolder::getDefaultOutboxFailureName() ||
                               $folder1->name == EmailFolder::getDefaultArchivedName() ||
                               $folder1->name == EmailFolder::getDefaultArchivedUnmatchedName());
             $this->assertTrue($folder2->name == EmailFolder::getDefaultInboxName() ||
@@ -96,6 +98,7 @@
                               $folder2->name == EmailFolder::getDefaultOutboxName() ||
                               $folder2->name == EmailFolder::getDefaultDraftName() ||
                               $folder2->name == EmailFolder::getDefaultOutboxErrorName() ||
+                              $folder2->name == EmailFolder::getDefaultOutboxFailureName() ||
                               $folder2->name == EmailFolder::getDefaultArchivedName() ||
                               $folder2->name == EmailFolder::getDefaultArchivedUnmatchedName());
             $this->assertTrue($folder3->name == EmailFolder::getDefaultInboxName() ||
@@ -103,6 +106,7 @@
                               $folder3->name == EmailFolder::getDefaultOutboxName() ||
                               $folder3->name == EmailFolder::getDefaultDraftName() ||
                               $folder3->name == EmailFolder::getDefaultOutboxErrorName() ||
+                              $folder3->name == EmailFolder::getDefaultOutboxFailureName() ||
                               $folder3->name == EmailFolder::getDefaultArchivedName() ||
                               $folder3->name == EmailFolder::getDefaultArchivedUnmatchedName());
             $this->assertTrue($folder4->name == EmailFolder::getDefaultInboxName() ||
@@ -110,6 +114,7 @@
                               $folder4->name == EmailFolder::getDefaultOutboxName() ||
                               $folder4->name == EmailFolder::getDefaultDraftName() ||
                               $folder4->name == EmailFolder::getDefaultOutboxErrorName() ||
+                              $folder4->name == EmailFolder::getDefaultOutboxFailureName() ||
                               $folder4->name == EmailFolder::getDefaultArchivedName() ||
                               $folder4->name == EmailFolder::getDefaultArchivedUnmatchedName());
             $this->assertTrue($folder5->name == EmailFolder::getDefaultInboxName() ||
@@ -117,6 +122,7 @@
                               $folder5->name == EmailFolder::getDefaultOutboxName() ||
                               $folder5->name == EmailFolder::getDefaultDraftName() ||
                               $folder5->name == EmailFolder::getDefaultOutboxErrorName() ||
+                              $folder5->name == EmailFolder::getDefaultOutboxFailureName() ||
                               $folder5->name == EmailFolder::getDefaultArchivedName() ||
                               $folder5->name == EmailFolder::getDefaultArchivedUnmatchedName());
             $this->assertTrue($folder6->name == EmailFolder::getDefaultInboxName() ||
@@ -124,6 +130,7 @@
                               $folder6->name == EmailFolder::getDefaultOutboxName() ||
                               $folder6->name == EmailFolder::getDefaultDraftName() ||
                               $folder6->name == EmailFolder::getDefaultOutboxErrorName() ||
+                              $folder6->name == EmailFolder::getDefaultOutboxFailureName() ||
                               $folder6->name == EmailFolder::getDefaultArchivedName() ||
                               $folder6->name == EmailFolder::getDefaultArchivedUnmatchedName());
             $this->assertTrue($folder7->name == EmailFolder::getDefaultInboxName() ||
@@ -131,8 +138,17 @@
                               $folder7->name == EmailFolder::getDefaultOutboxName() ||
                               $folder7->name == EmailFolder::getDefaultDraftName() ||
                               $folder7->name == EmailFolder::getDefaultOutboxErrorName() ||
+                              $folder7->name == EmailFolder::getDefaultOutboxFailureName() ||
                               $folder7->name == EmailFolder::getDefaultArchivedName() ||
                               $folder7->name == EmailFolder::getDefaultArchivedUnmatchedName());
+            $this->assertTrue($folder8->name == EmailFolder::getDefaultInboxName() ||
+                              $folder8->name == EmailFolder::getDefaultSentName() ||
+                              $folder8->name == EmailFolder::getDefaultOutboxName() ||
+                              $folder8->name == EmailFolder::getDefaultDraftName() ||
+                              $folder8->name == EmailFolder::getDefaultOutboxErrorName() ||
+                              $folder8->name == EmailFolder::getDefaultOutboxFailureName() ||
+                              $folder8->name == EmailFolder::getDefaultArchivedName() ||
+                              $folder8->name == EmailFolder::getDefaultArchivedUnmatchedName());
 
             $this->assertNotEquals($folder1->name, $folder2->name);
             $this->assertNotEquals($folder1->name, $folder3->name);
@@ -140,21 +156,28 @@
             $this->assertNotEquals($folder1->name, $folder5->name);
             $this->assertNotEquals($folder1->name, $folder6->name);
             $this->assertNotEquals($folder1->name, $folder7->name);
+            $this->assertNotEquals($folder1->name, $folder8->name);
             $this->assertNotEquals($folder2->name, $folder3->name);
             $this->assertNotEquals($folder2->name, $folder4->name);
             $this->assertNotEquals($folder2->name, $folder5->name);
             $this->assertNotEquals($folder2->name, $folder6->name);
             $this->assertNotEquals($folder2->name, $folder7->name);
+            $this->assertNotEquals($folder2->name, $folder8->name);
             $this->assertNotEquals($folder3->name, $folder4->name);
             $this->assertNotEquals($folder3->name, $folder5->name);
             $this->assertNotEquals($folder3->name, $folder6->name);
             $this->assertNotEquals($folder3->name, $folder7->name);
+            $this->assertNotEquals($folder3->name, $folder8->name);
             $this->assertNotEquals($folder4->name, $folder5->name);
             $this->assertNotEquals($folder4->name, $folder6->name);
             $this->assertNotEquals($folder4->name, $folder7->name);
+            $this->assertNotEquals($folder4->name, $folder8->name);
             $this->assertNotEquals($folder5->name, $folder6->name);
             $this->assertNotEquals($folder5->name, $folder7->name);
+            $this->assertNotEquals($folder5->name, $folder8->name);
             $this->assertNotEquals($folder6->name, $folder7->name);
+            $this->assertNotEquals($folder6->name, $folder8->name);
+            $this->assertNotEquals($folder7->name, $folder8->name);
             $boxes = EmailBox::getAll();
             $this->assertEquals(1, count($boxes));
             $this->assertTrue($boxes[0]->user->id < 0);
@@ -211,7 +234,7 @@
             $this->assertEquals(1, count($boxes));
             $box = EmailBoxUtil::getDefaultEmailBoxByUser($jane);
             $this->assertEquals(EmailBox::USER_DEFAULT_NAME, $box->name);
-            $this->assertEquals(7, $box->folders->count());
+            $this->assertEquals(8, $box->folders->count());
             $this->assertTrue($box->isDeletable());
             $this->assertTrue($box->id > 0);
 
@@ -223,7 +246,7 @@
             Yii::app()->user->userModel = $jane;
             $this->assertEquals(1, $jane->emailBoxes->count());
             $box = $jane->emailBoxes->offsetGet(0);
-            $this->assertEquals(7, $box->folders->count());
+            $this->assertEquals(8, $box->folders->count());
             $folder1 = $box->folders->offsetGet(0);
             $folder2 = $box->folders->offsetGet(1);
             $folder3 = $box->folders->offsetGet(2);
@@ -231,12 +254,14 @@
             $folder5 = $box->folders->offsetGet(4);
             $folder6 = $box->folders->offsetGet(5);
             $folder7 = $box->folders->offsetGet(6);
+            $folder8 = $box->folders->offsetGet(7);
 
             $this->assertTrue($folder1->name == EmailFolder::getDefaultInboxName() ||
                               $folder1->name == EmailFolder::getDefaultSentName() ||
                               $folder1->name == EmailFolder::getDefaultOutboxName() ||
                               $folder1->name == EmailFolder::getDefaultDraftName() ||
                               $folder1->name == EmailFolder::getDefaultOutboxErrorName() ||
+                              $folder1->name == EmailFolder::getDefaultOutboxFailureName() ||
                               $folder1->name == EmailFolder::getDefaultArchivedName() ||
                               $folder1->name == EmailFolder::getDefaultArchivedUnmatchedName());
             $this->assertTrue($folder2->name == EmailFolder::getDefaultInboxName() ||
@@ -244,6 +269,7 @@
                               $folder2->name == EmailFolder::getDefaultOutboxName() ||
                               $folder2->name == EmailFolder::getDefaultDraftName() ||
                               $folder2->name == EmailFolder::getDefaultOutboxErrorName() ||
+                              $folder2->name == EmailFolder::getDefaultOutboxFailureName() ||
                               $folder2->name == EmailFolder::getDefaultArchivedName() ||
                               $folder2->name == EmailFolder::getDefaultArchivedUnmatchedName());
             $this->assertTrue($folder3->name == EmailFolder::getDefaultInboxName() ||
@@ -251,13 +277,15 @@
                               $folder3->name == EmailFolder::getDefaultOutboxName() ||
                               $folder3->name == EmailFolder::getDefaultDraftName() ||
                               $folder3->name == EmailFolder::getDefaultOutboxErrorName() ||
-                              $folder3->name == EmailFolder::getDefaultArchivedName()) ||
-                              $folder3->name == EmailFolder::getDefaultArchivedUnmatchedName();
+                              $folder3->name == EmailFolder::getDefaultOutboxFailureName() ||
+                              $folder3->name == EmailFolder::getDefaultArchivedName() ||
+                              $folder3->name == EmailFolder::getDefaultArchivedUnmatchedName());
             $this->assertTrue($folder4->name == EmailFolder::getDefaultInboxName() ||
                               $folder4->name == EmailFolder::getDefaultSentName() ||
                               $folder4->name == EmailFolder::getDefaultOutboxName() ||
                               $folder4->name == EmailFolder::getDefaultDraftName() ||
                               $folder4->name == EmailFolder::getDefaultOutboxErrorName() ||
+                              $folder4->name == EmailFolder::getDefaultOutboxFailureName() ||
                               $folder4->name == EmailFolder::getDefaultArchivedName() ||
                               $folder4->name == EmailFolder::getDefaultArchivedUnmatchedName());
             $this->assertTrue($folder5->name == EmailFolder::getDefaultInboxName() ||
@@ -265,6 +293,7 @@
                               $folder5->name == EmailFolder::getDefaultOutboxName() ||
                               $folder5->name == EmailFolder::getDefaultDraftName() ||
                               $folder5->name == EmailFolder::getDefaultOutboxErrorName() ||
+                              $folder5->name == EmailFolder::getDefaultOutboxFailureName() ||
                               $folder5->name == EmailFolder::getDefaultArchivedName() ||
                               $folder5->name == EmailFolder::getDefaultArchivedUnmatchedName());
             $this->assertTrue($folder6->name == EmailFolder::getDefaultInboxName() ||
@@ -272,6 +301,7 @@
                               $folder6->name == EmailFolder::getDefaultOutboxName() ||
                               $folder6->name == EmailFolder::getDefaultDraftName() ||
                               $folder6->name == EmailFolder::getDefaultOutboxErrorName() ||
+                              $folder6->name == EmailFolder::getDefaultOutboxFailureName() ||
                               $folder6->name == EmailFolder::getDefaultArchivedName() ||
                               $folder6->name == EmailFolder::getDefaultArchivedUnmatchedName());
             $this->assertTrue($folder7->name == EmailFolder::getDefaultInboxName() ||
@@ -279,29 +309,45 @@
                               $folder7->name == EmailFolder::getDefaultOutboxName() ||
                               $folder7->name == EmailFolder::getDefaultDraftName() ||
                               $folder7->name == EmailFolder::getDefaultOutboxErrorName() ||
+                              $folder7->name == EmailFolder::getDefaultOutboxFailureName() ||
                               $folder7->name == EmailFolder::getDefaultArchivedName() ||
                               $folder7->name == EmailFolder::getDefaultArchivedUnmatchedName());
+            $this->assertTrue($folder8->name == EmailFolder::getDefaultInboxName() ||
+                              $folder8->name == EmailFolder::getDefaultSentName() ||
+                              $folder8->name == EmailFolder::getDefaultOutboxName() ||
+                              $folder8->name == EmailFolder::getDefaultDraftName() ||
+                              $folder8->name == EmailFolder::getDefaultOutboxErrorName() ||
+                              $folder8->name == EmailFolder::getDefaultOutboxFailureName() ||
+                              $folder8->name == EmailFolder::getDefaultArchivedName() ||
+                              $folder8->name == EmailFolder::getDefaultArchivedUnmatchedName());
             $this->assertNotEquals($folder1->name, $folder2->name);
             $this->assertNotEquals($folder1->name, $folder3->name);
             $this->assertNotEquals($folder1->name, $folder4->name);
             $this->assertNotEquals($folder1->name, $folder5->name);
             $this->assertNotEquals($folder1->name, $folder6->name);
             $this->assertNotEquals($folder1->name, $folder7->name);
+            $this->assertNotEquals($folder1->name, $folder8->name);
             $this->assertNotEquals($folder2->name, $folder3->name);
             $this->assertNotEquals($folder2->name, $folder4->name);
             $this->assertNotEquals($folder2->name, $folder5->name);
             $this->assertNotEquals($folder2->name, $folder6->name);
             $this->assertNotEquals($folder2->name, $folder7->name);
+            $this->assertNotEquals($folder2->name, $folder8->name);
             $this->assertNotEquals($folder3->name, $folder4->name);
             $this->assertNotEquals($folder3->name, $folder5->name);
             $this->assertNotEquals($folder3->name, $folder6->name);
             $this->assertNotEquals($folder3->name, $folder7->name);
+            $this->assertNotEquals($folder3->name, $folder8->name);
             $this->assertNotEquals($folder4->name, $folder5->name);
             $this->assertNotEquals($folder4->name, $folder6->name);
             $this->assertNotEquals($folder4->name, $folder7->name);
+            $this->assertNotEquals($folder4->name, $folder8->name);
             $this->assertNotEquals($folder5->name, $folder6->name);
             $this->assertNotEquals($folder5->name, $folder7->name);
+            $this->assertNotEquals($folder5->name, $folder8->name);
             $this->assertNotEquals($folder6->name, $folder7->name);
+            $this->assertNotEquals($folder6->name, $folder8->name);
+            $this->assertNotEquals($folder7->name, $folder8->name);
 
             $boxes = EmailBox::getAll();
             $this->assertEquals(2, count($boxes));

@@ -54,9 +54,8 @@
             $databaseType = RedBeanDatabase::getDatabaseTypeFromDsnString($dsn);
         }
 
-        /**
-         * @expectedException FailedAssertionException
-         */
+
+        //@expectedException FailedAssertionException
         public function testGetDatabaseInfoFromConnectionString()
         {
             $dsn = 'mysql:host=localhost;port=3306;dbname=zurmo'; // Not Coding Standard
@@ -79,6 +78,7 @@
             );
             $this->assertEquals($compareData, $databaseConnectionInfo);
 
+
             $dsn = 'mysql:host=localhost;dbname=zurmo;port=3306;'; // Not Coding Standard
             $databaseConnectionInfo = RedBeanDatabase::getDatabaseInfoFromDsnString($dsn);
             $compareData = array(
@@ -90,12 +90,16 @@
             $this->assertEquals($compareData, $databaseConnectionInfo);
 
             $dsn = 'mysql:host=localhost;'; // Not Coding Standard
-            $databaseConnectionInfo = RedBeanDatabase::getDatabaseInfoFromDsnString($dsn);
+            try
+            {
+                $databaseConnectionInfo = RedBeanDatabase::getDatabaseInfoFromDsnString($dsn);
+                $this->fail();
+            }
+            catch (NotSupportedException $e)
+            {
+            }
         }
 
-        /**
-         * @expectedException FailedAssertionException
-         */
         public function testGetDatabaseNameFromConnectionString()
         {
             $dsn = 'mysql:host=localhost;port=3306;dbname=zurmo'; // Not Coding Standard
@@ -103,7 +107,14 @@
             $this->assertEquals('zurmo', $databaseName);
 
             $dsn = 'mysql:host=localhost;'; // Not Coding Standard
-            $databaseName = RedBeanDatabase::getDatabaseNameFromDsnString($dsn);
+            try
+            {
+                $databaseName = RedBeanDatabase::getDatabaseNameFromDsnString($dsn);
+                $this->fail();
+            }
+            catch (NotSupportedException $e)
+            {
+            }
         }
     }
 ?>

@@ -140,7 +140,7 @@
             }
             else
             {
-                return intval(Yii::app()->request->getQuery('MarketingListMembersForPortletView_page'));
+                return intval(Yii::app()->request->getQuery('MarketingListMembersPortletView_page'));
             }
         }
 
@@ -148,7 +148,11 @@
         {
             if (strpos($actionId, 'massSubscribe') === 0 || strpos($actionId, 'massUnsubscribe') === 0)
             {
-                $viewNameSuffix    = (!$returnProgressViewName)? 'View': 'ProgressView';
+                $viewNameSuffix    = 'View';
+                if ($returnProgressViewName)
+                {
+                    $viewNameSuffix    = 'ProgressView';
+                }
                 $viewNamePrefix    = static::resolveMassActionId($actionId, true);
                 $viewNamePrefix    = 'MarketingListMembers' . $viewNamePrefix;
                 return $viewNamePrefix . $viewNameSuffix;
@@ -161,6 +165,7 @@
 
         protected function resolveMetadataBeforeMakingDataProvider(& $metadata)
         {
+            // TODO: @Shoaibi/@Jason: Critical: Does this seem alright? relatedAttributeName?
             $metadata = array(
                             'clauses'   => array(
                                         1   => array(

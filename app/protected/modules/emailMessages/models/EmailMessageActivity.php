@@ -37,7 +37,7 @@
     /**
      * Model for storing an email message item activity.
      */
-    class EmailMessageActivity extends RedBeanModel
+    class EmailMessageActivity extends Item
     {
         const TYPE_OPEN     = 1;
 
@@ -74,8 +74,7 @@
                     array('latestDateTime',         'type', 'type' => 'datetime'),
                     array('type',                   'required'),
                     array('type',                   'type', 'type' => 'integer'),
-                    array('type',                   'in', 'range' => array_keys(static::getTypesArray()),
-                                                                                        'except' => 'autoBuildDatabase'),
+                    array('type',                   'numerical', 'min' => static::TYPE_OPEN, 'max' => static::TYPE_CLICK),
                     array('quantity',               'required'),
                     array('quantity',                'type', 'type' => 'integer'),
                     array('quantity',               'numerical', 'integerOnly' => true),
@@ -240,14 +239,22 @@
 
         public function beforeSave()
         {
-            $this->latestDateTime = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
-            return true;
+            if (parent::beforeSave())
+            {
+                $this->latestDateTime = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
+                return true;
+            }
+            return false;
         }
 
         public function __toString()
         {
-            $types  = static::getTypesArray();
-            $type   = $types[intval($this->type)];
+            $type   = intval($this->type);
+            if ($type)
+            {
+                $types  = static::getTypesArray();
+                $type   = $types[intval($this->type)];
+            }
             return $this->latestDateTime . ': ' . strval($this->person) . '/' . $type;
         }
     }

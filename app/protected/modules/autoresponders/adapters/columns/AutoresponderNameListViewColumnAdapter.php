@@ -34,13 +34,19 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * Note related array of random seed data parts.
-     */
-    return array(
-        'unsubscribed'        => array(
-            0,
-            1
-        ),
-    );
+    class AutoresponderNameListViewColumnAdapter extends TextListViewColumnAdapter
+    {
+        public function renderGridViewData()
+        {
+            $value = 'ZurmoHtml::link($data->name, ';
+            $value .= 'Yii::app()->createUrl("/autoresponders/default/details", array("id" => $data->id';
+            $value .= ', "redirectUrl" => "' . $this->view->redirectUrl . '"';
+            $value .=')))';
+            return array(
+                'name'  => 'Name',
+                'value' => $value,
+                'type'  => 'raw',
+            );
+        }
+    }
 ?>

@@ -245,7 +245,7 @@
 
         protected static function resolveHashForQueryStringArray($queryStringArray)
         {
-            // TODO: @Shoaibi/@Ivica: Critical: core/utils/ZurmoPasswordSecurityUtil's encrypt and decrypt
+            // TODO: @Shoaibi: Critical: core/utils/ZurmoPasswordSecurityUtil's encrypt and decrypt
             // there might be problem with walkthrough tests as outgoing would be through util, using perInstanceTest.php and controller would use perInstance.php
             // core/utils/ZurmoPasswordSecurityUtil's encrypt and decrypt
             $queryString            = http_build_query($queryStringArray);

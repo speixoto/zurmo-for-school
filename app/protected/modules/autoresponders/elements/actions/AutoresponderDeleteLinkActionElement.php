@@ -34,26 +34,13 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class MarketingListMemberUnsubscribeLinkActionElement extends MarketingListMemberLinkActionElement
+    class AutoresponderDeleteLinkActionElement extends DeleteLinkActionElement
     {
-        public static function shouldRenderByRowModel($model)
+        protected function resolveConfirmAlertInHtmlOptions($htmlOptions)
         {
-            return ($model->unsubscribed == false);
-        }
-
-        public function getActionType()
-        {
-            return 'Edit';
-        }
-
-        protected function getDefaultLabel()
-        {
-            return Zurmo::t('MarketingListsModule', 'Unsubscribe');
-        }
-
-        protected function getActionId()
-        {
-            return 'toggleUnsubscribed';
+            $htmlOptions['confirm'] = Zurmo::t('Default', 'Are you sure you want to delete this {modelLabel}?',
+                                      array('{modelLabel}' => AutorespondersModule::getModuleLabelByTypeAndLanguage('SingularLowerCase')));
+            return $htmlOptions;
         }
     }
 ?>

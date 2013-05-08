@@ -34,12 +34,25 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    // TODO: @Shoaibi: Critical: Is this used anywhere?
-    class SelectReportModalListView extends ModalListView
+    /**
+     * Checks if Mcrypt extension is installed.
+     * Required by Yii framework.
+     */
+    class McryptServiceHelper extends ServiceHelper
     {
-        public static function getDefaultMetadata()
+        protected function checkService()
         {
-          // todo: add the metadata for reports
+            $isMcryptInstalled =  InstallUtil::isMcryptInstalled();
+            if ($isMcryptInstalled)
+            {
+                $this->message  = Zurmo::t('InstallModule', 'Mcrypt extension is loaded.');
+                return true;
+            }
+            else
+            {
+                $this->message  = Zurmo::t('InstallModule', 'Mcrypt extension is not loaded.');
+                return false;
+            }
         }
     }
 ?>

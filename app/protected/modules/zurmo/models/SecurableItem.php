@@ -349,6 +349,14 @@
                     }
                 }
             }
+            if ($this instanceof NamedSecurableItem)
+            {
+                PermissionsCache::forgetAll();
+            }
+            else
+            {
+                PermissionsCache::forgetSecurableItem($this);
+            }
         }
 
         public function removeAllPermissions()

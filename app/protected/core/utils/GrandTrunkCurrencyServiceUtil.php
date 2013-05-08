@@ -62,8 +62,7 @@
             $fileContents = curl_exec($ch);
             $httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
             curl_close($ch);
-
-            if ($httpcode == 200 )
+            if ($httpcode == 200 && $fileContents !== 'False')
             {
                 if (!empty($fileContents) && floatval($fileContents) > 0)
                 {
@@ -72,7 +71,7 @@
             }
             else
             {
-                if (stripos($fileContents, 'Invalid currency code') !== false)
+                if (stripos($fileContents, 'Invalid currency code') !== false || $fileContents === 'False')
                 {
                     $this->webServiceErrorMessage = Zurmo::t('Core', 'Invalid currency code');
                     $this->webServiceErrorCode    = ZurmoCurrencyHelper::ERROR_INVALID_CODE;

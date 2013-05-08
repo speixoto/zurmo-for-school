@@ -198,7 +198,7 @@
             $account->name = 'aNewName';
             $this->assertTrue($account->save());
             $account->forget();
-            //Now test that the attempt to cahnge createdByUser and modifiedUser on an existing model will not work.
+            //Now test that the attempt to change createdByUser and modifiedUser on an existing model will not work.
             //even when there are read only override permissions set.
             $account = Account::getById($accountId);
             $this->assertEquals($user, $account->createdByUser);
@@ -239,6 +239,20 @@
             $workflows = $account->getWorkflowsToProcessAfterSave();
             $this->assertEquals(1, count($workflows));
             $this->assertEquals('something', $workflows[0]->getModuleClassName());
+        }
+
+        public function testReadOnlyFieldsOnSearchScenario()
+        {
+            $super = User::getByUsername('super');
+            Yii::app()->user->userModel = $super;
+            $account                 = new Account(false);
+            $account->setScenario('search');
+            $account->name           = 'aTestAccountForTestReadOnlyFieldsOnSearchScenario';
+            $account->owner          = $super;
+            $account->createdByUser  = $super;
+            $account->modifiedByUser = $super;
+            $account->validate();
+            $this->assertFalse($account->hasErrors());
         }
     }
 ?>

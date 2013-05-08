@@ -89,13 +89,15 @@
 
         protected function renderSearchBox($params, $selectContact = true)
         {
-            $attribute          = ($selectContact) ? 'selectContactOrLeadSearchBox' :  'selectReportSearchBox';
-            $searchBoxDivId     = ($selectContact) ?
-                                                    static::SELECT_CONTACT_SEARCH_BOX_ID :
-                                                    static::SELECT_REPORT_SEARCH_BOX_ID;
-            $elementClassName   = ($selectContact) ?
-                                                    'MarketingListMemberSelectContactOrLeadAutoCompleteElement' :
-                                                    'MarketingListMemberSelectReportAutoCompleteElement';
+            $attribute          = 'selectContactOrLeadSearchBox';
+            $searchBoxDivId     = static::SELECT_CONTACT_SEARCH_BOX_ID;
+            $elementClassName   = 'MarketingListMemberSelectContactOrLeadAutoCompleteElement';
+            if (!$selectContact)
+            {
+                $attribute          = 'selectReportSearchBox';
+                $searchBoxDivId     = static::SELECT_REPORT_SEARCH_BOX_ID;
+                $elementClassName   = 'MarketingListMemberSelectReportAutoCompleteElement';
+            }
             $element            = new $elementClassName($this->model, $attribute, $this->form, $params);
             $content            = ZurmoHtml::tag('div', array('id' => $searchBoxDivId,
                                                                 'class' => static::SEARCH_BOX_MAGNIFIER_CLASS),

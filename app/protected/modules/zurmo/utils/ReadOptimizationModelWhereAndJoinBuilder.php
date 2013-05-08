@@ -71,7 +71,8 @@
             $mungeIds            = ReadPermissionsOptimizationUtil::getMungeIdsByUser(Yii::app()->user->userModel);
             $whereContent        = $columnWithTableAlias . " " . SQLOperatorUtil::getOperatorByType('equals'). " ";
             $whereContent       .= "(select securableitem_id from {$q}$mungeTableName{$q} " .
-                                   "where {$q}munge_id{$q} in ('" . join("', '", $mungeIds) . "') limit 1)";
+                                   "where {$q}securableitem_id{$q} = $columnWithTableAlias and {$q}munge_id{$q}" .
+                                   " in ('" . join("', '", $mungeIds) . "') limit 1)";
             $where[$whereKey]    = $whereContent;
         }
     }

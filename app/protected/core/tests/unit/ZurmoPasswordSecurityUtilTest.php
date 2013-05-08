@@ -34,16 +34,28 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class SelectReportModalSearchAndListView extends ModalSearchAndListView
+    class ZurmoPasswordSecurityUtilTest extends ZurmoBaseTest
     {
-        public static function getListViewClassName()
+        public function testEncryptAndDecrypt()
         {
-            return 'SelectReportsModalListView';
-        }
+            // No need to encrypt empty string
+            $encryptedString = ZurmoPasswordSecurityUtil::encrypt('', 'someKey');
+            $this->assertEquals('', $encryptedString);
 
-        public static function getSearchViewClassName()
-        {
-            return 'SelectReportsModalSearchView';
+            // No need to decrypt empty string
+            $decryptedString = ZurmoPasswordSecurityUtil::decrypt('', 'someKey');
+            $this->assertEquals('', $decryptedString);
+
+            $string = '357';
+            $salt = "123";
+            $encryptedString = ZurmoPasswordSecurityUtil::encrypt($string, $salt);
+            $this->assertTrue($string != $encryptedString);
+            $decryptedString = ZurmoPasswordSecurityUtil::decrypt($encryptedString, $salt);
+            $this->assertEquals($string, $decryptedString);
+
+            // Ensure that data will not be decrypted with random salt
+            $decryptedString = ZurmoPasswordSecurityUtil::decrypt($encryptedString, '567');
+            $this->assertTrue($string != $decryptedString);
         }
     }
 ?>

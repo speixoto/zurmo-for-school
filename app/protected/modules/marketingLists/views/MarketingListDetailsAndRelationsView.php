@@ -53,14 +53,11 @@
                             array(
                                 'rows' => array(
                                     array(
-                                        'type' => 'MarketingListMembersForPortlet'
+                                        'type' => 'MarketingListMembersPortlet'
                                     ),
-                                    /*
-                                     // TODO: @Shoaibi: Medium: Implement AutoResponders portlet
                                     array(
-                                        'type' => 'MarketingListAutorespondersForPortlet'
+                                        'type' => 'AutorespondersPortlet'
                                     ),
-                                    */
                                 )
                             )
                         )

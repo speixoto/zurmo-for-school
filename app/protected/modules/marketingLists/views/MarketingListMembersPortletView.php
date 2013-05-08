@@ -34,7 +34,7 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class MarketingListMembersForPortletView extends ConfigurableMetadataView
+    class MarketingListMembersPortletView extends ConfigurableMetadataView
                                                                   implements PortletViewInterface
     {
         // TODO: @Shoaibi: Low: refactor this and LatestActivitiesForPortletView, create a parent PortletView Class
@@ -56,13 +56,13 @@
 
         protected $viewData;
 
-        protected $marketingListMembersListView;
+        protected $listView;
 
         protected $dataProvider;
 
         protected $uniquePageId;
 
-        protected $marketingListMembersConfigurationForm;
+        protected $configurationForm;
 
         protected static $persistentUserPortletConfigs = array(
                 'filteredBySubscriptionType',
@@ -94,25 +94,25 @@
                 'global' => array(
                     'toolbar' => array(
                         'elements' => array(
-                            array('type'  => 'MarketingListAddSubscriberLink',
+                            array('type'            => 'MarketingListAddSubscriberLink',
                                 'htmlOptions'       => array('class' => 'icon-edit'),
                                 'pageVarName'       => 'eval:$this->getPageVarName()',
-                                'listViewGridId'    => 'eval:$this->getMarketingListMembersListGridId()'),
-                            array('type'  => 'MarketingListMembersSubscribeLink',
+                                'listViewGridId'    => 'eval:$this->getListGridId()'),
+                            array('type'            => 'MarketingListMembersSubscribeLink',
                                 'htmlOptions'       => array('class' => 'icon-edit'),
-                                'controllerId'      => 'member',
+                                'controllerId'      => 'eval:$this->getMassActionsControllerId()',
                                 'pageVarName'       => 'eval:$this->getPageVarName()',
-                                'listViewGridId'    => 'eval:$this->getMarketingListMembersListGridId()'),
-                            array('type'  => 'MarketingListMembersUnsubscribeLink',
+                                'listViewGridId'    => 'eval:$this->getListGridId()'),
+                            array('type'            => 'MarketingListMembersUnsubscribeLink',
                                 'htmlOptions'       => array('class' => 'icon-edit'),
-                                'controllerId'      => 'member',
+                                'controllerId'      => 'eval:$this->getMassActionsControllerId()',
                                 'pageVarName'       => 'eval:$this->getPageVarName()',
-                                'listViewGridId'    => 'eval:$this->getMarketingListMembersListGridId()'),
+                                'listViewGridId'    => 'eval:$this->getListGridId()'),
                             array('type'            => 'MassDeleteLink',
                                 'htmlOptions'       => array('class' => 'icon-delete'),
-                                'controllerId'      => 'member',
+                                'controllerId'      => 'eval:$this->getMassActionsControllerId()',
                                 'pageVarName'       => 'eval:$this->getPageVarName()',
-                                'listViewGridId'    => 'eval:$this->getMarketingListMembersListGridId()'),
+                                'listViewGridId'    => 'eval:$this->getListGridId()'),
                         ),
                     ),
                 ),
@@ -129,10 +129,9 @@
         {
             $actionElementBar       = ZurmoHtml::tag('div', array('class' => 'portlet-view-toolbar view-toolbar'),
                                                                                 $this->renderActionElementBar(false));
-            $memberSearchAndList    = $this->renderMembersSearchFormAndListContent();
-            $content = ZurmoHtml::tag('div', array('class' => MarketingListDetailsAndRelationsView::MEMBERS_PORTLET_CLASS),
-                                        $actionElementBar);
-            $content .= $memberSearchAndList;
+            $searchAndList    = $this->renderSearchFormAndListContent();
+            $content = ZurmoHtml::tag('div', array('class' => $this->getWrapperDivClass()), $actionElementBar);
+            $content .= $searchAndList;
             return $content;
         }
 
@@ -181,30 +180,32 @@
         protected function getNonAjaxRedirectUrl()
         {
             $redirectUrl = ArrayUtil::getArrayValue($this->params, 'redirectUrl');
-            if ($redirectUrl)
+            if ($redirectUrl && strpos($redirectUrl, 'defaultPortlet') === false)
             {
                 return $redirectUrl;
             }
             else
             {
-            return Yii::app()->createUrl('/' . $this->moduleId . '/' . $this->controllerId . '/details',
+                return Yii::app()->createUrl('/' . $this->moduleId . '/' . $this->controllerId . '/details',
                                                                                     array( 'id' => $this->modelId));
             }
         }
 
-        protected function renderMembersSearchFormAndListContent()
+        protected function renderSearchFormAndListContent()
         {
-            $marketingListMembersListContent = $this->getMarketingListMembersListView()->render();
-            return ZurmoHtml::tag('div', array('class' => 'marketing-list-members-list'), $marketingListMembersListContent);
+            $listContent = $this->getListView()->render();
+            return ZurmoHtml::tag('div', array('class' => $this->getListContentWrapperDivClass()), $listContent);
         }
 
-        protected function makeMarketingListMembersListView()
+
+
+        protected function makeListView()
         {
-            $marketingListMembersListViewClassName = $this->getMarketingListMembersListViewClassName();
+            $listViewClassName = $this->getListViewClassName();
             $this->getDataProvider(); // no need to save return value as we don't need it.
-            return new $marketingListMembersListViewClassName(
+            return new $listViewClassName(
                                                             $this->dataProvider,
-                                                            $this->marketingListMembersConfigurationForm,
+                                                            $this->configurationForm,
                                                             $this->controllerId,
                                                             $this->moduleId,
                                                             $this->getPortletDetailsUrl(),
@@ -215,21 +216,21 @@
                                                         );
         }
 
-        protected function getMarketingListMembersListView()
+        protected function getListView()
         {
-            if ($this->marketingListMembersListView === null)
+            if ($this->listView === null)
             {
-                $this->marketingListMembersListView = $this->makeMarketingListMembersListView();
+                $this->listView = $this->makeListView();
             }
-            return $this->marketingListMembersListView;
+            return $this->listView;
         }
 
-        protected function resolveMarketingListMembersConfigFormFromRequest()
+        protected function resolveConfigFormFromRequest()
         {
             $excludeFromRestore = array();
-            if (isset($_GET[get_class($this->marketingListMembersConfigurationForm)]))
+            if (isset($_GET[get_class($this->configurationForm)]))
             {
-                $this->marketingListMembersConfigurationForm->setAttributes($_GET[get_class($this->marketingListMembersConfigurationForm)]);
+                $this->configurationForm->setAttributes($_GET[get_class($this->configurationForm)]);
                 $excludeFromRestore = $this->saveUserSettingsFromConfigForm();
             }
             $this->restoreUserSettingsToConfigFrom($excludeFromRestore);
@@ -237,20 +238,15 @@
 
         protected function saveUserSettingsFromConfigForm()
         {
-            $savedConfigs = array();
+            $savedConfigs   = array();
+            $configUtil     = $this->getConfigUtilClassName();
             foreach (static::$persistentUserPortletConfigs as $persistentUserConfigItem)
             {
-                if ($this->marketingListMembersConfigurationForm->$persistentUserConfigItem !==
-                    MarketingListMembersPortletPersistentConfigUtil::getForCurrentUserByPortletIdAndKey(
-                                                                                            $this->getPortletId(),
-                                                                                            $persistentUserConfigItem)
-                                                                                        )
+                if ($this->configurationForm->$persistentUserConfigItem !==
+                    $configUtil::getForCurrentUserByPortletIdAndKey( $this->getPortletId(), $persistentUserConfigItem))
                 {
-                    MarketingListMembersPortletPersistentConfigUtil::setForCurrentUserByPortletIdAndKey(
-                                                        $this->getPortletId(),
-                                                        $persistentUserConfigItem,
-                                                        $this->marketingListMembersConfigurationForm->$persistentUserConfigItem
-                                                        );
+                    $configUtil::setForCurrentUserByPortletIdAndKey( $this->getPortletId(), $persistentUserConfigItem,
+                                                        $this->configurationForm->$persistentUserConfigItem);
                     $savedConfigs[] = $persistentUserConfigItem;
                 }
             }
@@ -267,38 +263,49 @@
                 }
                 else
                 {
-                    $persistentUserConfigItemValue = MarketingListMembersPortletPersistentConfigUtil::getForCurrentUserByPortletIdAndKey(
+                    $configUtil                     = $this->getConfigUtilClassName();
+                    $persistentUserConfigItemValue  = $configUtil::getForCurrentUserByPortletIdAndKey(
                                                                                             $this->getPortletId(),
                                                                                             $persistentUserConfigItem
                                                                                             );
                     if (isset($persistentUserConfigItemValue))
                     {
-                        $this->marketingListMembersConfigurationForm->$persistentUserConfigItem = $persistentUserConfigItemValue;
+                        $this->configurationForm->$persistentUserConfigItem = $persistentUserConfigItemValue;
                     }
                 }
             }
         }
 
-        protected function makeMarketingListMembersConfigurationForm()
+        protected function makeConfigurationForm()
         {
-            $this->marketingListMembersConfigurationForm = new MarketingListMembersConfigurationForm();
-            $this->resolveMarketingListMembersConfigFormFromRequest();
+            $this->configurationForm = null;
+            $configFormClass         = $this->getConfigurationFormClassName();
+            if ($configFormClass)
+            {
+                $this->configurationForm = new $configFormClass();
+                $this->resolveConfigFormFromRequest();
+            }
         }
 
-        protected function getMarketingListMembersConfigurationForm()
+        protected function getConfigurationFormClassName()
         {
-            if ($this->marketingListMembersConfigurationForm === null)
+            return 'MarketingListMembersConfigurationForm';
+        }
+
+        protected function getConfigurationForm()
+        {
+            if ($this->configurationForm === null)
             {
-                $this->makeMarketingListMembersConfigurationForm();
+                $this->makeConfigurationForm();
             }
-            return $this->marketingListMembersConfigurationForm;
+            return $this->configurationForm;
         }
 
         protected function getDataProvider()
         {
             if ($this->dataProvider === null)
             {
-                $this->dataProvider = $this->makeDataProvider($this->uniquePageId, $this->getMarketingListMembersConfigurationForm());
+                $this->dataProvider = $this->makeDataProvider();
             }
             return $this->dataProvider;
         }
@@ -308,31 +315,60 @@
             return $this->getDataProvider()->getPagination()->pageVar;
         }
 
-        protected function getMarketingListMembersListViewClassName()
+        protected function getListViewClassName()
         {
             return 'MarketingListMembersListView';
         }
 
-        protected function getMarketingListMembersListGridId()
+        protected function getListGridId()
         {
-            return $this->getMarketingListMembersListView()->getGridViewId();
+            return $this->getListView()->getGridViewId();
         }
 
-        protected function makeDataProvider($uniquePageId, $form)
+        protected function getWrapperDivClass()
         {
-            assert('is_string($uniquePageId)');
-            assert('$form instanceOf MarketingListMembersConfigurationForm');
+            return MarketingListDetailsAndRelationsView::MEMBERS_PORTLET_CLASS;
+        }
+
+        protected function getListContentWrapperDivClass()
+        {
+            return 'marketing-list-members-list';
+        }
+
+        protected function getConfigUtilClassName()
+        {
+            return 'MarketingListMembersPortletPersistentConfigUtil';
+        }
+
+        protected function getMassActionsControllerId()
+        {
+            return 'member';
+        }
+
+        protected function makeDataProvider()
+        {
             $pageSize = Yii::app()->pagination->resolveActiveForCurrentUserByType('subListPageSize');
-            $searchAttributes   = MarketingListMembersUtil::makeSearchAttributeData($this->modelId,
-                                                                                $form->filteredBySubscriptionType,
-                                                                                $form->filteredBySearchTerm);
-            $sortAttributes     = MarketingListMembersUtil::makeSortAttributeData();
-            return new RedBeanModelsDataProvider($uniquePageId,
+            $searchAttributes   = $this->getSearchAttributes();
+            $sortAttributes     = $this->getSortAttributes();
+            return new RedBeanModelsDataProvider($this->uniquePageId,
                                                     $sortAttributes,
                                                     true,
                                                     $searchAttributes,
                                                     array('pagination' => array('pageSize' => $pageSize))
                                                 );
+        }
+
+        protected function getSearchAttributes()
+        {
+            $form = $this->getConfigurationForm();
+            return  MarketingListMembersUtil::makeSearchAttributeData($this->modelId,
+                                                                        $form->filteredBySubscriptionType,
+                                                                        $form->filteredBySearchTerm);
+        }
+
+        protected function getSortAttributes()
+        {
+            return MarketingListMembersUtil::makeSortAttributeData();
         }
     }
 ?>

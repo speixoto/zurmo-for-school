@@ -81,10 +81,12 @@
             return self::RIGHT_DELETE_CAMPAIGNS;
         }
 
+        /*
         public static function getGlobalSearchFormClassName()
         {
             return 'CampaignsSearchForm';
         }
+        */
 
         public static function getDefaultMetadata()
         {

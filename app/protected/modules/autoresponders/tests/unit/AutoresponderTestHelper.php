@@ -41,14 +41,14 @@
                                                                           $marketingList = null, $runValidation = true)
         {
             assert('is_bool($runValidation)');
-            $autoresponder  = static::fillAutoresponder($name, $subject, $textContent, $htmlContent,
+            $autoresponder  = static::populateAutoresponder($name, $subject, $textContent, $htmlContent,
                                                 $secondsFromOperation, $operationType, $enableTracking, $marketingList);
-            $saved          = $autoresponder->unrestrictedSave($runValidation);
+            $saved          = $autoresponder->save($runValidation);
             assert('$saved');
             return $autoresponder;
         }
 
-        public static function fillAutoresponder($name, $subject, $textContent, $htmlContent, $secondsFromOperation,
+        public static function populateAutoresponder($name, $subject, $textContent, $htmlContent, $secondsFromOperation,
                                                         $operationType, $enableTracking = false, $marketingList = null)
         {
             assert('is_string($name)');

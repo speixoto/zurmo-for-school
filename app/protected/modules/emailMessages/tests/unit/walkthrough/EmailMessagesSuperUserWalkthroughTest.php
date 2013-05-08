@@ -106,7 +106,7 @@
             $this->assertEquals(0, Yii::app()->emailHelper->getSentCount());
 
             //Validate form
-            $createEmailMessageFormData = array('recipientsData' => array('to' => 'test@contact.com'),
+            $createEmailMessageFormData = array('recipientsData' => array('to' => 'testNewAddress@contact.com'),
                                                 'subject'        => 'test subject',
                                                 'content'        => array('htmlContent' => '<p>html body content</p>'));
             $this->setGetArray(array('toAddress'                 => 'test@contact.com',
@@ -126,6 +126,10 @@
             $this->assertEquals(1, count(EmailMessage::getAll()));
             $this->assertEquals(1, Yii::app()->emailHelper->getQueuedCount());
             $this->assertEquals(0, Yii::app()->emailHelper->getSentCount());
+
+            //To address must be the one in postArray
+            $emailMessages = EmailMessage::getAll();
+            $this->assertEquals('testNewAddress@contact.com', $emailMessages[0]->recipients[0]->toAddress);
         }
     }
 ?>

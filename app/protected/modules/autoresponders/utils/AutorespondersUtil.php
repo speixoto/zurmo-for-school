@@ -34,26 +34,31 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class MarketingListMemberSubscribeLinkActionElement extends MarketingListMemberLinkActionElement
+    /**
+     * Helper class for working with autoresponders views.
+     */
+    class AutorespondersUtil
     {
-        public static function shouldRenderByRowModel($model)
+        public static function makeSearchAttributeData($marketingListId)
         {
-            return ($model->unsubscribed == true);
+            assert('is_int($marketingListId)');
+            $searchAttributeData            = array();
+            $searchAttributeData['clauses'] = array(
+                                                    1 => array(
+                                                        'attributeName'        => 'marketingList',
+                                                        'relatedAttributeName' => 'id',
+                                                        'operatorType'         => 'equals',
+                                                        'value'                => $marketingListId,
+                                                    ),
+                                                );
+            $searchAttributeData['structure'] = 1;
+            return array(array('Autoresponder' => $searchAttributeData));
         }
 
-        public function getActionType()
+        public static function makeSortAttributeData()
         {
-            return 'Edit';
-        }
-
-        protected function getDefaultLabel()
-        {
-            return Zurmo::t('MarketingListsModule', 'Subscribe');
-        }
-
-        protected function getActionId()
-        {
-            return 'toggleUnsubscribed';
+            $sortAttribute = RedBeanModelDataProvider::getSortAttributeName('Autoresponder');
+            return array('Autoresponder' => $sortAttribute);
         }
     }
 ?>

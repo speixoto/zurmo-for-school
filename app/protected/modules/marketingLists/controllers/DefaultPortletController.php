@@ -69,7 +69,11 @@
             {
                 throw new NotSupportedException();
             }
-            $contactIds =  ($type === 'contact') ? array($id) : SavedReport::getContactIdsByReportId($id);
+            $contactIds = array($id);
+            if  ($type === 'report')
+            {
+                $contactIds = SavedReport::getContactIdsByReportId($id);
+            }
             $subscriberInformation = $this->addNewSubscribers($marketingListId, $contactIds);
             $message = Zurmo::t('MarketingListsModule', '{subscribedCount} subscribed.',
                                                 array('{subscribedCount}' => $subscriberInformation['subscribedCount']));

@@ -55,8 +55,11 @@
             if ($filterBySubscriptionType !== null &&
                     $filterBySubscriptionType !== MarketingListMembersConfigurationForm::FILTERED_USER_ALL)
             {
-                $UnsubscribeFlag = ($filterBySubscriptionType == MarketingListMembersConfigurationForm::FILTER_USER_UNSUBSCRIBERS)?
-                                                1 : 0;
+                $UnsubscribeFlag = 0;
+                if ($filterBySubscriptionType == MarketingListMembersConfigurationForm::FILTER_USER_UNSUBSCRIBERS)
+                {
+                    $UnsubscribeFlag = 1;
+                }
                 $searchAttributeData['clauses'][]  = array(
                                                             'attributeName'   =>  'unsubscribed',
                                                             'operatorType'    =>  'equals',

@@ -47,8 +47,9 @@
         /**
          * Validates the attribute of the model.
          * If there is any error, the error message is added to the model.
-         * @param RedBeanModel $model the model being validated
+         * @param RedBeanModel $object the model being validated
          * @param string $attribute the attribute being validated
+         * @return boolean true if validation passed
          */
         protected function validateAttribute($object, $attribute)
         {
