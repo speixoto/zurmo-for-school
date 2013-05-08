@@ -39,7 +39,7 @@
      */
     class SavedSearchUtil
     {
-        public static function makeSavedSearchBySearchForm(DynamicSearchForm $searchForm, $viewClassName)
+        public static function makeSavedSearchBySearchForm(DynamicSearchForm $searchForm, $viewClassName, $stickySearchData = null)
         {
             assert('is_string($viewClassName)');
             if ($searchForm->savedSearchId != null)
@@ -53,11 +53,37 @@
             }
             $savedSearch->name = $searchForm->savedSearchName;
 
+            $sortAttribute = '';
+            $sortDescending = '';
+            //As sticky data contains latest search attributes
+            if ($stickySearchData != null && isset($stickySearchData['sortAttribute']))
+            {
+                if ($stickySearchData['sortAttribute'] != '')
+                {
+                    $sortAttribute = $stickySearchData['sortAttribute'];
+                }
+
+                if (isset($stickySearchData['sortDescending']))
+                {
+                    if ($stickySearchData['sortDescending'] == true)
+                    {
+                        $sortDescending = ".desc";
+                    }
+                }
+            }
+            else
+            {
+                $sortAttribute = $searchForm->sortAttribute;
+                $sortDescending = $searchForm->sortDescending;
+            }
+
             $data = array(
                 'anyMixedAttributes'      => $searchForm->anyMixedAttributes,
                 'anyMixedAttributesScope' => $searchForm->getAnyMixedAttributesScope(),
                 'dynamicStructure'        => $searchForm->dynamicStructure,
                 'dynamicClauses'          => $searchForm->dynamicClauses,
+                'sortAttribute'           => $sortAttribute,
+                'sortDescending'          => $sortDescending
             );
 
             if ($searchForm->getListAttributesSelector() != null)
@@ -98,6 +124,14 @@
                 {
                     $searchForm->dynamicClauses = $unserializedData['dynamicClauses'];
                 }
+                if (isset($unserializedData['sortAttribute']))
+                {
+                    $searchForm->sortAttribute = $unserializedData['sortAttribute'];
+                }
+                if (isset($unserializedData['sortDescending']))
+                {
+                    $searchForm->sortDescending = $unserializedData['sortDescending'];
+                }
             }
         }
 
@@ -127,7 +161,13 @@
             $listSortModel = get_class($dataCollection->getModel()->getModel());
 
             $sortAttribute = $dataCollection->resolveSortAttributeFromSourceData($listSortModel);
-
+            //There are two cases
+            //a) When user clicks on sorting in grid view, at that time Model Class inside form is used
+            //b) When user save the search, sort attributes are in form model
+            if($sortAttribute == null)
+            {
+               $sortAttribute = $dataCollection->resolveSortAttributeFromSourceData(get_class($dataCollection->getModel()));
+            }
             if (!empty($sortAttribute))
             {
                 $stickyData['sortAttribute'] = $sortAttribute;
@@ -137,7 +177,15 @@
                 }
                 else
                 {
-                    $stickyData['sortDescending'] = false;
+                    $sortDescending = $dataCollection->resolveSortDescendingFromSourceData(get_class($dataCollection->getModel()));
+                    if($sortDescending === true)
+                    {
+                        $stickyData['sortDescending'] = true;
+                    }
+                    else
+                    {
+                        $stickyData['sortDescending'] = false;
+                    }
                 }
             }
 
@@ -196,6 +244,21 @@
                     {
                         $model->sortDescending = ".desc";
                     }
+                }
+            }
+        }
+
+        public static function resolveSearchFormByStickySortData(array $getData, DynamicSearchForm $searchForm, $stickyData)
+        {
+            if(isset($getData[get_class($searchForm)]))
+            {
+                if (isset($stickyData['sortAttribute']))
+                {
+                    $searchForm->sortAttribute = $stickyData['sortAttribute'];
+                }
+                if (isset($stickyData['sortDescending']))
+                {
+                    $searchForm->sortDescending = $stickyData['sortDescending'];
                 }
             }
         }

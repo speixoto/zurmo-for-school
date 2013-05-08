@@ -287,7 +287,8 @@
                     if ($searchForm->validate())
                     {
                         $savedSearch = $this->processSaveSearch($searchForm, $viewClassName);
-                        echo CJSON::encode(array('id' => $savedSearch->id, 'name' => $savedSearch->name));
+                        $unserializedData = unserialize($savedSearch->serializedData);
+                        echo CJSON::encode(array('id' => $savedSearch->id, 'name' => $savedSearch->name, 'sortAttribute' => $unserializedData['sortAttribute'], 'sortDescending' => $unserializedData['sortDescending'] ));
                         Yii::app()->end(0, false);
                     }
                 }
@@ -310,7 +311,12 @@
 
         protected function processSaveSearch($searchForm, $viewClassName)
         {
-            $savedSearch = SavedSearchUtil::makeSavedSearchBySearchForm($searchForm, $viewClassName);
+            $modelClassName = get_class($searchForm->model);
+            $moduleClassName = $modelClassName::getModuleClassName();
+            //Get sticky data here
+            $stickySearchKey = $moduleClassName::getModuleLabelByTypeAndLanguage('Plural') . 'SearchView';
+            $stickySearchData = StickySearchUtil::getDataByKey($stickySearchKey);
+            $savedSearch = SavedSearchUtil::makeSavedSearchBySearchForm($searchForm, $viewClassName, $stickySearchData);
             if (!$savedSearch->save())
             {
                 throw new FailedToSaveModelException();

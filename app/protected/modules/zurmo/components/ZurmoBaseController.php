@@ -174,6 +174,7 @@
                 if ($stickySearchKey != null && null != $stickySearchData = StickySearchUtil::getDataByKey($stickySearchKey))
                 {
                     SavedSearchUtil::resolveSearchFormByStickyDataAndModel($stickySearchData, $searchModel);
+                    SavedSearchUtil::resolveSearchFormByStickySortData(GetUtil::getData(), $searchModel, $stickySearchData);
                     $dataCollection = new SavedSearchAttributesDataCollection($searchModel);
                 }
                 else
