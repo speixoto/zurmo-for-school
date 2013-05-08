@@ -34,7 +34,7 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class MarketingListMemberSubscribeLinkActionElement extends MarketingListMemberLinkActionElement
+    class MarketingListMemberSubscribeListRowActionElement extends MarketingListMemberListRowActionElement
     {
         public static function shouldRenderByRowModel($model)
         {

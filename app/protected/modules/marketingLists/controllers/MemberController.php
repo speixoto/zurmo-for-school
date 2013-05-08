@@ -140,7 +140,7 @@
             }
             else
             {
-                return intval(Yii::app()->request->getQuery('MarketingListMembersForPortletView_page'));
+                return intval(Yii::app()->request->getQuery('MarketingListMembersPortletView_page'));
             }
         }
 
@@ -165,6 +165,7 @@
 
         protected function resolveMetadataBeforeMakingDataProvider(& $metadata)
         {
+            // TODO: @Shoaibi/@Jason: Critical: Does this seem alright? relatedAttributeName?
             $metadata = array(
                             'clauses'   => array(
                                         1   => array(

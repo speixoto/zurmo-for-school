@@ -58,7 +58,7 @@
             $autoresponder->textContent             = 'Test TextContent 01';
             $autoresponder->secondsFromOperation    = $intervalArray['1 week'];
             $autoresponder->operationType           = Autoresponder::OPERATION_SUBSCRIBE;
-            $this->assertTrue($autoresponder->unrestrictedSave());
+            $this->assertTrue($autoresponder->save());
             $id = $autoresponder->id;
             unset($autoresponder);
             $autoresponder = Autoresponder::getById($id);
@@ -78,7 +78,7 @@
         {
             $intervalArray = array_flip(Autoresponder::getIntervalDropDownArray());
             $autoresponder                          = new Autoresponder();
-            $this->assertFalse($autoresponder->unrestrictedSave());
+            $this->assertFalse($autoresponder->save());
             $errors = $autoresponder->getErrors();
             $this->assertNotEmpty($errors);
             $this->assertCount(5, $errors);
@@ -89,9 +89,9 @@
             $this->assertArrayHasKey('textContent', $errors);
             $this->assertEquals('Please provide at least one of the contents field.', $errors['textContent'][0]);
             $this->assertArrayHasKey('secondsFromOperation', $errors);
-            $this->assertEquals('Seconds From Operation cannot be blank.', $errors['secondsFromOperation'][0]);
+            $this->assertEquals('When to send? cannot be blank.', $errors['secondsFromOperation'][0]);
             $this->assertArrayHasKey('operationType', $errors);
-            $this->assertEquals('Operation Type cannot be blank.', $errors['operationType'][0]);
+            $this->assertEquals('Type cannot be blank.', $errors['operationType'][0]);
 
             $autoresponder->name                    = 'Test Autoresponder name 02';
             $autoresponder->subject                 = 'Test Autoresponder subject 02';
@@ -100,7 +100,7 @@
             $autoresponder->secondsFromOperation    = $intervalArray['1 month'];
             $autoresponder->operationType           = Autoresponder::OPERATION_UNSUBSCRIBE;
             $autoresponder->enableTracking          = Autoresponder::TRACKING_ENABLED;
-            $this->assertTrue($autoresponder->unrestrictedSave());
+            $this->assertTrue($autoresponder->save());
             $id = $autoresponder->id;
             unset($autoresponder);
             $autoresponder = Autoresponder::getById($id);

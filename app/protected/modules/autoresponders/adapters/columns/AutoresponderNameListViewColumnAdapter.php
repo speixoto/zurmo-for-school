@@ -34,16 +34,19 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class SelectReportModalSearchAndListView extends ModalSearchAndListView
+    class AutoresponderNameListViewColumnAdapter extends TextListViewColumnAdapter
     {
-        public static function getListViewClassName()
+        public function renderGridViewData()
         {
-            return 'SelectReportsModalListView';
-        }
-
-        public static function getSearchViewClassName()
-        {
-            return 'SelectReportsModalSearchView';
+            $value = 'ZurmoHtml::link($data->name, ';
+            $value .= 'Yii::app()->createUrl("/autoresponders/default/details", array("id" => $data->id';
+            $value .= ', "redirectUrl" => "' . $this->view->redirectUrl . '"';
+            $value .=')))';
+            return array(
+                'name'  => 'Name',
+                'value' => $value,
+                'type'  => 'raw',
+            );
         }
     }
 ?>

@@ -34,69 +34,23 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class CampaignsModule extends SecurableModule
+    class AutorespondersCancelLinkActionElement extends CancelLinkActionElement
     {
-        const RIGHT_CREATE_CAMPAIGNS = 'Create Campaigns';
-        const RIGHT_DELETE_CAMPAIGNS = 'Delete Campaigns';
-        const RIGHT_ACCESS_CAMPAIGNS = 'Access Campaigns';
-
-        public function getDependencies()
+        protected function getDefaultRoute()
         {
-            return array(
-                'activities',
-            );
-        }
-
-        public function getRootModelNames()
-        {
-            return array('Campaign');
-        }
-
-        public static function getUntranslatedRightsLabels()
-        {
-            $labels                           = array();
-            $labels[self::RIGHT_CREATE_CAMPAIGNS] = 'Create CampaignsModulePluralLabel';
-            $labels[self::RIGHT_DELETE_CAMPAIGNS] = 'Delete CampaignsModulePluralLabel';
-            $labels[self::RIGHT_ACCESS_CAMPAIGNS] = 'Access CampaignsModulePluralLabel';
-            return $labels;
-        }
-
-        public static function getPrimaryModelName()
-        {
-            return 'Campaign';
-        }
-
-        public static function getAccessRight()
-        {
-            return self::RIGHT_ACCESS_CAMPAIGNS;
-        }
-
-        public static function getCreateRight()
-        {
-            return self::RIGHT_CREATE_CAMPAIGNS;
-        }
-
-        public static function getDeleteRight()
-        {
-            return self::RIGHT_DELETE_CAMPAIGNS;
-        }
-
-        /*
-        public static function getGlobalSearchFormClassName()
-        {
-            return 'CampaignsSearchForm';
-        }
-        */
-
-        public static function getDefaultMetadata()
-        {
-            $metadata = array();
-            $metadata['global'] = array(
-                'globalSearchAttributeNames' => array(
-                    'name',
-                ),
-            );
-            return $metadata;
+            $params = $this->getRouteParameters();
+            if (Yii::app()->request->getParam('redirectUrl') != null)
+            {
+                return Yii::app()->request->getParam('redirectUrl');
+            }
+            elseif ($this->getRedirectUrl() != null)
+            {
+                return $this->getRedirectUrl();
+            }
+            else
+            {
+                throw new NotSupportedException();
+            }
         }
     }
 ?>

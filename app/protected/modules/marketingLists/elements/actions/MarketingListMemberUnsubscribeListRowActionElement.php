@@ -34,69 +34,26 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class CampaignsModule extends SecurableModule
+    class MarketingListMemberUnsubscribeListRowActionElement extends MarketingListMemberListRowActionElement
     {
-        const RIGHT_CREATE_CAMPAIGNS = 'Create Campaigns';
-        const RIGHT_DELETE_CAMPAIGNS = 'Delete Campaigns';
-        const RIGHT_ACCESS_CAMPAIGNS = 'Access Campaigns';
-
-        public function getDependencies()
+        public static function shouldRenderByRowModel($model)
         {
-            return array(
-                'activities',
-            );
+            return ($model->unsubscribed == false);
         }
 
-        public function getRootModelNames()
+        public function getActionType()
         {
-            return array('Campaign');
+            return 'Edit';
         }
 
-        public static function getUntranslatedRightsLabels()
+        protected function getDefaultLabel()
         {
-            $labels                           = array();
-            $labels[self::RIGHT_CREATE_CAMPAIGNS] = 'Create CampaignsModulePluralLabel';
-            $labels[self::RIGHT_DELETE_CAMPAIGNS] = 'Delete CampaignsModulePluralLabel';
-            $labels[self::RIGHT_ACCESS_CAMPAIGNS] = 'Access CampaignsModulePluralLabel';
-            return $labels;
+            return Zurmo::t('MarketingListsModule', 'Unsubscribe');
         }
 
-        public static function getPrimaryModelName()
+        protected function getActionId()
         {
-            return 'Campaign';
-        }
-
-        public static function getAccessRight()
-        {
-            return self::RIGHT_ACCESS_CAMPAIGNS;
-        }
-
-        public static function getCreateRight()
-        {
-            return self::RIGHT_CREATE_CAMPAIGNS;
-        }
-
-        public static function getDeleteRight()
-        {
-            return self::RIGHT_DELETE_CAMPAIGNS;
-        }
-
-        /*
-        public static function getGlobalSearchFormClassName()
-        {
-            return 'CampaignsSearchForm';
-        }
-        */
-
-        public static function getDefaultMetadata()
-        {
-            $metadata = array();
-            $metadata['global'] = array(
-                'globalSearchAttributeNames' => array(
-                    'name',
-                ),
-            );
-            return $metadata;
+            return 'toggleUnsubscribed';
         }
     }
 ?>

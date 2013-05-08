@@ -68,10 +68,11 @@
 
         public function __construct($controllerId, $moduleId, $modelId, $params = array())
         {
-            parent::__construct($controllerId, $moduleId, $moduleId, $params);
+            parent::__construct($controllerId, $moduleId, $modelId, $params);
             $this->gridId = $this->getListViewGridId();
             $this->selectedMenuItemName = $this->gridId . $this->getSelectedMenuNameSuffix();
             $this->allMenuItemName = $this->gridId . $this->getAllMenuNameSuffix();
+            $this->params['redirectUrl'] = $this->resolveRedirectUrl();
             $this->registerUnifiedEventHandler();
         }
 
@@ -338,6 +339,12 @@
             {
                 return $this->controllerId;
             }
+        }
+
+        protected function resolveRedirectUrl()
+        {
+            return Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/details',
+                                                                                        array('id' => $this->modelId));
         }
     }
 ?>

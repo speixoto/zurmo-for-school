@@ -82,8 +82,8 @@
             $tagsGuideLink      = null;
             if ($this->form)
             {
-                $controllerId           = Yii::app()->getController()->getId();
-                $moduleId               = Yii::app()->getController()->getModule()->getId();
+                $controllerId           = $this->getControllerId();
+                $moduleId               = $this->getModuleId();
                 $modelId                = $this->model->id;
                 $params                 = array('htmlOptions' => array('id' => 'mergetag-guide', 'class' => 'simple-link'));
                 $tagsGuideLinkElement   = new MergeTagGuideAjaxLinkActionElement($controllerId, $moduleId, $modelId, $params);
@@ -183,5 +183,15 @@
         {
             return null;
         }
-     }
+
+        protected function getControllerId()
+        {
+            return Yii::app()->getController()->getId();
+        }
+
+        protected function getModuleId()
+        {
+            return 'emailTemplates';
+        }
+    }
 ?>

@@ -142,6 +142,7 @@
                                                     $("." + radioButtonClass).removeAttr("disabled");
                                                     $("#" + listGridViewId).removeClass("loading");
                                                     event.preventDefault();
+                                                    return false;
                                                 }
                                 }
                             );

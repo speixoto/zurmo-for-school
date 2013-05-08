@@ -69,7 +69,7 @@
         public function testProcessDueAutoresponderItemThrowsExceptionWhenContentHasInvalidMergeTags()
         {
             $contact                    = ContactTestHelper::createContactByNameForOwner('contact 01', $this->user);
-            $marketingList              = MarketingListTestHelper::fillMarketingListByName('marketingList 01');
+            $marketingList              = MarketingListTestHelper::populateMarketingListByName('marketingList 01');
             $autoresponder              = AutoresponderTestHelper::createAutoresponder('autoresponder 01',
                                                                                     'subject 01',
                                                                                     '[[TEXT^CONTENT]]',

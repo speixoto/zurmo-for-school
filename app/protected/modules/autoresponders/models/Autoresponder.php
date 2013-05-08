@@ -34,7 +34,7 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class Autoresponder extends OwnedModel
+    class Autoresponder extends Item
     {
         const OPERATION_SUBSCRIBE   = 1;
 
@@ -48,7 +48,7 @@
 
         public static function getByName($name)
         {
-            return static::getSubset(null, null, null, "name = '" . DatabaseCompatibilityUtil::escape($name) . "'");
+            return static::getByNameOrEquivalent('name', $name);
         }
 
         public static function getModuleClassName()
@@ -199,6 +199,26 @@
             $joinTablesAdapter                = new RedBeanModelJoinTablesQueryAdapter(get_called_class());
             $where = RedBeanModelDataProvider::makeWhere(get_called_class(), $searchAttributeData, $joinTablesAdapter);
             return self::getSubset($joinTablesAdapter, null, $pageSize, $where, 'name');
+        }
+
+        public function __toString()
+        {
+            return strval($this->name);
+        }
+
+        protected static function translatedAttributeLabels($language)
+        {
+            return array_merge(parent::translatedAttributeLabels($language),
+                array(
+                    'name'                  => Zurmo::t('ZurmoModule', 'Name', null,  null, $language),
+                    'subject'               => Zurmo::t('EmailMessagesModule', 'Subject', null,  null, $language),
+                    'operationType'         => Zurmo::t('Core', 'Type', null,  null, $language),
+                    'secondsFromOperation'  => Zurmo::t('AutorespondersModule', 'When to send?', null,  null, $language),
+                    'htmlContent'           => Zurmo::t('EmailMessagesModule', 'Html Content', null,  null, $language),
+                    'textContent'           => Zurmo::t('EmailMessagesModule', 'Text Content', null,  null, $language),
+                    'enableTracking'        => Zurmo::t('AutorespondersModule', 'Enable Tracking', null,  null, $language),
+                )
+            );
         }
     }
 ?>
