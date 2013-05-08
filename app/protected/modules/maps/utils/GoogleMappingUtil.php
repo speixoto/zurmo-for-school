@@ -91,12 +91,6 @@
             assert('is_string($address) || $address == null');
             assert('is_numeric($latitude) || $latitude == null');
             assert('is_numeric($longitude) || $longitude == null');
-
-            $httpProtocol = 'http';
-            if (Yii::app()->request->getIsSecureConnection())
-            {
-                $httpProtocol = 'https';
-            }
 			
             $marker_text = "<strong>Location:</strong> <br />$address";
             $mapScript = "
@@ -132,12 +126,12 @@
               script.type = 'text/javascript';
               if ('$apiKey' !== null)
               {
-              script.src = '" . $httpProtocol . "://maps.googleapis.com/maps/api/js?key=" . $apiKey . "&sensor=false&callback=plotMap';". // Not Coding Standard
+              script.src = '//maps.googleapis.com/maps/api/js?key=" . $apiKey . "&sensor=false&callback=plotMap';". // Not Coding Standard
               "document.body.appendChild(script);
               }
               else
               {
-              script.src = '" . $httpProtocol . "://maps.googleapis.com/maps/api/js?sensor=false&callback=plotMap';". // Not Coding Standard
+              script.src = '//maps.googleapis.com/maps/api/js?sensor=false&callback=plotMap';". // Not Coding Standard
               "document.body.appendChild(script);
               }
             }
