@@ -71,9 +71,7 @@
                                                           'userHasRelatedModelAccess' => 'eval:ActionSecurityUtil::canCurrentUserPerformAction( "Edit", $this->params["relationModel"])')
                             ),
                         ),
-                        'derivedAttributeTypes' => array(
-                            'FullName',
-                        ),
+                        'nonConfigurableLayoutAttributes' => array('total'),
                         'gridViewType' => RelatedListView::GRID_VIEW_TYPE_NORMAL,
                         'panels' => array(
                             array(

@@ -80,7 +80,7 @@
                         $information['isReadOnly'] ||
                         $attributeName == 'id' ||
                         $this->isAttributeOnModelOrCastedUp($attributeName) ||
-			in_array($attributeName, $modelClassName::getNonConfigurableAttributes()))
+                                in_array($attributeName, $modelClassName::getNonConfigurableAttributes()))
                     {
                         //temporary until we figure out how to handle these types.
                         $linkContent = null;
