@@ -34,73 +34,73 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * Class to render link to toggle portlets for a report grid view
-     */
-    class MarketingListsTogglePortletsLinkActionElement extends LinkActionElement
+    class AutorespondersPortletView extends MarketingListMembersPortletView
     {
-        /**
-         * @return null
-         */
-        public function getActionType()
+        protected static $persistentUserPortletConfigs = array();
+
+        public static function getDefaultMetadata()
+        {
+            $metadata = array(
+                'global' => array(
+                    'toolbar' => array(
+                        'elements' => array(
+                            // TODO: @Shoaibi/@Jason: Critical: Create should appear in portlet's titlebar.
+                            array('type'            => 'AutoresponderCreateLink',
+                                'htmlOptions'       => array('class' => 'icon-create'),
+                                'route'             => 'eval:$this->getAutoresponderCreateRoute()',
+                                'redirectUrl'       => 'eval:$this->getNonAjaxRedirectUrl()',
+                                'pageVarName'       => 'eval:$this->getPageVarName()',
+                                'listViewGridId'    => 'eval:$this->getListGridId()'),
+                        ),
+                    ),
+                ),
+            );
+            return $metadata;
+        }
+
+        public function getTitle()
+        {
+            return Zurmo::t('MarketingListsModule', 'Autoresponders');
+        }
+
+        protected function getConfigurationFormClassName()
         {
             return null;
         }
 
-        /**
-         * @return string
-         */
-        public function render()
+        protected function getListViewClassName()
         {
-            $content  = null;
-            $membersClass           = $this->getMembersPortletClass();
-            $autorespondersClass    = $this->getAutorespondersPortletClass();
-            if ($membersClass)
-            {
-                $membersTranslatedLabel = Zurmo::t('MarketingListsModule', 'Members');
-                $content                .= $this->getCheckboxContent($membersTranslatedLabel, $membersClass);
-            }
-            if ($autorespondersClass)
-            {
-                $autorespondersTranslatedLabel = Zurmo::t('MarketingListsModule', 'Autoresponders');
-                $content                .= $this->getCheckboxContent($autorespondersTranslatedLabel, $autorespondersClass);
-            }
-            return ZurmoHtml::tag('div', $this->getHtmlOptions(), $content );
+            return 'AutorespondersListView';
         }
 
-        protected function getCheckboxContent($translatedLabel, $class)
+        protected function getWrapperDivClass()
         {
-            $htmlOptions = array('onClick' => 'js:$(".' . $class . '").parentsUntil("li").parent().toggle();');
-            $label       = ZurmoHtml::label($translatedLabel, $translatedLabel,
-                                                                array('class' => 'label-for-marketing-list-widgets'));
-            $content    = ZurmoHtml::checkBox($translatedLabel, true, $htmlOptions) . $label;
-            return $content;
+            return MarketingListDetailsAndRelationsView::AUTORESPONDERS_PORTLET_CLASS;
         }
 
-        /**
-         * @return string
-         */
-        protected function getDefaultLabel()
+        protected function getListContentWrapperDivClass()
         {
-            return Zurmo::t('MarketingListsModule', 'Toggle View');
+            return 'marketing-list-autoresponders-list';
         }
 
-        /**
-         * @return null
-         */
-        protected function getDefaultRoute()
+        protected function getConfigUtilClassName()
         {
             return null;
         }
 
-        protected function getMembersPortletClass()
+        protected function getSearchAttributes()
         {
-            return ArrayUtil::getArrayValueWithExceptionIfNotFound($this->params, 'membersPortletClass');
+            return  AutorespondersUtil::makeSearchAttributeData($this->modelId);
         }
 
-        protected function getAutorespondersPortletClass()
+        protected function getSortAttributes()
         {
-            return ArrayUtil::getArrayValueWithExceptionIfNotFound($this->params, 'autorespondersPortletClass');
+            return AutorespondersUtil::makeSortAttributeData();
+        }
+
+        protected function getAutoresponderCreateRoute()
+        {
+            return Yii::app()->createUrl('/autoresponders/default/create', array('marketingListId' => $this->modelId));
         }
     }
 ?>

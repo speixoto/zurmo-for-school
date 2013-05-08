@@ -34,12 +34,12 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    // TODO: @Shoaibi: Critical: Is this used anywhere?
-    class SelectReportModalListView extends ModalListView
+    class AutoresponderCreateLinkActionElement extends CreateLinkActionElement
     {
-        public static function getDefaultMetadata()
+        protected function getDefaultRoute()
         {
-          // todo: add the metadata for reports
+            $this->moduleId = 'autoresponders';
+            return parent::getDefaultRoute();
         }
     }
 ?>

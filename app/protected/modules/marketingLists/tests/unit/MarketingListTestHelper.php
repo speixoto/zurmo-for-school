@@ -38,13 +38,13 @@
     {
         public static function createMarketingListByName($name, $description = null, $fromName = null, $fromAddress = null)
         {
-            $marketingList  = static::fillMarketingListByName($name, $description, $fromName, $fromAddress);
+            $marketingList  = static::populateMarketingListByName($name, $description, $fromName, $fromAddress);
             $saved          = $marketingList->save();
             assert('$saved');
             return $marketingList;
         }
 
-        public static function fillMarketingListByName($name, $description = null, $fromName = null, $fromAddress = null)
+        public static function populateMarketingListByName($name, $description = null, $fromName = null, $fromAddress = null)
         {
             $marketingList              = new MarketingList();
             $marketingList->name        = $name;

@@ -170,9 +170,23 @@
         public function renderSummary()
         {
             parent::renderSummary();
-            Yii::app()->clientScript->registerScript('listViewSummaryChangeScript', "
-            processListViewSummaryClone('" . $this->id . "', '" . $this->summaryCssClass . "');
-            ");
+            $summaryClonePath = null;
+            foreach($this->columns as $column)
+            {
+                if(get_class($column) === 'RowMenuColumn' && isset($column->listView))
+                {
+                    $listClassName      = $column->listView;
+                    $reflectionClass    = new ReflectionClass($listClassName);
+                    if ($reflectionClass->implementsInterface('RendersMultipleSummaryPlaceholdersInterface'))
+                    {
+                        $summaryClonePath = ', ' . $listClassName::getSummaryCloneQueryPath();
+                        break;
+                    }
+                }
+            }
+            Yii::app()->clientScript->registerScript($this->id . '_listViewSummaryChangeScript', '
+            processListViewSummaryClone("' . $this->id . '", "' . $this->summaryCssClass . '"' . $summaryClonePath . ');
+            ');
         }
     }
 ?>

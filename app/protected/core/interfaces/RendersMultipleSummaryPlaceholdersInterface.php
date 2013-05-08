@@ -34,21 +34,12 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class SelectReportModalSearchView extends SearchView
+    /**
+     * A listview class should implement this interface if
+     * it needs to manually specify the path to summary clone div
+     */
+    interface RendersMultipleSummaryPlaceholdersInterface
     {
-        public static function getDefaultMetadata()
-        {
-          //todo: add the metadata according to reports
-        }
-
-        public static function getDesignerRulesType()
-        {
-            return 'ModalSearchView';
-        }
-
-        public static function getModelForMetadataClassName()
-        {
-          //todo:
-        }
+        public static function getSummaryCloneQueryPath();
     }
 ?>

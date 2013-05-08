@@ -38,13 +38,13 @@
     {
         public static function createAutoresponderItem($processed, $processDateTime, $autoresponder = null, $contact = null)
         {
-            $autoresponderItem  = static::fillAutoresponderItem($processed, $processDateTime, $autoresponder, $contact);
+            $autoresponderItem  = static::populateAutoresponderItem($processed, $processDateTime, $autoresponder, $contact);
             $saved              = $autoresponderItem->unrestrictedSave();
             assert('$saved');
             return $autoresponderItem;
         }
 
-        public static function fillAutoresponderItem($processed, $processDateTime, $autoresponder = null, $contact = null)
+        public static function populateAutoresponderItem($processed, $processDateTime, $autoresponder = null, $contact = null)
         {
             if (empty($autoresponder))
             {

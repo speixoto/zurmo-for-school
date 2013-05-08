@@ -52,7 +52,7 @@
         {
             $emailMessageUrl                          = new EmailMessageUrl();
             $emailMessageUrl->url                     = 'http://www.zurmo.com';
-            $this->assertTrue($emailMessageUrl->save());
+            $this->assertTrue($emailMessageUrl->unrestrictedSave());
             $id = $emailMessageUrl->id;
             unset($emailMessageUrl);
             $emailMessageUrl = EmailMessageUrl::getById($id);
@@ -65,7 +65,7 @@
         public function testRequiredAttributes()
         {
             $emailMessageUrl                          = new EmailMessageUrl();
-            $this->assertFalse($emailMessageUrl->save());
+            $this->assertFalse($emailMessageUrl->unrestrictedSave());
             $errors = $emailMessageUrl->getErrors();
             $this->assertNotEmpty($errors);
             $this->assertCount(1, $errors);
@@ -73,7 +73,7 @@
             $this->assertEquals('Url cannot be blank.', $errors['url'][0]);
 
             $emailMessageUrl->url                     = 'http://www.zurmo.org';
-            $this->assertTrue($emailMessageUrl->save());
+            $this->assertTrue($emailMessageUrl->unrestrictedSave());
             $id = $emailMessageUrl->id;
             unset($emailMessageUrl);
             $emailMessageUrl = EmailMessageUrl::getById($id);

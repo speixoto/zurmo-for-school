@@ -150,7 +150,7 @@
                                 'selectedIds'                               => $selectedIds,
                                 'selectAll'                                 => '',
                                 'massSubscribe'                             => '',
-                                'MarketingListMembersForPortletView_page'   => 1
+                                'MarketingListMembersPortletView_page'   => 1
                             )
                         );
             $this->setPostArray(
@@ -201,7 +201,7 @@
             $this->setGetArray(
                             array(
                                 'selectAll'                                 => '1',           // Not Coding Standard
-                                'MarketingListMembersForPortletView_page'   => 1,
+                                'MarketingListMembersPortletView_page'   => 1,
                                 'id'                                        => $listId
                             )
                         );
@@ -357,7 +357,7 @@
                                 'selectedIds'                               => $selectedIds,
                                 'selectAll'                                 => '',
                                 'massUnsubscribe'                           => '',
-                                'MarketingListMembersForPortletView_page'   => 1
+                                'MarketingListMembersPortletView_page'   => 1
                             )
                         );
             $this->setPostArray(
@@ -408,7 +408,7 @@
             $this->setGetArray(
                             array(
                                 'selectAll'                                 => '1',           // Not Coding Standard
-                                'MarketingListMembersForPortletView_page'   => 1,
+                                'MarketingListMembersPortletView_page'   => 1,
                                 'id'                                        => $listId
                             )
                         );
@@ -560,7 +560,7 @@
                                 'selectedIds'                               => $selectedIds,
                                 'selectAll'                                 => '',
                                 'massDelete'                                => '',
-                                'MarketingListMembersForPortletView_page'   => 1
+                                'MarketingListMembersPortletView_page'   => 1
                             )
                         );
             $this->setPostArray(
@@ -618,7 +618,7 @@
             $this->setGetArray(
                             array(
                                 'selectAll'                                 => '1',           // Not Coding Standard
-                                'MarketingListMembersForPortletView_page'   => 1,
+                                'MarketingListMembersPortletView_page'   => 1,
                                 'id'                                        => $listId
                             )
                         );

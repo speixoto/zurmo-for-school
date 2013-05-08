@@ -34,18 +34,20 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class EmailTemplateEditAndDetailsView extends SecuredEditAndDetailsView
+    class AutoresponderEditAndDetailsView extends SecuredEditAndDetailsView
     {
+        // TODO: @Shoaibi: Low: Refactor this and EmailTemplateEditAndDetailsView
         public static function getDefaultMetadata()
         {
             $metadata = array(
                 'global' => array(
                     'toolbar' => array(
                         'elements' => array(
-                            array('type'    => 'EmailTemplateCancelLink', 'renderType' => 'Edit'),
+                            array('type'    => 'AutorespondersCancelLink', 'renderType' => 'Edit'),
                             array('type'    => 'SaveButton', 'renderType' => 'Edit'),
                             array('type'    => 'EditLink', 'renderType' => 'Details'),
-                            array('type'    => 'EmailTemplateDeleteLink'),
+                            array('type'    => 'AutoresponderDeleteLink'),
+                            // TODO: @Shoaibi: Critical: Allow using an email template as base.
                         ),
                     ),
                     'panels' => array(
@@ -55,7 +57,18 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'modelClassName', 'type' => 'EmailTemplateModelClassName'),
+                                                array('attributeName' => 'operationType',
+                                                                                'type' => 'AutoresponderOperationType'),
+                                            ),
+                                        ),
+                                    )
+                                ),
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'secondsFromOperation',
+                                                                        'type' => 'AutoresponderSecondsFromOperation'),
                                             ),
                                         ),
                                     )
@@ -78,6 +91,15 @@
                                         ),
                                     )
                                 ),
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'enableTracking', 'type' => 'CheckBox'),
+                                            ),
+                                        ),
+                                    )
+                                ),
                             ),
                         ),
                     ),
@@ -86,71 +108,16 @@
             return $metadata;
         }
 
-        /**
-         * Override to handle security/access resolution on specific elements.
-         */
-        protected function resolveElementInformationDuringFormLayoutRender(& $elementInformation)
-        {
-            parent::resolveElementInformationDuringFormLayoutRender($elementInformation);
-            if ($elementInformation['attributeName'] == 'modelClassName' &&
-               $this->model->type == EmailTemplate::TYPE_CONTACT)
-            {
-                $elementInformation['attributeName'] = null;
-                $elementInformation['type']          = 'NoCellNull'; // Not Coding Standard
-            }
-        }
-
         protected function renderAfterFormLayout($form)
         {
-            // Begin Not Coding Standard
-            Yii::app()->clientScript->registerScript(__CLASS__.'_TypeChangeHandler', "
-                        $('#EmailTemplate_type_value').unbind('change.action').bind('change.action', function()
-                        {
-                            selectedOptionValue                 = $(this).find(':selected').val();
-                            modelClassNameDropDown              = $('#EmailTemplate_modelClassName_value');
-                            modelClassNameTr                    = modelClassNameDropDown.parent().parent().parent();
-                            animationSpeed                      = 400;
-                            if (selectedOptionValue == " . EmailTemplate::TYPE_WORKFLOW . ")
-                            {
-                                modelClassNameTr.show(animationSpeed);
-                            }
-                            else if (selectedOptionValue == " . EmailTemplate::TYPE_CONTACT . ")
-                            {
-                                modelClassNameTr.hide(animationSpeed, function()
-                                    {
-                                    modelClassNameDropDown.val('Contact');
-                                    });
-                            }
-                            else
-                            {
-                            }
-                        }
-                        );
-                    ");
-            // End Not Coding Standard
-            $content  = $this->resolveRenderHiddenModelClassNameElement($form);
-            $content .= $this->renderHtmlAndTextContentElement($this->model, null, $form);
+            $content = $this->renderHtmlAndTextContentElement($this->model, null, $form);
             return $content;
-        }
-
-        protected function resolveRenderHiddenModelClassNameElement(ZurmoActiveForm $form)
-        {
-            if ($this->model->type == EmailTemplate::TYPE_CONTACT)
-            {
-                return $form->hiddenField($this->model, 'modelClassName', array());
-            }
-        }
-
-        protected function getNewModelTitleLabel()
-        {
-            return Zurmo::t('Default', 'Create EmailTemplatesModuleSingularLabel',
-                                     LabelUtil::getTranslationParamsForAllModules());
         }
 
         protected function renderAfterFormLayoutForDetailsContent($form = null)
         {
             return $this->renderHtmlAndTextContentElement($this->model, null, $form) .
-                        parent::renderAfterFormLayout($form);
+                                                                                parent::renderAfterFormLayout($form);
         }
 
         protected function renderHtmlAndTextContentElement($model, $attribute, $form)
@@ -160,7 +127,7 @@
             {
                 $this->resolveElementDuringFormLayoutRender($element);
             }
-            return ZurmoHtml::tag('div', array('class' => 'email-template-combined-content'), $element->render());
+            return ZurmoHtml::tag('div', array('class' => 'autoresponder-combined-content'), $element->render());
         }
 
         protected function resolveElementDuringFormLayoutRender(& $element)
@@ -174,6 +141,12 @@
         protected function alwaysShowErrorSummary()
         {
             return true;
+        }
+
+        protected function getNewModelTitleLabel()
+        {
+            return Zurmo::t('Default', 'Create AutorespondersModuleSingularLabel',
+                                                                        LabelUtil::getTranslationParamsForAllModules());
         }
     }
 ?>

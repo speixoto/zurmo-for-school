@@ -231,16 +231,15 @@
 
         protected static function translatedAttributeLabels($language)
         {
-            $params = LabelUtil::getTranslationParamsForAllModules();
             return array_merge(parent::translatedAttributeLabels($language),
                 array(
-                    'modelClassName'  => Zurmo::t('Core',                'Module',   array(), null, $language),
-                    'language'        => Zurmo::t('ZurmoModule',         'Language',   array(), null, $language),
-                    'htmlContent'     => Zurmo::t('EmailMessagesModule', 'Html Content',  array(), null, $language),
-                    'name'            => Zurmo::t('ZurmoModule',         'Name',  array(), null, $language),
-                    'subject'         => Zurmo::t('EmailMessagesModule', 'Subject',  array(), null, $language),
-                    'type'            => Zurmo::t('Core',                'Type',  array(), null, $language),
-                    'textContent'     => Zurmo::t('EmailMessagesModule', 'Text Content',  array(), null, $language),
+                    'modelClassName'  => Zurmo::t('Core',                'Module',   null, null, $language),
+                    'language'        => Zurmo::t('ZurmoModule',         'Language',   null, null, $language),
+                    'htmlContent'     => Zurmo::t('EmailMessagesModule', 'Html Content',  null, null, $language),
+                    'name'            => Zurmo::t('ZurmoModule',         'Name',  null, null, $language),
+                    'subject'         => Zurmo::t('EmailMessagesModule', 'Subject',  null, null, $language),
+                    'type'            => Zurmo::t('Core',                'Type',  null, null, $language),
+                    'textContent'     => Zurmo::t('EmailMessagesModule', 'Text Content',  null, null, $language),
                 )
             );
         }
