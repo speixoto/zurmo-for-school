@@ -78,6 +78,65 @@
             $this->dataProvider = $dataProvider;
         }
 
+        public function analyzePageOfRows()
+        {
+            $data = $this->dataProvider->getData(true);
+            foreach ($data as $rowBean)
+            {
+                assert('$rowBean->id != null');
+                $columnMessages = array();
+                foreach($this->analyzableColumnNames as $columnName)
+                {
+                    $attributeIndexOrDerivedType = $this->mappingData[$columnName]['attributeIndexOrDerivedType'];
+                    $attributeImportRules = AttributeImportRulesFactory::
+                                            makeByImportRulesTypeAndAttributeIndexOrDerivedType(
+                                            $this->importRules->getType(),
+                                            $attributeIndexOrDerivedType);
+                    $modelClassName       = $attributeImportRules->getModelClassName();
+                    $attributeNames       = $attributeImportRules->getRealModelAttributeNames();
+                    //todo: begin this if/else can be made into a static resolve method here.
+                    if (count($attributeNames) > 1 || $attributeNames == null)
+                    {
+                        $dataAnalyzerAttributeName = null;
+                    }
+                    else
+                    {
+                        $dataAnalyzerAttributeName = $attributeNames[0];
+                    }
+                    //todo: end
+                    //todO: somehow we need to do something with dataAnalyzerAttributeName, just not sure how yet.
+                    if (null != $attributeValueSanitizerUtilTypes = $attributeImportRules->getSanitizerUtilTypesInProcessingOrder())
+                    {
+                        assert('is_array($attributeValueSanitizerUtilTypes)');
+                        foreach ($attributeValueSanitizerUtilTypes as $attributeValueSanitizerUtilType)
+                        {
+                            $sanitizer = ImportSanitizerUtilFactory::makeByType($attributeValueSanitizerUtilType);
+                            $sanitizer->analyzeByRowAndColumnName($rowBean, $columnName, $modelClassName); //todo: pass $dataAnalyzerAttributeName here?
+                            foreach($sanitizer->getAnalysisMessages() as $message)
+                            {
+                                $columnMessages[$columnName][] = $message;
+                            }
+                            if(null !== $missingCustomFieldValue = $sanitizer->getMissingCustomFieldValue())
+                            {
+                                $this->customFieldsInstructionData->addMissingValueByColumnName($missingCustomFieldValue, $columnName);
+                            }
+                        }
+                    }
+                }
+                if(!empty($columnMessages))
+                {
+                    $rowBean->serializedAnalysisMessages = serialize($columnMessages);
+                    $rowBean->analysisStatus             = static::STATUS_INFO;
+                }
+                else
+                {
+                    $rowBean->serializedAnalysisMessages = null;
+                    $rowBean->analysisStatus             = static::STATUS_CLEAN;
+                }
+                $rowBean->save();
+            }
+        }
+
         /**
          * Given a column name and column mapping data, perform data analysis on the column based on the mapped
          * attribute index or derived type.  The attribute index or derived type will correspond with an attribute

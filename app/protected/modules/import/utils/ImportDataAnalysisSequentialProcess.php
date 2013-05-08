@@ -80,6 +80,82 @@
             return array('processColumns' => Zurmo::t('ImportModule', 'Processing'));
         }
 
+        protected function processRows($params)
+        {
+            //todo: this can go in new method and also in createupdate model we can do same in prepareation
+            if (!isset($params['page']))
+            {
+                $page = 0;
+            }
+            else
+            {
+                $page = $params['page'];
+            }
+            $this->dataProvider->getPagination()->setCurrentPage($page);
+
+//todo: begin
+            //todO: analyzableColumnNames needs to process for attributeIndexOrDerivedType == null or extra column... and ignore
+            $importDataAnalyzer              = new ImportDataAnalyzer($this->importRules, $this->dataProvider,
+                                                                      $this->mappingData, $this->analyzableColumnNames);
+            $importDataAnalyzer->analyzePageOfRows();
+//todo: this call to resolveImportInstructions needs some help i suppose since we are using customFIeldsInstructionsData or something like that
+            static::resolveImportInstructionsDataIntoImportAndSaveImport($importDataAnalyzer, $this->import);
+            //todo: move below into new method.
+            //$messagesData                    = $importDataAnalyzer->getMessagesData();
+            $importInstructionsData          = $importDataAnalyzer->getImportInstructionsData();
+            $unserializedData                = unserialize($this->import->serializedData);
+            //todo: need to do something to get $importDataAnalyzer->getCustomFieldsInstructionData->getMissingValues into the mapping data customFieldsInstructionData
+            //todo: maybe we need to adapt the mapping data into some sort of ModeL that then has customFieldsInstructionData we can add too. yeah that is good.
+            $unserializedData['mappingData'] = ImportMappingUtil::resolveImportInstructionsDataIntoMappingData($this->mappingData, $importInstructionsData);
+            $this->import->serializedData    = serialize($unserializedData);
+            //ImportUtil::setDataAnalyzerMessagesDataToImport($this->import, $messagesData, true);
+            $saved = $this->import->save();
+            if (!$saved)
+            {
+                throw new FailedToSaveModelException();
+            }
+            //todo: import instructions data (we still need to do this somehow)
+            //todo: setting analyzer messages on import model? not sure we need to do this anymore
+                //todo: stuff like dropdown mapping data still needs to be mapped. but we have to think of it differently now
+//todo: end
+
+
+            $pageCount                             = $this->dataProvider->getPagination()->getPageCount();
+            $pageSize                              = $this->dataProvider->getPagination()->getPageSize();
+            $totalItemCount                        = $this->dataProvider->getTotalItemCount();
+            $this->subSequenceCompletionPercentage = (($page + 1) / $pageCount) * 100;
+
+            if (($page + 1) == $pageCount)
+            {
+                $this->nextStep    = 'completeImport';
+                $this->setNextMessageByStep($this->nextStep);
+                return null;
+            }
+            else
+            {
+                $params['page'] = ($page + 1);
+                $this->nextStep = 'processRows';
+                $this->setNextMessageByStep($this->nextStep);
+                $startItemCount = (($page + 1) * $pageSize) + 1;
+                if (($startItemCount + ($pageSize - 1) > $totalItemCount))
+                {
+                    $endItemCount = $totalItemCount;
+                }
+                else
+                {
+                    $endItemCount = ($page + 2) * $pageSize;
+                }
+                $labelParams = array('{startItemCount}' => $startItemCount,
+                    '{endItemCount}'   => $endItemCount,
+                    '{totalItemCount}' => $totalItemCount);
+                $nextMessage = ' ' . Zurmo::t('ImportModule', 'Record(s) {startItemCount} - {endItemCount} of {totalItemCount}',
+                    $labelParams);
+                $this->nextMessage .= $nextMessage;
+                return $params;
+            }
+        }
+
+
         protected function processColumns($params)
         {
             $completionPosition = 1;

@@ -97,7 +97,6 @@
 
         protected function processRows($params)
         {
-            $completionPosition = 1;
             if (!isset($params['page']))
             {
                 $page = 0;
