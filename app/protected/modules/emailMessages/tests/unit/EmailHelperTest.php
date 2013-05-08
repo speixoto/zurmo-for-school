@@ -244,35 +244,35 @@
                 $user = User::getByUsername('steve');
                 $user->primaryEmail->emailAddress = Yii::app()->params['emailTestAccounts']['userImapSettings']['imapUsername'];
                 $this->assertTrue($user->save());
+
+
+                Yii::app()->imap->connect();
+                Yii::app()->imap->deleteMessages(true);
+                $imapStats = Yii::app()->imap->getMessageBoxStatsDetailed();
+                $this->assertEquals(0, $imapStats->Nmsgs);
+
+                $emailMessage = EmailMessageTestHelper::createOutboxEmail($super, 'Test email',
+                    'Raw content', ',b>html content</b>end.', // Not Coding Standard
+                    'Zurmo', Yii::app()->emailHelper->outboundUsername,
+                    'Ivica', Yii::app()->params['emailTestAccounts']['userImapSettings']['imapUsername']);
+
+                Yii::app()->imap->connect();
+                $imapStats = Yii::app()->imap->getMessageBoxStatsDetailed();
+                $this->assertEquals(0, $imapStats->Nmsgs);
+
+                $this->assertEquals(1, Yii::app()->emailHelper->getQueuedCount());
+                $this->assertEquals(3, Yii::app()->emailHelper->getSentCount());
+                Yii::app()->emailHelper->sendQueued($emailMessage);
+                $job = new ProcessOutboundEmailJob();
+                $this->assertTrue($job->run());
+                $this->assertEquals(0, Yii::app()->emailHelper->getQueuedCount());
+                $this->assertEquals(4, Yii::app()->emailHelper->getSentCount());
+
+                sleep(30);
+                Yii::app()->imap->connect();
+                $imapStats = Yii::app()->imap->getMessageBoxStatsDetailed();
+                $this->assertEquals(1, $imapStats->Nmsgs);
             }
-
-            Yii::app()->imap->connect();
-            Yii::app()->imap->deleteMessages(true);
-            $imapStats = Yii::app()->imap->getMessageBoxStatsDetailed();
-            $this->assertEquals(0, $imapStats->Nmsgs);
-
-            $emailMessage = EmailMessageTestHelper::createOutboxEmail($super, 'Test email',
-                'Raw content', ',b>html content</b>end.', // Not Coding Standard
-                'Zurmo', Yii::app()->emailHelper->outboundUsername,
-                'Ivica', Yii::app()->params['emailTestAccounts']['userImapSettings']['imapUsername']);
-
-            Yii::app()->imap->connect();
-            $imapStats = Yii::app()->imap->getMessageBoxStatsDetailed();
-            $this->assertEquals(0, $imapStats->Nmsgs);
-
-            $this->assertEquals(1, Yii::app()->emailHelper->getQueuedCount());
-            $this->assertEquals(3, Yii::app()->emailHelper->getSentCount());
-            Yii::app()->emailHelper->sendQueued($emailMessage);
-            $job = new ProcessOutboundEmailJob();
-            $this->assertTrue($job->run());
-            $this->assertEquals(0, Yii::app()->emailHelper->getQueuedCount());
-            $this->assertEquals(4, Yii::app()->emailHelper->getSentCount());
-
-            sleep(30);
-            Yii::app()->imap->connect();
-            $imapStats = Yii::app()->imap->getMessageBoxStatsDetailed();
-            $this->assertEquals(1, $imapStats->Nmsgs);
-
             Yii::app()->emailHelper->sendEmailThroughTransport = false;
         }
 
