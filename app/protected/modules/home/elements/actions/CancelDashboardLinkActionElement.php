@@ -34,25 +34,9 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class CancelDashboardLinkActionElement extends LinkActionElement
+    class CancelDashboardLinkActionElement extends CancelToListLinkActionElement
     {
-        public function getActionType()
-        {
-            if (!empty($this->modelId) && $this->modelId > 0)
-            {
-                return 'Details';
-            }
-            else
-            {
-                return null;
-            }
-        }
-
-        protected function getDefaultLabel()
-        {
-            return Zurmo::t('Core', 'Cancel');
-        }
-
+        
         protected function getDefaultRoute()
         {
             if (Yii::app()->request->getParam('redirectUrl') != null)

@@ -43,7 +43,6 @@
                     'toolbar' => array(
                         'elements' => array(
                             array('type' => 'SaveButton'),
-                            //array('type' => 'CancelToListLink'),
                             array('type' => 'CancelDashboardLink'),
                         ),
                     ),
