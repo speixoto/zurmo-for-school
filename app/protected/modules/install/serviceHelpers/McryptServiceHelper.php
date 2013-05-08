@@ -35,11 +35,24 @@
      ********************************************************************************/
 
     /**
-     * Helper class for ModalListViews.  This class provides routing information of where links should go and how they
-     * should handle ajax request information.
+     * Checks if Mcrypt extension is installed.
+     * Required by Yii framework.
      */
-    abstract class ModalListLinkProvider
+    class McryptServiceHelper extends ServiceHelper
     {
-        abstract function getLinkString($attributeString);
+        protected function checkService()
+        {
+            $isMcryptInstalled =  InstallUtil::isMcryptInstalled();
+            if ($isMcryptInstalled)
+            {
+                $this->message  = Zurmo::t('InstallModule', 'Mcrypt extension is loaded.');
+                return true;
+            }
+            else
+            {
+                $this->message  = Zurmo::t('InstallModule', 'Mcrypt extension is not loaded.');
+                return false;
+            }
+        }
     }
 ?>

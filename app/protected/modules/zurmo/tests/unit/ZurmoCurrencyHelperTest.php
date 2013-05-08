@@ -57,7 +57,6 @@
             $rate = $currency->getConversionRateToBase('ACODETHATDOESNTEXIST');
             $this->assertNotNull($currency->getWebServiceErrorMessage());
             $this->assertEquals($currency::ERROR_INVALID_CODE, $currency->getWebServiceErrorCode());
-            $this->assertEquals(1, 1);
         }
 
         /**

@@ -35,54 +35,65 @@
      ********************************************************************************/
 
     /**
-     *
-     * Utilize GrandTrunk service provider to get currency rates
-     * @link http://currencies.apps.grandtrunk.net/
-     *
+     * Helper class for encrypting/decrypting passwords
      */
-    class GrandTrunkCurrencyServiceUtil extends CurrencyServiceUtil
+    class ZurmoPasswordSecurityUtil
     {
         /**
-         * @param string $fromCode
-         * @param string $toCode
-         * @return float
+         * Encrypt value, using CSecurityManager::encrypt method
+         * @param string $value
+         * @param string $salt
+         * @return string
          */
-        public function getConversionRateViaWebService($fromCode, $toCode)
+        public static function encrypt($value, $salt = ZURMO_PASSWORD_SALT)
         {
-            $this->resetErrors();
-            $url  = 'http://currencies.apps.grandtrunk.net/getlatest/';
-            $url .= $fromCode . '/' . $toCode;
-            $ch = curl_init();
-            $timeout = 2;
-            curl_setopt($ch, CURLOPT_URL, $url);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-            curl_setopt($ch, CURLOPT_TIMEOUT, 3);
-            curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $timeout);
-            curl_setopt($ch, CURLOPT_USERAGENT, 'Zurmo');
-            $fileContents = curl_exec($ch);
-            $httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-            curl_close($ch);
-            if ($httpcode == 200 && $fileContents !== 'False')
+            if ($value == '' || $value == null)
             {
-                if (!empty($fileContents) && floatval($fileContents) > 0)
-                {
-                    return floatval($fileContents);
-                }
+                return $value;
             }
-            else
+            return base64_encode(Yii::app()->getSecurityManager()->encrypt($value, $salt));
+        }
+
+        /**
+         * Decrypt value, using CSecurityManager::decrypt method
+         * @param string $value
+         * @param string $salt
+         * @return mixed
+         */
+        public static function decrypt($value, $salt = ZURMO_PASSWORD_SALT)
+        {
+            if ($value == '' || $value == null)
             {
-                if (stripos($fileContents, 'Invalid currency code') !== false || $fileContents === 'False')
-                {
-                    $this->webServiceErrorMessage = Zurmo::t('Core', 'Invalid currency code');
-                    $this->webServiceErrorCode    = ZurmoCurrencyHelper::ERROR_INVALID_CODE;
-                }
-                else
-                {
-                    $this->webServiceErrorMessage = Zurmo::t('Core', 'There was an error with the web service.');
-                    $this->webServiceErrorCode    = ZurmoCurrencyHelper::ERROR_WEB_SERVICE;
-                }
+                return $value;
             }
-            return null;
+            return Yii::app()->getSecurityManager()->decrypt(base64_decode($value), $salt);
+        }
+
+        /**
+         * Generate zurmo password salt and write it to perInstance file.
+         * @param $instanceRoot
+         * @param string $perInstanceFilename
+         * @return string
+         */
+        public static function setPasswordSaltAndWriteToPerInstanceFile($instanceRoot, $perInstanceFilename = 'perInstance.php')
+        {
+            assert('is_dir($instanceRoot)');
+
+            if (!defined('ZURMO_PASSWORD_SALT') || ZURMO_PASSWORD_SALT == 'defaultValue')
+            {
+                $perInstanceConfigFile     = "$instanceRoot/protected/config/$perInstanceFilename";
+                $contents = file_get_contents($perInstanceConfigFile);
+
+                $passwordSalt = substr(md5(microtime() * mt_rand()), 0, 15);
+
+                $contents = preg_replace('/define\(\'ZURMO_PASSWORD_SALT\', \'defaultValue\'\);/',
+                    "define('ZURMO_PASSWORD_SALT', '$passwordSalt');",
+                    $contents);
+
+                file_put_contents($perInstanceConfigFile, $contents);
+                return $passwordSalt;
+            }
+            return ZURMO_PASSWORD_SALT;
         }
     }
 ?>

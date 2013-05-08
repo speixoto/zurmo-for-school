@@ -63,4 +63,7 @@
         require_once INSTANCE_ROOT . '/protected/config/perInstanceConfig.php';
     }
     define('ZURMO_TOKEN', 'defaultValue');
+
+    // Never modify this value below manually or system will not be able to decrypt encrypted passwords.
+    define('ZURMO_PASSWORD_SALT', 'defaultValue');
 ?>
