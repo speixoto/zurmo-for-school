@@ -49,12 +49,11 @@
          * If the attribute specified is required and the value is null, attempt to utilize a default value if it is
          * specified. If it is not specified or the default value specified is not a valid custom field data value, then
          * an InvalidValueToSanitizeException will be thrown.
-         * @param string $modelClassName
-         * @param string $attributeName
          * @param mixed $value
-         * @param array $mappingRuleData
+         * @return sanitized value
+         * @throws InvalidValueToSanitizeException
          */
-        public static function sanitizeValue($modelClassName, $attributeName, $value, $mappingRuleData)
+        public function sanitizeValue($value)
         {
             assert('is_string($modelClassName)');
             assert('is_string($attributeName)');
@@ -63,20 +62,19 @@
                 return $value;
             }
             assert('$value == null || $value instanceof OwnedMultipleValuesCustomField');
-            assert('$mappingRuleData["defaultValue"] == null || is_string($mappingRuleData["defaultValue"])');
-            if ($mappingRuleData['defaultValue'] != null)
+            if ($this->mappingRuleData['defaultValue'] != null)
             {
                 try
                 {
                     $customField = new OwnedMultipleValuesCustomField();
-                    foreach ($mappingRuleData['defaultValue'] as $aDefaultValue)
+                    foreach ($this->mappingRuleData['defaultValue'] as $aDefaultValue)
                     {
                         $customFieldValue = new CustomFieldValue();
                         $customFieldValue->value = $aDefaultValue;
                         $customField->values->add($customFieldValue);
                     }
                     $customField->data  = CustomFieldDataModelUtil::
-                                          getDataByModelClassNameAndAttributeName($modelClassName, $attributeName);
+                                          getDataByModelClassNameAndAttributeName($this->modelClassName, $this->attributeName);
                 }
                 catch (NotSupportedException $e)
                 {
@@ -86,8 +84,9 @@
             }
             else
             {
+                $modelClassName = $this->modelClassName;
                 $model = new $modelClassName(false);
-                if (!$model->isAttributeRequired($attributeName))
+                if (!$model->isAttributeRequired($this->attributeName))
                 {
                     return $value;
                 }

@@ -39,6 +39,8 @@
      */
     class DropDownSanitizerUtil extends SanitizerUtil
     {
+        protected $missingCustomFieldValues = array();
+
         /**
          * Variable used to indicate a drop down value is missing from zurmo and will need to be added during import.
          * @var string
@@ -52,11 +54,6 @@
          */
         const MAP_MISSING_VALUES = 'Map missing values';
 
-        public static function getSqlAttributeValueDataAnalyzerType()
-        {
-            return 'DropDown';
-        }
-
         /**
          * Override to support instructions for drop downs. An example is if there is a missing drop down value,
          * information is provided in the instructions explainnig whether to add the missing drop down, delete the value,
@@ -67,33 +64,45 @@
             return true;
         }
 
-        public static function getBatchAttributeValueDataAnalyzerType()
+        public function getMissingCustomFieldValues()
         {
-            return 'DropDown';
+            return $this->missingCustomFieldValues;
+        }
+
+        /**
+         * @param RedBean_OODBBean $rowBean
+         */
+        public function analyzeByRow(RedBean_OODBBean $rowBean)
+        {
+            if ($rowBean->{$this->columnName} != null)
+            {
+                $customFieldData      = CustomFieldDataModelUtil::
+                                        getDataByModelClassNameAndAttributeName($this->modelClassName, $this->attributeName);
+                $dropDownValues       = unserialize($customFieldData->serializedData);
+                $dropDownValues       = ArrayUtil::resolveArrayToLowerCase($dropDownValues);
+                if (!in_array(strtolower($rowBean->{$this->columnName}), $dropDownValues))
+                {
+                    $label = Zurmo::t('ImportModule', '{columnName} dropdown value is new. This value will be added upon import',
+                                      array('{columnName}' => $this->columnName));
+                    $this->analysisMessages[]         = $label;
+                    $this->missingCustomFieldValues[] = $rowBean->{$this->columnName};
+                }
+            }
         }
 
         /**
          * Given a value, resolve that the value is a valid custom field data value. If the value does not exist yet,
          * check the import instructions data to determine how to handle the missing value.
-         *
-         * Example of importInstructionsData
-         * array('DropDown' => array(DropDownSanitizerUtil::ADD_MISSING_VALUE => array('neverPresent', 'notPresent')))
-         *
-         * @param string $modelClassName
-         * @param string $attributeName
          * @param mixed $value
-         * @param array $mappingRuleData
-         * @param array $importInstructionsData
+         * @return sanitized value
+         * @throws InvalidValueToSanitizeException
          */
-        public static function sanitizeValueWithInstructions($modelClassName, $attributeName, $value, $mappingRuleData,
-                                             $importInstructionsData)
+        public function sanitizeValue($value)
         {
-            assert('is_string($modelClassName)');
-            assert('is_string($attributeName)');
-            assert('$mappingRuleData == null');
-            if (!isset($importInstructionsData["DropDown"][DropDownSanitizerUtil::ADD_MISSING_VALUE]))
+            $customFieldsInstructionsData = $this->getCustomFieldsInstructionsDataFromColumnMappingData();
+            if (!isset($customFieldsInstructionsData[DropDownSanitizerUtil::ADD_MISSING_VALUE]))
             {
-                $importInstructionsData["DropDown"][DropDownSanitizerUtil::ADD_MISSING_VALUE] = array();
+                $customFieldsInstructionsData[DropDownSanitizerUtil::ADD_MISSING_VALUE] = array();
             }
             if ($value == null)
             {
@@ -101,7 +110,7 @@
             }
             $customFieldData                     = CustomFieldDataModelUtil::
                                                    getDataByModelClassNameAndAttributeName(
-                                                   $modelClassName, $attributeName);
+                                                   $this->modelClassName, $this->attributeName);
             $dropDownValues                      = unserialize($customFieldData->serializedData);
             $lowerCaseDropDownValues             = ArrayUtil::resolveArrayToLowerCase($dropDownValues);
             $generateMissingPickListError        = false;
@@ -115,24 +124,21 @@
             {
                 //if the value does not already exist, then check the instructions data.
                 $lowerCaseValuesToAdd                = ArrayUtil::resolveArrayToLowerCase(
-                                                       $importInstructionsData['DropDown']
-                                                       [DropDownSanitizerUtil::ADD_MISSING_VALUE]);
+                                                       $customFieldsInstructionsData[DropDownSanitizerUtil::ADD_MISSING_VALUE]);
                 if (in_array(TextUtil::strToLowerWithDefaultEncoding($value), $lowerCaseValuesToAdd))
                 {
                     $keyToAddAndUse                  = array_search(TextUtil::strToLowerWithDefaultEncoding($value), $lowerCaseValuesToAdd);
-                    $resolvedValueToUse              = $importInstructionsData['DropDown']
-                                                       [DropDownSanitizerUtil::ADD_MISSING_VALUE][$keyToAddAndUse];
+                    $resolvedValueToUse              = $customFieldsInstructionsData[DropDownSanitizerUtil::ADD_MISSING_VALUE][$keyToAddAndUse];
                     $unserializedData                = unserialize($customFieldData->serializedData);
                     $unserializedData[]              = $resolvedValueToUse;
                     $customFieldData->serializedData = serialize($unserializedData);
                     $saved                           = $customFieldData->save();
                     assert('$saved');
                 }
-                elseif (isset($importInstructionsData['DropDown'][DropDownSanitizerUtil::MAP_MISSING_VALUES]))
+                elseif (isset($customFieldsInstructionsData[DropDownSanitizerUtil::MAP_MISSING_VALUES]))
                 {
                     $lowerCaseMissingValuesToMap = ArrayUtil::resolveArrayToLowerCase(
-                                                       $importInstructionsData['DropDown']
-                                                       [DropDownSanitizerUtil::MAP_MISSING_VALUES]);
+                                                   $customFieldsInstructionsData[DropDownSanitizerUtil::MAP_MISSING_VALUES]);
                     if (isset($lowerCaseMissingValuesToMap[TextUtil::strToLowerWithDefaultEncoding($value)]))
                     {
                         $keyToUse           = array_search($lowerCaseMissingValuesToMap[TextUtil::strToLowerWithDefaultEncoding($value)],
@@ -140,7 +146,7 @@
                         if ($keyToUse === false)
                         {
                             $message = 'Pick list value specified is missing from existing pick list, has a specified mapping value' .
-                               ', but the mapping value is not a valid value.';
+                                       ', but the mapping value is not a valid value.';
                             throw new InvalidValueToSanitizeException(Zurmo::t('ImportModule', $message));
                         }
                         else
@@ -168,6 +174,16 @@
             $customField->value = $resolvedValueToUse;
             $customField->data  = $customFieldData;
             return $customField;
+        }
+
+        protected function assertMappingRuleDataIsValid()
+        {
+            assert('$this->mappingRuleData == null');
+        }
+
+        protected function getCustomFieldsInstructionsDataFromColumnMappingData()
+        {
+            $this->columnMappingData['customFieldsInstructionsData'];
         }
     }
 ?>

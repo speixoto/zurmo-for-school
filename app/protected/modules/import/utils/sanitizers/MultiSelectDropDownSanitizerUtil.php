@@ -39,14 +39,25 @@
      */
     class MultiSelectDropDownSanitizerUtil extends DropDownSanitizerUtil
     {
-        public static function supportsSqlAttributeValuesDataAnalysis()
+        /**
+         * @param RedBean_OODBBean $rowBean
+         */
+        public function analyzeByRow(RedBean_OODBBean $rowBean)
         {
-            return false;
-        }
-
-        public static function getBatchAttributeValueDataAnalyzerType()
-        {
-            return 'MultiSelectDropDown';
+            if ($rowBean->{$this->columnName} != null)
+            {
+                $customFieldValues = MultiSelectDropDownSanitizerUtil::getCustomFieldValuesFromValueString($rowBean->{$this->columnName});
+                foreach ($customFieldValues as $aValue)
+                {
+                    if (!in_array(strtolower($aValue), $this->dropDownValues))
+                    {
+                        $label = Zurmo::t('ImportModule', '{columnName} dropdown value is new. This value will be added upon import',
+                                          array('{columnName}' => $this->columnName));
+                        $this->analysisMessages[]         = $label;
+                        $this->missingCustomFieldValues[] = $aValue;
+                    }
+                }
+            }
         }
 
         /**
@@ -56,19 +67,20 @@
          * Example of importInstructionsData
          * array('MultiSelectDropDown' => array(DropDownSanitizerUtil::ADD_MISSING_VALUE => array('neverPresent', 'notPresent')))
          *
-         * @param string $modelClassName
-         * @param string $attributeName
          * @param mixed $value
-         * @param array $mappingRuleData
-         * @param array $importInstructionsData
+         * @return sanitized value
+         * @throws InvalidValueToSanitizeException
          */
-        public static function sanitizeValueWithInstructions($modelClassName, $attributeName, $value, $mappingRuleData,
-                                             $importInstructionsData)
+        public function sanitizeValue($value)
         {
             assert('is_string($modelClassName)');
             assert('is_string($attributeName)');
             assert('$mappingRuleData == null');
-            assert('is_array($importInstructionsData["MultiSelectDropDown"][DropDownSanitizerUtil::ADD_MISSING_VALUE])');
+            $customFieldsInstructionsData = $this->getCustomFieldsInstructionsDataFromColumnMappingData();
+            if (!isset($customFieldsInstructionsData[DropDownSanitizerUtil::ADD_MISSING_VALUE]))
+            {
+                $customFieldsInstructionsData[DropDownSanitizerUtil::ADD_MISSING_VALUE] = array();
+            }
             if ($value == null)
             {
                 return $value;
@@ -76,7 +88,7 @@
             $customFieldValues                   = static::getCustomFieldValuesFromValueString($value);
             $customFieldData                     = CustomFieldDataModelUtil::
                                                    getDataByModelClassNameAndAttributeName(
-                                                   $modelClassName, $attributeName);
+                                                   $this->modelClassName, $this->attributeName);
             $dropDownValues                      = unserialize($customFieldData->serializedData);
             $lowerCaseDropDownValues             = ArrayUtil::resolveArrayToLowerCase($dropDownValues);
             $resolvedValuesToUse                 = array();
@@ -93,12 +105,12 @@
                 {
                     //if the value does not already exist, then check the instructions data.
                     $lowerCaseValuesToAdd                = ArrayUtil::resolveArrayToLowerCase(
-                                                           $importInstructionsData['MultiSelectDropDown']
+                                                           $customFieldsInstructionsData
                                                            [DropDownSanitizerUtil::ADD_MISSING_VALUE]);
                     if (in_array(mb_strtolower($aValue), $lowerCaseValuesToAdd))
                     {
                         $keyToAddAndUse                  = array_search(mb_strtolower($aValue), $lowerCaseValuesToAdd);
-                        $resolvedValueToUse              = $importInstructionsData['MultiSelectDropDown']
+                        $resolvedValueToUse              = $customFieldsInstructionsData
                                                            [DropDownSanitizerUtil::ADD_MISSING_VALUE][$keyToAddAndUse];
                         $unserializedData                = unserialize($customFieldData->serializedData);
                         $unserializedData[]              = $resolvedValueToUse;
@@ -106,10 +118,11 @@
                         $saved                           = $customFieldData->save();
                         assert('$saved');
                     }
-                    elseif (isset($importInstructionsData['MultiSelectDropDown'][DropDownSanitizerUtil::MAP_MISSING_VALUES]))
+                    elseif (isset($customFieldsInstructionsData[DropDownSanitizerUtil::MAP_MISSING_VALUES]))
                     {
                         $resolvedValueToUse = static::processMissingValueToMapAndGetResolvedValueToUse(
-                                              $aValue, $generateMissingPickListError, $importInstructionsData);
+                                              $aValue, $generateMissingPickListError, $customFieldsInstructionsData,
+                                              $dropDownValues, $lowerCaseDropDownValues);
                     }
                     else
                     {
@@ -145,14 +158,16 @@
             return $customFieldValues;
         }
 
-        protected static function processMissingValueToMapAndGetResolvedValueToUse($aValue, & $generateMissingPickListError, $importInstructionsData)
+        protected static function processMissingValueToMapAndGetResolvedValueToUse($aValue,
+                                                                                   & $generateMissingPickListError,
+                                                                                   array $customFieldsInstructionsData,
+                                                                                   array $dropDownValues,
+                                                                                   array $lowerCaseDropDownValues)
         {
             assert('is_string($aValue)');
             assert('is_bool($generateMissingPickListError)');
-            assert('is_array($importInstructionsData)');
-            $lowerCaseMissingValuesToMap = ArrayUtil::resolveArrayToLowerCase(
-                                               $importInstructionsData['MultiSelectDropDown']
-                                               [DropDownSanitizerUtil::MAP_MISSING_VALUES]);
+            $lowerCaseMissingValuesToMap = ArrayUtil::resolveArrayToLowerCase($customFieldsInstructionsData
+                                           [DropDownSanitizerUtil::MAP_MISSING_VALUES]);
             if (isset($lowerCaseMissingValuesToMap[mb_strtolower($aValue)]))
             {
                 $keyToUse           = array_search($lowerCaseMissingValuesToMap[mb_strtolower($aValue)],

@@ -42,25 +42,22 @@
         /**
          * Given a value that is either a zurmo id or an external system id, resolve that the
          * value is valid.  If the value is not valid then an InvalidValueToSanitizeException is thrown.
-         * @param string $modelClassName
-         * @param string $attributeName
          * @param mixed $value
-         * @param array $mappingRuleData
+         * @return sanitized value
+         * @throws InvalidValueToSanitizeException
          */
-        public static function sanitizeValue($modelClassName, $attributeName, $value, $mappingRuleData)
+        public function sanitizeValue($value)
         {
-            assert('is_string($modelClassName)');
-            assert('is_string($attributeName) && $attributeName != "id"');
+            assert('is_string($this->attributeName) && $this->attributeName != "id"');
             assert('$value != ""');
-            assert('$mappingRuleData["type"] == IdValueTypeMappingRuleForm::ZURMO_MODEL_ID ||
-                    $mappingRuleData["type"] == IdValueTypeMappingRuleForm::EXTERNAL_SYSTEM_ID');
             if ($value == null)
             {
                 return $value;
             }
+            $modelClassName          = $this->modelClassName;
             $model                   = new $modelClassName(false);
-            $attributeModelClassName = $modelClassName::resolveAttributeModelClassName($model, $attributeName);
-            if ($mappingRuleData["type"] == IdValueTypeMappingRuleForm::ZURMO_MODEL_ID)
+            $attributeModelClassName = $modelClassName::resolveAttributeModelClassName($model, $this->attributeName);
+            if ($this->mappingRuleData["type"] == IdValueTypeMappingRuleForm::ZURMO_MODEL_ID)
             {
                 try
                 {
@@ -71,7 +68,7 @@
                     throw new InvalidValueToSanitizeException(Zurmo::t('ImportModule', 'The id specified did not match any existing records.'));
                 }
             }
-            elseif ($mappingRuleData["type"] == IdValueTypeMappingRuleForm::EXTERNAL_SYSTEM_ID)
+            elseif ($this->mappingRuleData["type"] == IdValueTypeMappingRuleForm::EXTERNAL_SYSTEM_ID)
             {
                 try
                 {

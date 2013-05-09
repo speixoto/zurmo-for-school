@@ -66,26 +66,50 @@
          */
         protected $importInstructionsData = array();
 
+        protected $mappingData;
+
+        protected $sanitizableColumnNames;
+
+        private $customFieldsInstructionData;
+
+        protected static function resolveAttributeNameByRules(AttributeImportRules $attributeImportRules)
+        {
+            $attributeNames       = $attributeImportRules->getRealModelAttributeNames();
+            if (count($attributeNames) > 1 || $attributeNames == null)
+            {
+                return null;
+            }
+            else
+            {
+                return $attributeNames[0];
+            }
+        }
+
         /**
          * @param string $importRules
          * @param object $dataProvider
+         * @param array $mappingData
+         * @param array $sanitizableColumnNames
          */
-        public function __construct($importRules, $dataProvider)
+        public function __construct($importRules, $dataProvider, array $mappingData, array $sanitizableColumnNames)
         {
             assert('$importRules instanceof ImportRules');
             assert('$dataProvider instanceof AnalyzerSupportedDataProvider');
-            $this->importRules  = $importRules;
-            $this->dataProvider = $dataProvider;
+            $this->importRules            = $importRules;
+            $this->dataProvider           = $dataProvider;
+            $this->mappingData            = $mappingData;
+            $this->sanitizableColumnNames = $sanitizableColumnNames;
         }
 
-        public function analyzePageOfRows()
+        public function analyzePage()
         {
             $data = $this->dataProvider->getData(true);
             foreach ($data as $rowBean)
             {
                 assert('$rowBean->id != null');
                 $columnMessages = array();
-                foreach($this->analyzableColumnNames as $columnName)
+                $shouldSkipRow  = false;
+                foreach($this->sanitizableColumnNames as $columnName)
                 {
                     $attributeIndexOrDerivedType = $this->mappingData[$columnName]['attributeIndexOrDerivedType'];
                     $attributeImportRules = AttributeImportRulesFactory::
@@ -93,32 +117,29 @@
                                             $this->importRules->getType(),
                                             $attributeIndexOrDerivedType);
                     $modelClassName       = $attributeImportRules->getModelClassName();
-                    $attributeNames       = $attributeImportRules->getRealModelAttributeNames();
-                    //todo: begin this if/else can be made into a static resolve method here.
-                    if (count($attributeNames) > 1 || $attributeNames == null)
-                    {
-                        $dataAnalyzerAttributeName = null;
-                    }
-                    else
-                    {
-                        $dataAnalyzerAttributeName = $attributeNames[0];
-                    }
-                    //todo: end
-                    //todO: somehow we need to do something with dataAnalyzerAttributeName, just not sure how yet.
+                    $attributeName        = static::resolveAttributeNameByRules($attributeImportRules);
                     if (null != $attributeValueSanitizerUtilTypes = $attributeImportRules->getSanitizerUtilTypesInProcessingOrder())
                     {
                         assert('is_array($attributeValueSanitizerUtilTypes)');
                         foreach ($attributeValueSanitizerUtilTypes as $attributeValueSanitizerUtilType)
                         {
-                            $sanitizer = ImportSanitizerUtilFactory::makeByType($attributeValueSanitizerUtilType);
-                            $sanitizer->analyzeByRowAndColumnName($rowBean, $columnName, $modelClassName); //todo: pass $dataAnalyzerAttributeName here?
+                            $sanitizer = ImportSanitizerUtilFactory::
+                                         make($attributeValueSanitizerUtilType, $modelClassName, $attributeName,
+                                         $columnName, $this->mappingData[$columnName]);
+                            $sanitizer->analyzeByRow($rowBean);
+                            if($sanitizer->getShouldSkipRow())
+                            {
+                                $shouldSkipRow = true;
+                            }
                             foreach($sanitizer->getAnalysisMessages() as $message)
                             {
                                 $columnMessages[$columnName][] = $message;
                             }
-                            if(null !== $missingCustomFieldValue = $sanitizer->getMissingCustomFieldValue())
+                            $classToEvaluate        = new ReflectionClass($sanitizer);
+                            if ($classToEvaluate->implementsInterface('ImportSanitizerHasCustomFieldValuesInterface'))
                             {
-                                $this->customFieldsInstructionData->addMissingValueByColumnName($missingCustomFieldValue, $columnName);
+                                $missingCustomFieldValues = $sanitizer->getMissingCustomFieldValues();
+                                $this->getCustomFieldsInstructionsData()->addMissingValuesByColumnName($missingCustomFieldValues, $columnName);
                             }
                         }
                     }
@@ -126,7 +147,14 @@
                 if(!empty($columnMessages))
                 {
                     $rowBean->serializedAnalysisMessages = serialize($columnMessages);
-                    $rowBean->analysisStatus             = static::STATUS_INFO;
+                    if($shouldSkipRow)
+                    {
+                        $rowBean->analysisStatus             = static::STATUS_SKIP;
+                    }
+                    else
+                    {
+                        $rowBean->analysisStatus             = static::STATUS_INFO;
+                    }
                 }
                 else
                 {
@@ -137,182 +165,13 @@
             }
         }
 
-        /**
-         * Given a column name and column mapping data, perform data analysis on the column based on the mapped
-         * attribute index or derived type.  The attribute index or derived type will correspond with an attribute
-         * import rules which will have information on what sanitizers to use.  Based on this, the correct sanitizers
-         * will be called and their appropriate analyzers will be used.
-         * NOTE - Analysis is only performed on mapped import columns and not extra columns with mapping rules.
-         * @param string $columnName
-         * @param array $columnMappingData
-         */
-        public function analyzeByColumnNameAndColumnMappingData($columnName, $columnMappingData)
+        public function getCustomFieldsInstructionData()
         {
-            assert('is_string($columnMappingData["attributeIndexOrDerivedType"]) ||
-                    $columnMappingData["attributeIndexOrDerivedType"] == null');
-                    assert('$columnMappingData["type"] == "importColumn" ||
-            $columnMappingData["type"] == "extraColumn"');
-            if ($columnMappingData['attributeIndexOrDerivedType'] == null)
+            if($this->customFieldsInstructionData === null)
             {
-                return;
+                $this->customFieldsInstructionData = new CustomFieldsInstructionData();
             }
-            //Currently does not support data analysis on extra columns.
-            if ($columnMappingData['type'] =='extraColumn')
-            {
-                return;
-            }
-            $attributeImportRules = AttributeImportRulesFactory::
-                                    makeByImportRulesTypeAndAttributeIndexOrDerivedType(
-                                    $this->importRules->getType(),
-                                    $columnMappingData['attributeIndexOrDerivedType']);
-            $modelClassName       = $attributeImportRules->getModelClassName();
-            $attributeNames       = $attributeImportRules->getRealModelAttributeNames();
-            if (count($attributeNames) > 1 || $attributeNames == null)
-            {
-                $dataAnalyzerAttributeName = null;
-            }
-            else
-            {
-                $dataAnalyzerAttributeName = $attributeNames[0];
-            }
-            if (null != $attributeValueSanitizerUtilTypes = $attributeImportRules->getSanitizerUtilTypesInProcessingOrder())
-            {
-                assert('is_array($attributeValueSanitizerUtilTypes)');
-                foreach ($attributeValueSanitizerUtilTypes as $attributeValueSanitizerUtilType)
-                {
-                    $attributeValueSanitizerUtilClassName = $attributeValueSanitizerUtilType . 'SanitizerUtil';
-                    if ($attributeValueSanitizerUtilClassName::supportsSqlAttributeValuesDataAnalysis())
-                    {
-                        $sanitizerUtilType              = $attributeValueSanitizerUtilClassName::getType();
-                        $sqlAttributeValuesDataAnalyzer = $attributeValueSanitizerUtilClassName::
-                                                          makeSqlAttributeValueDataAnalyzer($modelClassName,
-                                                                                            $dataAnalyzerAttributeName);
-                        assert('$sqlAttributeValuesDataAnalyzer != null');
-                        $this->resolveRun($columnName, $columnMappingData,
-                                          $attributeValueSanitizerUtilClassName,
-                                          $sqlAttributeValuesDataAnalyzer);
-                        $messages       = $sqlAttributeValuesDataAnalyzer->getMessages();
-                        if ($messages != null)
-                        {
-                            foreach ($messages as $message)
-                            {
-                                $moreAvailable     = $sqlAttributeValuesDataAnalyzer::supportsAdditionalResultInformation();
-                                $this->addMessageDataByColumnName($columnName, $message, $sanitizerUtilType, $moreAvailable);
-                            }
-                        }
-                        $instructionsData = $sqlAttributeValuesDataAnalyzer->getInstructionsData();
-                        if (!empty($instructionsData))
-                        {
-                            $this->addInstructionDataByColumnName($columnName, $instructionsData, $sanitizerUtilType);
-                        }
-                    }
-                    elseif ($attributeValueSanitizerUtilClassName::supportsBatchAttributeValuesDataAnalysis())
-                    {
-                        $sanitizerUtilType = $attributeValueSanitizerUtilClassName::getType();
-                        $batchAttributeValuesDataAnalyzer = $attributeValueSanitizerUtilClassName::
-                                                            makeBatchAttributeValueDataAnalyzer($modelClassName,
-                                                                                                $dataAnalyzerAttributeName);
-                        assert('$batchAttributeValuesDataAnalyzer != null');
-                        $this->resolveRun($columnName, $columnMappingData,
-                                                       $attributeValueSanitizerUtilClassName,
-                                                       $batchAttributeValuesDataAnalyzer);
-                        $messages                    = $batchAttributeValuesDataAnalyzer->getMessages();
-                        if ($messages != null)
-                        {
-                            foreach ($messages as $message)
-                            {
-                                $moreAvailable     = $batchAttributeValuesDataAnalyzer::
-                                                     supportsAdditionalResultInformation();
-                                $this->addMessageDataByColumnName($columnName, $message, $sanitizerUtilType, $moreAvailable);
-                            }
-                        }
-                        $instructionsData = $batchAttributeValuesDataAnalyzer->getInstructionsData();
-                        if (!empty($instructionsData))
-                        {
-                            $this->addInstructionDataByColumnName($columnName, $instructionsData, $sanitizerUtilType);
-                        }
-                    }
-                }
-            }
-        }
-
-        protected function resolveRun($columnName, $columnMappingData,
-                                                   $attributeValueSanitizerUtilClassName, $dataAnalyzer)
-        {
-            assert('is_string($columnName)');
-            assert('is_array($columnMappingData)');
-            assert('is_subclass_of($attributeValueSanitizerUtilClassName, "SanitizerUtil")');
-            assert('$dataAnalyzer instanceof BatchAttributeValueDataAnalyzer ||
-                    $dataAnalyzer instanceof SqlAttributeValueDataAnalyzer');
-            $classToEvaluate = new ReflectionClass(get_class($dataAnalyzer));
-            if ($classToEvaluate->implementsInterface('LinkedToMappingRuleDataAnalyzerInterface'))
-            {
-                $mappingRuleType = $attributeValueSanitizerUtilClassName::getLinkedMappingRuleType();
-                assert('$mappingRuleType != null');
-                $mappingRuleFormClassName = $mappingRuleType .'MappingRuleForm';
-                if (!isset($columnMappingData['mappingRulesData'][$mappingRuleFormClassName]))
-                {
-                    //do nothing. Either the data from the UI was improper or there is for some reason no mappingRulesFormData
-                }
-                else
-                {
-                    $mappingRuleData = $columnMappingData['mappingRulesData'][$mappingRuleFormClassName];
-                    assert('$mappingRuleData != null');
-                    $dataAnalyzer->runAndMakeMessages($this->dataProvider, $columnName, $mappingRuleType, $mappingRuleData);
-                }
-            }
-            else
-            {
-                $dataAnalyzer->runAndMakeMessages($this->dataProvider, $columnName);
-            }
-        }
-
-        /**
-         * Add a analysis results message by column name.
-         * @param string  $columnName
-         * @param string  $message
-         * @param string  $sanitizerUtilType
-         * @param boolean $moreAvailable
-         */
-        public function addMessageDataByColumnName($columnName, $message, $sanitizerUtilType, $moreAvailable)
-        {
-            assert('is_string($columnName)');
-            assert('is_string($message)');
-            assert('is_string($sanitizerUtilType)');
-            assert('is_bool($moreAvailable)');
-            $this->messagesData[$columnName][] = array('message'           => $message,
-                                                  'sanitizerUtilType' => $sanitizerUtilType,
-                                                  'moreAvailable'     => $moreAvailable);
-        }
-
-        /**
-         * Add instructional data by column name and sanitizer type
-         * @param string $columnName
-         * @param array  $instructionData
-         * @param string $sanitizerUtilType
-         */
-        public function addInstructionDataByColumnName($columnName, $instructionData, $sanitizerUtilType)
-        {
-            assert('is_string($columnName)');
-            assert('is_string($instructionData) || is_array($instructionData)');
-            assert('is_string($sanitizerUtilType)');
-            $this->importInstructionsData[$columnName][$sanitizerUtilType] = $instructionData;
-        }
-
-        /**
-         * @return array of messages data.
-         */
-        public function getMessagesData()
-        {
-            return $this->messagesData;
-        }
-
-        /**
-         * @return array of instructions data.
-         */
-        public function getImportInstructionsData()
-        {
-            return $this->importInstructionsData;
+            return $this->customFieldsInstructionData;
         }
     }
 ?>

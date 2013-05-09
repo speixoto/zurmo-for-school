@@ -39,16 +39,6 @@
      */
     class EmailSanitizerUtil extends SanitizerUtil
     {
-        public static function supportsSqlAttributeValuesDataAnalysis()
-        {
-            return false;
-        }
-
-        public static function getBatchAttributeValueDataAnalyzerType()
-        {
-            return 'Email';
-        }
-
         /**
          * If an email value is invalid, then skip the entire row during import.
          */
@@ -58,14 +48,40 @@
         }
 
         /**
+         * @param RedBean_OODBBean $rowBean
+         */
+        public function analyzeByRow(RedBean_OODBBean $rowBean)
+        {
+            if ($rowBean->{$this->columnName} == null)
+            {
+                return;
+            }
+            if (false === $validatedEmail = $this->resolveValidatedEmail($rowBean->{$this->columnName}))
+            {
+                $label = Zurmo::t('ImportModule', '{columnName} is an invalid email.',
+                                  array('{columnName}' => $this->columnName));
+                $this->shouldSkipRow      = true;
+                $this->analysisMessages[] = $label;
+                return;
+            }
+            $maximumLength = DatabaseCompatibilityUtil::getMaxVarCharLength();
+            if (strlen($validatedEmail) > $maximumLength)
+            {
+                $label = Zurmo::t('ImportModule', '{columnName} is  too long. Minimum length is {minimumLength}',
+                                  array('{columnName}' => $this->columnName, '{maximumLength}' => $maximumLength));
+                $this->shouldSkipRow      = true;
+                $this->analysisMessages[] = $label;
+            }
+        }
+
+        /**
          * Given a value, resolve that the value is a correctly formatted email address. If not, an
          * InvalidValueToSanitizeException is thrown.
-         * @param string $modelClassName
-         * @param string $attributeName
          * @param mixed $value
-         * @param array $mappingRuleData
+         * @return sanitized value
+         * @throws InvalidValueToSanitizeException
          */
-        public static function sanitizeValue($modelClassName, $attributeName, $value, $mappingRuleData)
+        public function sanitizeValue($value)
         {
             assert('is_string($modelClassName)');
             assert('is_string($attributeName)');
@@ -74,18 +90,22 @@
             {
                 return $value;
             }
-            $maxLength = DatabaseCompatibilityUtil::getMaxVarCharLength();
-            $validator = new CEmailValidator();
-            $validatedEmail = $validator->validateValue($value);
-            if ($validatedEmail === false)
+            $maximumLength = DatabaseCompatibilityUtil::getMaxVarCharLength();
+            if (false === $validatedEmail = $this->resolveValidatedEmail($value))
             {
                 throw new InvalidValueToSanitizeException(Zurmo::t('ImportModule', 'Invalid email format.'));
             }
-            if (strlen($validatedEmail) > $maxLength)
+            if (strlen($validatedEmail) > $maximumLength)
             {
                 throw new InvalidValueToSanitizeException(Zurmo::t('ImportModule', 'Email was too long.'));
             }
             return  $value;
+        }
+
+        protected function resolveValidatedEmail($email)
+        {
+            $validator = new CEmailValidator();
+            return $validator->validateValue($email);
         }
     }
 ?>

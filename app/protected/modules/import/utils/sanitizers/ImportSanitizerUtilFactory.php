@@ -35,27 +35,19 @@
      ********************************************************************************/
 
     /**
-     * Data analysis specific to text area type attributes. Handles checking if a value is too large.
+     * Factory class for making SanitizerUtil objects.
      */
-    class TextAreaTruncateSqlAttributeValueDataAnalyzer extends TruncateSqlAttributeValueDataAnalyzer
+    class ImportSanitizerUtilFactory
     {
-        /**
-         * @param string $columnName
-         */
-        protected static function resolvColumnNameSqlLengthFunction($columnName)
+        public static function make($attributeValueSanitizerUtilType, $modelClassName, $attributeName, $columnName, $columnMappingData)
         {
-            assert('is_string($columnName)');
-            return DatabaseCompatibilityUtil::length($columnName);
-        }
-
-        /**
-         * @see TruncateSqlAttributeValueDataAnalyzer::resolveMaxLength()
-         */
-        protected function resolveMaxLength($modelClassName, $attributeName)
-        {
+            assert('is_string($attributeValueSanitizerUtilType)');
             assert('is_string($modelClassName)');
             assert('is_string($attributeName)');
-            return 65000;
+            assert('is_string($columnName)');
+            assert('$columnMappingData == null || is_array($columnMappingData)');
+            $sanitizerUtilClassName = $attributeValueSanitizerUtilType . 'SanitizerUtil';
+            return new $sanitizerUtilClassName($modelClassName, $attributeName, $columnName, $columnMappingData);
         }
     }
 ?>

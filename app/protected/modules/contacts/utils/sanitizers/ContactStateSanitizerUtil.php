@@ -39,16 +39,6 @@
      */
     class ContactStateSanitizerUtil extends SanitizerUtil
     {
-        public static function getSqlAttributeValueDataAnalyzerType()
-        {
-            return 'ContactState';
-        }
-
-        public static function getBatchAttributeValueDataAnalyzerType()
-        {
-            return 'ContactState';
-        }
-
         /**
          * If a state is invalid, then skip the entire row during import.
          */
@@ -58,18 +48,31 @@
         }
 
         /**
+         * @param RedBean_OODBBean $rowBean
+         */
+        public function analyzeByRow(RedBean_OODBBean $rowBean)
+        {
+            $states = $this->resolveStates();
+            $states = ArrayUtil::resolveArrayToLowerCase($states);
+            if ($rowBean->{$this->columnName} != null && !in_array(strtolower($rowBean->{$this->columnName}), $states))
+            {
+                $label = Zurmo::t('ImportModule', '{columnName} is invalid.', array('{columnName}' => $this->columnName));
+                $this->shouldSkipRow      = true;
+                $this->analysisMessages[] = $label;
+            }
+        }
+
+        /**
          * Given a contact state id, attempt to get and return a contact state object. If the id is invalid, then an
          * InvalidValueToSanitizeException will be thrown.
-         * @param string $modelClassName
-         * @param string $attributeName
          * @param mixed $value
-         * @param array $mappingRuleData
+         * @return sanitized value
+         * @throws InvalidValueToSanitizeException
+         * @throws NotFoundException
          */
-        public static function sanitizeValue($modelClassName, $attributeName, $value, $mappingRuleData)
+        public function sanitizeValue($value)
         {
-            assert('is_string($modelClassName)');
-            assert('$attributeName == null');
-            assert('$mappingRuleData == null');
+            assert('$this->attributeName == null');
             if ($value == null)
             {
                 return $value;
@@ -113,6 +116,16 @@
                 return true;
             }
             return false;
+        }
+
+        protected function assertMappingRuleDataIsValid()
+        {
+            assert('$this->mappingRuleData == null');
+        }
+
+        protected function resolveStates()
+        {
+            return ContactsUtil::getContactStateDataFromStartingStateOnAndKeyedById();
         }
     }
 ?>

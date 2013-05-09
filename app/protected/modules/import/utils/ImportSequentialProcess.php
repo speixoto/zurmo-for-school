@@ -35,54 +35,65 @@
      ********************************************************************************/
 
     /**
-     * Base class for Batch analyzers. These type of analyzers loop over all the rows using the data provider instead
-     * of doing one sql query on all the rows at once like the Sql analyzer.
-     * @see SqlAttributeValueDataAnalyzer
+     * Base class for handling sequential processes for both data analysis and final data import
      */
-    abstract class BatchAttributeValueDataAnalyzer extends AttributeValueDataAnalyzer
+    abstract class ImportSequentialProcess extends SequentialProcess
     {
-        /**
-         * For each row's column value, perform the analysis.
-         * @param mixed $value
-         */
-        abstract protected function analyzeByValue($value);
+        protected $import;
 
-        /**
-         * After analysis is complete, this method is used to determine the appropriate messages to create.
-         */
-        abstract protected function makeMessages();
+        protected $mappingData;
 
-        /**
-         * Given a data provider and a column name, process over all the rows and analyze the column specified by
-         * column name.  After the data is processed any messages required are made and added to the messages array.
-         * @param object $dataProvider
-         * @param string $columnName
-         */
-        protected function processAndMakeMessage(AnalyzerSupportedDataProvider $dataProvider, $columnName)
+        protected $importRules;
+
+        protected $dataProvider;
+
+        protected static function resolvePageByParams(array $params)
         {
-            assert('is_string($columnName)');
-            $page           = 0;
-            $itemsProcessed = 0;
-            $totalItemCount =  $dataProvider->getTotalItemCount(true);
-            $dataProvider->getPagination()->setCurrentPage($page);
-            while (null != $data = $dataProvider->getData(true))
+            if (!isset($params['page']))
             {
-                foreach ($data as $rowData)
+                $page = 0;
+            }
+            else
+            {
+                $page = $params['page'];
+            }
+            return $page;
+        }
+
+        protected function resolveNextPagingAndParams($page, array $params)
+        {
+            $pageCount                             = $this->dataProvider->getPagination()->getPageCount();
+            $pageSize                              = $this->dataProvider->getPagination()->getPageSize();
+            $totalItemCount                        = $this->dataProvider->getTotalItemCount();
+            $this->subSequenceCompletionPercentage = (($page + 1) / $pageCount) * 100;
+            if (($page + 1) == $pageCount)
+            {
+                $this->nextStep    = 'completeImport';
+                $this->setNextMessageByStep($this->nextStep);
+                return null;
+            }
+            else
+            {
+                $params['page'] = ($page + 1);
+                $this->nextStep = 'processRows';
+                $this->setNextMessageByStep($this->nextStep);
+                $startItemCount = (($page + 1) * $pageSize) + 1;
+                if (($startItemCount + ($pageSize - 1) > $totalItemCount))
                 {
-                    $this->analyzeByValue($rowData->$columnName);
-                    $itemsProcessed++;
-                }
-                if ($itemsProcessed < $totalItemCount)
-                {
-                    $page++;
-                    $dataProvider->getPagination()->setCurrentPage($page);
+                    $endItemCount = $totalItemCount;
                 }
                 else
                 {
-                    break;
+                    $endItemCount = ($page + 2) * $pageSize;
                 }
+                $labelParams = array('{startItemCount}' => $startItemCount,
+                    '{endItemCount}'   => $endItemCount,
+                    '{totalItemCount}' => $totalItemCount);
+                $nextMessage = ' ' . Zurmo::t('ImportModule', 'Record(s) {startItemCount} - {endItemCount} of {totalItemCount}',
+                    $labelParams);
+                $this->nextMessage .= $nextMessage;
+                return $params;
             }
-            $this->makeMessages();
         }
     }
 ?>

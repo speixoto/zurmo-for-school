@@ -39,29 +39,31 @@
      */
     class UserStatusSanitizerUtil extends SanitizerUtil
     {
-        public static function supportsSqlAttributeValuesDataAnalysis()
+        /**
+         * @param RedBean_OODBBean $rowBean
+         */
+        public function analyzeByRow(RedBean_OODBBean $rowBean)
         {
-            return false;
-        }
-
-        public static function getBatchAttributeValueDataAnalyzerType()
-        {
-            return 'UserStatus';
+            if ($rowBean->{$this->columnName} != null &&
+                strtolower($rowBean->{$this->columnName}) != strtolower(UserStatusUtil::ACTIVE) &&
+                strtolower($rowBean->{$this->columnName}) == strtolower(UserStatusUtil::INACTIVE))
+            {
+                $label = Zurmo::t('ImportModule', '{columnName} status value is invalid. This status will be set to active upon import.',
+                                  array('{columnName}' => $this->columnName));
+                $this->analysisMessages[] = $label;
+            }
         }
 
         /**
          * Given a user status, attempt to resolve it as a valid status.  If the status is invalid, a
          * InvalidValueToSanitizeException will be thrown.
-         * @param string $modelClassName
-         * @param string $attributeName
          * @param mixed $value
-         * @param array $mappingRuleData
+         * @return sanitized value
+         * @throws InvalidValueToSanitizeException
          */
-        public static function sanitizeValue($modelClassName, $attributeName, $value, $mappingRuleData)
+        public function sanitizeValue($value)
         {
-            assert('is_string($modelClassName)');
-            assert('$attributeName == null');
-            assert('$mappingRuleData == null');
+            assert('$this->attributeName == null');
             if ($value == null)
             {
                 return $value;

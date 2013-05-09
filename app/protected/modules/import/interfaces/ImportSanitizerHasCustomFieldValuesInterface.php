@@ -35,42 +35,10 @@
      ********************************************************************************/
 
     /**
-     * Data analyzer for a user status attribute.
+     * Implemented by Import sanitizers that are sanitizing attributes that are a variation of CustomField
      */
-    class UserStatusBatchAttributeValueDataAnalyzer extends BatchAttributeValueDataAnalyzer
-                                                      implements DataAnalyzerInterface
+    interface ImportSanitizerHasCustomFieldValuesInterface
     {
-        public function __construct($modelClassName, $attributeName)
-        {
-            parent:: __construct($modelClassName, $attributeName);
-            assert('$attributeName == null');
-        }
-
-        public function runAndMakeMessages(AnalyzerSupportedDataProvider $dataProvider, $columnName)
-        {
-            assert('is_string($columnName)');
-            $this->processAndMakeMessage($dataProvider, $columnName);
-        }
-
-        protected function analyzeByValue($value)
-        {
-            if ($value != null &&
-               strtolower($value) != strtolower(UserStatusUtil::ACTIVE) &&
-               strtolower($value) == strtolower(UserStatusUtil::INACTIVE))
-            {
-                $this->messageCountData[static::INVALID]++;
-            }
-        }
-
-        protected function makeMessages()
-        {
-            $invalid  = $this->messageCountData[static::INVALID];
-            if ($invalid > 0)
-            {
-                $label   = '{count} user status value(s) are not valid. ';
-                $label  .= 'Users that have these values will be set to active upon import.';
-                $this->addMessage(Zurmo::t('UsersModule', $label, array('{count}' => $invalid)));
-            }
-        }
+        public function getMissingCustomFieldValues();
     }
 ?>

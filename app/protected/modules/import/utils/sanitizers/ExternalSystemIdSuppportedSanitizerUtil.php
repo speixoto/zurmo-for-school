@@ -44,6 +44,8 @@
          * not found, a NotFoundException will be thrown.  Otherwise the model will be made and returned.
          * @param string $id
          * @param string $modelClassName
+         * @return RedBeanModel $model
+         * @throws NotFoundException
          */
         public static function getModelByExternalSystemIdAndModelClassName($id, $modelClassName)
         {
