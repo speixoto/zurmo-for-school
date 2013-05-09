@@ -44,7 +44,8 @@
 
         protected function renderControlNonEditable()
         {
-            // TODO: @Shoaibi/@Jason: Critical: Is This alright? no exception.
+            // TODO: @Shoaibi: Critical: Uncomment following and figure out a way to let details action run independently
+            // throw new NotSupportedException();
         }
 
         protected function renderControlEditable()
