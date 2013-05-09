@@ -34,12 +34,23 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class AutoresponderCreateLinkActionElement extends CreateLinkActionElement
+    class CancelDashboardLinkActionElement extends CancelToListLinkActionElement
     {
-        public function __construct($controllerId, $moduleId, $modelId, $params = array())
+        
+        protected function getDefaultRoute()
         {
-            $moduleId = 'autoresponders';
-            parent::__construct($controllerId, $moduleId, $modelId, $params);
+            if (Yii::app()->request->getParam('redirectUrl') != null)
+            {
+                return Yii::app()->request->getParam('redirectUrl');
+            }
+            elseif (!empty($this->modelId) && $this->modelId > 0)
+            {
+                return Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/dashboardDetails/', array('id' => $this->modelId));
+            }
+            else
+            {
+                return Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId);
+            }
         }
     }
 ?>

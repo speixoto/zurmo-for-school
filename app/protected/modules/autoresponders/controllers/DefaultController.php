@@ -36,8 +36,6 @@
 
     class AutorespondersDefaultController extends ZurmoModuleController
     {
-        // TODO: @Shoaibi: Critical: Tests
-
         public static function getDetailsAndEditBreadcrumbLinks($marketingList)
         {
             $listsTitle                         = Zurmo::t('MarketingListsModule', 'Lists');
@@ -48,7 +46,7 @@
             return $breadcrumbs;
         }
 
-        public function actionCreate($marketingListId, $redirectUrl = null)
+        public function actionCreate($marketingListId, $redirectUrl)
         {
             $autoresponder                  = new Autoresponder();
             $autoresponder->marketingList   = MarketingList::getById(intval($marketingListId));
@@ -62,7 +60,7 @@
             echo $view->render();
         }
 
-        public function actionDetails($id, $redirectUrl = null)
+        public function actionDetails($id, $redirectUrl)
         {
             $autoresponder      = static::getModelAndCatchNotFoundAndDisplayError('Autoresponder', intval($id));
             $breadcrumbLinks    = static::getDetailsAndEditBreadcrumbLinks($autoresponder->marketingList);
@@ -75,7 +73,7 @@
             echo $view->render();
         }
 
-        public function actionEdit($id, $redirectUrl = null)
+        public function actionEdit($id, $redirectUrl)
         {
             $autoresponder      = Autoresponder::getById(intval($id));
             $model              = $this->attemptToSaveModelFromPost($autoresponder, $redirectUrl);
@@ -96,12 +94,6 @@
             {
                 $this->redirect($redirectUrl);
             }
-        }
-
-        protected static function getSearchFormClassName()
-        {
-            // TODO: @Shoaibi/@Jason: Critical: Do we need this? Or this class at all?
-            return 'AutorespondersSearchForm';
         }
     }
 ?>

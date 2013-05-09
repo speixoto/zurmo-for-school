@@ -55,7 +55,7 @@
         {
             if (!array_key_exists($element, $array))
             {
-                throw new NotSupportedException($element . " does not exist.");
+                throw new NotFoundException($element . " does not exist.");
             }
             else
             {

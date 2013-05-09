@@ -383,6 +383,24 @@
         /**
          * @depends testRegularUserEditActionForMarketing
          */
+        public function testRegularUserDetailsJsonActionForMarketing()
+        {
+            $emailTemplateId = self::getModelIdByModelNameAndName ('EmailTemplate', 'New Test Email Template 00');
+            $emailTemplate = EmailTemplate::getById($emailTemplateId);
+            $emailTemplateDataUtil = new ModelToArrayAdapter($emailTemplate);
+            $emailTemplateDetailsArray = $emailTemplateDataUtil->getData();
+            $this->assertNotEmpty($emailTemplateDetailsArray);
+            $this->setGetArray(array('id' => $emailTemplateId, 'renderJson' => true));
+            // @ to avoid headers already sent error.
+            $content = @$this->runControllerWithExitExceptionAndGetContent('emailTemplates/default/details');
+            $emailTemplateDetailsResolvedArray = CJSON::decode($content);
+            $this->assertNotEmpty($emailTemplateDetailsResolvedArray);
+            $this->assertEquals($emailTemplateDetailsArray, $emailTemplateDetailsResolvedArray);
+        }
+
+        /**
+         * @depends testRegularUserDetailsJsonActionForMarketing
+         */
         public function testRegularUserDetailsActionForMarketing()
         {
             $emailTemplateId = self::getModelIdByModelNameAndName ('EmailTemplate', 'New Test Email Template 00');
@@ -401,6 +419,24 @@
 
         /**
          * @depends testRegularUserEditActionForWorkflow
+         */
+        public function testRegularUserDetailsJsonActionForWorkflow()
+        {
+            $emailTemplateId = self::getModelIdByModelNameAndName ('EmailTemplate', 'New Test Workflow Email Template 00');
+            $emailTemplate = EmailTemplate::getById($emailTemplateId);
+            $emailTemplateDataUtil = new ModelToArrayAdapter($emailTemplate);
+            $emailTemplateDetailsArray = $emailTemplateDataUtil->getData();
+            $this->assertNotEmpty($emailTemplateDetailsArray);
+            $this->setGetArray(array('id' => $emailTemplateId, 'renderJson' => true));
+            // @ to avoid headers already sent error.
+            $content = @$this->runControllerWithExitExceptionAndGetContent('emailTemplates/default/details');
+            $emailTemplateDetailsResolvedArray = CJSON::decode($content);
+            $this->assertNotEmpty($emailTemplateDetailsResolvedArray);
+            $this->assertEquals($emailTemplateDetailsArray, $emailTemplateDetailsResolvedArray);
+        }
+
+        /**
+         * @depends testRegularUserDetailsJsonActionForWorkflow
          */
         public function testRegularUserDetailsActionForWorkflow()
         {
