@@ -35,9 +35,9 @@
      ********************************************************************************/
 
     /**
-     * Class that builds demo members.
+     * Class that builds demo autoresponderItems.
      */
-    class MarketingListMembersDemoDataMaker extends DemoDataMaker
+    class AutoresponderItemsDemoDataMaker extends DemoDataMaker
     {
         protected $ratioToLoad = 3;
 
@@ -50,32 +50,37 @@
         {
             assert('$demoDataHelper instanceof DemoDataHelper');
             assert('$demoDataHelper->isSetRange("Contact")');
-            assert('$demoDataHelper->isSetRange("MarketingList")');
+            assert('$demoDataHelper->isSetRange("Autoresponder")');
 
-            $members = array();
+            $items = array();
             for ($i = 0; $i < $this->resolveQuantityToLoad(); $i++)
             {
-                $member                 = new MarketingListMember();
-                $contact                = $demoDataHelper->getRandomByModelName('Contact');
-                $marketingList          = $demoDataHelper->getRandomByModelName('MarketingList');
-                if (!$marketingList->memberAlreadyExists($contact->id))
-                {
-                    $member->contact        = $contact;
-                    $member->marketingList  = $marketingList;
-                    $this->populateModel($member);
-                    $saved = $member->unrestrictedSave();
-                    assert('$saved');
-                    $members[]              = $member->id;
-                }
+                $item                   = new AutoresponderItem();
+                $item->autoresponder    = $demoDataHelper->getRandomByModelName('Autoresponder');
+                $item->contact          = $demoDataHelper->getRandomByModelName('Contact');
+                $this->populateModel($item);
+                $saved                  = $item->unrestrictedSave();
+                assert('$saved');
+                $items[]                = $item->id;
             }
-            $demoDataHelper->setRangeByModelName('MarketingListMember', $members[0], $members[count($members)-1]);
+            $demoDataHelper->setRangeByModelName('AutoresponderItem', $items[0], $items[count($items)-1]);
         }
 
         public function populateModel(& $model)
         {
-            assert('$model instanceof MarketingListMember');
+            assert('$model instanceof AutoresponderItem');
             parent::populateModel($model);
-            $model->unsubscribed    = (rand() % 2);
+            $model->processed       = (rand() % 2);
+            $difference             = rand(1000, 6000);
+            if ($model->processed)
+            {
+                $processTimestamp = time() - $difference;
+            }
+            else
+            {
+                $processTimestamp = time() + $difference;
+            }
+            $model->processDateTime = DateTimeUtil::convertTimestampToDbFormatDateTime($processTimestamp);
         }
     }
 ?>

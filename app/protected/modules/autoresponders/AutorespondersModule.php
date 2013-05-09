@@ -69,13 +69,12 @@
             return $metadata;
         }
 
-        /*
         public static function getDemoDataMakerClassNames()
         {
+            // TODO: @Shoaibi/@Jason: Critical: Should we load demo data for items, activities? if so, also load for urls
             return array('AutorespondersDemoDataMaker',
-                            'AutoresponderItemsDemoDataMaker',
-                            'AutoresponderItemActivitiesDemoDataMaker');
+                            'AutoresponderItemsDemoDataMaker');//,
+                            //'AutoresponderItemActivitiesDemoDataMaker');
         }
-        */
     }
 ?>
