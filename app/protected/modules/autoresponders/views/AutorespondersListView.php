@@ -103,6 +103,8 @@
 
         public static function getSummaryCloneQueryPath()
         {
+            // TODO: @Shoaibi/@Amit: Should we show summary for AR?
+            // TODO: @Shoaibi/@Amit: Critical: Style and position this summary clone
             return "function() { return $(this).parent().find('.list-view-items-summary-clone'); }";
         }
 

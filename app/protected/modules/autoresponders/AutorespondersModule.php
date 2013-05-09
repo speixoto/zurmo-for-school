@@ -53,13 +53,6 @@
             return 'Autoresponder';
         }
 
-        /*
-        public static function getGlobalSearchFormClassName()
-        {
-            return 'AutorespondersSearchForm';
-        }
-        */
-
         public static function modelsAreNeverGloballySearched()
         {
             return true;

@@ -198,10 +198,16 @@
             echo $view->render();
         }
 
-        public function actionDetails($id)
+        public function actionDetails($id, $renderJson = false)
         {
             $emailTemplate = static::getModelAndCatchNotFoundAndDisplayError('EmailTemplate', intval($id));
             ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($emailTemplate);
+            if ($renderJson)
+            {
+                header('Content-type: application/json');
+                echo $this->resolveEmailTemplateAsJson($emailTemplate);
+                Yii::app()->end(0, false);
+            }
             AuditEvent::logAuditEvent('ZurmoModule', ZurmoModule::AUDIT_EVENT_ITEM_VIEWED, array(strval($emailTemplate),
                                         'EmailTemplatesModule'), $emailTemplate);
             $detailsView              = new EmailTemplateEditAndDetailsView('Details', $this->getId(),
@@ -228,6 +234,12 @@
                 throw new NotSupportedException();
             }
             echo $view->render();
+        }
+
+        protected function resolveEmailTemplateAsJson(EmailTemplate $emailTemplate)
+        {
+            $emailTemplateDataUtil = new ModelToArrayAdapter($emailTemplate);
+            return CJSON::encode($emailTemplateDataUtil->getData());
         }
 
         protected static function getSearchFormClassName()

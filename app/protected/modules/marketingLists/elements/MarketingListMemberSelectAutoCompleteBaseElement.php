@@ -112,8 +112,13 @@
                                 {
                                     url:        url,
                                     dataType:   "json",
-                                    data:       { marketingListId: modelId, id: ui.item.id, type: selectType },
-                                    beforeSend: function(request, settings) {
+                                    data:       {
+                                                    marketingListId: modelId,
+                                                    id: ui.item.id,
+                                                     type: selectType
+                                                },
+                                    beforeSend: function(request, settings)
+                                                {
                                                     makeSmallLoadingSpinner(listGridViewId);
                                                     $("#" + listGridViewId).addClass("loading");
                                                     if (disableTextBox == true)
@@ -125,18 +130,21 @@
                                                         $("." + radioButtonClass).attr("disabled", "disabled");
                                                     }
                                                 },
-                                    success:    function(data, status, request) {
+                                    success:    function(data, status, request)
+                                                {
                                                     $("#" + listGridViewId).find(".pager").find(".refresh").find("a").click();
                                                     updateFlashBar(data, notificationBarId);
                                                 },
-                                    error:      function(request, status, error) {
+                                    error:      function(request, status, error)
+                                                {
                                                     var data = {' . // Not Coding Standard
                                                                 '   "message" : "' . Zurmo::t('MarketingListsModule', 'There was an error processing your request'). '",
                                                                     "type"    : "error"
                                                                 };
                                                     updateFlashBar(data, notificationBarId);
                                                 },
-                                    complete:   function(request, status) {
+                                    complete:   function(request, status)
+                                                {
                                                     $(searchBox).removeAttr("disabled");
                                                     $(searchBox).val("");
                                                     $("." + radioButtonClass).removeAttr("disabled");
