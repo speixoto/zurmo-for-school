@@ -38,12 +38,12 @@
     {
         public static function getAttributeTypeDisplayName()
         {
-            return Zurmo::t('DesignerModule', 'Product Template Type Dropdown');
+            return Zurmo::t('DesignerModule', 'Catalog Item Type Dropdown');
         }
 
         public static function getAttributeTypeDisplayDescription()
         {
-            return Zurmo::t('DesignerModule', 'Product Template Type Dropdown Values');
+            return Zurmo::t('DesignerModule', 'Catalog Item Type Dropdown Values');
         }
 
         public function getAttributeTypeName()

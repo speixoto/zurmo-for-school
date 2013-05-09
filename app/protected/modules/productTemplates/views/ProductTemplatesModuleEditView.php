@@ -41,13 +41,13 @@
             $metadata = parent::getDefaultMetadata();
             $metadata['global']['panels'][0]['rows'][] =
                 array('cells' =>
-                array(
                     array(
-                        'elements' => array(
-                            array('attributeName' => 'stageToProbabilityMapping', 'type' => 'StageToProbabilityMapping'),
+                        array(
+                            'elements' => array(
+                                array('attributeName' => 'stageToProbabilityMapping', 'type' => 'StageToProbabilityMapping'),
+                            ),
                         ),
                     ),
-                ),
                 );
             return $metadata;
         }

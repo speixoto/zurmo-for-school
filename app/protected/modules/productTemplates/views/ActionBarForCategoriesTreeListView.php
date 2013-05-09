@@ -39,7 +39,7 @@
      */
     class ActionBarForCategoriesTreeListView extends ActionBarForSecurityTreeListView
     {
-	public static function getDefaultMetadata()
+        public static function getDefaultMetadata()
         {
             $metadata = array(
                 'global' => array(

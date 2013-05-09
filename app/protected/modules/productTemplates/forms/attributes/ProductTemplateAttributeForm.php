@@ -38,17 +38,17 @@
     {
         public static function getAttributeTypeDisplayName()
         {
-            return Zurmo::t('ProductTemplatesModule', 'ProductTemplate');
+            return Zurmo::t('ProductTemplatesModule', 'CatalogItem');
         }
 
         public static function getAttributeTypeDisplayDescription()
         {
-            return Zurmo::t('ProductTemplatesModule', 'A product template field');
+            return Zurmo::t('ProductTemplatesModule', 'A catalog item field');
         }
 
         public function getAttributeTypeName()
         {
-            return 'Product Template';
+            return 'ProductTemplate';
         }
     }
 ?>

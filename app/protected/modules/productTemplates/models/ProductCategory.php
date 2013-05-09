@@ -27,9 +27,7 @@
     class ProductCategory extends Item
     {
         const EVERYONE_CATEGORY_NAME            = 'Everyone';
-
         const ERROR_EXIST_TEMPLATE              = 1;
-
         const ERROR_EXIST_CHILD_CATEGORIES      = 2;
 
         public static function getByName($name)

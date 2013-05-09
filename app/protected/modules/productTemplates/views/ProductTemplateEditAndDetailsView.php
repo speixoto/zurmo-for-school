@@ -40,7 +40,7 @@
                     'nonPlaceableAttributeNames' => array(
                         'owner',
                     ),
-                'derivedAttributeTypes' => array(
+                    'derivedAttributeTypes' => array(
                         'MultipleProductCategoriesForProductTemplate',
                     ),
                     'panelsDisplayType' => FormLayout::PANELS_DISPLAY_TYPE_ALL,

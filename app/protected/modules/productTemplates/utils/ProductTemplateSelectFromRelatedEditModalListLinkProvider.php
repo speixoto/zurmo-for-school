@@ -39,7 +39,7 @@
      */
     class ProductTemplateSelectFromRelatedEditModalListLinkProvider extends ModalListLinkProvider
     {
-	/**
+        /**
          * Id of input field in display for saving back a selected
          * record from the modal list view.
          * @see $sourceIdFieldId

@@ -37,7 +37,6 @@ function addProductRowToPortletGridView(productTemplateId, url, relationAttribut
             success: function(dataOrHtml, textStatus, xmlReq)
                      {
                          processAjaxSuccessUpdateHtmlOrShowDataOnFailure(dataOrHtml, uniquePortletPageId);
-                         //$("#product-portlet-grid-view").yiiGridView.update("product-portlet-grid-view");
                      },
             complete:function(XMLHttpRequest, textStatus)
                      {

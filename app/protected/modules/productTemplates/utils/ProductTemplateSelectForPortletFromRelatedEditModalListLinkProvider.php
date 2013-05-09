@@ -39,7 +39,7 @@
      */
     class ProductTemplateSelectForPortletFromRelatedEditModalListLinkProvider extends ModalListLinkProvider
     {
-	/**
+        /**
          * Id of input field in display for saving back a selected
          * record from the modal list view.
          * @see $sourceIdFieldId
@@ -53,7 +53,7 @@
          */
         protected $sourceNameFieldId;
 
-	/**
+        /**
          * sourceIdFieldName and sourceNameFieldId are needed to know
          * which fields in the parent form to populate data with
          * upon selecting a row in the listview

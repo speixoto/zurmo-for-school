@@ -166,7 +166,7 @@
             );
         }
 
-	public static function getProductTemplatePriceFrequencyDropdownArray()
+        public static function getProductTemplatePriceFrequencyDropdownArray()
         {
             return array(
                 ProductTemplate::PRICE_FREQUENCY_ONE_TIME  => Yii::t('Default', 'One Time'),

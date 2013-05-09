@@ -27,9 +27,7 @@
     class ProductTemplatesModule extends SecurableModule
     {
         const RIGHT_CREATE_PRODUCT_TEMPLATES = 'Create ProductTemplates';
-
         const RIGHT_DELETE_PRODUCT_TEMPLATES = 'Delete ProductTemplates';
-
         const RIGHT_ACCESS_PRODUCT_TEMPLATES = 'Access ProductTemplates Tab';
 
         public function getDependencies()
@@ -70,7 +68,7 @@
                 ),
                 'tabMenuItems' => array(
                     array(
-                        'label' => "eval:Zurmo::t('ProductTemplatesModule', 'ProductTemplatesModulePluralLabel', \$translationParams)",
+                        'label' => "eval:Zurmo::t('ProductTemplatesModule', 'Catalog Items', \$translationParams)",
                         'url'   => array('/productTemplates/default'),
                         'right' => self::RIGHT_ACCESS_PRODUCT_TEMPLATES,
                     ),
@@ -93,17 +91,17 @@
 
         public static function getSingularCamelCasedName()
         {
-            return 'ProductTemplate';
+            return 'CatalogItem';
         }
 
         protected static function getSingularModuleLabel($language)
         {
-            return Zurmo::t('ProductTemplatesModule', 'Product Template', array(), null, $language);
+            return Zurmo::t('ProductTemplatesModule', 'Catalog Item', array(), null, $language);
         }
 
         protected static function getPluralModuleLabel($language)
         {
-            return Zurmo::t('ProductTemplatesModule', 'Product Templates', array(), null, $language);
+            return Zurmo::t('ProductTemplatesModule', 'Catalog Items', array(), null, $language);
         }
 
         public static function getAccessRight()

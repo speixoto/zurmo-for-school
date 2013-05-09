@@ -99,7 +99,7 @@
 
         protected function getNameForIdField()
         {
-                return 'ProductTemplateCategoriesForm[categoryIds]';
+            return 'ProductTemplateCategoriesForm[categoryIds]';
         }
 
         protected function getIdForIdField()
