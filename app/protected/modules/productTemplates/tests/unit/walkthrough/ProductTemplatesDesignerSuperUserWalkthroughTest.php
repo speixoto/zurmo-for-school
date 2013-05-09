@@ -77,10 +77,10 @@
             $this->runControllerWithNoExceptionsAndGetContent('designer/default/moduleLayoutsList');
 
             //Now confirm everything did in fact save correctly.
-            $this->assertEquals('Product Template',  ProductTemplatesModule::getModuleLabelByTypeAndLanguage('Singular'));
-            $this->assertEquals('Product Templates', ProductTemplatesModule::getModuleLabelByTypeAndLanguage('Plural'));
-            $this->assertEquals('product template',  ProductTemplatesModule::getModuleLabelByTypeAndLanguage('SingularLowerCase'));
-            $this->assertEquals('product templates', ProductTemplatesModule::getModuleLabelByTypeAndLanguage('PluralLowerCase'));
+            $this->assertEquals('Catalog Item',  ProductTemplatesModule::getModuleLabelByTypeAndLanguage('Singular'));
+            $this->assertEquals('Catalog Items', ProductTemplatesModule::getModuleLabelByTypeAndLanguage('Plural'));
+            $this->assertEquals('catalog item',  ProductTemplatesModule::getModuleLabelByTypeAndLanguage('SingularLowerCase'));
+            $this->assertEquals('catalog items', ProductTemplatesModule::getModuleLabelByTypeAndLanguage('PluralLowerCase'));
 
             //Load LayoutEdit for each applicable module and applicable layout
             $this->resetPostArray();
