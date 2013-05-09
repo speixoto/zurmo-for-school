@@ -245,7 +245,7 @@
             $this->runControllerWithNoExceptionsAndGetContent('accounts/default/details');
             $this->runControllerWithNoExceptionsAndGetContent('accounts/default/list');
             $this->setGetArray(array(
-                'modalTransferInformation' => array('sourceIdFieldId' => 'x', 'sourceNameFieldId' => 'y')
+                'modalTransferInformation' => array('sourceIdFieldId' => 'x', 'sourceNameFieldId' => 'y', 'modalId' => 'z')
             ));
             $this->resetPostArray();
             $this->runControllerWithNoExceptionsAndGetContent('accounts/default/modalList');

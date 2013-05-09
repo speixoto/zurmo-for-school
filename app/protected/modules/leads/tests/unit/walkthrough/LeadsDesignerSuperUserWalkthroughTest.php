@@ -225,7 +225,7 @@
             $this->runControllerWithNoExceptionsAndGetContent('leads/default/details');
             $this->runControllerWithNoExceptionsAndGetContent('leads/default/list');
             $this->setGetArray(array(
-                'modalTransferInformation' => array('sourceIdFieldId' => 'x', 'sourceNameFieldId' => 'y')
+                'modalTransferInformation' => array('sourceIdFieldId' => 'x', 'sourceNameFieldId' => 'y', 'modalId' => 'z')
             ));
             $this->resetPostArray();
             $this->runControllerWithNoExceptionsAndGetContent('leads/default/modalList');
