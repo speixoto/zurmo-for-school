@@ -53,26 +53,37 @@
          */
         protected $sourceNameFieldId;
 
+        protected $modalId;
+
         /**
          * sourceIdFieldName and sourceNameFieldId are needed to know
          * which fields in the parent form to populate data with
          * upon selecting a row in the listview
          *
          */
-        public function __construct($sourceIdFieldId, $sourceNameFieldId)
+        public function __construct($sourceIdFieldId, $sourceNameFieldId, $modalId = null)
         {
             assert('is_string($sourceIdFieldId)');
             assert('is_string($sourceNameFieldId)');
             $this->sourceIdFieldId   = $sourceIdFieldId;
             $this->sourceNameFieldId = $sourceNameFieldId;
+            $this->modalId           = $modalId;
         }
 
         public function getLinkString($attributeString)
         {
+            if($this->modalId == null)
+            {
+                $modalId = 'modalContainer';
+            }
+            else
+            {
+                $modalId = $this->modalId;
+            }
             $url = Yii::app()->createUrl("productTemplates/default/details");
             $string  = 'ZurmoHtml::link(';
             $string .= $attributeString . ', ';
-            $string .= '"javascript:transferModalValues(\"#modalContainer\", " . CJavaScript::encode(array(\'' . $this->sourceIdFieldId . '\' => $data->id, \'' . $this->sourceNameFieldId . '\' => strval(' . $attributeString . '))) . ");
+            $string .= '"javascript:transferModalValues(\"#' . $modalId . '\", " . CJavaScript::encode(array(\'' . $this->sourceIdFieldId . '\' => $data->id, \'' . $this->sourceNameFieldId . '\' => strval(' . $attributeString . '))) . ");
 			copyProductTemplateDataForProduct(\'$data->id\', \'' . $url . '\')"';
             $string .= ')';
             return $string;

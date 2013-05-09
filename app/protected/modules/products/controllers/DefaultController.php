@@ -221,6 +221,10 @@
          */
         public function actionMassDelete()
         {
+            $title           = Zurmo::t('ProductTemplatesModule', 'Mass Delete Products');
+            $breadcrumbLinks = array(
+                 $title,
+            );
             $pageSize		    = Yii::app()->pagination->resolveActiveForCurrentUserByType('massDeleteProgressPageSize');
             $product		    = new Product(false);
 
@@ -248,7 +252,7 @@
                                                              ProductsModule::getModuleLabelByTypeAndLanguage('Plural')
                                                             );
             $view               = new ProductsPageView(ZurmoDefaultViewUtil::
-                                                    makeStandardViewForCurrentUser($this, $massDeleteView));
+                                                            makeViewWithBreadcrumbsForCurrentUser($this, $massDeleteView, $breadcrumbLinks, 'ProductBreadCrumbView'));
             echo $view->render();
         }
 

@@ -79,8 +79,8 @@
 								    'SecuredActionBarForProductsSearchAndListView',
 								    null, $activeActionElementType);
                 $view	    = new ProductTemplatesPageView(ProductDefaultViewUtil::
-							   makeViewWithBreadcrumbsForCurrentUser(
-							   $this, $mixedView, $breadcrumbLinks, 'ProductBreadCrumbView'));
+                                                               makeViewWithBreadcrumbsForCurrentUser(
+                                                                    $this, $mixedView, $breadcrumbLinks, 'ProductBreadCrumbView'));
             }
             echo $view->render();
         }
@@ -116,8 +116,8 @@
             ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($productTemplate);
             $detailsView        = new ProductTemplateDetailsView($this->getId(), $this->getModule()->getId(), $productTemplate);
             $view		= new ProductTemplatesPageView(ProductDefaultViewUtil::
-									makeViewWithBreadcrumbsForCurrentUser(
-										$this, $detailsView, $breadcrumbLinks, 'ProductBreadCrumbView'));
+                                                            makeViewWithBreadcrumbsForCurrentUser(
+                                                                $this, $detailsView, $breadcrumbLinks, 'ProductBreadCrumbView'));
             echo $view->render();
         }
 
@@ -246,6 +246,10 @@
          */
         public function actionMassDelete()
         {
+            $title           = Zurmo::t('ProductTemplatesModule', 'Mass Delete Catalog Items');
+            $breadcrumbLinks = array(
+                 $title,
+            );
             $pageSize           = Yii::app()->pagination->resolveActiveForCurrentUserByType(
                                     'massDeleteProgressPageSize');
             $productTemplate    = new ProductTemplate(false);
@@ -283,7 +287,7 @@
                     'ProductTemplatesMassDeleteView'
                 );
                 $view = new ProductTemplatesPageView(ZurmoDefaultViewUtil::
-                                             makeStandardViewForCurrentUser($this, $massDeleteView));
+                                                        makeViewWithBreadcrumbsForCurrentUser($this, $massDeleteView, $breadcrumbLinks, 'ProductBreadCrumbView'));
                 echo $view->render();
             }
         }
@@ -318,7 +322,8 @@
         {
             $modalListLinkProvider = new ProductTemplateSelectFromRelatedEditModalListLinkProvider(
                                             $_GET['modalTransferInformation']['sourceIdFieldId'],
-                                            $_GET['modalTransferInformation']['sourceNameFieldId']
+                                            $_GET['modalTransferInformation']['sourceNameFieldId'],
+                                            $_GET['modalTransferInformation']['modalId']
             );
             echo ModalSearchListControllerUtil::
                  setAjaxModeAndRenderModalSearchList($this, $modalListLinkProvider);

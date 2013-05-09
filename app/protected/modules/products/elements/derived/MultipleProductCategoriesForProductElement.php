@@ -59,7 +59,7 @@
                                         'htmlOptions' => array(
                                         'disabled' => $this->getDisabledValue(),
 						    ),
-                                        'hintText' => Zurmo::t('ProductsModule', 'Type a ProductCategoriesModuleSingularLowerCaseLabel',
+                                        'hintText' => Zurmo::t('ProductsModule', 'Type a ' . ProductCategory::getModelLabelByTypeAndLanguage('SingularLowerCase'),
                                                                 LabelUtil::getTranslationParamsForAllModules())
             ));
             $cClipWidget->endClip();
