@@ -473,7 +473,7 @@
                                                     $stateMetadataAdapterClassName = null)
         {
             $portlet = Portlet::getById((int)$portletId);
-            
+
             $modalListLinkProvider = new ProductTemplateSelectFromRelatedListModalListLinkProvider(
                                             $relationAttributeName,
                                             (int)$relationModelId,

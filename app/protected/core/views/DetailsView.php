@@ -307,7 +307,7 @@
         /**
          * Return the model that will have its details displayed.
          */
-        protected function getModel()
+        public function getModel()
         {
             return $this->model;
         }

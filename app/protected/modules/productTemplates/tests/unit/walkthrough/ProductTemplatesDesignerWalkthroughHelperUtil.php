@@ -37,9 +37,9 @@
     /**
      * Helper functions to assist with testing designer walkthroughs specifically for product layouts.
      */
-    class ProductsDesignerWalkthroughHelperUtil
+    class ProductTemplatesDesignerWalkthroughHelperUtil
     {
-        public static function getProductEditAndDetailsViewLayoutWithAllCustomFieldsPlaced()
+        public static function getProductTemplateEditAndDetailsViewLayoutWithAllCustomFieldsPlaced()
         {
             return array(
                     'panels' => array(
@@ -57,49 +57,28 @@
                                 array('cells' =>
                                     array(
                                         array(
-                                            'element' => 'quantity',
+                                            'element' => 'description',
                                         ),
                                     )
                                 ),
                                 array('cells' =>
                                     array(
                                         array(
-                                            'element' => 'account',
+                                            'element' => 'priceFrequency',
                                         ),
                                     )
                                 ),
                                 array('cells' =>
                                     array(
                                         array(
-                                            'element' => 'contact',
+                                            'element' => 'cost',
                                         ),
                                     )
                                 ),
                                 array('cells' =>
                                     array(
                                         array(
-                                            'element' => 'opportunity',
-                                        ),
-                                    )
-                                ),
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'element' => 'products',
-                                        ),
-                                    )
-                                ),
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'element' => 'type',
-                                        ),
-                                    )
-                                ),
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'element' => 'pricefrequency',
+                                            'element' => 'listPrice',
                                         ),
                                     )
                                 ),
@@ -113,7 +92,21 @@
                                 array('cells' =>
                                     array(
                                         array(
-                                            'element' => 'stage',
+                                            'element' => 'type',
+                                        ),
+                                    )
+                                ),
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'element' => 'status',
+                                        ),
+                                    )
+                                ),
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'element' => 'sellPriceFormula',
                                         ),
                                     )
                                 ),
@@ -251,7 +244,7 @@
             );
         }
 
-        public static function getProductsSearchViewLayoutWithAllCustomFieldsPlaced()
+        public static function getProductTemplatesSearchViewLayoutWithAllCustomFieldsPlaced()
         {
             return array(
                     'panels' => array(
@@ -401,42 +394,28 @@
                                 array('cells' =>
                                     array(
                                         array(
-                                            'element' => 'quantity',
+                                            'element' => 'description',
                                         ),
                                     )
                                 ),
                                 array('cells' =>
                                     array(
                                         array(
-                                            'element' => 'account',
+                                            'element' => 'priceFrequency',
                                         ),
                                     )
                                 ),
                                 array('cells' =>
                                     array(
                                         array(
-                                            'element' => 'contact',
+                                            'element' => 'cost',
                                         ),
                                     )
                                 ),
                                 array('cells' =>
                                     array(
                                         array(
-                                            'element' => 'products',
-                                        ),
-                                    )
-                                ),
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'element' => 'type',
-                                        ),
-                                    )
-                                ),
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'element' => 'pricefrequency',
+                                            'element' => 'listPrice',
                                         ),
                                     )
                                 ),
@@ -450,14 +429,21 @@
                                 array('cells' =>
                                     array(
                                         array(
-                                            'element' => 'opportunity',
+                                            'element' => 'type',
                                         ),
                                     )
                                 ),
                                 array('cells' =>
                                     array(
                                         array(
-                                            'element' => 'stage',
+                                            'element' => 'status',
+                                        ),
+                                    )
+                                ),
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'element' => 'sellPriceFormula',
                                         ),
                                     )
                                 ),
@@ -498,7 +484,7 @@
         /**
          * Can be use for listView or relatedListView.
          */
-        public static function getProductsListViewLayoutWithAllStandardAndCustomFieldsPlaced()
+        public static function getProductTemplatesListViewLayoutWithAllStandardAndCustomFieldsPlaced()
         {
             return array(
                     'panels' => array(
@@ -514,42 +500,28 @@
                                 array('cells' =>
                                     array(
                                         array(
-                                            'element' => 'quantity',
+                                            'element' => 'description',
                                         ),
                                     )
                                 ),
                                 array('cells' =>
                                     array(
                                         array(
-                                            'element' => 'account',
+                                            'element' => 'priceFrequency',
                                         ),
                                     )
                                 ),
                                 array('cells' =>
                                     array(
                                         array(
-                                            'element' => 'contact',
+                                            'element' => 'cost',
                                         ),
                                     )
                                 ),
                                 array('cells' =>
                                     array(
                                         array(
-                                            'element' => 'products',
-                                        ),
-                                    )
-                                ),
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'element' => 'type',
-                                        ),
-                                    )
-                                ),
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'element' => 'pricefrequency',
+                                            'element' => 'listPrice',
                                         ),
                                     )
                                 ),
@@ -563,14 +535,21 @@
                                 array('cells' =>
                                     array(
                                         array(
-                                            'element' => 'opportunity',
+                                            'element' => 'type',
                                         ),
                                     )
                                 ),
                                 array('cells' =>
                                     array(
                                         array(
-                                            'element' => 'stage',
+                                            'element' => 'status',
+                                        ),
+                                    )
+                                ),
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'element' => 'sellPriceFormula',
                                         ),
                                     )
                                 ),
@@ -738,17 +717,17 @@
          * This function returns the necessary get parameters for the product search form
          * based on the product edited data.
          */
-        public static function fetchProductsSearchFormGetData($accountId, $superUserId, $currencyId)
+        public static function fetchProductTemplatesSearchFormGetData()
         {
             return array(
-                            'name'               => 'myEditProduct',
-                            'owner'              => array('id' => $superUserId),
-                            'type'               => 1,
-                            'sellPrice'          => array ('currency' => array ('id' => $currencyId), 'value' => 200),
-                            'account'            => array('id' => $accountId),
-                            'quantity'           => 10,
-                            'stage'              => array('value' => 'Open'),
-                            'pricefrequency'     => 2,
+                            'name'               => 'myEditProductTemplate',
+                            'type'               => ProductTemplate::TYPE_PRODUCT,
+                            'description'        => 'Test Description',
+                            'sellPrice'          => array ( 'currency' => array ( 'id' => 1 ), 'value' => 200 ),
+                            'cost'               => array ( 'currency' => array ( 'id' => 1 ), 'value' => 200 ),
+                            'listPrice'          => array ( 'currency' => array ( 'id' => 1 ), 'value' => 200 ),
+                            'priceFrequency'     => 2,
+                            'status'             => ProductTemplate::STATUS_ACTIVE,
                             'decimalCstm'        => '12',
                             'integerCstm'        => '11',
                             'phoneCstm'          => '259-784-2069',
