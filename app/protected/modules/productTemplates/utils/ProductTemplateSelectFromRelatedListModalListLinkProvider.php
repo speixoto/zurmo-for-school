@@ -34,22 +34,23 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class ProductTemplatesMassDeleteView extends MassDeleteView
+    /**
+     * Class utilized by 'select' modal popup in the edit view
+     */
+    class ProductTemplateSelectFromRelatedListModalListLinkProvider extends SelectFromRelatedListModalListLinkProvider
     {
-        protected function renderOperationDescriptionContent()
+        public function getLinkString($attributeString)
         {
-            $highlight = ZurmoHtml::tag('em', array(), Zurmo::t('Core', 'Mass Delete is not reversable.'));
-            $message  = ZurmoHtml::tag('strong', array(), $highlight) .
-                        '<br />' . '<strong>' . $this->selectedRecordCount . '</strong>&#160;' .
-                        Zurmo::t('ProductTemplatesModule', 'Catalog Item|Catalog Items',
-                        array_merge(array($this->selectedRecordCount), LabelUtil::getTranslationParamsForAllModules())) .
-                        ' ' . Zurmo::t('Core', 'selected for removal.');
-            return ZurmoHtml::wrapLabel($message, 'operation-description');
-        }
-
-        public static function getDesignerRulesType()
-        {
-            return null;
+            $url = Yii::app()->createUrl("products/default/createProductFromProductTemplate", array('relationModuleId' => $this->relationModuleId,
+												    'portletId' => $this->portletId,
+												    'uniqueLayoutId' => $this->uniqueLayoutId));
+            $errorInProcess = CJavaScript::quote(Zurmo::t('Core', 'There was an error processing your request'));
+            $string  = 'ZurmoHtml::link(';
+            $string .= $attributeString . ', ';
+            $string .= '"javascript:addProductRowToPortletGridView(\'$data->id\', \'' . $url . '\', \'' . $this->relationAttributeName . '\', \'' . $this->relationModelId . '\'
+			    , \'' . $this->uniqueLayoutId . '\', \'' . $errorInProcess . '\')"';
+            $string .= ')';
+            return $string;
         }
     }
 ?>

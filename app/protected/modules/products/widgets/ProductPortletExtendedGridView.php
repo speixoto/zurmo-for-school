@@ -46,27 +46,27 @@
         {
             $relationModelClassName = get_class($this->params["relationModel"]);
             $relationModelId	    = $this->params["relationModel"]->id;
-            $relationModel	    = $relationModelClassName::getById($relationModelId);
-            $models		    = $relationModel->products;
-            $oneTimeTotal	    = 0;
-            $monthlyTotal	    = 0;
-            $annualTotal	    = 0;
+            $relationModel          = $relationModelClassName::getById($relationModelId);
+            $models                 = $relationModel->products;
+            $oneTimeTotal           = 0;
+            $monthlyTotal           = 0;
+            $annualTotal            = 0;
             foreach($models as $model)
             {
-            if($model->pricefrequency == ProductTemplate::PRICE_FREQUENCY_ONE_TIME)
-            {
-                $oneTimeTotal += $model->sellPrice->value * $model->quantity;
-            }
+                if($model->pricefrequency == ProductTemplate::PRICE_FREQUENCY_ONE_TIME)
+                {
+                    $oneTimeTotal += $model->sellPrice->value * $model->quantity;
+                }
 
-            if($model->pricefrequency == ProductTemplate::PRICE_FREQUENCY_MONTHLY)
-            {
-                $monthlyTotal += $model->sellPrice->value * $model->quantity;
-            }
+                if($model->pricefrequency == ProductTemplate::PRICE_FREQUENCY_MONTHLY)
+                {
+                    $monthlyTotal += $model->sellPrice->value * $model->quantity;
+                }
 
-            if($model->pricefrequency == ProductTemplate::PRICE_FREQUENCY_ANNUALLY)
-            {
-                $annualTotal += $model->sellPrice->value * $model->quantity;
-            }
+                if($model->pricefrequency == ProductTemplate::PRICE_FREQUENCY_ANNUALLY)
+                {
+                    $annualTotal += $model->sellPrice->value * $model->quantity;
+                }
             }
 
             $currencySymbol	    = Yii::app()->locale->getCurrencySymbol(Yii::app()->currencyHelper->getCodeForCurrentUserForDisplay());

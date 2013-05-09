@@ -42,9 +42,9 @@ function addProductRowToPortletGridView(productTemplateId, url, relationAttribut
             complete:function(XMLHttpRequest, textStatus)
                      {
                        $('#modalContainer').dialog('close');
-                       $('#product_opportunity_name').val('');
-                       $('#product_opportunity_id').val('');
-                       $('#product-configuration-form').hide('slow');
+                       //$('#product_opportunity_name').val('');
+                       //$('#product_opportunity_id').val('');
+                       //$('#product-configuration-form').hide('slow');
                        //juiPortlets.refresh();
                      },
             error:function(xhr, textStatus, errorThrown)

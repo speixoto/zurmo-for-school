@@ -46,10 +46,7 @@
                             array('type' => 'SaveButton'),
                         ),
                     ),
-                    'nonPlaceableAttributeNames' => array(
-                        'name',
-                        'probability',
-                    ),
+                    'nonPlaceableAttributeNames' => array(),
                     'panelsDisplayType' => FormLayout::PANELS_DISPLAY_TYPE_ALL,
                     'panels' => array(
                         array(
@@ -123,6 +120,11 @@
                 ),
             );
             return $metadata;
+        }
+
+        public static function getDesignerRulesType()
+        {
+            return null;
         }
     }
 ?>

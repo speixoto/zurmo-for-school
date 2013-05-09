@@ -319,14 +319,11 @@
                             $content .= '<div class="' . $cssClassName . ' droppable-cell-container-helper ui-state-hover">';
                         }
 
-                        $nonConfigurableLayoutAttributes = $this->getNonConfigurableLayoutAttributes();
-
                         if (is_array($cell['elements']))
                         {
                             assert('count($cell["elements"]) == 1');
                             $elementInformation = $cell['elements'][0];
-                            if ($elementInformation['attributeName'] != null &&
-                                !in_array($elementInformation['attributeName'], $nonConfigurableLayoutAttributes))
+                            if ($elementInformation['attributeName'] != null)
                             {
                                 $attribute = $this->designerLayoutAttributes->getByAttributeNameAndType(
                                     $elementInformation['attributeName'],
@@ -500,16 +497,6 @@
                 );");
             echo $this->renderLayoutTools();
             echo $this->renderLayout();
-        }
-
-        protected function getNonConfigurableLayoutAttributes()
-        {
-            if (isset($this->viewMetadata['global']['nonConfigurableLayoutAttributes']))
-            {
-                assert('is_array($this->viewMetadata["global"]["nonConfigurableLayoutAttributes"])');
-                return $this->viewMetadata['global']['nonConfigurableLayoutAttributes'];
-            }
-            return array();
         }
     }
 ?>

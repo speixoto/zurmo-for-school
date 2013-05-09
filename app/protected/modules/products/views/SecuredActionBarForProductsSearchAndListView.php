@@ -57,10 +57,6 @@
                                 'htmlOptions'     => array( 'class' => 'icon-workflows' )
                             ),
                             array(
-                                'type'            => EmailTemplatesForWorkflowLinkActionElement::getType(),
-                                'htmlOptions'     => array( 'class' => 'icon-email-templates' )
-                            ),
-                            array(
                                 'type'            => 'ProductTemplatesLink',
                                 'htmlOptions'     => array( 'class' => 'icon-by-time-workflow-in-queues' )
                             ),

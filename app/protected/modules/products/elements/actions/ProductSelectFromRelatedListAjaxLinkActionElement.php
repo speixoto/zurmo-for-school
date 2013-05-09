@@ -34,22 +34,25 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class ProductTemplatesMassDeleteView extends MassDeleteView
+    class ProductSelectFromRelatedListAjaxLinkActionElement extends SelectFromRelatedListAjaxLinkActionElement
     {
-        protected function renderOperationDescriptionContent()
+        protected function getDefaultRoute()
         {
-            $highlight = ZurmoHtml::tag('em', array(), Zurmo::t('Core', 'Mass Delete is not reversable.'));
-            $message  = ZurmoHtml::tag('strong', array(), $highlight) .
-                        '<br />' . '<strong>' . $this->selectedRecordCount . '</strong>&#160;' .
-                        Zurmo::t('ProductTemplatesModule', 'Catalog Item|Catalog Items',
-                        array_merge(array($this->selectedRecordCount), LabelUtil::getTranslationParamsForAllModules())) .
-                        ' ' . Zurmo::t('Core', 'selected for removal.');
-            return ZurmoHtml::wrapLabel($message, 'operation-description');
+            return Yii::app()->createUrl('productTemplates/' . $this->controllerId . '/selectFromRelatedList/',
+                    array(
+                    'uniqueLayoutId'          => $this->getUniqueLayoutId(),
+                    'portletId'               => $this->getPortletId(),
+                    'relationAttributeName'   => $this->params['relationAttributeName'],
+                    'relationModelId'         => $this->params['relationModelId'],
+                    'relationModuleId'        => $this->params['relationModuleId'],
+                    'relationModelClassName'  => $this->getRelationModelClassName(),
+                    )
+            );
         }
 
-        public static function getDesignerRulesType()
+        protected function getDefaultLabel()
         {
-            return null;
+            return Zurmo::t('Core', 'Select from Catalog');
         }
     }
 ?>

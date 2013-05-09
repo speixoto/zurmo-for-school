@@ -60,11 +60,11 @@
         public function __construct($model, $relationAttributeName, $form, array $params, $portletId, $uniqueLayoutId,
                         $relationModelId, $relationModuleId)
         {
-            $this->relationModelId	    = $relationModelId;
+            $this->relationModelId          = $relationModelId;
             $this->relationAttributeName    = $relationAttributeName;
-            $this->portletId		    = $portletId;
-            $this->uniqueLayoutId	    = $uniqueLayoutId;
-            $this->relationModuleId	    = $relationModuleId;
+            $this->portletId                = $portletId;
+            $this->uniqueLayoutId           = $uniqueLayoutId;
+            $this->relationModuleId         = $relationModuleId;
             parent::__construct($model, $relationAttributeName, $form, $params);
         }
 
@@ -74,20 +74,20 @@
         }
 
         protected function getModalTransferInformation()
-            {
-                $defaultModelTransferInformationArray =  array_merge(array(
-                                        'sourceIdFieldId' => $this->getIdForHiddenField(),
-                                        'sourceNameFieldId' => $this->getIdForTextField()
-                                    ), $this->resolveSourceModelIdForModalTransferInformation());
-                return array_merge($defaultModelTransferInformationArray, $this->resolveRelatedModelIdForModalTransferInformation());
-            }
+        {
+            $defaultModelTransferInformationArray =  array_merge(array(
+                                    'sourceIdFieldId' => $this->getIdForHiddenField(),
+                                    'sourceNameFieldId' => $this->getIdForTextField()
+                                ), $this->resolveSourceModelIdForModalTransferInformation());
+            return array_merge($defaultModelTransferInformationArray, $this->resolveRelatedModelIdForModalTransferInformation());
+        }
 
         protected function resolveRelatedModelIdForModalTransferInformation()
         {
             return array(
                     'relationModelId'		=> $this->relationModelId,
                     'relationAttributeName'	=> $this->relationAttributeName,
-                    'portletId'			=> $this->portletId,
+                    'portletId'             => $this->portletId,
                     'uniqueLayoutId'		=> $this->uniqueLayoutId,
                     'relationModuleId'		=> $this->relationModuleId
                 );

@@ -182,7 +182,6 @@
         protected function getAttributesInPlace()
         {
             $attributesInPlace = array();
-            $nonConfigurableLayoutAttributes = $this->getNonConfigurableLayoutAttributes();
             foreach ($this->metadata['global']['panels'] as $panel)
             {
                 foreach ($panel['rows'] as $row)
@@ -194,8 +193,7 @@
                             foreach ($cell['elements'] as $elementInformation)
                             {
                                 if ($elementInformation['type'] != 'Null' && // Not Coding Standard
-                                    $elementInformation['attributeName'] != 'null' &&
-                                        !in_array($elementInformation['attributeName'], $nonConfigurableLayoutAttributes))
+                                    $elementInformation['attributeName'] != 'null')
                                 {
                                     $attributesInPlace[] = $elementInformation['attributeName'];
                                 }
@@ -292,16 +290,6 @@
                 }
             }
             return $placedAttributes;
-        }
-
-        protected function getNonConfigurableLayoutAttributes()
-        {
-            if (isset($this->metadata['global']['nonConfigurableLayoutAttributes']))
-            {
-                assert('is_array($this->metadata["global"]["nonConfigurableLayoutAttributes"])');
-                return $this->metadata['global']['nonConfigurableLayoutAttributes'];
-            }
-            return array();
         }
     }
 ?>

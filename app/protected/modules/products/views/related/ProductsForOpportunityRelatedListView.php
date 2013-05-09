@@ -26,6 +26,61 @@
 
     class ProductsForOpportunityRelatedListView extends ProductsRelatedListView
     {
+        /**
+         * Override the panels and toolbar metadata.
+         */
+        public static function getDefaultMetadata()
+        {
+            $metadata = parent::getDefaultMetadata();
+            $metadata['global']['toolbar']['elements'][] =
+                                array('type'                 => 'ProductSelectFromRelatedListAjaxLink',
+                                    'portletId'              => 'eval:$this->params["portletId"]',
+                                    'relationAttributeName'  => 'eval:$this->getRelationAttributeName()',
+                                    'relationModelId'        => 'eval:$this->params["relationModel"]->id',
+                                    'relationModuleId'       => 'eval:$this->params["relationModuleId"]',
+                                    'uniqueLayoutId'         => 'eval:$this->uniqueLayoutId',
+                                //TODO: fix this 'eval' of $this->uniqueLayoutId above so that it can properly work being set/get from DB then getting evaluated
+                                //currently it will not work correctly since in the db it would store a static value instead of it still being dynamic
+                                    'ajaxOptions'            => 'eval:static::resolveAjaxOptionsForSelectList()',
+                                    'htmlOptions'            => array( 'id' => 'SelectProductsForOpportunityFromRelatedListLink',
+                                                                        'live' => false) //This is there are no double bindings
+            );
+            $metadata['global']['panels'] = array(
+                array(
+                    'rows' => array(
+                        array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'name', 'type' => 'Text'),
+                                            ),
+                                        ),
+                                    )
+                        ),
+                        array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'quantity', 'type' => 'Text'),
+                                            ),
+                                        ),
+                                    )
+                        ),
+                        array('cells' =>
+                            array(
+                                array(
+                                    'elements' => array(
+                                        array('attributeName' => 'sellPrice', 'type' => 'CurrencyValue'),
+                                    ),
+                                ),
+                            )
+                        ),
+                    ),
+                ),
+            );
+            return $metadata;
+        }
+
         protected function getRelationAttributeName()
         {
             return 'opportunity';
@@ -40,6 +95,14 @@
         protected function getUniquePageId()
         {
             return 'OpportunityProductsForPortletView';
+        }
+
+        protected static function resolveAjaxOptionsForSelectList()
+        {
+            $singularTitle = ProductTemplate::getModelLabelByTypeAndLanguage('Singular');
+            $title = Zurmo::t('ProductTemplatesModule', $singularTitle . ' Search',
+                            LabelUtil::getTranslationParamsForAllModules());
+            return ModalView::getAjaxOptionsForModalLink($title);
         }
     }
 ?>

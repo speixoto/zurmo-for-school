@@ -464,5 +464,27 @@
                 return false;
             }
         }
+
+        public function actionSelectFromRelatedList($portletId,
+                                                    $uniqueLayoutId,
+                                                    $relationAttributeName,
+                                                    $relationModelId,
+                                                    $relationModuleId,
+                                                    $stateMetadataAdapterClassName = null)
+        {
+            $portlet = Portlet::getById((int)$portletId);
+            
+            $modalListLinkProvider = new ProductTemplateSelectFromRelatedListModalListLinkProvider(
+                                            $relationAttributeName,
+                                            (int)$relationModelId,
+                                            $relationModuleId,
+                                            $portlet->getUniquePortletPageId(),
+                                            $uniqueLayoutId,
+                                            (int)$portlet->id,
+                                            $this->getModule()->getId()
+            );
+            echo ModalSearchListControllerUtil::
+                 setAjaxModeAndRenderModalSearchList($this, $modalListLinkProvider, $stateMetadataAdapterClassName);
+        }
     }
 ?>

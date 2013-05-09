@@ -38,11 +38,11 @@
     {
         public function renderGridViewData()
         {
-	    return array(
-                    'name'  => $this->attribute,
-                    'value' => array('ProductElementUtil' ,'getProductPortletTotalPrice'),
-                    'type'  => 'raw',
-                );
+            return array(
+                        'name'  => $this->attribute,
+                        'value' => array('ProductElementUtil' ,'getProductPortletTotalPrice'),
+                        'type'  => 'raw',
+                    );
         }
     }
 ?>
