@@ -99,12 +99,12 @@
 
         protected function getNameForIdField()
         {
-	    return 'ProductCategoriesForm[categoryIds]';
+            return 'ProductCategoriesForm[categoryIds]';
         }
 
         protected function getIdForIdField()
         {
-	    return 'ProductCategoriesForm_ProductCategory_ids';
+            return 'ProductCategoriesForm_ProductCategory_ids';
         }
 
         protected function getExistingProductCategoriesRelationsIdsAndLabels()

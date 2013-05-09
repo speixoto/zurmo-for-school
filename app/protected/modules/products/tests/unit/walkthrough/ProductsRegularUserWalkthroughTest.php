@@ -61,18 +61,6 @@
             ReadPermissionsOptimizationUtil::rebuild();
         }
 
-        public function testRegularUserAllControllerActions()
-        {
-            //Now test all portlet controller actions
-
-            //Now test peon with elevated rights to tabs /other available rights
-            //such as convert lead
-
-            //Now test peon with elevated permissions to models.
-
-            //Test peon create/select from sublist actions with none and elevated permissions
-        }
-
         public function testRegularUserAllControllerActionsNoElevation()
         {
             //Create product owned by user super.
@@ -118,7 +106,7 @@
             //Test nobody with elevated rights.
             Yii::app()->user->userModel = $nobody;
             $content = $this->runControllerWithNoExceptionsAndGetContent('products/default/list');
-            
+
             $this->assertFalse(strpos($content, 'John Kenneth Galbraith') === false);
             //TODO Need to ask Jason
             $this->runControllerWithNoExceptionsAndGetContent('products/default/create');
