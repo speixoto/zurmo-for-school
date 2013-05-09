@@ -40,6 +40,8 @@
      */
     class ParentProductCategoryElement extends ProductCategoryElement
     {
+        protected static $modalActionId = 'modalParentList';
+
         protected function renderControlEditable()
         {
             assert('$this->model instanceof ProductCategory');

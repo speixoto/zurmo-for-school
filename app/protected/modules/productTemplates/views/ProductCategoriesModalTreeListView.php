@@ -53,13 +53,15 @@
          */
         protected $sourceNameFieldId;
 
+        protected $modalId;
+
         /**
          * sourceIdFieldName and sourceNameFieldId are needed to know
          * which fields in the parent form to populate data with
          * upon selecting a row in the listview
          *
          */
-        public function __construct($controllerId, $moduleId, $modelId, $items, $sourceIdFieldId, $sourceNameFieldId)
+        public function __construct($controllerId, $moduleId, $modelId, $items, $sourceIdFieldId, $sourceNameFieldId, $modalId = null)
         {
             assert('$controllerId      != null');
             assert('$moduleId          != null');
@@ -72,6 +74,7 @@
             $this->items                  = $items;
             $this->sourceIdFieldId        = $sourceIdFieldId;
             $this->sourceNameFieldId      = $sourceNameFieldId;
+            $this->modalId                = $modalId;
         }
 
         /**
@@ -85,8 +88,16 @@
 
         protected function makeTreeMenuNodeLink($label, $action, $roleId)
         {
+            if($this->modalId == null)
+            {
+                $modalId = 'modalContainer';
+            }
+            else
+            {
+                $modalId = $this->modalId;
+            }
             return ZurmoHtml::Link($label,
-                    'javascript:transferModalValues("#modalContainer", ' . CJavaScript::encode(array($this->sourceIdFieldId  => $roleId,
+                    'javascript:transferModalValues("#' . $modalId . '", ' . CJavaScript::encode(array($this->sourceIdFieldId  => $roleId,
                         $this->sourceNameFieldId  => $label)) . '
                     );'
             );
