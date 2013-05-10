@@ -57,7 +57,7 @@
          */
         public function analyzeByRow(RedBean_OODBBean $rowBean)
         {
-            if ($this->mappingRuleData['defaultValue'] != null)
+            if (isset($this->mappingRuleData['defaultValue']) && $this->mappingRuleData['defaultValue'] != null)
             {
                 return;
             }
@@ -106,9 +106,9 @@
             }
         }
 
-        protected function assertMappingRuleDataIsValid()
+        public function shouldSanitizeValue()
         {
-            assert('$this->mappingRuleData["defaultValue"] == null || is_string($this->mappingRuleData["defaultValue"])');
+            return true;
         }
     }
 ?>

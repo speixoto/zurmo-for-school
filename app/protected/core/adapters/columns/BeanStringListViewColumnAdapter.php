@@ -34,59 +34,13 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * Sanitizer for resolving whether a value is too large based on an attribute's rules.
-     */
-    class TruncateSanitizerUtil extends SanitizerUtil
+    class BeanStringListViewColumnAdapter extends ListViewColumnAdapter
     {
-        /**
-         * @param RedBean_OODBBean $rowBean
-         */
-        public function analyzeByRow(RedBean_OODBBean $rowBean)
+        public function renderGridViewData()
         {
-            $maximumLength = $this->getMaximumLength();
-            if (strlen($rowBean->{$this->columnName}) > $maximumLength)
-            {
-                $label = Zurmo::t('ImportModule', '{columnName} is  too long. Maximum length is {maximumLength}. This value will truncated upon import',
-                                  array('{columnName}' => $this->columnName, '{maximumLength}' => $maximumLength));
-                $this->analysisMessages[] = $label;
-            }
-        }
-
-        /**
-         * Given a value, resolve that the value not too large for the attribute based on the attribute's type.  If
-         * the value is too large, then it is truncated.
-         * @param mixed $value
-         * @return sanitized value
-         */
-        public function sanitizeValue($value)
-        {
-            assert('$this->mappingRuleData == null');
-            $maxLength = $this->getMaximumLength();
-            if ($value == null)
-            {
-                return $value;
-            }
-            if (strlen($value) <= $maxLength)
-            {
-                return $value;
-            }
-            return substr($value, 0, $maxLength);
-        }
-
-        protected function assertMappingRuleDataIsValid()
-        {
-            assert('$this->mappingRuleData == null');
-        }
-
-        /**
-         * @return int|null minimum length
-         */
-        protected function getMaximumLength()
-        {
-            $modelClassName = $this->modelClassName;
-            $model          = new $modelClassName(false);
-            return StringValidatorHelper::getMaxLengthByModelAndAttributeName($model, $this->attributeName);
+            return array(
+                'name' => $this->attribute,
+            );
         }
     }
 ?>

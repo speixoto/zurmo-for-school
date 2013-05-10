@@ -233,45 +233,45 @@
         }
 
         public static function makeDropDownColumnMappingData($attributeName, $defaultValue = null,
-                                                             $customFieldsInstructionsData = null)
+                                                             $customFieldsInstructionData = null)
         {
-            if ($customFieldsInstructionsData == null)
+            if ($customFieldsInstructionData == null)
             {
-                $customFieldsInstructionsData = array(DropDownSanitizerUtil::ADD_MISSING_VALUE => array());
+                $customFieldsInstructionData = array(CustomFieldsInstructionData::ADD_MISSING_VALUE => array());
             }
             return array('attributeIndexOrDerivedType'  => $attributeName,
                          'type'                         => 'importColumn',
                          'mappingRulesData'             => array('DefaultValueDropDownModelAttributeMappingRuleForm' =>
                                                            array('defaultValue'=> $defaultValue)),
-                         'customFieldsInstructionsData' => $customFieldsInstructionsData);
+                         'customFieldsInstructionData' => $customFieldsInstructionData);
         }
 
         public static function makeMultiSelectDropDownColumnMappingData($attributeName, $defaultValue = null,
-                                                                        $customFieldsInstructionsData = null)
+                                                                        $customFieldsInstructionData = null)
         {
-            if ($customFieldsInstructionsData == null)
+            if ($customFieldsInstructionData == null)
             {
-                $customFieldsInstructionsData = array(DropDownSanitizerUtil::ADD_MISSING_VALUE => array());
+                $customFieldsInstructionData = array(CustomFieldsInstructionData::ADD_MISSING_VALUE => array());
             }
             return array('attributeIndexOrDerivedType'  => $attributeName,
                          'type'                         => 'importColumn',
                          'mappingRulesData'             => array('DefaultValueMultiSelectDropDownModelAttributeMappingRuleForm' =>
                                                            array('defaultValue' => $defaultValue)),
-                         'customFieldsInstructionsData' => $customFieldsInstructionsData);
+                         'customFieldsInstructionData' => $customFieldsInstructionData);
         }
 
         public static function makeTagCloudColumnMappingData($attributeName, $defaultValue = null,
-                                                             $customFieldsInstructionsData = null)
+                                                             $customFieldsInstructionData = null)
         {
-            if ($customFieldsInstructionsData == null)
+            if ($customFieldsInstructionData == null)
             {
-                $customFieldsInstructionsData = array(DropDownSanitizerUtil::ADD_MISSING_VALUE => array());
+                $customFieldsInstructionData = array(CustomFieldsInstructionData::ADD_MISSING_VALUE => array());
             }
             return array('attributeIndexOrDerivedType'  => $attributeName,
                          'type'                         => 'importColumn',
                          'mappingRulesData'             => array('DefaultValueMultiSelectDropDownModelAttributeMappingRuleForm' =>
                                                            array('defaultValue' => $defaultValue)),
-                         'customFieldsInstructionsData' => $customFieldsInstructionsData);
+                         'customFieldsInstructionData' => $customFieldsInstructionData);
         }
 
         public static function makeEmailColumnMappingData($attributeName, $defaultValue = null)

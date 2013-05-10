@@ -42,19 +42,6 @@
         protected $missingCustomFieldValues = array();
 
         /**
-         * Variable used to indicate a drop down value is missing from zurmo and will need to be added during import.
-         * @var string
-         */
-        const ADD_MISSING_VALUE = 'Add missing value';
-
-        /**
-         * Variable used to indicate a drop down value is missing from zurmo and will need to map to an existing value
-         * based on what is provided.
-         * @var string
-         */
-        const MAP_MISSING_VALUES = 'Map missing values';
-
-        /**
          * Override to support instructions for drop downs. An example is if there is a missing drop down value,
          * information is provided in the instructions explainnig whether to add the missing drop down, delete the value,
          * or merge the value into an existing drop down.
@@ -99,10 +86,10 @@
          */
         public function sanitizeValue($value)
         {
-            $customFieldsInstructionsData = $this->getCustomFieldsInstructionsDataFromColumnMappingData();
-            if (!isset($customFieldsInstructionsData[DropDownSanitizerUtil::ADD_MISSING_VALUE]))
+            $customFieldsInstructionData = $this->getCustomFieldsInstructionDataFromColumnMappingData();
+            if (!isset($customFieldsInstructionData[CustomFieldsInstructionData::ADD_MISSING_VALUE]))
             {
-                $customFieldsInstructionsData[DropDownSanitizerUtil::ADD_MISSING_VALUE] = array();
+                $customFieldsInstructionData[CustomFieldsInstructionData::ADD_MISSING_VALUE] = array();
             }
             if ($value == null)
             {
@@ -124,21 +111,21 @@
             {
                 //if the value does not already exist, then check the instructions data.
                 $lowerCaseValuesToAdd                = ArrayUtil::resolveArrayToLowerCase(
-                                                       $customFieldsInstructionsData[DropDownSanitizerUtil::ADD_MISSING_VALUE]);
+                                                       $customFieldsInstructionData[CustomFieldsInstructionData::ADD_MISSING_VALUE]);
                 if (in_array(TextUtil::strToLowerWithDefaultEncoding($value), $lowerCaseValuesToAdd))
                 {
                     $keyToAddAndUse                  = array_search(TextUtil::strToLowerWithDefaultEncoding($value), $lowerCaseValuesToAdd);
-                    $resolvedValueToUse              = $customFieldsInstructionsData[DropDownSanitizerUtil::ADD_MISSING_VALUE][$keyToAddAndUse];
+                    $resolvedValueToUse              = $customFieldsInstructionData[CustomFieldsInstructionData::ADD_MISSING_VALUE][$keyToAddAndUse];
                     $unserializedData                = unserialize($customFieldData->serializedData);
                     $unserializedData[]              = $resolvedValueToUse;
                     $customFieldData->serializedData = serialize($unserializedData);
                     $saved                           = $customFieldData->save();
                     assert('$saved');
                 }
-                elseif (isset($customFieldsInstructionsData[DropDownSanitizerUtil::MAP_MISSING_VALUES]))
+                elseif (isset($customFieldsInstructionData[CustomFieldsInstructionData::MAP_MISSING_VALUES]))
                 {
                     $lowerCaseMissingValuesToMap = ArrayUtil::resolveArrayToLowerCase(
-                                                   $customFieldsInstructionsData[DropDownSanitizerUtil::MAP_MISSING_VALUES]);
+                                                   $customFieldsInstructionData[CustomFieldsInstructionData::MAP_MISSING_VALUES]);
                     if (isset($lowerCaseMissingValuesToMap[TextUtil::strToLowerWithDefaultEncoding($value)]))
                     {
                         $keyToUse           = array_search($lowerCaseMissingValuesToMap[TextUtil::strToLowerWithDefaultEncoding($value)],
@@ -181,9 +168,13 @@
             assert('$this->mappingRuleData == null');
         }
 
-        protected function getCustomFieldsInstructionsDataFromColumnMappingData()
+        protected function getCustomFieldsInstructionDataFromColumnMappingData()
         {
-            $this->columnMappingData['customFieldsInstructionsData'];
+            if(isset($this->columnMappingData['customFieldsInstructionData']))
+            {
+                return $this->columnMappingData['customFieldsInstructionData'];
+            }
+            return null;
         }
     }
 ?>

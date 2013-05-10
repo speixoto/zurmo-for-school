@@ -153,9 +153,13 @@
 
         protected static function optimizeTableNonImportColumns($tableName)
         {
-            $bean         = R::dispense($tableName);
-            $bean->status = '2147483647'; //Creates an integer todo: optimize to status SET
-            $s            = chr(rand(ord('A'), ord('Z')));
+            $bean                 = R::dispense($tableName);
+            $bean->analysisstatus = '2147483647'; //Creates an integer todo: optimize to status SET
+            $bean->status         = '2147483647'; //Creates an integer todo: optimize to status SET
+            while (strlen($bean->serializedanalysismessages) < '1024')
+            {
+                $bean->serializedanalysismessages .= chr(rand(ord('a'), ord('z')));
+            }
             while (strlen($bean->serializedmessages) < '1024')
             {
                 $bean->serializedmessages .= chr(rand(ord('a'), ord('z')));
@@ -282,12 +286,12 @@
 
         /**
          * For the temporary import tables, some of the columns are reserved and not used by any of the import data
-         * coming from a csv.  This includes the id, status, and serializedMessages columns.
+         * coming from a csv.
          * @return array of column names.
          */
         public static function getReservedColumnNames()
         {
-            return array('id', 'status', 'serializedmessages');
+            return array('analysisstatus', 'id', 'serializedanalysismessages', 'serializedmessages', 'status');
         }
     }
 ?>

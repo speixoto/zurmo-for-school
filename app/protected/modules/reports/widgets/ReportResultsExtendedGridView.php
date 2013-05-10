@@ -34,8 +34,6 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    Yii::import('zii.widgets.grid.CGridView');
-
     /**
      * Extends the yii CGridView to provide additional functionality.
      * @see CGridView class

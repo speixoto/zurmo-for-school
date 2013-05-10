@@ -47,8 +47,9 @@
 
         protected $dataProvider;
 
-        protected static function resolvePageByParams(array $params)
+        protected static function resolvePageByParams($params)
         {
+            assert('$params === null || is_array($params)');
             if (!isset($params['page']))
             {
                 $page = 0;
@@ -60,15 +61,16 @@
             return $page;
         }
 
-        protected function resolveNextPagingAndParams($page, array $params)
+        protected function resolveNextPagingAndParams($page, $params)
         {
+            assert('$params === null || is_array($params)');
             $pageCount                             = $this->dataProvider->getPagination()->getPageCount();
             $pageSize                              = $this->dataProvider->getPagination()->getPageSize();
             $totalItemCount                        = $this->dataProvider->getTotalItemCount();
             $this->subSequenceCompletionPercentage = (($page + 1) / $pageCount) * 100;
             if (($page + 1) == $pageCount)
             {
-                $this->nextStep    = 'completeImport';
+                $this->nextStep    = 'complete';
                 $this->setNextMessageByStep($this->nextStep);
                 return null;
             }
@@ -94,6 +96,14 @@
                 $this->nextMessage .= $nextMessage;
                 return $params;
             }
+        }
+
+        protected function complete()
+        {
+            $this->nextStep    = null;
+            $this->nextMessage = null;
+            $this->complete    = true;
+            return null;
         }
     }
 ?>

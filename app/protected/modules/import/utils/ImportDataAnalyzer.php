@@ -42,6 +42,12 @@
      */
     class ImportDataAnalyzer
     {
+        const STATUS_CLEAN = 1;
+
+        const STATUS_INFO  = 2;
+
+        const STATUS_SKIP  = 3;
+
         /**
          * ImportRules object to base the analysis on.
          * @var object
@@ -49,7 +55,7 @@
         protected $importRules;
 
         /**
-         * AnalyzerSupportedDataProvider extended data provider for use in querying data to analyze.
+         * ImportDataProvider extended data provider for use in querying data to analyze.
          * @var object
          */
         protected $dataProvider;
@@ -85,10 +91,9 @@
          * @param array $mappingData
          * @param array $sanitizableColumnNames
          */
-        public function __construct($importRules, $dataProvider, array $mappingData, array $sanitizableColumnNames)
+        public function __construct($importRules, ImportDataProvider $dataProvider, array $mappingData, array $sanitizableColumnNames)
         {
             assert('$importRules instanceof ImportRules');
-            assert('$dataProvider instanceof AnalyzerSupportedDataProvider');
             $this->importRules            = $importRules;
             $this->dataProvider           = $dataProvider;
             $this->mappingData            = $mappingData;
@@ -133,27 +138,27 @@
                             if ($classToEvaluate->implementsInterface('ImportSanitizerHasCustomFieldValuesInterface'))
                             {
                                 $missingCustomFieldValues = $sanitizer->getMissingCustomFieldValues();
-                                $this->getCustomFieldsInstructionsData()->addMissingValuesByColumnName($missingCustomFieldValues, $columnName);
+                                $this->getCustomFieldsInstructionData()->addMissingValuesByColumnName($missingCustomFieldValues, $columnName);
                             }
                         }
                     }
                 }
                 if(!empty($columnMessages))
                 {
-                    $rowBean->serializedAnalysisMessages = serialize($columnMessages);
+                    $rowBean->serializedanalysismessages = serialize($columnMessages);
                     if($shouldSkipRow)
                     {
-                        $rowBean->analysisStatus             = static::STATUS_SKIP;
+                        $rowBean->analysisstatus             = static::STATUS_SKIP;
                     }
                     else
                     {
-                        $rowBean->analysisStatus             = static::STATUS_INFO;
+                        $rowBean->analysisstatus             = static::STATUS_INFO;
                     }
                 }
                 else
                 {
-                    $rowBean->serializedAnalysisMessages = null;
-                    $rowBean->analysisStatus             = static::STATUS_CLEAN;
+                    $rowBean->serializedAnalysismessages = null;
+                    $rowBean->analysisstatus             = static::STATUS_CLEAN;
                 }
                 $rowBean->save();
             }

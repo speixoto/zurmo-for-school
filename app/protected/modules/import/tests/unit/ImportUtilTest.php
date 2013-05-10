@@ -183,13 +183,13 @@
             $this->assertEquals(6, ImportDatabaseUtil::getCount($import->getTempTableName())); // includes header rows.
 
             $multiDropDownInstructionsData    = array('MultiSelectDropDown' =>
-                                                        array(DropDownSanitizerUtil::ADD_MISSING_VALUE =>
+                                                        array(CustomFieldsInstructionData::ADD_MISSING_VALUE =>
                                                               array('Multi 5', 'Multi 4'),
-                                                              DropDownSanitizerUtil::MAP_MISSING_VALUES => array()));
+                                                              CustomFieldsInstructionData::MAP_MISSING_VALUES => array()));
             $tagCloudInstructionsData         = array('MultiSelectDropDown' =>
-                                                        array(DropDownSanitizerUtil::ADD_MISSING_VALUE =>
+                                                        array(CustomFieldsInstructionData::ADD_MISSING_VALUE =>
                                                               array('Cloud 5', 'Cloud 4'),
-                                                              DropDownSanitizerUtil::MAP_MISSING_VALUES => array()));
+                                                              CustomFieldsInstructionData::MAP_MISSING_VALUES => array()));
             $mappingData = array(
                 'column_0'   => ImportMappingUtil::makeStringColumnMappingData      ('string'),
                 'column_1'   => ImportMappingUtil::makeStringColumnMappingData      ('lastName'),

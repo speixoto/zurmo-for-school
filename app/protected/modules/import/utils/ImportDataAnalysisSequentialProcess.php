@@ -46,10 +46,10 @@
          */
         protected $sanitizableColumnNames;
 
-        protected static function resolveCustomFieldsInstructionsDataIntoImportAndSaveImport(
+        protected static function resolveCustomFieldsInstructionDataIntoImportAndSaveImport(
                                   ImportDataAnalyzer $importDataAnalyzer, Import $import)
         {
-            $adapter = new ImportToCustomFieldsInstructionsDataAdapter($import);
+            $adapter = new ImportToCustomFieldsInstructionDataAdapter($import);
             $adapter->appendCustomFieldsInstructionData($importDataAnalyzer->getCustomFieldsInstructionData());
             $saved   = $import->save();
             if (!$saved)
@@ -62,10 +62,10 @@
         {
             assert('is_array($mappingData)');
             $sanitizableColumnNames = array();
-            foreach ($mappingData as $columnName => $notUsed)
+            foreach ($mappingData as $columnName => $columnMappingData)
             {
-                if ($mappingData[$columnName]['attributeIndexOrDerivedType'] != null &&
-                    $mappingData['type'] != 'extraColumn')
+                if ($columnMappingData['attributeIndexOrDerivedType'] != null &&
+                    $columnMappingData['type'] != 'extraColumn')
                 {
                     $sanitizableColumnNames[] = $columnName;
                 }
@@ -73,9 +73,8 @@
             return $sanitizableColumnNames;
         }
 
-        public function __construct(Import $import, $dataProvider)
+        public function __construct(Import $import, ImportDataProvider $dataProvider)
         {
-            assert('$dataProvider instanceof AnalyzerSupportedDataProvider');
             $unserializedData             = unserialize($import->serializedData);
             $this->import                 = $import;
             $this->mappingData            = $unserializedData['mappingData'];
@@ -91,12 +90,13 @@
 
         protected function steps()
         {
-            return array('processRows');
+            return array('processRows', 'complete');
         }
 
         protected function stepMessages()
         {
-            return array('processRows' => Zurmo::t('ImportModule', 'Analyzing'));
+            return array('processRows' => Zurmo::t('ImportModule', 'Analyzing'),
+                         'complete'    => Zurmo::t('ImportModule', 'Finalizing Analysis...'));
         }
 
         protected function processRows($params)
@@ -106,7 +106,7 @@
             $importDataAnalyzer = new ImportDataAnalyzer($this->importRules, $this->dataProvider,
                                                          $this->mappingData, $this->sanitizableColumnNames);
             $importDataAnalyzer->analyzePage();
-            static::resolveCustomFieldsInstructionsDataIntoImportAndSaveImport($importDataAnalyzer, $this->import);
+            static::resolveCustomFieldsInstructionDataIntoImportAndSaveImport($importDataAnalyzer, $this->import);
             return $this->resolveNextPagingAndParams($page, $params);
         }
     }

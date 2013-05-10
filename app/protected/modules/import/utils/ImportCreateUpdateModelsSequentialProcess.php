@@ -42,9 +42,8 @@
     {
         protected $explicitReadWriteModelPermissions;
 
-        public function __construct(Import $import, $dataProvider)
+        public function __construct(Import $import, ImportDataProvider $dataProvider)
         {
-            assert('$dataProvider instanceof AnalyzerSupportedDataProvider');
             $unserializedData             = unserialize($import->serializedData);
             $this->import                 = $import;
             $this->mappingData            = $unserializedData['mappingData'];
@@ -69,22 +68,14 @@
 
         protected function steps()
         {
-            return array('processRows', 'completeImport');
+            return array('processRows', 'complete');
         }
 
         protected function stepMessages()
         {
-            return array('processRows'    => Zurmo::t('ImportModule', 'Processing'),
-                         'completeImport' => Zurmo::t('ImportModule', 'Completing...')
+            return array('processRows'  => Zurmo::t('ImportModule', 'Processing'),
+                         'complete'     => Zurmo::t('ImportModule', 'Completing...')
                     );
-        }
-
-        protected function completeImport()
-        {
-            $this->nextStep    = null;
-            $this->nextMessage = null;
-            $this->complete    = true;
-            return null;
         }
 
         protected function processRows($params)

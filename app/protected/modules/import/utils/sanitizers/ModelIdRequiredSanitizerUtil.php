@@ -48,12 +48,11 @@
         /**
          * Resolves that the value is not null or the value is null and a valid default value is available for
          * the model id. If not, then an InvalidValueToSanitizeException is thrown.
-         * @param string $modelClassName
-         * @param string $attributeName
          * @param mixed $value
-         * @param array $mappingRuleData
+         * @return mixed|sanitized
+         * @throws InvalidValueToSanitizeException
          */
-        public static function sanitizeValue($modelClassName, $attributeName, $value, $mappingRuleData)
+        public function sanitizeValue($value)
         {
             assert('is_string($modelClassName)');
             assert('is_string($attributeName)');
@@ -62,15 +61,16 @@
                 return $value;
             }
             assert('$modelClassName::isRelation($attributeName)');
-            $relationModelClassName = $modelClassName::getRelationModelClassName($attributeName);
+            $modelClassName         = $this->modelClassName;
+            $relationModelClassName = $modelClassName::getRelationModelClassName($this->attributeName);
             assert('$value == null || $value instanceof $relationModelClassName');
             assert('$mappingRuleData["defaultModelId"] == null || is_string($mappingRuleData["defaultModelId"]) ||
                     is_int($mappingRuleData["defaultModelId"])');
-            if ($mappingRuleData['defaultModelId'] != null)
+            if ($this->mappingRuleData['defaultModelId'] != null)
             {
                 try
                 {
-                   $relationModel       = $relationModelClassName::getById((int)$mappingRuleData['defaultModelId']);
+                   $relationModel       = $relationModelClassName::getById((int)$this->mappingRuleData['defaultModelId']);
                 }
                 catch (NotFoundException $e)
                 {
@@ -81,7 +81,7 @@
             else
             {
                 $model = new $modelClassName(false);
-                if (!$model->isAttributeRequired($attributeName))
+                if (!$model->isAttributeRequired($this->attributeName))
                 {
                     return $value;
                 }

@@ -41,6 +41,19 @@
     class CustomFieldsInstructionData
     {
         /**
+         * Variable used to indicate a drop down value is missing from zurmo and will need to be added during import.
+         * @var string
+         */
+        const ADD_MISSING_VALUE = 'Add missing value';
+
+        /**
+         * Variable used to indicate a drop down value is missing from zurmo and will need to map to an existing value
+         * based on what is provided.
+         * @var string
+         */
+        const MAP_MISSING_VALUES = 'Map missing values';
+
+        /**
          * @var array
          */
         protected $missingValuesToAdd = array();
@@ -67,6 +80,40 @@
         }
 
         /**
+         * @param $columnName
+         * @return boolean
+         */
+        public function hasDataByColumnName($columnName)
+        {
+            assert('is_string($columnName)');
+            if((isset($this->missingValuesToAdd[$columnName]) && !empty($this->missingValuesToAdd[$columnName])) ||
+               (isset($this->missingValuesToMap[$columnName]) && !empty($this->missingValuesToMap[$columnName])))
+            {
+                return true;
+            }
+            return false;
+        }
+
+        /**
+         * @param $columnName
+         * @return array of data specific to the column specified
+         */
+        public function getDataByColumnName($columnName)
+        {
+            assert('is_string($columnName)');
+            $data = array();
+            if(isset($this->missingValuesToAdd[$columnName]))
+            {
+                $data[static::ADD_MISSING_VALUE] = $this->missingValuesToAdd[$columnName];
+            }
+            if(isset($this->missingValuesToAdd[$columnName]))
+            {
+                $data[static::MAP_MISSING_VALUES] = $this->missingValuesToMap[$columnName];
+            }
+            return $data;
+        }
+
+        /**
          * @param array $missingCustomFieldValues
          * @param string $columnName
          */
@@ -82,22 +129,22 @@
 
         /**
          *
-         * @param $instructionsData is the 'customFieldsInstructionsData' array element in the mappingData
+         * @param $instructionsData is the 'customFieldsInstructionData' array element in the mappingData
          * @param string $columnName
          */
         public function addByInstructionsDataAndColumnName($instructionsData, $columnName)
         {
             assert('is_string($columnName)');
-            if(isset($instructionsData[DropDownSanitizerUtil::ADD_MISSING_VALUE]))
+            if(isset($instructionsData[static::ADD_MISSING_VALUE]))
             {
-                foreach($instructionsData[DropDownSanitizerUtil::ADD_MISSING_VALUE] as $missingValueToAdd)
+                foreach($instructionsData[static::ADD_MISSING_VALUE] as $missingValueToAdd)
                 {
                     $this->resolveMissingValueToAdd($missingValueToAdd, $columnName);
                 }
             }
-            if(isset($instructionsData[DropDownSanitizerUtil::MAP_MISSING_VALUES]))
+            if(isset($instructionsData[static::MAP_MISSING_VALUES]))
             {
-                foreach($instructionsData[DropDownSanitizerUtil::MAP_MISSING_VALUES] as $missingValueToMap => $mapToValue)
+                foreach($instructionsData[static::MAP_MISSING_VALUES] as $missingValueToMap => $mapToValue)
                 {
                     $this->resolveMissingValueToMap($missingValueToMap, $mapToValue, $columnName);
                 }

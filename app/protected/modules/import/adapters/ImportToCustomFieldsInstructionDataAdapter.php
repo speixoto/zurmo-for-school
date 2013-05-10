@@ -35,26 +35,26 @@
      ********************************************************************************/
 
     /**
-     * Helper class to adapt an import's serialized mappingData's customFieldsInstructionsData into a model and allow
+     * Helper class to adapt an import's serialized mappingData's customFieldsInstructionData into a model and allow
      * for manipulation and then setting it back into the serialized array
      */
-    class ImportToCustomFieldsInstructionsDataAdapter
+    class ImportToCustomFieldsInstructionDataAdapter
     {
         protected $import;
 
         /**
          * Given an array of import instructions data, merge this data into the mapping data.
          * @param array $mappingData
-         * @param CustomFieldsInstructionsData $instructionsData
+         * @param CustomFieldsInstructionData $instructionsData
          */
-        protected static function resolveMappingData(& $mappingData, CustomFieldsInstructionsData $instructionsData)
+        protected static function resolveMappingData(& $mappingData, CustomFieldsInstructionData $instructionsData)
         {
             assert('is_array($mappingData)');
             foreach ($mappingData as $columnName => $columnMappingData)
             {
                 if ($instructionsData->hasDataByColumnName($columnName))
                 {
-                    $mappingData[$columnName]['customFieldsInstructionsData'] = $instructionsData->getDataByColumnName($columnName);
+                    $mappingData[$columnName]['customFieldsInstructionData'] = $instructionsData->getDataByColumnName($columnName);
                 }
             }
         }
@@ -67,7 +67,7 @@
         public function appendCustomFieldsInstructionData(CustomFieldsInstructionData $newInstructionsData)
         {
             $unserializedData                = unserialize($this->import->serializedData);
-            $existingInstructionsData        = new CustomFieldsInstructionsData();
+            $existingInstructionsData        = new CustomFieldsInstructionData();
             if(isset($unserializedData['mappingData']))
             {
                 $mappingData = $unserializedData['mappingData'];
@@ -83,13 +83,13 @@
         }
 
         protected function populateCustomFieldsInstructionDataByMappingData(
-                           CustomFieldsInstructionsData $instructionsData, array $mappingData)
+                           CustomFieldsInstructionData $instructionsData, array $mappingData)
         {
             foreach ($mappingData as $columnName => $columnMappingData)
             {
-                if(isset($mappingData[$columnName]['customFieldsInstructionsData']))
+                if(isset($mappingData[$columnName]['customFieldsInstructionData']))
                 {
-                    $instructionsData->addByInstructionsDataAndColumnName($mappingData[$columnName]['customFieldsInstructionsData'], $columnName);
+                    $instructionsData->addByInstructionsDataAndColumnName($mappingData[$columnName]['customFieldsInstructionData'], $columnName);
                 }
             }
         }

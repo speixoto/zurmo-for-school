@@ -35,23 +35,47 @@
      ********************************************************************************/
 
     /**
-     * Extend this class if the data provider should support DataAnalyzer classes.  These abstract methods
-     * act as an interface for any methods requiring the data provider to be an AnalyzerSupportedDataProvider
+     * Extends the yii CGridView to provide additional functionality.
+     * @see CGridView class
      */
-    abstract class AnalyzerSupportedDataProvider extends CDataProvider
+    class ImportTempTableExtendedGridView extends ExtendedGridView
     {
-        /**
-         * Get the count of rows in a table and filter by a where sql part if supplied.
-         * @param string $where
-         */
-        abstract public function getCountByWhere($where);
+        public $expandableRows = false;
+
+        public function renderTableBody()
+        {
+            $data = $this->dataProvider->getData();
+            $n    = count($data);
+            echo "<tbody>\n";
+
+            if ($n > 0)
+            {
+                for ($row = 0; $row < $n; ++$row)
+                {
+                    $this->renderTableRow($row);
+                    if ($this->expandableRows)
+                    {
+                        $this->renderExpandableRow($this->dataProvider->data[$row]->getId());
+                    }
+                }
+            }
+            else
+            {
+                echo '<tr><td colspan="' . count($this->columns) . '" class="empty">';
+                $this->renderEmptyText();
+                echo "</td></tr>\n";
+            }
+            echo "</tbody>\n";
+        }
 
         /**
-         * Get the grouped count by a column name and filter by a where sql part if supplied.  Each row has 2
-         * resulting elements, 'count' and the column named the $groupbyColumnName
-         * @param string $groupbyColumnName
-         * @param string $where
+         * @param $id
          */
-        abstract public function getCountDataByGroupByColumnName($groupbyColumnName, $where = null);
+        protected function renderExpandableRow($id)
+        {
+            echo '<tr style="display:none;"><td class="hasDrillDownContent" colspan="' . (count($this->columns)) . '">';
+            echo '<div class="drillDownContent" id="drillDownContentFor-' . $id . '"></div>';
+            echo "</td></tr>\n";
+        }
     }
 ?>

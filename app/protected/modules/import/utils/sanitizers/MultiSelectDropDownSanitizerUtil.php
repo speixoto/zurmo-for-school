@@ -64,8 +64,8 @@
          * Given a value, resolve that the value is a valid custom field data value. If the value does not exist yet,
          * check the import instructions data to determine how to handle the missing value.
          *
-         * Example of customFieldsInstructionsData
-         * array(array(DropDownSanitizerUtil::ADD_MISSING_VALUE => array('neverPresent', 'notPresent'))
+         * Example of customFieldsInstructionData
+         * array(array(CustomFieldsInstructionData::ADD_MISSING_VALUE => array('neverPresent', 'notPresent'))
          *
          * @param mixed $value
          * @return sanitized value
@@ -76,10 +76,10 @@
             assert('is_string($modelClassName)');
             assert('is_string($attributeName)');
             assert('$mappingRuleData == null');
-            $customFieldsInstructionsData = $this->getCustomFieldsInstructionsDataFromColumnMappingData();
-            if (!isset($customFieldsInstructionsData[DropDownSanitizerUtil::ADD_MISSING_VALUE]))
+            $customFieldsInstructionData = $this->getCustomFieldsInstructionDataFromColumnMappingData();
+            if (!isset($customFieldsInstructionData[CustomFieldsInstructionData::ADD_MISSING_VALUE]))
             {
-                $customFieldsInstructionsData[DropDownSanitizerUtil::ADD_MISSING_VALUE] = array();
+                $customFieldsInstructionData[CustomFieldsInstructionData::ADD_MISSING_VALUE] = array();
             }
             if ($value == null)
             {
@@ -105,23 +105,23 @@
                 {
                     //if the value does not already exist, then check the instructions data.
                     $lowerCaseValuesToAdd                = ArrayUtil::resolveArrayToLowerCase(
-                                                           $customFieldsInstructionsData
-                                                           [DropDownSanitizerUtil::ADD_MISSING_VALUE]);
+                                                           $customFieldsInstructionData
+                                                           [CustomFieldsInstructionData::ADD_MISSING_VALUE]);
                     if (in_array(mb_strtolower($aValue), $lowerCaseValuesToAdd))
                     {
                         $keyToAddAndUse                  = array_search(mb_strtolower($aValue), $lowerCaseValuesToAdd);
-                        $resolvedValueToUse              = $customFieldsInstructionsData
-                                                           [DropDownSanitizerUtil::ADD_MISSING_VALUE][$keyToAddAndUse];
+                        $resolvedValueToUse              = $customFieldsInstructionData
+                                                           [CustomFieldsInstructionData::ADD_MISSING_VALUE][$keyToAddAndUse];
                         $unserializedData                = unserialize($customFieldData->serializedData);
                         $unserializedData[]              = $resolvedValueToUse;
                         $customFieldData->serializedData = serialize($unserializedData);
                         $saved                           = $customFieldData->save();
                         assert('$saved');
                     }
-                    elseif (isset($customFieldsInstructionsData[DropDownSanitizerUtil::MAP_MISSING_VALUES]))
+                    elseif (isset($customFieldsInstructionData[CustomFieldsInstructionData::MAP_MISSING_VALUES]))
                     {
                         $resolvedValueToUse = static::processMissingValueToMapAndGetResolvedValueToUse(
-                                              $aValue, $generateMissingPickListError, $customFieldsInstructionsData,
+                                              $aValue, $generateMissingPickListError, $customFieldsInstructionData,
                                               $dropDownValues, $lowerCaseDropDownValues);
                     }
                     else
@@ -160,14 +160,14 @@
 
         protected static function processMissingValueToMapAndGetResolvedValueToUse($aValue,
                                                                                    & $generateMissingPickListError,
-                                                                                   array $customFieldsInstructionsData,
+                                                                                   array $customFieldsInstructionData,
                                                                                    array $dropDownValues,
                                                                                    array $lowerCaseDropDownValues)
         {
             assert('is_string($aValue)');
             assert('is_bool($generateMissingPickListError)');
-            $lowerCaseMissingValuesToMap = ArrayUtil::resolveArrayToLowerCase($customFieldsInstructionsData
-                                           [DropDownSanitizerUtil::MAP_MISSING_VALUES]);
+            $lowerCaseMissingValuesToMap = ArrayUtil::resolveArrayToLowerCase($customFieldsInstructionData
+                                           [CustomFieldsInstructionData::MAP_MISSING_VALUES]);
             if (isset($lowerCaseMissingValuesToMap[mb_strtolower($aValue)]))
             {
                 $keyToUse           = array_search($lowerCaseMissingValuesToMap[mb_strtolower($aValue)],

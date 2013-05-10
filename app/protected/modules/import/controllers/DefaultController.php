@@ -265,7 +265,6 @@
                                                            $config);
             $sequentialProcess    = new ImportDataAnalysisSequentialProcess($import, $dataProvider);
             $sequentialProcess->run($step, $nextParams);
-            $nextStep             = $sequentialProcess->getNextStep();
             $route                = $this->getModule()->getId() . '/' . $this->getId() . '/step5';
             if ($sequentialProcess->isComplete())
             {
@@ -276,7 +275,9 @@
                 $dataAnalysisCompleteView = new ImportWizardDataAnalysisCompleteView($this->getId(),
                                                 $this->getModule()->getId(),
                                                 $importWizardForm,
-                                                $columnNamesAndAttributeIndexOrDerivedTypeLabels);
+                                                $columnNamesAndAttributeIndexOrDerivedTypeLabels,
+                                                $dataProvider,
+                                                $unserializedData['mappingData']);
 
                 $sequenceView = new ContainedViewCompleteSequentialProcessView($dataAnalysisCompleteView);
             }

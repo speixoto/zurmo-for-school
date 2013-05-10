@@ -71,7 +71,7 @@
          */
         public function sanitizeValue($value)
         {
-            assert('$mappingRuleData == null');
+            assert('$this->mappingRuleData == null');
             if ($value == null)
             {
                 return $value;

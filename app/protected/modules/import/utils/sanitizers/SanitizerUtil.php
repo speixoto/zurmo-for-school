@@ -96,17 +96,6 @@
         }
 
         /**
-         * @return boolean - whether this sanitizer supports the use of instructions data in the form of an array
-         * during sanitization. An example is drop downs, which has possible instructional information regarding
-         * what to do with missing drop down values.
-         * @see self::sanitizeValueWithInstructions()
-         */
-        public static function supportsSanitizingWithInstructions()
-        {
-            return false;
-        }
-
-        /**
          * If the sanitization of a value fails, should the entire row that is trying to be imported be ignored?
          * Override if you want to change this value.  Returning false means save the import row anyways regardless
          * of if a sanitization of a value failed.  If the model has other validation errors, these will block saving
@@ -122,10 +111,12 @@
         {
             assert('$columnMappingData == null || is_array($columnMappingData)');
             $mappingRuleType = static::getLinkedMappingRuleType();
-            if($mappingRuleType == null)
+
+            if($mappingRuleType === null || empty($mappingRuleType))
             {
                 return array();
             }
+
             $mappingRuleFormClassName = $mappingRuleType .'MappingRuleForm';
             if (!isset($columnMappingData['mappingRulesData']) ||
                 !isset($columnMappingData['mappingRulesData'][$mappingRuleFormClassName]))
@@ -160,8 +151,13 @@
             $this->init();
         }
 
-        protected function init()
+        public function shouldSanitizeValue()
         {
+            if($this->columnMappingData["type"] == 'extraColumn')
+            {
+                return false;
+            }
+            return true;
         }
 
         public function getAnalysisMessages()
@@ -172,6 +168,13 @@
         public function getShouldSkipRow()
         {
             return $this->shouldSkipRow;
+        }
+
+        /**
+         * Override as needed
+         */
+        protected function init()
+        {
         }
 
         /**

@@ -145,7 +145,7 @@
             $importInstructionsData   = $importDataAnalyzer->getImportInstructionsData();
             $compareInstructionsData  = array('column_1' =>
                                             array('MultiSelectDropDown' =>
-                                                array(DropDownSanitizerUtil::ADD_MISSING_VALUE => array())));
+                                                array(CustomFieldsInstructionData::ADD_MISSING_VALUE => array())));
             $this->assertEquals($compareInstructionsData, $importInstructionsData);
             ImportUtil::setDataAnalyzerMessagesDataToImport($import, $messagesData);
             $compareData = unserialize($import->serializedData);
@@ -192,7 +192,7 @@
             $importInstructionsData   = $importDataAnalyzer->getImportInstructionsData();
             $compareInstructionsData  = array('column_1' =>
                                             array('MultiSelectDropDown' =>
-                                                array(DropDownSanitizerUtil::ADD_MISSING_VALUE => array())));
+                                                array(CustomFieldsInstructionData::ADD_MISSING_VALUE => array())));
             $this->assertEquals($compareInstructionsData, $importInstructionsData);
             ImportUtil::setDataAnalyzerMessagesDataToImport($import, $messagesData);
             $compareData = unserialize($import->serializedData);
@@ -516,13 +516,13 @@
             $importInstructionsData   = $importDataAnalyzer->getImportInstructionsData();
             $compareInstructionsData  = array('column_6' =>
                                             array('DropDown' =>
-                                                array(DropDownSanitizerUtil::ADD_MISSING_VALUE =>
+                                                array(CustomFieldsInstructionData::ADD_MISSING_VALUE =>
                                                     array('neverpresent', 'notpresent'))));
             $compareInstructionsData['column_24'] = array('MultiSelectDropDown' =>
-                                                        array(DropDownSanitizerUtil::ADD_MISSING_VALUE =>
+                                                        array(CustomFieldsInstructionData::ADD_MISSING_VALUE =>
                                                             array('Multi 5', 'Multi 4')));
             $compareInstructionsData['column_25'] = array('MultiSelectDropDown' =>
-                                                        array(DropDownSanitizerUtil::ADD_MISSING_VALUE =>
+                                                        array(CustomFieldsInstructionData::ADD_MISSING_VALUE =>
                                                             array('Cloud 5', 'Cloud 4')));
             $this->assertEquals($compareInstructionsData, $importInstructionsData);
             ImportUtil::setDataAnalyzerMessagesDataToImport($import, $messagesData);
