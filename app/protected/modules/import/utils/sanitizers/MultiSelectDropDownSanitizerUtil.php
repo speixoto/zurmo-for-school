@@ -64,8 +64,8 @@
          * Given a value, resolve that the value is a valid custom field data value. If the value does not exist yet,
          * check the import instructions data to determine how to handle the missing value.
          *
-         * Example of importInstructionsData
-         * array('MultiSelectDropDown' => array(DropDownSanitizerUtil::ADD_MISSING_VALUE => array('neverPresent', 'notPresent')))
+         * Example of customFieldsInstructionsData
+         * array(array(DropDownSanitizerUtil::ADD_MISSING_VALUE => array('neverPresent', 'notPresent'))
          *
          * @param mixed $value
          * @return sanitized value

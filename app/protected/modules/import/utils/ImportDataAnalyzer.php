@@ -60,12 +60,6 @@
          */
         protected $messagesData = array();
 
-        /**
-         * Analyzing data can produce instructional data that needs to be saved for later use during the actual import.
-         * @var array
-         */
-        protected $importInstructionsData = array();
-
         protected $mappingData;
 
         protected $sanitizableColumnNames;

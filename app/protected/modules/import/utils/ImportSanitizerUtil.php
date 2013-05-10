@@ -69,6 +69,7 @@
                 {
                    continue;
                 }
+                //todo: how does this work now that we pass in via constructor? we still need to deal with this..
                 $mappingRuleType = $sanitizerUtilClassName::getLinkedMappingRuleType();
                 if ($mappingRuleType != null)
                 {
@@ -90,26 +91,11 @@
                 }
                 try
                 {
-                    if ($sanitizerUtilClassName::supportsSanitizingWithInstructions())
-                    {
-                        if (!empty($columnMappingData['importInstructionsData']))
-                        {
-                            assert('isset($columnMappingData["importInstructionsData"])');
-                            $importInstructionsData = $columnMappingData['importInstructionsData'];
-                        }
-                        else
-                        {
-                            $importInstructionsData = null;
-                        }
-                        $value = $sanitizerUtilClassName::
-                                 sanitizeValueWithInstructions($modelClassName, $attributeName,
-                                                                 $value, $mappingRuleData, $importInstructionsData);
-                    }
-                    else
-                    {
-                        $value = $sanitizerUtilClassName::
-                                 sanitizeValue($modelClassName, $attributeName, $value, $mappingRuleData);
-                    }
+                    //todo: we need columeName... to pass here
+                    $sanitizer = ImportSanitizerUtilFactory::make($sanitizerUtilType,
+                                                                  $modelClassName, $attributeName,
+                                                                  $columnName, $columnMappingData);
+                    $value = $sanitizer->sanitizeValue($value);
                 }
                 catch (InvalidValueToSanitizeException $e)
                 {

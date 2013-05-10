@@ -40,6 +40,14 @@
     class MinimumLengthSanitizerUtil extends SanitizerUtil
     {
         /**
+         * If a model id value is invalid, then skip the entire row during import.
+         */
+        public static function shouldNotSaveModelOnSanitizingValueFailure()
+        {
+            return true;
+        }
+
+        /**
          * @param RedBean_OODBBean $rowBean
          */
         public function analyzeByRow(RedBean_OODBBean $rowBean)
