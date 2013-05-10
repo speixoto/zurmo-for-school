@@ -36,7 +36,7 @@
 
     class AutoresponderItem extends OwnedModel
     {
-        const PROCESSED = 1;
+        const PROCESSED     = 1;
 
         const NOT_PROCESSED = 0;
 

@@ -171,9 +171,9 @@
         {
             parent::renderSummary();
             $summaryClonePath = null;
-            foreach($this->columns as $column)
+            foreach ($this->columns as $column)
             {
-                if(get_class($column) === 'RowMenuColumn' && isset($column->listView))
+                if (get_class($column) === 'RowMenuColumn' && isset($column->listView))
                 {
                     $listClassName      = $column->listView;
                     $reflectionClass    = new ReflectionClass($listClassName);

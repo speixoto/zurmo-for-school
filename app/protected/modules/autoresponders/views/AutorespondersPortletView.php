@@ -44,10 +44,9 @@
                 'global' => array(
                     'toolbar' => array(
                         'elements' => array(
-                            // TODO: @Shoaibi/@Jason: Critical: Create should appear in portlet's titlebar.
                             array('type'            => 'AutoresponderCreateLink',
                                 'htmlOptions'       => array('class' => 'icon-create'),
-                                'route'             => 'eval:$this->getAutoresponderCreateRoute()',
+                                'routeParameters'   => 'eval:$this->getAutoresponderCreateRouteParameters()',
                                 'redirectUrl'       => 'eval:$this->getNonAjaxRedirectUrl()',
                                 'pageVarName'       => 'eval:$this->getPageVarName()',
                                 'listViewGridId'    => 'eval:$this->getListGridId()'),
@@ -98,9 +97,19 @@
             return AutorespondersUtil::makeSortAttributeData();
         }
 
-        protected function getAutoresponderCreateRoute()
+        protected function getIsSortDescending()
         {
-            return Yii::app()->createUrl('/autoresponders/default/create', array('marketingListId' => $this->modelId));
+            return AutorespondersUtil::getIsSortDescending();
+        }
+
+        protected function getAutoresponderCreateRouteParameters()
+        {
+            return array('marketingListId' => $this->modelId);
+        }
+
+        protected function shouldRenderViewToolBar()
+        {
+            return true;
         }
     }
 ?>

@@ -41,18 +41,30 @@
     {
         public function renderGridViewData()
         {
-            // TODO: @Shoaibi/@Jason: Critical: Use eval() directly to populate the string to be translated inside if/else?
-            $memberName         = 'strval($data->contact)';
-            $memberStatusPrefix = ' ."\t(" . ';
-            $memberStatus       = 'Zurmo::t("' . $this->view->getContainerModuleClassName() .
-                                  '", (($data->unsubscribed == true)? "Unsubscribed" : "Subscribed"))';
-            $memberStatusSuffix = ' . ")"';
-            $value              = $memberName . $memberStatusPrefix . $memberStatus . $memberStatusSuffix;
+            $className = get_class($this);
+            $value      = $className. '::resolveValueFromNameAndUnsubscribed(strval($data->contact), ' .
+                                                                    '$data->unsubscribed, ' .
+                                                                    '"' . $this->view->getContainerModuleClassName() .
+                                                                    '")';
             return array(
                 'name'  => 'Name',
                 'value' => $value,
                 'type'  => 'raw',
             );
+        }
+
+        public static function resolveValueFromNameAndUnsubscribed($name, $unsubscribed, $moduleClassName)
+        {
+            $status = null;
+            if ($unsubscribed == true)
+            {
+                $status = Zurmo::t($moduleClassName, 'Unsubscribed');
+            }
+            else
+            {
+                $status = Zurmo::t($moduleClassName, 'Subscribed');
+            }
+            return $name . "\t (" . $status . ")";
         }
     }
 ?>

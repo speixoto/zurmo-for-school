@@ -138,5 +138,10 @@
             $sortAttribute = RedBeanModelDataProvider::getSortAttributeName('MarketingListMember');
             return array('MarketingListMember' => $sortAttribute);
         }
+
+        public static function getIsSortDescending()
+        {
+            return true;
+        }
     }
 ?>

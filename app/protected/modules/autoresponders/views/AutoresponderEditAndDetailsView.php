@@ -47,7 +47,6 @@
                             array('type'    => 'SaveButton', 'renderType' => 'Edit'),
                             array('type'    => 'EditLink', 'renderType' => 'Details'),
                             array('type'    => 'AutoresponderDeleteLink'),
-                            // TODO: @Shoaibi: Critical: Allow using an email template as base.
                         ),
                     ),
                     'panels' => array(
@@ -96,6 +95,16 @@
                                         array(
                                             'elements' => array(
                                                 array('attributeName' => 'enableTracking', 'type' => 'CheckBox'),
+                                            ),
+                                        ),
+                                    )
+                                ),
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'null',
+                                                                        'type' => 'ContactEmailTemplateNamesDropDown'),
                                             ),
                                         ),
                                     )
