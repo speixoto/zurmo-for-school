@@ -34,46 +34,35 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class AutorespondersModule extends Module
+    /**
+     * Class that builds demo emailMessageUrls.
+     */
+    class EmailMessageUrlsDemoDataMaker extends DemoDataMaker
     {
-        public function getDependencies()
+        protected $ratioToLoad = 3;
+
+        protected $index;
+
+        public function makeAll(& $demoDataHelper)
         {
-            return array(
-                'marketingLists',
-            );
+            assert('$demoDataHelper instanceof DemoDataHelper');
+            $emailMessageUrls = array();
+            for ($this->index = 0; $this->index < $this->resolveQuantityToLoad(); $this->index++)
+            {
+                $emailMessageUrl                   = new EmailMessageUrl();
+                $this->populateModel($emailMessageUrl);
+                $saved                              = $emailMessageUrl->unrestrictedSave();
+                assert('$saved');
+                $emailMessageUrls[]                = $emailMessageUrl->id;
+            }
+            $demoDataHelper->setRangeByModelName('EmailMessageUrl', $emailMessageUrls[0], $emailMessageUrls[count($emailMessageUrls)-1]);
         }
 
-        public function getRootModelNames()
+        public function populateModel(& $model)
         {
-            return array('Autoresponder', 'AutoresponderItem', 'AutoresponderItemActivity');
-        }
-
-        public static function getPrimaryModelName()
-        {
-            return 'Autoresponder';
-        }
-
-        public static function modelsAreNeverGloballySearched()
-        {
-            return true;
-        }
-
-        public static function getDefaultMetadata()
-        {
-            $metadata = array();
-            $metadata['global'] = array(
-                'globalSearchAttributeNames' => array(
-                    'name',
-                ),
-            );
-            return $metadata;
-        }
-
-        public static function getDemoDataMakerClassNames()
-        {
-            return array('AutorespondersDemoDataMaker',
-                            'AutoresponderItemsDemoDataMaker',
-                            'AutoresponderItemActivitiesDemoDataMaker');
+            assert('$model instanceof EmailMessageUrl');
+            parent::populateModel($model);
+            $model->url = 'http://' . $this->index . '.zurmo.com/';
         }
     }
 ?>
