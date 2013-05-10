@@ -287,8 +287,7 @@
                     if ($searchForm->validate())
                     {
                         $savedSearch = $this->processSaveSearch($searchForm, $viewClassName);
-                        $unserializedData = unserialize($savedSearch->serializedData);
-                        echo CJSON::encode(array('id' => $savedSearch->id, 'name' => $savedSearch->name, 'sortAttribute' => $unserializedData['sortAttribute'], 'sortDescending' => $unserializedData['sortDescending'] ));
+                        echo CJSON::encode(array('id' => $savedSearch->id, 'name' => $savedSearch->name, 'sortAttribute' => $this->getSortAttributeFromSavedSearchData($savedSearch), 'sortDescending' => $this->getSortDescendingFromSavedSearchData($savedSearch) ));
                         Yii::app()->end(0, false);
                     }
                 }
@@ -311,12 +310,12 @@
 
         protected function processSaveSearch($searchForm, $viewClassName)
         {
-            $modelClassName = get_class($searchForm->model);
-            $moduleClassName = $modelClassName::getModuleClassName();
+            $modelClassName     = get_class($searchForm->model);
+            $moduleClassName    = $modelClassName::getModuleClassName();
             //Get sticky data here
-            $stickySearchKey = $moduleClassName::getModuleLabelByTypeAndLanguage('Plural') . 'SearchView';
-            $stickySearchData = StickySearchUtil::getDataByKey($stickySearchKey);
-            $savedSearch = SavedSearchUtil::makeSavedSearchBySearchForm($searchForm, $viewClassName, $stickySearchData);
+            $stickySearchKey    = $moduleClassName::getModuleLabelByTypeAndLanguage('Plural') . 'SearchView';
+            $stickySearchData   = StickySearchUtil::getDataByKey($stickySearchKey);
+            $savedSearch        = SavedSearchUtil::makeSavedSearchBySearchForm($searchForm, $viewClassName, $stickySearchData);
             if (!$savedSearch->save())
             {
                 throw new FailedToSaveModelException();
@@ -432,6 +431,28 @@
         {
             header("Content-Type:   ZurmoFileHelper::getMimeType($filePath)");
             echo file_get_contents($filePath);
+        }
+
+        protected function getSortAttributeFromSavedSearchData($savedSearch)
+        {
+            $unserializedData = unserialize($savedSearch->serializedData);
+            if(isset($unserializedData['sortAttribute']))
+            {
+                return $unserializedData['sortAttribute'];
+            }
+
+            return '';
+        }
+
+        protected function getSortDescendingFromSavedSearchData($savedSearch)
+        {
+            $unserializedData = unserialize($savedSearch->serializedData);
+            if(isset($unserializedData['sortDescending']))
+            {
+                return $unserializedData['sortDescending'];
+            }
+
+            return '';
         }
     }
 ?>

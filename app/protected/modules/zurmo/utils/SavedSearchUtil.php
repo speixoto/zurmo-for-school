@@ -53,27 +53,21 @@
             }
             $savedSearch->name = $searchForm->savedSearchName;
 
-            $sortAttribute = '';
-            $sortDescending = '';
+            $sortAttribute  = null;
+            $sortDescending = null;
             //As sticky data contains latest search attributes
             if ($stickySearchData != null && isset($stickySearchData['sortAttribute']))
             {
-                if ($stickySearchData['sortAttribute'] != '')
-                {
-                    $sortAttribute = $stickySearchData['sortAttribute'];
-                }
+                $sortAttribute = $stickySearchData['sortAttribute'];
 
-                if (isset($stickySearchData['sortDescending']))
+                if (isset($stickySearchData['sortDescending']) && $stickySearchData['sortDescending'] == true )
                 {
-                    if ($stickySearchData['sortDescending'] == true)
-                    {
-                        $sortDescending = ".desc";
-                    }
+                    $sortDescending = ".desc";
                 }
             }
             else
             {
-                $sortAttribute = $searchForm->sortAttribute;
+                $sortAttribute  = $searchForm->sortAttribute;
                 $sortDescending = $searchForm->sortDescending;
             }
 
