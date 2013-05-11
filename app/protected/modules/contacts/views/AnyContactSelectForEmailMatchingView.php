@@ -107,6 +107,7 @@
             $formEnd  = $clipWidget->renderEndWidget();
             $content .= $formEnd;
             $content .= '</div>';
+            $content .= $this->renderModalContainer();
             return $content;
         }
 
@@ -214,6 +215,13 @@
         protected static function getNotificationBarId()
         {
             return 'FlashMessageBar';
+        }
+
+        protected function renderModalContainer()
+        {
+            return ZurmoHtml::tag('div', array(
+                        'id' => ModelElement::MODAL_CONTAINER_PREFIX . '-' . static::getFormId()
+                   ),'');
         }
     }
 ?>
