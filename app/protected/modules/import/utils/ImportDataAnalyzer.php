@@ -44,7 +44,7 @@
     {
         const STATUS_CLEAN = 1;
 
-        const STATUS_INFO  = 2;
+        const STATUS_WARN  = 2;
 
         const STATUS_SKIP  = 3;
 
@@ -145,22 +145,22 @@
                 }
                 if(!empty($columnMessages))
                 {
-                    $rowBean->serializedanalysismessages = serialize($columnMessages);
+                    $rowBean->serializedAnalysisMessages = serialize($columnMessages);
                     if($shouldSkipRow)
                     {
-                        $rowBean->analysisstatus             = static::STATUS_SKIP;
+                        $rowBean->analysisStatus             = static::STATUS_SKIP;
                     }
                     else
                     {
-                        $rowBean->analysisstatus             = static::STATUS_INFO;
+                        $rowBean->analysisStatus             = static::STATUS_WARN;
                     }
                 }
                 else
                 {
-                    $rowBean->serializedAnalysismessages = null;
-                    $rowBean->analysisstatus             = static::STATUS_CLEAN;
+                    $rowBean->serializedAnalysisMessages = null;
+                    $rowBean->analysisStatus             = static::STATUS_CLEAN;
                 }
-                $rowBean->save();
+                R::store($rowBean);
             }
         }
 

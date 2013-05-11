@@ -48,8 +48,7 @@
                 strtolower($rowBean->{$this->columnName}) != strtolower(UserStatusUtil::ACTIVE) &&
                 strtolower($rowBean->{$this->columnName}) == strtolower(UserStatusUtil::INACTIVE))
             {
-                $label = Zurmo::t('ImportModule', '{columnName} status value is invalid. This status will be set to active upon import.',
-                                  array('{columnName}' => $this->columnName));
+                $label = Zurmo::t('ImportModule', 'Status value is invalid. This status will be set to active upon import.');
                 $this->analysisMessages[] = $label;
             }
         }

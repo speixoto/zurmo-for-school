@@ -47,8 +47,8 @@
             $maximumLength = $this->getMaximumLength();
             if (strlen($rowBean->{$this->columnName}) > $maximumLength)
             {
-                $label = Zurmo::t('ImportModule', '{columnName} is  too long. Maximum length is {maximumLength}. This value will truncated upon import',
-                                  array('{columnName}' => $this->columnName, '{maximumLength}' => $maximumLength));
+                $label = Zurmo::t('ImportModule', 'Is too long. Maximum length is {maximumLength}. This value will truncated upon import',
+                                  array('{maximumLength}' => $maximumLength));
                 $this->analysisMessages[] = $label;
             }
         }

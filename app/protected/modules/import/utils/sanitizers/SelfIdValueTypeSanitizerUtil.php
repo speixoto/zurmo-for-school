@@ -50,14 +50,12 @@
         {
             if ($this->mappingRuleData["type"] == IdValueTypeMappingRuleForm::ZURMO_MODEL_ID)
             {
-                $label = Zurmo::t('ImportModule', '{columnName} was not found and this row will be skipped during import.',
-                                  array('{columnName}' => $this->columnName));
+                $label = Zurmo::t('ImportModule', 'Was not found and this row will be skipped during import.');
                 $this->shouldSkipRow = true;
             }
             else
             {
-                $label = Zurmo::t('ImportModule', '{columnName} was not found and will create a new record during import.',
-                                  array('{columnName}' => $this->columnName));
+                $label = Zurmo::t('ImportModule', 'Was not found and will create a new record during import.');
             }
             $this->analysisMessages[] = $label;
         }

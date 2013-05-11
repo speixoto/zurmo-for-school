@@ -58,8 +58,7 @@
             }
             if (false === $validatedEmail = $this->resolveValidatedEmail($rowBean->{$this->columnName}))
             {
-                $label = Zurmo::t('ImportModule', '{columnName} is an invalid email.',
-                                  array('{columnName}' => $this->columnName));
+                $label = Zurmo::t('ImportModule', 'Is an invalid email.');
                 $this->shouldSkipRow      = true;
                 $this->analysisMessages[] = $label;
                 return;
@@ -67,8 +66,8 @@
             $maximumLength = DatabaseCompatibilityUtil::getMaxVarCharLength();
             if (strlen($validatedEmail) > $maximumLength)
             {
-                $label = Zurmo::t('ImportModule', '{columnName} is  too long. Minimum length is {minimumLength}',
-                                  array('{columnName}' => $this->columnName, '{maximumLength}' => $maximumLength));
+                $label = Zurmo::t('ImportModule', 'Is too long. Minimum length is {minimumLength}',
+                                  array('{maximumLength}' => $maximumLength));
                 $this->shouldSkipRow      = true;
                 $this->analysisMessages[] = $label;
             }

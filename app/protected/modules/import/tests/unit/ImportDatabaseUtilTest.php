@@ -56,7 +56,7 @@
                     'column_1'           => 'phone',
                     'column_2'           => 'industry',
                     'status'             => null,
-                    'serializedmessages' => null,
+                    'serializedMessages' => null,
                 ),
                 array
                 (
@@ -65,7 +65,7 @@
                     'column_1'           => '123',
                     'column_2'           => 'a',
                     'status'             => null,
-                    'serializedmessages' => null,
+                    'serializedMessages' => null,
                 ),
                 array
                 (
@@ -74,7 +74,7 @@
                     'column_1'           => '563',
                     'column_2'           => 'b',
                     'status'             => null,
-                    'serializedmessages' => null,
+                    'serializedMessages' => null,
                 ),
                 array
                 (
@@ -83,7 +83,7 @@
                     'column_1'           => '456',
                     'column_2'           => 'a',
                     'status'             => null,
-                    'serializedmessages' => null,
+                    'serializedMessages' => null,
                 ),
                 array
                 (
@@ -92,7 +92,7 @@
                     'column_1'           => null,
                     'column_2'           => 'b',
                     'status'             => null,
-                    'serializedmessages' => null,
+                    'serializedMessages' => null,
                 ),
             );
             $this->assertEquals($compareData, $tempTableData);
@@ -109,7 +109,7 @@
                     'column_1'           => '563',
                     'column_2'           => 'b',
                     'status'             => null,
-                    'serializedmessages' => null,
+                    'serializedMessages' => null,
                 ),
                 array
                 (
@@ -118,7 +118,7 @@
                     'column_1'           => '456',
                     'column_2'           => 'a',
                     'status'             => null,
-                    'serializedmessages' => null,
+                    'serializedMessages' => null,
                 ),
             );
             $this->assertEquals($compareData, $tempTableData);
@@ -139,7 +139,7 @@
                     'column_1'           => 'phone',
                     'column_2'           => 'industry',
                     'status'             => null,
-                    'serializedmessages' => null,
+                    'serializedMessages' => null,
                 ),
                 array
                 (
@@ -148,7 +148,7 @@
                     'column_1'           => 'thing',
                     'column_2'           => 'else',
                     'status'             => null,
-                    'serializedmessages' => null,
+                    'serializedMessages' => null,
                 ),
                 array
                 (
@@ -157,7 +157,7 @@
                     'column_1'           => 'thing2',
                     'column_2'           => 'else2',
                     'status'             => null,
-                    'serializedmessages' => null,
+                    'serializedMessages' => null,
                 ),
                 array
                 (
@@ -166,7 +166,7 @@
                     'column_1'           => 'thing3',
                     'column_2'           => 'else3',
                     'status'             => null,
-                    'serializedmessages' => null,
+                    'serializedMessages' => null,
                 ),
             );
             $this->assertEquals($compareData, $tempTableData);
@@ -192,7 +192,7 @@
                     'column_1'           => 'phone',
                     'column_2'           => 'industry',
                     'status'             => null,
-                    'serializedmessages' => null,
+                    'serializedMessages' => null,
             );
             $this->assertEquals($compareData, $firstRowData);
         }
@@ -254,13 +254,13 @@
             ImportDatabaseUtil::updateRowAfterProcessing('testimporttable', 2, 4, serialize(array('a' => 'b')));
             $bean = R::findOne('testimporttable', "id = :id", array('id' => 2));
             $this->assertEquals(4, $bean->status);
-            $this->assertEquals(serialize(array('a' => 'b')), $bean->serializedmessages);
+            $this->assertEquals(serialize(array('a' => 'b')), $bean->serializedMessages);
             $bean = R::findOne('testimporttable', "id = :id", array('id' => 1));
             $this->assertEquals(null, $bean->status);
-            $this->assertEquals(null, $bean->serializedmessages);
+            $this->assertEquals(null, $bean->serializedMessages);
             $bean = R::findOne('testimporttable', "id = :id", array('id' => 3));
             $this->assertEquals(null, $bean->status);
-            $this->assertEquals(null, $bean->serializedmessages);
+            $this->assertEquals(null, $bean->serializedMessages);
         }
 
        /**
@@ -297,7 +297,7 @@
                                     'column_1'           => 'phone',
                                     'column_2'           => 'industry',
                                     'status'             => null,
-                                    'serializedmessages' => null,
+                                    'serializedMessages' => null,
             ),
             array
             (
@@ -306,7 +306,7 @@
                                     'column_1'           => '123',
                                     'column_2'           => 'a',
                                     'status'             => null,
-                                    'serializedmessages' => null,
+                                    'serializedMessages' => null,
             ),
             array
             (
@@ -315,7 +315,7 @@
                                     'column_1'           => '563',
                                     'column_2'           => 'b',
                                     'status'             => null,
-                                    'serializedmessages' => null,
+                                    'serializedMessages' => null,
             ),
             array
             (
@@ -324,7 +324,7 @@
                                     'column_1'           => '456',
                                     'column_2'           => 'a',
                                     'status'             => null,
-                                    'serializedmessages' => null,
+                                    'serializedMessages' => null,
             ),
             array
             (
@@ -333,7 +333,7 @@
                                     'column_1'           => null,
                                     'column_2'           => 'b',
                                     'status'             => null,
-                                    'serializedmessages' => null,
+                                    'serializedMessages' => null,
             ),
             );
             $this->assertEquals($compareData, $tempTableData);
@@ -372,7 +372,7 @@
                                     'column_1'           => 'phone',
                                     'column_2'           => 'industry',
                                     'status'             => null,
-                                    'serializedmessages' => null,
+                                    'serializedMessages' => null,
             ),
             array
             (
@@ -381,7 +381,7 @@
                                     'column_1'           => '123',
                                     'column_2'           => 'a',
                                     'status'             => null,
-                                    'serializedmessages' => null,
+                                    'serializedMessages' => null,
             ),
             array
             (
@@ -390,7 +390,7 @@
                                     'column_1'           => '563',
                                     'column_2'           => 'b',
                                     'status'             => null,
-                                    'serializedmessages' => null,
+                                    'serializedMessages' => null,
             ),
             array
             (
@@ -399,7 +399,7 @@
                                     'column_1'           => '456',
                                     'column_2'           => 'a',
                                     'status'             => null,
-                                    'serializedmessages' => null,
+                                    'serializedMessages' => null,
             ),
             array
             (
@@ -408,7 +408,7 @@
                                     'column_1'           => null,
                                     'column_2'           => 'b',
                                     'status'             => null,
-                                    'serializedmessages' => null,
+                                    'serializedMessages' => null,
             ),
             );
             $this->assertEquals($compareData, $tempTableData);
@@ -447,7 +447,7 @@
                                     'column_1'           => 'phone',
                                     'column_2'           => 'industry',
                                     'status'             => null,
-                                    'serializedmessages' => null,
+                                    'serializedMessages' => null,
             ),
             array
             (
@@ -456,7 +456,7 @@
                                     'column_1'           => '123',
                                     'column_2'           => 'a',
                                     'status'             => null,
-                                    'serializedmessages' => null,
+                                    'serializedMessages' => null,
             ),
             array
             (
@@ -465,7 +465,7 @@
                                     'column_1'           => '563',
                                     'column_2'           => 'b',
                                     'status'             => null,
-                                    'serializedmessages' => null,
+                                    'serializedMessages' => null,
             ),
             array
             (
@@ -474,7 +474,7 @@
                                     'column_1'           => '456',
                                     'column_2'           => 'a',
                                     'status'             => null,
-                                    'serializedmessages' => null,
+                                    'serializedMessages' => null,
             ),
             array
             (
@@ -483,7 +483,7 @@
                                     'column_1'           => null,
                                     'column_2'           => 'b',
                                     'status'             => null,
-                                    'serializedmessages' => null,
+                                    'serializedMessages' => null,
             ),
             );
             $this->assertEquals($compareData, $tempTableData);
@@ -505,28 +505,28 @@
                     'id' => 1,
                     'column_0'           => 'name',
                     'status'             => null,
-                    'serializedmessages' => null,
+                    'serializedMessages' => null,
                 ),
                 array
                 (
                     'id' => 2,
                     'column_0'           => 'didée BBB',
                     'status'             => null,
-                    'serializedmessages' => null,
+                    'serializedMessages' => null,
                 ),
                 array
                 (
                     'id' => 3,
                     'column_0'           => 'Angêline Jone',
                     'status'             => null,
-                    'serializedmessages' => null,
+                    'serializedMessages' => null,
                 ),
                 array
                 (
                     'id' => 4,
                     'column_0'           => 'Laura o\'brien',
                     'status'             => null,
-                    'serializedmessages' => null,
+                    'serializedMessages' => null,
                 ),
             );
             $this->assertEquals($compareData, $tempTableData);

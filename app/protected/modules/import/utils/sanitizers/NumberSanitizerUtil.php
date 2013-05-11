@@ -62,8 +62,7 @@
             {
                 if (!preg_match($validator->integerPattern, $rowBean->{$this->columnName}))
                 {
-                    $label = Zurmo::t('ImportModule', '{columnName} is invalid.',
-                                      array('{columnName}' => $this->columnName));
+                    $label = Zurmo::t('ImportModule', 'Is invalid.');
                     $this->shouldSkipRow      = true;
                     $this->analysisMessages[] = $label;
                 }
@@ -72,8 +71,7 @@
             {
                 if (!preg_match($validator->numberPattern, $rowBean->{$this->columnName}))
                 {
-                    $label = Zurmo::t('ImportModule', '{columnName} is invalid.',
-                                      array('{columnName}' => $this->columnName));
+                    $label = Zurmo::t('ImportModule', 'Is invalid.');
                     $this->shouldSkipRow      = true;
                     $this->analysisMessages[] = $label;
                 }

@@ -37,7 +37,7 @@
     /**
      * Sanitizer for drop down attributes.
      */
-    class DropDownSanitizerUtil extends SanitizerUtil
+    class DropDownSanitizerUtil extends SanitizerUtil implements ImportSanitizerHasCustomFieldValuesInterface
     {
         protected $missingCustomFieldValues = array();
 
@@ -69,8 +69,8 @@
                 $dropDownValues       = ArrayUtil::resolveArrayToLowerCase($dropDownValues);
                 if (!in_array(strtolower($rowBean->{$this->columnName}), $dropDownValues))
                 {
-                    $label = Zurmo::t('ImportModule', '{columnName} dropdown value is new. This value will be added upon import',
-                                      array('{columnName}' => $this->columnName));
+                    $label = Zurmo::t('ImportModule', '{value} is new. This value will be added upon import',
+                                      array('{value}' => $rowBean->{$this->columnName}));
                     $this->analysisMessages[]         = $label;
                     $this->missingCustomFieldValues[] = $rowBean->{$this->columnName};
                 }

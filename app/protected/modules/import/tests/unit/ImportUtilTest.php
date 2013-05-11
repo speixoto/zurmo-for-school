@@ -572,7 +572,7 @@
                 'ImportModelTestItem - Last name specified is too long.',
                 'ImportModelTestItem - Last Name - Last Name cannot be blank.',
             );
-            $this->assertEquals($compareMessages, unserialize(current($beansWithErrors)->serializedmessages));
+            $this->assertEquals($compareMessages, unserialize(current($beansWithErrors)->serializedMessages));
 
             $compareMessages = array(
                 'ImportModelTestItem - String This field is required and neither a value nor a default value was specified.',
@@ -580,7 +580,7 @@
                 'ImportModelTestItem - Last Name - Last Name cannot be blank.',
                 'ImportModelTestItem - String - String cannot be blank.',
             );
-            $this->assertEquals($compareMessages, unserialize(next($beansWithErrors)->serializedmessages));
+            $this->assertEquals($compareMessages, unserialize(next($beansWithErrors)->serializedMessages));
 
             //Clear out data in table
             R::exec("delete from " . ImportModelTestItem::getTableName('ImportModelTestItem'));

@@ -106,7 +106,7 @@
             {
                 $data[static::ADD_MISSING_VALUE] = $this->missingValuesToAdd[$columnName];
             }
-            if(isset($this->missingValuesToAdd[$columnName]))
+            if(isset($this->missingValuesToMap[$columnName]))
             {
                 $data[static::MAP_MISSING_VALUES] = $this->missingValuesToMap[$columnName];
             }

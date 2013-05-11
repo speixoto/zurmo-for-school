@@ -81,8 +81,7 @@
             }
             if ($rowBean->{$this->columnName} != null && !in_array($compareValue, $this->getAcceptableValues()))
             {
-                $label = Zurmo::t('ImportModule', '{columnName} is an invalid user value. This value will be skipped during import.',
-                    array('{columnName}' => $this->columnName));
+                $label = Zurmo::t('ImportModule', 'Is an invalid user value. This value will be skipped during import.');
                 $this->analysisMessages[] = $label;
             }
         }

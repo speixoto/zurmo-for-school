@@ -70,13 +70,13 @@
             }
             if (strlen($lastName) > $lastNameMaxLength || strlen($firstName) > $firstNameMaxLength)
             {
-                $label = Zurmo::t('ImportModule', '{columnName} is  too short.', array('{columnName}' => $this->columnName));
+                $label = Zurmo::t('ImportModule', 'Is too long.');
                 $this->shouldSkipRow      = true;
                 $this->analysisMessages[] = $label;
             }
             if (strlen($lastName) < $lastNameMinLength)
             {
-                $label = Zurmo::t('ImportModule', '{columnName} is  too long.',  array('{columnName}' => $this->columnName));
+                $label = Zurmo::t('ImportModule', 'Is too short.');
                 $this->shouldSkipRow      = true;
                 $this->analysisMessages[] = $label;
             }

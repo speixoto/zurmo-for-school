@@ -56,7 +56,7 @@
             $states = ArrayUtil::resolveArrayToLowerCase($states);
             if ($rowBean->{$this->columnName} != null && !in_array(strtolower($rowBean->{$this->columnName}), $states))
             {
-                $label = Zurmo::t('ImportModule', '{columnName} is invalid.', array('{columnName}' => $this->columnName));
+                $label = Zurmo::t('ImportModule', 'Is invalid.');
                 $this->shouldSkipRow      = true;
                 $this->analysisMessages[] = $label;
             }

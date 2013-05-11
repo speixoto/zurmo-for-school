@@ -46,13 +46,17 @@
         {
             if ($rowBean->{$this->columnName} != null)
             {
-                $customFieldValues = MultiSelectDropDownSanitizerUtil::getCustomFieldValuesFromValueString($rowBean->{$this->columnName});
+                $customFieldData         = CustomFieldDataModelUtil::getDataByModelClassNameAndAttributeName(
+                                           $this->modelClassName, $this->attributeName);
+                $lowerCaseDropDownValues = ArrayUtil::resolveArrayToLowerCase(unserialize($customFieldData->serializedData));
+                $customFieldValues       = MultiSelectDropDownSanitizerUtil::getCustomFieldValuesFromValueString(
+                                           $rowBean->{$this->columnName});
                 foreach ($customFieldValues as $aValue)
                 {
-                    if (!in_array(strtolower($aValue), $this->dropDownValues))
+                    if (!in_array(strtolower($aValue), $lowerCaseDropDownValues))
                     {
-                        $label = Zurmo::t('ImportModule', '{columnName} dropdown value is new. This value will be added upon import',
-                                          array('{columnName}' => $this->columnName));
+                        $label = Zurmo::t('ImportModule', '{value} is new. This value will be added upon import',
+                                          array('{value}' => $aValue));
                         $this->analysisMessages[]         = $label;
                         $this->missingCustomFieldValues[] = $aValue;
                     }

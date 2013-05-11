@@ -52,18 +52,6 @@
          */
         protected $type;
 
-        /**
-         * The attribute is expected to be a relation. This is the model class name for that relation.
-         * @var string
-         */
-        protected $attributeModelClassName;
-
-        /**
-         * Max allowed length of a value when the type of value is IdValueTypeMappingRuleForm::EXTERNAL_SYSTEM_ID
-         * @var integer
-         */
-        protected $externalSystemIdMaxLength = 40;
-
         public static function getLinkedMappingRuleType()
         {
             return 'IdValueType';
@@ -102,25 +90,16 @@
             {
                 if (strlen($rowBean->{$this->columnName}) > $this->externalSystemIdMaxLength)
                 {
-                    $label = Zurmo::t('ImportModule', '{columnName} is  too long.',
-                                      array('{columnName}' => $this->columnName));
+                    $label = Zurmo::t('ImportModule', 'Is too long.');
                     $this->shouldSkipRow      = true;
                     $this->analysisMessages[] = $label;
                 }
             }
         }
 
-        protected function resolveForFoundModel()
-        {
-            $label = Zurmo::t('ImportModule', '{columnName} is an existing record and will be updated.',
-                              array('{columnName}' => $this->columnName));
-            $this->analysisMessages[] = $label;
-        }
-
         protected function resolveForUnfoundModel()
         {
-            $label = Zurmo::t('ImportModule', '{columnName} was not found and this row will be skipped during import.',
-                              array('{columnName}' => $this->columnName));
+            $label = Zurmo::t('ImportModule', 'Was not found and this row will be skipped during import.');
             $this->shouldSkipRow      = true;
             $this->analysisMessages[] = $label;
         }
@@ -133,79 +112,6 @@
         {
             assert('$type == IdValueTypeMappingRuleForm::ZURMO_MODEL_ID ||
                     $type == IdValueTypeMappingRuleForm::EXTERNAL_SYSTEM_ID');
-        }
-
-        /**
-         * Given a model and an attribute, return the model class name for the attribute.
-         * @param RedBeanModel $model
-         * @param string $attributeName
-         * @return string $attributeModelClassName
-         */
-        protected function resolveAttributeModelClassName(RedBeanModel $model, $attributeName)
-        {
-            assert('is_string($attributeName)');
-            if ($attributeName == 'id')
-            {
-                return get_class($model);
-            }
-            return $model->getRelationModelClassName($attributeName);
-        }
-
-        /**
-         * Tries to find the value in the system. If found, returns true, otherwise false.
-         * @param string $value
-         * @return boolean
-         */
-        protected function resolveFoundIdByValue($value)
-        {
-            assert('is_int($value) || is_string($value) || $value == null');
-            if ($value == null)
-            {
-                return false;
-            }
-            elseif (is_int($value))
-            {
-                $sqlReadyString = $value;
-            }
-            else
-            {
-                $sqlReadyString = '\'' . $value . '\'';
-            }
-            $modelClassName = $this->attributeModelClassName;
-            $sql = 'select id from ' . $modelClassName::getTableName($modelClassName) .
-                ' where id = ' . $sqlReadyString . ' limit 1';
-            $ids =  R::getCol($sql);
-            assert('count($ids) <= 1');
-            if (count($ids) == 0)
-            {
-                return false;
-            }
-            return true;
-        }
-
-        /**
-         * Tries to find the value in the system. If found, returns true, otherwise false.
-         * @param string $value
-         * @return boolean
-         */
-        protected function resolveFoundExternalSystemIdByValue($value)
-        {
-            assert('is_int($value) || is_string($value) || $value == null');
-            if ($value == null)
-            {
-                return false;
-            }
-            $modelClassName = $this->attributeModelClassName;
-            $columnName     = ExternalSystemIdUtil::EXTERNAL_SYSTEM_ID_COLUMN_NAME;
-            $sql = 'select id from ' . $modelClassName::getTableName($modelClassName) .
-                ' where ' . $columnName . ' = \'' . $value . '\' limit 1';
-            $ids =  R::getCol($sql);
-            assert('count($ids) <= 1');
-            if (count($ids) == 0)
-            {
-                return false;
-            }
-            return true;
         }
 
         protected function assertMappingRuleDataIsValid()

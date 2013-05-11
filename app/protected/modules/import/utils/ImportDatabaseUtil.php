@@ -154,15 +154,15 @@
         protected static function optimizeTableNonImportColumns($tableName)
         {
             $bean                 = R::dispense($tableName);
-            $bean->analysisstatus = '2147483647'; //Creates an integer todo: optimize to status SET
+            $bean->analysisStatus = '2147483647'; //Creates an integer todo: optimize to status SET
             $bean->status         = '2147483647'; //Creates an integer todo: optimize to status SET
-            while (strlen($bean->serializedanalysismessages) < '1024')
+            while (strlen($bean->serializedAnalysisMessages) < '1024')
             {
-                $bean->serializedanalysismessages .= chr(rand(ord('a'), ord('z')));
+                $bean->serializedAnalysisMessages .= chr(rand(ord('a'), ord('z')));
             }
-            while (strlen($bean->serializedmessages) < '1024')
+            while (strlen($bean->serializedMessages) < '1024')
             {
-                $bean->serializedmessages .= chr(rand(ord('a'), ord('z')));
+                $bean->serializedMessages .= chr(rand(ord('a'), ord('z')));
             }
             R::store($bean);
             R::trash($bean);
@@ -280,7 +280,7 @@
                 throw new NotFoundException();
             }
             $bean->status             = $status;
-            $bean->serializedmessages = $serializedMessages;
+            $bean->serializedMessages = $serializedMessages;
             R::store($bean);
         }
 
@@ -291,7 +291,7 @@
          */
         public static function getReservedColumnNames()
         {
-            return array('analysisstatus', 'id', 'serializedanalysismessages', 'serializedmessages', 'status');
+            return array('analysisStatus', 'id', 'serializedAnalysisMessages', 'serializedMessages', 'status');
         }
     }
 ?>

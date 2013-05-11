@@ -65,8 +65,7 @@
             if ($rowBean->{$this->columnName} != null &&
                 CDateTimeParser::parse($rowBean->{$this->columnName}, $this->mappingRuleData['format']) === false)
             {
-                $label = Zurmo::t('ImportModule', '{columnName} is an invalid date time format. This value will be skipped during import.',
-                    array('{columnName}' => $this->columnName));
+                $label = Zurmo::t('ImportModule', 'Is an invalid date time format. This value will be skipped during import.');
                 $this->analysisMessages[] = $label;
             }
         }

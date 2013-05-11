@@ -50,16 +50,15 @@
             }
             if (false === $validatedUrl = $this->resolveValidatedUrl($rowBean->{$this->columnName}))
             {
-                $label = Zurmo::t('ImportModule', '{columnName} is an invalid url. This value will be cleared during import.',
-                                  array('{columnName}' => $this->columnName));
+                $label = Zurmo::t('ImportModule', 'Is an invalid url. This value will be cleared during import.');
                 $this->analysisMessages[] = $label;
                 return;
             }
             $maximumLength = DatabaseCompatibilityUtil::getMaxVarCharLength();
             if (strlen($validatedUrl) > $maximumLength)
             {
-                $label = Zurmo::t('ImportModule', '{columnName} is  too long. Minimum length is {minimumLength}',
-                                  array('{columnName}' => $this->columnName, '{maximumLength}' => $maximumLength));
+                $label = Zurmo::t('ImportModule', 'Is too long. Minimum length is {minimumLength}',
+                                  array('{maximumLength}' => $maximumLength));
                 $this->analysisMessages[] = $label;
             }
         }

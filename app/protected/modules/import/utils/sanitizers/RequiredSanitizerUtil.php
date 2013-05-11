@@ -69,8 +69,7 @@
             }
             if ($rowBean->{$this->columnName} == null)
             {
-                $label = Zurmo::t('ImportModule', '{columnName} is  required.',
-                                  array('{columnName}' => $this->columnName));
+                $label = Zurmo::t('ImportModule', 'Is  required.');
                 $this->shouldSkipRow      = true;
                 $this->analysisMessages[] = $label;
             }

@@ -81,8 +81,7 @@
                         $found = false;
                         if (strlen($rowBean->{$this->columnName}) > $this->maxNameLength)
                         {
-                            $label   = Zurmo::t('ImportModule', '{columnName} value is too long.',
-                                                array('{columnName}' => $this->columnName));
+                            $label   = Zurmo::t('ImportModule', 'Value is too long.');
                             $this->shouldSkipRow      = true;
                             $this->analysisMessages[] = $label;
                             return;
@@ -110,8 +109,7 @@
             {
                 if (strlen($rowBean->{$this->columnName}) > $this->externalSystemIdMaxLength)
                 {
-                    $label = Zurmo::t('ImportModule', '{columnName} is  too long.',
-                                      array('{columnName}' => $this->columnName));
+                    $label = Zurmo::t('ImportModule', 'Is too long.');
                     $this->shouldSkipRow      = true;
                     $this->analysisMessages[] = $label;
                 }
@@ -216,8 +214,11 @@
         protected function init()
         {
             parent::init();
-            $attributeModelClassName = $this->attributeModelClassName;
-            $model                   = new $attributeModelClassName(false);
+            $modelClassName                = $this->modelClassName;
+            $model                         = new $modelClassName(false);
+            $this->attributeModelClassName = $this->resolveAttributeModelClassName($model, $this->attributeName);
+            $attributeModelClassName       = $this->attributeModelClassName;
+            $model                         = new $attributeModelClassName(false);
             assert('$model->isAttribute("name")');
             $this->maxNameLength = StringValidatorHelper::getMaxLengthByModelAndAttributeName($model, 'name');
         }
@@ -227,14 +228,12 @@
             if ($this->mappingRuleData["type"] == RelatedModelValueTypeMappingRuleForm::ZURMO_MODEL_ID ||
                 $this->mappingRuleData["type"] == RelatedModelValueTypeMappingRuleForm::EXTERNAL_SYSTEM_ID)
             {
-                $label = Zurmo::t('ImportModule', '{columnName} was not found and this row will be skipped during import.',
-                                  array('{columnName}' => $this->columnName));
+                $label = Zurmo::t('ImportModule', 'Was not found and this row will be skipped during import.');
                 $this->shouldSkipRow = true;
             }
             else
             {
-                $label = Zurmo::t('ImportModule', '{columnName} was not found and will create a new record during import.',
-                                  array('{columnName}' => $this->columnName));
+                $label = Zurmo::t('ImportModule', 'Was not found and will create a new record during import.');
             }
             $this->analysisMessages[] = $label;
         }
