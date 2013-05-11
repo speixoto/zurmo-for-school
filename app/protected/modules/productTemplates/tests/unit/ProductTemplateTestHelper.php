@@ -39,7 +39,7 @@
             $productTemplate->cost              = $currencyValue;
             $productTemplate->listPrice         = $currencyValue;
 
-            $currencyValue                      = new SellPriceCurrencyValue();
+            $currencyValue                      = new CurrencyValue();
             $currencyValue->value               = 500.54;
             $currencyValue->currency            = $currencies[0];
             $productTemplate->sellPrice         = $currencyValue;
@@ -68,7 +68,7 @@
             $currencyValue2                             = new CurrencyValue();
             $currencyValue2->value                      = 400.54;
             $currencyValue2->currency                   = $currencies[0];
-            $currencyValue3                             = new SellPriceCurrencyValue();
+            $currencyValue3                             = new CurrencyValue();
             $currencyValue3->value                      = 300.54;
             $currencyValue3->currency                   = $currencies[0];
 

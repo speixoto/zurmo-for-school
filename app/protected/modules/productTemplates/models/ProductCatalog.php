@@ -159,11 +159,6 @@
             return 'ProductCatalog';
         }
 
-        public static function hasReadPermissionsOptimization()
-        {
-            return true;
-        }
-
         public static function getGamificationRulesType()
         {
             //return 'ProductCatalogGamification';

@@ -127,11 +127,6 @@
             return 'ProductCategory';
         }
 
-        public static function hasReadPermissionsOptimization()
-        {
-            return true;
-        }
-
         public static function getGamificationRulesType()
         {
             //return 'ProductCategoryGamification';

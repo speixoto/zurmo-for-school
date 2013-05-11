@@ -27,15 +27,20 @@
     class ProductTemplate extends Item
     {
         const TYPE_PRODUCT      = 1;
+
         const TYPE_SERVICE      = 2;
+
         const TYPE_SUBSCRIPTION = 3;
 
-        const STATUS_INACTIVE   = 4;
-        const STATUS_ACTIVE     = 5;
+        const STATUS_INACTIVE   = 1;
 
-        const PRICE_FREQUENCY_ONE_TIME = 6;
-        const PRICE_FREQUENCY_MONTHLY = 7;
-        const PRICE_FREQUENCY_ANNUALLY = 8;
+        const STATUS_ACTIVE     = 2;
+
+        const PRICE_FREQUENCY_ONE_TIME  = 1;
+
+        const PRICE_FREQUENCY_MONTHLY   = 2;
+
+        const PRICE_FREQUENCY_ANNUALLY  = 3;
 
         public static function getByName($name)
         {
@@ -118,13 +123,13 @@
                                                 RedBeanModel::LINK_TYPE_SPECIFIC, 'cost'),
                     'listPrice'                 => array(RedBeanModel::HAS_ONE,   'CurrencyValue',    RedBeanModel::OWNED,
                                                 RedBeanModel::LINK_TYPE_SPECIFIC, 'listPrice'),
-                    'sellPrice'                 => array(RedBeanModel::HAS_ONE,   'SellPriceCurrencyValue',    RedBeanModel::OWNED,
+                    'sellPrice'                 => array(RedBeanModel::HAS_ONE,   'CurrencyValue',    RedBeanModel::OWNED,
                                                 RedBeanModel::LINK_TYPE_SPECIFIC, 'sellPrice'),
                 ),
                 'rules' => array(
                     array('name',             'required'),
                     array('name',             'type',    'type' => 'string'),
-                    array('name',             'length',  'min'  => 3, 'max' => 64),
+                    array('name',             'length',  'min'  => 3, 'max' => 255),
                     array('description',      'type',    'type' => 'string'),
                     array('status',           'required'),
                     array('type',             'required'),
@@ -167,11 +172,6 @@
         public static function getRollUpRulesType()
         {
             return 'ProductTemplate';
-        }
-
-        public static function hasReadPermissionsOptimization()
-        {
-            return true;
         }
 
         public static function getGamificationRulesType()

@@ -26,10 +26,21 @@
 
     class ProductsDefaultController extends ZurmoModuleController
     {
+        const ZERO_MODELS_CHECK_FILTER_PATH =
+            'application.modules.products.controllers.filters.ProductListsZeroModelsCheckControllerFilter';
+
+        public static function getListBreadcrumbLinks()
+        {
+            $title = Zurmo::t('ProductsModule', 'Products');
+            return array($title);
+        }
+
         public function filters()
         {
-            $modelClassName   = $this->getModule()->getPrimaryModelName();
-            $viewClassName    = $modelClassName . 'EditAndDetailsView';
+            $modelClassName             = $this->getModule()->getPrimaryModelName();
+            $viewClassName              = $modelClassName . 'EditAndDetailsView';
+            $zeroModelsYetViewClassName = 'ProductsZeroModelsYetView';
+            $pageViewClassName          = 'ProductsPageView';
             return array_merge(parent::filters(),
                 array(
                     array(
@@ -38,8 +49,14 @@
                         'viewClassName'   => $viewClassName,
                    ),
                     array(
-                        ZurmoModuleController::ZERO_MODELS_CHECK_FILTER_PATH . ' + list, index',
-                        'controller' => $this,
+                        static::ZERO_MODELS_CHECK_FILTER_PATH . ' + list, index',
+                        'controller'                 => $this,
+                        'zeroModelsYetViewClassName' => $zeroModelsYetViewClassName,
+                        'modelClassName'             => $modelClassName,
+                        'pageViewClassName'          => $pageViewClassName,
+                        'defaultViewUtilClassName'   => 'ProductDefaultViewUtil',
+                        'activeActionElementType'    => 'ProductsLink',
+                        'breadcrumbLinks'            => static::getListBreadcrumbLinks()
                    ),
                )
             );

@@ -114,7 +114,7 @@
                     array('name',           'type',    'type' => 'string'),
                     array('name',           'length',  'min'  => 3, 'max' => 64),
                     array('description',	'type',    'type' => 'string'),
-                    //array('quantity',		'numerical',  'integerOnly' => true, 'allowEmpty' => false, 'min' => 1),
+                    array('quantity',		'numerical',  'min' => 1),
                     array('quantity',       'type',    'type' => 'integer'),
                     array('stage',          'required'),
                     array('quantity',		'required'),

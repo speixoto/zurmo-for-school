@@ -34,25 +34,39 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class ProductSelectFromRelatedListAjaxLinkActionElement extends SelectFromRelatedListAjaxLinkActionElement
+    /**
+     * Filter used by product controller for showing if marketing lists exist yet
+     */
+    class ProductListsZeroModelsCheckControllerFilter extends ZeroModelsCheckControllerFilter
     {
-        protected function getDefaultRoute()
+        public $activeActionElementType;
+
+        public $breadcrumbLinks;
+
+        protected function getMessageViewClassName()
         {
-            return Yii::app()->createUrl('productTemplates/' . $this->controllerId . '/selectFromRelatedList/',
-                    array(
-                    'uniqueLayoutId'          => $this->getUniqueLayoutId(),
-                    'portletId'               => $this->getPortletId(),
-                    'relationAttributeName'   => $this->params['relationAttributeName'],
-                    'relationModelId'         => $this->params['relationModelId'],
-                    'relationModuleId'        => $this->params['relationModuleId'],
-                    'relationModelClassName'  => $this->getRelationModelClassName(),
-                    )
-            );
+            return $this->zeroModelsYetViewClassName;
         }
 
-        protected function getDefaultLabel()
+        protected function resolveAndRenderView(View $messageView)
         {
-            return Zurmo::t('ProductsModule', 'Catalog');
+            $gridViewId              = 'notUsed';
+            $pageVar                 = 'notUsed';
+            $modelClassName          = $this->modelClassName;
+            $listModel               = new $modelClassName();
+            $actionBarView           = new SecuredActionBarForProductsSearchAndListView(
+                                       get_class($this->controller),
+                                       get_class($this->controller->getModule()),
+                                       $listModel,
+                                       $gridViewId,
+                                       $pageVar,
+                                       false, $this->activeActionElementType);
+            $pageViewClassName       = $this->pageViewClassName;
+            $mixedView               = new ActionBarAndZeroModelsYetView($actionBarView, $messageView);
+            $view                    = new $pageViewClassName(ProductDefaultViewUtil::
+                                                                     makeViewWithBreadcrumbsForCurrentUser(
+                                                                         $this->controller, $mixedView, $this->breadcrumbLinks, 'ProductBreadCrumbView'));
+            echo $view->render();
         }
     }
 ?>

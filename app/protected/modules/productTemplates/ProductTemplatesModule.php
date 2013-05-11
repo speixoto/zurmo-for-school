@@ -43,7 +43,7 @@
             return array('ProductTemplate', 'ProductCategory', 'ProductCatalog');
         }
 
-        public static function getUntranslatedRightsLabels()
+        public static function getTranslatedRightsLabels()
         {
             $params					  = LabelUtil::getTranslationParamsForAllModules();
             $labels					  = array();
@@ -91,7 +91,7 @@
 
         public static function getSingularCamelCasedName()
         {
-            return 'CatalogItem';
+            return 'ProductTemplate';
         }
 
         protected static function getSingularModuleLabel($language)
@@ -127,11 +127,6 @@
         public static function getGlobalSearchFormClassName()
         {
             return 'ProductTemplatesSearchForm';
-        }
-
-        public static function hasPermissions()
-        {
-            return true;
         }
     }
 ?>

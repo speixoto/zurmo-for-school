@@ -24,10 +24,10 @@ class phaEditColumn extends phaAbsActiveColumn {
      */
     protected function renderDataCellContent($row,$data) {
 
-	if($this->value!==null)
-	    $value=$this->evaluateExpression($this->value,array('data'=>$data,'row'=>$row));
-	elseif($this->name!==null)
-	    $value = CHtml::value($data, $this->name);
+        if($this->value!==null)
+            $value=$this->evaluateExpression($this->value,array('data'=>$data,'row'=>$row));
+        elseif($this->name!==null)
+            $value = CHtml::value($data, $this->name);
 
         $valueId = $data->{$this->modelId};
         $this->htmlEditFieldOptions['itemId'] = $valueId;
