@@ -35,53 +35,34 @@
      ********************************************************************************/
 
     /**
-     * Class that builds demo autoresponders.
+     * Class that builds demo emailMessageUrls.
      */
-    class AutorespondersDemoDataMaker extends DemoDataMaker
+    class EmailMessageUrlsDemoDataMaker extends DemoDataMaker
     {
+        protected $ratioToLoad = 3;
+
         protected $index;
-
-        protected $seedData;
-
-        public static function getDependencies()
-        {
-            return array('marketingLists');
-        }
 
         public function makeAll(& $demoDataHelper)
         {
             assert('$demoDataHelper instanceof DemoDataHelper');
-            assert('$demoDataHelper->isSetRange("MarketingList")');
-
-            $autoresponders = array();
-            for ($this->index = 0; $this->index < 5; $this->index++)
+            $emailMessageUrls = array();
+            for ($this->index = 0; $this->index < $this->resolveQuantityToLoad(); $this->index++)
             {
-                $autoresponder                  = new Autoresponder();
-                $autoresponder->marketingList   = $demoDataHelper->getRandomByModelName('MarketingList');
-                $this->populateModel($autoresponder);
-                $saved                          = $autoresponder->save();
+                $emailMessageUrl                   = new EmailMessageUrl();
+                $this->populateModel($emailMessageUrl);
+                $saved                              = $emailMessageUrl->unrestrictedSave();
                 assert('$saved');
-                $autoresponders[]               = $autoresponder->id;
+                $emailMessageUrls[]                = $emailMessageUrl->id;
             }
-            $demoDataHelper->setRangeByModelName('Autoresponder', $autoresponders[0], $autoresponders[count($autoresponders)-1]);
+            $demoDataHelper->setRangeByModelName('EmailMessageUrl', $emailMessageUrls[0], $emailMessageUrls[count($emailMessageUrls)-1]);
         }
 
         public function populateModel(& $model)
         {
-            assert('$model instanceof Autoresponder');
+            assert('$model instanceof EmailMessageUrl');
             parent::populateModel($model);
-            if (empty($this->seedData))
-            {
-                $this->seedData =  ZurmoRandomDataUtil::getRandomDataByModuleAndModelClassNames('AutorespondersModule',
-                                                                                                'Autoresponder');
-            }
-            $model->name                    = $this->seedData['name'][$this->index];
-            $model->subject                 = $this->seedData['subject'][$this->index];
-            $model->htmlContent             = $this->seedData['htmlContent'][$this->index];
-            $model->textContent             = $this->seedData['textContent'][$this->index];
-            $model->secondsFromOperation    = $this->seedData['secondsFromOperation'][$this->index];
-            $model->operationType           = $this->seedData['operationType'][$this->index];
-            $model->enableTracking          = (rand() % 2);
+            $model->url = 'http://' . $this->index . '.zurmo.com/';
         }
     }
 ?>

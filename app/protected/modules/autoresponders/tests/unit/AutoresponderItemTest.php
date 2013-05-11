@@ -281,7 +281,7 @@
                     $autoresponder  = $autoresponder4;
                     $interval       = $intervals[0];
                 }
-                $timestamp          = strtotime($pastOrFuture . ($i+1) . ' ' . $interval);
+                $timestamp          = strtotime($pastOrFuture . ($i + 1) . ' ' . $interval);
                 $time               = DateTimeUtil::convertTimestampToDbFormatDateTime($timestamp);
                 $autoresponderItem  = AutoresponderItemTestHelper::createAutoresponderItem($processed, $time, $autoresponder);
                 $this->assertNotNull($autoresponderItem);

@@ -34,7 +34,7 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class AutoresponderDefaultControllerSuperUserWalkthroughTest extends ZurmoWalkthroughBaseTest
+    class AutoresponderDefaultControllerRegularUserWalkthroughTest extends ZurmoWalkthroughBaseTest
     {
         protected $user;
 
@@ -46,6 +46,7 @@
             SecurityTestHelper::createSuperAdmin();
             $super = User::getByUsername('super');
             Yii::app()->user->userModel = $super;
+            Yii::app()->user->userModel = UserTestHelper::createBasicUser('nobody');
 
             EmailTemplateTestHelper::createEmailTemplateByName(EmailTemplate::TYPE_CONTACT, 'Subject 01', 'Contact',
                                                             'EmailTemplate 01', 'Html Content 01', 'Text Content 01');
@@ -73,7 +74,7 @@
         public function setUp()
         {
             parent::setUp();
-            $this->user = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
+            $this->user = $this->logoutCurrentUserLoginNewUserAndGetByUsername('nobody');
             Yii::app()->user->userModel = $this->user;
         }
 

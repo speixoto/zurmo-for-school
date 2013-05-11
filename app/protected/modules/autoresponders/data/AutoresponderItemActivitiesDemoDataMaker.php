@@ -35,53 +35,62 @@
      ********************************************************************************/
 
     /**
-     * Class that builds demo autoresponders.
+     * Class that builds demo autoresponderItemActivities.
      */
-    class AutorespondersDemoDataMaker extends DemoDataMaker
+    class AutoresponderItemActivitiesDemoDataMaker extends DemoDataMaker
     {
-        protected $index;
-
-        protected $seedData;
+        protected $ratioToLoad = 3;
 
         public static function getDependencies()
         {
-            return array('marketingLists');
+            return array('contacts', 'emailMessages');
         }
 
         public function makeAll(& $demoDataHelper)
         {
             assert('$demoDataHelper instanceof DemoDataHelper');
-            assert('$demoDataHelper->isSetRange("MarketingList")');
+            assert('$demoDataHelper->isSetRange("Contact")');
+            assert('$demoDataHelper->isSetRange("EmailMessageUrl")');
+            assert('$demoDataHelper->isSetRange("Autor|esponderItem")');
 
-            $autoresponders = array();
-            for ($this->index = 0; $this->index < 5; $this->index++)
+            $activities = array();
+            for ($i = 0; $i < $this->resolveQuantityToLoad(); $i++)
             {
-                $autoresponder                  = new Autoresponder();
-                $autoresponder->marketingList   = $demoDataHelper->getRandomByModelName('MarketingList');
-                $this->populateModel($autoresponder);
-                $saved                          = $autoresponder->save();
+                $activity                       = new AutoresponderItemActivity();
+                $autoresponderItem              = $demoDataHelper->getRandomByModelName('AutoresponderItem');
+                $activity->autoresponderItem    = $autoresponderItem;
+                $contact                        = $demoDataHelper->getRandomByModelName('Contact');
+                $personId                       = $contact->getClassId('Person');
+                $activity->person               = Person::getById($personId);
+                if (rand() % 4)
+                {
+                    $emailMessageUrl                = $demoDataHelper->getRandomByModelName('EmailMessageUrl');
+                    $activity->emailMessageUrl      = $emailMessageUrl;
+                }
+
+                $this->populateModel($activity);
+                $saved                          = $activity->save();
                 assert('$saved');
-                $autoresponders[]               = $autoresponder->id;
+                $activities[]                   = $activity->id;
             }
-            $demoDataHelper->setRangeByModelName('Autoresponder', $autoresponders[0], $autoresponders[count($autoresponders)-1]);
+            $demoDataHelper->setRangeByModelName('AutoresponderItemActivity', $activities[0], $activities[count($activities)-1]);
         }
 
         public function populateModel(& $model)
         {
-            assert('$model instanceof Autoresponder');
+            assert('$model instanceof AutoresponderItemActivity');
             parent::populateModel($model);
-            if (empty($this->seedData))
+            $model->quantity        = rand(10, 100);
+            $timestamp              = time() - rand(100, 1000);
+            $model->latestDateTime  = DateTimeUtil::convertTimestampToDbFormatDateTime($timestamp);
+            if ($model->emailMessageUrl->id > 0)
             {
-                $this->seedData =  ZurmoRandomDataUtil::getRandomDataByModuleAndModelClassNames('AutorespondersModule',
-                                                                                                'Autoresponder');
+                $model->type        = AutoresponderItemActivity::TYPE_CLICK;
             }
-            $model->name                    = $this->seedData['name'][$this->index];
-            $model->subject                 = $this->seedData['subject'][$this->index];
-            $model->htmlContent             = $this->seedData['htmlContent'][$this->index];
-            $model->textContent             = $this->seedData['textContent'][$this->index];
-            $model->secondsFromOperation    = $this->seedData['secondsFromOperation'][$this->index];
-            $model->operationType           = $this->seedData['operationType'][$this->index];
-            $model->enableTracking          = (rand() % 2);
+            else
+            {
+                $model->type        = AutoresponderItemActivity::TYPE_OPEN;
+            }
         }
     }
 ?>
