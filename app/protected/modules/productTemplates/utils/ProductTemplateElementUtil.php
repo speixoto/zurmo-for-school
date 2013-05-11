@@ -204,15 +204,6 @@
         public static function getProductTemplatePriceFrequencyDisplayedGridValue($data, $row)
         {
             $frequencyDropdownData = self::getProductTemplatePriceFrequencyDropdownArray();
-            //The field changes here for product
-            if($data instanceof ProductTemplate)
-            {
-                $attribute = 'priceFrequency';
-            }
-            elseif($data instanceof Product)
-            {
-                $attribute = 'pricefrequency';
-            }
             if(isset($frequencyDropdownData[$data->$attribute]))
             {
                 return $frequencyDropdownData[$data->$attribute];
@@ -226,21 +217,21 @@
         public static function getSellPriceFormulaDisplayedGridValue($data, $row)
         {
             $sellPriceFormulaModel = $data->sellPriceFormula;
-                $type = $sellPriceFormulaModel->type;
-                $discountOrMarkupPercentage = $sellPriceFormulaModel->discountOrMarkupPercentage;
-                $displayedSellPriceFormulaList = SellPriceFormula::getDisplayedSellPriceFormulaArray();
-                $content = '';
-                if($type != null)
+            $type = $sellPriceFormulaModel->type;
+            $discountOrMarkupPercentage = $sellPriceFormulaModel->discountOrMarkupPercentage;
+            $displayedSellPriceFormulaList = SellPriceFormula::getDisplayedSellPriceFormulaArray();
+            $content = '';
+            if($type != null)
+            {
+                $content = $displayedSellPriceFormulaList[$type];
+
+                if($type != SellPriceFormula::TYPE_EDITABLE)
                 {
-                    $content = $displayedSellPriceFormulaList[$type];
-
-                    if($type != SellPriceFormula::TYPE_EDITABLE)
-                    {
-                        $content = str_replace('{discount}', $discountOrMarkupPercentage/100, $content);
-                    }
+                    $content = str_replace('{discount}', $discountOrMarkupPercentage/100, $content);
                 }
+            }
 
-                return $content;
+            return $content;
         }
     }
 ?>

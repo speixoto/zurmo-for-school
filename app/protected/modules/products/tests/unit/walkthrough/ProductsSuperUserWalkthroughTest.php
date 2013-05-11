@@ -124,7 +124,7 @@
             $product                                    = array();
             $product['name']                            = 'Red Widget';
             $product['quantity']                        = 5;
-            $product['pricefrequency']                  = ProductTemplate::PRICE_FREQUENCY_ONE_TIME;
+            $product['priceFrequency']                  = ProductTemplate::PRICE_FREQUENCY_ONE_TIME;
             $product['sellPrice']                       = $currencyValue1Array;
 
             $product['type']                            = ProductTemplate::TYPE_PRODUCT;

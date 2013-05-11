@@ -123,7 +123,7 @@
 
             //actionModalList
             $this->setGetArray(array(
-                'modalTransferInformation' => array('sourceIdFieldId' => 'x', 'sourceNameFieldId' => 'y')
+                'modalTransferInformation' => array('sourceIdFieldId' => 'x', 'sourceNameFieldId' => 'y', 'modalId' => '10')
             ));
             $this->runControllerWithNoExceptionsAndGetContent('productTemplates/default/modalList');
         }
@@ -195,27 +195,6 @@
             {
                 //success
             }
-        }
-
-        public function testSuperUserModalListForProductPortletAction()
-        {
-            $super							    = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
-            Yii::app()->user->userModel			= $super;
-            $this->resetGetArray();
-            $account							    = AccountTestHelper::createAccountByNameForOwner('superAccount', $super);
-            OpportunityTestHelper::createOpportunityStagesIfDoesNotExist();
-            $opportunity						    = OpportunityTestHelper::createOpportunityWithAccountByNameForOwner('superOpp', $super, $account);
-
-            $_GET['modalTransferInformation']['sourceIdFieldId']	    = 'product_opportunity_id';
-            $_GET['modalTransferInformation']['sourceNameFieldId']	    = 'product_opportunity_name';
-            $_GET['modalTransferInformation']['sourceModelId']		    = -148;
-            $_GET['modalTransferInformation']['relationModelId']	    = $opportunity->id;
-            $_GET['modalTransferInformation']['relationAttributeName']	= 'opportunity';
-            $_GET['modalTransferInformation']['portletId']              = 27;
-            $_GET['modalTransferInformation']['uniqueLayoutId']		    = 'OpportunityDetailsAndRelationsViewRightBottomView_27';
-            $_GET['modalTransferInformation']['relationModuleId']	    = 'opportunities';
-
-            $this->runControllerWithNoExceptionsAndGetContent('productTemplates/default/modalListForProductPortlet');
         }
 
         /**

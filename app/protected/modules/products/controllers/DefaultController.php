@@ -371,7 +371,7 @@
             $product->quantity          = 1;
             $product->stage->value      = Product::OPEN_STAGE;
             $product->productTemplate   = $productTemplate;
-            $product->pricefrequency    = $productTemplate->priceFrequency;
+            $product->priceFrequency    = $productTemplate->priceFrequency;
             $product->sellPrice->value  = $productTemplate->sellPrice->value;
             $product->type              = $productTemplate->type;
 

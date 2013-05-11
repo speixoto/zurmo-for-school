@@ -47,9 +47,12 @@
         {
             $params					  = LabelUtil::getTranslationParamsForAllModules();
             $labels					  = array();
-            $labels[self::RIGHT_CREATE_PRODUCT_TEMPLATES] = Zurmo::t('ProductTemplatesModule', 'Create ProductTemplatesModulePluralLabel',     $params);
-            $labels[self::RIGHT_DELETE_PRODUCT_TEMPLATES] = Zurmo::t('ProductTemplatesModule', 'Delete ProductTemplatesModulePluralLabel',     $params);
-            $labels[self::RIGHT_ACCESS_PRODUCT_TEMPLATES] = Zurmo::t('ProductTemplatesModule', 'Access ProductTemplatesModulePluralLabel Tab', $params);
+            $labels[self::RIGHT_CREATE_PRODUCT_TEMPLATES] = Zurmo::t('ProductTemplatesModule',
+                                                                        'Create ProductTemplatesModulePluralLabel',     $params);
+            $labels[self::RIGHT_DELETE_PRODUCT_TEMPLATES] = Zurmo::t('ProductTemplatesModule',
+                                                                        'Delete ProductTemplatesModulePluralLabel',     $params);
+            $labels[self::RIGHT_ACCESS_PRODUCT_TEMPLATES] = Zurmo::t('ProductTemplatesModule',
+                                                                        'Access ProductTemplatesModulePluralLabel Tab', $params);
             return $labels;
         }
 
@@ -68,16 +71,18 @@
                 ),
                 'tabMenuItems' => array(
                     array(
-                        'label' => "eval:Zurmo::t('ProductTemplatesModule', 'Catalog Items', \$translationParams)",
-                        'url'   => array('/productTemplates/default'),
-                        'right' => self::RIGHT_ACCESS_PRODUCT_TEMPLATES,
+                        'label'  => "eval:Zurmo::t('ProductTemplatesModule', 'ProductTemplatesModulePluralLabel', \$translationParams)",
+                        'url'    => array('/productTemplates/default'),
+                        'right'  => self::RIGHT_ACCESS_PRODUCT_TEMPLATES,
+                        'mobile' => true,
                     ),
                 ),
                 'shortcutsCreateMenuItems' => array(
                     array(
-                        'label' => "eval:Zurmo::t('ProductTemplatesModule', 'Catalog Item', \$translationParams)",
-                        'url'   => array('/productTemplates/default/create'),
-                        'right' => self::RIGHT_CREATE_PRODUCT_TEMPLATES,
+                        'label'  => "eval:Zurmo::t('ProductTemplatesModule', 'ProductTemplatesModuleSingularLabel', \$translationParams)",
+                        'url'    => array('/productTemplates/default/create'),
+                        'right'  => self::RIGHT_CREATE_PRODUCT_TEMPLATES,
+                        'mobile' => true,
                     ),
                 )
             );

@@ -104,8 +104,11 @@
         protected function resolveHtmlOptions()
         {
             $defaultHtmlOptions     = $this->getEditableHtmlOptions();
-            $additionalHtmlOptions  = $this->params['htmlOptions'];
-
+            $additionalHtmlOptions  = array();
+            if(isset($this->params['htmlOptions']))
+            {
+                $additionalHtmlOptions  = $this->params['htmlOptions'];
+            }
             return array_merge($defaultHtmlOptions, $additionalHtmlOptions);
         }
     }

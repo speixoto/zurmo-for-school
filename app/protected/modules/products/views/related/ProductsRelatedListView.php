@@ -134,38 +134,6 @@
                     }';
         }
 
-//        protected function renderConfigurationForm()
-//        {
-//            $formName		    = 'product-configuration-form';
-//            $clipWidget		    = new ClipWidget();
-//            list($form, $formStart) = $clipWidget->renderBeginWidget(
-//                                                                        'ZurmoActiveForm',
-//                                                                        array(
-//                                                                            'id'            => $formName,
-//                                                                            'htmlOptions'   => array('style' => 'display:none')
-//                                                                        )
-//            );
-//            $content		    = $formStart;
-//            $content		    .= $this->renderConfigurationFormLayout($form);
-//            $formEnd		    = $clipWidget->renderEndWidget();
-//            $content		    .= $formEnd;
-//            return $content;
-//        }
-
-//        protected function renderConfigurationFormLayout($form)
-//        {
-//            $this->uniquePageId = $this->getUniquePageId();
-//
-//            $this->configurationForm = new ProductsConfigurationForm();
-//
-//            assert('$form instanceof ZurmoActiveForm');
-//            $content      = null;
-//            $innerContent = null;
-//            $content	  = $this->renderAddProductContent($form);
-//            $content	  .= '</div>' . "\n";
-//            return $content;
-//        }
-
         protected function getUniquePageId()
         {
             return null;
@@ -251,51 +219,6 @@
                 $content	    .= $this->renderScripts();
             return $content;
         }
-
-//        protected function renderAddProductLink()
-//        {
-//            $title = Zurmo::t('ProductsModule', 'Select from Catalog',
-//                                LabelUtil::getTranslationParamsForAllModules());
-//            $string  = "<p>" . ZurmoHtml::link($title, "#", array('id' => 'addProductPortletLink')) . "</p>";
-//                return $string;
-//        }
-
-//        protected function renderAddProductContent($form)
-//        {
-//            $routeParams    = $this->getCreateLinkRouteParameters();
-//            $productElement = new ProductPortletTemplateElement(new Product(),
-//                                        $this->getRelationAttributeName(),
-//                                        $form,
-//                                        array('inputIdPrefix'   => 'product',
-//                                          'htmlOptions'	    => array('display' => 'none')),
-//                                        $this->params["portletId"],
-//                                        $this->uniqueLayoutId,
-//                                        $routeParams['relationModelId'],
-//                                        $routeParams["relationModuleId"]
-//                                    );
-//            $content	    = $productElement->render();
-//            return $content;
-//        }
-
-//        protected function renderScripts()
-//        {
-//            parent::renderScripts();
-//            Yii::app()->clientScript->registerScript("AddProductElementToggleDisplay",
-//                "$(function () {
-//                    $('#addProductPortletLink').click(function (e) {
-//                        e.preventDefault();
-//                        if($('#product-configuration-form').css('display') == 'none')
-//                        {
-//                            $('#product-configuration-form').show('slow');
-//                        }
-//                        else
-//                        {
-//                            $('#product-configuration-form').hide('slow');
-//                        }
-//                    })
-//                })
-//                ");
-//        }
 
         public function getGridViewId()
         {

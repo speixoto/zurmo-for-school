@@ -47,16 +47,6 @@
             return self::getByNameOrEquivalent('name', $name);
         }
 
-        protected function untranslatedAttributeLabels()
-        {
-            return array_merge(parent::untranslatedAttributeLabels(),
-                array(
-                    'product'                   => 'ProductsModuleSingularLabel',
-                    'productCategories'         => 'ProductCategoriesModulePluralLabel',
-                )
-            );
-        }
-
         public function __toString()
         {
             try
@@ -76,24 +66,6 @@
         public static function getModuleClassName()
         {
             return 'ProductTemplatesModule';
-        }
-
-        /**
-         * Returns the display name for the model class.
-         * @return dynamic label name based on module.
-         */
-        protected static function getLabel($language = null)
-        {
-            return 'Catalog Item';
-        }
-
-        /**
-         * Returns the display name for plural of the model class.
-         * @return dynamic label name based on module.
-         */
-        protected static function getPluralLabel($language = null)
-        {
-            return 'Catalog Items';
         }
 
         public static function canSaveMetadata()
@@ -193,21 +165,41 @@
         }
 
         protected static function translatedAttributeLabels($language)
-            {
-                $params = LabelUtil::getTranslationParamsForAllModules();
-                return array_merge(parent::translatedAttributeLabels($language),
-                    array(
-                        'productTemplate'       => Zurmo::t('ProductTemplatesModule', 'Catalog Item',  $params, null, $language),
-                        'products'              => Zurmo::t('ProductTemplatesModule', 'ProductsModulePluralLabel',  $params, null, $language),
-                        'sellPriceFormula'      => Zurmo::t('ProductTemplatesModule', 'Sell Price Formula',  array(), null, $language),
-                        'productCategories'     => ProductCategory::getModelLabelByTypeAndLanguage('Plural', $language),
-                        'cost'                  => Zurmo::t('ProductTemplatesModule', 'Cost',  array(), null, $language),
-                        'listPrice'             => Zurmo::t('ProductTemplatesModule', 'List Price',  array(), null, $language),
-                        'sellPrice'             => Zurmo::t('ProductTemplatesModule', 'Sell Price',  array(), null, $language),
-                        'type'                  => Zurmo::t('ProductTemplatesModule', 'Type',  array(), null, $language),
-                        'status'                => Zurmo::t('ProductTemplatesModule', 'Status',  array(), null, $language),
-                    )
-                );
-            }
+        {
+            $params = LabelUtil::getTranslationParamsForAllModules();
+            return array_merge(parent::translatedAttributeLabels($language),
+                array(
+                    'productTemplate'       => Zurmo::t('ProductTemplatesModule', 'ProductTemplatesModuleSingularLabel',  $params, null, $language),
+                    'products'              => Zurmo::t('ProductTemplatesModule', 'ProductsModulePluralLabel',  $params, null, $language),
+                    'sellPriceFormula'      => Zurmo::t('ProductTemplatesModule', 'Sell Price Formula',  array(), null, $language),
+                    'productCategories'     => ProductCategory::getModelLabelByTypeAndLanguage('Plural', $language),
+                    'cost'                  => Zurmo::t('ProductTemplatesModule', 'Cost',  array(), null, $language),
+                    'listPrice'             => Zurmo::t('ProductTemplatesModule', 'List Price',  array(), null, $language),
+                    'sellPrice'             => Zurmo::t('ProductTemplatesModule', 'Sell Price',  array(), null, $language),
+                    'type'                  => Zurmo::t('ProductTemplatesModule', 'Type',  array(), null, $language),
+                    'status'                => Zurmo::t('ProductTemplatesModule', 'Status',  array(), null, $language),
+                )
+            );
         }
+
+        /**
+         * Returns the display name for the model class.
+         * @param null | string $language
+         * @return dynamic label name based on module.
+         */
+        protected static function getLabel($language = null)
+        {
+            return Zurmo::t('ProductTemplatesModule', 'Catalog Item', array(), null, $language);
+        }
+
+        /**
+         * Returns the display name for plural of the model class.
+         * @param null | string $language
+         * @return dynamic label name based on module.
+         */
+        protected static function getPluralLabel($language = null)
+        {
+            return Zurmo::t('ProductTemplatesModule', 'Catalog Items', array(), null, $language);
+        }
+    }
 ?>

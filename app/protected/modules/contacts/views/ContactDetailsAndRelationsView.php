@@ -75,6 +75,9 @@
                                     ),
                                     array(
                                         'type' => 'OpportunitiesForContactRelatedList',
+                                    ),
+                                    array(
+                                        'type' => 'ProductsForContactRelatedList',
                                     )
                                 )
                             )

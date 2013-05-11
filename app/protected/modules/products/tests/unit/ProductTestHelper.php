@@ -40,7 +40,7 @@
             $product->type                   = ProductTemplate::TYPE_PRODUCT;
             $product->stage->value           = 'Open';
             $product->sellPrice              = $currencyValue;
-            $product->pricefrequency	     = ProductTemplate::PRICE_FREQUENCY_ONE_TIME;
+            $product->priceFrequency	     = ProductTemplate::PRICE_FREQUENCY_ONE_TIME;
             $saved                           = $product->save();
             assert('$saved');
             return $product;

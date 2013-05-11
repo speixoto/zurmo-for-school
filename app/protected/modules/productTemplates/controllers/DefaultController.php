@@ -345,22 +345,6 @@
                  setAjaxModeAndRenderModalSearchList($this, $modalListLinkProvider);
         }
 
-        public function actionModalListForProductPortlet()
-        {
-            $modalListLinkProvider = new ProductTemplateSelectForPortletFromRelatedEditModalListLinkProvider(
-                                            $_GET['modalTransferInformation']['sourceIdFieldId'],
-                                            $_GET['modalTransferInformation']['sourceNameFieldId'],
-                                            $_GET['modalTransferInformation']['relationAttributeName'],
-                                            intval($_GET['modalTransferInformation']['relationModelId']),
-                                            $_GET['modalTransferInformation']['relationModuleId'],
-                                            $_GET['modalTransferInformation']['uniqueLayoutId'],
-                                            intval($_GET['modalTransferInformation']['portletId']),
-                                            'productTemplates'
-            );
-            echo ModalSearchListControllerUtil::
-                 setAjaxModeAndRenderModalSearchList($this, $modalListLinkProvider);
-        }
-
         public function actionDelete($id)
         {
             $productTemplate = ProductTemplate::GetById(intval($id));
@@ -486,6 +470,10 @@
             }
         }
 
+        /**
+         * Override to provide a provide template specific label for the modal page title.
+         * @see ZurmoModuleController->actionSelectFromRelatedList()
+         */
         public function actionSelectFromRelatedList($portletId,
                                                     $uniqueLayoutId,
                                                     $relationAttributeName,

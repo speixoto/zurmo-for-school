@@ -112,7 +112,7 @@
 
             //actionModalList
             $this->setGetArray(array(
-                'modalTransferInformation' => array('sourceIdFieldId' => 'x', 'sourceNameFieldId' => 'y', 'sourceModelId' => 66)
+                'modalTransferInformation' => array('sourceIdFieldId' => 'x', 'sourceNameFieldId' => 'y', 'sourceModelId' => 66, 'modalId' => 10)
             ));
             $this->runControllerWithNoExceptionsAndGetContent('productTemplates/category/modalList');
         }

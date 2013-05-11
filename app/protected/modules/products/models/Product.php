@@ -33,18 +33,6 @@
             return self::getByNameOrEquivalent('name', $name);
         }
 
-        protected function untranslatedAttributeLabels()
-        {
-            return array_merge(parent::untranslatedAttributeLabels(),
-                array(
-                        'productTemplate' => 'Catalog Item',
-                        'contact'         => 'ContactsModuleSingularLabel',
-                        'account'         => 'AccountsModuleSingularLabel',
-                        'opportunity'     => 'OpportunitiesModuleSingularLabel',
-                     )
-            );
-        }
-
         public function __toString()
         {
             try
@@ -75,7 +63,7 @@
         {
             $params = LabelUtil::getTranslationParamsForAllModules();
             return array_merge(parent::translatedAttributeLabels($language), array(
-                'pricefrequency'    => Zurmo::t('ProductsModule', 'Price Frequency', $params, null, $language),
+                'priceFrequency'    => Zurmo::t('ProductsModule', 'Price Frequency', $params, null, $language),
                 'account'           => Zurmo::t('AccountsModule', 'AccountsModuleSingularLabel', $params, null, $language),
                 'contact'           => Zurmo::t('ContactsModule', 'ContactsModuleSingularLabel', $params, null, $language),
                 'opportunity'	    => Zurmo::t('OpportunitiesModule', 'OpportunitiesModuleSingularLabel', $params, null, $language),
@@ -94,7 +82,7 @@
                     'name',
                     'description',
                     'quantity',
-                    'pricefrequency',//In template it is priceFrequency which is not working here due to difference in type of item
+                    'priceFrequency',//In template it is priceFrequency which is not working here due to difference in type of item
                     'sellPrice',
                     'type'
                 ),
@@ -119,17 +107,17 @@
                     array('stage',          'required'),
                     array('quantity',		'required'),
                     array('type',           'type',    'type' => 'integer'),
-                    array('pricefrequency',	'type',    'type' => 'integer'),
+                    array('priceFrequency',	'type',    'type' => 'integer'),
                     array('sellPrice',		'required'),
                     array('type',           'required'),
-                    array('pricefrequency',	'required'),
+                    array('priceFrequency',	'required'),
                 ),
                 'elements' => array(
                     'account'	     => 'Account',
                     'contact'	     => 'Contact',
                     'description'    => 'TextArea',
                     'opportunity'    => 'Opportunity',
-                    'pricefrequency' => 'ProductTemplatePriceFrequencyDropDown',
+                    'priceFrequency' => 'ProductTemplatePriceFrequencyDropDown',
                     'productTemplate'=> 'ProductTemplate',
                     'sellPrice'      => 'CurrencyValue',
                     'type'           => 'ProductTemplateTypeDropDown',
@@ -140,7 +128,7 @@
                 'defaultSortAttribute' => 'name',
                 'noAudit' => array(
                 ),
-                'nonConfigurableAttributes' => array('pricefrequency', 'type', 'productTemplate')
+                'nonConfigurableAttributes' => array('priceFrequency', 'type', 'productTemplate')
             );
             return $metadata;
         }

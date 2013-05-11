@@ -99,7 +99,7 @@
                                 array('cells' =>
                                     array(
                                         array(
-                                            'element' => 'pricefrequency',
+                                            'element' => 'priceFrequency',
                                         ),
                                     )
                                 ),
@@ -436,7 +436,7 @@
                                 array('cells' =>
                                     array(
                                         array(
-                                            'element' => 'pricefrequency',
+                                            'element' => 'priceFrequency',
                                         ),
                                     )
                                 ),
@@ -549,7 +549,7 @@
                                 array('cells' =>
                                     array(
                                         array(
-                                            'element' => 'pricefrequency',
+                                            'element' => 'priceFrequency',
                                         ),
                                     )
                                 ),
@@ -748,7 +748,7 @@
                             'account'            => array('id' => $accountId),
                             'quantity'           => 10,
                             'stage'              => array('value' => 'Open'),
-                            'pricefrequency'     => 2,
+                            'priceFrequency'     => 2,
                             'decimalCstm'        => '12',
                             'integerCstm'        => '11',
                             'phoneCstm'          => '259-784-2069',

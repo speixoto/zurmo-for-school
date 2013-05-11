@@ -53,17 +53,17 @@
             $annualTotal            = 0;
             foreach($models as $model)
             {
-                if($model->pricefrequency == ProductTemplate::PRICE_FREQUENCY_ONE_TIME)
+                if($model->priceFrequency == ProductTemplate::PRICE_FREQUENCY_ONE_TIME)
                 {
                     $oneTimeTotal += $model->sellPrice->value * $model->quantity;
                 }
 
-                if($model->pricefrequency == ProductTemplate::PRICE_FREQUENCY_MONTHLY)
+                if($model->priceFrequency == ProductTemplate::PRICE_FREQUENCY_MONTHLY)
                 {
                     $monthlyTotal += $model->sellPrice->value * $model->quantity;
                 }
 
-                if($model->pricefrequency == ProductTemplate::PRICE_FREQUENCY_ANNUALLY)
+                if($model->priceFrequency == ProductTemplate::PRICE_FREQUENCY_ANNUALLY)
                 {
                     $annualTotal += $model->sellPrice->value * $model->quantity;
                 }

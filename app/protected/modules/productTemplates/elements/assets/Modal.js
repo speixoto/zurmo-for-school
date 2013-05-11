@@ -14,7 +14,7 @@ function copyProductTemplateDataForProduct(templateId, url)
                             $("#ProductCategoriesForm_ProductCategory_ids").tokenInput("add", {id: this.id, name: this.name});
                          });
                          $('#Product_type_value').val(data.productType);
-                         $('#Product_pricefrequency_value').val(data.productPriceFrequency);
+                         $('#Product_priceFrequency_value').val(data.productPriceFrequency);
                          $('#Product_sellPrice_currency_id').val(data.productSellPriceCurrency);
                          $('#Product_sellPrice_value').val(data.productSellPriceValue);
                      }

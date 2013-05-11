@@ -78,6 +78,9 @@
                                     ),
                                     array(
                                         'type' => 'OpportunitiesForAccountRelatedList',
+                                    ),
+                                    array(
+                                        'type' => 'ProductsForAccountRelatedList',
                                     )
                                 )
                             )
