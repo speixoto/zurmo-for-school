@@ -51,7 +51,7 @@
                 return ZurmoHtml::dropDownList($this->getNameForSelectInput(),
                                                null,
                                                $this->getDropDownArray(),
-                                               $this->getEditableHtmlOptions());
+                                               $this->resolveHtmlOptions());
             }
             else
             {
@@ -59,7 +59,7 @@
                     $this->model->{$this->attribute}->currency,
                     'id',
                     $this->getDropDownArray(),
-                    $this->getEditableHtmlOptions()
+                    $this->resolveHtmlOptions()
                 );
             }
         }
@@ -99,6 +99,14 @@
             return $this->form->error($this->model, $this->attribute,
                                       array('inputID' => $this->getEditableInputId($this->attribute, 'currency_id')), true, true,
                                       $this->renderScopedErrorId($this->attribute, 'currency_id'));
+        }
+
+        protected function resolveHtmlOptions()
+        {
+            $defaultHtmlOptions     = $this->getEditableHtmlOptions();
+            $additionalHtmlOptions  = $this->params['htmlOptions'];
+
+            return array_merge($defaultHtmlOptions, $additionalHtmlOptions);
         }
     }
 ?>

@@ -54,7 +54,7 @@
             $pageVar                 = 'notUsed';
             $modelClassName          = $this->modelClassName;
             $listModel               = new $modelClassName();
-            $actionBarView           = new SecuredActionBarForProductsSearchAndListView(
+            $actionBarView           = new SecuredActionBarForProductsZeroModelView(
                                        get_class($this->controller),
                                        get_class($this->controller->getModule()),
                                        $listModel,

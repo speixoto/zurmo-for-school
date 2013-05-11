@@ -34,21 +34,41 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class SellPriceCurrencyValueAttributeForm extends AttributeForm
+    /**
+     * Action bar view for the product zero model view. Provides buttons like create, and links to
+     * queues.
+     */
+    class SecuredActionBarForProductsZeroModelView extends SecuredActionBarForSearchAndListView
     {
-        public static function getAttributeTypeDisplayName()
+        /**
+         * @return array
+         */
+        public static function getDefaultMetadata()
         {
-            return Zurmo::t('DesignerModule', 'Sell Price Currency Value');
-        }
-
-        public static function getAttributeTypeDisplayDescription()
-        {
-            return Zurmo::t('DesignerModule', 'Sell Price Currency Value');
-        }
-
-        public function getAttributeTypeName()
-        {
-            return 'CurrencyValue';
+            $metadata = array(
+                'global' => array(
+                    'toolbar' => array(
+                        'elements' => array(
+                            array('type'	  => 'ProductCreateLink',
+                                'htmlOptions'	  => array('class' => 'icon-create'),
+                            ),
+                            array(
+                                'type'            => 'ProductsLink',
+                                'htmlOptions'     => array( 'class' => 'icon-workflows' )
+                            ),
+                            array(
+                                'type'            => 'ProductTemplatesLink',
+                                'htmlOptions'     => array( 'class' => 'icon-by-time-workflow-in-queues' )
+                            ),
+                            array(
+                                'type'            => 'ProductCategoriesLink',
+                                'htmlOptions'     => array( 'class' => 'icon-by-workflow-message-in-queues' )
+                            ),
+                        ),
+                    ),
+                ),
+            );
+            return $metadata;
         }
     }
 ?>

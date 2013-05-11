@@ -75,6 +75,8 @@
                 'id'   => $id,
                 'value' => $this->resolveAndGetEditableValue($model, $attribute),
             );
+            $additionalHtmlOptions = $this->getHtmlOptions();
+            $htmlOptions           = array_merge($htmlOptions, $additionalHtmlOptions);
             $textField = $form->textField($model, $attribute, $htmlOptions);
             $error     = $form->error    ($model, $attribute, array('inputID' => $id), true, true,
                                           $this->renderScopedErrorId($inputNameIdPrefix, $attribute));
@@ -120,6 +122,7 @@
          */
         protected function resolveParamsForCurrencyId(& $params)
         {
+            $params['htmlOptions'] = $this->getHtmlOptions();
         }
 
         protected function resolveAndGetEditableValue($model, $attribute)

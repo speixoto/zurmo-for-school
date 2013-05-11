@@ -147,7 +147,7 @@
                     'description'         => 'TextArea',
                     'cost'                => 'CurrencyValue',
                     'listPrice'           => 'CurrencyValue',
-                    'sellPrice'           => 'SellPriceCurrencyValue',
+                    'sellPrice'           => 'CurrencyValue',
                     'type'                => 'ProductTemplateTypeDropDown',
                     'status'              => 'ProductTemplateStatusDropDown',
                     'priceFrequency'	  => 'ProductTemplatePriceFrequencyDropDown',

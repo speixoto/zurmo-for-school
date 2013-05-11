@@ -26,6 +26,15 @@
 
     class ProductTemplatesCategoryController extends ZurmoModuleController
     {
+        const ZERO_MODELS_CHECK_FILTER_PATH =
+            'application.modules.products.controllers.filters.ProductListsZeroModelsCheckControllerFilter';
+
+        public static function getListBreadcrumbLinks()
+        {
+            $title = Zurmo::t('ProductTemplatesModule', 'Catalog Items');
+            return array($title);
+        }
+
         public function filters()
         {
             $modelClassName             = 'ProductCategory';
@@ -40,12 +49,14 @@
                         'viewClassName'   => $viewClassName,
                    ),
                     array(
-                        ZurmoModuleController::ZERO_MODELS_CHECK_FILTER_PATH . ' + list, index',
+                        static::ZERO_MODELS_CHECK_FILTER_PATH . ' + list, index',
                         'controller'                 => $this,
                         'zeroModelsYetViewClassName' => $zeroModelsYetViewClassName,
                         'modelClassName'             => $modelClassName,
                         'pageViewClassName'          => $pageViewClassName,
-                        'defaultViewUtilClassName'   => 'ProductDefaultViewUtil'
+                        'defaultViewUtilClassName'   => 'ProductDefaultViewUtil',
+                        'activeActionElementType'    => 'ProductTemplatesLink',
+                        'breadcrumbLinks'            => static::getListBreadcrumbLinks()
                    ),
                )
             );

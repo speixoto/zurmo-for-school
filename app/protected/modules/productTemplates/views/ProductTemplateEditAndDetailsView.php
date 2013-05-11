@@ -132,7 +132,7 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'sellPrice', 'type' => 'SellPriceCurrencyValue'),
+                                                array('attributeName' => 'sellPrice', 'type' => 'CurrencyValue'),
                                             ),
                                         ),
                                     )
@@ -149,6 +149,27 @@
         {
             return Zurmo::t('ProductTemplatesModule', 'Create Catalog Item',
                                      LabelUtil::getTranslationParamsForAllModules());
+        }
+
+        /**
+         * Override to make sell price attribute readonly.
+         */
+        protected function resolveElementInformationDuringFormLayoutRender(& $elementInformation)
+        {
+            parent::resolveElementInformationDuringFormLayoutRender($elementInformation);
+            if($elementInformation['attributeName'] == 'sellPrice')
+            {
+                $sellPriceFormulaModel          = $this->model->sellPriceFormula;
+                $type                           = $sellPriceFormulaModel->type;
+                if($type != null)
+                {
+                    if($type != SellPriceFormula::TYPE_EDITABLE)
+                    {
+                        $elementInformation['htmlOptions']['readonly'] = 'readonly';
+                        $elementInformation['htmlOptions']['class']    = 'disabled';
+                    }
+                }
+            }
         }
     }
 ?>
