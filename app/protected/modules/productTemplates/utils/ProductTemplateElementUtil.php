@@ -204,9 +204,9 @@
         public static function getProductTemplatePriceFrequencyDisplayedGridValue($data, $row)
         {
             $frequencyDropdownData = self::getProductTemplatePriceFrequencyDropdownArray();
-            if(isset($frequencyDropdownData[$data->$attribute]))
+            if(isset($frequencyDropdownData[$data->priceFrequency]))
             {
-                return $frequencyDropdownData[$data->$attribute];
+                return $frequencyDropdownData[$data->priceFrequency];
             }
             else
             {
