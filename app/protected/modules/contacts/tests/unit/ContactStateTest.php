@@ -183,6 +183,43 @@
             );
             $this->assertEquals($compareData, $attributeForm->contactStatesData);
             $this->assertEquals(2, $attributeForm->startingStateOrder);
+
+            //Switching name of existing state
+            $this->assertEquals(7, count(ContactState::getAll()));
+            $attributeForm->contactStatesDataExistingValues = array(
+                3 => 'New',
+                6 => 'In Progress',
+                5 => 'Recycled',
+                1 => 'Customer',
+                4 => 'AAA',
+                2 => 'BBB',
+                0 => 'CCC',
+            );
+            $attributeForm->contactStatesData = array(
+                3 => 'New',
+                6 => 'In Progress Plastic',
+                5 => 'Recycled',
+                1 => 'Customer',
+                4 => 'AAA',
+                2 => 'BBB',
+                0 => 'CCC',
+            );
+            $attributeForm->startingStateOrder = 2;
+            $adapter = new ContactStateModelAttributesAdapter(new Contact());
+            $adapter->setAttributeMetadataFromForm($attributeForm);
+            $attributeForm = AttributesFormFactory::createAttributeFormByAttributeName(new Contact(), 'state');
+            $compareData = array(
+                3 => 'New',
+                6 => 'In Progress Plastic',
+                5 => 'Recycled',
+                1 => 'Customer',
+                4 => 'AAA',
+                2 => 'BBB',
+                0 => 'CCC',
+            );
+            $this->assertEquals($compareData, $attributeForm->contactStatesData);
+            $this->assertEquals(2, $attributeForm->startingStateOrder);
+            $this->assertEquals(7, count(ContactState::getAll()));
         }
     }
 ?>
