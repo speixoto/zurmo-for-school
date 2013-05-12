@@ -92,6 +92,13 @@
         protected $displayLabel;
 
         /**
+         * Text and TextArea attributes for example since you can have merge tags as these attribute values
+         * that need to get overridden
+         * @var bool
+         */
+        protected $shouldResolveValueForMergeTags = false;
+
+        /**
          * @return string - If the class name is BooleanWorkflowActionAttributeForm,
          * then 'Boolean' will be returned.
          */
@@ -231,7 +238,12 @@
             assert('is_string($attribute)');
             if ($this->type == WorkflowActionAttributeForm::TYPE_STATIC)
             {
-                $adapter->getModel()->{$attribute} = $this->value;
+                $value = $this->value;
+                if($this->shouldResolveValueForMergeTags)
+                {
+                    $value = $this->resolveValueForMergeTags($value, $adapter);
+                }
+                $adapter->getModel()->{$attribute} = $value;
             }
             elseif ($this->type == WorkflowActionAttributeForm::TYPE_STATIC_NULL)
             {
@@ -263,6 +275,18 @@
             {
                 throw new NotSupportedException();
             }
+        }
+
+        protected function resolveValueForMergeTags($value, WorkflowActionProcessingModelAdapter $adapter)
+        {
+            $mergeTagsUtil = MergeTagsUtilFactory::make(EmailTemplate::TYPE_WORKFLOW,
+                             Yii::app()->languageHelper->getByUser($adapter->getTriggeredByUser()),
+                             $value);
+            if (false === $resolvedValue  = $mergeTagsUtil->resolveMergeTags($adapter->getTriggeredModel()))
+            {
+                return $value;
+            }
+            return $resolvedValue;
         }
     }
 ?>
