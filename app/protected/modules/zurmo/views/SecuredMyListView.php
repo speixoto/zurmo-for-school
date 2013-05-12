@@ -47,7 +47,7 @@
         protected function getCGridViewLastColumn()
         {
             $url  = 'Yii::app()->createUrl("' . $this->getGridViewActionRoute('edit');
-            $url .= '", array("id" => $data->id, "redirectUrl" => "' . Yii::app()->request->getRequestUri() . '"))';
+            $url .= '", array("id" => $data->id, "redirectUrl" => "' . Yii::app()->createUrl('home/default') . '"))';
             return array(
                 'class'           => 'ButtonColumn',
                 'template'        => '{update}',
