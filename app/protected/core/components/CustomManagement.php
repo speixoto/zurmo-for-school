@@ -81,12 +81,8 @@
             $messageLogger->addErrorMessage(Zurmo::t('Core', 'CustomManagement class needs to be extended.'));
         }
         
-        public function resolveElementInformationDuringFormLayoutRender(DetailsView $view, $elementInformation)
+        public function resolveElementInformationDuringFormLayoutRender(DetailsView $view, &$elementInformation)
         {
-           if($elementInformation['attributeName'] == 'closeDate')
-           {
-                //Todo: Add a quick tip
-           }
         }
     }
 ?>
