@@ -140,7 +140,7 @@
                 $dynamicUserTypeElement->editableTemplate    = '<div class="value-data">{content}{error}</div>';
                 $allRelatedDropdowns    = Zurmo::t('WorkflowsModule', '<span>For all related</span> {relationsDropDown}',
                                         array('{relationsDropDown}' => $relationElement->render()));
-                $allRelatedDropdowns   .= $dynamicUserTypeElement ->render();
+                $allRelatedDropdowns   .= $dynamicUserTypeElement->render();
                 $content .= ZurmoHtml::tag('div', array('class' => 'all-related-field'), $allRelatedDropdowns);
             }
             elseif ($formType == WorkflowEmailMessageRecipientForm::TYPE_DYNAMIC_TRIGGERED_BY_USER)
