@@ -155,6 +155,7 @@
             $content .= $formEnd;
             $content .= $this->renderUIOverLayBlock();
             $content .= '</div></div>';
+            $content .= $this->renderModalContainer();
             return $content;
         }
 
@@ -266,6 +267,13 @@
         protected function registerOperatorOnLoadAndOnChangeScript()
         {
             OperatorStaticDropDownElement::registerOnLoadAndOnChangeScript();
+        }
+
+        protected function renderModalContainer()
+        {
+            return ZurmoHtml::tag('div', array(
+                        'id' => ModelElement::MODAL_CONTAINER_PREFIX . '-' . $this->getFormId()
+                   ),'');
         }
     }
 ?>

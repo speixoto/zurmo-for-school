@@ -314,6 +314,7 @@
             $modelClassName                     = $moduleClassName::getPrimaryModelName();
             $form                               = new WizardActiveForm();
             $form->enableAjaxValidation         = true; //ensures error validation populates correctly
+            $form->id                           = WorkflowWizardView::getFormId();
             $wizardFormClassName                = WorkflowToWizardFormAdapter::getFormClassNameByType($workflow->getType());
             $model                              = ComponentForWorkflowFormFactory::makeByComponentType($moduleClassName,
                                                   $modelClassName, $workflow->getType(), $componentType);
@@ -354,6 +355,7 @@
         {
             $form                        = new WizardActiveForm();
             $form->enableAjaxValidation  = true; //ensures error validation populates correctly
+            $form->id                    = WorkflowWizardView::getFormId();
             $wizardFormClassName         = WorkflowToWizardFormAdapter::getFormClassNameByType($type);
             $model                       = ComponentForWorkflowFormFactory::makeByComponentType($moduleClassName,
                                            $moduleClassName::getPrimaryModelName(), $type,
