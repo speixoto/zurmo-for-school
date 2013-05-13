@@ -94,7 +94,7 @@
                 $explicitReadWriteModelPermissions = ExplicitReadWriteModelPermissionsUtil::makeBySecurableItem($adapter->getModel());
                 try
                 {
-                    $group = strval(Group::getById((int)$this->type));
+                    $group = Group::getById((int)$this->type);
                     $explicitReadWriteModelPermissions->addReadWritePermitable($group);
                 }
                 catch (NotFoundException $e)
@@ -115,18 +115,18 @@
         protected function makeTypeValuesAndLabels($isCreatingNewModel, $isRequired)
         {
             $data                      = array();
-            if ($isCreatingNewModel)
+            if (!$isCreatingNewModel)
             {
-                $data[self::TYPE_DYNAMIC_SAME_AS_TRIGGERED_MODEL] = Zurmo::t('WorkflowsModule', 'Same as triggered record');
+                throw new NotSupportedException();
             }
-
-            $data[self::TYPE_DYNAMIC_OWNER]   = Zurmo::t('ZurmoModule', 'Owner');
+            $data[self::TYPE_DYNAMIC_SAME_AS_TRIGGERED_MODEL] = Zurmo::t('WorkflowsModule', 'Same as triggered record');
+            $data[self::TYPE_DYNAMIC_OWNER]                   = Zurmo::t('ZurmoModule', 'Owner');
             $groups = ExplicitReadWriteModelPermissionsElement::getSelectableGroupsData();
             foreach($groups as $id => $name)
             {
                 $data[$id]  = Zurmo::t('Zurmo', 'Owner and users in {groupName}', array('{groupName}' => $name));
             }
-            $data[self::TYPE_DYNAMIC_EVERYONE_GROUP] = Zurmo::t('ZurmoModule', 'Everyone');
+            $data[self::TYPE_DYNAMIC_EVERYONE_GROUP]          = Zurmo::t('ZurmoModule', 'Everyone');
             return $data;
         }
     }
