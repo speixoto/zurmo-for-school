@@ -48,6 +48,10 @@
         {
             assert('is_string($resolvedModelClassName)');
             assert('is_string($resolvedAttributeName)');
+            if($resolvedAttributeName == 'permissions')
+            {
+                return self::makeForExplicitReadWriteModelPermissions($resolvedModelClassName);
+            }
             $formClassName = self::getType($resolvedModelClassName, $resolvedAttributeName) . 'WorkflowActionAttributeForm';
             return new $formClassName($resolvedModelClassName, $resolvedAttributeName);
         }
@@ -64,6 +68,14 @@
             //todo: switch to use just modelClassName and refactor getType to use it statically
             $model = new $resolvedModelClassName(false);
             return ModelAttributeToWorkflowActionAttributeFormTypeUtil::getType($model, $resolvedAttributeName);
+        }
+
+        protected static function makeForExplicitReadWriteModelPermissions($resolvedModelClassName)
+        {
+            assert('is_string($resolvedModelClassName)');
+            $form = new ExplicitReadWriteModelPermissionsWorkflowActionAttributeForm($resolvedModelClassName, 'permissions');
+            $form->setDisplayLabel(Zurmo::t('ZurmoModule', 'Who can read and write'));
+            return $form;
         }
     }
 ?>

@@ -233,10 +233,6 @@
                 }
                 return $valueElement->render();
             }
-            else
-            {
-                throw new NotSupportedException();
-            }
         }
     }
 ?>

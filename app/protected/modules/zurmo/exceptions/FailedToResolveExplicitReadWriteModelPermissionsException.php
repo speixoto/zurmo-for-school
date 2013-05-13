@@ -34,24 +34,10 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class WorkflowActionAttributeFormFactoryTest extends WorkflowBaseTest
+    /**
+     * Exception thrown when on attempting to resolve permissions after saving a model and it fails
+     */
+    class FailedToResolveExplicitReadWriteModelPermissionsException extends CException
     {
-        public function testMake()
-        {
-            $form = WorkflowActionAttributeFormFactory::make('WorkflowModelTestItem', 'boolean');
-            $this->assertTrue($form instanceof CheckBoxWorkflowActionAttributeForm);
-        }
-
-        public function testMakePermissions()
-        {
-            $form = WorkflowActionAttributeFormFactory::make('WorkflowModelTestItem', 'permissions');
-            $this->assertTrue($form instanceof ExplicitReadWriteModelPermissionsWorkflowActionAttributeForm);
-        }
-
-        public function testGetType()
-        {
-            $type = WorkflowActionAttributeFormFactory::getType('WorkflowModelTestItem', 'boolean');
-            $this->assertEquals('CheckBox', $type);
-        }
     }
 ?>
