@@ -35,47 +35,9 @@
      ********************************************************************************/
 
     /**
-     * Helper class to build workflow attribute forms
+     * Exception thrown when on attempting to resolve permissions after saving a model and it fails
      */
-    class WorkflowActionAttributeFormFactory extends ConfigurableMetadataModel
+    class FailedToResolveExplicitReadWriteModelPermissionsException extends CException
     {
-        /**
-         * @param $resolvedModelClassName
-         * @param $resolvedAttributeName
-         * @return WorkflowActionAttributeForm
-         */
-        public static function make($resolvedModelClassName, $resolvedAttributeName)
-        {
-            assert('is_string($resolvedModelClassName)');
-            assert('is_string($resolvedAttributeName)');
-            if($resolvedAttributeName == 'permissions')
-            {
-                return self::makeForExplicitReadWriteModelPermissions($resolvedModelClassName);
-            }
-            $formClassName = self::getType($resolvedModelClassName, $resolvedAttributeName) . 'WorkflowActionAttributeForm';
-            return new $formClassName($resolvedModelClassName, $resolvedAttributeName);
-        }
-
-        /**
-         * @param $resolvedModelClassName
-         * @param $resolvedAttributeName
-         * @return string
-         */
-        public static function getType($resolvedModelClassName, $resolvedAttributeName)
-        {
-            assert('is_string($resolvedModelClassName)');
-            assert('is_string($resolvedAttributeName)');
-            //todo: switch to use just modelClassName and refactor getType to use it statically
-            $model = new $resolvedModelClassName(false);
-            return ModelAttributeToWorkflowActionAttributeFormTypeUtil::getType($model, $resolvedAttributeName);
-        }
-
-        protected static function makeForExplicitReadWriteModelPermissions($resolvedModelClassName)
-        {
-            assert('is_string($resolvedModelClassName)');
-            $form = new ExplicitReadWriteModelPermissionsWorkflowActionAttributeForm($resolvedModelClassName, 'permissions');
-            $form->setDisplayLabel(Zurmo::t('ZurmoModule', 'Who can read and write'));
-            return $form;
-        }
     }
 ?>

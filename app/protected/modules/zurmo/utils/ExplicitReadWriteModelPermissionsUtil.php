@@ -328,7 +328,18 @@
             $securableItem->setTreatCreatedByUserAsOwnerForPermissions(false);
             if ($saveSecurableItem)
             {
-                return $securableItem->save();
+                $setBackToProcess     = false;
+                if($securableItem->shouldProcessWorkflowOnSave())
+                {
+                    $securableItem->setDoNotProcessWorkflowOnSave();
+                    $setBackToProcess = true;
+                }
+                $saved = $securableItem->save();
+                if($setBackToProcess)
+                {
+                    $securableItem->setProcessWorkflowOnSave();
+                }
+                return $saved;
             }
             return true;
         }

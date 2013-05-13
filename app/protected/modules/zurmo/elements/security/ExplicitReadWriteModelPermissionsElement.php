@@ -91,7 +91,7 @@
             $permissionTypes = $this->getPermissionTypes();
             if ($selectedType == ExplicitReadWriteModelPermissionsUtil::MIXED_TYPE_NONEVERYONE_GROUP)
             {
-                $selectedGroups = $this->getSelectableGroupsData();
+                $selectedGroups = static::getSelectableGroupsData();
                 $stringContent  = ArrayUtil::getArrayValue($permissionTypes, $selectedType);
                 $stringContent .= '&#160;';
                 $stringContent  = ArrayUtil::getArrayValue($selectedGroups, $this->resolveSelectedGroup());
@@ -225,7 +225,7 @@
                 'onclick'   => 'document.getElementById("{bindId}").checked="checked";',
             );
             $name        = $this->getEditableInputName($selectableAttributeName, $selectableRelationAttributeName);
-            $dropDownArray = $this->getSelectableGroupsData();
+            $dropDownArray = static::getSelectableGroupsData();
             if ($dropDownArray == null)
             {
                 return null;
@@ -233,7 +233,7 @@
             return ZurmoHtml::dropDownList($name, $this->resolveSelectedGroup(), $dropDownArray, $htmlOptions);
         }
 
-        protected function getSelectableGroupsData()
+        public static function getSelectableGroupsData()
         {
             $groups     = Group::getAll();
             $groupsData = array();
