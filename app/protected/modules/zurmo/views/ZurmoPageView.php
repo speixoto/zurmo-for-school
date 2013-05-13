@@ -52,15 +52,6 @@
             }
         }
 
-        /**
-         * Set the global page title value.
-         */
-        public static function setTitle($pageTitle)
-        {
-            assert('is_string($pageTitle)');
-            ZurmoConfigurationUtil::setByModuleName('ZurmoModule', 'pageTitle', $pageTitle);
-        }
-
         protected function getStyles()
         {
             return array();
