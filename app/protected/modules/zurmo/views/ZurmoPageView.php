@@ -36,9 +36,29 @@
 
     class ZurmoPageView extends PageView
     {
+        /**
+         * Get the global page title value.
+         * @return string - page title.
+         */
         public function getTitle()
         {
-            return Zurmo::t('ZurmoModule', 'ZurmoCRM');
+            if (null != $title = ZurmoConfigurationUtil::getByModuleName('ZurmoModule', 'title'))
+            {
+                return $title;
+            }
+            else
+            {
+                return $this->_title;
+            }
+        }
+
+        /**
+         * Set the global page title value.
+         */
+        public static function setTitle($title)
+        {
+            assert('is_string($title)');
+            ZurmoConfigurationUtil::setByModuleName('ZurmoModule', 'title', $title);
         }
 
         protected function getStyles()
