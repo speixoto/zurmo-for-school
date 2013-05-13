@@ -42,23 +42,23 @@
          */
         public function getTitle()
         {
-            if (null != $title = ZurmoConfigurationUtil::getByModuleName('ZurmoModule', 'title'))
+            if (null != $pageTitle = ZurmoConfigurationUtil::getByModuleName('ZurmoModule', 'pageTitle'))
             {
-                return $title;
+                return $pageTitle;
             }
             else
             {
-                return $this->_title;
+                return Zurmo::t('ZurmoModule', 'ZurmoCRM');
             }
         }
 
         /**
          * Set the global page title value.
          */
-        public static function setTitle($title)
+        public static function setTitle($pageTitle)
         {
-            assert('is_string($title)');
-            ZurmoConfigurationUtil::setByModuleName('ZurmoModule', 'title', $title);
+            assert('is_string($pageTitle)');
+            ZurmoConfigurationUtil::setByModuleName('ZurmoModule', 'pageTitle', $pageTitle);
         }
 
         protected function getStyles()
