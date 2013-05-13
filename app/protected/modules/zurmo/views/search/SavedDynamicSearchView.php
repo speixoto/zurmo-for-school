@@ -188,6 +188,8 @@
         {
             $content               = $form->textField($this->model, 'savedSearchName');
             $content              .= $form->hiddenField($this->model, 'savedSearchId');
+            $content              .= $form->hiddenField($this->model, 'sortAttribute');
+            $content              .= $form->hiddenField($this->model, 'sortDescending');
             $params['label']       = Zurmo::t('ZurmoModule', 'Save');
             $params['htmlOptions'] = array('id'      => 'save-advanced-search',
                                            'value'   => 'saveSearch',

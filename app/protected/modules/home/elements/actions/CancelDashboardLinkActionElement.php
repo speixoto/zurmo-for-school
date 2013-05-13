@@ -36,7 +36,6 @@
 
     class CancelDashboardLinkActionElement extends CancelToListLinkActionElement
     {
-        
         protected function getDefaultRoute()
         {
             if (Yii::app()->request->getParam('redirectUrl') != null)

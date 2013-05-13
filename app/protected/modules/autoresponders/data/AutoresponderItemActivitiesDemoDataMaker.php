@@ -51,7 +51,7 @@
             assert('$demoDataHelper instanceof DemoDataHelper');
             assert('$demoDataHelper->isSetRange("Contact")');
             assert('$demoDataHelper->isSetRange("EmailMessageUrl")');
-            assert('$demoDataHelper->isSetRange("Autor|esponderItem")');
+            assert('$demoDataHelper->isSetRange("AutoresponderItem")');
 
             $activities = array();
             for ($i = 0; $i < $this->resolveQuantityToLoad(); $i++)

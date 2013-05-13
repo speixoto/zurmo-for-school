@@ -98,6 +98,21 @@
         }
 
         /**
+         * For the specified user, get the language setting.
+         * The current user is specified here: Yii::app()->user->userModel
+         * @param User $user
+         * @return string - language.
+         */
+        public function getByUser(User $user)
+        {
+            if ($user->language != null)
+            {
+                return $user->language;
+            }
+            return Yii::app()->language;
+        }
+
+        /**
          * Get supported languages and data of language. Uses language id as
          * key.
          * @return array of language keys/ data.

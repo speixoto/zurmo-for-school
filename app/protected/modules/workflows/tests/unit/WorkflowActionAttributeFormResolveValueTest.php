@@ -353,6 +353,22 @@
             $this->assertEquals('54', $model->integer);
         }
 
+        /**
+         * Merge tags don't work with phone, so it should result in the same string prior to calling resolveValueAndSetToModel
+         */
+        public function testIntegerResolveValueAndSetToModelUpdateAsStaticWithMergeTags()
+        {
+            $form        = new IntegerWorkflowActionAttributeForm('WorkflowsTestModule', 'WorkflowModelTestItem');
+            $form->type  = IntegerWorkflowActionAttributeForm::TYPE_STATIC;
+            $form->value = '54 [[STRING]]';
+            $model       = new WorkflowModelTestItem();
+            $model->string = 'something';
+            $adapter     = new WorkflowActionProcessingModelAdapter($model, Yii::app()->user->userModel);
+            $this->assertNull($model->integer);
+            $form->resolveValueAndSetToModel($adapter, 'integer');
+            $this->assertEquals('54 [[STRING]]', $model->integer);
+        }
+
         public function testLikeContactStateResolveValueAndSetToModelUpdateAsStatic()
         {
             $form        = new ContactStateWorkflowActionAttributeForm('WorkflowsTestModule', 'WorkflowModelTestItem');
@@ -394,6 +410,19 @@
             $this->assertNull($model->phone);
             $form->resolveValueAndSetToModel($adapter, 'phone');
             $this->assertEquals('abc', $model->phone);
+        }
+
+        public function testPhoneResolveValueAndSetToModelUpdateAsStaticWithMergeTags()
+        {
+            $form        = new PhoneWorkflowActionAttributeForm('WorkflowsTestModule', 'WorkflowModelTestItem');
+            $form->type  = PhoneWorkflowActionAttributeForm::TYPE_STATIC;
+            $form->value = 'abc [[STRING]]';
+            $model       = new WorkflowModelTestItem();
+            $model->string = 'xtz';
+            $adapter     = new WorkflowActionProcessingModelAdapter($model, Yii::app()->user->userModel);
+            $this->assertNull($model->phone);
+            $form->resolveValueAndSetToModel($adapter, 'phone');
+            $this->assertEquals('abc xtz', $model->phone);
         }
 
         public function testPhoneResolveValueAndSetToModelUpdateAsNull()
@@ -475,6 +504,19 @@
             $this->assertEquals('abc', $model->string);
         }
 
+        public function testTextResolveValueAndSetToModelUpdateAsStaticWithMergeTags()
+        {
+            $form        = new TextWorkflowActionAttributeForm('WorkflowsTestModule', 'WorkflowModelTestItem');
+            $form->type  = TextWorkflowActionAttributeForm::TYPE_STATIC;
+            $form->value = 'abc [[PHONE]]';
+            $model       = new WorkflowModelTestItem();
+            $model->phone = '123434567';
+            $adapter     = new WorkflowActionProcessingModelAdapter($model, Yii::app()->user->userModel);
+            $this->assertNull($model->string);
+            $form->resolveValueAndSetToModel($adapter, 'string');
+            $this->assertEquals('abc 123434567', $model->string);
+        }
+
         public function testTextResolveValueAndSetToModelUpdateAsNull()
         {
             $form          = new TextWorkflowActionAttributeForm('WorkflowsTestModule', 'WorkflowModelTestItem');
@@ -496,6 +538,19 @@
             $this->assertNull($model->textArea);
             $form->resolveValueAndSetToModel($adapter, 'textArea');
             $this->assertEquals('abc', $model->textArea);
+        }
+
+        public function testTextAreaResolveValueAndSetToModelUpdateAsStaticWithMergeTags()
+        {
+            $form        = new TextAreaWorkflowActionAttributeForm('WorkflowsTestModule', 'WorkflowModelTestItem');
+            $form->type  = TextAreaWorkflowActionAttributeForm::TYPE_STATIC;
+            $form->value = 'abc [[PHONE]]';
+            $model       = new WorkflowModelTestItem();
+            $model->phone = '123434567';
+            $adapter     = new WorkflowActionProcessingModelAdapter($model, Yii::app()->user->userModel);
+            $this->assertNull($model->textArea);
+            $form->resolveValueAndSetToModel($adapter, 'textArea');
+            $this->assertEquals('abc 123434567', $model->textArea);
         }
 
         public function testTextAreaResolveValueAndSetToModelUpdateAsNull()

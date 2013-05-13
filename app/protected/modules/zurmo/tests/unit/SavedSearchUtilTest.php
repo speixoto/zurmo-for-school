@@ -50,19 +50,32 @@
 
         public function testMakeSavedSearchBySearchForm()
         {
-            $searchForm                   = new AAASavedDynamicSearchFormTestModel(new AAA());
-            $searchForm->savedSearchName  = 'myTest';
-            $searchForm->dynamicStructure = '1 or 6';
-            $savedSearch = SavedSearchUtil::makeSavedSearchBySearchForm($searchForm, 'someView');
+            $searchForm                     = new AAASavedDynamicSearchFormTestModel(new AAA());
+            $listAttributesSelector         = new ListAttributesSelector('AListView', 'TestModule');
+            $searchForm->setListAttributesSelector($listAttributesSelector);
+            $searchForm->savedSearchName    = 'myTest';
+            $searchForm->dynamicStructure   = '1 or 6';
+            $searchForm->dynamicClauses     = array('a', 'b');
+            $searchForm->anyMixedAttributes = 'abcdef';
+            $searchForm->setAnyMixedAttributesScope('xyz');
+            $searchForm->getListAttributesSelector()->setSelected(array('aaaMember', 'aaaMember2'));
+            $dataCollection                 = new SavedSearchAttributesDataCollection($searchForm);
+            SavedSearchUtil::setDataByKeyAndDataCollection('abc', $dataCollection, array());
+            $stickyData                     = StickySearchUtil::getDataByKey('abc');
+            $savedSearch                    = SavedSearchUtil::makeSavedSearchBySearchForm($searchForm, 'someView', $stickyData);
             $this->assertTrue($savedSearch->id < 0);
             $unserializedData = unserialize($savedSearch->serializedData);
             $this->assertEquals('1 or 6', $unserializedData['dynamicStructure']);
             $saved = $savedSearch->save();
             $savedSearchId = $savedSearch->id;
+            $searchForm->savedSearchId      = $savedSearch->id;
             $this->assertTrue($saved);
             $this->assertEquals('myTest', $savedSearch->name);
 
-            $savedSearch = SavedSearchUtil::makeSavedSearchBySearchForm($searchForm, 'someView');
+            $dataCollection                 = new SavedSearchAttributesDataCollection($searchForm);
+            SavedSearchUtil::setDataByKeyAndDataCollection('abc', $dataCollection, array());
+            $stickyData                     = StickySearchUtil::getDataByKey('abc');
+            $savedSearch                    = SavedSearchUtil::makeSavedSearchBySearchForm($searchForm, 'someView');
 
             $searchForm                  = new AAASavedDynamicSearchFormTestModel(new AAA());
             $searchForm->savedSearchId   = $savedSearchId;
@@ -92,12 +105,12 @@
             $listAttributesSelector         = new ListAttributesSelector('AListView', 'TestModule');
             $searchForm->setListAttributesSelector($listAttributesSelector);
             SavedSearchUtil::resolveSearchFormByGetData($getData, $searchForm);
-            $this->assertEquals('myTest',      $searchForm->savedSearchName);
-            $this->assertEquals(null,          $searchForm->anyMixedAttributes);
-            $this->assertEquals(null,          $searchForm->getAnyMixedAttributesScope());
-            $this->assertEquals('1 or 6',      $searchForm->dynamicStructure);
-            $this->assertEquals(array(),       $searchForm->dynamicClauses);
-            $this->assertEquals(array('name'), $searchForm->getListAttributesSelector()->getSelected());
+            $this->assertEquals('myTest',                                   $searchForm->savedSearchName);
+            $this->assertEquals('abcdef',                                   $searchForm->anyMixedAttributes);
+            $this->assertEquals('xyz',                                      $searchForm->getAnyMixedAttributesScope());
+            $this->assertEquals('1 or 6',                                   $searchForm->dynamicStructure);
+            $this->assertEquals(array('a', 'b'),                            $searchForm->dynamicClauses);
+            $this->assertEquals(array('aaaMember', 'aaaMember2'),           $searchForm->getListAttributesSelector()->getSelected());
         }
 
         public function testSetGetClearStickySearchByKey()
@@ -115,7 +128,7 @@
             $this->assertTrue($savedSearch->id > 0);
 
             $searchModel                     = new AAASavedDynamicSearchFormTestModel(new AAA(false));
-            $listAttributesSelector         = new ListAttributesSelector('AListView', 'TestModule');
+            $listAttributesSelector          = new ListAttributesSelector('AListView', 'TestModule');
             $searchModel->setListAttributesSelector($listAttributesSelector);
             $searchModel->dynamicStructure   = '1 and 5';
             $searchModel->dynamicClauses     = array('a', 'b');
