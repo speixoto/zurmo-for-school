@@ -85,7 +85,7 @@
             {
                 $hasDashboardAccess = false;
             }
-            if (!$this->hideWelcomeViewGlobally() || UserConfigurationFormAdapter::resolveAndGetValue(Yii::app()->user->userModel, 'hideWelcomeView'))
+            if ($this->hideWelcomeViewGlobally() || UserConfigurationFormAdapter::resolveAndGetValue(Yii::app()->user->userModel, 'hideWelcomeView'))
             {
                 //If you can see dashboards, then go there, otherwise stay here since the user has limited access.
                 if ($hasDashboardAccess)
@@ -99,9 +99,13 @@
             {
                 $welcomeView               = new MobileWelcomeView($tipContent, $hasDashboardAccess);
             }
-            else
+            elseif(!$this->hideWelcomeViewGlobally())
             {
                 $welcomeView               = new WelcomeView($tipContent, $hasDashboardAccess);
+            }
+            else
+            {
+                throw new NotSupportedException();
             }
             $view                      = new HomePageView(ZurmoDefaultViewUtil::
                                              makeStandardViewForCurrentUser($this, $welcomeView));
