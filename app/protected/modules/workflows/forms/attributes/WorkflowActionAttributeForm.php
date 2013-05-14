@@ -110,6 +110,15 @@
         }
 
         /**
+         * Return true if the actionAttribute should resolve value before save.  If false, it will resolve value afterSave
+         * @return bool
+         */
+        public static function resolveValueBeforeSave()
+        {
+            return true;
+        }
+
+        /**
          * @param string $modelClassName
          * @param string $modelAttributeName
          */

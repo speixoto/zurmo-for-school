@@ -78,12 +78,12 @@
             $this->canSaveTriggeredModel = $canSaveTriggeredModel;
         }
 
-        public function processUpdateSelectAction()
+        public function processUpdateSelfAction()
         {
             if ($this->action->type == ActionForWorkflowForm::TYPE_UPDATE_SELF)
             {
-                self::processActionAttributesForAction($this->action, $this->triggeredModel,
-                                                       $this->triggeredByUser, $this->triggeredModel);
+                self::processActionAttributesForActionBeforeSave($this->action, $this->triggeredModel,
+                                                                 $this->triggeredByUser, $this->triggeredModel);
             }
         }
 
@@ -112,8 +112,9 @@
          * @param RedBeanModel $model
          * @param User $triggeredByUser
          * @param RedBeanModel $triggeredModel
+         * @param boolean $create
          */
-        protected static function processActionAttributesForAction(ActionForWorkflowForm $action,
+        protected static function processActionAttributesForActionBeforeSave(ActionForWorkflowForm $action,
                                                                    RedBeanModel $model,
                                                                    User $triggeredByUser,
                                                                    RedBeanModel $triggeredModel,
@@ -123,7 +124,7 @@
             $processedAttributes = array();
             foreach ($action->getActionAttributes() as $attribute => $actionAttribute)
             {
-                if ($actionAttribute->shouldSetValue)
+                if ($actionAttribute->resolveValueBeforeSave() && $actionAttribute->shouldSetValue)
                 {
                     if (null === $relation = ActionForWorkflowForm::resolveFirstRelationName($attribute))
                     {
@@ -144,7 +145,8 @@
             {
                 foreach($action->resolveAllActionAttributeFormsAndLabelsAndSort() as $attribute => $actionAttribute)
                 {
-                    if(!in_array($attribute, $processedAttributes) && $actionAttribute->shouldSetNullAlternativeValue())
+                    if(!in_array($attribute, $processedAttributes) && $actionAttribute->resolveValueBeforeSave() &&
+                       $actionAttribute->shouldSetNullAlternativeValue())
                     {
                         if (null === $relation = ActionForWorkflowForm::resolveFirstRelationName($attribute))
                         {
@@ -154,6 +156,38 @@
                             $actionAttribute->resolveNullAlternativeValueAndSetToModel($adapter, $resolvedAttribute);
                         }
                     }
+                }
+            }
+        }
+
+        /**
+         * @param ActionForWorkflowForm $action
+         * @param RedBeanModel $model
+         * @param User $triggeredByUser
+         * @param RedBeanModel $triggeredModel
+         */
+        protected static function processActionAttributesForActionAfterSave(ActionForWorkflowForm $action,
+                                                                            RedBeanModel $model,
+                                                                            User $triggeredByUser,
+                                                                            RedBeanModel $triggeredModel)
+        {
+            assert('is_bool($create)');
+            foreach ($action->getActionAttributes() as $attribute => $actionAttribute)
+            {
+                if (!$actionAttribute->resolveValueBeforeSave() && $actionAttribute->shouldSetValue)
+                {
+                    if (null === $relation = ActionForWorkflowForm::resolveFirstRelationName($attribute))
+                    {
+                        $resolvedModel     = $model;
+                        $resolvedAttribute = ActionForWorkflowForm::resolveRealAttributeName($attribute);
+                    }
+                    else
+                    {
+                        $resolvedModel     = $model->{$relation};
+                        $resolvedAttribute = ActionForWorkflowForm::resolveRealAttributeName($attribute);
+                    }
+                    $adapter = new WorkflowActionProcessingModelAdapter($resolvedModel, $triggeredByUser, $triggeredModel);
+                    $actionAttribute->resolveValueAndSetToModel($adapter, $resolvedAttribute);
                 }
             }
         }
@@ -170,7 +204,7 @@
             {
                 foreach (WorkflowUtil::resolveDerivedModels($this->triggeredModel, $this->action->relation) as $relatedModel)
                 {
-                    self::processActionAttributesForAction($this->action, $relatedModel, $this->triggeredByUser, $this->triggeredModel);
+                    self::processActionAttributesForActionBeforeSave($this->action, $relatedModel, $this->triggeredByUser, $this->triggeredModel);
                     $saved = $relatedModel->save();
                     if (!$saved)
                     {
@@ -183,7 +217,7 @@
             {
                 foreach (WorkflowUtil::getInferredModelsByAtrributeAndModel($this->action->relation, $this->triggeredModel) as $relatedModel)
                 {
-                    self::processActionAttributesForAction($this->action, $relatedModel, $this->triggeredByUser, $this->triggeredModel);
+                    self::processActionAttributesForActionBeforeSave($this->action, $relatedModel, $this->triggeredByUser, $this->triggeredModel);
                     $saved = $relatedModel->save();
                     if (!$saved)
                     {
@@ -195,7 +229,7 @@
             {
                 foreach ($this->triggeredModel->{$this->action->relation} as $relatedModel)
                 {
-                    self::processActionAttributesForAction($this->action, $relatedModel, $this->triggeredByUser, $this->triggeredModel);
+                    self::processActionAttributesForActionBeforeSave($this->action, $relatedModel, $this->triggeredByUser, $this->triggeredModel);
                     $saved = $relatedModel->save();
                     if (!$saved)
                     {
@@ -207,7 +241,7 @@
                   !$modelClassName::isOwnedRelation($this->action->relation))
             {
                 $relatedModel = $this->triggeredModel->{$this->action->relation};
-                self::processActionAttributesForAction($this->action, $relatedModel, $this->triggeredByUser, $this->triggeredModel);
+                self::processActionAttributesForActionBeforeSave($this->action, $relatedModel, $this->triggeredByUser, $this->triggeredModel);
                 $saved = $relatedModel->save();
                 if (!$saved)
                 {
@@ -250,13 +284,14 @@
                 $relationModelClassName = $model->getDerivedRelationModelClassName($relation);
                 $inferredRelationName   = $model->getDerivedRelationViaCastedUpModelOpposingRelationName($relation);
                 $newModel               = new $relationModelClassName();
-                self::processActionAttributesForAction($this->action, $newModel, $this->triggeredByUser, $this->triggeredModel, true);
+                self::processActionAttributesForActionBeforeSave($this->action, $newModel, $this->triggeredByUser, $this->triggeredModel, true);
                 $newModel->{$inferredRelationName}->add($model);
                 $saved = $newModel->save();
                 if (!$saved)
                 {
                     throw new FailedToSaveModelException();
                 }
+                self::processActionAttributesForActionAfterSave($this->action, $newModel, $this->triggeredByUser, $this->triggeredModel);
                 return false;
             }
             elseif ($model->getInferredRelationModelClassNamesForRelation(
@@ -265,12 +300,13 @@
                 $relationModelClassName = ModelRelationsAndAttributesToWorkflowAdapter::
                                           getInferredRelationModelClassName($relation);
                 $newModel               = new $relationModelClassName();
-                self::processActionAttributesForAction($this->action, $newModel, $this->triggeredByUser, $this->triggeredModel, true);
+                self::processActionAttributesForActionBeforeSave($this->action, $newModel, $this->triggeredByUser, $this->triggeredModel, true);
                 $saved = $newModel->save();
                 if (!$saved)
                 {
                     throw new FailedToSaveModelException();
                 }
+                self::processActionAttributesForActionAfterSave($this->action, $newModel, $this->triggeredByUser, $this->triggeredModel);
                 $model->{ModelRelationsAndAttributesToWorkflowAdapter::resolveRealAttributeName($relation)}->add($newModel);
                 return true;
             }
@@ -278,12 +314,13 @@
             {
                 $relationModelClassName = $model->getRelationModelClassName($relation);
                 $newModel               = new $relationModelClassName();
-                self::processActionAttributesForAction($this->action, $newModel, $this->triggeredByUser, $this->triggeredModel, true);
+                self::processActionAttributesForActionBeforeSave($this->action, $newModel, $this->triggeredByUser, $this->triggeredModel, true);
                 $saved = $newModel->save();
                 if (!$saved)
                 {
                     throw new FailedToSaveModelException();
                 }
+                self::processActionAttributesForActionAfterSave($this->action, $newModel, $this->triggeredByUser, $this->triggeredModel);
                 $model->{$relation}->add($newModel);
                 return true;
             }
@@ -295,11 +332,12 @@
                 {
                     return;
                 }
-                self::processActionAttributesForAction($this->action, $relatedModel, $this->triggeredByUser, $this->triggeredModel, true);
+                self::processActionAttributesForActionBeforeSave($this->action, $relatedModel, $this->triggeredByUser, $this->triggeredModel, true);
                 if (!$relatedModel->save())
                 {
                     throw new FailedToSaveModelException();
                 }
+                self::processActionAttributesForActionAfterSave($this->action, $relatedModel, $this->triggeredByUser, $this->triggeredModel);
                 return true;
             }
             else
