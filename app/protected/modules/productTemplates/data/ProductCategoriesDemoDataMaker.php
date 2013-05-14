@@ -40,10 +40,11 @@
         {
             assert('$demoDataHelper instanceof DemoDataHelper');
             $productCategories = array();
+            $productCatalog    = ProductCatalog::resolveAndGetByName(ProductCatalog::DEFAULT_NAME);
             for ($i = 0; $i < $this->resolveQuantityToLoad(); $i++)
             {
                 $productCategory = new ProductCategory();
-                $productCategory->productCatalogs->add($demoDataHelper->getRandomByModelName('ProductCatalog'));
+                $productCategory->productCatalogs->add($productCatalog);
                 $this->populateModel($productCategory);
                 $saved = $productCategory->save();
                 assert('$saved');

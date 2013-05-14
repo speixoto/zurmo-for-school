@@ -29,8 +29,11 @@
      */
     return array(
         'names' => array(
-            'Product Template 1',
-            'Product Template 2',
+            'Amazing Kid',
+            'You Can Do Anything',
+            'A Bend in the River',
+            'A Gift of Monotheists',
+            'Once in a Lifetime'
         )
     );
 ?>

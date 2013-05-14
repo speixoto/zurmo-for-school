@@ -33,15 +33,47 @@
             $super = User::getByUsername('super');
             Yii::app()->user->userModel = $super;
             //Setup test data owned by the super user.
-            $account = AccountTestHelper::createAccountByNameForOwner('superAccount', $super);
-            $opportunity = OpportunityTestHelper::createOpportunityByNameForOwner('superOpportunity', $super);
-            $productTemplate = ProductTemplateTestHelper::createProductTemplateByName('superProductTemplate');
-            $contactWithNoAccount = ContactTestHelper::createContactByNameForOwner('noAccountContact', $super);
+            $account                = AccountTestHelper::createAccountByNameForOwner('superAccount', $super);
+            $opportunity            = OpportunityTestHelper::createOpportunityByNameForOwner('superOpportunity', $super);
+            $productTemplate        = ProductTemplateTestHelper::createProductTemplateByName('superProductTemplate');
+            $contactWithNoAccount   = ContactTestHelper::createContactByNameForOwner('noAccountContact', $super);
+        }
+
+        public function testDemoDataMaker()
+        {
+            $model                    = new Product();
+            $productRandomData        = ZurmoRandomDataUtil::getRandomDataByModuleAndModelClassNames(
+                                            'ProductsModule', 'Product');
+            $name                     = RandomDataUtil::getRandomValueFromArray($productRandomData['names']);
+
+            $productTemplateName      = ProductsDemoDataMaker::getProductTemplateForProduct($name);
+            $productTemplate          = ProductTemplateTestHelper::createProductTemplateByName($productTemplateName);
+            $model->name              = $name;
+            $model->quantity          = mt_rand(1, 95);
+            $model->productTemplate   = $productTemplate;
+            $model->stage->value      = 'Open';
+            $model->priceFrequency    = $productTemplate->priceFrequency;
+            $model->sellPrice->value  = $productTemplate->sellPrice->value;
+            $model->type              = $productTemplate->type;
+            $this->assertTrue($model->save());
+            $id                       = $model->id;
+
+            $product                  = Product::getById($id);
+            $this->assertEquals($model->name, $product->name);
+            $this->assertEquals($model->quantity, $product->quantity);
+            $this->assertEquals($model->description, $product->description);
+            $this->assertEquals($model->stage->value, $product->stage->value);
+            $this->assertEquals($model->owner->id, $product->owner->id);
+            $this->assertTrue($model->productTemplate->isSame($productTemplate));
+            $this->assertEquals($model->priceFrequency, $product->priceFrequency);
+            $this->assertEquals($model->sellPrice->value, $product->sellPrice->value);
+            $this->assertEquals($model->type, $product->type);
         }
 
         public function testCreateAndGetProductById()
         {
-            $contacts         = contact::getAll();
+            Yii::app()->user->userModel = User::getByUsername('super');
+            $contacts         = Contact::getAll();
             $accounts         = Account::getByName('superAccount');
             $opportunities    = Opportunity::getByName('superOpportunity');
             $productTemplates = ProductTemplate::getByName('superProductTemplate');
@@ -121,8 +153,8 @@
         {
             Yii::app()->user->userModel = User::getByUsername('super');
             $products                   = Product::getAll();
-            $this->assertEquals(1, count($products));
-            $this->assertEquals("superAccount", $products[0]->account->name);
+            $this->assertEquals(2, count($products));
+            $this->assertEquals("superAccount", $products[1]->account->name);
         }
 
         public function testDeleteProduct()
@@ -130,7 +162,7 @@
             Yii::app()->user->userModel = User::getByUsername('super');
 
             $products                   = Product::getAll();
-            $this->assertEquals(1, count($products));
+            $this->assertEquals(2, count($products));
             $products[0]->delete();
         }
 
@@ -138,7 +170,7 @@
         {
             Yii::app()->user->userModel = User::getByUsername('super');
             $products                   = Product::getAll();
-            $this->assertEquals(0, count($products));
+            $this->assertEquals(1, count($products));
         }
 
     }

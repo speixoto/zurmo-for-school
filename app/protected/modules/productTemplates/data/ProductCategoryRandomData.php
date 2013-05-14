@@ -29,8 +29,9 @@
      */
     return array(
         'names' => array(
-            'Product Category 1',
-            'Product Category 2',
+            'CD-DVD',
+            'Books',
+            'Music',
         )
     );
 ?>

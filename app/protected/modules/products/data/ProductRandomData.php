@@ -29,8 +29,11 @@
      */
     return array(
         'names' => array(
-            'Product 1',
-            'Product 2',
+            'Amazing Kid Sample',
+            'You Can Do Anything Sample',
+            'A Bend in the River November Issue',
+            'A Gift of Monotheists October Issue',
+            'Enjoy Once in a Lifetime Music'
         )
     );
 ?>

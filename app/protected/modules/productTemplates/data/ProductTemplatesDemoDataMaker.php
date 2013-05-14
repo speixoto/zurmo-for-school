@@ -64,13 +64,30 @@
             $productTemplateRandomData = ZurmoRandomDataUtil::getRandomDataByModuleAndModelClassNames(
                                             'ProductTemplatesModule', 'ProductTemplate');
             $name                      = RandomDataUtil::getRandomValueFromArray($productTemplateRandomData['names']);
+            $productCategoryName       = self::getProductCategoryForTemplate($name);
+            $productCategories         = ProductCategory::getByName($productCategoryName);
+            $productCategory           = $productCategories[0];
             $model->name               = $name;
+            $model->productCategories->add($productCategory);
             $model->priceFrequency     = 2;
             $model->cost->value        = mt_rand(5, 350) * 1000;
             $model->listPrice->value   = mt_rand(5, 350) * 1000;
             $model->sellPrice->value   = mt_rand(5, 350) * 1000;
             $model->status             = ProductTemplate::STATUS_ACTIVE;
             $model->type               = ProductTemplate::TYPE_PRODUCT;
+        }
+
+        private static function getProductCategoryForTemplate($template)
+        {
+            $templateCategoryMapping = array(
+                                                'Amazing Kid'           => 'CD-DVD',
+                                                'You Can Do Anything'   => 'CD-DVD',
+                                                'A Bend in the River'   => 'Books',
+                                                'A Gift of Monotheists' => 'Books',
+                                                'Once in a Lifetime'    => 'Music'
+                                            );
+
+            return $templateCategoryMapping[$template];
         }
     }
 ?>

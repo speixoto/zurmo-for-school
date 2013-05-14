@@ -63,13 +63,33 @@
         {
             assert('$model instanceof Product');
             parent::populateModel($model);
-            $stage		   = RandomDataUtil::getRandomValueFromArray(static::getCustomFieldDataByName('ProductStages'));
-            $productRandomData     = ZurmoRandomDataUtil::getRandomDataByModuleAndModelClassNames('ProductsModule', 'Product');
-            $name                  = RandomDataUtil::getRandomValueFromArray($productRandomData['names']);
+            $stage                  = RandomDataUtil::getRandomValueFromArray(static::getCustomFieldDataByName('ProductStages'));
+            $productRandomData      = ZurmoRandomDataUtil::getRandomDataByModuleAndModelClassNames('ProductsModule', 'Product');
+            $name                   = RandomDataUtil::getRandomValueFromArray($productRandomData['names']);
+            $productTemplateName    = self::getProductTemplateForProduct($name);
+            $productTemplates       = ProductTemplate::getByName($productTemplateName);
+            $productTemplate        = $productTemplates[0];
+            $model->name            = $name;
+            $model->quantity        = mt_rand(1, 95);
+            $model->productTemplate = $productTemplate;
+            $model->stage->value    = $stage;
+            $model->priceFrequency  = $productTemplate->priceFrequency;
+            $model->sellPrice->value= $productTemplate->sellPrice->value;
+            $model->type            = $productTemplate->type;
 
-            $model->name           = $name;
-            $model->quantity       = mt_rand(1, 95);
-            $model->stage->value   = $stage;
+        }
+
+        public static function getProductTemplateForProduct($product)
+        {
+            $templateCategoryMapping = array(
+                                                'A1mazing Kid Sample'                       => 'Amazing Kid',
+                                                'You Can Do Anything Sample'                => 'You Can Do Anything',
+                                                'A Bend in the River November Issue'        => 'A Bend in the River',
+                                                'A Gift of Monotheists October Issue'       => 'A Gift of Monotheists',
+                                                'Enjoy Once in a Lifetime Music'            => 'Once in a Lifetime'
+                                            );
+
+            return $templateCategoryMapping[$product];
         }
     }
 ?>
