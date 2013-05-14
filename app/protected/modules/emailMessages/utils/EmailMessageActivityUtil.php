@@ -39,7 +39,9 @@
      */
     class EmailMessageActivityUtil
     {
-        const IMAGE_PATH    =   '/default/images/1x1-pixel.png';
+        const IMAGE_PATH            =   '/default/images/1x1-pixel.png';
+
+        const VALID_HASH_PATTERN    = '~^[A-Z0-9\+=/]+~i';
 
         protected static $baseQueryStringArray;
 
@@ -61,14 +63,15 @@
 
         public static function resolveQueryStringArrayForHash($hash)
         {
-            if (ctype_xdigit($hash))
+            $hash = trim($hash);
+            if (static::isValidHash($hash))
             {
                 $queryStringArray   = array();
-                $decodedString      = @pack("H*", $hash);
-                if ($decodedString)
+                $decryptedString    = ZurmoPasswordSecurityUtil::decrypt($hash);
+                if ($decryptedString)
                 {
-                    $shuffledBackString = str_rot13($decodedString);
-                    parse_str($shuffledBackString, $queryStringArray);
+                    //$shuffledBackString = str_rot13($decodedString);
+                    parse_str($decryptedString, $queryStringArray);
                     static::validateAndResolveFullyQualifiedQueryStringArray($queryStringArray);
                     return $queryStringArray;
                 }
@@ -245,17 +248,13 @@
 
         protected static function resolveHashForQueryStringArray($queryStringArray)
         {
-            // TODO: @Shoaibi: Critical: core/utils/ZurmoPasswordSecurityUtil's encrypt and decrypt
-            // there might be problem with walkthrough tests as outgoing would be through util, using perInstanceTest.php and controller would use perInstance.php
-            // core/utils/ZurmoPasswordSecurityUtil's encrypt and decrypt
             $queryString            = http_build_query($queryStringArray);
-            $shuffledQueryString    = str_rot13($queryString);
-            $encodedString          = bin2hex($shuffledQueryString);
-            if (!$encodedString)
+            $encryptedString        = ZurmoPasswordSecurityUtil::encrypt($queryString);
+            if (!$encryptedString || !static::isValidHash($encryptedString))
             {
                 throw new NotSupportedException();
             }
-            return $encodedString;
+            return $encryptedString;
         }
 
         protected static function resolveBaseQueryStringArray($modelId, $modelType, $personId)
@@ -345,6 +344,21 @@ PTN;
         protected static function resolveFullyQualifiedImagePath()
         {
             return Yii::app()->themeManager->basePath . static::IMAGE_PATH;
+        }
+
+        protected static function isValidHash($hash)
+        {
+            if (empty($hash))
+            {
+                return false;
+            }
+            $matches = array();
+            $matchesCount = preg_match_all(static::VALID_HASH_PATTERN, $hash, $matches);
+            if (!$matchesCount || ($matches[0][0] !== $hash))
+            {
+                return false;
+            }
+            return true;
         }
     }
 ?>

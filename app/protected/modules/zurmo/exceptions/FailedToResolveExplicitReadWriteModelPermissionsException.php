@@ -34,12 +34,10 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class AutoresponderCreateLinkActionElement extends CreateLinkActionElement
+    /**
+     * Exception thrown when on attempting to resolve permissions after saving a model and it fails
+     */
+    class FailedToResolveExplicitReadWriteModelPermissionsException extends CException
     {
-        public function __construct($controllerId, $moduleId, $modelId, $params = array())
-        {
-            $moduleId = 'autoresponders';
-            parent::__construct($controllerId, $moduleId, $modelId, $params);
-        }
     }
 ?>

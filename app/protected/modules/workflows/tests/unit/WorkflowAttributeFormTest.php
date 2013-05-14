@@ -44,6 +44,30 @@
             UserTestHelper::createBasicUser('bobby');
         }
 
+        public function testExplicitReadWriteModelPermissionsWorkflowActionAttributeFormSetGetAndValidate()
+        {
+            $form                 = new ExplicitReadWriteModelPermissionsWorkflowActionAttributeForm('WorkflowModelTestItem', 'permissions');
+            $form->type           = ExplicitReadWriteModelPermissionsWorkflowActionAttributeForm::TYPE_DYNAMIC_SAME_AS_TRIGGERED_MODEL;
+            $form->shouldSetValue = true;
+            $validated            = $form->validate();
+            $this->assertTrue($validated);
+
+            $form->type           = ExplicitReadWriteModelPermissionsWorkflowActionAttributeForm::TYPE_DYNAMIC_OWNER;
+            $validated            = $form->validate();
+            $this->assertTrue($validated);
+
+            $form->type           = ExplicitReadWriteModelPermissionsWorkflowActionAttributeForm::TYPE_DYNAMIC_EVERYONE_GROUP;
+            $validated            = $form->validate();
+            $this->assertTrue($validated);
+
+            $form->type           = '5';
+            $validated            = $form->validate();
+            $this->assertTrue($validated);
+        }
+
+        /**
+         * @depends testExplicitReadWriteModelPermissionsWorkflowActionAttributeFormSetGetAndValidate
+         */
         public function testCheckBoxWorkflowAttributeFormSetGetAndValidate()
         {
             $form                 = new CheckBoxWorkflowActionAttributeForm('WorkflowModelTestItem', 'boolean');

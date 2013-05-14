@@ -34,12 +34,35 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class AutoresponderCreateLinkActionElement extends CreateLinkActionElement
+    /**
+     * Class that builds demo emailMessageUrls.
+     */
+    class EmailMessageUrlsDemoDataMaker extends DemoDataMaker
     {
-        public function __construct($controllerId, $moduleId, $modelId, $params = array())
+        protected $ratioToLoad = 3;
+
+        protected $index;
+
+        public function makeAll(& $demoDataHelper)
         {
-            $moduleId = 'autoresponders';
-            parent::__construct($controllerId, $moduleId, $modelId, $params);
+            assert('$demoDataHelper instanceof DemoDataHelper');
+            $emailMessageUrls = array();
+            for ($this->index = 0; $this->index < $this->resolveQuantityToLoad(); $this->index++)
+            {
+                $emailMessageUrl                   = new EmailMessageUrl();
+                $this->populateModel($emailMessageUrl);
+                $saved                              = $emailMessageUrl->unrestrictedSave();
+                assert('$saved');
+                $emailMessageUrls[]                = $emailMessageUrl->id;
+            }
+            $demoDataHelper->setRangeByModelName('EmailMessageUrl', $emailMessageUrls[0], $emailMessageUrls[count($emailMessageUrls)-1]);
+        }
+
+        public function populateModel(& $model)
+        {
+            assert('$model instanceof EmailMessageUrl');
+            parent::populateModel($model);
+            $model->url = 'http://' . $this->index . '.zurmo.com/';
         }
     }
 ?>

@@ -34,12 +34,53 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class AutoresponderCreateLinkActionElement extends CreateLinkActionElement
+    /**
+     * Class that builds demo autoresponderItems.
+     */
+    class AutoresponderItemsDemoDataMaker extends DemoDataMaker
     {
-        public function __construct($controllerId, $moduleId, $modelId, $params = array())
+        protected $ratioToLoad = 3;
+
+        public static function getDependencies()
         {
-            $moduleId = 'autoresponders';
-            parent::__construct($controllerId, $moduleId, $modelId, $params);
+            return array('contacts');
+        }
+
+        public function makeAll(& $demoDataHelper)
+        {
+            assert('$demoDataHelper instanceof DemoDataHelper');
+            assert('$demoDataHelper->isSetRange("Contact")');
+            assert('$demoDataHelper->isSetRange("Autoresponder")');
+
+            $items = array();
+            for ($i = 0; $i < $this->resolveQuantityToLoad(); $i++)
+            {
+                $item                   = new AutoresponderItem();
+                $item->autoresponder    = $demoDataHelper->getRandomByModelName('Autoresponder');
+                $item->contact          = $demoDataHelper->getRandomByModelName('Contact');
+                $this->populateModel($item);
+                $saved                  = $item->unrestrictedSave();
+                assert('$saved');
+                $items[]                = $item->id;
+            }
+            $demoDataHelper->setRangeByModelName('AutoresponderItem', $items[0], $items[count($items)-1]);
+        }
+
+        public function populateModel(& $model)
+        {
+            assert('$model instanceof AutoresponderItem');
+            parent::populateModel($model);
+            $model->processed       = (rand() % 2);
+            $difference             = rand(1000, 6000);
+            if ($model->processed)
+            {
+                $processTimestamp = time() - $difference;
+            }
+            else
+            {
+                $processTimestamp = time() + $difference;
+            }
+            $model->processDateTime = DateTimeUtil::convertTimestampToDbFormatDateTime($processTimestamp);
         }
     }
 ?>

@@ -246,7 +246,7 @@
             $super = User::getByUsername('super');
             Yii::app()->user->userModel = $super;
             $account                 = new Account(false);
-            $account->setScenario('search');
+            $account->setScenario('searchModel');
             $account->name           = 'aTestAccountForTestReadOnlyFieldsOnSearchScenario';
             $account->owner          = $super;
             $account->createdByUser  = $super;

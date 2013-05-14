@@ -127,12 +127,24 @@
 
         public function renderContent()
         {
-            $actionElementBar       = ZurmoHtml::tag('div', array('class' => 'portlet-view-toolbar view-toolbar'),
+            if ($this->shouldRenderViewToolBar())
+            {
+                $actionElementBar       = $this->renderViewToolBar();
+            }
+            else
+            {
+                $actionElementBar       = ZurmoHtml::tag('div', array('class' => 'portlet-view-toolbar view-toolbar'),
                                                                                 $this->renderActionElementBar(false));
+            }
             $searchAndList    = $this->renderSearchFormAndListContent();
             $content = ZurmoHtml::tag('div', array('class' => $this->getWrapperDivClass()), $actionElementBar);
             $content .= $searchAndList;
             return $content;
+        }
+
+        protected function shouldRenderViewToolBar()
+        {
+            return false;
         }
 
         public static function canUserConfigure()
@@ -196,8 +208,6 @@
             $listContent = $this->getListView()->render();
             return ZurmoHtml::tag('div', array('class' => $this->getListContentWrapperDivClass()), $listContent);
         }
-
-
 
         protected function makeListView()
         {
@@ -350,9 +360,10 @@
             $pageSize = Yii::app()->pagination->resolveActiveForCurrentUserByType('subListPageSize');
             $searchAttributes   = $this->getSearchAttributes();
             $sortAttributes     = $this->getSortAttributes();
+            $sortDescending     = $this->getIsSortDescending();
             return new RedBeanModelsDataProvider($this->uniquePageId,
                                                     $sortAttributes,
-                                                    true,
+                                                    $sortDescending,
                                                     $searchAttributes,
                                                     array('pagination' => array('pageSize' => $pageSize))
                                                 );
@@ -369,6 +380,11 @@
         protected function getSortAttributes()
         {
             return MarketingListMembersUtil::makeSortAttributeData();
+        }
+
+        protected function getIsSortDescending()
+        {
+            return MarketingListMembersUtil::getIsSortDescending();
         }
     }
 ?>
