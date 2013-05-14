@@ -143,9 +143,19 @@
                 $allRelatedDropdowns   .= $dynamicUserTypeElement->render();
                 $content .= ZurmoHtml::tag('div', array('class' => 'all-related-field'), $allRelatedDropdowns);
             }
-            elseif ($formType == WorkflowEmailMessageRecipientForm::TYPE_DYNAMIC_TRIGGERED_BY_USER)
+            elseif ($formType == WorkflowEmailMessageRecipientForm::TYPE_DYNAMIC_TRIGGERED_BY_USER ||
+                    $formType == WorkflowEmailMessageRecipientForm::TYPE_DYNAMIC_TRIGGERED_MODEL)
             {
                 //nothing to render
+            }
+            elseif($formType == WorkflowEmailMessageRecipientForm::TYPE_DYNAMIC_TRIGGERED_MODEL_RELATION)
+            {
+                $relationElement        = new ModelRelationForEmailMessageRecipientStaticDropDownElement(
+                                          $this->model, 'relation', $this->form, $params);
+                $relationElement->editableTemplate    = '<div class="value-data">{content}{error}</div>';
+                $allRelatedDropdowns    = Zurmo::t('WorkflowsModule', '<span>For all related</span> {relationsDropDown}',
+                                          array('{relationsDropDown}' => $relationElement->render()));
+                $content .= ZurmoHtml::tag('div', array('class' => 'all-related-field'), $allRelatedDropdowns);
             }
             elseif ($formType == WorkflowEmailMessageRecipientForm::TYPE_STATIC_ADDRESS)
             {

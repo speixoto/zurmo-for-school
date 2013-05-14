@@ -53,6 +53,10 @@
 
         const TYPE_STATIC_GROUP                             = 'StaticGroup';
 
+        const TYPE_DYNAMIC_TRIGGERED_MODEL                  = 'DynamicTriggeredModel';
+
+        const TYPE_DYNAMIC_TRIGGERED_MODEL_RELATION         = 'DynamicTriggeredModelRelation';
+
         /**
          *
          * @param RedBeanModel $model
@@ -135,10 +139,14 @@
         }
 
         /**
+         * @param string $modelClassName
+         * @param string $workflowType
          * @return array
          */
-        public static function getTypeValuesAndLabels()
+        public static function getTypeValuesAndLabels($modelClassName, $workflowType)
         {
+            assert('is_string($modelClassName)');
+            assert('is_string($workflowType)');
             $data = array();
             $data[static::TYPE_DYNAMIC_TRIGGERED_MODEL_USER]             =
                 DynamicTriggeredModelUserWorkflowEmailMessageRecipientForm::getTypeLabel();
@@ -154,6 +162,19 @@
                 StaticAddressWorkflowEmailMessageRecipientForm::getTypeLabel();
             $data[static::TYPE_STATIC_GROUP]                             =
                 StaticGroupWorkflowEmailMessageRecipientForm::getTypeLabel();
+
+            if(is_subclass_of($modelClassName, 'Contact') || $modelClassName == 'Contact')
+            {
+                $data[static::TYPE_DYNAMIC_TRIGGERED_MODEL] =
+                    DynamicTriggeredModelWorkflowEmailMessageRecipientForm::getTypeLabel();
+            }
+            $form = new DynamicTriggeredModelRelationWorkflowEmailMessageRecipientForm($modelClassName, $workflowType);
+            $relationValuesAndLabels = $form->getRelationValuesAndLabels();
+            if(!empty($relationValuesAndLabels))
+            {
+                $data[static::TYPE_DYNAMIC_TRIGGERED_MODEL_RELATION]                             =
+                    DynamicTriggeredModelRelationWorkflowEmailMessageRecipientForm::getTypeLabel();
+            }
             return $data;
         }
     }
