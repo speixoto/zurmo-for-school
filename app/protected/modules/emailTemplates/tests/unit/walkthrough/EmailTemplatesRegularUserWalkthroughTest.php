@@ -455,6 +455,58 @@
         }
 
         /**
+         * @depends testRegularUserListForMarketingAction
+         */
+        public function testStickySearchActions()
+        {
+            StickySearchUtil::clearDataByKey('EmailTemplatesSearchView');
+            $value = StickySearchUtil::getDataByKey('EmailTemplatesSearchView');
+            $this->assertNull($value);
+
+            $this->setGetArray(array(
+                'EmailTemplatesSearchForm' => array(
+                    'anyMixedAttributes'    => 'xyz'
+                )));
+            $content = $this->runControllerWithNoExceptionsAndGetContent('emailTemplates/default/listForMarketing');
+            $this->assertTrue(strpos($content, 'No results found.') !== false);
+            $data = StickySearchUtil::getDataByKey('EmailTemplatesSearchView');
+            $compareData = array('dynamicClauses'                     => array(),
+                'dynamicStructure'                      => null,
+                'anyMixedAttributes'                    => 'xyz',
+                'anyMixedAttributesScope'               => null,
+                'selectedListAttributes'                => null
+            );
+            $this->assertEquals($compareData, $data);
+
+            $this->setGetArray(array(
+                'EmailTemplatesSearchForm' => array(
+                    'anyMixedAttributes'    => 'Test'
+                )));
+            $content = $this->runControllerWithNoExceptionsAndGetContent('emailTemplates/default/listForMarketing');
+            $this->assertTrue(strpos($content, '1 result(s)') !== false);
+            $data = StickySearchUtil::getDataByKey('EmailTemplatesSearchView');
+            $compareData = array('dynamicClauses'                     => array(),
+                'dynamicStructure'                      => null,
+                'anyMixedAttributes'                    => 'Test',
+                'anyMixedAttributesScope'               => null,
+                'selectedListAttributes'                => null,
+                'savedSearchId'                         => null
+            );
+            $this->assertEquals($compareData, $data);
+
+            $this->setGetArray(array('clearingSearch' => true));
+            $this->runControllerWithNoExceptionsAndGetContent('emailTemplates/default/listForMarketing');
+            $data = StickySearchUtil::getDataByKey('EmailTemplatesSearchView');
+            $compareData = array('dynamicClauses'                     => array(),
+                'dynamicStructure'                      => null,
+                'anyMixedAttributesScope'               => null,
+                'selectedListAttributes'                => null
+            );
+            $this->assertEquals($compareData, $data);
+        }
+
+
+        /**
          * @depends testRegularUserDetailsActionForMarketing
          */
         public function testRegularUserDeleteAction()
