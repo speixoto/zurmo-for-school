@@ -42,6 +42,10 @@
     {
         const PROPERTY_NOT_FOUND = "!MERGETAG-TO-ATTR-FAILED";
 
+        protected static $specialAttributesResolver = array (
+                                                            'modelUrl'  => 'resolveModelUrlByModel',
+                                                            );
+
         public static function resolveMergeTagsArrayToAttributesFromModel(& $mergeTags, $model, & $invalidTags = array(), $language = 'en', $errorOnFirstMissing = false)
         {
             $resolvedMergeTags = array();
@@ -89,62 +93,78 @@
         {
             $attributeName = strtok($attributeAccessorString, '->');
             $modelAttributeAdapter = new ModelAttributesAdapter($model);
-            if (!$model->isAttribute($attributeName))
+            if (array_key_exists($attributeName, static::$specialAttributesResolver) && empty($timeQualifier))
             {
-                return static::PROPERTY_NOT_FOUND;
+                $methodName = static::$specialAttributesResolver[$attributeName];
+                return static::$methodName($model);
             }
-            elseif ($model->$attributeName instanceof CustomField)
+            else
             {
-                $value = static::getAttributeValue($model->$attributeName, 'value', $timeQualifier);
-                // TODO: @Shoaibi/@Jason: Low: need to apply localizations(Date/time/currency formats, ...) here besides translation
-                if ($value)
+                if (!$model->isAttribute($attributeName))
                 {
-                    $value = Zurmo::t($model::getModuleClassName(), $value, array(), null, $language);
+                    return static::PROPERTY_NOT_FOUND;
                 }
-                return $value;
-            }
-            elseif ($model->isRelation($attributeName))
-            {
-                $model = $model->$attributeName;
-                if ($attributeName === $attributeAccessorString) // We have name of relation, don't have a property requested, like $object->owner
+                elseif ($model->$attributeName instanceof CustomField)
                 {
-                    $attributeAccessorString = null;
-                }
-                else
-                {
-                    $attributeAccessorString = str_replace($attributeName . '->', '', $attributeAccessorString);
-                }
-                if (empty($attributeAccessorString))
-                {
-                    // If a user specific a relation merge tag but not a property, we assume he meant "value" property.
-                    if (empty($timeQualifier))
+                    $value = static::getAttributeValue($model->$attributeName, 'value', $timeQualifier);
+                    // TODO: @Shoaibi/@Jason: Low: need to apply localizations(Date/time/currency formats, ...) here besides translation
+                    if ($value)
                     {
-                        return strval($model);
+                        $value = Zurmo::t($model::getModuleClassName(), $value, array(), null, $language);
+                    }
+                    return $value;
+                }
+                elseif ($model->isRelation($attributeName))
+                {
+                    $model = $model->$attributeName;
+                    if ($attributeName === $attributeAccessorString) // We have name of relation, don't have a property requested, like $object->owner
+                    {
+                        $attributeAccessorString = null;
+                    }
+                    else
+                    {
+                        $attributeAccessorString = str_replace($attributeName . '->', '', $attributeAccessorString);
+                    }
+                    if (empty($attributeAccessorString))
+                    {
+                        // If a user specific a relation merge tag but not a property, we assume he meant "value" property.
+                        if (empty($timeQualifier))
+                        {
+                            return strval($model);
+                        }
+                        else
+                        {
+                            return static::PROPERTY_NOT_FOUND;
+                        }
+                    }
+                    return static::resolveMergeTagToStandardOrRelatedAttribute($attributeAccessorString, $model, $language, $timeQualifier);
+                }
+                elseif ($modelAttributeAdapter->isStandardAttribute($attributeName))
+                {
+                    if ($attributeName === $attributeAccessorString) // we don't have any accessor operator after the attributeName e.g. its the last in list
+                    {
+                        return static::getAttributeValue($model, $attributeName, $timeQualifier);
                     }
                     else
                     {
                         return static::PROPERTY_NOT_FOUND;
                     }
                 }
-                return static::resolveMergeTagToStandardOrRelatedAttribute($attributeAccessorString, $model, $language, $timeQualifier);
-            }
-            elseif ($modelAttributeAdapter->isStandardAttribute($attributeName))
-            {
-                if ($attributeName === $attributeAccessorString) // we don't have any accessor operator after the attributeName e.g. its the last in list
-                {
-                    return static::getAttributeValue($model, $attributeName, $timeQualifier);
-                }
                 else
                 {
-                    return static::PROPERTY_NOT_FOUND;
+                    // Don't really need this as null would be return implicitly if we exclude this,
+                    // so basically this is just to avoid IDE warnings to not returning anything
+                    return null;
                 }
             }
-            else
-            {
-                // Don't really need this as null would be return implicitly if we exclude this,
-                // so basically this is just to avoid IDE warnings to not returning anything
-                return null;
-            }
+        }
+
+        protected static function resolveModelUrlByModel($model)
+        {
+            $modelClassName     = get_class($model);
+            $moduleClassName    = $modelClassName::getModuleClassName();
+            $moduleId           = $moduleClassName::getDirectoryName();
+            return Yii::app()->createAbsoluteUrl('/' . $moduleId . '/default/details/', array('id' => $model->id));
         }
 
         protected static function getAttributeValue($model, $attributeName, $timeQualifier)
