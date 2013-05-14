@@ -36,6 +36,39 @@
 
     class SearchUtilTest extends BaseTest
     {
+
+        public function testResolveSortFromStickyData()
+        {
+            list($sortAttribute, $sortDescending) = SearchUtil::
+                    resolveSortFromStickyData('testing', 'testId');
+            $this->assertEquals(null, $sortAttribute);
+            $this->assertFalse ($sortDescending);
+
+            $_GET['testing_sort'] = 'name';
+            list($sortAttribute, $sortDescending) = SearchUtil::
+                    resolveSortFromStickyData('testing', 'testId');
+            $this->assertEquals('name', $sortAttribute);
+            $this->assertFalse ($sortDescending);
+
+            $_GET = array();
+            list($sortAttribute, $sortDescending) = SearchUtil::
+                    resolveSortFromStickyData('testing', 'testId');
+            $this->assertEquals('name', $sortAttribute);
+            $this->assertFalse ($sortDescending);
+
+            $_GET['testing_sort'] = 'other.desc';
+            list($sortAttribute, $sortDescending) = SearchUtil::
+                    resolveSortFromStickyData('testing', 'testId');
+            $this->assertEquals('other', $sortAttribute);
+            $this->assertTrue  ($sortDescending);
+
+            $_GET = array();
+            list($sortAttribute, $sortDescending) = SearchUtil::
+                    resolveSortFromStickyData('testing', 'testId');
+            $this->assertEquals('other', $sortAttribute);
+            $this->assertTrue  ($sortDescending);
+        }
+
         public function testGetSorAttributeFromSortArray()
         {
             $sortAttribute = SearchUtil::getSortAttributeFromSortString('name.desc');
