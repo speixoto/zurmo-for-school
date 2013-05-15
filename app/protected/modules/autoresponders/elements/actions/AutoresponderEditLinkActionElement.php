@@ -41,10 +41,10 @@
             return false;
         }
 
-        protected function getDefaultRoute()
+        public function __construct($controllerId, $moduleId, $modelId, $params = array())
         {
-            $this->moduleId = 'autoresponders';
-            return parent::getDefaultRoute();
+            $moduleId = 'autoresponders';
+            parent::__construct($controllerId, $moduleId, $modelId, $params);
         }
     }
 ?>

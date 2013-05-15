@@ -42,6 +42,12 @@
             $this->assertTrue($form instanceof CheckBoxWorkflowActionAttributeForm);
         }
 
+        public function testMakePermissions()
+        {
+            $form = WorkflowActionAttributeFormFactory::make('WorkflowModelTestItem', 'permissions');
+            $this->assertTrue($form instanceof ExplicitReadWriteModelPermissionsWorkflowActionAttributeForm);
+        }
+
         public function testGetType()
         {
             $type = WorkflowActionAttributeFormFactory::getType('WorkflowModelTestItem', 'boolean');

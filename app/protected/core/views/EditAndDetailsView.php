@@ -155,7 +155,7 @@
 
         protected function renderModalContainer()
         {
-            return ZurmoHtml::tag('div', array('id' => ModelElement::MODAL_CONTAINER_PREFIX . '-' . $this->getFormId()));
+            return ZurmoHtml::tag('div', array('id' => ModelElement::MODAL_CONTAINER_PREFIX . '-' . $this->getFormId()),'');
         }
 
         protected function resolveActiveFormAjaxValidationOptions()

@@ -165,13 +165,13 @@
 
         protected function resolveMetadataBeforeMakingDataProvider(& $metadata)
         {
-            // TODO: @Shoaibi/@Jason: Critical: Does this seem alright? relatedAttributeName?
             $metadata = array(
                             'clauses'   => array(
                                         1   => array(
-                                                'attributeName' => 'marketingList',
-                                                'operatorType'  => 'equals',
-                                                'value'         => Yii::app()->request->getQuery('id')
+                                                'attributeName'         => 'marketingList',
+                                                'relatedAttributeName'  => 'id',
+                                                'operatorType'          => 'equals',
+                                                'value'                 => Yii::app()->request->getQuery('id')
                                             ),
                                         ),
                             'structure' => 1

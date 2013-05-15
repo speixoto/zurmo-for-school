@@ -262,7 +262,8 @@
             $form->type            = ActionForWorkflowForm::TYPE_CREATE;
             $form->relation        = 'hasMany2';
             $data = $form->resolveAllRequiredActionAttributeFormsAndLabelsAndSort();
-            $this->assertEquals(3, count($data));
+            $this->assertEquals(4, count($data));
+            $this->assertTrue(isset($data['permissions']));
         }
 
         /**

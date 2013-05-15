@@ -705,7 +705,34 @@
                 }
                 $attributeFormsIndexedByAttribute[$attribute]->setDisplayLabel($data['label']);
             }
+            $this->resolvePermissionsAttributeForm($modelClassName, $methodToCall, $attributeFormsIndexedByAttribute);
             return $attributeFormsIndexedByAttribute;
+        }
+
+        protected function resolvePermissionsAttributeForm($modelClassName, $methodToCall, array & $attributeFormsIndexedByAttribute)
+        {
+            assert('is_string($modelClassName)');
+            assert('$methodToCall == "getNonRequiredAttributesForActions" ||
+                    $methodToCall == "getRequiredAttributesForActions" ||
+                    $methodToCall == "getAllAttributesForActions"');
+            if(($this->type == self::TYPE_CREATE || $this->type == self::TYPE_CREATE_RELATED) &&
+                is_subclass_of($modelClassName, 'OwnedSecurableItem') &&
+                ($methodToCall == 'getRequiredAttributesForActions' || $methodToCall == 'getAllAttributesForActions'))
+            {
+                if ($this->hasActionAttributeFormByName('permissions'))
+                {
+                    $attributeFormsIndexedByAttribute['permissions'] = $this->getActionAttributeFormByName('permissions');
+                }
+                else
+                {
+                    $attributeFormsIndexedByAttribute['permissions'] =
+                        WorkflowActionAttributeFormFactory::make($modelClassName, 'permissions');
+                    if($methodToCall == 'getRequiredAttributesForActions')
+                    {
+                        $attributeFormsIndexedByAttribute['permissions']->shouldSetValue = true;
+                    }
+                }
+            }
         }
     }
 ?>

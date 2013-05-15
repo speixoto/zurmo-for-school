@@ -38,15 +38,21 @@
     {
         public function renderGridViewData()
         {
-            $value = 'ZurmoHtml::link($data->name, ';
-            $value .= 'Yii::app()->createUrl("/autoresponders/default/details", array("id" => $data->id';
-            $value .= ', "redirectUrl" => "' . $this->view->redirectUrl . '"';
-            $value .=')))';
+            $className  = get_class($this);
+            $value      = $className . '::resolveNameWithRedirectURl($data->name, $data->id, "' .
+                                                                                        $this->view->redirectUrl . '")';
             return array(
                 'name'  => 'Name',
                 'value' => $value,
                 'type'  => 'raw',
             );
+        }
+
+        public static function resolveNameWithRedirectURl($name, $id, $redirectUrl)
+        {
+            $url = Yii::app()->createUrl('/autoresponders/default/details',
+                                                                array('id' => $id, 'redirectUrl' => $redirectUrl));
+            return ZurmoHtml::link($name, $url);
         }
     }
 ?>

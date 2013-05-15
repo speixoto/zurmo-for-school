@@ -230,7 +230,7 @@
             $this->runControllerWithNoExceptionsAndGetContent('opportunities/default/details');
             $this->runControllerWithNoExceptionsAndGetContent('opportunities/default/list');
             $this->setGetArray(array(
-                'modalTransferInformation' => array('sourceIdFieldId' => 'x', 'sourceNameFieldId' => 'y')
+                'modalTransferInformation' => array('sourceIdFieldId' => 'x', 'sourceNameFieldId' => 'y', 'modalId' => 'z')
             ));
             $this->resetPostArray();
             $this->runControllerWithNoExceptionsAndGetContent('opportunities/default/modalList');

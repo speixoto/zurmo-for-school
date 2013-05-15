@@ -47,7 +47,6 @@
                             array('type'    => 'SaveButton', 'renderType' => 'Edit'),
                             array('type'    => 'EditLink', 'renderType' => 'Details'),
                             array('type'    => 'AutoresponderDeleteLink'),
-                            // TODO: @Shoaibi: Critical: Allow using an email template as base.
                         ),
                     ),
                     'panels' => array(
@@ -100,6 +99,18 @@
                                         ),
                                     )
                                 ),
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            // TODO: @Shoaibi: Low: change this to constant after refactoring
+                                            'detailViewOnly' => 2, // using 2 here to mean: "do not render on details"
+                                            'elements' => array(
+                                                array('attributeName' => 'null',
+                                                                        'type' => 'ContactEmailTemplateNamesDropDown')
+                                            ),
+                                        ),
+                                    )
+                                ),
                             ),
                         ),
                     ),
@@ -147,6 +158,16 @@
         {
             return Zurmo::t('Default', 'Create AutorespondersModuleSingularLabel',
                                                                         LabelUtil::getTranslationParamsForAllModules());
+        }
+
+        protected function shouldDisplayCell($detailViewOnly)
+        {
+            // TODO: @Shoaibi: Low: change this to constant after refactoring and port to parent.
+            if ($detailViewOnly == 2)
+            {
+                return ($this->renderType != 'Details');// this if would only be true for contactEmailTemplateNamesDropDown.
+            }
+            return parent::shouldDisplayCell($detailViewOnly);
         }
     }
 ?>

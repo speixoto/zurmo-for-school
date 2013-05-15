@@ -60,5 +60,10 @@
             $sortAttribute = RedBeanModelDataProvider::getSortAttributeName('Autoresponder');
             return array('Autoresponder' => $sortAttribute);
         }
+
+        public static function getIsSortDescending()
+        {
+            return false;
+        }
     }
 ?>

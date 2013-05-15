@@ -111,6 +111,7 @@
             $content .= '</div>';
             $content .= ZurmoHtml::link('—', '#', array('class' => 'remove-dynamic-row-link'));
             $content .= '<div class="toggle-me">';
+            $content .= $this->renderMergeTagGuideContent();
             $content .= $this->renderAttributesRowsContent($this->makeAttributeRows());
             $content .= $this->renderSaveActionElementsContent($rowId);
             $content .= '</div>';
@@ -223,6 +224,16 @@
                 $attributeRows[self::NON_REQUIRED_ATTRIBUTES_INDEX][] = $elementAdapter->getContent();
             }
             return $attributeRows;
+        }
+
+        /**
+         * @return string
+         */
+        protected function renderMergeTagGuideContent()
+        {
+            $element = new MergeTagGuideAjaxLinkActionElement('default', 'emailTemplates', 'notUsed',
+                                                              array('htmlOptions' => array('namespace' => 'mergetag')));
+            return $element->render();
         }
 
         /**
