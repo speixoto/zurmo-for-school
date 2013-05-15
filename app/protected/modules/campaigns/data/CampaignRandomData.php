@@ -35,50 +35,51 @@
      ********************************************************************************/
 
     /**
-     * Autoresponder related array of random seed data parts.
+     * Campaign related array of random seed data parts.
      */
     return array(
         'name'                          => array(
-            '1 hour after subscription',
-            '1 day after subscription',
-            '1 hour after unsubscription',
-            '5 hours after unsubscription',
-            '1 hour after removal',
+            '10% discount for new clients',
+            '5% discount for existing clients',
+            'Infrastructure redesign completed',
+            'Christmas Sale',
+            'Zurmo Upgrade Complete',
         ),
         'subject'                       => array(
-            'You are now subscribed.',
-            'You subscribed today.',
-            'You are now unsubscribed',
-            'Your unsubscription triggered the next big bang',
-            'Leaving already?',
+            'Special Offer: 10% Discount for new clients',
+            'Special Offer: 5% Discount for existing clients',
+            'Infrastructure Redesign Completed',
+            'Jingle Bells and Zurmo Special Christmas Offer',
+            'Zurmo Upgrade to v1.6',
         ),
         'htmlContent'                  => array(
-            '<p>Thanks for <i>subscribing</i>. You are not gonna <strong>regret</strong> this.</p>',
-            '<p>So you like <i>our</i> emails so far?</p>',
-            '<p><strong>You are now unsubscribed. Its really sad to see you go but you can always subscribe</strong></p>',
-            '<p>So you are <strong>not</strong> coming back?</p>',
-            '<p>You have been removed for the mentioned email lists completely with no traces left.</p>'
+            '<p>We are offering <strong>10% discount</strong> on all packages to new clients.</p>',
+            '<p>Existing clients can upgrade to a higher package and enjoy a special one time <strong>5% discount</strong>.</p>',
+            '<p>We have done lot of infrastructure redesign in terms and <strong>seucrity and performance</strong>.</p>',
+            '<p>Brace yourselves. This year santa came bit early with a special gift for you, <strong>25% discount</strong> on all zurmo packages.</p>',
+            '<p>All existing clients have been <strong>upgraded to v1.6</strong> as of now. Please contact support if you face any issues.</p>',
         ),
         'textContent'                  => array(
-            'Thanks for subscribing. You are not gonna regret this.',
-            'So you like our emails so far?',
-            'You are now unsubscribed. Its really sad to see you go but you can always subscribe',
-            'So you are not coming back?',
-            'You have been removed for the mentioned email lists completely with no traces left.'
+            'We are offering 10% discount on all packages to new clients.',
+            'Existing clients can upgrade to a higher package and enjoy a special one time 5% discount.',
+            'We have done lot of infrastructure redesign in terms and seucrity and performance.',
+            'Brace yourselves. This year santa came bit early with a special gift for you, 25% discount on all zurmo packages.',
+            'All existing clients have been upgraded to v1.6 as of now. Please contact support if you face any issues.'
         ),
-        'secondsFromOperation'                  => array(
-            60*60,
-            60*60*24,
-            60*60,
-            60*60*5,
-            60*60
+        'fromName'                      => array(
+            'Marketing Team',
+            'Sales Team',
+            'Development Team',
+            'Special Offers',
+            'Support Team',
         ),
-        'operationType'                  => array(
-            Autoresponder::OPERATION_SUBSCRIBE,
-            Autoresponder::OPERATION_SUBSCRIBE,
-            Autoresponder::OPERATION_UNSUBSCRIBE,
-            Autoresponder::OPERATION_UNSUBSCRIBE,
-            Autoresponder::OPERATION_REMOVE,
+        'fromAddress'                   => array(
+            'marketing@zurmo.com',
+            'sales@zurmo.com',
+            'development@zurmo.com',
+            'offers@zurmo.com',
+            'support@zurmo.com',
+            'info@zurmo.com',
         ),
     );
 ?>

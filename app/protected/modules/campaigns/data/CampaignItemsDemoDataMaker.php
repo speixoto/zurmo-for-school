@@ -34,77 +34,43 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class CampaignsModule extends SecurableModule
+    /**
+     * Class that builds demo campaignItems.
+     */
+    class CampaignItemsDemoDataMaker extends DemoDataMaker
     {
-        const RIGHT_CREATE_CAMPAIGNS = 'Create Campaigns';
+        protected $ratioToLoad = 3;
 
-        const RIGHT_DELETE_CAMPAIGNS = 'Delete Campaigns';
-
-        const RIGHT_ACCESS_CAMPAIGNS = 'Access Campaigns Tab';
-
-        public function getDependencies()
+        public static function getDependencies()
         {
-            return array();
+            return array('contacts');
         }
 
-        public function getRootModelNames()
+        public function makeAll(& $demoDataHelper)
         {
-            return array('Campaign', 'CampaignItemActivity');
+            assert('$demoDataHelper instanceof DemoDataHelper');
+            assert('$demoDataHelper->isSetRange("Contact")');
+            assert('$demoDataHelper->isSetRange("Campaign")');
+
+            $items = array();
+            for ($i = 0; $i < $this->resolveQuantityToLoad(); $i++)
+            {
+                $item                   = new CampaignItem();
+                $item->campaign         = $demoDataHelper->getRandomByModelName('Campaign');
+                $item->contact          = $demoDataHelper->getRandomByModelName('Contact');
+                $this->populateModel($item);
+                $saved                  = $item->unrestrictedSave();
+                assert('$saved');
+                $items[]                = $item->id;
+            }
+            $demoDataHelper->setRangeByModelName('CampaignItem', $items[0], $items[count($items)-1]);
         }
 
-        public static function getTranslatedRightsLabels()
+        public function populateModel(& $model)
         {
-            $labels                           = array();
-            $labels[self::RIGHT_CREATE_CAMPAIGNS] = Zurmo::t('CampaignsModule', 'Create Campaigns');
-            $labels[self::RIGHT_DELETE_CAMPAIGNS] = Zurmo::t('CampaignsModule', 'Delete Campaigns');
-            $labels[self::RIGHT_ACCESS_CAMPAIGNS] = Zurmo::t('CampaignsModule', 'Access Campaigns Tab');
-            return $labels;
-        }
-
-        public static function getPrimaryModelName()
-        {
-            return 'Campaign';
-        }
-
-        public static function getAccessRight()
-        {
-            return self::RIGHT_ACCESS_CAMPAIGNS;
-        }
-
-        public static function getCreateRight()
-        {
-            return self::RIGHT_CREATE_CAMPAIGNS;
-        }
-
-        public static function getDeleteRight()
-        {
-            return self::RIGHT_DELETE_CAMPAIGNS;
-        }
-
-        /*
-        public static function getGlobalSearchFormClassName()
-        {
-            // TODO: @Shoaibi: Critical: Implement
-            return 'CampaignsSearchForm';
-        }
-        */
-
-        public static function getDefaultMetadata()
-        {
-            $metadata = array();
-            $metadata['global'] = array(
-                'globalSearchAttributeNames' => array(
-                    'name',
-                ),
-            );
-            return $metadata;
-        }
-
-        public static function getDemoDataMakerClassNames()
-        {
-            return array('CampaignsDemoDataMaker',
-                            'CampaignItemsDemoDataMaker',
-                            'CampaignItemActivitiesDemoDataMaker');
+            assert('$model instanceof CampaignItem');
+            parent::populateModel($model);
+            $model->processed       = (rand() % 2);
         }
     }
 ?>
