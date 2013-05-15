@@ -44,6 +44,13 @@
     {
         const CACHE_KEY_PREFIX = 'ZurmoMessageSource';
 
+        public static function clearCache($category, $languageCode)
+        {
+            assert('is_string($category)');
+            assert('is_string($languageCode)');
+            GeneralCache::forgetEntry(self::getMessageSourceCacheIdentifier($category, $languageCode));
+        }
+
         /**
          * Override of the parent method using RedBean. Tries to get messages from cache first before going to database
          * @param string $category

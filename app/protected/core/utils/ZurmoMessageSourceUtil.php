@@ -46,8 +46,8 @@
          * @param String $category The category of the translation
          * @param String $source Message source
          * @param String $translation Message translation
-         *
          * @return Integer Id of the added translation or false
+         * @throws NotSupportedException
          */
         public static function importOneMessage($languageCode, $category, $source, $translation)
         {
@@ -64,13 +64,9 @@
             {
                 throw new NotSupportedException();
             }
-
             try
             {
-                $sourceModel = MessageSource::getByCategoryAndSource(
-                                                                     $category,
-                                                                     $source
-                                                                    );
+                $sourceModel = MessageSource::getByCategoryAndSource($category, $source);
             }
             catch (NotFoundException $e)
             {
@@ -79,10 +75,7 @@
 
             try
             {
-                $translationModel = MessageTranslation::getBySourceIdAndLangCode(
-                                        $sourceModel->id,
-                                        $languageCode
-                                    );
+                $translationModel = MessageTranslation::getBySourceIdAndLangCode($sourceModel->id, $languageCode);
                 $translationModel->updateTranslation($translation);
             }
             catch (NotFoundException $e)
@@ -103,9 +96,10 @@
          * @param $languageCode String The language code
          * @param $category String The category of the translation
          * @param Array $messages Array with the messages
-         *
          * @return Boolean Status of the import process
+         * @throws NotSupportedException
          */
+
         public static function importMessagesArray($languageCode, $category, $messages)
         {
             assert('is_string($languageCode) && !empty($languageCode)');
@@ -119,7 +113,7 @@
             {
                 throw new NotSupportedException();
             }
-
+            ZurmoMessageSource::clearCache($category, $languageCode);
             foreach ($messages as $source => $translation)
             {
                 self::importOneMessage(
@@ -134,12 +128,12 @@
         }
 
         /**
-         * Loads all messages with context from PO file and impots them to the database
+         * Loads all messages with context from PO file and imports them to the database
          *
          * @param String $languageCode The language code
          * @param String $messageFile Path to the PO file to import.
-         *
          * @return Boolean Status of the import
+         * @throws NotSupportedException
          */
         public static function importPoFile($languageCode, $messageFile)
         {
@@ -149,11 +143,15 @@
                 throw new NotSupportedException();
             }
 
-            $file = new ZurmoGettextPoFile($messageFile);
-            $messages = $file->read();
-
+            $file       = new ZurmoGettextPoFile($messageFile);
+            $messages   = $file->read();
+            $categories = array();
             foreach ($messages as $message)
             {
+                if(!in_array($message['msgctxt'], $categories))
+                {
+                    $categories[] = $message['msgctxt'];
+                }
                 self::importOneMessage(
                     $languageCode,
                     $message['msgctxt'],
@@ -161,7 +159,10 @@
                     $message['msgstr']
                 );
             }
-
+            foreach($categories as $category)
+            {
+                ZurmoMessageSource::clearCache($category, $languageCode);
+            }
             return true;
         }
     }
