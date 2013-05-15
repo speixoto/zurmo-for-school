@@ -34,10 +34,7 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * Helper class for working with CampaignItemActivity
-     */
-    class CampaignItemActivityUtil extends EmailMessageActivityUtil
+    class CampaignMergeTagsValidator extends AutoresponderMergeTagsValidator
     {
 
     }

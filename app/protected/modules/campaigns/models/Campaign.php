@@ -36,6 +36,30 @@
 
     class Campaign extends OwnedSecurableItem
     {
+        const TYPE_MARKETING_LIST               = 1;
+
+        const TYPE_DYNAMIC                      = 2;
+
+        const SUPPORTS_PLAIN_TEXT_ONLY          = 0;
+
+        const SUPPORTS_RICH_TEXT                = 1;
+
+        const STATUS_INCOMPLETE                 = 1;
+
+        const STATUS_PAUSED                     = 2;
+
+        const STATUS_ACTIVE                     = 3;
+
+        const STATUS_COMPLETED                  = 4;
+
+        const TRACKING_DISABLED                 = 0;
+
+        const TRACKING_ENABLED                  = 1;
+
+        const SEND_DELAYED                      = 0;
+
+        const SEND_NOW                          = 1;
+
         public static function getByName($name)
         {
             return self::getByNameOrEquivalent('name', $name);
@@ -44,6 +68,16 @@
         public static function getModuleClassName()
         {
             return 'CampaignsModule';
+        }
+
+        public static function getStatusDropDownArray()
+        {
+            return array(
+                static::STATUS_INCOMPLETE   => Zurmo::t('CampaignsModule', 'Incomplete'),
+                static::STATUS_PAUSED       => Zurmo::t('CampaignsModule', 'Paused'),
+                static::STATUS_ACTIVE       => Zurmo::t('CampaignsModule', 'Active'),
+                static::STATUS_COMPLETED    => Zurmo::t('CampaignsModule', 'Completed'),
+            );
         }
 
         public function __toString()
@@ -68,7 +102,7 @@
          */
         protected static function getLabel($language = null)
         {
-            return 'CampaignsModuleSingularLabel';
+            return Zurmo::t('CampaignsModule', 'Campaign', array(), null, $language);
         }
 
         /**
@@ -77,7 +111,7 @@
          */
         protected static function getPluralLabel($language = null)
         {
-            return 'CampaignsModulePluralLabel';
+            return Zurmo::t('CampaignsModule', 'Campaigns', array(), null, $language);
         }
 
         public static function canSaveMetadata()
@@ -95,39 +129,142 @@
             $metadata = parent::getDefaultMetadata();
             $metadata[__CLASS__] = array(
                 'members' => array(
-                    'name',
                     'type',
-                    'formatType',
-                    'fromName',
-                    'fromAddress',
+                    'name',
                     'subject',
+                    'status',
+                    'sendNow',
+                    'sendingDateTime',
+                    'supportsRichText',
+                    'enableTracking',
                     'htmlContent',
                     'textContent',
+                    'fromName',
+                    'fromAddress',
                 ),
                 'rules' => array(
-                    array('type',                 'required'),
-                    array('type',                 'type',    'type' => 'integer'),
-                    array('type',                 'length',  'min'  => 1),
-                    array('name',                 'required'),
-                    array('name',                 'type',    'type' => 'string'),
-                    array('name',                 'length',  'min'  => 3, 'max' => 64),
-                    array('formatType',           'type',    'type' => 'string'),
-                    array('formatType',           'length',  'min'  => 3, 'max' => 64),
-                    array('fromName',             'required'),
-                    array('fromName',             'type',    'type' => 'string'),
-                    array('fromName',             'length',  'min'  => 3, 'max' => 64),
-                    array('subject',              'required'),
-                    array('subject',              'type',    'type' => 'string'),
-                    array('subject',              'length',  'min'  => 3, 'max' => 64),
-                    array('htmlContent',          'type',    'type' => 'string'),
-                    array('textContent',          'type',    'type' => 'string'),
+                    array('name',                   'required'),
+                    array('name',                   'type',    'type' => 'string'),
+                    array('name',                   'length',  'min'  => 3, 'max' => 64),
+                    //array('type',                 'required'), // TODO: @Shoaibi: Medium: We don't need type for now.
+                    array('type',                   'type',    'type' => 'integer'),
+                    array('type',                   'numerical',  'min'  => static::TYPE_MARKETING_LIST,
+                                                                                        'max' => static::TYPE_DYNAMIC),
+                    array('type',                   'default', 'value' => static::TYPE_MARKETING_LIST),
+                    array('status',                 'required'),
+                    array('status',                 'type',    'type' => 'integer'),
+                    array('status',                 'numerical',  'min'  => static::STATUS_INCOMPLETE,
+                                                                                    'max' => static::STATUS_COMPLETED),
+                    array('supportsRichText',       'required'),
+                    array('supportsRichText',       'type',    'type' => 'integer'),
+                    array('supportsRichText',       'numerical',  'min'  => static::SUPPORTS_PLAIN_TEXT_ONLY,
+                                                                        'max' => static::SUPPORTS_RICH_TEXT),
+                    array('sendNow',                'required'),
+                    array('sendNow',                'type',    'type' => 'integer'),
+                    array('sendNow',                'numerical',  'min'  => static::SEND_DELAYED,
+                                                                                            'max' => static::SEND_NOW),
+                    array('sendingDateTime',        'type', 'type' => 'datetime'),
+                    array('sendingDateTime',        'validateSendDateTimeAgainstSendNow'),
+                    array('fromName',                'required'),
+                    array('fromName',               'type',    'type' => 'string'),
+                    array('fromName',               'length',  'min'  => 3, 'max' => 64),
+                    array('fromAddress',            'required'),
+                    array('fromAddress',            'type', 'type' => 'string'),
+                    array('fromAddress',            'length',  'min'  => 6, 'max' => 64),
+                    array('fromAddress',            'email', 'except' => 'autoBuildDatabase'),
+                    array('subject',                'required'),
+                    array('subject',                'type',    'type' => 'string'),
+                    array('subject',                'length',  'min'  => 3, 'max' => 64),
+                    array('htmlContent',            'type',    'type' => 'string'),
+                    array('textContent',            'type',    'type' => 'string'),
+                    array('htmlContent',            'AtLeastOneContentAreaRequiredValidator'),
+                    array('textContent',            'AtLeastOneContentAreaRequiredValidator'),
+                    array('htmlContent',            'CampaignMergeTagsValidator', 'except' => 'autoBuildDatabase'),
+                    array('textContent',            'CampaignMergeTagsValidator', 'except' => 'autoBuildDatabase'),
+                    array('enableTracking',         'type',    'type' => 'integer'),
+                    array('enableTracking',         'numerical', 'min' => static::TRACKING_DISABLED, // boolean gives error during schema build
+                                                                                    'max' => static::TRACKING_ENABLED),
+                    array('enableTracking',         'default', 'value' => static::TRACKING_DISABLED),
+                ),
+                'relations' => array(
+                    'campaignItems'                 => array(RedBeanModel::HAS_MANY, 'CampaignItem'),
+                    'marketingList'                 => array(RedBeanModel::HAS_ONE, 'MarketingList',
+                                                                                            RedBeanModel::NOT_OWNED),
                 ),
                 'elements' => array(
-                    'htmlContent'                  => 'TextArea',
-                    'textContent'                  => 'TextArea',
+                    'htmlContent'                   => 'TextArea',
+                    'textContent'                   => 'TextArea',
+                    'supportsRichText'              => 'CheckBox',
+                    'enableTracking'                => 'CheckBox',
+                    'sendNow'                       => 'CheckBox',
+                    'sendDateTime'                  => 'DateTime',
                 ),
+                'defaultSortAttribute' => 'name',
             );
             return $metadata;
+        }
+
+        public function validateSendDateTimeAgainstSendNow($attribute, $params)
+        {
+            $passedValidation = true;
+            if (!$this->hasErrors('sendNow'))
+            {
+                if ($this->sendNow == static::SEND_NOW)
+                {
+                    $this->$attribute = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
+                }
+                else if (empty($this->$attribute))
+                {
+                    $this->addError($attribute, Zurmo::t('CampaignsModule', 'Send On cannot be blank.'));
+                    $passedValidation = false;
+                }
+            }
+            return $passedValidation;
+        }
+
+        public function beforeSave()
+        {
+            if (!parent::beforeSave())
+            {
+                return false;
+            }
+            $contacts = array();
+            if ($this->type == static::TYPE_MARKETING_LIST)
+            {
+                foreach ($this->marketingList->marketingListMembers as $member)
+                {
+                    $contacts[] = $member->contact;
+                }
+            }
+            else
+            {
+                // TODO: @Shoaibi: Medium: Figure out a way to find contacts for second type
+            }
+            if (!empty($contacts))
+            {
+                CampaignItem::registerCampaignItemsByCampaign($this, $contacts);
+            }
+            return true;
+        }
+
+        protected static function translatedAttributeLabels($language)
+        {
+            return array_merge(parent::translatedAttributeLabels($language),
+                array(
+                    'name'                  => Zurmo::t('ZurmoModule', 'Name', null,  null, $language),
+                    'type'                  => Zurmo::t('Core', 'Type', null,  null, $language),
+                    'status'                => Zurmo::t('CampaignsModule', 'Status', null,  null, $language),
+                    'sendNow'               => Zurmo::t('CampaignsModule', 'Send Now?', null,  null, $language),
+                    'sendingDateTime'       => Zurmo::t('CampaignsModule', 'Send On', null,  null, $language),
+                    'supportsRichText'      => Zurmo::t('CampaignsModule', 'Supports Rich Text(HTML) outgoing emails',
+                                                                                                null,  null, $language),
+                    'fromName'              => Zurmo::t('CampaignsModule', 'From Name', null,  null, $language),
+                    'fromAddress'           => Zurmo::t('CampaignsModule', 'From Address', null,  null, $language),
+                    'subject'               => Zurmo::t('EmailMessagesModule', 'Subject', null,  null, $language),
+                    'htmlContent'           => Zurmo::t('EmailMessagesModule', 'Html Content', null,  null, $language),
+                    'textContent'           => Zurmo::t('EmailMessagesModule', 'Text Content', null,  null, $language),
+                )
+            );
         }
     }
 ?>

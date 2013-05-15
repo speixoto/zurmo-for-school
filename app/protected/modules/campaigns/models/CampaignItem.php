@@ -34,7 +34,7 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class AutoresponderItem extends OwnedModel
+    class CampaignItem extends OwnedModel
     {
         const PROCESSED     = 1;
 
@@ -42,7 +42,7 @@
 
         public static function getModuleClassName()
         {
-            return 'AutorespondersModule';
+            return 'CampaignsModule';
         }
 
         /**
@@ -51,7 +51,7 @@
          */
         protected static function getLabel($language = null)
         {
-            return Zurmo::t('AutorespondersModule', 'Autoresponder Item', array(), null, $language);
+            return Zurmo::t('CampaignsModule', 'Campaign Item', array(), null, $language);
         }
 
         /**
@@ -60,7 +60,7 @@
          */
         protected static function getPluralLabel($language = null)
         {
-            return Zurmo::t('AutorespondersModule', 'Autoresponder Items', array(), null, $language);
+            return Zurmo::t('CampaignsModule', 'Campaign Items', array(), null, $language);
         }
 
         public static function getDefaultMetadata()
@@ -68,25 +68,21 @@
             $metadata = parent::getDefaultMetadata();
             $metadata[__CLASS__] = array(
                 'members' => array(
-                    'processDateTime',
                     'processed',
                 ),
                 'relations' => array(
-                    'contact'                     => array(RedBeanModel::HAS_ONE, 'Contact', RedBeanModel::NOT_OWNED),
-                    'emailMessage'                => array(RedBeanModel::HAS_ONE, 'EmailMessage'),
-                    'autoresponderItemActivities' => array(RedBeanModel::HAS_MANY, 'AutoresponderItemActivity'),
-                    'autoresponder'               => array(RedBeanModel::HAS_ONE, 'Autoresponder', RedBeanModel::NOT_OWNED),
+                    'contact'                       => array(RedBeanModel::HAS_ONE, 'Contact', RedBeanModel::NOT_OWNED),
+                    'emailMessage'                  => array(RedBeanModel::HAS_ONE, 'EmailMessage'),
+                    'campaignItemActivities'        => array(RedBeanModel::HAS_MANY, 'CampaignItemActivity'),
+                    'campaign'                      => array(RedBeanModel::HAS_ONE, 'Campaign', RedBeanModel::NOT_OWNED),
                 ),
                 'rules' => array(
-                    array('processDateTime',        'required'),
-                    array('processDateTime',        'type', 'type' => 'datetime'),
                     array('processed',              'type', 'type' => 'integer'),
                     array('processed',              'default', 'value' => static::NOT_PROCESSED),
                     array('processed',              'numerical', 'min' => static::NOT_PROCESSED, 'max' => static::PROCESSED),
                 ),
                 'elements' => array(
                 ),
-                'defaultSortAttribute' => 'processDateTime',
             );
             return $metadata;
         }
@@ -115,10 +111,10 @@
             $searchAttributeData['structure'] = '1';
             $joinTablesAdapter                = new RedBeanModelJoinTablesQueryAdapter(get_called_class());
             $where = RedBeanModelDataProvider::makeWhere(get_called_class(), $searchAttributeData, $joinTablesAdapter);
-            return self::getSubset($joinTablesAdapter, null, $pageSize, $where, 'processDateTime');
+            return self::getSubset($joinTablesAdapter, null, $pageSize, $where, null);
         }
 
-        public static function getByProcessedAndProcessDateTime($processed, $timestamp = null, $pageSize = null)
+        public static function getByProcessedAndSendingDateTime($processed, $timestamp = null, $pageSize = null)
         {
             if (empty($timestamp))
             {
@@ -134,7 +130,8 @@
                     'value'                     => intval($processed),
                 ),
                 2 => array(
-                    'attributeName'             => 'processDateTime',
+                    'attributeName'             => 'campaign',
+                    'relatedAttributeName'      => 'sendingDateTime',
                     'operatorType'              => 'lessThan',
                     'value'                     => $dateTime,
                 ),
@@ -142,13 +139,13 @@
             $searchAttributeData['structure'] = '(1 and 2)';
             $joinTablesAdapter                = new RedBeanModelJoinTablesQueryAdapter(get_called_class());
             $where = RedBeanModelDataProvider::makeWhere(get_called_class(), $searchAttributeData, $joinTablesAdapter);
-            return self::getSubset($joinTablesAdapter, null, $pageSize, $where, 'processDateTime');
+            return self::getSubset($joinTablesAdapter, null, $pageSize, $where, null);
         }
 
-        public static function getByProcessedAndAutoresponderId($processed, $autoresponderId, $pageSize = null)
+        public static function getByProcessedAndCampaignId($processed, $campaignId, $pageSize = null)
         {
             assert('is_int($processed)');
-            assert('is_int($autoresponderId) || is_string($autoresponderId)');
+            assert('is_int($campaignId) || is_string($campaignId)');
             $searchAttributeData = array();
             $searchAttributeData['clauses'] = array(
                 1 => array(
@@ -157,73 +154,33 @@
                     'value'                     => intval($processed),
                 ),
                 2 => array(
-                    'attributeName'             => 'autoresponder',
+                    'attributeName'             => 'campaign',
                     'relatedAttributeName'      => 'id',
                     'operatorType'              => 'equals',
-                    'value'                     => $autoresponderId,
+                    'value'                     => $campaignId,
                 ),
             );
             $searchAttributeData['structure'] = '(1 and 2)';
             $joinTablesAdapter                = new RedBeanModelJoinTablesQueryAdapter(get_called_class());
             $where = RedBeanModelDataProvider::makeWhere(get_called_class(), $searchAttributeData, $joinTablesAdapter);
-            return self::getSubset($joinTablesAdapter, null, $pageSize, $where, 'processDateTime');
+            return self::getSubset($joinTablesAdapter, null, $pageSize, $where, null);
         }
 
-        public static function getByProcessedAndAutoresponderIdWithProcessDateTime($processed, $autoresponderId, $timestamp = null, $pageSize = null)
+        public static function registerCampaignItemsByCampaign($campaign, $contacts)
         {
-            if (empty($timestamp))
+            foreach ($contacts as $contact)
             {
-                $timestamp = time();
-            }
-            $dateTime = DateTimeUtil::convertTimestampToDbFormatDateTime($timestamp);
-            assert('is_int($processed)');
-            assert('is_int($autoresponderId) || is_string($autoresponderId)');
-            $searchAttributeData = array();
-            $searchAttributeData['clauses'] = array(
-                1 => array(
-                    'attributeName'             => 'processed',
-                    'operatorType'              => 'equals',
-                    'value'                     => intval($processed),
-                ),
-                2 => array(
-                    'attributeName'             => 'processDateTime',
-                    'operatorType'              => 'lessThan',
-                    'value'                     => $dateTime,
-                ),
-                3 => array(
-                    'attributeName'             => 'autoresponder',
-                    'relatedAttributeName'      => 'id',
-                    'operatorType'              => 'equals',
-                    'value'                     => $autoresponderId,
-                ),
-            );
-            $searchAttributeData['structure'] = '(1 and 2 and 3)';
-            $joinTablesAdapter                = new RedBeanModelJoinTablesQueryAdapter(get_called_class());
-            $where = RedBeanModelDataProvider::makeWhere(get_called_class(), $searchAttributeData, $joinTablesAdapter);
-            return self::getSubset($joinTablesAdapter, null, $pageSize, $where, 'processDateTime');
-        }
-
-        public static function registerAutoresponderItemsByAutoresponderOperation($operation, $marketingListId, $contact)
-        {
-            $autoresponders = Autoresponder::getByOperationTypeAndMarketingListId($operation, $marketingListId);
-            $now = time();
-            foreach ($autoresponders as $autoresponder)
-            {
-                $processTimestamp = $now + $autoresponder->secondsFromOperation;
-                $processDateTime = DateTimeUtil::convertTimestampToDbFormatDateTime($processTimestamp);
-                $processed = false;
-                static::addNewItem($processed, $processDateTime, $contact, $autoresponder);
+                static::addNewItem(static::NOT_PROCESSED, $contact, $campaign);
             }
         }
 
-        public static function addNewItem($processed, $processDateTime, $contact, $autoresponder)
+        public static function addNewItem($processed, $contact, $campaign)
         {
-            $autoresponderItem                              = new self;
-            $autoresponderItem->processed                   = $processed;
-            $autoresponderItem->processDateTime             = $processDateTime;
-            $autoresponderItem->contact                     = $contact;
-            $autoresponderItem->autoresponder               = $autoresponder;
-            $saved                                          = $autoresponderItem->unrestrictedSave();
+            $campaignItem                       = new self;
+            $campaignItem->processed            = $processed;
+            $campaignItem->contact              = $contact;
+            $campaignItem->campaign             = $campaign;
+            $saved                              = $campaignItem->unrestrictedSave();
             assert('$saved');
             if (!$saved)
             {
