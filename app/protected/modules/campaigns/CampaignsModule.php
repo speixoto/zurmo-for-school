@@ -37,27 +37,27 @@
     class CampaignsModule extends SecurableModule
     {
         const RIGHT_CREATE_CAMPAIGNS = 'Create Campaigns';
+
         const RIGHT_DELETE_CAMPAIGNS = 'Delete Campaigns';
-        const RIGHT_ACCESS_CAMPAIGNS = 'Access Campaigns';
+
+        const RIGHT_ACCESS_CAMPAIGNS = 'Access Campaigns Tab';
 
         public function getDependencies()
         {
-            return array(
-                'activities',
-            );
+            return array();
         }
 
         public function getRootModelNames()
         {
-            return array('Campaign');
+            return array('Campaign', 'CampaignItemActivity');
         }
 
-        public static function getUntranslatedRightsLabels()
+        public static function getTranslatedRightsLabels()
         {
             $labels                           = array();
-            $labels[self::RIGHT_CREATE_CAMPAIGNS] = 'Create CampaignsModulePluralLabel';
-            $labels[self::RIGHT_DELETE_CAMPAIGNS] = 'Delete CampaignsModulePluralLabel';
-            $labels[self::RIGHT_ACCESS_CAMPAIGNS] = 'Access CampaignsModulePluralLabel';
+            $labels[self::RIGHT_CREATE_CAMPAIGNS] = Zurmo::t('CampaignsModule', 'Create Campaigns');
+            $labels[self::RIGHT_DELETE_CAMPAIGNS] = Zurmo::t('CampaignsModule', 'Delete Campaigns');
+            $labels[self::RIGHT_ACCESS_CAMPAIGNS] = Zurmo::t('CampaignsModule', 'Access Campaigns Tab');
             return $labels;
         }
 
@@ -84,6 +84,7 @@
         /*
         public static function getGlobalSearchFormClassName()
         {
+            // TODO: @Shoaibi: Critical: Implement
             return 'CampaignsSearchForm';
         }
         */
@@ -97,6 +98,15 @@
                 ),
             );
             return $metadata;
+        }
+
+        public static function getDemoDataMakerClassNames()
+        {
+            // TODO: @Shoaibi: Critical: DemoDataLoaders
+            return array();
+            return array('CampaignsDemoDataMaker',
+                            'CampaignItemsDemoDataMaker',
+                            'CampaignItemActivitiesDemoDataMaker');
         }
     }
 ?>

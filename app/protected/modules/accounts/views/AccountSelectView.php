@@ -102,6 +102,7 @@
                                                                 'label'  => Zurmo::t('AccountsModule', 'Complete Conversion')));
             $content .= $element->render();
             $content .= '</div></div>';
+            $content .= $this->renderModalContainer();
             return $content;
         }
 
@@ -114,6 +115,13 @@
         {
             $data = array('onSubmit' => 'js:return attachLoadingOnSubmit("' . static::getFormId() . '")');
             return $data;
+        }
+
+        protected function renderModalContainer()
+        {
+            return ZurmoHtml::tag('div', array(
+                        'id' => ModelElement::MODAL_CONTAINER_PREFIX . '-' . static::getFormId()
+                   ),'');
         }
     }
 ?>

@@ -82,7 +82,6 @@
             $model->secondsFromOperation    = $this->seedData['secondsFromOperation'][$this->index];
             $model->operationType           = $this->seedData['operationType'][$this->index];
             $model->enableTracking          = (rand() % 2);
-
         }
     }
 ?>

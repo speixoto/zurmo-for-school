@@ -91,6 +91,7 @@
             $formEnd  = $clipWidget->renderEndWidget();
             $content .= $formEnd;
             $content .= '</div>';
+            $content .= $this->renderModalContainer();
             return $content;
         }
 
@@ -563,6 +564,13 @@
             $designerRulesClassName = $designerRulesType . 'DesignerRules';
             $designerRules          = new $designerRulesClassName();
             return $designerRules->maxCellsPerRow();
+        }
+
+        protected function renderModalContainer()
+        {
+            return ZurmoHtml::tag('div', array(
+                        'id' => ModelElement::MODAL_CONTAINER_PREFIX . '-' . $this->getSearchFormId()
+                   ),'');
         }
     }
 ?>

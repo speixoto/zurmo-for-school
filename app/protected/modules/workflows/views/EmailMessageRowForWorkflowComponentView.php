@@ -90,10 +90,11 @@
         /**
          * @return array
          */
-        protected static function resolveRecipientTypeDataAndLabels()
+        protected function resolveRecipientTypeDataAndLabels()
         {
             $data = array('' => Zurmo::t('WorkflowsModule', 'Add Recipient'));
-            return array_merge($data, WorkflowEmailMessageRecipientForm::getTypeValuesAndLabels());
+            return array_merge($data, WorkflowEmailMessageRecipientForm::
+                        getTypeValuesAndLabels($this->model->getModelClassName(), $this->model->getWorkflowType()));
         }
 
         /**
@@ -222,7 +223,7 @@
             $content     = ZurmoHtml::tag('h2', array(), Zurmo::t('WorkflowsModule', 'Recipients'));
             $htmlOptions = array('id' => $this->resolveAddRecipientId(), 'class' => self::ADD_RECIPIENT_CLASS_NAME);
             $content     = ZurmoHtml::dropDownList(self::ADD_RECIPIENT_TYPE_NAME, null,
-                           self::resolveRecipientTypeDataAndLabels(), $htmlOptions);
+                           $this->resolveRecipientTypeDataAndLabels(), $htmlOptions);
             return         ZurmoHtml::tag('div', array('class' => 'email-message-recipient-type-selector-container'), $content);
         }
 

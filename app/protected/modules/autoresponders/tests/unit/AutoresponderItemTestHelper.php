@@ -46,6 +46,10 @@
 
         public static function populateAutoresponderItem($processed, $processDateTime, $autoresponder = null, $contact = null)
         {
+            assert('is_string($processed) || is_int($processed)');
+            assert('is_string($processDateTime)');
+            assert('is_object($autoresponder) || $autoresponder === null');
+            assert('is_object($contact) || $contact === null');
             if (empty($autoresponder))
             {
                 $autoresponders = Autoresponder::getAll();

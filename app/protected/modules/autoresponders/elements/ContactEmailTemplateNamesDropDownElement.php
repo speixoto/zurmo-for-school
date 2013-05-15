@@ -44,7 +44,7 @@
 
         protected function renderControlNonEditable()
         {
-            // TODO: @Shoaibi/@Jason: Critical: Is This alright? no exception.
+            throw new NotSupportedException();
         }
 
         protected function renderControlEditable()

@@ -204,6 +204,10 @@
         protected function resolveModelClassName()
         {
             $modelClassName = $this->modelClassName;
+            if($this->relation == null)
+            {
+                return $modelClassName;
+            }
             if ($modelClassName::isADerivedRelationViaCastedUpModel($this->relation) &&
                $modelClassName::getDerivedRelationType($this->relation) == RedBeanModel::MANY_MANY)
             {

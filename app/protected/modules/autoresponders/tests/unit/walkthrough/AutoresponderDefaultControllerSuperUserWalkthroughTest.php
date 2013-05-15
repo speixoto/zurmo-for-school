@@ -106,11 +106,10 @@
             $redirectUrl    = 'http://www.zurmo.com/';
             $this->setGetArray(array('marketingListId' => static::$marketingListId , 'redirectUrl' => $redirectUrl));
             $content = $this->runControllerWithNoExceptionsAndGetContent('autoresponders/default/create');
-            $this->assertTrue(strpos($content, '<a href="/usr/bin/phpunit/emailTemplates/default/index">' .
-                                                'Marketing</a> &#47; <a href="/usr/bin/phpunit/marketingLists/default/list">' .
-                                                'Lists</a> &#47; <a href="/usr/bin/phpunit/marketingLists/default/details?id=' .
-                                                static::$marketingListId . '">' . 'MarketingListName</a> &#47; ' .
-                                                '<span>Create</span></div>') !== false);
+            $this->assertTrue(strpos($content, 'emailTemplates/default/index">Marketing</a> &#47; <a href=') !== false);
+            $this->assertTrue(strpos($content, 'marketingLists/default/list">Lists</a> &#47; <a href=') !== false);
+            $this->assertTrue(strpos($content, 'marketingLists/default/details?id=' . static::$marketingListId .
+                                                '">MarketingListName</a> &#47; <span>Create</span></div>') !== false);
             $this->assertTrue(strpos($content, 'Create Autoresponder') !== false);
             $this->assertTrue(strpos($content, '<label for="Autoresponder_operationType_value" class="required">' .
                                                     'Type <span class="required">*</span></label>') !== false);
@@ -144,10 +143,10 @@
             $this->assertTrue(strpos($content, '<select name="Autoresponder[contactEmailTemplateNames]" ' .
                                                 'id="Autoresponder_contactEmailTemplateNames_value">') !== false);
             $this->assertTrue(strpos($content, '<option value="">Select a template</option>') !== false);
-            $this->assertTrue(strpos($content, '<option value="2">EmailTemplate 01</option>') !== false);
-            $this->assertTrue(strpos($content, '<option value="3">EmailTemplate 02</option>') !== false);
-            $this->assertTrue(strpos($content, '<option value="4">EmailTemplate 03</option>') !== false);
-            $this->assertTrue(strpos($content, '<option value="5">EmailTemplate 04</option>') !== false);
+            $this->assertTrue(strpos($content, '>EmailTemplate 01</option>') !== false);
+            $this->assertTrue(strpos($content, '>EmailTemplate 02</option>') !== false);
+            $this->assertTrue(strpos($content, '>EmailTemplate 03</option>') !== false);
+            $this->assertTrue(strpos($content, '>EmailTemplate 04</option>') !== false);
             $this->assertTrue(strpos($content, '<a class="active-tab" href="#tab1">Text Content</a>') !== false);
             $this->assertTrue(strpos($content, '<a href="#tab2">Html Content</a>') !== false);
             $this->assertTrue(strpos($content, '<a id="mergetag-guide" class="simple-link" ' .
@@ -199,8 +198,6 @@
             $this->assertTrue(strpos($content, 'Please fix the following input errors:') !== false);
             $this->assertTrue(strpos($content, 'Text Content: Invalid MergeTag(TEXT^CONTENT) used.') !== false);
             $this->assertTrue(strpos($content, 'Html Content: Invalid MergeTag(HTML^CONTENT) used.') !== false);
-
-            // TODO: @Shoaibi/@Jason: Critical: Try that Email thing.
 
             // try saving with valid data.
             $this->setPostArray(array('Autoresponder' => array(
@@ -261,11 +258,10 @@
             $this->setGetArray(array('id' => $autoresponderId, 'redirectUrl' => $redirectUrl));
             $content = $this->runControllerWithNoExceptionsAndGetContent('autoresponders/default/details');
             $this->assertTrue(strpos($content, '<div class="breadcrumbs">') !== false);
-            $this->assertTrue(strpos($content, '<a href="/usr/bin/phpunit/emailTemplates/default/index">' .
-                                                'Marketing</a> &#47; <a href="/usr/bin/phpunit/marketingLists/default/list">' .
-                                                'Lists</a> &#47; <a href="/usr/bin/phpunit/marketingLists/default/details?id=' .
-                                                static::$marketingListId . '">' . 'MarketingListName</a> &#47; ' .
-                                                '<span>Autoresponder 04</span></div>') !== false);
+            $this->assertTrue(strpos($content, 'emailTemplates/default/index">Marketing</a> &#47; <a href=') !== false);
+            $this->assertTrue(strpos($content, 'marketingLists/default/list">Lists</a> &#47; <a href=') !== false);
+            $this->assertTrue(strpos($content, 'marketingLists/default/details?id=' . static::$marketingListId .
+                                                '">MarketingListName</a> &#47; <span>Autoresponder 04</span></div>') !== false);
             $this->assertTrue(strpos($content, 'Autoresponder 04') !== false);
             $this->assertEquals(3, substr_count($content, 'Autoresponder 04'));
             $this->assertTrue(strpos($content, '<span class="ellipsis-content">Autoresponder 04</span>') !== false);
@@ -321,11 +317,10 @@
             $this->setGetArray(array('id' => $autoresponderId, 'redirectUrl' => $redirectUrl));
             $content = $this->runControllerWithNoExceptionsAndGetContent('autoresponders/default/edit');
             $this->assertTrue(strpos($content, '<div class="breadcrumbs">') !== false);
-            $this->assertTrue(strpos($content, '<a href="/usr/bin/phpunit/emailTemplates/default/index">' .
-                                                'Marketing</a> &#47; <a href="/usr/bin/phpunit/marketingLists/default/list">' .
-                                                'Lists</a> &#47; <a href="/usr/bin/phpunit/marketingLists/default/details?id=' .
-                                                static::$marketingListId . '">' . 'MarketingListName</a> &#47; ' .
-                                                '<span>Autoresponder 04</span></div>') !== false);
+            $this->assertTrue(strpos($content, 'emailTemplates/default/index">Marketing</a> &#47; <a href=') !== false);
+            $this->assertTrue(strpos($content, 'marketingLists/default/list">Lists</a> &#47; <a href=') !== false);
+            $this->assertTrue(strpos($content, 'marketingLists/default/details?id=' . static::$marketingListId .
+                                                '">MarketingListName</a> &#47; <span>Autoresponder 04</span></div>') !== false);
             $this->assertTrue(strpos($content, 'Autoresponder 04') !== false);
             $this->assertEquals(3, substr_count($content, 'Autoresponder 04'));
             $this->assertTrue(strpos($content, '<span class="ellipsis-content">Autoresponder 04</span>') !== false);
@@ -361,10 +356,10 @@
             $this->assertTrue(strpos($content, '<select name="Autoresponder[contactEmailTemplateNames]" ' .
                                                 'id="Autoresponder_contactEmailTemplateNames_value">') !== false);
             $this->assertTrue(strpos($content, '<option value="">Select a template</option>') !== false);
-            $this->assertTrue(strpos($content, '<option value="2">EmailTemplate 01</option>') !== false);
-            $this->assertTrue(strpos($content, '<option value="3">EmailTemplate 02</option>') !== false);
-            $this->assertTrue(strpos($content, '<option value="4">EmailTemplate 03</option>') !== false);
-            $this->assertTrue(strpos($content, '<option value="5">EmailTemplate 04</option>') !== false);
+            $this->assertTrue(strpos($content, '>EmailTemplate 01</option>') !== false);
+            $this->assertTrue(strpos($content, '>EmailTemplate 02</option>') !== false);
+            $this->assertTrue(strpos($content, '>EmailTemplate 03</option>') !== false);
+            $this->assertTrue(strpos($content, '>EmailTemplate 04</option>') !== false);
             $this->assertTrue(strpos($content, '<a class="active-tab" href="#tab1">Text Content</a>') !== false);
             $this->assertTrue(strpos($content, '<a href="#tab2">Html Content</a>') !== false);
             $this->assertTrue(strpos($content, '<a id="mergetag-guide" class="simple-link" ' .
