@@ -38,8 +38,10 @@
      * A job for processing autoresponder messages that are not sent immediately when triggered
      */
 
-    class AutoresponderMessageInQueueJob extends BaseJob
+    class AutoresponderQueueMessagesInOutboxJob extends BaseJob
     {
+        const BATCH_SIZE_CONFIG_KEY = 'AutoresponderBatchSize';
+
         /**
          * @var int
          */
@@ -71,6 +73,11 @@
          */
         public function run()
         {
+            $batchSize = ZurmoConfigurationUtil::getByModuleName('AutorespondersModule', static::BATCH_SIZE_CONFIG_KEY);
+            if ($batchSize)
+            {
+                static::$pageSize = $batchSize;
+            }
             $autoresponderItemsToProcess    = AutoresponderItem::getByProcessedAndProcessDateTime(
                                                                                         AutoresponderItem::NOT_PROCESSED,
                                                                                         time(),

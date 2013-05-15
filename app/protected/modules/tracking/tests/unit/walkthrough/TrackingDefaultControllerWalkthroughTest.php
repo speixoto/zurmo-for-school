@@ -203,13 +203,13 @@
             $path       = tempnam(sys_get_temp_dir() , '1x1-pixel') . '.png';
             $createdPng = imagepng($image, $path);
             $this->assertTrue($createdPng);
-            $autoresponderItemActitvity = AutoresponderItemActivity::getByTypeAndModelIdAndPersonIdAndUrl(
+            $autoresponderItemActivity = AutoresponderItemActivity::getByTypeAndModelIdAndPersonIdAndUrl(
                                                                                 AutoresponderItemActivity::TYPE_OPEN,
                                                                                 static::$autoresponderItemId,
                                                                                 static::$personId);
-            $this->assertNotEmpty($autoresponderItemActitvity);
-            $this->assertCount(1, $autoresponderItemActitvity);
-            $this->assertEquals(1, $autoresponderItemActitvity[0]->quantity);
+            $this->assertNotEmpty($autoresponderItemActivity);
+            $this->assertCount(1, $autoresponderItemActivity);
+            $this->assertEquals(1, $autoresponderItemActivity[0]->quantity);
         }
 
         /**
@@ -231,14 +231,14 @@
             ));
             $url        = $this->runControllerWithRedirectExceptionAndGetUrl(static::TRACK_ROUTE);
             $this->assertEquals($queryStringArray['url'], $url);
-            $autoresponderItemActitvity = AutoresponderItemActivity::getByTypeAndModelIdAndPersonIdAndUrl(
+            $autoresponderItemActivity = AutoresponderItemActivity::getByTypeAndModelIdAndPersonIdAndUrl(
                                                                                 AutoresponderItemActivity::TYPE_CLICK,
                                                                                 static::$autoresponderItemId,
                                                                                 static::$personId,
                                                                                 $queryStringArray['url']);
-            $this->assertNotEmpty($autoresponderItemActitvity);
-            $this->assertCount(1, $autoresponderItemActitvity);
-            $this->assertEquals(1, $autoresponderItemActitvity[0]->quantity);
+            $this->assertNotEmpty($autoresponderItemActivity);
+            $this->assertCount(1, $autoresponderItemActivity);
+            $this->assertEquals(1, $autoresponderItemActivity[0]->quantity);
         }
 
         /**
@@ -264,13 +264,13 @@
             $path       = tempnam(sys_get_temp_dir() , '1x1-pixel') . '.png';
             $createdPng = imagepng($image, $path);
             $this->assertTrue($createdPng);
-            $campaignItemActitvity = AutoresponderItemActivity::getByTypeAndModelIdAndPersonIdAndUrl(
+            $campaignItemActivity = CampaignItemActivity::getByTypeAndModelIdAndPersonIdAndUrl(
                                                                                     CampaignItemActivity::TYPE_OPEN,
                                                                                     static::$campaignItemId,
                                                                                     static::$personId);
-            $this->assertNotEmpty($campaignItemActitvity);
-            $this->assertCount(1, $campaignItemActitvity);
-            $this->assertEquals(1, $campaignItemActitvity[0]->quantity);
+            $this->assertNotEmpty($campaignItemActivity);
+            $this->assertCount(1, $campaignItemActivity);
+            $this->assertEquals(1, $campaignItemActivity[0]->quantity);
         }
 
         /**
@@ -292,14 +292,14 @@
             ));
             $url        = $this->runControllerWithRedirectExceptionAndGetUrl(static::TRACK_ROUTE);
             $this->assertEquals($queryStringArray['url'], $url);
-            $campaignItemActitvity = AutoresponderItemActivity::getByTypeAndModelIdAndPersonIdAndUrl(
+            $campaignItemActivity = CampaignItemActivity::getByTypeAndModelIdAndPersonIdAndUrl(
                                                                                     CampaignItemActivity::TYPE_CLICK,
                                                                                     static::$campaignItemId,
                                                                                     static::$personId,
                                                                                     $queryStringArray['url']);
-            $this->assertNotEmpty($campaignItemActitvity);
-            $this->assertCount(1, $campaignItemActitvity);
-            $this->assertEquals(1, $campaignItemActitvity[0]->quantity);
+            $this->assertNotEmpty($campaignItemActivity);
+            $this->assertCount(1, $campaignItemActivity);
+            $this->assertEquals(1, $campaignItemActivity[0]->quantity);
         }
     }
 ?>

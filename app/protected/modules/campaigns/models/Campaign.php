@@ -213,7 +213,7 @@
                 {
                     $this->$attribute = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
                 }
-                else if (empty($this->$attribute))
+                elseif (empty($this->$attribute))
                 {
                     $this->addError($attribute, Zurmo::t('CampaignsModule', 'Send On cannot be blank.'));
                     $passedValidation = false;
