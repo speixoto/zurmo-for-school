@@ -35,10 +35,38 @@
      ********************************************************************************/
 
     /**
-     * Helper class for working with CampaignItemActivity
+     * Form to work with a triggered users for an email message recipient
      */
-    class CampaignItemActivityUtil extends EmailMessageActivityUtil
+    class DynamicTriggeredModelWorkflowEmailMessageRecipientForm extends WorkflowEmailMessageRecipientForm
     {
+        /**
+         * @return string
+         */
+        public static function getTypeLabel()
+        {
+            $params = LabelUtil::getTranslationParamsForAllModules();
+            return Zurmo::t('WorkflowsModule',
+                            'The triggered ContactsModuleSingularLowerCaseLabel or LeadsModuleSingularLowerCaseLabel', $params);
+        }
 
+        /**
+         * @param RedBeanModel $model
+         * @param User $triggeredByUser
+         * @return array
+         */
+        public function makeRecipients(RedBeanModel $model, User $triggeredByUser)
+        {
+            $recipients = array();
+            if ($model instanceof Contact && $model->primaryEmail->emailAddress !== null)
+            {
+                $recipient                  = new EmailMessageRecipient();
+                $recipient->toAddress       = $model->primaryEmail->emailAddress;
+                $recipient->toName          = strval($model);
+                $recipient->type            = $this->audienceType;
+                $recipient->personOrAccount = $model;
+                $recipients[]               = $recipient;
+            }
+            return $recipients;
+        }
     }
 ?>

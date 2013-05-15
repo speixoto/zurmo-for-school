@@ -126,7 +126,7 @@
             $action->setAttributes(array(ActionForWorkflowForm::ACTION_ATTRIBUTES => $attributes));
             $model = new WorkflowModelTestItem();
             $helper = new WorkflowActionProcessingHelper($action, $model, Yii::app()->user->userModel);
-            $helper->processUpdateSelftAction();
+            $helper->processUpdateSelfAction();
             $this->assertEquals('jason', $model->string);
             $this->assertTrue($model->id < 0);
         }

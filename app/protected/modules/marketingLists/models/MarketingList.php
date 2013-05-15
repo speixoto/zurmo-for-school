@@ -114,6 +114,7 @@
                 'elements' => array(
                     'description'                  => 'TextArea',
                 ),
+                'defaultSortAttribute' => 'name',
             );
             return $metadata;
         }

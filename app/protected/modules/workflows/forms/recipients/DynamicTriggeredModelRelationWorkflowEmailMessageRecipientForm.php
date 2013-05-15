@@ -37,8 +37,7 @@
     /**
      * Form to work with dynamic triggered model relation users for an email message recipient
      */
-    class DynamicTriggeredModelRelationUserWorkflowEmailMessageRecipientForm extends
-          DynamicTriggeredModelUserWorkflowEmailMessageRecipientForm
+    class DynamicTriggeredModelRelationWorkflowEmailMessageRecipientForm extends WorkflowEmailMessageRecipientForm
     {
         /**
          * When sending email messages on related models, if there are MANY related models RELATION_FILTER_ALL means the
@@ -64,7 +63,8 @@
          */
         public static function getTypeLabel()
         {
-            return Zurmo::t('WorkflowsModule', 'A person associated with a related record');
+            $params = LabelUtil::getTranslationParamsForAllModules();
+            return Zurmo::t('WorkflowsModule',  'Related ContactsModulePluralLowerCaseLabel or LeadsModulePluralLowerCaseLabel', $params);
         }
 
         /**
@@ -138,7 +138,7 @@
             $adapter        = ModelRelationsAndAttributesToWorkflowAdapter::make($modelClassName::getModuleClassName(),
                                                                                  $modelClassName, $this->workflowType);
             $valueAndLabels = array();
-            foreach ($adapter->getSelectableRelationsDataForEmailMessageRecipientModelRelation() as $relation => $data)
+            foreach ($adapter->getSelectableContactRelationsDataForEmailMessageRecipientModelRelation() as $relation => $data)
             {
                 $valueAndLabels[$relation] = $data['label'];
             }
@@ -160,7 +160,7 @@
             {
                 foreach (WorkflowUtil::resolveDerivedModels($model, $this->relation) as $resolvedModel)
                 {
-                    $recipients = self::resolveRecipientsAsUniquePeople($recipients, parent::makeRecipients($resolvedModel, $triggeredByUser));
+                    $recipients = self::resolveRecipientsAsUniquePeople($recipients, $this->resolveRecipients($resolvedModel));
                 }
             }
             elseif ($modelClassName::getInferredRelationModelClassNamesForRelation(
@@ -169,7 +169,7 @@
                 foreach (WorkflowUtil::
                         getInferredModelsByAtrributeAndModel($this->relation, $model) as $resolvedModel)
                 {
-                    $recipients = self::resolveRecipientsAsUniquePeople($recipients, parent::makeRecipients($resolvedModel, $triggeredByUser));
+                    $recipients = self::resolveRecipientsAsUniquePeople($recipients, $this->resolveRecipients($resolvedModel));
                 }
             }
             elseif ($model->{$this->relation} instanceof RedBeanMutableRelatedModels)
@@ -180,14 +180,14 @@
                 }
                 foreach ($model->{$this->relation} as $resolvedModel)
                 {
-                    $recipients = self::resolveRecipientsAsUniquePeople($recipients, parent::makeRecipients($resolvedModel, $triggeredByUser));
+                    $recipients = self::resolveRecipientsAsUniquePeople($recipients, $this->resolveRecipients($resolvedModel));
                 }
             }
             elseif ($modelClassName::isRelationTypeAHasOneVariant($this->relation))
             {
                 if ($model->{$this->relation}->id > 0)
                 {
-                    $recipients = parent::makeRecipients($model->{$this->relation}, $triggeredByUser);
+                    $recipients =$this->resolveRecipients($model->{$this->relation});
                 }
             }
             else
@@ -198,35 +198,22 @@
         }
 
         /**
-         * @return string
-         * @throws NotSupportedException
+         * @param RedBeanModel $model
+         * @return array
          */
-        protected function resolveModelClassName()
+        public function resolveRecipients(RedBeanModel $model)
         {
-            $modelClassName = $this->modelClassName;
-            if($this->relation == null)
+            $recipients = array();
+            if ($model instanceof Contact && $model->primaryEmail->emailAddress !== null)
             {
-                return $modelClassName;
+                $recipient                  = new EmailMessageRecipient();
+                $recipient->toAddress       = $model->primaryEmail->emailAddress;
+                $recipient->toName          = strval($model);
+                $recipient->type            = $this->audienceType;
+                $recipient->personOrAccount = $model;
+                $recipients[]               = $recipient;
             }
-            if ($modelClassName::isADerivedRelationViaCastedUpModel($this->relation) &&
-               $modelClassName::getDerivedRelationType($this->relation) == RedBeanModel::MANY_MANY)
-            {
-                return $modelClassName::getDerivedRelationModelClassName($this->relation);
-            }
-            elseif ($modelClassName::getInferredRelationModelClassNamesForRelation(
-                   ModelRelationsAndAttributesToWorkflowAdapter::resolveRealAttributeName($this->relation)) !=  null)
-            {
-                return ModelRelationsAndAttributesToWorkflowAdapter::getInferredRelationModelClassName($this->relation);
-            }
-            elseif ($modelClassName::isRelationTypeAHasManyVariant($this->relation) ||
-                   $modelClassName::isRelationTypeAHasOneVariant($this->relation))
-            {
-                return $modelClassName::getRelationModelClassName($this->relation);
-            }
-            else
-            {
-                throw new NotSupportedException();
-            }
+            return $recipients;
         }
     }
 ?>

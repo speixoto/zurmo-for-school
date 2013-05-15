@@ -34,11 +34,42 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * Helper class for working with CampaignItemActivity
-     */
-    class CampaignItemActivityUtil extends EmailMessageActivityUtil
+    class CampaignItemTestHelper
     {
+        public static function createCampaignItem($processed, $campaign = null, $contact = null)
+        {
+            $campaignItem       = static::populateCampaignItem($processed, $campaign, $contact);
+            $saved              = $campaignItem->unrestrictedSave();
+            assert('$saved');
+            return $campaignItem;
+        }
 
+        public static function populateCampaignItem($processed, $campaign = null, $contact = null)
+        {
+            assert('is_string($processed) || is_int($processed)');
+            assert('is_object($campaign) || $campaign === null');
+            assert('is_object($contact) || $contact === null');
+            if (empty($campaign))
+            {
+                $campaigns = Campaign::getAll();
+                if (!empty($campaigns))
+                {
+                    $campaign       = RandomDataUtil::getRandomValueFromArray($campaigns);
+                }
+            }
+            if (empty($contact))
+            {
+                $contacts       = Contact::getAll();
+                if (!empty($contacts))
+                {
+                    $contact        = RandomDataUtil::getRandomValueFromArray($contacts);
+                }
+            }
+            $campaignItem                               = new CampaignItem();
+            $campaignItem->processed                    = $processed;
+            $campaignItem->campaign                     = $campaign;
+            $campaignItem->contact                      = $contact;
+            return $campaignItem;
+        }
     }
 ?>

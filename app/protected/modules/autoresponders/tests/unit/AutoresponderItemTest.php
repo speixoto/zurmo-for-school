@@ -363,7 +363,7 @@
             $super              = User::getByUsername('super');
             $processed          = AutoresponderItem::NOT_PROCESSED;
             $processDateTime    = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
-            $contact            = ContactTestHelper::createContactByNameForOwner('autoresponderContact', $super);
+            $contact            = ContactTestHelper::createContactByNameForOwner('autoresponderContact', Yii::app()->user->userModel);
             $marketingList      = MarketingListTestHelper::createMarketingListByName('marketingList 03');
             $autoresponder      = AutoresponderTestHelper::createAutoresponder('autoresponder 01',
                                                                                 'test autoresponder 01',
@@ -418,12 +418,16 @@
                                                                                         $marketingList
                                                                                     );
             $this->assertNotNull($autoresponderRemove);
-            $super              = User::getByUsername('super');
-            $contact1           = ContactTestHelper::createContactByNameForOwner('autoresponderContact 01', $super);
-            $contact2           = ContactTestHelper::createContactByNameForOwner('autoresponderContact 02', $super);
-            $contact3           = ContactTestHelper::createContactByNameForOwner('autoresponderContact 03', $super);
-            $contact4           = ContactTestHelper::createContactByNameForOwner('autoresponderContact 04', $super);
-            $contact5           = ContactTestHelper::createContactByNameForOwner('autoresponderContact 05', $super);
+            $contact1           = ContactTestHelper::createContactByNameForOwner('autoresponderContact 01',
+                                                                                        Yii::app()->user->userModel);
+            $contact2           = ContactTestHelper::createContactByNameForOwner('autoresponderContact 02',
+                                                                                        Yii::app()->user->userModel);
+            $contact3           = ContactTestHelper::createContactByNameForOwner('autoresponderContact 03',
+                                                                                        Yii::app()->user->userModel);
+            $contact4           = ContactTestHelper::createContactByNameForOwner('autoresponderContact 04',
+                                                                                        Yii::app()->user->userModel);
+            $contact5           = ContactTestHelper::createContactByNameForOwner('autoresponderContact 05',
+                                                                                        Yii::app()->user->userModel);
 
             AutoresponderItem::registerAutoresponderItemsByAutoresponderOperation(Autoresponder::OPERATION_SUBSCRIBE,
                                                                                     $marketingList->id,
