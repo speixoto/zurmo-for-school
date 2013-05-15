@@ -140,7 +140,7 @@
         public function __construct($modelClassName, $attributeName, $columnName, array $columnMappingData)
         {
             assert('is_string($modelClassName)');
-            assert('is_string($attributeName)');
+            assert('is_string($attributeName) || $attributeName == null');
             assert('is_string($columnName)');
             $this->modelClassName    = $modelClassName;
             $this->attributeName     = $attributeName;

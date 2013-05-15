@@ -71,7 +71,7 @@
          */
         public function sanitizeValue($value)
         {
-            assert('is_string($attributeName) && $attributeName == "id"');
+            assert('is_string($this->attributeName) && $this->attributeName == "id"');
             if ($value == null)
             {
                 return $value;
