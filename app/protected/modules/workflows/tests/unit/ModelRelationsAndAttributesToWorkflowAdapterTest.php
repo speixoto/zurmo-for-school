@@ -1384,5 +1384,40 @@
             $relations          = $adapter->getSelectableRelationsDataForEmailMessageRecipientModelRelation();
             $this->assertEquals(5, count($relations));
         }
+
+        /**
+         * @depends testGetSelectableRelationsDataForEmailMessageRecipientModelRelation
+         */
+        public function testGetSelectableContactRelationsDataForEmailMessageRecipientModelRelation()
+        {
+            $model              = new Account();
+            $rules              = new AccountsWorkflowRules();
+            $workflow           = new Workflow();
+            $workflow->setType(Workflow::TYPE_ON_SAVE);
+            $workflow->setModuleClassName('AccountsModule');
+            $adapter            = new ModelRelationsAndAttributesToWorkflowAdapter($model, $rules, $workflow->getType());
+            $relations          = $adapter->getSelectableContactRelationsDataForEmailMessageRecipientModelRelation();
+            $this->assertEquals(1, count($relations));
+            $this->assertTrue(isset($relations['contacts']));
+
+            $model              = new Contact();
+            $rules              = new ContactsWorkflowRules();
+            $workflow           = new Workflow();
+            $workflow->setType(Workflow::TYPE_ON_SAVE);
+            $workflow->setModuleClassName('ContactsModule');
+            $adapter            = new ModelRelationsAndAttributesToWorkflowAdapter($model, $rules, $workflow->getType());
+            $relations          = $adapter->getSelectableContactRelationsDataForEmailMessageRecipientModelRelation();
+            $this->assertEquals(0, count($relations));
+
+            $model              = new Task();
+            $rules              = new TasksWorkflowRules();
+            $workflow           = new Workflow();
+            $workflow->setType(Workflow::TYPE_ON_SAVE);
+            $workflow->setModuleClassName('TasksModule');
+            $adapter            = new ModelRelationsAndAttributesToWorkflowAdapter($model, $rules, $workflow->getType());
+            $relations          = $adapter->getSelectableContactRelationsDataForEmailMessageRecipientModelRelation();
+            $this->assertEquals(1, count($relations));
+            $this->assertTrue(isset($relations['Contact__activityItems__Inferred']));
+        }
     }
 ?>

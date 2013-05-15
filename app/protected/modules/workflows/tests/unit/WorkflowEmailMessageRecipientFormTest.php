@@ -53,6 +53,7 @@
         public static function setUpBeforeClass()
         {
             parent::setUpBeforeClass();
+            ContactsModule::loadStartingData();
             $bobbyBoss = UserTestHelper::createBasicUserWithEmailAddress('bobbyBoss');
             $sarahBoss = UserTestHelper::createBasicUserWithEmailAddress('sarahBoss');
             $superBoss = UserTestHelper::createBasicUserWithEmailAddress('superBoss');
@@ -94,6 +95,34 @@
                 RedBeanDatabase::freeze();
             }
             parent::teardown();
+        }
+
+        public function testGetTypeValuesAndLabels()
+        {
+            $typeValuesAndLabels = WorkflowEmailMessageRecipientForm::getTypeValuesAndLabels('Account', Workflow::TYPE_ON_SAVE);
+            $compareData = array(
+                'DynamicTriggeredModelUser',
+                'DynamicTriggeredModelRelationUser',
+                'StaticRole',
+                'DynamicTriggeredByUser',
+                'StaticUser',
+                'StaticAddress',
+                'StaticGroup',
+                'DynamicTriggeredModelRelation'
+            );
+            $this->assertEquals($compareData, array_keys($typeValuesAndLabels));
+            $typeValuesAndLabels = WorkflowEmailMessageRecipientForm::getTypeValuesAndLabels('Contact', Workflow::TYPE_ON_SAVE);
+            $compareData = array(
+                'DynamicTriggeredModelUser',
+                'DynamicTriggeredModelRelationUser',
+                'StaticRole',
+                'DynamicTriggeredByUser',
+                'StaticUser',
+                'StaticAddress',
+                'StaticGroup',
+                'DynamicTriggeredModel'
+            );
+            $this->assertEquals($compareData, array_keys($typeValuesAndLabels));
         }
 
         public function testStringifiedModelForValue()
@@ -313,6 +342,53 @@
             $this->assertEquals('superBoss superBossson' , $recipients[0]->toName);
             $this->assertEquals('superBoss@zurmo.com',    $recipients[0]->toAddress);
             $this->assertEquals(self::$superBossUserId,    $recipients[0]->personOrAccount->id);
+        }
+
+        public function testMakeRecipientsForDynamicTriggeredModel()
+        {
+            $form  = new DynamicTriggeredModelWorkflowEmailMessageRecipientForm('Contact', Workflow::TYPE_ON_SAVE);
+            $model             = new Contact();
+            $model->firstName  = 'Jason';
+            $model->lastName   = 'Blue';
+            $model->state      = ContactsUtil::getStartingState();
+            $model->primaryEmail->emailAddress = 'jason@something.com';
+            $this->assertTrue($model->save());
+            $recipients = $form->makeRecipients($model, User::getById(self::$bobbyUserId));
+            $this->assertEquals(1, count($recipients));
+            $this->assertEquals('Jason Blue' ,           $recipients[0]->toName);
+            $this->assertEquals('jason@something.com',   $recipients[0]->toAddress);
+            $this->assertEquals($model->id,              $recipients[0]->personOrAccount->id);
+        }
+
+        public function testMakeRecipientsForDynamicTriggeredModelRelation()
+        {
+            $form  = new DynamicTriggeredModelRelationWorkflowEmailMessageRecipientForm('Account', Workflow::TYPE_ON_SAVE);
+            $form->relation = 'contacts';
+            $model               = new Account();
+            $model->name         = 'the account';
+            $contact             = new Contact();
+            $contact->firstName  = 'Jason';
+            $contact->lastName   = 'Blue';
+            $contact->state      = ContactsUtil::getStartingState();
+            $contact->primaryEmail->emailAddress = 'jason@something.com';
+            $this->assertTrue($contact->save());
+            $contact2            = new Contact();
+            $contact2->firstName = 'Laura';
+            $contact2->lastName  = 'Blue';
+            $contact2->state     = ContactsUtil::getStartingState();
+            $contact2->primaryEmail->emailAddress = 'laura@something.com';
+            $this->assertTrue($contact2->save());
+            $model->contacts->add($contact);
+            $model->contacts->add($contact2);
+            $this->assertTrue($model->save());
+            $recipients = $form->makeRecipients($model, User::getById(self::$bobbyUserId));
+            $this->assertEquals(2, count($recipients));
+            $this->assertEquals('Jason Blue' ,           $recipients[0]->toName);
+            $this->assertEquals('jason@something.com',   $recipients[0]->toAddress);
+            $this->assertEquals($contact->id,            $recipients[0]->personOrAccount->id);
+            $this->assertEquals('Laura Blue' ,           $recipients[1]->toName);
+            $this->assertEquals('laura@something.com',   $recipients[1]->toAddress);
+            $this->assertEquals($contact2->id,           $recipients[1]->personOrAccount->id);
         }
     }
 ?>

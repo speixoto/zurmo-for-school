@@ -81,6 +81,26 @@
                         'effective'   => Right::DENY,
                     ),
                 ),
+                'CampaignsModule' => array(
+                    'RIGHT_CREATE_CAMPAIGNS'   => array(
+                        'displayName' => CampaignsModule::RIGHT_CREATE_CAMPAIGNS,
+                        'explicit'    => null,
+                        'inherited'   => null,
+                        'effective'   => Right::DENY,
+                    ),
+                    'RIGHT_DELETE_CAMPAIGNS'   => array(
+                        'displayName' => CampaignsModule::RIGHT_DELETE_CAMPAIGNS,
+                        'explicit'    => null,
+                        'inherited'   => null,
+                        'effective'   => Right::DENY,
+                    ),
+                    'RIGHT_ACCESS_CAMPAIGNS'   => array(
+                        'displayName' => CampaignsModule::RIGHT_ACCESS_CAMPAIGNS,
+                        'explicit'    => null,
+                        'inherited'   => null,
+                        'effective'   => Right::DENY,
+                    ),
+                ),
                 'ContactsModule' => array(
                     'RIGHT_CREATE_CONTACTS'   => array(
                         'displayName' => ContactsModule::RIGHT_CREATE_CONTACTS,
@@ -573,6 +593,26 @@
                     ),
                     'RIGHT_ACCESS_ACCOUNTS'   => array(
                         'displayName' => AccountsModule::RIGHT_ACCESS_ACCOUNTS,
+                        'explicit'    => null,
+                        'inherited'   => null,
+                        'effective'   => Right::DENY,
+                    ),
+                ),
+                'CampaignsModule' => array(
+                    'RIGHT_CREATE_CAMPAIGNS'   => array(
+                        'displayName' => CampaignsModule::RIGHT_CREATE_CAMPAIGNS,
+                        'explicit'    => null,
+                        'inherited'   => null,
+                        'effective'   => Right::DENY,
+                    ),
+                    'RIGHT_DELETE_CAMPAIGNS'   => array(
+                        'displayName' => CampaignsModule::RIGHT_DELETE_CAMPAIGNS,
+                        'explicit'    => null,
+                        'inherited'   => null,
+                        'effective'   => Right::DENY,
+                    ),
+                    'RIGHT_ACCESS_CAMPAIGNS'   => array(
+                        'displayName' => CampaignsModule::RIGHT_ACCESS_CAMPAIGNS,
                         'explicit'    => null,
                         'inherited'   => null,
                         'effective'   => Right::DENY,
@@ -1071,6 +1111,26 @@
                         'effective'   => Right::DENY,
                     ),
                 ),
+                'CampaignsModule' => array(
+                    'RIGHT_CREATE_CAMPAIGNS'   => array(
+                        'displayName' => CampaignsModule::RIGHT_CREATE_CAMPAIGNS,
+                        'explicit'    => null,
+                        'inherited'   => null,
+                        'effective'   => Right::DENY,
+                    ),
+                    'RIGHT_DELETE_CAMPAIGNS'   => array(
+                        'displayName' => CampaignsModule::RIGHT_DELETE_CAMPAIGNS,
+                        'explicit'    => null,
+                        'inherited'   => null,
+                        'effective'   => Right::DENY,
+                    ),
+                    'RIGHT_ACCESS_CAMPAIGNS'   => array(
+                        'displayName' => CampaignsModule::RIGHT_ACCESS_CAMPAIGNS,
+                        'explicit'    => null,
+                        'inherited'   => null,
+                        'effective'   => Right::DENY,
+                    ),
+                ),
                 'ContactsModule' => array(
                     'RIGHT_CREATE_CONTACTS'   => array(
                         'displayName' => ContactsModule::RIGHT_CREATE_CONTACTS,
@@ -1558,6 +1618,26 @@
                     ),
                     'RIGHT_ACCESS_ACCOUNTS'   => array(
                         'displayName' => AccountsModule::RIGHT_ACCESS_ACCOUNTS,
+                        'explicit'    => null,
+                        'inherited'   => null,
+                        'effective'   => Right::DENY,
+                    ),
+                ),
+                'CampaignsModule' => array(
+                    'RIGHT_CREATE_CAMPAIGNS'   => array(
+                        'displayName' => CampaignsModule::RIGHT_CREATE_CAMPAIGNS,
+                        'explicit'    => null,
+                        'inherited'   => null,
+                        'effective'   => Right::DENY,
+                    ),
+                    'RIGHT_DELETE_CAMPAIGNS'   => array(
+                        'displayName' => CampaignsModule::RIGHT_DELETE_CAMPAIGNS,
+                        'explicit'    => null,
+                        'inherited'   => null,
+                        'effective'   => Right::DENY,
+                    ),
+                    'RIGHT_ACCESS_CAMPAIGNS'   => array(
+                        'displayName' => CampaignsModule::RIGHT_ACCESS_CAMPAIGNS,
                         'explicit'    => null,
                         'inherited'   => null,
                         'effective'   => Right::DENY,
