@@ -56,12 +56,12 @@
             assert('is_string($languageCode)');
             try
             {
-                $messages = GeneralCache::getEntry(self::CACHE_KEY_PREFIX);
+                $messages = GeneralCache::getEntry(self::getMessageSourceCacheIdentifier($category, $languageCode));
             }
             catch (NotFoundException $e)
             {
                 $messages = $this->loadMessagesFromDbIgnoringCache($category, $languageCode);
-                GeneralCache::cacheEntry(self::CACHE_KEY_PREFIX, $messages);
+                GeneralCache::cacheEntry(self::getMessageSourceCacheIdentifier($category, $languageCode), $messages);
             }
             return $messages;
         }
@@ -88,6 +88,13 @@
                 $messages[$bean->messagesource->source] = $bean->translation;
             }
             return $messages;
+        }
+
+        protected static function getMessageSourceCacheIdentifier($category, $languageCode)
+        {
+            assert('is_string($category)');
+            assert('is_string($languageCode)');
+            return self::CACHE_KEY_PREFIX . $category . $languageCode;
         }
     }
 ?>
