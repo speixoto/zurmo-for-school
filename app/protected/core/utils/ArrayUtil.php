@@ -51,6 +51,12 @@
             return null;
         }
 
+        /**
+         * @param $array
+         * @param $element
+         * @return null
+         * @throws NotFoundException
+         */
         public static function getArrayValueWithExceptionIfNotFound($array, $element)
         {
             if (!array_key_exists($element, $array))
