@@ -34,14 +34,14 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class AccountDetailsAndRelationsView extends DetailsAndRelationsView
+    class AccountDetailsAndRelationsView extends ConfigurableDetailsAndRelationsView
     {
         public function isUniqueToAPage()
         {
             return true;
         }
 
-        public static function getDefaultMetadata()
+        /*public static function getDefaultMetadata()
         {
             $metadata = array(
                 'global' => array(
@@ -86,6 +86,51 @@
                 )
             );
             return $metadata;
+        }*/
+
+        public static function getDefaultMetadata()
+        {
+            $metadata = array(
+                'global' => array(
+                    'columns' => array(
+                        array(
+                            'rows' => array(
+                               array(
+                                    'type' => 'AccountEditAndDetails',
+                                ),
+                               array(
+                                    'type' => 'NoteInlineEditForPortlet',
+                                ),
+                                array(
+                                    'type' => 'AccountLatestActivitiesForPortlet',
+                                ),
+                            )
+                        ),
+                        array(
+                            'rows' => array(
+                                array(
+                                    'type' => 'UpcomingMeetingsForAccountCalendar',
+                                ),
+                                array(
+                                    'type' => 'OpenTasksForAccountRelatedList',
+                                ),
+                                array(
+                                    'type' => 'ContactsForAccountRelatedList',
+                                ),
+                                array(
+                                    'type' => 'OpportunitiesForAccountRelatedList',
+                                ),
+                            )
+                        )
+                    )
+                )
+            );
+            return $metadata;
+        }
+
+        public static function getModuleClassName()
+        {
+            return 'AccountsModule';
         }
     }
 ?>

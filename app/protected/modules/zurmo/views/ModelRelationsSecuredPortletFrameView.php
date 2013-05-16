@@ -53,7 +53,7 @@
         private $showAsTabs;
 
         public function __construct($controllerId, $moduleId, $uniqueLayoutId, $params, $metadata,
-                                    $portletsAreCollapsible = true, $portletsAreMovable = true, $showAsTabs = false)
+                                    $portletsAreCollapsible = true, $portletsAreMovable = true, $showAsTabs = false, $layoutType = '100')
         {
             assert('is_string($controllerId)');
             assert('is_string($moduleId)');
@@ -71,6 +71,7 @@
             $this->portletsAreCollapsible = $portletsAreCollapsible;
             $this->portletsAreMovable     = $portletsAreMovable;
             $this->showAsTabs             = $showAsTabs;
+            $this->layoutType             = $layoutType;
         }
 
         protected function renderContent()
@@ -118,7 +119,7 @@
 
         protected function arePortletsRemovable()
         {
-            return false;
+            return true;
         }
 
         public function isUniqueToAPage()

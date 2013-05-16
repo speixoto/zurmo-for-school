@@ -37,7 +37,7 @@
     /**
      * The base View for a module's details view.
      */
-    abstract class DetailsView extends ModelView
+    abstract class DetailsView extends ModelView implements PortletViewInterface
     {
         protected $controllerId;
 
@@ -383,6 +383,16 @@
         protected function alwaysShowErrorSummary()
         {
             return false;
+        }
+
+        public static function getPortletRulesType()
+        {
+            return 'Detail';
+        }
+
+        public static function getModuleClassName()
+        {
+            return null;
         }
     }
 ?>
