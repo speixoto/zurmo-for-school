@@ -53,7 +53,10 @@
          * used by the designer page view.
          * @param CController $controller
          * @param View $containedView
-         * @param mixed $activeNodeModuleClassName (null or string)
+         * @param $breadcrumbLinks
+         * @param $breadcrumbViewClassName
+         * @param array $cssClasses
+         * @return GridView
          */
         public static function makeViewWithBreadcrumbsForCurrentUser(CController $controller,
                                                                      View $containedView,
@@ -68,6 +71,46 @@
                                                             $controller->getModule()->getId(),
                                                             $breadcrumbLinks), 0, 0);
             $gridView->setView($containedView, 1, 0);
+            return static::makeStandardViewForCurrentUser($controller, $gridView);
+        }
+
+        /**
+
+         * @param CController $controller
+         * @param View $containedView
+         * @param $breadcrumbLinks
+         * @param $breadcrumbViewClassName
+         * @param array $cssClasses
+         * @return GridView
+         */
+
+
+        /**
+         * Given a controller, two contained views, construct the gridview
+         * used by the designer page view.
+         * @param CController $controller
+         * @param View $containedView
+         * @param View $secondContainedView
+         * @param $breadcrumbLinks
+         * @param $breadcrumbViewClassName
+         * @param array $cssClasses
+         * @return GridView
+         */
+        public static function makeTwoViewsWithBreadcrumbsForCurrentUser(CController $controller,
+                                                                         View $containedView,
+                                                                         View $secondContainedView,
+                                                                         $breadcrumbLinks,
+                                                                         $breadcrumbViewClassName,
+                                                                         $cssClasses = array())
+        {
+            assert('is_array($breadcrumbLinks)');
+            $gridView    = new GridView(3, 1);
+            $gridView->setCssClasses($cssClasses);
+            $gridView->setView(new $breadcrumbViewClassName($controller->getId(),
+                                                            $controller->getModule()->getId(),
+                                                            $breadcrumbLinks), 0, 0);
+            $gridView->setView($containedView, 1, 0);
+            $gridView->setView($secondContainedView, 2, 0);
             return static::makeStandardViewForCurrentUser($controller, $gridView);
         }
 
