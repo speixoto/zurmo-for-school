@@ -93,19 +93,18 @@
                     $this->redirect(array($this->getId() . '/index'));
                 }
             }
-            $tipContent                = ZurmoTipsUtil::getRandomTipResolvedForCurrentUser();
-
-            if (Yii::app()->userInterface->isMobile())
-            {
-                $welcomeView               = new MobileWelcomeView($tipContent, $hasDashboardAccess);
-            }
-            elseif(!$this->hideWelcomeViewGlobally())
-            {
-                $welcomeView               = new WelcomeView($tipContent, $hasDashboardAccess);
-            }
             else
             {
-                throw new NotSupportedException();
+                $tipContent                = ZurmoTipsUtil::getRandomTipResolvedForCurrentUser();
+
+                if (Yii::app()->userInterface->isMobile())
+                {
+                    $welcomeView               = new MobileWelcomeView($tipContent, $hasDashboardAccess);
+                }
+                else
+                {
+                    $welcomeView               = new WelcomeView($tipContent, $hasDashboardAccess);
+                }
             }
             $view                      = new HomePageView(ZurmoDefaultViewUtil::
                                              makeStandardViewForCurrentUser($this, $welcomeView));
