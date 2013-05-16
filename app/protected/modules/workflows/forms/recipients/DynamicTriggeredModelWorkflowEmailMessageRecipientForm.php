@@ -35,58 +35,38 @@
      ********************************************************************************/
 
     /**
-     * Model for storing an autoresponder item activity.
+     * Form to work with a triggered users for an email message recipient
      */
-    class AutoresponderItemActivity extends EmailMessageActivity
+    class DynamicTriggeredModelWorkflowEmailMessageRecipientForm extends WorkflowEmailMessageRecipientForm
     {
-        public static function getModuleClassName()
+        /**
+         * @return string
+         */
+        public static function getTypeLabel()
         {
-            return 'AutorespondersModule';
-        }
-
-        public static function getDefaultMetadata()
-        {
-            $metadata = parent::getDefaultMetadata();
-            $metadata[__CLASS__] = array(
-                'relations' => array(
-                    'autoresponderItem'   => array(RedBeanModel::HAS_ONE, 'AutoresponderItem', RedBeanModel::NOT_OWNED),
-                ),
-            );
-            return $metadata;
-        }
-
-        public static function getByTypeAndModelIdAndPersonIdAndUrl($type, $modelId, $personId, $url = null,
-                                                                    $sortBy = 'latestDateTime', $pageSize = null)
-        {
-            $modelRelationName = 'autoresponderItem';
-            return parent::getChildActivityByTypeAndModelIdAndModelRelationNameAndPersonIdAndUrl($type, $modelId,
-                                                                $modelRelationName, $personId, $url, $sortBy, $pageSize);
-        }
-
-        public static function createNewActivity($type, $modelId, $personId, $url = null)
-        {
-            $relatedModel = AutoresponderItem::getById(intval($modelId));
-            if (!$relatedModel)
-            {
-                throw new NotFoundException();
-            }
-            $relationName = 'autoresponderItem';
-            return parent::createNewChildActivity($type, $personId, $url, $relationName, $relatedModel);
-        }
-
-        protected static function getLabel($language = null)
-        {
-            return Zurmo::t('AutorespondersModule', 'Autoresponder Item Activity', array(), null, $language);
+            $params = LabelUtil::getTranslationParamsForAllModules();
+            return Zurmo::t('WorkflowsModule',
+                            'The triggered ContactsModuleSingularLowerCaseLabel or LeadsModuleSingularLowerCaseLabel', $params);
         }
 
         /**
-         * Returns the display name for plural of the model class.
-         * @param null|string $language
-         * @return dynamic label name based on module.
+         * @param RedBeanModel $model
+         * @param User $triggeredByUser
+         * @return array
          */
-        protected static function getPluralLabel($language = null)
+        public function makeRecipients(RedBeanModel $model, User $triggeredByUser)
         {
-            return Zurmo::t('AutorespondersModule', 'Autoresponder Item Activities', array(), null, $language);
+            $recipients = array();
+            if ($model instanceof Contact && $model->primaryEmail->emailAddress !== null)
+            {
+                $recipient                  = new EmailMessageRecipient();
+                $recipient->toAddress       = $model->primaryEmail->emailAddress;
+                $recipient->toName          = strval($model);
+                $recipient->type            = $this->audienceType;
+                $recipient->personOrAccount = $model;
+                $recipients[]               = $recipient;
+            }
+            return $recipients;
         }
     }
 ?>

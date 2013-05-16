@@ -135,14 +135,16 @@
                 $this->actionSelectType();
                 Yii::app()->end(0, false);
             }
-            $breadcrumbLinks = array(Zurmo::t('ReportsModule', 'Create'));
+            $breadcrumbLinks         = array(Zurmo::t('ReportsModule', 'Create'));
             assert('is_string($type)');
             $report           = new Report();
             $report->setType($type);
+            $progressBarAndStepsView = ReportWizardViewFactory::makeStepsAndProgressBarViewFromReport($report);
             $reportWizardView = ReportWizardViewFactory::makeViewFromReport($report);
             $view             = new ReportsPageView(ZurmoDefaultViewUtil::
-                                                    makeViewWithBreadcrumbsForCurrentUser(
+                                                    makeTwoViewsWithBreadcrumbsForCurrentUser(
                                                     $this,
+                                                    $progressBarAndStepsView,
                                                     $reportWizardView,
                                                     $breadcrumbLinks,
                                                     'ReportBreadCrumbView'));
@@ -156,10 +158,12 @@
             ControllerSecurityUtil::resolveAccessCanCurrentUserWriteModel($savedReport);
             $breadcrumbLinks  = array(strval($savedReport));
             $report           = SavedReportToReportAdapter::makeReportBySavedReport($savedReport);
+            $progressBarAndStepsView = ReportWizardViewFactory::makeStepsAndProgressBarViewFromReport($report);
             $reportWizardView = ReportWizardViewFactory::makeViewFromReport($report);
             $view             = new ReportsPageView(ZurmoDefaultViewUtil::
-                                                    makeViewWithBreadcrumbsForCurrentUser(
+                                                    makeTwoViewsWithBreadcrumbsForCurrentUser(
                                                     $this,
+                                                    $progressBarAndStepsView,
                                                     $reportWizardView,
                                                     $breadcrumbLinks,
                                                     'ReportBreadCrumbView'));

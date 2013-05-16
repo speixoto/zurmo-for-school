@@ -35,58 +35,37 @@
      ********************************************************************************/
 
     /**
-     * Model for storing an autoresponder item activity.
+     * Base View for showing a  progress bar and 'steps' in that progress bar. For use with a wizard view such as reporting
+     * or workflow.
      */
-    class AutoresponderItemActivity extends EmailMessageActivity
+    abstract class StepsAndProgressBarForWizardView extends MetadataView
     {
-        public static function getModuleClassName()
-        {
-            return 'AutorespondersModule';
-        }
-
-        public static function getDefaultMetadata()
-        {
-            $metadata = parent::getDefaultMetadata();
-            $metadata[__CLASS__] = array(
-                'relations' => array(
-                    'autoresponderItem'   => array(RedBeanModel::HAS_ONE, 'AutoresponderItem', RedBeanModel::NOT_OWNED),
-                ),
-            );
-            return $metadata;
-        }
-
-        public static function getByTypeAndModelIdAndPersonIdAndUrl($type, $modelId, $personId, $url = null,
-                                                                    $sortBy = 'latestDateTime', $pageSize = null)
-        {
-            $modelRelationName = 'autoresponderItem';
-            return parent::getChildActivityByTypeAndModelIdAndModelRelationNameAndPersonIdAndUrl($type, $modelId,
-                                                                $modelRelationName, $personId, $url, $sortBy, $pageSize);
-        }
-
-        public static function createNewActivity($type, $modelId, $personId, $url = null)
-        {
-            $relatedModel = AutoresponderItem::getById(intval($modelId));
-            if (!$relatedModel)
-            {
-                throw new NotFoundException();
-            }
-            $relationName = 'autoresponderItem';
-            return parent::createNewChildActivity($type, $personId, $url, $relationName, $relatedModel);
-        }
-
-        protected static function getLabel($language = null)
-        {
-            return Zurmo::t('AutorespondersModule', 'Autoresponder Item Activity', array(), null, $language);
-        }
-
         /**
-         * Returns the display name for plural of the model class.
-         * @param null|string $language
-         * @return dynamic label name based on module.
+         * @return array
          */
-        protected static function getPluralLabel($language = null)
+        abstract protected function getSpanLabels();
+
+        public function isUniqueToAPage()
         {
-            return Zurmo::t('AutorespondersModule', 'Autoresponder Item Activities', array(), null, $language);
+            return true;
+        }
+
+        protected function renderContent()
+        {
+            $content = ZurmoHtml::tag('div', array('class' => 'progress-bar'), '');
+            $content = ZurmoHtml::tag('div', array('class' => 'progress-back'), $content);
+            $spanContent = $this->getSpanContent();
+            return ZurmoHtml::tag('div', array('class' => 'progress'), $content . $spanContent);
+        }
+
+        protected function getSpanContent()
+        {
+            $content = null;
+            foreach($this->getSpanLabels() as $label)
+            {
+                $content .= ZurmoHtml::tag('div', array(), $label);
+            }
+            return $content;
         }
     }
 ?>

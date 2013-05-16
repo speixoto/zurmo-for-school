@@ -43,6 +43,7 @@
         public static function setUpBeforeClass()
         {
             parent::setUpBeforeClass();
+            ContactsModule::loadStartingData();
             $super = User::getByUsername('super');
             $super->primaryEmail = new Email();
             $super->primaryEmail->emailAddress = 'super@zurmo.com';
@@ -149,6 +150,115 @@
             WorkflowEmailMessagesUtil::processAfterSave($workflow, $model, Yii::app()->user->userModel);
             $this->assertEquals(1, Yii::app()->emailHelper->getQueuedCount());
             $this->assertEquals(0, Yii::app()->emailHelper->getSentCount());
+        }
+
+        public function testProcessAfterSaveWhenSendIsImmediateAndToAContactThatIsTheTriggeredModel()
+        {
+            foreach(EmailMessage::getAll() as $emailMessage)
+            {
+                $emailMessage->delete();
+            }
+            $this->assertEquals(0, Yii::app()->emailHelper->getQueuedCount());
+            $this->assertEquals(0, Yii::app()->emailHelper->getSentCount());
+
+            $emailTemplate                 = new EmailTemplate();
+            $emailTemplate->name           = 'the name';
+            $emailTemplate->modelClassName = 'Account';
+            $emailTemplate->textContent    = 'some content';
+            $emailTemplate->type           = 2;
+            $emailTemplate->subject        = 'subject';
+            $saved                         = $emailTemplate->save();
+            $this->assertTrue($saved);
+            $workflow         = new Workflow();
+            $workflow->setId(self::$savedWorkflow->id);
+            $workflow->type   = Workflow::TYPE_ON_SAVE;
+            $emailMessageForm = new EmailMessageForWorkflowForm('Contact', Workflow::TYPE_ON_SAVE);
+            $emailMessageForm->sendAfterDurationSeconds = 0;
+            $emailMessageForm->emailTemplateId = $emailTemplate->id;
+            $emailMessageForm->sendFromType    = EmailMessageForWorkflowForm::SEND_FROM_TYPE_DEFAULT;
+            $recipients = array(array('type'             => WorkflowEmailMessageRecipientForm::
+                                                            TYPE_DYNAMIC_TRIGGERED_MODEL,
+                                      'audienceType'    => EmailMessageRecipient::TYPE_TO));
+            $emailMessageForm->setAttributes(array(EmailMessageForWorkflowForm::EMAIL_MESSAGE_RECIPIENTS => $recipients));
+            $workflow->addEmailMessage($emailMessageForm);
+            $model             = new Contact();
+            $model->firstName  = 'Jason';
+            $model->lastName   = 'Blue';
+            $model->state      = ContactsUtil::getStartingState();
+            $model->primaryEmail->emailAddress = 'jason@something.com';
+            $this->assertTrue($model->save());
+            WorkflowEmailMessagesUtil::processAfterSave($workflow, $model, Yii::app()->user->userModel);
+            $this->assertEquals(1, Yii::app()->emailHelper->getQueuedCount());
+            $this->assertEquals(0, Yii::app()->emailHelper->getSentCount());
+
+            $queuedEmailMessages = EmailMessage::getAllByFolderType(EmailFolder::TYPE_OUTBOX);
+            $this->assertEquals(1, count($queuedEmailMessages));
+            $this->assertEquals(1, count($queuedEmailMessages[0]->recipients));
+            $this->assertEquals('Jason Blue' ,           $queuedEmailMessages[0]->recipients[0]->toName);
+            $this->assertEquals('jason@something.com',   $queuedEmailMessages[0]->recipients[0]->toAddress);
+            $this->assertEquals($model->id,              $queuedEmailMessages[0]->recipients[0]->personOrAccount->id);
+        }
+
+        public function testProcessAfterSaveWhenSendIsImmediateAndToAContactThatIsRelatedToTheTriggeredModel()
+        {
+            foreach(EmailMessage::getAll() as $emailMessage)
+            {
+                $emailMessage->delete();
+            }
+            $this->assertEquals(0, Yii::app()->emailHelper->getQueuedCount());
+            $this->assertEquals(0, Yii::app()->emailHelper->getSentCount());
+
+            $emailTemplate                 = new EmailTemplate();
+            $emailTemplate->name           = 'the name';
+            $emailTemplate->modelClassName = 'Account';
+            $emailTemplate->textContent    = 'some content';
+            $emailTemplate->type           = 2;
+            $emailTemplate->subject        = 'subject';
+            $saved                         = $emailTemplate->save();
+            $this->assertTrue($saved);
+            $workflow         = new Workflow();
+            $workflow->setId(self::$savedWorkflow->id);
+            $workflow->type   = Workflow::TYPE_ON_SAVE;
+            $emailMessageForm = new EmailMessageForWorkflowForm('Account', Workflow::TYPE_ON_SAVE);
+            $emailMessageForm->sendAfterDurationSeconds = 0;
+            $emailMessageForm->emailTemplateId = $emailTemplate->id;
+            $emailMessageForm->sendFromType    = EmailMessageForWorkflowForm::SEND_FROM_TYPE_DEFAULT;
+            $recipients = array(array('type'             => WorkflowEmailMessageRecipientForm::
+                                                            TYPE_DYNAMIC_TRIGGERED_MODEL_RELATION,
+                                      'audienceType'     => EmailMessageRecipient::TYPE_TO,
+                                      'relation'         => 'contacts'));
+            $emailMessageForm->setAttributes(array(EmailMessageForWorkflowForm::EMAIL_MESSAGE_RECIPIENTS => $recipients));
+            $workflow->addEmailMessage($emailMessageForm);
+            $model               = new Account();
+            $model->name         = 'the account';
+            $contact             = new Contact();
+            $contact->firstName  = 'Jason';
+            $contact->lastName   = 'Blue';
+            $contact->state      = ContactsUtil::getStartingState();
+            $contact->primaryEmail->emailAddress = 'jason@something.com';
+            $this->assertTrue($contact->save());
+            $contact2            = new Contact();
+            $contact2->firstName = 'Laura';
+            $contact2->lastName  = 'Blue';
+            $contact2->state     = ContactsUtil::getStartingState();
+            $contact2->primaryEmail->emailAddress = 'laura@something.com';
+            $this->assertTrue($contact2->save());
+            $model->contacts->add($contact);
+            $model->contacts->add($contact2);
+            $this->assertTrue($model->save());
+            WorkflowEmailMessagesUtil::processAfterSave($workflow, $model, Yii::app()->user->userModel);
+            $this->assertEquals(1, Yii::app()->emailHelper->getQueuedCount());
+            $this->assertEquals(0, Yii::app()->emailHelper->getSentCount());
+
+            $queuedEmailMessages = EmailMessage::getAllByFolderType(EmailFolder::TYPE_OUTBOX);
+            $this->assertEquals(1, count($queuedEmailMessages));
+            $this->assertEquals(2, count($queuedEmailMessages[0]->recipients));
+            $this->assertEquals('Jason Blue' ,           $queuedEmailMessages[0]->recipients[0]->toName);
+            $this->assertEquals('jason@something.com',   $queuedEmailMessages[0]->recipients[0]->toAddress);
+            $this->assertEquals($contact->id,            $queuedEmailMessages[0]->recipients[0]->personOrAccount->id);
+            $this->assertEquals('Laura Blue' ,           $queuedEmailMessages[0]->recipients[1]->toName);
+            $this->assertEquals('laura@something.com',   $queuedEmailMessages[0]->recipients[1]->toAddress);
+            $this->assertEquals($contact2->id,           $queuedEmailMessages[0]->recipients[1]->personOrAccount->id);
         }
     }
 ?>

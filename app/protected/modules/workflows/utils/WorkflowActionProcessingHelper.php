@@ -171,7 +171,6 @@
                                                                             User $triggeredByUser,
                                                                             RedBeanModel $triggeredModel)
         {
-            assert('is_bool($create)');
             foreach ($action->getActionAttributes() as $attribute => $actionAttribute)
             {
                 if (!$actionAttribute->resolveValueBeforeSave() && $actionAttribute->shouldSetValue)

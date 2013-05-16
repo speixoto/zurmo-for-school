@@ -334,6 +334,20 @@
         /**
          * @depends testActionAddEmailMessageRecipient
          */
+        public function testActionAddEmailMessageRecipientForRelatedRecipient()
+        {
+            $this->setGetArray(array('type'               => 'OnSave',
+                'moduleClassName'    => 'WorkflowsTestModule',
+                'rowNumber'          => 4,
+                'recipientType'      => WorkflowEmailMessageRecipientForm::TYPE_DYNAMIC_TRIGGERED_MODEL_RELATION_USER,
+                'recipientRowNumber' => 3));
+            $content = $this->runControllerWithNoExceptionsAndGetContent('workflows/default/addEmailMessageRecipient');
+            $this->assertTrue(strpos($content, '<li class="dynamic-sub-row"><div class="dynamic-sub-row') !== false);
+        }
+
+        /**
+         * @depends testActionAddEmailMessageRecipientForRelatedRecipient
+         */
         public function testTimeQueueController()
         {
             $this->runControllerWithNoExceptionsAndGetContent      ('workflows/defaultTimeQueue/index');

@@ -34,46 +34,21 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class AutorespondersModule extends Module
+    /**
+     * Progress bar and steps for the summation report wizard
+     */
+    class SummationReportStepsAndProgressBarForWizardView extends StepsAndProgressBarForWizardView
     {
-        public function getDependencies()
+        protected function getSpanLabels()
         {
-            return array(
-                'marketingLists',
-            );
-        }
-
-        public function getRootModelNames()
-        {
-            return array('Autoresponder', 'AutoresponderItem', 'AutoresponderItemActivity');
-        }
-
-        public static function getPrimaryModelName()
-        {
-            return 'Autoresponder';
-        }
-
-        public static function modelsAreNeverGloballySearched()
-        {
-            return true;
-        }
-
-        public static function getDefaultMetadata()
-        {
-            $metadata = array();
-            $metadata['global'] = array(
-                'globalSearchAttributeNames' => array(
-                    'name',
-                ),
-            );
-            return $metadata;
-        }
-
-        public static function getDemoDataMakerClassNames()
-        {
-            return array('AutorespondersDemoDataMaker',
-                         'AutoresponderItemsDemoDataMaker',
-                         'AutoresponderItemActivitiesDemoDataMaker');
+            return array(Zurmo::t('Core', 'Module'),
+                         Zurmo::t('ReportingModule', 'Filters'),
+                         Zurmo::t('ReportingModule', 'Groupings'),
+                         Zurmo::t('ReportingModule', 'Columns'),
+                         Zurmo::t('ReportingModule', 'Drill Down Columns'),
+                         Zurmo::t('ReportingModule', 'Ordering'),
+                         Zurmo::t('ReportingModule', 'Chart'),
+                         Zurmo::t('ReportingModule', 'General'));
         }
     }
 ?>
