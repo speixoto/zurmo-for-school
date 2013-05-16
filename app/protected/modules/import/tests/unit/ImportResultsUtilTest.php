@@ -86,6 +86,8 @@
                     'column_2'           => 'a',
                     'status'             => 1,
                     'serializedMessages' => serialize(array('the first message')),
+                    'analysisStatus'     => null,
+                    'serializedAnalysisMessages' => null,
                 ),
                 array
                 (
@@ -95,6 +97,8 @@
                     'column_2'           => 'b',
                     'status'             => 2,
                     'serializedMessages' => serialize(array('the second message')),
+                    'analysisStatus'     => null,
+                    'serializedAnalysisMessages' => null,
                 ),
                 array
                 (
@@ -104,6 +108,8 @@
                     'column_2'           => 'a',
                     'status'             => 3,
                     'serializedMessages' => serialize(array('the third message')),
+                    'analysisStatus'     => null,
+                    'serializedAnalysisMessages' => null,
                 ),
                 array
                 (
@@ -113,6 +119,8 @@
                     'column_2'           => 'b',
                     'status'             => null,
                     'serializedMessages' => null,
+                    'analysisStatus'     => null,
+                    'serializedAnalysisMessages' => null,
                 ),
             );
             $this->assertEquals($compareData, $tempTableData);

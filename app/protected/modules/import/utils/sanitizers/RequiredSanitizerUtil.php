@@ -88,7 +88,7 @@
             {
                 return $value;
             }
-            if ($this->mappingRuleData['defaultValue'] != null)
+            if (isset($this->mappingRuleData['defaultValue']) && $this->mappingRuleData['defaultValue'] != null)
             {
                 return $this->mappingRuleData['defaultValue'];
             }

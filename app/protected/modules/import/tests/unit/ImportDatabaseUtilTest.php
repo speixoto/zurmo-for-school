@@ -57,6 +57,8 @@
                     'column_2'           => 'industry',
                     'status'             => null,
                     'serializedMessages' => null,
+                    'analysisStatus'     => null,
+                    'serializedAnalysisMessages' => null,
                 ),
                 array
                 (
@@ -66,6 +68,8 @@
                     'column_2'           => 'a',
                     'status'             => null,
                     'serializedMessages' => null,
+                    'analysisStatus'     => null,
+                    'serializedAnalysisMessages' => null,
                 ),
                 array
                 (
@@ -75,6 +79,8 @@
                     'column_2'           => 'b',
                     'status'             => null,
                     'serializedMessages' => null,
+                    'analysisStatus'     => null,
+                    'serializedAnalysisMessages' => null,
                 ),
                 array
                 (
@@ -84,6 +90,8 @@
                     'column_2'           => 'a',
                     'status'             => null,
                     'serializedMessages' => null,
+                    'analysisStatus'     => null,
+                    'serializedAnalysisMessages' => null,
                 ),
                 array
                 (
@@ -93,6 +101,8 @@
                     'column_2'           => 'b',
                     'status'             => null,
                     'serializedMessages' => null,
+                    'analysisStatus'     => null,
+                    'serializedAnalysisMessages' => null,
                 ),
             );
             $this->assertEquals($compareData, $tempTableData);
@@ -110,6 +120,8 @@
                     'column_2'           => 'b',
                     'status'             => null,
                     'serializedMessages' => null,
+                    'analysisStatus'     => null,
+                    'serializedAnalysisMessages' => null,
                 ),
                 array
                 (
@@ -119,6 +131,8 @@
                     'column_2'           => 'a',
                     'status'             => null,
                     'serializedMessages' => null,
+                    'analysisStatus'     => null,
+                    'serializedAnalysisMessages' => null,
                 ),
             );
             $this->assertEquals($compareData, $tempTableData);
@@ -140,6 +154,8 @@
                     'column_2'           => 'industry',
                     'status'             => null,
                     'serializedMessages' => null,
+                    'analysisStatus'     => null,
+                    'serializedAnalysisMessages' => null,
                 ),
                 array
                 (
@@ -149,6 +165,8 @@
                     'column_2'           => 'else',
                     'status'             => null,
                     'serializedMessages' => null,
+                    'analysisStatus'     => null,
+                    'serializedAnalysisMessages' => null,
                 ),
                 array
                 (
@@ -158,6 +176,8 @@
                     'column_2'           => 'else2',
                     'status'             => null,
                     'serializedMessages' => null,
+                    'analysisStatus'     => null,
+                    'serializedAnalysisMessages' => null,
                 ),
                 array
                 (
@@ -167,6 +187,8 @@
                     'column_2'           => 'else3',
                     'status'             => null,
                     'serializedMessages' => null,
+                    'analysisStatus'     => null,
+                    'serializedAnalysisMessages' => null,
                 ),
             );
             $this->assertEquals($compareData, $tempTableData);
@@ -177,7 +199,7 @@
          */
         public function testGetColumnCountByTableName()
         {
-            $this->assertEquals(5, ImportDatabaseUtil::getColumnCountByTableName('testimporttable'));
+            $this->assertEquals(7, ImportDatabaseUtil::getColumnCountByTableName('testimporttable'));
         }
 
         /**
@@ -193,6 +215,8 @@
                     'column_2'           => 'industry',
                     'status'             => null,
                     'serializedMessages' => null,
+                    'analysisStatus'     => null,
+                    'serializedAnalysisMessages' => null,
             );
             $this->assertEquals($compareData, $firstRowData);
         }
@@ -292,48 +316,58 @@
             $compareData   = array(
             array
             (
-                                    'id' => 1,
-                                    'column_0'           => 'name',
-                                    'column_1'           => 'phone',
-                                    'column_2'           => 'industry',
-                                    'status'             => null,
-                                    'serializedMessages' => null,
+                'id' => 1,
+                'column_0'           => 'name',
+                'column_1'           => 'phone',
+                'column_2'           => 'industry',
+                'status'             => null,
+                'serializedMessages' => null,
+                'analysisStatus'     => null,
+                'serializedAnalysisMessages' => null,
             ),
             array
             (
-                                    'id' => 2,
-                                    'column_0'           => 'abc',
-                                    'column_1'           => '123',
-                                    'column_2'           => 'a',
-                                    'status'             => null,
-                                    'serializedMessages' => null,
+                'id' => 2,
+                'column_0'           => 'abc',
+                'column_1'           => '123',
+                'column_2'           => 'a',
+                'status'             => null,
+                'serializedMessages' => null,
+                'analysisStatus'     => null,
+                'serializedAnalysisMessages' => null,
             ),
             array
             (
-                                    'id' => 3,
-                                    'column_0'           => 'def',
-                                    'column_1'           => '563',
-                                    'column_2'           => 'b',
-                                    'status'             => null,
-                                    'serializedMessages' => null,
+                'id' => 3,
+                'column_0'           => 'def',
+                'column_1'           => '563',
+                'column_2'           => 'b',
+                'status'             => null,
+                'serializedMessages' => null,
+                'analysisStatus'     => null,
+                'serializedAnalysisMessages' => null,
             ),
             array
             (
-                                    'id' => 4,
-                                    'column_0'           => 'efg',
-                                    'column_1'           => '456',
-                                    'column_2'           => 'a',
-                                    'status'             => null,
-                                    'serializedMessages' => null,
+                'id' => 4,
+                'column_0'           => 'efg',
+                'column_1'           => '456',
+                'column_2'           => 'a',
+                'status'             => null,
+                'serializedMessages' => null,
+                'analysisStatus'     => null,
+                'serializedAnalysisMessages' => null,
             ),
             array
             (
-                                    'id' => 5,
-                                    'column_0'           => 'we1s',
-                                    'column_1'           => null,
-                                    'column_2'           => 'b',
-                                    'status'             => null,
-                                    'serializedMessages' => null,
+                'id' => 5,
+                'column_0'           => 'we1s',
+                'column_1'           => null,
+                'column_2'           => 'b',
+                'status'             => null,
+                'serializedMessages' => null,
+                'analysisStatus'     => null,
+                'serializedAnalysisMessages' => null,
             ),
             );
             $this->assertEquals($compareData, $tempTableData);
@@ -367,48 +401,58 @@
             $compareData   = array(
             array
             (
-                                    'id' => 1,
-                                    'column_0'           => 'name',
-                                    'column_1'           => 'phone',
-                                    'column_2'           => 'industry',
-                                    'status'             => null,
-                                    'serializedMessages' => null,
+                'id' => 1,
+                'column_0'           => 'name',
+                'column_1'           => 'phone',
+                'column_2'           => 'industry',
+                'status'             => null,
+                'serializedMessages' => null,
+                'analysisStatus'     => null,
+                'serializedAnalysisMessages' => null,
             ),
             array
             (
-                                    'id' => 2,
-                                    'column_0'           => 'abc',
-                                    'column_1'           => '123',
-                                    'column_2'           => 'a',
-                                    'status'             => null,
-                                    'serializedMessages' => null,
+                'id' => 2,
+                'column_0'           => 'abc',
+                'column_1'           => '123',
+                'column_2'           => 'a',
+                'status'             => null,
+                'serializedMessages' => null,
+                'analysisStatus'     => null,
+                'serializedAnalysisMessages' => null,
             ),
             array
             (
-                                    'id' => 3,
-                                    'column_0'           => 'def',
-                                    'column_1'           => '563',
-                                    'column_2'           => 'b',
-                                    'status'             => null,
-                                    'serializedMessages' => null,
+                'id' => 3,
+                'column_0'           => 'def',
+                'column_1'           => '563',
+                'column_2'           => 'b',
+                'status'             => null,
+                'serializedMessages' => null,
+                'analysisStatus'     => null,
+                'serializedAnalysisMessages' => null,
             ),
             array
             (
-                                    'id' => 4,
-                                    'column_0'           => 'efg',
-                                    'column_1'           => '456',
-                                    'column_2'           => 'a',
-                                    'status'             => null,
-                                    'serializedMessages' => null,
+                'id' => 4,
+                'column_0'           => 'efg',
+                'column_1'           => '456',
+                'column_2'           => 'a',
+                'status'             => null,
+                'serializedMessages' => null,
+                'analysisStatus'     => null,
+                'serializedAnalysisMessages' => null,
             ),
             array
             (
-                                    'id' => 5,
-                                    'column_0'           => 'we1s',
-                                    'column_1'           => null,
-                                    'column_2'           => 'b',
-                                    'status'             => null,
-                                    'serializedMessages' => null,
+                'id' => 5,
+                'column_0'           => 'we1s',
+                'column_1'           => null,
+                'column_2'           => 'b',
+                'status'             => null,
+                'serializedMessages' => null,
+                'analysisStatus'     => null,
+                'serializedAnalysisMessages' => null,
             ),
             );
             $this->assertEquals($compareData, $tempTableData);
@@ -442,48 +486,58 @@
             $compareData   = array(
             array
             (
-                                    'id' => 1,
-                                    'column_0'           => 'name',
-                                    'column_1'           => 'phone',
-                                    'column_2'           => 'industry',
-                                    'status'             => null,
-                                    'serializedMessages' => null,
+                'id' => 1,
+                'column_0'           => 'name',
+                'column_1'           => 'phone',
+                'column_2'           => 'industry',
+                'status'             => null,
+                'serializedMessages' => null,
+                'analysisStatus'     => null,
+                'serializedAnalysisMessages' => null,
             ),
             array
             (
-                                    'id' => 2,
-                                    'column_0'           => 'abc',
-                                    'column_1'           => '123',
-                                    'column_2'           => 'a',
-                                    'status'             => null,
-                                    'serializedMessages' => null,
+                'id' => 2,
+                'column_0'           => 'abc',
+                'column_1'           => '123',
+                'column_2'           => 'a',
+                'status'             => null,
+                'serializedMessages' => null,
+                'analysisStatus'     => null,
+                'serializedAnalysisMessages' => null,
             ),
             array
             (
-                                    'id' => 3,
-                                    'column_0'           => 'def',
-                                    'column_1'           => '563',
-                                    'column_2'           => 'b',
-                                    'status'             => null,
-                                    'serializedMessages' => null,
+                'id' => 3,
+                'column_0'           => 'def',
+                'column_1'           => '563',
+                'column_2'           => 'b',
+                'status'             => null,
+                'serializedMessages' => null,
+                'analysisStatus'     => null,
+                'serializedAnalysisMessages' => null,
             ),
             array
             (
-                                    'id' => 4,
-                                    'column_0'           => 'efg',
-                                    'column_1'           => '456',
-                                    'column_2'           => 'a',
-                                    'status'             => null,
-                                    'serializedMessages' => null,
+                'id' => 4,
+                'column_0'           => 'efg',
+                'column_1'           => '456',
+                'column_2'           => 'a',
+                'status'             => null,
+                'serializedMessages' => null,
+                'analysisStatus'     => null,
+                'serializedAnalysisMessages' => null,
             ),
             array
             (
-                                    'id' => 5,
-                                    'column_0'           => 'we1s',
-                                    'column_1'           => null,
-                                    'column_2'           => 'b',
-                                    'status'             => null,
-                                    'serializedMessages' => null,
+                'id' => 5,
+                'column_0'           => 'we1s',
+                'column_1'           => null,
+                'column_2'           => 'b',
+                'status'             => null,
+                'serializedMessages' => null,
+                'analysisStatus'     => null,
+                'serializedAnalysisMessages' => null,
             ),
             );
             $this->assertEquals($compareData, $tempTableData);
@@ -506,6 +560,8 @@
                     'column_0'           => 'name',
                     'status'             => null,
                     'serializedMessages' => null,
+                    'analysisStatus'     => null,
+                    'serializedAnalysisMessages' => null,
                 ),
                 array
                 (
@@ -513,6 +569,8 @@
                     'column_0'           => 'didée BBB',
                     'status'             => null,
                     'serializedMessages' => null,
+                    'analysisStatus'     => null,
+                    'serializedAnalysisMessages' => null,
                 ),
                 array
                 (
@@ -520,6 +578,8 @@
                     'column_0'           => 'Angêline Jone',
                     'status'             => null,
                     'serializedMessages' => null,
+                    'analysisStatus'     => null,
+                    'serializedAnalysisMessages' => null,
                 ),
                 array
                 (
@@ -527,6 +587,8 @@
                     'column_0'           => 'Laura o\'brien',
                     'status'             => null,
                     'serializedMessages' => null,
+                    'analysisStatus'     => null,
+                    'serializedAnalysisMessages' => null,
                 ),
             );
             $this->assertEquals($compareData, $tempTableData);

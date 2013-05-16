@@ -105,7 +105,7 @@
          */
         protected function resolveAttributeModelClassName(RedBeanModel $model, $attributeName)
         {
-            return get_class($model);
+            return static::getDerivedModelClassName();
         }
     }
 ?>

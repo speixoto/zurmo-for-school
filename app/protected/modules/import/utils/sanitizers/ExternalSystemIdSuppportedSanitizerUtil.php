@@ -96,7 +96,7 @@
             }
             $modelClassName = $this->attributeModelClassName;
             $sql = 'select id from ' . $modelClassName::getTableName($modelClassName) .
-                ' where id = ' . $sqlReadyString . ' limit 1';
+                   ' where id = ' . $sqlReadyString . ' limit 1';
             $ids =  R::getCol($sql);
             assert('count($ids) <= 1');
             if (count($ids) == 0)

@@ -401,7 +401,7 @@
             $this->assertEquals(ImportDataAnalyzer::STATUS_SKIP, $data[0]->analysisStatus);
 
             $compareData              = array();
-            $compareData['column_1']  = array('Is too long. Maximum length is 14. This value will truncated upon import');
+            $compareData['column_1']  = array('Is too long. Maximum length is 14. This value will truncated upon import.');
             $compareData['column_10'] = array('Is an existing record and will be updated.');
             $compareData['column_11'] = array('Was not found and will create a new record during import.');
             $compareData['column_12'] = array('Is an existing record and will be updated.');
@@ -416,9 +416,9 @@
 
             $compareData = array();
             $compareData['column_0']   = array();
-            $compareData['column_0'][] = 'Is too long. Maximum length is 64. This value will truncated upon import';
+            $compareData['column_0'][] = 'Is too long. Maximum length is 64. This value will truncated upon import.';
             $compareData['column_1']   = array();
-            $compareData['column_1'][] = 'Is too long. Maximum length is 14. This value will truncated upon import';
+            $compareData['column_1'][] = 'Is too long. Maximum length is 14. This value will truncated upon import.';
             $compareData['column_10']   = array();
             $compareData['column_10'][] = 'Is an existing record and will be updated.';
             $compareData['column_11']   = array();
@@ -514,7 +514,7 @@
             $compareData['column_17']   = array();
             $compareData['column_17'][] = 'Was not found and this row will be skipped during import.';
             $compareData['column_18']   = array();
-            $compareData['column_18'][] = 'Was not found and this row will be skipped during import.';
+            $compareData['column_18'][] = 'Is an existing record and will be updated.';
             $this->assertEquals($compareData, unserialize($data[5]->serializedAnalysisMessages));
             $this->assertEquals(ImportDataAnalyzer::STATUS_SKIP, $data[5]->analysisStatus);
 
@@ -544,7 +544,7 @@
             $compareData['column_17']   = array();
             $compareData['column_17'][] = 'Was not found and this row will be skipped during import.';
             $compareData['column_18']   = array();
-            $compareData['column_18'][] = 'Was not found and this row will be skipped during import.';
+            $compareData['column_18'][] = 'Is an existing record and will be updated.';
             $compareData['column_24']   = array();
             $compareData['column_24'][] = 'Multi 5 is new. This value will be added upon import';
             $compareData['column_25']   = array();

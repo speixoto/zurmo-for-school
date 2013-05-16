@@ -118,7 +118,7 @@
             $acceptableValuesResolvingValues = BooleanSanitizerUtil::getAcceptableValuesResolvingValues();
             if ($value == null)
             {
-                if ($this->mappingRuleData['defaultValue'] != null)
+                if (isset($this->mappingRuleData['defaultValue']) && $this->mappingRuleData['defaultValue'] != null)
                 {
                     $key = array_search($this->mappingRuleData['defaultValue'], $acceptableValues);
                     return $acceptableValuesResolvingValues[$this->mappingRuleData['defaultValue']];
