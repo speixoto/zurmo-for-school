@@ -52,7 +52,7 @@
          */
         public static function getType()
         {
-            return 'CampaignGenerateDueCampaignItemsJob';
+            return 'CampaignGenerateDueCampaignItems';
         }
 
         public static function getRecommendedRunFrequencyContent()
