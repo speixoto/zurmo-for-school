@@ -77,9 +77,7 @@
          */
         public function sanitizeValue($value)
         {
-            assert('is_string($modelClassName)');
-            assert('is_string($attributeName)');
-            assert('$mappingRuleData == null');
+            assert('$this->mappingRuleData == null');
             $customFieldsInstructionData = $this->getCustomFieldsInstructionDataFromColumnMappingData();
             if (!isset($customFieldsInstructionData[CustomFieldsInstructionData::ADD_MISSING_VALUES]))
             {

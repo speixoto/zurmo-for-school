@@ -55,7 +55,7 @@
          */
         public function sanitizeValue($value)
         {
-            assert('$attributeName == null');
+            assert('$this->attributeName == null');
             $derivedModelClassName = static::getDerivedModelClassName();
             if ($value == null)
             {

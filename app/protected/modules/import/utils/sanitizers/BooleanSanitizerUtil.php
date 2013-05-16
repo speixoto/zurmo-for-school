@@ -141,7 +141,8 @@
 
         protected function assertMappingRuleDataIsValid()
         {
-            assert('$this->mappingRuleData["defaultValue"] == null || $this->mappingRuleData["defaultValue"] == "1" ||
+            assert('!isset($this->mappingRuleData["defaultValue"]) ||
+                    $this->mappingRuleData["defaultValue"] == null || $this->mappingRuleData["defaultValue"] == "1" ||
                     $this->mappingRuleData["defaultValue"] == "0"');
         }
     }

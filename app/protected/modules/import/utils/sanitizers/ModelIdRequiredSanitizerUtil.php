@@ -54,17 +54,19 @@
          */
         public function sanitizeValue($value)
         {
-            assert('is_string($modelClassName)');
-            assert('is_string($attributeName)');
             if ($value != null)
             {
                 return $value;
             }
-            assert('$modelClassName::isRelation($attributeName)');
             $modelClassName         = $this->modelClassName;
+            if(!$modelClassName::isRelation($this->attributeName))
+            {
+                throw new NotSupportedException();
+            }
             $relationModelClassName = $modelClassName::getRelationModelClassName($this->attributeName);
             assert('$value == null || $value instanceof $relationModelClassName');
-            assert('$mappingRuleData["defaultModelId"] == null || is_string($mappingRuleData["defaultModelId"]) ||
+            assert('!isset($mappingRuleData["defaultModelId"]) ||
+                    $mappingRuleData["defaultModelId"] == null || is_string($mappingRuleData["defaultModelId"]) ||
                     is_int($mappingRuleData["defaultModelId"])');
             if ($this->mappingRuleData['defaultModelId'] != null)
             {
