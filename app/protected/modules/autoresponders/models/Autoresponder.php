@@ -131,7 +131,7 @@
                                                                                         'except' => 'autoBuildDatabase'),
                     array('enableTracking',          'type',    'type' => 'integer'),
                     array('enableTracking',          'numerical', 'min' => static::TRACKING_DISABLED, // boolean gives error during schema build
-                                                                                'max' => static::TRACKING_ENABLED),
+                                                                  'max' => static::TRACKING_ENABLED),
                     array('enableTracking',          'default', 'value' => static::TRACKING_DISABLED),
 
                 ),
