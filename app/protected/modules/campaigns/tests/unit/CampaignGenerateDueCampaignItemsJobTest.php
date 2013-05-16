@@ -59,7 +59,7 @@
         public function testGetType()
         {
             $type                       = CampaignGenerateDueCampaignItemsJob::getType();
-            $this->assertEquals('CampaignGenerateDueCampaignItemsJob', $type);
+            $this->assertEquals('CampaignGenerateDueCampaignItems', $type);
         }
 
         public function testGetRecommendedRunFrequencyContent()
@@ -191,7 +191,7 @@
             $contact3           = ContactTestHelper::createContactByNameForOwner('campaignContact 03', $this->user);
             $contact4           = ContactTestHelper::createContactByNameForOwner('campaignContact 04', $this->user);
             $contact5           = ContactTestHelper::createContactByNameForOwner('campaignContact 05', $this->user);
-            $processed          = CampaignItem::NOT_PROCESSED;
+            $processed          = 0;
             MarketingListMemberTestHelper::createMarketingListMember($processed, $marketingList, $contact1);
             MarketingListMemberTestHelper::createMarketingListMember($processed, $marketingList, $contact2);
             MarketingListMemberTestHelper::createMarketingListMember($processed, $marketingList, $contact3);
@@ -221,7 +221,7 @@
             $allCampaignItems   = CampaignItem::getAll();
             $this->assertNotEmpty(CampaignItem::getAll());
             $this->assertCount(5, $allCampaignItems);
-            $campaignItems      = CampaignItem::getByProcessedAndCampaignId(CampaignItem::NOT_PROCESSED, $campaign[0]->id);
+            $campaignItems      = CampaignItem::getByProcessedAndCampaignId(0, $campaign[0]->id);
             $this->assertNotEmpty($campaignItems);
             $this->assertCount(5, $campaignItems);
         }

@@ -165,7 +165,7 @@
                                                                                 $marketingList);
             $campaignProcessingId    = $campaignProcessing->id;
             $this->assertNotNull($campaignProcessing);
-            CampaignItemTestHelper::createCampaignItem(CampaignItem::NOT_PROCESSED, $campaignProcessing, $contact);
+            CampaignItemTestHelper::createCampaignItem(0, $campaignProcessing, $contact);
             $campaignProcessing->forgetAll();
             $job                    = new CampaignMarkCompletedJob();
             $this->assertTrue($job->run());
@@ -196,7 +196,7 @@
                                                                             $marketingList);
             $campaignProcessingId    = $campaignProcessing->id;
             $this->assertNotNull($campaignProcessing);
-            CampaignItemTestHelper::createCampaignItem(CampaignItem::PROCESSED, $campaignProcessing, $contact);
+            CampaignItemTestHelper::createCampaignItem(1, $campaignProcessing, $contact);
             $campaignProcessing->forgetAll();
             $job                    = new CampaignMarkCompletedJob();
             $this->assertTrue($job->run());

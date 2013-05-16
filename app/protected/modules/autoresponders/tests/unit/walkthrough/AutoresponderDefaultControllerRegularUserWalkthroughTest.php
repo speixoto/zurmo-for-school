@@ -62,12 +62,10 @@
             $marketingList = MarketingListTestHelper::createMarketingListByName('MarketingListName',
                                                                                         'MarketingList Description');
             static::$marketingListId = $marketingList->id;
-            AutoresponderTestHelper::createAutoresponder('Autoresponder 01', 'Subject 01', 'This is text Content 01',
+            AutoresponderTestHelper::createAutoresponder('Subject 01', 'This is text Content 01',
                             'This is html Content 01', 10, Autoresponder::OPERATION_SUBSCRIBE, true, $marketingList);
-            AutoresponderTestHelper::createAutoresponder('Autoresponder 02', 'Subject 02', 'This is text Content 02',
+            AutoresponderTestHelper::createAutoresponder('Subject 02', 'This is text Content 02',
                         'This is html Content 02', 5, Autoresponder::OPERATION_UNSUBSCRIBE, false, $marketingList);
-            AutoresponderTestHelper::createAutoresponder('Autoresponder 03', 'Subject 03', 'This is text Content 03',
-                        'This is html Content 03', 1, Autoresponder::OPERATION_REMOVE, false, $marketingList);
             ReadPermissionsOptimizationUtil::rebuild();
         }
 
@@ -82,7 +80,7 @@
          * @expectedException CHttpException
          * @expectedMessage Your request is invalid.
          */
-        public function testSuperUserCreateActionWithoutParameters()
+        public function testRegularUserCreateActionWithoutParameters()
         {
             $this->runControllerWithNoExceptionsAndGetContent('autoresponders/default/create');
         }
@@ -90,18 +88,18 @@
         /**
          * @expectedException CHttpException
          * @expectedMessage Your request is invalid.
-         * @depends testSuperUserCreateActionWithoutParameters
+         * @depends testRegularUserCreateActionWithoutParameters
          */
-        public function testSuperUserCreateActionWithoutRedirectUrl()
+        public function testRegularUserCreateActionWithoutRedirectUrl()
         {
             $this->setGetArray(array('marketingListId' => static::$marketingListId ));
             $this->runControllerWithNoExceptionsAndGetContent('autoresponders/default/create');
         }
 
         /**
-         * @depends testSuperUserCreateActionWithoutRedirectUrl
+         * @depends testRegularUserCreateActionWithoutRedirectUrl
          */
-        public function testSuperUserCreateActionWithParameters()
+        public function testRegularUserCreateActionWithParameters()
         {
             // test create page
             $redirectUrl    = 'http://www.zurmo.com/';
@@ -113,32 +111,38 @@
                                                 '">MarketingListName</a> &#47; <span>Create</span></div>') !== false);
             $this->assertTrue(strpos($content, 'Create Autoresponder') !== false);
             $this->assertTrue(strpos($content, '<label for="Autoresponder_operationType_value" class="required">' .
-                                                    'Type <span class="required">*</span></label>') !== false);
+                                                    'Triggered By <span class="required">*</span></label>') !== false);
             $this->assertTrue(strpos($content, '<label for="Autoresponder_secondsFromOperation_value" class="required">' .
-                                                    'When to send? <span class="required">*</span></label>') !== false);
-            $this->assertTrue(strpos($content, '<label for="Autoresponder_name" class="required">Name ' .
-                                                    '<span class="required">*</span></label>') !== false);
+                                                    'Send After <span class="required">*</span></label>') !== false);
             $this->assertTrue(strpos($content, '<label for="Autoresponder_subject" class="required">Subject ' .
                                                 '<span class="required">*</span></label>') !== false);
             $this->assertTrue(strpos($content, '<label for="Autoresponder_enableTracking">Enable Tracking' .
                                                 '</label>') !== false);
             $this->assertTrue(strpos($content, '<select name="Autoresponder[operationType]" ' .
                                                 'id="Autoresponder_operationType_value">') !== false);
-            $this->assertTrue(strpos($content, '<option value="1">Subscription</option>') !== false);
-            $this->assertTrue(strpos($content, '<option value="2">Unsubscription</option>') !== false);
-            $this->assertTrue(strpos($content, '<option value="3">Removal</option>') !== false);
+            $this->assertTrue(strpos($content, '<option value="1">Subscription to list</option>') !== false);
+            $this->assertTrue(strpos($content, '<option value="2">Unsubscribed from list</option>') !== false);
             $this->assertTrue(strpos($content, '<select name="Autoresponder[secondsFromOperation]" ' .
                                                 'id="Autoresponder_secondsFromOperation_value">') !== false);
             $this->assertTrue(strpos($content, '<option value="3600">1 Hour</option>') !== false);
-            $this->assertTrue(strpos($content, '<option value="21600">6 Hours</option>') !== false);
+            $this->assertTrue(strpos($content, '<option value="14400">4 Hours</option>') !== false);
+            $this->assertTrue(strpos($content, '<option value="28800">8 Hours</option>') !== false);
             $this->assertTrue(strpos($content, '<option value="43200">12 Hours</option>') !== false);
             $this->assertTrue(strpos($content, '<option value="86400">1 day</option>') !== false);
             $this->assertTrue(strpos($content, '<option value="259200">3 days</option>') !== false);
+            $this->assertTrue(strpos($content, '<option value="345600">4 days</option>') !== false);
+            $this->assertTrue(strpos($content, '<option value="432000">5 days</option>') !== false);
+            $this->assertTrue(strpos($content, '<option value="864000">10 days</option>') !== false);
             $this->assertTrue(strpos($content, '<option value="604800">1 week</option>') !== false);
             $this->assertTrue(strpos($content, '<option value="1209600">2 weeks</option>') !== false);
+            $this->assertTrue(strpos($content, '<option value="1814400">3 weeks</option>') !== false);
             $this->assertTrue(strpos($content, '<option value="2592000">1 month</option>') !== false);
-            $this->assertTrue(strpos($content, '<input id="Autoresponder_name" name="Autoresponder[name]" '.
-                                                'type="text" maxlength="64"') !== false);
+            $this->assertTrue(strpos($content, '<option value="5184000">2 months</option>') !== false);
+            $this->assertTrue(strpos($content, '<option value="7776000">3 months</option>') !== false);
+            $this->assertTrue(strpos($content, '<option value="10368000">4 months</option>') !== false);
+            $this->assertTrue(strpos($content, '<option value="12960000">5 months</option>') !== false);
+            $this->assertTrue(strpos($content, '<option value="15552000">6 months</option>') !== false);
+            $this->assertTrue(strpos($content, '<option value="31104000">1 year</option>') !== false);
             $this->assertTrue(strpos($content, '<input id="Autoresponder_subject" name="Autoresponder[subject]" ' .
                                                 'type="text" maxlength="64"') !== false);
             $this->assertTrue(strpos($content, '<select name="Autoresponder[contactEmailTemplateNames]" ' .
@@ -163,7 +167,6 @@
             $this->setPostArray(array('Autoresponder' => array(
                                                             'operationType'             => '',
                                                             'secondsFromOperation'      => '',
-                                                            'name'                      => '',
                                                             'subject'                   => '',
                                                             'enableTracking'            => '',
                                                             'contactEmailTemplateNames' => '',
@@ -172,12 +175,10 @@
                                                             )));
             $content = $this->runControllerWithNoExceptionsAndGetContent('autoresponders/default/create');
             $this->assertTrue(strpos($content, 'Please fix the following input errors:') !== false);
-            $this->assertTrue(strpos($content, 'Name cannot be blank.') !== false);
             $this->assertTrue(strpos($content, 'Subject cannot be blank.') !== false);
             $this->assertTrue(strpos($content, 'Please provide at least one of the contents field.') !== false);
-            $this->assertTrue(strpos($content, 'When to send? cannot be blank.') !== false);
-            $this->assertTrue(strpos($content, 'Type cannot be blank.') !== false);
-            $this->assertTrue(strpos($content, '<input id="Autoresponder_name" name="Autoresponder[name]" type="text" maxlength="64" value="" class="error"') !== false);
+            $this->assertTrue(strpos($content, 'Send After cannot be blank.') !== false);
+            $this->assertTrue(strpos($content, 'Triggered By cannot be blank.') !== false);
             $this->assertTrue(strpos($content, '<input id="Autoresponder_subject" name="Autoresponder[subject]" type="text" maxlength="64" value="" class="error"') !== false);
             $this->assertTrue(strpos($content, '<select name="Autoresponder[operationType]" ' .
                                                 'id="Autoresponder_operationType_value" class="error">') !== false);
@@ -187,8 +188,7 @@
             // try with invalid merge tags
             $this->setPostArray(array('Autoresponder' => array(
                                                                 'operationType'             => 2,
-                                                                'secondsFromOperation'      => 86400,
-                                                                'name'                      => 'Autoresponder 04',
+                                                                'secondsFromOperation'      => 60*60*4,
                                                                 'subject'                   => 'Subject 04',
                                                                 'enableTracking'            => 0,
                                                                 'contactEmailTemplateNames' => '',
@@ -203,8 +203,7 @@
             // try saving with valid data.
             $this->setPostArray(array('Autoresponder' => array(
                                                             'operationType'             => 2,
-                                                            'secondsFromOperation'      => 2592000,
-                                                            'name'                      => 'Autoresponder 04',
+                                                            'secondsFromOperation'      => 60*60*4,
                                                             'subject'                   => 'Subject 04',
                                                             'enableTracking'            => 0,
                                                             'contactEmailTemplateNames' => '',
@@ -213,26 +212,26 @@
                                                         )));
 
             $resolvedRedirectUrl    = $this->runControllerWithRedirectExceptionAndGetUrl('autoresponders/default/create');
-            $autoresponders  = Autoresponder::getByName('Autoresponder 04');
+            $autoresponders  = Autoresponder::getByName('Subject 04');
             $this->assertEquals(1, count($autoresponders));
             $this->assertTrue  ($autoresponders[0]->id > 0);
             $this->assertEquals(2, $autoresponders[0]->operationType);
-            $this->assertEquals(2592000, $autoresponders[0]->secondsFromOperation);
+            $this->assertEquals(60*60*4, $autoresponders[0]->secondsFromOperation);
             $this->assertEquals('Subject 04', $autoresponders[0]->subject);
             $this->assertEquals(0, $autoresponders[0]->enableTracking);
             $this->assertEquals('Text Content 04', $autoresponders[0]->textContent);
             $this->assertEquals('Html Content 04', $autoresponders[0]->htmlContent);
             $this->assertEquals($redirectUrl, $resolvedRedirectUrl);
             $autoresponders = Autoresponder::getAll();
-            $this->assertEquals(4, count($autoresponders));
+            $this->assertEquals(3, count($autoresponders));
         }
 
         /**
          * @expectedException CHttpException
          * @expectedMessage Your request is invalid.
-         * @depends testSuperUserCreateActionWithParameters
+         * @depends testRegularUserCreateActionWithParameters
          */
-        public function testSuperUserDetailsActionWithoutParameters()
+        public function testRegularUserDetailsActionWithoutParameters()
         {
             $this->runControllerWithNoExceptionsAndGetContent('autoresponders/default/details');
         }
@@ -240,21 +239,21 @@
         /**
          * @expectedException CHttpException
          * @expectedMessage Your request is invalid.
-         * @depends testSuperUserDetailsActionWithoutParameters
+         * @depends testRegularUserDetailsActionWithoutParameters
          */
-        public function testSuperUserDetailsActionWithoutRedirectUrl()
+        public function testRegularUserDetailsActionWithoutRedirectUrl()
         {
-            $autoresponderId = self::getModelIdByModelNameAndName('Autoresponder', 'Autoresponder 04');
+            $autoresponderId = self::getModelIdByModelNameAndName('Autoresponder', 'Subject 04');
             $this->setGetArray(array('id' => $autoresponderId));
             $this->runControllerWithNoExceptionsAndGetContent('autoresponders/default/details');
         }
 
         /**
-         * @depends testSuperUserDetailsActionWithoutRedirectUrl
+         * @depends testRegularUserDetailsActionWithoutRedirectUrl
          */
-        public function testSuperUserDetailsActionWithRedirectUrl()
+        public function testRegularUserDetailsActionWithRedirectUrl()
         {
-            $autoresponderId = self::getModelIdByModelNameAndName('Autoresponder', 'Autoresponder 04');
+            $autoresponderId = self::getModelIdByModelNameAndName('Autoresponder', 'Subject 04');
             $redirectUrl     = 'http://www.zurmo.com/';
             $this->setGetArray(array('id' => $autoresponderId, 'redirectUrl' => $redirectUrl));
             $content = $this->runControllerWithNoExceptionsAndGetContent('autoresponders/default/details');
@@ -262,16 +261,15 @@
             $this->assertTrue(strpos($content, 'emailTemplates/default/index">Marketing</a> &#47; <a href=') !== false);
             $this->assertTrue(strpos($content, 'marketingLists/default/list">Lists</a> &#47; <a href=') !== false);
             $this->assertTrue(strpos($content, 'marketingLists/default/details?id=' . static::$marketingListId .
-                                                '">MarketingListName</a> &#47; <span>Autoresponder 04</span></div>') !== false);
-            $this->assertTrue(strpos($content, 'Autoresponder 04') !== false);
-            $this->assertEquals(3, substr_count($content, 'Autoresponder 04'));
-            $this->assertTrue(strpos($content, '<span class="ellipsis-content">Autoresponder 04</span>') !== false);
+                                                '">MarketingListName</a> &#47; <span>Subject 04</span></div>') !== false);
+            $this->assertTrue(strpos($content, 'Subject 04') !== false);
+            $this->assertEquals(3, substr_count($content, 'Subject 04'));
+            $this->assertTrue(strpos($content, '<span class="ellipsis-content">Subject 04</span>') !== false);
             $this->assertTrue(strpos($content, '<span>Options</span>') !== false);
             $this->assertTrue(strpos($content, 'autoresponders/default/edit?id=' . $autoresponderId) !== false);
             $this->assertTrue(strpos($content, 'autoresponders/default/delete?id=' . $autoresponderId) !== false);
-            $this->assertTrue(strpos($content, '<th>Type</th><td colspan="1">Unsubscription</td>') !== false);
-            $this->assertTrue(strpos($content, '<th>When to send?</th><td colspan="1">1 month</td>') !== false);
-            $this->assertTrue(strpos($content, '<th>Name</th><td colspan="1">Autoresponder 04</td>') !== false);
+            $this->assertTrue(strpos($content, '<th>Triggered By</th><td colspan="1">Unsubscribed from list</td>') !== false);
+            $this->assertTrue(strpos($content, '<th>Send After</th><td colspan="1">4 Hours</td>') !== false);
             $this->assertTrue(strpos($content, '<th>Subject</th><td colspan="1">Subject 04</td>') !== false);
             $this->assertTrue(strpos($content, '<th>Enable Tracking</th>') !== false);
             $this->assertTrue(strpos($content, '<input id="ytAutoresponder_enableTracking" type="hidden" value="0" '.
@@ -289,9 +287,9 @@
         /**
          * @expectedException CHttpException
          * @expectedMessage Your request is invalid.
-         * @depends testSuperUserCreateActionWithParameters
+         * @depends testRegularUserCreateActionWithParameters
          */
-        public function testSuperUserEditActionWithoutParameters()
+        public function testRegularUserEditActionWithoutParameters()
         {
             $this->runControllerWithNoExceptionsAndGetContent('autoresponders/default/edit');
         }
@@ -299,21 +297,21 @@
         /**
          * @expectedException CHttpException
          * @expectedMessage Your request is invalid.
-         * @depends testSuperUserEditActionWithoutParameters
+         * @depends testRegularUserEditActionWithoutParameters
          */
-        public function testSuperUserEditActionWithoutRedirectUrl()
+        public function testRegularUserEditActionWithoutRedirectUrl()
         {
-            $autoresponderId = self::getModelIdByModelNameAndName('Autoresponder', 'Autoresponder 04');
+            $autoresponderId = self::getModelIdByModelNameAndName('Autoresponder', 'Subject 04');
             $this->setGetArray(array('id' => $autoresponderId));
             $this->runControllerWithNoExceptionsAndGetContent('autoresponders/default/edit');
         }
 
         /**
-         * @depends testSuperUserCreateActionWithParameters
+         * @depends testRegularUserCreateActionWithParameters
          */
-        public function testSuperUserEditAction()
+        public function testRegularUserEditAction()
         {
-            $autoresponderId = self::getModelIdByModelNameAndName('Autoresponder', 'Autoresponder 04');
+            $autoresponderId = self::getModelIdByModelNameAndName('Autoresponder', 'Subject 04');
             $redirectUrl     = 'http://www.zurmo.com/';
             $this->setGetArray(array('id' => $autoresponderId, 'redirectUrl' => $redirectUrl));
             $content = $this->runControllerWithNoExceptionsAndGetContent('autoresponders/default/edit');
@@ -321,37 +319,43 @@
             $this->assertTrue(strpos($content, 'emailTemplates/default/index">Marketing</a> &#47; <a href=') !== false);
             $this->assertTrue(strpos($content, 'marketingLists/default/list">Lists</a> &#47; <a href=') !== false);
             $this->assertTrue(strpos($content, 'marketingLists/default/details?id=' . static::$marketingListId .
-                                                '">MarketingListName</a> &#47; <span>Autoresponder 04</span></div>') !== false);
-            $this->assertTrue(strpos($content, 'Autoresponder 04') !== false);
-            $this->assertEquals(3, substr_count($content, 'Autoresponder 04'));
-            $this->assertTrue(strpos($content, '<span class="ellipsis-content">Autoresponder 04</span>') !== false);
+                                                '">MarketingListName</a> &#47; <span>Subject 04</span></div>') !== false);
+            $this->assertTrue(strpos($content, 'Subject 04') !== false);
+            $this->assertEquals(3, substr_count($content, 'Subject 04'));
+            $this->assertTrue(strpos($content, '<span class="ellipsis-content">Subject 04</span>') !== false);
             $this->assertTrue(strpos($content, '<label for="Autoresponder_operationType_value" class="required">' .
-                                                'Type <span class="required">*</span></label>') !== false);
+                                                'Triggered By <span class="required">*</span></label>') !== false);
             $this->assertTrue(strpos($content, '<label for="Autoresponder_secondsFromOperation_value" class="required">' .
-                                                'When to send? <span class="required">*</span></label>') !== false);
-            $this->assertTrue(strpos($content, '<label for="Autoresponder_name" class="required">Name ' .
-                                                '<span class="required">*</span></label>') !== false);
+                                                'Send After <span class="required">*</span></label>') !== false);
             $this->assertTrue(strpos($content, '<label for="Autoresponder_subject" class="required">Subject ' .
                                                 '<span class="required">*</span></label>') !== false);
             $this->assertTrue(strpos($content, '<label for="Autoresponder_enableTracking">Enable Tracking' .
                                                 '</label>') !== false);
             $this->assertTrue(strpos($content, '<select name="Autoresponder[operationType]" ' .
                                                 'id="Autoresponder_operationType_value">') !== false);
-            $this->assertTrue(strpos($content, '<option value="1">Subscription</option>') !== false);
-            $this->assertTrue(strpos($content, '<option value="2" selected="selected">Unsubscription</option>') !== false);
-            $this->assertTrue(strpos($content, '<option value="3">Removal</option>') !== false);
+            $this->assertTrue(strpos($content, '<option value="1">Subscription to list</option>') !== false);
+            $this->assertTrue(strpos($content, '<option value="2" selected="selected">Unsubscribed from list</option>') !== false);
             $this->assertTrue(strpos($content, '<select name="Autoresponder[secondsFromOperation]" ' .
                                                 'id="Autoresponder_secondsFromOperation_value">') !== false);
             $this->assertTrue(strpos($content, '<option value="3600">1 Hour</option>') !== false);
-            $this->assertTrue(strpos($content, '<option value="21600">6 Hours</option>') !== false);
+            $this->assertTrue(strpos($content, '<option value="14400" selected="selected">4 Hours</option>') !== false);
+            $this->assertTrue(strpos($content, '<option value="28800">8 Hours</option>') !== false);
             $this->assertTrue(strpos($content, '<option value="43200">12 Hours</option>') !== false);
             $this->assertTrue(strpos($content, '<option value="86400">1 day</option>') !== false);
             $this->assertTrue(strpos($content, '<option value="259200">3 days</option>') !== false);
+            $this->assertTrue(strpos($content, '<option value="345600">4 days</option>') !== false);
+            $this->assertTrue(strpos($content, '<option value="432000">5 days</option>') !== false);
+            $this->assertTrue(strpos($content, '<option value="864000">10 days</option>') !== false);
             $this->assertTrue(strpos($content, '<option value="604800">1 week</option>') !== false);
             $this->assertTrue(strpos($content, '<option value="1209600">2 weeks</option>') !== false);
-            $this->assertTrue(strpos($content, '<option value="2592000" selected="selected">1 month</option>') !== false);
-            $this->assertTrue(strpos($content, '<input id="Autoresponder_name" name="Autoresponder[name]" type="text" '.
-                                                'maxlength="64" value="Autoresponder 04" ') !== false);
+            $this->assertTrue(strpos($content, '<option value="1814400">3 weeks</option>') !== false);
+            $this->assertTrue(strpos($content, '<option value="2592000">1 month</option>') !== false);
+            $this->assertTrue(strpos($content, '<option value="5184000">2 months</option>') !== false);
+            $this->assertTrue(strpos($content, '<option value="7776000">3 months</option>') !== false);
+            $this->assertTrue(strpos($content, '<option value="10368000">4 months</option>') !== false);
+            $this->assertTrue(strpos($content, '<option value="12960000">5 months</option>') !== false);
+            $this->assertTrue(strpos($content, '<option value="15552000">6 months</option>') !== false);
+            $this->assertTrue(strpos($content, '<option value="31104000">1 year</option>') !== false);
             $this->assertTrue(strpos($content, '<input id="Autoresponder_subject" name="Autoresponder[subject]" ' .
                                                 'type="text" maxlength="64" value="Subject 04"') !== false);
             $this->assertTrue(strpos($content, '<select name="Autoresponder[contactEmailTemplateNames]" ' .
@@ -376,8 +380,7 @@
             // modify everything:
             $this->setPostArray(array('Autoresponder' => array(
                                                         'operationType'             => 1,
-                                                        'secondsFromOperation'      => 259200,
-                                                        'name'                      => 'Autoresponder 040',
+                                                        'secondsFromOperation'      => 60*60*24,
                                                         'subject'                   => 'Subject 040',
                                                         'enableTracking'            => 1,
                                                         'contactEmailTemplateNames' => '',
@@ -385,28 +388,28 @@
                                                         'htmlContent'               => 'Html Content 040',
                                                     )));
             $resolvedRedirectUrl    = $this->runControllerWithRedirectExceptionAndGetUrl('autoresponders/default/edit');
-            $autoresponders  = Autoresponder::getByName('Autoresponder 040');
+            $autoresponders  = Autoresponder::getByName('Subject 040');
             $this->assertEquals(1, count($autoresponders));
             $this->assertTrue  ($autoresponders[0]->id > 0);
             $this->assertEquals(1, $autoresponders[0]->operationType);
-            $this->assertEquals(259200, $autoresponders[0]->secondsFromOperation);
+            $this->assertEquals(60*60*24, $autoresponders[0]->secondsFromOperation);
             $this->assertEquals('Subject 040', $autoresponders[0]->subject);
             $this->assertEquals(1, $autoresponders[0]->enableTracking);
             $this->assertEquals('Text Content 040', $autoresponders[0]->textContent);
             $this->assertEquals('Html Content 040', $autoresponders[0]->htmlContent);
             $this->assertEquals($redirectUrl, $resolvedRedirectUrl);
             $autoresponders = Autoresponder::getAll();
-            $this->assertEquals(4, count($autoresponders));
+            $this->assertEquals(3, count($autoresponders));
         }
 
         /**
-         * @depends testSuperUserCreateActionWithParameters
+         * @depends testRegularUserCreateActionWithParameters
          */
-        public function testSuperUserDeleteAction()
+        public function testRegularUserDeleteAction()
         {
             $autoresponders = Autoresponder::getAll();
             $this->assertNotEmpty($autoresponders);
-            $this->assertCount(4, $autoresponders);
+            $this->assertCount(3, $autoresponders);
             $autoresponderId = $autoresponders[0]->id;
             $this->setGetArray(array('id' => $autoresponderId));
             $content = $this->runControllerWithNoExceptionsAndGetContent('autoresponders/default/delete', true);
@@ -414,7 +417,7 @@
 
             $autoresponders = Autoresponder::getAll();
             $this->assertNotEmpty($autoresponders);
-            $this->assertCount(3, $autoresponders);
+            $this->assertCount(2, $autoresponders);
             $autoresponderId = $autoresponders[0]->id;
             $redirectUrl = 'http://www.zurmo.com/';
             $this->setGetArray(array('id' => $autoresponderId, 'redirectUrl' => $redirectUrl));
@@ -422,7 +425,7 @@
             $this->assertEquals($redirectUrl, $resolvedRedirectUrl);
             $autoresponders = Autoresponder::getAll();
             $this->assertNotEmpty($autoresponders);
-            $this->assertCount(2, $autoresponders);
+            $this->assertCount(1, $autoresponders);
         }
     }
 ?>

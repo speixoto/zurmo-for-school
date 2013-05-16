@@ -70,7 +70,7 @@
             assert('is_object($marketingList) || $marketingList === null');
             if (!isset($supportsRichText))
             {
-                $supportsRichText   = Campaign::SUPPORTS_RICH_TEXT;
+                $supportsRichText   = 1;
             }
             if (!isset($type))
             {
@@ -82,15 +82,15 @@
             }
             if (isset($sendingDateTime))
             {
-                $sendNow            = Campaign::SEND_DELAYED;
+                $sendNow            = 0;
             }
             elseif (!isset($sendNow))
             {
-                $sendNow            = Campaign::SEND_NOW;
+                $sendNow            = 1;
             }
             if (!isset($enableTracking))
             {
-                $enableTracking     = Campaign::TRACKING_ENABLED;
+                $enableTracking     = 1;
             }
             if (!isset($fromName))
             {

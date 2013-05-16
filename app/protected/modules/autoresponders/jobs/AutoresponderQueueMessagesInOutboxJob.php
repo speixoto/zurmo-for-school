@@ -70,7 +70,7 @@
         {
             $batchSize = $this->resolveBatchSize();
             $autoresponderItemsToProcess    = AutoresponderItem::getByProcessedAndProcessDateTime(
-                                                                                        AutoresponderItem::NOT_PROCESSED,
+                                                                                        0,
                                                                                         time(),
                                                                                         $batchSize);
             foreach ($autoresponderItemsToProcess as $autoresponderItem)

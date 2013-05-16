@@ -40,15 +40,9 @@
 
         const OPERATION_UNSUBSCRIBE = 2;
 
-        const OPERATION_REMOVE      = 3;
-
-        const TRACKING_ENABLED      = 1;
-
-        const TRACKING_DISABLED     = 0;
-
         public static function getByName($name)
         {
-            return static::getByNameOrEquivalent('name', $name);
+            return static::getByNameOrEquivalent('subject', $name);
         }
 
         public static function getModuleClassName()
@@ -59,9 +53,8 @@
         public static function getOperationTypeDropDownArray()
         {
             return array(
-                self::OPERATION_SUBSCRIBE       => Zurmo::t('AutorespondersModule', 'Subscription'),
-                self::OPERATION_UNSUBSCRIBE     => Zurmo::t('AutorespondersModule',  'Unsubscription'),
-                self::OPERATION_REMOVE          => Zurmo::t('AutorespondersModule', 'Removal'),
+                self::OPERATION_SUBSCRIBE       => Zurmo::t('AutorespondersModule', 'Subscription to list'),
+                self::OPERATION_UNSUBSCRIBE     => Zurmo::t('AutorespondersModule', 'Unsubscribed from list'),
             );
         }
 
@@ -69,13 +62,25 @@
         {
             return array(
                 60*60           =>  Zurmo::t('AutorespondersModule', '{hourCount} Hour', array('{hourCount}' => 1)),
-                60*60*6         =>  Zurmo::t('AutorespondersModule', '{hourCount} Hours', array('{hourCount}' => 6)),
+                60*60*4         =>  Zurmo::t('AutorespondersModule', '{hourCount} Hours', array('{hourCount}' => 4)),
+                60*60*8         =>  Zurmo::t('AutorespondersModule', '{hourCount} Hours', array('{hourCount}' => 8)),
                 60*60*12        =>  Zurmo::t('AutorespondersModule', '{hourCount} Hours', array('{hourCount}' => 12)),
                 60*60*24        =>  Zurmo::t('AutorespondersModule', '{dayCount} day', array('{dayCount}' => 1)),
+                60*60*24*2      =>  Zurmo::t('AutorespondersModule', '{dayCount} days', array('{dayCount}' => 2)),
                 60*60*24*3      =>  Zurmo::t('AutorespondersModule', '{dayCount} days', array('{dayCount}' => 3)),
+                60*60*24*4      =>  Zurmo::t('AutorespondersModule', '{dayCount} days', array('{dayCount}' => 4)),
+                60*60*24*5      =>  Zurmo::t('AutorespondersModule', '{dayCount} days', array('{dayCount}' => 5)),
+                60*60*24*10     =>  Zurmo::t('AutorespondersModule', '{dayCount} days', array('{dayCount}' => 10)),
                 60*60*24*7      =>  Zurmo::t('AutorespondersModule', '{weekCount} week', array('{weekCount}' => 1)),
                 60*60*24*14     =>  Zurmo::t('AutorespondersModule', '{weekCount} weeks', array('{weekCount}' => 2)),
+                60*60*24*21     =>  Zurmo::t('AutorespondersModule', '{weekCount} weeks', array('{weekCount}' => 3)),
                 60*60*24*30     =>  Zurmo::t('AutorespondersModule', '{monthCount} month', array('{monthCount}' => 1)),
+                60*60*24*30*2   =>  Zurmo::t('AutorespondersModule', '{monthCount} months', array('{monthCount}' => 2)),
+                60*60*24*30*3   =>  Zurmo::t('AutorespondersModule', '{monthCount} months', array('{monthCount}' => 3)),
+                60*60*24*30*4   =>  Zurmo::t('AutorespondersModule', '{monthCount} months', array('{monthCount}' => 4)),
+                60*60*24*30*5   =>  Zurmo::t('AutorespondersModule', '{monthCount} months', array('{monthCount}' => 5)),
+                60*60*24*30*6   =>  Zurmo::t('AutorespondersModule', '{monthCount} months', array('{monthCount}' => 6)),
+                60*60*24*30*12  =>  Zurmo::t('AutorespondersModule', '{yearCount} year', array('{yearCount}' => 1)),
             );
         }
 
@@ -102,7 +107,6 @@
             $metadata = parent::getDefaultMetadata();
             $metadata[__CLASS__] = array(
                 'members' => array(
-                    'name',
                     'subject',
                     'htmlContent',
                     'textContent',
@@ -111,9 +115,6 @@
                     'enableTracking',
                 ),
                 'rules' => array(
-                    array('name',                   'required'),
-                    array('name',                   'type',    'type' => 'string'),
-                    array('name',                   'length',  'min'  => 3, 'max' => 64),
                     array('subject',                'required'),
                     array('subject',                'type',    'type' => 'string'),
                     array('subject',                'length',  'min'  => 3, 'max' => 64),
@@ -127,25 +128,23 @@
                     array('secondsFromOperation',   'type',    'type' => 'integer'),
                     array('operationType',          'required'),
                     array('operationType',          'type',    'type' => 'integer'),
-                    array('operationType',          'in', 'range' => array_keys(static::getOperationTypeDropDownArray()),
-                                                                                        'except' => 'autoBuildDatabase'),
+                    array('operationType',          'numerical', 'min' => static::OPERATION_SUBSCRIBE,
+                                                                                    'max' => static::OPERATION_UNSUBSCRIBE),
                     array('enableTracking',          'type',    'type' => 'integer'),
-                    array('enableTracking',          'numerical', 'min' => static::TRACKING_DISABLED, // boolean gives error during schema build
-                                                                  'max' => static::TRACKING_ENABLED),
-                    array('enableTracking',          'default', 'value' => static::TRACKING_DISABLED),
+                    array('enableTracking',          'numerical', 'min' => 0, 'max' => 1), // boolean gives error during schema build
+                    array('enableTracking',          'default', 'value' => 0),
 
                 ),
                 'relations' => array(
-                    'autoresponderItems'            => array(RedBeanModel::HAS_MANY, 'AutoresponderItem'),
-                    'marketingList'                 => array(RedBeanModel::HAS_ONE, 'MarketingList',
-                                                                                            RedBeanModel::NOT_OWNED),
+                    'autoresponderItems'    => array(RedBeanModel::HAS_MANY, 'AutoresponderItem'),
+                    'marketingList'         => array(RedBeanModel::HAS_ONE, 'MarketingList', RedBeanModel::NOT_OWNED),
                 ),
                 'elements' => array(
                     'htmlContent'                   => 'TextArea',
                     'textContent'                   => 'TextArea',
                     'enableTracking'                => 'CheckBox',
                 ),
-                'defaultSortAttribute' => 'name',
+                'defaultSortAttribute' => 'secondsFromOperation',
             );
             return $metadata;
         }
@@ -174,7 +173,7 @@
             $searchAttributeData['structure'] = '1';
             $joinTablesAdapter                = new RedBeanModelJoinTablesQueryAdapter(get_called_class());
             $where = RedBeanModelDataProvider::makeWhere(get_called_class(), $searchAttributeData, $joinTablesAdapter);
-            return self::getSubset($joinTablesAdapter, null, $pageSize, $where, 'name');
+            return self::getSubset($joinTablesAdapter, null, $pageSize, $where, 'secondsFromOperation');
         }
 
         public static function getByOperationTypeAndMarketingListId($operationType, $marketingListId, $pageSize = null)
@@ -198,22 +197,21 @@
             $searchAttributeData['structure'] = '(1 and 2)';
             $joinTablesAdapter                = new RedBeanModelJoinTablesQueryAdapter(get_called_class());
             $where = RedBeanModelDataProvider::makeWhere(get_called_class(), $searchAttributeData, $joinTablesAdapter);
-            return self::getSubset($joinTablesAdapter, null, $pageSize, $where, 'name');
+            return self::getSubset($joinTablesAdapter, null, $pageSize, $where, 'secondsFromOperation');
         }
 
         public function __toString()
         {
-            return strval($this->name);
+            return strval($this->subject);
         }
 
         protected static function translatedAttributeLabels($language)
         {
             return array_merge(parent::translatedAttributeLabels($language),
                 array(
-                    'name'                  => Zurmo::t('ZurmoModule', 'Name', null,  null, $language),
                     'subject'               => Zurmo::t('EmailMessagesModule', 'Subject', null,  null, $language),
-                    'operationType'         => Zurmo::t('Core', 'Type', null,  null, $language),
-                    'secondsFromOperation'  => Zurmo::t('AutorespondersModule', 'When to send?', null,  null, $language),
+                    'operationType'         => Zurmo::t('Core', 'Triggered By', null,  null, $language),
+                    'secondsFromOperation'  => Zurmo::t('AutorespondersModule', 'Send After', null,  null, $language),
                     'htmlContent'           => Zurmo::t('EmailMessagesModule', 'Html Content', null,  null, $language),
                     'textContent'           => Zurmo::t('EmailMessagesModule', 'Text Content', null,  null, $language),
                     'enableTracking'        => Zurmo::t('AutorespondersModule', 'Enable Tracking', null,  null, $language),

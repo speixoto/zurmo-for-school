@@ -51,12 +51,12 @@
         public function testCreateAndGetCampaignItemById()
         {
             $campaignItem                          = new CampaignItem();
-            $campaignItem->processed               = CampaignItem::PROCESSED;
+            $campaignItem->processed               = 1;
             $this->assertTrue($campaignItem->unrestrictedSave());
             $id = $campaignItem->id;
             unset($campaignItem);
             $campaignItem = CampaignItem::getById($id);
-            $this->assertEquals(CampaignItem::PROCESSED,   $campaignItem->processed);
+            $this->assertEquals(1,   $campaignItem->processed);
         }
 
         /**
@@ -69,7 +69,7 @@
             $id = $campaignItem->id;
             unset($campaignItem);
             $campaignItem = CampaignItem::getById($id);
-            $this->assertEquals(CampaignItem::NOT_PROCESSED,   $campaignItem->processed);
+            $this->assertEquals(0,   $campaignItem->processed);
         }
 
         /**
@@ -80,10 +80,10 @@
             $this->deleteAllCampaignItems();
             for ($i = 0; $i < 5; $i++)
             {
-                $processed                          = CampaignItem::NOT_PROCESSED;
+                $processed                          = 0;
                 if ($i % 2)
                 {
-                    $processed      = CampaignItem::PROCESSED;
+                    $processed      = 1;
                 }
                 $campaignItem                  = new CampaignItem();
                 $campaignItem->processed       = $processed;
@@ -91,9 +91,9 @@
             }
             $campaignItems         =   CampaignItem::getAll();
             $this->assertCount(5, $campaignItems);
-            $processedItems             =   CampaignItem::getByProcessed(CampaignItem::PROCESSED);
+            $processedItems             =   CampaignItem::getByProcessed(1);
             $this->assertCount(2, $processedItems);
-            $notProcessedItems          =   CampaignItem::getByProcessed(CampaignItem::NOT_PROCESSED);
+            $notProcessedItems          =   CampaignItem::getByProcessed(0);
             $this->assertCount(3, $notProcessedItems);
         }
 
@@ -141,11 +141,11 @@
                 $this->assertNotNull($contact);
                 if ($i % 3)
                 {
-                    $processed      = CampaignItem::PROCESSED;
+                    $processed      = 1;
                 }
                 else
                 {
-                    $processed      = CampaignItem::NOT_PROCESSED;
+                    $processed      = 0;
                 }
                 if ($i % 2)
                 {
@@ -162,18 +162,18 @@
             $campaignItems         = CampaignItem::getAll();
             $this->assertNotEmpty($campaignItems);
             $this->assertCount(10, $campaignItems);
-            $campaignTodayProcessed  = CampaignItem::getByProcessedAndSendingDateTime(CampaignItem::PROCESSED);
+            $campaignTodayProcessed  = CampaignItem::getByProcessedAndSendingDateTime(1);
             $this->assertNotEmpty($campaignTodayProcessed);
             $this->assertCount(3, $campaignTodayProcessed);
-            $campaignTodayNotProcessed  = CampaignItem::getByProcessedAndSendingDateTime(CampaignItem::NOT_PROCESSED);
+            $campaignTodayNotProcessed  = CampaignItem::getByProcessedAndSendingDateTime(0);
             $this->assertNotEmpty($campaignTodayNotProcessed);
             $this->assertCount(2, $campaignTodayNotProcessed);
-            $campaignTenDaysFromNowProcessed  = CampaignItem::getByProcessedAndSendingDateTime(CampaignItem::PROCESSED,
+            $campaignTenDaysFromNowProcessed  = CampaignItem::getByProcessedAndSendingDateTime(1,
                                                                                             $tenDaysFromNowTimestamp);
             $this->assertNotEmpty($campaignTenDaysFromNowProcessed);
             $this->assertCount(6, $campaignTenDaysFromNowProcessed);
             $campaignTenDaysFromNowNotProcessed  = CampaignItem::getByProcessedAndSendingDateTime(
-                                                                                            CampaignItem::NOT_PROCESSED,
+                                                                                            0,
                                                                                             $tenDaysFromNowTimestamp);
             $this->assertNotEmpty($campaignTenDaysFromNowNotProcessed);
             $this->assertCount(4, $campaignTenDaysFromNowNotProcessed);
@@ -254,11 +254,11 @@
                 $this->assertNotNull($contact);
                 if ($i % 3)
                 {
-                    $processed      = CampaignItem::PROCESSED;
+                    $processed      = 1;
                 }
                 else
                 {
-                    $processed      = CampaignItem::NOT_PROCESSED;
+                    $processed      = 0;
                 }
                 $campaign           = $campaignsArray[$i % 4];
                 $campaignItem       = CampaignItemTestHelper::createCampaignItem($processed, $campaign);
@@ -269,45 +269,45 @@
             $this->assertNotEmpty($campaignItems);
             $this->assertCount(20, $campaignItems);
             $campaignTodayActiveProcessed               = CampaignItem::getByProcessedAndStatusAndSendingDateTime(
-                                                                                    CampaignItem::PROCESSED,
+                                                                                    1,
                                                                                     Campaign::STATUS_ACTIVE);
             $this->assertNotEmpty($campaignTodayActiveProcessed);
             $this->assertCount(3, $campaignTodayActiveProcessed);
             $campaignTodayActiveNotProcessed            = CampaignItem::getByProcessedAndStatusAndSendingDateTime(
-                                                                                    CampaignItem::NOT_PROCESSED,
+                                                                                    0,
                                                                                     Campaign::STATUS_ACTIVE);
             $this->assertNotEmpty($campaignTodayActiveNotProcessed);
             $this->assertCount(2, $campaignTodayActiveNotProcessed);
             $campaignTodayPausedProcessed               = CampaignItem::getByProcessedAndStatusAndSendingDateTime(
-                                                                                    CampaignItem::PROCESSED,
+                                                                                    1,
                                                                                     Campaign::STATUS_PAUSED);
             $this->assertNotEmpty($campaignTodayPausedProcessed);
             $this->assertCount(4, $campaignTodayPausedProcessed);
             $campaignTodayPausedNotProcessed            = CampaignItem::getByProcessedAndStatusAndSendingDateTime(
-                                                                                    CampaignItem::NOT_PROCESSED,
+                                                                                    0,
                                                                                     Campaign::STATUS_PAUSED);
             $this->assertNotEmpty($campaignTodayPausedNotProcessed);
             $this->assertCount(1, $campaignTodayPausedNotProcessed);
             $campaignTenDaysFromNowActiveProcessed      = CampaignItem::getByProcessedAndStatusAndSendingDateTime(
-                                                                                    CampaignItem::PROCESSED,
+                                                                                    1,
                                                                                     Campaign::STATUS_ACTIVE,
                                                                                     $tenDaysFromNowTimestamp);
             $this->assertNotEmpty($campaignTenDaysFromNowActiveProcessed);
             $this->assertCount(6, $campaignTenDaysFromNowActiveProcessed);
             $campaignTenDaysFromNowActiveNotProcessed   = CampaignItem::getByProcessedAndStatusAndSendingDateTime(
-                                                                                    CampaignItem::NOT_PROCESSED,
+                                                                                    0,
                                                                                     Campaign::STATUS_ACTIVE,
                                                                                     $tenDaysFromNowTimestamp);
             $this->assertNotEmpty($campaignTenDaysFromNowActiveNotProcessed);
             $this->assertCount(4, $campaignTenDaysFromNowActiveNotProcessed);
             $campaignTenDaysFromNowPausedProcessed      = CampaignItem::getByProcessedAndStatusAndSendingDateTime(
-                                                                                    CampaignItem::PROCESSED,
+                                                                                    1,
                                                                                     Campaign::STATUS_PAUSED,
                                                                                     $tenDaysFromNowTimestamp);
             $this->assertNotEmpty($campaignTenDaysFromNowPausedProcessed);
             $this->assertCount(7, $campaignTenDaysFromNowPausedProcessed);
             $campaignTenDaysFromNowPausedNotProcessed   = CampaignItem::getByProcessedAndStatusAndSendingDateTime(
-                                                                                    CampaignItem::NOT_PROCESSED,
+                                                                                    0,
                                                                                     Campaign::STATUS_PAUSED,
                                                                                     $tenDaysFromNowTimestamp);
             $this->assertNotEmpty($campaignTenDaysFromNowPausedNotProcessed);
@@ -356,11 +356,11 @@
                 $this->assertNotNull($contact);
                 if ($i % 3)
                 {
-                    $processed      = CampaignItem::PROCESSED;
+                    $processed      = 1;
                 }
                 else
                 {
-                    $processed      = CampaignItem::NOT_PROCESSED;
+                    $processed      = 0;
                 }
                 if ($i % 2)
                 {
@@ -376,19 +376,19 @@
             $campaignItems         = CampaignItem::getAll();
             $this->assertNotEmpty($campaignItems);
             $this->assertCount(10, $campaignItems);
-            $campaign1Processed  = CampaignItem::getByProcessedAndCampaignId(CampaignItem::PROCESSED,
+            $campaign1Processed  = CampaignItem::getByProcessedAndCampaignId(1,
                                                                                             $campaign1->id);
             $this->assertNotEmpty($campaign1Processed);
             $this->assertCount(3, $campaign1Processed);
-            $campaign1NotProcessed  = CampaignItem::getByProcessedAndCampaignId(CampaignItem::NOT_PROCESSED,
+            $campaign1NotProcessed  = CampaignItem::getByProcessedAndCampaignId(0,
                                                                                                 $campaign1->id);
             $this->assertNotEmpty($campaign1NotProcessed);
             $this->assertCount(2, $campaign1NotProcessed);
-            $campaign2Processed  = CampaignItem::getByProcessedAndCampaignId(CampaignItem::PROCESSED,
+            $campaign2Processed  = CampaignItem::getByProcessedAndCampaignId(1,
                                                                                             $campaign2->id);
             $this->assertNotEmpty($campaign2Processed);
             $this->assertCount(3, $campaign2Processed);
-            $campaign2NotProcessed  = CampaignItem::getByProcessedAndCampaignId(CampaignItem::NOT_PROCESSED,
+            $campaign2NotProcessed  = CampaignItem::getByProcessedAndCampaignId(0,
                                                                                                 $campaign2->id);
             $this->assertNotEmpty($campaign2NotProcessed);
             $this->assertCount(2, $campaign2NotProcessed);
@@ -424,7 +424,7 @@
          */
         public function testAddNewItem()
         {
-            $processed          = CampaignItem::NOT_PROCESSED;
+            $processed          = 0;
             $contact            = ContactTestHelper::createContactByNameForOwner('campaignContact', Yii::app()->user->userModel);
             $marketingList      = MarketingListTestHelper::createMarketingListByName('marketingList 04');
             $campaign           = CampaignTestHelper::createCampaign('campaign 03',
@@ -442,7 +442,7 @@
                                                                         $marketingList);
             $saved              = CampaignItem::addNewItem($processed, $contact, $campaign);
             $this->assertTrue($saved);
-            $campaignItems      = CampaignItem::getByProcessedAndCampaignId(CampaignItem::NOT_PROCESSED,
+            $campaignItems      = CampaignItem::getByProcessedAndCampaignId(0,
                                                                                         $campaign->id);
             $this->assertNotEmpty($campaignItems);
             $this->assertCount(1, $campaignItems);
@@ -481,7 +481,7 @@
                                                                                         Yii::app()->user->userModel);
 
             CampaignItem::registerCampaignItemsByCampaign($campaign, $contacts);
-            $campaignItems      = CampaignItem::getByProcessedAndCampaignId(CampaignItem::NOT_PROCESSED, $campaign->id);
+            $campaignItems      = CampaignItem::getByProcessedAndCampaignId(0, $campaign->id);
             $this->assertNotEmpty($campaignItems);
             $this->assertCount(5, $campaignItems);
         }

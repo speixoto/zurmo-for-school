@@ -70,7 +70,7 @@
                                                                                         null,
                                                                                         $marketingList);
             $campaignActiveAllItemsProcessedId      = $campaignActiveAllItemsProcessed->id;
-            CampaignItemTestHelper::createCampaignItem(CampaignItem::PROCESSED,
+            CampaignItemTestHelper::createCampaignItem(1,
                                                         $campaignActiveAllItemsProcessed,
                                                         $contact);
             $campaignProcessingAllItemsProcessed    = CampaignTestHelper::createCampaign('Processing Processed',
@@ -87,7 +87,7 @@
                                                                                         null,
                                                                                         $marketingList);
             $campaignProcessingAllItemsProcessedId      = $campaignProcessingAllItemsProcessed->id;
-            CampaignItemTestHelper::createCampaignItem(CampaignItem::PROCESSED,
+            CampaignItemTestHelper::createCampaignItem(1,
                                                         $campaignProcessingAllItemsProcessed,
                                                         $contact);
             $campaignProcessingNoItemsProcessed    = CampaignTestHelper::createCampaign('Processing Not Processed',
@@ -104,7 +104,7 @@
                                                                                         null,
                                                                                         $marketingList);
             $campaignProcessingNoItemsProcessedId      = $campaignProcessingNoItemsProcessed->id;
-            CampaignItemTestHelper::createCampaignItem(CampaignItem::NOT_PROCESSED,
+            CampaignItemTestHelper::createCampaignItem(0,
                                                         $campaignProcessingNoItemsProcessed,
                                                         $contact);
             $campaignActiveAllItemsProcessed->forgetAll();

@@ -72,7 +72,6 @@
             $marketingList                                  = MarketingListTestHelper::createMarketingListByName(
                                                                                                     'marketingList 01');
             $autoresponder                                  = AutoresponderTestHelper::createAutoresponder(
-                                                                                    'autoresponder 01',
                                                                                     'subject 01',
                                                                                     'text content',
                                                                                     'html content',
@@ -80,7 +79,7 @@
                                                                                     Autoresponder::OPERATION_SUBSCRIBE,
                                                                                     true,
                                                                                     $marketingList);
-            $processed                                      = AutoresponderItem::NOT_PROCESSED;
+            $processed                                      = 0;
             $processDateTime                                = DateTimeUtil::convertTimestampToDbFormatDateTime(time() - 100);
             $autoresponderItem                              = AutoresponderItemTestHelper::createAutoresponderItem(
                                                                                                         $processed,

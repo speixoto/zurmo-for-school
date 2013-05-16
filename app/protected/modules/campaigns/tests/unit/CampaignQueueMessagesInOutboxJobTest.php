@@ -94,9 +94,9 @@
                                                                                 null,
                                                                                 null,
                                                                                 null,
-                                                                                Campaign::TRACKING_DISABLED,
+                                                                                0,
                                                                                 $marketingList);
-            $processed                  = CampaignItem::NOT_PROCESSED;
+            $processed                  = 0;
             CampaignItemTestHelper::createCampaignItem($processed, $campaign);
             $this->assertTrue($job->run());
             $campaignItems         = CampaignItem::getAll();
@@ -125,12 +125,12 @@
                                                                                 null,
                                                                                 $marketingList);
 
-            $processed                  = CampaignItem::NOT_PROCESSED;
+            $processed                  = 0;
             CampaignItemTestHelper::createCampaignItem($processed, $campaign, $contact);
             $this->assertTrue($job->run());
             $campaignItems         = CampaignItem::getAll();
             $this->assertCount(1, $campaignItems);
-            $campaignItemsProcessed = CampaignItem::getByProcessedAndCampaignId(CampaignItem::PROCESSED, $campaign->id);
+            $campaignItemsProcessed = CampaignItem::getByProcessedAndCampaignId(1, $campaign->id);
             $this->assertCount(1, $campaignItemsProcessed);
         }
 
@@ -157,15 +157,15 @@
                                                                                 null,
                                                                                 null,
                                                                                 null,
-                                                                                Campaign::TRACKING_DISABLED,
+                                                                                0,
                                                                                 $marketingList);
 
-            $processed                  = CampaignItem::NOT_PROCESSED;
+            $processed                  = 0;
             CampaignItemTestHelper::createCampaignItem($processed, $campaign, $contact);
             $this->assertTrue($job->run());
             $campaignItems         = CampaignItem::getAll();
             $this->assertCount(2, $campaignItems);
-            $campaignItemsProcessed = CampaignItem::getByProcessedAndCampaignId(CampaignItem::PROCESSED, $campaign->id);
+            $campaignItemsProcessed = CampaignItem::getByProcessedAndCampaignId(1, $campaign->id);
             $this->assertCount(1, $campaignItemsProcessed);
         }
 
@@ -197,12 +197,12 @@
                                                                                 null,
                                                                                 null,
                                                                                 $marketingList);
-            $processed                  = CampaignItem::NOT_PROCESSED;
+            $processed                  = 0;
             CampaignItemTestHelper::createCampaignItem($processed, $campaign, $contact);
             $this->assertTrue($job->run());
             $campaignItems         = CampaignItem::getAll();
             $this->assertCount(3, $campaignItems);
-            $campaignItemsProcessed = CampaignItem::getByProcessedAndCampaignId(CampaignItem::PROCESSED, $campaign->id);
+            $campaignItemsProcessed = CampaignItem::getByProcessedAndCampaignId(1, $campaign->id);
             $this->assertCount(1, $campaignItemsProcessed);
         }
 
@@ -232,16 +232,16 @@
                                                                                 null,
                                                                                 null,
                                                                                 null,
-                                                                                Campaign::TRACKING_DISABLED,
+                                                                                0,
                                                                                 $marketingList,
                                                                                 false);
-            $processed                  = CampaignItem::NOT_PROCESSED;
+            $processed                  = 0;
             $campaignItem               = CampaignItemTestHelper::createCampaignItem($processed, $campaign, $contact);
             $this->assertFalse($job->run());
             $this->assertEquals('Provided content contains few invalid merge tags.', $job->getErrorMessage());
             $campaignItems         = CampaignItem::getAll();
             $this->assertCount(4, $campaignItems);
-            $campaignItemsProcessed = CampaignItem::getByProcessedAndCampaignId( CampaignItem::PROCESSED, $campaign->id);
+            $campaignItemsProcessed = CampaignItem::getByProcessedAndCampaignId( 1, $campaign->id);
             $this->assertCount(0, $campaignItemsProcessed);
             $this->assertTrue($campaignItem->delete()); // Need to get rid of this so it doesn't interfere with next test.
         }
@@ -274,13 +274,13 @@
                                                                                 null,
                                                                                 null,
                                                                                 $marketingList);
-            $processed                  = CampaignItem::NOT_PROCESSED;
+            $processed                  = 0;
             CampaignItemTestHelper::createCampaignItem($processed, $campaign, $contact);
             $this->assertTrue($job->run());
             $campaignItems         = CampaignItem::getAll();
             $this->assertCount(4, $campaignItems);
             $campaignItemsProcessed = CampaignItem::getByProcessedAndCampaignId(
-                                                                                            CampaignItem::PROCESSED,
+                                                                                            1,
                                                                                             $campaign->id);
             $this->assertCount(1, $campaignItemsProcessed);
         }
@@ -290,7 +290,7 @@
          */
         public function testRunWithCustomBatchSize()
         {
-            $unprocessedItems           = CampaignItem::getByProcessed(CampaignITem::NOT_PROCESSED);
+            $unprocessedItems           = CampaignItem::getByProcessed(0);
             $this->assertEmpty($unprocessedItems);
             $job                        = new CampaignQueueMessagesInOutboxJob();
             $email                      = new Email();
@@ -317,25 +317,25 @@
                                                                                 $marketingList);
             for ($i = 0; $i < 10; $i++)
             {
-                $processed                  = CampaignItem::NOT_PROCESSED;
+                $processed                  = 0;
                 CampaignItemTestHelper::createCampaignItem($processed, $campaign, $contact);
             }
             $unprocessedItems               = CampaignItem::getByProcessedAndCampaignId(
-                                                                                    CampaignItem::NOT_PROCESSED,
+                                                                                    0,
                                                                                     $campaign->id);
             $this->assertCount(10, $unprocessedItems);
             ZurmoConfigurationUtil::setByModuleName('CampaignsModule',
                                                     CampaignQueueMessagesInOutboxJob::BATCH_SIZE_CONFIG_KEY, 5);
             $this->assertTrue($job->run());
             $unprocessedItems               = CampaignItem::getByProcessedAndCampaignId(
-                                                                                    CampaignItem::NOT_PROCESSED,
+                                                                                    0,
                                                                                     $campaign->id);
             $this->assertCount(5, $unprocessedItems);
             ZurmoConfigurationUtil::setByModuleName('CampaignsModule',
                                                         CampaignQueueMessagesInOutboxJob::BATCH_SIZE_CONFIG_KEY, 3);
             $this->assertTrue($job->run());
             $unprocessedItems               = CampaignItem::getByProcessedAndCampaignId(
-                                                                                        CampaignItem::NOT_PROCESSED,
+                                                                                        0,
                                                                                         $campaign->id);
             $this->assertCount(2, $unprocessedItems);
         }

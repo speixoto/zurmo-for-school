@@ -83,15 +83,14 @@
         {
             $job                        = new AutoresponderQueueMessagesInOutboxJob();
             $marketingList              = MarketingListTestHelper::createMarketingListByName('marketingList 01');
-            $autoresponder              = AutoresponderTestHelper::createAutoresponder('autoresponder 01',
-                                                                                        'subject 01',
+            $autoresponder              = AutoresponderTestHelper::createAutoresponder('subject 01',
                                                                                         'text content',
                                                                                         'html content',
                                                                                         1,
                                                                                         Autoresponder::OPERATION_SUBSCRIBE,
                                                                                         false,
                                                                                         $marketingList);
-            $processed                  = AutoresponderItem::NOT_PROCESSED;
+            $processed                  = 0;
             $processDateTime            = DateTimeUtil::convertTimestampToDbFormatDateTime(time()-10);
             AutoresponderItemTestHelper::createAutoresponderItem($processed, $processDateTime, $autoresponder);
             $this->assertTrue($job->run());
@@ -107,22 +106,21 @@
             $job                        = new AutoresponderQueueMessagesInOutboxJob();
             $contact                    = ContactTestHelper::createContactByNameForOwner('contact 01', $this->user);
             $marketingList              = MarketingListTestHelper::createMarketingListByName('marketingList 02');
-            $autoresponder              = AutoresponderTestHelper::createAutoresponder('autoresponder 02',
-                                                                                        'subject 02',
+            $autoresponder              = AutoresponderTestHelper::createAutoresponder('subject 02',
                                                                                         'text content',
                                                                                         'html content',
                                                                                         1,
                                                                                         Autoresponder::OPERATION_SUBSCRIBE,
                                                                                         true,
                                                                                         $marketingList);
-            $processed                  = AutoresponderItem::NOT_PROCESSED;
+            $processed                  = 0;
             $processDateTime            = DateTimeUtil::convertTimestampToDbFormatDateTime(time()-10);
             AutoresponderItemTestHelper::createAutoresponderItem($processed, $processDateTime, $autoresponder, $contact);
             $this->assertTrue($job->run());
             $autoresponderItems         = AutoresponderItem::getAll();
             $this->assertCount(1, $autoresponderItems);
             $autoresponderItemsProcessed = AutoresponderItem::getByProcessedAndAutoresponderId(
-                                                                                            AutoresponderItem::PROCESSED,
+                                                                                            1,
                                                                                             $autoresponder->id);
             $this->assertCount(1, $autoresponderItemsProcessed);
         }
@@ -139,22 +137,21 @@
             $contact->primaryEmail      = $email;
             $this->assertTrue($contact->save());
             $marketingList              = MarketingListTestHelper::createMarketingListByName('marketingList 03');
-            $autoresponder              = AutoresponderTestHelper::createAutoresponder('autoresponder 03',
-                                                                                        'subject 03',
+            $autoresponder              = AutoresponderTestHelper::createAutoresponder('subject 03',
                                                                                         'text content',
                                                                                         'html content',
                                                                                         1,
                                                                                         Autoresponder::OPERATION_SUBSCRIBE,
                                                                                         false,
                                                                                         $marketingList);
-            $processed                  = AutoresponderItem::NOT_PROCESSED;
+            $processed                  = 0;
             $processDateTime            = DateTimeUtil::convertTimestampToDbFormatDateTime(time()-10);
             AutoresponderItemTestHelper::createAutoresponderItem($processed, $processDateTime, $autoresponder, $contact);
             $this->assertTrue($job->run());
             $autoresponderItems         = AutoresponderItem::getAll();
             $this->assertCount(2, $autoresponderItems);
             $autoresponderItemsProcessed = AutoresponderItem::getByProcessedAndAutoresponderId(
-                                                                                            AutoresponderItem::PROCESSED,
+                                                                                            1,
                                                                                             $autoresponder->id);
             $this->assertCount(1, $autoresponderItemsProcessed);
         }
@@ -174,22 +171,21 @@
                                                                                                 'description goes here',
                                                                                                 'fromName',
                                                                                                 'from@domain.com');
-            $autoresponder              = AutoresponderTestHelper::createAutoresponder('autoresponder 04',
-                                                                                        'subject 04',
+            $autoresponder              = AutoresponderTestHelper::createAutoresponder('subject 04',
                                                                                         'text content',
                                                                                         'html content',
                                                                                         1,
                                                                                         Autoresponder::OPERATION_SUBSCRIBE,
                                                                                         true,
                                                                                         $marketingList);
-            $processed                  = AutoresponderItem::NOT_PROCESSED;
+            $processed                  = 0;
             $processDateTime            = DateTimeUtil::convertTimestampToDbFormatDateTime(time()-10);
             AutoresponderItemTestHelper::createAutoresponderItem($processed, $processDateTime, $autoresponder, $contact);
             $this->assertTrue($job->run());
             $autoresponderItems         = AutoresponderItem::getAll();
             $this->assertCount(3, $autoresponderItems);
             $autoresponderItemsProcessed = AutoresponderItem::getByProcessedAndAutoresponderId(
-                                                                                            AutoresponderItem::PROCESSED,
+                                                                                            1,
                                                                                             $autoresponder->id);
             $this->assertCount(1, $autoresponderItemsProcessed);
         }
@@ -209,8 +205,7 @@
                                                                                                 'description goes here',
                                                                                                 'fromName',
                                                                                                 'from@domain.com');
-            $autoresponder              = AutoresponderTestHelper::createAutoresponder('autoresponder 05',
-                                                                                            'subject 05',
+            $autoresponder              = AutoresponderTestHelper::createAutoresponder('subject 05',
                                                                                             '[[TEXT^CONTENT]]',
                                                                                             '[[HTML^CONTENT]]',
                                                                                             1,
@@ -218,7 +213,7 @@
                                                                                             false,
                                                                                             $marketingList,
                                                                                             false);
-            $processed                  = AutoresponderItem::NOT_PROCESSED;
+            $processed                  = 0;
             $processDateTime            = DateTimeUtil::convertTimestampToDbFormatDateTime(time()-10);
             $autoresponderItem          = AutoresponderItemTestHelper::createAutoresponderItem($processed,
                                                                                                 $processDateTime,
@@ -229,7 +224,7 @@
             $autoresponderItems         = AutoresponderItem::getAll();
             $this->assertCount(4, $autoresponderItems);
             $autoresponderItemsProcessed = AutoresponderItem::getByProcessedAndAutoresponderId(
-                                                                                            AutoresponderItem::PROCESSED,
+                                                                                            1,
                                                                                             $autoresponder->id);
             $this->assertCount(0, $autoresponderItemsProcessed);
             $this->assertTrue($autoresponderItem->delete()); // Need to get rid of this so it doesn't interfere with next test.
@@ -250,22 +245,21 @@
                                                                                                 'description goes here',
                                                                                                 'fromName',
                                                                                                 'from@domain.com');
-            $autoresponder              = AutoresponderTestHelper::createAutoresponder('autoresponder 06',
-                                                                                        'subject 06',
+            $autoresponder              = AutoresponderTestHelper::createAutoresponder('subject 06',
                                                                                         '[[FIRST^NAME]]',
                                                                                         '[[LAST^NAME]]',
                                                                                         1,
                                                                                         Autoresponder::OPERATION_SUBSCRIBE,
                                                                                         true,
                                                                                         $marketingList);
-            $processed                  = AutoresponderItem::NOT_PROCESSED;
+            $processed                  = 0;
             $processDateTime            = DateTimeUtil::convertTimestampToDbFormatDateTime(time()-10);
             AutoresponderItemTestHelper::createAutoresponderItem($processed, $processDateTime, $autoresponder, $contact);
             $this->assertTrue($job->run());
             $autoresponderItems         = AutoresponderItem::getAll();
             $this->assertCount(4, $autoresponderItems);
             $autoresponderItemsProcessed = AutoresponderItem::getByProcessedAndAutoresponderId(
-                                                                                            AutoresponderItem::PROCESSED,
+                                                                                            1,
                                                                                             $autoresponder->id);
             $this->assertCount(1, $autoresponderItemsProcessed);
         }
@@ -275,7 +269,7 @@
          */
         public function testRunWithCustomBatchSize()
         {
-            $unprocessedItems           = AutoresponderItem::getByProcessed(AutoresponderITem::NOT_PROCESSED);
+            $unprocessedItems           = AutoresponderItem::getByProcessed(0);
             $this->assertEmpty($unprocessedItems);
             $job                        = new AutoresponderQueueMessagesInOutboxJob();
             $email                      = new Email();
@@ -287,8 +281,7 @@
                                                                                             'description goes here',
                                                                                             'fromName',
                                                                                             'from@domain.com');
-            $autoresponder              = AutoresponderTestHelper::createAutoresponder('autoresponder 07',
-                                                                                        'subject 07',
+            $autoresponder              = AutoresponderTestHelper::createAutoresponder('subject 07',
                                                                                         '[[FIRST^NAME]]',
                                                                                         '[[LAST^NAME]]',
                                                                                         1,
@@ -297,26 +290,26 @@
                                                                                         $marketingList);
             for ($i = 0; $i < 10; $i++)
             {
-                $processed                  = AutoresponderItem::NOT_PROCESSED;
+                $processed                  = 0;
                 $processDateTime            = DateTimeUtil::convertTimestampToDbFormatDateTime(time() - rand(10, 500));
                 AutoresponderItemTestHelper::createAutoresponderItem($processed, $processDateTime, $autoresponder, $contact);
             }
             $unprocessedItems               = AutoresponderItem::getByProcessedAndAutoresponderId(
-                                                                                    AutoresponderItem::NOT_PROCESSED,
+                                                                                    0,
                                                                                     $autoresponder->id);
             $this->assertCount(10, $unprocessedItems);
             ZurmoConfigurationUtil::setByModuleName('AutorespondersModule',
                                                     AutoresponderQueueMessagesInOutboxJob::BATCH_SIZE_CONFIG_KEY, 5);
             $this->assertTrue($job->run());
             $unprocessedItems               = AutoresponderItem::getByProcessedAndAutoresponderId(
-                                                                                    AutoresponderItem::NOT_PROCESSED,
+                                                                                    0,
                                                                                     $autoresponder->id);
             $this->assertCount(5, $unprocessedItems);
             ZurmoConfigurationUtil::setByModuleName('AutorespondersModule',
                                                         AutoresponderQueueMessagesInOutboxJob::BATCH_SIZE_CONFIG_KEY, 3);
             $this->assertTrue($job->run());
             $unprocessedItems               = AutoresponderItem::getByProcessedAndAutoresponderId(
-                                                                                        AutoresponderItem::NOT_PROCESSED,
+                                                                                        0,
                                                                                         $autoresponder->id);
             $this->assertCount(2, $unprocessedItems);
         }

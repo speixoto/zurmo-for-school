@@ -40,10 +40,6 @@
 
         const TYPE_DYNAMIC                      = 2;
 
-        const SUPPORTS_PLAIN_TEXT_ONLY          = 0;
-
-        const SUPPORTS_RICH_TEXT                = 1;
-
         const STATUS_INCOMPLETE                 = 1;
 
         const STATUS_PAUSED                     = 2;
@@ -53,14 +49,6 @@
         const STATUS_PROCESSING                 = 4;
 
         const STATUS_COMPLETED                  = 5;
-
-        const TRACKING_DISABLED                 = 0;
-
-        const TRACKING_ENABLED                  = 1;
-
-        const SEND_DELAYED                      = 0;
-
-        const SEND_NOW                          = 1;
 
         public static function getByName($name)
         {
@@ -204,12 +192,10 @@
                                                                                     'max' => static::STATUS_COMPLETED),
                     array('supportsRichText',       'required'),
                     array('supportsRichText',       'type',    'type' => 'integer'),
-                    array('supportsRichText',       'numerical',  'min'  => static::SUPPORTS_PLAIN_TEXT_ONLY,
-                                                                        'max' => static::SUPPORTS_RICH_TEXT),
+                    array('supportsRichText',       'numerical',  'min'  => 0, 'max' => 1),
                     array('sendNow',                'required'),
                     array('sendNow',                'type',    'type' => 'integer'),
-                    array('sendNow',                'numerical',  'min'  => static::SEND_DELAYED,
-                                                                                            'max' => static::SEND_NOW),
+                    array('sendNow',                'numerical',  'min'  => 0, 'max' => 1),
                     array('sendingDateTime',        'type', 'type' => 'datetime'),
                     array('sendingDateTime',        'validateSendDateTimeAgainstSendNow'),
                     array('fromName',                'required'),
@@ -229,14 +215,12 @@
                     array('htmlContent',            'CampaignMergeTagsValidator', 'except' => 'autoBuildDatabase'),
                     array('textContent',            'CampaignMergeTagsValidator', 'except' => 'autoBuildDatabase'),
                     array('enableTracking',         'type',    'type' => 'integer'),
-                    array('enableTracking',         'numerical', 'min' => static::TRACKING_DISABLED, // boolean gives error during schema build
-                                                                                    'max' => static::TRACKING_ENABLED),
-                    array('enableTracking',         'default', 'value' => static::TRACKING_DISABLED),
+                    array('enableTracking',         'numerical', 'min' => 0, 'max' => 1),
+                    array('enableTracking',         'default', 'value' => 0),
                 ),
                 'relations' => array(
-                    'campaignItems'                 => array(RedBeanModel::HAS_MANY, 'CampaignItem'),
-                    'marketingList'                 => array(RedBeanModel::HAS_ONE, 'MarketingList',
-                                                                                            RedBeanModel::NOT_OWNED),
+                    'campaignItems'     => array(RedBeanModel::HAS_MANY, 'CampaignItem'),
+                    'marketingList'     => array(RedBeanModel::HAS_ONE, 'MarketingList', RedBeanModel::NOT_OWNED),
                 ),
                 'elements' => array(
                     'htmlContent'                   => 'TextArea',
@@ -253,7 +237,7 @@
 
         public function validateSendDateTimeAgainstSendNow($attribute, $params)
         {
-            if (!$this->hasErrors('sendNow') && $this->sendNow == static::SEND_DELAYED && empty($this->$attribute))
+            if (!$this->hasErrors('sendNow') && $this->sendNow == 0 && empty($this->$attribute))
             {
                 $this->addError($attribute, Zurmo::t('CampaignsModule', 'Send On cannot be blank.'));
                 return false;
@@ -267,7 +251,7 @@
             {
                 return false;
             }
-            if ($this->sendNow == static::SEND_NOW && empty($this->sendingDateTime))
+            if ($this->sendNow == 1 && empty($this->sendingDateTime))
             {
                 // set sendingDateTime to a past date so its sending immediately in next job execution.
                 $this->sendingDateTime = DateTimeUtil::convertTimestampToDbFormatDateTime(time() - 180);

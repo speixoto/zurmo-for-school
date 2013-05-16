@@ -84,7 +84,7 @@
                                                                                 null,
                                                                                 $marketingList,
                                                                                 false);
-            $processed                  = CampaignItem::NOT_PROCESSED;
+            $processed                  = 0;
             $campaignItem               = CampaignItemTestHelper::createCampaignItem($processed, $campaign, $contact);
             CampaignItemsUtil::processDueItem($campaignItem);
         }
@@ -107,12 +107,12 @@
                                                                                 null,
                                                                                 null,
                                                                                 null,
-                                                                                Campaign::TRACKING_DISABLED,
+                                                                                0,
                                                                                 $marketingList);
-            $processed                  = CampaignItem::NOT_PROCESSED;
+            $processed                  = 0;
             $campaignItem               = CampaignItemTestHelper::createCampaignItem($processed, $campaign, $contact);
             CampaignItemsUtil::processDueItem($campaignItem);
-            $this->assertEquals(CampaignItem::PROCESSED, $campaignItem->processed);
+            $this->assertEquals(1, $campaignItem->processed);
             $emailMessage               = $campaignItem->emailMessage;
             $this->assertEquals($marketingList->owner, $emailMessage->owner);
             $this->assertNull($emailMessage->subject);
@@ -148,10 +148,10 @@
                                                                                 null,
                                                                                 $marketingList);
 
-            $processed                  = CampaignItem::NOT_PROCESSED;
+            $processed                  = 0;
             $campaignItem               = CampaignItemTestHelper::createCampaignItem($processed, $campaign, $contact);
             CampaignItemsUtil::processDueItem($campaignItem);
-            $this->assertEquals(CampaignItem::PROCESSED, $campaignItem->processed);
+            $this->assertEquals(1, $campaignItem->processed);
             $emailMessage               = $campaignItem->emailMessage;
             $this->assertEquals($marketingList->owner, $emailMessage->owner);
             $this->assertEquals($campaign->subject, $emailMessage->subject);
@@ -195,12 +195,12 @@
                                                                                 null,
                                                                                 null,
                                                                                 null,
-                                                                                Campaign::TRACKING_DISABLED,
+                                                                                0,
                                                                                 $marketingList);
-            $processed                  = CampaignItem::NOT_PROCESSED;
+            $processed                  = 0;
             $campaignItem               = CampaignItemTestHelper::createCampaignItem($processed, $campaign, $contact);
             CampaignItemsUtil::processDueItem($campaignItem);
-            $this->assertEquals(CampaignItem::PROCESSED, $campaignItem->processed);
+            $this->assertEquals(1, $campaignItem->processed);
             $emailMessage               = $campaignItem->emailMessage;
             $this->assertEquals($marketingList->owner, $emailMessage->owner);
             $this->assertEquals($campaign->subject, $emailMessage->subject);
@@ -243,11 +243,11 @@
                                                                                 null,
                                                                                 null,
                                                                                 $marketingList);
-            $processed                  = CampaignItem::NOT_PROCESSED;
+            $processed                  = 0;
             $processDateTime            = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
             $campaignItem               = CampaignItemTestHelper::createCampaignItem($processed, $campaign, $contact);
             CampaignItemsUtil::processDueItem($campaignItem);
-            $this->assertEquals(CampaignItem::PROCESSED, $campaignItem->processed);
+            $this->assertEquals(1, $campaignItem->processed);
             $emailMessage               = $campaignItem->emailMessage;
             $this->assertEquals($marketingList->owner, $emailMessage->owner);
             $this->assertEquals($campaign->subject, $emailMessage->subject);
@@ -277,7 +277,7 @@
             $contact3           = ContactTestHelper::createContactByNameForOwner('campaignContact 03', $this->user);
             $contact4           = ContactTestHelper::createContactByNameForOwner('campaignContact 04', $this->user);
             $contact5           = ContactTestHelper::createContactByNameForOwner('campaignContact 05', $this->user);
-            $processed          = CampaignItem::NOT_PROCESSED;
+            $processed          = 0;
             MarketingListMemberTestHelper::createMarketingListMember($processed, $marketingList, $contact1);
             MarketingListMemberTestHelper::createMarketingListMember($processed, $marketingList, $contact2);
             MarketingListMemberTestHelper::createMarketingListMember($processed, $marketingList, $contact3);

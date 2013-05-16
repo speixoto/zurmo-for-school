@@ -163,7 +163,7 @@
 
         protected static function markItemAsProcessed($item, $itemClass)
         {
-            $item->processed   = $itemClass::PROCESSED;
+            $item->processed   = 1;
             return $item->unrestrictedSave();
         }
 

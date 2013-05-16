@@ -34,7 +34,7 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class AutoresponderNameElement extends TextElement
+    class AutoresponderSubjectElement extends TextElement
     {
     }
 ?>

@@ -34,12 +34,12 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class AutoresponderNameListViewColumnAdapter extends TextListViewColumnAdapter
+    class AutoresponderSubjectListViewColumnAdapter extends TextListViewColumnAdapter
     {
         public function renderGridViewData()
         {
             $className  = get_class($this);
-            $value      = $className . '::resolveNameWithRedirectURl($data->name, $data->id, "' .
+            $value      = $className . '::resolveSubjectWithRedirectURl($data->subject, $data->id, "' .
                                                                                         $this->view->redirectUrl . '")';
             return array(
                 'name'  => 'Name',
@@ -48,11 +48,11 @@
             );
         }
 
-        public static function resolveNameWithRedirectURl($name, $id, $redirectUrl)
+        public static function resolveSubjectWithRedirectURl($subject, $id, $redirectUrl)
         {
-            $url = Yii::app()->createUrl('/autoresponders/default/details',
+            $url = Yii::app()->createUrl('/autoresponders/default/edit',
                                                                 array('id' => $id, 'redirectUrl' => $redirectUrl));
-            return ZurmoHtml::link($name, $url);
+            return ZurmoHtml::link($subject, $url);
         }
     }
 ?>

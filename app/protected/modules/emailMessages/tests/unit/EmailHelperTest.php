@@ -245,7 +245,6 @@
                 $user->primaryEmail->emailAddress = Yii::app()->params['emailTestAccounts']['userImapSettings']['imapUsername'];
                 $this->assertTrue($user->save());
 
-
                 Yii::app()->imap->connect();
                 Yii::app()->imap->deleteMessages(true);
                 $imapStats = Yii::app()->imap->getMessageBoxStatsDetailed();

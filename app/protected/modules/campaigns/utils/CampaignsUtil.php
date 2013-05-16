@@ -59,7 +59,7 @@
         protected static function areAllCampaignItemsProcessed($campaignId)
         {
             // TODO: @Shoaibi/@Jason: Critical: Should we account for campaigns that are in processing but no items? Items won't be generated against those anyway.
-            $unprocessedCampaignItems = CampaignItem::getByProcessedAndCampaignId(CampaignItem::NOT_PROCESSED, $campaignId);
+            $unprocessedCampaignItems = CampaignItem::getByProcessedAndCampaignId(0, $campaignId);
             return (count($unprocessedCampaignItems) == 0);
         }
     }
