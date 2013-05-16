@@ -35,44 +35,32 @@
      ********************************************************************************/
 
     /**
-     * Autoresponder related array of random seed data parts.
+     * Helper class for working with campaigns
      */
-    return array(
-        'name'                          => array(
-            '1 hour after subscription',
-            '1 day after subscription',
-            '1 hour after unsubscription',
-            '4 hours after unsubscription',
-        ),
-        'subject'                       => array(
-            'You are now subscribed.',
-            'You subscribed today.',
-            'You are now unsubscribed',
-            'Your unsubscription triggered the next big bang',
-        ),
-        'htmlContent'                  => array(
-            '<p>Thanks for <i>subscribing</i>. You are not gonna <strong>regret</strong> this.</p>',
-            '<p>So you like <i>our</i> emails so far?</p>',
-            '<p><strong>You are now unsubscribed. Its really sad to see you go but you can always subscribe</strong></p>',
-            '<p>So you are <strong>not</strong> coming back?</p>',
-        ),
-        'textContent'                  => array(
-            'Thanks for subscribing. You are not gonna regret this.',
-            'So you like our emails so far?',
-            'You are now unsubscribed. Its really sad to see you go but you can always subscribe',
-            'So you are not coming back?',
-        ),
-        'secondsFromOperation'                  => array(
-            60*60,
-            60*60*24,
-            60*60,
-            60*60*4,
-        ),
-        'operationType'                  => array(
-            Autoresponder::OPERATION_SUBSCRIBE,
-            Autoresponder::OPERATION_SUBSCRIBE,
-            Autoresponder::OPERATION_UNSUBSCRIBE,
-            Autoresponder::OPERATION_UNSUBSCRIBE,
-        ),
-    );
+    abstract class CampaignsUtil
+    {
+        public static function markProcessedCampaignsAsCompleted($pageSize = null)
+        {
+            $processingCampaigns = Campaign::getByStatus(Campaign::STATUS_PROCESSING, $pageSize);
+            foreach ($processingCampaigns as $processingCampaign)
+            {
+                if (static::areAllCampaignItemsProcessed($processingCampaign->id))
+                {
+                    $processingCampaign->status = Campaign::STATUS_COMPLETED;
+                    if (!$processingCampaign->save())
+                    {
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
+
+        protected static function areAllCampaignItemsProcessed($campaignId)
+        {
+            // TODO: @Shoaibi/@Jason: Critical: Should we account for campaigns that are in processing but no items? Items won't be generated against those anyway.
+            $unprocessedCampaignItems = CampaignItem::getByProcessedAndCampaignId(0, $campaignId);
+            return (count($unprocessedCampaignItems) == 0);
+        }
+    }
 ?>

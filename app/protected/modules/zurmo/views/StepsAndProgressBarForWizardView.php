@@ -35,44 +35,37 @@
      ********************************************************************************/
 
     /**
-     * Autoresponder related array of random seed data parts.
+     * Base View for showing a  progress bar and 'steps' in that progress bar. For use with a wizard view such as reporting
+     * or workflow.
      */
-    return array(
-        'name'                          => array(
-            '1 hour after subscription',
-            '1 day after subscription',
-            '1 hour after unsubscription',
-            '4 hours after unsubscription',
-        ),
-        'subject'                       => array(
-            'You are now subscribed.',
-            'You subscribed today.',
-            'You are now unsubscribed',
-            'Your unsubscription triggered the next big bang',
-        ),
-        'htmlContent'                  => array(
-            '<p>Thanks for <i>subscribing</i>. You are not gonna <strong>regret</strong> this.</p>',
-            '<p>So you like <i>our</i> emails so far?</p>',
-            '<p><strong>You are now unsubscribed. Its really sad to see you go but you can always subscribe</strong></p>',
-            '<p>So you are <strong>not</strong> coming back?</p>',
-        ),
-        'textContent'                  => array(
-            'Thanks for subscribing. You are not gonna regret this.',
-            'So you like our emails so far?',
-            'You are now unsubscribed. Its really sad to see you go but you can always subscribe',
-            'So you are not coming back?',
-        ),
-        'secondsFromOperation'                  => array(
-            60*60,
-            60*60*24,
-            60*60,
-            60*60*4,
-        ),
-        'operationType'                  => array(
-            Autoresponder::OPERATION_SUBSCRIBE,
-            Autoresponder::OPERATION_SUBSCRIBE,
-            Autoresponder::OPERATION_UNSUBSCRIBE,
-            Autoresponder::OPERATION_UNSUBSCRIBE,
-        ),
-    );
+    abstract class StepsAndProgressBarForWizardView extends MetadataView
+    {
+        /**
+         * @return array
+         */
+        abstract protected function getSpanLabels();
+
+        public function isUniqueToAPage()
+        {
+            return true;
+        }
+
+        protected function renderContent()
+        {
+            $content = ZurmoHtml::tag('div', array('class' => 'progress-bar'), '');
+            $content = ZurmoHtml::tag('div', array('class' => 'progress-back'), $content);
+            $spanContent = $this->getSpanContent();
+            return ZurmoHtml::tag('div', array('class' => 'progress'), $content . $spanContent);
+        }
+
+        protected function getSpanContent()
+        {
+            $content = null;
+            foreach($this->getSpanLabels() as $label)
+            {
+                $content .= ZurmoHtml::tag('div', array(), $label);
+            }
+            return $content;
+        }
+    }
 ?>

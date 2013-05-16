@@ -39,9 +39,13 @@
      */
     class EmailBox extends Item
     {
-        const NOTIFICATIONS_NAME   = 'System Notifications';
+        const NOTIFICATIONS_NAME    = 'System Notifications';
 
-        const USER_DEFAULT_NAME    = 'Default';
+        const USER_DEFAULT_NAME     = 'Default';
+
+        const AUTORESPONDERS_NAME   = 'Autoresponders';
+
+        const CAMPAIGNS_NAME        = 'Campaigns';
 
         protected $isNotifications = false;
 
@@ -66,59 +70,18 @@
         public static function resolveAndGetByName($name)
         {
             assert('is_string($name)');
-            assert('$name != ""');
+            assert('!empty($name)');
             try
             {
                 $box = static::getByName($name);
             }
             catch (NotFoundException $e)
             {
-                if ($name == self::NOTIFICATIONS_NAME)
+                // we do this to avoid three "||" inside if below.
+                $allowedBoxes = array(static::NOTIFICATIONS_NAME, static::AUTORESPONDERS_NAME, static::CAMPAIGNS_NAME);
+                if (in_array($name, $allowedBoxes))
                 {
-                    $box = new EmailBox();
-                    $box->name        = self::NOTIFICATIONS_NAME;
-                    $folder           = new EmailFolder();
-                    $folder->name     = EmailFolder::getDefaultDraftName();
-                    $folder->type     = EmailFolder::TYPE_DRAFT;
-                    $folder->emailBox = $box;
-                    $box->folders->add($folder);
-                    $folder           = new EmailFolder();
-                    $folder->name     = EmailFolder::getDefaultSentName();
-                    $folder->type     = EmailFolder::TYPE_SENT;
-                    $folder->emailBox = $box;
-                    $box->folders->add($folder);
-                    $folder           = new EmailFolder();
-                    $folder->name     = EmailFolder::getDefaultOutboxName();
-                    $folder->type     = EmailFolder::TYPE_OUTBOX;
-                    $folder->emailBox = $box;
-                    $box->folders->add($folder);
-                    $folder           = new EmailFolder();
-                    $folder->name     = EmailFolder::getDefaultOutboxErrorName();
-                    $folder->type     = EmailFolder::TYPE_OUTBOX_ERROR;
-                    $folder->emailBox = $box;
-                    $box->folders->add($folder);
-                    $folder           = new EmailFolder();
-                    $folder->name     = EmailFolder::getDefaultOutboxFailureName();
-                    $folder->type     = EmailFolder::TYPE_OUTBOX_FAILURE;
-                    $folder->emailBox = $box;
-                    $box->folders->add($folder);
-                    $folder           = new EmailFolder();
-                    $folder->name     = EmailFolder::getDefaultInboxName();
-                    $folder->type     = EmailFolder::TYPE_INBOX;
-                    $folder->emailBox = $box;
-                    $box->folders->add($folder);
-                    $folder           = new EmailFolder();
-                    $folder->name     = EmailFolder::getDefaultArchivedName();
-                    $folder->type     = EmailFolder::TYPE_ARCHIVED;
-                    $folder->emailBox = $box;
-                    $box->folders->add($folder);
-                    $folder           = new EmailFolder();
-                    $folder->name     = EmailFolder::getDefaultArchivedUnmatchedName();
-                    $folder->type     = EmailFolder::TYPE_ARCHIVED_UNMATCHED;
-                    $folder->emailBox = $box;
-                    $box->folders->add($folder);
-                    $saved            = $box->save();
-                    assert('$saved');
+                    $box = static::makeSystemMissingBox($name);
                 }
                 else
                 {
@@ -126,6 +89,55 @@
                 }
             }
             $box->setSpecialBox();
+            return $box;
+        }
+
+        protected static function makeSystemMissingBox($name)
+        {
+            $box                = new EmailBox();
+            $box->name          = $name;
+            $folder             = new EmailFolder();
+            $folder->name       = EmailFolder::getDefaultDraftName();
+            $folder->type       = EmailFolder::TYPE_DRAFT;
+            $folder->emailBox   = $box;
+            $box->folders->add($folder);
+            $folder             = new EmailFolder();
+            $folder->name       = EmailFolder::getDefaultSentName();
+            $folder->type       = EmailFolder::TYPE_SENT;
+            $folder->emailBox   = $box;
+            $box->folders->add($folder);
+            $folder             = new EmailFolder();
+            $folder->name       = EmailFolder::getDefaultOutboxName();
+            $folder->type       = EmailFolder::TYPE_OUTBOX;
+            $folder->emailBox   = $box;
+            $box->folders->add($folder);
+            $folder             = new EmailFolder();
+            $folder->name       = EmailFolder::getDefaultOutboxErrorName();
+            $folder->type       = EmailFolder::TYPE_OUTBOX_ERROR;
+            $folder->emailBox   = $box;
+            $box->folders->add($folder);
+            $folder             = new EmailFolder();
+            $folder->name       = EmailFolder::getDefaultOutboxFailureName();
+            $folder->type       = EmailFolder::TYPE_OUTBOX_FAILURE;
+            $folder->emailBox   = $box;
+            $box->folders->add($folder);
+            $folder             = new EmailFolder();
+            $folder->name       = EmailFolder::getDefaultInboxName();
+            $folder->type       = EmailFolder::TYPE_INBOX;
+            $folder->emailBox   = $box;
+            $box->folders->add($folder);
+            $folder             = new EmailFolder();
+            $folder->name       = EmailFolder::getDefaultArchivedName();
+            $folder->type       = EmailFolder::TYPE_ARCHIVED;
+            $folder->emailBox   = $box;
+            $box->folders->add($folder);
+            $folder             = new EmailFolder();
+            $folder->name       = EmailFolder::getDefaultArchivedUnmatchedName();
+            $folder->type       = EmailFolder::TYPE_ARCHIVED_UNMATCHED;
+            $folder->emailBox   = $box;
+            $box->folders->add($folder);
+            $saved              = $box->save();
+            assert('$saved');
             return $box;
         }
 
@@ -142,7 +154,10 @@
 
         protected function setSpecialBox()
         {
-            $this->isNotifications = $this->name == self::NOTIFICATIONS_NAME;
+            // TODO: @Shoaibi/@Jason: Critical: Should this really be called isNotifications?
+            // TODO: @Shoaibi/@Jason: Critical: Why are we setting name here?
+            //$this->isNotifications = $this->name == self::NOTIFICATIONS_NAME;
+            $this->isNotifications = true;
         }
 
         public function isSpecialBox()

@@ -35,44 +35,37 @@
      ********************************************************************************/
 
     /**
-     * Autoresponder related array of random seed data parts.
+     * A job for marking campaigns as completed which have all recipients processed.
      */
-    return array(
-        'name'                          => array(
-            '1 hour after subscription',
-            '1 day after subscription',
-            '1 hour after unsubscription',
-            '4 hours after unsubscription',
-        ),
-        'subject'                       => array(
-            'You are now subscribed.',
-            'You subscribed today.',
-            'You are now unsubscribed',
-            'Your unsubscription triggered the next big bang',
-        ),
-        'htmlContent'                  => array(
-            '<p>Thanks for <i>subscribing</i>. You are not gonna <strong>regret</strong> this.</p>',
-            '<p>So you like <i>our</i> emails so far?</p>',
-            '<p><strong>You are now unsubscribed. Its really sad to see you go but you can always subscribe</strong></p>',
-            '<p>So you are <strong>not</strong> coming back?</p>',
-        ),
-        'textContent'                  => array(
-            'Thanks for subscribing. You are not gonna regret this.',
-            'So you like our emails so far?',
-            'You are now unsubscribed. Its really sad to see you go but you can always subscribe',
-            'So you are not coming back?',
-        ),
-        'secondsFromOperation'                  => array(
-            60*60,
-            60*60*24,
-            60*60,
-            60*60*4,
-        ),
-        'operationType'                  => array(
-            Autoresponder::OPERATION_SUBSCRIBE,
-            Autoresponder::OPERATION_SUBSCRIBE,
-            Autoresponder::OPERATION_UNSUBSCRIBE,
-            Autoresponder::OPERATION_UNSUBSCRIBE,
-        ),
-    );
+    class CampaignMarkCompletedJob extends BaseJob
+    {
+        /**
+         * @returns Translated label that describes this job type.
+         */
+        public static function getDisplayName()
+        {
+           return Zurmo::t('CampaignsModule', 'Mark campaigns as completed');
+        }
+
+        /**
+         * @return The type of the NotificationRules
+         */
+        public static function getType()
+        {
+            return 'CampaignMarkCompleted';
+        }
+
+        public static function getRecommendedRunFrequencyContent()
+        {
+            return Zurmo::t('JobsManagerModule', 'Every hour');
+        }
+
+        /**
+         * @see BaseJob::run()
+         */
+        public function run()
+        {
+            return CampaignsUtil::markProcessedCampaignsAsCompleted();
+        }
+    }
 ?>

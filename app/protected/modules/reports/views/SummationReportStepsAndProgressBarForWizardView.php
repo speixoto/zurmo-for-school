@@ -34,25 +34,21 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class AutoresponderNameListViewColumnAdapter extends TextListViewColumnAdapter
+    /**
+     * Progress bar and steps for the summation report wizard
+     */
+    class SummationReportStepsAndProgressBarForWizardView extends StepsAndProgressBarForWizardView
     {
-        public function renderGridViewData()
+        protected function getSpanLabels()
         {
-            $className  = get_class($this);
-            $value      = $className . '::resolveNameWithRedirectURl($data->name, $data->id, "' .
-                                                                                        $this->view->redirectUrl . '")';
-            return array(
-                'name'  => 'Name',
-                'value' => $value,
-                'type'  => 'raw',
-            );
-        }
-
-        public static function resolveNameWithRedirectURl($name, $id, $redirectUrl)
-        {
-            $url = Yii::app()->createUrl('/autoresponders/default/details',
-                                                                array('id' => $id, 'redirectUrl' => $redirectUrl));
-            return ZurmoHtml::link($name, $url);
+            return array(Zurmo::t('Core', 'Module'),
+                         Zurmo::t('ReportingModule', 'Filters'),
+                         Zurmo::t('ReportingModule', 'Groupings'),
+                         Zurmo::t('ReportingModule', 'Columns'),
+                         Zurmo::t('ReportingModule', 'Drill Down Columns'),
+                         Zurmo::t('ReportingModule', 'Ordering'),
+                         Zurmo::t('ReportingModule', 'Chart'),
+                         Zurmo::t('ReportingModule', 'General'));
         }
     }
 ?>

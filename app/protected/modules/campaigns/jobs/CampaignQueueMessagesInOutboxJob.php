@@ -35,22 +35,18 @@
      ********************************************************************************/
 
     /**
-     * A job for processing autoresponder messages that are not sent immediately when triggered
+     * A job for processing campaign messages that are not sent immediately when triggered
      */
-
-    class AutoresponderMessageInQueueJob extends BaseJob
+    class CampaignQueueMessagesInOutboxJob extends BaseJob
     {
-        /**
-         * @var int
-         */
-        protected static $pageSize = 200;
+        const BATCH_SIZE_CONFIG_KEY = 'CampaignBatchSize';
 
         /**
          * @returns Translated label that describes this job type.
          */
         public static function getDisplayName()
         {
-           return Zurmo::t('MarketingListsModule', 'Process autoresponder messages');
+           return Zurmo::t('CampaignsModule', 'Process campaign messages');
         }
 
         /**
@@ -58,7 +54,7 @@
          */
         public static function getType()
         {
-            return 'AutoresponderMessageInQueue';
+            return 'CampaignQueueMessagesInOutbox';
         }
 
         public static function getRecommendedRunFrequencyContent()
@@ -71,19 +67,21 @@
          */
         public function run()
         {
-            $autoresponderItemsToProcess    = AutoresponderItem::getByProcessedAndProcessDateTime(
-                                                                                        AutoresponderItem::NOT_PROCESSED,
+            $batchSize = $this->resolveBatchSize();
+            $campaignItemsToProcess    = CampaignItem::getByProcessedAndStatusAndSendingDateTime(
+                                                                                        0,
+                                                                                        Campaign::STATUS_ACTIVE,
                                                                                         time(),
-                                                                                        static::$pageSize);
-            foreach ($autoresponderItemsToProcess as $autoresponderItem)
+                                                                                        $batchSize);
+            foreach ($campaignItemsToProcess as $campaignItem)
             {
                 try
                 {
-                    $this->processAutoresponderItemInQueue($autoresponderItem);
+                    $this->processCampaignItemInQueue($campaignItem);
                 }
                 catch (NotFoundException $e)
                 {
-                    return $autoresponderItem->delete();
+                    return $campaignItem->delete();
                 }
                 catch (NotSupportedException $e)
                 {
@@ -94,9 +92,20 @@
             return true;
         }
 
-        protected function processAutoresponderItemInQueue(AutoresponderItem $autoresponderItem)
+        protected function processCampaignItemInQueue(CampaignItem $campaignItem)
         {
-            AutoresponderItemsUtil::processDueAutoresponderItem($autoresponderItem);
+            CampaignItemsUtil::processDueItem($campaignItem);
+        }
+
+        protected function resolveBatchSize()
+        {
+            $batchSize = ZurmoConfigurationUtil::getByModuleName('CampaignsModule', static::BATCH_SIZE_CONFIG_KEY);
+            if (!$batchSize)
+            {
+                $batchSize = 200;
+                ZurmoConfigurationUtil::getByModuleName('CampaignsModule', static::BATCH_SIZE_CONFIG_KEY, $batchSize);
+            }
+            return $batchSize;
         }
     }
 ?>

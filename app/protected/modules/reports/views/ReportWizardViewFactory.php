@@ -70,5 +70,33 @@
             }
             return new $viewClassName($form);
         }
+
+        /**
+         * @param Report $report
+         * @return  MatrixReportStepsAndProgressBarForWizardView|
+         *          RowsAndColumnsReportStepsAndProgressBarForWizardView|
+         *          SummationReportStepsAndProgressBarForWizardView
+         * @throws NotSupportedException
+         */
+        public static function makeStepsAndProgressBarViewFromReport(Report $report)
+        {
+            $type = $report->getType();
+            if ($type == Report::TYPE_ROWS_AND_COLUMNS)
+            {
+                return new RowsAndColumnsReportStepsAndProgressBarForWizardView();
+            }
+            elseif ($type == Report::TYPE_SUMMATION)
+            {
+                return new SummationReportStepsAndProgressBarForWizardView();
+            }
+            elseif ($type == Report::TYPE_MATRIX)
+            {
+                return new MatrixReportStepsAndProgressBarForWizardView();
+            }
+            else
+            {
+                throw new NotSupportedException();
+            }
+        }
     }
 ?>

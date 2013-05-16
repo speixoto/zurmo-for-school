@@ -36,10 +36,6 @@
 
     class AutoresponderItem extends OwnedModel
     {
-        const PROCESSED     = 1;
-
-        const NOT_PROCESSED = 0;
-
         public static function getModuleClassName()
         {
             return 'AutorespondersModule';
@@ -81,8 +77,8 @@
                     array('processDateTime',        'required'),
                     array('processDateTime',        'type', 'type' => 'datetime'),
                     array('processed',              'type', 'type' => 'integer'),
-                    array('processed',              'default', 'value' => static::NOT_PROCESSED),
-                    array('processed',              'numerical', 'min' => static::NOT_PROCESSED, 'max' => static::PROCESSED),
+                    array('processed',              'default', 'value' => 0),
+                    array('processed',              'numerical', 'min' => 0, 'max' => 1),
                 ),
                 'elements' => array(
                 ),

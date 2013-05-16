@@ -34,7 +34,18 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class AutoresponderNameElement extends TextElement
+    /**
+     * Progress bar and steps for the rows and columns report wizard
+     */
+    class RowsAndColumnsReportStepsAndProgressBarForWizardView extends StepsAndProgressBarForWizardView
     {
+        protected function getSpanLabels()
+        {
+            return array(Zurmo::t('Core', 'Module'),
+                         Zurmo::t('ReportingModule', 'Filters'),
+                         Zurmo::t('ReportingModule', 'Columns'),
+                         Zurmo::t('ReportingModule', 'Ordering'),
+                         Zurmo::t('ReportingModule', 'General'));
+        }
     }
 ?>

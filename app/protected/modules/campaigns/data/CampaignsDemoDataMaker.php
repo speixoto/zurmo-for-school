@@ -35,9 +35,9 @@
      ********************************************************************************/
 
     /**
-     * Class that builds demo autoresponders.
+     * Class that builds demo campaigns.
      */
-    class AutorespondersDemoDataMaker extends DemoDataMaker
+    class CampaignsDemoDataMaker extends DemoDataMaker
     {
         protected $index;
 
@@ -53,33 +53,48 @@
             assert('$demoDataHelper instanceof DemoDataHelper');
             assert('$demoDataHelper->isSetRange("MarketingList")');
 
-            $autoresponders = array();
-            for ($this->index = 0; $this->index < 4; $this->index++)
+            $campaigns = array();
+            for ($this->index = 0; $this->index < 5; $this->index++)
             {
-                $autoresponder                  = new Autoresponder();
-                $autoresponder->marketingList   = $demoDataHelper->getRandomByModelName('MarketingList');
-                $this->populateModel($autoresponder);
-                $saved                          = $autoresponder->save();
+                $campaign                       = new Campaign();
+                $this->populateModel($campaign);
+                if ($campaign->type === Campaign::TYPE_MARKETING_LIST)
+                {
+                    $campaign->marketingList        = $demoDataHelper->getRandomByModelName('MarketingList');
+                }
+                $saved                          = $campaign->save();
                 assert('$saved');
-                $autoresponders[]               = $autoresponder->id;
+                $campaigns[]                    = $campaign->id;
             }
-            $demoDataHelper->setRangeByModelName('Autoresponder', $autoresponders[0], $autoresponders[count($autoresponders)-1]);
+            $demoDataHelper->setRangeByModelName('Campaign', $campaigns[0], $campaigns[count($campaigns)-1]);
         }
 
         public function populateModel(& $model)
         {
-            assert('$model instanceof Autoresponder');
+            assert('$model instanceof Campaign');
             parent::populateModel($model);
             if (empty($this->seedData))
             {
-                $this->seedData =  ZurmoRandomDataUtil::getRandomDataByModuleAndModelClassNames('AutorespondersModule',
-                                                                                                'Autoresponder');
+                $this->seedData =  ZurmoRandomDataUtil::getRandomDataByModuleAndModelClassNames('CampaignsModule',
+                                                                                                'Campaign');
             }
+            $statusKeys                     = array_keys(Campaign::getStatusDropDownArray());
+            $timestamp                      = time();
+            $model->type                    = (rand() % 2) + 1;
+            $model->name                    = $this->seedData['name'][$this->index];
             $model->subject                 = $this->seedData['subject'][$this->index];
+            $model->status                  = RandomDataUtil::getRandomValueFromArray($statusKeys);
+            $model->sendNow                 = (rand() % 2);
+            if (!$model->sendNow)
+            {
+                $timestamp              += rand(500, 5000);
+            }
+            $model->sendingDateTime         = DateTimeUtil::convertTimestampToDbFormatDateTime($timestamp);
+            $model->supportsRichText        = (rand() % 2);
             $model->htmlContent             = $this->seedData['htmlContent'][$this->index];
             $model->textContent             = $this->seedData['textContent'][$this->index];
-            $model->secondsFromOperation    = $this->seedData['secondsFromOperation'][$this->index];
-            $model->operationType           = $this->seedData['operationType'][$this->index];
+            $model->fromName                = $this->seedData['fromName'][$this->index];
+            $model->fromAddress             = $this->seedData['fromAddress'][$this->index];
             $model->enableTracking          = (rand() % 2);
         }
     }

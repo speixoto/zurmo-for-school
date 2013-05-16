@@ -43,8 +43,8 @@
 
         public function __construct($controllerId, $moduleId, $modelId, $params = array())
         {
-            $moduleId = 'autoresponders';
             parent::__construct($controllerId, $moduleId, $modelId, $params);
+            $this->moduleId = 'autoresponders';
         }
     }
 ?>

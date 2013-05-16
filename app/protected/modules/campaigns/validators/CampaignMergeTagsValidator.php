@@ -36,6 +36,5 @@
 
     class CampaignMergeTagsValidator extends AutoresponderMergeTagsValidator
     {
-
     }
 ?>

@@ -81,13 +81,10 @@
             return self::RIGHT_DELETE_CAMPAIGNS;
         }
 
-        /*
         public static function getGlobalSearchFormClassName()
         {
-            // TODO: @Shoaibi: Critical: Implement
             return 'CampaignsSearchForm';
         }
-        */
 
         public static function getDefaultMetadata()
         {
@@ -102,8 +99,6 @@
 
         public static function getDemoDataMakerClassNames()
         {
-            // TODO: @Shoaibi: Critical: DemoDataLoaders
-            return array();
             return array('CampaignsDemoDataMaker',
                             'CampaignItemsDemoDataMaker',
                             'CampaignItemActivitiesDemoDataMaker');

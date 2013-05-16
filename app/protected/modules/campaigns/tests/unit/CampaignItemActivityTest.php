@@ -81,7 +81,7 @@
                                                                         null,
                                                                         null,
                                                                         $marketingList);
-            $processed          = CampaignItem::NOT_PROCESSED;
+            $processed          = 0;
             $campaignItem       = CampaignItemTestHelper::createCampaignItem($processed, $campaign, $contact);
             $campaignItemActivity                           = new CampaignItemActivity();
             $campaignItemActivity->type                     = CampaignItemActivity::TYPE_CLICK;
