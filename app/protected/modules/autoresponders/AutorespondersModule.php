@@ -72,8 +72,8 @@
         public static function getDemoDataMakerClassNames()
         {
             return array('AutorespondersDemoDataMaker',
-                            'AutoresponderItemsDemoDataMaker',
-                            'AutoresponderItemActivitiesDemoDataMaker');
+                         'AutoresponderItemsDemoDataMaker',
+                         'AutoresponderItemActivitiesDemoDataMaker');
         }
     }
 ?>
