@@ -59,7 +59,7 @@
 
         public function getTitle()
         {
-            return Zurmo::t('MarketingListsModule', 'Autoresponders');
+            return Zurmo::t('AutorespondersModule', 'Autoresponders');
         }
 
         protected function getConfigurationFormClassName()

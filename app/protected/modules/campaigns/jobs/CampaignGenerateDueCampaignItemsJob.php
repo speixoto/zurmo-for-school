@@ -35,19 +35,16 @@
      ********************************************************************************/
 
     /**
-     * A job for processing autoresponder messages that are not sent immediately when triggered
+     * A job for create campaign items for campaigns
      */
-
-    class AutoresponderQueueMessagesInOutboxJob extends BaseJob
+    class CampaignGenerateDueCampaignItemsJob extends BaseJob
     {
-        const BATCH_SIZE_CONFIG_KEY = 'AutoresponderBatchSize';
-
         /**
          * @returns Translated label that describes this job type.
          */
         public static function getDisplayName()
         {
-           return Zurmo::t('AutorespondersModule', 'Process autoresponder messages');
+           return Zurmo::t('CampaignsModule', 'Generate campaign items');
         }
 
         /**
@@ -55,7 +52,7 @@
          */
         public static function getType()
         {
-            return 'AutoresponderQueueMessagesInOutbox';
+            return 'CampaignGenerateDueCampaignItemsJob';
         }
 
         public static function getRecommendedRunFrequencyContent()
@@ -68,44 +65,7 @@
          */
         public function run()
         {
-            $batchSize = $this->resolveBatchSize();
-            $autoresponderItemsToProcess    = AutoresponderItem::getByProcessedAndProcessDateTime(
-                                                                                        AutoresponderItem::NOT_PROCESSED,
-                                                                                        time(),
-                                                                                        $batchSize);
-            foreach ($autoresponderItemsToProcess as $autoresponderItem)
-            {
-                try
-                {
-                    $this->processAutoresponderItemInQueue($autoresponderItem);
-                }
-                catch (NotFoundException $e)
-                {
-                    return $autoresponderItem->delete();
-                }
-                catch (NotSupportedException $e)
-                {
-                    $this->errorMessage = $e->getMessage();
-                    return false;
-                }
-            }
-            return true;
-        }
-
-        protected function processAutoresponderItemInQueue(AutoresponderItem $autoresponderItem)
-        {
-            AutoresponderItemsUtil::processDueItem($autoresponderItem);
-        }
-
-        protected function resolveBatchSize()
-        {
-            $batchSize = ZurmoConfigurationUtil::getByModuleName('AutorespondersModule', static::BATCH_SIZE_CONFIG_KEY);
-            if (!$batchSize)
-            {
-                $batchSize = 200;
-                ZurmoConfigurationUtil::setByModuleName('AutorespondersModule', static::BATCH_SIZE_CONFIG_KEY, $batchSize);
-            }
-            return $batchSize;
+            return CampaignItemsUtil::generateCampaignItemsForDueCampaigns();
         }
     }
 ?>

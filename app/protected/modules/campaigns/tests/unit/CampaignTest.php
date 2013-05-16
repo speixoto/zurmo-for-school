@@ -197,6 +197,80 @@
         }
 
         /**
+         * @depends testCreateAndGetCampaignListById
+         */
+        public function testGetByStatus()
+        {
+            $totalCampaigns     = Campaign::getAll();
+            $this->assertNotEmpty($totalCampaigns);
+            $this->assertCount(2, $totalCampaigns);
+            $dueActiveCampaigns = Campaign::getByStatus(Campaign::STATUS_ACTIVE);
+            $this->assertNotEmpty($dueActiveCampaigns);
+            $this->assertCount(1, $dueActiveCampaigns);
+            $campaign = $dueActiveCampaigns[0];
+            $this->assertEquals('Test Campaign Name2',                      $campaign->name);
+            $this->assertEquals(Campaign::TYPE_MARKETING_LIST,              $campaign->type);
+            $this->assertEquals(Campaign::SUPPORTS_PLAIN_TEXT_ONLY,         $campaign->supportsRichText);
+            $this->assertEquals('From Name2',                               $campaign->fromName);
+            $this->assertEquals('from2@zurmo.com',                          $campaign->fromAddress);
+            $this->assertEquals('Test Subject2',                            $campaign->subject);
+            $this->assertEquals('Test Html Content2',                       $campaign->htmlContent);
+            $this->assertEquals('Test Text Content2',                       $campaign->textContent);
+            $this->assertEquals(Campaign::SEND_NOW,                         $campaign->sendNow);
+
+            $duePausedCampaigns = Campaign::getByStatus(Campaign::STATUS_PAUSED);
+            $this->assertNotEmpty($duePausedCampaigns);
+            $this->assertCount(1, $duePausedCampaigns);
+            $campaign = $duePausedCampaigns[0];
+            $this->assertEquals('Test Campaign Name',                       $campaign->name);
+            $this->assertEquals(Campaign::TYPE_MARKETING_LIST,              $campaign->type);
+            $this->assertEquals(Campaign::SUPPORTS_RICH_TEXT,               $campaign->supportsRichText);
+            $this->assertEquals(Campaign::STATUS_PAUSED,                    $campaign->status);
+            $this->assertEquals('From Name',                                $campaign->fromName);
+            $this->assertEquals('from@zurmo.com',                           $campaign->fromAddress);
+            $this->assertEquals('Test Subject',                             $campaign->subject);
+            $this->assertEquals('Test Html Content',                        $campaign->htmlContent);
+            $this->assertEquals('Test Text Content',                        $campaign->textContent);
+        }
+
+        /**
+         * @depends testGetByStatus
+         */
+        public function testGetByStatusAndSendingTime()
+        {
+            $totalCampaigns     = Campaign::getAll();
+            $this->assertNotEmpty($totalCampaigns);
+            $this->assertCount(2, $totalCampaigns);
+            $dueActiveCampaigns = Campaign::getByStatusAndSendingTime(Campaign::STATUS_ACTIVE, time());
+            $this->assertNotEmpty($dueActiveCampaigns);
+            $this->assertCount(1, $dueActiveCampaigns);
+            $campaign = $dueActiveCampaigns[0];
+            $this->assertEquals('Test Campaign Name2',                      $campaign->name);
+            $this->assertEquals(Campaign::TYPE_MARKETING_LIST,              $campaign->type);
+            $this->assertEquals(Campaign::SUPPORTS_PLAIN_TEXT_ONLY,         $campaign->supportsRichText);
+            $this->assertEquals('From Name2',                               $campaign->fromName);
+            $this->assertEquals('from2@zurmo.com',                          $campaign->fromAddress);
+            $this->assertEquals('Test Subject2',                            $campaign->subject);
+            $this->assertEquals('Test Html Content2',                       $campaign->htmlContent);
+            $this->assertEquals('Test Text Content2',                       $campaign->textContent);
+            $this->assertEquals(Campaign::SEND_NOW,                         $campaign->sendNow);
+
+            $duePausedCampaigns = Campaign::getByStatusAndSendingTime(Campaign::STATUS_PAUSED);
+            $this->assertNotEmpty($duePausedCampaigns);
+            $this->assertCount(1, $duePausedCampaigns);
+            $campaign = $duePausedCampaigns[0];
+            $this->assertEquals('Test Campaign Name',                       $campaign->name);
+            $this->assertEquals(Campaign::TYPE_MARKETING_LIST,              $campaign->type);
+            $this->assertEquals(Campaign::SUPPORTS_RICH_TEXT,               $campaign->supportsRichText);
+            $this->assertEquals(Campaign::STATUS_PAUSED,                    $campaign->status);
+            $this->assertEquals('From Name',                                $campaign->fromName);
+            $this->assertEquals('from@zurmo.com',                           $campaign->fromAddress);
+            $this->assertEquals('Test Subject',                             $campaign->subject);
+            $this->assertEquals('Test Html Content',                        $campaign->htmlContent);
+            $this->assertEquals('Test Text Content',                        $campaign->textContent);
+        }
+
+        /**
          * @depends testRequiredAttributes
          */
         public function testDeleteCampaign()
@@ -206,53 +280,6 @@
             $campaigns[0]->delete();
             $campaigns = Campaign::getAll();
             $this->assertEquals(1, count($campaigns));
-        }
-
-        /**
-         * @depends testCreateAndGetCampaignListById
-         */
-        public function testBeforeSaveCampaignItemRegister()
-        {
-            $marketingList      = MarketingListTestHelper::createMarketingListByName('marketingList 04');
-            $marketingListId    = $marketingList->id;
-            $contact1           = ContactTestHelper::createContactByNameForOwner('campaignContact 01',
-                                                                                        Yii::app()->user->userModel);
-            $contact2           = ContactTestHelper::createContactByNameForOwner('campaignContact 02',
-                                                                                        Yii::app()->user->userModel);
-            $contact3           = ContactTestHelper::createContactByNameForOwner('campaignContact 03',
-                                                                                        Yii::app()->user->userModel);
-            $contact4           = ContactTestHelper::createContactByNameForOwner('campaignContact 04',
-                                                                                        Yii::app()->user->userModel);
-            $contact5           = ContactTestHelper::createContactByNameForOwner('campaignContact 05',
-                                                                                        Yii::app()->user->userModel);
-            $processed          = CampaignItem::NOT_PROCESSED;
-            MarketingListMemberTestHelper::createMarketingListMember($processed, $marketingList, $contact1);
-            MarketingListMemberTestHelper::createMarketingListMember($processed, $marketingList, $contact2);
-            MarketingListMemberTestHelper::createMarketingListMember($processed, $marketingList, $contact3);
-            MarketingListMemberTestHelper::createMarketingListMember($processed, $marketingList, $contact4);
-            MarketingListMemberTestHelper::createMarketingListMember($processed, $marketingList, $contact5);
-            $marketingList->forgetAll();
-            $marketingList      = MarketingList::getById($marketingListId);
-
-            $campaign           = CampaignTestHelper::createCampaign('campaign 04',
-                                                                        'subject 04',
-                                                                        'text 04',
-                                                                        'html 04',
-                                                                        null,
-                                                                        null,
-                                                                        null,
-                                                                        Campaign::TYPE_MARKETING_LIST,
-                                                                        null,
-                                                                        null,
-                                                                        null,
-                                                                        null,
-                                                                        $marketingList);
-            $this->assertNotNull($campaign);
-            $campaignItems      = CampaignItem::getByProcessedAndCampaignId($processed, $campaign->id);
-            $this->assertNotEmpty($campaignItems);
-            $this->assertCount(5, $campaignItems);
-
-            // TODO: @Shoaibi: Medium: Add tests for the other campaign type.
         }
     }
 ?>

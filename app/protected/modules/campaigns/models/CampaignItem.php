@@ -142,6 +142,41 @@
             return self::getSubset($joinTablesAdapter, null, $pageSize, $where, null);
         }
 
+        public static function getByProcessedAndStatusAndSendingDateTime($processed, $status, $timestamp = null, $pageSize = null)
+        {
+            if (empty($timestamp))
+            {
+                $timestamp = time();
+            }
+            $dateTime = DateTimeUtil::convertTimestampToDbFormatDateTime($timestamp);
+            assert('is_int($processed)');
+            assert('is_int($status)');
+            $searchAttributeData = array();
+            $searchAttributeData['clauses'] = array(
+                1 => array(
+                    'attributeName'             => 'processed',
+                    'operatorType'              => 'equals',
+                    'value'                     => intval($processed),
+                ),
+                2 => array(
+                    'attributeName'             => 'campaign',
+                    'relatedAttributeName'      => 'status',
+                    'operatorType'              => 'equals',
+                    'value'                     => intval($status),
+                ),
+                3 => array(
+                    'attributeName'             => 'campaign',
+                    'relatedAttributeName'      => 'sendingDateTime',
+                    'operatorType'              => 'lessThan',
+                    'value'                     => $dateTime,
+                ),
+            );
+            $searchAttributeData['structure'] = '(1 and 2 and 3)';
+            $joinTablesAdapter                = new RedBeanModelJoinTablesQueryAdapter(get_called_class());
+            $where = RedBeanModelDataProvider::makeWhere(get_called_class(), $searchAttributeData, $joinTablesAdapter);
+            return self::getSubset($joinTablesAdapter, null, $pageSize, $where, null);
+        }
+
         public static function getByProcessedAndCampaignId($processed, $campaignId, $pageSize = null)
         {
             assert('is_int($processed)');
@@ -170,8 +205,12 @@
         {
             foreach ($contacts as $contact)
             {
-                static::addNewItem(static::NOT_PROCESSED, $contact, $campaign);
+                if (!static::addNewItem(static::NOT_PROCESSED, $contact, $campaign))
+                {
+                    return false;
+                }
             }
+            return true;
         }
 
         public static function addNewItem($processed, $contact, $campaign)

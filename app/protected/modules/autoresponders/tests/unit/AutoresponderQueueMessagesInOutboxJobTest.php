@@ -59,7 +59,7 @@
         public function testGetType()
         {
             $type                       = AutoresponderQueueMessagesInOutboxJob::getType();
-            $this->assertEquals('AutoresponderMessageInQueue', $type);
+            $this->assertEquals('AutoresponderQueueMessagesInOutbox', $type);
         }
 
         public function testGetRecommendedRunFrequencyContent()

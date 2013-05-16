@@ -78,9 +78,13 @@
             }
             if (!isset($status))
             {
-                $status             = Campaign::STATUS_PAUSED;
+                $status             = Campaign::STATUS_ACTIVE;
             }
-            if (!isset($sendNow))
+            if (isset($sendingDateTime))
+            {
+                $sendNow            = Campaign::SEND_DELAYED;
+            }
+            elseif (!isset($sendNow))
             {
                 $sendNow            = Campaign::SEND_NOW;
             }

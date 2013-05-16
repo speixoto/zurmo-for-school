@@ -50,7 +50,9 @@
 
         const STATUS_ACTIVE                     = 3;
 
-        const STATUS_COMPLETED                  = 4;
+        const STATUS_PROCESSING                 = 4;
+
+        const STATUS_COMPLETED                  = 5;
 
         const TRACKING_DISABLED                 = 0;
 
@@ -76,6 +78,7 @@
                 static::STATUS_INCOMPLETE   => Zurmo::t('CampaignsModule', 'Incomplete'),
                 static::STATUS_PAUSED       => Zurmo::t('CampaignsModule', 'Paused'),
                 static::STATUS_ACTIVE       => Zurmo::t('CampaignsModule', 'Active'),
+                static::STATUS_PROCESSING   => Zurmo::t('CampaignsModule', 'Processing'),
                 static::STATUS_COMPLETED    => Zurmo::t('CampaignsModule', 'Completed'),
             );
         }
@@ -122,6 +125,50 @@
         public static function isTypeDeletable()
         {
             return true;
+        }
+
+        public static function getByStatus($status, $pageSize = null)
+        {
+            assert('is_int($status)');
+            $searchAttributeData = array();
+            $searchAttributeData['clauses'] = array(
+                1 => array(
+                    'attributeName'             => 'status',
+                    'operatorType'              => 'equals',
+                    'value'                     => intval($status),
+                ),
+            );
+            $searchAttributeData['structure'] = '1';
+            $joinTablesAdapter                = new RedBeanModelJoinTablesQueryAdapter(get_called_class());
+            $where = RedBeanModelDataProvider::makeWhere(get_called_class(), $searchAttributeData, $joinTablesAdapter);
+            return self::getSubset($joinTablesAdapter, null, $pageSize, $where, null);
+        }
+
+        public static function getByStatusAndSendingTime($status, $sendingTimestamp = null, $pageSize = null)
+        {
+            if (empty($sendingTimestamp))
+            {
+                $sendingTimestamp = time();
+            }
+            $sendingDateTime = DateTimeUtil::convertTimestampToDbFormatDateTime($sendingTimestamp);
+            assert('is_int($status)');
+            $searchAttributeData = array();
+            $searchAttributeData['clauses'] = array(
+                1 => array(
+                    'attributeName'             => 'status',
+                    'operatorType'              => 'equals',
+                    'value'                     => intval($status),
+                ),
+                2 => array(
+                    'attributeName'             => 'sendingDateTime',
+                    'operatorType'              => 'lessThan',
+                    'value'                     => $sendingDateTime,
+                ),
+            );
+            $searchAttributeData['structure'] = '(1 and 2)';
+            $joinTablesAdapter                = new RedBeanModelJoinTablesQueryAdapter(get_called_class());
+            $where = RedBeanModelDataProvider::makeWhere(get_called_class(), $searchAttributeData, $joinTablesAdapter);
+            return self::getSubset($joinTablesAdapter, null, $pageSize, $where, null);
         }
 
         public static function getDefaultMetadata()
@@ -206,20 +253,12 @@
 
         public function validateSendDateTimeAgainstSendNow($attribute, $params)
         {
-            $passedValidation = true;
-            if (!$this->hasErrors('sendNow'))
+            if (!$this->hasErrors('sendNow') && $this->sendNow == static::SEND_DELAYED && empty($this->$attribute))
             {
-                if ($this->sendNow == static::SEND_NOW)
-                {
-                    $this->$attribute = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
-                }
-                elseif (empty($this->$attribute))
-                {
-                    $this->addError($attribute, Zurmo::t('CampaignsModule', 'Send On cannot be blank.'));
-                    $passedValidation = false;
-                }
+                $this->addError($attribute, Zurmo::t('CampaignsModule', 'Send On cannot be blank.'));
+                return false;
             }
-            return $passedValidation;
+            return true;
         }
 
         public function beforeSave()
@@ -228,21 +267,10 @@
             {
                 return false;
             }
-            $contacts = array();
-            if ($this->type == static::TYPE_MARKETING_LIST)
+            if ($this->sendNow == static::SEND_NOW && empty($this->sendingDateTime))
             {
-                foreach ($this->marketingList->marketingListMembers as $member)
-                {
-                    $contacts[] = $member->contact;
-                }
-            }
-            else
-            {
-                // TODO: @Shoaibi: Medium: Figure out a way to find contacts for second type
-            }
-            if (!empty($contacts))
-            {
-                CampaignItem::registerCampaignItemsByCampaign($this, $contacts);
+                // set sendingDateTime to a past date so its sending immediately in next job execution.
+                $this->sendingDateTime = DateTimeUtil::convertTimestampToDbFormatDateTime(time() - 180);
             }
             return true;
         }
