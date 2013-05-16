@@ -123,6 +123,22 @@
             }
         }
 
+        public static function resolveSortFromStickyData($getArrayPrefixName, $uniqueLayoutId)
+        {
+            $key            = $uniqueLayoutId;
+            $sortAttribute  = static::resolveSortAttributeFromGetArray($getArrayPrefixName);
+            $sortDescending = static::resolveSortDescendingFromGetArray($getArrayPrefixName);
+            if(!$sortAttribute)
+            {
+                $stickyData     = StickyUtil::getDataByKey($key);
+                $sortAttribute  = $stickyData[0];
+                $sortDescending = $stickyData[1] ? $stickyData[1] : false;
+                return array($sortAttribute, $sortDescending);
+            }
+            StickyUtil::setDataByKeyAndData($key, array($sortAttribute, $sortDescending));
+            return array($sortAttribute, $sortDescending);
+        }
+
         /**
          * Get the sort attribute array by resolving the GET array
          * for the information.

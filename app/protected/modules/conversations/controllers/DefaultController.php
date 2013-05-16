@@ -140,8 +140,8 @@
                 {
                     $success                   = ExplicitReadWriteModelPermissionsUtil::
                                                  resolveExplicitReadWriteModelPermissions($conversation,
-                                                                                          $explicitReadWriteModelPermissions);
-                    $currentUserIsParticipant  = ConversationParticipantsUtil::isUserAParticipant($conversation, Yii::app()->user->userModel);
+                                                 $explicitReadWriteModelPermissions);
+                    $currentUserIsParticipant  = ConversationParticipantsUtil::isCurrentUserAParticipant($conversation);
                     if ($currentUserWasParticipant && !$currentUserIsParticipant)
                     {
                         echo 'redirectToList';

@@ -58,7 +58,7 @@
         public function testProcessDueAutoresponderItemThrowsExceptionWhenNoContactIsAvailable()
         {
             $autoresponderItem          = new AutoresponderItem();
-            AutoresponderItemsUtil::processDueAutoresponderItem($autoresponderItem);
+            AutoresponderItemsUtil::processDueItem($autoresponderItem);
         }
 
         /**
@@ -85,7 +85,7 @@
                                                                                                 $processDateTime,
                                                                                                 $autoresponder,
                                                                                                 $contact);
-            AutoresponderItemsUtil::processDueAutoresponderItem($autoresponderItem);
+            AutoresponderItemsUtil::processDueItem($autoresponderItem);
         }
 
         /**
@@ -109,7 +109,7 @@
                                                                                                 $processDateTime,
                                                                                                 $autoresponder,
                                                                                                 $contact);
-            AutoresponderItemsUtil::processDueAutoresponderItem($autoresponderItem);
+            AutoresponderItemsUtil::processDueItem($autoresponderItem);
             $this->assertEquals(AutoresponderItem::PROCESSED, $autoresponderItem->processed);
             $emailMessage               = $autoresponderItem->emailMessage;
             $this->assertEquals($marketingList->owner, $emailMessage->owner);
@@ -146,7 +146,7 @@
                                                                                                 $processDateTime,
                                                                                                 $autoresponder,
                                                                                                 $contact);
-            AutoresponderItemsUtil::processDueAutoresponderItem($autoresponderItem);
+            AutoresponderItemsUtil::processDueItem($autoresponderItem);
             $this->assertEquals(AutoresponderItem::PROCESSED, $autoresponderItem->processed);
             $emailMessage               = $autoresponderItem->emailMessage;
             $this->assertEquals($marketingList->owner, $emailMessage->owner);
@@ -194,7 +194,7 @@
                                                                                                 $processDateTime,
                                                                                                 $autoresponder,
                                                                                                 $contact);
-            AutoresponderItemsUtil::processDueAutoresponderItem($autoresponderItem);
+            AutoresponderItemsUtil::processDueItem($autoresponderItem);
             $this->assertEquals(AutoresponderItem::PROCESSED, $autoresponderItem->processed);
             $emailMessage               = $autoresponderItem->emailMessage;
             $this->assertEquals($marketingList->owner, $emailMessage->owner);
@@ -239,7 +239,7 @@
                                                                                                 $processDateTime,
                                                                                                 $autoresponder,
                                                                                                 $contact);
-            AutoresponderItemsUtil::processDueAutoresponderItem($autoresponderItem);
+            AutoresponderItemsUtil::processDueItem($autoresponderItem);
             $this->assertEquals(AutoresponderItem::PROCESSED, $autoresponderItem->processed);
             $emailMessage               = $autoresponderItem->emailMessage;
             $this->assertEquals($marketingList->owner, $emailMessage->owner);

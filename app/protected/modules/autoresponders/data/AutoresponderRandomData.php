@@ -35,7 +35,7 @@
      ********************************************************************************/
 
     /**
-     * Marketing List related array of random seed data parts.
+     * Autoresponder related array of random seed data parts.
      */
     return array(
         'name'                          => array(

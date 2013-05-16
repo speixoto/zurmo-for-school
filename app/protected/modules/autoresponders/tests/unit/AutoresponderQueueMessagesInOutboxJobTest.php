@@ -33,7 +33,7 @@
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
-    class AutoresponderMessageInQueueJobTest extends ZurmoBaseTest
+    class AutoresponderQueueMessagesInOutboxJobTest extends ZurmoBaseTest
     {
         protected $user;
 
@@ -52,19 +52,19 @@
 
         public function testGetDisplayName()
         {
-            $displayName                = AutoresponderMessageInQueueJob::getDisplayName();
+            $displayName                = AutoresponderQueueMessagesInOutboxJob::getDisplayName();
             $this->assertEquals('Process autoresponder messages', $displayName);
         }
 
         public function testGetType()
         {
-            $type                       = AutoresponderMessageInQueueJob::getType();
-            $this->assertEquals('AutoresponderMessageInQueue', $type);
+            $type                       = AutoresponderQueueMessagesInOutboxJob::getType();
+            $this->assertEquals('AutoresponderQueueMessagesInOutbox', $type);
         }
 
         public function testGetRecommendedRunFrequencyContent()
         {
-            $recommendedRunFrequency    = AutoresponderMessageInQueueJob::getRecommendedRunFrequencyContent();
+            $recommendedRunFrequency    = AutoresponderQueueMessagesInOutboxJob::getRecommendedRunFrequencyContent();
             $this->assertEquals('Every hour', $recommendedRunFrequency);
         }
 
@@ -72,7 +72,7 @@
         {
             $autoresponderItems         = AutoresponderItem::getAll();
             $this->assertEmpty($autoresponderItems);
-            $job                        = new AutoresponderMessageInQueueJob();
+            $job                        = new AutoresponderQueueMessagesInOutboxJob();
             $this->assertTrue($job->run());
         }
 
@@ -81,7 +81,7 @@
          */
         public function testRunWithoutContact()
         {
-            $job                        = new AutoresponderMessageInQueueJob();
+            $job                        = new AutoresponderQueueMessagesInOutboxJob();
             $marketingList              = MarketingListTestHelper::createMarketingListByName('marketingList 01');
             $autoresponder              = AutoresponderTestHelper::createAutoresponder('autoresponder 01',
                                                                                         'subject 01',
@@ -104,7 +104,7 @@
          */
         public function testRunWithContactNotContainingPrimaryEmail()
         {
-            $job                        = new AutoresponderMessageInQueueJob();
+            $job                        = new AutoresponderQueueMessagesInOutboxJob();
             $contact                    = ContactTestHelper::createContactByNameForOwner('contact 01', $this->user);
             $marketingList              = MarketingListTestHelper::createMarketingListByName('marketingList 02');
             $autoresponder              = AutoresponderTestHelper::createAutoresponder('autoresponder 02',
@@ -132,7 +132,7 @@
          */
         public function testRunWithContactContainingPrimaryEmail()
         {
-            $job                        = new AutoresponderMessageInQueueJob();
+            $job                        = new AutoresponderQueueMessagesInOutboxJob();
             $email                      = new Email();
             $email->emailAddress        = 'demo@zurmo.com';
             $contact                    = ContactTestHelper::createContactByNameForOwner('contact 02', $this->user);
@@ -162,9 +162,9 @@
         /**
          * @depends testRunWithContactContainingPrimaryEmail
          */
-        public function testRunWithMarketingListContaingCustomFromNameAndFromAddress()
+        public function testRunWithMarketingListContainingCustomFromNameAndFromAddress()
         {
-            $job                        = new AutoresponderMessageInQueueJob();
+            $job                        = new AutoresponderQueueMessagesInOutboxJob();
             $email                      = new Email();
             $email->emailAddress        = 'demo@zurmo.com';
             $contact                    = ContactTestHelper::createContactByNameForOwner('contact 03', $this->user);
@@ -195,11 +195,11 @@
         }
 
         /**
-         * @depends testRunWithMarketingListContaingCustomFromNameAndFromAddress
+         * @depends testRunWithMarketingListContainingCustomFromNameAndFromAddress
          */
         public function testRunWithInvalidMergeTags()
         {
-            $job                        = new AutoresponderMessageInQueueJob();
+            $job                        = new AutoresponderQueueMessagesInOutboxJob();
             $email                      = new Email();
             $email->emailAddress        = 'demo@zurmo.com';
             $contact                    = ContactTestHelper::createContactByNameForOwner('contact 04', $this->user);
@@ -240,7 +240,7 @@
          */
         public function testRunWithValidMergeTags()
         {
-            $job                        = new AutoresponderMessageInQueueJob();
+            $job                        = new AutoresponderQueueMessagesInOutboxJob();
             $email                      = new Email();
             $email->emailAddress        = 'demo@zurmo.com';
             $contact                    = ContactTestHelper::createContactByNameForOwner('contact 05', $this->user);
@@ -268,6 +268,57 @@
                                                                                             AutoresponderItem::PROCESSED,
                                                                                             $autoresponder->id);
             $this->assertCount(1, $autoresponderItemsProcessed);
+        }
+
+        /**
+         * @depends testRunWithValidMergeTags
+         */
+        public function testRunWithCustomBatchSize()
+        {
+            $unprocessedItems           = AutoresponderItem::getByProcessed(AutoresponderITem::NOT_PROCESSED);
+            $this->assertEmpty($unprocessedItems);
+            $job                        = new AutoresponderQueueMessagesInOutboxJob();
+            $email                      = new Email();
+            $email->emailAddress        = 'demo@zurmo.com';
+            $contact                    = ContactTestHelper::createContactByNameForOwner('contact 06', $this->user);
+            $contact->primaryEmail      = $email;
+            $this->assertTrue($contact->save());
+            $marketingList              = MarketingListTestHelper::createMarketingListByName('marketingList 07',
+                                                                                            'description goes here',
+                                                                                            'fromName',
+                                                                                            'from@domain.com');
+            $autoresponder              = AutoresponderTestHelper::createAutoresponder('autoresponder 07',
+                                                                                        'subject 07',
+                                                                                        '[[FIRST^NAME]]',
+                                                                                        '[[LAST^NAME]]',
+                                                                                        1,
+                                                                                        Autoresponder::OPERATION_SUBSCRIBE,
+                                                                                        true,
+                                                                                        $marketingList);
+            for ($i = 0; $i < 10; $i++)
+            {
+                $processed                  = AutoresponderItem::NOT_PROCESSED;
+                $processDateTime            = DateTimeUtil::convertTimestampToDbFormatDateTime(time() - rand(10, 500));
+                AutoresponderItemTestHelper::createAutoresponderItem($processed, $processDateTime, $autoresponder, $contact);
+            }
+            $unprocessedItems               = AutoresponderItem::getByProcessedAndAutoresponderId(
+                                                                                    AutoresponderItem::NOT_PROCESSED,
+                                                                                    $autoresponder->id);
+            $this->assertCount(10, $unprocessedItems);
+            ZurmoConfigurationUtil::setByModuleName('AutorespondersModule',
+                                                    AutoresponderQueueMessagesInOutboxJob::BATCH_SIZE_CONFIG_KEY, 5);
+            $this->assertTrue($job->run());
+            $unprocessedItems               = AutoresponderItem::getByProcessedAndAutoresponderId(
+                                                                                    AutoresponderItem::NOT_PROCESSED,
+                                                                                    $autoresponder->id);
+            $this->assertCount(5, $unprocessedItems);
+            ZurmoConfigurationUtil::setByModuleName('AutorespondersModule',
+                                                        AutoresponderQueueMessagesInOutboxJob::BATCH_SIZE_CONFIG_KEY, 3);
+            $this->assertTrue($job->run());
+            $unprocessedItems               = AutoresponderItem::getByProcessedAndAutoresponderId(
+                                                                                        AutoresponderItem::NOT_PROCESSED,
+                                                                                        $autoresponder->id);
+            $this->assertCount(2, $unprocessedItems);
         }
     }
 ?>

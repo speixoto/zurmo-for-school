@@ -505,7 +505,6 @@
             $this->assertEquals($compareData, $data);
         }
 
-
         /**
          * @depends testRegularUserDetailsActionForMarketing
          */

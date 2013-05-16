@@ -35,22 +35,16 @@
      ********************************************************************************/
 
     /**
-     * A job for processing autoresponder messages that are not sent immediately when triggered
+     * A job for marking campaigns as completed which have all recipients processed.
      */
-
-    class AutoresponderMessageInQueueJob extends BaseJob
+    class CampaignMarkCompletedJob extends BaseJob
     {
-        /**
-         * @var int
-         */
-        protected static $pageSize = 200;
-
         /**
          * @returns Translated label that describes this job type.
          */
         public static function getDisplayName()
         {
-           return Zurmo::t('MarketingListsModule', 'Process autoresponder messages');
+           return Zurmo::t('CampaignsModule', 'Mark campaigns as completed');
         }
 
         /**
@@ -58,7 +52,7 @@
          */
         public static function getType()
         {
-            return 'AutoresponderMessageInQueue';
+            return 'CampaignMarkCompleted';
         }
 
         public static function getRecommendedRunFrequencyContent()
@@ -71,32 +65,7 @@
          */
         public function run()
         {
-            $autoresponderItemsToProcess    = AutoresponderItem::getByProcessedAndProcessDateTime(
-                                                                                        AutoresponderItem::NOT_PROCESSED,
-                                                                                        time(),
-                                                                                        static::$pageSize);
-            foreach ($autoresponderItemsToProcess as $autoresponderItem)
-            {
-                try
-                {
-                    $this->processAutoresponderItemInQueue($autoresponderItem);
-                }
-                catch (NotFoundException $e)
-                {
-                    return $autoresponderItem->delete();
-                }
-                catch (NotSupportedException $e)
-                {
-                    $this->errorMessage = $e->getMessage();
-                    return false;
-                }
-            }
-            return true;
-        }
-
-        protected function processAutoresponderItemInQueue(AutoresponderItem $autoresponderItem)
-        {
-            AutoresponderItemsUtil::processDueAutoresponderItem($autoresponderItem);
+            return CampaignsUtil::markProcessedCampaignsAsCompleted();
         }
     }
 ?>

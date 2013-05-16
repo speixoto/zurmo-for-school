@@ -218,12 +218,12 @@
 
         public static function addNewItem($processed, $processDateTime, $contact, $autoresponder)
         {
-            $autoresponderItem = new self;
-            $autoresponderItem->processed = $processed;
-            $autoresponderItem->processDateTime = $processDateTime;
-            $autoresponderItem->contact = $contact;
-            $autoresponderItem->autoresponder = $autoresponder;
-            $saved = $autoresponderItem->unrestrictedSave();
+            $autoresponderItem                              = new self;
+            $autoresponderItem->processed                   = $processed;
+            $autoresponderItem->processDateTime             = $processDateTime;
+            $autoresponderItem->contact                     = $contact;
+            $autoresponderItem->autoresponder               = $autoresponder;
+            $saved                                          = $autoresponderItem->unrestrictedSave();
             assert('$saved');
             if (!$saved)
             {
