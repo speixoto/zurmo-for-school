@@ -711,13 +711,13 @@
 
             $customFieldsInstructionData = $importDataAnalyzer->getCustomFieldsInstructionData();
             $this->assertTrue($customFieldsInstructionData->hasDataByColumnName('column_6'));
-            $compareData = array(CustomFieldsInstructionData::ADD_MISSING_VALUE =>
+            $compareData = array(CustomFieldsInstructionData::ADD_MISSING_VALUES =>
                                  array( 'notpresent', 'neverpresent'));
             $this->assertEquals($compareData, $customFieldsInstructionData->getDataByColumnName('column_6'));
-            $compareData = array(CustomFieldsInstructionData::ADD_MISSING_VALUE =>
+            $compareData = array(CustomFieldsInstructionData::ADD_MISSING_VALUES =>
                                  array('Multi 5', 'Multi 4'));
             $this->assertEquals($compareData, $customFieldsInstructionData->getDataByColumnName('column_24'));
-            $compareData = array(CustomFieldsInstructionData::ADD_MISSING_VALUE =>
+            $compareData = array(CustomFieldsInstructionData::ADD_MISSING_VALUES =>
                                  array('Cloud 5', 'Cloud 4'));
             $this->assertEquals($compareData, $customFieldsInstructionData->getDataByColumnName('column_25'));
         }

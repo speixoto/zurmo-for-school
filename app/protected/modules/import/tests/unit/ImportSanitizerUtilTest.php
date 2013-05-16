@@ -427,7 +427,7 @@
 
         public function testSanitizeValueBySanitizerTypesForDropDownTypeThatIsNotRequired()
         {
-            $customFieldsInstructionData = array(CustomFieldsInstructionData::ADD_MISSING_VALUE => array());
+            $customFieldsInstructionData = array(CustomFieldsInstructionData::ADD_MISSING_VALUES => array());
 
             //Test a non-required dropDown with no value and no default value.
             $importSanitizeResultsUtil = new ImportSanitizeResultsUtil();
@@ -500,7 +500,7 @@
             $this->assertEquals($compareMessage, $messages[0]);
 
             //Now use a value that is missing, but there are instructions to add it, and confirm it is added.
-            $customFieldsInstructionData = array(CustomFieldsInstructionData::ADD_MISSING_VALUE => array('NewValue'));
+            $customFieldsInstructionData = array(CustomFieldsInstructionData::ADD_MISSING_VALUES => array('NewValue'));
             $customFieldData = CustomFieldData::getByName('ImportTestDropDown');
             $this->assertEquals(5, count(unserialize($customFieldData->serializedData)));
             $importSanitizeResultsUtil = new ImportSanitizeResultsUtil();
@@ -525,7 +525,7 @@
 
             //Now use a value that is missing, but there is valid instructions on how to map it. Use different casing
             //to increase test coverage. (sample instead of Sample)
-            $customFieldsInstructionData = array(CustomFieldsInstructionData::ADD_MISSING_VALUE  => array(),
+            $customFieldsInstructionData = array(CustomFieldsInstructionData::ADD_MISSING_VALUES => array(),
                                                  CustomFieldsInstructionData::MAP_MISSING_VALUES => array('MappedValue' => 'sample'));
             $customFieldData = CustomFieldData::getByName('ImportTestDropDown');
             $this->assertEquals(6, count(unserialize($customFieldData->serializedData)));
@@ -548,7 +548,7 @@
             $this->assertEquals(6, count($values));
 
             //Now use a value that is missing, there are instructions on how to map it, but the mapping is invalid.
-            $customFieldsInstructionData = array(CustomFieldsInstructionData::ADD_MISSING_VALUE  => array(),
+            $customFieldsInstructionData = array(CustomFieldsInstructionData::ADD_MISSING_VALUES => array(),
                                                  CustomFieldsInstructionData::MAP_MISSING_VALUES => array('MappedValue' => 'SampleX'));
             $customFieldData = CustomFieldData::getByName('ImportTestDropDown');
             $this->assertEquals(6, count(unserialize($customFieldData->serializedData)));
@@ -574,7 +574,7 @@
             $this->assertEquals(6, count($values));
 
             //Test using no value, and relying on the defaultValue to populate
-            $customFieldsInstructionData = array(CustomFieldsInstructionData::ADD_MISSING_VALUE  => array(),
+            $customFieldsInstructionData = array(CustomFieldsInstructionData::ADD_MISSING_VALUES => array(),
                                                  CustomFieldsInstructionData::MAP_MISSING_VALUES => array());
             $customFieldData = CustomFieldData::getByName('ImportTestDropDown');
             $this->assertEquals(6, count(unserialize($customFieldData->serializedData)));

@@ -69,7 +69,7 @@
          * check the import instructions data to determine how to handle the missing value.
          *
          * Example of customFieldsInstructionData
-         * array(array(CustomFieldsInstructionData::ADD_MISSING_VALUE => array('neverPresent', 'notPresent'))
+         * array(array(CustomFieldsInstructionData::ADD_MISSING_VALUES => array('neverPresent', 'notPresent'))
          *
          * @param mixed $value
          * @return sanitized value
@@ -81,9 +81,9 @@
             assert('is_string($attributeName)');
             assert('$mappingRuleData == null');
             $customFieldsInstructionData = $this->getCustomFieldsInstructionDataFromColumnMappingData();
-            if (!isset($customFieldsInstructionData[CustomFieldsInstructionData::ADD_MISSING_VALUE]))
+            if (!isset($customFieldsInstructionData[CustomFieldsInstructionData::ADD_MISSING_VALUES]))
             {
-                $customFieldsInstructionData[CustomFieldsInstructionData::ADD_MISSING_VALUE] = array();
+                $customFieldsInstructionData[CustomFieldsInstructionData::ADD_MISSING_VALUES] = array();
             }
             if ($value == null)
             {
@@ -110,12 +110,12 @@
                     //if the value does not already exist, then check the instructions data.
                     $lowerCaseValuesToAdd                = ArrayUtil::resolveArrayToLowerCase(
                                                            $customFieldsInstructionData
-                                                           [CustomFieldsInstructionData::ADD_MISSING_VALUE]);
+                                                           [CustomFieldsInstructionData::ADD_MISSING_VALUES]);
                     if (in_array(mb_strtolower($aValue), $lowerCaseValuesToAdd))
                     {
                         $keyToAddAndUse                  = array_search(mb_strtolower($aValue), $lowerCaseValuesToAdd);
                         $resolvedValueToUse              = $customFieldsInstructionData
-                                                           [CustomFieldsInstructionData::ADD_MISSING_VALUE][$keyToAddAndUse];
+                                                           [CustomFieldsInstructionData::ADD_MISSING_VALUES][$keyToAddAndUse];
                         $unserializedData                = unserialize($customFieldData->serializedData);
                         $unserializedData[]              = $resolvedValueToUse;
                         $customFieldData->serializedData = serialize($unserializedData);

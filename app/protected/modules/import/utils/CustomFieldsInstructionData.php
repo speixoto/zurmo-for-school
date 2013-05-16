@@ -44,14 +44,14 @@
          * Variable used to indicate a drop down value is missing from zurmo and will need to be added during import.
          * @var string
          */
-        const ADD_MISSING_VALUE = 'Add missing value';
+        const ADD_MISSING_VALUES = 'Add missing value';
 
         /**
          * Variable used to indicate a drop down value is missing from zurmo and will need to map to an existing value
          * based on what is provided.
          * @var string
          */
-        const MAP_MISSING_VALUES = 'Map missing values';
+        const MAP_MISSING_VALUES = 'Map missing value';
 
         /**
          * @var array
@@ -104,7 +104,7 @@
             $data = array();
             if(isset($this->missingValuesToAdd[$columnName]))
             {
-                $data[static::ADD_MISSING_VALUE] = $this->missingValuesToAdd[$columnName];
+                $data[static::ADD_MISSING_VALUES] = $this->missingValuesToAdd[$columnName];
             }
             if(isset($this->missingValuesToMap[$columnName]))
             {
@@ -135,9 +135,9 @@
         public function addByInstructionsDataAndColumnName($instructionsData, $columnName)
         {
             assert('is_string($columnName)');
-            if(isset($instructionsData[static::ADD_MISSING_VALUE]))
+            if(isset($instructionsData[static::ADD_MISSING_VALUES]))
             {
-                foreach($instructionsData[static::ADD_MISSING_VALUE] as $missingValueToAdd)
+                foreach($instructionsData[static::ADD_MISSING_VALUES] as $missingValueToAdd)
                 {
                     $this->resolveMissingValueToAdd($missingValueToAdd, $columnName);
                 }
@@ -197,7 +197,7 @@
             assert('is_string($missingCustomFieldValue)');
             assert('is_string($mapToValue)');
             assert('is_string($columnName)');
-            if(!isset($this->missingValuesToAdd[$columnName]))
+            if(!isset($this->missingValuesToMap[$columnName]))
             {
                 $this->missingValuesToMap[$columnName] = array();
             }

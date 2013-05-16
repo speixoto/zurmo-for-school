@@ -237,7 +237,7 @@
         {
             if ($customFieldsInstructionData == null)
             {
-                $customFieldsInstructionData = array(CustomFieldsInstructionData::ADD_MISSING_VALUE => array());
+                $customFieldsInstructionData = array(CustomFieldsInstructionData::ADD_MISSING_VALUES => array());
             }
             return array('attributeIndexOrDerivedType'  => $attributeName,
                          'type'                         => 'importColumn',
@@ -251,7 +251,7 @@
         {
             if ($customFieldsInstructionData == null)
             {
-                $customFieldsInstructionData = array(CustomFieldsInstructionData::ADD_MISSING_VALUE => array());
+                $customFieldsInstructionData = array(CustomFieldsInstructionData::ADD_MISSING_VALUES => array());
             }
             return array('attributeIndexOrDerivedType'  => $attributeName,
                          'type'                         => 'importColumn',
@@ -265,7 +265,7 @@
         {
             if ($customFieldsInstructionData == null)
             {
-                $customFieldsInstructionData = array(CustomFieldsInstructionData::ADD_MISSING_VALUE => array());
+                $customFieldsInstructionData = array(CustomFieldsInstructionData::ADD_MISSING_VALUES => array());
             }
             return array('attributeIndexOrDerivedType'  => $attributeName,
                          'type'                         => 'importColumn',

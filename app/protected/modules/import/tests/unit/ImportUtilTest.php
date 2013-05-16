@@ -161,10 +161,10 @@
 
             $this->assertEquals(6, ImportDatabaseUtil::getCount($import->getTempTableName())); // includes header rows.
 
-            $multiDropDownInstructionsData    = array(CustomFieldsInstructionData::ADD_MISSING_VALUE =>
+            $multiDropDownInstructionsData    = array(CustomFieldsInstructionData::ADD_MISSING_VALUES =>
                                                               array('Multi 5', 'Multi 4'),
                                                               CustomFieldsInstructionData::MAP_MISSING_VALUES => array());
-            $tagCloudInstructionsData         = array(CustomFieldsInstructionData::ADD_MISSING_VALUE =>
+            $tagCloudInstructionsData         = array(CustomFieldsInstructionData::ADD_MISSING_VALUES =>
                                                               array('Cloud 5', 'Cloud 4'),
                                                               CustomFieldsInstructionData::MAP_MISSING_VALUES => array());
             $mappingData = array(
