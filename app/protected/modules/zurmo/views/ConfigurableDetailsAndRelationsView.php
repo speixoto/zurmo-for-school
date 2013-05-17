@@ -39,11 +39,25 @@
      */
     abstract class ConfigurableDetailsAndRelationsView extends DetailsAndRelationsView
     {
+        public function __construct($controllerId, $moduleId, $params)
+        {
+            assert('isset($params["controllerId"])');
+            assert('isset($params["relationModuleId"])');
+            assert('isset($params["relationModel"])');
+            $this->controllerId        = $controllerId;
+            $this->moduleId            = $moduleId;
+            $this->uniqueLayoutId      = get_class($this);
+            $this->params              = $params;
+            $model                     = $params["relationModel"];
+            $this->modelId             = $model->id;
+        }
+
         protected function renderContent()
         {
             $metadata         = self::getMetadata();
+            $content          = $this->renderActionElementBar(true);
             $viewClassName    = static::getModelRelationsSecuredPortletFrameViewClassName();
-            $configurableView = new $viewClassName(   $this->controllerId,
+            $configurableView = new $viewClassName( $this->controllerId,
                                                     $this->moduleId,
                                                     $this->uniqueLayoutId,
                                                     $this->params,
@@ -52,7 +66,7 @@
                                                     true,
                                                     false,
                                                     '50,50');
-            $content          =  $configurableView->render();
+            $content          .=  $configurableView->render();
             $content          .= $this->renderScripts();
             return $content;
         }

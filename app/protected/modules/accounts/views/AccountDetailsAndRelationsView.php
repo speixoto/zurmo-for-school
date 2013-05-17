@@ -92,11 +92,22 @@
         {
             $metadata = array(
                 'global' => array(
+                    'toolbar' => array(
+                        'elements' => array(
+                            array(  'type'           => 'AddPortletAjaxLink',
+                                    'uniqueLayoutId' => 'eval:$this->uniqueLayoutId',
+                                    'ajaxOptions'    => 'eval:static::resolveAjaxOptionsForAddPortlet()',
+                                    'htmlOptions'    => array('id' => 'AddPortletLink',
+                                    'class'          => 'icon-add'
+                                )
+                            ),
+                        ),
+                    ),
                     'columns' => array(
                         array(
                             'rows' => array(
                                array(
-                                    'type' => 'AccountEditAndDetails',
+                                    'type' => 'AccountDetailsPortlet',
                                 ),
                                array(
                                     'type' => 'NoteInlineEditForPortlet',
@@ -131,6 +142,12 @@
         public static function getModuleClassName()
         {
             return 'AccountsModule';
+        }
+
+        protected static function resolveAjaxOptionsForAddPortlet()
+        {
+            $title = Zurmo::t('HomeModule', 'Add Portlet');
+            return ModalView::getAjaxOptionsForModalLink($title);
         }
     }
 ?>

@@ -82,6 +82,16 @@
             {
                 foreach ($columnPortlets as $position => $portlet)
                 {
+                    $className = get_class($portlet->getView());
+                    //TODO @Mayank, If i am calling the following if else as a function it doesn't work
+                    if(method_exists($className, 'canUserRemove'))
+                    {
+                        $removable      = $className::canUserRemove();
+                    }
+                    else
+                    {
+                        $removable      = $this->arePortletsRemovable();
+                    }
                     $juiPortletsWidgetItems[$column][$position] = array(
                         'id'          => $portlet->id,
                         'uniqueId'    => $portlet->getUniquePortletPageId(),
@@ -89,7 +99,7 @@
                         'content'     => $portlet->renderContent(),
                         'editable'    => $portlet->isEditable(),
                         'collapsed'   => $portlet->collapsed,
-                        'removable'   => $this->arePortletsRemovable(),
+                        'removable'   => $removable,
                         'uniqueClass' => $this->resolveUniqueClass($portlet)
                     );
                 }
