@@ -44,6 +44,8 @@
 
         protected $showDelete = true;
 
+        protected $showCopy   = true;
+
         public function setHideEdit()
         {
             $this->showEdit = false;
@@ -53,6 +55,12 @@
         {
             $this->showDelete = false;
         }
+
+        public function setHideCopy()
+        {
+            $this->showCopy = false;
+        }
+
 
         /**
          * @return string
@@ -74,6 +82,13 @@
                 $menuItems['items'][] = array('label' => Zurmo::t('ReportsModule', 'Edit'),
                                                  'url'   => Yii::app()->createUrl($this->getEditRoute(),
                                                                                   array('id' => $this->modelId)));
+            }
+
+            if ($this->showCopy)
+            {
+                $menuItems['items'][] = array('label' => Zurmo::t('Core', 'Clone'),
+                                              'url'   => Yii::app()->createUrl($this->getEditRoute(),
+                                                            array('id' => $this->modelId, 'isBeingCopied' => true)));
             }
 
             if ($this->showDelete)

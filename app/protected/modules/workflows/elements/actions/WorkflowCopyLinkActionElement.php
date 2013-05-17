@@ -34,38 +34,20 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * Factory for creating workflow wizard views of
-     * the appropriate type.
-     */
-    class WorkflowWizardViewFactory
+    class WorkflowCopyLinkActionElement extends CopyLinkActionElement
     {
-        /**
-         * @param Workflow $workflow
-         * @param $isBeingCopied
-         * @return View
-         * @throws NotSupportedException if the type provided is not valid
-         */
-        public static function makeViewFromWorkflow(Workflow $workflow, $isBeingCopied = false)
+        protected function getDefaultRoute()
         {
-            assert('is_bool($isBeingCopied)');
-            $type                      = $workflow->getType();
-            $workflowToWizardFormAdapter = new WorkflowToWizardFormAdapter($workflow);
-            if ($type == Workflow::TYPE_ON_SAVE)
+            $params = array('id' => $this->modelId, 'isBeingCopied' => true);
+            if (Yii::app()->request->getParam('redirectUrl') != null)
             {
-                $viewClassName = 'OnSaveWorkflowWizardView';
-                $form          = $workflowToWizardFormAdapter->makeOnSaveWizardForm();
+                $params = array_merge($params, array('redirectUrl' => Yii::app()->request->getParam('redirectUrl')));
             }
-            elseif ($type == Workflow::TYPE_BY_TIME)
+            elseif ($this->getRedirectUrl() != null)
             {
-                $viewClassName = 'ByTimeWorkflowWizardView';
-                $form          = $workflowToWizardFormAdapter->makeByTimeWizardForm();
+                $params = array_merge($params, array('redirectUrl' => $this->getRedirectUrl()));
             }
-            else
-            {
-                throw new NotSupportedException();
-            }
-            return new $viewClassName($form, $isBeingCopied);
+            return Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/edit/', $params);
         }
     }
 ?>

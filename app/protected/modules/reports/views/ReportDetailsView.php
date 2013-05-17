@@ -136,7 +136,8 @@
             {
                 $userCanEditReport   = $this->userCanEditReport();
                 $userCanDeleteReport = $this->userCanDeleteReport();
-                if (!$userCanEditReport && !$userCanDeleteReport)
+                $userCanCreateReport = $this->userCanCreateReport();
+                if (!$userCanEditReport && !$userCanDeleteReport && !$userCanCreateReport)
                 {
                     return false;
                 }
@@ -148,8 +149,17 @@
                 {
                     $element->setHideDelete();
                 }
+                if (!$userCanCreateReport)
+                {
+                    $element->setHideCopy();
+                }
             }
             return true;
+        }
+
+        protected function userCanCreateReport()
+        {
+            return ActionSecurityUtil::canCurrentUserPerformAction('Create', $this->savedReport);
         }
 
         protected function userCanEditReport()

@@ -151,15 +151,18 @@
             echo $view->render();
         }
 
-        public function actionEdit($id)
+        public function actionEdit($id, $isBeingCopied = false)
         {
             $savedReport      = SavedReport::getById((int)$id);
             ControllerSecurityUtil::resolveCanCurrentUserAccessModule($savedReport->moduleClassName);
-            ControllerSecurityUtil::resolveAccessCanCurrentUserWriteModel($savedReport);
+            if(!$isBeingCopied)
+            {
+                ControllerSecurityUtil::resolveAccessCanCurrentUserWriteModel($savedReport);
+            }
             $breadcrumbLinks  = array(strval($savedReport));
             $report           = SavedReportToReportAdapter::makeReportBySavedReport($savedReport);
             $progressBarAndStepsView = ReportWizardViewFactory::makeStepsAndProgressBarViewFromReport($report);
-            $reportWizardView = ReportWizardViewFactory::makeViewFromReport($report);
+            $reportWizardView = ReportWizardViewFactory::makeViewFromReport($report, (bool)$isBeingCopied);
             $view             = new ReportsPageView(ZurmoDefaultViewUtil::
                                                     makeTwoViewsWithBreadcrumbsForCurrentUser(
                                                     $this,
@@ -170,12 +173,12 @@
             echo $view->render();
         }
 
-        public function actionSave($type, $id = null)
+        public function actionSave($type, $id = null, $isBeingCopied = false)
         {
             $postData                  = PostUtil::getData();
             $savedReport               = null;
             $report                    = null;
-            $this->resolveSavedReportAndReportByPostData($postData, $savedReport, $report, $type, $id);
+            $this->resolveSavedReportAndReportByPostData($postData, $savedReport, $report, $type, $id, (bool)$isBeingCopied);
             $reportToWizardFormAdapter = new ReportToWizardFormAdapter($report);
             $model                     =  $reportToWizardFormAdapter->makeFormByType();
             if (isset($postData['ajax']) && $postData['ajax'] === 'edit-form')
@@ -213,12 +216,12 @@
             }
         }
 
-        public function actionRelationsAndAttributesTree($type, $treeType, $id = null, $nodeId = null)
+        public function actionRelationsAndAttributesTree($type, $treeType, $id = null, $nodeId = null, $isBeingCopied = false)
         {
             $postData    = PostUtil::getData();
             $savedReport = null;
             $report      = null;
-            $this->resolveSavedReportAndReportByPostData($postData, $savedReport, $report, $type, $id);
+            $this->resolveSavedReportAndReportByPostData($postData, $savedReport, $report, $type, $id, (bool)$isBeingCopied);
             if ($nodeId != null)
             {
                 $reportToTreeAdapter = new ReportRelationsAndAttributesToTreeAdapter($report, $treeType);
@@ -232,12 +235,13 @@
             echo $content;
         }
 
-        public function actionAddAttributeFromTree($type, $treeType, $nodeId, $rowNumber, $trackableStructurePosition = false, $id = null)
+        public function actionAddAttributeFromTree($type, $treeType, $nodeId, $rowNumber,
+                                                   $trackableStructurePosition = false, $id = null, $isBeingCopied = false)
         {
             $postData                           = PostUtil::getData();
             $savedReport                        = null;
             $report                             = null;
-            $this->resolveSavedReportAndReportByPostData($postData, $savedReport, $report, $type, $id);
+            $this->resolveSavedReportAndReportByPostData($postData, $savedReport, $report, $type, $id, (bool)$isBeingCopied);
             $nodeIdWithoutTreeType              = ReportRelationsAndAttributesToTreeAdapter::
                                                      removeTreeTypeFromNodeId($nodeId, $treeType);
             $moduleClassName                    = $report->getModuleClassName();
@@ -268,12 +272,12 @@
             echo $content;
         }
 
-        public function actionGetAvailableSeriesAndRangesForChart($type, $id = null)
+        public function actionGetAvailableSeriesAndRangesForChart($type, $id = null, $isBeingCopied = false)
         {
             $postData                           = PostUtil::getData();
             $savedReport                        = null;
             $report                             = null;
-            $this->resolveSavedReportAndReportByPostData($postData, $savedReport, $report, $type, $id);
+            $this->resolveSavedReportAndReportByPostData($postData, $savedReport, $report, $type, $id, (bool)$isBeingCopied);
             $moduleClassName                    = $report->getModuleClassName();
             $modelClassName                     = $moduleClassName::getPrimaryModelName();
             $modelToReportAdapter               = ModelRelationsAndAttributesToReportAdapter::
@@ -470,7 +474,8 @@
             return true;
         }
 
-        protected function resolveSavedReportAndReportByPostData(Array $postData, & $savedReport, & $report, $type, $id = null)
+        protected function resolveSavedReportAndReportByPostData(Array $postData, & $savedReport, & $report, $type,
+                                                                 $id = null, $isBeingCopied = false)
         {
             if ($id == null)
             {
@@ -478,6 +483,14 @@
                 $savedReport               = new SavedReport();
                 $report                    = new Report();
                 $report->setType($type);
+            }
+            elseif($isBeingCopied)
+            {
+                $savedReport              = new SavedReport();
+                $oldReport                = SavedReport::getById(intval($id));
+                ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($oldReport);
+                ZurmoCopyModelUtil::copy($oldReport, $savedReport);
+                $report                   = SavedReportToReportAdapter::makeReportBySavedReport($savedReport);
             }
             else
             {
