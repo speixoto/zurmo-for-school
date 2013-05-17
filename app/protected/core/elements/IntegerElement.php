@@ -41,7 +41,6 @@
     {
         /**
          * Renders the attribute from the model.
-         * Directs Url to open in new page.
          * @return The element's content.
          */
         protected function renderControlNonEditable()
@@ -53,7 +52,7 @@
             }
             else
             {
-                return parent::renderControlNonEditable();
+                return Yii::app()->format->formatNumber($this->model->{$this->attribute});
             }
         }
     }

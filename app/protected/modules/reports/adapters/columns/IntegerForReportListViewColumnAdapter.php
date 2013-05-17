@@ -63,7 +63,7 @@
             }
             else
             {
-                return $model->{$attribute};
+                return Yii::app()->format->formatNumber($model->{$attribute});
             }
         }
     }
