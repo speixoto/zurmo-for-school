@@ -86,7 +86,7 @@
             {
                 $jobInProcess = JobInProcess::getByType('Monitor');
                 $messageLogger->addInfoMessage("Existing monitor job detected");
-                if (static::isJobInProcessOverThreashold($jobInProcess, 'Monitor'))
+                if (static::isJobInProcessOverThreshold($jobInProcess, 'Monitor'))
                 {
                     $messageLogger->addInfoMessage("Existing monitor job is stuck");
                     self::makeMonitorStuckJobNotification();
@@ -181,7 +181,7 @@
          * @param string $type
          * @return true/false - true if the job is over the allowed amount of time to run for.
          */
-        public static function isJobInProcessOverThreashold(JobInProcess $jobInProcess, $type)
+        public static function isJobInProcessOverThreshold(JobInProcess $jobInProcess, $type)
         {
             assert('is_string($type) && $type != ""');
 

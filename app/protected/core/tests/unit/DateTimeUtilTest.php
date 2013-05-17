@@ -43,6 +43,39 @@
             Yii::app()->setLanguage('en');
         }
 
+        public function testGetTimeSinceDisplayContent()
+        {
+            //30 minutes ago
+            $timeStampLatestUpdate  = DateTimeUtil::convertTimestampToDbFormatDateTime(time() - (30 * 60));
+            $timeSinceLastestUpdate = DateTimeUtil::getTimeSinceDisplayContent($timeStampLatestUpdate);
+            $this->assertEquals($timeSinceLastestUpdate, '0 hours ago');
+
+            //58 minutes ago
+            $timeStampLatestUpdate  = DateTimeUtil::convertTimestampToDbFormatDateTime(time() - (58 * 60));
+            $timeSinceLastestUpdate = DateTimeUtil::getTimeSinceDisplayContent($timeStampLatestUpdate);
+            $this->assertEquals($timeSinceLastestUpdate, '0 hours ago');
+
+            //61 minutes ago
+            $timeStampLatestUpdate  = DateTimeUtil::convertTimestampToDbFormatDateTime(time() - (61 * 60));
+            $timeSinceLastestUpdate = DateTimeUtil::getTimeSinceDisplayContent($timeStampLatestUpdate);
+            $this->assertEquals($timeSinceLastestUpdate, '1 hour ago');
+
+            //3 hours ago
+            $timeStampLatestUpdate  = DateTimeUtil::convertTimestampToDbFormatDateTime(time() - (3 * 60 * 60));
+            $timeSinceLastestUpdate = DateTimeUtil::getTimeSinceDisplayContent($timeStampLatestUpdate);
+            $this->assertEquals($timeSinceLastestUpdate, '3 hours ago');
+
+            //27 hours ago
+            $timeStampLatestUpdate  = DateTimeUtil::convertTimestampToDbFormatDateTime(time() - (27 * 60 * 60));
+            $timeSinceLastestUpdate = DateTimeUtil::getTimeSinceDisplayContent($timeStampLatestUpdate);
+            $this->assertEquals($timeSinceLastestUpdate, '1 day ago');
+
+            //10 days ago
+            $timeStampLatestUpdate  = DateTimeUtil::convertTimestampToDbFormatDateTime(time() - (10 * 24 * 60 * 60));
+            $timeSinceLastestUpdate = DateTimeUtil::getTimeSinceDisplayContent($timeStampLatestUpdate);
+            $this->assertEquals($timeSinceLastestUpdate, '10 days ago');
+        }
+
         public function testConvertTimestampToDbFormatDateTimeAndBackToTimeStamp()
         {
             $time = time();
