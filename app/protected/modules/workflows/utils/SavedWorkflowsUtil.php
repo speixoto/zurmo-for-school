@@ -121,7 +121,7 @@
         public static function resolveBeforeSaveByModel(Item $model, User $triggeredByUser)
         {
             $savedWorkflows = SavedWorkflow::getActiveByModuleClassNameAndIsNewModel(
-                                             $model::getModuleClassName(), $model->isNewModel);
+                                             $model::getModuleClassName(), $model->getIsNewModel());
             foreach ($savedWorkflows as $savedWorkflow)
             {
                 $workflow = SavedWorkflowToWorkflowAdapter::makeWorkflowBySavedWorkflow($savedWorkflow);
