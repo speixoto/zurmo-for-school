@@ -115,8 +115,8 @@
                                                 'Send After <span class="required">*</span></label>') !== false);
             $this->assertTrue(strpos($content, '<label for="Autoresponder_subject" class="required">Subject ' .
                                                 '<span class="required">*</span></label>') !== false);
-            $this->assertTrue(strpos($content, '<label for="Autoresponder_enableTracking">Enable Tracking' .
-                                                '</label>') !== false);
+            $this->assertTrue(strpos($content, '<input id="ytAutoresponder_enableTracking" type="hidden" ' .
+                                                'value="0" name="Autoresponder[enableTracking]"') !== false);
             $this->assertTrue(strpos($content, '<select name="Autoresponder[operationType]" ' .
                                                 'id="Autoresponder_operationType_value">') !== false);
             $this->assertTrue(strpos($content, '<option value="1">Subscription to list</option>') !== false);
@@ -328,8 +328,8 @@
                                                 'Send After <span class="required">*</span></label>') !== false);
             $this->assertTrue(strpos($content, '<label for="Autoresponder_subject" class="required">Subject ' .
                                                 '<span class="required">*</span></label>') !== false);
-            $this->assertTrue(strpos($content, '<label for="Autoresponder_enableTracking">Enable Tracking' .
-                                                '</label>') !== false);
+            $this->assertTrue(strpos($content, '<input id="ytAutoresponder_enableTracking" type="hidden" ' .
+                                                'value="0" name="Autoresponder[enableTracking]"') !== false);
             $this->assertTrue(strpos($content, '<select name="Autoresponder[operationType]" ' .
                                                 'id="Autoresponder_operationType_value">') !== false);
             $this->assertTrue(strpos($content, '<option value="1">Subscription to list</option>') !== false);
