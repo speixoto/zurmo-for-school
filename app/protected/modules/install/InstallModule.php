@@ -57,5 +57,15 @@
         {
             return array();
         }
+
+        protected static function getSingularModuleLabel($language)
+        {
+            return Zurmo::t('InstallModule', 'Install', array(), null, $language);
+        }
+
+        protected static function getPluralModuleLabel($language)
+        {
+            return Zurmo::t('InstallModule', 'Installs', array(), null, $language);
+        }
     }
 ?>

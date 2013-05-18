@@ -214,5 +214,15 @@
         {
             return true;
         }
+
+        protected static function getSingularModuleLabel($language)
+        {
+            return Zurmo::t('ContactsModule', 'Contact', array(), null, $language);
+        }
+
+        protected static function getPluralModuleLabel($language)
+        {
+            return Zurmo::t('ContactsModule', 'Contacts', array(), null, $language);
+        }
     }
 ?>

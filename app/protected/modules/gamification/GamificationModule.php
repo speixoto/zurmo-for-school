@@ -68,5 +68,15 @@
         {
             return array('GamificationDemoDataMaker');
         }
+
+        protected static function getSingularModuleLabel($language)
+        {
+            return Zurmo::t('GamificationModule', 'Gamification', array(), null, $language);
+        }
+
+        protected static function getPluralModuleLabel($language)
+        {
+            return Zurmo::t('GamificationModule', 'Gamifications', array(), null, $language);
+        }
     }
 ?>

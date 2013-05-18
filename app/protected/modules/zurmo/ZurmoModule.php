@@ -340,5 +340,15 @@
                 self::setLastAttemptedInfoUpdateTimeStamp();
             }
         }
+
+        protected static function getSingularModuleLabel($language)
+        {
+            return Zurmo::t('ZurmoModule', 'Zurmo', array(), null, $language);
+        }
+
+        protected static function getPluralModuleLabel($language)
+        {
+            return Zurmo::t('ZurmoModule', 'Zurmo', array(), null, $language);
+        }
     }
 ?>
