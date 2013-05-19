@@ -34,20 +34,60 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class ExportUtil
+    /**
+    * Test ExportUtil functions.
+    */
+    class ExportUtilTest extends ZurmoBaseTest
     {
-        public static function getDataForExport(CDataProvider $dataProvider)
+        public static function setUpBeforeClass()
         {
-            $totalItems = intval($dataProvider->calculateTotalItemCount());
-            $dataProvider->getPagination()->setPageSize($totalItems);
-            return $dataProvider->getData();
+            parent::setUpBeforeClass();
+            SecurityTestHelper::createSuperAdmin();
+            $super = User::getByUsername('super');
+            Yii::app()->user->userModel = $super;
+            for ($i = 1; $i <= 30; $i++)
+            {
+                $account = new Account();
+                $account->owner       = $super;
+                $account->name        = 'Test Account' . $i;
+                $account->officePhone = '12345678' . $i;
+                $account->save();
+            }
         }
 
-        public static function getSerializedDataForExport(CDataProvider $dataProvider)
+        public function testGetDataForExport()
         {
-            $totalItems = intval($dataProvider->calculateTotalItemCount());
-            $dataProvider->getPagination()->setPageSize($totalItems);
-            return serialize($dataProvider);
+            $super = User::getByUsername('super');
+            Yii::app()->user->userModel = $super;
+            $account = new Account(false);
+            $searchForm = new AccountsSearchForm($account);
+            $dataProvider = ExportTestHelper::makeRedBeanDataProvider(
+                $searchForm,
+                'Account',
+                0,
+                Yii::app()->user->userModel->id
+            );
+
+            $data = ExportUtil::getDataForExport($dataProvider);
+            $this->assertEquals(30, count($data));
+        }
+
+        public function testGetSerializedDataForExport()
+        {
+            $super = User::getByUsername('super');
+            Yii::app()->user->userModel = $super;
+
+            $account = new Account(false);
+            $searchForm = new AccountsSearchForm($account);
+            $dataProvider = ExportTestHelper::makeRedBeanDataProvider(
+                $searchForm,
+                'Account',
+                0,
+                Yii::app()->user->userModel->id
+            );
+
+            $serializedData = ExportUtil::getSerializedDataForExport($dataProvider);
+            $this->assertEquals($dataProvider, unserialize($serializedData));
         }
     }
 ?>

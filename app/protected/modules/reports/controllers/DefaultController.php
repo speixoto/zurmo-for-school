@@ -397,7 +397,7 @@
                     // Output csv file directly to user browser
                     if ($dataProvider)
                     {
-                        $data1      = $dataProvider->getData();
+                        $data1 = ExportUtil::getDataForExport($dataProvider);
                         $headerData = array();
                         foreach ($data1 as $reportResultsRowData)
                         {
@@ -426,7 +426,7 @@
                 {
                     if ($dataProvider)
                     {
-                        $serializedData = serialize($dataProvider);
+                        $serializedData = ExportUtil::getSerializedDataForExport($dataProvider);
                     }
                     // Create background job
                     $exportItem                  = new ExportItem();
