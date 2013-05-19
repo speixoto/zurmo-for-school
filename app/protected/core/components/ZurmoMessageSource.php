@@ -68,7 +68,7 @@
             }
             catch (NotFoundException $e)
             {
-                $messages = $this->loadMessagesFromDbIgnoringCache($category, $languageCode);
+                $messages = $this->loadMessagesFromDb($category, $languageCode);
                 GeneralCache::cacheEntry(self::getMessageSourceCacheIdentifier($category, $languageCode), $messages);
             }
             return $messages;
