@@ -35,33 +35,43 @@
      ********************************************************************************/
 
     /**
-     * Helper class to convert a report search into
-     * an Jui AutoComplete ready array.
+     * Form used for selecting a report
      */
-    class ReportAutoCompleteUtil
+    class ReportSelectForm extends ConfigurableMetadataModel
     {
+        public $reportId;
+        public $reportName;
+
         /**
-         * @param string $partialName
-         * @param int $pageSize
-         * @param null|string $moduleClassName
-         * @param null|string $type
-         * @return array Jui AutoComplete ready array containing id, value, and label elements.
+         * Override to handle use case of $name == 'id'.
+         * As this form does not have an 'id', it will return null;
+         * @see ModelElement.  This form is used by ModelElement for example
+         * and ModelElement expects the model to have an 'id' value.
          */
-        public static function getByPartialName($partialName, $pageSize, $moduleClassName = null, $type = null)
+        public function __get($name)
         {
-            assert('is_string($partialName)');
-            assert('is_int($pageSize)');
-            $autoCompleteResults  = array();
-            $reports                = ReportSearch::getReportsByPartialName($partialName, $pageSize, $moduleClassName, $type);
-            foreach ($reports as $report)
+            if ($name == 'id')
             {
-                $autoCompleteResults[] = array(
-                    'id'    => $report->id,
-                    'value' => strval($report),
-                    'label' => strval($report),
-                );
+                return null;
             }
-            return $autoCompleteResults;
+            return parent::__get($name);
+        }
+
+        public function rules()
+        {
+            return array(
+                array('reportId',   'type',    'type' => 'integer'),
+                array('reportId',   'required'),
+                array('reportName', 'required'),
+            );
+        }
+
+        public function attributeLabels()
+        {
+            return array(
+                'reportId'          => Zurmo::t('ReportsModule', 'Report Id'),
+                'reportName'        => Zurmo::t('ReportsModule', 'Report Name'),
+            );
         }
     }
 ?>

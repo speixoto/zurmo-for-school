@@ -35,33 +35,44 @@
      ********************************************************************************/
 
     /**
-     * Helper class to convert a report search into
-     * an Jui AutoComplete ready array.
+     * Adapter class to adapt just the summation reports
      */
-    class ReportAutoCompleteUtil
+    class SummationReportsMetadataAdapter implements StateMetadataAdapterInterface
     {
-        /**
-         * @param string $partialName
-         * @param int $pageSize
-         * @param null|string $moduleClassName
-         * @param null|string $type
-         * @return array Jui AutoComplete ready array containing id, value, and label elements.
-         */
-        public static function getByPartialName($partialName, $pageSize, $moduleClassName = null, $type = null)
+        protected $metadata;
+
+        public function __construct(array $metadata)
         {
-            assert('is_string($partialName)');
-            assert('is_int($pageSize)');
-            $autoCompleteResults  = array();
-            $reports                = ReportSearch::getReportsByPartialName($partialName, $pageSize, $moduleClassName, $type);
-            foreach ($reports as $report)
+            assert('isset($metadata["clauses"])');
+            assert('isset($metadata["structure"])');
+            $this->metadata = $metadata;
+        }
+
+        /**
+         * Creates where clauses and adds structure information
+         * to existing DataProvider metadata.
+         */
+        public function getAdaptedDataProviderMetadata()
+        {
+            $metadata       = $this->metadata;
+            $clauseCount    = count($metadata['clauses']);
+            $startingCount  = $clauseCount + 1;
+            $structure      = '';
+            $metadata['clauses'][$startingCount] = array(
+                'attributeName' => 'type',
+                'operatorType'  => 'equals',
+                'value'         => Report::TYPE_SUMMATION
+            );
+            $structure .= $startingCount;
+            if (empty($metadata['structure']))
             {
-                $autoCompleteResults[] = array(
-                    'id'    => $report->id,
-                    'value' => strval($report),
-                    'label' => strval($report),
-                );
+                $metadata['structure'] = '(' . $structure . ')';
             }
-            return $autoCompleteResults;
+            else
+            {
+                $metadata['structure'] = '(' . $metadata['structure'] . ') and (' . $structure . ')';
+            }
+            return $metadata;
         }
     }
 ?>

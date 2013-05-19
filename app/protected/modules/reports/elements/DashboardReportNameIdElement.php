@@ -35,33 +35,20 @@
      ********************************************************************************/
 
     /**
-     * Helper class to convert a report search into
-     * an Jui AutoComplete ready array.
+     * Display the name and hidden id of the savedReport model specifically for a report that shows on the dashboard
+     * Displays a select button and auto-complete input
      */
-    class ReportAutoCompleteUtil
+    class DashboardReportNameIdElement extends ReportNameIdElement
     {
-        /**
-         * @param string $partialName
-         * @param int $pageSize
-         * @param null|string $moduleClassName
-         * @param null|string $type
-         * @return array Jui AutoComplete ready array containing id, value, and label elements.
-         */
-        public static function getByPartialName($partialName, $pageSize, $moduleClassName = null, $type = null)
+        protected function getAutoCompleteUrlParams()
         {
-            assert('is_string($partialName)');
-            assert('is_int($pageSize)');
-            $autoCompleteResults  = array();
-            $reports                = ReportSearch::getReportsByPartialName($partialName, $pageSize, $moduleClassName, $type);
-            foreach ($reports as $report)
-            {
-                $autoCompleteResults[] = array(
-                    'id'    => $report->id,
-                    'value' => strval($report),
-                    'label' => strval($report),
-                );
-            }
-            return $autoCompleteResults;
+            return array('type' => Report::TYPE_SUMMATION);
+        }
+
+        protected function getSelectLinkUrlParams()
+        {
+            return array_merge(parent::getSelectLinkUrlParams(),
+                        array('stateMetadataAdapterClassName' => 'SummationReportsMetadataAdapter'));
         }
     }
 ?>

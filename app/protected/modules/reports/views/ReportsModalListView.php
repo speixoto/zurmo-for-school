@@ -34,34 +34,49 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * Helper class to convert a report search into
-     * an Jui AutoComplete ready array.
-     */
-    class ReportAutoCompleteUtil
+    class ReportsModalListView extends ModalListView
     {
-        /**
-         * @param string $partialName
-         * @param int $pageSize
-         * @param null|string $moduleClassName
-         * @param null|string $type
-         * @return array Jui AutoComplete ready array containing id, value, and label elements.
-         */
-        public static function getByPartialName($partialName, $pageSize, $moduleClassName = null, $type = null)
+        public static function getDefaultMetadata()
         {
-            assert('is_string($partialName)');
-            assert('is_int($pageSize)');
-            $autoCompleteResults  = array();
-            $reports                = ReportSearch::getReportsByPartialName($partialName, $pageSize, $moduleClassName, $type);
-            foreach ($reports as $report)
-            {
-                $autoCompleteResults[] = array(
-                    'id'    => $report->id,
-                    'value' => strval($report),
-                    'label' => strval($report),
-                );
-            }
-            return $autoCompleteResults;
+            $metadata = array(
+                'global' => array(
+                    'panels' => array(
+                        array(
+                            'rows' => array(
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'name', 'type' => 'Text', 'isLink' => true),
+                                            ),
+                                        ),
+                                    )
+                                ),
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'moduleClassName',
+                                                    'type' => 'ModuleForReportStaticDropDown'),
+                                            ),
+                                        ),
+                                    )
+                                ),
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'type', 'type' => 'ReportTypeStaticDropDown'),
+                                            ),
+                                        ),
+                                    )
+                                ),
+                            ),
+                        ),
+                    ),
+                ),
+            );
+            return $metadata;
         }
     }
 ?>

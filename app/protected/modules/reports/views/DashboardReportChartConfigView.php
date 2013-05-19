@@ -35,33 +35,39 @@
      ********************************************************************************/
 
     /**
-     * Helper class to convert a report search into
-     * an Jui AutoComplete ready array.
+     * A chart configuration view for reports that go on the home page dashboard
      */
-    class ReportAutoCompleteUtil
+    class DashboardReportChartConfigView extends ModalConfigEditView
     {
-        /**
-         * @param string $partialName
-         * @param int $pageSize
-         * @param null|string $moduleClassName
-         * @param null|string $type
-         * @return array Jui AutoComplete ready array containing id, value, and label elements.
-         */
-        public static function getByPartialName($partialName, $pageSize, $moduleClassName = null, $type = null)
+        public static function getDefaultMetadata()
         {
-            assert('is_string($partialName)');
-            assert('is_int($pageSize)');
-            $autoCompleteResults  = array();
-            $reports                = ReportSearch::getReportsByPartialName($partialName, $pageSize, $moduleClassName, $type);
-            foreach ($reports as $report)
-            {
-                $autoCompleteResults[] = array(
-                    'id'    => $report->id,
-                    'value' => strval($report),
-                    'label' => strval($report),
-                );
-            }
-            return $autoCompleteResults;
+            $metadata = array(
+                'global' => array(
+                    'toolbar' => array(
+                        'elements' => array(
+                            array('type' => 'SaveButton'),
+                        ),
+                    ),
+                    'panelsDisplayType' => FormLayout::PANELS_DISPLAY_TYPE_ALL,
+                    'panels' => array(
+                        array(
+                            'rows' => array(
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'null',
+                                                      'type'          => 'DashboardReportNameId'),
+                                            ),
+                                        ),
+                                    )
+                                ),
+                            ),
+                        ),
+                    ),
+                ),
+            );
+            return $metadata;
         }
     }
 ?>

@@ -34,34 +34,16 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * Helper class to convert a report search into
-     * an Jui AutoComplete ready array.
-     */
-    class ReportAutoCompleteUtil
+    class ReportsModalSearchAndListView extends ModalSearchAndListView
     {
-        /**
-         * @param string $partialName
-         * @param int $pageSize
-         * @param null|string $moduleClassName
-         * @param null|string $type
-         * @return array Jui AutoComplete ready array containing id, value, and label elements.
-         */
-        public static function getByPartialName($partialName, $pageSize, $moduleClassName = null, $type = null)
+        public static function getListViewClassName()
         {
-            assert('is_string($partialName)');
-            assert('is_int($pageSize)');
-            $autoCompleteResults  = array();
-            $reports                = ReportSearch::getReportsByPartialName($partialName, $pageSize, $moduleClassName, $type);
-            foreach ($reports as $report)
-            {
-                $autoCompleteResults[] = array(
-                    'id'    => $report->id,
-                    'value' => strval($report),
-                    'label' => strval($report),
-                );
-            }
-            return $autoCompleteResults;
+            return 'ReportsModalListView';
+        }
+
+        public static function getSearchViewClassName()
+        {
+            return 'ReportsModalSearchView';
         }
     }
 ?>

@@ -35,33 +35,10 @@
      ********************************************************************************/
 
     /**
-     * Helper class to convert a report search into
-     * an Jui AutoComplete ready array.
+     * Implemented by adapters that are either StateMetadataAdapters or mimic the same interface
      */
-    class ReportAutoCompleteUtil
+    interface StateMetadataAdapterInterface
     {
-        /**
-         * @param string $partialName
-         * @param int $pageSize
-         * @param null|string $moduleClassName
-         * @param null|string $type
-         * @return array Jui AutoComplete ready array containing id, value, and label elements.
-         */
-        public static function getByPartialName($partialName, $pageSize, $moduleClassName = null, $type = null)
-        {
-            assert('is_string($partialName)');
-            assert('is_int($pageSize)');
-            $autoCompleteResults  = array();
-            $reports                = ReportSearch::getReportsByPartialName($partialName, $pageSize, $moduleClassName, $type);
-            foreach ($reports as $report)
-            {
-                $autoCompleteResults[] = array(
-                    'id'    => $report->id,
-                    'value' => strval($report),
-                    'label' => strval($report),
-                );
-            }
-            return $autoCompleteResults;
-        }
+        public function getAdaptedDataProviderMetadata();
     }
 ?>
