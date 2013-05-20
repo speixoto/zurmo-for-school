@@ -52,7 +52,10 @@
 
         protected function renderContent()
         {
-            $content = ZurmoHtml::tag('div', array('class' => 'progress-bar'), '');
+            $width = $this->getSpanPercentWidthFromCount();
+            $left  = $this->getCurrentStepIndex() * $width;
+            $content = ZurmoHtml::tag('div', array('class' => 'progress-bar',
+                                                   'style' => 'width:' . $width . '%; margin-left:' . $left . '%'), '');
             $content = ZurmoHtml::tag('div', array('class' => 'progress-back'), $content);
             $spanContent = $this->getSpanContent();
             return ZurmoHtml::tag('div', array('class' => 'progress'), $content . $spanContent);
@@ -60,12 +63,25 @@
 
         protected function getSpanContent()
         {
+            $width = $this->getSpanPercentWidthFromCount();
             $content = null;
             foreach($this->getSpanLabels() as $label)
             {
-                $content .= ZurmoHtml::tag('div', array(), $label);
+                $content .= ZurmoHtml::tag('span', array('style' => 'width:' . $width . '%'), $label);
             }
             return $content;
+        }
+
+        protected function getSpanPercentWidthFromCount()
+        {
+            $width  = 100 / count($this->getSpanLabels());
+            return $width;
+        }
+
+        protected function getCurrentStepIndex()
+        {
+            $index = 0;
+            return $index; // Jason: should implement it to get the margin for left for the progress bar
         }
     }
 ?>
