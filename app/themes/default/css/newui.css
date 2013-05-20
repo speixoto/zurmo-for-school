@@ -11778,7 +11778,6 @@ table.configuration-list td:last-child a .z-label:before {
 }
 .has-lang-label input {
   position: relative;
-  padding-left: 80px;
 }
 .has-lang-label input + span {
   background: url(../images/lang-label.png) left top no-repeat;
