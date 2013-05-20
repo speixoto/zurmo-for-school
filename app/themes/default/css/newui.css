@@ -16730,6 +16730,10 @@ a.user-link {
   padding-left: 15px;
   width: 80%;
 }
+.first-date-area {
+  margin-top: 10px;
+  display: block;
+}
 .dynamic-and-for-mixed {
   display: inline-block;
   padding: 5px 0;
