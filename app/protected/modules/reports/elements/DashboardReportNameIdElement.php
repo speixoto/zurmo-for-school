@@ -35,13 +35,20 @@
      ********************************************************************************/
 
     /**
-     * Renders an action bar specifically for the search and listview.
+     * Display the name and hidden id of the savedReport model specifically for a report that shows on the dashboard
+     * Displays a select button and auto-complete input
      */
-    class ActionBarForGroupsTreeListView extends ActionBarForSecurityTreeListView
+    class DashboardReportNameIdElement extends ReportNameIdElement
     {
-        protected function makeModel()
+        protected function getAutoCompleteUrlParams()
         {
-            return new Group(false);
+            return array('type' => Report::TYPE_SUMMATION);
+        }
+
+        protected function getSelectLinkUrlParams()
+        {
+            return array_merge(parent::getSelectLinkUrlParams(),
+                        array('stateMetadataAdapterClassName' => 'SummationReportsMetadataAdapter'));
         }
     }
 ?>

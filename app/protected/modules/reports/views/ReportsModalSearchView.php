@@ -34,31 +34,37 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * Base view for the group edit view and details view.
-     */
-    class GroupEditAndDetailsView extends EditAndDetailsView
+    class ReportsModalSearchView extends SearchView
     {
         public static function getDefaultMetadata()
         {
             $metadata = array(
                 'global' => array(
-                    'toolbar' => array(
-                        'elements' => array(
-                            array('type'           => 'SaveButton', 'renderType' => 'Edit'),
-                            array('type'           => 'CancelToListLink', 'renderType' => 'Edit'),
-                            array('type'           => 'GroupDeleteLink')
-                        ),
-                    ),
-                    'panelsDisplayType' => FormLayout::PANELS_DISPLAY_TYPE_ALL,
                     'panels' => array(
                         array(
+                            'locked' => true,
+                            'title'  => 'Basic Search',
+                            'rows'   => array(
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'anyMixedAttributes',
+                                                      'type' => 'AnyMixedAttributesSearch', 'wide' => true),
+                                            ),
+                                        ),
+                                    )
+                                ),
+                            ),
+                        ),
+                        array(
+                            'title' => 'Advanced Search',
                             'rows' => array(
                                 array('cells' =>
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'name', 'type' => 'Text'),
+                                                array('attributeName' => 'type', 'type' => 'ReportTypeStaticDropDown', 'addBlank' => true),
                                             ),
                                         ),
                                     )
@@ -67,7 +73,7 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'group', 'type' => 'ParentGroup'),
+                                                array('attributeName' => 'moduleClassName', 'type' => 'ModuleForReportStaticDropDown', 'addBlank' => true),
                                             ),
                                         ),
                                     )
@@ -80,62 +86,14 @@
             return $metadata;
         }
 
-        /**
-         * Override to check for different scenarios depending on if the group is
-         * special or not. Everyone and SuperAdministrators are special groups
-         * for example.
-         * Checks for $elementInformation['resolveToDisplay'] to be present and if it is,
-         * will run the resolveName as a function on the group model.
-         * @param $element
-         * @param $elementInformation
-         * @return bool
-         */
-        protected function shouldRenderToolBarElement($element, $elementInformation)
+        public static function getDesignerRulesType()
         {
-            assert('$element instanceof ActionElement');
-            assert('is_array($elementInformation)');
-            if (!parent::shouldRenderToolBarElement($element, $elementInformation))
-            {
-                return false;
-            }
-            if (isset($elementInformation['resolveToDisplay']))
-            {
-                $resolveMethodName = $elementInformation['resolveToDisplay'];
-                if (!$this->model->{$resolveMethodName}())
-                {
-                    return false;
-                }
-            }
-            $actionType = $element->getActionType();
-            if ($actionType == null || $actionType != 'Delete')
-            {
-                return true;
-            }
-            return RightsUtil::doesUserHaveAllowByRightName('GroupsModule', $actionType, Yii::app()->user->userModel);
+            return 'ModalSearchView';
         }
 
-        /**
-         * Override to handle everyone and super admin special groups since they cannot be edited.
-         */
-        protected function resolveElementInformationDuringFormLayoutRender(& $elementInformation)
+        public static function getModelForMetadataClassName()
         {
-            if ($elementInformation['attributeName'] =='name' &&
-               ($this->model->isEveryone || $this->model->isSuperAdministrators))
-            {
-                $elementInformation['disabled']          = true;
-            }
-
-            if ($elementInformation['attributeName'] =='group' &&
-               ($this->model->isEveryone || $this->model->isSuperAdministrators))
-            {
-                    $elementInformation['attributeName'] = null;
-                    $elementInformation['type']          = 'Null'; // Not Coding Standard
-            }
-        }
-
-        protected function getNewModelTitleLabel()
-        {
-            return Zurmo::t('ZurmoModule', 'Create Group');
+            return 'ReportsSearchForm';
         }
     }
 ?>

@@ -35,13 +35,15 @@
      ********************************************************************************/
 
     /**
-     * Renders an action bar specifically for the search and listview.
+     * Display the name and hidden id of the savedReport model.
+     * Displays a select button and auto-complete input
      */
-    class ActionBarForGroupsTreeListView extends ActionBarForSecurityTreeListView
+    class ReportNameIdElement extends NameIdElement
     {
-        protected function makeModel()
-        {
-            return new Group(false);
-        }
+        protected static $moduleId = 'reports';
+
+        protected $idAttributeId = 'reportId';
+
+        protected $nameAttributeName = 'reportName';
     }
 ?>

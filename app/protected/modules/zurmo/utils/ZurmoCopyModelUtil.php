@@ -68,7 +68,10 @@
                     static::copyRelation($model, $attributeName, $copyToModel);
                 }
             }
-            static::copyRelation($model, 'owner', $copyToModel);
+            if($model instanceof OwnedSecurableItem)
+            {
+                static::copyRelation($model, 'owner', $copyToModel);
+            }
             static::resolveExplicitPermissions($model, $copyToModel);
         }
 

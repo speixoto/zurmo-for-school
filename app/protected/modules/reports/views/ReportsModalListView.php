@@ -34,14 +34,49 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * Renders an action bar specifically for the search and listview.
-     */
-    class ActionBarForGroupsTreeListView extends ActionBarForSecurityTreeListView
+    class ReportsModalListView extends ModalListView
     {
-        protected function makeModel()
+        public static function getDefaultMetadata()
         {
-            return new Group(false);
+            $metadata = array(
+                'global' => array(
+                    'panels' => array(
+                        array(
+                            'rows' => array(
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'name', 'type' => 'Text', 'isLink' => true),
+                                            ),
+                                        ),
+                                    )
+                                ),
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'moduleClassName',
+                                                    'type' => 'ModuleForReportStaticDropDown'),
+                                            ),
+                                        ),
+                                    )
+                                ),
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'type', 'type' => 'ReportTypeStaticDropDown'),
+                                            ),
+                                        ),
+                                    )
+                                ),
+                            ),
+                        ),
+                    ),
+                ),
+            );
+            return $metadata;
         }
     }
 ?>

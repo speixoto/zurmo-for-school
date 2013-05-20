@@ -288,7 +288,7 @@
             $this->assertContains('gardening'                              , $note[0]->tagcloudCstm->values);
             $metadata            = CalculatedDerivedAttributeMetadata::
                                    getByNameAndModelClassName('calcnumber', 'Note');
-            $testCalculatedValue = CalculatedNumberUtil::calculateByFormulaAndModel($metadata->getFormula(), $note[0]);
+            $testCalculatedValue = CalculatedNumberUtil::calculateByFormulaAndModelAndResolveFormat($metadata->getFormula(), $note[0]);
             $this->assertEquals(135                                        , $testCalculatedValue);
         }
 
@@ -385,7 +385,7 @@
             $this->assertEquals(0                                          , $note[0]->tagcloudCstm->values->count());
             $metadata            = CalculatedDerivedAttributeMetadata::
                                    getByNameAndModelClassName('calcnumber', 'Note');
-            $testCalculatedValue = CalculatedNumberUtil::calculateByFormulaAndModel($metadata->getFormula(), $note[0]);
+            $testCalculatedValue = CalculatedNumberUtil::calculateByFormulaAndModelAndResolveFormat($metadata->getFormula(), $note[0]);
             $this->assertEquals(23                                         , $testCalculatedValue);
         }
 
@@ -482,7 +482,7 @@
             $this->assertContains('surfing'                                , $note[0]->tagcloudCstm->values);
             $metadata            = CalculatedDerivedAttributeMetadata::
                                    getByNameAndModelClassName('calcnumber', 'Note');
-            $testCalculatedValue = CalculatedNumberUtil::calculateByFormulaAndModel($metadata->getFormula(), $note[0]);
+            $testCalculatedValue = CalculatedNumberUtil::calculateByFormulaAndModelAndResolveFormat($metadata->getFormula(), $note[0]);
             $this->assertEquals(23                                         , $testCalculatedValue);
         }
 

@@ -34,14 +34,16 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * Renders an action bar specifically for the search and listview.
-     */
-    class ActionBarForGroupsTreeListView extends ActionBarForSecurityTreeListView
+    class ReportsModalSearchAndListView extends ModalSearchAndListView
     {
-        protected function makeModel()
+        public static function getListViewClassName()
         {
-            return new Group(false);
+            return 'ReportsModalListView';
+        }
+
+        public static function getSearchViewClassName()
+        {
+            return 'ReportsModalSearchView';
         }
     }
 ?>

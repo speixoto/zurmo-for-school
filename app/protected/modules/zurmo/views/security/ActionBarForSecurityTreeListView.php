@@ -37,11 +37,15 @@
     /**
      * Renders an action bar specifically for the search and listview.
      */
-    class ActionBarForSecurityTreeListView extends ConfigurableMetadataView
+    abstract class ActionBarForSecurityTreeListView extends ConfigurableMetadataView
     {
+
         protected $controllerId;
 
         protected $moduleId;
+
+
+        abstract protected function makeModel();
 
         public function __construct($controllerId, $moduleId)
         {
@@ -53,9 +57,14 @@
 
         protected function renderContent()
         {
-            $content  = '<div class="view-toolbar-container clearfix"><div class="view-toolbar">';
-            $content .= $this->renderActionElementBar(false);
-            $content .= '</div></div>';
+            $content          = null;
+            $actionBarContent = $this->renderActionElementBar(false);
+            if($actionBarContent != null)
+            {
+                $content .= '<div class="view-toolbar-container clearfix"><div class="view-toolbar">';
+                $content .= $actionBarContent;
+                $content .= '</div></div>';
+            }
             return $content;
         }
 
@@ -78,6 +87,26 @@
                 ),
             );
             return $metadata;
+        }
+
+        protected function shouldRenderToolBarElement($element, $elementInformation)
+        {
+            assert('$element instanceof ActionElement');
+            assert('is_array($elementInformation)');
+            if (!parent::shouldRenderToolBarElement($element, $elementInformation))
+            {
+                return false;
+            }
+            $actionType = $element->getActionType();
+            if ($actionType == null)
+            {
+                return true;
+            }
+            $actionSecurity = ActionSecurityFactory::createActionSecurityFromActionType(
+                $actionType,
+                $this->makeModel(),
+                Yii::app()->user->userModel);
+            return $actionSecurity->canUserPerformAction();
         }
     }
 ?>

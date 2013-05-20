@@ -35,13 +35,43 @@
      ********************************************************************************/
 
     /**
-     * Renders an action bar specifically for the search and listview.
+     * Form used for selecting a report
      */
-    class ActionBarForGroupsTreeListView extends ActionBarForSecurityTreeListView
+    class ReportSelectForm extends ConfigurableMetadataModel
     {
-        protected function makeModel()
+        public $reportId;
+        public $reportName;
+
+        /**
+         * Override to handle use case of $name == 'id'.
+         * As this form does not have an 'id', it will return null;
+         * @see ModelElement.  This form is used by ModelElement for example
+         * and ModelElement expects the model to have an 'id' value.
+         */
+        public function __get($name)
         {
-            return new Group(false);
+            if ($name == 'id')
+            {
+                return null;
+            }
+            return parent::__get($name);
+        }
+
+        public function rules()
+        {
+            return array(
+                array('reportId',   'type',    'type' => 'integer'),
+                array('reportId',   'required'),
+                array('reportName', 'required'),
+            );
+        }
+
+        public function attributeLabels()
+        {
+            return array(
+                'reportId'          => Zurmo::t('ReportsModule', 'Report Id'),
+                'reportName'        => Zurmo::t('ReportsModule', 'Report Name'),
+            );
         }
     }
 ?>

@@ -43,11 +43,11 @@
         /**
          * @param string $partialName
          * @param int $pageSize
-         * @param string $moduleClassName
-         * @param string $type
+         * @param null|string $moduleClassName
+         * @param null|string $type
          * @return array Jui AutoComplete ready array containing id, value, and label elements.
          */
-        public static function getByPartialName($partialName, $pageSize, $moduleClassName, $type)
+        public static function getByPartialName($partialName, $pageSize, $moduleClassName = null, $type = null)
         {
             assert('is_string($partialName)');
             assert('is_int($pageSize)');

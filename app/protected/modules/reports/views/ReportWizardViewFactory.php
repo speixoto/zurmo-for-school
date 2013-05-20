@@ -42,11 +42,13 @@
     {
         /**
          * @param Report $report
+         * @param bool $isBeingCopied - whether the model is being copied to 'Save As' or not.
          * @return View
          * @throws NotSupportedException if the type provided is not valid
          */
-        public static function makeViewFromReport(Report $report)
+        public static function makeViewFromReport(Report $report, $isBeingCopied = false)
         {
+            assert('is_bool($isBeingCopied)');
             $type                      = $report->getType();
             $reportToWizardFormAdapter = new ReportToWizardFormAdapter($report);
             if ($type == Report::TYPE_ROWS_AND_COLUMNS)
@@ -68,7 +70,7 @@
             {
                 throw new NotSupportedException();
             }
-            return new $viewClassName($form);
+            return new $viewClassName($form, $isBeingCopied);
         }
 
         /**

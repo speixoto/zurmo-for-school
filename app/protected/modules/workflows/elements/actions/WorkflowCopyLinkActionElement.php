@@ -34,14 +34,20 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * Renders an action bar specifically for the search and listview.
-     */
-    class ActionBarForGroupsTreeListView extends ActionBarForSecurityTreeListView
+    class WorkflowCopyLinkActionElement extends CopyLinkActionElement
     {
-        protected function makeModel()
+        protected function getDefaultRoute()
         {
-            return new Group(false);
+            $params = array('id' => $this->modelId, 'isBeingCopied' => true);
+            if (Yii::app()->request->getParam('redirectUrl') != null)
+            {
+                $params = array_merge($params, array('redirectUrl' => Yii::app()->request->getParam('redirectUrl')));
+            }
+            elseif ($this->getRedirectUrl() != null)
+            {
+                $params = array_merge($params, array('redirectUrl' => $this->getRedirectUrl()));
+            }
+            return Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/edit/', $params);
         }
     }
 ?>

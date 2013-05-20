@@ -175,13 +175,13 @@
             echo $view->render();
         }
 
-        public function actionEdit($id)
+        public function actionEdit($id, $isBeingCopied = false)
         {
             $savedWorkflow      = SavedWorkflow::getById((int)$id);
             ControllerSecurityUtil::resolveCanCurrentUserAccessModule($savedWorkflow->moduleClassName);
             $breadcrumbLinks    = array(strval($savedWorkflow));
             $workflow           = SavedWorkflowToWorkflowAdapter::makeWorkflowBySavedWorkflow($savedWorkflow);
-            $wizardWizardView = WorkflowWizardViewFactory::makeViewFromWorkflow($workflow);
+            $wizardWizardView = WorkflowWizardViewFactory::makeViewFromWorkflow($workflow, (bool)$isBeingCopied);
             $view             = new WorkflowsPageView(  ZurmoDefaultAdminViewUtil::
                                                         makeViewWithBreadcrumbsForCurrentUser(
                                                         $this,
@@ -191,12 +191,13 @@
             echo $view->render();
         }
 
-        public function actionSave($type, $id = null)
+        public function actionSave($type, $id = null, $isBeingCopied = false)
         {
             $postData                  = PostUtil::getData();
             $savedWorkflow             = null;
             $workflow                  = null;
-            $this->resolveSavedWorkflowAndWorkflowByPostData($postData, $savedWorkflow, $workflow, $type, $id);
+            $this->resolveSavedWorkflowAndWorkflowByPostData($postData, $savedWorkflow, $workflow, $type, $id,
+                                                             (bool)$isBeingCopied);
 
             $workflowToWizardFormAdapter = new WorkflowToWizardFormAdapter($workflow);
             $model                     =  $workflowToWizardFormAdapter->makeFormByType();
@@ -205,15 +206,14 @@
                 $this->actionValidate($postData, $model);
             }
             SavedWorkflowToWorkflowAdapter::resolveWorkflowToSavedWorkflow($workflow, $savedWorkflow);
-            SavedWorkflowsUtil::resolveOrder($savedWorkflow);
+            SavedWorkflowsUtil::resolveOrder($savedWorkflow, (bool)$isBeingCopied);
             if ($savedWorkflow->id > 0)
             {
                 ControllerSecurityUtil::resolveCanCurrentUserAccessModule($savedWorkflow->moduleClassName);
             }
             if ($savedWorkflow->save())
             {
-                echo CJSON::encode(array('id'             => $savedWorkflow->id,
-                                         'redirectToList' => false));
+                echo CJSON::encode(array('id' => $savedWorkflow->id, 'redirectToList' => false));
                 Yii::app()->end(0, false);
             }
             else
@@ -222,12 +222,13 @@
             }
         }
 
-        public function actionRelationsAndAttributesTree($type, $treeType, $id = null, $nodeId = null)
+        public function actionRelationsAndAttributesTree($type, $treeType, $id = null, $nodeId = null, $isBeingCopied = false)
         {
             $postData      = PostUtil::getData();
             $savedWorkflow = null;
             $workflow        = null;
-            $this->resolveSavedWorkflowAndWorkflowByPostData($postData, $savedWorkflow, $workflow, $type, $id);
+            $this->resolveSavedWorkflowAndWorkflowByPostData($postData, $savedWorkflow, $workflow, $type, $id,
+                                                             (bool)$isBeingCopied);
             if ($nodeId != null)
             {
                 $wizardToTreeAdapter = new WorkflowRelationsAndAttributesToTreeAdapter($workflow, $treeType);
@@ -242,12 +243,13 @@
         }
 
         public function actionAddAttributeFromTree($type, $treeType, $nodeId, $rowNumber,
-                                                   $trackableStructurePosition = false, $id = null)
+                                                   $trackableStructurePosition = false, $id = null, $isBeingCopied = false)
         {
             $postData                           = PostUtil::getData();
             $savedWorkflow                      = null;
             $workflow                           = null;
-            $this->resolveSavedWorkflowAndWorkflowByPostData($postData, $savedWorkflow, $workflow, $type, $id);
+            $this->resolveSavedWorkflowAndWorkflowByPostData($postData, $savedWorkflow, $workflow, $type, $id,
+                                                             (bool)$isBeingCopied);
             $nodeIdWithoutTreeType              = WorkflowRelationsAndAttributesToTreeAdapter::
                                                      removeTreeTypeFromNodeId($nodeId, $treeType);
             $moduleClassName                    = $workflow->getModuleClassName();
@@ -287,12 +289,13 @@
             $this->redirect(array($this->getId() . '/index'));
         }
 
-        public function actionGetAvailableAttributesForTimeTrigger($type, $id = null)
+        public function actionGetAvailableAttributesForTimeTrigger($type, $id = null, $isBeingCopied = false)
         {
             $postData                           = PostUtil::getData();
             $savedWorkflow                      = null;
             $workflow                           = null;
-            $this->resolveSavedWorkflowAndWorkflowByPostData($postData, $savedWorkflow, $workflow, $type, $id);
+            $this->resolveSavedWorkflowAndWorkflowByPostData($postData, $savedWorkflow, $workflow, $type, $id,
+                                                             (bool)$isBeingCopied);
             $moduleClassName                    = $workflow->getModuleClassName();
             $modelClassName                     = $moduleClassName::getPrimaryModelName();
             $dataAndLabels                      = WorkflowUtil::resolveDataAndLabelsForTimeTriggerAvailableAttributes(
@@ -301,7 +304,7 @@
         }
 
         public function actionAddOrChangeTimeTriggerAttribute($type, $attributeIndexOrDerivedType, $moduleClassName,
-                                                              $id = null)
+                                                              $id = null, $isBeingCopied = false)
         {
             $componentType                      = TimeTriggerForWorkflowForm::getType();
             $postData                           = PostUtil::getData();
@@ -309,7 +312,8 @@
             $postData['ByTimeWorkflowWizardForm']['moduleClassName'] = $moduleClassName;
             $savedWorkflow                      = null;
             $workflow                           = null;
-            $this->resolveSavedWorkflowAndWorkflowByPostData($postData, $savedWorkflow, $workflow, $type, $id);
+            $this->resolveSavedWorkflowAndWorkflowByPostData($postData, $savedWorkflow, $workflow, $type, $id,
+                                                  (bool)$isBeingCopied);
             $moduleClassName                    = $workflow->getModuleClassName();
             $modelClassName                     = $moduleClassName::getPrimaryModelName();
             $form                               = new WizardActiveForm();
@@ -508,7 +512,7 @@
         }
 
         protected function resolveSavedWorkflowAndWorkflowByPostData(Array $postData, & $savedWorkflow, & $workflow,
-                                                                     $type, $id = null)
+                                                                     $type, $id = null, $isBeingCopied = false)
         {
             if ($id == null)
             {
@@ -516,6 +520,14 @@
                 $savedWorkflow               = new SavedWorkflow();
                 $workflow                    = new Workflow();
                 $workflow->setType($type);
+            }
+            elseif($isBeingCopied)
+            {
+                $savedWorkflow               = new SavedWorkflow();
+                $oldWorkflow                 = SavedWorkflow::getById(intval($id));
+                ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($oldWorkflow);
+                ZurmoCopyModelUtil::copy($oldWorkflow, $savedWorkflow);
+                $workflow                    = SavedWorkflowToWorkflowAdapter::makeWorkflowBySavedWorkflow($savedWorkflow);
             }
             else
             {

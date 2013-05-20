@@ -42,11 +42,13 @@
     {
         /**
          * @param Workflow $workflow
+         * @param $isBeingCopied
          * @return View
          * @throws NotSupportedException if the type provided is not valid
          */
-        public static function makeViewFromWorkflow(Workflow $workflow)
+        public static function makeViewFromWorkflow(Workflow $workflow, $isBeingCopied = false)
         {
+            assert('is_bool($isBeingCopied)');
             $type                      = $workflow->getType();
             $workflowToWizardFormAdapter = new WorkflowToWizardFormAdapter($workflow);
             if ($type == Workflow::TYPE_ON_SAVE)
@@ -63,7 +65,7 @@
             {
                 throw new NotSupportedException();
             }
-            return new $viewClassName($form);
+            return new $viewClassName($form, $isBeingCopied);
         }
     }
 ?>

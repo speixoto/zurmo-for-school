@@ -35,13 +35,44 @@
      ********************************************************************************/
 
     /**
-     * Renders an action bar specifically for the search and listview.
+     * Adapter class to adapt just the summation reports
      */
-    class ActionBarForGroupsTreeListView extends ActionBarForSecurityTreeListView
+    class SummationReportsMetadataAdapter implements StateMetadataAdapterInterface
     {
-        protected function makeModel()
+        protected $metadata;
+
+        public function __construct(array $metadata)
         {
-            return new Group(false);
+            assert('isset($metadata["clauses"])');
+            assert('isset($metadata["structure"])');
+            $this->metadata = $metadata;
+        }
+
+        /**
+         * Creates where clauses and adds structure information
+         * to existing DataProvider metadata.
+         */
+        public function getAdaptedDataProviderMetadata()
+        {
+            $metadata       = $this->metadata;
+            $clauseCount    = count($metadata['clauses']);
+            $startingCount  = $clauseCount + 1;
+            $structure      = '';
+            $metadata['clauses'][$startingCount] = array(
+                'attributeName' => 'type',
+                'operatorType'  => 'equals',
+                'value'         => Report::TYPE_SUMMATION
+            );
+            $structure .= $startingCount;
+            if (empty($metadata['structure']))
+            {
+                $metadata['structure'] = '(' . $structure . ')';
+            }
+            else
+            {
+                $metadata['structure'] = '(' . $metadata['structure'] . ') and (' . $structure . ')';
+            }
+            return $metadata;
         }
     }
 ?>

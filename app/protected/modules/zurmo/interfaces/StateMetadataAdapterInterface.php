@@ -35,13 +35,10 @@
      ********************************************************************************/
 
     /**
-     * Renders an action bar specifically for the search and listview.
+     * Implemented by adapters that are either StateMetadataAdapters or mimic the same interface
      */
-    class ActionBarForGroupsTreeListView extends ActionBarForSecurityTreeListView
+    interface StateMetadataAdapterInterface
     {
-        protected function makeModel()
-        {
-            return new Group(false);
-        }
+        public function getAdaptedDataProviderMetadata();
     }
 ?>

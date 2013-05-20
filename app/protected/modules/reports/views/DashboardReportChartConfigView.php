@@ -35,13 +35,39 @@
      ********************************************************************************/
 
     /**
-     * Renders an action bar specifically for the search and listview.
+     * A chart configuration view for reports that go on the home page dashboard
      */
-    class ActionBarForGroupsTreeListView extends ActionBarForSecurityTreeListView
+    class DashboardReportChartConfigView extends ModalConfigEditView
     {
-        protected function makeModel()
+        public static function getDefaultMetadata()
         {
-            return new Group(false);
+            $metadata = array(
+                'global' => array(
+                    'toolbar' => array(
+                        'elements' => array(
+                            array('type' => 'SaveButton'),
+                        ),
+                    ),
+                    'panelsDisplayType' => FormLayout::PANELS_DISPLAY_TYPE_ALL,
+                    'panels' => array(
+                        array(
+                            'rows' => array(
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'null',
+                                                      'type'          => 'DashboardReportNameId'),
+                                            ),
+                                        ),
+                                    )
+                                ),
+                            ),
+                        ),
+                    ),
+                ),
+            );
+            return $metadata;
         }
     }
 ?>

@@ -36,6 +36,8 @@
 
     class WorkflowDocumentationTest extends WorkflowBaseTest
     {
+        protected static $jimmy;
+
         public static function setUpBeforeClass()
         {
             parent::setUpBeforeClass();
@@ -45,12 +47,58 @@
             //Setup test data owned by the super user.
             OpportunityTestHelper::createOpportunityStagesIfDoesNotExist();
             ContactsModule::loadStartingData();
+            $jimmy  = UserTestHelper::createBasicUserWithEmailAddress('jimmy');
+            self::$jimmy  = $jimmy;
         }
 
         public function setUp()
         {
             parent::setUp();
             Yii::app()->user->userModel = User::getByUsername('super');
+        }
+
+        /**
+         * A simple workflow that is only triggered on a new account being created.  If the owner is jimmy it means
+         * that the description will be updated with some text.
+         */
+        public function testUpdateDescriptionWhenAccountIsCreatedAndOwnerIsJim()
+        {
+            $super = User::getByUsername('super');
+            $contactStates = ContactState::getAll();
+            //Create workflow
+            $workflow = new Workflow();
+            $workflow->setDescription    ('aDescription');
+            $workflow->setIsActive       (true);
+            $workflow->setOrder          (1);
+            $workflow->setModuleClassName('AccountsModule');
+            $workflow->setName           ('myFirstWorkflow');
+            $workflow->setTriggerOn      (Workflow::TRIGGER_ON_NEW);
+            $workflow->setType           (Workflow::TYPE_ON_SAVE);
+            $workflow->setTriggersStructure('1');
+            //Add Trigger
+            $trigger     = new TriggerForWorkflowForm('AccountsModule', 'Account', Workflow::TYPE_ON_SAVE);
+            $trigger->attributeIndexOrDerivedType = 'owner';
+            $trigger->value                       = self::$jimmy->id;
+            $trigger->operator                    = 'equals';
+            $workflow->addTrigger($trigger);
+            //Add action
+            $action                       = new ActionForWorkflowForm('Opportunity', Workflow::TYPE_ON_SAVE);
+            $action->type                 = ActionForWorkflowForm::TYPE_UPDATE_SELF;
+            $attributes                   = array(  'description' => array('shouldSetValue'    => '1',
+                                                        'type'   => WorkflowActionAttributeForm::TYPE_STATIC,
+                                                        'value'  => 'my new description')
+            );
+            $action->setAttributes(array(ActionForWorkflowForm::ACTION_ATTRIBUTES => $attributes));
+            $workflow->addAction($action);
+            //Create the saved Workflow
+            $savedWorkflow = new SavedWorkflow();
+            SavedWorkflowToWorkflowAdapter::resolveWorkflowToSavedWorkflow($workflow, $savedWorkflow);
+            $saved = $savedWorkflow->save();
+            $this->assertTrue($saved);
+
+            $account = AccountTestHelper::createAccountByNameForOwner('my account', self::$jimmy);
+            $this->assertTrue($account->id > 0);
+            $this->assertEquals('my new description', $account->description);
         }
 
         public function testCreateARelatedContactOnAnOpportunityWhenOpportunityBecomesClosedWon()

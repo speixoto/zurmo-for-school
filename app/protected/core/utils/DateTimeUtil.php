@@ -44,6 +44,42 @@
         const DATETIME_FORMAT_TIME_WIDTH = 'short';
 
         /**
+         * Given a datetime, return a string representation of how much time has elapsed since the $dateTime to now
+         * @param $dateTime
+         * @return string
+         */
+        public static function getTimeSinceDisplayContent($dateTime)
+        {
+            $nowTimeStamp           = time();
+            $dateTimeStamp          = DateTimeUtil::convertDbFormatDateTimeToTimeStamp($dateTime);
+            $timeSinceLatestUpdate  = $nowTimeStamp - $dateTimeStamp;
+            $timeForString = array(
+                'days'  => floor($timeSinceLatestUpdate / 86400),
+                'hours' => floor($timeSinceLatestUpdate / 3600),
+            );
+            if ($timeForString['days'] == 0)
+            {
+                if ($timeForString['hours'] == 1)
+                {
+                    $string = Zurmo::t('MashableInboxModule', '{hours} hour ago', array('{hours}' => $timeForString['hours']));
+                }
+                else
+                {
+                    $string = Zurmo::t('MashableInboxModule', '{hours} hours ago', array('{hours}' => $timeForString['hours']));
+                }
+            }
+            elseif (($timeForString['days'] == 1))
+            {
+                $string = Zurmo::t('MashableInboxModule', '{days} day ago', array('{days}' => $timeForString['days']));
+            }
+            else
+            {
+                $string = Zurmo::t('MashableInboxModule', '{days} days ago', array('{days}' => $timeForString['days']));
+            }
+            return $string;
+        }
+
+        /**
          * Convert month to a display label. If the month is invalid then it just returns the month passed in.
          * @param string $month
          * @return mixed

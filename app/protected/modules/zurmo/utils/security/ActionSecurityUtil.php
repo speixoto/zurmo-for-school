@@ -55,7 +55,10 @@
          * return true.  This does not necessarily mean the current user is allowed through
          * the user interface to edit the $model (User).  This must be controlled by
          * controller rights filters.
-         * @return boolean true if user can perform action.
+         * @param $actionType
+         * @param $model
+         * @param $user
+         * @return bool true if user can perform action.
          */
         public static function canUserPerformAction($actionType, $model, $user)
         {
@@ -90,7 +93,8 @@
          * @param $model
          * @param $moduleClassName
          * @param $linkRoute
-         * @return string content.
+         * @param null $offset
+         * @return null|string
          */
         public static function resolveLinkToModelForCurrentUser(
             $attributeString,
@@ -131,7 +135,8 @@
          * @param $model
          * @param $moduleClassName
          * @param $linkRoute
-         * @return string content.
+         * @param null $redirectUrl
+         * @return null|string
          */
         public static function resolveLinkToEditModelForCurrentUser(
             $attributeString,

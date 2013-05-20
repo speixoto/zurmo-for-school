@@ -82,14 +82,14 @@
             $jobInProcessId        = $jobInProcess->id;
             $jobInProcess->forget();
             $jobInProcess = JobInProcess::getById($jobInProcessId);
-            $this->assertTrue(JobsManagerUtil::isJobInProcessOverThreashold($jobInProcess, $jobInProcess->type));
+            $this->assertTrue(JobsManagerUtil::isJobInProcessOverThreshold($jobInProcess, $jobInProcess->type));
             $jobInProcess->delete();
 
             //Test when a job is not over the threshold.
             $jobInProcess          = new JobInProcess();
             $jobInProcess->type    = 'Test';
             $this->assertTrue($jobInProcess->save());
-            $this->assertFalse(JobsManagerUtil::isJobInProcessOverThreashold($jobInProcess, $jobInProcess->type));
+            $this->assertFalse(JobsManagerUtil::isJobInProcessOverThreshold($jobInProcess, $jobInProcess->type));
             $jobInProcess->delete();
         }
 
