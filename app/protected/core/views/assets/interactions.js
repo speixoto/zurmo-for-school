@@ -162,6 +162,15 @@ $(window).ready(function(){
         }
     });
 
+    /*Adds padding to accommodate long labels for lang-label inputs*/
+    $(".has-lang-label").each(function(){
+        if ( $("span", this).width() > 80 ){
+           $("input", this).css({paddingLeft: $("span", this).width() });
+        } else {
+           $("input", this).css({paddingLeft: 80 });
+        }
+    });
+
     $('.hasDropDown').live({
         mouseenter: function(){
             $('span', this).addClass('over-dd');
