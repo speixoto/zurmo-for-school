@@ -103,5 +103,15 @@
                             'CampaignItemsDemoDataMaker',
                             'CampaignItemActivitiesDemoDataMaker');
         }
+
+        protected static function getSingularModuleLabel($language)
+        {
+            return Zurmo::t('CampaignsModule', 'Campaign', array(), null, $language);
+        }
+
+        protected static function getPluralModuleLabel($language)
+        {
+            return Zurmo::t('CampaignsModule', 'Campaigns', array(), null, $language);
+        }
     }
 ?>
