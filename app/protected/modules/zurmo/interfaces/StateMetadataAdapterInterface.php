@@ -34,12 +34,11 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class AutoresponderCreateLinkActionElement extends CreateLinkActionElement
+    /**
+     * Implemented by adapters that are either StateMetadataAdapters or mimic the same interface
+     */
+    interface StateMetadataAdapterInterface
     {
-        public function __construct($controllerId, $moduleId, $modelId, $params = array())
-        {
-            $moduleId = 'autoresponders';
-            parent::__construct($controllerId, $moduleId, $modelId, $params);
-        }
+        public function getAdaptedDataProviderMetadata();
     }
 ?>

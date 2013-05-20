@@ -34,12 +34,40 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class AutoresponderCreateLinkActionElement extends CreateLinkActionElement
+    /**
+     * A chart configuration view for reports that go on the home page dashboard
+     */
+    class DashboardReportChartConfigView extends ModalConfigEditView
     {
-        public function __construct($controllerId, $moduleId, $modelId, $params = array())
+        public static function getDefaultMetadata()
         {
-            $moduleId = 'autoresponders';
-            parent::__construct($controllerId, $moduleId, $modelId, $params);
+            $metadata = array(
+                'global' => array(
+                    'toolbar' => array(
+                        'elements' => array(
+                            array('type' => 'SaveButton'),
+                        ),
+                    ),
+                    'panelsDisplayType' => FormLayout::PANELS_DISPLAY_TYPE_ALL,
+                    'panels' => array(
+                        array(
+                            'rows' => array(
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'null',
+                                                      'type'          => 'DashboardReportNameId'),
+                                            ),
+                                        ),
+                                    )
+                                ),
+                            ),
+                        ),
+                    ),
+                ),
+            );
+            return $metadata;
         }
     }
 ?>

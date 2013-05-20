@@ -85,7 +85,8 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'enableTracking', 'type' => 'CheckBox'),
+                                                array('attributeName' => 'enableTracking',
+                                                                        'type' => 'EnableTrackingCheckBox'),
                                             ),
                                         ),
                                     )

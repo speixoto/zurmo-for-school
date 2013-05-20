@@ -34,12 +34,45 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class AutoresponderCreateLinkActionElement extends CreateLinkActionElement
+    /**
+     * Adapter class to adapt just the summation reports
+     */
+    class SummationReportsMetadataAdapter implements StateMetadataAdapterInterface
     {
-        public function __construct($controllerId, $moduleId, $modelId, $params = array())
+        protected $metadata;
+
+        public function __construct(array $metadata)
         {
-            $moduleId = 'autoresponders';
-            parent::__construct($controllerId, $moduleId, $modelId, $params);
+            assert('isset($metadata["clauses"])');
+            assert('isset($metadata["structure"])');
+            $this->metadata = $metadata;
+        }
+
+        /**
+         * Creates where clauses and adds structure information
+         * to existing DataProvider metadata.
+         */
+        public function getAdaptedDataProviderMetadata()
+        {
+            $metadata       = $this->metadata;
+            $clauseCount    = count($metadata['clauses']);
+            $startingCount  = $clauseCount + 1;
+            $structure      = '';
+            $metadata['clauses'][$startingCount] = array(
+                'attributeName' => 'type',
+                'operatorType'  => 'equals',
+                'value'         => Report::TYPE_SUMMATION
+            );
+            $structure .= $startingCount;
+            if (empty($metadata['structure']))
+            {
+                $metadata['structure'] = '(' . $structure . ')';
+            }
+            else
+            {
+                $metadata['structure'] = '(' . $metadata['structure'] . ') and (' . $structure . ')';
+            }
+            return $metadata;
         }
     }
 ?>

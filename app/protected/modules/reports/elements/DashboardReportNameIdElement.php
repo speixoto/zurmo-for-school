@@ -34,12 +34,21 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class AutoresponderCreateLinkActionElement extends CreateLinkActionElement
+    /**
+     * Display the name and hidden id of the savedReport model specifically for a report that shows on the dashboard
+     * Displays a select button and auto-complete input
+     */
+    class DashboardReportNameIdElement extends ReportNameIdElement
     {
-        public function __construct($controllerId, $moduleId, $modelId, $params = array())
+        protected function getAutoCompleteUrlParams()
         {
-            $moduleId = 'autoresponders';
-            parent::__construct($controllerId, $moduleId, $modelId, $params);
+            return array('type' => Report::TYPE_SUMMATION);
+        }
+
+        protected function getSelectLinkUrlParams()
+        {
+            return array_merge(parent::getSelectLinkUrlParams(),
+                        array('stateMetadataAdapterClassName' => 'SummationReportsMetadataAdapter'));
         }
     }
 ?>
