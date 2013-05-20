@@ -69,7 +69,7 @@
                 $cClipWidget = new CClipWidget();
                 $cClipWidget->beginClip("ActionMenu");
                 $cClipWidget->widget('application.core.widgets.MbMenu', array(
-                    'htmlOptions' => array('id' => 'MashableInboxCreateDropdown'),
+                    'htmlOptions' => array('id' => get_class($this)),
                     'items'       => array($menuItems),
                 ));
                 $cClipWidget->endClip();

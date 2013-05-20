@@ -50,14 +50,12 @@
 
         public static function getDetailsAndEditForWorkflowBreadcrumbLinks()
         {
-            return array(Zurmo::t('EmailTemplatesModule', 'Templates') =>
-                         array('default/listForWorkflow'));
+            return array(Zurmo::t('EmailTemplatesModule', 'Templates') => array('default/listForWorkflow'));
         }
 
         public static function getDetailsAndEditForMarketingBreadcrumbLinks()
         {
-            return array(Zurmo::t('EmailTemplatesModule', 'Templates') =>
-            array('default/listForMarketing'));
+            return array(Zurmo::t('EmailTemplatesModule', 'Templates') => array('default/listForMarketing'));
         }
 
         public function filters()
@@ -272,6 +270,11 @@
             Yii::app()->getClientScript()->setToAjaxMode();
             $view = new ModalView($this, new MergeTagGuideView());
             echo $view->render();
+        }
+
+        protected static function getZurmoControllerUtil()
+        {
+            return new EmailTemplateControllerUtil();
         }
     }
 ?>

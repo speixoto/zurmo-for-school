@@ -34,12 +34,49 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class AutoresponderCreateLinkActionElement extends CreateLinkActionElement
+    class ReportsModalListView extends ModalListView
     {
-        public function __construct($controllerId, $moduleId, $modelId, $params = array())
+        public static function getDefaultMetadata()
         {
-            $moduleId = 'autoresponders';
-            parent::__construct($controllerId, $moduleId, $modelId, $params);
+            $metadata = array(
+                'global' => array(
+                    'panels' => array(
+                        array(
+                            'rows' => array(
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'name', 'type' => 'Text', 'isLink' => true),
+                                            ),
+                                        ),
+                                    )
+                                ),
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'moduleClassName',
+                                                    'type' => 'ModuleForReportStaticDropDown'),
+                                            ),
+                                        ),
+                                    )
+                                ),
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'type', 'type' => 'ReportTypeStaticDropDown'),
+                                            ),
+                                        ),
+                                    )
+                                ),
+                            ),
+                        ),
+                    ),
+                ),
+            );
+            return $metadata;
         }
     }
 ?>

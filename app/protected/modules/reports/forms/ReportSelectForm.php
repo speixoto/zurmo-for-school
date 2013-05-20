@@ -34,12 +34,44 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class AutoresponderCreateLinkActionElement extends CreateLinkActionElement
+    /**
+     * Form used for selecting a report
+     */
+    class ReportSelectForm extends ConfigurableMetadataModel
     {
-        public function __construct($controllerId, $moduleId, $modelId, $params = array())
+        public $reportId;
+        public $reportName;
+
+        /**
+         * Override to handle use case of $name == 'id'.
+         * As this form does not have an 'id', it will return null;
+         * @see ModelElement.  This form is used by ModelElement for example
+         * and ModelElement expects the model to have an 'id' value.
+         */
+        public function __get($name)
         {
-            $moduleId = 'autoresponders';
-            parent::__construct($controllerId, $moduleId, $modelId, $params);
+            if ($name == 'id')
+            {
+                return null;
+            }
+            return parent::__get($name);
+        }
+
+        public function rules()
+        {
+            return array(
+                array('reportId',   'type',    'type' => 'integer'),
+                array('reportId',   'required'),
+                array('reportName', 'required'),
+            );
+        }
+
+        public function attributeLabels()
+        {
+            return array(
+                'reportId'          => Zurmo::t('ReportsModule', 'Report Id'),
+                'reportName'        => Zurmo::t('ReportsModule', 'Report Name'),
+            );
         }
     }
 ?>

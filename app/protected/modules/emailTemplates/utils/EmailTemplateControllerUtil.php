@@ -34,12 +34,28 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class AutoresponderCreateLinkActionElement extends CreateLinkActionElement
+    class EmailTemplateControllerUtil extends ZurmoControllerUtil
     {
-        public function __construct($controllerId, $moduleId, $modelId, $params = array())
+        protected function afterSuccessfulSave($model)
         {
-            $moduleId = 'autoresponders';
-            parent::__construct($controllerId, $moduleId, $modelId, $params);
+            $filesIds = Yii::app()->request->getPost('filesIds');
+            if (is_array($filesIds) && !empty($filesIds))
+            {
+                foreach ($filesIds as $filesId)
+                {
+                    $file   = FileModel::getById($filesId);
+                    $model->files->add($file);
+                }
+                if ($model->save())
+                {
+                    return $model;
+                }
+                else
+                {
+                    throw new FailedToSaveModelException();
+                }
+            }
+            return $model;
         }
     }
 ?>

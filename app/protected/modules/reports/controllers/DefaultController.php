@@ -452,7 +452,18 @@
             $this->redirect(array($this->getId() . '/index'));
         }
 
-        public function actionAutoComplete($term, $moduleClassName, $type)
+        public function actionModalList($stateMetadataAdapterClassName = null)
+        {
+            $modalListLinkProvider = new SelectFromRelatedEditModalListLinkProvider(
+                $_GET['modalTransferInformation']['sourceIdFieldId'],
+                $_GET['modalTransferInformation']['sourceNameFieldId'],
+                $_GET['modalTransferInformation']['modalId']
+            );
+            echo ModalSearchListControllerUtil::
+                    setAjaxModeAndRenderModalSearchList($this, $modalListLinkProvider, $stateMetadataAdapterClassName);
+        }
+
+        public function actionAutoComplete($term, $moduleClassName = null, $type = null)
         {
             $pageSize = Yii::app()->pagination->resolveActiveForCurrentUserByType(
                         'autoCompleteListPageSize', get_class($this->getModule()));

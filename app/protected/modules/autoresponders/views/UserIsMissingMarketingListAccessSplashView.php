@@ -34,12 +34,24 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class AutoresponderCreateLinkActionElement extends CreateLinkActionElement
+    class UserIsMissingMarketingListAccessSplashView extends SplashView
     {
-        public function __construct($controllerId, $moduleId, $modelId, $params = array())
+        /**
+         * @return null|string
+         */
+        protected function getIconName()
         {
-            $moduleId = 'autoresponders';
-            parent::__construct($controllerId, $moduleId, $modelId, $params);
+            return 'Warning';
+        }
+
+        /**
+         * @return string
+         */
+        protected function getMessageContent()
+        {
+            return Zurmo::t('MarketingListsModule', '<h2>Not so fast!</h2><div class="large-icon"></div>' .
+                        '<p>To manage Marketing Lists related features you must have access to marketing lists first.' .
+                        ' Contact the CRM administrator about this issue.</p>');
         }
     }
 ?>

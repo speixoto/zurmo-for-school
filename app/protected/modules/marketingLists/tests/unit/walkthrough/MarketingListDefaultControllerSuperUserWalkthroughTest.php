@@ -245,10 +245,10 @@
             $this->assertTrue(strpos($content, '<span>Options</span></a>') !== false);
             $this->assertTrue(strpos($content, '<span>Edit</span></a></li>') !== false);
             $this->assertTrue(strpos($content, '<span>Delete</span></a></li>') !== false);
-            $this->assertTrue(strpos($content, '<h3>Members</h3></div>') !== false);
-            $this->assertTrue(strpos($content, '<span>Add Member</span></a>') !== false);
+            $this->assertTrue(strpos($content, '<h3>Contacts/Leads</h3></div>') !== false);
+            $this->assertTrue(strpos($content, '<span>Add Contact/Lead</span></a>') !== false);
             $this->assertTrue(strpos($content, 'From Contacts/Leads</label>') !== false);
-            $this->assertTrue(strpos($content, 'From a Report</label>') !== false);
+            $this->assertTrue(strpos($content, 'From Report</label>') !== false);
             $this->assertTrue(strpos($content, '<span>Subscribe</span></a>') !== false);
             $this->assertTrue(strpos($content, '<span>Unsubscribe</span></a>') !== false);
             $this->assertTrue(strpos($content, '<span>Delete</span></a>') !== false);

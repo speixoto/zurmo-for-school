@@ -34,12 +34,16 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class AutoresponderCreateLinkActionElement extends CreateLinkActionElement
+    /**
+     * Display the name and hidden id of the savedReport model.
+     * Displays a select button and auto-complete input
+     */
+    class ReportNameIdElement extends NameIdElement
     {
-        public function __construct($controllerId, $moduleId, $modelId, $params = array())
-        {
-            $moduleId = 'autoresponders';
-            parent::__construct($controllerId, $moduleId, $modelId, $params);
-        }
+        protected static $moduleId = 'reports';
+
+        protected $idAttributeId = 'reportId';
+
+        protected $nameAttributeName = 'reportName';
     }
 ?>
