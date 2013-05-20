@@ -36,6 +36,21 @@
 
     class AutorespondersDefaultController extends ZurmoModuleController
     {
+        const USER_MARKETING_LIST_ACCESS_FILTER_PATH =
+            'application.modules.autoresponders.controllers.filters.UserCanAccessMarketingListControllerFilter';
+
+        public function filters()
+        {
+            return array_merge(parent::filters(),
+                array(
+                    array(
+                        static::USER_MARKETING_LIST_ACCESS_FILTER_PATH . ' + create, details, edit, delete',
+                        'controller' => $this,
+                    ),
+                )
+            );
+        }
+
         public static function getDetailsAndEditBreadcrumbLinks($marketingList)
         {
             $listsTitle                         = Zurmo::t('MarketingListsModule', 'Lists');
@@ -50,6 +65,7 @@
         {
             $autoresponder                  = new Autoresponder();
             $autoresponder->marketingList   = MarketingList::getById(intval($marketingListId));
+            ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($autoresponder->marketingList);
             $model                          = $this->attemptToSaveModelFromPost($autoresponder, $redirectUrl);
             $editAndDetailsView             = $this->makeEditAndDetailsView($model, 'Edit');
             $breadcrumbLinks                = static::getDetailsAndEditBreadcrumbLinks($autoresponder->marketingList);
@@ -63,6 +79,7 @@
         public function actionDetails($id, $redirectUrl)
         {
             $autoresponder      = static::getModelAndCatchNotFoundAndDisplayError('Autoresponder', intval($id));
+            ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($autoresponder->marketingList);
             $breadcrumbLinks    = static::getDetailsAndEditBreadcrumbLinks($autoresponder->marketingList);
             $breadcrumbLinks[]  = StringUtil::getChoppedStringContent(strval($autoresponder), 25);
             $detailsView        = new AutoresponderEditAndDetailsView('Details', $this->getId(),
@@ -76,6 +93,7 @@
         public function actionEdit($id, $redirectUrl)
         {
             $autoresponder      = Autoresponder::getById(intval($id));
+            ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($autoresponder->marketingList);
             $model              = $this->attemptToSaveModelFromPost($autoresponder, $redirectUrl);
             $editAndDetailsView = $this->makeEditAndDetailsView($model, 'Edit');
             $breadcrumbLinks    = static::getDetailsAndEditBreadcrumbLinks($autoresponder->marketingList);
@@ -89,6 +107,7 @@
         public function actionDelete($id, $redirectUrl = null)
         {
             $autoresponder = Autoresponder::getById(intval($id));
+            ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($autoresponder->marketingList);
             $autoresponder->delete();
             if ($redirectUrl)
             {
