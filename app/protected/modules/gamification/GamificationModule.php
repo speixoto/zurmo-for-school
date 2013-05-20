@@ -76,7 +76,7 @@
 
         protected static function getPluralModuleLabel($language)
         {
-            return Zurmo::t('GamificationModule', 'Gamifications', array(), null, $language);
+            return static::getSingularModuleLabel($language);
         }
     }
 ?>

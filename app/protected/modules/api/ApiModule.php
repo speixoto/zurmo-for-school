@@ -66,12 +66,12 @@
 
         protected static function getSingularModuleLabel($language)
         {
-            return Zurmo::t('ApiModule', 'Api', array(), null, $language);
+            return Zurmo::t('ApiModule', 'API', array(), null, $language);
         }
 
         protected static function getPluralModuleLabel($language)
         {
-            return Zurmo::t('ApiModule', 'Apis', array(), null, $language);
+            return Zurmo::t('ApiModule', 'APIs', array(), null, $language);
         }
     }
 ?>

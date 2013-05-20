@@ -51,7 +51,7 @@
 
         protected static function getPluralModuleLabel($language)
         {
-            return Zurmo::t('TrackingModule', 'Trackings', array(), null, $language);
+            return static::getSingularModuleLabel($language);
         }
     }
 ?>

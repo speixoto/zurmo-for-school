@@ -113,7 +113,7 @@
 
         protected static function getPluralModuleLabel($language)
         {
-            return Zurmo::t('DesignerModule', 'Designers', array(), null, $language);
+            return static::getSingularModuleLabel($language);
         }
     }
 ?>

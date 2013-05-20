@@ -65,7 +65,7 @@
 
         protected static function getPluralModuleLabel($language)
         {
-            return Zurmo::t('InstallModule', 'Installs', array(), null, $language);
+            return static::getSingularModuleLabel($language);
         }
     }
 ?>
