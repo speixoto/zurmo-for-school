@@ -34,43 +34,62 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * Model for storing starred items.
-     */
-    class Star extends RedBeanModel
+    class StarredUtilTest extends ZurmoBaseTest
     {
-        
-        private static $_modelClassName;
-
-        public function __construct($starredModel, $setDefaults = true, \RedBean_OODBBean $bean = null, $forceTreatAsCreation = false, $runConstruction = true) {
-            static::$_modelClassName    = get_class($starredModel);
-            $this->starredModel         = $starredModel;
-            parent::__construct($setDefaults, $bean, $forceTreatAsCreation, $runConstruction);
+        public static function setUpBeforeClass()
+        {
+            parent::setUpBeforeClass();
+            SecurityTestHelper::createSuperAdmin();
         }
 
-        public static function getDefaultMetadata()
+        public function teardown()
         {
-            $metadata = parent::getDefaultMetadata();
-            $metadata[__CLASS__] = array(
-                'relations' => array(
-                    'starredModel'    => array(RedBeanModel::HAS_ONE,  static::$_modelClassName, RedBeanModel::NOT_OWNED,
-                                     RedBeanModel::LINK_TYPE_SPECIFIC, 'starredModel'),
-                    'forUser'  => array(RedBeanModel::HAS_ONE,  'User', RedBeanModel::NOT_OWNED,
-                                     RedBeanModel::LINK_TYPE_SPECIFIC, 'forUser'),
-                ),
-            );
-            return $metadata;
-        }
-
-        public static function getTableName($modelClassName)
-        {
-            assert('is_string($modelClassName) && $modelClassName != ""');
-            if($modelClassName == get_called_class())
+            $super = User::getByUsername('super');
+            Yii::app()->user->userModel = $super;
+            $accounts = Account::getAll();
+            foreach ($accounts as $account)
             {
-                $tableName = strtolower(static::$_modelClassName . '_' . $modelClassName);
-                return $tableName;
+                $account->delete();
             }
-            return parent::getTableName($modelClassName);
+
+            $stars = Star::getAll();
+            foreach ($stars as $star)
+            {
+                $star->delete();
+            }
+            parent::teardown();
+        }
+
+        public function testMarkAsStarred()
+        {
+            $super = User::getByUsername('super');
+            Yii::app()->user->userModel = $super;
+
+            $account              = new Account();
+            $account->owner       = $super;
+            $account->name        = 'Test Account';
+            $account->officePhone = '1234567890';
+            $this->assertTrue($account->save());
+            StarredUtil::markModelAsStarred($account);
+            $stars = Star::getAll();
+            $this->assertEquals($account,   $stars[0]->starredModel);
+            $this->assertEquals($super,     $stars[0]->forUser);
+        }
+
+        public function testIsStarred()
+        {
+            $super = User::getByUsername('super');
+            Yii::app()->user->userModel = $super;
+
+            $account              = new Account();
+            $account->owner       = $super;
+            $account->name        = 'Test Account';
+            $account->officePhone = '1234567890';
+            $this->assertTrue($account->save());
+            $this->assertFalse(StarredUtil::isStarred($account));
+
+            StarredUtil::markModelAsStarred($account);
+            $this->assertTrue(StarredUtil::isStarred($account));
         }
     }
 ?>

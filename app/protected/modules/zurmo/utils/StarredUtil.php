@@ -35,42 +35,50 @@
      ********************************************************************************/
 
     /**
-     * Model for storing starred items.
+     * Helper class for working with Starred Models
      */
-    class Star extends RedBeanModel
+    class StarredUtil
     {
-        
-        private static $_modelClassName;
 
-        public function __construct($starredModel, $setDefaults = true, \RedBean_OODBBean $bean = null, $forceTreatAsCreation = false, $runConstruction = true) {
-            static::$_modelClassName    = get_class($starredModel);
-            $this->starredModel         = $starredModel;
-            parent::__construct($setDefaults, $bean, $forceTreatAsCreation, $runConstruction);
+        public static function modelHasStarredInterface($modelClassName)
+        {
+            $refelectionClass = new ReflectionClass($modelClassName);
+            return in_array('StarredInterface', $refelectionClass->getInterfaceNames());
         }
 
-        public static function getDefaultMetadata()
+        public static function markModelAsStarred($model)
         {
-            $metadata = parent::getDefaultMetadata();
-            $metadata[__CLASS__] = array(
-                'relations' => array(
-                    'starredModel'    => array(RedBeanModel::HAS_ONE,  static::$_modelClassName, RedBeanModel::NOT_OWNED,
-                                     RedBeanModel::LINK_TYPE_SPECIFIC, 'starredModel'),
-                    'forUser'  => array(RedBeanModel::HAS_ONE,  'User', RedBeanModel::NOT_OWNED,
-                                     RedBeanModel::LINK_TYPE_SPECIFIC, 'forUser'),
-                ),
-            );
-            return $metadata;
-        }
-
-        public static function getTableName($modelClassName)
-        {
-            assert('is_string($modelClassName) && $modelClassName != ""');
-            if($modelClassName == get_called_class())
+            if(!static::modelHasStarredInterface(get_class($model)))
             {
-                $tableName = strtolower(static::$_modelClassName . '_' . $modelClassName);
-                return $tableName;
+                throw new NotSupportedException();
             }
-            return parent::getTableName($modelClassName);
+            $user = Yii::app()->user->userModel;
+            $star = new Star($model);
+            $star->forUser = $user;
+            $star->save();
+        }
+
+        public static function isStarred($model)
+        {
+            $modelClassName = get_class($model);
+            if(!static::modelHasStarredInterface($modelClassName))
+            {
+                throw new NotSupportedException();
+            }
+            $user = Yii::app()->user->userModel;
+            $tableName = strtolower($modelClassName . '_star');
+            $sql = "starredmodel_" . strtolower($modelClassName) . "_id = :modelId AND foruser__user_id = :userId";
+            $bean = R::findOne($tableName,
+                               $sql,
+                               $values=array(
+                                   ':modelId' => $model->id,
+                                   ':userId'  => $user->id
+                               ));
+            if ($bean === false)
+            {
+                return false;
+            }
+            return true;
         }
     }
 ?>

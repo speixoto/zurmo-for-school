@@ -47,20 +47,19 @@
             $super = User::getByUsername('super');
             Yii::app()->user->userModel = $super;
 
-            $account = new Account();
+            $account              = new Account();
             $account->owner       = $super;
             $account->name        = 'Test Account';
             $account->officePhone = '1234567890';
             $this->assertTrue($account->save());
 
-            $star = new Star($account);
-            $star->forUser      = $super;
+            $star           = new Star($account);
+            $star->forUser  = $super;
             $this->assertTrue($star->save());
 
-            $allStar = Star::getAll();
-            $this->assertEquals($account,   $allStar[0]->starredModel);
-            $this->assertEquals($user,      $allStar[0]->forUser);
+            $stars = Star::getAll();
+            $this->assertEquals($account,   $stars[0]->starredModel);
+            $this->assertEquals($super,     $stars[0]->forUser);
         }
-
     }
 ?>

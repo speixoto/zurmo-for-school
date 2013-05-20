@@ -35,42 +35,9 @@
      ********************************************************************************/
 
     /**
-     * Model for storing starred items.
+     * Implemented by any model that can be starred
      */
-    class Star extends RedBeanModel
+    interface StarredInterface
     {
-        
-        private static $_modelClassName;
-
-        public function __construct($starredModel, $setDefaults = true, \RedBean_OODBBean $bean = null, $forceTreatAsCreation = false, $runConstruction = true) {
-            static::$_modelClassName    = get_class($starredModel);
-            $this->starredModel         = $starredModel;
-            parent::__construct($setDefaults, $bean, $forceTreatAsCreation, $runConstruction);
-        }
-
-        public static function getDefaultMetadata()
-        {
-            $metadata = parent::getDefaultMetadata();
-            $metadata[__CLASS__] = array(
-                'relations' => array(
-                    'starredModel'    => array(RedBeanModel::HAS_ONE,  static::$_modelClassName, RedBeanModel::NOT_OWNED,
-                                     RedBeanModel::LINK_TYPE_SPECIFIC, 'starredModel'),
-                    'forUser'  => array(RedBeanModel::HAS_ONE,  'User', RedBeanModel::NOT_OWNED,
-                                     RedBeanModel::LINK_TYPE_SPECIFIC, 'forUser'),
-                ),
-            );
-            return $metadata;
-        }
-
-        public static function getTableName($modelClassName)
-        {
-            assert('is_string($modelClassName) && $modelClassName != ""');
-            if($modelClassName == get_called_class())
-            {
-                $tableName = strtolower(static::$_modelClassName . '_' . $modelClassName);
-                return $tableName;
-            }
-            return parent::getTableName($modelClassName);
-        }
     }
 ?>
