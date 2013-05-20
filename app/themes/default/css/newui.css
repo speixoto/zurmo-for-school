@@ -11829,9 +11829,6 @@ table.configuration-list td:last-child a .z-label:before {
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
 }
-#UserCreateView .panel {
-  width: 70% !important;
-}
 .panelTitle {
   padding-left: 15px;
   padding-top: 30px;
