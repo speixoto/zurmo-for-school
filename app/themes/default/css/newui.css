@@ -7983,8 +7983,7 @@ div.wide.form label.hasCheckBox {
   padding-left: 8px;
   border-bottom: 1px solid #DFDFDF;
   overflow: hidden;
-  height: 40px;
-  line-height: 40px;
+  min-height: 40px;
   background-color: #ededed;
   background-repeat: repeat-x;
   background-image: -moz-linear-gradient(top, #f6f6f6, #ededed);
@@ -8023,6 +8022,7 @@ div.wide.form label.hasCheckBox {
   font-size: 11px !important;
   padding: 3px;
   margin: 0 3px;
+  white-space: nowrap;
 }
 .filters-bar label:hover {
   color: #FFF;
@@ -8050,6 +8050,9 @@ div.wide.form label.hasCheckBox {
 .filters-bar .ui-button-text {
   padding: 0;
   margin: 0;
+}
+.filters-bar > .ui-buttonset {
+  margin: 14px 0;
 }
 .filters-bar > div + div {
   display: inline-block;
@@ -10091,6 +10094,7 @@ div.hasHalfs .twoThirds {
   font-size: 11px !important;
   padding: 3px;
   margin: 0 3px;
+  white-space: nowrap;
 }
 #MashableInboxForm_filteredBy_area label:hover,
 #MashableInboxForm_optionForModel_area label:hover,
@@ -10137,8 +10141,7 @@ div.hasHalfs .twoThirds {
 .filter-portlet-model-bar {
   border-bottom: 1px solid #DFDFDF;
   overflow: hidden;
-  height: 40px;
-  line-height: 40px;
+  min-height: 40px;
   background-color: #ededed;
   background-repeat: repeat-x;
   background-image: -moz-linear-gradient(top, #f6f6f6, #ededed);
@@ -10154,6 +10157,9 @@ div.hasHalfs .twoThirds {
   -ms-box-shadow: inset 0 1px 0 0 #ffffff;
   box-shadow: inset 0 1px 0 0 #ffffff;
   position: relative;
+}
+.filter-portlet-model-bar > .ui-buttonset {
+  margin: 14px 0;
 }
 .activity-date {
   font-size: 11px;
