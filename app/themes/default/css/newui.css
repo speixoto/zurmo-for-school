@@ -11108,7 +11108,7 @@ a.remove .icon:after {
   padding: 8px 2px;
 }
 #InstallPageView #install-form {
-  padding-top: 15px !important;
+  padding: 15px !important;
 }
 #InstallPageView #install-form table {
   padding-bottom: 15px;
