@@ -65,9 +65,17 @@
         {
             $width = $this->getSpanPercentWidthFromCount();
             $content = null;
+            $first   = true;
             foreach($this->getSpanLabels() as $label)
             {
-                $content .= ZurmoHtml::tag('span', array('style' => 'width:' . $width . '%'), $label);
+                $htmlOptions          = array();
+                $htmlOptions['style'] = 'width:' . $width . '%';
+                if($first)
+                {
+                    $htmlOptions['class'] = 'current-step';
+                }
+                $content .= ZurmoHtml::tag('span', $htmlOptions, $label);
+                $first    = false;
             }
             return $content;
         }
@@ -80,8 +88,7 @@
 
         protected function getCurrentStepIndex()
         {
-            $index = 0;
-            return $index; // Jason: should implement it to get the margin for left for the progress bar
+            return 0;
         }
     }
 ?>

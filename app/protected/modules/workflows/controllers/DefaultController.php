@@ -165,10 +165,11 @@
             $workflow         = new Workflow();
             $workflow->setType($type);
             $workflow->setIsActive(true);
+            $progressBarAndStepsView = WorkflowWizardViewFactory::makeStepsAndProgressBarViewFromReport($workflow);
             $wizardWizardView = WorkflowWizardViewFactory::makeViewFromWorkflow($workflow);
             $view             = new WorkflowsPageView(  ZurmoDefaultAdminViewUtil::
-                                                        makeViewWithBreadcrumbsForCurrentUser(
-                                                        $this,
+                                                        makeTwoViewsWithBreadcrumbsForCurrentUser(
+                                                        $this, $progressBarAndStepsView,
                                                         $wizardWizardView,
                                                         $breadcrumbLinks,
                                                         'WorkflowBreadCrumbView'));
@@ -181,10 +182,11 @@
             ControllerSecurityUtil::resolveCanCurrentUserAccessModule($savedWorkflow->moduleClassName);
             $breadcrumbLinks    = array(strval($savedWorkflow));
             $workflow           = SavedWorkflowToWorkflowAdapter::makeWorkflowBySavedWorkflow($savedWorkflow);
+            $progressBarAndStepsView = WorkflowWizardViewFactory::makeStepsAndProgressBarViewFromReport($workflow);
             $wizardWizardView = WorkflowWizardViewFactory::makeViewFromWorkflow($workflow, (bool)$isBeingCopied);
             $view             = new WorkflowsPageView(  ZurmoDefaultAdminViewUtil::
-                                                        makeViewWithBreadcrumbsForCurrentUser(
-                                                        $this,
+                                                        makeTwoViewsWithBreadcrumbsForCurrentUser(
+                                                        $this, $progressBarAndStepsView,
                                                         $wizardWizardView,
                                                         $breadcrumbLinks,
                                                         'WorkflowBreadCrumbView'));
