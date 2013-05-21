@@ -108,8 +108,8 @@
             }
             $formEnd = $clipWidget->renderEndWidget();
             $content .= $formEnd;
-            $content .= '</div></div>';
             $content .= $this->renderModalContainer();
+            $content .= '</div></div>';
             return $content;
         }
 

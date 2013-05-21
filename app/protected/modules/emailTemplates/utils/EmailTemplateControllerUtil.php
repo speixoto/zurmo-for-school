@@ -34,61 +34,28 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * Factory for creating workflow wizard views of
-     * the appropriate type.
-     */
-    class WorkflowWizardViewFactory
+    class EmailTemplateControllerUtil extends ZurmoControllerUtil
     {
-        /**
-         * @param Workflow $workflow
-         * @param $isBeingCopied
-         * @return View
-         * @throws NotSupportedException if the type provided is not valid
-         */
-        public static function makeViewFromWorkflow(Workflow $workflow, $isBeingCopied = false)
+        protected function afterSuccessfulSave($model)
         {
-            assert('is_bool($isBeingCopied)');
-            $type                      = $workflow->getType();
-            $workflowToWizardFormAdapter = new WorkflowToWizardFormAdapter($workflow);
-            if ($type == Workflow::TYPE_ON_SAVE)
+            $filesIds = Yii::app()->request->getPost('filesIds');
+            if (is_array($filesIds) && !empty($filesIds))
             {
-                $viewClassName = 'OnSaveWorkflowWizardView';
-                $form          = $workflowToWizardFormAdapter->makeOnSaveWizardForm();
+                foreach ($filesIds as $filesId)
+                {
+                    $file   = FileModel::getById($filesId);
+                    $model->files->add($file);
+                }
+                if ($model->save())
+                {
+                    return $model;
+                }
+                else
+                {
+                    throw new FailedToSaveModelException();
+                }
             }
-            elseif ($type == Workflow::TYPE_BY_TIME)
-            {
-                $viewClassName = 'ByTimeWorkflowWizardView';
-                $form          = $workflowToWizardFormAdapter->makeByTimeWizardForm();
-            }
-            else
-            {
-                throw new NotSupportedException();
-            }
-            return new $viewClassName($form, $isBeingCopied);
-        }
-
-        /**
-         * @param Workflow $workflow
-         * @return  ByTimeWorkflowStepsAndProgressBarForWizardView|
-         *          OnSaveWorkflowStepsAndProgressBarForWizardView
-         * @throws NotSupportedException
-         */
-        public static function makeStepsAndProgressBarViewFromReport(Workflow $workflow)
-        {
-            $type = $workflow->getType();
-            if ($type == Workflow::TYPE_BY_TIME)
-            {
-                return new ByTimeWorkflowStepsAndProgressBarForWizardView();
-            }
-            elseif ($type == Workflow::TYPE_ON_SAVE)
-            {
-                return new OnSaveWorkflowStepsAndProgressBarForWizardView();
-            }
-            else
-            {
-                throw new NotSupportedException();
-            }
+            return $model;
         }
     }
 ?>

@@ -939,7 +939,8 @@ body.blue .dynamic-search-row .remove-extra-dynamic-search-row-link:hover,
 body.blue #AboutView p a,
 body.blue #AboutView ul a,
 body.blue .back-to-app-menu-item span,
-body.blue .breadcrumbs a {
+body.blue .breadcrumbs a,
+body.blue .StepsAndProgressBarForWizardView .current-step {
   color: #282a76 !important;
 }
 body.blue .portlet-toolbar .icon-create:hover,
@@ -959,14 +960,16 @@ body.blue #clear-search-link,
 body.blue #show-filters-structure-div-link,
 body.blue .filters-bar .ui-state-active,
 body.blue .filters-bar label:hover,
-body.blue #clear-search-linkmodal {
+body.blue #clear-search-linkmodal,
+body.blue .StepsAndProgressBarForWizardView .progress-bar {
   background-color: #282a76;
 }
 body.blue .latest-activity-toolbar label:hover,
 body.blue .filter-portlet-model-bar label:hover,
 body.blue .latest-activity-toolbar .ui-state-active,
 body.blue .filter-portlet-model-bar .ui-state-active,
-body.blue #clear-search-link #MashableInboxForm_filteredBy_area label:hover,
+body.blue #clear-search-link,
+body.blue #MashableInboxForm_filteredBy_area label:hover,
 body.blue #MashableInboxForm_optionForModel_area label:hover,
 body.blue #MashableInboxForm_filteredBy_area .ui-state-active,
 body.blue #MashableInboxForm_optionForModel_area .ui-state-active {
@@ -1503,7 +1506,8 @@ body.brown .dynamic-search-row .remove-extra-dynamic-search-row-link:hover,
 body.brown #AboutView p a,
 body.brown #AboutView ul a,
 body.brown .back-to-app-menu-item span,
-body.brown .breadcrumbs a {
+body.brown .breadcrumbs a,
+body.brown .StepsAndProgressBarForWizardView .current-step {
   color: #547980 !important;
 }
 body.brown .portlet-toolbar .icon-create:hover,
@@ -1523,14 +1527,16 @@ body.brown #clear-search-link,
 body.brown #show-filters-structure-div-link,
 body.brown .filters-bar .ui-state-active,
 body.brown .filters-bar label:hover,
-body.brown #clear-search-linkmodal {
+body.brown #clear-search-linkmodal,
+body.brown .StepsAndProgressBarForWizardView .progress-bar {
   background-color: #547980;
 }
 body.brown .latest-activity-toolbar label:hover,
 body.brown .filter-portlet-model-bar label:hover,
 body.brown .latest-activity-toolbar .ui-state-active,
 body.brown .filter-portlet-model-bar .ui-state-active,
-body.brown #clear-search-link #MashableInboxForm_filteredBy_area label:hover,
+body.brown #clear-search-link,
+body.brown #MashableInboxForm_filteredBy_area label:hover,
 body.brown #MashableInboxForm_optionForModel_area label:hover,
 body.brown #MashableInboxForm_filteredBy_area .ui-state-active,
 body.brown #MashableInboxForm_optionForModel_area .ui-state-active {
@@ -2067,7 +2073,8 @@ body.lime .dynamic-search-row .remove-extra-dynamic-search-row-link:hover,
 body.lime #AboutView p a,
 body.lime #AboutView ul a,
 body.lime .back-to-app-menu-item span,
-body.lime .breadcrumbs a {
+body.lime .breadcrumbs a,
+body.lime .StepsAndProgressBarForWizardView .current-step {
   color: #2b434f !important;
 }
 body.lime .portlet-toolbar .icon-create:hover,
@@ -2087,14 +2094,16 @@ body.lime #clear-search-link,
 body.lime #show-filters-structure-div-link,
 body.lime .filters-bar .ui-state-active,
 body.lime .filters-bar label:hover,
-body.lime #clear-search-linkmodal {
+body.lime #clear-search-linkmodal,
+body.lime .StepsAndProgressBarForWizardView .progress-bar {
   background-color: #2b434f;
 }
 body.lime .latest-activity-toolbar label:hover,
 body.lime .filter-portlet-model-bar label:hover,
 body.lime .latest-activity-toolbar .ui-state-active,
 body.lime .filter-portlet-model-bar .ui-state-active,
-body.lime #clear-search-link #MashableInboxForm_filteredBy_area label:hover,
+body.lime #clear-search-link,
+body.lime #MashableInboxForm_filteredBy_area label:hover,
 body.lime #MashableInboxForm_optionForModel_area label:hover,
 body.lime #MashableInboxForm_filteredBy_area .ui-state-active,
 body.lime #MashableInboxForm_optionForModel_area .ui-state-active {
@@ -2631,7 +2640,8 @@ body.cherry .dynamic-search-row .remove-extra-dynamic-search-row-link:hover,
 body.cherry #AboutView p a,
 body.cherry #AboutView ul a,
 body.cherry .back-to-app-menu-item span,
-body.cherry .breadcrumbs a {
+body.cherry .breadcrumbs a,
+body.cherry .StepsAndProgressBarForWizardView .current-step {
   color: #6c8092 !important;
 }
 body.cherry .portlet-toolbar .icon-create:hover,
@@ -2651,14 +2661,16 @@ body.cherry #clear-search-link,
 body.cherry #show-filters-structure-div-link,
 body.cherry .filters-bar .ui-state-active,
 body.cherry .filters-bar label:hover,
-body.cherry #clear-search-linkmodal {
+body.cherry #clear-search-linkmodal,
+body.cherry .StepsAndProgressBarForWizardView .progress-bar {
   background-color: #6c8092;
 }
 body.cherry .latest-activity-toolbar label:hover,
 body.cherry .filter-portlet-model-bar label:hover,
 body.cherry .latest-activity-toolbar .ui-state-active,
 body.cherry .filter-portlet-model-bar .ui-state-active,
-body.cherry #clear-search-link #MashableInboxForm_filteredBy_area label:hover,
+body.cherry #clear-search-link,
+body.cherry #MashableInboxForm_filteredBy_area label:hover,
 body.cherry #MashableInboxForm_optionForModel_area label:hover,
 body.cherry #MashableInboxForm_filteredBy_area .ui-state-active,
 body.cherry #MashableInboxForm_optionForModel_area .ui-state-active {
@@ -3195,7 +3207,8 @@ body.turquoise .dynamic-search-row .remove-extra-dynamic-search-row-link:hover,
 body.turquoise #AboutView p a,
 body.turquoise #AboutView ul a,
 body.turquoise .back-to-app-menu-item span,
-body.turquoise .breadcrumbs a {
+body.turquoise .breadcrumbs a,
+body.turquoise .StepsAndProgressBarForWizardView .current-step {
   color: #447799 !important;
 }
 body.turquoise .portlet-toolbar .icon-create:hover,
@@ -3215,14 +3228,16 @@ body.turquoise #clear-search-link,
 body.turquoise #show-filters-structure-div-link,
 body.turquoise .filters-bar .ui-state-active,
 body.turquoise .filters-bar label:hover,
-body.turquoise #clear-search-linkmodal {
+body.turquoise #clear-search-linkmodal,
+body.turquoise .StepsAndProgressBarForWizardView .progress-bar {
   background-color: #447799;
 }
 body.turquoise .latest-activity-toolbar label:hover,
 body.turquoise .filter-portlet-model-bar label:hover,
 body.turquoise .latest-activity-toolbar .ui-state-active,
 body.turquoise .filter-portlet-model-bar .ui-state-active,
-body.turquoise #clear-search-link #MashableInboxForm_filteredBy_area label:hover,
+body.turquoise #clear-search-link,
+body.turquoise #MashableInboxForm_filteredBy_area label:hover,
 body.turquoise #MashableInboxForm_optionForModel_area label:hover,
 body.turquoise #MashableInboxForm_filteredBy_area .ui-state-active,
 body.turquoise #MashableInboxForm_optionForModel_area .ui-state-active {
@@ -3759,7 +3774,8 @@ body.violet .dynamic-search-row .remove-extra-dynamic-search-row-link:hover,
 body.violet #AboutView p a,
 body.violet #AboutView ul a,
 body.violet .back-to-app-menu-item span,
-body.violet .breadcrumbs a {
+body.violet .breadcrumbs a,
+body.violet .StepsAndProgressBarForWizardView .current-step {
   color: #4a3970 !important;
 }
 body.violet .portlet-toolbar .icon-create:hover,
@@ -3779,14 +3795,16 @@ body.violet #clear-search-link,
 body.violet #show-filters-structure-div-link,
 body.violet .filters-bar .ui-state-active,
 body.violet .filters-bar label:hover,
-body.violet #clear-search-linkmodal {
+body.violet #clear-search-linkmodal,
+body.violet .StepsAndProgressBarForWizardView .progress-bar {
   background-color: #4a3970;
 }
 body.violet .latest-activity-toolbar label:hover,
 body.violet .filter-portlet-model-bar label:hover,
 body.violet .latest-activity-toolbar .ui-state-active,
 body.violet .filter-portlet-model-bar .ui-state-active,
-body.violet #clear-search-link #MashableInboxForm_filteredBy_area label:hover,
+body.violet #clear-search-link,
+body.violet #MashableInboxForm_filteredBy_area label:hover,
 body.violet #MashableInboxForm_optionForModel_area label:hover,
 body.violet #MashableInboxForm_filteredBy_area .ui-state-active,
 body.violet #MashableInboxForm_optionForModel_area .ui-state-active {
@@ -4323,7 +4341,8 @@ body.honey .dynamic-search-row .remove-extra-dynamic-search-row-link:hover,
 body.honey #AboutView p a,
 body.honey #AboutView ul a,
 body.honey .back-to-app-menu-item span,
-body.honey .breadcrumbs a {
+body.honey .breadcrumbs a,
+body.honey .StepsAndProgressBarForWizardView .current-step {
   color: #46201c !important;
 }
 body.honey .portlet-toolbar .icon-create:hover,
@@ -4343,14 +4362,16 @@ body.honey #clear-search-link,
 body.honey #show-filters-structure-div-link,
 body.honey .filters-bar .ui-state-active,
 body.honey .filters-bar label:hover,
-body.honey #clear-search-linkmodal {
+body.honey #clear-search-linkmodal,
+body.honey .StepsAndProgressBarForWizardView .progress-bar {
   background-color: #46201c;
 }
 body.honey .latest-activity-toolbar label:hover,
 body.honey .filter-portlet-model-bar label:hover,
 body.honey .latest-activity-toolbar .ui-state-active,
 body.honey .filter-portlet-model-bar .ui-state-active,
-body.honey #clear-search-link #MashableInboxForm_filteredBy_area label:hover,
+body.honey #clear-search-link,
+body.honey #MashableInboxForm_filteredBy_area label:hover,
 body.honey #MashableInboxForm_optionForModel_area label:hover,
 body.honey #MashableInboxForm_filteredBy_area .ui-state-active,
 body.honey #MashableInboxForm_optionForModel_area .ui-state-active {
@@ -7983,8 +8004,7 @@ div.wide.form label.hasCheckBox {
   padding-left: 8px;
   border-bottom: 1px solid #DFDFDF;
   overflow: hidden;
-  height: 40px;
-  line-height: 40px;
+  min-height: 40px;
   background-color: #ededed;
   background-repeat: repeat-x;
   background-image: -moz-linear-gradient(top, #f6f6f6, #ededed);
@@ -8023,6 +8043,7 @@ div.wide.form label.hasCheckBox {
   font-size: 11px !important;
   padding: 3px;
   margin: 0 3px;
+  white-space: nowrap;
 }
 .filters-bar label:hover {
   color: #FFF;
@@ -8050,6 +8071,9 @@ div.wide.form label.hasCheckBox {
 .filters-bar .ui-button-text {
   padding: 0;
   margin: 0;
+}
+.filters-bar > .ui-buttonset {
+  margin: 14px 0;
 }
 .filters-bar > div + div {
   display: inline-block;
@@ -10091,6 +10115,7 @@ div.hasHalfs .twoThirds {
   font-size: 11px !important;
   padding: 3px;
   margin: 0 3px;
+  white-space: nowrap;
 }
 #MashableInboxForm_filteredBy_area label:hover,
 #MashableInboxForm_optionForModel_area label:hover,
@@ -10137,8 +10162,7 @@ div.hasHalfs .twoThirds {
 .filter-portlet-model-bar {
   border-bottom: 1px solid #DFDFDF;
   overflow: hidden;
-  height: 40px;
-  line-height: 40px;
+  min-height: 40px;
   background-color: #ededed;
   background-repeat: repeat-x;
   background-image: -moz-linear-gradient(top, #f6f6f6, #ededed);
@@ -10154,6 +10178,9 @@ div.hasHalfs .twoThirds {
   -ms-box-shadow: inset 0 1px 0 0 #ffffff;
   box-shadow: inset 0 1px 0 0 #ffffff;
   position: relative;
+}
+.filter-portlet-model-bar > .ui-buttonset {
+  margin: 14px 0;
 }
 .activity-date {
   font-size: 11px;
@@ -11108,7 +11135,7 @@ a.remove .icon:after {
   padding: 8px 2px;
 }
 #InstallPageView #install-form {
-  padding-top: 15px !important;
+  padding: 15px !important;
 }
 #InstallPageView #install-form table {
   padding-bottom: 15px;
@@ -11778,7 +11805,6 @@ table.configuration-list td:last-child a .z-label:before {
 }
 .has-lang-label input {
   position: relative;
-  padding-left: 80px;
 }
 .has-lang-label input + span {
   background: url(../images/lang-label.png) left top no-repeat;
@@ -11823,9 +11849,6 @@ table.configuration-list td:last-child a .z-label:before {
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
-}
-#UserCreateView .panel {
-  width: 70% !important;
 }
 .panelTitle {
   padding-left: 15px;
@@ -13280,6 +13303,9 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
   background-image: -o-linear-gradient(top, #ffffff, #f5f5f5);
   background-image: linear-gradient(top, #ffffff, #f5f5f5);
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#f5f5f5', GradientType=0);
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
 }
 .modal-settings .hasCheckBox {
   margin-left: 0;
@@ -13289,7 +13315,7 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
   padding: 0 0 15px 0;
 }
 .designer-toolbar {
-  margin: 15px 0 0 0;
+  margin: 0;
 }
 .designer-toolbar input[type="submit"] {
   margin-bottom: 15px;
@@ -16704,6 +16730,10 @@ a.user-link {
   padding-left: 15px;
   width: 80%;
 }
+.first-date-area {
+  margin-top: 10px;
+  display: block;
+}
 .dynamic-and-for-mixed {
   display: inline-block;
   padding: 5px 0;
@@ -17275,6 +17305,46 @@ a.user-link {
   color: #555;
   font-weight: bold;
   margin: 15px 0 0 0;
+}
+/*Wizard progress bar*/
+.StepsAndProgressBarForWizardView .progress {
+  width: 100%;
+  margin-bottom: 15px;
+}
+.StepsAndProgressBarForWizardView .progress-back {
+  width: 100%;
+  height: 13px;
+  background: #ededed;
+  -webkit-box-shadow: inset 0 0 5px 0 #cccccc;
+  -moz-box-shadow: inset 0 0 5px 0 #cccccc;
+  -o-box-shadow: inset 0 0 5px 0 #cccccc;
+  -ms-box-shadow: inset 0 0 5px 0 #cccccc;
+  box-shadow: inset 0 0 5px 0 #cccccc;
+  padding: 3px 2px;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  -ms-border-radius: 3px;
+  -o-border-radius: 3px;
+  border-radius: 3px;
+  margin-bottom: 10px;
+}
+.StepsAndProgressBarForWizardView .progress-bar {
+  height: 100%;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  -ms-border-radius: 3px;
+  -o-border-radius: 3px;
+  border-radius: 3px;
+}
+.StepsAndProgressBarForWizardView span {
+  display: inline-block;
+  text-align: center;
+}
+.StepsAndProgressBarForWizardView .current-step {
+  font-weight: bold;
 }
 #MashableInboxActionBarForViews .view-toolbar ul:first-child > li > a {
   border-left: none;

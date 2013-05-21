@@ -57,6 +57,21 @@
             return array_combine($dropDownArray, $labelsArray);
         }
 
+        public static function getTranslatedLabelByValue(CustomFieldData $customFieldData, $value, $language)
+        {
+            if($customFieldData->serializedLabels != null)
+            {
+                $customLabels        = unserialize($customFieldData->serializedLabels);
+                //todo: need to do data order/value pairing like in getDataLabelsByLanguage so we would need to cache
+                //getting the data labels statically below, i think that would be easiest.
+                //if(isset($customLabels[$language[$value]))
+                //{
+                //    return $customLabels[$value];
+                //}
+            }
+            return $value;
+        }
+
         /**
          * Given an array of data names, a language, and an array of custom labels make an array of data names paired
          * with their labels.  If a custom label is available then utilize that for each data name, otherwise fallback

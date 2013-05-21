@@ -4348,10 +4348,9 @@ div.hasHalfs{
 		font-size:11px !important;
 		padding:3px;
 		margin:0 3px;
-		++.themeColor;
+		white-space: nowrap;
 	}
 	label:hover{
-		++.themeBackgroundColor;
 		color:#FFF;
 		.radius(3px) !important;
 		border:none;
@@ -4361,7 +4360,6 @@ div.hasHalfs{
 		display:none;
 	}
 	.ui-state-active{
-		++.themeBackgroundColor;
 		color:#FFF;
 		.radius(3px) !important;
 		border:none;
@@ -4375,11 +4373,14 @@ div.hasHalfs{
 .filter-portlet-model-bar{
 	border-bottom:1px solid #DFDFDF;
 	overflow: hidden;
-	height: 40px;
-	line-height: 40px;
+	min-height: 40px;
+	//line-height: 40px;
 	#gradient > .vertical(#f6f6f6, #ededed);
 	.b-shadow(inset 0 1px 0 0 #ffffff);
 	position:relative;
+	> .ui-buttonset{
+		margin: 14px 0;
+	}
 }
 
 .activity-date{

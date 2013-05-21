@@ -165,10 +165,11 @@
             $workflow         = new Workflow();
             $workflow->setType($type);
             $workflow->setIsActive(true);
+            $progressBarAndStepsView = WorkflowWizardViewFactory::makeStepsAndProgressBarViewFromReport($workflow);
             $wizardWizardView = WorkflowWizardViewFactory::makeViewFromWorkflow($workflow);
             $view             = new WorkflowsPageView(  ZurmoDefaultAdminViewUtil::
-                                                        makeViewWithBreadcrumbsForCurrentUser(
-                                                        $this,
+                                                        makeTwoViewsWithBreadcrumbsForCurrentUser(
+                                                        $this, $progressBarAndStepsView,
                                                         $wizardWizardView,
                                                         $breadcrumbLinks,
                                                         'WorkflowBreadCrumbView'));
@@ -181,10 +182,11 @@
             ControllerSecurityUtil::resolveCanCurrentUserAccessModule($savedWorkflow->moduleClassName);
             $breadcrumbLinks    = array(strval($savedWorkflow));
             $workflow           = SavedWorkflowToWorkflowAdapter::makeWorkflowBySavedWorkflow($savedWorkflow);
+            $progressBarAndStepsView = WorkflowWizardViewFactory::makeStepsAndProgressBarViewFromReport($workflow);
             $wizardWizardView = WorkflowWizardViewFactory::makeViewFromWorkflow($workflow, (bool)$isBeingCopied);
             $view             = new WorkflowsPageView(  ZurmoDefaultAdminViewUtil::
-                                                        makeViewWithBreadcrumbsForCurrentUser(
-                                                        $this,
+                                                        makeTwoViewsWithBreadcrumbsForCurrentUser(
+                                                        $this, $progressBarAndStepsView,
                                                         $wizardWizardView,
                                                         $breadcrumbLinks,
                                                         'WorkflowBreadCrumbView'));
@@ -255,6 +257,7 @@
             $moduleClassName                    = $workflow->getModuleClassName();
             $modelClassName                     = $moduleClassName::getPrimaryModelName();
             $form                               = new WizardActiveForm();
+            $form->id                           = WorkflowWizardView::getFormId();
             $form->enableAjaxValidation         = true; //ensures error validation populates correctly
 
             $wizardFormClassName                = WorkflowToWizardFormAdapter::getFormClassNameByType($workflow->getType());
@@ -381,6 +384,7 @@
         public function actionAddEmailMessage($moduleClassName, $type, $rowNumber)
         {
             $form                        = new WizardActiveForm();
+            $form->id                    = WorkflowWizardView::getFormId();
             $form->enableAjaxValidation  = true; //ensures error validation populates correctly
             $rowCounterInputId           = ComponentForWorkflowWizardView::
                                            resolveRowCounterInputId(ComponentForWorkflowForm::TYPE_EMAIL_MESSAGES);
@@ -406,6 +410,7 @@
                                                        $recipientRowNumber)
         {
             $form                        = new WizardActiveForm();
+            $form->id                    = WorkflowWizardView::getFormId();
             $form->enableAjaxValidation  = true; //ensures error validation populates correctly
             $wizardFormClassName         = WorkflowToWizardFormAdapter::getFormClassNameByType($type);
             $model                       = WorkflowEmailMessageRecipientFormFactory::make($recipientType,

@@ -35,60 +35,18 @@
      ********************************************************************************/
 
     /**
-     * Factory for creating workflow wizard views of
-     * the appropriate type.
+     * Progress bar and steps for the by-time workflow wizard
      */
-    class WorkflowWizardViewFactory
+    class ByTimeWorkflowStepsAndProgressBarForWizardView extends StepsAndProgressBarForWizardView
     {
-        /**
-         * @param Workflow $workflow
-         * @param $isBeingCopied
-         * @return View
-         * @throws NotSupportedException if the type provided is not valid
-         */
-        public static function makeViewFromWorkflow(Workflow $workflow, $isBeingCopied = false)
+        protected function getSpanLabels()
         {
-            assert('is_bool($isBeingCopied)');
-            $type                      = $workflow->getType();
-            $workflowToWizardFormAdapter = new WorkflowToWizardFormAdapter($workflow);
-            if ($type == Workflow::TYPE_ON_SAVE)
-            {
-                $viewClassName = 'OnSaveWorkflowWizardView';
-                $form          = $workflowToWizardFormAdapter->makeOnSaveWizardForm();
-            }
-            elseif ($type == Workflow::TYPE_BY_TIME)
-            {
-                $viewClassName = 'ByTimeWorkflowWizardView';
-                $form          = $workflowToWizardFormAdapter->makeByTimeWizardForm();
-            }
-            else
-            {
-                throw new NotSupportedException();
-            }
-            return new $viewClassName($form, $isBeingCopied);
-        }
-
-        /**
-         * @param Workflow $workflow
-         * @return  ByTimeWorkflowStepsAndProgressBarForWizardView|
-         *          OnSaveWorkflowStepsAndProgressBarForWizardView
-         * @throws NotSupportedException
-         */
-        public static function makeStepsAndProgressBarViewFromReport(Workflow $workflow)
-        {
-            $type = $workflow->getType();
-            if ($type == Workflow::TYPE_BY_TIME)
-            {
-                return new ByTimeWorkflowStepsAndProgressBarForWizardView();
-            }
-            elseif ($type == Workflow::TYPE_ON_SAVE)
-            {
-                return new OnSaveWorkflowStepsAndProgressBarForWizardView();
-            }
-            else
-            {
-                throw new NotSupportedException();
-            }
+            return array(Zurmo::t('Core', 'Module'),
+                         Zurmo::t('WorkflowsModule', 'Time Trigger'),
+                         Zurmo::t('WorkflowsModule', 'Triggers'),
+                         Zurmo::t('WorkflowsModule', 'Actions'),
+                         Zurmo::t('WorkflowsModule', 'Messages'),
+                         Zurmo::t('WorkflowsModule', 'General'));
         }
     }
 ?>
