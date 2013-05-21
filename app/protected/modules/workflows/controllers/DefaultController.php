@@ -257,6 +257,7 @@
             $moduleClassName                    = $workflow->getModuleClassName();
             $modelClassName                     = $moduleClassName::getPrimaryModelName();
             $form                               = new WizardActiveForm();
+            $form->id                           = WorkflowWizardView::getFormId();
             $form->enableAjaxValidation         = true; //ensures error validation populates correctly
 
             $wizardFormClassName                = WorkflowToWizardFormAdapter::getFormClassNameByType($workflow->getType());
@@ -383,6 +384,7 @@
         public function actionAddEmailMessage($moduleClassName, $type, $rowNumber)
         {
             $form                        = new WizardActiveForm();
+            $form->id                    = WorkflowWizardView::getFormId();
             $form->enableAjaxValidation  = true; //ensures error validation populates correctly
             $rowCounterInputId           = ComponentForWorkflowWizardView::
                                            resolveRowCounterInputId(ComponentForWorkflowForm::TYPE_EMAIL_MESSAGES);
@@ -408,6 +410,7 @@
                                                        $recipientRowNumber)
         {
             $form                        = new WizardActiveForm();
+            $form->id                    = WorkflowWizardView::getFormId();
             $form->enableAjaxValidation  = true; //ensures error validation populates correctly
             $wizardFormClassName         = WorkflowToWizardFormAdapter::getFormClassNameByType($type);
             $model                       = WorkflowEmailMessageRecipientFormFactory::make($recipientType,

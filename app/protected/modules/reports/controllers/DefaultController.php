@@ -247,6 +247,7 @@
             $moduleClassName                    = $report->getModuleClassName();
             $modelClassName                     = $moduleClassName::getPrimaryModelName();
             $form                               = new WizardActiveForm();
+            $form->id                           = 'edit-form';
             $form->enableAjaxValidation         = true; //ensures error validation populates correctly
 
             $wizardFormClassName                = ReportToWizardFormAdapter::getFormClassNameByType($report->getType());
