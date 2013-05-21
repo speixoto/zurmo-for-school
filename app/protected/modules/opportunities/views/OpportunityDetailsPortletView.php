@@ -35,9 +35,9 @@
      ********************************************************************************/
 
     /**
-     * The portlet view for accounts detail view
+     * The portlet view for opportunity detail view
      */
-    class AccountDetailsPortletView extends AccountEditAndDetailsView implements PortletViewInterface
+    class OpportunityDetailsPortletView extends OpportunityEditAndDetailsView implements PortletViewInterface
     {
         protected $params;
         protected $viewData;
@@ -69,7 +69,7 @@
 
         public static function getModuleClassName()
         {
-            return 'AccountsModule';
+            return 'OpportunitiesModule';
         }
 
         /**
@@ -85,7 +85,7 @@
          */
         private function resolveModuleId()
         {
-            return 'accounts';
+            return 'opportunities';
         }
 
         public static function canUserConfigure()

@@ -127,7 +127,7 @@
             $this->assertFalse(strpos($content, 'Name cannot be blank') === false);
 
             //Load Model Detail Views
-            $this->setGetArray(array('id' => $superAccountId));
+            $this->setGetArray(array('id' => $superAccountId, 'lockPortlets' => '1'));
             $this->resetPostArray();
             $this->runControllerWithNoExceptionsAndGetContent('accounts/default/details');
 
@@ -274,9 +274,9 @@
             //Save a layout change. Collapse all portlets in the Account Details View.
             //At this point portlets for this view should be created because we have already loaded the 'details' page in a request above.
             $portlets = Portlet::getByLayoutIdAndUserSortedByColumnIdAndPosition(
-                                    'AccountDetailsAndRelationsViewLeftBottomView', $super->id, array());
-            $this->assertEquals (2, count($portlets[1])         );
-            $this->assertFalse  (array_key_exists(2, $portlets) );
+                                    'AccountDetailsAndRelationsView', $super->id, array());
+            $this->assertEquals (3, count($portlets[1]));
+            $this->assertFalse  (array_key_exists(3, $portlets) );
             $portletPostData = array();
             $portletCount = 0;
             foreach ($portlets as $column => $columnPortlets)
@@ -284,30 +284,30 @@
                 foreach ($columnPortlets as $position => $portlet)
                 {
                     $this->assertEquals('0', $portlet->collapsed);
-                    $portletPostData['AccountDetailsAndRelationsViewLeftBottomView_' . $portlet->id] = array(
+                    $portletPostData['AccountDetailsAndRelationsView_' . $portlet->id] = array(
                         'collapsed' => 'true',
                         'column'    => 0,
-                        'id'        => 'AccountDetailsAndRelationsViewLeftBottomView_' . $portlet->id,
+                        'id'        => 'AccountDetailsAndRelationsView_' . $portlet->id,
                         'position'  => $portletCount,
                     );
                     $portletCount++;
                 }
             }
-            //There should have been a total of 2 portlets.
-            $this->assertEquals(2, $portletCount);
+            //There should have been a total of 7 portlets.
+            $this->assertEquals(7, $portletCount);
             $this->resetGetArray();
             $this->setPostArray(array(
                 'portletLayoutConfiguration' => array(
                     'portlets' => $portletPostData,
-                    'uniqueLayoutId' => 'AccountDetailsAndRelationsViewLeftBottomView',
+                    'uniqueLayoutId' => 'AccountDetailsAndRelationsView',
                 )
             ));
             $this->runControllerWithNoExceptionsAndGetContent('home/defaultPortlet/saveLayout', true);
             //Now test that all the portlets are collapsed and moved to the first column.
             $portlets = Portlet::getByLayoutIdAndUserSortedByColumnIdAndPosition(
-                            'AccountDetailsAndRelationsViewLeftBottomView', $super->id, array());
-            $this->assertEquals (2, count($portlets[1])         );
-            $this->assertFalse  (array_key_exists(2, $portlets) );
+                            'AccountDetailsAndRelationsView', $super->id, array());
+            $this->assertEquals (7, count($portlets[1]));
+            $this->assertFalse  (array_key_exists(3, $portlets) );
             foreach ($portlets as $column => $columns)
             {
                 foreach ($columns as $position => $positionPortlets)
@@ -397,6 +397,7 @@
             $this->assertEquals($compareData, $data);
 
             //Sort order asc
+            StickySearchUtil::clearDataByKey('AccountsSearchView');
             $this->setGetArray(array('AccountsSearchForm' => array('anyMixedAttributes'                 => 'xyz',
                                                                    SearchForm::SELECTED_LIST_ATTRIBUTES => array('officePhone', 'name')),
                                      'Account_sort'       => 'officePhone'));
@@ -408,9 +409,8 @@
                                  'anyMixedAttributes'                 => 'xyz',
                                  'anyMixedAttributesScope'            => null,
                                  SearchForm::SELECTED_LIST_ATTRIBUTES => array('officePhone', 'name'),
-                                 'sortAttribute'                       => 'officePhone',
-                                 'sortDescending'                      => '',
-                                 'savedSearchId'                       => ''
+                                 'sortAttribute'                      => 'officePhone',
+                                 'sortDescending'                     => false
             );
             $this->assertEquals($compareData, $data);
 

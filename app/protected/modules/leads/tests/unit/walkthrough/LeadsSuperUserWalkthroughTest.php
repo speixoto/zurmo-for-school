@@ -265,7 +265,7 @@
             //Save a layout change. Collapse all portlets in the Lead Details View.
             //At this point portlets for this view should be created because we have already loaded the 'details' page in a request above.
             $portlets = Portlet::getByLayoutIdAndUserSortedByColumnIdAndPosition(
-                                        'LeadDetailsAndRelationsViewLeftBottomView', $super->id, array());
+                                        'LeadDetailsAndRelationsView', $super->id, array());
             $this->assertEquals (2, count($portlets[1])         );
             $this->assertFalse  (array_key_exists(2, $portlets) );
             $portletPostData = array();
@@ -275,10 +275,10 @@
                 foreach ($columnPortlets as $position => $portlet)
                 {
                     $this->assertEquals('0', $portlet->collapsed);
-                    $portletPostData['LeadDetailsAndRelationsViewLeftBottomView_' . $portlet->id] = array(
+                    $portletPostData['LeadDetailsAndRelationsView_' . $portlet->id] = array(
                         'collapsed' => 'true',
                         'column'    => 0,
-                        'id'        => 'LeadDetailsAndRelationsViewLeftBottomView_' . $portlet->id,
+                        'id'        => 'LeadDetailsAndRelationsView_' . $portlet->id,
                         'position'  => $portletCount,
                     );
                     $portletCount++;
@@ -290,13 +290,13 @@
             $this->setPostArray(array(
                 'portletLayoutConfiguration' => array(
                     'portlets' => $portletPostData,
-                    'uniqueLayoutId' => 'LeadDetailsAndRelationsViewLeftBottomView',
+                    'uniqueLayoutId' => 'LeadDetailsAndRelationsView',
                 )
             ));
             $this->runControllerWithNoExceptionsAndGetContent('home/defaultPortlet/saveLayout', true);
             //Now test that all the portlets are collapsed and moved to the first column.
             $portlets = Portlet::getByLayoutIdAndUserSortedByColumnIdAndPosition(
-                            'LeadDetailsAndRelationsViewLeftBottomView', $super->id, array());
+                            'LeadDetailsAndRelationsView', $super->id, array());
             $this->assertEquals (2, count($portlets[1])         );
             $this->assertFalse  (array_key_exists(2, $portlets) );
             foreach ($portlets as $column => $columns)

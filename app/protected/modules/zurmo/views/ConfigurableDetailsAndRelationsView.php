@@ -109,5 +109,11 @@
 
             return $lockLink . parent::renderActionElementBar($renderedInForm);
         }
+
+        protected static function resolveAjaxOptionsForAddPortlet()
+        {
+            $title = Zurmo::t('HomeModule', 'Add Portlet');
+            return ModalView::getAjaxOptionsForModalLink($title);
+        }
     }
 ?>

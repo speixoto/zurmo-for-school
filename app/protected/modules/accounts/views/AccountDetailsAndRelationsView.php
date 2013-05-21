@@ -41,53 +41,6 @@
             return true;
         }
 
-        /*public static function getDefaultMetadata()
-        {
-            $metadata = array(
-                'global' => array(
-                    'leftTopView' => array(
-                        'viewClassName' => 'AccountEditAndDetailsView',
-                    ),
-                    'leftBottomView' => array(
-                        'showAsTabbed' => false,
-                        'columns' => array(
-                            array(
-                                'rows' => array(
-                                    array(
-                                        'type' => 'NoteInlineEditForPortlet'
-                                    ),
-                                    array(
-                                        'type' => 'AccountLatestActivitiesForPortlet'
-                                    )
-                                )
-                            )
-                        )
-                    ),
-                    'rightTopView' => array(
-                        'columns' => array(
-                            array(
-                                'rows' => array(
-                                    array(
-                                        'type' => 'UpcomingMeetingsForAccountCalendar',
-                                    ),
-                                    array(
-                                        'type' => 'OpenTasksForAccountRelatedList',
-                                    ),
-                                    array(
-                                        'type' => 'ContactsForAccountRelatedList',
-                                    ),
-                                    array(
-                                        'type' => 'OpportunitiesForAccountRelatedList',
-                                    )
-                                )
-                            )
-                        )
-                    )
-                )
-            );
-            return $metadata;
-        }*/
-
         public static function getDefaultMetadata()
         {
             $metadata = array(
@@ -137,17 +90,6 @@
                 )
             );
             return $metadata;
-        }
-
-        public static function getModuleClassName()
-        {
-            return 'AccountsModule';
-        }
-
-        protected static function resolveAjaxOptionsForAddPortlet()
-        {
-            $title = Zurmo::t('HomeModule', 'Add Portlet');
-            return ModalView::getAjaxOptionsForModalLink($title);
         }
     }
 ?>

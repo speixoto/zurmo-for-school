@@ -35,9 +35,9 @@
      ********************************************************************************/
 
     /**
-     * The portlet view for accounts detail view
+     * The portlet view for contact detail view
      */
-    class AccountDetailsPortletView extends AccountEditAndDetailsView implements PortletViewInterface
+    class ContactDetailsPortletView extends ContactEditAndDetailsView implements PortletViewInterface
     {
         protected $params;
         protected $viewData;
@@ -69,7 +69,7 @@
 
         public static function getModuleClassName()
         {
-            return 'AccountsModule';
+            return 'ContactsModule';
         }
 
         /**
@@ -85,7 +85,7 @@
          */
         private function resolveModuleId()
         {
-            return 'accounts';
+            return 'contacts';
         }
 
         public static function canUserConfigure()
