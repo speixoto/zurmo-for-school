@@ -266,8 +266,8 @@
             //At this point portlets for this view should be created because we have already loaded the 'details' page in a request above.
             $portlets = Portlet::getByLayoutIdAndUserSortedByColumnIdAndPosition(
                                         'LeadDetailsAndRelationsView', $super->id, array());
-            $this->assertEquals (2, count($portlets[1])         );
-            $this->assertFalse  (array_key_exists(2, $portlets) );
+            $this->assertEquals(3, count($portlets[1]));
+            $this->assertFalse(array_key_exists(3, $portlets) );
             $portletPostData = array();
             $portletCount = 0;
             foreach ($portlets as $column => $columnPortlets)
@@ -284,8 +284,8 @@
                     $portletCount++;
                 }
             }
-            //There should have been a total of 2 portlets.
-            $this->assertEquals(2, $portletCount);
+            //There should have been a total of 5 portlets.
+            $this->assertEquals(5, $portletCount);
             $this->resetGetArray();
             $this->setPostArray(array(
                 'portletLayoutConfiguration' => array(
@@ -297,7 +297,7 @@
             //Now test that all the portlets are collapsed and moved to the first column.
             $portlets = Portlet::getByLayoutIdAndUserSortedByColumnIdAndPosition(
                             'LeadDetailsAndRelationsView', $super->id, array());
-            $this->assertEquals (2, count($portlets[1])         );
+            $this->assertEquals (5, count($portlets[1]));
             $this->assertFalse  (array_key_exists(2, $portlets) );
             foreach ($portlets as $column => $columns)
             {

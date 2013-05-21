@@ -300,8 +300,8 @@
             $opportunity = Opportunity::getById($superOpportunityId);
             $portlets = Portlet::getByLayoutIdAndUserSortedByColumnIdAndPosition(
                                     'OpportunityDetailsAndRelationsView', $super->id, array());
-            $this->assertEquals(1, count($portlets));
-            $this->assertEquals(2, count($portlets[1]));
+            $this->assertEquals(2, count($portlets));
+            $this->assertEquals(3, count($portlets[1]));
             $contact = Contact::getById($superContactId);
             $this->assertEquals(0, $contact->opportunities->count());
             $this->assertEquals(0, $opportunity->contacts->count());
@@ -349,8 +349,8 @@
             //already loaded the 'details' page in a request above.
             $portlets = Portlet::getByLayoutIdAndUserSortedByColumnIdAndPosition(
                                     'OpportunityDetailsAndRelationsView', $super->id, array());
-            $this->assertEquals (2, count($portlets[1])         );
-            $this->assertFalse  (array_key_exists(2, $portlets) );
+            $this->assertEquals(3, count($portlets[1]));
+            $this->assertFalse(array_key_exists(3, $portlets) );
             $portletPostData = array();
             $portletCount = 0;
             foreach ($portlets as $column => $columnPortlets)
@@ -368,7 +368,7 @@
                 }
             }
             //There should have been a total of 3 portlets.
-            $this->assertEquals(2, $portletCount);
+            $this->assertEquals(6, $portletCount);
             $this->resetGetArray();
             $this->setPostArray(array(
                 'portletLayoutConfiguration' => array(
@@ -380,7 +380,7 @@
             //Now test that all the portlets are collapsed and moved to the first column.
             $portlets = Portlet::getByLayoutIdAndUserSortedByColumnIdAndPosition(
                             'OpportunityDetailsAndRelationsView', $super->id, array());
-            $this->assertEquals (2, count($portlets[1])         );
+            $this->assertEquals (6, count($portlets[1]));
             $this->assertFalse  (array_key_exists(2, $portlets) );
             foreach ($portlets as $column => $columns)
             {
