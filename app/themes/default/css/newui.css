@@ -12286,28 +12286,28 @@ table.configuration-list td:last-child a .z-label:before {
 .uploaded-logo ~ .file-size {
   vertical-align: top;
 }
-#HomeDashboardPortletSelectionView ul {
+#HomeDashboardPortletSelectionView ul, #DetailsPortletSelectionView ul {
   padding: 20px;
   list-style: none;
   zoom: 1;
 }
-#HomeDashboardPortletSelectionView ul:before {
+#HomeDashboardPortletSelectionView ul:before, #DetailsPortletSelectionView ul:before {
   content: "";
   display: table;
 }
-#HomeDashboardPortletSelectionView ul:after {
+#HomeDashboardPortletSelectionView ul:after, #DetailsPortletSelectionView ul:after {
   content: "";
   display: table;
   clear: both;
 }
-#HomeDashboardPortletSelectionView ul li {
+#HomeDashboardPortletSelectionView ul li, #DetailsPortletSelectionView ul li {
   width: 50%;
   float: left;
   margin-bottom: 15px;
   color: #666;
   vertical-align: middle;
 }
-#HomeDashboardPortletSelectionView ul span {
+#HomeDashboardPortletSelectionView ul span , #DetailsPortletSelectionView ul span{
   font-weight: normal;
   font-size: 24px;
   font-family: "ZurmoGamificationSymblyReguRg";
@@ -12317,11 +12317,11 @@ table.configuration-list td:last-child a .z-label:before {
   outline: none !important;
   display: inline-block;
 }
-#HomeDashboardPortletSelectionView ul a {
+#HomeDashboardPortletSelectionView ul a , #DetailsPortletSelectionView ul a{
   outline: none !important;
   cursor: pointer;
 }
-#HomeDashboardPortletSelectionView ul a:foucs {
+#HomeDashboardPortletSelectionView ul a:focus, #DetailsPortletSelectionView ul a:focus {
   outline: none;
 }
 /*Edit Portlet*/

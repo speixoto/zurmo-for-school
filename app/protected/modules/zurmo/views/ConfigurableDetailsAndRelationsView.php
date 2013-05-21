@@ -35,7 +35,7 @@
      ********************************************************************************/
 
     /**
-     * The base View for a model detail view with relation views.
+     * The configurable View for a model detail view with relation views.
      */
     abstract class ConfigurableDetailsAndRelationsView extends DetailsAndRelationsView
     {
@@ -55,7 +55,28 @@
         protected function renderContent()
         {
             $metadata         = self::getMetadata();
-            $content          = $this->renderActionElementBar(true);
+            if(isset($_GET['lockPortlets']))
+            {
+                $lockPortlets = (bool)$_GET['lockPortlets'];
+                if($lockPortlets == '1')
+                {
+                    ZurmoDefaultViewUtil::setLockKeyForDetailsAndRelationsView('lockPortletsForDetailsAndRelationsView', true);
+                }
+                else
+                {
+                    ZurmoDefaultViewUtil::setLockKeyForDetailsAndRelationsView('lockPortletsForDetailsAndRelationsView', false);
+                }
+            }
+
+            $content                = $this->renderActionElementBar(true);
+            $isViewLocked           = ZurmoDefaultViewUtil::getLockKeyForDetailsAndRelationsView('lockPortletsForDetailsAndRelationsView');
+            $portletsAreRemovable   = true;
+            $portletsAreMovable     = true;
+            if($isViewLocked == true)
+            {
+                $portletsAreRemovable   = false;
+                $portletsAreMovable     = false;
+            }
             $viewClassName    = static::getModelRelationsSecuredPortletFrameViewClassName();
             $configurableView = new $viewClassName( $this->controllerId,
                                                     $this->moduleId,
@@ -63,12 +84,30 @@
                                                     $this->params,
                                                     $metadata,
                                                     false,
-                                                    true,
+                                                    $portletsAreMovable,
                                                     false,
-                                                    '50,50');
+                                                    '50,50',
+                                                    $portletsAreRemovable);
             $content          .=  $configurableView->render();
             $content          .= $this->renderScripts();
             return $content;
+        }
+
+        protected function renderActionElementBar($renderedInForm)
+        {
+            $isViewLocked     = ZurmoDefaultViewUtil::getLockKeyForDetailsAndRelationsView('lockPortletsForDetailsAndRelationsView');
+            $url              = Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/details?id=' . $_GET['id']);
+            $lockLink = '';
+            if($isViewLocked === true)
+            {
+                $lockLink = "<span style='margin-right:30px'> <a href='" . $url . "&lockPortlets=0'>" . Zurmo::t('Core', 'Unlock') . "</a></span>";
+            }
+            else
+            {
+                $lockLink = "<span style='margin-right:30px'> <a href='" . $url . "&lockPortlets=1'>" . Zurmo::t('Core', 'Lock') . "</a></span>";
+            }
+
+            return $lockLink . parent::renderActionElementBar($renderedInForm);
         }
     }
 ?>

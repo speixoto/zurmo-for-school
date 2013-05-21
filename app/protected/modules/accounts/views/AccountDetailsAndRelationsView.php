@@ -94,7 +94,7 @@
                 'global' => array(
                     'toolbar' => array(
                         'elements' => array(
-                            array(  'type'           => 'AddPortletAjaxLink',
+                            array(  'type'           => 'AddPortletAjaxLinkOnDetailView',
                                     'uniqueLayoutId' => 'eval:$this->uniqueLayoutId',
                                     'ajaxOptions'    => 'eval:static::resolveAjaxOptionsForAddPortlet()',
                                     'htmlOptions'    => array('id' => 'AddPortletLink',

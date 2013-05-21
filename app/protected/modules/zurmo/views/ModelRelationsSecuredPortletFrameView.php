@@ -52,8 +52,11 @@
 
         private $showAsTabs;
 
+        private $portletsAreRemovable;
+
         public function __construct($controllerId, $moduleId, $uniqueLayoutId, $params, $metadata,
-                                    $portletsAreCollapsible = true, $portletsAreMovable = true, $showAsTabs = false, $layoutType = '100')
+                                    $portletsAreCollapsible = true, $portletsAreMovable = true, $showAsTabs = false, $layoutType = '100',
+                                    $portletsAreRemovable = true)
         {
             assert('is_string($controllerId)');
             assert('is_string($moduleId)');
@@ -63,6 +66,7 @@
             assert('is_bool($portletsAreCollapsible)');
             assert('is_bool($portletsAreMovable)');
             assert('is_bool($showAsTabs)');
+            assert('is_bool($portletsAreRemovable)');
             $this->controllerId           = $controllerId;
             $this->moduleId               = $moduleId;
             $this->uniqueLayoutId         = $uniqueLayoutId;
@@ -72,6 +76,7 @@
             $this->portletsAreMovable     = $portletsAreMovable;
             $this->showAsTabs             = $showAsTabs;
             $this->layoutType             = $layoutType;
+            $this->portletsAreRemovable   = $portletsAreRemovable;
         }
 
         protected function renderContent()
@@ -79,14 +84,15 @@
             $this->portlets = $this->getPortlets($this->uniqueLayoutId, $this->metadata);
             return $this->renderPortlets($this->uniqueLayoutId,
                                          $this->portletsAreCollapsible,
-                                         $this->portletsAreMovable);
+                                         $this->portletsAreMovable,
+                                         $this->portletsAreRemovable);
         }
 
-        protected function renderPortlets($uniqueLayoutId, $portletsAreCollapsible = true, $portletsAreMovable = true)
+        protected function renderPortlets($uniqueLayoutId, $portletsAreCollapsible = true, $portletsAreMovable = true, $portletsAreRemovable = true)
         {
             if (!$this->showAsTabs)
             {
-                return parent::renderPortlets($uniqueLayoutId, $portletsAreCollapsible, $portletsAreMovable);
+                return parent::renderPortlets($uniqueLayoutId, $portletsAreCollapsible, $portletsAreMovable, $portletsAreRemovable);
             }
             assert('is_bool($portletsAreCollapsible) && $portletsAreCollapsible == false');
             assert('is_bool($portletsAreMovable) && $portletsAreMovable == false');

@@ -211,12 +211,12 @@
         {
             Yii::app()->getClientScript()->setToAjaxMode();
             $view = new ModalView($this,
-                new HomeDashboardPortletSelectionView(
-                    $this->getId(),
-                    $this->getModule()->getId(),
-                    $_GET['dashboardId'],//dashboard id is model id
-                    $_GET['uniqueLayoutId']
-                    ));
+                                    new DetailsPortletSelectionView(
+                                        $this->getId(),
+                                        $this->getModule()->getId(),
+                                        $_GET['modelId'],//dashboard id is model id
+                                        $_GET['uniqueLayoutId']
+                                        ));
             echo $view->render();
         }
 
@@ -240,9 +240,9 @@
                         $portlet->save();
                 }
             }
-            if (!empty($_GET['dashboardId']))
+            if (!empty($_GET['modelId']))
             {
-                $dashboardId = $_GET['dashboardId'];
+                $dashboardId = $_GET['modelId'];
             }
             else
             {

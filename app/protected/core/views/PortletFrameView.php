@@ -72,11 +72,12 @@
             return $portlets;
         }
 
-        protected function renderPortlets($uniqueLayoutId, $portletsAreCollapsible = true, $portletsAreMovable = true)
+        protected function renderPortlets($uniqueLayoutId, $portletsAreCollapsible = true, $portletsAreMovable = true, $portletsAreRemovable = true)
         {
             assert('is_string($uniqueLayoutId)');
             assert('is_bool($portletsAreCollapsible)');
             assert('is_bool($portletsAreMovable)');
+            assert('is_bool($portletsAreRemovable)');
             $juiPortletsWidgetItems = array();
             foreach ($this->portlets as $column => $columnPortlets)
             {
@@ -90,7 +91,7 @@
                     }
                     else
                     {
-                        $removable      = $this->arePortletsRemovable();
+                        $removable      = $portletsAreRemovable;
                     }
                     $juiPortletsWidgetItems[$column][$position] = array(
                         'id'          => $portlet->id,

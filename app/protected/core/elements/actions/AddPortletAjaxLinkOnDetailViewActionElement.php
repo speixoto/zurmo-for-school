@@ -34,22 +34,54 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class ContactsForAccountRelatedListView extends ContactsRelatedListView
+    class AddPortletAjaxLinkOnDetailViewActionElement extends DropdownSupportedAjaxLinkActionElement
     {
-        protected function getRelationAttributeName()
+        public function getActionType()
         {
-            return 'account';
+            return 'AddPortlet';
         }
 
-        public static function getDisplayDescription()
+        protected function getDefaultLabel()
         {
-            return Zurmo::t('ContactsModule', 'ContactsModulePluralLabel For AccountsModuleSingularLabel',
-                        LabelUtil::getTranslationParamsForAllModules());
+            return Zurmo::t('HomeModule', 'Add Portlet');
         }
 
-        public static function getAllowedOnPortletViewClassNames()
+        protected function getDefaultRoute()
         {
-            return array('AccountDetailsAndRelationsView');
+            return Yii::app()->createUrl($this->moduleId . '/defaultPortlet/AddList/',
+                    array(
+                    'uniqueLayoutId' => $this->getUniqueLayoutId(),
+                    'modelId' => $this->modelId,
+                    )
+            );
+        }
+
+        protected function getUniqueLayoutId()
+        {
+            if (isset($this->params['uniqueLayoutId']))
+            {
+                return $this->params['uniqueLayoutId'];
+            }
+        }
+
+        public function getElementValue()
+        {
+            $eventHandlerName = 'addPortletAjaxLinkActionElementHandler';
+            $ajaxOptions      = CMap::mergeArray($this->getAjaxOptions(), array('url' => $this->route));
+            if (Yii::app()->clientScript->isScriptRegistered($eventHandlerName))
+            {
+                return;
+            }
+            else
+            {
+                Yii::app()->clientScript->registerScript($eventHandlerName, "
+                    function ". $eventHandlerName ."()
+                    {
+                        " . ZurmoHtml::ajax($ajaxOptions)."
+                    }
+                ", CClientScript::POS_HEAD); // POS_HEAD so its available when registerDropdownScripts() checks for it.
+            }
+            return $eventHandlerName;
         }
     }
 ?>
