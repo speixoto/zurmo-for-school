@@ -444,6 +444,11 @@
     }
 }
 
+.first-date-area{
+	margin-top: 10px;
+	display: block;
+}
+
 .dynamic-and-for-mixed{
     display: inline-block;
     padding:5px 0;
@@ -1071,5 +1076,34 @@
 		color:#555;
 		font-weight:bold;
 		margin:15px 0 0 0;
+	}
+}
+
+/*Wizard progress bar*/
+.StepsAndProgressBarForWizardView{
+	.progress{
+		width: 100%;
+		margin-bottom: 15px;
+	}
+	.progress-back{
+		width: 100%;
+		height: 13px;
+		background: #ededed;
+		.b-shadow(inset 0 0 5px 0 #ccc);
+		padding:3px 2px;
+		.box-sizing();
+		.radius(3px);
+		margin-bottom: 10px;
+	}
+	.progress-bar{
+		height: 100%;
+		.radius(3px);
+	}
+	span{
+		display: inline-block;
+		text-align: center;
+	}
+	.current-step{
+		font-weight: bold;
 	}
 }

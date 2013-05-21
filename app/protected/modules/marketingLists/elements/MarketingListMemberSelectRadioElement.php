@@ -123,8 +123,10 @@
         protected function getArray()
         {
             $data = array(
-                        Zurmo::t('MarketingListsModule', 'From Contacts/Leads'),
-                        Zurmo::t('MarketingListsModule', 'From a Report'),
+                        Zurmo::t('MarketingListsModule', 'From ContactsModulePluralLabel/LeadsModulePluralLabel',
+                                                                        LabelUtil::getTranslationParamsForAllModules()),
+                        Zurmo::t('MarketingListsModule', 'From ReportsModuleSingularLabel',
+                                                                        LabelUtil::getTranslationParamsForAllModules()),
                     );
             return $data;
         }

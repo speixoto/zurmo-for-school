@@ -34,12 +34,23 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class AutoresponderCreateLinkActionElement extends CreateLinkActionElement
+    class EnableTrackingCheckBoxElement extends CheckBoxElement
     {
-        public function __construct($controllerId, $moduleId, $modelId, $params = array())
+        protected function renderLabel()
         {
-            $moduleId = 'autoresponders';
-            parent::__construct($controllerId, $moduleId, $modelId, $params);
+            if ($this->form === null)
+            {
+                return $this->getFormattedAttributeLabel();
+            }
+            $title                  = Zurmo::t('ZurmoModule', 'Enabling tracking would record when recipients open' .
+                                                                    ' email or click any links in outgoing message.');
+            $content                = Zurmo::t('ZurmoModule', 'Enable Tracking');
+            $content                .= ZurmoHtml::tag('span', array('id' => 'enable-tracking-tooltip',
+                                                        'class' => 'tooltip',
+                                                        'title' => $title), '?');
+            $enableTrackingTip     = new ZurmoTip();
+            $enableTrackingTip->addQTip("#enable-tracking-tooltip");
+            return $content;
         }
     }
 ?>

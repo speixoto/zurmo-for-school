@@ -84,5 +84,15 @@
         {
             return self::RIGHT_ACCESS_MAPS_ADMINISTRATION;
         }
+
+        protected static function getSingularModuleLabel($language)
+        {
+            return Zurmo::t('MapsModule', 'Map', array(), null, $language);
+        }
+
+        protected static function getPluralModuleLabel($language)
+        {
+            return Zurmo::t('MapsModule', 'Maps', array(), null, $language);
+        }
     }
 ?>

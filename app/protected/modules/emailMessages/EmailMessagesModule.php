@@ -169,5 +169,15 @@
             assert('$lastImapDropboxCheckTime != ""');
             ZurmoConfigurationUtil::setByModuleName('EmailMessagesModule', 'lastImapDropboxCheckTime', $lastImapDropboxCheckTime);
         }
+
+        protected static function getSingularModuleLabel($language)
+        {
+            return Zurmo::t('EmailMessagesModule', 'Email Message', array(), null, $language);
+        }
+
+        protected static function getPluralModuleLabel($language)
+        {
+            return Zurmo::t('EmailMessagesModule', 'Email Messages', array(), null, $language);
+        }
     }
 ?>

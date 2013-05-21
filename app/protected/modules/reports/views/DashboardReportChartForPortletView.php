@@ -170,7 +170,7 @@
                 $script = "$(document).ready(function () {
                                 $('#" . $this->getRefreshLinkContainerId() . "').find('.refreshPortletLink').click();
                        });";
-                Yii::app()->clientScript->registerScript('loadReportResults'. $this->uniqueLayoutId, $script);
+                Yii::app()->clientScript->registerScript('loadReportResults-'. $this->uniqueLayoutId, $script);
                 // End Not Coding Standard
             }
         }

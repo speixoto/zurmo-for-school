@@ -34,12 +34,25 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class AutoresponderCreateLinkActionElement extends CreateLinkActionElement
+    /**
+     * Filter used by controller to ascertain if the user can access marketingLists
+     */
+    class UserCanAccessMarketingListControllerFilter extends CFilter
     {
-        public function __construct($controllerId, $moduleId, $modelId, $params = array())
+        public $controller;
+
+        protected function preFilter($filterChain)
         {
-            $moduleId = 'autoresponders';
-            parent::__construct($controllerId, $moduleId, $modelId, $params);
+            if (!RightsUtil::canUserAccessModule('MarketingListsModule', Yii::app()->user->userModel))
+            {
+                $messageView        = new UserIsMissingMarketingListAccessSplashView();
+                $pageViewClassName  = $this->controller->getModule()->getPluralCamelCasedName() . 'PageView';
+                $view               = new $pageViewClassName(ZurmoDefaultAdminViewUtil::
+                                      makeStandardViewForCurrentUser($this->controller, $messageView));
+                echo $view->render();
+                return false;
+            }
+            return true;
         }
     }
 ?>
