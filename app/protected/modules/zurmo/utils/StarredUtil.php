@@ -39,46 +39,154 @@
      */
     class StarredUtil
     {
-
         public static function modelHasStarredInterface($modelClassName)
         {
             $refelectionClass = new ReflectionClass($modelClassName);
             return in_array('StarredInterface', $refelectionClass->getInterfaceNames());
         }
 
+        public static function createStarredTables()
+        {
+            $modelClassNames = static::getStarredModels('StarredInterface');
+            foreach ($modelClassNames as $modelClassName)
+            {
+                $modelStarredTableName = static::getStarredTableName($modelClassName);
+                static::createTable($modelStarredTableName);
+            }
+        }
+
+        protected static function getStarredModels($interfaceClassName)
+        {
+            assert('is_string($interfaceClassName)');
+            $interfaceModelClassNames = array();
+            $modules = Module::getModuleObjects();
+            foreach ($modules as $module)
+            {
+                $modelClassNames = $module::getModelClassNames();
+                foreach ($modelClassNames as $modelClassName)
+                {
+                    $classToEvaluate     = new ReflectionClass($modelClassName);
+                    if ($classToEvaluate->implementsInterface($interfaceClassName) &&
+                    !$classToEvaluate->isAbstract())
+                    {
+                        $interfaceModelClassNames[] = $modelClassName;
+                    }
+                }
+            }
+            return $interfaceModelClassNames;
+        }
+
+        protected static function createTable($modelStarredTableName)
+        {
+            assert('is_string($modelStarredTableName) && $modelStarredTableName  != ""');
+            R::exec("create table if not exists {$modelStarredTableName} (
+                        id int(11)         unsigned NOT NULL PRIMARY KEY AUTO_INCREMENT ,
+                        userId int(11)     unsigned NOT NULL,
+                        modelId int(11)    unsigned NOT NULL
+                     )");
+        }
+
+        protected static function getMainTableName($modelClassName)
+        {
+            assert('is_string($modelClassName) && $modelClassName != ""');
+            return RedBeanModel::getTableName($modelClassName);
+        }
+
+        public static function getStarredTableName($modelClassName)
+        {
+            assert('is_string($modelClassName) && $modelClassName != ""');
+            return self::getMainTableName($modelClassName) . '_starred';
+        }
+
         public static function markModelAsStarred($model)
         {
-            if(!static::modelHasStarredInterface(get_class($model)))
+            static::markModelAsStarredForUser(get_class($model),
+                                              Yii::app()->user->userModel->id,
+                                              $model->id);
+        }
+
+        protected static function markModelAsStarredForUser($modelClassName, $userId, $modelId)
+        {
+            if(!static::modelHasStarredInterface($modelClassName))
             {
                 throw new NotSupportedException();
             }
-            $user = Yii::app()->user->userModel;
-            $star = new Star($model);
-            $star->forUser = $user;
-            $star->save();
+            if(static::isModelStarredForUser($modelClassName, $userId, $modelId))
+            {
+                return;
+            }
+            $tableName = static::getStarredTableName($modelClassName);
+            $sql       = "INSERT INTO {$tableName} VALUES (null, :userId, :modelId);";
+            R::exec($sql, array(
+                ':userId'  => $userId,
+                ':modelId' => $modelId,
+            ));
         }
 
-        public static function isStarred($model)
+        public static function unmarkModelAsStarred($model)
+        {
+            static::unmarkModelAsStarredForUser(get_class($model),
+                                              Yii::app()->user->userModel->id,
+                                              $model->id);
+        }
+
+        protected static function unmarkModelAsStarredForUser($modelClassName, $userId, $modelId)
+        {
+            if(!static::modelHasStarredInterface($modelClassName))
+            {
+                throw new NotSupportedException();
+            }
+            if(!static::isModelStarredForUser($modelClassName, $userId, $modelId))
+            {
+                return;
+            }
+            $tableName = static::getStarredTableName($modelClassName);
+            $sql       = "DELETE FROM {$tableName} WHERE userId = :userId AND modelId = :modelId;";
+            R::exec($sql, array(
+                ':userId'  => $userId,
+                ':modelId' => $modelId,
+            ));
+        }
+
+        public static function isModelStarred($model)
+        {
+            return static::isModelStarredForUser(get_class($model),
+                                                 Yii::app()->user->userModel->id,
+                                                 $model->id);
+        }
+
+        protected static function isModelStarredForUser($modelClassName, $userId, $modelId)
+        {
+            if(!static::modelHasStarredInterface($modelClassName))
+            {
+                throw new NotSupportedException();
+            }
+            $tableName = static::getStarredTableName($modelClassName);
+            $sql       = "SELECT id FROM {$tableName} WHERE userId = :userId AND modelId = :modelId;";
+            $rows      = R::getAll($sql,
+                                   $values=array(
+                                    ':userId'    => $userId,
+                                    ':modelId'   => $modelId,
+                                   ));
+            if (count($rows) == 0)
+            {
+                return false;
+            }
+            return true;
+        }
+
+        public static function unmarkModelAsStarredForAllUsers($model)
         {
             $modelClassName = get_class($model);
             if(!static::modelHasStarredInterface($modelClassName))
             {
                 throw new NotSupportedException();
             }
-            $user = Yii::app()->user->userModel;
-            $tableName = strtolower($modelClassName . '_star');
-            $sql = "starredmodel_" . strtolower($modelClassName) . "_id = :modelId AND foruser__user_id = :userId";
-            $bean = R::findOne($tableName,
-                               $sql,
-                               $values=array(
-                                   ':modelId' => $model->id,
-                                   ':userId'  => $user->id
-                               ));
-            if ($bean === false)
-            {
-                return false;
-            }
-            return true;
+            $tableName = static::getStarredTableName($modelClassName);
+            $sql       = "DELETE FROM {$tableName} WHERE modelId = :modelId;";
+            R::exec($sql, array(
+                ':modelId' => $model->id,
+            ));
         }
     }
 ?>

@@ -51,32 +51,27 @@
             {
                 $account->delete();
             }
-
-            $stars = Star::getAll();
-            foreach ($stars as $star)
-            {
-                $star->delete();
-            }
             parent::teardown();
         }
 
-        public function testMarkAsStarred()
+        public function testGetStarredTableName()
         {
-            $super = User::getByUsername('super');
-            Yii::app()->user->userModel = $super;
-
-            $account              = new Account();
-            $account->owner       = $super;
-            $account->name        = 'Test Account';
-            $account->officePhone = '1234567890';
-            $this->assertTrue($account->save());
-            StarredUtil::markModelAsStarred($account);
-            $stars = Star::getAll();
-            $this->assertEquals($account,   $stars[0]->starredModel);
-            $this->assertEquals($super,     $stars[0]->forUser);
+            $starredTableName = StarredUtil::getStarredTableName('Account');
+            $this->assertEquals('account_starred', $starredTableName);
         }
 
-        public function testIsStarred()
+        public function testCreateStarredTables()
+        {
+            StarredUtil::createStarredTables();
+            $sql = "SHOW TABLES LIKE '%_starred'";
+            $allStarredTableRows = R::getAll($sql);
+            $this->assertCount(1, $allStarredTableRows);
+        }
+
+        /**
+         * @depends testCreateStarredTables
+         */
+        public function testMarkModelAsStarred()
         {
             $super = User::getByUsername('super');
             Yii::app()->user->userModel = $super;
@@ -86,10 +81,96 @@
             $account->name        = 'Test Account';
             $account->officePhone = '1234567890';
             $this->assertTrue($account->save());
-            $this->assertFalse(StarredUtil::isStarred($account));
+            StarredUtil::markModelAsStarred($account);
+            $tableName            = StarredUtil::getStarredTableName('Account');
+            $sql                  = "SELECT id FROM {$tableName} WHERE userId = :userId AND modelId = :modelId;";
+            $rows                 = R::getAll($sql,
+                                              $values=array(
+                                                ':userId'    => $super->id,
+                                                ':modelId'   => $account->id,
+                                              ));
+            $this->assertCount(1, $rows);
+        }
+
+        /**
+         * @depends testCreateStarredTables
+         */
+        public function testUnmarkModelAsStarred()
+        {
+            $super = User::getByUsername('super');
+            Yii::app()->user->userModel = $super;
+
+            $account              = new Account();
+            $account->owner       = $super;
+            $account->name        = 'Test Account';
+            $account->officePhone = '1234567890';
+            $this->assertTrue($account->save());
+            StarredUtil::markModelAsStarred($account);
+            StarredUtil::unmarkModelAsStarred($account);
+            $tableName            = StarredUtil::getStarredTableName('Account');
+            $sql                  = "SELECT id FROM {$tableName} WHERE userId = :userId AND modelId = :modelId;";
+            $rows                 = R::getAll($sql,
+                                              $values=array(
+                                                ':userId'    => $super->id,
+                                                ':modelId'   => $account->id,
+                                              ));
+            $this->assertCount(0, $rows);
+        }
+
+        /**
+         * @depends testCreateStarredTables
+         */
+        public function testUnmarkModelAsStarredForAllUsers()
+        {
+            $super = User::getByUsername('super');
+            Yii::app()->user->userModel = $super;
+
+            $steven = UserTestHelper::createBasicUser('Steven');
+
+            $account              = new Account();
+            $account->owner       = $super;
+            $account->name        = 'Test Account';
+            $account->officePhone = '1234567890';
+            $this->assertTrue($account->save());
+            StarredUtil::markModelAsStarred($account);
+
+            Yii::app()->user->userModel = $steven;
+            StarredUtil::markModelAsStarred($account);
+
+            $tableName            = StarredUtil::getStarredTableName('Account');
+            $sql                  = "SELECT id FROM {$tableName} WHERE modelId = :modelId;";
+            $rows                 = R::getAll($sql,
+                                              $values=array(
+                                                ':modelId'   => $account->id,
+                                              ));
+            $this->assertCount(2, $rows);
+
+            StarredUtil::unmarkModelAsStarredForAllUsers($account);
+            $sql                  = "SELECT id FROM {$tableName} WHERE modelId = :modelId;";
+            $rows                 = R::getAll($sql,
+                                              $values=array(
+                                                ':modelId'   => $account->id,
+                                              ));
+            $this->assertCount(0, $rows);
+        }
+
+        /**
+         * @depends testCreateStarredTables
+         */
+        public function testIsModelStarred()
+        {
+            $super = User::getByUsername('super');
+            Yii::app()->user->userModel = $super;
+
+            $account              = new Account();
+            $account->owner       = $super;
+            $account->name        = 'Test Account';
+            $account->officePhone = '1234567890';
+            $this->assertTrue($account->save());
+            $this->assertFalse(StarredUtil::isModelStarred($account));
 
             StarredUtil::markModelAsStarred($account);
-            $this->assertTrue(StarredUtil::isStarred($account));
+            $this->assertTrue(StarredUtil::isModelStarred($account));
         }
     }
 ?>
