@@ -37,7 +37,7 @@
     /**
      * Extended class to support saving comments against a related model
      */
-    class CommentZurmoControllerUtil extends ZurmoControllerUtil
+    class CommentZurmoControllerUtil extends FileZurmoControllerUtil
     {
         protected $relatedModel;
 
@@ -60,7 +60,6 @@
         {
             assert('$model instanceof Item');
             parent::afterSetAttributesDuringSave($model, $explicitReadWriteModelPermissions);
-            FileModelUtil::resolveModelsHasManyFilesFromPost($model, 'files', 'filesIds');
             if ($this->relatedModel->getRelationType($this->relationName) == RedBeanModel::HAS_MANY)
             {
                 if (!$this->relatedModel->{$this->relationName}->contains($model))

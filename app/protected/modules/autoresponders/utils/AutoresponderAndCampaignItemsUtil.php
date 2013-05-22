@@ -66,7 +66,7 @@
             {
                 // TODO: @Shoaibi/@Jason: Medium: Do something about it.
             }
-            static::markItemAsProcessed($item, $itemClass);
+            static::markItemAsProcessed($item);
         }
 
         protected static function resolveContent(& $textContent, & $htmlContent, Contact $contact)
@@ -120,6 +120,7 @@
             $emailMessage->content          = $emailContent;
             $emailMessage->sender           = static::resolveSender($marketingList);
             static::resolveRecipient($emailMessage, $contact);
+            static::resolveAttachments($emailMessage, $itemOwnerModel);
             if ($emailMessage->recipients->count() == 0)
             {
                 throw new MissingRecipientsForEmailMessageException();
@@ -131,7 +132,7 @@
             return $emailMessage;
         }
 
-        protected static function resolveSender($marketingList)
+        protected static function resolveSender(MarketingList $marketingList)
         {
             $sender                         = new EmailMessageSender();
             if (!empty($marketingList->fromName) && !empty($marketingList->fromAddress))
@@ -161,7 +162,18 @@
             }
         }
 
-        protected static function markItemAsProcessed($item, $itemClass)
+        protected static function resolveAttachments(EmailMessage $emailMessage, $itemOwnerModel)
+        {
+            if (!empty($itemOwnerModel->files))
+            {
+                foreach ($itemOwnerModel->files as $file)
+                {
+                    $emailMessage->files->add($file);
+                }
+            }
+        }
+
+        protected static function markItemAsProcessed($item)
         {
             $item->processed   = 1;
             return $item->unrestrictedSave();

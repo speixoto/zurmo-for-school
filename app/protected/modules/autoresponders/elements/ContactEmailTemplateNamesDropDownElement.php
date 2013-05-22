@@ -34,13 +34,15 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class ContactEmailTemplateNamesDropDownElement extends StaticDropDownFormElement
+    abstract class ContactEmailTemplateNamesDropDownElement extends StaticDropDownFormElement
     {
         const DISABLE_DROPDOWN_WHEN_AJAX_IN_PROGRESS    = true;
 
         const DISABLE_TEXTBOX_WHEN_AJAX_IN_PROGRESS    = true;
 
         const NOTIFICATION_BAR_ID                      = 'FlashMessageBar';
+
+        abstract protected function getModuleId();
 
         protected function renderControlNonEditable()
         {
@@ -75,10 +77,43 @@
             {
                 // TODO: @Shoaibi/@Amit: Critical: Loading spinner
                 Yii::app()->clientScript->registerScript($scriptName, '
+
+                        function updateContentAreaWithDataFromAjax(textContentElement, htmlContentElement,
+                                                                                                redActorElement, data)
+                        {
+                            $(textContentElement).html(data.textContent);
+                            $(htmlContentElement).html(data.htmlContent);
+                            $(redActorElement).html(data.htmlContent);
+                        }
+
+                        function updateAddFilesWithDataFromAjax(filesIds)
+                        {
+                            // check if files is array and empty, then skip.
+                            if (filesIds != "")
+                            {
+                                console.log(filesIds);
+                                // TODO: @Shoaibi/@Jason: Critical:
+                                /*
+                                Could use: https://github.com/blueimp/jQuery-File-Upload/wiki/API#programmatic-file-upload
+                                If used with File then requirements of browsers are too high:
+                                 https://developer.mozilla.org/en-US/docs/Web/API/File?redirectlocale=en-US&redirectslug=DOM%2FFile#Browser_compatibility
+                                If used with Blob then where do we have name?
+                                We would also need a separate action to fetch file details against each file id, not json as that truncate non-utf8 content, like images.
+
+                                Workaround #1:
+                                a- get list of ids of current attachments using ajax, we have this done.
+                                b- make an ajax to action that duplicates those and returns new ids, names, sizes
+                                c- use data from [b] and build contents for file <table>, should be better to use a FileUpload function to do this like:
+                                $("#IdOfTemplate").tmpl(JSArrayContainingAllPlaceHolderValues).appendTo("#IdOfTargetContainerWhereTemplatedContentShouldGo");
+                                d- append those contents to file <table>
+                                */
+                            }
+                        }
+
                         $("#' . $dropDownId . '").unbind("change.action").bind("change.action", function(event, ui)
                         {
-                            selectedOption      = $(this).find(":selected");
-                            selectedOptionValue    = selectedOption.val();
+                            selectedOption          = $(this).find(":selected");
+                            selectedOptionValue     = selectedOption.val();
                             if (selectedOptionValue)
                             {
                                 var dropDown            = $(this);
@@ -97,7 +132,8 @@
                                         dataType:   "json",
                                         data:       {
                                                         id: selectedOptionValue,
-                                                         renderJson: true
+                                                        renderJson: true,
+                                                        includeFilesInJson: true
                                                     },
                                         beforeSend: function(request, settings)
                                                     {
@@ -115,14 +151,18 @@
                                                     },
                                         success:    function(data, status, request)
                                                     {
-                                                        $(textContentElement).html(data.textContent);
-                                                        $(htmlContentElement).html(data.htmlContent);
-                                                        $(redActorElement).html(data.htmlContent);
+                                                        updateContentAreaWithDataFromAjax(textContentElement,
+                                                                                            htmlContentElement,
+                                                                                            redActorElement,
+                                                                                            data);
+                                                        // TODO: @Shoaibi/@Jason: Critical: Should this append? or should we use beforeSend to delete?, right now its in append mode.
+                                                        // TODO: @Shoaibi: Critical: This should upload files(async trigger of js events) and update areas
+                                                        updateAddFilesWithDataFromAjax(data.filesIds);
                                                     },
                                         error:      function(request, status, error)
                                                     {
                                                         var data = {' . // Not Coding Standard
-                                                                    '   "message" : "' . Zurmo::t('AutorespondersModule',
+                                                                    '   "message" : "' . Zurmo::t('Core',
                                                                             'There was an error processing your request') .
                                                                         '",
                                                                         "type"    : "error"
@@ -200,7 +240,8 @@
 
         protected function getEditableHtmlOptions()
         {
-            $prompt             = array('prompt' => Zurmo::t('AutorespondersModule', 'Select a template'));
+            $moduleName         = $this->getModuleId() . 'sModule';
+            $prompt             = array('prompt' => Zurmo::t($moduleName, 'Select a template'));
             $parentHtmlOptions  = parent::getEditableHtmlOptions();
             $htmlOptions        = CMap::mergeArray($parentHtmlOptions, $prompt);
             return $htmlOptions;
@@ -225,11 +266,6 @@
             $htmlContentId .= '_';
             $htmlContentId .= EmailTemplateHtmlAndTextContentElement::HTML_CONTENT_INPUT_NAME;
             return $htmlContentId;
-        }
-
-        protected function getModuleId()
-        {
-            return 'Autoresponder';
         }
     }
 ?>

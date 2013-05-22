@@ -361,6 +361,22 @@
             $emailTemplateDetailsResolvedArray = CJSON::decode($content);
             $this->assertNotEmpty($emailTemplateDetailsResolvedArray);
             $this->assertEquals($emailTemplateDetailsArray, $emailTemplateDetailsResolvedArray);
+
+            $this->setGetArray(array('id' => $emailTemplateId, 'renderJson' => true, 'includeFilesInJson' => true));
+            // @ to avoid headers already sent error.
+            $content = @$this->runControllerWithExitExceptionAndGetContent('emailTemplates/default/details');
+            $emailTemplateDetailsResolvedArray = CJSON::decode($content);
+            $emailTemplateDetailsResolvedArrayWithoutFiles = $emailTemplateDetailsResolvedArray;
+            unset($emailTemplateDetailsResolvedArrayWithoutFiles['filesIds']);
+            $this->assertNotEmpty($emailTemplateDetailsResolvedArray);
+            $this->assertNotEquals($emailTemplateDetailsArray, $emailTemplateDetailsResolvedArray);
+            $this->assertEquals($emailTemplateDetailsArray, $emailTemplateDetailsResolvedArrayWithoutFiles);
+            $this->assertNotEmpty($emailTemplateDetailsResolvedArray['filesIds']);
+            $this->assertEquals($emailTemplate->files->count(), count($emailTemplateDetailsResolvedArray['filesIds']));
+            foreach ($emailTemplate->files as $index => $file)
+            {
+                $this->assertEquals($file->id, $emailTemplateDetailsResolvedArray['filesIds'][$index]);
+            }
         }
 
         /**

@@ -159,6 +159,10 @@
                                                 'name="Autoresponder[textContent]" rows="6" cols="50"') !== false);
             $this->assertTrue(strpos($content, "<textarea id='Autoresponder_htmlContent' " .
                                                 "name='Autoresponder[htmlContent]'") !== false);
+            $this->assertTrue(strpos($content, '<label>Attachments</label>') !== false);
+            $this->assertTrue(strpos($content, '<strong class="add-label">Add Files</strong>') !== false);
+            $this->assertTrue(strpos($content, '<input id="Autoresponder_files" type="file" ' .
+                                                'name="Autoresponder_files"') !== false);
             $this->assertTrue(strpos($content, '<span class="z-label">Cancel</span>') !== false);
             $this->assertTrue(strpos($content, '<span class="z-label">Save</span>') !== false);
 
@@ -277,6 +281,7 @@
                                                 '<input id="Autoresponder_enableTracking" ' .
                                                 'name="Autoresponder[enableTracking]" disabled="disabled" value="1" ' .
                                                 'type="checkbox"') !== false);
+            $this->assertTrue(strpos($content, '<th>Attachments</th>') !== false);
             $this->assertTrue(strpos($content, '<a class="active-tab" href="#tab1">Text Content</a>') !== false);
             $this->assertTrue(strpos($content, '<a href="#tab2">Html Content</a>') !== false);
             $this->assertTrue(strpos($content, 'Text Content 04') !== false);
@@ -372,6 +377,10 @@
                                                 'name="Autoresponder[textContent]" rows="6" cols="50"') !== false);
             $this->assertTrue(strpos($content, "<textarea id='Autoresponder_htmlContent' " .
                                                 "name='Autoresponder[htmlContent]'") !== false);
+            $this->assertTrue(strpos($content, '<label>Attachments</label>') !== false);
+            $this->assertTrue(strpos($content, '<strong class="add-label">Add Files</strong>') !== false);
+            $this->assertTrue(strpos($content, '<input id="Autoresponder_files" type="file" ' .
+                                                'name="Autoresponder_files"') !== false);
             $this->assertTrue(strpos($content, '<span class="z-label">Cancel</span>') !== false);
             $this->assertTrue(strpos($content, '<span class="z-label">Save</span>') !== false);
             $this->assertTrue(strpos($content, '<span class="z-label">Delete</span>') !== false);
@@ -397,6 +406,61 @@
             $this->assertEquals('Text Content 040', $autoresponders[0]->textContent);
             $this->assertEquals('Html Content 040', $autoresponders[0]->htmlContent);
             $this->assertEquals($redirectUrl, $resolvedRedirectUrl);
+            $autoresponders = Autoresponder::getAll();
+            $this->assertEquals(3, count($autoresponders));
+
+            // Now test same with file attachment
+            $fileNames              = array('testImage.png', 'testZip.zip', 'testPDF.pdf');
+            $files                  = array();
+            $filesIds               = array();
+            foreach ($fileNames as $index => $fileName)
+            {
+                $files[$index]['name']      = $fileName;
+                $files[$index]['path']      = Yii::getPathOfAlias('application.modules.zurmo.tests.unit.files') .
+                                                                        DIRECTORY_SEPARATOR . $files[$index]['name'];
+                $files[$index]['type']      = ZurmoFileHelper::getMimeType($files[$index]['path']);
+                $files[$index]['size']      = filesize($files[$index]['path']);
+                $files[$index]['contents']  = file_get_contents($files[$index]['path']);
+                $fileContent                = new FileContent();
+                $fileContent->content       = $files[$index]['contents'];
+                $file                       = new FileModel();
+                $file->fileContent          = $fileContent;
+                $file->name                 = $files[$index]['name'];
+                $file->type                 = $files[$index]['type'];
+                $file->size                 = $files[$index]['size'];
+                $this->assertTrue($file->save());
+                $filesIds[]                 = $file->id;
+            }
+            $this->setPostArray(array('Autoresponder' => array(
+                                                            'operationType'             => 1,
+                                                            'secondsFromOperation'      => 60*60*24,
+                                                            'subject'                   => 'Subject 040',
+                                                            'enableTracking'            => 1,
+                                                            'contactEmailTemplateNames' => '',
+                                                            'textContent'               => 'Text Content 040',
+                                                            'htmlContent'               => 'Html Content 040'),
+                                    'filesIds'      => $filesIds,
+                                    ));
+            $resolvedRedirectUrl    = $this->runControllerWithRedirectExceptionAndGetUrl('autoresponders/default/edit');
+            $autoresponders  = Autoresponder::getByName('Subject 040');
+            $this->assertEquals(1, count($autoresponders));
+            $this->assertTrue  ($autoresponders[0]->id > 0);
+            $this->assertEquals(1, $autoresponders[0]->operationType);
+            $this->assertEquals(60*60*24, $autoresponders[0]->secondsFromOperation);
+            $this->assertEquals('Subject 040', $autoresponders[0]->subject);
+            $this->assertEquals(1, $autoresponders[0]->enableTracking);
+            $this->assertEquals('Text Content 040', $autoresponders[0]->textContent);
+            $this->assertEquals('Html Content 040', $autoresponders[0]->htmlContent);
+            $this->assertEquals($redirectUrl, $resolvedRedirectUrl);
+            $this->assertNotEmpty($autoresponders[0]->files);
+            $this->assertCount(count($files), $autoresponders[0]->files);
+            foreach ($files as $index => $file)
+            {
+                $this->assertEquals($files[$index]['name'], $autoresponders[0]->files[$index]->name);
+                $this->assertEquals($files[$index]['type'], $autoresponders[0]->files[$index]->type);
+                $this->assertEquals($files[$index]['size'], $autoresponders[0]->files[$index]->size);
+                $this->assertEquals($files[$index]['contents'], $autoresponders[0]->files[$index]->fileContent->content);
+            }
             $autoresponders = Autoresponder::getAll();
             $this->assertEquals(3, count($autoresponders));
         }

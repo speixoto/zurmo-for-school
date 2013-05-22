@@ -252,5 +252,81 @@
             $this->assertEquals(EmailMessageRecipient::TYPE_TO, $recipients[0]->type);
             $this->assertEquals($contact, $recipients[0]->personOrAccount);
         }
+
+        /**
+         * @depends testProcessDueAutoresponderItemWithValidMergeTags
+         */
+        public function testProcessDueAutoresponderItemWithAttachments()
+        {
+            $email                      = new Email();
+            $email->emailAddress        = 'demo@zurmo.com';
+            $contact                    = ContactTestHelper::createContactByNameForOwner('contact 06', $this->user);
+            $contact->primaryEmail      = $email;
+            $this->assertTrue($contact->save());
+            $marketingList              = MarketingListTestHelper::createMarketingListByName('marketingList 06',
+                                                                                                'description',
+                                                                                                'CustomFromName',
+                                                                                                'custom@from.com');
+            $autoresponder              = AutoresponderTestHelper::createAutoresponder('subject 06',
+                                                                                'Dr. [[FIRST^NAME]] [[LAST^NAME]]',
+                                                                                '<b>[[LAST^NAME]]</b>, [[FIRST^NAME]]',
+                                                                                1,
+                                                                                Autoresponder::OPERATION_SUBSCRIBE,
+                                                                                true,
+                                                                                $marketingList);
+            $fileNames              = array('testImage.png', 'testZip.zip', 'testPDF.pdf');
+            $files                  = array();
+            foreach ($fileNames as $index => $fileName)
+            {
+                $files[$index]['name']      = $fileName;
+                $files[$index]['path']      = Yii::getPathOfAlias('application.modules.zurmo.tests.unit.files') .
+                                                                        DIRECTORY_SEPARATOR . $files[$index]['name'];
+                $files[$index]['type']      = ZurmoFileHelper::getMimeType($files[$index]['path']);
+                $files[$index]['size']      = filesize($files[$index]['path']);
+                $files[$index]['contents']  = file_get_contents($files[$index]['path']);
+                $fileContent                = new FileContent();
+                $fileContent->content       = $files[$index]['contents'];
+                $file                       = new FileModel();
+                $file->fileContent          = $fileContent;
+                $file->name                 = $files[$index]['name'];
+                $file->type                 = $files[$index]['type'];
+                $file->size                 = $files[$index]['size'];
+                $this->assertTrue($file->save());
+                $autoresponder->files->add($file);
+            }
+            $this->assertTrue($autoresponder->save());
+            $processed                  = 0;
+            $processDateTime            = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
+            $autoresponderItem          = AutoresponderItemTestHelper::createAutoresponderItem($processed,
+                                                                                                    $processDateTime,
+                                                                                                    $autoresponder,
+                                                                                                    $contact);
+            AutoresponderItemsUtil::processDueItem($autoresponderItem);
+            $this->assertEquals(1, $autoresponderItem->processed);
+            $emailMessage               = $autoresponderItem->emailMessage;
+            $this->assertEquals($marketingList->owner, $emailMessage->owner);
+            $this->assertEquals($autoresponder->subject, $emailMessage->subject);
+            $this->assertNotEquals($autoresponder->textContent, $emailMessage->content->textContent);
+            $this->assertNotEquals($autoresponder->htmlContent, $emailMessage->content->htmlContent);
+            $this->assertEquals('Dr. contact 06 contact 06son', $emailMessage->content->textContent);
+            $this->assertTrue(strpos($emailMessage->content->htmlContent, '<b>contact 06son</b>, contact 06') === 0);
+            $this->assertEquals($marketingList->fromAddress, $emailMessage->sender->fromAddress);
+            $this->assertEquals($marketingList->fromName, $emailMessage->sender->fromName);
+            $this->assertEquals(1, $emailMessage->recipients->count());
+            $recipients                 = $emailMessage->recipients;
+            $this->assertEquals(strval($contact), $recipients[0]->toName);
+            $this->assertEquals($email->emailAddress, $recipients[0]->toAddress);
+            $this->assertEquals(EmailMessageRecipient::TYPE_TO, $recipients[0]->type);
+            $this->assertEquals($contact, $recipients[0]->personOrAccount);
+            $this->assertNotEmpty($emailMessage->files);
+            $this->assertCount(count($files), $emailMessage->files);
+            foreach ($files as $index => $file)
+            {
+                $this->assertEquals($files[$index]['name'], $emailMessage->files[$index]->name);
+                $this->assertEquals($files[$index]['type'], $emailMessage->files[$index]->type);
+                $this->assertEquals($files[$index]['size'], $emailMessage->files[$index]->size);
+                $this->assertEquals($files[$index]['contents'], $emailMessage->files[$index]->fileContent->content);
+            }
+        }
     }
 ?>

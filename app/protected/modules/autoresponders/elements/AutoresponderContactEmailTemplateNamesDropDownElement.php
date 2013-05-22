@@ -34,10 +34,11 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * Extended class to support attachments
-     */
-    class MissionZurmoControllerUtil extends FileZurmoControllerUtil
+    class AutoresponderContactEmailTemplateNamesDropDownElement extends  ContactEmailTemplateNamesDropDownElement
     {
+        protected function getModuleId()
+        {
+            return 'Autoresponder';
+        }
     }
 ?>

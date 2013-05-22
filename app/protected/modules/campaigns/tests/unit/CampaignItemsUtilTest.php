@@ -244,7 +244,6 @@
                                                                                 null,
                                                                                 $marketingList);
             $processed                  = 0;
-            $processDateTime            = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
             $campaignItem               = CampaignItemTestHelper::createCampaignItem($processed, $campaign, $contact);
             CampaignItemsUtil::processDueItem($campaignItem);
             $this->assertEquals(1, $campaignItem->processed);
@@ -268,9 +267,87 @@
         /**
          * @depends testProcessDueCampaignItemWithValidMergeTags
          */
+        public function testProcessDueCampaignItemWithAttachments()
+        {
+            $email                      = new Email();
+            $email->emailAddress        = 'demo@zurmo.com';
+            $contact                    = ContactTestHelper::createContactByNameForOwner('contact 06', $this->user);
+            $contact->primaryEmail      = $email;
+            $this->assertTrue($contact->save());
+            $marketingList              = MarketingListTestHelper::createMarketingListByName('marketingList 06',
+                                                                                                    'description',
+                                                                                                    'CustomFromName',
+                                                                                                    'custom@from.com');
+            $campaign                   = CampaignTestHelper::createCampaign('campaign 06',
+                                                                                'subject 06',
+                                                                                'Dr. [[FIRST^NAME]] [[LAST^NAME]]',
+                                                                                '<b>[[LAST^NAME]]</b>, [[FIRST^NAME]]',
+                                                                                null,
+                                                                                null,
+                                                                                null,
+                                                                                Campaign::TYPE_MARKETING_LIST,
+                                                                                null,
+                                                                                null,
+                                                                                null,
+                                                                                null,
+                                                                                $marketingList);
+            $fileNames              = array('testImage.png', 'testZip.zip', 'testPDF.pdf');
+            $files                  = array();
+            foreach ($fileNames as $index => $fileName)
+            {
+                $files[$index]['name']      = $fileName;
+                $files[$index]['path']      = Yii::getPathOfAlias('application.modules.zurmo.tests.unit.files') .
+                                                                        DIRECTORY_SEPARATOR . $files[$index]['name'];
+                $files[$index]['type']      = ZurmoFileHelper::getMimeType($files[$index]['path']);
+                $files[$index]['size']      = filesize($files[$index]['path']);
+                $files[$index]['contents']  = file_get_contents($files[$index]['path']);
+                $fileContent                = new FileContent();
+                $fileContent->content       = $files[$index]['contents'];
+                $file                       = new FileModel();
+                $file->fileContent          = $fileContent;
+                $file->name                 = $files[$index]['name'];
+                $file->type                 = $files[$index]['type'];
+                $file->size                 = $files[$index]['size'];
+                $this->assertTrue($file->save());
+                $campaign->files->add($file);
+            }
+            $this->assertTrue($campaign->save());
+            $processed                  = 0;
+            $campaignItem               = CampaignItemTestHelper::createCampaignItem($processed, $campaign, $contact);
+            CampaignItemsUtil::processDueItem($campaignItem);
+            $this->assertEquals(1, $campaignItem->processed);
+            $emailMessage               = $campaignItem->emailMessage;
+            $this->assertEquals($marketingList->owner, $emailMessage->owner);
+            $this->assertEquals($campaign->subject, $emailMessage->subject);
+            $this->assertNotEquals($campaign->textContent, $emailMessage->content->textContent);
+            $this->assertNotEquals($campaign->htmlContent, $emailMessage->content->htmlContent);
+            $this->assertEquals('Dr. contact 06 contact 06son', $emailMessage->content->textContent);
+            $this->assertTrue(strpos($emailMessage->content->htmlContent, '<b>contact 06son</b>, contact 06') === 0);
+            $this->assertEquals($marketingList->fromAddress, $emailMessage->sender->fromAddress);
+            $this->assertEquals($marketingList->fromName, $emailMessage->sender->fromName);
+            $this->assertEquals(1, $emailMessage->recipients->count());
+            $recipients                 = $emailMessage->recipients;
+            $this->assertEquals(strval($contact), $recipients[0]->toName);
+            $this->assertEquals($email->emailAddress, $recipients[0]->toAddress);
+            $this->assertEquals(EmailMessageRecipient::TYPE_TO, $recipients[0]->type);
+            $this->assertEquals($contact, $recipients[0]->personOrAccount);
+            $this->assertNotEmpty($emailMessage->files);
+            $this->assertCount(count($files), $emailMessage->files);
+            foreach ($files as $index => $file)
+            {
+                $this->assertEquals($files[$index]['name'], $emailMessage->files[$index]->name);
+                $this->assertEquals($files[$index]['type'], $emailMessage->files[$index]->type);
+                $this->assertEquals($files[$index]['size'], $emailMessage->files[$index]->size);
+                $this->assertEquals($files[$index]['contents'], $emailMessage->files[$index]->fileContent->content);
+            }
+        }
+
+        /**
+         * @depends testProcessDueCampaignItemWithAttachments
+         */
         public function testGenerateCampaignItemsForDueCampaigns()
         {
-            $marketingList      = MarketingListTestHelper::createMarketingListByName('marketingList 04');
+            $marketingList      = MarketingListTestHelper::createMarketingListByName('marketingList 07');
             $marketingListId    = $marketingList->id;
             $contact1           = ContactTestHelper::createContactByNameForOwner('campaignContact 01', $this->user);
             $contact2           = ContactTestHelper::createContactByNameForOwner('campaignContact 02', $this->user);
@@ -286,10 +363,10 @@
             $marketingList->forgetAll();
 
             $marketingList      = MarketingList::getById($marketingListId);
-            $campaign           = CampaignTestHelper::createCampaign('campaign 06',
-                                                                        'subject 06',
-                                                                        'text 06',
-                                                                        'html 06',
+            $campaign           = CampaignTestHelper::createCampaign('campaign 07',
+                                                                        'subject 07',
+                                                                        'text 07',
+                                                                        'html 07',
                                                                         null,
                                                                         null,
                                                                         null,
