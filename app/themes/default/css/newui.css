@@ -16312,7 +16312,16 @@ a.user-link {
 }
 /*email modal*/
 #NoUserEmailConfigurationYetView {
-  padding-bottom: 30px;
+  padding: 0 0 30px 0;
+}
+#NoUserEmailConfigurationYetView .large-icon {
+  margin-top: 0;
+}
+#NoUserEmailConfigurationYetView .large-icon:after {
+  font-size: 220px;
+}
+#NoUserEmailConfigurationYetView p {
+  margin-top: 15px;
 }
 /*User email configuration*/
 .outbound-settings {
@@ -17165,7 +17174,7 @@ a.user-link {
   padding-left: 15px;
 }
 .all-related-field .value-data {
-  width: 44.5%;
+  width: 42.5%;
 }
 .all-related-field > span {
   float: left;
