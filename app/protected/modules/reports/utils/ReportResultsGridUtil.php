@@ -51,9 +51,22 @@
             {
                 return null;
             }
-            $moduleClassName = $data->getModel($attribute)->getModuleClassName();
+            $moduleClassName = self::resolveModuleClassName($attribute, $data);
             return Yii::app()->createUrl('/' . $moduleClassName::getDirectoryName() . '/default/details',
                                          array('id' => $data->getModel($attribute)->id));
+        }
+
+        protected static function resolveModuleClassName($attribute, ReportResultsRowData $data)
+        {
+            if(get_class($data->getModel($attribute)) == 'Contact' &&
+                LeadsUtil::isStateALead($data->getModel($attribute)->state))
+            {
+                return 'LeadsModule';
+            }
+            else
+            {
+                return $data->getModel($attribute)->getModuleClassName();
+            }
         }
     }
 ?>
