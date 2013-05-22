@@ -100,14 +100,17 @@
             $lockLink = '';
             if($isViewLocked === true)
             {
-                $lockLink = "<span style='margin-right:30px'> <a href='" . $url . "&lockPortlets=0'>" . Zurmo::t('Core', 'Unlock') . "</a></span>";
+                $lockLink = "<a href='" . $url . "&lockPortlets=0'>" . Zurmo::t('Core', 'Unlock') . "</a>";
             }
             else
             {
-                $lockLink = "<span style='margin-right:30px'> <a href='" . $url . "&lockPortlets=1'>" . Zurmo::t('Core', 'Lock') . "</a></span>";
+                $lockLink = "<a href='" . $url . "&lockPortlets=1'>" . Zurmo::t('Core', 'Lock') . "</a>";
             }
 
-            return $lockLink . parent::renderActionElementBar($renderedInForm);
+            $content  = '<div class="view-toolbar-container clearfix"><div class="view-toolbar">';
+            $content .= $lockLink . parent::renderActionElementBar($renderedInForm);
+            $content .= '</div></div>';
+            return $content;
         }
 
         protected static function resolveAjaxOptionsForAddPortlet()
