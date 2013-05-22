@@ -77,7 +77,6 @@
             {
                 // TODO: @Shoaibi/@Amit: Critical: Loading spinner
                 Yii::app()->clientScript->registerScript($scriptName, '
-
                         function updateContentAreaWithDataFromAjax(textContentElement, htmlContentElement,
                                                                                                 redActorElement, data)
                         {
@@ -86,12 +85,16 @@
                             $(redActorElement).html(data.htmlContent);
                         }
 
-                        function updateAddFilesWithDataFromAjax(filesIds)
+                        function deleteExistingAttachments()
                         {
-                            // check if files is array and empty, then skip.
+                            $("table.files tr.template-download td.name span.upload-actions.delete button.icon-delete")
+                                .click();
+                        }
+
+                        function updateAddFilesWithDataFromAjax(filesIds, notificationBarId)
+                        {
                             if (filesIds != "")
                             {
-                                console.log(filesIds);
                                 // TODO: @Shoaibi/@Jason: Critical:
                                 /*
                                 Could use: https://github.com/blueimp/jQuery-File-Upload/wiki/API#programmatic-file-upload
@@ -104,9 +107,41 @@
                                 a- get list of ids of current attachments using ajax, we have this done.
                                 b- make an ajax to action that duplicates those and returns new ids, names, sizes
                                 c- use data from [b] and build contents for file <table>, should be better to use a FileUpload function to do this like:
-                                $("#IdOfTemplate").tmpl(JSArrayContainingAllPlaceHolderValues).appendTo("#IdOfTargetContainerWhereTemplatedContentShouldGo");
+                                $("#IdOfTemplate").tmpl(JSObjectContainingAllPlaceHolderValues).appendTo("#IdOfTargetContainerWhereTemplatedContentShouldGo");
                                 d- append those contents to file <table>
+                                Implemented workaround below:
                                 */
+                                var url             = "' . $this->getCloneExitingFilesUrl() . '";
+                                var templateId      = "#' . FileUpload::DOWNLOAD_TEMPLATE_ID .'";
+                                var targetClass     = ".files";
+                                var filesIdsString  = filesIds.join();
+                                $.ajax(
+                                    {
+                                        url:        url,
+                                        dataType:   "json",
+                                        data:       {
+                                                        commaSeparatedExistingModelIds: filesIdsString
+                                                    },
+                                        beforeSend: function(request, settings)
+                                                    {
+                                                        // TODO: @Shoaibi: Critical: Do it here: if we want to delete existing attachments only if selected template has attachments.
+                                                    },
+                                        success:    function(data, status, request)
+                                                    {
+                                                        $(templateId).tmpl(data).appendTo(targetClass);
+                                                    },
+                                        error:      function(request, status, error)
+                                                    {
+                                                        var data = {' . // Not Coding Standard
+                                                                    '   "message" : "' . Zurmo::t('Core',
+                                                                            'There was an error processing your request') .
+                                                                    '",
+                                                                    "type"    : "error"
+                                                                    };
+                                                        updateFlashBar(data, notificationBarId);
+                                                    },
+                                    }
+                                );
                             }
                         }
 
@@ -155,9 +190,8 @@
                                                                                             htmlContentElement,
                                                                                             redActorElement,
                                                                                             data);
-                                                        // TODO: @Shoaibi/@Jason: Critical: Should this append? or should we use beforeSend to delete?, right now its in append mode.
-                                                        // TODO: @Shoaibi: Critical: This should upload files(async trigger of js events) and update areas
-                                                        updateAddFilesWithDataFromAjax(data.filesIds);
+                                                        // TODO: @Shoaibi/@Jason: Critical: Should this append? or should we use beforeSend to delete?, right now its in append mode. delete only if new one has attachments?
+                                                        updateAddFilesWithDataFromAjax(data.filesIds, notificationBarId);
                                                     },
                                         error:      function(request, status, error)
                                                     {
@@ -266,6 +300,11 @@
             $htmlContentId .= '_';
             $htmlContentId .= EmailTemplateHtmlAndTextContentElement::HTML_CONTENT_INPUT_NAME;
             return $htmlContentId;
+        }
+
+        protected function getCloneExitingFilesUrl()
+        {
+            return Yii::app()->createUrl('/zurmo/fileModel/cloneExistingFiles');
         }
     }
 ?>
