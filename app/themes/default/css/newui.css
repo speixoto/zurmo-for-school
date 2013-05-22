@@ -15522,49 +15522,78 @@ a.dashboard-link .z-label {
   line-height: 130%;
 }
 .single-coloumn-details-view.AppContent,
+#MissionDetailsView.AppContent,
 #ConversationDetailsView.AppContent,
 #ConversationDetailsAndRelationsView.AppContent {
   padding-right: 0;
 }
 .single-coloumn-details-view .GridView,
+#MissionDetailsView .GridView,
 #ConversationDetailsView .GridView,
 #ConversationDetailsAndRelationsView .GridView {
   display: none;
 }
 .single-coloumn-details-view .GridView:first-child,
+#MissionDetailsView .GridView:first-child,
 #ConversationDetailsView .GridView:first-child,
 #ConversationDetailsAndRelationsView .GridView:first-child {
   display: block;
   width: 100%;
 }
 .single-coloumn-details-view .panel,
+#MissionDetailsView .panel,
 #ConversationDetailsView .panel,
 #ConversationDetailsAndRelationsView .panel {
   width: 70%;
   float: left;
 }
 .single-coloumn-details-view .panel > table,
+#MissionDetailsView .panel > table,
 #ConversationDetailsView .panel > table,
 #ConversationDetailsAndRelationsView .panel > table {
   border-bottom: none;
 }
 .single-coloumn-details-view .details-table,
+#MissionDetailsView .details-table,
 #ConversationDetailsView .details-table,
 #ConversationDetailsAndRelationsView .details-table {
+  border: 1px solid #ccc !important;
+  -webkit-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12) !important;
+  -moz-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12) !important;
+  -o-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12) !important;
+  -ms-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12) !important;
+  box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12) !important;
+  background-color: #f5f5f5  !important;
+  background-repeat: no-repeat  !important;
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ffffff), color-stop(80%, #f5f5f5), to(#f5f5f5))  !important;
+  background-image: -webkit-linear-gradient(#ffffff, #f5f5f5 80%, #f5f5f5)  !important;
+  background-image: -moz-linear-gradient(top, #ffffff, #f5f5f5 80%, #f5f5f5)  !important;
+  background-image: -ms-linear-gradient(#ffffff, #f5f5f5 80%, #f5f5f5)  !important;
+  background-image: -o-linear-gradient(#ffffff, #f5f5f5 80%, #f5f5f5)  !important;
+  background-image: linear-gradient(#ffffff, #f5f5f5 80%, #f5f5f5)  !important;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#f5f5f5', GradientType=0) !important;
   zoom: 1;
 }
 .single-coloumn-details-view .details-table:before,
+#MissionDetailsView .details-table:before,
 #ConversationDetailsView .details-table:before,
 #ConversationDetailsAndRelationsView .details-table:before {
   content: "";
   display: table;
 }
 .single-coloumn-details-view .details-table:after,
+#MissionDetailsView .details-table:after,
 #ConversationDetailsView .details-table:after,
 #ConversationDetailsAndRelationsView .details-table:after {
   content: "";
   display: table;
   clear: both;
+}
+.single-coloumn-details-view .toolbar-mbmenu,
+#MissionDetailsView .toolbar-mbmenu,
+#ConversationDetailsView .toolbar-mbmenu,
+#ConversationDetailsAndRelationsView .toolbar-mbmenu {
+  top: 8px !important;
 }
 /*Sidebar*/
 .thread-details {
