@@ -93,10 +93,12 @@
          * If the workflow is an existing workflow, then if moduleClassName has changed, the 'max' plus 1 should be
          * used.  Otherwise if it is new and the moduleClassName has not changed, then leave it alone
          * @param SavedWorkflow $savedWorkflow
+         * @param bool $isBeingCopied
          * @throws NotSupportedException if the moduleClassName has not been defined yet
          */
-        public static function resolveOrder(SavedWorkflow $savedWorkflow)
+        public static function resolveOrder(SavedWorkflow $savedWorkflow, $isBeingCopied = false)
         {
+            assert('is_bool($isBeingCopied)');
             if ($savedWorkflow->moduleClassName == null)
             {
                 throw new NotSupportedException();
@@ -104,7 +106,8 @@
             $q   = DatabaseCompatibilityUtil::getQuote();
             $sql = "select max({$q}order{$q}) maxorder from " . SavedWorkflow::getTableName('SavedWorkflow');
             $sql .= " where moduleclassname = '" . $savedWorkflow->moduleClassName . "'";
-            if ($savedWorkflow->id < 0 || array_key_exists('moduleClassName', $savedWorkflow->originalAttributeValues))
+            if ($isBeingCopied || $savedWorkflow->id < 0 ||
+                array_key_exists('moduleClassName', $savedWorkflow->originalAttributeValues))
             {
                 $maxOrder             = R::getCell($sql);
                 $savedWorkflow->order = (int)$maxOrder +  1;
@@ -121,7 +124,7 @@
         public static function resolveBeforeSaveByModel(Item $model, User $triggeredByUser)
         {
             $savedWorkflows = SavedWorkflow::getActiveByModuleClassNameAndIsNewModel(
-                                             $model::getModuleClassName(), $model->isNewModel);
+                                             $model::getModuleClassName(), $model->getIsNewModel());
             foreach ($savedWorkflows as $savedWorkflow)
             {
                 $workflow = SavedWorkflowToWorkflowAdapter::makeWorkflowBySavedWorkflow($savedWorkflow);

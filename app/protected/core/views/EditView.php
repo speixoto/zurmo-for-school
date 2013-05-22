@@ -107,8 +107,8 @@
             }
             $formEnd  = $clipWidget->renderEndWidget();
             $content .= $formEnd;
-            $content .= '</div>';
             $content .= $this->renderModalContainer();
+            $content .= '</div>';
             if ($this->wrapContentInWrapperDiv)
             {
                 return ZurmoHtml::tag('div', array('class' => 'wrapper'), $content);
@@ -146,7 +146,7 @@
         {
             return ZurmoHtml::tag('div', array(
                         'id' => ModelElement::MODAL_CONTAINER_PREFIX . '-' . $this->getFormId()
-                   ));
+                   ),'');
         }
 
         protected function resolveActiveFormAjaxValidationOptions()

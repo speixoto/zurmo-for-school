@@ -50,14 +50,22 @@
 
         public function testMakeSavedSearchBySearchForm()
         {
-            $searchForm                   = new AAASavedDynamicSearchFormTestModel(new AAA());
-            $searchForm->savedSearchName  = 'myTest';
-            $searchForm->dynamicStructure = '1 or 6';
+            $searchForm                     = new AAASavedDynamicSearchFormTestModel(new AAA());
+            $listAttributesSelector         = new ListAttributesSelector('AListView', 'TestModule');
+            $searchForm->setListAttributesSelector($listAttributesSelector);
+            $searchForm->savedSearchName    = 'myTest';
+            $searchForm->dynamicStructure   = '1 or 6';
+            $searchForm->dynamicClauses     = array('a', 'b');
+            $searchForm->anyMixedAttributes = 'abcdef';
+            $searchForm->setAnyMixedAttributesScope('xyz');
+            $searchForm->getListAttributesSelector()->setSelected(array('aaaMember', 'aaaMember2'));
+            $dataCollection                 = new SavedSearchAttributesDataCollection($searchForm);
+            SavedSearchUtil::setDataByKeyAndDataCollection('abc', $dataCollection, array());
+            $stickyData                     = StickySearchUtil::getDataByKey('abc');
             $kanbanBoard                  = new KanbanBoard(new AAA(), 'industry');
             $kanbanBoard->setGroupByAttributeVisibleValues(array('c', 'd'));
             $kanbanBoard->setSelectedTheme('red');
-            $searchForm->setKanbanBoard($kanbanBoard);
-            $savedSearch = SavedSearchUtil::makeSavedSearchBySearchForm($searchForm, 'someView');
+            $savedSearch                    = SavedSearchUtil::makeSavedSearchBySearchForm($searchForm, 'someView', $stickyData);
             $this->assertTrue($savedSearch->id < 0);
             $unserializedData = unserialize($savedSearch->serializedData);
             $this->assertEquals('1 or 6',        $unserializedData['dynamicStructure']);
@@ -65,10 +73,14 @@
             $this->assertEquals('red',           $unserializedData['selectedTheme']);
             $saved = $savedSearch->save();
             $savedSearchId = $savedSearch->id;
+            $searchForm->savedSearchId      = $savedSearch->id;
             $this->assertTrue($saved);
             $this->assertEquals('myTest', $savedSearch->name);
 
-            $savedSearch = SavedSearchUtil::makeSavedSearchBySearchForm($searchForm, 'someView');
+            $dataCollection                 = new SavedSearchAttributesDataCollection($searchForm);
+            SavedSearchUtil::setDataByKeyAndDataCollection('abc', $dataCollection, array());
+            $stickyData                     = StickySearchUtil::getDataByKey('abc');
+            $savedSearch                    = SavedSearchUtil::makeSavedSearchBySearchForm($searchForm, 'someView');
 
             $searchForm                  = new AAASavedDynamicSearchFormTestModel(new AAA());
             $searchForm->savedSearchId   = $savedSearchId;
@@ -100,12 +112,12 @@
             $searchForm->setListAttributesSelector($listAttributesSelector);
             $searchForm->setKanbanBoard(new KanbanBoard(new AAA(), 'industry'));
             SavedSearchUtil::resolveSearchFormByGetData($getData, $searchForm);
-            $this->assertEquals('myTest',        $searchForm->savedSearchName);
-            $this->assertEquals(null,            $searchForm->anyMixedAttributes);
-            $this->assertEquals(null,            $searchForm->getAnyMixedAttributesScope());
-            $this->assertEquals('1 or 6',        $searchForm->dynamicStructure);
-            $this->assertEquals(array(),         $searchForm->dynamicClauses);
-            $this->assertEquals(array('name'),   $searchForm->getListAttributesSelector()->getSelected());
+            $this->assertEquals('myTest',                                   $searchForm->savedSearchName);
+            $this->assertEquals('abcdef',                                   $searchForm->anyMixedAttributes);
+            $this->assertEquals('xyz',                                      $searchForm->getAnyMixedAttributesScope());
+            $this->assertEquals('1 or 6',                                   $searchForm->dynamicStructure);
+            $this->assertEquals(array('a', 'b'),                            $searchForm->dynamicClauses);
+            $this->assertEquals(array('aaaMember', 'aaaMember2'),           $searchForm->getListAttributesSelector()->getSelected());
             $this->assertEquals(array('c', 'd'), $searchForm->getKanbanBoard()->getGroupByAttributeVisibleValues());
             $this->assertEquals('red',           $searchForm->getKanbanBoard()->getSelectedTheme());
         }
@@ -125,7 +137,7 @@
             $this->assertTrue($savedSearch->id > 0);
 
             $searchModel                     = new AAASavedDynamicSearchFormTestModel(new AAA(false));
-            $listAttributesSelector         = new ListAttributesSelector('AListView', 'TestModule');
+            $listAttributesSelector          = new ListAttributesSelector('AListView', 'TestModule');
             $searchModel->setListAttributesSelector($listAttributesSelector);
             $searchModel->dynamicStructure   = '1 and 5';
             $searchModel->dynamicClauses     = array('a', 'b');

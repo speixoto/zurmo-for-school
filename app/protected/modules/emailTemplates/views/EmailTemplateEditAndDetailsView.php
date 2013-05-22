@@ -52,33 +52,41 @@
                         array(
                             'rows' => array(
                                 array('cells' =>
-                                array(
                                     array(
-                                        'elements' => array(
-                                            array('attributeName' => 'modelClassName', 'type' => 'EmailTemplateModelClassName'),
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'modelClassName', 'type' => 'EmailTemplateModelClassName'),
+                                            ),
                                         ),
-                                    ),
-                                )
+                                    )
                                 ),
                                 array('cells' =>
-                                array(
                                     array(
-                                        'elements' => array(
-                                            array('attributeName' => 'name', 'type' => 'Text'),
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'name', 'type' => 'Text'),
+                                            ),
                                         ),
-                                    ),
-                                )
+                                    )
                                 ),
                                 array('cells' =>
-                                array(
                                     array(
-                                        'elements' => array(
-                                            array('attributeName' => 'subject', 'type' => 'Text'),
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'subject', 'type' => 'Text'),
+                                            ),
                                         ),
-                                    ),
-                                )
+                                    )
                                 ),
-
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'null', 'type' => 'Files'),
+                                            ),
+                                        ),
+                                    )
+                                ),
                             ),
                         ),
                     ),

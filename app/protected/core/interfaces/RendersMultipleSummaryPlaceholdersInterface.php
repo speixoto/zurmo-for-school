@@ -34,26 +34,12 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class MarketingListMemberUnsubscribeLinkActionElement extends MarketingListMemberLinkActionElement
+    /**
+     * A listview class should implement this interface if
+     * it needs to manually specify the path to summary clone div
+     */
+    interface RendersMultipleSummaryPlaceholdersInterface
     {
-        public static function shouldRenderByRowModel($model)
-        {
-            return ($model->unsubscribed == false);
-        }
-
-        public function getActionType()
-        {
-            return 'Edit';
-        }
-
-        protected function getDefaultLabel()
-        {
-            return Zurmo::t('MarketingListsModule', 'Unsubscribe');
-        }
-
-        protected function getActionId()
-        {
-            return 'toggleUnsubscribed';
-        }
+        public static function getSummaryCloneQueryPath();
     }
 ?>

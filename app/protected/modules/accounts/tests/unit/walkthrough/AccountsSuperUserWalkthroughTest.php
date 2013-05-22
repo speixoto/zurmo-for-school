@@ -253,7 +253,7 @@
 
             //actionModalList
             $this->setGetArray(array(
-                'modalTransferInformation' => array('sourceIdFieldId' => 'x', 'sourceNameFieldId' => 'y')
+                'modalTransferInformation' => array('sourceIdFieldId' => 'x', 'sourceNameFieldId' => 'y', 'modalId' => 'z')
             ));
             $this->runControllerWithNoExceptionsAndGetContent('accounts/default/modalList');
 
@@ -397,6 +397,7 @@
             $this->assertEquals($compareData, $data);
 
             //Sort order asc
+            StickySearchUtil::clearDataByKey('AccountsSearchView');
             $this->setGetArray(array('AccountsSearchForm' => array('anyMixedAttributes'                 => 'xyz',
                                                                    SearchForm::SELECTED_LIST_ATTRIBUTES => array('officePhone', 'name')),
                                      'Account_sort'       => 'officePhone'));
@@ -409,8 +410,7 @@
                                  'anyMixedAttributesScope'            => null,
                                  SearchForm::SELECTED_LIST_ATTRIBUTES => array('officePhone', 'name'),
                                  'sortAttribute'                       => 'officePhone',
-                                 'sortDescending'                      => '',
-                                 'savedSearchId'                       => ''
+                                 'sortDescending'                      => false
             );
             $this->assertEquals($compareData, $data);
 

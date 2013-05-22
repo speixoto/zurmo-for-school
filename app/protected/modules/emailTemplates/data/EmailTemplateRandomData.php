@@ -70,10 +70,11 @@
             'de',
         ),
         'htmlContent'           => array(
-            'This can be used to put styled content. Any number of HTML tags are allowed with support for merge tags.',
+            '<img src="http://zurmo.com/img/logo.png" alt="zurmo" />\'s source code is hosted on bitbucket while we use ' .
+                '<img src="http://www.selenic.com/hg-logo/droplets-50.png" alt="mercurial" /> for version control.',
         ),
         'textContent'           => array(
-            'This can be used to put plain text content. Any number of HTML tags are allowed with support for merge tags.',
+            'Zurmo\'s source code is hosted on bitbucket while we use mercurial for version control.',
         ),
     );
 ?>

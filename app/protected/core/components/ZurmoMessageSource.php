@@ -44,28 +44,66 @@
     {
         const CACHE_KEY_PREFIX = 'ZurmoMessageSource';
 
+        public static function clearCache($category, $languageCode)
+        {
+            assert('is_string($category)');
+            assert('is_string($languageCode)');
+            GeneralCache::forgetEntry(self::getMessageSourceCacheIdentifier($category, $languageCode));
+        }
+
         /**
-         * Override of the parent method using RedBean
+         * Override of the parent method because of problems with Yii's default cache
+         * @see CDbMessageSource::loadMessages()
          * @param string $category
+         * @param string $languageCode
+         * @return array $messages
+         */
+        protected function loadMessages($category, $languageCode)
+        {
+            assert('is_string($category)');
+            assert('is_string($languageCode)');
+            try
+            {
+                $messages = GeneralCache::getEntry(self::getMessageSourceCacheIdentifier($category, $languageCode));
+            }
+            catch (NotFoundException $e)
+            {
+                $messages = $this->loadMessagesFromDb($category, $languageCode);
+                GeneralCache::cacheEntry(self::getMessageSourceCacheIdentifier($category, $languageCode), $messages);
+            }
+            return $messages;
+        }
+
+        /**
+         * Override of the parent method using RedBean.
+         * @param $category
+         * @param $languageCode
+         * @return array
          */
         protected function loadMessagesFromDb($category, $languageCode)
         {
+            assert('is_string($category)');
+            assert('is_string($languageCode)');
             $sourceTableName   = RedBeanModel::getTableName('MessageSource');
             $joinTablesAdapter = new RedBeanModelJoinTablesQueryAdapter('MessageTranslation');
             $joinTablesAdapter->addFromTableAndGetAliasName($sourceTableName, "{$sourceTableName}_id");
-
             $where             =  " messagesource.`category` = '$category' AND"
                                 . " messagetranslation.`language` = '$languageCode' ";
 
-            $beans = MessageTranslation::getSubset($joinTablesAdapter, null, null, $where);
-
+            $beans    = MessageTranslation::getSubset($joinTablesAdapter, null, null, $where);
             $messages = array();
             foreach ($beans as $bean)
             {
                 $messages[$bean->messagesource->source] = $bean->translation;
             }
-
             return $messages;
+        }
+
+        protected static function getMessageSourceCacheIdentifier($category, $languageCode)
+        {
+            assert('is_string($category)');
+            assert('is_string($languageCode)');
+            return self::CACHE_KEY_PREFIX.'.messages.'.$category.'.'.$languageCode;
         }
     }
 ?>

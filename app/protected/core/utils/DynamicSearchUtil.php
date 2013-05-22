@@ -245,6 +245,7 @@
                                                                           $attributeIndexOrDerivedType);
             }
             $form                      = new NoRequiredsActiveForm();
+            $form->id                  = "search-form";
             $element['inputPrefix']    = $inputPrefix;
             $elementclassname          = $element['type'] . 'Element';
             $element                   = new $elementclassname($modelToUse, $element['attributeName'],

@@ -34,9 +34,8 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class MarketingListMembersListView extends SecuredListView
+    class MarketingListMembersListView extends SecuredListView implements RendersMultipleSummaryPlaceholdersInterface
     {
-        // TODO: @Shoaibi/@Amit: Low: There is an extra spacing in div of portlet, check whats that all about.
         /**
          * Form that has the information for how to display the marketing list member view.
          * @var object MarketingListMembersConfigurationForm
@@ -88,9 +87,9 @@
                 'global' => array(
                     'rowMenu' => array(
                         'elements' => array(
-                            array('type'                            => 'MarketingListMemberSubscribeLink'),
-                            array('type'                            => 'MarketingListMemberUnsubscribeLink'),
-                            array('type'                            => 'MarketingListMemberDeleteLink'),
+                            array('type'                            => 'MarketingListMemberSubscribeListRow'),
+                            array('type'                            => 'MarketingListMemberUnsubscribeListRow'),
+                            array('type'                            => 'MarketingListMemberDeleteListRow'),
                         ),
                     ),
                      'panels' => array(
@@ -111,6 +110,12 @@
                 ),
             );
             return $metadata;
+        }
+
+        public static function getSummaryCloneQueryPath()
+        {
+            // TODO: @Shoaibi/@Amit: Critical: Style and position this summary clone
+            return "function() { return $(this).parent().find('.list-view-items-summary-clone');}";
         }
 
         public function __construct(RedBeanModelsDataProvider $dataProvider,
@@ -158,16 +163,15 @@
 
         protected function renderContent()
         {
-            $this->registerScriptsForDynamicMemberCountUpdate();
-            return $this->renderConfigurationForm() . parent::renderContent();
+            $content = $this->renderConfigurationForm();
+            $content .= parent::renderContent();
+            return $content;
         }
 
-        protected static function getGridTemplate()
+        protected function renderScripts()
         {
-            $preloader = ZurmoHtml::tag('div', array('class' => 'list-preloader'),
-                                ZurmoHtml::tag('span', array('class' => 'z-spinner'), '')
-                            );
-            return "\n{items}\n{pager}" . $preloader;
+            parent::renderScripts();
+            $this->registerScriptsForDynamicMemberCountUpdate();
         }
 
         protected function getCGridViewLastColumn()
@@ -208,10 +212,10 @@
                     'id' => $formName,
                 )
             );
-            $content  = $formStart;
-            $content .= $this->renderConfigurationFormLayout($form);
-            $formEnd  = $clipWidget->renderEndWidget();
-            $content .= $formEnd;
+            $content    = $formStart;
+            $content   .= $this->renderSummaryCloneContent();
+            $content   .= $this->renderConfigurationFormLayout($form);
+            $content   .= $clipWidget->renderEndWidget();
             $this->registerConfigurationFormLayoutScripts($form);
             return $content;
         }
@@ -339,6 +343,11 @@
         {
             $model = ArrayUtil::getArrayValueWithExceptionIfNotFound($this->params, 'relationModel');
             return $model->id;
+        }
+
+        protected function renderSummaryCloneContent()
+        {
+            return ZurmoHtml::tag('div', array('class' => 'list-view-items-summary-clone'), '');
         }
     }
 ?>

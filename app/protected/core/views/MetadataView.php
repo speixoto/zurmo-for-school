@@ -228,7 +228,7 @@
                 }
                 foreach ($items as $item)
                 {
-                    if($element::useItemUrlAsElementValue())
+                    if ($element::useItemUrlAsElementValue())
                     {
                         $value      = $item['url'];
                     }
@@ -240,7 +240,6 @@
                     if (!$value)
                     {
                         $value      = $element->getActionNameForCurrentElement() . '_' . $item['label'];
-
                     }
                     $optGroup   = $element->getOptGroup();
                     if ($optGroup)

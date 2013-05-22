@@ -70,15 +70,14 @@
                                                                                         'description 01',
                                                                                         'fromName 01',
                                                                                         'fromAddress01@domain.com');
-            $autoresponder      = AutoresponderTestHelper::createAutoresponder('autoresponder 01',
-                                                                                'subject 01',
+            $autoresponder      = AutoresponderTestHelper::createAutoresponder('subject 01',
                                                                                 'textContent 01',
                                                                                 'htmlContent 01',
                                                                                 10,
                                                                                 Autoresponder::OPERATION_SUBSCRIBE,
-                                                                                Autoresponder::TRACKING_ENABLED,
+                                                                                1,
                                                                                 $marketingList);
-            $processed          = AutoresponderItem::NOT_PROCESSED;
+            $processed          = 0;
             $processDateTime    = DateTimeUtil::convertTimestampToDbFormatDateTime(time()-100);
             $autoresponderItem  = AutoresponderItemTestHelper::createAutoresponderItem($processed,
                                                                                         $processDateTime,
@@ -184,15 +183,14 @@
                                                                                         'description 02',
                                                                                         'fromName 02',
                                                                                         'fromAddress02@domain.com');
-            $autoresponder      = AutoresponderTestHelper::createAutoresponder('autoresponder 02',
-                                                                                'subject 02',
+            $autoresponder      = AutoresponderTestHelper::createAutoresponder('subject 02',
                                                                                 'textContent 02',
                                                                                 'htmlContent 02',
                                                                                 10,
                                                                                 Autoresponder::OPERATION_SUBSCRIBE,
-                                                                                Autoresponder::TRACKING_ENABLED,
+                                                                                1,
                                                                                 $marketingList);
-            $processed          = AutoresponderItem::NOT_PROCESSED;
+            $processed          = 0;
             $processDateTime    = DateTimeUtil::convertTimestampToDbFormatDateTime(time()-100);
             $autoresponderItem  = AutoresponderItemTestHelper::createAutoresponderItem($processed,
                                                                                         $processDateTime,
@@ -261,15 +259,14 @@
                                                                                     'description 03',
                                                                                     'fromName 03',
                                                                                     'fromAddress03@domain.com');
-            $autoresponder      = AutoresponderTestHelper::createAutoresponder('autoresponder 03',
-                                                                                'subject 03',
+            $autoresponder      = AutoresponderTestHelper::createAutoresponder('subject 03',
                                                                                 'textContent 03',
                                                                                 'htmlContent 03',
                                                                                 10,
                                                                                 Autoresponder::OPERATION_SUBSCRIBE,
-                                                                                Autoresponder::TRACKING_ENABLED,
+                                                                                1,
                                                                                 $marketingList);
-            $processed          = AutoresponderItem::NOT_PROCESSED;
+            $processed          = 0;
             $processDateTime    = DateTimeUtil::convertTimestampToDbFormatDateTime(time()-100);
             $autoresponderItem  = AutoresponderItemTestHelper::createAutoresponderItem($processed,
                                                                                         $processDateTime,
@@ -404,15 +401,14 @@
                                                                                         'description 04',
                                                                                         'fromName 04',
                                                                                         'fromAddress04@domain.com');
-            $autoresponder      = AutoresponderTestHelper::createAutoresponder('autoresponder 04',
-                                                                                'subject 04',
+            $autoresponder      = AutoresponderTestHelper::createAutoresponder('subject 04',
                                                                                 'textContent 04',
                                                                                 'htmlContent 04',
                                                                                 10,
                                                                                 Autoresponder::OPERATION_SUBSCRIBE,
-                                                                                Autoresponder::TRACKING_ENABLED,
+                                                                                1,
                                                                                 $marketingList);
-            $processed          = AutoresponderItem::NOT_PROCESSED;
+            $processed          = 0;
             $processDateTime    = DateTimeUtil::convertTimestampToDbFormatDateTime(time()-100);
             $autoresponderItem  = AutoresponderItemTestHelper::createAutoresponderItem($processed,
                                                                                 $processDateTime,
@@ -519,15 +515,14 @@
                                                                                         'description 05',
                                                                                         'fromName 05',
                                                                                         'fromAddress05@domain.com');
-            $autoresponder      = AutoresponderTestHelper::createAutoresponder('autoresponder 05',
-                                                                                'subject 05',
+            $autoresponder      = AutoresponderTestHelper::createAutoresponder('subject 05',
                                                                                 'textContent 05',
                                                                                 'htmlContent 05',
                                                                                 10,
                                                                                 Autoresponder::OPERATION_SUBSCRIBE,
-                                                                                Autoresponder::TRACKING_ENABLED,
+                                                                                1,
                                                                                 $marketingList);
-            $processed          = AutoresponderItem::NOT_PROCESSED;
+            $processed          = 0;
             $processDateTime    = DateTimeUtil::convertTimestampToDbFormatDateTime(time()-100);
             $autoresponderItem  = AutoresponderItemTestHelper::createAutoresponderItem($processed,
                                                                                         $processDateTime,
@@ -597,15 +592,14 @@
                                                                                         'description 06',
                                                                                         'fromName 06',
                                                                                         'fromAddress06@domain.com');
-            $autoresponder      = AutoresponderTestHelper::createAutoresponder('autoresponder 06',
-                                                                                'subject 06',
+            $autoresponder      = AutoresponderTestHelper::createAutoresponder('subject 06',
                                                                                 'textContent 06',
                                                                                 'htmlContent 06',
                                                                                 10,
                                                                                 Autoresponder::OPERATION_SUBSCRIBE,
-                                                                                Autoresponder::TRACKING_ENABLED,
+                                                                                1,
                                                                                 $marketingList);
-            $processed          = AutoresponderItem::NOT_PROCESSED;
+            $processed          = 0;
             $processDateTime    = DateTimeUtil::convertTimestampToDbFormatDateTime(time()-100);
             $autoresponderItem  = AutoresponderItemTestHelper::createAutoresponderItem($processed,
                                                                                         $processDateTime,

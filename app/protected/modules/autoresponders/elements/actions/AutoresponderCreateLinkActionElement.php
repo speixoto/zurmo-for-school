@@ -34,16 +34,12 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class SelectReportModalSearchAndListView extends ModalSearchAndListView
+    class AutoresponderCreateLinkActionElement extends CreateLinkActionElement
     {
-        public static function getListViewClassName()
+        public function __construct($controllerId, $moduleId, $modelId, $params = array())
         {
-            return 'SelectReportsModalListView';
-        }
-
-        public static function getSearchViewClassName()
-        {
-            return 'SelectReportsModalSearchView';
+            $moduleId = 'autoresponders';
+            parent::__construct($controllerId, $moduleId, $modelId, $params);
         }
     }
 ?>

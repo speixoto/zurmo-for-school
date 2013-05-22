@@ -383,6 +383,24 @@
         /**
          * @depends testRegularUserEditActionForMarketing
          */
+        public function testRegularUserDetailsJsonActionForMarketing()
+        {
+            $emailTemplateId = self::getModelIdByModelNameAndName ('EmailTemplate', 'New Test Email Template 00');
+            $emailTemplate = EmailTemplate::getById($emailTemplateId);
+            $emailTemplateDataUtil = new ModelToArrayAdapter($emailTemplate);
+            $emailTemplateDetailsArray = $emailTemplateDataUtil->getData();
+            $this->assertNotEmpty($emailTemplateDetailsArray);
+            $this->setGetArray(array('id' => $emailTemplateId, 'renderJson' => true));
+            // @ to avoid headers already sent error.
+            $content = @$this->runControllerWithExitExceptionAndGetContent('emailTemplates/default/details');
+            $emailTemplateDetailsResolvedArray = CJSON::decode($content);
+            $this->assertNotEmpty($emailTemplateDetailsResolvedArray);
+            $this->assertEquals($emailTemplateDetailsArray, $emailTemplateDetailsResolvedArray);
+        }
+
+        /**
+         * @depends testRegularUserDetailsJsonActionForMarketing
+         */
         public function testRegularUserDetailsActionForMarketing()
         {
             $emailTemplateId = self::getModelIdByModelNameAndName ('EmailTemplate', 'New Test Email Template 00');
@@ -402,6 +420,24 @@
         /**
          * @depends testRegularUserEditActionForWorkflow
          */
+        public function testRegularUserDetailsJsonActionForWorkflow()
+        {
+            $emailTemplateId = self::getModelIdByModelNameAndName ('EmailTemplate', 'New Test Workflow Email Template 00');
+            $emailTemplate = EmailTemplate::getById($emailTemplateId);
+            $emailTemplateDataUtil = new ModelToArrayAdapter($emailTemplate);
+            $emailTemplateDetailsArray = $emailTemplateDataUtil->getData();
+            $this->assertNotEmpty($emailTemplateDetailsArray);
+            $this->setGetArray(array('id' => $emailTemplateId, 'renderJson' => true));
+            // @ to avoid headers already sent error.
+            $content = @$this->runControllerWithExitExceptionAndGetContent('emailTemplates/default/details');
+            $emailTemplateDetailsResolvedArray = CJSON::decode($content);
+            $this->assertNotEmpty($emailTemplateDetailsResolvedArray);
+            $this->assertEquals($emailTemplateDetailsArray, $emailTemplateDetailsResolvedArray);
+        }
+
+        /**
+         * @depends testRegularUserDetailsJsonActionForWorkflow
+         */
         public function testRegularUserDetailsActionForWorkflow()
         {
             $emailTemplateId = self::getModelIdByModelNameAndName ('EmailTemplate', 'New Test Workflow Email Template 00');
@@ -416,6 +452,57 @@
             $this->assertTrue(strpos($content, '<th>Subject</th><td colspan="1">'. $emailTemplate->subject . '</td>') !== false);
             $this->assertTrue(strpos($content, '<div class="tabs-nav"><a class="active-tab" href="#tab1">') !== false);
             $this->assertTrue(strpos($content, '<a href="#tab2">') !== false);
+        }
+
+        /**
+         * @depends testRegularUserListForMarketingAction
+         */
+        public function testStickySearchActions()
+        {
+            StickySearchUtil::clearDataByKey('EmailTemplatesSearchView');
+            $value = StickySearchUtil::getDataByKey('EmailTemplatesSearchView');
+            $this->assertNull($value);
+
+            $this->setGetArray(array(
+                'EmailTemplatesSearchForm' => array(
+                    'anyMixedAttributes'    => 'xyz'
+                )));
+            $content = $this->runControllerWithNoExceptionsAndGetContent('emailTemplates/default/listForMarketing');
+            $this->assertTrue(strpos($content, 'No results found.') !== false);
+            $data = StickySearchUtil::getDataByKey('EmailTemplatesSearchView');
+            $compareData = array('dynamicClauses'                     => array(),
+                'dynamicStructure'                      => null,
+                'anyMixedAttributes'                    => 'xyz',
+                'anyMixedAttributesScope'               => null,
+                'selectedListAttributes'                => null
+            );
+            $this->assertEquals($compareData, $data);
+
+            $this->setGetArray(array(
+                'EmailTemplatesSearchForm' => array(
+                    'anyMixedAttributes'    => 'Test'
+                )));
+            $content = $this->runControllerWithNoExceptionsAndGetContent('emailTemplates/default/listForMarketing');
+            $this->assertTrue(strpos($content, '1 result(s)') !== false);
+            $data = StickySearchUtil::getDataByKey('EmailTemplatesSearchView');
+            $compareData = array('dynamicClauses'                     => array(),
+                'dynamicStructure'                      => null,
+                'anyMixedAttributes'                    => 'Test',
+                'anyMixedAttributesScope'               => null,
+                'selectedListAttributes'                => null,
+                'savedSearchId'                         => null
+            );
+            $this->assertEquals($compareData, $data);
+
+            $this->setGetArray(array('clearingSearch' => true));
+            $this->runControllerWithNoExceptionsAndGetContent('emailTemplates/default/listForMarketing');
+            $data = StickySearchUtil::getDataByKey('EmailTemplatesSearchView');
+            $compareData = array('dynamicClauses'                     => array(),
+                'dynamicStructure'                      => null,
+                'anyMixedAttributesScope'               => null,
+                'selectedListAttributes'                => null
+            );
+            $this->assertEquals($compareData, $data);
         }
 
         /**

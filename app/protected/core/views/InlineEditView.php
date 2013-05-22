@@ -129,6 +129,13 @@
             return "inline-edit-form";
         }
 
+        protected function renderModalContainer()
+        {
+            return ZurmoHtml::tag('div', array(
+                        'id' => ModelElement::MODAL_CONTAINER_PREFIX . '-' . $this->getFormName()
+                   ),'');
+        }
+
         protected function renderConfigSaveAjax($formName)
         {
             return ZurmoHtml::ajax(array(

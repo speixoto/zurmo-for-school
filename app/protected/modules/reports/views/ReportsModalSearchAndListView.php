@@ -34,12 +34,16 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    // TODO: @Shoaibi: Critical: Is this used anywhere?
-    class SelectReportModalListView extends ModalListView
+    class ReportsModalSearchAndListView extends ModalSearchAndListView
     {
-        public static function getDefaultMetadata()
+        public static function getListViewClassName()
         {
-          // todo: add the metadata for reports
+            return 'ReportsModalListView';
+        }
+
+        public static function getSearchViewClassName()
+        {
+            return 'ReportsModalSearchView';
         }
     }
 ?>

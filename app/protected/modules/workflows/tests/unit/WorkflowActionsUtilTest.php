@@ -178,6 +178,9 @@
          */
         public function testProcessAfterSave()
         {
+            //Save everyone group
+            $group = Group::getByName(Group::EVERYONE_GROUP_NAME);
+            $this->assertTrue($group->save());
             //Create workflow
             $workflow      = new Workflow();
             $workflow->setDescription    ('aDescription');
@@ -200,8 +203,11 @@
             $action->type                 = ActionForWorkflowForm::TYPE_CREATE;
             $action->relation             = 'hasOne';
             $attributes                   = array('name' => array('shouldSetValue'    => '1',
-                'type'   => WorkflowActionAttributeForm::TYPE_STATIC,
-                'value'  => 'jason'));
+                                                    'type'   => WorkflowActionAttributeForm::TYPE_STATIC,
+                                                    'value'  => 'jason'),
+                                                  'permissions' => array('shouldSetValue'    => '1',
+                                                    'type'   => ExplicitReadWriteModelPermissionsWorkflowActionAttributeForm::TYPE_DYNAMIC_EVERYONE_GROUP),
+            );
             $action->setAttributes(array(ActionForWorkflowForm::ACTION_ATTRIBUTES => $attributes));
             $workflow->addAction($action);
             //Create the saved Workflow
@@ -217,7 +223,14 @@
 
             $this->assertEquals(0, count(WorkflowModelTestItem2::getAll()));
             WorkflowActionsUtil::processAfterSave($workflow, $model, Yii::app()->user->userModel);
-            $this->assertEquals(1, count(WorkflowModelTestItem2::getAll()));
+            $workflowModelTestItem2s = WorkflowModelTestItem2::getAll();
+            $this->assertEquals(1, count($workflowModelTestItem2s));
+            //Confirm permissions are on the everyone group
+            $explicitReadWriteModelPermissions = ExplicitReadWriteModelPermissionsUtil::makeBySecurableItem($workflowModelTestItem2s[0]);
+            $this->assertEquals(1, $explicitReadWriteModelPermissions->getReadWritePermitablesCount());
+            $readWritePermitables = $explicitReadWriteModelPermissions->getReadWritePermitables();
+            $everyoneGroup      = Group::getByName(Group::EVERYONE_GROUP_NAME);
+            $this->assertTrue(isset($readWritePermitables[$everyoneGroup->id]));
         }
 
         /**

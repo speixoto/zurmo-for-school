@@ -275,6 +275,9 @@
                 }
                 if (isset($_POST[$formModelClassName][SearchForm::SELECTED_LIST_ATTRIBUTES]))
                 {
+                    $listAttributesSelector         = new ListAttributesSelector($viewClassName, $model->getModuleClassName());
+                    $listAttributesSelector->setSelected($_POST[$formModelClassName][SearchForm::SELECTED_LIST_ATTRIBUTES]);
+                    $searchForm->setListAttributesSelector($listAttributesSelector);
                     unset($_POST[$formModelClassName][SearchForm::SELECTED_LIST_ATTRIBUTES]);
                 }
                 if (isset($_POST[$formModelClassName][KanbanBoard::GROUP_BY_ATTRIBUTE_VISIBLE_VALUES]))
@@ -294,7 +297,7 @@
                     if ($searchForm->validate())
                     {
                         $savedSearch = $this->processSaveSearch($searchForm, $viewClassName);
-                        echo CJSON::encode(array('id' => $savedSearch->id, 'name' => $savedSearch->name));
+                        echo CJSON::encode(array('id' => $savedSearch->id, 'name' => $savedSearch->name, 'sortAttribute' => $this->getSortAttributeFromSavedSearchData($savedSearch), 'sortDescending' => $this->getSortDescendingFromSavedSearchData($savedSearch) ));
                         Yii::app()->end(0, false);
                     }
                 }
@@ -317,7 +320,12 @@
 
         protected function processSaveSearch($searchForm, $viewClassName)
         {
-            $savedSearch = SavedSearchUtil::makeSavedSearchBySearchForm($searchForm, $viewClassName);
+            $modelClassName     = get_class($searchForm->model);
+            $moduleClassName    = $modelClassName::getModuleClassName();
+            //Get sticky data here
+            $stickySearchKey    = $moduleClassName::getModuleLabelByTypeAndLanguage('Plural') . 'SearchView';
+            $stickySearchData   = StickySearchUtil::getDataByKey($stickySearchKey);
+            $savedSearch        = SavedSearchUtil::makeSavedSearchBySearchForm($searchForm, $viewClassName, $stickySearchData);
             if (!$savedSearch->save())
             {
                 throw new FailedToSaveModelException();
@@ -433,6 +441,28 @@
         {
             header("Content-Type:   ZurmoFileHelper::getMimeType($filePath)");
             echo file_get_contents($filePath);
+        }
+
+        protected function getSortAttributeFromSavedSearchData($savedSearch)
+        {
+            $unserializedData = unserialize($savedSearch->serializedData);
+            if(isset($unserializedData['sortAttribute']))
+            {
+                return $unserializedData['sortAttribute'];
+            }
+
+            return '';
+        }
+
+        protected function getSortDescendingFromSavedSearchData($savedSearch)
+        {
+            $unserializedData = unserialize($savedSearch->serializedData);
+            if(isset($unserializedData['sortDescending']))
+            {
+                return $unserializedData['sortDescending'];
+            }
+
+            return '';
         }
     }
 ?>

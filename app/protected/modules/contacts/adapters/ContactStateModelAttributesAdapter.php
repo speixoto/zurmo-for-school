@@ -64,10 +64,10 @@
                 $stateNames = array();
                 foreach ($states as $state)
                 {
-                    $stateNames[] = $state->name;
                     if (in_array($state->name, $contactStatesData))
                     {
-                        $state->order = array_search($state->name, $contactStatesData);
+                        $stateNames[]            = $state->name;
+                        $state->order            = array_search($state->name, $contactStatesData);
                         $state->serializedLabels = $this->makeSerializedLabelsByLabelsAndOrder($contactStatesLabels,
                                                                                                (int)$state->order);
                         $saved        = $state->save();
@@ -82,9 +82,11 @@
                                                                                                (int)$state->order);
                         $saved                   = $state->save();
                         assert('$saved');
+                        $stateNames[]            = $state->name;
                     }
                     else
                     {
+                        $stateNames[]            = $state->name;
                         $state->delete();
                     }
                 }

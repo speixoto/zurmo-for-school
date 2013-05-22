@@ -43,7 +43,7 @@
                         getByNameAndModelClassName($this->attribute, $this->view->getModelClassName());
             return array(
                 'name'     => $this->attribute,
-                'value'    => 'CalculatedNumberUtil::calculateByFormulaAndModel("' . $metadata->getFormula() . '", $data)',
+                'value'    => 'CalculatedNumberUtil::calculateByFormulaAndModelAndResolveFormat("' . $metadata->getFormula() . '", $data)',
                 'type'     => 'raw',
                 'sortable' => false,
                 'header'   => $metadata->getLabelByLanguage(Yii::app()->language)

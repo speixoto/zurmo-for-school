@@ -34,21 +34,23 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class SelectReportModalSearchView extends SearchView
+    class EnableTrackingCheckBoxElement extends CheckBoxElement
     {
-        public static function getDefaultMetadata()
+        protected function renderLabel()
         {
-          //todo: add the metadata according to reports
-        }
-
-        public static function getDesignerRulesType()
-        {
-            return 'ModalSearchView';
-        }
-
-        public static function getModelForMetadataClassName()
-        {
-          //todo:
+            if ($this->form === null)
+            {
+                return $this->getFormattedAttributeLabel();
+            }
+            $title                  = Zurmo::t('ZurmoModule', 'Enabling tracking would record when recipients open' .
+                                                                    ' email or click any links in outgoing message.');
+            $content                = Zurmo::t('ZurmoModule', 'Enable Tracking');
+            $content                .= ZurmoHtml::tag('span', array('id' => 'enable-tracking-tooltip',
+                                                        'class' => 'tooltip',
+                                                        'title' => $title), '?');
+            $enableTrackingTip     = new ZurmoTip();
+            $enableTrackingTip->addQTip("#enable-tracking-tooltip");
+            return $content;
         }
     }
 ?>

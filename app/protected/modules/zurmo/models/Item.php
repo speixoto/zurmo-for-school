@@ -152,6 +152,7 @@
          */
         protected function beforeSave()
         {
+             $this->isNewModel = $this->id < 0;
              if (parent::beforeSave())
              {
                 if ($this->unrestrictedGet('id') < 0)
@@ -165,7 +166,6 @@
                         }
                     }
                 }
-                $this->isNewModel = $this->id < 0;
                 return true;
              }
              else

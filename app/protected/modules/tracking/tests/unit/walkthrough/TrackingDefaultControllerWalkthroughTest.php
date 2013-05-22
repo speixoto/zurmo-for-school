@@ -42,7 +42,7 @@
 
         protected static $autoresponderItemId;
 
-        protected static $modelType;
+        protected static $campaignItemId;
 
         const TRACK_ROUTE = '/tracking/default/track';
 
@@ -58,59 +58,74 @@
                                                                                         'description 01',
                                                                                         'fromName 01',
                                                                                         'fromAddress01@domain.com');
-            $autoresponder      = AutoresponderTestHelper::createAutoresponder('autoresponder 01',
-                                                                                    'subject 01',
-                                                                                    'textContent 01',
-                                                                                    'htmlContent 01',
-                                                                                    10,
-                                                                                    Autoresponder::OPERATION_SUBSCRIBE,
-                                                                                    Autoresponder::TRACKING_ENABLED,
-                                                                                    $marketingList);
-            $processed          = AutoresponderItem::NOT_PROCESSED;
+            $autoresponder      = AutoresponderTestHelper::createAutoresponder('subject 01',
+                                                                                'textContent 01',
+                                                                                'htmlContent 01',
+                                                                                10,
+                                                                                Autoresponder::OPERATION_SUBSCRIBE,
+                                                                                1,
+                                                                                $marketingList);
+            $processed          = 0;
             $processDateTime    = DateTimeUtil::convertTimestampToDbFormatDateTime(time()-100);
             $autoresponderItem  = AutoresponderItemTestHelper::createAutoresponderItem($processed,
                                                                                         $processDateTime,
                                                                                         $autoresponder,
                                                                                         $contact);
-            static::$personId           = $contact->getClassId('Person');
-            static::$autoresponderItemId = $autoresponderItem->id;
-            static::$modelType          = get_class($autoresponderItem);
+            static::$personId               = $contact->getClassId('Person');
+            static::$autoresponderItemId    = $autoresponderItem->id;
+            $campaign                       = CampaignTestHelper::createCampaign('campaign 01',
+                                                                                    'subject 01',
+                                                                                    'text Content 01',
+                                                                                    'html Content 01',
+                                                                                    'fromName 01',
+                                                                                    'fromAddress01@zurmo.com',
+                                                                                    null,
+                                                                                    Campaign::TYPE_MARKETING_LIST,
+                                                                                    null,
+                                                                                    null,
+                                                                                    null,
+                                                                                    null,
+                                                                                    $marketingList);
+            $processed                      = 0;
+            $campaignItem                   = CampaignItemTestHelper::createCampaignItem($processed, $campaign, $contact);
+            static::$campaignItemId         = $campaignItem->id;
+
             ReadPermissionsOptimizationUtil::rebuild();
         }
 
-        public function testGuestUserCanAccessTrackActionAndThrowsNotSupportedExceptionWithoutHash()
+        public function testGuestUserCanAccessTrackActionAndReturnsNothingWithoutHash()
         {
-            $this->runControllerWithNotSupportedExceptionAndGetContent(static::TRACK_ROUTE);
+            $this->runControllerWithNoExceptionsAndGetContent(static::TRACK_ROUTE, true);
         }
 
         /**
-         * @depends testGuestUserCanAccessTrackActionAndThrowsNotSupportedExceptionWithoutHash
+         * @depends testGuestUserCanAccessTrackActionAndReturnsNothingWithoutHash
          */
-        public function testTrackActionThrowsNotSupportedExceptionForNonHexadecimalHash()
+        public function testTrackActionReturnsNothingForNonHexadecimalHash()
         {
             $hash       = 'Bo9iemeigh6muath8chu2leThohn8Abimoh5rebaihei4aiM1uFoThaith9eng1sei8aisuHu1ugoophiewoe1ieloo';
             $this->setGetArray(array(
                 'id'    => $hash,
             ));
-            $this->runControllerWithNotSupportedExceptionAndGetContent(static::TRACK_ROUTE);
+            $this->runControllerWithNoExceptionsAndGetContent(static::TRACK_ROUTE, true);
         }
 
         /**
-         * @depends testTrackActionThrowsNotSupportedExceptionForNonHexadecimalHash
+         * @depends testTrackActionReturnsNothingForNonHexadecimalHash
          */
-        public function testTrackActionThrowsNotSupportedExceptionForIndecipherableHexadecimalHash()
+        public function testTrackActionReturnsNothingForIndecipherableHexadecimalHash()
         {
             $hash       = 'DEDF8F6C80D20528130EBBFBD293E49C9E2F0CBFDE8995FFE4EEAD8EC8F00B70';
             $this->setGetArray(array(
                 'id'    => $hash,
             ));
-            $this->runControllerWithNotSupportedExceptionAndGetContent(static::TRACK_ROUTE);
+            $this->runControllerWithNoExceptionsAndGetContent(static::TRACK_ROUTE, true);
         }
 
         /**
-         * @depends testTrackActionThrowsNotSupportedExceptionForIndecipherableHexadecimalHash
+         * @depends testTrackActionReturnsNothingForIndecipherableHexadecimalHash
          */
-        public function testTrackActionThrowsNotSupportedExceptionForDecipherableHexadecimalHashWithMissingParameters()
+        public function testTrackActionReturnsNothingForDecipherableHexadecimalHashWithMissingParameters()
         {
             $queryStringArray = array(
                 'keyOne'    => 'valueOne',
@@ -123,17 +138,17 @@
             $this->setGetArray(array(
                 'id'    => $hash,
             ));
-            $this->runControllerWithNotSupportedExceptionAndGetContent(static::TRACK_ROUTE);
+            $this->runControllerWithNoExceptionsAndGetContent(static::TRACK_ROUTE, true);
         }
 
         /**
-         * @depends testTrackActionThrowsNotSupportedExceptionForDecipherableHexadecimalHashWithMissingParameters
+         * @depends testTrackActionReturnsNothingForDecipherableHexadecimalHashWithMissingParameters
          */
-        public function testTrackActionThrowsNotFoundExceptionForInvalidModelId()
+        public function testTrackActionReturnsNothingForInvalidModelId()
         {
             $queryStringArray = array(
                 'modelId'   => 100,
-                'modelType' => static::$modelType,
+                'modelType' => 'AutoresponderItem',
                 'personId'  => static::$personId,
             );
             $resolveHashForQueryStringArrayFunction = static::getProtectedMethod('EmailMessageActivityUtil',
@@ -142,17 +157,17 @@
             $this->setGetArray(array(
                 'id'    => $hash,
             ));
-            $this->runControllerWithNotFoundExceptionAndGetContent(static::TRACK_ROUTE);
+            $this->runControllerWithNoExceptionsAndGetContent(static::TRACK_ROUTE, true);
         }
 
         /**
-         * @depends testTrackActionThrowsNotFoundExceptionForInvalidModelId
+         * @depends testTrackActionReturnsNothingForInvalidModelId
          */
-        public function testTrackActionThrowsNotFoundExceptionForInvalidPersonlId()
+        public function testTrackActionReturnsNothingForInvalidPersonlId()
         {
             $queryStringArray = array(
                 'modelId'   => static::$autoresponderItemId,
-                'modelType' => static::$modelType,
+                'modelType' => 'AutoresponderItem',
                 'personId'  => 200,
             );
             $resolveHashForQueryStringArrayFunction = static::getProtectedMethod('EmailMessageActivityUtil',
@@ -161,19 +176,17 @@
             $this->setGetArray(array(
                 'id'    => $hash,
             ));
-            $this->runControllerWithNotFoundExceptionAndGetContent(static::TRACK_ROUTE);
+            $this->runControllerWithNoExceptionsAndGetContent(static::TRACK_ROUTE, true);
         }
 
-        // TODO: @Shoaibi: Critical: replicate the tests below for CampignItem too.
-
         /**
-         * @depends testTrackActionThrowsNotFoundExceptionForInvalidPersonlId
+         * @depends testTrackActionReturnsNothingForInvalidPersonlId
          */
-        public function testTrackActionDoesNotThrowsExceptionForMissingUrlParameterForAutoresponderItem()
+        public function testTrackActionDoesNotComplainForMissingUrlParameterForAutoresponderItem()
         {
             $queryStringArray = array(
                 'modelId'   => static::$autoresponderItemId,
-                'modelType' => static::$modelType,
+                'modelType' => 'AutoresponderItem',
                 'personId'  => static::$personId,
             );
             $resolveHashForQueryStringArrayFunction = static::getProtectedMethod('EmailMessageActivityUtil',
@@ -189,23 +202,23 @@
             $path       = tempnam(sys_get_temp_dir() , '1x1-pixel') . '.png';
             $createdPng = imagepng($image, $path);
             $this->assertTrue($createdPng);
-            $autoresponderItemActitvity = AutoresponderItemActivity::getByTypeAndModelIdAndPersonIdAndUrl(
+            $autoresponderItemActivity = AutoresponderItemActivity::getByTypeAndModelIdAndPersonIdAndUrl(
                                                                                 AutoresponderItemActivity::TYPE_OPEN,
                                                                                 static::$autoresponderItemId,
                                                                                 static::$personId);
-            $this->assertNotEmpty($autoresponderItemActitvity);
-            $this->assertCount(1, $autoresponderItemActitvity);
-            $this->assertEquals(1, $autoresponderItemActitvity[0]->quantity);
+            $this->assertNotEmpty($autoresponderItemActivity);
+            $this->assertCount(1, $autoresponderItemActivity);
+            $this->assertEquals(1, $autoresponderItemActivity[0]->quantity);
         }
 
         /**
-         * @depends testTrackActionDoesNotThrowsExceptionForMissingUrlParameterForAutoresponderItem
+         * @depends testTrackActionDoesNotComplainForMissingUrlParameterForAutoresponderItem
          */
         public function testTrackActionThrowsRedirectExceptionForUrlParameterForAutoresponderItem()
         {
             $queryStringArray = array(
                 'modelId'   => static::$autoresponderItemId,
-                'modelType' => static::$modelType,
+                'modelType' => 'AutoresponderItem',
                 'personId'  => static::$personId,
                 'url'       => 'http://www.zurmo.com',
             );
@@ -217,14 +230,75 @@
             ));
             $url        = $this->runControllerWithRedirectExceptionAndGetUrl(static::TRACK_ROUTE);
             $this->assertEquals($queryStringArray['url'], $url);
-            $autoresponderItemActitvity = AutoresponderItemActivity::getByTypeAndModelIdAndPersonIdAndUrl(
+            $autoresponderItemActivity = AutoresponderItemActivity::getByTypeAndModelIdAndPersonIdAndUrl(
                                                                                 AutoresponderItemActivity::TYPE_CLICK,
                                                                                 static::$autoresponderItemId,
                                                                                 static::$personId,
                                                                                 $queryStringArray['url']);
-            $this->assertNotEmpty($autoresponderItemActitvity);
-            $this->assertCount(1, $autoresponderItemActitvity);
-            $this->assertEquals(1, $autoresponderItemActitvity[0]->quantity);
+            $this->assertNotEmpty($autoresponderItemActivity);
+            $this->assertCount(1, $autoresponderItemActivity);
+            $this->assertEquals(1, $autoresponderItemActivity[0]->quantity);
+        }
+
+        /**
+         * @depends testTrackActionReturnsNothingForInvalidPersonlId
+         */
+        public function testTrackActionDoesNotComplainForMissingUrlParameterForCampaignItem()
+        {
+            $queryStringArray = array(
+                'modelId'   => static::$campaignItemId,
+                'modelType' => 'CampaignItem',
+                'personId'  => static::$personId,
+            );
+            $resolveHashForQueryStringArrayFunction = static::getProtectedMethod('EmailMessageActivityUtil',
+                                                                                    'resolveHashForQueryStringArray');
+            $hash       = $resolveHashForQueryStringArrayFunction->invokeArgs(null, array($queryStringArray));
+            $this->setGetArray(array(
+                'id'    => $hash,
+            ));
+            // Need @ to ignore the headers already sent error.
+            $content    = @$this->runControllerWithExitExceptionAndGetContent(static::TRACK_ROUTE);
+            $image      = imagecreatefromstring($content);
+            $this->assertTrue($image !== false);
+            $path       = tempnam(sys_get_temp_dir() , '1x1-pixel') . '.png';
+            $createdPng = imagepng($image, $path);
+            $this->assertTrue($createdPng);
+            $campaignItemActivity = CampaignItemActivity::getByTypeAndModelIdAndPersonIdAndUrl(
+                                                                                    CampaignItemActivity::TYPE_OPEN,
+                                                                                    static::$campaignItemId,
+                                                                                    static::$personId);
+            $this->assertNotEmpty($campaignItemActivity);
+            $this->assertCount(1, $campaignItemActivity);
+            $this->assertEquals(1, $campaignItemActivity[0]->quantity);
+        }
+
+        /**
+         * @depends testTrackActionDoesNotComplainForMissingUrlParameterForCampaignItem
+         */
+        public function testTrackActionThrowsRedirectExceptionForUrlParameterForCampaignItem()
+        {
+            $queryStringArray = array(
+                'modelId'   => static::$campaignItemId,
+                'modelType' => 'CampaignItem',
+                'personId'  => static::$personId,
+                'url'       => 'http://www.zurmo.com',
+            );
+            $resolveHashForQueryStringArrayFunction = static::getProtectedMethod('EmailMessageActivityUtil',
+                                                                                    'resolveHashForQueryStringArray');
+            $hash       = $resolveHashForQueryStringArrayFunction->invokeArgs(null, array($queryStringArray));
+            $this->setGetArray(array(
+                'id'    => $hash,
+            ));
+            $url        = $this->runControllerWithRedirectExceptionAndGetUrl(static::TRACK_ROUTE);
+            $this->assertEquals($queryStringArray['url'], $url);
+            $campaignItemActivity = CampaignItemActivity::getByTypeAndModelIdAndPersonIdAndUrl(
+                                                                                    CampaignItemActivity::TYPE_CLICK,
+                                                                                    static::$campaignItemId,
+                                                                                    static::$personId,
+                                                                                    $queryStringArray['url']);
+            $this->assertNotEmpty($campaignItemActivity);
+            $this->assertCount(1, $campaignItemActivity);
+            $this->assertEquals(1, $campaignItemActivity[0]->quantity);
         }
     }
 ?>

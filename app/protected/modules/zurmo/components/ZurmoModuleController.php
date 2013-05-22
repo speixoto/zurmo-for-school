@@ -237,8 +237,7 @@
                     // Output csv file directly to user browser
                     if ($dataProvider)
                     {
-                        $dataProvider->getPagination()->setPageSize($totalItems);
-                        $modelsToExport = $dataProvider->getData();
+                        $modelsToExport = ExportUtil::getDataForExport($dataProvider);
                         if (count($modelsToExport) > 0)
                         {
                             $modelToExportAdapter  = new ModelToExportAdapter($modelsToExport[0]);
@@ -287,8 +286,7 @@
                 {
                     if ($dataProvider)
                     {
-                        $dataProvider->getPagination()->setPageSize($totalItems);
-                        $serializedData = serialize($dataProvider);
+                        $serializedData = ExportUtil::getSerializedDataForExport($dataProvider);
                     }
                     else
                     {

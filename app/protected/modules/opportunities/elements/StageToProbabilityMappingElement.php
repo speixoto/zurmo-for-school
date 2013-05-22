@@ -50,15 +50,36 @@
             $content = null;
             $content .= ZurmoHtml::textField('stageToProbabilityMapping_notUsed', null,
                                              array('id' => $this->getEditableInputId(), 'style' => "display:none;"));
-            foreach(OpportunitiesModule::getStageToProbabilityMappingData() as $stage => $probability)
+            $fieldData = CustomFieldData::getByName('SalesStages');
+            if($fieldData->serializedData != null)
             {
+                $values = unserialize($fieldData->serializedData);
+                if(!is_array($values))
+                {
+                    $values = array();
+                }
+            }
+            else
+            {
+                $values = array();
+            }
+            $stagesToProbabilities = OpportunitiesModule::getStageToProbabilityMappingData();
+            foreach($values as $value)
+            {
+                if(isset($stagesToProbabilities[$value]))
+                {
+                    $probability = $stagesToProbabilities[$value];
+                }
+                else
+                {
+                    $probability = 0;
+                }
                 $htmlOptions = array(
-                    'name'   => $this->getNameForInputField($stage),
+                    'name'   => $this->getNameForInputField($value),
                     'value'  => $probability,
                 );
-
                 $element  = $this->form->textField($this->model, $this->attribute, $htmlOptions);
-                $element .= ZurmoHtml::tag('span', array(), $stage);
+                $element .= ZurmoHtml::tag('span', array(), $value);
                 $content .= ZurmoHtml::tag('div', array('class' => 'has-lang-label'), $element);
             }
             return $content;

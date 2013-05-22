@@ -53,6 +53,10 @@
             $copyToModel->setIsCopied();
             foreach ($model->attributeNames() as $attributeName)
             {
+                if($attributeName == 'owner')
+                {
+                        continue;
+                }
                 $isReadOnly = $model->isAttributeReadOnly($attributeName);
                 if (!$model->isRelation($attributeName) && !$isReadOnly)
                 {
@@ -63,6 +67,10 @@
                 {
                     static::copyRelation($model, $attributeName, $copyToModel);
                 }
+            }
+            if($model instanceof OwnedSecurableItem)
+            {
+                static::copyRelation($model, 'owner', $copyToModel);
             }
             static::resolveExplicitPermissions($model, $copyToModel);
         }

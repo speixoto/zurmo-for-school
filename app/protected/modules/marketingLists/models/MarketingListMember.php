@@ -120,12 +120,17 @@
 
         public function onCreated()
         {
+            parent::onCreated();
             $this->unrestrictedSet('createdDateTime',  DateTimeUtil::convertTimestampToDbFormatDateTime(time()));
             $this->unrestrictedSet('modifiedDateTime', DateTimeUtil::convertTimestampToDbFormatDateTime(time()));
         }
 
         public function beforeSave()
         {
+            if (!parent::beforeSave())
+            {
+                return false;
+            }
             if ($this->id < 0 || (isset($this->originalAttributeValues['unsubscribed']) &&
                                             $this->originalAttributeValues['unsubscribed'] != $this->unsubscribed))
             {
@@ -134,17 +139,11 @@
                 {
                     $operation = Autoresponder::OPERATION_UNSUBSCRIBE;
                 }
-                AutoresponderItem::
-                    registerAutoresponderItemsByAutoresponderOperation($operation, $this->marketingList->id, $this->contact);
+                AutoresponderItem::registerAutoresponderItemsByAutoresponderOperation($operation,
+                                                                                        $this->marketingList->id,
+                                                                                        $this->contact);
             }
             $this->modifiedDateTime     = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
-            return true;
-        }
-
-        public function beforeDelete()
-        {
-            AutoresponderItem::
-                registerAutoresponderItemsByAutoresponderOperation(Autoresponder::OPERATION_REMOVE, $this->marketingList->id, $this->contact);
             return true;
         }
     }

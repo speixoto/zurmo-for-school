@@ -163,5 +163,16 @@
             $this->assertEquals('application/zip', $file5->type);
             $this->assertEquals(3492, $file5->size);
         }
+
+        public function testMakeByExistingFileModelId()
+        {
+            Yii::app()->user->userModel = User::getByUsername('super');
+            $file1  = ZurmoTestHelper::createFileModel();
+            $file2  = FileModelUtil::makeByExistingFileModelId($file1->id);
+            $this->assertEquals($file1->fileContent->content, $file2->fileContent->content);
+            $this->assertEquals($file1->name, $file2->name);
+            $this->assertEquals($file1->type, $file2->type);
+            $this->assertEquals($file1->size, $file2->size);
+        }
     }
 ?>

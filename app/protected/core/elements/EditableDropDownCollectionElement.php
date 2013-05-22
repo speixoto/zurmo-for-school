@@ -223,7 +223,7 @@
                             $('#" . $this->attribute . "_AddInput_em_').html('').hide();
                         }
                         var currenInputCollectionLength = $('input[name=\"" . $this->getNameForInputField() . "\"]').length;
-                        $('<li class=\"ui-state-default\" id=\"{id}\">' +
+                        var newLi = $('<li class=\"ui-state-default\" id=\"{id}\">' +
                         '" . $this->renderRemoveLink() . "' +
                         '<span class=\"ui-icon ui-icon-arrowthick-2-n-s\">&#160;</span>' +
                         '<div class=\"has-lang-label\">' +
@@ -234,7 +234,8 @@
                         '<input name=\"" . $this->getNameForExistingValueHiddenField() . "\" type=\"hidden\" value=\"' +
                         $('#" . $this->attribute . "_AddInput').val() + '\" />" . "' +
                         '" . $this->renderSortableLanguageLabelInputsForAddingNewValuesJavaScriptContent(). "' +
-                        '</li>').appendTo($('#" . $this->attribute . "_ul'));
+                        '</li>');
+                        newLi.appendTo($('#" . $this->attribute . "_ul'));
                         $('#" . $this->attribute . "_AddInput').val('');
                         $('#" . $inputIdPrefix . "' + (currenInputCollectionLength + 1)).change(function()
                         {
@@ -242,6 +243,7 @@
                         }
                         );
                             " . $this->renderScriptCallToRebuildSelectInputFromInputs() . "
+                        resolvePaddingForHasLangLabel(('.has-lang-label', newLi));
                         return false;
                     }
                 );
@@ -290,7 +292,7 @@
             return "rebuildSelectInputFromInputs(
                         '" . $this->resolveInputIdPrefix() . "_" .
                         $this->getSpecificValueFromDropDownAttributeName() . "', '" .
-                        $this->getNameForInputField() . "')";
+                        $this->getNameForInputField() . "');";
         }
 
         protected function renderItemsOnChangeScript()

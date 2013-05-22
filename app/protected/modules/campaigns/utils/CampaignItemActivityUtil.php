@@ -39,7 +39,5 @@
      */
     class CampaignItemActivityUtil extends EmailMessageActivityUtil
     {
-        // TODO: @Shoaibi: Critical: Test resolveQueryStringFromUrlAndCreateOrUpdateActivity()
-        // check AutoresponderItemActivityUtilTest, need exact same tests here with different model though
     }
 ?>

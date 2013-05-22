@@ -45,6 +45,12 @@
         protected $model;
 
         /**
+         * whether the model is being copied to 'Save As' or not.
+         * @var bool $isBeingCopied
+         */
+        protected $isBeingCopied;
+
+        /**
          * @return mixed
          */
         abstract protected function registerClickFlowScript();
@@ -80,10 +86,13 @@
 
         /**
          * @param WizardForm $model
+         * @param bool $isBeingCopied
          */
-        public function __construct(WizardForm $model)
+        public function __construct(WizardForm $model, $isBeingCopied = false)
         {
-            $this->model = $model;
+            assert('is_bool($isBeingCopied)');
+            $this->model              = $model;
+            $this->isBeingCopied = $isBeingCopied;
         }
 
         /**
@@ -106,6 +115,7 @@
 
         /**
          * Override in children classes. Should @return string
+         * @throws NotImplementedException
          */
         protected static function getStartingValidationScenario()
         {
@@ -155,6 +165,7 @@
             $content .= $formEnd;
             $content .= $this->renderUIOverLayBlock();
             $content .= '</div></div>';
+            $content .= $this->renderModalContainer();
             return $content;
         }
 
@@ -197,7 +208,7 @@
         protected function getFormActionUrl()
         {
             return Yii::app()->createUrl(static::getControllerId() . '/default/save',
-                array('type' => $this->model->type, 'id' => $this->model->id));
+                array('type' => $this->model->type, 'id' => $this->model->id, 'isBeingCopied' => $this->isBeingCopied));
         }
 
         /**
@@ -266,6 +277,13 @@
         protected function registerOperatorOnLoadAndOnChangeScript()
         {
             OperatorStaticDropDownElement::registerOnLoadAndOnChangeScript();
+        }
+
+        protected function renderModalContainer()
+        {
+            return ZurmoHtml::tag('div', array(
+                        'id' => ModelElement::MODAL_CONTAINER_PREFIX . '-' . $this->getFormId()
+                   ),'');
         }
     }
 ?>

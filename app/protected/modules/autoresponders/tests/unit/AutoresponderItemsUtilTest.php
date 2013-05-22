@@ -58,7 +58,7 @@
         public function testProcessDueAutoresponderItemThrowsExceptionWhenNoContactIsAvailable()
         {
             $autoresponderItem          = new AutoresponderItem();
-            AutoresponderItemsUtil::processDueAutoresponderItem($autoresponderItem);
+            AutoresponderItemsUtil::processDueItem($autoresponderItem);
         }
 
         /**
@@ -69,9 +69,8 @@
         public function testProcessDueAutoresponderItemThrowsExceptionWhenContentHasInvalidMergeTags()
         {
             $contact                    = ContactTestHelper::createContactByNameForOwner('contact 01', $this->user);
-            $marketingList              = MarketingListTestHelper::fillMarketingListByName('marketingList 01');
-            $autoresponder              = AutoresponderTestHelper::createAutoresponder('autoresponder 01',
-                                                                                    'subject 01',
+            $marketingList              = MarketingListTestHelper::populateMarketingListByName('marketingList 01');
+            $autoresponder              = AutoresponderTestHelper::createAutoresponder('subject 01',
                                                                                     '[[TEXT^CONTENT]]',
                                                                                     '[[HTML^CONTENT]]',
                                                                                     1,
@@ -79,13 +78,13 @@
                                                                                     true,
                                                                                     $marketingList,
                                                                                     false);
-            $processed                  = AutoresponderItem::NOT_PROCESSED;
+            $processed                  = 0;
             $processDateTime            = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
             $autoresponderItem          = AutoresponderItemTestHelper::createAutoresponderItem($processed,
                                                                                                 $processDateTime,
                                                                                                 $autoresponder,
                                                                                                 $contact);
-            AutoresponderItemsUtil::processDueAutoresponderItem($autoresponderItem);
+            AutoresponderItemsUtil::processDueItem($autoresponderItem);
         }
 
         /**
@@ -95,22 +94,21 @@
         {
             $contact                    = ContactTestHelper::createContactByNameForOwner('contact 02', $this->user);
             $marketingList              = MarketingListTestHelper::createMarketingListByName('marketingList 02');
-            $autoresponder              = AutoresponderTestHelper::createAutoresponder('autoresponder 02',
-                                                                                    'subject 02',
+            $autoresponder              = AutoresponderTestHelper::createAutoresponder('subject 02',
                                                                                     'text content',
                                                                                     'html content',
                                                                                     1,
                                                                                     Autoresponder::OPERATION_SUBSCRIBE,
                                                                                     false,
                                                                                     $marketingList);
-            $processed                  = AutoresponderItem::NOT_PROCESSED;
+            $processed                  = 0;
             $processDateTime            = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
             $autoresponderItem          = AutoresponderItemTestHelper::createAutoresponderItem($processed,
                                                                                                 $processDateTime,
                                                                                                 $autoresponder,
                                                                                                 $contact);
-            AutoresponderItemsUtil::processDueAutoresponderItem($autoresponderItem);
-            $this->assertEquals(AutoresponderItem::PROCESSED, $autoresponderItem->processed);
+            AutoresponderItemsUtil::processDueItem($autoresponderItem);
+            $this->assertEquals(1, $autoresponderItem->processed);
             $emailMessage               = $autoresponderItem->emailMessage;
             $this->assertEquals($marketingList->owner, $emailMessage->owner);
             $this->assertNull($emailMessage->subject);
@@ -132,22 +130,21 @@
             $contact->primaryEmail      = $email;
             $this->assertTrue($contact->save());
             $marketingList              = MarketingListTestHelper::createMarketingListByName('marketingList 03');
-            $autoresponder              = AutoresponderTestHelper::createAutoresponder('autoresponder 03',
-                                                                                    'subject 03',
+            $autoresponder              = AutoresponderTestHelper::createAutoresponder('subject 03',
                                                                                     'text content',
                                                                                     'html content',
                                                                                     1,
                                                                                     Autoresponder::OPERATION_SUBSCRIBE,
                                                                                     true,
                                                                                     $marketingList);
-            $processed                  = AutoresponderItem::NOT_PROCESSED;
+            $processed                  = 0;
             $processDateTime            = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
             $autoresponderItem          = AutoresponderItemTestHelper::createAutoresponderItem($processed,
                                                                                                 $processDateTime,
                                                                                                 $autoresponder,
                                                                                                 $contact);
-            AutoresponderItemsUtil::processDueAutoresponderItem($autoresponderItem);
-            $this->assertEquals(AutoresponderItem::PROCESSED, $autoresponderItem->processed);
+            AutoresponderItemsUtil::processDueItem($autoresponderItem);
+            $this->assertEquals(1, $autoresponderItem->processed);
             $emailMessage               = $autoresponderItem->emailMessage;
             $this->assertEquals($marketingList->owner, $emailMessage->owner);
             $this->assertEquals($autoresponder->subject, $emailMessage->subject);
@@ -180,22 +177,21 @@
                                                                                             'description',
                                                                                             'CustomFromName',
                                                                                             'custom@from.com');
-            $autoresponder              = AutoresponderTestHelper::createAutoresponder('autoresponder 04',
-                                                                                    'subject 04',
+            $autoresponder              = AutoresponderTestHelper::createAutoresponder('subject 04',
                                                                                     'text content',
                                                                                     'html content',
                                                                                     1,
                                                                                     Autoresponder::OPERATION_SUBSCRIBE,
                                                                                     false,
                                                                                     $marketingList);
-            $processed                  = AutoresponderItem::NOT_PROCESSED;
+            $processed                  = 0;
             $processDateTime            = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
             $autoresponderItem          = AutoresponderItemTestHelper::createAutoresponderItem($processed,
                                                                                                 $processDateTime,
                                                                                                 $autoresponder,
                                                                                                 $contact);
-            AutoresponderItemsUtil::processDueAutoresponderItem($autoresponderItem);
-            $this->assertEquals(AutoresponderItem::PROCESSED, $autoresponderItem->processed);
+            AutoresponderItemsUtil::processDueItem($autoresponderItem);
+            $this->assertEquals(1, $autoresponderItem->processed);
             $emailMessage               = $autoresponderItem->emailMessage;
             $this->assertEquals($marketingList->owner, $emailMessage->owner);
             $this->assertEquals($autoresponder->subject, $emailMessage->subject);
@@ -225,22 +221,21 @@
                                                                                             'description',
                                                                                             'CustomFromName',
                                                                                             'custom@from.com');
-            $autoresponder              = AutoresponderTestHelper::createAutoresponder('autoresponder 05',
-                                                                                        'subject 05',
-                                                                                        'Dr. [[FIRST^NAME]] [[LAST^NAME]]',
-                                                                                        '<b>[[LAST^NAME]]</b>, [[FIRST^NAME]]',
-                                                                                        1,
-                                                                                        Autoresponder::OPERATION_SUBSCRIBE,
-                                                                                        true,
-                                                                                        $marketingList);
-            $processed                  = AutoresponderItem::NOT_PROCESSED;
+            $autoresponder              = AutoresponderTestHelper::createAutoresponder('subject 05',
+                                                                                'Dr. [[FIRST^NAME]] [[LAST^NAME]]',
+                                                                                '<b>[[LAST^NAME]]</b>, [[FIRST^NAME]]',
+                                                                                1,
+                                                                                Autoresponder::OPERATION_SUBSCRIBE,
+                                                                                true,
+                                                                                $marketingList);
+            $processed                  = 0;
             $processDateTime            = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
             $autoresponderItem          = AutoresponderItemTestHelper::createAutoresponderItem($processed,
                                                                                                 $processDateTime,
                                                                                                 $autoresponder,
                                                                                                 $contact);
-            AutoresponderItemsUtil::processDueAutoresponderItem($autoresponderItem);
-            $this->assertEquals(AutoresponderItem::PROCESSED, $autoresponderItem->processed);
+            AutoresponderItemsUtil::processDueItem($autoresponderItem);
+            $this->assertEquals(1, $autoresponderItem->processed);
             $emailMessage               = $autoresponderItem->emailMessage;
             $this->assertEquals($marketingList->owner, $emailMessage->owner);
             $this->assertEquals($autoresponder->subject, $emailMessage->subject);
@@ -256,6 +251,73 @@
             $this->assertEquals($email->emailAddress, $recipients[0]->toAddress);
             $this->assertEquals(EmailMessageRecipient::TYPE_TO, $recipients[0]->type);
             $this->assertEquals($contact, $recipients[0]->personOrAccount);
+        }
+
+        /**
+         * @depends testProcessDueAutoresponderItemWithValidMergeTags
+         */
+        public function testProcessDueAutoresponderItemWithAttachments()
+        {
+            $email                      = new Email();
+            $email->emailAddress        = 'demo@zurmo.com';
+            $contact                    = ContactTestHelper::createContactByNameForOwner('contact 06', $this->user);
+            $contact->primaryEmail      = $email;
+            $this->assertTrue($contact->save());
+            $marketingList              = MarketingListTestHelper::createMarketingListByName('marketingList 06',
+                                                                                                'description',
+                                                                                                'CustomFromName',
+                                                                                                'custom@from.com');
+            $autoresponder              = AutoresponderTestHelper::createAutoresponder('subject 06',
+                                                                                'Dr. [[FIRST^NAME]] [[LAST^NAME]]',
+                                                                                '<b>[[LAST^NAME]]</b>, [[FIRST^NAME]]',
+                                                                                1,
+                                                                                Autoresponder::OPERATION_SUBSCRIBE,
+                                                                                true,
+                                                                                $marketingList);
+            $fileNames              = array('testImage.png', 'testZip.zip', 'testPDF.pdf');
+            $files                  = array();
+            foreach ($fileNames as $index => $fileName)
+            {
+                $file                       = ZurmoTestHelper::createFileModel($fileName);
+                $files[$index]['name']      = $fileName;
+                $files[$index]['type']      = $file->type;
+                $files[$index]['size']      = $file->size;
+                $files[$index]['contents']  = $file->fileContent->content;
+                $autoresponder->files->add($file);
+            }
+            $this->assertTrue($autoresponder->save());
+            $processed                  = 0;
+            $processDateTime            = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
+            $autoresponderItem          = AutoresponderItemTestHelper::createAutoresponderItem($processed,
+                                                                                                    $processDateTime,
+                                                                                                    $autoresponder,
+                                                                                                    $contact);
+            AutoresponderItemsUtil::processDueItem($autoresponderItem);
+            $this->assertEquals(1, $autoresponderItem->processed);
+            $emailMessage               = $autoresponderItem->emailMessage;
+            $this->assertEquals($marketingList->owner, $emailMessage->owner);
+            $this->assertEquals($autoresponder->subject, $emailMessage->subject);
+            $this->assertNotEquals($autoresponder->textContent, $emailMessage->content->textContent);
+            $this->assertNotEquals($autoresponder->htmlContent, $emailMessage->content->htmlContent);
+            $this->assertEquals('Dr. contact 06 contact 06son', $emailMessage->content->textContent);
+            $this->assertTrue(strpos($emailMessage->content->htmlContent, '<b>contact 06son</b>, contact 06') === 0);
+            $this->assertEquals($marketingList->fromAddress, $emailMessage->sender->fromAddress);
+            $this->assertEquals($marketingList->fromName, $emailMessage->sender->fromName);
+            $this->assertEquals(1, $emailMessage->recipients->count());
+            $recipients                 = $emailMessage->recipients;
+            $this->assertEquals(strval($contact), $recipients[0]->toName);
+            $this->assertEquals($email->emailAddress, $recipients[0]->toAddress);
+            $this->assertEquals(EmailMessageRecipient::TYPE_TO, $recipients[0]->type);
+            $this->assertEquals($contact, $recipients[0]->personOrAccount);
+            $this->assertNotEmpty($emailMessage->files);
+            $this->assertCount(count($files), $emailMessage->files);
+            foreach ($files as $index => $file)
+            {
+                $this->assertEquals($files[$index]['name'], $emailMessage->files[$index]->name);
+                $this->assertEquals($files[$index]['type'], $emailMessage->files[$index]->type);
+                $this->assertEquals($files[$index]['size'], $emailMessage->files[$index]->size);
+                $this->assertEquals($files[$index]['contents'], $emailMessage->files[$index]->fileContent->content);
+            }
         }
     }
 ?>

@@ -58,15 +58,15 @@
                 $member                 = new MarketingListMember();
                 $contact                = $demoDataHelper->getRandomByModelName('Contact');
                 $marketingList          = $demoDataHelper->getRandomByModelName('MarketingList');
-                $member->contact        = $contact;
-                $this->populateModel($member);
-                if (!$marketingList->marketingListMembers->contains($member))
+                if (!$marketingList->memberAlreadyExists($contact->id))
                 {
-                    $marketingList->marketingListMembers->add($member);
-                    $saved = $marketingList->save();
+                    $member->contact        = $contact;
+                    $member->marketingList  = $marketingList;
+                    $this->populateModel($member);
+                    $saved = $member->unrestrictedSave();
                     assert('$saved');
+                    $members[]              = $member->id;
                 }
-                $members[]              = $member->id;
             }
             $demoDataHelper->setRangeByModelName('MarketingListMember', $members[0], $members[count($members)-1]);
         }
