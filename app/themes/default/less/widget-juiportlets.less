@@ -31,11 +31,19 @@
 // feasible for technical reasons, the Appropriate Legal Notices must display the words
 // "Copyright Zurmo Inc. 2013. All rights reserved".
 
-.juiportlet-columns .juiportlet-column {
-	float: left;
-	min-height: 400px;
-	height: auto !important;
-	height: 400px;
+.juiportlet-columns{
+	.juiportlet-column {
+		float: left;
+		min-height: 400px;
+		height: auto !important;
+		height: 400px;
+
+		+ .juiportlet-column{
+			.juiportlet-widget {
+				margin-right: 0;
+			}
+		}
+	}
 }
 
 .juiportlet-widget-column1 {
@@ -78,13 +86,15 @@
 }
 
 .juiportlet-columns .juiportlet-widget .juiportlet-widget-head {
-	overflow: hidden;
+	//overflow: hidden;
 	width: 100%;
 	height: 40px;
 	line-height: 40px;
 	#gradient > .vertical(#f6f6f6, #ededed);
 	.b-shadow(inset 0 1px 0 0 #ffffff);
 	position:relative;
+	border-bottom:1px solid #CCC;
+	cursor: move;
 }
 
 .juiportlet-columns .juiportlet-widget .juiportlet-widget-head h3 {
@@ -96,15 +106,9 @@
 	margin-left:0;
 }
 
-.juiportlet-widget-head{
-	border-bottom:1px solid #CCC;
-	background:#fff;
-	cursor: move;
-}
-
 /*.juiportlet-widget-head */
 a.remove {
-	float: right;
+	/*float: right;
 	display: inline;
 	width: 13px;
 	height: 40px;
@@ -113,20 +117,38 @@ a.remove {
 	outline: none;
 	position:relative;
 	z-index:9999;
+	*/
+	.b-shadow(inset 0 1px 0 0 #ffffff);
+	float: right;
+	display: inline;
+	text-indent: -9999em;
+	outline: none;
+	position: relative;
+	z-index: 9999;
+	line-height: 1 !important;
+	#gradient > .vertical(#f6f6f6, #ededed);
+	border:1px solid #CCC;
+	border-left: none;
+	width: 14px;
+	height: 20px;
+	border-radius: 0 15% 15% 0;
+	margin-right: -15px;
+	margin-top: 10px;
 	.icon{
 	    line-height:1;
 	    position:relative;
 	    float:right;
 	}
 	.icon:after{
-		position:absolute;
-		top:6px;
-		right:0;
+		position: relative;
+		left: -1px;
+		margin-top: -2px;
+		line-height: 1;
 		content:"—";
-		.symbly(24px);
+		.symbly(22px);
 		text-indent:0;
 		display:block;
-		float:right;
+		float:left;
 		color:#A7A7A7;
 		.t-shadow( rgba( 255, 255, 255, 0.8 ) 0 1px 0  );
 	}
@@ -148,7 +170,7 @@ a.remove {
 	}
 	.icon:after{
 		position:absolute;
-		top:6px;
+		top:7px;
 		right:0;
 		content:"n";
 		.symbly(24px);
