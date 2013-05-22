@@ -206,5 +206,26 @@
                                 );
             $this->runControllerWithRedirectExceptionAndGetContent('users/default/changeAvatar');
         }
+		
+		public function testRegularUserAccessGroupsAndRolesButNotCreateAndDelete()
+		{
+			$user = UserTestHelper::createBasicUser('Dood1');
+			$group = new Group();
+            $group->name = 'Doods';
+            $group->users->add($user);
+            $this->assertTrue($group->save());
+
+            $this->assertEquals(1, count($user->groups));
+            $this->assertEquals('Doods', $user->groups[0]->name);
+			
+			$user->setRight('GroupsModule', GroupsModule::RIGHT_ACCESS_GROUPS);
+			$user->setRight('RolesModule', RolesModule::RIGHT_ACCESS_ROLES);
+			$user->setRight('ZurmoModule', ZurmoModule::RIGHT_ACCESS_ADMINISTRATION);
+			$user = $this->logoutCurrentUserLoginNewUserAndGetByUsername('Dood1');
+			//Access to create action should fail.
+			$this->runControllerShouldResultInAccessFailureAndGetContent('zurmo/group/create');
+			//Access to delete action should fail.
+			$this->runControllerShouldResultInAccessFailureAndGetContent('zurmo/group/delete');
+		}
     }
 ?>
