@@ -38,7 +38,7 @@
     {
         public function renderGridViewData()
         {
-            $value  = 'Yii::app()->numberFormatter->formatCurrency($data->' . $this->attribute;
+            $value  = 'Yii::app()->numberFormatter->formatCurrency((float)$data->' . $this->attribute;
             $value .= '->value, $data->' . $this->attribute . '->currency->code)';
             return array(
                 'name'  => $this->attribute,

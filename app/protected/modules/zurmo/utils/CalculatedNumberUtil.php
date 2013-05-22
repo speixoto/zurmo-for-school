@@ -59,19 +59,19 @@
             $value = static::calculateByFormulaAndModel($formula, $model, $formatType, $currencyCode);
             if($formatType == self::FORMAT_TYPE_INTEGER)
             {
-                return Yii::app()->format->formatNumber($value);
+                return Yii::app()->format->formatNumber((int)$value);
             }
             elseif($formatType == self::FORMAT_TYPE_DECIMAL)
             {
-                return Yii::app()->numberFormatter->formatDecimal($value);
+                return Yii::app()->numberFormatter->formatDecimal((float)$value);
             }
             elseif($formatType == self::FORMAT_TYPE_CURRENCY_VALUE && $currencyCode != null)
             {
-                return Yii::app()->numberFormatter->formatCurrency($value, $currencyCode);
+                return Yii::app()->numberFormatter->formatCurrency((float)$value, $currencyCode);
             }
             elseif($formatType == self::FORMAT_TYPE_CURRENCY_VALUE)
             {
-                return Yii::app()->numberFormatter->formatDecimal($value);
+                return Yii::app()->numberFormatter->formatDecimal((float)$value);
             }
             else
             {

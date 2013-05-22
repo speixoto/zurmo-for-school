@@ -90,7 +90,7 @@
         {
             assert('$this->model->{$this->attribute} instanceof CurrencyValue');
             $currencyValueModel = $this->model->{$this->attribute};
-            return Yii::app()->numberFormatter->formatCurrency( $currencyValueModel->value,
+            return Yii::app()->numberFormatter->formatCurrency((float)$currencyValueModel->value,
                                                                 $currencyValueModel->currency->code);
         }
 
