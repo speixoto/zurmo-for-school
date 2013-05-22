@@ -102,5 +102,10 @@
         {
             return false;
         }
+
+        public static function getDesignerRulesType()
+        {
+            return 'DetailsPortletView';
+        }
     }
 ?>

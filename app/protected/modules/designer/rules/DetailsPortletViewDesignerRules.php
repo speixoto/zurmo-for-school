@@ -34,78 +34,26 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * The portlet view for contact detail view
-     */
-    class ContactDetailsPortletView extends ContactEditAndDetailsView implements PortletViewInterface
+    class DetailsPortletViewDesignerRules extends DesignerRules
     {
-        protected $params;
-        protected $viewData;
-        protected $uniqueLayoutId;
-
-        public function __construct($viewData, $params, $uniqueLayoutId)
-        {
-            assert('isset($params["controllerId"])');
-            assert('isset($params["relationModuleId"])');
-            assert('$params["relationModel"] instanceof RedBeanModel || $params["relationModel"] instanceof ModelForm');
-            assert('isset($params["portletId"])');
-            assert('isset($params["redirectUrl"])');
-            $this->modelClassName    = $this->getModelClassName();
-            $this->viewData          = $viewData;
-            $this->params            = $params;
-            $this->uniqueLayoutId    = $uniqueLayoutId;
-            $this->gridIdSuffix      = $uniqueLayoutId;
-            $this->rowsAreSelectable = false;
-            $this->gridId            = 'list-view';
-            $this->controllerId      = $this->resolveControllerId();
-            $this->moduleId          = $this->resolveModuleId();
-            parent::__construct('Details', $this->controllerId, $this->moduleId, $params["relationModel"]);
-        }
-
-        public static function getPortletRulesType()
-        {
-            return 'Detail';
-        }
-
-        public static function getModuleClassName()
-        {
-            return 'ContactsModule';
-        }
-
-        /**
-         * Controller Id for the link to models from rows in the grid view.
-         */
-        private function resolveControllerId()
-        {
-            return 'default';
-        }
-
-        /**
-         * Module Id for the link to models from rows in the grid view.
-         */
-        private function resolveModuleId()
-        {
-            return 'contacts';
-        }
-
-        public static function canUserConfigure()
+        public function allowEditInLayoutTool()
         {
             return false;
         }
 
-        protected function renderTitleContent()
+        public function getDisplayName()
         {
-            return '';
+            return Zurmo::t('DesignerModule', 'Details Portlet View');
         }
 
-        public static function canUserRemove()
+        public function maxCellsPerRow()
         {
-            return false;
+            return 2;
         }
 
-        public static function getDesignerRulesType()
+        public function canConfigureLayoutPanelsType()
         {
-            return 'DetailsPortletView';
+            return true;
         }
     }
 ?>
