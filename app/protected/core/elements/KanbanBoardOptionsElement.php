@@ -45,11 +45,11 @@
             assert('$this->model instanceof SearchForm');
             assert('$this->attribute == null');
             assert('$this->model->getKanbanBoard() != null');
-            $content      = $this->renderSelectionContent();
-            $content     .= $this->renderThemeContent();
-            $content      = ZurmoHtml::tag('div', array('class' => 'attributesContainer'), $content);
-            $linkContent  = $this->renderApplyResetContent() . $this->renderApplyLinkContent();
-            $linkContent  = ZurmoHtml::tag('div', array('class' => 'form-toolbar clearfix'), $linkContent);
+            $content     = ZurmoHtml::tag('div', array('class' => 'kanban-board-options-panel'), $this->renderSelectionContent());
+            $content    .= ZurmoHtml::tag('div', array('class' => 'kanban-board-options-panel'), $this->renderThemeContent());
+            $content     = ZurmoHtml::tag('div', array('class' => 'attributesContainer clearfix'), $content);
+            $linkContent = $this->renderApplyResetContent() . $this->renderApplyLinkContent();
+            $linkContent = ZurmoHtml::tag('div', array('class' => 'form-toolbar clearfix'), $linkContent);
             $this->registerEditableValuesScripts();
             $this->registerThemeScript();
             return $content . ZurmoHtml::tag('div', array('class' => 'view-toolbar-container'), $linkContent);
@@ -75,7 +75,7 @@
 
         protected function renderSelectionContent()
         {
-            $content = Zurmo::t('Core', 'Visible Values');
+            $content = ZurmoHtml::tag('h3', array(), Zurmo::t('Core', 'Visible Columns'));
             $content .= ZurmoHtml::checkBoxList(
                 $this->getEditableInputName(KanbanBoard::GROUP_BY_ATTRIBUTE_VISIBLE_VALUES),
                 $this->model->getKanbanBoard()->getGroupByAttributeVisibleValues(),
@@ -91,7 +91,7 @@
          */
         protected function renderThemeContent()
         {
-            $content = Zurmo::t('Core', 'Theme');
+            $content = ZurmoHtml::tag('h3', array(), Zurmo::t('Core', 'Theme'));
             $content .= ZurmoHtml::radioButtonList(
                 $this->getEditableInputName(KanbanBoard::SELECTED_THEME),
                 $this->model->getKanbanBoard()->getSelectedTheme(),
@@ -104,7 +104,7 @@
         protected function getEditableValuesHtmlOptions()
         {
             return array(
-                'template'  => '<div class="multi-select-checkbox-input"><label class="hasCheckBox">{input}</label>{label}</div>',
+                'template'  => '<div class="multi-select-checkbox-input">{input}{label}</div>',
                 'separator' => '',
                 'id'        => $this->getEditableInputId(KanbanBoard::GROUP_BY_ATTRIBUTE_VISIBLE_VALUES),
                 'class'     => 'ignore-clearform'

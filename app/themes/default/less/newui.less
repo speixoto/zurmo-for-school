@@ -2672,6 +2672,9 @@ div.wide.form{
 	input[type="submit"]{
 		++.z-button;
 	}
+	> a{
+		margin-right: 25px;
+	}
 }
 
 #more-search-linkmodal,
@@ -2686,8 +2689,8 @@ div.wide.form{
 	}
 }
 
+#kanban-board-options-link,
 #select-list-attributes-link{
-	margin-left:25px;
 	&:after{
 		content: "÷";
 		.symbly(14px);
@@ -2756,6 +2759,7 @@ div.wide.form{
 	}
 }
 
+.kanban-board-options-view,
 .select-list-attributes-view,
 .search-view-1{
 	margin-top:15px;
@@ -2764,13 +2768,6 @@ div.wide.form{
 	height:auto;
 	float: left;
 	width: 100%;
-	label{
-		padding-top:7px;
-		padding-right:10px;
-		width:100%;
-		display:block;
-		text-align:left;
-	}
 	#cancel-advanced-search{
 		color:#656565;
 		.t-shadow(none);
@@ -2786,6 +2783,17 @@ div.wide.form{
 	}
 	.view-toolbar-container{
 		display: inline-block;
+	}
+}
+
+.select-list-attributes-view,
+.search-view-1{
+	label{
+		padding-top:7px;
+		padding-right:10px;
+		width:100%;
+		display:block;
+		text-align:left;
 	}
 }
 
@@ -2815,7 +2823,7 @@ div.wide.form{
 
 #clear-search-link{
 	.z-link();
-	margin-left:10px;
+	//margin-left:10px;
 	.icon-clear{
 		.symbly(16px);
 	}

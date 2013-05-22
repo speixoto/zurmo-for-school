@@ -4,7 +4,7 @@ $(window).ready(function(){
             helper: function(event, ui){
                 var label = $(event.currentTarget).html();
                 var width = $(this).width();
-                var clone = $('<div class="kanban-card dynamic-row clone">' + label + '</div>');
+                var clone = $('<div class="kanban-card clone">' + label + '</div>');
                 clone.width(width);
                 //clone.animate({ width : width}, 250);
                 $('body').append(clone);

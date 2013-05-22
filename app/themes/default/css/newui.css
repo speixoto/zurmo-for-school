@@ -870,6 +870,7 @@ body.blue .xhtml-validation-info,
 body.blue .performance-info,
 body.blue tr:hover .pencil,
 body.blue .ui-dialog .ui-dialog-title div.wide.form a,
+body.blue #kanban-board-options-link,
 body.blue #select-list-attributes-link,
 body.blue #more-search-linkmodal,
 body.blue #more-search-link,
@@ -1437,6 +1438,7 @@ body.brown .xhtml-validation-info,
 body.brown .performance-info,
 body.brown tr:hover .pencil,
 body.brown .ui-dialog .ui-dialog-title div.wide.form a,
+body.brown #kanban-board-options-link,
 body.brown #select-list-attributes-link,
 body.brown #more-search-linkmodal,
 body.brown #more-search-link,
@@ -2004,6 +2006,7 @@ body.lime .xhtml-validation-info,
 body.lime .performance-info,
 body.lime tr:hover .pencil,
 body.lime .ui-dialog .ui-dialog-title div.wide.form a,
+body.lime #kanban-board-options-link,
 body.lime #select-list-attributes-link,
 body.lime #more-search-linkmodal,
 body.lime #more-search-link,
@@ -2571,6 +2574,7 @@ body.cherry .xhtml-validation-info,
 body.cherry .performance-info,
 body.cherry tr:hover .pencil,
 body.cherry .ui-dialog .ui-dialog-title div.wide.form a,
+body.cherry #kanban-board-options-link,
 body.cherry #select-list-attributes-link,
 body.cherry #more-search-linkmodal,
 body.cherry #more-search-link,
@@ -3138,6 +3142,7 @@ body.turquoise .xhtml-validation-info,
 body.turquoise .performance-info,
 body.turquoise tr:hover .pencil,
 body.turquoise .ui-dialog .ui-dialog-title div.wide.form a,
+body.turquoise #kanban-board-options-link,
 body.turquoise #select-list-attributes-link,
 body.turquoise #more-search-linkmodal,
 body.turquoise #more-search-link,
@@ -3705,6 +3710,7 @@ body.violet .xhtml-validation-info,
 body.violet .performance-info,
 body.violet tr:hover .pencil,
 body.violet .ui-dialog .ui-dialog-title div.wide.form a,
+body.violet #kanban-board-options-link,
 body.violet #select-list-attributes-link,
 body.violet #more-search-linkmodal,
 body.violet #more-search-link,
@@ -4272,6 +4278,7 @@ body.honey .xhtml-validation-info,
 body.honey .performance-info,
 body.honey tr:hover .pencil,
 body.honey .ui-dialog .ui-dialog-title div.wide.form a,
+body.honey #kanban-board-options-link,
 body.honey #select-list-attributes-link,
 body.honey #more-search-linkmodal,
 body.honey #more-search-link,
@@ -8166,6 +8173,9 @@ div.wide.form label.hasCheckBox {
   line-height: 25px;
   font-size: 11px;
 }
+.search-form-tools > a {
+  margin-right: 25px;
+}
 #more-search-linkmodal,
 #more-search-link {
   margin-left: 0;
@@ -8180,9 +8190,7 @@ div.wide.form label.hasCheckBox {
   top: 1px;
   margin-left: 5px;
 }
-#select-list-attributes-link {
-  margin-left: 25px;
-}
+#kanban-board-options-link:after,
 #select-list-attributes-link:after {
   content: "÷";
   font-weight: normal;
@@ -8250,6 +8258,7 @@ div.wide.form label.hasCheckBox {
 #ModalView .items thead tr:first-child th {
   border-top: none;
 }
+.kanban-board-options-view,
 .select-list-attributes-view,
 .search-view-1 {
   margin-top: 15px;
@@ -8259,14 +8268,7 @@ div.wide.form label.hasCheckBox {
   float: left;
   width: 100%;
 }
-.select-list-attributes-view label,
-.search-view-1 label {
-  padding-top: 7px;
-  padding-right: 10px;
-  width: 100%;
-  display: block;
-  text-align: left;
-}
+.kanban-board-options-view #cancel-advanced-search,
 .select-list-attributes-view #cancel-advanced-search,
 .search-view-1 #cancel-advanced-search {
   color: #656565;
@@ -8276,21 +8278,33 @@ div.wide.form label.hasCheckBox {
   -ms-text-shadow: none;
   text-shadow: none;
 }
+.kanban-board-options-view #cancel-advanced-search .z-label,
 .select-list-attributes-view #cancel-advanced-search .z-label,
 .search-view-1 #cancel-advanced-search .z-label {
   background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
 }
+.kanban-board-options-view .view-toolbar-container,
 .select-list-attributes-view .view-toolbar-container,
 .search-view-1 .view-toolbar-container {
   border-top: 1px solid #CCCCCC;
 }
+.kanban-board-options-view > div,
 .select-list-attributes-view > div,
 .search-view-1 > div {
   display: block;
 }
+.kanban-board-options-view .view-toolbar-container,
 .select-list-attributes-view .view-toolbar-container,
 .search-view-1 .view-toolbar-container {
   display: inline-block;
+}
+.select-list-attributes-view label,
+.search-view-1 label {
+  padding-top: 7px;
+  padding-right: 10px;
+  width: 100%;
+  display: block;
+  text-align: left;
 }
 .select-list-attributes-view table {
   border-bottom: none;
@@ -8324,7 +8338,6 @@ div.wide.form label.hasCheckBox {
   border-radius: 3px;
   color: #fff !important;
   font-size: 11px;
-  margin-left: 10px;
 }
 #clear-search-link .icon-clear {
   font-weight: normal;
@@ -17756,6 +17769,7 @@ a.user-link {
   padding: 5px 5px;
   position: relative;
   z-index: 5;
+  min-height: 600px;
 }
 .column-header {
   font-weight: bold !important;
@@ -17804,7 +17818,7 @@ a.user-link {
   color: #666;
 }
 .kanban-card .opportunity-amount {
-  font-size: 24px;
+  font-size: 20px;
   font-weight: bold;
   text-align: right;
   color: #222363;
@@ -17855,6 +17869,17 @@ a.user-link {
 .kanban-card .hidden-content > div {
   display: none;
   padding: 10px 0 5px 0;
+}
+.kanban-card.clone {
+  position: absolute;
+  z-index: 10000;
+}
+.kanban-board-options-panel {
+  width: 50%;
+  float: left;
+}
+.kanban-board-options-panel h3 {
+  margin-bottom: 10px;
 }
 /*********************************************************************************
  * Zurmo is a customer relationship management program developed by
