@@ -34,22 +34,12 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class ContactsForAccountRelatedListView extends ContactsRelatedListView
+    /**
+     * Class defines rules for any detail
+     * portlets.
+     */
+    class DetailPortletRules extends PortletRules
     {
-        protected function getRelationAttributeName()
-        {
-            return 'account';
-        }
-
-        public static function getDisplayDescription()
-        {
-            return Zurmo::t('ContactsModule', 'ContactsModulePluralLabel For AccountsModuleSingularLabel',
-                        LabelUtil::getTranslationParamsForAllModules());
-        }
-
-        public static function getAllowedOnPortletViewClassNames()
-        {
-            return array('AccountDetailsAndRelationsView');
-        }
+        
     }
 ?>

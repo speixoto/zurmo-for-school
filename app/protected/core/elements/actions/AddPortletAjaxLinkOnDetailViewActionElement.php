@@ -34,59 +34,54 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class LeadDetailsAndRelationsView extends ConfigurableDetailsAndRelationsView
+    class AddPortletAjaxLinkOnDetailViewActionElement extends DropdownSupportedAjaxLinkActionElement
     {
-        /**
-         * Declare layout as 2 columns
-         */
-        public function isUniqueToAPage()
+        public function getActionType()
         {
-            return true;
+            return 'AddPortlet';
         }
 
-        public static function getDefaultMetadata()
+        protected function getDefaultLabel()
         {
-            $metadata = array(
-                'global' => array(
-                    'toolbar' => array(
-                        'elements' => array(
-                            array(  'type'           => 'AddPortletAjaxLinkOnDetailView',
-                                    'uniqueLayoutId' => 'eval:$this->uniqueLayoutId',
-                                    'ajaxOptions'    => 'eval:static::resolveAjaxOptionsForAddPortlet()',
-                                    'htmlOptions'    => array('id' => 'AddPortletLink',
-                                    'class'          => 'icon-add'
-                                )
-                            ),
-                        ),
-                    ),
-                    'columns' => array(
-                        array(
-                            'rows' => array(
-                               array(
-                                    'type' => 'LeadDetailsPortlet',
-                                ),
-                               array(
-                                    'type' => 'NoteInlineEditForPortlet',
-                                ),
-                               array(
-                                    'type' => 'ContactLatestActivitiesForPortlet',
-                                ),
-                            )
-                        ),
-                        array(
-                            'rows' => array(
-                                array(
-                                     'type' => 'UpcomingMeetingsForContactCalendar',
-                                    ),
-                                array(
-                                     'type' => 'OpenTasksForContactRelatedList',
-                                    )
-                            )
-                        )
+            return Zurmo::t('HomeModule', 'Add Portlet');
+        }
+
+        protected function getDefaultRoute()
+        {
+            return Yii::app()->createUrl($this->moduleId . '/defaultPortlet/AddList/',
+                    array(
+                    'uniqueLayoutId' => $this->getUniqueLayoutId(),
+                    'modelId' => $this->modelId,
                     )
-                )
             );
-            return $metadata;
+        }
+
+        protected function getUniqueLayoutId()
+        {
+            if (isset($this->params['uniqueLayoutId']))
+            {
+                return $this->params['uniqueLayoutId'];
+            }
+        }
+
+        public function getElementValue()
+        {
+            $eventHandlerName = 'addPortletAjaxLinkActionElementHandler';
+            $ajaxOptions      = CMap::mergeArray($this->getAjaxOptions(), array('url' => $this->route));
+            if (Yii::app()->clientScript->isScriptRegistered($eventHandlerName))
+            {
+                return;
+            }
+            else
+            {
+                Yii::app()->clientScript->registerScript($eventHandlerName, "
+                    function ". $eventHandlerName ."()
+                    {
+                        " . ZurmoHtml::ajax($ajaxOptions)."
+                    }
+                ", CClientScript::POS_HEAD); // POS_HEAD so its available when registerDropdownScripts() checks for it.
+            }
+            return $eventHandlerName;
         }
     }
 ?>

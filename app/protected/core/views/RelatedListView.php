@@ -37,7 +37,7 @@
     /**
      * The base View for a module's related list view.
      */
-    abstract class RelatedListView extends ListView implements PortletViewInterface
+    abstract class RelatedListView extends ListView implements PortletViewInterface,RelatedPortletViewInterface
     {
         protected $params;
         protected $viewData;
@@ -269,5 +269,15 @@
         }
 
         abstract protected function getRelationAttributeName();
+
+        public static function getAllowedOnPortletViewClassNames()
+        {
+            return array();
+        }
+
+        public static function allowMultiplePlacement()
+        {
+            return false;
+        }
     }
 ?>

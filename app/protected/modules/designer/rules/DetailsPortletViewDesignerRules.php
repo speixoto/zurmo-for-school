@@ -34,59 +34,26 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class LeadDetailsAndRelationsView extends ConfigurableDetailsAndRelationsView
+    class DetailsPortletViewDesignerRules extends DesignerRules
     {
-        /**
-         * Declare layout as 2 columns
-         */
-        public function isUniqueToAPage()
+        public function allowEditInLayoutTool()
         {
-            return true;
+            return false;
         }
 
-        public static function getDefaultMetadata()
+        public function getDisplayName()
         {
-            $metadata = array(
-                'global' => array(
-                    'toolbar' => array(
-                        'elements' => array(
-                            array(  'type'           => 'AddPortletAjaxLinkOnDetailView',
-                                    'uniqueLayoutId' => 'eval:$this->uniqueLayoutId',
-                                    'ajaxOptions'    => 'eval:static::resolveAjaxOptionsForAddPortlet()',
-                                    'htmlOptions'    => array('id' => 'AddPortletLink',
-                                    'class'          => 'icon-add'
-                                )
-                            ),
-                        ),
-                    ),
-                    'columns' => array(
-                        array(
-                            'rows' => array(
-                               array(
-                                    'type' => 'LeadDetailsPortlet',
-                                ),
-                               array(
-                                    'type' => 'NoteInlineEditForPortlet',
-                                ),
-                               array(
-                                    'type' => 'ContactLatestActivitiesForPortlet',
-                                ),
-                            )
-                        ),
-                        array(
-                            'rows' => array(
-                                array(
-                                     'type' => 'UpcomingMeetingsForContactCalendar',
-                                    ),
-                                array(
-                                     'type' => 'OpenTasksForContactRelatedList',
-                                    )
-                            )
-                        )
-                    )
-                )
-            );
-            return $metadata;
+            return Zurmo::t('DesignerModule', 'Details Portlet View');
+        }
+
+        public function maxCellsPerRow()
+        {
+            return 2;
+        }
+
+        public function canConfigureLayoutPanelsType()
+        {
+            return true;
         }
     }
 ?>
