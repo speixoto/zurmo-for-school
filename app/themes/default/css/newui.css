@@ -6377,6 +6377,34 @@ form .view-toolbar-container,
   position: relative;
   top: -2px;
 }
+.icon-lock:before {
+  content: "F";
+  font-weight: normal;
+  font-size: 24px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  padding: 0 0 0 0;
+  margin: 0 6px 0 -30px;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  vertical-align: middle;
+  position: relative;
+  top: -3px;
+}
+.icon-unlock:before {
+  content: "E";
+  font-weight: normal;
+  font-size: 24px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  padding: 0 0 0 0;
+  margin: 0 6px 0 -30px;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  vertical-align: middle;
+  position: relative;
+  top: -3px;
+}
 #HomeDashboardView .parent > a:before,
 .icon-change-dashborad:before {
   content: "/";

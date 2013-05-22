@@ -100,11 +100,11 @@
             $lockLink = '';
             if($isViewLocked === true)
             {
-                $lockLink = "<a href='" . $url . "&lockPortlets=0'>" . Zurmo::t('Core', 'Unlock') . "</a>";
+                $lockLink = "<a href='" . $url . "&lockPortlets=0' class='icon-lock'>" . Zurmo::t('Core', 'Unlock') . "</a>";
             }
             else
             {
-                $lockLink = "<a href='" . $url . "&lockPortlets=1'>" . Zurmo::t('Core', 'Lock') . "</a>";
+                $lockLink = "<a href='" . $url . "&lockPortlets=1' class='icon-unlock'>" . Zurmo::t('Core', 'Lock') . "</a>";
             }
 
             $content  = '<div class="view-toolbar-container clearfix"><div class="view-toolbar">';
