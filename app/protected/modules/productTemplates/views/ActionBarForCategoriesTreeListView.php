@@ -66,5 +66,17 @@
             );
             return $metadata;
         }
+
+        protected function makeModel()
+        {
+            return new ProductCategory(false);
+        }
+
+        protected function shouldRenderToolBarElement($element, $elementInformation)
+        {
+            assert('$element instanceof ActionElement');
+            assert('is_array($elementInformation)');
+            return true;
+        }
     }
 ?>
