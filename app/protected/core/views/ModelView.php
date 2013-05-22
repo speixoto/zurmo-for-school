@@ -84,7 +84,10 @@
                             }
                             $cellCount++;
                             $designerRules = DesignerRulesFactory::createDesignerRulesByView(get_called_class());
-                            assert('$cellCount <= $designerRules->maxCellsPerRow()');
+			    if($designerRules != null)
+			    {
+				assert('$cellCount <= $designerRules->maxCellsPerRow()');
+			    }
                         }
                     }
                 }

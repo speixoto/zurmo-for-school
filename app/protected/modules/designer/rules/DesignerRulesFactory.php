@@ -45,8 +45,8 @@
             assert('is_string($viewClassName) && $viewClassName != ""');
             $designerRulesType = $viewClassName::getDesignerRulesType();
             assert('$designerRulesType !== null');
-            $designerRulesClassName = $designerRulesType . 'DesignerRules';
-            return new $designerRulesClassName();
+	    $designerRulesClassName = $designerRulesType . 'DesignerRules';
+	    return new $designerRulesClassName();
         }
     }
 ?>

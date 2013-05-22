@@ -172,6 +172,7 @@
                     'opportunities',
                     'marketing',
                     'reports',
+                    'products',
                 )
             );
             return $metadata;

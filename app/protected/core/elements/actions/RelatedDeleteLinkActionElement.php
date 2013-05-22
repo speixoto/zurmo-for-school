@@ -59,7 +59,7 @@
 
         protected function getDefaultRoute()
         {
-            $params = array('id' => $this->modelId);
+            $params = $this->getParams();
             if (Yii::app()->request->getParam('redirectUrl') != null)
             {
                 $params = array_merge($params, array('redirectUrl' => Yii::app()->request->getParam('redirectUrl')));
@@ -68,12 +68,22 @@
             {
                 $params = array_merge($params, array('redirectUrl' => $this->getRedirectUrl()));
             }
-            return Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/delete/', $params);
+            return Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/' . $this->getDeleteAction() . '/', $params);
         }
 
         protected function getLinkId()
         {
             return $this->getGridId(). '-delete-' . $this->modelId;
         }
+
+	protected function getDeleteAction()
+	{
+	    return 'delete';
+	}
+
+	protected function getParams()
+	{
+	    return array('id' => $this->modelId);
+	}
     }
 ?>
