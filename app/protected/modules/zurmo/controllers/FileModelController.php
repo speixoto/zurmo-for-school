@@ -87,6 +87,10 @@
             foreach($existingFileModelIds as $existingFileModelId)
             {
                 $newFileModel           = FileModelUtil::makeByExistingFileModelId($existingFileModelId);
+                if ($newFileModel === false)
+                {
+                    throw new FailedFileUploadException();
+                }
                 $newFileModelsData[]    = array('name' => $newFileModel->name,
                                                 'type' => $newFileModel->type,
                                                 'size' =>

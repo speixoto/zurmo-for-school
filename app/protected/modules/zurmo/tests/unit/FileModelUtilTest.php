@@ -169,6 +169,7 @@
             Yii::app()->user->userModel = User::getByUsername('super');
             $file1  = ZurmoTestHelper::createFileModel();
             $file2  = FileModelUtil::makeByExistingFileModelId($file1->id);
+            $this->assertTrue($file2 !== false);
             $this->assertEquals($file1->fileContent->content, $file2->fileContent->content);
             $this->assertEquals($file1->name, $file2->name);
             $this->assertEquals($file1->type, $file2->type);
