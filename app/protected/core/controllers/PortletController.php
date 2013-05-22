@@ -127,7 +127,6 @@
         public function actionModalRefresh($portletId, $uniqueLayoutId, $redirectUrl, array $portletParams = array(),
                                            $portletsAreRemovable = true)
         {
-            assert('is_bool($portletsAreRemovable)');
             $portlet = Portlet::getById(intval($portletId));
             $portlet->params = array_merge(array(
                     'controllerId' => 'default',
