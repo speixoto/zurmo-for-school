@@ -41,6 +41,8 @@
     {
         const BATCH_SIZE_CONFIG_KEY = 'CampaignBatchSize';
 
+        const DEFAULT_BATCH_SIZE    = 200;
+
         /**
          * @returns Translated label that describes this job type.
          */
@@ -102,7 +104,7 @@
             $batchSize = ZurmoConfigurationUtil::getByModuleName('CampaignsModule', static::BATCH_SIZE_CONFIG_KEY);
             if (!$batchSize)
             {
-                $batchSize = 200;
+                $batchSize = static::DEFAULT_BATCH_SIZE;
                 ZurmoConfigurationUtil::getByModuleName('CampaignsModule', static::BATCH_SIZE_CONFIG_KEY, $batchSize);
             }
             return $batchSize;

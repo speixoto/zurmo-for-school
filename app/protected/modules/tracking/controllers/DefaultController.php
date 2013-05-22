@@ -72,6 +72,7 @@
             catch (FailedToSaveModelException $e)
             {
             }
+            // we do not catch all exceptions because we need Exit and Redirect Exception for unit tests
         }
 
         protected static function getUserToRunTrackActionAs()

@@ -39,7 +39,7 @@
      */
     abstract class AutoresponderAndCampaignItemsUtil
     {
-        public static function processDueItem($item)
+        public static function processDueItem(OwnedModel $item)
         {
             assert('is_object($item)');
             $itemClass                  = get_class($item);
@@ -108,7 +108,7 @@
             $activityUtil::resolveContentForTracking($enableTracking, $htmlContent, $modelId, $modelType, $personId, true);
         }
 
-        protected static function resolveEmailMessage($textContent, $htmlContent, $itemOwnerModel, Contact $contact)
+        protected static function resolveEmailMessage($textContent, $htmlContent, Item $itemOwnerModel, Contact $contact)
         {
             $marketingList                  = $itemOwnerModel->marketingList;
             $emailMessage                   = new EmailMessage();
@@ -125,7 +125,7 @@
             {
                 throw new MissingRecipientsForEmailMessageException();
             }
-            $boxName                        = static::resolveEmailBoxName($itemOwnerModel);
+            $boxName                        = static::resolveEmailBoxName(get_class($itemOwnerModel));
             $box                            = EmailBox::resolveAndGetByName($boxName);
             $emailMessage->folder           = EmailFolder::getByBoxAndType($box, EmailFolder::TYPE_DRAFT);
             Yii::app()->emailHelper->send($emailMessage);
@@ -162,7 +162,7 @@
             }
         }
 
-        protected static function resolveAttachments(EmailMessage $emailMessage, $itemOwnerModel)
+        protected static function resolveAttachments(EmailMessage $emailMessage, Item $itemOwnerModel)
         {
             if (!empty($itemOwnerModel->files))
             {
@@ -191,9 +191,9 @@
             }
         }
 
-        protected static function resolveEmailBoxName($itemOwnerModel)
+        protected static function resolveEmailBoxName($itemOwnerModelClassName)
         {
-            if ($itemOwnerModel == "Autoresponder")
+            if ($itemOwnerModelClassName == "Autoresponder")
             {
                 return EmailBox::AUTORESPONDERS_NAME;
             }
