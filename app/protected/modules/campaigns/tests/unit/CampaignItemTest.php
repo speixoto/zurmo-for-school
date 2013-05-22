@@ -51,12 +51,12 @@
         public function testCreateAndGetCampaignItemById()
         {
             $campaignItem                          = new CampaignItem();
-            $campaignItem->processed               = CampaignItem::PROCESSED;
+            $campaignItem->processed               = 1;
             $this->assertTrue($campaignItem->unrestrictedSave());
             $id = $campaignItem->id;
             unset($campaignItem);
             $campaignItem = CampaignItem::getById($id);
-            $this->assertEquals(CampaignItem::PROCESSED,   $campaignItem->processed);
+            $this->assertEquals(1,   $campaignItem->processed);
         }
 
         /**
@@ -69,7 +69,7 @@
             $id = $campaignItem->id;
             unset($campaignItem);
             $campaignItem = CampaignItem::getById($id);
-            $this->assertEquals(CampaignItem::NOT_PROCESSED,   $campaignItem->processed);
+            $this->assertEquals(0,   $campaignItem->processed);
         }
 
         /**
@@ -77,30 +77,32 @@
          */
         public function testGetByProcessed()
         {
+            $this->deleteAllCampaignItems();
             for ($i = 0; $i < 5; $i++)
             {
-                $processed                          = CampaignItem::NOT_PROCESSED;
+                $processed                          = 0;
                 if ($i % 2)
                 {
-                    $processed      = CampaignItem::PROCESSED;
+                    $processed      = 1;
                 }
                 $campaignItem                  = new CampaignItem();
                 $campaignItem->processed       = $processed;
                 $this->assertTrue($campaignItem->unrestrictedSave());
             }
             $campaignItems         =   CampaignItem::getAll();
-            $this->assertCount(7, $campaignItems);
-            $processedItems             =   CampaignItem::getByProcessed(CampaignItem::PROCESSED);
-            $this->assertCount(3, $processedItems);
-            $notProcessedItems          =   CampaignItem::getByProcessed(CampaignItem::NOT_PROCESSED);
-            $this->assertCount(4, $notProcessedItems);
+            $this->assertCount(5, $campaignItems);
+            $processedItems             =   CampaignItem::getByProcessed(1);
+            $this->assertCount(2, $processedItems);
+            $notProcessedItems          =   CampaignItem::getByProcessed(0);
+            $this->assertCount(3, $notProcessedItems);
         }
 
         /**
          * @depends testGetByProcessed
          */
-        public function testGetByProcessedAndTime()
+        public function testGetByProcessedAndSendingDateTime()
         {
+            $this->deleteAllCampaignItems();
             $marketingList                  = MarketingListTestHelper::createMarketingListByName('marketingList 01');
             $this->assertNotNull($marketingList);
             $campaignToday                  = CampaignTestHelper::createCampaign('campaign Today',
@@ -117,7 +119,8 @@
                                                                                     null,
                                                                                     $marketingList);
             $this->assertNotNull($campaignToday);
-            $tenDaysFromNowDateTime     = DateTimeUtil::convertTimestampToDbFormatDateTime(time() + 60*60*24*10);
+            $tenDaysFromNowTimestamp    = time() + 60*60*24*10;
+            $tenDaysFromNowDateTime     = DateTimeUtil::convertTimestampToDbFormatDateTime($tenDaysFromNowTimestamp);
             $campaignTenDaysFromNow     = CampaignTestHelper::createCampaign('campaign Ten Days',
                                                                                     'subject Ten Days',
                                                                                     'text Ten Days',
@@ -138,11 +141,11 @@
                 $this->assertNotNull($contact);
                 if ($i % 3)
                 {
-                    $processed      = CampaignItem::PROCESSED;
+                    $processed      = 1;
                 }
                 else
                 {
-                    $processed      = CampaignItem::NOT_PROCESSED;
+                    $processed      = 0;
                 }
                 if ($i % 2)
                 {
@@ -155,26 +158,160 @@
                 $campaignItem       = CampaignItemTestHelper::createCampaignItem($processed, $campaign);
                 $this->assertNotNull($campaignItem);
             }
-
+            $tenDaysFromNowTimestamp                    += 100; // incrementing it a bit so the records we just created show up.
             $campaignItems         = CampaignItem::getAll();
             $this->assertNotEmpty($campaignItems);
-            $this->assertCount(17, $campaignItems);
-            $campaignTodayProcessed  = CampaignItem::getByProcessedAndCampaignId(CampaignItem::PROCESSED,
-                                                                                                $campaignToday->id);
+            $this->assertCount(10, $campaignItems);
+            $campaignTodayProcessed  = CampaignItem::getByProcessedAndSendingDateTime(1);
             $this->assertNotEmpty($campaignTodayProcessed);
             $this->assertCount(3, $campaignTodayProcessed);
-            $campaignTodayNotProcessed  = CampaignItem::getByProcessedAndCampaignId(CampaignItem::NOT_PROCESSED,
-                                                                                                $campaignToday->id);
+            $campaignTodayNotProcessed  = CampaignItem::getByProcessedAndSendingDateTime(0);
             $this->assertNotEmpty($campaignTodayNotProcessed);
             $this->assertCount(2, $campaignTodayNotProcessed);
-            $campaignTenDaysFromNowProcessed  = CampaignItem::getByProcessedAndCampaignId(CampaignItem::PROCESSED,
-                                                                                                $campaignTenDaysFromNow->id);
+            $campaignTenDaysFromNowProcessed  = CampaignItem::getByProcessedAndSendingDateTime(1,
+                                                                                            $tenDaysFromNowTimestamp);
             $this->assertNotEmpty($campaignTenDaysFromNowProcessed);
-            $this->assertCount(3, $campaignTenDaysFromNowProcessed);
-            $campaignTenDaysFromNowNotProcessed  = CampaignItem::getByProcessedAndCampaignId(CampaignItem::NOT_PROCESSED,
-                                                                                                $campaignTenDaysFromNow->id);
+            $this->assertCount(6, $campaignTenDaysFromNowProcessed);
+            $campaignTenDaysFromNowNotProcessed  = CampaignItem::getByProcessedAndSendingDateTime(
+                                                                                            0,
+                                                                                            $tenDaysFromNowTimestamp);
             $this->assertNotEmpty($campaignTenDaysFromNowNotProcessed);
-            $this->assertCount(2, $campaignTenDaysFromNowNotProcessed);
+            $this->assertCount(4, $campaignTenDaysFromNowNotProcessed);
+        }
+
+        /**
+         * @depends testGetByProcessed
+         */
+        public function testGetByProcessedAndStatusAndSendingDateTime()
+        {
+            $this->deleteAllCampaignItems();
+            $marketingList              = MarketingListTestHelper::createMarketingListByName('marketingList 02');
+            $this->assertNotNull($marketingList);
+            $campaignTodayActive        = CampaignTestHelper::createCampaign('campaign Today Active',
+                                                                                    'subject Today Active',
+                                                                                    'text Today Active',
+                                                                                    'html Today Active',
+                                                                                    null,
+                                                                                    null,
+                                                                                    null,
+                                                                                    Campaign::TYPE_MARKETING_LIST,
+                                                                                    Campaign::STATUS_ACTIVE,
+                                                                                    null,
+                                                                                    null,
+                                                                                    null,
+                                                                                    $marketingList);
+            $this->assertNotNull($campaignTodayActive);
+            $campaignTodayPaused        = CampaignTestHelper::createCampaign('campaign Today Paused',
+                                                                                    'subject Today Paused',
+                                                                                    'text Today Paused',
+                                                                                    'html Today Paused',
+                                                                                    null,
+                                                                                    null,
+                                                                                    null,
+                                                                                    Campaign::TYPE_MARKETING_LIST,
+                                                                                    Campaign::STATUS_PAUSED,
+                                                                                    null,
+                                                                                    null,
+                                                                                    null,
+                                                                                    $marketingList);
+            $this->assertNotNull($campaignTodayPaused);
+            $this->assertNotNull($campaignTodayActive);
+            $tenDaysFromNowTimestamp        = time() + 60*60*24*10;
+            $tenDaysFromNowDateTime         = DateTimeUtil::convertTimestampToDbFormatDateTime($tenDaysFromNowTimestamp);
+            $campaignTenDaysFromNowActive   = CampaignTestHelper::createCampaign('campaign Ten Days Active',
+                                                                                'subject Ten Days Active',
+                                                                                'text Ten Days Active',
+                                                                                'html Ten Days Active',
+                                                                                null,
+                                                                                null,
+                                                                                null,
+                                                                                Campaign::TYPE_MARKETING_LIST,
+                                                                                Campaign::STATUS_ACTIVE,
+                                                                                null,
+                                                                                $tenDaysFromNowDateTime,
+                                                                                null,
+                                                                                $marketingList);
+            $this->assertNotNull($campaignTenDaysFromNowActive);
+            $campaignTenDaysFromNowPaused       = CampaignTestHelper::createCampaign('campaign Ten Days Paused',
+                                                                                'subject Ten Days Paused',
+                                                                                'text Ten Days Paused',
+                                                                                'html Ten Days Paused',
+                                                                                null,
+                                                                                null,
+                                                                                null,
+                                                                                Campaign::TYPE_MARKETING_LIST,
+                                                                                Campaign::STATUS_PAUSED,
+                                                                                null,
+                                                                                $tenDaysFromNowDateTime,
+                                                                                null,
+                                                                                $marketingList);
+            $this->assertNotNull($campaignTenDaysFromNowPaused);
+            $campaignsArray = array($campaignTodayActive, $campaignTodayPaused,
+                                    $campaignTenDaysFromNowActive, $campaignTenDaysFromNowPaused);
+            for ($i = 0; $i < 20; $i++)
+            {
+                $contact = ContactTestHelper::createContactByNameForOwner('contact ' . $i, Yii::app()->user->userModel);
+                $this->assertNotNull($contact);
+                if ($i % 3)
+                {
+                    $processed      = 1;
+                }
+                else
+                {
+                    $processed      = 0;
+                }
+                $campaign           = $campaignsArray[$i % 4];
+                $campaignItem       = CampaignItemTestHelper::createCampaignItem($processed, $campaign);
+                $this->assertNotNull($campaignItem);
+            }
+            $tenDaysFromNowTimestamp                    += 100; // incrementing it a bit so the records we just created show up.
+            $campaignItems                              = CampaignItem::getAll();
+            $this->assertNotEmpty($campaignItems);
+            $this->assertCount(20, $campaignItems);
+            $campaignTodayActiveProcessed               = CampaignItem::getByProcessedAndStatusAndSendingDateTime(
+                                                                                    1,
+                                                                                    Campaign::STATUS_ACTIVE);
+            $this->assertNotEmpty($campaignTodayActiveProcessed);
+            $this->assertCount(3, $campaignTodayActiveProcessed);
+            $campaignTodayActiveNotProcessed            = CampaignItem::getByProcessedAndStatusAndSendingDateTime(
+                                                                                    0,
+                                                                                    Campaign::STATUS_ACTIVE);
+            $this->assertNotEmpty($campaignTodayActiveNotProcessed);
+            $this->assertCount(2, $campaignTodayActiveNotProcessed);
+            $campaignTodayPausedProcessed               = CampaignItem::getByProcessedAndStatusAndSendingDateTime(
+                                                                                    1,
+                                                                                    Campaign::STATUS_PAUSED);
+            $this->assertNotEmpty($campaignTodayPausedProcessed);
+            $this->assertCount(4, $campaignTodayPausedProcessed);
+            $campaignTodayPausedNotProcessed            = CampaignItem::getByProcessedAndStatusAndSendingDateTime(
+                                                                                    0,
+                                                                                    Campaign::STATUS_PAUSED);
+            $this->assertNotEmpty($campaignTodayPausedNotProcessed);
+            $this->assertCount(1, $campaignTodayPausedNotProcessed);
+            $campaignTenDaysFromNowActiveProcessed      = CampaignItem::getByProcessedAndStatusAndSendingDateTime(
+                                                                                    1,
+                                                                                    Campaign::STATUS_ACTIVE,
+                                                                                    $tenDaysFromNowTimestamp);
+            $this->assertNotEmpty($campaignTenDaysFromNowActiveProcessed);
+            $this->assertCount(6, $campaignTenDaysFromNowActiveProcessed);
+            $campaignTenDaysFromNowActiveNotProcessed   = CampaignItem::getByProcessedAndStatusAndSendingDateTime(
+                                                                                    0,
+                                                                                    Campaign::STATUS_ACTIVE,
+                                                                                    $tenDaysFromNowTimestamp);
+            $this->assertNotEmpty($campaignTenDaysFromNowActiveNotProcessed);
+            $this->assertCount(4, $campaignTenDaysFromNowActiveNotProcessed);
+            $campaignTenDaysFromNowPausedProcessed      = CampaignItem::getByProcessedAndStatusAndSendingDateTime(
+                                                                                    1,
+                                                                                    Campaign::STATUS_PAUSED,
+                                                                                    $tenDaysFromNowTimestamp);
+            $this->assertNotEmpty($campaignTenDaysFromNowPausedProcessed);
+            $this->assertCount(7, $campaignTenDaysFromNowPausedProcessed);
+            $campaignTenDaysFromNowPausedNotProcessed   = CampaignItem::getByProcessedAndStatusAndSendingDateTime(
+                                                                                    0,
+                                                                                    Campaign::STATUS_PAUSED,
+                                                                                    $tenDaysFromNowTimestamp);
+            $this->assertNotEmpty($campaignTenDaysFromNowPausedNotProcessed);
+            $this->assertCount(3, $campaignTenDaysFromNowPausedNotProcessed);
         }
 
         /**
@@ -182,7 +319,8 @@
          */
         public function testGetByProcessedAndCampaignId()
         {
-            $marketingList      = MarketingListTestHelper::createMarketingListByName('marketingList 02');
+            $this->deleteAllCampaignItems();
+            $marketingList      = MarketingListTestHelper::createMarketingListByName('marketingList 03');
             $this->assertNotNull($marketingList);
             $campaign1          = CampaignTestHelper::createCampaign('campaign 01',
                                                                         'subject 01',
@@ -218,11 +356,11 @@
                 $this->assertNotNull($contact);
                 if ($i % 3)
                 {
-                    $processed      = CampaignItem::PROCESSED;
+                    $processed      = 1;
                 }
                 else
                 {
-                    $processed      = CampaignItem::NOT_PROCESSED;
+                    $processed      = 0;
                 }
                 if ($i % 2)
                 {
@@ -237,20 +375,20 @@
             }
             $campaignItems         = CampaignItem::getAll();
             $this->assertNotEmpty($campaignItems);
-            $this->assertCount(27, $campaignItems);
-            $campaign1Processed  = CampaignItem::getByProcessedAndCampaignId(CampaignItem::PROCESSED,
+            $this->assertCount(10, $campaignItems);
+            $campaign1Processed  = CampaignItem::getByProcessedAndCampaignId(1,
                                                                                             $campaign1->id);
             $this->assertNotEmpty($campaign1Processed);
             $this->assertCount(3, $campaign1Processed);
-            $campaign1NotProcessed  = CampaignItem::getByProcessedAndCampaignId(CampaignItem::NOT_PROCESSED,
+            $campaign1NotProcessed  = CampaignItem::getByProcessedAndCampaignId(0,
                                                                                                 $campaign1->id);
             $this->assertNotEmpty($campaign1NotProcessed);
             $this->assertCount(2, $campaign1NotProcessed);
-            $campaign2Processed  = CampaignItem::getByProcessedAndCampaignId(CampaignItem::PROCESSED,
+            $campaign2Processed  = CampaignItem::getByProcessedAndCampaignId(1,
                                                                                             $campaign2->id);
             $this->assertNotEmpty($campaign2Processed);
             $this->assertCount(3, $campaign2Processed);
-            $campaign2NotProcessed  = CampaignItem::getByProcessedAndCampaignId(CampaignItem::NOT_PROCESSED,
+            $campaign2NotProcessed  = CampaignItem::getByProcessedAndCampaignId(0,
                                                                                                 $campaign2->id);
             $this->assertNotEmpty($campaign2NotProcessed);
             $this->assertCount(2, $campaign2NotProcessed);
@@ -272,11 +410,13 @@
          */
         public function testDeleteCampaignItem()
         {
-            $campaignItems = CampaignItem::getAll();
-            $this->assertCount(27, $campaignItems);
+            $campaignItems   = CampaignItem::getAll();
+            $this->assertNotEmpty($campaignItems);
+            $this->assertCount(10, $campaignItems);
             $campaignItems[0]->delete();
-            $campaignItems = CampaignItem::getAll();
-            $this->assertEquals(26, count($campaignItems));
+            $campaignItems   = CampaignItem::getAll();
+            $this->assertNotEmpty($campaignItems);
+            $this->assertCount(9, $campaignItems);
         }
 
         /**
@@ -284,10 +424,9 @@
          */
         public function testAddNewItem()
         {
-            $super              = User::getByUsername('super');
-            $processed          = CampaignItem::NOT_PROCESSED;
+            $processed          = 0;
             $contact            = ContactTestHelper::createContactByNameForOwner('campaignContact', Yii::app()->user->userModel);
-            $marketingList      = MarketingListTestHelper::createMarketingListByName('marketingList 03');
+            $marketingList      = MarketingListTestHelper::createMarketingListByName('marketingList 04');
             $campaign           = CampaignTestHelper::createCampaign('campaign 03',
                                                                         'subject 03',
                                                                         'text 03',
@@ -303,7 +442,7 @@
                                                                         $marketingList);
             $saved              = CampaignItem::addNewItem($processed, $contact, $campaign);
             $this->assertTrue($saved);
-            $campaignItems      = CampaignItem::getByProcessedAndCampaignId(CampaignItem::NOT_PROCESSED,
+            $campaignItems      = CampaignItem::getByProcessedAndCampaignId(0,
                                                                                         $campaign->id);
             $this->assertNotEmpty($campaignItems);
             $this->assertCount(1, $campaignItems);
@@ -312,9 +451,9 @@
         /**
          * @depends testAddNewItem
          */
-        public function testRegisterCampaignItemsByCampaignCreation()
+        public function testRegisterCampaignItemsByCampaign()
         {
-            $marketingList              = MarketingListTestHelper::createMarketingListByName('marketingList 04');
+            $marketingList              = MarketingListTestHelper::createMarketingListByName('marketingList 05');
             $campaign                   = CampaignTestHelper::createCampaign('campaign 04',
                                                                                 'subject 04',
                                                                                 'text 04',
@@ -342,9 +481,18 @@
                                                                                         Yii::app()->user->userModel);
 
             CampaignItem::registerCampaignItemsByCampaign($campaign, $contacts);
-            $campaignItems      = CampaignItem::getByProcessedAndCampaignId(CampaignItem::NOT_PROCESSED, $campaign->id);
+            $campaignItems      = CampaignItem::getByProcessedAndCampaignId(0, $campaign->id);
             $this->assertNotEmpty($campaignItems);
             $this->assertCount(5, $campaignItems);
+        }
+
+        protected function deleteAllCampaignItems()
+        {
+            $campaignItems  = CampaignItem::getAll();
+            foreach ($campaignItems as $campaignItem)
+            {
+                $campaignItem->delete();
+            }
         }
     }
 ?>

@@ -34,13 +34,15 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class ContactEmailTemplateNamesDropDownElement extends StaticDropDownFormElement
+    abstract class ContactEmailTemplateNamesDropDownElement extends StaticDropDownFormElement
     {
         const DISABLE_DROPDOWN_WHEN_AJAX_IN_PROGRESS    = true;
 
         const DISABLE_TEXTBOX_WHEN_AJAX_IN_PROGRESS    = true;
 
         const NOTIFICATION_BAR_ID                      = 'FlashMessageBar';
+
+        abstract protected function getModuleId();
 
         protected function renderControlNonEditable()
         {
@@ -75,10 +77,78 @@
             {
                 // TODO: @Shoaibi/@Amit: Critical: Loading spinner
                 Yii::app()->clientScript->registerScript($scriptName, '
+                        function updateContentAreaWithDataFromAjax(textContentElement, htmlContentElement,
+                                                                                                redActorElement, data)
+                        {
+                            $(textContentElement).html(data.textContent);
+                            $(htmlContentElement).html(data.htmlContent);
+                            $(redActorElement).html(data.htmlContent);
+                        }
+
+                        function deleteExistingAttachments()
+                        {
+                            $("table.files tr.template-download td.name span.upload-actions.delete button.icon-delete")
+                                .click();
+                        }
+
+                        function updateAddFilesWithDataFromAjax(filesIds, notificationBarId)
+                        {
+                            if (filesIds != "")
+                            {
+                                // TODO: @Shoaibi/@Jason: Critical:
+                                /*
+                                Could use: https://github.com/blueimp/jQuery-File-Upload/wiki/API#programmatic-file-upload
+                                If used with File then requirements of browsers are too high:
+                                 https://developer.mozilla.org/en-US/docs/Web/API/File?redirectlocale=en-US&redirectslug=DOM%2FFile#Browser_compatibility
+                                If used with Blob then where do we have name?
+                                We would also need a separate action to fetch file details against each file id, not json as that truncate non-utf8 content, like images.
+
+                                Workaround #1:
+                                a- get list of ids of current attachments using ajax, we have this done.
+                                b- make an ajax to action that duplicates those and returns new ids, names, sizes
+                                c- use data from [b] and build contents for file <table>, should be better to use a FileUpload function to do this like:
+                                $("#IdOfTemplate").tmpl(JSObjectContainingAllPlaceHolderValues).appendTo("#IdOfTargetContainerWhereTemplatedContentShouldGo");
+                                d- append those contents to file <table>
+                                Implemented workaround below:
+                                */
+                                var url             = "' . $this->getCloneExitingFilesUrl() . '";
+                                var templateId      = "#' . FileUpload::DOWNLOAD_TEMPLATE_ID .'";
+                                var targetClass     = ".files";
+                                var filesIdsString  = filesIds.join();
+                                $.ajax(
+                                    {
+                                        url:        url,
+                                        dataType:   "json",
+                                        data:       {
+                                                        commaSeparatedExistingModelIds: filesIdsString
+                                                    },
+                                        beforeSend: function(request, settings)
+                                                    {
+                                                        // TODO: @Shoaibi: Critical: Do it here: if we want to delete existing attachments only if selected template has attachments.
+                                                    },
+                                        success:    function(data, status, request)
+                                                    {
+                                                        $(templateId).tmpl(data).appendTo(targetClass);
+                                                    },
+                                        error:      function(request, status, error)
+                                                    {
+                                                        var data = {' . // Not Coding Standard
+                                                                    '   "message" : "' . Zurmo::t('Core',
+                                                                            'There was an error processing your request') .
+                                                                    '",
+                                                                    "type"    : "error"
+                                                                    };
+                                                        updateFlashBar(data, notificationBarId);
+                                                    },
+                                    }
+                                );
+                            }
+                        }
+
                         $("#' . $dropDownId . '").unbind("change.action").bind("change.action", function(event, ui)
                         {
-                            selectedOption      = $(this).find(":selected");
-                            selectedOptionValue    = selectedOption.val();
+                            selectedOption          = $(this).find(":selected");
+                            selectedOptionValue     = selectedOption.val();
                             if (selectedOptionValue)
                             {
                                 var dropDown            = $(this);
@@ -97,7 +167,8 @@
                                         dataType:   "json",
                                         data:       {
                                                         id: selectedOptionValue,
-                                                         renderJson: true
+                                                        renderJson: true,
+                                                        includeFilesInJson: true
                                                     },
                                         beforeSend: function(request, settings)
                                                     {
@@ -115,14 +186,17 @@
                                                     },
                                         success:    function(data, status, request)
                                                     {
-                                                        $(textContentElement).html(data.textContent);
-                                                        $(htmlContentElement).html(data.htmlContent);
-                                                        $(redActorElement).html(data.htmlContent);
+                                                        updateContentAreaWithDataFromAjax(textContentElement,
+                                                                                            htmlContentElement,
+                                                                                            redActorElement,
+                                                                                            data);
+                                                        // TODO: @Shoaibi/@Jason: Critical: Should this append? or should we use beforeSend to delete?, right now its in append mode. delete only if new one has attachments?
+                                                        updateAddFilesWithDataFromAjax(data.filesIds, notificationBarId);
                                                     },
                                         error:      function(request, status, error)
                                                     {
                                                         var data = {' . // Not Coding Standard
-                                                                    '   "message" : "' . Zurmo::t('AutorespondersModule',
+                                                                    '   "message" : "' . Zurmo::t('Core',
                                                                             'There was an error processing your request') .
                                                                         '",
                                                                         "type"    : "error"
@@ -200,7 +274,8 @@
 
         protected function getEditableHtmlOptions()
         {
-            $prompt             = array('prompt' => Zurmo::t('AutorespondersModule', 'Select a template'));
+            $moduleName         = $this->getModuleId() . 'sModule';
+            $prompt             = array('prompt' => Zurmo::t($moduleName, 'Select a template'));
             $parentHtmlOptions  = parent::getEditableHtmlOptions();
             $htmlOptions        = CMap::mergeArray($parentHtmlOptions, $prompt);
             return $htmlOptions;
@@ -227,9 +302,9 @@
             return $htmlContentId;
         }
 
-        protected function getModuleId()
+        protected function getCloneExitingFilesUrl()
         {
-            return 'Autoresponder';
+            return Yii::app()->createUrl('/zurmo/fileModel/cloneExistingFiles');
         }
     }
 ?>

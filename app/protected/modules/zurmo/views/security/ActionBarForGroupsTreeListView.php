@@ -39,5 +39,9 @@
      */
     class ActionBarForGroupsTreeListView extends ActionBarForSecurityTreeListView
     {
+        protected function makeModel()
+        {
+            return new Group(false);
+        }
     }
 ?>

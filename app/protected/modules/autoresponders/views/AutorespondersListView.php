@@ -34,7 +34,7 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class AutorespondersListView extends ListView implements RendersMultipleSummaryPlaceholdersInterface
+    class AutorespondersListView extends ListView
     {
         // TODO: @Shoaibi: Low: Possible refactoring with MarketingListMembersListView
         /**
@@ -88,7 +88,7 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'null', 'type' => 'AutoresponderName'),
+                                                array('attributeName' => 'null', 'type' => 'AutoresponderSubject'),
                                             ),
                                         ),
                                     ),
@@ -99,13 +99,6 @@
                 ),
             );
             return $metadata;
-        }
-
-        public static function getSummaryCloneQueryPath()
-        {
-            // TODO: @Shoaibi/@Amit: Should we show summary for AR?
-            // TODO: @Shoaibi/@Amit: Critical: Style and position this summary clone
-            return "function() { return $(this).parent().find('.list-view-items-summary-clone'); }";
         }
 
         public function __construct(RedBeanModelsDataProvider $dataProvider,

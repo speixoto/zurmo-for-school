@@ -39,9 +39,15 @@
         public function renderGridViewData()
         {
             return array(
-                'type' => 'Number',
                 'name'  => $this->attribute,
+                'value' => 'DecimalListViewColumnAdapter::renderNonEditableStatically($data, "' . $this->attribute . '")',
+                'type'  => 'raw',
             );
+        }
+
+        public static function renderNonEditableStatically($model, $attribute)
+        {
+            return Yii::app()->numberFormatter->formatDecimal((float)$model->{$attribute});
         }
     }
 ?>

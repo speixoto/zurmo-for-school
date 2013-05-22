@@ -35,68 +35,59 @@
      ********************************************************************************/
 
     /**
-     * A job for processing autoresponder messages that are not sent immediately when triggered
-     */
-
-    class AutoresponderMessageInQueueJob extends BaseJob
+    * Test ExportUtil functions.
+    */
+    class ExportUtilTest extends ZurmoBaseTest
     {
-        /**
-         * @var int
-         */
-        protected static $pageSize = 200;
-
-        /**
-         * @returns Translated label that describes this job type.
-         */
-        public static function getDisplayName()
+        public static function setUpBeforeClass()
         {
-           return Zurmo::t('MarketingListsModule', 'Process autoresponder messages');
-        }
-
-        /**
-         * @return The type of the NotificationRules
-         */
-        public static function getType()
-        {
-            return 'AutoresponderMessageInQueue';
-        }
-
-        public static function getRecommendedRunFrequencyContent()
-        {
-            return Zurmo::t('JobsManagerModule', 'Every hour');
-        }
-
-        /**
-         * @see BaseJob::run()
-         */
-        public function run()
-        {
-            $autoresponderItemsToProcess    = AutoresponderItem::getByProcessedAndProcessDateTime(
-                                                                                        AutoresponderItem::NOT_PROCESSED,
-                                                                                        time(),
-                                                                                        static::$pageSize);
-            foreach ($autoresponderItemsToProcess as $autoresponderItem)
+            parent::setUpBeforeClass();
+            SecurityTestHelper::createSuperAdmin();
+            $super = User::getByUsername('super');
+            Yii::app()->user->userModel = $super;
+            for ($i = 1; $i <= 30; $i++)
             {
-                try
-                {
-                    $this->processAutoresponderItemInQueue($autoresponderItem);
-                }
-                catch (NotFoundException $e)
-                {
-                    return $autoresponderItem->delete();
-                }
-                catch (NotSupportedException $e)
-                {
-                    $this->errorMessage = $e->getMessage();
-                    return false;
-                }
+                $account = new Account();
+                $account->owner       = $super;
+                $account->name        = 'Test Account' . $i;
+                $account->officePhone = '12345678' . $i;
+                $account->save();
             }
-            return true;
         }
 
-        protected function processAutoresponderItemInQueue(AutoresponderItem $autoresponderItem)
+        public function testGetDataForExport()
         {
-            AutoresponderItemsUtil::processDueAutoresponderItem($autoresponderItem);
+            $super = User::getByUsername('super');
+            Yii::app()->user->userModel = $super;
+            $account = new Account(false);
+            $searchForm = new AccountsSearchForm($account);
+            $dataProvider = ExportTestHelper::makeRedBeanDataProvider(
+                $searchForm,
+                'Account',
+                0,
+                Yii::app()->user->userModel->id
+            );
+
+            $data = ExportUtil::getDataForExport($dataProvider);
+            $this->assertEquals(30, count($data));
+        }
+
+        public function testGetSerializedDataForExport()
+        {
+            $super = User::getByUsername('super');
+            Yii::app()->user->userModel = $super;
+
+            $account = new Account(false);
+            $searchForm = new AccountsSearchForm($account);
+            $dataProvider = ExportTestHelper::makeRedBeanDataProvider(
+                $searchForm,
+                'Account',
+                0,
+                Yii::app()->user->userModel->id
+            );
+
+            $serializedData = ExportUtil::getSerializedDataForExport($dataProvider);
+            $this->assertEquals($dataProvider, unserialize($serializedData));
         }
     }
 ?>

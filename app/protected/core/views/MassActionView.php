@@ -90,6 +90,7 @@
             $content  = '<div class="wrapper">';
             $content .= $this->renderTitleContent();
             $content .= '<div class="wide form">';
+            $content .= '<div class="left-column full-width">';
             $clipWidget = new ClipWidget();
             list($form, $formStart) = $clipWidget->renderBeginWidget(
                                                                 'ZurmoActiveForm',
@@ -108,8 +109,8 @@
             }
             $formEnd = $clipWidget->renderEndWidget();
             $content .= $formEnd;
-            $content .= '</div></div>';
             $content .= $this->renderModalContainer();
+            $content .= '</div></div></div>';
             return $content;
         }
 

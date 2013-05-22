@@ -80,5 +80,10 @@
             $messageLogger->addErrorMessage(Zurmo::t('Core', 'No import processes found.'));
             $messageLogger->addErrorMessage(Zurmo::t('Core', 'CustomManagement class needs to be extended.'));
         }
+        
+        public function resolveElementInformationDuringFormLayoutRender(DetailsView $view, &$elementInformation)
+        {
+            self::resolveIsCustomDataLoaded();
+        }
     }
 ?>

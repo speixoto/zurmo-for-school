@@ -52,13 +52,13 @@
         {
             $time                                       = DateTimeUtil::convertTimestampToDbFormatDateTime(strtotime('+1 week'));
             $autoresponderItem                          = new AutoresponderItem();
-            $autoresponderItem->processed               = AutoresponderItem::NOT_PROCESSED;
+            $autoresponderItem->processed               = 0;
             $autoresponderItem->processDateTime         = $time;
             $this->assertTrue($autoresponderItem->unrestrictedSave());
             $id = $autoresponderItem->id;
             unset($autoresponderItem);
             $autoresponderItem = AutoresponderItem::getById($id);
-            $this->assertEquals(AutoresponderItem::NOT_PROCESSED,   $autoresponderItem->processed);
+            $this->assertEquals(0,   $autoresponderItem->processed);
             $this->assertEquals($time,                              $autoresponderItem->processDateTime);
         }
 
@@ -77,13 +77,13 @@
 
             $time                                       = DateTimeUtil::convertTimestampToDbFormatDateTime(strtotime('+1 week'));
             $autoresponderItem                          = new AutoresponderItem();
-            $autoresponderItem->processed               = AutoresponderItem::PROCESSED;
+            $autoresponderItem->processed               = 1;
             $autoresponderItem->processDateTime         = $time;
             $this->assertTrue($autoresponderItem->unrestrictedSave());
             $id = $autoresponderItem->id;
             unset($autoresponderItem);
             $autoresponderItem = AutoresponderItem::getById($id);
-            $this->assertEquals(AutoresponderItem::PROCESSED,       $autoresponderItem->processed);
+            $this->assertEquals(1,       $autoresponderItem->processed);
             $this->assertEquals($time,                              $autoresponderItem->processDateTime);
         }
 
@@ -95,10 +95,10 @@
             for ($i = 0; $i < 5; $i++)
             {
                 $time                               = DateTimeUtil::convertTimestampToDbFormatDateTime(strtotime('+1 day'));
-                $processed                          = AutoresponderItem::NOT_PROCESSED;
+                $processed                          = 0;
                 if ($i % 2)
                 {
-                    $processed      = AutoresponderItem::PROCESSED;
+                    $processed      = 1;
                 }
                 $autoresponderItem                  = new AutoresponderItem();
                 $autoresponderItem->processed       = $processed;
@@ -107,9 +107,9 @@
             }
             $autoresponderItems         =   AutoresponderItem::getAll();
             $this->assertCount(7, $autoresponderItems);
-            $processedItems             =   AutoresponderItem::getByProcessed(AutoresponderItem::PROCESSED);
+            $processedItems             =   AutoresponderItem::getByProcessed(1);
             $this->assertCount(3, $processedItems);
-            $notProcessedItems          =   AutoresponderItem::getByProcessed(AutoresponderItem::NOT_PROCESSED);
+            $notProcessedItems          =   AutoresponderItem::getByProcessed(0);
             $this->assertCount(4, $notProcessedItems);
         }
 
@@ -120,8 +120,7 @@
         {
             $marketingList                  = MarketingListTestHelper::createMarketingListByName('marketingList 01');
             $this->assertNotNull($marketingList);
-            $autoresponderToday             = AutoresponderTestHelper::createAutoresponder('autoresponder Today',
-                                                                                    'subject Today',
+            $autoresponderToday             = AutoresponderTestHelper::createAutoresponder('subject Today',
                                                                                     'text Today',
                                                                                     'html Today',
                                                                                     1,
@@ -129,8 +128,7 @@
                                                                                     true,
                                                                                     $marketingList);
             $this->assertNotNull($autoresponderToday);
-            $autoresponderTenDaysFromNow    = AutoresponderTestHelper::createAutoresponder('autoresponder Ten Days',
-                                                                                    'subject Ten Days',
+            $autoresponderTenDaysFromNow    = AutoresponderTestHelper::createAutoresponder('subject Ten Days',
                                                                                     'text Ten Days',
                                                                                     'html Ten Days',
                                                                                     60*60*24*10,
@@ -144,11 +142,11 @@
                 $this->assertNotNull($contact);
                 if ($i % 3)
                 {
-                    $processed      = AutoresponderItem::PROCESSED;
+                    $processed      = 1;
                 }
                 else
                 {
-                    $processed      = AutoresponderItem::NOT_PROCESSED;
+                    $processed      = 0;
                 }
                 if ($i % 2)
                 {
@@ -169,19 +167,19 @@
             $autoresponderItems         = AutoresponderItem::getAll();
             $this->assertNotEmpty($autoresponderItems);
             $this->assertCount(17, $autoresponderItems);
-            $autoresponderTodayProcessed  = AutoresponderItem::getByProcessedAndAutoresponderId(AutoresponderItem::PROCESSED,
+            $autoresponderTodayProcessed  = AutoresponderItem::getByProcessedAndAutoresponderId(1,
                                                                                                 $autoresponderToday->id);
             $this->assertNotEmpty($autoresponderTodayProcessed);
             $this->assertCount(3, $autoresponderTodayProcessed);
-            $autoresponderTodayNotProcessed  = AutoresponderItem::getByProcessedAndAutoresponderId(AutoresponderItem::NOT_PROCESSED,
+            $autoresponderTodayNotProcessed  = AutoresponderItem::getByProcessedAndAutoresponderId(0,
                                                                                                 $autoresponderToday->id);
             $this->assertNotEmpty($autoresponderTodayNotProcessed);
             $this->assertCount(2, $autoresponderTodayNotProcessed);
-            $autoresponderTenDaysFromNowProcessed  = AutoresponderItem::getByProcessedAndAutoresponderId(AutoresponderItem::PROCESSED,
+            $autoresponderTenDaysFromNowProcessed  = AutoresponderItem::getByProcessedAndAutoresponderId(1,
                                                                                                 $autoresponderTenDaysFromNow->id);
             $this->assertNotEmpty($autoresponderTenDaysFromNowProcessed);
             $this->assertCount(3, $autoresponderTenDaysFromNowProcessed);
-            $autoresponderTenDaysFromNowNotProcessed  = AutoresponderItem::getByProcessedAndAutoresponderId(AutoresponderItem::NOT_PROCESSED,
+            $autoresponderTenDaysFromNowNotProcessed  = AutoresponderItem::getByProcessedAndAutoresponderId(0,
                                                                                                 $autoresponderTenDaysFromNow->id);
             $this->assertNotEmpty($autoresponderTenDaysFromNowNotProcessed);
             $this->assertCount(2, $autoresponderTenDaysFromNowNotProcessed);
@@ -194,11 +192,11 @@
         {
             $marketingList      = MarketingListTestHelper::createMarketingListByName('marketingList 02');
             $this->assertNotNull($marketingList);
-            $autoresponder1     = AutoresponderTestHelper::createAutoresponder('autoresponder 01', 'subject 01', 'text 01',
-                                                'html 01', 10, Autoresponder::OPERATION_UNSUBSCRIBE, true, $marketingList);
+            $autoresponder1     = AutoresponderTestHelper::createAutoresponder('subject 01', 'text 01', 'html 01', 10,
+                                                            Autoresponder::OPERATION_UNSUBSCRIBE, true, $marketingList);
             $this->assertNotNull($autoresponder1);
-            $autoresponder2     = AutoresponderTestHelper::createAutoresponder('autoresponder 02', 'subject 02', 'text 02',
-                                                'html 02', 20, Autoresponder::OPERATION_SUBSCRIBE, false,  $marketingList);
+            $autoresponder2     = AutoresponderTestHelper::createAutoresponder('subject 02', 'text 02', 'html 02', 20,
+                                                            Autoresponder::OPERATION_SUBSCRIBE, false,  $marketingList);
             $this->assertNotNull($autoresponder2);
             for ($i = 0; $i < 10; $i++)
             {
@@ -207,11 +205,11 @@
                 $time                               = DateTimeUtil::convertTimestampToDbFormatDateTime(strtotime('+1 day'));
                 if ($i % 3)
                 {
-                    $processed      = AutoresponderItem::PROCESSED;
+                    $processed      = 1;
                 }
                 else
                 {
-                    $processed      = AutoresponderItem::NOT_PROCESSED;
+                    $processed      = 0;
                 }
                 if ($i % 2)
                 {
@@ -227,19 +225,19 @@
             $autoresponderItems         = AutoresponderItem::getAll();
             $this->assertNotEmpty($autoresponderItems);
             $this->assertCount(27, $autoresponderItems);
-            $autoresponder1Processed  = AutoresponderItem::getByProcessedAndAutoresponderId(AutoresponderItem::PROCESSED,
+            $autoresponder1Processed  = AutoresponderItem::getByProcessedAndAutoresponderId(1,
                                                                                             $autoresponder1->id);
             $this->assertNotEmpty($autoresponder1Processed);
             $this->assertCount(3, $autoresponder1Processed);
-            $autoresponder1NotProcessed  = AutoresponderItem::getByProcessedAndAutoresponderId(AutoresponderItem::NOT_PROCESSED,
+            $autoresponder1NotProcessed  = AutoresponderItem::getByProcessedAndAutoresponderId(0,
                                                                                                 $autoresponder1->id);
             $this->assertNotEmpty($autoresponder1NotProcessed);
             $this->assertCount(2, $autoresponder1NotProcessed);
-            $autoresponder2Processed  = AutoresponderItem::getByProcessedAndAutoresponderId(AutoresponderItem::PROCESSED,
+            $autoresponder2Processed  = AutoresponderItem::getByProcessedAndAutoresponderId(1,
                                                                                             $autoresponder2->id);
             $this->assertNotEmpty($autoresponder2Processed);
             $this->assertCount(3, $autoresponder2Processed);
-            $autoresponder2NotProcessed  = AutoresponderItem::getByProcessedAndAutoresponderId(AutoresponderItem::NOT_PROCESSED,
+            $autoresponder2NotProcessed  = AutoresponderItem::getByProcessedAndAutoresponderId(0,
                                                                                                 $autoresponder2->id);
             $this->assertNotEmpty($autoresponder2NotProcessed);
             $this->assertCount(2, $autoresponder2NotProcessed);
@@ -253,23 +251,23 @@
             $intervals          = array('hour', 'day');
             $marketingList      = MarketingList::getByName('marketingList 01');
             $this->assertNotEmpty($marketingList);
-            $autoresponder3     = AutoresponderTestHelper::createAutoresponder('autoresponder 03', 'subject 03', 'text 03',
-                                            'html 03', 10, Autoresponder::OPERATION_UNSUBSCRIBE, true, $marketingList[0]);
+            $autoresponder3     = AutoresponderTestHelper::createAutoresponder('subject 03', 'text 03', 'html 03', 10,
+                                                        Autoresponder::OPERATION_UNSUBSCRIBE, true, $marketingList[0]);
             $this->assertNotNull($autoresponder3);
-            $autoresponder4     = AutoresponderTestHelper::createAutoresponder('autoresponder 04', 'subject 04', 'text 04',
-                                            'html 04', 20, Autoresponder::OPERATION_SUBSCRIBE, false, $marketingList[0]);
+            $autoresponder4     = AutoresponderTestHelper::createAutoresponder('subject 04', 'text 04', 'html 04', 20,
+                                                        Autoresponder::OPERATION_SUBSCRIBE, false, $marketingList[0]);
             $this->assertNotNull($autoresponder4);
             for ($i = 0; $i < 10; $i++)
             {
                 if ($i % 3)
                 {
                     $pastOrFuture   = "-";
-                    $processed      = AutoresponderItem::PROCESSED;
+                    $processed      = 1;
                 }
                 else
                 {
                     $pastOrFuture   = "+";
-                    $processed      = AutoresponderItem::NOT_PROCESSED;
+                    $processed      = 0;
                 }
                 if ($i % 2)
                 {
@@ -290,42 +288,42 @@
             $autoresponderItems         = AutoresponderItem::getAll();
             $this->assertCount(37, $autoresponderItems);
             $autoresponder3ProcessedBeforeNow   = AutoresponderItem::getByProcessedAndAutoresponderIdWithProcessDateTime(
-                                                                                            AutoresponderItem::PROCESSED,
+                                                                                            1,
                                                                                             $autoresponder3->id);
             $this->assertNotEmpty($autoresponder3ProcessedBeforeNow);
             $this->assertCount(3, $autoresponder3ProcessedBeforeNow);
             $autoresponder3ProcessedFiveDaysAgo   = AutoresponderItem::getByProcessedAndAutoresponderIdWithProcessDateTime(
-                                                                                        AutoresponderItem::PROCESSED,
+                                                                                        1,
                                                                                         $autoresponder3->id,
                                                                                         strtotime("-5 day"));
             $this->assertNotEmpty($autoresponder3ProcessedFiveDaysAgo);
             $this->assertCount(2, $autoresponder3ProcessedFiveDaysAgo);
             $autoresponder3NotProcessedBeforeNow   = AutoresponderItem::getByProcessedAndAutoresponderIdWithProcessDateTime(
-                                                                                    AutoresponderItem::NOT_PROCESSED,
+                                                                                    0,
                                                                                     $autoresponder3->id);
             $this->assertEmpty($autoresponder3NotProcessedBeforeNow);
             $autoresponder3NotProcessedFiveDaysFromNow   = AutoresponderItem::getByProcessedAndAutoresponderIdWithProcessDateTime(
-                                                                                    AutoresponderItem::NOT_PROCESSED,
+                                                                                    0,
                                                                                     $autoresponder3->id,
                                                                                     strtotime("+5 day"));
             $this->assertNotEmpty($autoresponder3NotProcessedFiveDaysFromNow);
             $this->assertCount(1, $autoresponder3NotProcessedFiveDaysFromNow);
             $autoresponder4ProcessedBeforeNow   = AutoresponderItem::getByProcessedAndAutoresponderIdWithProcessDateTime(
-                                                                                            AutoresponderItem::PROCESSED,
+                                                                                            1,
                                                                                             $autoresponder4->id);
             $this->assertNotEmpty($autoresponder4ProcessedBeforeNow);
             $this->assertCount(3, $autoresponder4ProcessedBeforeNow);
             $autoresponder4ProcessedFiveDaysAgo   = AutoresponderItem::getByProcessedAndAutoresponderIdWithProcessDateTime(
-                                                                                            AutoresponderItem::PROCESSED,
+                                                                                            1,
                                                                                             $autoresponder4->id,
                                                                                             strtotime("-5 day"));
             $this->assertEmpty($autoresponder4ProcessedFiveDaysAgo);
             $autoresponder4NotProcessedBeforeNow   = AutoresponderItem::getByProcessedAndAutoresponderIdWithProcessDateTime(
-                                                                                        AutoresponderItem::NOT_PROCESSED,
+                                                                                        0,
                                                                                         $autoresponder4->id);
             $this->assertEmpty($autoresponder4NotProcessedBeforeNow);
             $autoresponder4NotProcessedFiveDaysFromNow   = AutoresponderItem::getByProcessedAndAutoresponderIdWithProcessDateTime(
-                                                                                        AutoresponderItem::NOT_PROCESSED,
+                                                                                        0,
                                                                                         $autoresponder4->id,
                                                                                         strtotime("+5 day"));
             $this->assertNotEmpty($autoresponder4NotProcessedFiveDaysFromNow);
@@ -361,12 +359,11 @@
         public function testAddNewItem()
         {
             $super              = User::getByUsername('super');
-            $processed          = AutoresponderItem::NOT_PROCESSED;
+            $processed          = 0;
             $processDateTime    = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
             $contact            = ContactTestHelper::createContactByNameForOwner('autoresponderContact', Yii::app()->user->userModel);
             $marketingList      = MarketingListTestHelper::createMarketingListByName('marketingList 03');
-            $autoresponder      = AutoresponderTestHelper::createAutoresponder('autoresponder 01',
-                                                                                'test autoresponder 01',
+            $autoresponder      = AutoresponderTestHelper::createAutoresponder('test autoresponder 01',
                                                                                 'This is text content 01',
                                                                                 'This is <b>html</b> content 01',
                                                                                 10,
@@ -376,7 +373,7 @@
                                                                             );
             $saved              = AutoresponderItem::addNewItem($processed, $processDateTime, $contact, $autoresponder);
             $this->assertTrue($saved);
-            $autoresponderItems = AutoresponderItem::getByProcessedAndAutoresponderId(AutoresponderItem::NOT_PROCESSED,
+            $autoresponderItems = AutoresponderItem::getByProcessedAndAutoresponderId(0,
                                                                                         $autoresponder->id);
             $this->assertNotEmpty($autoresponderItems);
             $this->assertCount(1, $autoresponderItems);
@@ -388,36 +385,24 @@
         public function testRegisterAutoresponderItemsByAutoresponderOperation()
         {
             $marketingList              = MarketingListTestHelper::createMarketingListByName('marketingList 04');
-            $autoresponderSubscribe     = AutoresponderTestHelper::createAutoresponder('autoresponder Subscribe',
-                                                                                        'test autoresponder Subscribe',
-                                                                                        'This is text content Subscribe',
-                                                                                        'This is <b>html</b> content Subscribe',
-                                                                                        10,
-                                                                                        Autoresponder::OPERATION_SUBSCRIBE,
-                                                                                        true,
-                                                                                        $marketingList
-                                                                                    );
+            $autoresponderSubscribe     = AutoresponderTestHelper::createAutoresponder('test autoresponder Subscribe',
+                                                                            'This is text content Subscribe',
+                                                                            'This is <b>html</b> content Subscribe',
+                                                                            10,
+                                                                            Autoresponder::OPERATION_SUBSCRIBE,
+                                                                            true,
+                                                                            $marketingList
+                                                                        );
             $this->assertNotNull($autoresponderSubscribe);
-            $autoresponderUnsubscribe   = AutoresponderTestHelper::createAutoresponder('autoresponder Unsubscribe',
-                                                                                        'test autoresponder Unsubscribe',
-                                                                                        'This is text content Unsubscribe',
-                                                                                        'This is <b>html</b> content Unsubscribe',
-                                                                                        20,
-                                                                                        Autoresponder::OPERATION_UNSUBSCRIBE,
-                                                                                        true,
-                                                                                        $marketingList
-                                                                                    );
+            $autoresponderUnsubscribe   = AutoresponderTestHelper::createAutoresponder('test autoresponder Unsubscribe',
+                                                                            'This is text content Unsubscribe',
+                                                                            'This is <b>html</b> content Unsubscribe',
+                                                                            20,
+                                                                            Autoresponder::OPERATION_UNSUBSCRIBE,
+                                                                            true,
+                                                                            $marketingList
+                                                                        );
             $this->assertNotNull($autoresponderUnsubscribe);
-            $autoresponderRemove        = AutoresponderTestHelper::createAutoresponder('autoresponder Remove',
-                                                                                        'test autoresponder Remove',
-                                                                                        'This is text content Remove',
-                                                                                        'This is <b>html</b> content Remove',
-                                                                                        10,
-                                                                                        Autoresponder::OPERATION_REMOVE,
-                                                                                        false,
-                                                                                        $marketingList
-                                                                                    );
-            $this->assertNotNull($autoresponderRemove);
             $contact1           = ContactTestHelper::createContactByNameForOwner('autoresponderContact 01',
                                                                                         Yii::app()->user->userModel);
             $contact2           = ContactTestHelper::createContactByNameForOwner('autoresponderContact 02',
@@ -426,29 +411,25 @@
                                                                                         Yii::app()->user->userModel);
             $contact4           = ContactTestHelper::createContactByNameForOwner('autoresponderContact 04',
                                                                                         Yii::app()->user->userModel);
-            $contact5           = ContactTestHelper::createContactByNameForOwner('autoresponderContact 05',
-                                                                                        Yii::app()->user->userModel);
-
             AutoresponderItem::registerAutoresponderItemsByAutoresponderOperation(Autoresponder::OPERATION_SUBSCRIBE,
                                                                                     $marketingList->id,
                                                                                     $contact1);
             AutoresponderItem::registerAutoresponderItemsByAutoresponderOperation(Autoresponder::OPERATION_SUBSCRIBE,
                                                                                     $marketingList->id,
                                                                                     $contact2);
-            $autoresponderItemsSubscribe = AutoresponderItem::getByProcessedAndAutoresponderId(AutoresponderItem::NOT_PROCESSED, $autoresponderSubscribe->id);
+            $autoresponderItemsSubscribe = AutoresponderItem::getByProcessedAndAutoresponderId(0,
+                                                                                        $autoresponderSubscribe->id);
             $this->assertNotEmpty($autoresponderItemsSubscribe);
             $this->assertCount(2, $autoresponderItemsSubscribe);
 
-            AutoresponderItem::registerAutoresponderItemsByAutoresponderOperation(Autoresponder::OPERATION_UNSUBSCRIBE, $marketingList->id, $contact3);
-            AutoresponderItem::registerAutoresponderItemsByAutoresponderOperation(Autoresponder::OPERATION_UNSUBSCRIBE, $marketingList->id, $contact4);
-            $autoresponderItemsUnsubscribe = AutoresponderItem::getByProcessedAndAutoresponderId(AutoresponderItem::NOT_PROCESSED, $autoresponderUnsubscribe->id);
+            AutoresponderItem::registerAutoresponderItemsByAutoresponderOperation(Autoresponder::OPERATION_UNSUBSCRIBE,
+                                                                                        $marketingList->id, $contact3);
+            AutoresponderItem::registerAutoresponderItemsByAutoresponderOperation(Autoresponder::OPERATION_UNSUBSCRIBE,
+                                                                                        $marketingList->id, $contact4);
+            $autoresponderItemsUnsubscribe = AutoresponderItem::getByProcessedAndAutoresponderId(0,
+                                                                                        $autoresponderUnsubscribe->id);
             $this->assertNotEmpty($autoresponderItemsUnsubscribe);
             $this->assertCount(2, $autoresponderItemsUnsubscribe);
-
-            AutoresponderItem::registerAutoresponderItemsByAutoresponderOperation(Autoresponder::OPERATION_REMOVE, $marketingList->id, $contact5);
-            $autoresponderItemsRemove = AutoresponderItem::getByProcessedAndAutoresponderId(AutoresponderItem::NOT_PROCESSED, $autoresponderRemove->id);
-            $this->assertNotEmpty($autoresponderItemsRemove);
-            $this->assertCount(1, $autoresponderItemsRemove);
         }
     }
 ?>

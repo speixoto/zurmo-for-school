@@ -157,7 +157,7 @@
                 'id'      => $this->getIdForTextField(),
                 'value'   => $this->getName(),
                 'source'  => Yii::app()->createUrl($this->resolveModuleId() . '/' . $this->getAutoCompleteControllerId()
-                                                        . '/' . static::$autoCompleteActionId),
+                                                   . '/' . static::$autoCompleteActionId, $this->getAutoCompleteUrlParams()),
                 'options' => array(
                     'select'   => 'js:function(event, ui){ jQuery("#' . $idInputName . '").val(ui.item["id"]).trigger("change");}', // Not Coding Standard
                     'appendTo' => 'js:$("#' . $this->getIdForTextField() . '").parent().parent()',
@@ -198,6 +198,11 @@
             return $cClipWidget->getController()->clips['ModelElement'];
         }
 
+        protected function getAutoCompleteUrlParams()
+        {
+            return array();
+        }
+
         protected function getAutoCompleteControllerId()
         {
             return $this->controllerId;
@@ -212,9 +217,8 @@
         {
             $id = $this->getIdForSelectLink();
             $content = ZurmoHtml::ajaxLink('<span class="model-select-icon"></span><span class="z-spinner"></span>',
-                Yii::app()->createUrl($this->resolveModuleId() . '/' . $this->getSelectLinkControllerId() . '/'. static::$modalActionId .'/', array(
-                'modalTransferInformation' => $this->getModalTransferInformation(),
-                )),
+                Yii::app()->createUrl($this->resolveModuleId() . '/' . $this->getSelectLinkControllerId() . '/'.
+                                      static::$modalActionId .'/', $this->getSelectLinkUrlParams()),
                 $this->resolveAjaxOptionsForSelectingModel($id),
                 array(
                 'id'        => $id,
@@ -223,6 +227,13 @@
                 )
             );
             return $content;
+        }
+
+        protected function getSelectLinkUrlParams()
+        {
+            return array(
+                'modalTransferInformation' => $this->getModalTransferInformation(),
+            );
         }
 
         protected function resolveAjaxOptionsForSelectingModel($formId)

@@ -380,7 +380,9 @@
             $this->assertContains('gardening'                               , $account[0]->tagcloudCstm->values);
             $metadata            = CalculatedDerivedAttributeMetadata::
                                    getByNameAndModelClassName('calcnumber', 'Account');
-            $testCalculatedValue = CalculatedNumberUtil::calculateByFormulaAndModel($metadata->getFormula(), $account[0]);
+            $formatType          = CalculatedNumberUtil::FORMAT_TYPE_INTEGER;
+            $currencyCode        = null;
+            $testCalculatedValue = CalculatedNumberUtil::calculateByFormulaAndModelAndResolveFormat($metadata->getFormula(), $account[0]);
             $this->assertEquals(474000930                                   , $testCalculatedValue);
         }
 
@@ -570,7 +572,9 @@
 
             $metadata            = CalculatedDerivedAttributeMetadata::
                                    getByNameAndModelClassName('calcnumber', 'Account');
-            $testCalculatedValue = CalculatedNumberUtil::calculateByFormulaAndModel($metadata->getFormula(), $account[0]);
+            $formatType          = CalculatedNumberUtil::FORMAT_TYPE_INTEGER;
+            $currencyCode        = null;
+            $testCalculatedValue = CalculatedNumberUtil::calculateByFormulaAndModelAndResolveFormat($metadata->getFormula(), $account[0]);
             $this->assertEquals(472000630                                   , $testCalculatedValue);
         }
 
@@ -707,7 +711,7 @@
 
             $metadata            = CalculatedDerivedAttributeMetadata::
                                    getByNameAndModelClassName('calcnumber', 'Account');
-            $testCalculatedValue = CalculatedNumberUtil::calculateByFormulaAndModel($metadata->getFormula(), $account[0]);
+            $testCalculatedValue = CalculatedNumberUtil::calculateByFormulaAndModelAndResolveFormat($metadata->getFormula(), $account[0]);
             $this->assertEquals(472000630                                   , $testCalculatedValue);
         }
 

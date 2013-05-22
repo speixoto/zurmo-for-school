@@ -37,17 +37,7 @@
     /**
      * Extended class to support attachments
      */
-    class MissionZurmoControllerUtil extends ZurmoControllerUtil
+    class MissionZurmoControllerUtil extends FileZurmoControllerUtil
     {
-       /**
-         * (non-PHPdoc)
-         * @see ModelHasRelatedItemsZurmoControllerUtil::afterSetAttributesDuringSave()
-         */
-        protected function afterSetAttributesDuringSave($model, $explicitReadWriteModelPermissions)
-        {
-            assert('$model instanceof Item');
-            parent::afterSetAttributesDuringSave($model, $explicitReadWriteModelPermissions);
-            FileModelUtil::resolveModelsHasManyFilesFromPost($model, 'files', 'filesIds');
-        }
     }
 ?>

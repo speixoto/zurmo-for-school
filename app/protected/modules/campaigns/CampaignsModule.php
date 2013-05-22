@@ -81,13 +81,10 @@
             return self::RIGHT_DELETE_CAMPAIGNS;
         }
 
-        /*
         public static function getGlobalSearchFormClassName()
         {
-            // TODO: @Shoaibi: Critical: Implement
             return 'CampaignsSearchForm';
         }
-        */
 
         public static function getDefaultMetadata()
         {
@@ -102,11 +99,19 @@
 
         public static function getDemoDataMakerClassNames()
         {
-            // TODO: @Shoaibi: Critical: DemoDataLoaders
-            return array();
             return array('CampaignsDemoDataMaker',
                             'CampaignItemsDemoDataMaker',
                             'CampaignItemActivitiesDemoDataMaker');
+        }
+
+        protected static function getSingularModuleLabel($language)
+        {
+            return Zurmo::t('CampaignsModule', 'Campaign', array(), null, $language);
+        }
+
+        protected static function getPluralModuleLabel($language)
+        {
+            return Zurmo::t('CampaignsModule', 'Campaigns', array(), null, $language);
         }
     }
 ?>

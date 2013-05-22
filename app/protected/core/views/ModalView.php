@@ -117,7 +117,7 @@
                     'dialogClass' : {$class},
                     'height' : {$heightContent},
                     'open': function( event, ui )  { jQuery('#{$containerId}').parent().addClass('openingModal'); },
-                    'close': function( event, ui ) { jQuery('#{$containerId}').parent().removeClass('openingModal'); }
+                    'close': function( event, ui ) { jQuery('#{$containerId}').parent().removeClass('openingModal'); $('#{$containerId}').dialog('destroy'); }
                 });
                 return true;
             }";

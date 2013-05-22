@@ -44,7 +44,7 @@
 
         public function filters()
         {
-            $moduleClassName = get_class($this->getModule());
+            $moduleClassName = $this->resolveModuleClassNameForFilters();
             $filters = array();
             if (is_subclass_of($moduleClassName, 'SecurableModule'))
             {
@@ -75,6 +75,11 @@
                 'rightName' => ZurmoModule::RIGHT_BULK_DELETE,
             );
             return $filters;
+        }
+
+        public function resolveModuleClassNameForFilters()
+        {
+            return get_class($this->getModule());
         }
 
         public function __construct($id, $module = null)

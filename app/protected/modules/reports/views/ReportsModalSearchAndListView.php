@@ -34,7 +34,16 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class AutoresponderNameElement extends TextElement
+    class ReportsModalSearchAndListView extends ModalSearchAndListView
     {
+        public static function getListViewClassName()
+        {
+            return 'ReportsModalListView';
+        }
+
+        public static function getSearchViewClassName()
+        {
+            return 'ReportsModalSearchView';
+        }
     }
 ?>

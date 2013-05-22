@@ -84,6 +84,8 @@
                             $('#ModuleForWorkflowWizardView').hide();
                             " . $this->renderTreeViewAjaxScriptContent($formName, 'TriggersForWorkflowWizardView') . "
                             $('#TriggersForWorkflowWizardView').show();
+                            $('.StepsAndProgressBarForWizardView').find('.progress-bar').width('40%');
+                            $('.StepsAndProgressBarForWizardView').find('.current-step').removeClass('current-step').next().addClass('current-step');
                         }
                         if (linkId == '" . TriggersForWorkflowWizardView::getNextPageLinkId() . "')
                         {
@@ -101,6 +103,8 @@
                                     $('.toggle-me', this).toggle();
                                 }
                             });
+                            $('.StepsAndProgressBarForWizardView').find('.progress-bar').width('60%');
+                            $('.StepsAndProgressBarForWizardView').find('.current-step').removeClass('current-step').next().addClass('current-step');
                         }
                         if (linkId == '" . ActionsForWorkflowWizardView::getNextPageLinkId() . "')
                         {
@@ -108,6 +112,8 @@
                                 WorkflowWizardForm::EMAIL_MESSAGES_VALIDATION_SCENARIO . "');
                             $('#ActionsForWorkflowWizardView').hide();
                             $('#EmailMessagesForWorkflowWizardView').show();
+                            $('.StepsAndProgressBarForWizardView').find('.progress-bar').width('80%');
+                            $('.StepsAndProgressBarForWizardView').find('.current-step').removeClass('current-step').next().addClass('current-step');
                         }
                         if (linkId == '" . EmailMessagesForWorkflowWizardView::getNextPageLinkId() . "')
                         {
@@ -115,6 +121,8 @@
                             WorkflowWizardForm::GENERAL_DATA_VALIDATION_SCENARIO . "');
                             $('#EmailMessagesForWorkflowWizardView').hide();
                             $('#GeneralDataForWorkflowWizardView').show();
+                            $('.StepsAndProgressBarForWizardView').find('.progress-bar').width('100%');
+                            $('.StepsAndProgressBarForWizardView').find('.current-step').removeClass('current-step').next().addClass('current-step');
                         }
 
                         var rowData = $('#" . $formName . "').find('.attachLoadingTarget').data() || {};
@@ -126,7 +134,6 @@
                             $('#' + rowData.row.toString()).siblings().show();
                             $('#actionsNextLink').parent().parent().show();
                         }
-
                         if (linkId == '" . GeneralDataForWorkflowWizardView::getNextPageLinkId() . "')
                         {
                             " . $this->getSaveAjaxString($formName) . "
@@ -158,6 +165,8 @@
                         $('#" . WizardActiveForm::makeErrorsSummaryId(static::getFormId()) . "').hide();
                         $('#ModuleForWorkflowWizardView').show();
                         $('#TriggersForWorkflowWizardView').hide();
+                        $('.StepsAndProgressBarForWizardView').find('.progress-bar').width('20%');
+                        $('.StepsAndProgressBarForWizardView').find('.current-step').removeClass('current-step').prev().addClass('current-step');
                         return false;
                     }
                 );
@@ -167,6 +176,8 @@
                         $('#" . static::getValidationScenarioInputId() . "').val('" . WorkflowWizardForm::TRIGGERS_VALIDATION_SCENARIO . "');
                         $('#TriggersForWorkflowWizardView').show();
                         $('#ActionsForWorkflowWizardView').hide();
+                        $('.StepsAndProgressBarForWizardView').find('.progress-bar').width('40%');
+                        $('.StepsAndProgressBarForWizardView').find('.current-step').removeClass('current-step').prev().addClass('current-step');
                         return false;
                     }
                 );
@@ -176,6 +187,8 @@
                         $('#" . static::getValidationScenarioInputId() . "').val('" . WorkflowWizardForm::ACTIONS_VALIDATION_SCENARIO . "');
                         $('#ActionsForWorkflowWizardView').show();
                         $('#EmailMessagesForWorkflowWizardView').hide();
+                        $('.StepsAndProgressBarForWizardView').find('.progress-bar').width('60%');
+                        $('.StepsAndProgressBarForWizardView').find('.current-step').removeClass('current-step').prev().addClass('current-step');
                         return false;
                     }
                 );
@@ -185,6 +198,8 @@
                         $('#" . static::getValidationScenarioInputId() . "').val('" . WorkflowWizardForm::EMAIL_MESSAGES_VALIDATION_SCENARIO . "');
                         $('#EmailMessagesForWorkflowWizardView').show();
                         $('#GeneralDataForWorkflowWizardView').hide();
+                        $('.StepsAndProgressBarForWizardView').find('.progress-bar').width('80%');
+                        $('.StepsAndProgressBarForWizardView').find('.current-step').removeClass('current-step').prev().addClass('current-step');
                         return false;
                     }
                 );

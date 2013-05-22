@@ -85,6 +85,8 @@
                             $('#ModuleForWorkflowWizardView').hide();
                              " . $this->renderLoadTimeTriggerAttributeScriptContent($formName) . "
                             $('#TimeTriggerForWorkflowWizardView').show();
+                            $('.StepsAndProgressBarForWizardView').find('.progress-bar').width('33%');
+                            $('.StepsAndProgressBarForWizardView').find('.current-step').removeClass('current-step').next().addClass('current-step');
                         }
                         if (linkId == '" . TimeTriggerForWorkflowWizardView::getNextPageLinkId() . "')
                         {
@@ -93,6 +95,8 @@
                             $('#TimeTriggerForWorkflowWizardView').hide();
                             " . $this->renderTreeViewAjaxScriptContent($formName, 'TriggersForWorkflowWizardView') . "
                             $('#TriggersForWorkflowWizardView').show();
+                            $('.StepsAndProgressBarForWizardView').find('.progress-bar').width('50%');
+                            $('.StepsAndProgressBarForWizardView').find('.current-step').removeClass('current-step').next().addClass('current-step');
                         }
                         if (linkId == '" . TriggersForWorkflowWizardView::getNextPageLinkId() . "')
                         {
@@ -110,6 +114,8 @@
                                     $('.toggle-me', this).toggle();
                                 }
                             });
+                            $('.StepsAndProgressBarForWizardView').find('.progress-bar').width('67%');
+                            $('.StepsAndProgressBarForWizardView').find('.current-step').removeClass('current-step').next().addClass('current-step');
                         }
                         if (linkId == '" . ActionsForWorkflowWizardView::getNextPageLinkId() . "')
                         {
@@ -117,6 +123,8 @@
                             WorkflowWizardForm::EMAIL_MESSAGES_VALIDATION_SCENARIO . "');
                             $('#ActionsForWorkflowWizardView').hide();
                             $('#EmailMessagesForWorkflowWizardView').show();
+                            $('.StepsAndProgressBarForWizardView').find('.progress-bar').width('83%');
+                            $('.StepsAndProgressBarForWizardView').find('.current-step').removeClass('current-step').next().addClass('current-step');
                         }
                         if (linkId == '" . EmailMessagesForWorkflowWizardView::getNextPageLinkId() . "')
                         {
@@ -124,6 +132,8 @@
                             WorkflowWizardForm::GENERAL_DATA_VALIDATION_SCENARIO . "');
                             $('#EmailMessagesForWorkflowWizardView').hide();
                             $('#GeneralDataForWorkflowWizardView').show();
+                            $('.StepsAndProgressBarForWizardView').find('.progress-bar').width('100%');
+                            $('.StepsAndProgressBarForWizardView').find('.current-step').removeClass('current-step').next().addClass('current-step');
                         }
 
                         var rowData = $('#" . $formName . "').find('.attachLoadingTarget').data() || {};
@@ -168,6 +178,8 @@
                         $('#" . WizardActiveForm::makeErrorsSummaryId(static::getFormId()) . "').hide();
                         $('#ModuleForWorkflowWizardView').show();
                         $('#TimeTriggerForWorkflowWizardView').hide();
+                        $('.StepsAndProgressBarForWizardView').find('.progress-bar').width('16.5%');
+                        $('.StepsAndProgressBarForWizardView').find('.current-step').removeClass('current-step').prev().addClass('current-step');
                         return false;
                     }
                 );
@@ -178,6 +190,8 @@
                         WorkflowWizardForm::TIME_TRIGGER_VALIDATION_SCENARIO . "');
                         $('#TimeTriggerForWorkflowWizardView').show();
                         $('#TriggersForWorkflowWizardView').hide();
+                        $('.StepsAndProgressBarForWizardView').find('.progress-bar').width('33%');
+                        $('.StepsAndProgressBarForWizardView').find('.current-step').removeClass('current-step').prev().addClass('current-step');
                         return false;
                     }
                 );
@@ -187,6 +201,8 @@
                         $('#" . static::getValidationScenarioInputId() . "').val('" . WorkflowWizardForm::TRIGGERS_VALIDATION_SCENARIO . "');
                         $('#TriggersForWorkflowWizardView').show();
                         $('#ActionsForWorkflowWizardView').hide();
+                        $('.StepsAndProgressBarForWizardView').find('.progress-bar').width('50%');
+                        $('.StepsAndProgressBarForWizardView').find('.current-step').removeClass('current-step').prev().addClass('current-step');
                         return false;
                     }
                 );
@@ -196,6 +212,8 @@
                         $('#" . static::getValidationScenarioInputId() . "').val('" . WorkflowWizardForm::ACTIONS_VALIDATION_SCENARIO . "');
                         $('#ActionsForWorkflowWizardView').show();
                         $('#EmailMessagesForWorkflowWizardView').hide();
+                        $('.StepsAndProgressBarForWizardView').find('.progress-bar').width('67%');
+                        $('.StepsAndProgressBarForWizardView').find('.current-step').removeClass('current-step').prev().addClass('current-step');
                         return false;
                     }
                 );
@@ -205,6 +223,8 @@
                         $('#" . static::getValidationScenarioInputId() . "').val('" . WorkflowWizardForm::EMAIL_MESSAGES_VALIDATION_SCENARIO . "');
                         $('#EmailMessagesForWorkflowWizardView').show();
                         $('#GeneralDataForWorkflowWizardView').hide();
+                        $('.StepsAndProgressBarForWizardView').find('.progress-bar').width('83%');
+                        $('.StepsAndProgressBarForWizardView').find('.current-step').removeClass('current-step').prev().addClass('current-step');
                         return false;
                     }
                 );

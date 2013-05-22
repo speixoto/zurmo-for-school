@@ -39,19 +39,64 @@
      */
     class CalculatedNumberUtil
     {
+        const FORMAT_TYPE_INTEGER        = 1;
+
+        const FORMAT_TYPE_DECIMAL        = 2;
+
+        const FORMAT_TYPE_CURRENCY_VALUE = 3;
+
+        /**
+         * Calculate the formula and resolve the correct formula based on the attributes included in the formula
+         * @param $formula
+         * @param RedBeanModel $model
+         * @return mixed
+         * @throws NotSupportedException
+         */
+        public static function calculateByFormulaAndModelAndResolveFormat($formula, RedBeanModel $model)
+        {
+            $formatType   = self::FORMAT_TYPE_INTEGER;
+            $currencyCode = null;
+            $value = static::calculateByFormulaAndModel($formula, $model, $formatType, $currencyCode);
+            if($formatType == self::FORMAT_TYPE_INTEGER)
+            {
+                return Yii::app()->format->formatNumber((int)$value);
+            }
+            elseif($formatType == self::FORMAT_TYPE_DECIMAL)
+            {
+                return Yii::app()->numberFormatter->formatDecimal((float)$value);
+            }
+            elseif($formatType == self::FORMAT_TYPE_CURRENCY_VALUE && $currencyCode != null)
+            {
+                return Yii::app()->numberFormatter->formatCurrency((float)$value, $currencyCode);
+            }
+            elseif($formatType == self::FORMAT_TYPE_CURRENCY_VALUE)
+            {
+                return Yii::app()->numberFormatter->formatDecimal((float)$value);
+            }
+            else
+            {
+                throw new NotSupportedException();
+            }
+        }
+
         /**
          * Given a formula string and a model, calculate the number using the formula and values from the attributes
          * on the model.
          * @param string $formula
          * @param RedBeanModel $model
-         * @return calculated value as number.
+         * @param $formatType
+         * @param $currencyCode
+         * @return bool|int|string calculated value as number.
          */
-        public static function calculateByFormulaAndModel($formula, RedBeanModel $model)
+        public static function calculateByFormulaAndModel($formula, RedBeanModel $model, & $formatType, & $currencyCode)
         {
             assert('is_string($formula)');
+            assert('is_int($formatType)');
+            assert('is_string($currencyCode) || $currencyCode === null');
             $adapter = new ModelNumberOrCurrencyAttributesAdapter($model);
             foreach ($adapter->getAttributes() as $attribute => $data)
             {
+
                 if (($model->{$attribute} instanceof CurrencyValue && $model->{$attribute}->value == null) ||
                    $model->{$attribute} == null)
                 {
@@ -68,9 +113,14 @@
                         $replacementValue = $model->{$attribute};
                     }
                 }
+                $oldFormula = $formula;
                 $formula = str_replace($attribute, $replacementValue, $formula);
+                if($formula !== $oldFormula)
+                {
+                    self::resolveFormatTypeAndCurrencyCode($formatType, $currencyCode, $model, $attribute);
+                }
             }
-            $result = static::matheval($formula);
+            $result = static::mathEval($formula);
             if ($result === false)
             {
                 return Zurmo::t('ZurmoModule', 'Invalid');
@@ -81,9 +131,9 @@
         /**
          * Given a formula string and a model, determine if the formula is correctly formed and is using valid
          * attributes from the given model.
-         * @param string $formula
-         * @param RedBeanModel $model
-         * @return boolean true/false
+         * @param $formula
+         * @param ModelNumberOrCurrencyAttributesAdapter $adapter
+         * @return bool
          */
         public static function isFormulaValid($formula, ModelNumberOrCurrencyAttributesAdapter $adapter)
         {
@@ -96,14 +146,14 @@
             {
                 return false;
             }
-            if (static::matheval($formula) === false)
+            if (static::mathEval($formula) === false)
             {
                 return false;
             }
             return true;
         }
 
-        protected static function matheval($equation)
+        protected static function mathEval($equation)
         {
             $equation = preg_replace("/[^0-9+\-.*\/()%]/","",$equation); // Not Coding Standard
             $equation = preg_replace("/([+-])([0-9]{1})(%)/","*(1\$1.0\$2)",$equation); // Not Coding Standard
@@ -122,6 +172,32 @@
               }
             }
             return $return;
+        }
+
+        protected static function resolveFormatTypeAndCurrencyCode(& $formatType, & $currencyCode, $model, $attribute)
+        {
+            assert('is_int($formatType)');
+            assert('is_string($currencyCode) || $currencyCode === null');
+            $attributeType = ModelAttributeToMixedTypeUtil::getType($model, $attribute);
+            if($attributeType == 'Decimal' && $formatType == self::FORMAT_TYPE_INTEGER)
+            {
+                $formatType = self::FORMAT_TYPE_DECIMAL;
+            }
+            if($attributeType == 'CurrencyValue' &&
+               ($formatType == self::FORMAT_TYPE_INTEGER || $formatType == self::FORMAT_TYPE_DECIMAL))
+            {
+                $formatType = self::FORMAT_TYPE_CURRENCY_VALUE;
+            }
+            if($attributeType == 'CurrencyValue' && $currencyCode === null)
+            {
+                $currencyCode = $model->{$attribute}->currency->code;
+            }
+            elseif($attributeType == 'CurrencyValue' && $currencyCode != null &&
+                   $model->{$attribute}->currency->code != $currencyCode)
+            {
+                //An empty value, not null, indicates there is mixed currencies
+                $currencyCode = '';
+            }
         }
     }
 ?>

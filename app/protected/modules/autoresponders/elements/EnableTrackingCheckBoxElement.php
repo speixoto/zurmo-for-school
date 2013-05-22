@@ -34,25 +34,23 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class AutoresponderNameListViewColumnAdapter extends TextListViewColumnAdapter
+    class EnableTrackingCheckBoxElement extends CheckBoxElement
     {
-        public function renderGridViewData()
+        protected function renderLabel()
         {
-            $className  = get_class($this);
-            $value      = $className . '::resolveNameWithRedirectURl($data->name, $data->id, "' .
-                                                                                        $this->view->redirectUrl . '")';
-            return array(
-                'name'  => 'Name',
-                'value' => $value,
-                'type'  => 'raw',
-            );
-        }
-
-        public static function resolveNameWithRedirectURl($name, $id, $redirectUrl)
-        {
-            $url = Yii::app()->createUrl('/autoresponders/default/details',
-                                                                array('id' => $id, 'redirectUrl' => $redirectUrl));
-            return ZurmoHtml::link($name, $url);
+            if ($this->form === null)
+            {
+                return $this->getFormattedAttributeLabel();
+            }
+            $title                  = Zurmo::t('ZurmoModule', 'Enabling tracking would record when recipients open' .
+                                                                    ' email or click any links in outgoing message.');
+            $content                = Zurmo::t('ZurmoModule', 'Enable Tracking');
+            $content                .= ZurmoHtml::tag('span', array('id' => 'enable-tracking-tooltip',
+                                                        'class' => 'tooltip',
+                                                        'title' => $title), '?');
+            $enableTrackingTip     = new ZurmoTip();
+            $enableTrackingTip->addQTip("#enable-tracking-tooltip");
+            return $content;
         }
     }
 ?>

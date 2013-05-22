@@ -144,7 +144,7 @@
         protected static function makeStatusContentByJobInProcess($jobInProcess)
         {
             assert('$jobInProcess instanceof JobInProcess || $jobInProcess == null');
-            if ($jobInProcess != null && JobsManagerUtil::isJobInProcessOverThreashold($jobInProcess, $jobInProcess->type))
+            if ($jobInProcess != null && JobsManagerUtil::isJobInProcessOverThreshold($jobInProcess, $jobInProcess->type))
             {
                 return Zurmo::t('JobsManagerModule', 'In Process (Stuck)');
             }
@@ -164,7 +164,7 @@
         protected static function resolveStatusByJobInProcess($jobInProcess)
         {
             assert('$jobInProcess instanceof JobInProcess || $jobInProcess == null');
-            if ($jobInProcess != null && JobsManagerUtil::isJobInProcessOverThreashold($jobInProcess, $jobInProcess->type))
+            if ($jobInProcess != null && JobsManagerUtil::isJobInProcessOverThreshold($jobInProcess, $jobInProcess->type))
             {
                 return self::STATUS_IN_PROCESS_STUCK;
             }

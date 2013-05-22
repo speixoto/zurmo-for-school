@@ -63,5 +63,15 @@
         {
             return 'Comment';
         }
+
+        protected static function getSingularModuleLabel($language)
+        {
+            return Zurmo::t('CommentsModule', 'Comment', array(), null, $language);
+        }
+
+        protected static function getPluralModuleLabel($language)
+        {
+            return Zurmo::t('CommentsModule', 'Comments', array(), null, $language);
+        }
     }
 ?>

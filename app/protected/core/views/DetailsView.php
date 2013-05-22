@@ -162,6 +162,7 @@
                                     $elementInformation['wide'] = true;
                                 }
                                 $this->resolveElementInformationDuringFormLayoutRender($elementInformation);
+                                Yii::app()->custom->resolveElementInformationDuringFormLayoutRender($this, $elementInformation);
                                 $elementclassname = $elementInformation['type'] . 'Element';
                                 $element  = new $elementclassname($this->getModel(), $elementInformation['attributeName'],
                                                                   $form, array_slice($elementInformation, 2));
