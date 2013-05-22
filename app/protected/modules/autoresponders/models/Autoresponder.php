@@ -138,6 +138,7 @@
                 'relations' => array(
                     'autoresponderItems'    => array(RedBeanModel::HAS_MANY, 'AutoresponderItem'),
                     'marketingList'         => array(RedBeanModel::HAS_ONE, 'MarketingList', RedBeanModel::NOT_OWNED),
+                    'files'                 => array(RedBeanModel::HAS_MANY,  'FileModel', RedBeanModel::OWNED)
                 ),
                 'elements' => array(
                     'htmlContent'                   => 'TextArea',

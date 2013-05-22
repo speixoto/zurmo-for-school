@@ -196,14 +196,14 @@
             echo $view->render();
         }
 
-        public function actionDetails($id, $renderJson = false)
+        public function actionDetails($id, $renderJson = false, $includeFilesInJson = false)
         {
             $emailTemplate = static::getModelAndCatchNotFoundAndDisplayError('EmailTemplate', intval($id));
             ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($emailTemplate);
             if ($renderJson)
             {
                 header('Content-type: application/json');
-                echo $this->resolveEmailTemplateAsJson($emailTemplate);
+                echo $this->resolveEmailTemplateAsJson($emailTemplate, $includeFilesInJson);
                 Yii::app()->end(0, false);
             }
             AuditEvent::logAuditEvent('ZurmoModule', ZurmoModule::AUDIT_EVENT_ITEM_VIEWED, array(strval($emailTemplate),
@@ -234,10 +234,20 @@
             echo $view->render();
         }
 
-        protected function resolveEmailTemplateAsJson(EmailTemplate $emailTemplate)
+        protected function resolveEmailTemplateAsJson(EmailTemplate $emailTemplate, $includeFilesInJson)
         {
-            $emailTemplateDataUtil = new ModelToArrayAdapter($emailTemplate);
-            return CJSON::encode($emailTemplateDataUtil->getData());
+            $emailTemplateDataUtil          = new ModelToArrayAdapter($emailTemplate);
+            $emailTemplateData              = $emailTemplateDataUtil->getData();
+            if ($includeFilesInJson)
+            {
+                $emailTemplateData['filesIds']  = array();
+                foreach ($emailTemplate->files as $file)
+                {
+                    $emailTemplateData['filesIds'][] = $file->id;
+                }
+            }
+            $emailTemplateJson = CJSON::encode($emailTemplateData);
+            return $emailTemplateJson;
         }
 
         protected static function getSearchFormClassName()
@@ -274,7 +284,7 @@
 
         protected static function getZurmoControllerUtil()
         {
-            return new EmailTemplateControllerUtil();
+            return new EmailTemplateZurmoControllerUtil();
         }
     }
 ?>

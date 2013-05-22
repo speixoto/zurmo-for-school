@@ -34,28 +34,7 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class EmailTemplateControllerUtil extends ZurmoControllerUtil
+    class AutoresponderZurmoControllerUtil extends FileZurmoControllerUtil
     {
-        protected function afterSuccessfulSave($model)
-        {
-            $filesIds = Yii::app()->request->getPost('filesIds');
-            if (is_array($filesIds) && !empty($filesIds))
-            {
-                foreach ($filesIds as $filesId)
-                {
-                    $file   = FileModel::getById($filesId);
-                    $model->files->add($file);
-                }
-                if ($model->save())
-                {
-                    return $model;
-                }
-                else
-                {
-                    throw new FailedToSaveModelException();
-                }
-            }
-            return $model;
-        }
     }
 ?>

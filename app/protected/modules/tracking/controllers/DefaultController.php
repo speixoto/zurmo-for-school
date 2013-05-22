@@ -43,31 +43,41 @@
 
         public function actionTrack()
         {
-            Yii::app()->user->userModel = static::getUserToRunTrackActionAs();
-            $response                   = EmailMessageActivityUtil::resolveQueryStringFromUrlAndCreateOrUpdateActivity();
-            if ($response['redirect'])
+            try
             {
-                $this->redirect($response['url']);
+                Yii::app()->user->userModel = static::getUserToRunTrackActionAs();
+                $response                   = EmailMessageActivityUtil::resolveQueryStringFromUrlAndCreateOrUpdateActivity();
+                if ($response['redirect'])
+                {
+                    $this->redirect($response['url']);
+                }
+                elseif (isset($response['imagePath']))
+                {
+                    $mime               = ZurmoFileHelper::getMimeType($response['imagePath']);
+                    $size               = filesize($response['imagePath']);
+                    $name               = pathinfo($response['imagePath'], PATHINFO_FILENAME);
+                    header('Content-Type: '     .   $mime);
+                    header('Content-Length: '   .   $size);
+                    header('Content-Name: '     .   $name);
+                    readfile($response['imagePath']);
+                    Yii::app()->end(0, false);
+                }
             }
-            elseif (isset($response['imagePath']))
+            catch (NotFoundException $e)
             {
-                $mime               = ZurmoFileHelper::getMimeType($response['imagePath']);
-                $size               = filesize($response['imagePath']);
-                $name               = pathinfo($response['imagePath'], PATHINFO_FILENAME);
-                header('Content-Type: '     .   $mime);
-                header('Content-Length: '   .   $size);
-                header('Content-Name: '     .   $name);
-                readfile($response['imagePath']);
-                Yii::app()->end(0, false);
             }
-            else
+            catch (NotSupportedException $e)
             {
-                throw new NotSupportedException();
             }
+            catch (FailedToSaveModelException $e)
+            {
+            }
+            // we do not catch all exceptions because we need Exit and Redirect Exception for unit tests
         }
 
         protected static function getUserToRunTrackActionAs()
         {
+            // TODO: @Shoaibi/@Jason: Critical: Needs UI configuration
             $keyName      = 'UserIdOfUserToRunTrackingAs';
             $superGroup   = Group::getByName(Group::SUPER_ADMINISTRATORS_GROUP_NAME);
             if (null != $userId = ZurmoConfigurationUtil::getByModuleName('TrackingModule', $keyName))
@@ -75,7 +85,6 @@
                 try
                 {
                     $user  = User::getById($userId);
-
                     if ($user->groups->contains($superGroup))
                     {
                         return $user;
@@ -93,7 +102,7 @@
             {
                 $user = $superGroup->users->offsetGet(0);
                 ZurmoConfigurationUtil::setByModuleName('TrackingModule', $keyName, $user->id);
-                return $userId;
+                return $user;
             }
         }
     }

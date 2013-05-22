@@ -39,7 +39,7 @@
      */
     abstract class AutoresponderAndCampaignItemsUtil
     {
-        public static function processDueItem($item)
+        public static function processDueItem(OwnedModel $item)
         {
             assert('is_object($item)');
             $itemClass                  = get_class($item);
@@ -66,7 +66,7 @@
             {
                 // TODO: @Shoaibi/@Jason: Medium: Do something about it.
             }
-            static::markItemAsProcessed($item, $itemClass);
+            static::markItemAsProcessed($item);
         }
 
         protected static function resolveContent(& $textContent, & $htmlContent, Contact $contact)
@@ -108,7 +108,7 @@
             $activityUtil::resolveContentForTracking($enableTracking, $htmlContent, $modelId, $modelType, $personId, true);
         }
 
-        protected static function resolveEmailMessage($textContent, $htmlContent, $itemOwnerModel, Contact $contact)
+        protected static function resolveEmailMessage($textContent, $htmlContent, Item $itemOwnerModel, Contact $contact)
         {
             $marketingList                  = $itemOwnerModel->marketingList;
             $emailMessage                   = new EmailMessage();
@@ -120,18 +120,19 @@
             $emailMessage->content          = $emailContent;
             $emailMessage->sender           = static::resolveSender($marketingList);
             static::resolveRecipient($emailMessage, $contact);
+            static::resolveAttachments($emailMessage, $itemOwnerModel);
             if ($emailMessage->recipients->count() == 0)
             {
                 throw new MissingRecipientsForEmailMessageException();
             }
-            $boxName                        = static::resolveEmailBoxName($itemOwnerModel);
+            $boxName                        = static::resolveEmailBoxName(get_class($itemOwnerModel));
             $box                            = EmailBox::resolveAndGetByName($boxName);
             $emailMessage->folder           = EmailFolder::getByBoxAndType($box, EmailFolder::TYPE_DRAFT);
             Yii::app()->emailHelper->send($emailMessage);
             return $emailMessage;
         }
 
-        protected static function resolveSender($marketingList)
+        protected static function resolveSender(MarketingList $marketingList)
         {
             $sender                         = new EmailMessageSender();
             if (!empty($marketingList->fromName) && !empty($marketingList->fromAddress))
@@ -161,7 +162,18 @@
             }
         }
 
-        protected static function markItemAsProcessed($item, $itemClass)
+        protected static function resolveAttachments(EmailMessage $emailMessage, Item $itemOwnerModel)
+        {
+            if (!empty($itemOwnerModel->files))
+            {
+                foreach ($itemOwnerModel->files as $file)
+                {
+                    $emailMessage->files->add($file);
+                }
+            }
+        }
+
+        protected static function markItemAsProcessed($item)
         {
             $item->processed   = 1;
             return $item->unrestrictedSave();
@@ -179,9 +191,9 @@
             }
         }
 
-        protected static function resolveEmailBoxName($itemOwnerModel)
+        protected static function resolveEmailBoxName($itemOwnerModelClassName)
         {
-            if ($itemOwnerModel == "Autoresponder")
+            if ($itemOwnerModelClassName == "Autoresponder")
             {
                 return EmailBox::AUTORESPONDERS_NAME;
             }

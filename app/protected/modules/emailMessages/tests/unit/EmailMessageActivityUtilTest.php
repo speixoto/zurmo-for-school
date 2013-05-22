@@ -34,8 +34,6 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    //define('ZURMO_PASSWORD_SALT', 'some32432dsfds%&%^&%Salt');
-
     class EmailMessageActivityUtilTest extends ZurmoBaseTest
     {
         public static function setUpBeforeClass()

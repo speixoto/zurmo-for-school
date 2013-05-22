@@ -164,11 +164,7 @@ $(window).ready(function(){
 
     /*Adds padding to accommodate long labels for lang-label inputs*/
     $(".has-lang-label").each(function(){
-        if ( $("span", this).width() > 80 ){
-           $("input", this).css({paddingLeft: $("span", this).width() });
-        } else {
-           $("input", this).css({paddingLeft: 80 });
-        }
+        resolvePaddingForHasLangLabel(this);
     });
 
     $('.hasDropDown').live({
@@ -283,6 +279,16 @@ function onAjaxSubmitRelatedListAction(confirmTitle, gridId){
     $('#' + gridId).addClass("loading");
     makeSmallLoadingSpinner(true, '#' + gridId);
     return true;
+}
+
+/*Takes care of padding in input of type has-lang-label*/
+function resolvePaddingForHasLangLabel(context){
+    if ( $("span", context).width() > 80 ){
+        $("input", context).css({paddingLeft: $("span", context).width() });
+    } else {
+        $("input", context).css({paddingLeft: 80 });
+    }
+    console.log(context);
 }
 
 /*

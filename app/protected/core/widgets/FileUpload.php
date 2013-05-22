@@ -41,6 +41,10 @@
      */
     class FileUpload extends ZurmoWidget
     {
+        const DOWNLOAD_TEMPLATE_ID  = 'template-download';
+
+        const UPLOAD_TEMPLATE_ID    = 'template-upload';
+
         public $scriptFile = array('jquery.fileupload.js',
                                    'jquery.fileupload-ui.js', 'jquery.tmpl.min.js', 'jquery.iframe-transport.js');
 
@@ -248,9 +252,10 @@ EOD;
         {
             $deleteLabel = 'Delete';
             $removeLabel = Zurmo::t('Core', 'Remove');
+            $templateId  = static::DOWNLOAD_TEMPLATE_ID;
 $scriptContent = <<<EOD
-<script id="template-download" type="text/x-jquery-tmpl">
-    <tr class="template-download{{if error}} ui-state-error{{/if}}">
+<script id="{$templateId}" type="text/x-jquery-tmpl">
+    <tr class="{$templateId}{{if error}} ui-state-error{{/if}}">
         {{if error}}
             <td class="error" colspan="4">\${error}</td>
         {{else}}
@@ -273,9 +278,10 @@ EOD;
         {
             $startLabel  = Zurmo::t('Core', 'Start');
             $cancelLabel = Zurmo::t('Core', 'Cancel');
+            $templateId  = static::UPLOAD_TEMPLATE_ID;
 $scriptContent = <<<EOD
-<script id="template-upload" type="text/x-jquery-tmpl">
-    <tr class="template-upload{{if error}} ui-state-error{{/if}}">
+<script id="{$templateId}" type="text/x-jquery-tmpl">
+    <tr class="{$templateId}{{if error}} ui-state-error{{/if}}">
         <td class="name">
             <span class="z-spinner"></span>
             \${name} <span class="file-size">(\${sizef})</span>

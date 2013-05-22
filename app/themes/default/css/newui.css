@@ -10432,11 +10432,6 @@ div.hasHalfs .twoThirds {
 .AppContent.MassEditView #edit-form table {
   width: 100%;
 }
-.AppContent.MassEditView .hasCheckBox {
-  margin-top: 0 !important;
-  position: relative;
-  top: -4px;
-}
 .AppContent.MassEditView tr th:first-child {
   padding: 0 !important;
 }
@@ -11827,7 +11822,7 @@ table.configuration-list td:last-child a .z-label:before {
   -ms-border-radius: 1px 0 0 1px;
   -o-border-radius: 1px 0 0 1px;
   border-radius: 1px 0 0 1px;
-  padding: 0 10px;
+  padding: 0 10px 0 17px;
 }
 .has-lang-label .errorMessage {
   margin-bottom: 15px;
@@ -13747,8 +13742,8 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
 }
 .AttributeEditView .sortable .remove-sortable-item-link {
   position: absolute;
-  left: 6px;
-  top: 5px;
+  left: 4px;
+  top: 4px;
   z-index: 100;
 }
 .AttributeEditView .sortable .remove-sortable-item-link span {
@@ -13758,7 +13753,7 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
 .AttributeEditView .sortable .remove-sortable-item-link:after {
   content: "_";
   font-weight: normal;
-  font-size: 20px;
+  font-size: 18px;
   font-family: "ZurmoGamificationSymblyReguRg";
   text-indent: 0 !important;
   color: #A7A7A7;
@@ -16317,7 +16312,16 @@ a.user-link {
 }
 /*email modal*/
 #NoUserEmailConfigurationYetView {
-  padding-bottom: 30px;
+  padding: 0 0 30px 0;
+}
+#NoUserEmailConfigurationYetView .large-icon {
+  margin-top: 0;
+}
+#NoUserEmailConfigurationYetView .large-icon:after {
+  font-size: 220px;
+}
+#NoUserEmailConfigurationYetView p {
+  margin-top: 15px;
 }
 /*User email configuration*/
 .outbound-settings {
@@ -16670,7 +16674,7 @@ a.user-link {
   border-radius: 0 3px 3px 0;
   background: #f0f0f0 url(../images/drag-handle.png) left top repeat-y;
 }
-.sortable .dynamic-row:active {
+.sortable .ui-sortable-helper .dynamic-row {
   cursor: move;
   background-color: #f5f5f5;
 }
@@ -17170,7 +17174,7 @@ a.user-link {
   padding-left: 15px;
 }
 .all-related-field .value-data {
-  width: 44.5%;
+  width: 42.5%;
 }
 .all-related-field > span {
   float: left;
@@ -17345,6 +17349,13 @@ a.user-link {
 }
 .StepsAndProgressBarForWizardView .current-step {
   font-weight: bold;
+}
+/*Misc*/
+.margetags-guide-link {
+  margin-bottom: 10px;
+}
+.margetags-guide-link .simple-link {
+  margin-left: 0;
 }
 #MashableInboxActionBarForViews .view-toolbar ul:first-child > li > a {
   border-left: none;
