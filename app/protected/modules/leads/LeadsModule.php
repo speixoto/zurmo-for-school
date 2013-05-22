@@ -158,5 +158,15 @@
         {
             return 'LeadsSearchForm';
         }
+
+        protected static function getSingularModuleLabel($language)
+        {
+            return Zurmo::t('LeadsModule', 'Lead', array(), null, $language);
+        }
+
+        protected static function getPluralModuleLabel($language)
+        {
+            return Zurmo::t('LeadsModule', 'Leads', array(), null, $language);
+        }
     }
 ?>

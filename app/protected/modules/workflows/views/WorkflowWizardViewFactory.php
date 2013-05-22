@@ -67,5 +67,28 @@
             }
             return new $viewClassName($form, $isBeingCopied);
         }
+
+        /**
+         * @param Workflow $workflow
+         * @return  ByTimeWorkflowStepsAndProgressBarForWizardView|
+         *          OnSaveWorkflowStepsAndProgressBarForWizardView
+         * @throws NotSupportedException
+         */
+        public static function makeStepsAndProgressBarViewFromReport(Workflow $workflow)
+        {
+            $type = $workflow->getType();
+            if ($type == Workflow::TYPE_BY_TIME)
+            {
+                return new ByTimeWorkflowStepsAndProgressBarForWizardView();
+            }
+            elseif ($type == Workflow::TYPE_ON_SAVE)
+            {
+                return new OnSaveWorkflowStepsAndProgressBarForWizardView();
+            }
+            else
+            {
+                throw new NotSupportedException();
+            }
+        }
     }
 ?>

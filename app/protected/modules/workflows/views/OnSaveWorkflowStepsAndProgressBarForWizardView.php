@@ -34,70 +34,18 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class MergeTagGuideAjaxLinkActionElement extends AjaxLinkActionElement
+    /**
+     * Progress bar and steps for the on-save workflow wizard
+     */
+    class OnSaveWorkflowStepsAndProgressBarForWizardView extends StepsAndProgressBarForWizardView
     {
-        public function getActionType()
+        protected function getSpanLabels()
         {
-            return 'MergeTagGuide';
-        }
-
-        public function render()
-        {
-            $this->registerScript();
-            return parent::render();
-        }
-
-        public function renderMenuItem()
-        {
-            $this->registerScript();
-            return parent::renderMenuItem();
-        }
-
-        protected function getDefaultLabel()
-        {
-            return Zurmo::t('EmailTemplatesModule', 'MergeTag Guide');
-        }
-
-        protected function getDefaultRoute()
-        {
-            return Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/mergeTagGuide/');
-        }
-
-        protected function getAjaxOptions()
-        {
-            $parentAjaxOptions = parent::getAjaxOptions();
-            $modalViewAjaxOptions = ModalView::getAjaxOptionsForModalLink($this->getDefaultLabel());
-            if (!isset($this->params['ajaxOptions']))
-            {
-                $this->params['ajaxOptions'] = array();
-            }
-            return CMap::mergeArray($parentAjaxOptions, $modalViewAjaxOptions, $this->params['ajaxOptions']);
-        }
-
-        protected function getHtmlOptions()
-        {
-            $htmlOptions = array('class' => 'simple-link');
-            return $htmlOptions;
-        }
-
-        protected function registerScript()
-        {
-            $eventHandlerName = get_class($this);
-            $ajaxOptions      = CMap::mergeArray($this->getAjaxOptions(), array('url' => $this->route));
-            if (Yii::app()->clientScript->isScriptRegistered($eventHandlerName))
-            {
-                return;
-            }
-            else
-            {
-                Yii::app()->clientScript->registerScript($eventHandlerName, "
-                    function ". $eventHandlerName ."()
-                    {
-                        " . ZurmoHtml::ajax($ajaxOptions)."
-                    }
-                ", CClientScript::POS_HEAD);
-            }
-            return $eventHandlerName;
+            return array(Zurmo::t('Core', 'Module'),
+                         Zurmo::t('WorkflowsModule', 'Triggers'),
+                         Zurmo::t('WorkflowsModule', 'Actions'),
+                         Zurmo::t('WorkflowsModule', 'Messages'),
+                         Zurmo::t('WorkflowsModule', 'General'));
         }
     }
 ?>

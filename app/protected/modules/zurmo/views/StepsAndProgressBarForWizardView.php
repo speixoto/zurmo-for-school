@@ -52,7 +52,10 @@
 
         protected function renderContent()
         {
-            $content = ZurmoHtml::tag('div', array('class' => 'progress-bar'), '');
+            $width = $this->getSpanPercentWidthFromCount();
+            $left  = $this->getCurrentStepIndex() * $width;
+            $content = ZurmoHtml::tag('div', array('class' => 'progress-bar',
+                                                   'style' => 'width:' . $width . '%; margin-left:' . $left . '%'), '');
             $content = ZurmoHtml::tag('div', array('class' => 'progress-back'), $content);
             $spanContent = $this->getSpanContent();
             return ZurmoHtml::tag('div', array('class' => 'progress'), $content . $spanContent);
@@ -60,12 +63,32 @@
 
         protected function getSpanContent()
         {
+            $width = $this->getSpanPercentWidthFromCount();
             $content = null;
+            $first   = true;
             foreach($this->getSpanLabels() as $label)
             {
-                $content .= ZurmoHtml::tag('div', array(), $label);
+                $htmlOptions          = array();
+                $htmlOptions['style'] = 'width:' . $width . '%';
+                if($first)
+                {
+                    $htmlOptions['class'] = 'current-step';
+                }
+                $content .= ZurmoHtml::tag('span', $htmlOptions, $label);
+                $first    = false;
             }
             return $content;
+        }
+
+        protected function getSpanPercentWidthFromCount()
+        {
+            $width  = 100 / count($this->getSpanLabels());
+            return $width;
+        }
+
+        protected function getCurrentStepIndex()
+        {
+            return 0;
         }
     }
 ?>

@@ -236,5 +236,23 @@
                 }
             }
         }
+
+        /**
+         * Encrypt password before validate
+         * @return true to signal success and that validate can proceed.
+         */
+        public function afterValidate()
+        {
+            if (!parent::afterValidate())
+            {
+                return false;
+            }
+
+            if ($this->outboundPassword !== null && $this->outboundPassword !== '')
+            {
+                $this->outboundPassword = ZurmoPasswordSecurityUtil::encrypt($this->outboundPassword);
+             }
+            return true;
+        }
     }
 ?>
