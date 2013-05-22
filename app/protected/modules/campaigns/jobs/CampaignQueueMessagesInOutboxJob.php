@@ -101,6 +101,7 @@
 
         protected function resolveBatchSize()
         {
+            // TODO: @Shoaibi/@Jason: Critical: Needs UI configuration
             $batchSize = ZurmoConfigurationUtil::getByModuleName('CampaignsModule', static::BATCH_SIZE_CONFIG_KEY);
             if (!$batchSize)
             {

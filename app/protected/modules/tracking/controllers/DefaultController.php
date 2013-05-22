@@ -77,6 +77,7 @@
 
         protected static function getUserToRunTrackActionAs()
         {
+            // TODO: @Shoaibi/@Jason: Critical: Needs UI configuration
             $keyName      = 'UserIdOfUserToRunTrackingAs';
             $superGroup   = Group::getByName(Group::SUPER_ADMINISTRATORS_GROUP_NAME);
             if (null != $userId = ZurmoConfigurationUtil::getByModuleName('TrackingModule', $keyName))
@@ -84,7 +85,6 @@
                 try
                 {
                     $user  = User::getById($userId);
-
                     if ($user->groups->contains($superGroup))
                     {
                         return $user;
@@ -102,7 +102,7 @@
             {
                 $user = $superGroup->users->offsetGet(0);
                 ZurmoConfigurationUtil::setByModuleName('TrackingModule', $keyName, $user->id);
-                return $userId;
+                return $user;
             }
         }
     }
