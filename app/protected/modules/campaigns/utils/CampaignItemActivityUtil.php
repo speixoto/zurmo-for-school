@@ -39,6 +39,5 @@
      */
     class CampaignItemActivityUtil extends EmailMessageActivityUtil
     {
-
     }
 ?>

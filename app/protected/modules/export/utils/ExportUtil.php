@@ -36,5 +36,18 @@
 
     class ExportUtil
     {
+        public static function getDataForExport(CDataProvider $dataProvider)
+        {
+            $totalItems = intval($dataProvider->calculateTotalItemCount());
+            $dataProvider->getPagination()->setPageSize($totalItems);
+            return $dataProvider->getData();
+        }
+
+        public static function getSerializedDataForExport(CDataProvider $dataProvider)
+        {
+            $totalItems = intval($dataProvider->calculateTotalItemCount());
+            $dataProvider->getPagination()->setPageSize($totalItems);
+            return serialize($dataProvider);
+        }
     }
 ?>

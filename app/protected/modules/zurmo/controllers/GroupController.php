@@ -48,14 +48,9 @@
             }
         }
 
-        public function filters()
+        public function resolveModuleClassNameForFilters()
         {
-            return array(
-                array(
-                    ZurmoBaseController::RIGHTS_FILTER_PATH,
-                    'moduleClassName' => 'GroupsModule',
-               ),
-            );
+            return 'GroupsModule';
         }
 
         public function resolveAndGetModuleId()

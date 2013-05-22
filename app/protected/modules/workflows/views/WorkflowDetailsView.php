@@ -49,6 +49,7 @@
                     'toolbar' => array(
                         'elements' => array(
                             array('type' => 'EditLink'),
+                            array('type' => 'WorkflowCopyLink'),
                             array('type' => 'WorkflowDeleteLink'),
                         ),
                     ),

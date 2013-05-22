@@ -266,15 +266,15 @@
             {
                 if ($this->report->getCurrencyConversionType() == Report::CURRENCY_CONVERSION_TYPE_ACTUAL)
                 {
-                    return Yii::app()->numberFormatter->formatDecimal($value);
+                    return Yii::app()->numberFormatter->formatDecimal((float)$value);
                 }
                 elseif ($this->report->getCurrencyConversionType() == Report::CURRENCY_CONVERSION_TYPE_BASE)
                 {
-                    return Yii::app()->numberFormatter->formatCurrency($value, Yii::app()->currencyHelper->getBaseCode());
+                    return Yii::app()->numberFormatter->formatCurrency((float)$value, Yii::app()->currencyHelper->getBaseCode());
                 }
                 elseif ($this->report->getCurrencyConversionType() == Report::CURRENCY_CONVERSION_TYPE_SPOT)
                 {
-                    return Yii::app()->numberFormatter->formatCurrency($value * $this->report->getFromBaseToSpotRate(),
+                    return Yii::app()->numberFormatter->formatCurrency((float)$value * $this->report->getFromBaseToSpotRate(),
                                                                        $this->report->getSpotConversionCurrencyCode());
                 }
                 else
@@ -284,11 +284,11 @@
             }
             elseif ($displayAttribute->getDisplayElementType() == 'Decimal')
             {
-                return Yii::app()->numberFormatter->formatDecimal($value);
+                return Yii::app()->numberFormatter->formatDecimal((float)$value);
             }
             elseif ($displayAttribute->getDisplayElementType() == 'Integer')
             {
-                return Yii::app()->numberFormatter->formatDecimal($value);
+                return Yii::app()->numberFormatter->formatDecimal((int)$value);
             }
             elseif ($displayAttribute->getDisplayElementType()  == 'Date')
             {

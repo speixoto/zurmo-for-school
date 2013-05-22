@@ -35,9 +35,17 @@
      ********************************************************************************/
 
     /**
-     * TODO
+     * Class for rendering decimal attribute
      */
     class DecimalElement extends TextElement
     {
+        /**
+         * Renders the attribute from the model.
+         * @return The element's content.
+         */
+        protected function renderControlNonEditable()
+        {
+            return Yii::app()->numberFormatter->formatDecimal((float)$this->model->{$this->attribute});
+        }
     }
 ?>

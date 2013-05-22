@@ -146,17 +146,5 @@
             $this->modifiedDateTime     = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
             return true;
         }
-
-        public function beforeDelete()
-        {
-            if (!parent::beforeDelete())
-            {
-                return false;
-            }
-            AutoresponderItem::registerAutoresponderItemsByAutoresponderOperation(Autoresponder::OPERATION_REMOVE,
-                                                                                            $this->marketingList->id,
-                                                                                            $this->contact);
-            return true;
-        }
     }
 ?>

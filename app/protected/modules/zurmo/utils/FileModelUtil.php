@@ -130,5 +130,28 @@
                 }
             }
         }
+
+        /**
+         *
+         * @param integer $fileModelId
+         * @return $fileModel or false on failure
+         */
+        public static function makeByExistingFileModelId($fileModelId)
+        {
+            assert('is_int($fileModelId) || (is_string($fileModelId) && !empty($fileModelId))');
+            $existingFileModel  = FileModel::getById($fileModelId);
+            $fileContent          = new FileContent();
+            $fileContent->content = $existingFileModel->fileContent->content;
+            $file                 = new FileModel();
+            $file->fileContent    = $fileContent;
+            $file->name           = $existingFileModel->name;
+            $file->type           = $existingFileModel->type;
+            $file->size           = $existingFileModel->size;
+            if (!$file->save())
+            {
+                return false;
+            }
+            return $file;
+        }
     }
 ?>

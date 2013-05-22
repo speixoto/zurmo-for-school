@@ -233,7 +233,7 @@
         {
             $element = new MergeTagGuideAjaxLinkActionElement('default', 'emailTemplates', 'notUsed',
                                                               array('htmlOptions' => array('namespace' => 'mergetag')));
-            return $element->render();
+            return ZurmoHtml::tag('div', array('class' => 'margetags-guide-link'), $element->render());
         }
 
         /**

@@ -44,34 +44,43 @@
     {
         const CACHE_KEY_PREFIX = 'ZurmoMessageSource';
 
+        public static function clearCache($category, $languageCode)
+        {
+            assert('is_string($category)');
+            assert('is_string($languageCode)');
+            GeneralCache::forgetEntry(self::getMessageSourceCacheIdentifier($category, $languageCode));
+        }
+
         /**
-         * Override of the parent method using RedBean. Tries to get messages from cache first before going to database
+         * Override of the parent method because of problems with Yii's default cache
+         * @see CDbMessageSource::loadMessages()
          * @param string $category
          * @param string $languageCode
          * @return array $messages
          */
-        protected function loadMessagesFromDb($category, $languageCode)
+        protected function loadMessages($category, $languageCode)
         {
             assert('is_string($category)');
             assert('is_string($languageCode)');
             try
             {
-                $messages = GeneralCache::getEntry(self::CACHE_KEY_PREFIX);
+                $messages = GeneralCache::getEntry(self::getMessageSourceCacheIdentifier($category, $languageCode));
             }
             catch (NotFoundException $e)
             {
-                $messages = $this->loadMessagesFromDbIgnoringCache($category, $languageCode);
-                GeneralCache::cacheEntry(self::CACHE_KEY_PREFIX, $messages);
+                $messages = $this->loadMessagesFromDb($category, $languageCode);
+                GeneralCache::cacheEntry(self::getMessageSourceCacheIdentifier($category, $languageCode), $messages);
             }
             return $messages;
         }
 
         /**
+         * Override of the parent method using RedBean.
          * @param $category
          * @param $languageCode
          * @return array
          */
-        protected function loadMessagesFromDbIgnoringCache($category, $languageCode)
+        protected function loadMessagesFromDb($category, $languageCode)
         {
             assert('is_string($category)');
             assert('is_string($languageCode)');
@@ -88,6 +97,13 @@
                 $messages[$bean->messagesource->source] = $bean->translation;
             }
             return $messages;
+        }
+
+        protected static function getMessageSourceCacheIdentifier($category, $languageCode)
+        {
+            assert('is_string($category)');
+            assert('is_string($languageCode)');
+            return self::CACHE_KEY_PREFIX.'.messages.'.$category.'.'.$languageCode;
         }
     }
 ?>

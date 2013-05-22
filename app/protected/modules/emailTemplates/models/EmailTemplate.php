@@ -148,8 +148,11 @@
                     array('textContent',                'EmailTemplateMergeTagsValidator', 'except' => 'autoBuildDatabase'),
                 ),
                 'elements' => array(
-                    'htmlContent'                  => 'TextArea',
-                    'textContent'                  => 'TextArea',
+                    'htmlContent'                   => 'TextArea',
+                    'textContent'                   => 'TextArea',
+                ),
+                'relations' => array(
+                    'files'                         => array(RedBeanModel::HAS_MANY,  'FileModel', RedBeanModel::OWNED),
                 ),
             );
             return $metadata;

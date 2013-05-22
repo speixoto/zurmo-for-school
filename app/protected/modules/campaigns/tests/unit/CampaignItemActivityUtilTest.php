@@ -83,7 +83,7 @@
                                                                         null,
                                                                         null,
                                                                         $marketingList);
-            $processed          = CampaignItem::NOT_PROCESSED;
+            $processed          = 0;
             $campaignItem       = CampaignItemTestHelper::createCampaignItem($processed, $campaign, $contact);
             $modelId            = $campaignItem->id;
             $modelType          = get_class($campaignItem);
@@ -198,7 +198,7 @@
                                                                         null,
                                                                         null,
                                                                         $marketingList);
-            $processed          = CampaignItem::NOT_PROCESSED;
+            $processed          = 0;
             $campaignItem  = CampaignItemTestHelper::createCampaignItem($processed, $campaign, $contact);
             $modelId            = $campaignItem->id;
             $modelId            += 200;
@@ -276,7 +276,7 @@
                                                                         null,
                                                                         null,
                                                                         $marketingList);
-            $processed          = CampaignItem::NOT_PROCESSED;
+            $processed          = 0;
             $campaignItem       = CampaignItemTestHelper::createCampaignItem($processed, $campaign, $contact);
             $modelId            = $campaignItem->id;
             $modelType          = get_class($campaignItem);
@@ -420,7 +420,7 @@
                                                                         null,
                                                                         null,
                                                                         $marketingList);
-            $processed          = CampaignItem::NOT_PROCESSED;
+            $processed          = 0;
             $campaignItem       = CampaignItemTestHelper::createCampaignItem($processed, $campaign, $contact);
             $modelId            = $campaignItem->id;
             $modelType          = get_class($campaignItem);
@@ -536,7 +536,7 @@
                                                                         null,
                                                                         null,
                                                                         $marketingList);
-            $processed          = CampaignItem::NOT_PROCESSED;
+            $processed          = 0;
             $campaignItem       = CampaignItemTestHelper::createCampaignItem($processed, $campaign, $contact);
             $modelId            = $campaignItem->id;
             $modelId            += 200;
@@ -615,7 +615,7 @@
                                                                         null,
                                                                         null,
                                                                         $marketingList);
-            $processed          = CampaignItem::NOT_PROCESSED;
+            $processed          = 0;
             $campaignItem       = CampaignItemTestHelper::createCampaignItem($processed, $campaign, $contact);
             $modelId            = $campaignItem->id;
             $modelType          = get_class($campaignItem);

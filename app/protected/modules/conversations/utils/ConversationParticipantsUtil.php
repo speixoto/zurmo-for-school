@@ -40,9 +40,26 @@
     class ConversationParticipantsUtil
     {
         /**
+         * Resolved by current user. If the current user cannot access the model, the return false.
+         * @param Conversation $model
+         * @return bool
+         */
+        public static function isCurrentUserAParticipant(Conversation $model)
+        {
+            try
+            {
+                return self::isUserAParticipant($model, Yii::app()->user->userModel);
+            }
+            catch(AccessDeniedSecurityException $e)
+            {
+                return false;
+            }
+        }
+        /**
          * Given a Conversation and User, determine if the user is already a conversationParticipant.
          * @param Conversation $model
          * @param User $user
+         * @return boolean
          */
         public static function isUserAParticipant(Conversation $model, User $user)
         {
@@ -62,10 +79,10 @@
         /**
          * Based on the post data, resolve the conversation participants. While this is being resolved also
          * resolve the correct read/write permissions.
-         * @param object $model - Conversation Model
+         * @param Conversation $conversation
          * @param array $postData
          * @param object $explicitReadWriteModelPermissions - ExplicitReadWriteModelPermissions model
-         * @returns Array of persons who have been added as participants
+         * @return Array of persons who have been added as participants
          */
         public static function resolveConversationHasManyParticipantsFromPost(
                                     Conversation $conversation, $postData, $explicitReadWriteModelPermissions)

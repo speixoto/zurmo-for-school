@@ -76,15 +76,6 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'name', 'type' => 'Text'),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
                                                 array('attributeName' => 'subject', 'type' => 'Text'),
                                             ),
                                         ),
@@ -94,7 +85,8 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'enableTracking', 'type' => 'CheckBox'),
+                                                array('attributeName' => 'enableTracking',
+                                                                        'type' => 'EnableTrackingCheckBox'),
                                             ),
                                         ),
                                     )
@@ -106,7 +98,16 @@
                                             'detailViewOnly' => 2, // using 2 here to mean: "do not render on details"
                                             'elements' => array(
                                                 array('attributeName' => 'null',
-                                                                        'type' => 'ContactEmailTemplateNamesDropDown')
+                                                            'type' => 'AutoresponderContactEmailTemplateNamesDropDown')
+                                            ),
+                                        ),
+                                    )
+                                ),
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'null', 'type' => 'Files'),
                                             ),
                                         ),
                                     )

@@ -49,9 +49,8 @@
         {
             $url      = Yii::app()->createUrl('/missions/default/details', array('id' => $mission->id));
             $content  = $mission->description;
-            $details  = '<span class="list-item-details">' . Zurmo::t('MissionsModule', 'Updated') . ': ' .
-                        DateTimeUtil::convertDbFormattedDateTimeToLocaleFormattedDisplay($mission->latestDateTime) .
-                        '</span>';
+            $details  = ZurmoHtml::tag('span', array('class' => 'list-item-details'),
+                                       DateTimeUtil::getTimeSinceDisplayContent($mission->latestDateTime));
             $link     = ZurmoHtml::link($content, $url);
             return $link . $details;
         }

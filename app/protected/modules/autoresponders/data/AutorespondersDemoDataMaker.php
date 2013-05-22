@@ -54,7 +54,7 @@
             assert('$demoDataHelper->isSetRange("MarketingList")');
 
             $autoresponders = array();
-            for ($this->index = 0; $this->index < 5; $this->index++)
+            for ($this->index = 0; $this->index < 4; $this->index++)
             {
                 $autoresponder                  = new Autoresponder();
                 $autoresponder->marketingList   = $demoDataHelper->getRandomByModelName('MarketingList');
@@ -75,7 +75,6 @@
                 $this->seedData =  ZurmoRandomDataUtil::getRandomDataByModuleAndModelClassNames('AutorespondersModule',
                                                                                                 'Autoresponder');
             }
-            $model->name                    = $this->seedData['name'][$this->index];
             $model->subject                 = $this->seedData['subject'][$this->index];
             $model->htmlContent             = $this->seedData['htmlContent'][$this->index];
             $model->textContent             = $this->seedData['textContent'][$this->index];
