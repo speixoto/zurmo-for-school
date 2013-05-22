@@ -42,6 +42,8 @@
     {
         const BATCH_SIZE_CONFIG_KEY = 'AutoresponderBatchSize';
 
+        const DEFAULT_BATCH_SIZE    = 200;
+
         /**
          * @returns Translated label that describes this job type.
          */
@@ -99,10 +101,11 @@
 
         protected function resolveBatchSize()
         {
+            // TODO: @Shoaibi/@Jason: Critical: Needs UI configuration
             $batchSize = ZurmoConfigurationUtil::getByModuleName('AutorespondersModule', static::BATCH_SIZE_CONFIG_KEY);
             if (!$batchSize)
             {
-                $batchSize = 200;
+                $batchSize = static::DEFAULT_BATCH_SIZE;
                 ZurmoConfigurationUtil::setByModuleName('AutorespondersModule', static::BATCH_SIZE_CONFIG_KEY, $batchSize);
             }
             return $batchSize;

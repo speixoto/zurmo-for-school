@@ -36,14 +36,9 @@
 
     class ZurmoRoleController extends ZurmoModuleController
     {
-        public function filters()
+        public function resolveModuleClassNameForFilters()
         {
-            return array(
-                array(
-                    ZurmoBaseController::RIGHTS_FILTER_PATH,
-                    'moduleClassName' => 'RolesModule',
-               ),
-            );
+            return 'RolesModule';
         }
 
         public function resolveAndGetModuleId()

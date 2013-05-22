@@ -75,5 +75,15 @@
                          'AutoresponderItemsDemoDataMaker',
                          'AutoresponderItemActivitiesDemoDataMaker');
         }
+
+        protected static function getSingularModuleLabel($language)
+        {
+            return Zurmo::t('AutorespondersModule', 'Autoresponder', array(), null, $language);
+        }
+
+        protected static function getPluralModuleLabel($language)
+        {
+            return Zurmo::t('AutorespondersModule', 'Autoresponders', array(), null, $language);
+        }
     }
 ?>

@@ -221,6 +221,7 @@
                 'relations' => array(
                     'campaignItems'     => array(RedBeanModel::HAS_MANY, 'CampaignItem'),
                     'marketingList'     => array(RedBeanModel::HAS_ONE, 'MarketingList', RedBeanModel::NOT_OWNED),
+                    'files'             => array(RedBeanModel::HAS_MANY,  'FileModel', RedBeanModel::OWNED)
                 ),
                 'elements' => array(
                     'htmlContent'                   => 'TextArea',

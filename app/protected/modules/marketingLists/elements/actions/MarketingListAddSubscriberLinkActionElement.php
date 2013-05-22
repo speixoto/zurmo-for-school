@@ -74,7 +74,8 @@
 
         protected function getDefaultLabel()
         {
-            return Zurmo::t('MarketingListsModule', 'Add Member');
+            return Zurmo::t('MarketingListsModule', 'Add ContactsModuleSingularLabel/LeadsModuleSingularLabel',
+                                                                        LabelUtil::getTranslationParamsForAllModules());
         }
 
         protected function getDefaultRoute()

@@ -122,7 +122,8 @@
 
         public function getTitle()
         {
-            return Zurmo::t('MarketingListsModule', 'Members');
+            return Zurmo::t('LeadsModule', 'ContactsModulePluralLabel/LeadsModulePluralLabel',
+                                                                LabelUtil::getTranslationParamsForAllModules());
         }
 
         public function renderContent()

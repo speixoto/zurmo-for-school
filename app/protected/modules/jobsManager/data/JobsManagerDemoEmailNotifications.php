@@ -38,7 +38,7 @@
     {
         public function run(User $userToSendTo, $messageLogger)
         {
-            MonitorJob::makeJobStuckNotification();
+            MonitorJob::makeJobStuckNotification(array('Process Outbound Email Job', 'Process Inbound Email Job'));
             $messageLogger->addInfoMessage('Sending a job is stuck message');
             JobsManagerUtil::makeMonitorStuckJobNotification();
             $messageLogger->addInfoMessage('Sending monitor job stuck message');

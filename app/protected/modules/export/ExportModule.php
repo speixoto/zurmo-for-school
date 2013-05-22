@@ -66,5 +66,15 @@
         {
             return self::RIGHT_ACCESS_EXPORT;
         }
+
+        protected static function getSingularModuleLabel($language)
+        {
+            return Zurmo::t('ExportModule', 'Export', array(), null, $language);
+        }
+
+        protected static function getPluralModuleLabel($language)
+        {
+            return Zurmo::t('ExportModule', 'Exports', array(), null, $language);
+        }
     }
 ?>

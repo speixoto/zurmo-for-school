@@ -39,5 +39,9 @@
      */
     class ActionBarForRolesTreeListView extends ActionBarForSecurityTreeListView
     {
+        protected function makeModel()
+        {
+            return new Role(false);
+        }
     }
 ?>

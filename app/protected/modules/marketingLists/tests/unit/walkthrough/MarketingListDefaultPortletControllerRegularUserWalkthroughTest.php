@@ -38,36 +38,50 @@
     {
         protected $user;
 
+        protected static $superUserMarketingListId;
+
+        protected static $regularUserMarketingListId;
+
+        protected static $superUserMemberId;
+
+        protected static $regularUserMemberId;
+
         public static function setUpBeforeClass()
         {
             parent::setUpBeforeClass();
             SecurityTestHelper::createSuperAdmin();
             SecurityTestHelper::createUsers();
-            $nobody = UserTestHelper::createBasicUser('nobody');
-            $nobody->setRight('MarketingListsModule', MarketingListsModule::getAccessRight());
-            $saved = $nobody->save();
-            static::assertTrue($saved);
-            Yii::app()->user->userModel = $nobody;
-
-            //Setup test data owned by the super user.
-            $account    = AccountTestHelper::createAccountByNameForOwner('nobodyAccount', $nobody);
-            $account2   = AccountTestHelper::createAccountByNameForOwner('nobodyAccount2', $nobody);
-            $contact1   = ContactTestHelper::createContactWithAccountByNameForOwner('nobodyContact', $nobody, $account);
-            $contact2   = ContactTestHelper::createContactWithAccountByNameForOwner('nobodyContact2', $nobody, $account2);
-            $contact3   = ContactTestHelper::createContactWithAccountByNameForOwner('nobodyContact3', $nobody, $account);
-            $contact4   = ContactTestHelper::createContactWithAccountByNameForOwner('nobodyContact4', $nobody, $account2);
-            $contact5   = ContactTestHelper::createContactWithAccountByNameForOwner('nobodyContact5', $nobody, $account);
-
-            $marketingList1 = MarketingListTestHelper::createMarketingListByName('MarketingList1', 'MarketingList Description1');
-            $marketingList2 = MarketingListTestHelper::createMarketingListByName('MarketingList2', 'MarketingList Description2');
+            // set up data owned by super
+            Yii::app()->user->userModel = User::getByUsername('super');
+            $account1       = AccountTestHelper::createAccountByNameForOwner('account1', Yii::app()->user->userModel);
+            $contact1       = ContactTestHelper::createContactWithAccountByNameForOwner('contact1',
+                                                                                Yii::app()->user->userModel, $account1);
+            $contact2       = ContactTestHelper::createContactWithAccountByNameForOwner('contact2',
+                                                                                Yii::app()->user->userModel, $account1);
+            $contact3       = ContactTestHelper::createContactWithAccountByNameForOwner('contact3',
+                                                                                Yii::app()->user->userModel, $account1);
+            $marketingList1 = MarketingListTestHelper::createMarketingListByName('MarketingList1');
             MarketingListMemberTestHelper::createMarketingListMember(0, $marketingList1, $contact1);
             MarketingListMemberTestHelper::createMarketingListMember(1, $marketingList1, $contact2);
-            MarketingListMemberTestHelper::createMarketingListMember(0, $marketingList1, $contact3);
-            MarketingListMemberTestHelper::createMarketingListMember(1, $marketingList1, $contact4);
-            MarketingListMemberTestHelper::createMarketingListMember(0, $marketingList1, $contact5);
-            MarketingListMemberTestHelper::createMarketingListMember(0, $marketingList2, $contact1);
-            MarketingListMemberTestHelper::createMarketingListMember(1, $marketingList2, $contact2);
+            $member1        = MarketingListMemberTestHelper::createMarketingListMember(0, $marketingList1, $contact3);
+            static::$superUserMarketingListId   = $marketingList1->id;
+            static::$superUserMemberId          = $member1->id;
 
+            // set up data owned by nobody
+            Yii::app()->user->userModel = UserTestHelper::createBasicUser('nobody');
+            $account2       = AccountTestHelper::createAccountByNameForOwner('account2', Yii::app()->user->userModel);
+            $contact4       = ContactTestHelper::createContactWithAccountByNameForOwner('contact4',
+                                                                                Yii::app()->user->userModel, $account2);
+            $contact5       = ContactTestHelper::createContactWithAccountByNameForOwner('contact5',
+                                                                                Yii::app()->user->userModel, $account2);
+            $contact6       = ContactTestHelper::createContactWithAccountByNameForOwner('contact6',
+                                                                                Yii::app()->user->userModel, $account2);
+            $marketingList2 = MarketingListTestHelper::createMarketingListByName('MarketingList2');
+            MarketingListMemberTestHelper::createMarketingListMember(0, $marketingList2, $contact4);
+            $member2        = MarketingListMemberTestHelper::createMarketingListMember(1, $marketingList2, $contact5);
+            MarketingListMemberTestHelper::createMarketingListMember(0, $marketingList2, $contact6);
+            static::$regularUserMarketingListId = $marketingList2->id;
+            static::$regularUserMemberId        = $member2->id;
             ReadPermissionsOptimizationUtil::rebuild();
         }
 
@@ -78,124 +92,94 @@
             Yii::app()->user->userModel = $this->user;
         }
 
-        public function testDelete()
+        public function testRegularUserAllActionsWithNoMarketingListRight()
         {
-            $marketingList          = MarketingListTestHelper::createMarketingListByName('MarketingList3', 'MarketingList Description3');
-            $this->assertNotNull($marketingList);
-            $contact                = RandomDataUtil::getRandomValueFromArray(Contact::getAll());
-            $this->assertNotEmpty($contact);
-            $marketingListMember    = MarketingListMemberTestHelper::createMarketingListMember(1, $marketingList, $contact);
-            $this->assertNotNull($marketingListMember);
-            $id                     = $marketingListMember->id;
-            $this->setGetArray(array('id' => $id));
-            $content                = $this->runControllerWithNoExceptionsAndGetContent('marketingLists/defaultPortlet/delete', true);
-            $this->assertEmpty($content);
-            $memberCount            = $marketingList->memberAlreadyExists($contact->id);
-            $this->assertEquals(0, $memberCount);
+            $content    = $this->runControllerWithExitExceptionAndGetContent(
+                                                                    'marketingLists/defaultPortlet/toggleUnsubscribed');
+            $this->assertTrue(strpos($content, 'You have tried to access a page you do not have access to.') !== false);
+            $content    = $this->runControllerWithExitExceptionAndGetContent(
+                                                                        'marketingLists/defaultPortlet/countMembers');
+            $this->assertTrue(strpos($content, 'You have tried to access a page you do not have access to.') !== false);
+            $content    = $this->runControllerWithExitExceptionAndGetContent(
+                                                                    'marketingLists/defaultPortlet/subscribeContacts');
+            $this->assertTrue(strpos($content, 'You have tried to access a page you do not have access to.') !== false);
+            $content    = $this->runControllerWithExitExceptionAndGetContent(
+                                                                                'marketingLists/defaultPortlet/delete');
+            $this->assertTrue(strpos($content, 'You have tried to access a page you do not have access to.') !== false);
         }
 
-        public function testToggleUnsubscribed()
+        /**
+         * Expected exception due to subscribeContacts with no access for contacts and leads.
+         * @expectedException PartialRightsForReportSecurityException
+         */
+        public function testRegularUserActionsWithMarketingListRightButInsufficientPermission()
         {
-            $marketingList              = MarketingListTestHelper::createMarketingListByName('MarketingList4',
-                                                                                            'MarketingList Description4');
-            $this->assertNotNull($marketingList);
-            $contact                    = RandomDataUtil::getRandomValueFromArray(Contact::getAll());
-            $this->assertNotEmpty($contact);
-            $previousUnsubcribedValue   = 1;
-            $marketingListMember        = MarketingListMemberTestHelper::createMarketingListMember($previousUnsubcribedValue,
-                                                                                                    $marketingList,
-                                                                                                    $contact);
-            $marketingListMemberId      = $marketingListMember->id;
-            $this->assertNotNull($marketingListMember);
-            $this->setGetArray(array('id' => $marketingListMemberId));
-            $content                    = $this->runControllerWithNoExceptionsAndGetContent(
-                                                                        'marketingLists/defaultPortlet/toggleUnsubscribed',
-                                                                        true);
-            $this->assertEmpty($content);
-            $marketingListMember        = MarketingListMember::getById($marketingListMemberId);
-            $newUnsubscribedValue       = $marketingListMember->unsubscribed;
-            $this->assertNotEquals($previousUnsubcribedValue, $newUnsubscribedValue);
-        }
-
-        public function testCountMembers()
-        {
-            $marketingLists             = MarketingList::getByName('MarketingList1');
-            $marketingListId            = $marketingLists[0]->id;
-            $subscriberCount            = 3;
-            $unsubscriberCount          = 2;
-            $this->setGetArray(array('marketingListId' => $marketingListId));
-            $content                    = $this->runControllerWithNoExceptionsAndGetContent('marketingLists/defaultPortlet/countMembers');
-            $countArray                 = CJson::decode($content);
-            $this->assertNotEmpty($countArray);
-            $this->assertArrayHasKey('subscriberCount', $countArray);
-            $this->assertArrayHasKey('unsubscriberCount', $countArray);
-            $this->assertEquals($subscriberCount, $countArray['subscriberCount']);
-            $this->assertEquals($unsubscriberCount, $countArray['unsubscriberCount']);
-        }
-
-        public function testSubscribeContactsForContactType()
-        {
+            $this->user->setRight('MarketingListsModule', MarketingListsModule::getAccessRight());
+            $this->assertTrue($this->user->save());
+            $this->setGetArray(array('id' => static::$superUserMemberId));
+            $content    = $this->runControllerWithExitExceptionAndGetContent(
+                                                                    'marketingLists/defaultPortlet/toggleUnsubscribed');
+            $this->assertTrue(strpos($content, 'You have tried to access a page you do not have access to.') !== false);
+            $content    = $this->runControllerWithExitExceptionAndGetContent('marketingLists/defaultPortlet/delete');
+            $this->assertTrue(strpos($content, 'You have tried to access a page you do not have access to.') !== false);
+            $this->setGetArray(array('marketingListId' => static::$superUserMarketingListId));
+            $content    = $this->runControllerWithExitExceptionAndGetContent(
+                                                                        'marketingLists/defaultPortlet/countMembers');
+            $this->assertTrue(strpos($content, 'You have tried to access a page you do not have access to.') !== false);
             $type                       = 'contact';
-            $account                    = AccountTestHelper::createAccountByNameForOwner('nobodyAccount3', $this->user);
-            $contact                    = ContactTestHelper::createContactWithAccountByNameForOwner('nobodyContact6',
-                                                                                                    $this->user,
-                                                                                                    $account);
-            $contactId                  = $contact->id;
-            $marketingList              = RandomDataUtil::getRandomValueFromArray(MarketingList::getAll());
-            $marketingListId            = $marketingList->id;
+            $account                    = AccountTestHelper::createAccountByNameForOwner('account2', $this->user);
+            $contact7                   = ContactTestHelper::createContactWithAccountByNameForOwner('contact7',
+                                                                                                        $this->user,
+                                                                                                        $account);
             $this->setGetArray(array(
-                                   'marketingListId'    => $marketingListId,
-                                    'id'                => $contact->id,
-                                    'type'              => $type,
-                                ));
-            $content                    = $this->runControllerWithNoExceptionsAndGetContent('marketingLists/defaultPortlet/subscribeContacts');
-            $contentArray               = CJson::decode($content);
-            $this->assertNotEmpty($contentArray);
-            $this->assertArrayHasKey('type', $contentArray);
-            $this->assertArrayHasKey('message', $contentArray);
-            $this->assertEquals('1 subscribed.', $contentArray['message']);
-            $this->assertEquals('message', $contentArray['type']);
-
-            $content                    = $this->runControllerWithNoExceptionsAndGetContent('marketingLists/defaultPortlet/subscribeContacts');
-            $contentArray               = CJson::decode($content);
-            $this->assertNotEmpty($contentArray);
-            $this->assertArrayHasKey('type', $contentArray);
-            $this->assertArrayHasKey('message', $contentArray);
-            $this->assertEquals('0 subscribed. 1 skipped.', $contentArray['message']);
-            $this->assertEquals('message', $contentArray['type']);
+                'marketingListId'       => static::$superUserMarketingListId,
+                'id'                    => $contact7->id,
+                'type'                  => $type,
+            ));
+            $content    = $this->runControllerWithExitExceptionAndGetContent(
+                                                                    'marketingLists/defaultPortlet/subscribeContacts');
+            $this->assertTrue(strpos($content, 'You have tried to access a page you do not have access to.') !== false);
+            $type                       = 'report';
+            $report                     = SavedReportTestHelper::makeSimpleContactRowsAndColumnsReport();
+            $this->setGetArray(array(
+                'marketingListId'       => static::$superUserMarketingListId,
+                'id'                    => $report->id,
+                'type'                  => $type,
+            ));
+            $content    = $this->runControllerWithExitExceptionAndGetContent(
+                                                                    'marketingLists/defaultPortlet/subscribeContacts');
+            $this->assertTrue(strpos($content, 'You have tried to access a page you do not have access to.') !== false);
         }
 
-        public function testSubscribeContactsForReportType()
+        public function testRegularUserActionsWithMarketingListRightAndRequiredPermissions()
         {
-            $this->user->setRight('ReportsModule', ReportsModule::getAccessRight());
+            $this->setGetArray(array('id' => static::$regularUserMemberId));
+            $this->runControllerWithNoExceptionsAndGetContent('marketingLists/defaultPortlet/toggleUnsubscribed', true);
+            $this->runControllerWithNoExceptionsAndGetContent('marketingLists/defaultPortlet/delete', true);
+            $this->setGetArray(array('marketingListId' => static::$regularUserMarketingListId));
+            $this->runControllerWithNoExceptionsAndGetContent('marketingLists/defaultPortlet/countMembers');
+            $type                       = 'contact';
+            $account                    = AccountTestHelper::createAccountByNameForOwner('account2', $this->user);
+            $contact8                   = ContactTestHelper::createContactWithAccountByNameForOwner('contact8',
+                                                                                                        $this->user,
+                                                                                                        $account);
+            $this->setGetArray(array(
+                'marketingListId'       => static::$regularUserMarketingListId,
+                'id'                    => $contact8->id,
+                'type'                  => $type,
+            ));
+            $this->runControllerWithNoExceptionsAndGetContent('marketingLists/defaultPortlet/subscribeContacts');
+            //$this->user->setRight('ReportsModule', ReportsModule::getAccessRight());
             $this->user->setRight('ContactsModule', ContactsModule::getAccessRight()); // or leads. Else PartialRightsForReportSecurityException
             $this->assertTrue($this->user->save());
             $type                       = 'report';
             $report                     = SavedReportTestHelper::makeSimpleContactRowsAndColumnsReport();
-            $marketingList              = MarketingListTestHelper::createMarketingListByName('MarketingList5', 'MarketingList Description5');
-            $marketingListId            = $marketingList->id;
-            $contactCount               = Contact::getCount();
-            $this->assertNotNull($report);
             $this->setGetArray(array(
-                                    'marketingListId'    => $marketingListId,
-                                    'id'                => $report->id,
-                                    'type'              => $type,
-                                ));
-            $content                    = $this->runControllerWithNoExceptionsAndGetContent('marketingLists/defaultPortlet/subscribeContacts');
-            $contentArray               = CJson::decode($content);
-            $this->assertNotEmpty($contentArray);
-            $this->assertArrayHasKey('type', $contentArray);
-            $this->assertArrayHasKey('message', $contentArray);
-            $this->assertEquals($contactCount . ' subscribed.', $contentArray['message']);
-            $this->assertEquals('message', $contentArray['type']);
-
-            $content                    = $this->runControllerWithNoExceptionsAndGetContent('marketingLists/defaultPortlet/subscribeContacts');
-            $contentArray               = CJson::decode($content);
-            $this->assertNotEmpty($contentArray);
-            $this->assertArrayHasKey('type', $contentArray);
-            $this->assertArrayHasKey('message', $contentArray);
-            $this->assertEquals('0 subscribed. ' . $contactCount . ' skipped.', $contentArray['message']);
-            $this->assertEquals('message', $contentArray['type']);
+                'marketingListId'       => static::$regularUserMarketingListId,
+                'id'                    => $report->id,
+                'type'                  => $type,
+            ));
+            $this->runControllerWithNoExceptionsAndGetContent('marketingLists/defaultPortlet/subscribeContacts');
         }
     }
 ?>
