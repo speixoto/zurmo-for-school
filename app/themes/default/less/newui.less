@@ -1375,6 +1375,10 @@ form,
 	}
 }
 
+.view-toolbar + .view-toolbar {
+	float: right;
+}
+
 .portlet-view-toolbar{
 	.parent{
 		position: relative;
@@ -1450,16 +1454,25 @@ form,
 	top:-2px;
 }
 
-.icon-lock:before{
-	content: "F";
-	.view-toolbar-icons();
-	top:-3px;
+
+.icon-lock{
+	padding: 0 10px !important;
+	&:before{
+		content: "F";
+		.view-toolbar-icons();
+		top:-2px;
+		margin: 0;
+	}
 }
 
-.icon-unlock:before{
-	content: "E";
-	.view-toolbar-icons();
-	top:-3px;
+.icon-unlock{
+	padding: 0 10px !important;
+	&:before{
+		content: "E";
+		.view-toolbar-icons();
+		top:-2px;
+		margin: 0;
+	}
 }
 
 #HomeDashboardView .parent > a:before,
@@ -3358,12 +3371,17 @@ div.wide.form{
 	}
 }
 
+.juiportlet-widget-content{
+	.details-table{
+		.unstyle-panel();
+		border: none !important;
+		.b-shadow(none) !important;
+	}
+}
+
 .details-table{
 	position:relative;
 	margin:0px !important;
-	.unstyle-panel();
-	border: none !important;
-	.b-shadow(none) !important;
 	table{
 		margin:0 0 10px 0;
 	}
@@ -3512,7 +3530,7 @@ div.wide.form{
 
 .toolbar-mbmenu{
 	position:absolute;
-	top:-35px;
+	top: 8px;//-35px;
 	right:10px;
 	margin:0;
 	float:right;
@@ -4302,6 +4320,10 @@ div.hasHalfs{
 		span{
 			line-height: 140%;
 			word-break: break-all;
+			a{
+				break-word: break-all;
+				display: inline-block;
+			}
 		}
 	}
 	.items em{
