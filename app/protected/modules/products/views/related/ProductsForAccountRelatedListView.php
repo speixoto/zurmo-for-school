@@ -104,5 +104,10 @@
                             LabelUtil::getTranslationParamsForAllModules());
             return ModalView::getAjaxOptionsForModalLink($title);
         }
+
+        public static function getAllowedOnPortletViewClassNames()
+        {
+            return array('AccountDetailsAndRelationsView');
+        }
     }
 ?>

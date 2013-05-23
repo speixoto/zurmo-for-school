@@ -246,7 +246,7 @@
             $productId = self::getModelIdByModelNameAndName('Product', 'myNewProduct');
             $product   = Product::getById($productId);
 
-            //Retrieve the permission of the opportunity.
+            //Retrieve the permission of the product.
             $explicitReadWriteModelPermissions = ExplicitReadWriteModelPermissionsUtil::
                                                  makeBySecurableItem($product);
 //            $readWritePermitables              = $explicitReadWriteModelPermissions->getReadWritePermitables();
@@ -283,7 +283,7 @@
             $this->assertContains('gardening'                            , $product->tagcloudCstm->values);
             $metadata            = CalculatedDerivedAttributeMetadata::
                                    getByNameAndModelClassName('calcnumber', 'Product');
-            $testCalculatedValue = CalculatedNumberUtil::calculateByFormulaAndModel($metadata->getFormula(), $product);
+            $testCalculatedValue = CalculatedNumberUtil::calculateByFormulaAndModelAndResolveFormat($metadata->getFormula(), $product);
             $this->assertEquals(1476                                     , $testCalculatedValue);
         }
 
@@ -346,7 +346,7 @@
             $datetimeAssert = date('Y-m-d H:i:')."00";
             $baseCurrency   = Currency::getByCode(Yii::app()->currencyHelper->getBaseCode());
 
-            //Retrieve the account id, the super user id and opportunity Id.
+            //Retrieve the account id, the super user id and product Id.
             $accountId                        = self::getModelIdByModelNameAndName ('Account', 'superAccount');
             $superUserId                      = $super->id;
             $explicitReadWriteModelPermission = ExplicitReadWriteModelPermissionsUtil::MIXED_TYPE_EVERYONE_GROUP;
@@ -429,7 +429,7 @@
             $this->assertEquals(0                                        , $product->tagcloudCstm->values->count());
             $metadata            = CalculatedDerivedAttributeMetadata::
                                    getByNameAndModelClassName('calcnumber', 'Product');
-            $testCalculatedValue = CalculatedNumberUtil::calculateByFormulaAndModel($metadata->getFormula(), $product);
+            $testCalculatedValue = CalculatedNumberUtil::calculateByFormulaAndModelAndResolveFormat($metadata->getFormula(), $product);
             $this->assertEquals(132                                      , $testCalculatedValue);
         }
 
@@ -491,7 +491,7 @@
             $productId = self::getModelIdByModelNameAndName('Product', 'myEditProduct');
             $product   = Product::getById($productId);
 
-            //Retrieve the permission of the opportunity.
+            //Retrieve the permission of the product.
             $explicitReadWriteModelPermissions = ExplicitReadWriteModelPermissionsUtil::
                                                  makeBySecurableItem($product);
             $readWritePermitables              = $explicitReadWriteModelPermissions->getReadWritePermitables();
@@ -530,7 +530,7 @@
             $this->assertContains('surfing'                              , $product->tagcloudCstm->values);
             $metadata            = CalculatedDerivedAttributeMetadata::
                                    getByNameAndModelClassName('calcnumber', 'Product');
-            $testCalculatedValue = CalculatedNumberUtil::calculateByFormulaAndModel($metadata->getFormula(), $product);
+            $testCalculatedValue = CalculatedNumberUtil::calculateByFormulaAndModelAndResolveFormat($metadata->getFormula(), $product);
             $this->assertEquals(132                                      , $testCalculatedValue);
         }
 
@@ -541,7 +541,7 @@
         {
             $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
 
-            //Retrieve the account id, the super user id and opportunity Id.
+            //Retrieve the account id, the super user id and product Id.
             $accountId      = self::getModelIdByModelNameAndName ('Account', 'superAccount');
             $superUserId    = $super->id;
             $baseCurrency   = Currency::getByCode(Yii::app()->currencyHelper->getBaseCode());
@@ -567,10 +567,10 @@
         {
             $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
 
-            //Get the opportunity id from the recently edited opportunity.
+            //Get the product id from the recently edited product.
             $productId = self::getModelIdByModelNameAndName('Product', 'myEditProduct');
 
-            //Set the opportunity id so as to delete the opportunity.
+            //Set the product id so as to delete the product.
             $this->setGetArray(array('id' => $productId));
             $this->runControllerWithRedirectExceptionAndGetUrl('products/default/delete');
 
@@ -586,7 +586,7 @@
         {
             $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
 
-            //Retrieve the account id, the super user id and opportunity Id.
+            //Retrieve the account id, the super user id and product Id.
             $accountId      = self::getModelIdByModelNameAndName ('Account', 'superAccount');
             $superUserId    = $super->id;
             $baseCurrency   = Currency::getByCode(Yii::app()->currencyHelper->getBaseCode());
