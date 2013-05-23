@@ -8865,9 +8865,7 @@ div.wide.form label.hasCheckBox {
 .ConfigurableMetadataView .juiportlet-widget-head {
   cursor: default;
 }
-.details-table {
-  position: relative;
-  margin: 0px !important;
+.juiportlet-widget-content .details-table {
   border: none;
   background: none;
   -webkit-box-shadow: none;
@@ -8884,6 +8882,10 @@ div.wide.form label.hasCheckBox {
   -o-box-shadow: none !important;
   -ms-box-shadow: none !important;
   box-shadow: none !important;
+}
+.details-table {
+  position: relative;
+  margin: 0px !important;
 }
 .details-table table {
   margin: 0 0 10px 0;
@@ -9086,7 +9088,7 @@ div.wide.form label.hasCheckBox {
 }
 .toolbar-mbmenu {
   position: absolute;
-  top: -35px;
+  top: 8px;
   right: 10px;
   margin: 0;
   float: right;
