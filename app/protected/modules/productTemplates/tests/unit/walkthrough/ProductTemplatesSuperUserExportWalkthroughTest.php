@@ -68,7 +68,7 @@
             $productTemplates = array();
             for ($i = 0; $i < 2; $i++)
             {
-                $productTemplates[] = ProductTestHelper::createProductByNameForOwner('superProductTemplate' . $i, $super);
+                $productTemplates[] = ProductTemplateTestHelper::createProductTemplateByName('superProductTemplate' . $i);
             }
 
             $this->runControllerWithNoExceptionsAndGetContent('productTemplates/default/list');
@@ -104,6 +104,7 @@
                     'anyMixedAttributes'      => '',
                     'name'                    => 'superProductTemplate'
                 ),
+                'multiselect_ProductTemplatesSearchForm_anyMixedAttributesScope' => 'All',
                 'ProductTemplate_page'   => '1',
                 'export'         => '',
                 'ajax'           => '',
@@ -120,6 +121,7 @@
                     'anyMixedAttributes'      => '',
                     'name'                    => 'missingName',
                 ),
+                'multiselect_ProductTemplatesSearchForm_anyMixedAttributesScope' => 'All',
                 'ProductTemplate_page' => '1',
                 'export'       => '',
                 'ajax'         => '',
@@ -139,7 +141,7 @@
             $notificationsBeforeCount        = count(Notification::getAll());
             $notificationMessagesBeforeCount = count(NotificationMessage::getAll());
 
-            $productTemplates = Product::getAll();
+            $productTemplates = ProductTemplate::getAll();
             if (count($productTemplates))
             {
                 foreach ($productTemplates as $productTemplate)
@@ -203,6 +205,7 @@
                     'anyMixedAttributes'      => '',
                     'name'                    => ''
                 ),
+                'multiselect_ProductTemplatesSearchForm_anyMixedAttributesScope' => 'All',
                 'ProductTemplate_page'   => '1',
                 'export'         => '',
                 'ajax'           => '',

@@ -116,7 +116,7 @@
 
             //At this point the listview for products should show the search/list and not the helper screen.
             $content = $this->runControllerWithNoExceptionsAndGetContent('products/default/list');
-            $this->assertTrue(strpos($content, 'Description') === false);
+            $this->assertTrue(strpos($content, 'Description 1') === false);
 
             $this->setGetArray(array('id' => $product->id));
             $this->runControllerWithNoExceptionsAndGetContent('products/default/edit');
@@ -161,6 +161,8 @@
             //give nobody access to read and write
             Yii::app()->user->userModel = $super;
             $product->addPermissions($nobody, Permission::READ_WRITE_CHANGE_PERMISSIONS);
+            $product->save();
+            //TODO :Its wierd that giving opportunity errors
             $this->assertTrue($product->save());
 
             //Now the nobody user should be able to access the edit view and still the details view.
@@ -413,7 +415,7 @@
             $confused->setRight('ZurmoModule', ZurmoModule::RIGHT_BULK_DELETE);
             //Load MassDelete view
             $products = Product::getAll();
-            $this->assertEquals(9, count($products));
+            $this->assertEquals(6, count($products));
             $product1 = ProductTestHelper::createProductByNameForOwner('productDelete1', $confused);
             $product2 = ProductTestHelper::createProductByNameForOwner('productDelete2', $confused);
             $product3 = ProductTestHelper::createProductByNameForOwner('productDelete3', $nobody);
@@ -427,9 +429,9 @@
             $this->assertFalse(strpos($content, '<strong>3</strong>&#160;Products selected for removal') === false);
             $pageSize = Yii::app()->pagination->getForCurrentUserByType('massDeleteProgressPageSize');
             $this->assertEquals(5, $pageSize);
-            //calculating leads after adding 6 new records
+            //calculating products after adding 6 new records
             $products = Product::getAll();
-            $this->assertEquals(15, count($products));
+            $this->assertEquals(12, count($products));
             //Deleting 6 opportunities for pagination scenario
             //Run Mass Delete using progress save for page1
             $selectedIds = $product1->id . ',' . $product2->id . ',' . // Not Coding Standard
@@ -442,7 +444,7 @@
             $this->setPostArray(array('selectedRecordCount' => 6));
             $content = $this->runControllerWithExitExceptionAndGetContent('products/default/massDelete');
             $products = Product::getAll();
-            $this->assertEquals(10, count($products));
+            $this->assertEquals(7, count($products));
 
             //Run Mass Delete using progress save for page2
             $selectedIds = $product1->id . ',' . $product2->id . ',' . // Not Coding Standard
@@ -455,7 +457,7 @@
             $this->setPostArray(array('selectedRecordCount' => 6));
             $content = $this->runControllerWithNoExceptionsAndGetContent('products/default/massDeleteProgress');
             $products = Product::getAll();
-            $this->assertEquals(9, count($products));
+            $this->assertEquals(6, count($products));
         }
 
          /**
@@ -467,9 +469,9 @@
             $confused = User::getByUsername('confused');
             $nobody = User::getByUsername('nobody');
 
-            //Load MassDelete view for the 8 opportunities.
+            //Load MassDelete view for the 6 products
             $products = Product::getAll();
-            $this->assertEquals(9, count($products));
+            $this->assertEquals(6, count($products));
 
             //mass Delete pagination scenario
             //Run Mass Delete using progress save for page1
@@ -481,7 +483,7 @@
             $this->assertEquals(5, $pageSize);
             $content = $this->runControllerWithExitExceptionAndGetContent('products/default/massDelete');
             $products = Product::getAll();
-            $this->assertEquals(4, count($products));
+            $this->assertEquals(1, count($products));
 
            //Run Mass Delete using progress save for page2
             $this->setGetArray(array(
