@@ -288,7 +288,6 @@ function resolvePaddingForHasLangLabel(context){
     } else {
         $("input", context).css({paddingLeft: 80 });
     }
-    console.log(context);
 }
 
 /*

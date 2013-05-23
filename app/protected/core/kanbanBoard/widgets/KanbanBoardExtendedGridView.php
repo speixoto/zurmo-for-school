@@ -198,11 +198,11 @@
                 Yii::app()->getAssetManager()->publish(
                     Yii::getPathOfAlias('application.core.kanbanBoard.widgets.assets')) . '/KanbanUtils.js');
             $script = '
-                $(".droppable-dynamic-rows-container").live("drop", function(event, ui)
-                {
+                $(".droppable-dynamic-rows-container").live("drop", function(event, ui){
                    ' . $this->getAjaxForDroppedAttribute() . '
                    $("ul", this).append(ui.draggable);
                 });
+                setupKanbanDragDrop();
             ';
             Yii::app()->getClientScript()->registerScript('KanbanDragDropScript', $script);
         }
