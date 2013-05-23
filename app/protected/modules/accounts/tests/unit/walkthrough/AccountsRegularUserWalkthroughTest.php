@@ -724,16 +724,15 @@
         public function testCloningWithAnotherUser()
         {
             $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
-			$billy = User::getByUsername('billy');
+            $billy = User::getByUsername('billy');
             $billy = $this->logoutCurrentUserLoginNewUserAndGetByUsername('billy');
             $account1 = AccountTestHelper::createAccountByNameForOwner('test account', $billy);
-			$id = $account1->id;
+            $id = $account1->id;
             $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
-			$confused = User::getByUsername('confused');
+            $confused = User::getByUsername('confused');
             $confused = $this->logoutCurrentUserLoginNewUserAndGetByUsername('confused');
-            $this->setGetArray(array(
-                'id' => $id));
-			$content = $this->runControllerWithExitExceptionAndGetContent('accounts/default/copy');
+            $this->setGetArray(array('id' => $id));
+            $content = $this->runControllerWithExitExceptionAndGetContent('accounts/default/copy');
             $this->assertFalse(strpos($content, 'You have tried to access a page you do not have access to.') === false);
         }
     }
