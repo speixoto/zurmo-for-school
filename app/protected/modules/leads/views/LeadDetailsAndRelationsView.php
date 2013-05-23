@@ -34,13 +34,11 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class LeadDetailsAndRelationsView extends DetailsAndRelationsView
+    class LeadDetailsAndRelationsView extends ConfigurableDetailsAndRelationsView
     {
         /**
          * Declare layout as 2 columns
          */
-        protected $layoutType = '75,25'; // Not Coding Standard
-
         public function isUniqueToAPage()
         {
             return true;
@@ -50,35 +48,39 @@
         {
             $metadata = array(
                 'global' => array(
-                    'leftTopView' => array(
-                        'viewClassName' => 'LeadEditAndDetailsView',
-                    ),
-                    'leftBottomView' => array(
-                        'showAsTabbed' => false,
-                        'columns' => array(
-                            array(
-                                'rows' => array(
-                                    array(
-                                        'type' => 'NoteInlineEditForPortlet'
-                                    ),
-                                    array(
-                                        'type' => 'ContactLatestActivitiesForPortlet'
-                                    ),
+                    'toolbar' => array(
+                        'elements' => array(
+                            array(  'type'           => 'AddPortletAjaxLinkOnDetailView',
+                                    'uniqueLayoutId' => 'eval:$this->uniqueLayoutId',
+                                    'ajaxOptions'    => 'eval:static::resolveAjaxOptionsForAddPortlet()',
+                                    'htmlOptions'    => array('id' => 'AddPortletLink',
+                                    'class'          => 'icon-add'
                                 )
+                            ),
+                        ),
+                    ),
+                    'columns' => array(
+                        array(
+                            'rows' => array(
+                               array(
+                                    'type' => 'LeadDetailsPortlet',
+                                ),
+                               array(
+                                    'type' => 'NoteInlineEditForPortlet',
+                                ),
+                               array(
+                                    'type' => 'ContactLatestActivitiesForPortlet',
+                                ),
                             )
-                        )
-                    ),
-                    'rightTopView' => array(
-                        'columns' => array(
-                            array(
-                                'rows' => array(
-                                    array(
-                                        'type' => 'UpcomingMeetingsForContactCalendar',
+                        ),
+                        array(
+                            'rows' => array(
+                                array(
+                                     'type' => 'UpcomingMeetingsForContactCalendar',
                                     ),
-                                    array(
-                                        'type' => 'OpenTasksForContactRelatedList',
-                                    ),
-                                )
+                                array(
+                                     'type' => 'OpenTasksForContactRelatedList',
+                                    )
                             )
                         )
                     )

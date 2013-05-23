@@ -58,13 +58,14 @@
 
         protected function getDefaultRoute()
         {
-            return Yii::app()->createUrl($this->moduleId . '/default/selectFromRelatedList/',
+            return Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/selectFromRelatedList/',
                     array(
                     'uniqueLayoutId'          => $this->getUniqueLayoutId(),
                     'portletId'               => $this->getPortletId(),
                     'relationAttributeName'   => $this->params['relationAttributeName'],
                     'relationModelId'         => $this->params['relationModelId'],
                     'relationModuleId'        => $this->params['relationModuleId'],
+                    'relationModelClassName'  => $this->getRelationModelClassName(),
                     )
             );
         }
@@ -74,6 +75,15 @@
             if (isset($this->params['uniqueLayoutId']))
             {
                 return $this->params['uniqueLayoutId'];
+            }
+            return null;
+        }
+
+        protected function getRelationModelClassName()
+        {
+            if (isset($this->params['relationModelClassName']))
+            {
+                return $this->params['relationModelClassName'];
             }
             return null;
         }

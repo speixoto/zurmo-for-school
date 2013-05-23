@@ -50,11 +50,15 @@
 
         private $editableMetadata;
 
-        public function __construct($viewClassName, $moduleClassName)
+        public function __construct($viewClassName, $moduleClassName, $modelClassName = null)
         {
             assert('is_string($viewClassName)');
             assert('is_string($moduleClassName)');
-            $modelClassName           = $moduleClassName::getPrimaryModelName();
+            assert('$modelClassName == null || is_string($modelClassName)');
+            if($modelClassName == null)
+            {
+                $modelClassName       = $moduleClassName::getPrimaryModelName();
+            }
             $editableMetadata         = $viewClassName::getMetadata();
             $designerRulesType        = $viewClassName::getDesignerRulesType();
             $designerRulesClassName   = $designerRulesType . 'DesignerRules';

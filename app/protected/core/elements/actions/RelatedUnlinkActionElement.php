@@ -51,13 +51,14 @@
 
         protected function getHtmlOptions()
         {
-            $confirmTitle           = Zurmo::t('Core', 'Are you sure you want to unlink this {modelLabel}?',
+            $confirmTitle		= Zurmo::t('Core', 'Are you sure you want to unlink this {modelLabel}?',
                                                         array('{modelLabel}' => $this->getModelSingularLabel()));
-            $confirmTitle           = Yii::app()->format->text($confirmTitle);
-            $htmlOptions            = parent::getHtmlOptions();
-            $htmlOptions['id']      = $this->getLinkId();
-            $htmlOptions['onclick'] = 'if (!onAjaxSubmitRelatedListAction("' . $confirmTitle . '", "' . $this->getGridId() . '")){return;};';
-            return $htmlOptions;
+            $confirmTitle		= Yii::app()->format->text($confirmTitle);
+            $htmlOptions		= parent::getHtmlOptions();
+            $htmlOptions['id']		= $this->getLinkId();
+            $htmlOptions['onclick']	= 'if (!onAjaxSubmitRelatedListAction("' . $confirmTitle . '", "' . $this->getGridId() . '")){return;};';
+            $htmlOptions['namespace']	= 'portlet';
+	    return $htmlOptions;
         }
 
         protected function getDefaultRoute()

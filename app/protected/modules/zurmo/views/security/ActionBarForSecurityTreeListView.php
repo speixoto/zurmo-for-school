@@ -44,15 +44,22 @@
 
         protected $moduleId;
 
+        /**
+         * Used to identify the active action for the action bar elements
+         * @var mixed null or string
+         */
+        protected $activeActionElementType;
 
         abstract protected function makeModel();
 
-        public function __construct($controllerId, $moduleId)
+        public function __construct($controllerId, $moduleId, $activeActionElementType = null)
         {
             assert('is_string($controllerId)');
             assert('is_string($moduleId)');
+            assert('$activeActionElementType == null || is_string($activeActionElementType)');
             $this->controllerId              = $controllerId;
             $this->moduleId                  = $moduleId;
+            $this->activeActionElementType   = $activeActionElementType;
         }
 
         protected function renderContent()
@@ -107,6 +114,15 @@
                 $this->makeModel(),
                 Yii::app()->user->userModel);
             return $actionSecurity->canUserPerformAction();
+        }
+
+        protected function resolveActionElementInformationDuringRender(& $elementInformation)
+        {
+            parent::resolveActionElementInformationDuringRender($elementInformation);
+            if ($elementInformation['type'] == $this->activeActionElementType)
+            {
+                $elementInformation['htmlOptions']['class'] .= ' active';
+            }
         }
     }
 ?>

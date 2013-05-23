@@ -428,6 +428,7 @@ function makeOrRemoveTogglableSpinner(state, context){
 function processAjaxSuccessUpdateHtmlOrShowDataOnFailure(dataOrHtml, updateId){
     try{
         jsonData = jQuery.parseJSON(dataOrHtml);
+        console.log(jsonData);
         $('#FlashMessageBar').jnotifyAddMessage({
                  text: jsonData.message,
                  permanent: false,
