@@ -51,15 +51,15 @@
         {
             //checking with blank values for required fields
             $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
-            $this->setPostArray(array('save'                                        => 'Save',
-                                      'ZurmoConfigurationForm'                      => array(
-                                        'applicationName'                             => '',
-                                        'dashboardListPage'                           => '',
-                                        'gamificationModalNotificationsEnabled'       => '1',
-                                        'listPageSize'                                => '',
-                                        'modalListPageSize'                           => '',
-                                        'subListPageSize'                             => '',
-                                        'timeZone'                                    => 'America/Chicago'),
+            $this->setPostArray(array('save'                    => 'Save',
+                                      'ZurmoConfigurationForm'  => array(
+                                            'applicationName'                               => '',
+                                            'dashboardListPage'                             => '',
+                                            'gamificationModalNotificationsEnabled'         => '1',
+                                            'listPageSize'                                  => '',
+                                            'modalListPageSize'                             => '',
+                                            'subListPageSize'                               => '',
+                                            'timeZone'                                      => 'America/Chicago'),
                                       )
                                );
             $content = $this->runControllerWithNoExceptionsAndGetContent('zurmo/default/configurationEdit');
@@ -70,15 +70,15 @@
 
             //checking with proper values for required fields
             $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
-            $this->setPostArray(array('save'                                        => 'Save',
-                                      'ZurmoConfigurationForm'                      => array(
-                                        'applicationName'                             => 'Demo Company Inc.',
-                                        'dashboardListPage'                           => '5',
-                                        'gamificationModalNotificationsEnabled'       => '0',
-                                        'listPageSize'                                => '10',
-                                        'modalListPageSize'                           => '5',
-                                        'subListPageSize'                             => '5',
-                                        'timeZone'                                    => 'America/Chicago'),
+            $this->setPostArray(array('save'                    => 'Save',
+                                      'ZurmoConfigurationForm'  => array(
+                                            'applicationName'                           => 'Demo Company Inc.',
+                                            'dashboardListPage'                         => '5',
+                                            'gamificationModalNotificationsEnabled'     => '0',
+                                            'listPageSize'                              => '10',
+                                            'modalListPageSize'                         => '5',
+                                            'subListPageSize'                           => '5',
+                                            'timeZone'                                  => 'America/Chicago'),
                                       )
                                );
             $this->runControllerWithRedirectExceptionAndGetContent('zurmo/default/configurationEdit');

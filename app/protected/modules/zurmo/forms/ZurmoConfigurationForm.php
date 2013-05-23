@@ -47,6 +47,7 @@
         public $dashboardListPageSize;
         public $gamificationModalNotificationsEnabled;
         public $userIdOfUserToRunWorkflowsAs;
+        public $userIdOfUserToRunTrackingAs;
         public $realtimeUpdatesEnabled;
         public $logoFileData;
 
@@ -80,6 +81,8 @@
                 array('logoFileData',                           'type',      'type' => 'array'),
                 array('userIdOfUserToRunWorkflowsAs',           'type',      'type' => 'integer'),
                 array('userIdOfUserToRunWorkflowsAs',           'numerical', 'min'  => 1),
+                array('userIdOfUserToRunTrackingAs',            'type',      'type' => 'integer'),
+                array('userIdOfUserToRunTrackingAs',            'numerical', 'min' => 1),
             );
         }
 
@@ -95,6 +98,7 @@
                 'gamificationModalNotificationsEnabled' => Zurmo::t('ZurmoModule', 'Enable game notification popup'),
                 'realtimeUpdatesEnabled'                => Zurmo::t('ZurmoModule', 'Enable real-time updates'),
                 'userIdOfUserToRunWorkflowsAs'          => Zurmo::t('ZurmoModule', 'Run workflows from'),
+                'userIdOfUserToRunTrackingAs'           => Zurmo::t('ZurmoModule', 'Run tracking requests from'),
             );
         }
     }

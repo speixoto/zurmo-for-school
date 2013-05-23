@@ -73,6 +73,7 @@
             $this->assertEquals(53,                              $form->dashboardListPageSize);
             $this->assertEquals('demoCompany',                   $form->applicationName);
             $this->assertEquals(Yii::app()->user->userModel->id, $form->userIdOfUserToRunWorkflowsAs);
+            $this->assertEquals(Yii::app()->user->userModel->id, $form->userIdOfUserToRunTrackingAs);
             $this->assertEquals($logoFileName,                   $form->logoFileData['name']);
             $form->timeZone              = 'America/Chicago';
             $form->listPageSize          = 60;
@@ -81,6 +82,7 @@
             $form->dashboardListPageSize = 63;
             $form->applicationName       = 'demoCompany2';
             $form->userIdOfUserToRunWorkflowsAs = $billy->id;
+            $form->userIdOfUserToRunTrackingAs  = $billy->id;
             $logoFileName2               = 'testLogo.png';
             $logoFilePath2               = Yii::getPathOfAlias('application.modules.zurmo.tests.unit.files') . DIRECTORY_SEPARATOR . $logoFileName2;
             copy($logoFilePath2, sys_get_temp_dir() . DIRECTORY_SEPARATOR . $logoFileName2);
@@ -95,6 +97,7 @@
             $this->assertEquals(63,                 $form->dashboardListPageSize);
             $this->assertEquals('demoCompany2',     $form->applicationName);
             $this->assertEquals($billy->id,         $form->userIdOfUserToRunWorkflowsAs);
+            $this->assertEquals($billy->id,         $form->userIdOfUserToRunTrackingAs);
             $this->assertEquals($logoFileName2,     $form->logoFileData['name']);
         }
     }

@@ -34,48 +34,18 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class TrackingDefaultController extends ZurmoModuleController
+    /**
+     * Helper class for working with tracking
+     */
+    abstract class TrackingUtil extends BaseControlUserConfigUtil
     {
-        public function filters()
-        {
-            return array();
-        }
+        const CONFIG_MODULE_NAME        = 'TrackingModule';
 
-        public function actionTrack()
+        const CONFIG_KEY                = 'UserIdOfUserToRunTrackingAs';
+
+        public static function getUserToRunAs($setOnMissing = true)
         {
-            try
-            {
-                Yii::app()->user->userModel = TrackingUtil::getUserToRunTrackActionAs();
-                $response                   = EmailMessageActivityUtil::resolveQueryStringFromUrlAndCreateOrUpdateActivity();
-                if ($response['redirect'])
-                {
-                    $this->redirect($response['url']);
-                }
-                elseif (isset($response['imagePath']))
-                {
-                    $mime               = ZurmoFileHelper::getMimeType($response['imagePath']);
-                    $size               = filesize($response['imagePath']);
-                    $name               = pathinfo($response['imagePath'], PATHINFO_FILENAME);
-                    header('Content-Type: '     .   $mime);
-                    header('Content-Length: '   .   $size);
-                    header('Content-Name: '     .   $name);
-                    readfile($response['imagePath']);
-                    Yii::app()->end(0, false);
-                }
-            }
-            catch (NotFoundException $e)
-            {
-            }
-            catch (NotSupportedException $e)
-            {
-            }
-            catch (FailedToSaveModelException $e)
-            {
-            }
-            catch (MissingASuperAdministratorException $e)
-            {
-            }
-            // we do not catch all exceptions because we need Exit and Redirect Exception for unit tests
+            return parent::getUserToRunAs($setOnMissing);
         }
     }
 ?>

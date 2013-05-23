@@ -37,8 +37,12 @@
     /**
      * Helper class for working with Workflow objects
      */
-    class WorkflowUtil
+    class WorkflowUtil extends BaseControlUserConfigUtil
     {
+        const CONFIG_MODULE_NAME        = 'WorkflowsModule';
+
+        const CONFIG_KEY                = 'UserIdOfUserToRunWorkflowsAs';
+
         /**
          * When running workflow rules either during beforeSave, afterSave, byTime, or Message Queue processing
          * an elevated user must be used in order to ensure the workflows can be processed properly.  if there is not
@@ -49,28 +53,7 @@
          */
         public static function getUserToRunWorkflowsAs()
         {
-            $keyName      = 'UserIdOfUserToRunWorkflowsAs';
-            $superGroup   = Group::getByName(Group::SUPER_ADMINISTRATORS_GROUP_NAME);
-            if (null != $userId = ZurmoConfigurationUtil::getByModuleName('WorkflowsModule', $keyName))
-            {
-                try
-                {
-                    $user  = User::getById($userId);
-
-                    if ($user->groups->contains($superGroup))
-                    {
-                        return $user;
-                    }
-                }
-                catch (NotFoundException $e)
-                {
-                }
-            }
-            if ($superGroup->users->count() == 0)
-            {
-                throw new MissingASuperAdministratorException();
-            }
-            return $superGroup->users->offsetGet(0);
+            return parent::getUserToRunAs(false);
         }
 
         /**
@@ -80,14 +63,7 @@
          */
         public static function setUserToRunWorkflowsAs(User $user)
         {
-            assert('$user->id > 0');
-            $superGroup   = Group::getByName(Group::SUPER_ADMINISTRATORS_GROUP_NAME);
-            if (!$user->groups->contains($superGroup))
-            {
-                throw new NotSupportedException();
-            }
-            $keyName      = 'UserIdOfUserToRunWorkflowsAs';
-            ZurmoConfigurationUtil::setByModuleName('WorkflowsModule', $keyName, $user->id);
+            parent::setUserToRunAs($user);
         }
 
         /**

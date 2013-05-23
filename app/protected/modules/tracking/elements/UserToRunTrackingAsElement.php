@@ -34,48 +34,28 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class TrackingDefaultController extends ZurmoModuleController
+    /**
+     * When processing tracking, the user that processes them must be a super administrator to ensure the
+     * tracking requests can be properly processed.
+     */
+    class UserToRunTrackingAsElement extends SuperAdministratorToUseElement
     {
-        public function filters()
+        /**
+         * @return string
+         */
+        protected static function renderTooltipContent()
         {
-            return array();
         }
 
-        public function actionTrack()
+        protected function renderLabel()
         {
-            try
-            {
-                Yii::app()->user->userModel = TrackingUtil::getUserToRunTrackActionAs();
-                $response                   = EmailMessageActivityUtil::resolveQueryStringFromUrlAndCreateOrUpdateActivity();
-                if ($response['redirect'])
-                {
-                    $this->redirect($response['url']);
-                }
-                elseif (isset($response['imagePath']))
-                {
-                    $mime               = ZurmoFileHelper::getMimeType($response['imagePath']);
-                    $size               = filesize($response['imagePath']);
-                    $name               = pathinfo($response['imagePath'], PATHINFO_FILENAME);
-                    header('Content-Type: '     .   $mime);
-                    header('Content-Length: '   .   $size);
-                    header('Content-Name: '     .   $name);
-                    readfile($response['imagePath']);
-                    Yii::app()->end(0, false);
-                }
-            }
-            catch (NotFoundException $e)
-            {
-            }
-            catch (NotSupportedException $e)
-            {
-            }
-            catch (FailedToSaveModelException $e)
-            {
-            }
-            catch (MissingASuperAdministratorException $e)
-            {
-            }
-            // we do not catch all exceptions because we need Exit and Redirect Exception for unit tests
+            $title       = Zurmo::t('TrackingModule', 'Tracking requests must be processed as a super administrator user.');
+            $content     = parent::renderLabel();
+            $content    .= ZurmoHtml::tag('span', array('id' => 'run-tracking-from-user-tooltip',
+                                                        'class' => 'tooltip', 'title' => $title), '?');
+            $qtip = new ZurmoTip(array('options' => array('position' => array('my' => 'bottom right', 'at' => 'top left'))));
+            $qtip->addQTip("#run-tracking-from-user-tooltip");
+            return $content;
         }
     }
 ?>

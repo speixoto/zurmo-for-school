@@ -55,6 +55,7 @@
             $form->gamificationModalNotificationsEnabled = Yii::app()->gameHelper->modalNotificationsEnabled;
             $form->realtimeUpdatesEnabled                = static::getRealtimeUpdatesEnabled();
             $form->userIdOfUserToRunWorkflowsAs          = WorkflowUtil::getUserToRunWorkflowsAs()->id;
+            $form->userIdOfUserToRunTrackingAs           = TrackingUtil::getUserToRunAs()->id;
             self::getLogoAttributes($form);
             return $form;
         }
@@ -77,6 +78,7 @@
                                                     'realtimeUpdatesEnabled',
                                                     (boolean) $form->realtimeUpdatesEnabled);
             WorkflowUtil::setUserToRunWorkflowsAs  (User::getById((int)$form->userIdOfUserToRunWorkflowsAs));
+            TrackingUtil::setUserToRunAs           (User::getById((int)$form->userIdOfUserToRunTrackingAs));
             self::setLogoAttributes($form);
         }
 
