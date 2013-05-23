@@ -44,29 +44,6 @@
         const CONFIG_KEY                = 'UserIdOfUserToRunWorkflowsAs';
 
         /**
-         * When running workflow rules either during beforeSave, afterSave, byTime, or Message Queue processing
-         * an elevated user must be used in order to ensure the workflows can be processed properly.  if there is not
-         * a user specified, then a fall back of the first user that is a super administrator will be returned
-         * @return User $user
-         * @throws NotSupportedException if there is no user specified and there are no users in the super admin group
-         * @throws MissingASuperAdministratorException if there are no super administrators available
-         */
-        public static function getUserToRunWorkflowsAs()
-        {
-            return parent::getUserToRunAs(false);
-        }
-
-        /**
-         * @see getUserToRunWorkflowsAs
-         * @param User $user
-         * @throws NotSupportedException
-         */
-        public static function setUserToRunWorkflowsAs(User $user)
-        {
-            parent::setUserToRunAs($user);
-        }
-
-        /**
          * @param $type
          * @return null | string
          */
