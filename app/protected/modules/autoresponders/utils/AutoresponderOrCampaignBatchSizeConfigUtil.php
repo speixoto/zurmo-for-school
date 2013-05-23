@@ -34,48 +34,32 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class TrackingDefaultController extends ZurmoModuleController
+    class AutoresponderOrCampaignBatchSizeConfigUtil
     {
-        public function filters()
+        const CONFIG_KEY             = 'AutoresponderOrCampaignBatchSize';
+
+        const CONFIG_MODULE_NAME     = 'AutorespondersModule';
+
+        const CONFIG_DEFAULT_VALUE   = 200;
+
+        public static function getBatchSize($returnDefaultIfMissing = true, $setDefaultIfMissing = false)
         {
-            return array();
+            $size = ZurmoConfigurationUtil::getByModuleName(static::CONFIG_MODULE_NAME, static::CONFIG_KEY);
+            if (empty($size) && $returnDefaultIfMissing)
+            {
+                $size = static::CONFIG_DEFAULT_VALUE;
+                if ($setDefaultIfMissing)
+                {
+                    static::setBatchSize($size);
+                }
+            }
+            return $size;
         }
 
-        public function actionTrack()
+        public static function setBatchSize($size)
         {
-            try
-            {
-                Yii::app()->user->userModel = TrackingUtil::getUserToRunAs();
-                $response                   = EmailMessageActivityUtil::resolveQueryStringFromUrlAndCreateOrUpdateActivity();
-                if ($response['redirect'])
-                {
-                    $this->redirect($response['url']);
-                }
-                elseif (isset($response['imagePath']))
-                {
-                    $mime               = ZurmoFileHelper::getMimeType($response['imagePath']);
-                    $size               = filesize($response['imagePath']);
-                    $name               = pathinfo($response['imagePath'], PATHINFO_FILENAME);
-                    header('Content-Type: '     .   $mime);
-                    header('Content-Length: '   .   $size);
-                    header('Content-Name: '     .   $name);
-                    readfile($response['imagePath']);
-                    Yii::app()->end(0, false);
-                }
-            }
-            catch (NotFoundException $e)
-            {
-            }
-            catch (NotSupportedException $e)
-            {
-            }
-            catch (FailedToSaveModelException $e)
-            {
-            }
-            catch (MissingASuperAdministratorException $e)
-            {
-            }
-            // we do not catch all exceptions because we need Exit and Redirect Exception for unit tests
+            assert('is_int($size) || $size === null');
+            ZurmoConfigurationUtil::setByModuleName(static::CONFIG_MODULE_NAME, static::CONFIG_KEY, $size);
         }
     }
 ?>

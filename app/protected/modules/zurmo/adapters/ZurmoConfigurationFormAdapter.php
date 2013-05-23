@@ -56,6 +56,7 @@
             $form->realtimeUpdatesEnabled                = static::getRealtimeUpdatesEnabled();
             $form->userIdOfUserToRunWorkflowsAs          = WorkflowUtil::getUserToRunAs()->id;
             $form->userIdOfUserToRunTrackingAs           = TrackingUtil::getUserToRunAs()->id;
+            $form->campaignOrAutoresponderBatchSize      = AutoresponderOrCampaignBatchSizeConfigUtil::getBatchSize();
             self::getLogoAttributes($form);
             return $form;
         }
@@ -79,6 +80,7 @@
                                                     (boolean) $form->realtimeUpdatesEnabled);
             WorkflowUtil::setUserToRunAs  (User::getById((int)$form->userIdOfUserToRunWorkflowsAs));
             TrackingUtil::setUserToRunAs           (User::getById((int)$form->userIdOfUserToRunTrackingAs));
+            AutoresponderOrCampaignBatchSizeConfigUtil::setBatchSize((int)$form->campaignOrAutoresponderBatchSize);
             self::setLogoAttributes($form);
         }
 

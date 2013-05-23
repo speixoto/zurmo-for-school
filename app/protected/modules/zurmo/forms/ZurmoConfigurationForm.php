@@ -48,6 +48,7 @@
         public $gamificationModalNotificationsEnabled;
         public $userIdOfUserToRunWorkflowsAs;
         public $userIdOfUserToRunTrackingAs;
+        public $campaignOrAutoresponderBatchSize;
         public $realtimeUpdatesEnabled;
         public $logoFileData;
 
@@ -83,6 +84,9 @@
                 array('userIdOfUserToRunWorkflowsAs',           'numerical', 'min'  => 1),
                 array('userIdOfUserToRunTrackingAs',            'type',      'type' => 'integer'),
                 array('userIdOfUserToRunTrackingAs',            'numerical', 'min' => 1),
+                array('campaignOrAutoresponderBatchSize',       'required'),
+                array('campaignOrAutoresponderBatchSize',       'type',      'type' => 'integer'),
+                array('campaignOrAutoresponderBatchSize',       'numerical', 'min' => 1),
             );
         }
 
@@ -99,6 +103,7 @@
                 'realtimeUpdatesEnabled'                => Zurmo::t('ZurmoModule', 'Enable real-time updates'),
                 'userIdOfUserToRunWorkflowsAs'          => Zurmo::t('ZurmoModule', 'Run workflows from'),
                 'userIdOfUserToRunTrackingAs'           => Zurmo::t('ZurmoModule', 'Run tracking requests from'),
+                'campaignOrAutoresponderBatchSize'      => Zurmo::t('ZurmoModule', 'Campaign/Autoresponder batch size'),
             );
         }
     }

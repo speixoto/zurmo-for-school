@@ -280,8 +280,7 @@
                 $this->assertEmpty($campaignItems);
             }
 
-            ZurmoConfigurationUtil::setByModuleName(CampaignGenerateDueCampaignItemsJob::BATCH_SIZE_CONFIG_MODULE_NAME,
-                                                            CampaignGenerateDueCampaignItemsJob::BATCH_SIZE_CONFIG_KEY, 1);
+            AutoresponderOrCampaignBatchSizeConfigUtil::setBatchSize(1);
             $job    = new CampaignGenerateDueCampaignItemsJob();
             $this->assertTrue($job->run());
             foreach ($campaignIds as $index => $campaignId)
@@ -301,8 +300,7 @@
                 }
             }
 
-            ZurmoConfigurationUtil::setByModuleName(CampaignGenerateDueCampaignItemsJob::BATCH_SIZE_CONFIG_MODULE_NAME,
-                                                    CampaignGenerateDueCampaignItemsJob::BATCH_SIZE_CONFIG_KEY, null);
+            AutoresponderOrCampaignBatchSizeConfigUtil::setBatchSize(null);
             $this->assertTrue($job->run());
             foreach ($campaignIds as $campaignId)
             {

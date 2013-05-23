@@ -118,8 +118,18 @@
                                     array(
                                         array(
                                             'elements' => array(
+                                                array('attributeName' => 'campaignOrAutoresponderBatchSize',
+                                                                                                'type' => 'Integer'),
+                                            ),
+                                        ),
+                                    )
+                                ),
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
                                                 array('attributeName' => 'userIdOfUserToRunWorkflowsAs',
-                                                    'type'          => 'UserToRunWorkflowsAs'),
+                                                                            'type'          => 'UserToRunWorkflowsAs'),
                                             ),
                                         ),
                                     )
@@ -129,7 +139,7 @@
                                         array(
                                             'elements' => array(
                                                 array('attributeName' => 'userIdOfUserToRunTrackingAs',
-                                                    'type'          => 'UserToRunTrackingAs'),
+                                                                            'type'          => 'UserToRunTrackingAs'),
                                             ),
                                         ),
                                     )
@@ -138,7 +148,8 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'gamificationModalNotificationsEnabled', 'type' => 'CheckBox'),
+                                                array('attributeName' => 'gamificationModalNotificationsEnabled',
+                                                                                                'type' => 'CheckBox'),
                                             ),
                                         ),
                                     )
