@@ -74,6 +74,13 @@
             return CMap::mergeArray($parentAjaxOptions, $modalViewAjaxOptions, $this->params['ajaxOptions']);
         }
 
+        protected function getHtmlOptions()
+        {
+            $htmlOptionsInParams = parent::getHtmlOptions();
+            $defaultHtmlOptions  = array('id' => 'mergetag-guide', 'class' => 'simple-link');
+            return CMap::mergeArray($defaultHtmlOptions, $htmlOptionsInParams);
+        }
+
         protected function registerScript()
         {
             $eventHandlerName = get_class($this);

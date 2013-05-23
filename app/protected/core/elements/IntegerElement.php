@@ -48,11 +48,11 @@
             if($this->model instanceof RedBeanModel && $this->model->isAttributeFormattedAsProbability($this->attribute))
             {
                 $resolvedValue = NumberUtil::divisionForZero($this->model->{$this->attribute}, 100);
-                return Yii::app()->numberFormatter->formatPercentage($resolvedValue);
+                return Yii::app()->numberFormatter->formatPercentage((int)$resolvedValue);
             }
             else
             {
-                return Yii::app()->format->formatNumber($this->model->{$this->attribute});
+                return Yii::app()->format->formatNumber((int)$this->model->{$this->attribute});
             }
         }
     }

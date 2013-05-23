@@ -98,7 +98,16 @@
                                             'detailViewOnly' => 2, // using 2 here to mean: "do not render on details"
                                             'elements' => array(
                                                 array('attributeName' => 'null',
-                                                                        'type' => 'ContactEmailTemplateNamesDropDown')
+                                                            'type' => 'AutoresponderContactEmailTemplateNamesDropDown')
+                                            ),
+                                        ),
+                                    )
+                                ),
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'null', 'type' => 'Files'),
                                             ),
                                         ),
                                     )

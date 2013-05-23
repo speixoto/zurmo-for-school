@@ -155,9 +155,12 @@
          * @param string $relationModuleId
          */
         public function actionSelectFromRelatedListSave($modelId, $portletId, $uniqueLayoutId,
-                                                        $relationAttributeName, $relationModelId, $relationModuleId)
+                                                        $relationAttributeName, $relationModelId, $relationModuleId, $relationModelClassName = null)
         {
-            $relationModelClassName = Yii::app()->getModule($relationModuleId)->getPrimaryModelName();
+            if($relationModelClassName == null)
+            {
+                $relationModelClassName = Yii::app()->getModule($relationModuleId)->getPrimaryModelName();
+            }
             $relationModel          = $relationModelClassName::getById((int)$relationModelId);
             $modelClassName         = $this->getModule()->getPrimaryModelName();
             $model                  = $modelClassName::getById((int)$modelId);
@@ -205,6 +208,51 @@
         public function resolveAndGetModuleId()
         {
             return $this->getModule()->getId();
+        }
+
+        public function actionAddList()
+        {
+            Yii::app()->getClientScript()->setToAjaxMode();
+            $view = new ModalView($this,
+                                    new DetailsPortletSelectionView(
+                                        $this->getId(),
+                                        $this->getModule()->getId(),
+                                        $_GET['modelId'],//dashboard id is model id
+                                        $_GET['uniqueLayoutId']
+                                        ));
+            echo $view->render();
+        }
+
+        /**
+         * Add portlet to first column, first position
+         * and if there are other portlets in the first
+         * column, shift their postion by 1 to accomodate
+         * the new portlet
+         *
+         */
+        public function actionAdd()
+        {
+            assert('!empty($_GET["uniqueLayoutId"])');
+            assert('!empty($_GET["portletType"])');
+            $portletCollection = Portlet::getByLayoutIdAndUserSortedByColumnIdAndPosition($_GET['uniqueLayoutId'], Yii::app()->user->userModel->id, array());
+            if (!empty($portletCollection))
+            {
+                foreach ($portletCollection[1] as $position => $portlet)
+                {
+                        $portlet->position = $portlet->position + 1;
+                        $portlet->save();
+                }
+            }
+            if (!empty($_GET['modelId']))
+            {
+                $dashboardId = $_GET['modelId'];
+            }
+            else
+            {
+                $dashboardId = '';
+            }
+            Portlet::makePortletUsingViewType($_GET['portletType'], $_GET['uniqueLayoutId'], Yii::app()->user->userModel);
+            $this->redirect(array('/' . $this->resolveAndGetModuleId() . '/default/details', 'id' => $dashboardId));
         }
     }
 ?>

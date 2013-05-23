@@ -261,20 +261,11 @@
             $filesIds               = array();
             foreach ($fileNames as $index => $fileName)
             {
+                $file                       = ZurmoTestHelper::createFileModel($fileName);
                 $files[$index]['name']      = $fileName;
-                $files[$index]['path']      = Yii::getPathOfAlias('application.modules.zurmo.tests.unit.files') .
-                                                                        DIRECTORY_SEPARATOR . $files[$index]['name'];
-                $files[$index]['type']      = ZurmoFileHelper::getMimeType($files[$index]['path']);
-                $files[$index]['size']      = filesize($files[$index]['path']);
-                $files[$index]['contents']  = file_get_contents($files[$index]['path']);
-                $fileContent                = new FileContent();
-                $fileContent->content       = $files[$index]['contents'];
-                $file                       = new FileModel();
-                $file->fileContent          = $fileContent;
-                $file->name                 = $files[$index]['name'];
-                $file->type                 = $files[$index]['type'];
-                $file->size                 = $files[$index]['size'];
-                $this->assertTrue($file->save());
+                $files[$index]['type']      = $file->type;
+                $files[$index]['size']      = $file->size;
+                $files[$index]['contents']  = $file->fileContent->content;
                 $filesIds[]                 = $file->id;
             }
             $this->setPostArray(array('EmailTemplate' => array(
@@ -361,6 +352,22 @@
             $emailTemplateDetailsResolvedArray = CJSON::decode($content);
             $this->assertNotEmpty($emailTemplateDetailsResolvedArray);
             $this->assertEquals($emailTemplateDetailsArray, $emailTemplateDetailsResolvedArray);
+
+            $this->setGetArray(array('id' => $emailTemplateId, 'renderJson' => true, 'includeFilesInJson' => true));
+            // @ to avoid headers already sent error.
+            $content = @$this->runControllerWithExitExceptionAndGetContent('emailTemplates/default/details');
+            $emailTemplateDetailsResolvedArray = CJSON::decode($content);
+            $emailTemplateDetailsResolvedArrayWithoutFiles = $emailTemplateDetailsResolvedArray;
+            unset($emailTemplateDetailsResolvedArrayWithoutFiles['filesIds']);
+            $this->assertNotEmpty($emailTemplateDetailsResolvedArray);
+            $this->assertNotEquals($emailTemplateDetailsArray, $emailTemplateDetailsResolvedArray);
+            $this->assertEquals($emailTemplateDetailsArray, $emailTemplateDetailsResolvedArrayWithoutFiles);
+            $this->assertNotEmpty($emailTemplateDetailsResolvedArray['filesIds']);
+            $this->assertEquals($emailTemplate->files->count(), count($emailTemplateDetailsResolvedArray['filesIds']));
+            foreach ($emailTemplate->files as $index => $file)
+            {
+                $this->assertEquals($file->id, $emailTemplateDetailsResolvedArray['filesIds'][$index]);
+            }
         }
 
         /**

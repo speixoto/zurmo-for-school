@@ -114,5 +114,10 @@
                 $this->redirect($redirectUrl);
             }
         }
+
+        protected static function getZurmoControllerUtil()
+        {
+            return new AutoresponderZurmoControllerUtil();
+        }
     }
 ?>

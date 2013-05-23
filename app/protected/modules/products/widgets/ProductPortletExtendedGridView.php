@@ -34,28 +34,43 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class EmailTemplateControllerUtil extends ZurmoControllerUtil
+    /**
+     * Extends the ExtendedGridView to provide additional functionality.
+     * @see ExtendedGridView class
+     */
+    class ProductPortletExtendedGridView extends ExtendedGridView
     {
-        protected function afterSuccessfulSave($model)
+        public $params;
+
+        protected function renderTotalBarDetails()
         {
-            $filesIds = Yii::app()->request->getPost('filesIds');
-            if (is_array($filesIds) && !empty($filesIds))
+            $relationModelClassName = get_class($this->params["relationModel"]);
+            $relationModelId	    = $this->params["relationModel"]->id;
+            $relationModel          = $relationModelClassName::getById($relationModelId);
+            $models                 = $relationModel->products;
+            $oneTimeTotal           = 0;
+            $monthlyTotal           = 0;
+            $annualTotal            = 0;
+            foreach($models as $model)
             {
-                foreach ($filesIds as $filesId)
+                if($model->priceFrequency == ProductTemplate::PRICE_FREQUENCY_ONE_TIME)
                 {
-                    $file   = FileModel::getById($filesId);
-                    $model->files->add($file);
+                    $oneTimeTotal += $model->sellPrice->value * $model->quantity;
                 }
-                if ($model->save())
+
+                if($model->priceFrequency == ProductTemplate::PRICE_FREQUENCY_MONTHLY)
                 {
-                    return $model;
+                    $monthlyTotal += $model->sellPrice->value * $model->quantity;
                 }
-                else
+
+                if($model->priceFrequency == ProductTemplate::PRICE_FREQUENCY_ANNUALLY)
                 {
-                    throw new FailedToSaveModelException();
+                    $annualTotal += $model->sellPrice->value * $model->quantity;
                 }
             }
-            return $model;
+
+            $currencySymbol	    = Yii::app()->locale->getCurrencySymbol(Yii::app()->currencyHelper->getCodeForCurrentUserForDisplay());
+            echo Zurmo::t("Core", "Total: ") . $currencySymbol . $oneTimeTotal . Zurmo::t("Core", " One Time") . ", " . $currencySymbol . $monthlyTotal . Zurmo::t("Core", " Monthly") . ", " . $currencySymbol. $annualTotal . Zurmo::t("Core", " Annually");
         }
     }
 ?>

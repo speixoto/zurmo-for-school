@@ -37,29 +37,14 @@
     /**
      * A job for processing campaign messages that are not sent immediately when triggered
      */
-    class CampaignQueueMessagesInOutboxJob extends BaseJob
+    class CampaignQueueMessagesInOutboxJob extends AutoresponderOrCampaignBaseJob
     {
-        const BATCH_SIZE_CONFIG_KEY = 'CampaignBatchSize';
-
         /**
          * @returns Translated label that describes this job type.
          */
         public static function getDisplayName()
         {
            return Zurmo::t('CampaignsModule', 'Process campaign messages');
-        }
-
-        /**
-         * @return The type of the NotificationRules
-         */
-        public static function getType()
-        {
-            return 'CampaignQueueMessagesInOutbox';
-        }
-
-        public static function getRecommendedRunFrequencyContent()
-        {
-            return Zurmo::t('JobsManagerModule', 'Every hour');
         }
 
         /**
@@ -73,6 +58,10 @@
                                                                                         Campaign::STATUS_ACTIVE,
                                                                                         time(),
                                                                                         $batchSize);
+            if (!is_array($campaignItemsToProcess))
+            {
+                $campaignItemsToProcess = array($campaignItemsToProcess);
+            }
             foreach ($campaignItemsToProcess as $campaignItem)
             {
                 try
@@ -95,17 +84,6 @@
         protected function processCampaignItemInQueue(CampaignItem $campaignItem)
         {
             CampaignItemsUtil::processDueItem($campaignItem);
-        }
-
-        protected function resolveBatchSize()
-        {
-            $batchSize = ZurmoConfigurationUtil::getByModuleName('CampaignsModule', static::BATCH_SIZE_CONFIG_KEY);
-            if (!$batchSize)
-            {
-                $batchSize = 200;
-                ZurmoConfigurationUtil::getByModuleName('CampaignsModule', static::BATCH_SIZE_CONFIG_KEY, $batchSize);
-            }
-            return $batchSize;
         }
     }
 ?>

@@ -437,7 +437,6 @@ footer, header, hgroup, menu, nav, section {
 		top:5px;
 		margin-left:-12px;
 	}
-
 	.single-notification{
 		line-height:125%;
 		padding:9px 0;
@@ -1242,12 +1241,6 @@ body > .ui-autocomplete{
 }
 
 /*=dashboard*/
-#HomePageView .AppContent{
-	padding-right:0;
-	&#DashboardEditView{
-		padding-right:20px;
-	}
-}
 #HomeDashboardView{
 	.parent > ul{
 		min-width: 160px;
@@ -1455,6 +1448,18 @@ form,
 	content: "Y";
 	.view-toolbar-icons();
 	top:-2px;
+}
+
+.icon-lock:before{
+	content: "F";
+	.view-toolbar-icons();
+	top:-3px;
+}
+
+.icon-unlock:before{
+	content: "E";
+	.view-toolbar-icons();
+	top:-3px;
 }
 
 #HomeDashboardView .parent > a:before,
@@ -3355,9 +3360,12 @@ div.wide.form{
 
 .details-table{
 	position:relative;
-	margin-right:20px;
+	margin:0px !important;
+	.unstyle-panel();
+	border: none !important;
+	.b-shadow(none) !important;
 	table{
-		margin:10px 0;
+		margin:0 0 10px 0;
 	}
 	.double-column{
 		.col-0, .col-2{
@@ -3504,7 +3512,7 @@ div.wide.form{
 
 .toolbar-mbmenu{
 	position:absolute;
-	top:7px;
+	top:-35px;
 	right:10px;
 	margin:0;
 	float:right;
@@ -4294,6 +4302,10 @@ div.hasHalfs{
 		span{
 			line-height: 140%;
 			word-break: break-all;
+			a{
+				break-word: break-all;
+				display: inline-block;
+			}
 		}
 	}
 	.items em{
@@ -4612,9 +4624,6 @@ div.hasHalfs{
 		width:100%;
 	}
 	.hasCheckBox{
-		margin-top:0 !important;
-		position:relative;
-		top:-4px;
 	}
 	tr th:first-child{
 		padding:0 !important;

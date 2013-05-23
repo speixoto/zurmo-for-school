@@ -34,7 +34,7 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class AccountDetailsAndRelationsView extends DetailsAndRelationsView
+    class AccountDetailsAndRelationsView extends ConfigurableDetailsAndRelationsView
     {
         public function isUniqueToAPage()
         {
@@ -45,41 +45,45 @@
         {
             $metadata = array(
                 'global' => array(
-                    'leftTopView' => array(
-                        'viewClassName' => 'AccountEditAndDetailsView',
-                    ),
-                    'leftBottomView' => array(
-                        'showAsTabbed' => false,
-                        'columns' => array(
-                            array(
-                                'rows' => array(
-                                    array(
-                                        'type' => 'NoteInlineEditForPortlet'
-                                    ),
-                                    array(
-                                        'type' => 'AccountLatestActivitiesForPortlet'
-                                    )
+                    'toolbar' => array(
+                        'elements' => array(
+                            array(  'type'           => 'AddPortletAjaxLinkOnDetailView',
+                                    'uniqueLayoutId' => 'eval:$this->uniqueLayoutId',
+                                    'ajaxOptions'    => 'eval:static::resolveAjaxOptionsForAddPortlet()',
+                                    'htmlOptions'    => array('id' => 'AddPortletLink',
+                                    'class'          => 'icon-add'
                                 )
+                            ),
+                        ),
+                    ),
+                    'columns' => array(
+                        array(
+                            'rows' => array(
+                               array(
+                                    'type' => 'AccountDetailsPortlet',
+                                ),
+                               array(
+                                    'type' => 'NoteInlineEditForPortlet',
+                                ),
+                                array(
+                                    'type' => 'AccountLatestActivitiesForPortlet',
+                                ),
                             )
-                        )
-                    ),
-                    'rightTopView' => array(
-                        'columns' => array(
-                            array(
-                                'rows' => array(
-                                    array(
-                                        'type' => 'UpcomingMeetingsForAccountCalendar',
-                                    ),
-                                    array(
-                                        'type' => 'OpenTasksForAccountRelatedList',
-                                    ),
-                                    array(
-                                        'type' => 'ContactsForAccountRelatedList',
-                                    ),
-                                    array(
-                                        'type' => 'OpportunitiesForAccountRelatedList',
-                                    )
-                                )
+                        ),
+                        array(
+                            'rows' => array(
+                                array(
+                                    'type' => 'UpcomingMeetingsForAccountCalendar',
+                                ),
+                                array(
+                                    'type' => 'OpenTasksForAccountRelatedList',
+                                ),
+                                array(
+                                    'type' => 'ContactsForAccountRelatedList',
+                                ),
+                                array(
+                                    'type' => 'OpportunitiesForAccountRelatedList',
+                                ),
                             )
                         )
                     )

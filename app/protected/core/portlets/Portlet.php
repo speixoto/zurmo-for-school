@@ -227,6 +227,19 @@
             return $className::canUserConfigure();
         }
 
+//        public function isRemovable()
+//        {
+//            $className = get_class($this->getView());
+//            if(method_exists($className, 'canUserRemove'))
+//            {
+//                return $className::canUserRemove();
+//            }
+//            else
+//            {
+//                return null;
+//            }
+//        }
+
         public function beforeDelete()
         {
             $className = $this->viewType . 'View';

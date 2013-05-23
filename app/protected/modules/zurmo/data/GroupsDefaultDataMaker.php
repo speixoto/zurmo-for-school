@@ -91,6 +91,9 @@
             $everyone->setRight('HomeModule',          HomeModule::RIGHT_DELETE_DASHBOARDS, Right::ALLOW);
             $everyone->setRight('ExportModule',        ExportModule::RIGHT_ACCESS_EXPORT, Right::ALLOW);
             $everyone->setRight('SocialItemsModule',   SocialItemsModule::RIGHT_ACCESS_SOCIAL_ITEMS, Right::ALLOW);
+            $everyone->setRight('ProductsModule',      ProductsModule::RIGHT_ACCESS_PRODUCTS, Right::ALLOW);
+            $everyone->setRight('ProductsModule',      ProductsModule::RIGHT_CREATE_PRODUCTS, Right::ALLOW);
+            $everyone->setRight('ProductsModule',      ProductsModule::RIGHT_DELETE_PRODUCTS, Right::ALLOW);
             $saved = $everyone->save();
             assert('$saved');
         }

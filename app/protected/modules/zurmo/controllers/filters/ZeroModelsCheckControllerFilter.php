@@ -44,13 +44,27 @@
 
         public $stateMetadataAdapterClassName = null;
 
+        public $zeroModelsYetViewClassName = null;
+
+        public $modelClassName = null;
+
+        public $pageViewClassName = null;
+
+        public $defaultViewUtilClassName = null;
+
         protected function preFilter($filterChain)
         {
             if (isset($_POST['ajax']))
             {
                 return true;
             }
-            $modelClassName    = $this->controller->getModule()->getPrimaryModelName();
+
+            $modelClassName = $this->modelClassName;
+
+            if($modelClassName == null)
+            {
+                $modelClassName    = $this->controller->getModule()->getPrimaryModelName();
+            }
 
             if ($this->stateMetadataAdapterClassName != null)
             {
@@ -70,7 +84,13 @@
             {
                 return true;
             }
-            $messageViewClassName         = $this->getMessageViewClassName();
+
+            $messageViewClassName = $this->zeroModelsYetViewClassName;
+            if($messageViewClassName == null)
+            {
+                $messageViewClassName     = $this->controller->getModule()->getPluralCamelCasedName() . 'ZeroModelsYetView';
+            }
+
             $messageView                  = new $messageViewClassName($this->resolveMessageControllerId(),
                                                                       $this->resolveMessageModuleId(),
                                                                       $modelClassName);
@@ -80,7 +100,12 @@
 
         protected function getMessageViewClassName()
         {
-            return $this->controller->getModule()->getPluralCamelCasedName() . 'ZeroModelsYetView';
+            $messageViewClassName = $this->zeroModelsYetViewClassName;
+            if($messageViewClassName == null)
+            {
+                $messageViewClassName     = $this->controller->getModule()->getPluralCamelCasedName() . 'ZeroModelsYetView';
+            }
+            return $messageViewClassName;
         }
 
         protected function resolveMessageControllerId()
@@ -95,9 +120,20 @@
 
         protected function resolveAndRenderView(View $messageView)
         {
-            $pageViewClassName            = $this->controller->getModule()->getPluralCamelCasedName() . 'PageView';
-            $view                         = new $pageViewClassName(ZurmoDefaultViewUtil::
-                                            makeStandardViewForCurrentUser($this->controller, $messageView));
+            $pageViewClassName              = $this->pageViewClassName;
+            if($pageViewClassName == null)
+            {
+                $pageViewClassName          = $this->controller->getModule()->getPluralCamelCasedName() . 'PageView';
+            }
+
+            if($this->defaultViewUtilClassName == null)
+            {
+                $this->defaultViewUtilClassName = 'ZurmoDefaultViewUtil';
+            }
+
+            $defaultViewUtilClassName       = $this->defaultViewUtilClassName;
+            $view                           = new $pageViewClassName($defaultViewUtilClassName::
+                                                    makeStandardViewForCurrentUser($this->controller, $messageView));
             echo $view->render();
         }
     }

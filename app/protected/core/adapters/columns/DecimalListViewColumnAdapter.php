@@ -47,7 +47,7 @@
 
         public static function renderNonEditableStatically($model, $attribute)
         {
-            return Yii::app()->numberFormatter->formatDecimal($model->{$attribute});
+            return Yii::app()->numberFormatter->formatDecimal((float)$model->{$attribute});
         }
     }
 ?>

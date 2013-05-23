@@ -42,6 +42,10 @@
         public static function markProcessedCampaignsAsCompleted($pageSize = null)
         {
             $processingCampaigns = Campaign::getByStatus(Campaign::STATUS_PROCESSING, $pageSize);
+            if (!is_array($processingCampaigns))
+            {
+                $processingCampaigns = array($processingCampaigns);
+            }
             foreach ($processingCampaigns as $processingCampaign)
             {
                 if (static::areAllCampaignItemsProcessed($processingCampaign->id))
@@ -58,7 +62,6 @@
 
         protected static function areAllCampaignItemsProcessed($campaignId)
         {
-            // TODO: @Shoaibi/@Jason: Critical: Should we account for campaigns that are in processing but no items? Items won't be generated against those anyway.
             $unprocessedCampaignItems = CampaignItem::getByProcessedAndCampaignId(0, $campaignId);
             return (count($unprocessedCampaignItems) == 0);
         }

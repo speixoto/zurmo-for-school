@@ -40,7 +40,7 @@
      */
     class CurrencyValueElement extends TextElement
     {
-            /**
+        /**
          * Renders the editable currency attribute. Also renders a currency id selector if there is more
          * than one currency. If there is only one currency, then show a display only currency code with
          * a hidden input for the currency id. //todo: only showing hidden currency id
@@ -60,13 +60,13 @@
             $content  = '<div class="hasParallelFields">';
             $content .= ZurmoHtml::tag('div', array('class' => 'quarter'), $activeCurrenciesElement->render());
             $content .= ZurmoHtml::tag('div', array('class' => 'threeQuarters'),
-                            $this->renderEditableValueTextField($currencyValueModel, $this->form, $this->attribute, 'value'));
+                            $this->renderEditableValueTextField($currencyValueModel, $this->form, $this->attribute, 'value', $this->model));
             $content .= $this->renderExtraEditableContent();
             $content .= '</div>';
             return $content;
         }
 
-        protected function renderEditableValueTextField($model, $form, $inputNameIdPrefix, $attribute)
+        protected function renderEditableValueTextField($model, $form, $inputNameIdPrefix, $attribute, $parentModel = null)
         {
             //need to override a resolveValue to NOT default to 0 if not specifically null
             $id =  $this->getEditableInputId($inputNameIdPrefix, $attribute);
@@ -75,6 +75,8 @@
                 'id'   => $id,
                 'value' => $this->resolveAndGetEditableValue($model, $attribute),
             );
+            $additionalHtmlOptions = $this->getHtmlOptions();
+            $htmlOptions           = array_merge($htmlOptions, $additionalHtmlOptions);
             $textField = $form->textField($model, $attribute, $htmlOptions);
             $error     = $form->error    ($model, $attribute, array('inputID' => $id), true, true,
                                           $this->renderScopedErrorId($inputNameIdPrefix, $attribute));
@@ -90,7 +92,7 @@
         {
             assert('$this->model->{$this->attribute} instanceof CurrencyValue');
             $currencyValueModel = $this->model->{$this->attribute};
-            return Yii::app()->numberFormatter->formatCurrency( $currencyValueModel->value,
+            return Yii::app()->numberFormatter->formatCurrency((float)$currencyValueModel->value,
                                                                 $currencyValueModel->currency->code);
         }
 
@@ -120,6 +122,7 @@
          */
         protected function resolveParamsForCurrencyId(& $params)
         {
+            $params['htmlOptions'] = $this->getHtmlOptions();
         }
 
         protected function resolveAndGetEditableValue($model, $attribute)

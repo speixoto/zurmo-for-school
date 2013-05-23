@@ -154,9 +154,6 @@
 
         protected function setSpecialBox()
         {
-            // TODO: @Shoaibi/@Jason: Critical: Should this really be called isNotifications?
-            // TODO: @Shoaibi/@Jason: Critical: Why are we setting name here?
-            //$this->isNotifications = $this->name == self::NOTIFICATIONS_NAME;
             $this->isNotifications = true;
         }
 
