@@ -1375,6 +1375,10 @@ form,
 	}
 }
 
+.view-toolbar + .view-toolbar {
+	float: right;
+}
+
 .portlet-view-toolbar{
 	.parent{
 		position: relative;
@@ -1450,16 +1454,25 @@ form,
 	top:-2px;
 }
 
-.icon-lock:before{
-	content: "F";
-	.view-toolbar-icons();
-	top:-3px;
+
+.icon-lock{
+	padding: 0 10px !important;
+	&:before{
+		content: "F";
+		.view-toolbar-icons();
+		top:-2px;
+		margin: 0;
+	}
 }
 
-.icon-unlock:before{
-	content: "E";
-	.view-toolbar-icons();
-	top:-3px;
+.icon-unlock{
+	padding: 0 10px !important;
+	&:before{
+		content: "E";
+		.view-toolbar-icons();
+		top:-2px;
+		margin: 0;
+	}
 }
 
 #HomeDashboardView .parent > a:before,

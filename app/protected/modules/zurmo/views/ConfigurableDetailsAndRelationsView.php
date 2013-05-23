@@ -97,14 +97,16 @@
         {
             $isViewLocked     = ZurmoDefaultViewUtil::getLockKeyForDetailsAndRelationsView('lockPortletsForDetailsAndRelationsView');
             $url              = Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/details?id=' . $_GET['id']);
+            $lockTitle = Zurmo::t('Core', 'Click to unlock and edit this screen\'s layout ');
+            $unlockTitle = Zurmo::t('Core', 'Click to lock and prevent layout changes to this screen');
             $lockLink = '';
             if($isViewLocked === true)
             {
-                $lockLink = "<a href='" . $url . "&lockPortlets=0' class='icon-lock'><!--" . Zurmo::t('Core', 'Unlock') . "--></a>";
+                $lockLink = "<a href='" . $url . "&lockPortlets=0' class='icon-lock' title='".$lockTitle."'><!--" . Zurmo::t('Core', 'Unlock') . "--></a>";
             }
             else
             {
-                $lockLink = "<a href='" . $url . "&lockPortlets=1' class='icon-unlock'><!--" . Zurmo::t('Core', 'Lock') . "--></a>";
+                $lockLink = "<a href='" . $url . "&lockPortlets=1' class='icon-unlock' title='".$unlockTitle."'><!--" . Zurmo::t('Core', 'Lock') . "--></a>";
             }
 
             $content  = '<div class="view-toolbar-container clearfix"><div class="view-toolbar">';

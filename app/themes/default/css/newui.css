@@ -6303,6 +6303,9 @@ form .view-toolbar-container,
 .portlet-view-toolbar > a:first-child {
   border-left: none;
 }
+.view-toolbar + .view-toolbar {
+  float: right;
+}
 .portlet-view-toolbar .parent {
   position: relative;
 }
@@ -6412,6 +6415,9 @@ form .view-toolbar-container,
   position: relative;
   top: -3px;
 }
+.icon-unlock {
+  padding: 0 10px;
+}
 .icon-unlock:before {
   content: "E";
   font-weight: normal;
@@ -6425,6 +6431,7 @@ form .view-toolbar-container,
   vertical-align: middle;
   position: relative;
   top: -3px;
+  margin: 0;
 }
 #HomeDashboardView .parent > a:before,
 .icon-change-dashborad:before {
