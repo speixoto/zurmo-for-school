@@ -199,9 +199,9 @@
                             'name'                              => 'myNewProductTemplate',
                             'type'                              => ProductTemplate::TYPE_PRODUCT,
                             'description'                       => 'Test Description',
-                            'sellPrice'                         => array ('currency' => array ( 'id' => 1 ), 'value' => 200),
-                            'cost'                              => array ('currency' => array ( 'id' => 1 ), 'value' => 200),
-                            'listPrice'                         => array ('currency' => array ( 'id' => 1 ), 'value' => 200),
+                            'sellPrice'                         => array ('currency' => array ('id' => $baseCurrency->id), 'value' => 200),
+                            'cost'                              => array ('currency' => array ('id' => $baseCurrency->id), 'value' => 200),
+                            'listPrice'                         => array ('currency' => array ('id' => $baseCurrency->id), 'value' => 200),
                             'priceFrequency'                    => 2,
                             'status'                            => ProductTemplate::STATUS_ACTIVE,
                             'sellPriceFormula'                  => array ( 'type' => SellPriceFormula::TYPE_EDITABLE ),
@@ -261,8 +261,8 @@
             $this->assertContains('gardening'                                , $productTemplate->tagcloudCstm->values);
             $metadata            = CalculatedDerivedAttributeMetadata::
                                    getByNameAndModelClassName('calcnumber', 'ProductTemplate');
-            $testCalculatedValue = CalculatedNumberUtil::calculateByFormulaAndModel($metadata->getFormula(), $productTemplate);
-            $this->assertEquals(1476                                     , $testCalculatedValue);
+            $testCalculatedValue = CalculatedNumberUtil::calculateByFormulaAndModelAndResolveFormat($metadata->getFormula(), $productTemplate);
+            $this->assertEquals(1476                                     , intval(str_replace(',',"", $testCalculatedValue)));
         }
 
         /**
@@ -278,9 +278,9 @@
                                                 'name'                      => 'myNewProductTemplate',
                                                 'type'                      => ProductTemplate::TYPE_PRODUCT,
                                                 'description'               => 'Test Description',
-                                                'sellPrice'                 => array ( 'currency' => array ( 'id' => 1 ), 'value' => 200 ),
-                                                'cost'                      => array ( 'currency' => array ( 'id' => 1 ), 'value' => 200 ),
-                                                'listPrice'                 => array ( 'currency' => array ( 'id' => 1 ), 'value' => 200 ),
+                                                'sellPrice'                 => array ('currency' => array ('id' => $baseCurrency->id), 'value' => 200),
+                                                'cost'                      => array ('currency' => array ('id' => $baseCurrency->id), 'value' => 200),
+                                                'listPrice'                 => array ('currency' => array ('id' => $baseCurrency->id), 'value' => 200),
                                                 'priceFrequency'            => 2,
                                                 'status'                    => ProductTemplate::STATUS_ACTIVE,
                                                 'sellPriceFormula'          => array ( 'type' => SellPriceFormula::TYPE_EDITABLE ),
@@ -303,8 +303,8 @@
                                                 'datetimeCstm__DateTime'    => array('type'   =>  'Today')),
                                                 'ajax'                      =>  'list-view'));
             //TODO Ask Jason
-            //$content = $this->runControllerWithNoExceptionsAndGetContent('productTemplates/default');
-            //$this->assertTrue(strpos($content, "myNewProductTemplate") > 0);
+            $content = $this->runControllerWithNoExceptionsAndGetContent('productTemplates/default');
+            $this->assertTrue(strpos($content, "myNewProductTemplate") > 0);
         }
 
         /**
@@ -332,9 +332,9 @@
                             'name'                              => 'myEditProductTemplate',
                             'type'                              => ProductTemplate::TYPE_PRODUCT,
                             'description'                       => 'Test Description',
-                            'sellPrice'                         => array ( 'currency' => array ( 'id' => 1 ), 'value' => 200 ),
-                            'cost'                              => array ( 'currency' => array ( 'id' => 1 ), 'value' => 200 ),
-                            'listPrice'                         => array ( 'currency' => array ( 'id' => 1 ), 'value' => 200 ),
+                            'sellPrice'                         => array ('currency' => array ('id' => $baseCurrency->id), 'value' => 200 ),
+                            'cost'                              => array ('currency' => array ('id' => $baseCurrency->id), 'value' => 200 ),
+                            'listPrice'                         => array ('currency' => array ('id' => $baseCurrency->id), 'value' => 200 ),
                             'priceFrequency'                    => 2,
                             'status'                            => ProductTemplate::STATUS_ACTIVE,
                             'sellPriceFormula'                  => array ( 'type' => SellPriceFormula::TYPE_EDITABLE ),
@@ -395,8 +395,8 @@
             $this->assertEquals(0                                        , $productTemplate->tagcloudCstm->values->count());
             $metadata            = CalculatedDerivedAttributeMetadata::
                                    getByNameAndModelClassName('calcnumber', 'ProductTemplate');
-            $testCalculatedValue = CalculatedNumberUtil::calculateByFormulaAndModel($metadata->getFormula(), $productTemplate);
-            $this->assertEquals(132                                      , $testCalculatedValue);
+            $testCalculatedValue = CalculatedNumberUtil::calculateByFormulaAndModelAndResolveFormat($metadata->getFormula(), $productTemplate);
+            $this->assertEquals(132                                     , intval(str_replace(',',"", $testCalculatedValue)));
         }
 
         /**
@@ -424,9 +424,9 @@
                             'name'                              => 'myEditProductTemplate',
                             'type'                              => ProductTemplate::TYPE_PRODUCT,
                             'description'                       => 'Test Description',
-                            'sellPrice'                         => array ( 'currency' => array ( 'id' => 1 ), 'value' => 200 ),
-                            'cost'                              => array ( 'currency' => array ( 'id' => 1 ), 'value' => 200 ),
-                            'listPrice'                         => array ( 'currency' => array ( 'id' => 1 ), 'value' => 200 ),
+                            'sellPrice'                         => array ('currency' => array ('id' => $baseCurrency->id), 'value' => 200 ),
+                            'cost'                              => array ('currency' => array ('id' => $baseCurrency->id), 'value' => 200 ),
+                            'listPrice'                         => array ('currency' => array ('id' => $baseCurrency->id), 'value' => 200 ),
                             'priceFrequency'                    => 2,
                             'status'                            => ProductTemplate::STATUS_ACTIVE,
                             'sellPriceFormula'                  => array ( 'type' => SellPriceFormula::TYPE_EDITABLE ),
@@ -488,8 +488,8 @@
             $this->assertContains('surfing'                              , $productTemplate->tagcloudCstm->values);
             $metadata            = CalculatedDerivedAttributeMetadata::
                                    getByNameAndModelClassName('calcnumber', 'ProductTemplate');
-            $testCalculatedValue = CalculatedNumberUtil::calculateByFormulaAndModel($metadata->getFormula(), $productTemplate);
-            $this->assertEquals(132                                      , $testCalculatedValue);
+            $testCalculatedValue = CalculatedNumberUtil::calculateByFormulaAndModelAndResolveFormat($metadata->getFormula(), $productTemplate);
+            $this->assertEquals(132                                     , intval(str_replace(',',"", $testCalculatedValue)));
         }
 
         /**
@@ -507,8 +507,8 @@
                             'ajax'                   =>  'list-view')
             );
             //TODO Ask Jason
-            //$content = $this->runControllerWithNoExceptionsAndGetContent('productTemplates/default');
-            //$this->assertTrue(strpos($content, "myEditProductTemplate") > 0);
+            $content = $this->runControllerWithNoExceptionsAndGetContent('productTemplates/default');
+            $this->assertTrue(strpos($content, "myEditProductTemplate") > 0);
         }
 
         /**
@@ -546,10 +546,10 @@
             );
 
             //TODO Ask Jason
-            //$content = $this->runControllerWithNoExceptionsAndGetContent('productTemplates/default');
+            $content = $this->runControllerWithNoExceptionsAndGetContent('productTemplates/default');
 
             //Assert that the edit ProductTemplate does not exits after the search.
-            //$this->assertTrue(strpos($content, "No results found.") > 0);
+            $this->assertTrue(strpos($content, "No results found.") > 0);
         }
 
         /**
