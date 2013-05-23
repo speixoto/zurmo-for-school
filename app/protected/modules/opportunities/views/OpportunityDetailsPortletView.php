@@ -107,5 +107,22 @@
         {
             return 'DetailsPortletView';
         }
+
+        /**
+         * Override and return null so we can render the actionElementMenu in the portletHeaderContent
+         * @return null
+         */
+        protected function resolveAndRenderActionElementMenu()
+        {
+            return null;
+        }
+
+        /**
+         * @return null|string
+         */
+        public function renderPortletHeadContent()
+        {
+            return $this->renderWrapperAndActionElementMenu();
+        }
     }
 ?>

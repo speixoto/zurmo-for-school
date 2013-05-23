@@ -77,6 +77,23 @@
         {
             $content  = '<div class="details-table">';
             $content .= $this->renderTitleContent();
+            $content .= $this->resolveAndRenderActionElementMenu();
+            $content .= $this->renderBeforeFormLayoutForDetailsContent();
+            $content .= $this->renderFormLayout();
+            $content .= $this->renderRightSideContent();
+            $content .= $this->renderAfterFormLayoutForDetailsContent();
+            $content .= '</div>';
+            return $content;
+        }
+
+        protected function resolveAndRenderActionElementMenu()
+        {
+            return $this->renderWrapperAndActionElementMenu();
+        }
+
+        protected function renderWrapperAndActionElementMenu()
+        {
+            $content              = null;
             $actionElementContent = $this->renderActionElementMenu();
             if ($actionElementContent != null)
             {
@@ -84,11 +101,6 @@
                 $content .= $actionElementContent;
                 $content .= '</div></div>';
             }
-            $content .= $this->renderBeforeFormLayoutForDetailsContent();
-            $content .= $this->renderFormLayout();
-            $content .= $this->renderRightSideContent();
-            $content .= $this->renderAfterFormLayoutForDetailsContent();
-            $content .= '</div>';
             return $content;
         }
 

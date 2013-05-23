@@ -51,6 +51,15 @@
 
         protected $dataProvider;
 
+        /**
+         * Override and set to true if you want the renderViewToolBar to render during renderContent instead of
+         * renderPortletHeadContent(
+         *
+         * @var bool
+         */
+        protected $renderViewToolBarDuringRenderContent = false;
+
+
         public function __construct($viewData, $params, $uniqueLayoutId)
         {
             assert('isset($params["controllerId"])');
@@ -68,7 +77,11 @@
          */
         protected function renderContent()
         {
-            $content     = $this->renderViewToolBar();
+            $content = null;
+            if($this->renderViewToolBarDuringRenderContent)
+            {
+                $content .= $this->renderViewToolBar();
+            }
             $cClipWidget = new CClipWidget();
             $cClipWidget->beginClip("Calendar");
             $cClipWidget->widget('application.core.widgets.Calendar', array(
@@ -167,6 +180,11 @@
         public static function getPortletRulesType()
         {
             return 'Calendar';
+        }
+
+        public function renderPortletHeadContent()
+        {
+            return $this->renderViewToolBar();
         }
 
         /**

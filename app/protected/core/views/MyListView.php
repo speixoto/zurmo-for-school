@@ -58,6 +58,11 @@
             $this->moduleId          = $this->resolveModuleId();
         }
 
+        public function renderPortletHeadContent()
+        {
+            return null;
+        }
+
         protected function getShowTableOnEmpty()
         {
             return false;

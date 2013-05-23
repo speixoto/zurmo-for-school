@@ -136,24 +136,21 @@
         }
 
         /**
-         * @param $renderOnClickEvent boolean
          * In the event of a portlet refresh, you do not want to render the onClick event
          * since this will already be rendered in the page.  Doing so would add an extra unneeded
          * modal dialog.
+         * @param $item
+         * @param $uniqueLayoutId
+         * @param $moduleId
+         * @param bool $renderOnClickEvent
+         * @return string
          */
         public static function renderPortlet($item, $uniqueLayoutId, $moduleId, $renderOnClickEvent = true)
         {
-            $content = "<div class=\"juiportlet-widget-head\">\n";
-            if (isset($item['removable']) && $item['removable'] == true)
-            {
-                $content .= "<a href=\"#\" class=\"remove\">CLOSE<span class=\"icon\"></span></a>"; //must be CLOSE - do not translate
-            }
+            $content  = "<div class=\"juiportlet-widget-head\">\n";
             $content .= "<h3>" . $item['title'] . "</h3>";
-            if (isset($item['editable']) && $item['editable'] == true)
-            {
-                $content .= JuiPortlets::renderEditLink(
-                    $item['id'], $uniqueLayoutId, $moduleId, $renderOnClickEvent) . "\n";
-            }
+            $content .= $item['headContent'] . "\n";
+            $content .= static::renderOptionsMenu($item, $uniqueLayoutId, $moduleId, $renderOnClickEvent);
             if (isset($item['collapsed']) && $item['collapsed'])
             {
                 $widgetContentStyle = "style=\"display:none;\"";
@@ -169,7 +166,34 @@
             return $content;
         }
 
-        protected static function renderEditLink($portletId, $uniqueLayoutId, $moduleId, $renderOnClickEvent = true)
+        protected static function renderOptionsMenu(array $item, $uniqueLayoutId, $moduleId, $renderOnClickEvent = true)
+        {
+            $menuItems = array('label' => null, 'items' => array());
+
+            if (isset($item['editable']) && $item['editable'] == true)
+            {
+                $menuItems['items'][] = static::makeEditMenuItem($item['id'], $uniqueLayoutId, $moduleId, $renderOnClickEvent);
+            }
+            if (isset($item['removable']) && $item['removable'] == true)
+            {
+                $menuItems['items'][] = array('label' => Zurmo::t('Core', 'Remove Portlet'), 'url' => '#',
+                    'linkOptions' => array('class' => 'remove-portlet'));
+                //$content .= "<a href=\"#\" class=\"remove\">CLOSE<span class=\"icon\"></span></a>"; //must be CLOSE - do not translate
+            }
+            if (count($menuItems['items']) > 0)
+            {
+                $cClipWidget = new CClipWidget();
+                $cClipWidget->beginClip("PortletOptionMenu" . $uniqueLayoutId);
+                $cClipWidget->widget('application.core.widgets.MbMenu', array(
+                    'htmlOptions' => array('class' => 'options-menu edit-row-menu'),
+                    'items'       => array($menuItems),
+                ));
+                $cClipWidget->endClip();
+                return $cClipWidget->getController()->clips['PortletOptionMenu' . $uniqueLayoutId];
+            }
+        }
+
+        protected static function makeEditMenuItem($portletId, $uniqueLayoutId, $moduleId, $renderOnClickEvent = true)
         {
             $htmlOptions = array(
                         'class' => 'edit',
@@ -177,21 +201,26 @@
             );
             if (!$renderOnClickEvent)
             {
-                return ZurmoHtml::link(Zurmo::t('Core', 'Edit') . '<span class="icon"></span>', '#', $htmlOptions);
+                return array('label'       => Zurmo::t('Core', 'Edit'), 'url' => '#',
+                             'linkOptions' => $htmlOptions);
+                //return ZurmoHtml::link(Zurmo::t('Core', 'Edit') . '<span class="icon"></span>', '#', $htmlOptions);
             }
             else
             {
                 $url = null;
-                $ajaxOptions = array();
             }
             $url = Yii::app()->createUrl($moduleId .'/defaultPortlet/ModalConfigEdit/', array(
                 'uniqueLayoutId' => $uniqueLayoutId,
                 'portletId'      => $portletId,
             ));
+            return array('label' => Zurmo::t('Core', 'Edit'), 'url' => $url,
+                         'linkOptions' => $htmlOptions, 'ajaxLinkOptions' => static::resolveAjaxOptionsForEditLink());
+/**
             return ZurmoHtml::ajaxLink(Zurmo::t('Core', 'Edit') . '<span class="icon"></span>', $url,
                 static::resolveAjaxOptionsForEditLink(),
                 $htmlOptions
             );
+ * **/
         }
 
         protected static function resolveAjaxOptionsForEditLink()

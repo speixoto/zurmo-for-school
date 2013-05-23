@@ -221,6 +221,11 @@
             return $this->getView()->render();
         }
 
+        public function renderHeadContent()
+        {
+            return $this->getView()->renderPortletHeadContent();
+        }
+
         public function isEditable()
         {
             $className = get_class($this->getView());
