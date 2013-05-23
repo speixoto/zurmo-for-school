@@ -10055,6 +10055,11 @@ div.hasHalfs .twoThirds {
   line-height: 140%;
   word-break: break-all;
 }
+.LatestActivitiesListView .activity-item span a,
+.LatestActivitiesView .activity-item span a {
+  break-word: break-all;
+  display: inline-block;
+}
 .LatestActivitiesListView .items em,
 .LatestActivitiesView .items em {
   display: inline-block;
