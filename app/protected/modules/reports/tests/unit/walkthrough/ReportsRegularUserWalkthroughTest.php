@@ -127,9 +127,9 @@
             //Now add permitables and test retrieving them.
             $explicitReadWriteModelPermissions->addReadWritePermitable($group1);
             
-            $nobody = $this->logoutCurrentUserLoginNewUserAndGetByUsername('nobody');
             $savedReports = SavedReport::getAll();
             $this->assertEquals(0, count($savedReports));
+            $nobody = $this->logoutCurrentUserLoginNewUserAndGetByUsername('nobody');
             $content = $this->runControllerWithExitExceptionAndGetContent     ('reports/default/create');
             $this->assertFalse(strpos($content, 'Rows and Columns Report') === false);
             $this->assertFalse(strpos($content, 'Summation Report') === false);
@@ -151,8 +151,11 @@
             $postData['save'] = 'save';
             $this->setPostArray($postData);
             $this->runControllerWithExitExceptionAndGetContent('reports/default/save');
+            $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
             $savedReports = SavedReport::getAll();
-            $this->assertEquals(1, count($savedReports));
+            $this->assertEquals(2, count($savedReports));
+            $nobody = $this->logoutCurrentUserLoginNewUserAndGetByUsername('nobody');
+            //exit();
             $this->setGetArray(array('id' => $savedReports[0]->id));
             $this->resetPostArray();
             $this->runControllerWithNoExceptionsAndGetContent('reports/default/details');
@@ -165,15 +168,16 @@
             $postData['save'] = 'save';
             $this->setPostArray($postData);
             $this->runControllerWithExitExceptionAndGetContent('reports/default/save');
-            $this->assertEquals(1, count($savedReports));
+            $this->assertEquals(2, count($savedReports));
             //Clone existing report
             $this->setGetArray(array('type' => 'RowsAndColumns', 'id' => $savedReports[0]->id, 'isBeingCopied' => '1'));
             $postData = static::makeRowsAndColumnsReportPostData();
             $postData['save'] = 'save';
             $this->setPostArray($postData);
             $this->runControllerWithExitExceptionAndGetContent('reports/default/save');
+            $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
             $savedReports     = SavedReport::getAll();
-            $this->assertEquals(2, count($savedReports));
+            $this->assertEquals(3, count($savedReports));
         }
     }
 ?>

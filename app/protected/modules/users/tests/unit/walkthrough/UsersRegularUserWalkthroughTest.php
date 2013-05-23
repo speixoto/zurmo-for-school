@@ -216,6 +216,12 @@
             $this->assertTrue($group->save());
             $this->assertEquals(1, count($user->groups));
             $this->assertEquals('Doods', $user->groups[0]->name);
+
+            $role = new Role();
+            $role->name = 'myRole';
+            $saved = $role->save();
+            $this->assertTrue($saved);
+            
             $user->setRight('GroupsModule', GroupsModule::RIGHT_ACCESS_GROUPS);
             $user->setRight('RolesModule', RolesModule::RIGHT_ACCESS_ROLES);
             $user->setRight('ZurmoModule', ZurmoModule::RIGHT_ACCESS_ADMINISTRATION);
@@ -226,7 +232,7 @@
             $find = 'Create';
             $this->assertEquals(0, preg_match('~\b' . $find . '\b~i', $content));
             //Check Delete button not present in group
-            $this->setGetArray(array('id' => $user->id));
+            $this->setGetArray(array('id' => $group->id));
             $content = $this->runControllerWithNoExceptionsAndGetContent('zurmo/group/edit');
             $find = 'Delete Group';
             $this->assertEquals(0, preg_match('~\b' . $find . '\b~i', $content));
@@ -235,8 +241,8 @@
             $find = 'Create';
             $this->assertEquals(0, preg_match('~\b' . $find . '\b~i', $content));
             //Check Delete button not present in role
-            $this->setGetArray(array('id' => $user->id));
-            $content = $this->runControllerWithExitExceptionAndGetContent('zurmo/role/edit');
+            $this->setGetArray(array('id' => $role->id));
+            $content = $this->runControllerWithExitExceptionAndGetContent('zurmo/role/details');
             $find = 'Delete Group';
             $this->assertEquals(0, preg_match('~\b' . $find . '\b~i', $content));
             //Access to create action in group should fail.
