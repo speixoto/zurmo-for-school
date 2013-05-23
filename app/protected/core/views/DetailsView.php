@@ -91,19 +91,6 @@
             return $this->renderWrapperAndActionElementMenu();
         }
 
-        protected function renderWrapperAndActionElementMenu()
-        {
-            $content              = null;
-            $actionElementContent = $this->renderActionElementMenu();
-            if ($actionElementContent != null)
-            {
-                $content .= '<div class="view-toolbar-container toolbar-mbmenu clearfix"><div class="view-toolbar">';
-                $content .= $actionElementContent;
-                $content .= '</div></div>';
-            }
-            return $content;
-        }
-
         protected function renderRightSideContent($form = null)
         {
         }

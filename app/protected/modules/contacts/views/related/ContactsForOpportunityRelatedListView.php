@@ -100,6 +100,11 @@
             return $metadata;
         }
 
+        public function renderPortletHeadContent()
+        {
+            return $this->renderWrapperAndActionElementMenu(Zurmo::t('Core', 'Options'));
+        }
+
         protected function getRelationAttributeName()
         {
             return 'opportunities';

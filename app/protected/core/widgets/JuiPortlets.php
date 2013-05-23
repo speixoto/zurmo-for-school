@@ -201,9 +201,8 @@
             );
             if (!$renderOnClickEvent)
             {
-                return array('label'       => Zurmo::t('Core', 'Edit'), 'url' => '#',
+                return array('label'       => Zurmo::t('Core', 'Configure Portlet'), 'url' => '#',
                              'linkOptions' => $htmlOptions);
-                //return ZurmoHtml::link(Zurmo::t('Core', 'Edit') . '<span class="icon"></span>', '#', $htmlOptions);
             }
             else
             {
@@ -213,14 +212,8 @@
                 'uniqueLayoutId' => $uniqueLayoutId,
                 'portletId'      => $portletId,
             ));
-            return array('label' => Zurmo::t('Core', 'Edit'), 'url' => $url,
+            return array('label' => Zurmo::t('Core', 'Configure Portlet'), 'url' => $url,
                          'linkOptions' => $htmlOptions, 'ajaxLinkOptions' => static::resolveAjaxOptionsForEditLink());
-/**
-            return ZurmoHtml::ajaxLink(Zurmo::t('Core', 'Edit') . '<span class="icon"></span>', $url,
-                static::resolveAjaxOptionsForEditLink(),
-                $htmlOptions
-            );
- * **/
         }
 
         protected static function resolveAjaxOptionsForEditLink()
