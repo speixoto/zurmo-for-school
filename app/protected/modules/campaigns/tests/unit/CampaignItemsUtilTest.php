@@ -345,12 +345,11 @@
             $contact3           = ContactTestHelper::createContactByNameForOwner('campaignContact 03', $this->user);
             $contact4           = ContactTestHelper::createContactByNameForOwner('campaignContact 04', $this->user);
             $contact5           = ContactTestHelper::createContactByNameForOwner('campaignContact 05', $this->user);
-            $processed          = 0;
-            MarketingListMemberTestHelper::createMarketingListMember($processed, $marketingList, $contact1);
-            MarketingListMemberTestHelper::createMarketingListMember($processed, $marketingList, $contact2);
-            MarketingListMemberTestHelper::createMarketingListMember($processed, $marketingList, $contact3);
-            MarketingListMemberTestHelper::createMarketingListMember($processed, $marketingList, $contact4);
-            MarketingListMemberTestHelper::createMarketingListMember($processed, $marketingList, $contact5);
+            MarketingListMemberTestHelper::createMarketingListMember(0, $marketingList, $contact1);
+            MarketingListMemberTestHelper::createMarketingListMember(1, $marketingList, $contact2);
+            MarketingListMemberTestHelper::createMarketingListMember(0, $marketingList, $contact3);
+            MarketingListMemberTestHelper::createMarketingListMember(1, $marketingList, $contact4);
+            MarketingListMemberTestHelper::createMarketingListMember(0, $marketingList, $contact5);
             $marketingList->forgetAll();
 
             $marketingList      = MarketingList::getById($marketingListId);
@@ -370,16 +369,114 @@
             $this->assertNotNull($campaign);
             $campaign->forgetAll();
             $campaignId         = $campaign->id;
-            $campaignItems      = CampaignItem::getByProcessedAndCampaignId($processed, $campaignId);
+            $campaignItems      = CampaignItem::getByProcessedAndCampaignId(0, $campaignId);
             $this->assertEmpty($campaignItems);
             CampaignItemsUtil::generateCampaignItemsForDueCampaigns();
             $campaign           = Campaign::getById($campaignId);
             $this->assertNotNull($campaign);
             $this->assertEquals(Campaign::STATUS_PROCESSING, $campaign->status);
-            $campaignItems      = CampaignItem::getByProcessedAndCampaignId($processed, $campaignId);
+            $campaignItems      = CampaignItem::getByProcessedAndCampaignId(0, $campaignId);
             $this->assertNotEmpty($campaignItems);
             $this->assertCount(5, $campaignItems);
             // TODO: @Shoaibi: Medium: Add tests for the other campaign type.
+        }
+
+        /**
+         * @depends testGenerateCampaignItemsForDueCampaigns
+         */
+        public function testGenerateCampaignItemsForDueCampaignsWithCustomBatchSize()
+        {
+            $this->purgeAllCampaigns();
+            $contactIds         = array();
+            $marketingListIds   = array();
+            $campaignIds        = array();
+            for ($index = 6; $index < 9; $index++)
+            {
+                $contact        = ContactTestHelper::createContactByNameForOwner('campaignContact 0' . $index,
+                                                                                    $this->user);
+                $contactIds[] = $contact->id;
+                $contact->forgetAll();
+            }
+            for ($index = 8; $index < 12; $index++)
+            {
+                $suffix     = $index;
+                if ($index < 10)
+                {
+                    $suffix = "0${suffix}";
+                }
+                $marketingList      = MarketingListTestHelper::createMarketingListByName('marketingList ' . $suffix);
+                $marketingListId    = $marketingList->id;
+                $marketingListIds[] = $marketingListId;
+                foreach ($contactIds as $contactId)
+                {
+                    $contact        = Contact::getById($contactId);
+                    $unsubscribed   = (rand(10, 20) % 2);
+                    MarketingListMemberTestHelper::createMarketingListMember($unsubscribed, $marketingList, $contact);
+                }
+                $marketingList->forgetAll();
+                $marketingList      = MarketingList::getById($marketingListId);
+                $campaignSuffix     = substr($marketingList->name, -2);
+                $campaign           = CampaignTestHelper::createCampaign('campaign ' . $campaignSuffix,
+                                                                            'subject ' . $campaignSuffix,
+                                                                            'text ' . $campaignSuffix,
+                                                                            'html ' . $campaignSuffix,
+                                                                            null,
+                                                                            null,
+                                                                            null,
+                                                                            Campaign::TYPE_MARKETING_LIST,
+                                                                            null,
+                                                                            null,
+                                                                            null,
+                                                                            null,
+                                                                            $marketingList);
+                $this->assertNotNull($campaign);
+                $campaignIds[]      = $campaign->id;
+                $campaign->forgetAll();
+            }
+
+            foreach ($campaignIds as $campaignId)
+            {
+                $campaignItems      = CampaignItem::getByProcessedAndCampaignId(0, $campaignId);
+                $this->assertEmpty($campaignItems);
+            }
+
+            $this->assertTrue(CampaignItemsUtil::generateCampaignItemsForDueCampaigns(1));
+            foreach ($campaignIds as $index => $campaignId)
+            {
+                $campaign           = Campaign::getById($campaignId);
+                $campaignItems      = CampaignItem::getByProcessedAndCampaignId(0, $campaignId);
+                if ($index === 0)
+                {
+                    $this->assertNotEmpty($campaignItems);
+                    $this->assertCount(3, $campaignItems);
+                    $this->assertEquals(Campaign::STATUS_PROCESSING, $campaign->status);
+                }
+                else
+                {
+                    $this->assertEmpty($campaignItems);
+                    $this->assertEquals(Campaign::STATUS_ACTIVE, $campaign->status);
+                }
+            }
+
+            $this->assertTrue(CampaignItemsUtil::generateCampaignItemsForDueCampaigns());
+            foreach ($campaignIds as $index => $campaignId)
+            {
+                $campaign           = Campaign::getById($campaignId);
+                $campaignItems      = CampaignItem::getByProcessedAndCampaignId(0, $campaignId);
+                $this->assertNotEmpty($campaignItems);
+                $this->assertCount(3, $campaignItems);
+                $this->assertEquals(Campaign::STATUS_PROCESSING, $campaign->status);
+            }
+            // TODO: @Shoaibi: Medium: Add tests for the other campaign type.
+        }
+
+        protected function purgeAllCampaigns()
+        {
+            $campaigns = Campaign::getAll();
+            foreach ($campaigns as $campaign)
+            {
+                $campaign->delete();
+            }
         }
     }
 ?>

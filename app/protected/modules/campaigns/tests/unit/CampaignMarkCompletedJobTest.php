@@ -204,5 +204,104 @@
             $this->assertNotNull($campaignProcessing);
             $this->assertEquals(Campaign::STATUS_COMPLETED, $campaignProcessing->status);
         }
+
+        /**
+         * @depends testRunWithCampaignWithProcessingStatusAndProcessedItems
+         */
+        public function testRunWithCustomBatchSize()
+        {
+            $this->purgeAllCampaigns();
+            $contact            = ContactTestHelper::createContactByNameForOwner('contact 03', $this->user);
+            $marketingList      = MarketingListTestHelper::populateMarketingListByName('marketingList 04');
+            $campaign01         = CampaignTestHelper::createCampaign('campaign 01',
+                                                                        'subject',
+                                                                        'text Content',
+                                                                        'Html Content',
+                                                                        null,
+                                                                        null,
+                                                                        null,
+                                                                        Campaign::TYPE_MARKETING_LIST,
+                                                                        Campaign::STATUS_PROCESSING,
+                                                                        null,
+                                                                        null,
+                                                                        null,
+                                                                        $marketingList);
+            $this->assertNotNull($campaign01);
+            $campaign01Id   = $campaign01->id;
+            CampaignItemTestHelper::createCampaignItem(1, $campaign01, $contact);
+            $campaign02         = CampaignTestHelper::createCampaign('campaign 02',
+                                                                        'subject',
+                                                                        'text Content',
+                                                                        'Html Content',
+                                                                        null,
+                                                                        null,
+                                                                        null,
+                                                                        Campaign::TYPE_MARKETING_LIST,
+                                                                        Campaign::STATUS_PROCESSING,
+                                                                        null,
+                                                                        null,
+                                                                        null,
+                                                                        $marketingList);
+            $this->assertNotNull($campaign02);
+            $campaign02Id   = $campaign02->id;
+            CampaignItemTestHelper::createCampaignItem(1, $campaign02, $contact);
+            $campaign03         = CampaignTestHelper::createCampaign('campaign 03',
+                                                                        'subject',
+                                                                        'text Content',
+                                                                        'Html Content',
+                                                                        null,
+                                                                        null,
+                                                                        null,
+                                                                        Campaign::TYPE_MARKETING_LIST,
+                                                                        Campaign::STATUS_PROCESSING,
+                                                                        null,
+                                                                        null,
+                                                                        null,
+                                                                        $marketingList);
+            $this->assertNotNull($campaign03);
+            $campaign03Id   = $campaign03->id;
+
+            $campaign01->forgetAll();
+            $campaign02->forgetAll();
+            $campaign03->forgetAll();
+            $job = new CampaignMarkCompletedJob();
+            ZurmoConfigurationUtil::setByModuleName(CampaignMarkCompletedJob::BATCH_SIZE_CONFIG_MODULE_NAME,
+                                                                    CampaignMarkCompletedJob::BATCH_SIZE_CONFIG_KEY, 1);
+            $this->assertTrue($job->run());
+            $campaign01 = Campaign::getById($campaign01Id);
+            $this->assertNotNull($campaign01);
+            $this->assertEquals(Campaign::STATUS_COMPLETED, $campaign01->status);
+            $campaign02 = Campaign::getById($campaign02Id);
+            $this->assertNotNull($campaign02);
+            $this->assertEquals(Campaign::STATUS_PROCESSING, $campaign02->status);
+            $campaign03 = Campaign::getById($campaign03Id);
+            $this->assertNotNull($campaign03);
+            $this->assertEquals(Campaign::STATUS_PROCESSING, $campaign03->status);
+
+            $campaign01->forgetAll();
+            $campaign02->forgetAll();
+            $campaign03->forgetAll();
+            ZurmoConfigurationUtil::setByModuleName(CampaignMarkCompletedJob::BATCH_SIZE_CONFIG_MODULE_NAME,
+                                                                CampaignMarkCompletedJob::BATCH_SIZE_CONFIG_KEY, null);
+            $this->assertTrue($job->run());
+            $campaign01 = Campaign::getById($campaign01Id);
+            $this->assertNotNull($campaign01);
+            $this->assertEquals(Campaign::STATUS_COMPLETED, $campaign01->status);
+            $campaign02 = Campaign::getById($campaign02Id);
+            $this->assertNotNull($campaign02);
+            $this->assertEquals(Campaign::STATUS_COMPLETED, $campaign02->status);
+            $campaign03 = Campaign::getById($campaign03Id);
+            $this->assertNotNull($campaign03);
+            $this->assertEquals(Campaign::STATUS_COMPLETED, $campaign03->status);
+        }
+
+        protected function purgeAllCampaigns()
+        {
+            $campaigns = Campaign::getAll();
+            foreach ($campaigns as $campaign)
+            {
+                $campaign->delete();
+            }
+        }
     }
 ?>

@@ -75,7 +75,6 @@
             }
             else
             {
-                // TODO: @Shoaibi/@Amit: Critical: Loading spinner
                 Yii::app()->clientScript->registerScript($scriptName, '
                         function updateContentAreaWithDataFromAjax(textContentElement, htmlContentElement,
                                                                                                 redActorElement, data)
@@ -95,22 +94,6 @@
                         {
                             if (filesIds != "")
                             {
-                                // TODO: @Shoaibi/@Jason: Critical:
-                                /*
-                                Could use: https://github.com/blueimp/jQuery-File-Upload/wiki/API#programmatic-file-upload
-                                If used with File then requirements of browsers are too high:
-                                 https://developer.mozilla.org/en-US/docs/Web/API/File?redirectlocale=en-US&redirectslug=DOM%2FFile#Browser_compatibility
-                                If used with Blob then where do we have name?
-                                We would also need a separate action to fetch file details against each file id, not json as that truncate non-utf8 content, like images.
-
-                                Workaround #1:
-                                a- get list of ids of current attachments using ajax, we have this done.
-                                b- make an ajax to action that duplicates those and returns new ids, names, sizes
-                                c- use data from [b] and build contents for file <table>, should be better to use a FileUpload function to do this like:
-                                $("#IdOfTemplate").tmpl(JSObjectContainingAllPlaceHolderValues).appendTo("#IdOfTargetContainerWhereTemplatedContentShouldGo");
-                                d- append those contents to file <table>
-                                Implemented workaround below:
-                                */
                                 var url             = "' . $this->getCloneExitingFilesUrl() . '";
                                 var templateId      = "#' . FileUpload::DOWNLOAD_TEMPLATE_ID .'";
                                 var targetClass     = ".files";
@@ -121,10 +104,6 @@
                                         dataType:   "json",
                                         data:       {
                                                         commaSeparatedExistingModelIds: filesIdsString
-                                                    },
-                                        beforeSend: function(request, settings)
-                                                    {
-                                                        // TODO: @Shoaibi: Critical: Do it here: if we want to delete existing attachments only if selected template has attachments.
                                                     },
                                         success:    function(data, status, request)
                                                     {
@@ -183,6 +162,7 @@
                                                             $(htmlContentElement).attr("disabled", "disabled");
                                                             $(redActorElement).hide();
                                                         }
+                                                        deleteExistingAttachments();
                                                     },
                                         success:    function(data, status, request)
                                                     {
@@ -190,7 +170,6 @@
                                                                                             htmlContentElement,
                                                                                             redActorElement,
                                                                                             data);
-                                                        // TODO: @Shoaibi/@Jason: Critical: Should this append? or should we use beforeSend to delete?, right now its in append mode. delete only if new one has attachments?
                                                         updateAddFilesWithDataFromAjax(data.filesIds, notificationBarId);
                                                     },
                                         error:      function(request, status, error)

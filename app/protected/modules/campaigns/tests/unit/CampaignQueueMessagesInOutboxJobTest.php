@@ -324,14 +324,14 @@
                                                                                     0,
                                                                                     $campaign->id);
             $this->assertCount(10, $unprocessedItems);
-            ZurmoConfigurationUtil::setByModuleName('CampaignsModule',
+            ZurmoConfigurationUtil::setByModuleName(CampaignQueueMessagesInOutboxJob::BATCH_SIZE_CONFIG_MODULE_NAME,
                                                     CampaignQueueMessagesInOutboxJob::BATCH_SIZE_CONFIG_KEY, 5);
             $this->assertTrue($job->run());
             $unprocessedItems               = CampaignItem::getByProcessedAndCampaignId(
                                                                                     0,
                                                                                     $campaign->id);
             $this->assertCount(5, $unprocessedItems);
-            ZurmoConfigurationUtil::setByModuleName('CampaignsModule',
+            ZurmoConfigurationUtil::setByModuleName(CampaignQueueMessagesInOutboxJob::BATCH_SIZE_CONFIG_MODULE_NAME,
                                                         CampaignQueueMessagesInOutboxJob::BATCH_SIZE_CONFIG_KEY, 3);
             $this->assertTrue($job->run());
             $unprocessedItems               = CampaignItem::getByProcessedAndCampaignId(

@@ -38,31 +38,14 @@
      * A job for processing autoresponder messages that are not sent immediately when triggered
      */
 
-    class AutoresponderQueueMessagesInOutboxJob extends BaseJob
+    class AutoresponderQueueMessagesInOutboxJob extends AutoresponderOrCampaignBaseJob
     {
-        const BATCH_SIZE_CONFIG_KEY = 'AutoresponderBatchSize';
-
-        const DEFAULT_BATCH_SIZE    = 200;
-
         /**
          * @returns Translated label that describes this job type.
          */
         public static function getDisplayName()
         {
            return Zurmo::t('AutorespondersModule', 'Process autoresponder messages');
-        }
-
-        /**
-         * @return The type of the NotificationRules
-         */
-        public static function getType()
-        {
-            return 'AutoresponderQueueMessagesInOutbox';
-        }
-
-        public static function getRecommendedRunFrequencyContent()
-        {
-            return Zurmo::t('JobsManagerModule', 'Every hour');
         }
 
         /**
@@ -75,6 +58,10 @@
                                                                                         0,
                                                                                         time(),
                                                                                         $batchSize);
+            if (!is_array($autoresponderItemsToProcess))
+            {
+                $autoresponderItemsToProcess    = array($autoresponderItemsToProcess);
+            }
             foreach ($autoresponderItemsToProcess as $autoresponderItem)
             {
                 try
@@ -97,18 +84,6 @@
         protected function processAutoresponderItemInQueue(AutoresponderItem $autoresponderItem)
         {
             AutoresponderItemsUtil::processDueItem($autoresponderItem);
-        }
-
-        protected function resolveBatchSize()
-        {
-            // TODO: @Shoaibi/@Jason: Critical: Needs UI configuration
-            $batchSize = ZurmoConfigurationUtil::getByModuleName('AutorespondersModule', static::BATCH_SIZE_CONFIG_KEY);
-            if (!$batchSize)
-            {
-                $batchSize = static::DEFAULT_BATCH_SIZE;
-                ZurmoConfigurationUtil::setByModuleName('AutorespondersModule', static::BATCH_SIZE_CONFIG_KEY, $batchSize);
-            }
-            return $batchSize;
         }
     }
 ?>

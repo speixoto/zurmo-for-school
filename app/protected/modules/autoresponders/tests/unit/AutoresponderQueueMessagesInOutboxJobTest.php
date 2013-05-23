@@ -298,14 +298,14 @@
                                                                                     0,
                                                                                     $autoresponder->id);
             $this->assertCount(10, $unprocessedItems);
-            ZurmoConfigurationUtil::setByModuleName('AutorespondersModule',
+            ZurmoConfigurationUtil::setByModuleName(AutoresponderQueueMessagesInOutboxJob::BATCH_SIZE_CONFIG_MODULE_NAME,
                                                     AutoresponderQueueMessagesInOutboxJob::BATCH_SIZE_CONFIG_KEY, 5);
             $this->assertTrue($job->run());
             $unprocessedItems               = AutoresponderItem::getByProcessedAndAutoresponderId(
                                                                                     0,
                                                                                     $autoresponder->id);
             $this->assertCount(5, $unprocessedItems);
-            ZurmoConfigurationUtil::setByModuleName('AutorespondersModule',
+            ZurmoConfigurationUtil::setByModuleName(AutoresponderQueueMessagesInOutboxJob::BATCH_SIZE_CONFIG_MODULE_NAME,
                                                         AutoresponderQueueMessagesInOutboxJob::BATCH_SIZE_CONFIG_KEY, 3);
             $this->assertTrue($job->run());
             $unprocessedItems               = AutoresponderItem::getByProcessedAndAutoresponderId(

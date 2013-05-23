@@ -37,8 +37,12 @@
     /**
      * A job for create campaign items for campaigns
      */
-    class CampaignGenerateDueCampaignItemsJob extends BaseJob
+    class CampaignGenerateDueCampaignItemsJob extends AutoresponderOrCampaignBaseJob
     {
+        const BATCH_SIZE_CONFIG_KEY         = 'CampaignItemGenerationBatchSize';
+
+        const BATCH_SIZE_CONFIG_MODULE_NAME = 'CampaignsModule';
+
         /**
          * @returns Translated label that describes this job type.
          */
@@ -48,24 +52,12 @@
         }
 
         /**
-         * @return The type of the NotificationRules
-         */
-        public static function getType()
-        {
-            return 'CampaignGenerateDueCampaignItems';
-        }
-
-        public static function getRecommendedRunFrequencyContent()
-        {
-            return Zurmo::t('JobsManagerModule', 'Every hour');
-        }
-
-        /**
          * @see BaseJob::run()
          */
         public function run()
         {
-            return CampaignItemsUtil::generateCampaignItemsForDueCampaigns();
+            $batchSize = $this->resolveBatchSize();
+            return CampaignItemsUtil::generateCampaignItemsForDueCampaigns($batchSize);
         }
     }
 ?>

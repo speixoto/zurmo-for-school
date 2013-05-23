@@ -34,54 +34,40 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * Helper class for working with campaignItem
-     */
-    abstract class CampaignItemsUtil extends AutoresponderAndCampaignItemsUtil
+    abstract class AutoresponderOrCampaignBaseJob extends BaseJob
     {
-        public static function generateCampaignItemsForDueCampaigns($pageSize = null)
+        const BATCH_SIZE_CONFIG_KEY             = 'AutoresponderOrCampaignOutgoingBatchSize';
+
+        const BATCH_SIZE_CONFIG_MODULE_NAME     = 'AutorespondersModule';
+
+        const BATCH_SIZE_CONFIG_DEFAULT_VALUE   = 200;
+
+        /**
+         * @return The type of the NotificationRules
+         */
+        public static function getType()
         {
-            $dueCampaigns   = Campaign::getByStatusAndSendingTime(Campaign::STATUS_ACTIVE, time(), $pageSize);
-            if (!is_array($dueCampaigns))
-            {
-                $dueCampaigns   = array($dueCampaigns);
-            }
-            foreach ($dueCampaigns as $dueCampaign)
-            {
-                if (static::generateCampaignItems($dueCampaign))
-                {
-                    $dueCampaign->status = Campaign::STATUS_PROCESSING;
-                    if (!$dueCampaign->save())
-                    {
-                        return false;
-                    }
-                }
-            }
-            return true;
+            $className  = get_called_class();
+            $type       = substr($className, 0, -3);
+            return $type;
         }
 
-        protected static function generateCampaignItems($campaign)
+        public static function getRecommendedRunFrequencyContent()
         {
-            $contacts = array();
-            if ($campaign->type == Campaign::TYPE_MARKETING_LIST)
+            return Zurmo::t('JobsManagerModule', 'Every hour');
+        }
+
+        protected function resolveBatchSize()
+        {
+            $batchSize = ZurmoConfigurationUtil::getByModuleName(static::BATCH_SIZE_CONFIG_MODULE_NAME,
+                                                                    static::BATCH_SIZE_CONFIG_KEY);
+            if (!$batchSize)
             {
-                foreach ($campaign->marketingList->marketingListMembers as $member)
-                {
-                    $contacts[] = $member->contact;
-                }
+                $batchSize = static::BATCH_SIZE_CONFIG_DEFAULT_VALUE;
+                ZurmoConfigurationUtil::setByModuleName(static::BATCH_SIZE_CONFIG_MODULE_NAME,
+                                                            static::BATCH_SIZE_CONFIG_KEY, $batchSize);
             }
-            else
-            {
-                // TODO: @Shoaibi: Medium: Figure out a way to find contacts for second type
-            }
-            if (!empty($contacts))
-            {
-                return CampaignItem::registerCampaignItemsByCampaign($campaign, $contacts);
-            }
-            else
-            {
-                return false;
-            }
+            return $batchSize;
         }
     }
 ?>
