@@ -157,7 +157,7 @@
         public function actionSelectFromRelatedListSave($modelId, $portletId, $uniqueLayoutId,
                                                         $relationAttributeName, $relationModelId, $relationModuleId, $relationModelClassName = null)
         {
-            if($relationModelClassName == null)
+            if ($relationModelClassName == null)
             {
                 $relationModelClassName = Yii::app()->getModule($relationModuleId)->getPrimaryModelName();
             }

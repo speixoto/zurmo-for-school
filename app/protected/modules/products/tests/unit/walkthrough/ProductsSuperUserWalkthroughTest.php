@@ -151,10 +151,10 @@
             //Delete a product
             $this->setGetArray(array('id' => $product->id));
             $this->resetPostArray();
-            $products		= Product::getAll();
+            $products       = Product::getAll();
             $this->assertEquals(14, count($products));
             $this->runControllerWithRedirectExceptionAndGetContent('products/default/delete');
-            $products		= Product::getAll();
+            $products       = Product::getAll();
             $this->assertEquals(13, count($products));
             try
             {

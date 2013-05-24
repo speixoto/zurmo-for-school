@@ -57,19 +57,19 @@
             $formatType   = self::FORMAT_TYPE_INTEGER;
             $currencyCode = null;
             $value = static::calculateByFormulaAndModel($formula, $model, $formatType, $currencyCode);
-            if($formatType == self::FORMAT_TYPE_INTEGER)
+            if ($formatType == self::FORMAT_TYPE_INTEGER)
             {
                 return Yii::app()->format->formatNumber((int)$value);
             }
-            elseif($formatType == self::FORMAT_TYPE_DECIMAL)
+            elseif ($formatType == self::FORMAT_TYPE_DECIMAL)
             {
                 return Yii::app()->numberFormatter->formatDecimal((float)$value);
             }
-            elseif($formatType == self::FORMAT_TYPE_CURRENCY_VALUE && $currencyCode != null)
+            elseif ($formatType == self::FORMAT_TYPE_CURRENCY_VALUE && $currencyCode != null)
             {
                 return Yii::app()->numberFormatter->formatCurrency((float)$value, $currencyCode);
             }
-            elseif($formatType == self::FORMAT_TYPE_CURRENCY_VALUE)
+            elseif ($formatType == self::FORMAT_TYPE_CURRENCY_VALUE)
             {
                 return Yii::app()->numberFormatter->formatDecimal((float)$value);
             }
@@ -114,7 +114,7 @@
                 }
                 $oldFormula = $formula;
                 $formula = str_replace($attribute, $replacementValue, $formula);
-                if($formula !== $oldFormula)
+                if ($formula !== $oldFormula)
                 {
                     self::resolveFormatTypeAndCurrencyCode($formatType, $currencyCode, $model, $attribute);
                 }
@@ -178,20 +178,20 @@
             assert('is_int($formatType)');
             assert('is_string($currencyCode) || $currencyCode === null');
             $attributeType = ModelAttributeToMixedTypeUtil::getType($model, $attribute);
-            if($attributeType == 'Decimal' && $formatType == self::FORMAT_TYPE_INTEGER)
+            if ($attributeType == 'Decimal' && $formatType == self::FORMAT_TYPE_INTEGER)
             {
                 $formatType = self::FORMAT_TYPE_DECIMAL;
             }
-            if($attributeType == 'CurrencyValue' &&
+            if ($attributeType == 'CurrencyValue' &&
                ($formatType == self::FORMAT_TYPE_INTEGER || $formatType == self::FORMAT_TYPE_DECIMAL))
             {
                 $formatType = self::FORMAT_TYPE_CURRENCY_VALUE;
             }
-            if($attributeType == 'CurrencyValue' && $currencyCode === null)
+            if ($attributeType == 'CurrencyValue' && $currencyCode === null)
             {
                 $currencyCode = $model->{$attribute}->currency->code;
             }
-            elseif($attributeType == 'CurrencyValue' && $currencyCode != null &&
+            elseif ($attributeType == 'CurrencyValue' && $currencyCode != null &&
                    $model->{$attribute}->currency->code != $currencyCode)
             {
                 //An empty value, not null, indicates there is mixed currencies

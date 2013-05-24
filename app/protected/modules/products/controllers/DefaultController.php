@@ -347,7 +347,7 @@
             ControllerSecurityUtil::resolveAccessCanCurrentUserWriteModel($product);
             switch($attribute)
             {
-                case 'quantity'     : $product->quantity	 = $value;
+                case 'quantity'     : $product->quantity     = $value;
                                         break;
                 case 'sellPrice'    : $product->sellPrice->value = $value;
                                         break;
@@ -360,7 +360,7 @@
         public function actionCreateProductFromProductTemplate($relationModuleId, $portletId, $uniqueLayoutId, $id,
                                 $relationModelId, $relationAttributeName, $relationModelClassName = null)
         {
-            if($relationModelClassName == null)
+            if ($relationModelClassName == null)
             {
                 $relationModelClassName = Yii::app()->getModule($relationModuleId)->getPrimaryModelName();
             }

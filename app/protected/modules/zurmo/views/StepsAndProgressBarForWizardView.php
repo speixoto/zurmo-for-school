@@ -66,11 +66,11 @@
             $width = $this->getSpanPercentWidthFromCount();
             $content = null;
             $first   = true;
-            foreach($this->getSpanLabels() as $label)
+            foreach ($this->getSpanLabels() as $label)
             {
                 $htmlOptions          = array();
                 $htmlOptions['style'] = 'width:' . $width . '%';
-                if($first)
+                if ($first)
                 {
                     $htmlOptions['class'] = 'current-step';
                 }

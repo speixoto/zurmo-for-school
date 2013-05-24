@@ -50,7 +50,7 @@
             {
                 return self::isUserAParticipant($model, Yii::app()->user->userModel);
             }
-            catch(AccessDeniedSecurityException $e)
+            catch (AccessDeniedSecurityException $e)
             {
                 return false;
             }

@@ -194,7 +194,7 @@
 
         private function resolveStageToProbability()
         {
-            if($this->stage === null)
+            if ($this->stage === null)
             {
                 throw new NotSupportedException();
             }

@@ -94,7 +94,7 @@
                 $mixedView  = $this->makeActionBarSearchAndListView($searchForm, $dataProvider,
                                     'SecuredActionBarForProductsSearchAndListView',
                                     null, $activeActionElementType);
-                $view	    = new ProductTemplatesPageView(ProductDefaultViewUtil::
+                $view       = new ProductTemplatesPageView(ProductDefaultViewUtil::
                                                                makeViewWithBreadcrumbsForCurrentUser(
                                                                     $this, $mixedView, $breadcrumbLinks, 'ProductBreadCrumbView'));
             }
@@ -108,14 +108,14 @@
                  $title,
             );
             $productTemplate = static::getModelAndCatchNotFoundAndDisplayError('ProductTemplate', intval($id));
-            if(Yii::app()->request->isAjaxRequest)
+            if (Yii::app()->request->isAjaxRequest)
             {
                 $categoryOutput = array();
                 $productType = $productTemplate->type;
                 $productPriceFrequency = $productTemplate->priceFrequency;
                 $productSellPriceCurrency = $productTemplate->sellPrice->currency->id;
                 $productSellPriceValue = $productTemplate->sellPrice->value;
-                foreach($productTemplate->productCategories as $category)
+                foreach ($productTemplate->productCategories as $category)
                 {
                     $categoryOutput[] = array( 'id' => $category->id, 'name' => $category->name);
                 }
@@ -288,7 +288,7 @@
                                                             $dataProvider
                                                         );
 
-            if($productTemplate === false)
+            if ($productTemplate === false)
             {
                 Yii::app()->user->setFlash('notification', Zurmo::t('ProductTemplatesModule', 'One of the catalog item selected is  associated to products in the system hence could not be deleted'));
                 $this->redirect(Zurmo::app()->request->getUrlReferrer());
@@ -350,7 +350,7 @@
             $productTemplate = ProductTemplate::GetById(intval($id));
             ControllerSecurityUtil::resolveAccessCanCurrentUserDeleteModel($productTemplate);
             //Check if product template has associated products
-            if($productTemplate->delete())
+            if ($productTemplate->delete())
             {
                 $this->redirect(array($this->getId() . '/index'));
             }

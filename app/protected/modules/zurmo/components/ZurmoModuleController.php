@@ -101,7 +101,7 @@
             $pageSize            = Yii::app()->pagination->resolveActiveForCurrentUserByType(
                                    'autoCompleteListPageSize', get_class($this->getModule()));
             $autoCompleteResults = ModelAutoCompleteUtil::getByPartialName($modelClassName, $term, $pageSize);
-            if(empty($autoCompleteResults))
+            if (empty($autoCompleteResults))
             {
                 $autoCompleteResults = array(array('id'    => null,
                                                    'value' => null,
@@ -185,7 +185,7 @@
             assert('$stickySearchKey == null || is_string($stickySearchKey)');
             assert('$modelClassName == null || is_string($modelClassName)');
             assert('$exportFileName == null || is_string($exportFileName)');
-            if($modelClassName == null)
+            if ($modelClassName == null)
             {
                 $modelClassName        = $this->getModelName();
             }
@@ -260,7 +260,7 @@
                     // Output data
                     if (count($data))
                     {
-                        if($exportFileName == null)
+                        if ($exportFileName == null)
                         {
                             $fileName = $this->getModule()->getName() . ".csv";
                         }
@@ -268,7 +268,7 @@
                         {
                             $fileName = $exportFileName . ".csv";
                         }
-			//TODO Clarify with Jason, header data is missing here
+                        // TODO Clarify with Jason, header data is missing here
                         $output = ExportItemToCsvFileUtil::export($data, array(), $fileName, true);
                     }
                     else

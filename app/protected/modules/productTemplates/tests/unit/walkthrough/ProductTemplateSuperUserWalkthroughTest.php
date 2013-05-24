@@ -84,7 +84,7 @@
 
             //Default Controller actions requiring some sort of parameter via POST or GET
             //Load Model Edit Views
-            $productTemplates	 = ProductTemplate::getAll();
+            $productTemplates    = ProductTemplate::getAll();
             $this->assertEquals(12, count($productTemplates));
             $superTemplateId     = self::getModelIdByModelNameAndName('ProductTemplate', 'My Catalog Item 1');
             $superTemplateId2    = self::getModelIdByModelNameAndName('ProductTemplate', 'My Catalog Item 2');
@@ -181,10 +181,10 @@
             //Delete a product template
             $this->setGetArray(array('id' => $productTemplate->id));
             $this->resetPostArray();
-            $productTemplates		= ProductTemplate::getAll();
+            $productTemplates       = ProductTemplate::getAll();
             $this->assertEquals(14, count($productTemplates));
             $this->runControllerWithRedirectExceptionAndGetContent('productTemplates/default/delete');
-            $productTemplates		= ProductTemplate::getAll();
+            $productTemplates       = ProductTemplate::getAll();
             $this->assertEquals(13, count($productTemplates));
             try
             {

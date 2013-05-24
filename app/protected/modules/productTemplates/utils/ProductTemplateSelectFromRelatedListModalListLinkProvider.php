@@ -42,13 +42,13 @@
         public function getLinkString($attributeString)
         {
             $url = Yii::app()->createUrl("products/default/createProductFromProductTemplate", array('relationModuleId' => $this->relationModuleId,
-												    'portletId' => $this->portletId,
-												    'uniqueLayoutId' => $this->uniqueLayoutId));
+                                                    'portletId' => $this->portletId,
+                                                    'uniqueLayoutId' => $this->uniqueLayoutId));
             $errorInProcess = CJavaScript::quote(Zurmo::t('Core', 'There was an error processing your request'));
             $string  = 'ZurmoHtml::link(';
             $string .= $attributeString . ', ';
             $string .= '"javascript:addProductRowToPortletGridView(\'$data->id\', \'' . $url . '\', \'' . $this->relationAttributeName . '\', \'' . $this->relationModelId . '\'
-			    , \'' . $this->uniqueLayoutId . '\', \'' . $errorInProcess . '\')"';
+                , \'' . $this->uniqueLayoutId . '\', \'' . $errorInProcess . '\')"';
             $string .= ')';
             return $string;
         }

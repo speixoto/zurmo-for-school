@@ -39,7 +39,7 @@
         protected function getMessageContent()
         {
             return Zurmo::t('ProductTemplatesModule', '<h2>"I don\'t want to be lumped into any categories."</h2>
-		<i>- Corey Feldman</i><div class="large-icon"></div><p>Unlike Corey, Products love to be lumped into Categories. Why not be the first to create one?</p>');
+                <i>- Corey Feldman</i><div class="large-icon"></div><p>Unlike Corey, Products love to be lumped into Categories. Why not be the first to create one?</p>');
         }
     }
 ?>

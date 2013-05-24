@@ -91,7 +91,7 @@
                     var helperValue = $('#ProductTemplate_sellPriceFormula_type').val();
                     var calculatedSellPrice = 0;
                     var discountOrMarkupPercentage = $('#ProductTemplate_sellPriceFormula_discountOrMarkupPercentage').val();
-                    if(discountOrMarkupPercentage == '')
+                    if (discountOrMarkupPercentage == '')
                     {
                         discountOrMarkupPercentage = 0;
                     }
@@ -178,7 +178,7 @@
         public static function getProductTemplateTypeDisplayedGridValue($data, $row)
         {
             $typeDropdownData = self::getProductTemplateTypeDropdownArray();
-            if(isset($typeDropdownData[$data->type]))
+            if (isset($typeDropdownData[$data->type]))
             {
                 return $typeDropdownData[$data->type];
             }
@@ -191,7 +191,7 @@
         public static function getProductTemplateStatusDisplayedGridValue($data, $row)
         {
             $statusDropdownData = self::getProductTemplateStatusDropdownArray();
-            if(isset($statusDropdownData[$data->status]))
+            if (isset($statusDropdownData[$data->status]))
             {
                 return $statusDropdownData[$data->status];
             }
@@ -204,7 +204,7 @@
         public static function getProductTemplatePriceFrequencyDisplayedGridValue($data, $row)
         {
             $frequencyDropdownData = self::getProductTemplatePriceFrequencyDropdownArray();
-            if(isset($frequencyDropdownData[$data->priceFrequency]))
+            if (isset($frequencyDropdownData[$data->priceFrequency]))
             {
                 return $frequencyDropdownData[$data->priceFrequency];
             }
@@ -221,11 +221,11 @@
             $discountOrMarkupPercentage = $sellPriceFormulaModel->discountOrMarkupPercentage;
             $displayedSellPriceFormulaList = SellPriceFormula::getDisplayedSellPriceFormulaArray();
             $content = '';
-            if($type != null)
+            if ($type != null)
             {
                 $content = $displayedSellPriceFormulaList[$type];
 
-                if($type != SellPriceFormula::TYPE_EDITABLE)
+                if ($type != SellPriceFormula::TYPE_EDITABLE)
                 {
                     $content = str_replace('{discount}', $discountOrMarkupPercentage/100, $content);
                 }

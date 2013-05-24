@@ -101,7 +101,7 @@
         public function getFilterValueElementType(RedBeanModel $model, $attribute)
         {
             assert('is_string($attribute)');
-            if($attribute == 'id')
+            if ($attribute == 'id')
             {
                 $modelClassName = get_class($model);
             }

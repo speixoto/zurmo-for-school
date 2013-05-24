@@ -55,10 +55,10 @@
         protected function renderContent()
         {
             $metadata         = self::getMetadata();
-            if(isset($_GET['lockPortlets']))
+            if (isset($_GET['lockPortlets']))
             {
                 $lockPortlets = (bool)$_GET['lockPortlets'];
-                if($lockPortlets == '1')
+                if ($lockPortlets == '1')
                 {
                     ZurmoDefaultViewUtil::setLockKeyForDetailsAndRelationsView('lockPortletsForDetailsAndRelationsView', true);
                 }
@@ -72,7 +72,7 @@
             $isViewLocked           = ZurmoDefaultViewUtil::getLockKeyForDetailsAndRelationsView('lockPortletsForDetailsAndRelationsView');
             $portletsAreRemovable   = true;
             $portletsAreMovable     = true;
-            if($isViewLocked == true)
+            if ($isViewLocked == true)
             {
                 $portletsAreRemovable   = false;
                 $portletsAreMovable     = false;
@@ -100,7 +100,7 @@
             $lockTitle = Zurmo::t('Core', 'Click to unlock and edit this screen\'s layout ');
             $unlockTitle = Zurmo::t('Core', 'Click to lock and prevent layout changes to this screen');
             $lockLink = '';
-            if($isViewLocked === true)
+            if ($isViewLocked === true)
             {
                 $lockLink = "<a href='" . $url . "&lockPortlets=0' class='icon-lock' title='".$lockTitle."'><!--" . Zurmo::t('Core', 'Unlock') . "--></a>"; // Not Coding Standard
             }

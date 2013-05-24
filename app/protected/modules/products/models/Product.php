@@ -26,7 +26,7 @@
 
     class Product extends OwnedSecurableItem
     {
-        const OPEN_STAGE	= 'Open';
+        const OPEN_STAGE    = 'Open';
 
         public static function getByName($name)
         {
@@ -113,14 +113,14 @@
                     array('priceFrequency', 'required'),
                 ),
                 'elements' => array(
-                    'account'        => 'Account',
-                    'contact'        => 'Contact',
-                    'description'    => 'TextArea',
-                    'opportunity'    => 'Opportunity',
-                    'priceFrequency' => 'ProductTemplatePriceFrequencyDropDown',
-                    'productTemplate'=> 'ProductTemplate',
-                    'sellPrice'      => 'CurrencyValue',
-                    'type'           => 'ProductTemplateTypeDropDown',
+                    'account'         => 'Account',
+                    'contact'         => 'Contact',
+                    'description'     => 'TextArea',
+                    'opportunity'     => 'Opportunity',
+                    'priceFrequency'  => 'ProductTemplatePriceFrequencyDropDown',
+                    'productTemplate' => 'ProductTemplate',
+                    'sellPrice'       => 'CurrencyValue',
+                    'type'            => 'ProductTemplateTypeDropDown',
                 ),
                 'customFields' => array(
                     'stage'    => 'ProductStages',

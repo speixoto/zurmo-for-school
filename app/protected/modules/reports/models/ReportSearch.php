@@ -62,7 +62,7 @@
 
             );
             $clauseCount = 2;
-            if($moduleClassName != null)
+            if ($moduleClassName != null)
             {
                 $searchAttributeData['clauses'][$clauseCount] = array(
                     'attributeName'             => 'moduleClassName',
@@ -71,7 +71,7 @@
                 );
                 $clauseCount++;
             }
-            if($type != null)
+            if ($type != null)
             {
                 $searchAttributeData['clauses'][$clauseCount] = array(
                     'attributeName'             => 'type',
@@ -79,11 +79,11 @@
                     'value'                     => $type
                 );
             }
-            if($clauseCount == 1)
+            if ($clauseCount == 1)
             {
                 $searchAttributeData['structure'] = '(1)';
             }
-            elseif($clauseCount == 2)
+            elseif ($clauseCount == 2)
             {
                 $searchAttributeData['structure'] = '(1 and 2)';
             }

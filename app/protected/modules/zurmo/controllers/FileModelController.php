@@ -84,7 +84,7 @@
             assert('is_string($commaSeparatedExistingModelIds)');
             $existingFileModelIds   = explode(',', $commaSeparatedExistingModelIds); // Not Coding Standard
             $newFileModelsData      = array(); //needs id, name, size at least, preferably type too.
-            foreach($existingFileModelIds as $existingFileModelId)
+            foreach ($existingFileModelIds as $existingFileModelId)
             {
                 $newFileModel           = FileModelUtil::makeByExistingFileModelId($existingFileModelId);
                 if ($newFileModel === false)

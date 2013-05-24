@@ -81,7 +81,7 @@
                     $jobsAreStuck     = true;
                 }
             }
-            if($jobsAreStuck)
+            if ($jobsAreStuck)
             {
                 self::makeJobStuckNotification($jobTitleLabels);
             }
@@ -152,13 +152,13 @@
             $message->htmlContent = $prefixContent;
             $textContent          = null;
             $htmlContent          = null;
-            foreach($jobTitleLabels as $label)
+            foreach ($jobTitleLabels as $label)
             {
-                if($textContent != null)
+                if ($textContent != null)
                 {
                     $textContent .= ', ';
                 }
-                if($htmlContent != null)
+                if ($htmlContent != null)
                 {
                     $htmlContent .= ', ';
                 }

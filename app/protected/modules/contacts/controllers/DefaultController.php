@@ -356,11 +356,11 @@
             $account = static::getModelAndCatchNotFoundAndDisplayError('Account', intval($id));
             ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($account);
             $addressData = array();
-            foreach($account->billingAddress->getAttributeNames() as $attribute)
+            foreach ($account->billingAddress->getAttributeNames() as $attribute)
             {
                 $addressData['billingAddress_' . $attribute] = $account->billingAddress->{$attribute};
             }
-            foreach($account->shippingAddress->getAttributeNames() as $attribute)
+            foreach ($account->shippingAddress->getAttributeNames() as $attribute)
             {
                 $addressData['shippingAddress_' . $attribute] = $account->shippingAddress->{$attribute};
             }

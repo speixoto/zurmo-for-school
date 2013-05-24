@@ -167,7 +167,7 @@
         protected function beforeDelete()
         {
             parent::beforeDelete();
-            if($this->name != self::DEFAULT_NAME)
+            if ($this->name != self::DEFAULT_NAME)
             {
                 return true;
             }

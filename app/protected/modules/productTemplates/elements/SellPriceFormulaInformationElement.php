@@ -34,11 +34,11 @@
             $discountOrMarkupPercentage     = $sellPriceFormulaModel->discountOrMarkupPercentage;
             $displayedSellPriceFormulaList  = SellPriceFormula::getDisplayedSellPriceFormulaArray();
             $content = '';
-            if($type != null)
+            if ($type != null)
             {
                 $content = $displayedSellPriceFormulaList[$type];
 
-                if($type != SellPriceFormula::TYPE_EDITABLE)
+                if ($type != SellPriceFormula::TYPE_EDITABLE)
                 {
                     $content = str_replace('{discount}', $discountOrMarkupPercentage/100, $content);
                 }
@@ -126,7 +126,7 @@
 
         protected function resolveInputDisplayStyle($model)
         {
-            if($model->type == SellPriceFormula::TYPE_PROFIT_MARGIN || $model->type == SellPriceFormula::TYPE_MARKUP_OVER_COST || $model->type == SellPriceFormula::TYPE_DISCOUNT_FROM_LIST)
+            if ($model->type == SellPriceFormula::TYPE_PROFIT_MARGIN || $model->type == SellPriceFormula::TYPE_MARKUP_OVER_COST || $model->type == SellPriceFormula::TYPE_DISCOUNT_FROM_LIST)
             {
                 return 'display:block';
             }

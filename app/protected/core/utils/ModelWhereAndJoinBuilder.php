@@ -145,7 +145,7 @@
         {
             assert('is_string($onTableAliasName) || $onTableAliasName == null');
             assert('is_bool($resolveAsSubquery)');
-            if($resolveAsSubquery)
+            if ($resolveAsSubquery)
             {
                 return $this->resolveRelationAttributeTableAliasNameForResolveSubqueryAsTrue($onTableAliasName);
             }
@@ -159,7 +159,7 @@
         protected function resolveRelationAttributeTableAliasNameForResolveSubqueryAsTrue($onTableAliasName)
         {
             assert('is_string($onTableAliasName) || $onTableAliasName == null');
-            if($onTableAliasName == null)
+            if ($onTableAliasName == null)
             {
                 return $this->modelAttributeToDataProviderAdapter->getModelTableName();
             }
@@ -191,7 +191,7 @@
             assert('(is_array($value) && count($value) > 0) || is_string($value) || is_int($value)');
             assert('is_array($where)');
             assert('is_int($whereKey)');
-            if(!$this->modelAttributeToDataProviderAdapter->getRelatedAttributeRelationType() == RedBeanModel::HAS_MANY)
+            if (!$this->modelAttributeToDataProviderAdapter->getRelatedAttributeRelationType() == RedBeanModel::HAS_MANY)
             {
                 throw new NotSupportedException();
             }

@@ -215,7 +215,7 @@
         {
             $url           = Yii::app()->createUrl('contacts/default/getAccountAddressesToCopy');
             $successScript = null;
-            foreach($this->model->primaryAddress->getAttributeNames() as $attribute)
+            foreach ($this->model->primaryAddress->getAttributeNames() as $attribute)
             {
                 $successScript .= "$('#Contact_primaryAddress_" . $attribute . "').val(data.billingAddress_" . $attribute . ").trigger('change'); \n";
                 $successScript .= "$('#Contact_secondaryAddress_" . $attribute . "').val(data.shippingAddress_" . $attribute . ").trigger('change'); \n";
@@ -224,7 +224,7 @@
             Yii::app()->clientScript->registerScript('copyAddressFromAccountToContactScript', "
                 $('#Contact_account_id').live('change', function()
                     {
-                       if($('#Contact_account_id').val() &&
+                       if ($('#Contact_account_id').val() &&
                           !$('#Contact_primaryAddress_street1').val() &&
                           !$('#Contact_primaryAddress_street2').val() &&
                           !$('#Contact_primaryAddress_city').val() &&

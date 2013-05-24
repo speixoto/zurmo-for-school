@@ -110,7 +110,7 @@
             );
             $productCategory        = new ProductCategory();
             $productCatalog         = ProductCatalog::resolveAndGetByName(ProductCatalog::DEFAULT_NAME);
-            if(!empty($productCatalog))
+            if (!empty($productCatalog))
             {
                 $productCategory->productCatalogs->add($productCatalog);
             }
@@ -172,7 +172,7 @@
             $productCategory = ProductCategory::GetById(intval($id));
             ControllerSecurityUtil::resolveAccessCanCurrentUserDeleteModel($productCategory);
             $isDeleted = $productCategory->delete();
-            if($isDeleted)
+            if ($isDeleted)
             {
                 $this->redirect(array($this->getId() . '/index'));
             }

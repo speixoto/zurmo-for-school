@@ -151,7 +151,7 @@
         protected function resolveElementInformationDuringFormLayoutRender(& $elementInformation)
         {
             parent::resolveElementInformationDuringFormLayoutRender($elementInformation);
-            if($elementInformation['attributeName'] == 'probability')
+            if ($elementInformation['attributeName'] == 'probability')
             {
                 $elementInformation['disabled'] = true;
             }
@@ -168,7 +168,7 @@
             $stageInputId       = Element::resolveInputIdPrefixIntoString(array(get_class($this->model), 'stage', 'value'));
             $probabilityInputId = Element::resolveInputIdPrefixIntoString(array(get_class($this->model), 'probability'));
             $mappingData        = OpportunitiesModule::getStageToProbabilityMappingData();
-            if(count($mappingData) > 0)
+            if (count($mappingData) > 0)
             {
                 $jsonEncodedMapping = CJSON::encode($mappingData);
                 Yii::app()->clientScript->registerScript('stageToProbabilityMapping', "
@@ -185,7 +185,7 @@
                     $('#" . $probabilityInputId . "').val(0);
                     $.each(result, function(stage, probability)
                     {
-                        if(value == stage)
+                        if (value == stage)
                         {
                             $('#" . $probabilityInputId . "').val(probability);
                             return false;

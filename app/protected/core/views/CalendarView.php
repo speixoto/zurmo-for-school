@@ -77,7 +77,7 @@
         protected function renderContent()
         {
             $content = null;
-            if($this->renderViewToolBarDuringRenderContent)
+            if ($this->renderViewToolBarDuringRenderContent)
             {
                 $content .= $this->renderViewToolBar();
             }

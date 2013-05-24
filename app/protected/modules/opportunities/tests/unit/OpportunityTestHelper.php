@@ -110,7 +110,7 @@
             }
         }
 
-	public static function createOpportunityWithProductsByNameForOwner($name, $owner, $account)
+        public static function createOpportunityWithProductsByNameForOwner($name, $owner, $account)
         {
             $currencies                 = Currency::getAll();
             $currencyValue              = new CurrencyValue();

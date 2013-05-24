@@ -51,10 +51,10 @@
             $content .= ZurmoHtml::textField('stageToProbabilityMapping_notUsed', null,
                                              array('id' => $this->getEditableInputId(), 'style' => "display:none;"));
             $fieldData = CustomFieldData::getByName('SalesStages');
-            if($fieldData->serializedData != null)
+            if ($fieldData->serializedData != null)
             {
                 $values = unserialize($fieldData->serializedData);
-                if(!is_array($values))
+                if (!is_array($values))
                 {
                     $values = array();
                 }
@@ -64,9 +64,9 @@
                 $values = array();
             }
             $stagesToProbabilities = OpportunitiesModule::getStageToProbabilityMappingData();
-            foreach($values as $value)
+            foreach ($values as $value)
             {
-                if(isset($stagesToProbabilities[$value]))
+                if (isset($stagesToProbabilities[$value]))
                 {
                     $probability = $stagesToProbabilities[$value];
                 }

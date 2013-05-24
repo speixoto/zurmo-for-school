@@ -130,7 +130,7 @@
             $cClipWidget->widget($this->getGridViewWidgetPath(), $this->getCGridViewParams());
             $cClipWidget->endClip();
             $content     = null;
-            if($this->renderViewToolBarDuringRenderContent)
+            if ($this->renderViewToolBarDuringRenderContent)
             {
                 $content .= $this->renderViewToolBar();
             }

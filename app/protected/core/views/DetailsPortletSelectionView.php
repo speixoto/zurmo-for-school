@@ -110,7 +110,7 @@
 
         private function resolveLayoutIdInAllowedOnPortletViewClassNames($className)
         {
-            if(in_array($this->uniqueLayoutId, $className::getAllowedOnPortletViewClassNames()))
+            if (in_array($this->uniqueLayoutId, $className::getAllowedOnPortletViewClassNames()))
             {
                 return true;
             }

@@ -134,11 +134,11 @@
 
         protected function beforeDelete()
         {
-            if($this->getScenario() != 'autoBuildDatabase')
+            if ($this->getScenario() != 'autoBuildDatabase')
             {
                 parent::beforeDelete();
 
-                if(count($this->productTemplates) > 0 || count($this->productCategories) > 0 )
+                if (count($this->productTemplates) > 0 || count($this->productCategories) > 0 )
                 {
                     return false;
                 }

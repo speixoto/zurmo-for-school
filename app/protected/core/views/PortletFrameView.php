@@ -85,7 +85,7 @@
                 {
                     $className = get_class($portlet->getView());
                     //TODO @Mayank, If i am calling the following if else as a function it doesn't work
-                    if(method_exists($className, 'canUserRemove'))
+                    if (method_exists($className, 'canUserRemove'))
                     {
                         $removable      = $className::canUserRemove();
                     }

@@ -158,7 +158,7 @@
             //There are two cases
             //a) When user clicks on sorting in grid view, at that time Model Class inside form is used
             //b) When user save the search, sort attributes are in form model
-            if($sortAttribute == null)
+            if ($sortAttribute == null)
             {
                $sortAttribute = $dataCollection->resolveSortAttributeFromSourceData(get_class($dataCollection->getModel()));
             }
@@ -172,7 +172,7 @@
                 else
                 {
                     $sortDescending = $dataCollection->resolveSortDescendingFromSourceData(get_class($dataCollection->getModel()));
-                    if($sortDescending === true)
+                    if ($sortDescending === true)
                     {
                         $stickyData['sortDescending'] = true;
                     }
@@ -244,7 +244,7 @@
 
         public static function resolveSearchFormByStickySortData(array $getData, DynamicSearchForm $searchForm, $stickyData)
         {
-            if(isset($getData[get_class($searchForm)]))
+            if (isset($getData[get_class($searchForm)]))
             {
                 if (isset($stickyData['sortAttribute']))
                 {

@@ -41,9 +41,9 @@
             $sellPriceFormulaModel  = $this->model->sellPriceFormula;
             $type                   = $sellPriceFormulaModel->type;
             $additionalHtmlOptions  = array();
-            if($type != null)
+            if ($type != null)
             {
-                if($type != SellPriceFormula::TYPE_EDITABLE)
+                if ($type != SellPriceFormula::TYPE_EDITABLE)
                 {
                     $additionalHtmlOptions = array('readonly' => 'readonly', 'class' => 'disabled');
                 }

@@ -148,7 +148,7 @@
             $categories = array();
             foreach ($messages as $message)
             {
-                if(!in_array($message['msgctxt'], $categories))
+                if (!in_array($message['msgctxt'], $categories))
                 {
                     $categories[] = $message['msgctxt'];
                 }
@@ -159,7 +159,7 @@
                     $message['msgstr']
                 );
             }
-            foreach($categories as $category)
+            foreach ($categories as $category)
             {
                 ZurmoMessageSource::clearCache($category, $languageCode);
             }
