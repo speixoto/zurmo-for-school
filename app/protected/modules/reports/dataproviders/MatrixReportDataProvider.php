@@ -112,14 +112,7 @@
          */
         public function calculateTotalGroupingsCount()
         {
-            $selectQueryAdapter     = new RedBeanModelSelectQueryAdapter();
-            $sql                    = $this->makeSqlQueryForFetchingTotalItemCount($selectQueryAdapter);
-            $rows                   = R::getAll($sql);
-            if (count($rows) > 0)
-            {
-                return count($rows) * count($rows[0]);
-            }
-            return 0;
+            return $this->dataProvider->getXAxisGroupByDataValuesCount() * $this->dataProvider->getYAxisGroupByDataValuesCount();
         }
 
         /**
