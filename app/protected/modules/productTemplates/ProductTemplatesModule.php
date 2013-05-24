@@ -133,5 +133,10 @@
         {
             return 'ProductTemplatesSearchForm';
         }
+
+        public static function isReportable()
+        {
+            return true;
+        }
     }
 ?>

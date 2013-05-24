@@ -54,10 +54,11 @@
 
         protected function renderContent()
         {
+            $getData = GetUtil::getData();
             $metadata         = self::getMetadata();
-            if(isset($_GET['lockPortlets']))
+            if(isset($getData['lockPortlets']))
             {
-                $lockPortlets = (bool)$_GET['lockPortlets'];
+                $lockPortlets = (bool)$getData['lockPortlets'];
                 if($lockPortlets == '1')
                 {
                     ZurmoDefaultViewUtil::setLockKeyForDetailsAndRelationsView('lockPortletsForDetailsAndRelationsView', true);
@@ -95,18 +96,25 @@
 
         protected function renderActionElementBar($renderedInForm)
         {
-            $isViewLocked     = ZurmoDefaultViewUtil::getLockKeyForDetailsAndRelationsView('lockPortletsForDetailsAndRelationsView');
-            $url              = Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/details?id=' . $_GET['id']);
-            $lockLink = '';
-            if($isViewLocked === true)
+            $getData = GetUtil::getData();
+            if (Yii::app()->userInterface->isMobile() === false)
             {
-                $lockLink = "<a href='" . $url . "&lockPortlets=0' class='icon-lock'>" . Zurmo::t('Core', 'Unlock') . "</a>";
+                $isViewLocked     = ZurmoDefaultViewUtil::getLockKeyForDetailsAndRelationsView('lockPortletsForDetailsAndRelationsView');
+                $url              = Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/details?id=' . $getData['id']);
+                $lockLink = '';
+                if($isViewLocked === true)
+                {
+                    $lockLink = "<a href='" . $url . "&lockPortlets=0' class='icon-lock'>" . Zurmo::t('Core', 'Unlock') . "</a>";
+                }
+                else
+                {
+                    $lockLink = "<a href='" . $url . "&lockPortlets=1' class='icon-unlock'>" . Zurmo::t('Core', 'Lock') . "</a>";
+                }
             }
             else
             {
-                $lockLink = "<a href='" . $url . "&lockPortlets=1' class='icon-unlock'>" . Zurmo::t('Core', 'Lock') . "</a>";
+                $lockLink = '';
             }
-
             $content  = '<div class="view-toolbar-container clearfix"><div class="view-toolbar">';
             $content .= $lockLink . parent::renderActionElementBar($renderedInForm);
             $content .= '</div></div>';
