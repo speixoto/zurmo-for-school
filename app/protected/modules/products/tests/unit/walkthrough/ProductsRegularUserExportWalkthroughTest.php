@@ -37,7 +37,7 @@
     /**
      * Export module walkthrough tests.
      */
-    class ProductsRegularUserExportWalkthroughTest extends ZurmoWalkthroughBaseTest
+    class ProductsRegularUserExportWalkthroughTest extends ZurmoRegularUserWalkthroughBaseTest
     {
         protected static $asynchronusThreshold;
 
@@ -77,7 +77,14 @@
             $nobody = $this->logoutCurrentUserLoginNewUserAndGetByUsername('nobody');
 
             $this->runControllerShouldResultInAccessFailureAndGetContent('products/default/list');
-
+            $this->setGetArray(array(
+                'Product_page' => '1',
+                'export' => '',
+                'ajax' => '',
+                'selectAll' => '',
+                'selectedIds' => '')
+            );
+            $this->runControllerShouldResultInAccessFailureAndGetContent('products/default/export');
             // Check if user have access to module action, but not to export action
             // Now test peon with elevated rights to accounts
             $nobody->setRight('ProductsModule', ProductsModule::RIGHT_ACCESS_PRODUCTS);
@@ -107,6 +114,7 @@
                     'anyMixedAttributes'      => '',
                     'name'                    => 'superProduct'
                 ),
+                'multiselect_ProductsSearchForm_anyMixedAttributesScope' => 'All',
                 'Product_page'   => '1',
                 'export'         => '',
                 'ajax'           => '',
@@ -115,7 +123,7 @@
             );
               //TODO Need to ask jason
             $response = $this->runControllerWithExitExceptionAndGetContent('products/default/export');
-            $this->assertEquals('Testing download.', $response);
+            $this->assertTrue(strstr($response, 'products/default/index') !== false);
 
             $this->setGetArray(array(
                 'ProductsSearchForm' => array(
@@ -123,6 +131,7 @@
                     'anyMixedAttributes'      => '',
                     'name'                    => 'superProduct'
                 ),
+                'multiselect_ProductsSearchForm_anyMixedAttributesScope' => 'All',
                 'Product_page'   => '1',
                 'export'         => '',
                 'ajax'           => '',
@@ -151,6 +160,7 @@
                     'anyMixedAttributes'      => '',
                     'name'                    => 'superProduct'
                 ),
+                'multiselect_ProductsSearchForm_anyMixedAttributesScope' => 'All',
                 'Product_page'   => '1',
                 'export'         => '',
                 'ajax'           => '',
@@ -167,6 +177,7 @@
                     'anyMixedAttributes'      => '',
                     'name'                    => 'superProduct'
                 ),
+                'multiselect_ProductsSearchForm_anyMixedAttributesScope' => 'All',
                 'Product_page'   => '1',
                 'export'         => '',
                 'ajax'           => '',
@@ -183,6 +194,7 @@
                     'anyMixedAttributes'      => '',
                     'name'                    => 'missingName'
                 ),
+                'multiselect_ProductsSearchForm_anyMixedAttributesScope' => 'All',
                 'Product_page' => '1',
                 'export'       => '',
                 'ajax'         => '',
