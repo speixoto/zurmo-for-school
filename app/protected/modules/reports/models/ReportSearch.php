@@ -69,7 +69,7 @@
                     'operatorType'              => 'equals',
                     'value'                     => $moduleClassName,
                 );
-                $clauseCount ++;
+                $clauseCount++;
             }
             if($type != null)
             {

@@ -93,7 +93,7 @@
 //            $superProduct       = Product::getById($superProductId);
 //            $this->assertEquals(20, $superProduct->quantity);
             //Test having a failed validation on the contact during save.
-            $this->setGetArray (array('id'		=> $superProductId));
+            $this->setGetArray (array('id'      => $superProductId));
             $this->setPostArray(array('Product' => array('name' => '')));
             $content = $this->runControllerWithNoExceptionsAndGetContent('products/default/edit');
             $this->assertFalse(strpos($content, 'Name cannot be blank') === false);

@@ -126,7 +126,6 @@
             $this->form->setInputPrefixData($inputPrefixData);
             $params            = array('inputPrefix' => $inputPrefixData);
 
-
             $leftSideContent = null;
             $element         = new ChartTypeRadioStaticDropDownForReportElement($this->model->chart, 'type', $this->form,
                                array_merge($params, array('addBlank' => true)));

@@ -93,12 +93,12 @@
             $breadcrumbLinks    = array(
                                          $title,
                                         );
-            $productCategory	= static::getModelAndCatchNotFoundAndDisplayError('ProductCategory', intval($id));
+            $productCategory    = static::getModelAndCatchNotFoundAndDisplayError('ProductCategory', intval($id));
             ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($productCategory);
-            $detailsView	    = new ProductCategoryDetailsView($this->getId(), $this->getModule()->getId(), $productCategory);
+            $detailsView        = new ProductCategoryDetailsView($this->getId(), $this->getModule()->getId(), $productCategory);
             $view               = new ProductCategoriesPageView(ProductDefaultViewUtil::
-									makeViewWithBreadcrumbsForCurrentUser(
-										$this, $detailsView, $breadcrumbLinks, 'ProductBreadCrumbView'));
+                                    makeViewWithBreadcrumbsForCurrentUser(
+                                        $this, $detailsView, $breadcrumbLinks, 'ProductBreadCrumbView'));
             echo $view->render();
         }
 
@@ -114,7 +114,7 @@
             {
                 $productCategory->productCatalogs->add($productCatalog);
             }
-            $editAndDetailsView		= $this->makeEditAndDetailsView(
+            $editAndDetailsView     = $this->makeEditAndDetailsView(
                                             $this->attemptToSaveModelFromPost($productCategory), 'Edit');
             $view                   = new ProductCategoriesPageView(ProductDefaultViewUtil::
                                             makeViewWithBreadcrumbsForCurrentUser(
@@ -128,7 +128,7 @@
             $breadcrumbLinks        = array(
                                              $title,
                                         );
-            $productCategory	    = ProductCategory::getById(intval($id));
+            $productCategory        = ProductCategory::getById(intval($id));
             ControllerSecurityUtil::resolveAccessCanCurrentUserWriteModel($productCategory);
             $view                   = new ProductCategoriesPageView(ProductDefaultViewUtil::
                                             makeViewWithBreadcrumbsForCurrentUser($this,

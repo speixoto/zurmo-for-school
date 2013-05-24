@@ -45,7 +45,7 @@
         {
             $listPriceLabel = Zurmo::t('ProductTemplatesModule', 'List Price');
             return Zurmo::t('ProductTemplatesModule', self::getDisplayLabel() . self::getSellPriceFormulaDisplaySeparator() .
-											$listPriceLabel . ' - ({discount} * ' . $listPriceLabel . ')');
+                                            $listPriceLabel . ' - ({discount} * ' . $listPriceLabel . ')');
         }
     }
 ?>

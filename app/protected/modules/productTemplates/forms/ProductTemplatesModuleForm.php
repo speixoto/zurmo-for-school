@@ -36,6 +36,5 @@
 
     class ProductTemplatesModuleForm extends GlobalSearchEnabledModuleForm
     {
-        
     }
 ?>

@@ -159,15 +159,15 @@
         public function testCategoryProductTemplates()
         {
             $user                   = UserTestHelper::createBasicUser('Steven 1');
-            $productCategory		= new ProductCategory();
-            $productCategory->name	= "My Test Category";
-            $productTemplate		= ProductTemplateTestHelper::createProductTemplateByName("Test Template");
+            $productCategory        = new ProductCategory();
+            $productCategory->name  = "My Test Category";
+            $productTemplate        = ProductTemplateTestHelper::createProductTemplateByName("Test Template");
 
             $productCategory->productTemplates->add($productTemplate);
             $this->assertTrue($productCategory->save());
             $id                     = $productCategory->id;
             unset($productCategory);
-            $productCategory		= ProductCategory::getById($id);
+            $productCategory        = ProductCategory::getById($id);
             $this->assertEquals(1, count($productCategory->productTemplates));
             $this->assertEquals($productTemplate, $productCategory->productTemplates[0]);
         }

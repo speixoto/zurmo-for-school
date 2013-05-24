@@ -70,7 +70,7 @@
             }
 
             $currencySymbol	    = Yii::app()->locale->getCurrencySymbol(Yii::app()->currencyHelper->getCodeForCurrentUserForDisplay());
-            echo Zurmo::t("Core", "Total: ") . $currencySymbol . $oneTimeTotal . Zurmo::t("Core", " One Time") . ", " . $currencySymbol . $monthlyTotal . Zurmo::t("Core", " Monthly") . ", " . $currencySymbol. $annualTotal . Zurmo::t("Core", " Annually");
+            echo Zurmo::t("Core", "Total: ") . $currencySymbol . $oneTimeTotal . Zurmo::t("Core", " One Time") . ", " . $currencySymbol . $monthlyTotal . Zurmo::t("Core", " Monthly") . ", " . $currencySymbol . $annualTotal . Zurmo::t("Core", " Annually");
         }
     }
 ?>

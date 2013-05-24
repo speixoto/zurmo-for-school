@@ -217,7 +217,7 @@
                                     new DetailsPortletSelectionView(
                                         $this->getId(),
                                         $this->getModule()->getId(),
-                                        $_GET['modelId'],//dashboard id is model id
+                                        $_GET['modelId'], //dashboard id is model id
                                         $_GET['uniqueLayoutId']
                                         ));
             echo $view->render();

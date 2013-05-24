@@ -625,12 +625,14 @@
             $this->setGetArray(array('id' => $account[0]->id));
             //Run Mass Delete using progress save for page2.
             $content = $this->runControllerWithNoExceptionsAndGetContent('contacts/default/getAccountAddressesToCopy');
+            // Begin Not Coding Standard
             $compareContent = '{"billingAddress_city":null,"billingAddress_country":null,"billingAddress_invalid":"0","billingAddre'
                             . 'ss_latitude":null,"billingAddress_longitude":null,"billingAddress_postalCode":null,"billingAddress_street1":'
                             . '"some street","billingAddress_street2":null,"billingAddress_state":null,"shippingAddress_city":null,"shippin'
                             . 'gAddress_country":null,"shippingAddress_invalid":"0","shippingAddress_latitude":null,"shippingAddress_longit'
                             . 'ude":null,"shippingAddress_postalCode":null,"shippingAddress_street1":"some street 2","shippingAddress_stree'
                             . 't2":null,"shippingAddress_state":null}';
+            // End Not Coding Standard
             $this->assertEquals($compareContent, $content);
         }
     }

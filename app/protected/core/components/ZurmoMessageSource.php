@@ -103,7 +103,7 @@
         {
             assert('is_string($category)');
             assert('is_string($languageCode)');
-            return self::CACHE_KEY_PREFIX.'.messages.'.$category.'.'.$languageCode;
+            return self::CACHE_KEY_PREFIX . '.messages.' . $category . '.' . $languageCode;
         }
     }
 ?>

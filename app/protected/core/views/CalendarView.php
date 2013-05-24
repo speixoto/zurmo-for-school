@@ -59,7 +59,6 @@
          */
         protected $renderViewToolBarDuringRenderContent = false;
 
-
         public function __construct($viewData, $params, $uniqueLayoutId)
         {
             assert('isset($params["controllerId"])');

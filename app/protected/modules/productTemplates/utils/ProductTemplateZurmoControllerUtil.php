@@ -55,7 +55,6 @@
 
         protected function checkProductTemplatesMassDeletion()
         {
-
         }
     }
 ?>

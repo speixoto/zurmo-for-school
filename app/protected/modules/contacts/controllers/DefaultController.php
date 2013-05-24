@@ -131,7 +131,6 @@
             $contact = Contact::getById(intval($id));
             ControllerSecurityUtil::resolveAccessCanCurrentUserWriteModel($contact);
             $this->processEdit($contact, $redirectUrl);
-
         }
 
         public function actionCopy($id)

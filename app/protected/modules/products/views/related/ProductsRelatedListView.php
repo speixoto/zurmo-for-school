@@ -129,7 +129,8 @@
          */
         protected function getCGridViewAfterAjaxUpdate()
         {
-            return 'js:function(id, data) {
+            return 'js:function(id, data)
+                    {
                         processAjaxSuccessError(id, data);
                     }';
         }

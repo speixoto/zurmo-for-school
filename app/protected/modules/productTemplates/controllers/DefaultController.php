@@ -72,11 +72,11 @@
             $listAttributesSelector         = new ListAttributesSelector('ProductTemplatesListView', get_class($this->getModule()));
             $searchForm->setListAttributesSelector($listAttributesSelector);
             $dataProvider = $this->resolveSearchDataProvider(
-								$searchForm,
-								$pageSize,
-								null,
-								'ProductTemplatesSearchView'
-							    );
+                                $searchForm,
+                                $pageSize,
+                                null,
+                                'ProductTemplatesSearchView'
+                                );
             $title           = Zurmo::t('ProductTemplatesModule', 'Catalog Items');
             $breadcrumbLinks = array(
                  $title,
@@ -87,13 +87,13 @@
                     $searchForm,
                     $dataProvider
                 );
-                $view	    = new ProductTemplatesPageView($mixedView);
+                $view       = new ProductTemplatesPageView($mixedView);
             }
             else
             {
                 $mixedView  = $this->makeActionBarSearchAndListView($searchForm, $dataProvider,
-								    'SecuredActionBarForProductsSearchAndListView',
-								    null, $activeActionElementType);
+                                    'SecuredActionBarForProductsSearchAndListView',
+                                    null, $activeActionElementType);
                 $view	    = new ProductTemplatesPageView(ProductDefaultViewUtil::
                                                                makeViewWithBreadcrumbsForCurrentUser(
                                                                     $this, $mixedView, $breadcrumbLinks, 'ProductBreadCrumbView'));
@@ -131,7 +131,7 @@
             }
             ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($productTemplate);
             $detailsView        = new ProductTemplateDetailsView($this->getId(), $this->getModule()->getId(), $productTemplate);
-            $view		= new ProductTemplatesPageView(ProductDefaultViewUtil::
+            $view       = new ProductTemplatesPageView(ProductDefaultViewUtil::
                                                             makeViewWithBreadcrumbsForCurrentUser(
                                                                 $this, $detailsView, $breadcrumbLinks, 'ProductBreadCrumbView'));
             echo $view->render();
@@ -145,9 +145,9 @@
             );
             $editAndDetailsView = $this->makeEditAndDetailsView(
                                             $this->attemptToSaveModelFromPost(new ProductTemplate()), 'Edit');
-            $view		= new ProductTemplatesPageView(ProductDefaultViewUtil::
-									makeViewWithBreadcrumbsForCurrentUser(
-										$this, $editAndDetailsView, $breadcrumbLinks, 'ProductBreadCrumbView'));
+            $view       = new ProductTemplatesPageView(ProductDefaultViewUtil::
+                                    makeViewWithBreadcrumbsForCurrentUser(
+                                        $this, $editAndDetailsView, $breadcrumbLinks, 'ProductBreadCrumbView'));
             echo $view->render();
         }
 
@@ -230,7 +230,7 @@
         public function actionMassEditProgressSave()
         {
             $pageSize           = Yii::app()->pagination->resolveActiveForCurrentUserByType('massEditProgressPageSize');
-            $productTemplate	= new ProductTemplate(false);
+            $productTemplate    = new ProductTemplate(false);
             $dataProvider       = $this->getDataProviderByResolvingSelectAllFromGet(
                                                                                     new ProductTemplatesSearchForm($productTemplate),
                                                                                     $pageSize,
@@ -318,7 +318,7 @@
         public function actionMassDeleteProgress()
         {
             $pageSize           = Yii::app()->pagination->resolveActiveForCurrentUserByType('massDeleteProgressPageSize');
-            $productTemplate	= new ProductTemplate(false);
+            $productTemplate    = new ProductTemplate(false);
             $dataProvider       = $this->getDataProviderByResolvingSelectAllFromGet(
                                                                                         new ProductTemplatesSearchForm($productTemplate),
                                                                                         $pageSize,
@@ -359,7 +359,6 @@
                 Yii::app()->user->setFlash('notification', Zurmo::t('ProductTemplatesModule', 'The product template is associated to products in the system hence could not be deleted'));
                 $this->redirect(Zurmo::app()->request->getUrlReferrer());
             }
-
         }
 
         protected static function getSearchFormClassName()
@@ -374,7 +373,7 @@
 
         public function actionAutoCompleteAllProductCategoriesForMultiSelectAutoComplete($term)
         {
-            $pageSize	  = Yii::app()->pagination->resolveActiveForCurrentUserByType(
+            $pageSize     = Yii::app()->pagination->resolveActiveForCurrentUserByType(
                             'autoCompleteListPageSize', get_class($this->getModule()));
             $adapterName  = self::resolveProductCategoryStateAdapterByModulesUserHasAccessTo('ProductTemplatesModule',
                                                                                         'ProductTemplatesModule',
@@ -386,7 +385,7 @@
                 echo $view->render();
                 Yii::app()->end(0, false);
             }
-            $productCategories	    = self::getProductCategoriesByPartialName($term, $pageSize, $adapterName);
+            $productCategories      = self::getProductCategoriesByPartialName($term, $pageSize, $adapterName);
             $autoCompleteResults    = array();
             foreach ($productCategories as $productCategory)
             {
@@ -403,13 +402,13 @@
             assert('is_string($partialName)');
             assert('is_int($pageSize)');
             assert('$stateMetadataAdapterClassName == null || is_string($stateMetadataAdapterClassName)');
-            $joinTablesAdapter	= new RedBeanModelJoinTablesQueryAdapter('ProductCategory');
-            $metadata		= array('clauses' => array(), 'structure' => '');
+            $joinTablesAdapter  = new RedBeanModelJoinTablesQueryAdapter('ProductCategory');
+            $metadata           = array('clauses' => array(), 'structure' => '');
             if ($stateMetadataAdapterClassName != null)
             {
-                $stateMetadataAdapter	= new $stateMetadataAdapterClassName($metadata);
-                $metadata		= $stateMetadataAdapter->getAdaptedDataProviderMetadata();
-                $metadata['structure']	= '(' . $metadata['structure'] . ')';
+                $stateMetadataAdapter   = new $stateMetadataAdapterClassName($metadata);
+                $metadata               = $stateMetadataAdapter->getAdaptedDataProviderMetadata();
+                $metadata['structure']  = '(' . $metadata['structure'] . ')';
             }
             $where  = RedBeanModelDataProvider::makeWhere('ProductCategory', $metadata, $joinTablesAdapter);
             if ($where != null)

@@ -115,8 +115,8 @@
                                                       $this->modelAttributeToDataProviderAdapter->resolveManyToManyColumnName());
             }
             elseif (($this->modelAttributeToDataProviderAdapter->isRelatedAttributeRelation() &&
-                    $this->modelAttributeToDataProviderAdapter->getRelatedAttributeRelationType() == RedBeanModel::HAS_MANY)
-                    || $resolveAsSubquery)
+                    $this->modelAttributeToDataProviderAdapter->getRelatedAttributeRelationType() == RedBeanModel::HAS_MANY) ||
+                    $resolveAsSubquery)
             {
                 $relationAttributeTableAliasName = $this->resolveRelationAttributeTableAliasNameForResolveSubquery(
                                                    $onTableAliasName, $resolveAsSubquery);

@@ -96,7 +96,6 @@
             $adapter = new ModelNumberOrCurrencyAttributesAdapter($model);
             foreach ($adapter->getAttributes() as $attribute => $data)
             {
-
                 if (($model->{$attribute} instanceof CurrencyValue && $model->{$attribute}->value == null) ||
                    $model->{$attribute} == null)
                 {

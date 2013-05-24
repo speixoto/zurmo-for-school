@@ -155,7 +155,6 @@
             return $content;
         }
 
-
         protected static function getEmailSubject()
         {
             return Zurmo::t('NotificationsModule', 'You have a new notification');

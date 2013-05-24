@@ -107,7 +107,7 @@
             $superTemplate       = ProductTemplate::getById($superTemplateId);
             $this->assertEquals('Test Description', $superTemplate->description);
             //Test having a failed validation on the contact during save.
-            $this->setGetArray (array('id'		=> $superTemplateId));
+            $this->setGetArray (array('id'       => $superTemplateId));
             $this->setPostArray(array('ProductTemplate' => array('name' => '')));
             $content = $this->runControllerWithNoExceptionsAndGetContent('productTemplates/default/edit');
             $this->assertFalse(strpos($content, 'Name cannot be blank') === false);

@@ -39,7 +39,6 @@
      */
     abstract class ActionBarForSecurityTreeListView extends ConfigurableMetadataView
     {
-
         protected $controllerId;
 
         protected $moduleId;

@@ -36,7 +36,6 @@
 
     class HomeDefaultController extends ZurmoBaseController
     {
-        
         public function filters()
         {
             return array_merge(parent::filters(),
@@ -234,7 +233,7 @@
             $tipContent = ZurmoTipsUtil::getRandomTipResolvedForCurrentUser();
             echo CJSON::encode($tipContent);
         }
-        
+
         protected function hideWelcomeViewGlobally()
         {
             if (null != $hideWelcomeViewGlobally = ZurmoConfigurationUtil::getByModuleName('ZurmoModule', 'hideWelcomeViewGlobally'))

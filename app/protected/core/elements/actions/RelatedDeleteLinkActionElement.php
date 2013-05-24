@@ -76,14 +76,14 @@
             return $this->getGridId(). '-delete-' . $this->modelId;
         }
 
-	protected function getDeleteAction()
-	{
-	    return 'delete';
-	}
+        protected function getDeleteAction()
+        {
+            return 'delete';
+        }
 
-	protected function getParams()
-	{
-	    return array('id' => $this->modelId);
-	}
+        protected function getParams()
+        {
+            return array('id' => $this->modelId);
+        }
     }
 ?>

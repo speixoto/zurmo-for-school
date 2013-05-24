@@ -57,7 +57,7 @@
             {
                 if ($name == self::DEFAULT_NAME)
                 {
-                    $catalog	   = new ProductCatalog();
+                    $catalog       = new ProductCatalog();
                     $catalog->name = self::DEFAULT_NAME;
                     $saved         = $catalog->save();
                     assert('$saved');

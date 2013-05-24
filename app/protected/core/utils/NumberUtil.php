@@ -56,7 +56,6 @@
             {
                 return $dividend / $divisor;
             }
-
         }
     }
 ?>

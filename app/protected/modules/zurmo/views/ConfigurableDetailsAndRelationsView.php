@@ -86,7 +86,7 @@
                                                     false,
                                                     $portletsAreMovable,
                                                     false,
-                                                    '50,50',
+                                                    '50,50', // Not Coding Standard
                                                     $portletsAreRemovable);
             $content          .=  $configurableView->render();
             $content          .= $this->renderScripts();
@@ -102,11 +102,11 @@
             $lockLink = '';
             if($isViewLocked === true)
             {
-                $lockLink = "<a href='" . $url . "&lockPortlets=0' class='icon-lock' title='".$lockTitle."'><!--" . Zurmo::t('Core', 'Unlock') . "--></a>";
+                $lockLink = "<a href='" . $url . "&lockPortlets=0' class='icon-lock' title='".$lockTitle."'><!--" . Zurmo::t('Core', 'Unlock') . "--></a>"; // Not Coding Standard
             }
             else
             {
-                $lockLink = "<a href='" . $url . "&lockPortlets=1' class='icon-unlock' title='".$unlockTitle."'><!--" . Zurmo::t('Core', 'Lock') . "--></a>";
+                $lockLink = "<a href='" . $url . "&lockPortlets=1' class='icon-unlock' title='".$unlockTitle."'><!--" . Zurmo::t('Core', 'Lock') . "--></a>"; // Not Coding Standard
             }
 
             $content  = '<div class="view-toolbar-container clearfix"><div class="view-toolbar">';

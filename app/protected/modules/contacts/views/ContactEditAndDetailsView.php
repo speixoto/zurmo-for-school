@@ -220,6 +220,7 @@
                 $successScript .= "$('#Contact_primaryAddress_" . $attribute . "').val(data.billingAddress_" . $attribute . ").trigger('change'); \n";
                 $successScript .= "$('#Contact_secondaryAddress_" . $attribute . "').val(data.shippingAddress_" . $attribute . ").trigger('change'); \n";
             }
+            // Begin Not Coding Standard
             Yii::app()->clientScript->registerScript('copyAddressFromAccountToContactScript', "
                 $('#Contact_account_id').live('change', function()
                     {
@@ -237,7 +238,8 @@
                           !$('#Contact_secondaryAddress_postalCode').val() &&
                           !$('#Contact_secondaryAddress_country').val())
                           {
-                            $.ajax({
+                            $.ajax(
+                            {
                                 url : '" . $url . "?id=' + $('#Contact_account_id').val(),
                                 type : 'GET',
                                 dataType: 'json',
@@ -249,11 +251,13 @@
                                 {
                                     //todo: error call
                                 }
-                            });
+                            }
+                            );
                           }
                     }
                 );
             ");
+            // End Not Coding Standard
         }
     }
 ?>

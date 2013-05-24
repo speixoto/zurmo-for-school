@@ -31,14 +31,13 @@
      */
     class SellPriceCurrencyIdForAModelsRelatedCurrencyValueDropDownElement extends CurrencyIdForAModelsRelatedCurrencyValueDropDownElement
     {
-
         /**
          * Renders the editable dropdown content.
          * @return A string containing the element's content.
          */
         protected function renderControlEditable()
         {
-            $defaultHtmlOptions	    = $this->getEditableHtmlOptions();
+            $defaultHtmlOptions     = $this->getEditableHtmlOptions();
             $sellPriceFormulaModel  = $this->model->sellPriceFormula;
             $type                   = $sellPriceFormulaModel->type;
             $additionalHtmlOptions  = array();

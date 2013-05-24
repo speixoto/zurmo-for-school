@@ -262,8 +262,8 @@
             $activeAttributes,
             $selectedRecordCount,
             $title,
-	    $massDeleteViewClassName = 'MassDeleteView'
-		)
+            $massDeleteViewClassName = 'MassDeleteView'
+        )
         {
             // TODO: @Shoaibi/@Jason: Low: Deprecated
             // trigger_error('Deprecated');

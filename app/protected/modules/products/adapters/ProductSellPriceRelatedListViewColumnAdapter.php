@@ -41,7 +41,7 @@
             return array(
                         'class' => 'phaEditColumn',
                         'name'  => $this->attribute,
-                        'value' => array('ProductElementUtil' ,'getProductPortletSellPrice'),
+                        'value' => array('ProductElementUtil', 'getProductPortletSellPrice'),
                         'actionUrl' => Yii::app()->createUrl('products/default/update', array('attribute' => 'sellPrice')),
                     );
         }

@@ -55,6 +55,7 @@
                 return false;
             }
         }
+
         /**
          * Given a Conversation and User, determine if the user is already a conversationParticipant.
          * @param Conversation $model

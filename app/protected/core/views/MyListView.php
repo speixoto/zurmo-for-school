@@ -109,8 +109,7 @@
             assert('is_array($searchAttributeData)');
             list($sortAttribute, $sortDescending)  =
                     SearchUtil::resolveSortFromStickyData($this->modelClassName, $this->uniqueLayoutId);
-            $pageSize =
-                    Yii::app()->pagination->resolveActiveForCurrentUserByType('dashboardListPageSize');
+            $pageSize = Yii::app()->pagination->resolveActiveForCurrentUserByType('dashboardListPageSize');
             $redBeanModelDataProvider = new RedBeanModelDataProvider($this->modelClassName, $sortAttribute, $sortDescending,
                                                                 $searchAttributeData, array(
                                                                     'pagination' => array(

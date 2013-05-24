@@ -110,7 +110,7 @@
                     if (helperValue == typeMarkOverCost)
                     {
                         var cost = parseFloat($('#ProductTemplate_cost_value').val());
-                        calculatedSellPrice = (discountOrMarkupPercentage*cost)+cost;
+                        calculatedSellPrice = (discountOrMarkupPercentage * cost) + cost;
                         $('#ProductTemplate_sellPrice_value').val(calculatedSellPrice);
                     }
 
@@ -135,12 +135,12 @@
             return "
                 $(document).ready(function()
                 {
-                   $('#ProductTemplate_cost_value').bind('keyup',function()
+                   $('#ProductTemplate_cost_value').bind('keyup', function()
                        {
                             calculateSellPriceBySellPriceFormula();
                        }
                    );
-                   $('#ProductTemplate_listPrice_value').bind('keyup',function()
+                   $('#ProductTemplate_listPrice_value').bind('keyup', function()
                        {
                             calculateSellPriceBySellPriceFormula();
                        }

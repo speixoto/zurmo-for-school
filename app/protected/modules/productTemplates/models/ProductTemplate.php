@@ -122,8 +122,8 @@
                     'sellPrice'           => 'CurrencyValue',
                     'type'                => 'ProductTemplateTypeDropDown',
                     'status'              => 'ProductTemplateStatusDropDown',
-                    'priceFrequency'	  => 'ProductTemplatePriceFrequencyDropDown',
-                    'sellPriceFormula'	  => 'SellPriceFormulaInformation'
+                    'priceFrequency'      => 'ProductTemplatePriceFrequencyDropDown',
+                    'sellPriceFormula'    => 'SellPriceFormulaInformation'
 
                 ),
                 'customFields' => array(

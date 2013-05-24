@@ -383,7 +383,7 @@
             $formatType          = CalculatedNumberUtil::FORMAT_TYPE_INTEGER;
             $currencyCode        = null;
             $testCalculatedValue = CalculatedNumberUtil::calculateByFormulaAndModelAndResolveFormat($metadata->getFormula(), $account[0]);
-            $this->assertEquals('474,000,930'                               , $testCalculatedValue);
+            $this->assertEquals('474,000,930'                               , $testCalculatedValue); // Not Coding Standard
         }
 
         /**

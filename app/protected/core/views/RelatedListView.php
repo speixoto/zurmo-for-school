@@ -37,7 +37,7 @@
     /**
      * The base View for a module's related list view.
      */
-    abstract class RelatedListView extends ListView implements PortletViewInterface,RelatedPortletViewInterface
+    abstract class RelatedListView extends ListView implements PortletViewInterface, RelatedPortletViewInterface
     {
         protected $params;
         protected $viewData;

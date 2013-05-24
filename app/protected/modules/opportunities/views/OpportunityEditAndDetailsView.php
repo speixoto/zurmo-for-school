@@ -183,7 +183,8 @@
                     var value  = stageInput.val();
                     var result = $.parseJSON('" . $jsonEncodedMapping . "');
                     $('#" . $probabilityInputId . "').val(0);
-                    $.each(result, function(stage, probability) {
+                    $.each(result, function(stage, probability)
+                    {
                         if(value == stage)
                         {
                             $('#" . $probabilityInputId . "').val(probability);

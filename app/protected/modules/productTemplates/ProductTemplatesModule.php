@@ -45,8 +45,8 @@
 
         public static function getTranslatedRightsLabels()
         {
-            $params					  = LabelUtil::getTranslationParamsForAllModules();
-            $labels					  = array();
+            $params                   = LabelUtil::getTranslationParamsForAllModules();
+            $labels                   = array();
             $labels[self::RIGHT_CREATE_PRODUCT_TEMPLATES] = Zurmo::t('ProductTemplatesModule',
                                                                         'Create ProductTemplatesModulePluralLabel',     $params);
             $labels[self::RIGHT_DELETE_PRODUCT_TEMPLATES] = Zurmo::t('ProductTemplatesModule',
