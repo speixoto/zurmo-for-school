@@ -144,6 +144,7 @@
                             $('#' + rowData.row.toString() + ' .edit-dynamic-row-link').toggle();
                             $('#' + rowData.row.toString()).siblings().show();
                             $('#actionsNextLink').parent().parent().show();
+                            $('#actionType').removeAttr('disabled');
                         }
 
                         if (linkId == '" . GeneralDataForWorkflowWizardView::getNextPageLinkId() . "')
