@@ -1289,7 +1289,21 @@ body > .ui-autocomplete{
 	display:inline-block;
 	width: 100%;
 	position: relative;
+	z-index: 100;
 }
+
+
+.widgets-lock{
+	position: relative;
+	margin-top: -37px;
+	margin-bottom: 15px;
+	float: right;
+	.view-toolbar{
+		float: right;
+		margin-bottom: 0 !important;
+	}
+}
+
 
 .juiportlet-widget-head{
 	.view-toolbar-container{
@@ -1466,6 +1480,7 @@ form,
 		.view-toolbar-icons();
 		top:-2px;
 		margin: 0;
+		color: #c43d53;
 	}
 }
 
@@ -1476,6 +1491,7 @@ form,
 		.view-toolbar-icons();
 		top:-2px;
 		margin: 0;
+		color: #7CB830;
 	}
 }
 
@@ -3730,13 +3746,14 @@ div.wide.form{
 
 #inline-edit-form{
 	++.unstyle-panel;
-	padding: 15px 15px 15px 0;
+	//padding: 15px 15px 15px 0;
 	table + table{
 		float:left;
 		.box-sizing();
 	}
 	.panel td{
 		padding-bottom: 15px;
+		padding-left: 0;
 	}
 	> table{
 		td > a{
@@ -3765,8 +3782,13 @@ div.wide.form{
 	table{
 		border-bottom: none;
 	}
+	.left-column{
+		padding-bottom: 0;
+	}
 	.view-toolbar-container{
 		display: inline-block;
+		padding: 0 15px 15px 15px;
+		++.border-box;
 		a{
 			float:right;
 			clear: both;
@@ -3873,6 +3895,7 @@ div.radio-input{
 .BreadCrumbView{
 	position: relative;
 	z-index: 10;
+	display: inline-block;
 	&+div{
 		position: relative;
 		z-index: 1;
