@@ -45,19 +45,26 @@
             SecurityTestHelper::createSuperAdmin();
             $super = User::getByUsername('super');
             Yii::app()->user->userModel = $super;
-			
+            $nobody = User::getByUsername('nobody');
+            Yii::app()->user->userModel = $nobody;
+            
+            $everyoneGroup = Group::getByName(Group::EVERYONE_GROUP_NAME);
+            assert($everyoneGroup->save()); // Not Coding Standard
+            
+            $group1        = new Group();
+            $group1->name  = 'Group1';
+            $group1->users->add($nobody);
+            assert($group1->save()); // Not Coding Standard
         }
 
         public function testRegularUserAllControllerActionsNoElevation()
         {
             $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
-			$savedReports = SavedReportTestHelper::makeSimpleContactRowsAndColumnsReport();
-			$savedReports = SavedReport::getAll();
-			$nobody = User::getByUsername('nobody');
-			Yii::app()->user->userModel = $nobody;
+            $savedReports = SavedReportTestHelper::makeSimpleContactRowsAndColumnsReport();
+            $savedReports = SavedReport::getAll();
             $nobody = $this->logoutCurrentUserLoginNewUserAndGetByUsername('nobody');
             //should fail
-			$this->setGetArray(array('id' => $savedReports[0]->id));
+            $this->setGetArray(array('id' => $savedReports[0]->id));
             $this->resetPostArray();
             $this->runControllerShouldResultInAccessFailureAndGetContent('reports/default/details');
             $this->setGetArray(array('id' => $savedReports[0]->id));
@@ -67,6 +74,8 @@
 
         public static function makeRowsAndColumnsReportPostData()
         {
+            $group1 = Group::getByName('Group1');
+            
             return array(
                 'validationScenario' => 'ValidateForDisplayAttributes',
                 'RowsAndColumnsReportWizardForm' => array(
@@ -93,7 +102,7 @@
                     'ownerName' => 'Super User',
                     'explicitReadWriteModelPermissions' => array(
                         'type' => '',
-                        'nonEveryoneGroup' => '4')),
+                        'nonEveryoneGroup' => $group1->id)),
                 'FiltersRowCounter' => '1',
                 'DisplayAttributesRowCounter' => '1',
                 'OrderBysRowCounter' => '0',
@@ -104,21 +113,13 @@
         {
             $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
             $nobody = User::getByUsername('nobody');
-            Yii::app()->user->userModel = $nobody;
+            $group1 = Group::getByName('Group1');
             $nobody->setRight('AccountsModule', AccountsModule::RIGHT_ACCESS_ACCOUNTS);
             $nobody->setRight('AccountsModule', AccountsModule::RIGHT_CREATE_ACCOUNTS);
             $nobody->setRight('ReportsModule', ReportsModule::RIGHT_ACCESS_REPORTS);
             $nobody->setRight('ReportsModule', ReportsModule::RIGHT_CREATE_REPORTS);
             $nobody->setRight('ReportsModule', ReportsModule::RIGHT_DELETE_REPORTS);
             assert($nobody->save()); // Not Coding Standard
-            
-            $everyoneGroup = Group::getByName(Group::EVERYONE_GROUP_NAME);
-            assert($everyoneGroup->save()); // Not Coding Standard
-
-            $group1        = new Group();
-            $group1->name  = 'Group1';
-            $group1->users->add($nobody);
-            assert($group1->save()); // Not Coding Standard
             
             $explicitReadWriteModelPermissions = new ExplicitReadWriteModelPermissions();
             $this->assertEquals(0, $explicitReadWriteModelPermissions->getReadOnlyPermitablesCount());
@@ -128,7 +129,7 @@
             $explicitReadWriteModelPermissions->addReadWritePermitable($group1);
             
             $savedReports = SavedReport::getAll();
-            $this->assertEquals(0, count($savedReports));
+            $this->assertEquals(1, count($savedReports));
             $nobody = $this->logoutCurrentUserLoginNewUserAndGetByUsername('nobody');
             $content = $this->runControllerWithExitExceptionAndGetContent     ('reports/default/create');
             $this->assertFalse(strpos($content, 'Rows and Columns Report') === false);
@@ -155,7 +156,6 @@
             $savedReports = SavedReport::getAll();
             $this->assertEquals(2, count($savedReports));
             $nobody = $this->logoutCurrentUserLoginNewUserAndGetByUsername('nobody');
-            //exit();
             $this->setGetArray(array('id' => $savedReports[0]->id));
             $this->resetPostArray();
             $this->runControllerWithNoExceptionsAndGetContent('reports/default/details');

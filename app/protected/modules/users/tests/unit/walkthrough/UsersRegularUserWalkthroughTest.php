@@ -242,7 +242,7 @@
             $this->assertEquals(0, preg_match('~\b' . $find . '\b~i', $content));
             //Check Delete button not present in role
             $this->setGetArray(array('id' => $role->id));
-            $content = $this->runControllerWithExitExceptionAndGetContent('zurmo/role/details');
+            $content = $this->runControllerWithNoExceptionsAndGetContent('zurmo/role/details');
             $find = 'Delete Group';
             $this->assertEquals(0, preg_match('~\b' . $find . '\b~i', $content));
             //Access to create action in group should fail.
