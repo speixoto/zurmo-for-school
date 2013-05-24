@@ -35,36 +35,22 @@
      ********************************************************************************/
 
     /**
-     * Wrapper class to render highlight or alert notify html content given a message.
+     * Report rules to be used with the Products module.
      */
-    class HtmlNotifyUtil
+    class ProductsReportRules extends SecuredReportRules
     {
-        public static function renderHighlightBoxByMessage($message)
+        /**
+         * @return array
+         */
+        public static function getDefaultMetadata()
         {
-            assert('$message != null && is_string($message)');
-            $content   = ZurmoHtml::wrapLabel('&#160', 'ui-icon ui-icon-info') . $message;
-            $innerContent = ZurmoHtml::tag('p', array(), $content );
-            $innerDiv  = ZurmoHtml::tag('div', array('class' => 'ui-state-highlight ui-corner-all'), $innerContent );
-            return ZurmoHtml::tag('div', array('class' => 'ui-notice ui-widget'), $innerDiv );
-        }
-
-        public static function renderAlertBoxByMessage($message)
-        {
-            assert('$message != null && is_string($message)');
-            $alertMessage = '<strong>' . Zurmo::t('ZurmoModule', 'Alert') . ':</strong> ' . $message ;
-            $content   = ZurmoHtml::wrapLabel('&#160', 'ui-icon ui-icon-alert') . $alertMessage;
-            $innerContent = ZurmoHtml::tag('p', array(), $content );
-            $innerDiv  = ZurmoHtml::tag('div', array('class' => 'ui-state-highlight ui-corner-all'), $innerContent );
-            return ZurmoHtml::tag('div', array('class' => 'ui-widget'), $innerDiv );
-        }
-
-        public static function renderWarningBoxByMessage($message)
-        {
-            assert('$message != null && is_string($message)');
-            $content   = ZurmoHtml::wrapLabel('&#160', 'ui-icon ui-icon-info') . $message;
-            $innerContent = ZurmoHtml::tag('p', array(), $content );
-            $innerDiv  = ZurmoHtml::tag('div', array('class' => 'ui-state-warning ui-corner-all'), $innerContent );
-            return ZurmoHtml::tag('div', array('class' => 'ui-widget'), $innerDiv );
+            $metadata = array(
+                'Product' => array(
+                    'nonReportable' =>
+                    array('products', 'product'),
+                )
+            );
+            return array_merge(parent::getDefaultMetadata(), $metadata);
         }
     }
 ?>

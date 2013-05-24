@@ -559,6 +559,46 @@
                         'effective'   => Right::DENY,
                     ),
                 ),
+                'ProductTemplatesModule'  => array(
+                    'RIGHT_CREATE_PRODUCT_TEMPLATES' => array(
+                        'displayName' => ProductTemplatesModule::RIGHT_CREATE_PRODUCT_TEMPLATES,
+                        'explicit'    => null,
+                        'inherited'   => null,
+                        'effective'   => Right::DENY,
+                    ),
+                    'RIGHT_DELETE_PRODUCT_TEMPLATES' => array(
+                        'displayName' => ProductTemplatesModule::RIGHT_DELETE_PRODUCT_TEMPLATES,
+                        'explicit'    => null,
+                        'inherited'   => null,
+                        'effective'   => Right::DENY,
+                    ),
+                    'RIGHT_ACCESS_PRODUCT_TEMPLATES' => array(
+                        'displayName' => ProductTemplatesModule::RIGHT_ACCESS_PRODUCT_TEMPLATES,
+                        'explicit'    => null,
+                        'inherited'   => null,
+                        'effective'   => Right::DENY,
+                    ),
+                ),
+                'ProductsModule'  => array(
+                    'RIGHT_CREATE_PRODUCT_TEMPLATES' => array(
+                        'displayName' => ProductsModule::RIGHT_CREATE_PRODUCTS,
+                        'explicit'    => null,
+                        'inherited'   => null,
+                        'effective'   => Right::DENY,
+                    ),
+                    'RIGHT_DELETE_PRODUCT_TEMPLATES' => array(
+                        'displayName' => ProductsModule::RIGHT_DELETE_PRODUCTS,
+                        'explicit'    => null,
+                        'inherited'   => null,
+                        'effective'   => Right::DENY,
+                    ),
+                    'RIGHT_ACCESS_PRODUCT_TEMPLATES' => array(
+                        'displayName' => ProductsModule::RIGHT_ACCESS_PRODUCTS,
+                        'explicit'    => null,
+                        'inherited'   => null,
+                        'effective'   => Right::DENY,
+                    ),
+                ),
             );
             $this->assertEquals($compareData, $data);
             $group->forget();

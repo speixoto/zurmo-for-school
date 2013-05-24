@@ -64,6 +64,11 @@ a.z-button,
 .float-bar,
 .hasDetailsFlyout ul,
 .stacked-list td div.checkbox-column ~ div,
+.filters-bar #MashableInboxForm_filteredBy_area,
+.filters-bar #MashableInboxForm_optionForModel_area,
+.filters-bar .latest-activity-toolbar,
+.filters-bar .filter-portlet-model-bar,
+.filters-bar,
 .search-form-tools input[type="submit"],
 a.search-form-tools input[type="submit"],
 .default-btn .search-form-tools input[type="submit"],
@@ -75,11 +80,16 @@ a.search-form-tools input[type="submit"],
 #delete-form,
 .right-side-edit-view-panel,
 .after-form-details-content,
+#inline-edit-form .view-toolbar-container,
 .pager,
 .pager ul,
 .pager li,
 .LatestActivitiesListView .activity-item,
 .LatestActivitiesView .activity-item,
+#MashableInboxForm_filteredBy_area,
+#MashableInboxForm_optionForModel_area,
+.latest-activity-toolbar,
+.filter-portlet-model-bar,
 #progressBar-links a,
 a#progressBar-links a,
 .default-btn #progressBar-links a,
@@ -198,13 +208,21 @@ a.designer-toolbar input[type="submit"],
 .AppContent.ImportWizardView #addExtraColumnButton a.designer-toolbar input[type="submit"],
 .addfileinput-button span .designer-toolbar input[type="submit"],
 .addfileinput-button span a.designer-toolbar input[type="submit"],
+#contactStatesData_AddInputButton,
 #customFieldDataData_AddInputButton,
+a#contactStatesData_AddInputButton,
 a#customFieldDataData_AddInputButton,
+.default-btn #contactStatesData_AddInputButton,
 .default-btn #customFieldDataData_AddInputButton,
+.default-btn a#contactStatesData_AddInputButton,
 .default-btn a#customFieldDataData_AddInputButton,
+.AppContent.ImportWizardView #addExtraColumnButton #contactStatesData_AddInputButton,
 .AppContent.ImportWizardView #addExtraColumnButton #customFieldDataData_AddInputButton,
+.AppContent.ImportWizardView #addExtraColumnButton a#contactStatesData_AddInputButton,
 .AppContent.ImportWizardView #addExtraColumnButton a#customFieldDataData_AddInputButton,
+.addfileinput-button span #contactStatesData_AddInputButton,
 .addfileinput-button span #customFieldDataData_AddInputButton,
+.addfileinput-button span a#contactStatesData_AddInputButton,
 .addfileinput-button span a#customFieldDataData_AddInputButton,
 .ModalGameNotification a,
 a.ModalGameNotification a,
@@ -388,7 +406,9 @@ a.ui-datepicker .ui-datepicker-current,
 a.ui-datepicker .ui-datepicker-close,
 .designer-toolbar input[type="submit"],
 a.designer-toolbar input[type="submit"],
+#contactStatesData_AddInputButton,
 #customFieldDataData_AddInputButton,
+a#contactStatesData_AddInputButton,
 a#customFieldDataData_AddInputButton,
 .ModalGameNotification a,
 a.ModalGameNotification a {
@@ -454,7 +474,9 @@ a.ui-datepicker .ui-datepicker-current:before,
 a.ui-datepicker .ui-datepicker-close:before,
 .designer-toolbar input[type="submit"]:before,
 a.designer-toolbar input[type="submit"]:before,
+#contactStatesData_AddInputButton:before,
 #customFieldDataData_AddInputButton:before,
+a#contactStatesData_AddInputButton:before,
 a#customFieldDataData_AddInputButton:before,
 .ModalGameNotification a:before,
 a.ModalGameNotification a:before {
@@ -496,7 +518,9 @@ a.ui-datepicker .ui-datepicker-current:after,
 a.ui-datepicker .ui-datepicker-close:after,
 .designer-toolbar input[type="submit"]:after,
 a.designer-toolbar input[type="submit"]:after,
+#contactStatesData_AddInputButton:after,
 #customFieldDataData_AddInputButton:after,
+a#contactStatesData_AddInputButton:after,
 a#customFieldDataData_AddInputButton:after,
 .ModalGameNotification a:after,
 a.ModalGameNotification a:after {
@@ -539,7 +563,9 @@ a.ui-datepicker .ui-datepicker-current.attachLoading.z-button,
 a.ui-datepicker .ui-datepicker-close.attachLoading.z-button,
 .designer-toolbar input[type="submit"].attachLoading.z-button,
 a.designer-toolbar input[type="submit"].attachLoading.z-button,
+#contactStatesData_AddInputButton.attachLoading.z-button,
 #customFieldDataData_AddInputButton.attachLoading.z-button,
+a#contactStatesData_AddInputButton.attachLoading.z-button,
 a#customFieldDataData_AddInputButton.attachLoading.z-button,
 .ModalGameNotification a.attachLoading.z-button,
 a.ModalGameNotification a.attachLoading.z-button {
@@ -580,7 +606,9 @@ a.ui-datepicker .ui-datepicker-current:not(.attachLoading) .z-label,
 a.ui-datepicker .ui-datepicker-close:not(.attachLoading) .z-label,
 .designer-toolbar input[type="submit"]:not(.attachLoading) .z-label,
 a.designer-toolbar input[type="submit"]:not(.attachLoading) .z-label,
+#contactStatesData_AddInputButton:not(.attachLoading) .z-label,
 #customFieldDataData_AddInputButton:not(.attachLoading) .z-label,
+a#contactStatesData_AddInputButton:not(.attachLoading) .z-label,
 a#customFieldDataData_AddInputButton:not(.attachLoading) .z-label,
 .ModalGameNotification a:not(.attachLoading) .z-label,
 a.ModalGameNotification a:not(.attachLoading) .z-label {
@@ -684,6 +712,7 @@ table.configuration-list td:last-child a.loading .z-spinner,
 .ui-datepicker .ui-datepicker-current.loading .z-spinner,
 .ui-datepicker .ui-datepicker-close.loading .z-spinner,
 .designer-toolbar input[type="submit"].loading .z-spinner,
+#contactStatesData_AddInputButton.loading .z-spinner,
 #customFieldDataData_AddInputButton.loading .z-spinner,
 .ModalGameNotification a.loading .z-spinner {
   display: inline-block;
@@ -704,6 +733,7 @@ table.configuration-list td:last-child a.loading .z-icon,
 .ui-datepicker .ui-datepicker-current.loading .z-icon,
 .ui-datepicker .ui-datepicker-close.loading .z-icon,
 .designer-toolbar input[type="submit"].loading .z-icon,
+#contactStatesData_AddInputButton.loading .z-icon,
 #customFieldDataData_AddInputButton.loading .z-icon,
 .ModalGameNotification a.loading .z-icon {
   display: none;
@@ -5846,26 +5876,22 @@ body > .ui-autocomplete {
 .toggle-hidden-nav-items {
   display: block;
   text-align: center;
-  padding: 5px 0;
+  padding: 5px 0 5px 0;
   margin: 0 0 0 0;
   cursor: pointer;
   position: relative;
-  top: 5px;
+  top: 8px;
 }
 .toggle-hidden-nav-items:after {
-  content: '\00F7';
-  font-weight: normal;
-  font-size: 20px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  content: "···";
+  font-size: 26px;
+  font-weight: bold;
   line-height: 1;
   -webkit-text-shadow: 0 1px 0 #ffffff;
   -moz-text-shadow: 0 1px 0 #ffffff;
   -o-text-shadow: 0 1px 0 #ffffff;
   -ms-text-shadow: 0 1px 0 #ffffff;
   text-shadow: 0 1px 0 #ffffff;
-}
-.toggle-hidden-nav-items.point-up:after {
-  content: '\00A1';
 }
 /*=Recently Viewed*/
 #RecentlyViewedView {
@@ -6142,11 +6168,14 @@ body > .ui-autocomplete {
 #ActionBarSearchAndListView > :nth-child(6) {
   z-index: 5;
 }
-/*=dashboard*/
-#HomeDashboardView .parent > ul {
-  min-width: 160px;
-  margin-top: 0;
+/*=dashboard
+#HomeDashboardView{
+	.parent > ul{
+		min-width: 160px;
+		margin-top:0;
+	}
 }
+*/
 /*=Inner toolbar*/
 .float-bar {
   width: 100%;
@@ -6203,6 +6232,17 @@ body > .ui-autocomplete {
   display: inline-block;
   width: 100%;
   position: relative;
+  z-index: 100;
+}
+.widgets-lock {
+  position: relative;
+  margin-top: -37px;
+  margin-bottom: 15px;
+  float: right;
+}
+.widgets-lock .view-toolbar {
+  float: right;
+  margin-bottom: 0 !important;
 }
 .juiportlet-widget-head .view-toolbar-container {
   float: right;
@@ -6432,6 +6472,7 @@ form .view-toolbar-container,
   position: relative;
   top: -2px;
   margin: 0;
+  color: #c43d53;
 }
 .icon-unlock {
   padding: 0 10px !important;
@@ -6450,8 +6491,8 @@ form .view-toolbar-container,
   position: relative;
   top: -2px;
   margin: 0;
+  color: #7CB830;
 }
-#HomeDashboardView .parent > a:before,
 .icon-change-dashborad:before {
   content: "/";
   font-weight: normal;
@@ -8049,7 +8090,7 @@ div.wide.form label.hasCheckBox {
   font-size: 11px;
   padding-left: 8px;
   border-bottom: 1px solid #DFDFDF;
-  overflow: hidden;
+  width: 100%;
   min-height: 40px;
   background-color: #ededed;
   background-repeat: repeat-x;
@@ -8119,7 +8160,7 @@ div.wide.form label.hasCheckBox {
   margin: 0;
 }
 .filters-bar > .ui-buttonset {
-  margin: 14px 0;
+  padding-top: 14px;
 }
 .filters-bar > div + div {
   display: inline-block;
@@ -8992,10 +9033,6 @@ div.wide.form label.hasCheckBox {
   height: auto !important;
 }
 /*=For single meeting, contact etc..*/
-.AppContent.TableOfContentsView .toolbar-mbmenu,
-.AppContent.SecuredEditAndDetailsView .toolbar-mbmenu {
-  top: 8px;
-}
 .wrapper {
   float: left;
   width: 100%;
@@ -9114,15 +9151,15 @@ div.wide.form label.hasCheckBox {
   margin: 0 10px 0 0;
   float: right;
   width: auto;
-  /*.view-toolbar{
-		position:absolute;
-		right:0;
-		top:0;
-		border:none;
-		.b-shadow(none);
-	}
-	*/
-
+}
+.toolbar-mbmenu .view-toolbar {
+  border: none;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  -o-box-shadow: none;
+  -ms-box-shadow: none;
+  box-shadow: none;
+  background: none;
 }
 .toolbar-mbmenu ul {
   list-style: none;
@@ -9173,7 +9210,7 @@ div.wide.form label.hasCheckBox {
   margin-left: 5px;
 }
 .toolbar-mbmenu .options-menu ul {
-  margin-top: -5px;
+  margin-top: 0;
   padding-top: 3px;
   padding-bottom: 3px;
   display: none;
@@ -9192,6 +9229,9 @@ div.wide.form label.hasCheckBox {
   -o-text-shadow: none;
   -ms-text-shadow: none;
   text-shadow: none;
+}
+.details-table .toolbar-mbmenu {
+  top: -35px;
 }
 .AttributeDetailsView .toolbar-mbmenu {
   top: 8px;
@@ -9365,9 +9405,6 @@ div.wide.form label.hasCheckBox {
 #NoteInlineEditForPortletView .wide.form {
   float: none;
 }
-#inline-edit-form {
-  padding: 15px 15px 15px 0;
-}
 #inline-edit-form table + table {
   float: left;
   -moz-box-sizing: border-box;
@@ -9376,6 +9413,7 @@ div.wide.form label.hasCheckBox {
 }
 #inline-edit-form .panel td {
   padding-bottom: 15px;
+  padding-left: 0;
 }
 #inline-edit-form > table td > a:after {
   content: "÷";
@@ -9402,8 +9440,12 @@ div.wide.form label.hasCheckBox {
 #inline-edit-form table {
   border-bottom: none;
 }
+#inline-edit-form .left-column {
+  padding-bottom: 0;
+}
 #inline-edit-form .view-toolbar-container {
   display: inline-block;
+  padding: 0 15px 15px 15px;
 }
 #inline-edit-form .view-toolbar-container a {
   float: right;
@@ -9515,6 +9557,7 @@ div.radio-input .hasDropDown {
 .BreadCrumbView {
   position: relative;
   z-index: 10;
+  display: inline-block;
 }
 .BreadCrumbView + div {
   position: relative;
@@ -9792,13 +9835,16 @@ div.hasHalfs .twoThirds {
 .edit-portlet-menu ul,
 .edit-row-menu ul {
   width: 110px;
-  margin-left: -97px;
+  margin-left: -85px;
   list-style: none;
   top: 20px;
   font-size: 11px;
 }
 .edit-portlet-menu {
   margin-right: 15px;
+}
+.edit-portlet-menu ul {
+  top: 32px;
 }
 /*Upcoming Meeting Pager*/
 .pager {
@@ -10237,7 +10283,7 @@ div.hasHalfs .twoThirds {
 }
 .filter-portlet-model-bar {
   border-bottom: 1px solid #DFDFDF;
-  overflow: hidden;
+  width: 100%;
   min-height: 40px;
   background-color: #ededed;
   background-repeat: repeat-x;
@@ -10256,7 +10302,7 @@ div.hasHalfs .twoThirds {
   position: relative;
 }
 .filter-portlet-model-bar > .ui-buttonset {
-  margin: 14px 0;
+  padding-top: 14px;
 }
 .activity-date {
   font-size: 11px;
@@ -10996,34 +11042,34 @@ a.remove {
 	}*/
 
 }
+/*
 .juiportlet-widget-head a.edit {
-  float: right;
-  display: inline;
-  width: 14px;
-  height: 40px;
-  text-indent: -9999em;
-  margin-right: 8px;
-  outline: none;
-  position: relative;
+	float: right;
+	display: inline;
+	width: 14px;
+	height: 40px;
+	text-indent: -9999em;
+	margin-right:8px;
+	outline: none;
+	position:relative;
+	.icon{
+	    line-height:1;
+	    position:relative;
+	    float:right;
+	}
+	.icon:after{
+		position:absolute;
+		top:7px;
+		right:0;
+		content:"n";
+		.symbly(24px);
+		text-indent:0;
+		display:block;
+		float:right;
+		color:#A7A7A7;
+	}
 }
-.juiportlet-widget-head a.edit .icon {
-  line-height: 1;
-  position: relative;
-  float: right;
-}
-.juiportlet-widget-head a.edit .icon:after {
-  position: absolute;
-  top: 7px;
-  right: 0;
-  content: "n";
-  font-weight: normal;
-  font-size: 24px;
-  font-family: "ZurmoGamificationSymblyReguRg";
-  text-indent: 0;
-  display: block;
-  float: right;
-  color: #A7A7A7;
-}
+*/
 .juiportlet-widget-head a.collapse {
   float: left;
   display: none;
@@ -13905,8 +13951,9 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
 #customFieldDataData_ul li {
   position: relative;
 }
+#contactStatesData_AddInputButton,
 #customFieldDataData_AddInputButton {
-  margin: 15px 0 0 0 !important;
+  margin: 5px 0 0 0 !important;
   float: left;
   clear: both;
 }
@@ -17897,14 +17944,11 @@ a.user-link {
     width: 100%;
     min-width: 0 !important;
   }
-  #HomeDashboardView {
-    padding-right: 20px;
-  }
-  #HomeDashboardView .juiportlet-column {
+  .juiportlet-column {
     width: 100%;
     float: none;
   }
-  #HomeDashboardView .juiportlet-widget {
+  .juiportlet-widget {
     min-width: auto;
     margin-right: 0px;
   }
