@@ -154,7 +154,6 @@
                         '" id = "' . $this->getIdForInputField('{id}') .
                         '" type = "text" value = "{content}" size="50"/>
                         <input name = "' . $this->getNameForExistingValueHiddenField() . '" type = "hidden" value = "{content}"/>
-
                         ' . static::renderLanguageLabelHtmlContent($activeLanguagesData[$baseLanguage]['name']) .
                         '</div>{removalContent}' .
                         $this->renderSortableLanguageLabelInputsForAddingNewValuesJuiSortableContent() .

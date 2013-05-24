@@ -208,13 +208,21 @@ a.designer-toolbar input[type="submit"],
 .AppContent.ImportWizardView #addExtraColumnButton a.designer-toolbar input[type="submit"],
 .addfileinput-button span .designer-toolbar input[type="submit"],
 .addfileinput-button span a.designer-toolbar input[type="submit"],
+#contactStatesData_AddInputButton,
 #customFieldDataData_AddInputButton,
+a#contactStatesData_AddInputButton,
 a#customFieldDataData_AddInputButton,
+.default-btn #contactStatesData_AddInputButton,
 .default-btn #customFieldDataData_AddInputButton,
+.default-btn a#contactStatesData_AddInputButton,
 .default-btn a#customFieldDataData_AddInputButton,
+.AppContent.ImportWizardView #addExtraColumnButton #contactStatesData_AddInputButton,
 .AppContent.ImportWizardView #addExtraColumnButton #customFieldDataData_AddInputButton,
+.AppContent.ImportWizardView #addExtraColumnButton a#contactStatesData_AddInputButton,
 .AppContent.ImportWizardView #addExtraColumnButton a#customFieldDataData_AddInputButton,
+.addfileinput-button span #contactStatesData_AddInputButton,
 .addfileinput-button span #customFieldDataData_AddInputButton,
+.addfileinput-button span a#contactStatesData_AddInputButton,
 .addfileinput-button span a#customFieldDataData_AddInputButton,
 .ModalGameNotification a,
 a.ModalGameNotification a,
@@ -398,7 +406,9 @@ a.ui-datepicker .ui-datepicker-current,
 a.ui-datepicker .ui-datepicker-close,
 .designer-toolbar input[type="submit"],
 a.designer-toolbar input[type="submit"],
+#contactStatesData_AddInputButton,
 #customFieldDataData_AddInputButton,
+a#contactStatesData_AddInputButton,
 a#customFieldDataData_AddInputButton,
 .ModalGameNotification a,
 a.ModalGameNotification a {
@@ -464,7 +474,9 @@ a.ui-datepicker .ui-datepicker-current:before,
 a.ui-datepicker .ui-datepicker-close:before,
 .designer-toolbar input[type="submit"]:before,
 a.designer-toolbar input[type="submit"]:before,
+#contactStatesData_AddInputButton:before,
 #customFieldDataData_AddInputButton:before,
+a#contactStatesData_AddInputButton:before,
 a#customFieldDataData_AddInputButton:before,
 .ModalGameNotification a:before,
 a.ModalGameNotification a:before {
@@ -506,7 +518,9 @@ a.ui-datepicker .ui-datepicker-current:after,
 a.ui-datepicker .ui-datepicker-close:after,
 .designer-toolbar input[type="submit"]:after,
 a.designer-toolbar input[type="submit"]:after,
+#contactStatesData_AddInputButton:after,
 #customFieldDataData_AddInputButton:after,
+a#contactStatesData_AddInputButton:after,
 a#customFieldDataData_AddInputButton:after,
 .ModalGameNotification a:after,
 a.ModalGameNotification a:after {
@@ -549,7 +563,9 @@ a.ui-datepicker .ui-datepicker-current.attachLoading.z-button,
 a.ui-datepicker .ui-datepicker-close.attachLoading.z-button,
 .designer-toolbar input[type="submit"].attachLoading.z-button,
 a.designer-toolbar input[type="submit"].attachLoading.z-button,
+#contactStatesData_AddInputButton.attachLoading.z-button,
 #customFieldDataData_AddInputButton.attachLoading.z-button,
+a#contactStatesData_AddInputButton.attachLoading.z-button,
 a#customFieldDataData_AddInputButton.attachLoading.z-button,
 .ModalGameNotification a.attachLoading.z-button,
 a.ModalGameNotification a.attachLoading.z-button {
@@ -590,7 +606,9 @@ a.ui-datepicker .ui-datepicker-current:not(.attachLoading) .z-label,
 a.ui-datepicker .ui-datepicker-close:not(.attachLoading) .z-label,
 .designer-toolbar input[type="submit"]:not(.attachLoading) .z-label,
 a.designer-toolbar input[type="submit"]:not(.attachLoading) .z-label,
+#contactStatesData_AddInputButton:not(.attachLoading) .z-label,
 #customFieldDataData_AddInputButton:not(.attachLoading) .z-label,
+a#contactStatesData_AddInputButton:not(.attachLoading) .z-label,
 a#customFieldDataData_AddInputButton:not(.attachLoading) .z-label,
 .ModalGameNotification a:not(.attachLoading) .z-label,
 a.ModalGameNotification a:not(.attachLoading) .z-label {
@@ -694,6 +712,7 @@ table.configuration-list td:last-child a.loading .z-spinner,
 .ui-datepicker .ui-datepicker-current.loading .z-spinner,
 .ui-datepicker .ui-datepicker-close.loading .z-spinner,
 .designer-toolbar input[type="submit"].loading .z-spinner,
+#contactStatesData_AddInputButton.loading .z-spinner,
 #customFieldDataData_AddInputButton.loading .z-spinner,
 .ModalGameNotification a.loading .z-spinner {
   display: inline-block;
@@ -714,6 +733,7 @@ table.configuration-list td:last-child a.loading .z-icon,
 .ui-datepicker .ui-datepicker-current.loading .z-icon,
 .ui-datepicker .ui-datepicker-close.loading .z-icon,
 .designer-toolbar input[type="submit"].loading .z-icon,
+#contactStatesData_AddInputButton.loading .z-icon,
 #customFieldDataData_AddInputButton.loading .z-icon,
 .ModalGameNotification a.loading .z-icon {
   display: none;
@@ -13931,8 +13951,9 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
 #customFieldDataData_ul li {
   position: relative;
 }
+#contactStatesData_AddInputButton,
 #customFieldDataData_AddInputButton {
-  margin: 15px 0 0 0 !important;
+  margin: 5px 0 0 0 !important;
   float: left;
   clear: both;
 }
