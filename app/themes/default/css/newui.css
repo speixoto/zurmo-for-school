@@ -940,6 +940,7 @@ body.blue .configuration-list td:last-child a:hover span:before,
 body.blue .addfileinput-button:hover span,
 body.blue #HomeDashboardPortletSelectionView li span,
 body.blue .hide-welcome span,
+body.blue #kanban-board-options-link:hover,
 body.blue #more-search-link:hover,
 body.blue #select-list-attributes-link:hover {
   color: #7cb830;
@@ -1508,6 +1509,7 @@ body.brown .configuration-list td:last-child a:hover span:before,
 body.brown .addfileinput-button:hover span,
 body.brown #HomeDashboardPortletSelectionView li span,
 body.brown .hide-welcome span,
+body.brown #kanban-board-options-link:hover,
 body.brown #more-search-link:hover,
 body.brown #select-list-attributes-link:hover {
   color: #b88f30;
@@ -2076,6 +2078,7 @@ body.lime .configuration-list td:last-child a:hover span:before,
 body.lime .addfileinput-button:hover span,
 body.lime #HomeDashboardPortletSelectionView li span,
 body.lime .hide-welcome span,
+body.lime #kanban-board-options-link:hover,
 body.lime #more-search-link:hover,
 body.lime #select-list-attributes-link:hover {
   color: #bcc98e;
@@ -2644,6 +2647,7 @@ body.cherry .configuration-list td:last-child a:hover span:before,
 body.cherry .addfileinput-button:hover span,
 body.cherry #HomeDashboardPortletSelectionView li span,
 body.cherry .hide-welcome span,
+body.cherry #kanban-board-options-link:hover,
 body.cherry #more-search-link:hover,
 body.cherry #select-list-attributes-link:hover {
   color: #933140;
@@ -3212,6 +3216,7 @@ body.turquoise .configuration-list td:last-child a:hover span:before,
 body.turquoise .addfileinput-button:hover span,
 body.turquoise #HomeDashboardPortletSelectionView li span,
 body.turquoise .hide-welcome span,
+body.turquoise #kanban-board-options-link:hover,
 body.turquoise #more-search-link:hover,
 body.turquoise #select-list-attributes-link:hover {
   color: #44bbcc;
@@ -3780,6 +3785,7 @@ body.violet .configuration-list td:last-child a:hover span:before,
 body.violet .addfileinput-button:hover span,
 body.violet #HomeDashboardPortletSelectionView li span,
 body.violet .hide-welcome span,
+body.violet #kanban-board-options-link:hover,
 body.violet #more-search-link:hover,
 body.violet #select-list-attributes-link:hover {
   color: #91a1dc;
@@ -4348,6 +4354,7 @@ body.honey .configuration-list td:last-child a:hover span:before,
 body.honey .addfileinput-button:hover span,
 body.honey #HomeDashboardPortletSelectionView li span,
 body.honey .hide-welcome span,
+body.honey #kanban-board-options-link:hover,
 body.honey #more-search-link:hover,
 body.honey #select-list-attributes-link:hover {
   color: #abbc42;
@@ -17739,7 +17746,7 @@ a.user-link {
 #kanban-holder {
   margin: 0;
   padding: 0;
-  background: #ffffff url(../images/chalk.jpg) left 36px no-repeat;
+  background: #ffffff url(../images/kanban/greenboard.jpg) left 36px repeat;
   background-size: 100% 100%;
 }
 #kanban-holder #kanban-board,
@@ -17776,7 +17783,7 @@ a.user-link {
   font-weight: bold !important;
   height: 35px;
   line-height: 35px;
-  background: url(../images/table-items-header.png) left top repeat-x;
+  background: rgba(255, 255, 255, 0.8) url(../images/table-items-header.png) left top repeat-x;
   padding: 0 0 0 5px;
   white-space: nowrap;
   border-bottom: 1px solid #dfdfdf;
