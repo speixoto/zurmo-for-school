@@ -265,8 +265,7 @@
             $campaign02->forgetAll();
             $campaign03->forgetAll();
             $job = new CampaignMarkCompletedJob();
-            ZurmoConfigurationUtil::setByModuleName(CampaignMarkCompletedJob::BATCH_SIZE_CONFIG_MODULE_NAME,
-                                                                    CampaignMarkCompletedJob::BATCH_SIZE_CONFIG_KEY, 1);
+            AutoresponderOrCampaignBatchSizeConfigUtil::setBatchSize(1);
             $this->assertTrue($job->run());
             $campaign01 = Campaign::getById($campaign01Id);
             $this->assertNotNull($campaign01);
@@ -281,8 +280,7 @@
             $campaign01->forgetAll();
             $campaign02->forgetAll();
             $campaign03->forgetAll();
-            ZurmoConfigurationUtil::setByModuleName(CampaignMarkCompletedJob::BATCH_SIZE_CONFIG_MODULE_NAME,
-                                                                CampaignMarkCompletedJob::BATCH_SIZE_CONFIG_KEY, null);
+            AutoresponderOrCampaignBatchSizeConfigUtil::setBatchSize(null);
             $this->assertTrue($job->run());
             $campaign01 = Campaign::getById($campaign01Id);
             $this->assertNotNull($campaign01);

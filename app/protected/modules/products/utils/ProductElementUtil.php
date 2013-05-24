@@ -35,7 +35,6 @@
             $currencyValueModel = $data->sellPrice;
             return Yii::app()->numberFormatter->formatCurrency( $currencyValueModel->value,
                                                                 $currencyValueModel->currency->code);
-
         }
 
         public static function getProductPortletTotalPrice($data, $row)
@@ -44,7 +43,6 @@
             $currencyValueModel = $data->sellPrice;
             return Yii::app()->numberFormatter->formatCurrency( $currencyValueModel->value * $data->quantity,
                                                                 $currencyValueModel->currency->code);
-
         }
     }
 ?>

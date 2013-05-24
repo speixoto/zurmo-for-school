@@ -45,8 +45,8 @@
                 'global' => array(
                     'toolbar' => array(
                         'elements' => array(
-                            array('type'	  => 'ProductCreateLink',
-                                'htmlOptions'	  => array('class' => 'icon-create'),
+                            array('type'          => 'ProductCreateLink',
+                                'htmlOptions'     => array('class' => 'icon-create'),
                             ),
                             array(
                                 'type'            => 'ProductsLink',

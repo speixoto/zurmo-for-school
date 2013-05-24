@@ -121,7 +121,7 @@
         {
             return ZurmoHtml::tag('div', array(
                         'id' => ModelElement::MODAL_CONTAINER_PREFIX . '-' . static::getFormId()
-                   ),'');
+                   ), '');
         }
     }
 ?>

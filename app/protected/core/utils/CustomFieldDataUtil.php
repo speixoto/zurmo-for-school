@@ -59,12 +59,12 @@
 
         public static function getTranslatedLabelByValue(CustomFieldData $customFieldData, $value, $language)
         {
-            if($customFieldData->serializedLabels != null)
+            if ($customFieldData->serializedLabels != null)
             {
                 $customLabels        = unserialize($customFieldData->serializedLabels);
                 //todo: need to do data order/value pairing like in getDataLabelsByLanguage so we would need to cache
                 //getting the data labels statically below, i think that would be easiest.
-                //if(isset($customLabels[$language[$value]))
+                //if (isset($customLabels[$language[$value]))
                 //{
                 //    return $customLabels[$value];
                 //}

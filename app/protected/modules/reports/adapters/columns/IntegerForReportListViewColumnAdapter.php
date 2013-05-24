@@ -48,14 +48,14 @@
         public static function renderNonEditableStatically($model, $attribute)
         {
             assert('$model instanceof ReportResultsRowData');
-            if(null === $displayAttributeKey = $model::resolveKeyByAttributeName($attribute))
+            if (null === $displayAttributeKey = $model::resolveKeyByAttributeName($attribute))
             {
                 return $model->{$attribute};
             }
             $displayAttributes = $model->getDisplayAttributes();
             $displayAttribute  = $displayAttributes[$displayAttributeKey];
             $realAttributeName = $displayAttribute->getResolvedAttribute();
-            if($model->getModel($attribute) instanceof RedBeanModel &&
+            if ($model->getModel($attribute) instanceof RedBeanModel &&
                $model->getModel($attribute)->isAttributeFormattedAsProbability($realAttributeName))
             {
                 $resolvedValue = NumberUtil::divisionForZero($model->{$attribute}, 100);

@@ -45,7 +45,7 @@
         {
             try
             {
-                Yii::app()->user->userModel = static::getUserToRunTrackActionAs();
+                Yii::app()->user->userModel = TrackingUtil::getUserToRunAs();
                 $response                   = EmailMessageActivityUtil::resolveQueryStringFromUrlAndCreateOrUpdateActivity();
                 if ($response['redirect'])
                 {
@@ -72,38 +72,10 @@
             catch (FailedToSaveModelException $e)
             {
             }
+            catch (MissingASuperAdministratorException $e)
+            {
+            }
             // we do not catch all exceptions because we need Exit and Redirect Exception for unit tests
-        }
-
-        protected static function getUserToRunTrackActionAs()
-        {
-            // TODO: @Shoaibi/@Jason: Critical: Needs UI configuration
-            $keyName      = 'UserIdOfUserToRunTrackingAs';
-            $superGroup   = Group::getByName(Group::SUPER_ADMINISTRATORS_GROUP_NAME);
-            if (null != $userId = ZurmoConfigurationUtil::getByModuleName('TrackingModule', $keyName))
-            {
-                try
-                {
-                    $user  = User::getById($userId);
-                    if ($user->groups->contains($superGroup))
-                    {
-                        return $user;
-                    }
-                }
-                catch (NotFoundException $e)
-                {
-                }
-            }
-            if ($superGroup->users->count() == 0)
-            {
-                throw new MissingASuperAdministratorException();
-            }
-            else
-            {
-                $user = $superGroup->users->offsetGet(0);
-                ZurmoConfigurationUtil::setByModuleName('TrackingModule', $keyName, $user->id);
-                return $user;
-            }
         }
     }
 ?>

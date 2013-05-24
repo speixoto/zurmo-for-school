@@ -79,7 +79,7 @@
         {
             assert('is_string($attribute)');
             parent::resolveNullAlternativeValueAndSetToModel($adapter, $attribute);
-            if($adapter->getModel()->{$attribute} === null)
+            if ($adapter->getModel()->{$attribute} === null)
             {
                 $adapter->getModel()->{$attribute} = false;
             }

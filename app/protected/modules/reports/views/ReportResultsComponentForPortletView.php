@@ -110,6 +110,11 @@
             $this->uniqueLayoutId = $uniqueLayoutId;
         }
 
+        public function renderPortletHeadContent()
+        {
+            return null;
+        }
+
         /**
          * @return null
          */

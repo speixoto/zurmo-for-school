@@ -155,7 +155,7 @@
         {
             $savedReport      = SavedReport::getById((int)$id);
             ControllerSecurityUtil::resolveCanCurrentUserAccessModule($savedReport->moduleClassName);
-            if(!$isBeingCopied)
+            if (!$isBeingCopied)
             {
                 ControllerSecurityUtil::resolveAccessCanCurrentUserWriteModel($savedReport);
             }
@@ -496,7 +496,7 @@
                 $report                    = new Report();
                 $report->setType($type);
             }
-            elseif($isBeingCopied)
+            elseif ($isBeingCopied)
             {
                 $savedReport              = new SavedReport();
                 $oldReport                = SavedReport::getById(intval($id));

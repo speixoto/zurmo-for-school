@@ -43,7 +43,6 @@
      */
     abstract class ModelElement extends Element implements ElementActionTypeInterface
     {
-
         const MODAL_CONTAINER_PREFIX = 'modalContainer';
 
         /**

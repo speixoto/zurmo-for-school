@@ -122,8 +122,8 @@
                     'sellPrice'           => 'CurrencyValue',
                     'type'                => 'ProductTemplateTypeDropDown',
                     'status'              => 'ProductTemplateStatusDropDown',
-                    'priceFrequency'	  => 'ProductTemplatePriceFrequencyDropDown',
-                    'sellPriceFormula'	  => 'SellPriceFormulaInformation'
+                    'priceFrequency'      => 'ProductTemplatePriceFrequencyDropDown',
+                    'sellPriceFormula'    => 'SellPriceFormulaInformation'
 
                 ),
                 'customFields' => array(
@@ -153,10 +153,10 @@
 
         protected function beforeDelete()
         {
-            if($this->getScenario() != 'autoBuildDatabase')
+            if ($this->getScenario() != 'autoBuildDatabase')
             {
                 parent::beforeDelete();
-                if(count($this->products) == 0 )
+                if (count($this->products) == 0 )
                 {
                     return true;
                 }

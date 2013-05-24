@@ -40,7 +40,7 @@
         {
             return array(
                         'name'  => $this->attribute,
-                        'value' => array('ProductElementUtil' ,'getProductPortletTotalPrice'),
+                        'value' => array('ProductElementUtil', 'getProductPortletTotalPrice'),
                         'type'  => 'raw',
                     );
         }

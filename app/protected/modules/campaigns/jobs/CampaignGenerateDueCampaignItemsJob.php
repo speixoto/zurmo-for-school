@@ -39,10 +39,6 @@
      */
     class CampaignGenerateDueCampaignItemsJob extends AutoresponderOrCampaignBaseJob
     {
-        const BATCH_SIZE_CONFIG_KEY         = 'CampaignItemGenerationBatchSize';
-
-        const BATCH_SIZE_CONFIG_MODULE_NAME = 'CampaignsModule';
-
         /**
          * @returns Translated label that describes this job type.
          */

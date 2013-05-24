@@ -157,7 +157,7 @@
         public function actionSelectFromRelatedListSave($modelId, $portletId, $uniqueLayoutId,
                                                         $relationAttributeName, $relationModelId, $relationModuleId, $relationModelClassName = null)
         {
-            if($relationModelClassName == null)
+            if ($relationModelClassName == null)
             {
                 $relationModelClassName = Yii::app()->getModule($relationModuleId)->getPrimaryModelName();
             }
@@ -217,7 +217,7 @@
                                     new DetailsPortletSelectionView(
                                         $this->getId(),
                                         $this->getModule()->getId(),
-                                        $_GET['modelId'],//dashboard id is model id
+                                        $_GET['modelId'], //dashboard id is model id
                                         $_GET['uniqueLayoutId']
                                         ));
             echo $view->render();

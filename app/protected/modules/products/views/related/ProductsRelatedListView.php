@@ -129,7 +129,8 @@
          */
         protected function getCGridViewAfterAjaxUpdate()
         {
-            return 'js:function(id, data) {
+            return 'js:function(id, data)
+                    {
                         processAjaxSuccessError(id, data);
                     }';
         }
@@ -152,7 +153,7 @@
          */
          protected function getCGridViewColumns()
          {
-            $columns	     = array();
+            $columns         = array();
             if ($this->rowsAreSelectable)
             {
                 $firstColumn = $this->getCGridViewFirstColumn();
@@ -168,7 +169,7 @@
                     {
                         foreach ($cell['elements'] as $columnInformation)
                         {
-                            $columnClassName	= 'Product' . ucfirst($columnInformation['attributeName']) . 'RelatedListViewColumnAdapter';
+                            $columnClassName    = 'Product' . ucfirst($columnInformation['attributeName']) . 'RelatedListViewColumnAdapter';
                             $columnAdapter      = new $columnClassName($columnInformation['attributeName'], $this, array_slice($columnInformation, 1));
                             $column = $columnAdapter->renderGridViewData();
                             if (!isset($column['class']))
@@ -182,7 +183,7 @@
             }
 
             //Add total to the grid view
-            $columnClassName	= 'ProductTotalRelatedListViewColumnAdapter';
+            $columnClassName    = 'ProductTotalRelatedListViewColumnAdapter';
             $columnAdapter      = new ProductTotalRelatedListViewColumnAdapter('total', $this, array());
             $column             = $columnAdapter->renderGridViewData();
             array_push($columns, $column);
@@ -205,18 +206,18 @@
         protected function renderContent()
         {
             $content        = $this->renderViewToolBar();
-            //$content	    .= $this->renderAddProductLink();
-            //$content	    .= $this->renderConfigurationForm();
+            //$content      .= $this->renderAddProductLink();
+            //$content      .= $this->renderConfigurationForm();
             $cClipWidget    = new CClipWidget();
             $cClipWidget->beginClip("ListView");
             $cClipWidget->widget($this->getGridViewWidgetPath(), $this->getCGridViewParams());
             $cClipWidget->endClip();
-            $content	    .= $cClipWidget->getController()->clips['ListView'] . "\n";
+            $content        .= $cClipWidget->getController()->clips['ListView'] . "\n";
             if ($this->rowsAreSelectable)
             {
                 $content    .= ZurmoHtml::hiddenField($this->gridId . $this->gridIdSuffix . '-selectedIds', implode(",", $this->selectedIds)) . "\n"; // Not Coding Standard
             }
-                $content	    .= $this->renderScripts();
+                $content        .= $this->renderScripts();
             return $content;
         }
 

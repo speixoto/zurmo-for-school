@@ -36,12 +36,6 @@
 
     abstract class AutoresponderOrCampaignBaseJob extends BaseJob
     {
-        const BATCH_SIZE_CONFIG_KEY             = 'AutoresponderOrCampaignOutgoingBatchSize';
-
-        const BATCH_SIZE_CONFIG_MODULE_NAME     = 'AutorespondersModule';
-
-        const BATCH_SIZE_CONFIG_DEFAULT_VALUE   = 200;
-
         /**
          * @return The type of the NotificationRules
          */
@@ -59,15 +53,7 @@
 
         protected function resolveBatchSize()
         {
-            $batchSize = ZurmoConfigurationUtil::getByModuleName(static::BATCH_SIZE_CONFIG_MODULE_NAME,
-                                                                    static::BATCH_SIZE_CONFIG_KEY);
-            if (!$batchSize)
-            {
-                $batchSize = static::BATCH_SIZE_CONFIG_DEFAULT_VALUE;
-                ZurmoConfigurationUtil::setByModuleName(static::BATCH_SIZE_CONFIG_MODULE_NAME,
-                                                            static::BATCH_SIZE_CONFIG_KEY, $batchSize);
-            }
-            return $batchSize;
+            return AutoresponderOrCampaignBatchSizeConfigUtil::getBatchSize();
         }
     }
 ?>

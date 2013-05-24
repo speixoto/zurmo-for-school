@@ -74,7 +74,7 @@
          */
         public static function getMetadata(User $user = null)
         {
-            $className = get_called_class();
+            $className = static::resolveMetadataClassNameToUse();
             if ($user == null)
             {
                 try
@@ -104,7 +104,7 @@
          */
         public static function setMetadata(array $metadata, User $user = null)
         {
-            $className = get_called_class();
+            $className = static::resolveMetadataClassNameToUse();
             if (YII_DEBUG)
             {
                 $className::assertMetadataIsValid($metadata);
@@ -118,6 +118,11 @@
 
         protected static function assertMetadataIsValid(array $metadata)
         {
+        }
+
+        protected static function resolveMetadataClassNameToUse()
+        {
+            return get_called_class();
         }
     }
 ?>

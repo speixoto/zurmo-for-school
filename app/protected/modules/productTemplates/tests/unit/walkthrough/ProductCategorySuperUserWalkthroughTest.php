@@ -76,7 +76,7 @@
 
             //Default Controller actions requiring some sort of parameter via POST or GET
             //Load Model Edit Views
-            $productTemplates	 = ProductCategory::getAll();
+            $productTemplates    = ProductCategory::getAll();
             $this->assertEquals(12, count($productTemplates));
             $superCategoryId     = self::getModelIdByModelNameAndName('ProductCategory', 'My Category 1');
             $superCategoryId2    = self::getModelIdByModelNameAndName('ProductCategory', 'My Category 2');
@@ -100,7 +100,7 @@
             $superCategory       = ProductCategory::getById($superCategoryId);
             $this->assertEquals($superCategoryId, $superCategory2->productCategory->id);
             //Test having a failed validation on the contact during save.
-            $this->setGetArray (array('id'		=> $superCategoryId2));
+            $this->setGetArray (array('id'              => $superCategoryId2));
             $this->setPostArray(array('ProductCategory' => array('name' => '')));
             $content = $this->runControllerWithNoExceptionsAndGetContent('productTemplates/category/edit');
             $this->assertFalse(strpos($content, 'Name cannot be blank') === false);

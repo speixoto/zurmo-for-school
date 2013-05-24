@@ -91,7 +91,7 @@
             assert('is_string($address) || $address == null');
             assert('is_numeric($latitude) || $latitude == null');
             assert('is_numeric($longitude) || $longitude == null');
-			
+
             $marker_text = "<strong>Location:</strong> <br />$address";
             $mapScript = "
             function plotMap()

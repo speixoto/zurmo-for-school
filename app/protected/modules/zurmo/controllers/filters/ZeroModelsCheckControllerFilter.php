@@ -61,7 +61,7 @@
 
             $modelClassName = $this->modelClassName;
 
-            if($modelClassName == null)
+            if ($modelClassName == null)
             {
                 $modelClassName    = $this->controller->getModule()->getPrimaryModelName();
             }
@@ -86,7 +86,7 @@
             }
 
             $messageViewClassName = $this->zeroModelsYetViewClassName;
-            if($messageViewClassName == null)
+            if ($messageViewClassName == null)
             {
                 $messageViewClassName     = $this->controller->getModule()->getPluralCamelCasedName() . 'ZeroModelsYetView';
             }
@@ -101,7 +101,7 @@
         protected function getMessageViewClassName()
         {
             $messageViewClassName = $this->zeroModelsYetViewClassName;
-            if($messageViewClassName == null)
+            if ($messageViewClassName == null)
             {
                 $messageViewClassName     = $this->controller->getModule()->getPluralCamelCasedName() . 'ZeroModelsYetView';
             }
@@ -121,12 +121,12 @@
         protected function resolveAndRenderView(View $messageView)
         {
             $pageViewClassName              = $this->pageViewClassName;
-            if($pageViewClassName == null)
+            if ($pageViewClassName == null)
             {
                 $pageViewClassName          = $this->controller->getModule()->getPluralCamelCasedName() . 'PageView';
             }
 
-            if($this->defaultViewUtilClassName == null)
+            if ($this->defaultViewUtilClassName == null)
             {
                 $this->defaultViewUtilClassName = 'ZurmoDefaultViewUtil';
             }

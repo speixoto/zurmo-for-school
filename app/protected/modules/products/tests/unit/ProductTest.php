@@ -172,6 +172,5 @@
             $products                   = Product::getAll();
             $this->assertEquals(1, count($products));
         }
-
     }
 ?>

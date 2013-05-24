@@ -75,6 +75,7 @@
             }
             else
             {
+                // Begin Not Coding Standard
                 Yii::app()->clientScript->registerScript($scriptName, '
                         function updateContentAreaWithDataFromAjax(textContentElement, htmlContentElement,
                                                                                                 redActorElement, data)
@@ -198,6 +199,7 @@
                         }
                     );
                 ');
+                // End Not Coding Standard
             }
         }
 

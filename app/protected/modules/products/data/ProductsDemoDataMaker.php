@@ -76,7 +76,6 @@
             $model->priceFrequency  = $productTemplate->priceFrequency;
             $model->sellPrice->value= $productTemplate->sellPrice->value;
             $model->type            = $productTemplate->type;
-
         }
 
         public static function getProductTemplateForProduct($product)

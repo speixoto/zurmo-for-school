@@ -37,7 +37,7 @@
             $productCategory->productCatalogs->add($productCatalog);
 
             $saved                           = $productCategory->save();
-            if($parentCategory != null)
+            if ($parentCategory != null)
             {
                 $productCategory->productCategories->add($parentCategory);
             }
