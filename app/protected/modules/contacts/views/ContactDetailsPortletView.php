@@ -72,6 +72,11 @@
             return 'ContactsModule';
         }
 
+        protected static function resolveMetadataClassNameToUse()
+        {
+            return 'ContactEditAndDetailsView';
+        }
+
         /**
          * Controller Id for the link to models from rows in the grid view.
          */

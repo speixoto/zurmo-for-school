@@ -72,6 +72,11 @@
             return 'AccountsModule';
         }
 
+        protected static function resolveMetadataClassNameToUse()
+        {
+            return 'AccountEditAndDetailsView';
+        }
+
         /**
          * Controller Id for the link to models from rows in the grid view.
          */

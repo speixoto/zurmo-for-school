@@ -72,6 +72,11 @@
             return 'LeadsModule';
         }
 
+        protected static function resolveMetadataClassNameToUse()
+        {
+            return 'LeadEditAndDetailsView';
+        }
+
         /**
          * Controller Id for the link to models from rows in the grid view.
          */

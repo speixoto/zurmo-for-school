@@ -72,6 +72,11 @@
             return 'OpportunitiesModule';
         }
 
+        protected static function resolveMetadataClassNameToUse()
+        {
+            return 'OpportunityEditAndDetailsView';
+        }
+
         /**
          * Controller Id for the link to models from rows in the grid view.
          */
