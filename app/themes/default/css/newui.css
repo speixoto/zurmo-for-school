@@ -990,7 +990,8 @@ body.blue #StickyListMenu ul a:hover,
 body.blue .toolbar-mbmenu .options-menu ul a:hover,
 body.blue #ShortcutsMenu ul a:hover,
 body.blue .view-toolbar .parent > ul a:hover,
-body.blue .edit-row-menu ul a:hover {
+body.blue .edit-row-menu ul a:hover,
+body.blue .edit-portlet-menu ul a:hover {
   background-color: #7cb830 !important;
   color: #fff !important;
 }
@@ -1557,7 +1558,8 @@ body.brown #StickyListMenu ul a:hover,
 body.brown .toolbar-mbmenu .options-menu ul a:hover,
 body.brown #ShortcutsMenu ul a:hover,
 body.brown .view-toolbar .parent > ul a:hover,
-body.brown .edit-row-menu ul a:hover {
+body.brown .edit-row-menu ul a:hover,
+body.brown .edit-portlet-menu ul a:hover {
   background-color: #b88f30 !important;
   color: #fff !important;
 }
@@ -2124,7 +2126,8 @@ body.lime #StickyListMenu ul a:hover,
 body.lime .toolbar-mbmenu .options-menu ul a:hover,
 body.lime #ShortcutsMenu ul a:hover,
 body.lime .view-toolbar .parent > ul a:hover,
-body.lime .edit-row-menu ul a:hover {
+body.lime .edit-row-menu ul a:hover,
+body.lime .edit-portlet-menu ul a:hover {
   background-color: #bcc98e !important;
   color: #fff !important;
 }
@@ -2691,7 +2694,8 @@ body.cherry #StickyListMenu ul a:hover,
 body.cherry .toolbar-mbmenu .options-menu ul a:hover,
 body.cherry #ShortcutsMenu ul a:hover,
 body.cherry .view-toolbar .parent > ul a:hover,
-body.cherry .edit-row-menu ul a:hover {
+body.cherry .edit-row-menu ul a:hover,
+body.cherry .edit-portlet-menu ul a:hover {
   background-color: #933140 !important;
   color: #fff !important;
 }
@@ -3258,7 +3262,8 @@ body.turquoise #StickyListMenu ul a:hover,
 body.turquoise .toolbar-mbmenu .options-menu ul a:hover,
 body.turquoise #ShortcutsMenu ul a:hover,
 body.turquoise .view-toolbar .parent > ul a:hover,
-body.turquoise .edit-row-menu ul a:hover {
+body.turquoise .edit-row-menu ul a:hover,
+body.turquoise .edit-portlet-menu ul a:hover {
   background-color: #44bbcc !important;
   color: #fff !important;
 }
@@ -3825,7 +3830,8 @@ body.violet #StickyListMenu ul a:hover,
 body.violet .toolbar-mbmenu .options-menu ul a:hover,
 body.violet #ShortcutsMenu ul a:hover,
 body.violet .view-toolbar .parent > ul a:hover,
-body.violet .edit-row-menu ul a:hover {
+body.violet .edit-row-menu ul a:hover,
+body.violet .edit-portlet-menu ul a:hover {
   background-color: #91a1dc !important;
   color: #fff !important;
 }
@@ -4392,7 +4398,8 @@ body.honey #StickyListMenu ul a:hover,
 body.honey .toolbar-mbmenu .options-menu ul a:hover,
 body.honey #ShortcutsMenu ul a:hover,
 body.honey .view-toolbar .parent > ul a:hover,
-body.honey .edit-row-menu ul a:hover {
+body.honey .edit-row-menu ul a:hover,
+body.honey .edit-portlet-menu ul a:hover {
   background-color: #abbc42 !important;
   color: #fff !important;
 }
@@ -5035,6 +5042,7 @@ section {
 #ShortcutsMenu ul,
 .view-toolbar .parent > ul,
 .portlet-view-toolbar .parent > ul,
+.edit-portlet-menu ul,
 .edit-row-menu ul {
   border: 1px solid #b6b6b6;
   background-color: #ebebeb;
@@ -5064,6 +5072,7 @@ section {
 #ShortcutsMenu ul li,
 .view-toolbar .parent > ul li,
 .portlet-view-toolbar .parent > ul li,
+.edit-portlet-menu ul li,
 .edit-row-menu ul li {
   line-height: 100%;
 }
@@ -5071,6 +5080,7 @@ section {
 #ShortcutsMenu ul li > a,
 .view-toolbar .parent > ul li > a,
 .portlet-view-toolbar .parent > ul li > a,
+.edit-portlet-menu ul li > a,
 .edit-row-menu ul li > a {
   color: #666;
   font-size: 11px;
@@ -5083,6 +5093,7 @@ section {
 #ShortcutsMenu ul li > a:hover,
 .view-toolbar .parent > ul li > a:hover,
 .portlet-view-toolbar .parent > ul li > a:hover,
+.edit-portlet-menu ul li > a:hover,
 .edit-row-menu ul li > a:hover {
   color: #fff !important;
 }
@@ -6189,10 +6200,13 @@ body > .ui-autocomplete {
   border-top: 1px solid #CCC;
 }
 .view-toolbar-container {
-  width: auto;
   display: inline-block;
   width: 100%;
   position: relative;
+}
+.juiportlet-widget-head .view-toolbar-container {
+  float: right;
+  width: auto;
 }
 .unread-count {
   display: inline-block;
@@ -6226,15 +6240,11 @@ body > .ui-autocomplete {
   border: 1px solid #dfdfdf;
 }
 form .view-toolbar-container,
-.juiportlet-widget .view-toolbar-container,
 .ActionBarForSecurityTreeListView .view-toolbar-container,
 #ActionBarForDesignerModuleView .view-toolbar-container,
 #LeaderboardView .view-toolbar-container,
 #UsersPageView .view-toolbar-container {
   float: none;
-}
-.juiportlet-widget .view-toolbar-container {
-  display: block;
 }
 .view-toolbar,
 .portlet-view-toolbar {
@@ -6305,6 +6315,10 @@ form .view-toolbar-container,
 }
 .view-toolbar + .view-toolbar {
   float: right;
+}
+.portlet-view-toolbar {
+  float: right;
+  margin: 0 0 0 0;
 }
 .portlet-view-toolbar .parent {
   position: relative;
@@ -6401,6 +6415,9 @@ form .view-toolbar-container,
   position: relative;
   top: -2px;
 }
+.icon-lock {
+  padding: 0 10px !important;
+}
 .icon-lock:before {
   content: "F";
   font-weight: normal;
@@ -6413,10 +6430,11 @@ form .view-toolbar-container,
   box-sizing: border-box;
   vertical-align: middle;
   position: relative;
-  top: -3px;
+  top: -2px;
+  margin: 0;
 }
 .icon-unlock {
-  padding: 0 10px;
+  padding: 0 10px !important;
 }
 .icon-unlock:before {
   content: "E";
@@ -6430,7 +6448,7 @@ form .view-toolbar-container,
   box-sizing: border-box;
   vertical-align: middle;
   position: relative;
-  top: -3px;
+  top: -2px;
   margin: 0;
 }
 #HomeDashboardView .parent > a:before,
@@ -7363,9 +7381,8 @@ td.empty {
   margin: 0 10px;
 }
 .portlet-toolbar {
-  position: absolute;
-  top: -35px;
-  right: 8px;
+  float: right;
+  margin-right: 10px;
 }
 .portlet-toolbar a {
   line-height: 25px;
@@ -9094,23 +9111,18 @@ div.wide.form label.hasCheckBox {
   position: relative;
 }
 .toolbar-mbmenu {
-  position: absolute;
-  top: 8px;
-  right: 10px;
-  margin: 0;
+  margin: 0 10px 0 0;
   float: right;
   width: auto;
-}
-.toolbar-mbmenu .view-toolbar {
-  position: absolute;
-  right: 0;
-  top: 0;
-  border: none;
-  -webkit-box-shadow: none;
-  -moz-box-shadow: none;
-  -o-box-shadow: none;
-  -ms-box-shadow: none;
-  box-shadow: none;
+  /*.view-toolbar{
+		position:absolute;
+		right:0;
+		top:0;
+		border:none;
+		.b-shadow(none);
+	}
+	*/
+
 }
 .toolbar-mbmenu ul {
   list-style: none;
@@ -9709,11 +9721,13 @@ div.hasHalfs .twoThirds {
   -moz-opacity: 1;
   opacity: 1;
 }
+.edit-portlet-menu,
 .edit-row-menu {
   float: right;
   margin: 0 10px 0 0;
   list-style: none;
 }
+.edit-portlet-menu > li,
 .edit-row-menu > li {
   position: relative;
   -webkit-text-shadow: none !important;
@@ -9722,6 +9736,7 @@ div.hasHalfs .twoThirds {
   -ms-text-shadow: none !important;
   text-shadow: none !important;
 }
+.edit-portlet-menu > li > a,
 .edit-row-menu > li > a {
   padding: 0;
   display: block;
@@ -9732,6 +9747,7 @@ div.hasHalfs .twoThirds {
   opacity: 0.5;
   white-space: nowrap;
 }
+.edit-portlet-menu > li > a span,
 .edit-row-menu > li > a span {
   display: inline-block;
   text-indent: -9999px;
@@ -9741,18 +9757,21 @@ div.hasHalfs .twoThirds {
   -ms-text-shadow: none !important;
   text-shadow: none !important;
 }
+.edit-portlet-menu > li > a:hover,
 .edit-row-menu > li > a:hover {
   filter: alpha(opacity=100);
   -khtml-opacity: 1;
   -moz-opacity: 1;
   opacity: 1;
 }
+.edit-portlet-menu > li > a:before,
 .edit-row-menu > li > a:before {
   content: "n";
   font-weight: normal;
   font-size: 24px;
   font-family: "ZurmoGamificationSymblyReguRg";
 }
+.edit-portlet-menu > li > a:after,
 .edit-row-menu > li > a:after {
   content: "÷";
   font-weight: normal;
@@ -9762,6 +9781,7 @@ div.hasHalfs .twoThirds {
   top: -2px;
   left: 2px;
 }
+.edit-portlet-menu > li a,
 .edit-row-menu > li a {
   -webkit-text-shadow: none !important;
   -moz-text-shadow: none !important;
@@ -9769,12 +9789,16 @@ div.hasHalfs .twoThirds {
   -ms-text-shadow: none !important;
   text-shadow: none !important;
 }
+.edit-portlet-menu ul,
 .edit-row-menu ul {
   width: 110px;
   margin-left: -97px;
   list-style: none;
   top: 20px;
   font-size: 11px;
+}
+.edit-portlet-menu {
+  margin-right: 15px;
 }
 /*Upcoming Meeting Pager*/
 .pager {
@@ -10914,7 +10938,6 @@ div.hasHalfs .twoThirds {
   box-shadow: inset 0 1px 0 0 #ffffff;
   position: relative;
   border-bottom: 1px solid #CCC;
-  cursor: move;
 }
 .juiportlet-columns .juiportlet-widget .juiportlet-widget-head h3 {
   float: left;
@@ -10937,58 +10960,41 @@ a.remove {
 	z-index:9999;
 	*/
 
-  -webkit-box-shadow: inset 0 1px 0 0 #ffffff;
-  -moz-box-shadow: inset 0 1px 0 0 #ffffff;
-  -o-box-shadow: inset 0 1px 0 0 #ffffff;
-  -ms-box-shadow: inset 0 1px 0 0 #ffffff;
-  box-shadow: inset 0 1px 0 0 #ffffff;
-  float: right;
-  display: inline;
-  text-indent: -9999em;
-  outline: none;
-  position: relative;
-  z-index: 9999;
-  line-height: 1 !important;
-  background-color: #ededed;
-  background-repeat: repeat-x;
-  background-image: -moz-linear-gradient(top, #f6f6f6, #ededed);
-  background-image: -ms-linear-gradient(top, #f6f6f6, #ededed);
-  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #f6f6f6), color-stop(100%, #ededed));
-  background-image: -webkit-linear-gradient(top, #f6f6f6, #ededed);
-  background-image: -o-linear-gradient(top, #f6f6f6, #ededed);
-  background-image: linear-gradient(top, #f6f6f6, #ededed);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f6f6f6', endColorstr='#ededed', GradientType=0);
-  border: 1px solid #CCC;
-  border-left: none;
-  width: 14px;
-  height: 20px;
-  border-radius: 0 15% 15% 0;
-  margin-right: -15px;
-  margin-top: 10px;
-}
-a.remove .icon {
-  line-height: 1;
-  position: relative;
-  float: right;
-}
-a.remove .icon:after {
-  position: relative;
-  left: -1px;
-  margin-top: -2px;
-  line-height: 1;
-  content: "—";
-  font-weight: normal;
-  font-size: 22px;
-  font-family: "ZurmoGamificationSymblyReguRg";
-  text-indent: 0;
-  display: block;
-  float: left;
-  color: #A7A7A7;
-  -webkit-text-shadow: rgba(255, 255, 255, 0.8) 0 1px 0;
-  -moz-text-shadow: rgba(255, 255, 255, 0.8) 0 1px 0;
-  -o-text-shadow: rgba(255, 255, 255, 0.8) 0 1px 0;
-  -ms-text-shadow: rgba(255, 255, 255, 0.8) 0 1px 0;
-  text-shadow: rgba(255, 255, 255, 0.8) 0 1px 0;
+  /*.b-shadow(inset 0 1px 0 0 #ffffff);
+	float: right;
+	display: inline;
+	text-indent: -9999em;
+	outline: none;
+	position: relative;
+	z-index: 9999;
+	line-height: 1 !important;
+	#gradient > .vertical(#f6f6f6, #ededed);
+	border:1px solid #CCC;
+	border-left: none;
+	width: 14px;
+	height: 20px;
+	border-radius: 0 15% 15% 0;
+	margin-right: -15px;
+	margin-top: 10px;
+	.icon{
+	    line-height:1;
+	    position:relative;
+	    float:right;
+	}
+	.icon:after{
+		position: relative;
+		left: -1px;
+		margin-top: -2px;
+		line-height: 1;
+		content:"—";
+		.symbly(22px);
+		text-indent:0;
+		display:block;
+		float:left;
+		color:#A7A7A7;
+		.t-shadow( rgba( 255, 255, 255, 0.8 ) 0 1px 0  );
+	}*/
+
 }
 .juiportlet-widget-head a.edit {
   float: right;

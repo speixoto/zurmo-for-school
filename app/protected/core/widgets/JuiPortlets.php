@@ -149,8 +149,8 @@
         {
             $content  = "<div class=\"juiportlet-widget-head\">\n";
             $content .= "<h3>" . $item['title'] . "</h3>";
-            $content .= $item['headContent'] . "\n";
             $content .= static::renderOptionsMenu($item, $uniqueLayoutId, $moduleId, $renderOnClickEvent);
+            $content .= $item['headContent'] . "\n";
             if (isset($item['collapsed']) && $item['collapsed'])
             {
                 $widgetContentStyle = "style=\"display:none;\"";
@@ -185,7 +185,7 @@
                 $cClipWidget = new CClipWidget();
                 $cClipWidget->beginClip("PortletOptionMenu" . $uniqueLayoutId);
                 $cClipWidget->widget('application.core.widgets.MbMenu', array(
-                    'htmlOptions' => array('class' => 'options-menu edit-row-menu'),
+                    'htmlOptions' => array('class' => 'options-menu edit-portlet-menu'),
                     'items'       => array($menuItems),
                 ));
                 $cClipWidget->endClip();
