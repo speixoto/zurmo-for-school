@@ -41,14 +41,43 @@
             $viewClassName              = $modelClassName . 'EditAndDetailsView';
             $zeroModelsYetViewClassName = 'ProductTemplatesZeroModelsYetView';
             $pageViewClassName          = 'ProductTemplatesPageView';
-            return array_merge(parent::filters(),
-                array(
-                    array(
+
+            $filters = array();
+            $filters[] = array(
+                    ZurmoBaseController::RIGHTS_FILTER_PATH .
+                    ' - modalList,details,autoCompleteAllProductCategoriesForMultiSelectAutoComplete',
+                    'moduleClassName' => 'ProductTemplatesModule',
+                    'rightName' => ProductTemplatesModule::getAccessRight(),
+            );
+            $filters[] = array(
+                    ZurmoBaseController::RIGHTS_FILTER_PATH . ' + create',
+                    'moduleClassName' => 'ProductTemplatesModule',
+                    'rightName' => ProductTemplatesModule::getCreateRight(),
+            );
+            $filters[] = array(
+                    ZurmoBaseController::RIGHTS_FILTER_PATH . ' + delete',
+                    'moduleClassName' => 'ProductTemplatesModule',
+                    'rightName' => ProductTemplatesModule::getDeleteRight(),
+            );
+            $filters[] = array(
+                    ZurmoBaseController::RIGHTS_FILTER_PATH . ' + massEdit, massEditProgressSave',
+                    'moduleClassName' => 'ZurmoModule',
+                    'rightName' => ZurmoModule::RIGHT_BULK_WRITE,
+            );
+
+            $filters[] = array(
+                    ZurmoBaseController::RIGHTS_FILTER_PATH . ' + massDelete',
+                    'moduleClassName' => 'ZurmoModule',
+                    'rightName' => ZurmoModule::RIGHT_BULK_DELETE,
+            );
+
+            $filters[] = array(
                         ZurmoBaseController::REQUIRED_ATTRIBUTES_FILTER_PATH . ' + create, createFromRelation, edit',
                         'moduleClassName' => get_class($this->getModule()),
                         'viewClassName'   => $viewClassName,
-                   ),
-                    array(
+            );
+
+            $filters[] = array(
                         static::ZERO_MODELS_CHECK_FILTER_PATH . ' + list, index',
                         'controller'                 => $this,
                         'zeroModelsYetViewClassName' => $zeroModelsYetViewClassName,
@@ -57,9 +86,9 @@
                         'defaultViewUtilClassName'   => 'ProductDefaultViewUtil',
                         'activeActionElementType'    => 'ProductTemplatesLink',
                         'breadcrumbLinks'            => static::getListBreadcrumbLinks()
-                   ),
-               )
-            );
+                   );
+
+            return $filters;
         }
 
         public function actionList()
@@ -375,16 +404,7 @@
         {
             $pageSize     = Yii::app()->pagination->resolveActiveForCurrentUserByType(
                             'autoCompleteListPageSize', get_class($this->getModule()));
-            $adapterName  = self::resolveProductCategoryStateAdapterByModulesUserHasAccessTo('ProductTemplatesModule',
-                                                                                        'ProductTemplatesModule',
-                                                                                         Yii::app()->user->userModel);
-            if ($adapterName === false)
-            {
-                $messageView = new AccessFailureView();
-                $view        = new AccessFailurePageView($messageView);
-                echo $view->render();
-                Yii::app()->end(0, false);
-            }
+            $adapterName  = null;
             $productCategories      = self::getProductCategoriesByPartialName($term, $pageSize, $adapterName);
             $autoCompleteResults    = array();
             foreach ($productCategories as $productCategory)
@@ -437,35 +457,6 @@
             else
             {
                 return strval($productCategory);
-            }
-        }
-
-        public static function resolveProductCategoryStateAdapterByModulesUserHasAccessTo( $moduleClassNameFirstStates,
-                                                                                    $moduleClassNameLaterStates,
-                                                                                    $user)
-        {
-            assert('is_string($moduleClassNameFirstStates)');
-            assert('is_string($moduleClassNameLaterStates)');
-            assert('$user instanceof User && $user->id > 0');
-            $canAccessFirstStatesModule  = RightsUtil::canUserAccessModule($moduleClassNameFirstStates, $user);
-            $canAccessLaterStatesModule = RightsUtil::canUserAccessModule($moduleClassNameLaterStates, $user);
-            if ($canAccessFirstStatesModule && $canAccessLaterStatesModule)
-            {
-                return null;
-            }
-            elseif (!$canAccessFirstStatesModule && $canAccessLaterStatesModule)
-            {
-                $prefix = substr($moduleClassNameLaterStates, 0, strlen($moduleClassNameLaterStates) - strlen('Module'));
-                return $prefix . 'StateMetadataAdapter';
-            }
-            elseif ($canAccessFirstStatesModule && !$canAccessLaterStatesModule)
-            {
-                $prefix = substr($moduleClassNameFirstStates, 0, strlen($moduleClassNameFirstStates) - strlen('Module'));
-                return $prefix . 'StateMetadataAdapter';
-            }
-            else
-            {
-                return false;
             }
         }
 

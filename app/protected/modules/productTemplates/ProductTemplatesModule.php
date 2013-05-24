@@ -126,12 +126,17 @@
 
         public static function getDemoDataMakerClassName()
         {
-            return 'ProductTemplatesDemoDataMaker';
+            return array('ProductTemplatesDemoDataMaker', 'ProductCategoriesDemoDataMaker');
         }
 
         public static function getGlobalSearchFormClassName()
         {
             return 'ProductTemplatesSearchForm';
+        }
+
+        public static function isReportable()
+        {
+            return true;
         }
     }
 ?>

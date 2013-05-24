@@ -269,8 +269,8 @@
          */
         public function testWhetherSearchWorksForTheCustomFieldsPlacedForProductTemplatesModuleAfterCreatingTheProductTemplate()
         {
-            $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
-
+            $super              = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
+            $baseCurrency       = Currency::getByCode(Yii::app()->currencyHelper->getBaseCode());
             //Search a created opportunity using the customfield.
             $this->resetPostArray();
             $this->setGetArray(array('ProductTemplatesSearchForm' => array(

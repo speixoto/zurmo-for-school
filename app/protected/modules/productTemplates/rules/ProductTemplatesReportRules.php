@@ -35,64 +35,22 @@
      ********************************************************************************/
 
     /**
-     * Base class used for wrapping model detail views into a portlet ready view.
-     *
+     * Report rules to be used with the Product Templates module.
      */
-    abstract class DetailsForPortletView extends ConfigurableMetadataView implements PortletViewInterface
+    class ProductTemplatesReportRules extends SecuredReportRules
     {
-        protected $params;
-
-        protected $controllerId;
-
-        protected $moduleId;
-
-        protected $model;
-
-        protected $uniqueLayoutId;
-
-        protected $viewData;
-
-        public function __construct($viewData, $params, $uniqueLayoutId)
-        {
-            assert('isset($params["controllerId"])');
-            assert('isset($params["relationModuleId"])');
-            assert('isset($params["relationModel"])');
-            $this->viewData       = $viewData;
-            $this->params         = $params;
-            $this->controllerId   = $params["controllerId"];
-            $this->moduleId       = $params["relationModuleId"];
-            $this->model          = $params["relationModel"];
-            $this->uniqueLayoutId = $uniqueLayoutId;
-        }
-
+        /**
+         * @return array
+         */
         public static function getDefaultMetadata()
         {
-            return array(
-                'perUser' => array(
-                    'title' => null,
-                ),
+            $metadata = array(
+                'ProductTemplate' => array(
+                    'nonReportable' =>
+                    array('productTemplates', 'productTemplate'),
+                )
             );
-        }
-
-        public function renderContent()
-        {
-            $viewClassName = $this->getDetailsViewClassName();
-            $view = new $viewClassName('Details', $this->controllerId, $this->moduleId, $this->model);
-            return $view->render();
-        }
-
-        public static function canUserConfigure()
-        {
-            return false;
-        }
-
-        /**
-         * What kind of PortletRules this view follows
-         * @return PortletRulesType as string.
-         */
-        public static function getPortletRulesType()
-        {
-            return 'ModelDetails';
+            return array_merge(parent::getDefaultMetadata(), $metadata);
         }
     }
 ?>

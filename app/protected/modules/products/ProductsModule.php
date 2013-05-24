@@ -126,7 +126,7 @@
 
         public static function getDemoDataMakerClassName()
         {
-            return 'ProductsDemoDataMaker';
+            return array('ProductsDemoDataMaker');
         }
 
         public static function getGlobalSearchFormClassName()
@@ -135,6 +135,11 @@
         }
 
         public static function hasPermissions()
+        {
+            return true;
+        }
+
+        public static function isReportable()
         {
             return true;
         }

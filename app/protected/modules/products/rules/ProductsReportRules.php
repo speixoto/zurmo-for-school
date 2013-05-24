@@ -35,10 +35,9 @@
      ********************************************************************************/
 
     /**
-     * Action bar view for the product zero model view. Provides buttons like create, and links to
-     * queues.
+     * Report rules to be used with the Products module.
      */
-    class SecuredActionBarForProductsZeroModelView extends SecuredActionBarForSearchAndListView
+    class ProductsReportRules extends SecuredReportRules
     {
         /**
          * @return array
@@ -46,29 +45,12 @@
         public static function getDefaultMetadata()
         {
             $metadata = array(
-                'global' => array(
-                    'toolbar' => array(
-                        'elements' => array(
-                            array('type'          => 'ProductCreateLink',
-                                  'htmlOptions'	  => array('class' => 'icon-create'),
-                                 ),
-                            array(
-                                  'type'          => 'ProductsLink',
-                                  'htmlOptions'   => array( 'class' => 'icon-workflows' )
-                                ),
-                            array(
-                                  'type'          => 'ProductTemplatesLink',
-                                  'htmlOptions'   => array( 'class' => 'icon-by-time-workflow-in-queues' )
-                                 ),
-                            array(
-                                  'type'          => 'ProductCategoriesLink',
-                                  'htmlOptions'   => array( 'class' => 'icon-by-workflow-message-in-queues' )
-                                ),
-                            ),
-                        ),
-                    ),
-                );
-            return $metadata;
+                'Product' => array(
+                    'nonReportable' =>
+                    array('products', 'product'),
+                )
+            );
+            return array_merge(parent::getDefaultMetadata(), $metadata);
         }
     }
 ?>
