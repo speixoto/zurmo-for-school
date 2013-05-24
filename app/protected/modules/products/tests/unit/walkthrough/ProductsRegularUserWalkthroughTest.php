@@ -108,15 +108,13 @@
             $content = $this->runControllerWithNoExceptionsAndGetContent('products/default/list');
 
             $this->assertFalse(strpos($content, 'John Kenneth Galbraith') === false);
-            //TODO Need to ask Jason
             $this->runControllerWithNoExceptionsAndGetContent('products/default/create');
-
             //Test nobody can view an existing product he owns.
             $product = ProductTestHelper::createProductByNameForOwner('productOwnedByNobody', $nobody);
 
             //At this point the listview for products should show the search/list and not the helper screen.
             $content = $this->runControllerWithNoExceptionsAndGetContent('products/default/list');
-            $this->assertTrue(strpos($content, 'Description 1') === false);
+            $this->assertTrue(strpos($content, 'John Kenneth Galbraith') === false);
 
             $this->setGetArray(array('id' => $product->id));
             $this->runControllerWithNoExceptionsAndGetContent('products/default/edit');
@@ -143,6 +141,8 @@
             $this->runControllerShouldResultInAccessFailureAndGetContent('products/default/edit');
             $this->setGetArray(array('id' => $product->id));
             $this->runControllerShouldResultInAccessFailureAndGetContent('products/default/details');
+            $this->setGetArray(array('id' => $product->id));
+            $this->runControllerShouldResultInAccessFailureAndGetContent('products/default/delete');
 
             //give nobody access to read
             Yii::app()->user->userModel = $super;
@@ -157,11 +157,12 @@
             //Test nobody, access to edit should fail.
             $this->setGetArray(array('id' => $product->id));
             $this->runControllerShouldResultInAccessFailureAndGetContent('products/default/edit');
+            $this->setGetArray(array('id' => $product->id));
+            $this->runControllerShouldResultInAccessFailureAndGetContent('products/default/delete');
 
             //give nobody access to read and write
             Yii::app()->user->userModel = $super;
             $product->addPermissions($nobody, Permission::READ_WRITE_CHANGE_PERMISSIONS);
-            $product->save();
             //TODO :Its wierd that giving opportunity errors
             $this->assertTrue($product->save());
 

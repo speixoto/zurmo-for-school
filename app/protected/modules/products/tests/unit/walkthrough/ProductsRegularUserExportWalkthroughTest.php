@@ -122,7 +122,7 @@
                 'selectedIds' => '')
             );
               //TODO Need to ask jason
-            $response = $this->runControllerWithExitExceptionAndGetContent('products/default/export');
+            $response = $this->runControllerWithRedirectExceptionAndGetUrl('products/default/export');
             $this->assertTrue(strstr($response, 'products/default/index') !== false);
 
             $this->setGetArray(array(
@@ -138,7 +138,7 @@
                 'selectAll' => '',
                 'selectedIds' => "{$products[0]->id}, {$products[1]->id}")
             );
-            $response = $this->runControllerWithExitExceptionAndGetContent('products/default/export');
+            $response = $this->runControllerWithRedirectExceptionAndGetUrl('products/default/export');
             $this->assertTrue(strstr($response, 'products/default/index') !== false);
             $this->assertContains('There is no data to export.',
             Yii::app()->user->getFlash('notification'));
