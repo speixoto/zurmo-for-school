@@ -101,7 +101,14 @@
         public function getFilterValueElementType(RedBeanModel $model, $attribute)
         {
             assert('is_string($attribute)');
-            $modelClassName = $model->getAttributeModelClassName($attribute);
+            if($attribute == 'id')
+            {
+                $modelClassName = get_class($model);
+            }
+            else
+            {
+                $modelClassName = $model->getAttributeModelClassName($attribute);
+            }
             $metadata = static::getMetadata();
             if (isset($metadata[$modelClassName]) && isset($metadata[$modelClassName]['filterValueElementTypes']) &&
                isset($attribute, $metadata[$modelClassName]['filterValueElementTypes'][$attribute]))
