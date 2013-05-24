@@ -126,7 +126,7 @@
 
         public static function getDemoDataMakerClassName()
         {
-            return 'ProductTemplatesDemoDataMaker';
+            return array('ProductTemplatesDemoDataMaker', 'ProductCategoriesDemoDataMaker');
         }
 
         public static function getGlobalSearchFormClassName()

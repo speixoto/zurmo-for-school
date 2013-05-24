@@ -160,6 +160,9 @@
             $this->setGetArray(array('id' => $product->id));
             $this->runControllerShouldResultInAccessFailureAndGetContent('products/default/delete');
 
+            $productId  = $product->id;
+            $product->forget();
+            $product    = Product::getById($productId);
             //give nobody access to read and write
             Yii::app()->user->userModel = $super;
             $product->addPermissions($nobody, Permission::READ_WRITE_CHANGE_PERMISSIONS);
@@ -173,6 +176,9 @@
             $this->setGetArray(array('id' => $product->id));
             $this->runControllerWithNoExceptionsAndGetContent('products/default/edit');
 
+            $productId  = $product->id;
+            $product->forget();
+            $product    = Product::getById($productId);
             //revoke nobody access to read
             Yii::app()->user->userModel = $super;
             $product->addPermissions($nobody, Permission::READ_WRITE_CHANGE_PERMISSIONS, Permission::DENY);
@@ -230,6 +236,10 @@
             $this->setGetArray(array('id' => $product2->id));
             $this->runControllerWithNoExceptionsAndGetContent('products/default/details');
 
+            $productId  = $product2->id;
+            $product2->forget();
+            $product2   = Product::getById($productId);
+
             //give userInChildRole access to read and write
             Yii::app()->user->userModel = $super;
             $product2->addPermissions($userInChildRole, Permission::READ_WRITE_CHANGE_PERMISSIONS);
@@ -245,6 +255,9 @@
             $this->setGetArray(array('id' => $product2->id));
             $this->runControllerWithNoExceptionsAndGetContent('products/default/edit');
 
+            $productId  = $product2->id;
+            $product2->forget();
+            $product2   = Product::getById($productId);
             //revoke userInChildRole access to read and write
             Yii::app()->user->userModel = $super;
             $product2->addPermissions($userInChildRole, Permission::READ_WRITE_CHANGE_PERMISSIONS, Permission::DENY);
@@ -331,6 +344,9 @@
             $this->setGetArray(array('id' => $product3->id));
             $this->runControllerWithNoExceptionsAndGetContent('products/default/details');
 
+            $productId  = $product3->id;
+            $product3->forget();
+            $product3   = Product::getById($productId);
             //give parentGroup access to read and write
             Yii::app()->user->userModel = $super;
             $product3->addPermissions($parentGroup, Permission::READ_WRITE_CHANGE_PERMISSIONS);
@@ -347,6 +363,9 @@
             $this->setGetArray(array('id' => $product3->id));
             $this->runControllerWithNoExceptionsAndGetContent('products/default/edit');
 
+            $productId  = $product3->id;
+            $product3->forget();
+            $product3   = Product::getById($productId);
             //revoke parentGroup access to read and write
             Yii::app()->user->userModel = $super;
             $product3->addPermissions($parentGroup, Permission::READ_WRITE_CHANGE_PERMISSIONS, Permission::DENY);
@@ -416,7 +435,7 @@
             $confused->setRight('ZurmoModule', ZurmoModule::RIGHT_BULK_DELETE);
             //Load MassDelete view
             $products = Product::getAll();
-            $this->assertEquals(6, count($products));
+            $this->assertEquals(9, count($products));
             $product1 = ProductTestHelper::createProductByNameForOwner('productDelete1', $confused);
             $product2 = ProductTestHelper::createProductByNameForOwner('productDelete2', $confused);
             $product3 = ProductTestHelper::createProductByNameForOwner('productDelete3', $nobody);
@@ -432,7 +451,7 @@
             $this->assertEquals(5, $pageSize);
             //calculating products after adding 6 new records
             $products = Product::getAll();
-            $this->assertEquals(12, count($products));
+            $this->assertEquals(15, count($products));
             //Deleting 6 opportunities for pagination scenario
             //Run Mass Delete using progress save for page1
             $selectedIds = $product1->id . ',' . $product2->id . ',' . // Not Coding Standard
@@ -445,7 +464,7 @@
             $this->setPostArray(array('selectedRecordCount' => 6));
             $content = $this->runControllerWithExitExceptionAndGetContent('products/default/massDelete');
             $products = Product::getAll();
-            $this->assertEquals(7, count($products));
+            $this->assertEquals(10, count($products));
 
             //Run Mass Delete using progress save for page2
             $selectedIds = $product1->id . ',' . $product2->id . ',' . // Not Coding Standard
@@ -458,7 +477,7 @@
             $this->setPostArray(array('selectedRecordCount' => 6));
             $content = $this->runControllerWithNoExceptionsAndGetContent('products/default/massDeleteProgress');
             $products = Product::getAll();
-            $this->assertEquals(6, count($products));
+            $this->assertEquals(9, count($products));
         }
 
          /**
@@ -472,7 +491,7 @@
 
             //Load MassDelete view for the 6 products
             $products = Product::getAll();
-            $this->assertEquals(6, count($products));
+            $this->assertEquals(9, count($products));
 
             //mass Delete pagination scenario
             //Run Mass Delete using progress save for page1
@@ -484,7 +503,7 @@
             $this->assertEquals(5, $pageSize);
             $content = $this->runControllerWithExitExceptionAndGetContent('products/default/massDelete');
             $products = Product::getAll();
-            $this->assertEquals(1, count($products));
+            $this->assertEquals(4, count($products));
 
            //Run Mass Delete using progress save for page2
             $this->setGetArray(array(
