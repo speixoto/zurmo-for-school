@@ -259,8 +259,8 @@
             $this->assertEquals($product->type                       , 1);
             $this->assertEquals($product->stage->value               , 'Open');
             $this->assertEquals($product->owner->id                  , $superUserId);
-            $this->assertEquals(0                                        , count($readWritePermitables));
-            $this->assertEquals(0                                        , count($readOnlyPermitables));
+            $this->assertEquals(1                                    , count($readWritePermitables));
+            $this->assertEquals(0                                    , count($readOnlyPermitables));
             $this->assertEquals($product->checkboxCstm               , '1');
             $this->assertEquals($product->currencyCstm->value        , 45);
             $this->assertEquals($product->currencyCstm->currency->id , $baseCurrency->id);
@@ -284,7 +284,7 @@
             $metadata            = CalculatedDerivedAttributeMetadata::
                                    getByNameAndModelClassName('calcnumber', 'Product');
             $testCalculatedValue = CalculatedNumberUtil::calculateByFormulaAndModelAndResolveFormat($metadata->getFormula(), $product);
-            $this->assertEquals(1476                                     , $testCalculatedValue);
+            $this->assertEquals(1476                                     , intval(str_replace(',', '', $testCalculatedValue)));
         }
 
         /**
@@ -430,7 +430,7 @@
             $metadata            = CalculatedDerivedAttributeMetadata::
                                    getByNameAndModelClassName('calcnumber', 'Product');
             $testCalculatedValue = CalculatedNumberUtil::calculateByFormulaAndModelAndResolveFormat($metadata->getFormula(), $product);
-            $this->assertEquals(132                                      , $testCalculatedValue);
+            $this->assertEquals(132                                      , intval(str_replace(',', '', $testCalculatedValue)));
         }
 
         /**
@@ -460,7 +460,7 @@
                             'name'                              => 'myEditProduct',
                             'owner'                             => array('id' => $superUserId),
                             'type'                              => 1,
-                            'sellPrice'                         => array ('currency' => array('id' => 1), 'value' => 200),
+                            'sellPrice'                         => array ('currency' => array('id' => $baseCurrency->id), 'value' => 200),
                             'account'                           => array('id' => $accountId),
                             'quantity'                          => 10,
                             'priceFrequency'                    => 2,
@@ -531,7 +531,7 @@
             $metadata            = CalculatedDerivedAttributeMetadata::
                                    getByNameAndModelClassName('calcnumber', 'Product');
             $testCalculatedValue = CalculatedNumberUtil::calculateByFormulaAndModelAndResolveFormat($metadata->getFormula(), $product);
-            $this->assertEquals(132                                      , $testCalculatedValue);
+            $this->assertEquals(132                                      , intval(str_replace(',', '', $testCalculatedValue)));
         }
 
         /**
