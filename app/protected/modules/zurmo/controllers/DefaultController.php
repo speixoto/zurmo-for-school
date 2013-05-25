@@ -457,5 +457,10 @@
 
             return '';
         }
+
+        public function actionToggleStar($modelClassName, $modelId)
+        {
+            echo StarredUtil::toggleModelStarStatus($modelClassName, (int) $modelId);
+        }
     }
 ?>

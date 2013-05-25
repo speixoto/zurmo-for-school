@@ -172,5 +172,26 @@
             StarredUtil::markModelAsStarred($account);
             $this->assertTrue(StarredUtil::isModelStarred($account));
         }
+
+        /**
+         * @depends testCreateStarredTables
+         */
+        public function testToggleModelStarStatus()
+        {
+            $super = User::getByUsername('super');
+            Yii::app()->user->userModel = $super;
+
+            $account              = new Account();
+            $account->owner       = $super;
+            $account->name        = 'Test Account';
+            $account->officePhone = '1234567890';
+            $this->assertTrue($account->save());
+
+            $this->assertFalse(StarredUtil::isModelStarred($account));
+            $this->assertEquals('starred', StarredUtil::toggleModelStarStatus('Account', $account->id));
+            $this->assertTrue(StarredUtil::isModelStarred($account));
+            $this->assertEquals('unstarred', StarredUtil::toggleModelStarStatus('Account', $account->id));
+            $this->assertFalse(StarredUtil::isModelStarred($account));
+        }
     }
 ?>

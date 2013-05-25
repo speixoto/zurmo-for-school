@@ -188,5 +188,24 @@
                 ':modelId' => $model->id,
             ));
         }
+
+        public static function toggleModelStarStatus($modelClassName, $modelId)
+        {
+            $model = $modelClassName::getById($modelId);
+            $isModelStarred = static::isModelStarred($model);
+            if ($isModelStarred)
+            {
+                static::unmarkModelAsStarred($model);
+            }
+            else
+            {
+                static::markModelAsStarred($model);
+            }
+            if ($isModelStarred)
+            {
+                return 'unstarred';
+            }
+            return 'starred';
+        }
     }
 ?>
