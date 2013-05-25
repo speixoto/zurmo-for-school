@@ -72,6 +72,11 @@
             return 'AccountsModule';
         }
 
+        protected static function resolveMetadataClassNameToUse()
+        {
+            return 'AccountEditAndDetailsView';
+        }
+
         /**
          * Controller Id for the link to models from rows in the grid view.
          */
@@ -134,6 +139,23 @@
         public static function getDesignerRulesType()
         {
             return 'DetailsPortletView';
+        }
+
+        /**
+         * Override and return null so we can render the actionElementMenu in the portletHeaderContent
+         * @return null
+         */
+        protected function resolveAndRenderActionElementMenu()
+        {
+            return null;
+        }
+
+        /**
+         * @return null|string
+         */
+        public function renderPortletHeadContent()
+        {
+            return $this->renderWrapperAndActionElementMenu();
         }
     }
 ?>

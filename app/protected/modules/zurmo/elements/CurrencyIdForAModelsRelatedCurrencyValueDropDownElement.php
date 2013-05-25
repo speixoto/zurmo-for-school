@@ -105,7 +105,7 @@
         {
             $defaultHtmlOptions     = $this->getEditableHtmlOptions();
             $additionalHtmlOptions  = array();
-            if(isset($this->params['htmlOptions']))
+            if (isset($this->params['htmlOptions']))
             {
                 $additionalHtmlOptions  = $this->params['htmlOptions'];
             }

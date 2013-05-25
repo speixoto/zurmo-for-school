@@ -981,21 +981,24 @@ body > .ui-autocomplete{
 .toggle-hidden-nav-items{
 	display: block;
 	text-align: center;
-	padding: 5px 0;
+	padding: 5px 0 5px 0;
 	margin: 0 0 0 0;
 	cursor:pointer;
 	position: relative;
-	top: 5px;
+	top: 8px;
 	&:after{
-		content:'\00F7';
-		.symbly(20px);
+		content: "···";
+		font-size: 26px;
+		font-weight: bold;
+		//content:'\00F7';
+		//.symbly(20px);
 		line-height: 1;
 		.t-shadow(0 1px 0 #fff);
 	}
 }
 
 .toggle-hidden-nav-items.point-up:after{
-	content:'\00A1'; //A1
+	//content:'\00A1'; //A1
 }
 
 /*=Recently Viewed*/
@@ -1240,14 +1243,14 @@ body > .ui-autocomplete{
 	}
 }
 
-/*=dashboard*/
+/*=dashboard
 #HomeDashboardView{
 	.parent > ul{
 		min-width: 160px;
 		margin-top:0;
 	}
 }
-
+*/
 /*=Inner toolbar*/
 .float-bar{
 	width: 100%;
@@ -1283,10 +1286,30 @@ body > .ui-autocomplete{
 }
 
 .view-toolbar-container{
-	width:auto;
 	display:inline-block;
 	width: 100%;
 	position: relative;
+	z-index: 100;
+}
+
+
+.widgets-lock{
+	position: relative;
+	margin-top: -37px;
+	margin-bottom: 15px;
+	float: right;
+	.view-toolbar{
+		float: right;
+		margin-bottom: 0 !important;
+	}
+}
+
+
+.juiportlet-widget-head{
+	.view-toolbar-container{
+		float: right;
+		width: auto;
+	}
 }
 
 .unread-count{
@@ -1306,19 +1329,12 @@ body > .ui-autocomplete{
 }
 
 form,
-.juiportlet-widget,
 .ActionBarForSecurityTreeListView,
 #ActionBarForDesignerModuleView,
 #LeaderboardView,
 #UsersPageView{
 	.view-toolbar-container{
 		float: none;
-	}
-}
-
-.juiportlet-widget{
-	.view-toolbar-container{
-		display: block;
 	}
 }
 
@@ -1375,7 +1391,13 @@ form,
 	}
 }
 
+.view-toolbar + .view-toolbar {
+	float: right;
+}
+
 .portlet-view-toolbar{
+	float:right;
+	margin:0 0 0 0;
 	.parent{
 		position: relative;
 	}
@@ -1450,19 +1472,29 @@ form,
 	top:-2px;
 }
 
-.icon-lock:before{
-	content: "F";
-	.view-toolbar-icons();
-	top:-3px;
+
+.icon-lock{
+	padding: 0 10px !important;
+	&:before{
+		content: "F";
+		.view-toolbar-icons();
+		top:-2px;
+		margin: 0;
+		color: #c43d53;
+	}
 }
 
-.icon-unlock:before{
-	content: "E";
-	.view-toolbar-icons();
-	top:-3px;
+.icon-unlock{
+	padding: 0 10px !important;
+	&:before{
+		content: "E";
+		.view-toolbar-icons();
+		top:-2px;
+		margin: 0;
+		color: #7CB830;
+	}
 }
 
-#HomeDashboardView .parent > a:before,
 .icon-change-dashborad:before{
 	content: "/";
 	.view-toolbar-icons();
@@ -2057,9 +2089,11 @@ td.empty{
 }
 
 .portlet-toolbar{
-	position: absolute;
-	top:-35px;
-	right:8px;
+	float: right;
+	margin-right: 10px;
+	//position: absolute;
+	//top:-35px;
+	//right:8px;
 	a{
 		line-height:25px;
 		margin:0;
@@ -2301,6 +2335,7 @@ a.simple-link{
 	> .ui-state-highlight{
 		min-height: 45px;
 		background: #efefef;
+		margin-bottom: 15px;
 	}
 }
 
@@ -3032,6 +3067,9 @@ div.wide.form{
 .attributesContainer{
 	padding-bottom:15px;
 	.clearfix();
+	+ h3{
+		margin-top: 0 !important;
+	}
 }
 
 .left-column{
@@ -3045,6 +3083,9 @@ div.wide.form{
 		+.right-column{
 			display: none;
 		}
+	}
+	.ui-notice{
+		margin-bottom: 15px;
 	}
 }
 .right-column{
@@ -3358,12 +3399,17 @@ div.wide.form{
 	}
 }
 
+.juiportlet-widget-content{
+	.details-table{
+		.unstyle-panel();
+		border: none !important;
+		.b-shadow(none) !important;
+	}
+}
+
 .details-table{
 	position:relative;
 	margin:0px !important;
-	.unstyle-panel();
-	border: none !important;
-	.b-shadow(none) !important;
 	table{
 		margin:0 0 10px 0;
 	}
@@ -3451,7 +3497,7 @@ div.wide.form{
 .AppContent.TableOfContentsView,
 .AppContent.SecuredEditAndDetailsView{
 	.toolbar-mbmenu{
-		top:8px;
+		//top:8px;
 	}
 }
 
@@ -3511,18 +3557,16 @@ div.wide.form{
 }
 
 .toolbar-mbmenu{
-	position:absolute;
-	top:-35px;
-	right:10px;
-	margin:0;
+	//position:absolute;
+	//top: 8px;//-35px;
+	//right:10px;
+	margin:0 10px 0 0;
 	float:right;
 	width:auto;
 	.view-toolbar{
-		position:absolute;
-		right:0;
-		top:0;
 		border:none;
 		.b-shadow(none);
+		background: none;
 	}
 	ul{
 		list-style: none;
@@ -3556,7 +3600,7 @@ div.wide.form{
 	}
 	.options-menu ul{
 		++.flyout;
-		margin-top:-5px;
+		margin-top:0;
 		padding-top:3px;
 		padding-bottom:3px;
 		display:none;
@@ -3571,6 +3615,12 @@ div.wide.form{
 			line-height: normal;
 			.t-shadow(none);
 		}
+	}
+}
+
+.details-table{
+	.toolbar-mbmenu{
+		top: -35px;
 	}
 }
 
@@ -3709,13 +3759,14 @@ div.wide.form{
 
 #inline-edit-form{
 	++.unstyle-panel;
-	padding: 15px 15px 15px 0;
+	//padding: 15px 15px 15px 0;
 	table + table{
 		float:left;
 		.box-sizing();
 	}
 	.panel td{
 		padding-bottom: 15px;
+		padding-left: 0;
 	}
 	> table{
 		td > a{
@@ -3744,8 +3795,13 @@ div.wide.form{
 	table{
 		border-bottom: none;
 	}
+	.left-column{
+		padding-bottom: 0;
+	}
 	.view-toolbar-container{
 		display: inline-block;
+		padding: 0 15px 15px 15px;
+		++.border-box;
 		a{
 			float:right;
 			clear: both;
@@ -3852,6 +3908,7 @@ div.radio-input{
 .BreadCrumbView{
 	position: relative;
 	z-index: 10;
+	display: inline-block;
 	&+div{
 		position: relative;
 		z-index: 1;
@@ -4014,6 +4071,7 @@ div.hasHalfs{
 	}
 }
 
+.edit-portlet-menu,
 .edit-row-menu{
 	float:right;
 	margin:0 10px 0 0;
@@ -4053,11 +4111,18 @@ div.hasHalfs{
 	}
 	ul{
 		width:110px;
-		margin-left:-97px;
+		margin-left:-85px;
 		list-style: none;
 		++.headerDropDown;
 		top:20px;
 		.smaller();
+	}
+}
+
+.edit-portlet-menu{
+	margin-right: 15px;
+	ul{
+		top: 32px;
 	}
 }
 
@@ -4190,7 +4255,6 @@ div.hasHalfs{
 			font-size:11px;
 			padding-left:10px;
 			a{
-				++.themeColor-important;
 				outline: none;
 			}
 		}
@@ -4353,6 +4417,10 @@ div.hasHalfs{
 .filter-portlet-model-bar{
 	.smaller();
 	padding-left:8px;
+	++.border-box;
+	//width: 100%;
+	//position: relative;
+	//top: -3px;
 	label{
 		cursor:pointer;
 		border:none;
@@ -4384,14 +4452,15 @@ div.hasHalfs{
 
 .filter-portlet-model-bar{
 	border-bottom:1px solid #DFDFDF;
-	overflow: hidden;
+	//overflow: hidden;
+	width: 100%;
 	min-height: 40px;
-	//line-height: 40px;
 	#gradient > .vertical(#f6f6f6, #ededed);
 	.b-shadow(inset 0 1px 0 0 #ffffff);
 	position:relative;
 	> .ui-buttonset{
-		margin: 14px 0;
+		//margin: 14px 0;
+		padding-top:14px
 	}
 }
 

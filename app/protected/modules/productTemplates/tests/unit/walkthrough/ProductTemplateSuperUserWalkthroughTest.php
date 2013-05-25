@@ -84,7 +84,7 @@
 
             //Default Controller actions requiring some sort of parameter via POST or GET
             //Load Model Edit Views
-            $productTemplates	 = ProductTemplate::getAll();
+            $productTemplates    = ProductTemplate::getAll();
             $this->assertEquals(12, count($productTemplates));
             $superTemplateId     = self::getModelIdByModelNameAndName('ProductTemplate', 'My Catalog Item 1');
             $superTemplateId2    = self::getModelIdByModelNameAndName('ProductTemplate', 'My Catalog Item 2');
@@ -107,7 +107,7 @@
             $superTemplate       = ProductTemplate::getById($superTemplateId);
             $this->assertEquals('Test Description', $superTemplate->description);
             //Test having a failed validation on the contact during save.
-            $this->setGetArray (array('id'		=> $superTemplateId));
+            $this->setGetArray (array('id'       => $superTemplateId));
             $this->setPostArray(array('ProductTemplate' => array('name' => '')));
             $content = $this->runControllerWithNoExceptionsAndGetContent('productTemplates/default/edit');
             $this->assertFalse(strpos($content, 'Name cannot be blank') === false);
@@ -181,10 +181,10 @@
             //Delete a product template
             $this->setGetArray(array('id' => $productTemplate->id));
             $this->resetPostArray();
-            $productTemplates		= ProductTemplate::getAll();
+            $productTemplates       = ProductTemplate::getAll();
             $this->assertEquals(14, count($productTemplates));
             $this->runControllerWithRedirectExceptionAndGetContent('productTemplates/default/delete');
-            $productTemplates		= ProductTemplate::getAll();
+            $productTemplates       = ProductTemplate::getAll();
             $this->assertEquals(13, count($productTemplates));
             try
             {

@@ -39,7 +39,6 @@
      */
     abstract class ActionBarForSecurityTreeListView extends ConfigurableMetadataView
     {
-
         protected $controllerId;
 
         protected $moduleId;
@@ -66,7 +65,7 @@
         {
             $content          = null;
             $actionBarContent = $this->renderActionElementBar(false);
-            if($actionBarContent != null)
+            if ($actionBarContent != null)
             {
                 $content .= '<div class="view-toolbar-container clearfix"><div class="view-toolbar">';
                 $content .= $actionBarContent;

@@ -68,8 +68,8 @@
                             $portletRules = PortletRulesFactory::createPortletRulesByView($className);
                             if ($viewReflectionClass->implementsInterface('RelatedPortletViewInterface'))
                             {
-                                if ($this->resolveLayoutIdInAllowedOnPortletViewClassNames($className)
-                                   && $className::allowMultiplePlacement() == false &&
+                                if ($this->resolveLayoutIdInAllowedOnPortletViewClassNames($className) &&
+                                    $className::allowMultiplePlacement() == false &&
                                     !in_array($portletRules->getType(), $placedViewTypes))
                                 {
                                     $metadata = $className::getMetadata();
@@ -110,7 +110,7 @@
 
         private function resolveLayoutIdInAllowedOnPortletViewClassNames($className)
         {
-            if(in_array($this->uniqueLayoutId, $className::getAllowedOnPortletViewClassNames()))
+            if (in_array($this->uniqueLayoutId, $className::getAllowedOnPortletViewClassNames()))
             {
                 return true;
             }

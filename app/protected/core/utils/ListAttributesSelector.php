@@ -55,7 +55,7 @@
             assert('is_string($viewClassName)');
             assert('is_string($moduleClassName)');
             assert('$modelClassName == null || is_string($modelClassName)');
-            if($modelClassName == null)
+            if ($modelClassName == null)
             {
                 $modelClassName       = $moduleClassName::getPrimaryModelName();
             }

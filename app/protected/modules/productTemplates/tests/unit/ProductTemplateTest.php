@@ -107,7 +107,6 @@
             unset($productTemplate);
             $productTemplate                             = ProductTemplate::getById($id);
             $this->assertEquals(ProductTemplate::PRICE_FREQUENCY_MONTHLY, intval($productTemplate->priceFrequency));
-
         }
 
         /**
@@ -264,18 +263,18 @@
 
         public function testPriceValidation()
         {
-            $user				= UserTestHelper::createBasicUser('Steven3');
-            $product				= ProductTestHelper::createProductByNameForOwner('Product 2', $user);
-            $productTemplate			= ProductTemplateTestHelper::createProductTemplateByVariables($product, ProductTemplate::PRICE_FREQUENCY_ONE_TIME, ProductTemplate::TYPE_PRODUCT, ProductTemplate::STATUS_ACTIVE, SellPriceFormula::TYPE_EDITABLE);
-            $productTemplate->cost->value	= -200;
+            $user                           = UserTestHelper::createBasicUser('Steven3');
+            $product                        = ProductTestHelper::createProductByNameForOwner('Product 2', $user);
+            $productTemplate                = ProductTemplateTestHelper::createProductTemplateByVariables($product, ProductTemplate::PRICE_FREQUENCY_ONE_TIME, ProductTemplate::TYPE_PRODUCT, ProductTemplate::STATUS_ACTIVE, SellPriceFormula::TYPE_EDITABLE);
+            $productTemplate->cost->value   = -200;
             $this->assertFalse($productTemplate->save());
-            $productTemplate->sellPrice->value	= -200;
+            $productTemplate->sellPrice->value  = -200;
             $this->assertFalse($productTemplate->save());
-            $productTemplate->listPrice->value	= -200;
+            $productTemplate->listPrice->value  = -200;
             $this->assertFalse($productTemplate->save());
-            $productTemplate->listPrice->value	= 100;
-            $productTemplate->sellPrice->value	= 100;
-            $productTemplate->cost->value	= 100;
+            $productTemplate->listPrice->value  = 100;
+            $productTemplate->sellPrice->value  = 100;
+            $productTemplate->cost->value       = 100;
             $this->assertTrue($productTemplate->save());
         }
     }

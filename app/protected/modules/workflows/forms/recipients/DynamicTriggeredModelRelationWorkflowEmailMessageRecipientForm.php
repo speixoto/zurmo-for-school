@@ -187,7 +187,7 @@
             {
                 if ($model->{$this->relation}->id > 0)
                 {
-                    $recipients =$this->resolveRecipients($model->{$this->relation});
+                    $recipients = $this->resolveRecipients($model->{$this->relation});
                 }
             }
             else

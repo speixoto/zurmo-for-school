@@ -49,7 +49,7 @@
                 return true;
             }
             $isLdapExtensionLoaded = InstallUtil::isLdapInstalled();
-            if($isLdapExtensionLoaded)
+            if ($isLdapExtensionLoaded)
             {
                 return true;
             }

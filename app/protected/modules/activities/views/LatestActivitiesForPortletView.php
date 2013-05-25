@@ -99,9 +99,7 @@
 
         public function renderContent()
         {
-            $content  = $this->renderActionContent();
-            $content .= $this->renderLatestActivitiesContent();
-            return $content;
+            return $this->renderLatestActivitiesContent();
         }
 
         protected function renderLatestActivitiesContent()
@@ -332,6 +330,11 @@
                                                                                                 null);
                 }
             }
+        }
+
+        public function renderPortletHeadContent()
+        {
+            return $this->renderActionContent();
         }
     }
 ?>

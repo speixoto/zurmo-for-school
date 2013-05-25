@@ -36,6 +36,5 @@
 
     class ProductsModuleEditView extends GlobalSearchEnabledModuleEditView
     {
-        
     }
 ?>

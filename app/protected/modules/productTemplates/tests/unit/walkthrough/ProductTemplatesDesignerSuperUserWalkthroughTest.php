@@ -161,7 +161,6 @@
             $this->setPostArray(array('save'  => 'Save', 'layout' => $layout));
             $content = $this->runControllerWithExitExceptionAndGetContent('designer/default/LayoutEdit');
             $this->assertFalse(strpos($content, 'Layout saved successfully') === false);
-
         }
 
         /**
@@ -262,7 +261,7 @@
             $metadata            = CalculatedDerivedAttributeMetadata::
                                    getByNameAndModelClassName('calcnumber', 'ProductTemplate');
             $testCalculatedValue = CalculatedNumberUtil::calculateByFormulaAndModelAndResolveFormat($metadata->getFormula(), $productTemplate);
-            $this->assertEquals(1476                                     , intval(str_replace(',',"", $testCalculatedValue)));
+            $this->assertEquals(1476                                     , intval(str_replace(',', "", $testCalculatedValue))); // Not Coding Standard
         }
 
         /**
@@ -270,8 +269,8 @@
          */
         public function testWhetherSearchWorksForTheCustomFieldsPlacedForProductTemplatesModuleAfterCreatingTheProductTemplate()
         {
-            $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
-
+            $super              = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
+            $baseCurrency       = Currency::getByCode(Yii::app()->currencyHelper->getBaseCode());
             //Search a created opportunity using the customfield.
             $this->resetPostArray();
             $this->setGetArray(array('ProductTemplatesSearchForm' => array(
@@ -396,7 +395,7 @@
             $metadata            = CalculatedDerivedAttributeMetadata::
                                    getByNameAndModelClassName('calcnumber', 'ProductTemplate');
             $testCalculatedValue = CalculatedNumberUtil::calculateByFormulaAndModelAndResolveFormat($metadata->getFormula(), $productTemplate);
-            $this->assertEquals(132                                     , intval(str_replace(',',"", $testCalculatedValue)));
+            $this->assertEquals(132                                     , intval(str_replace(',', "", $testCalculatedValue))); // Not Coding Standard
         }
 
         /**
@@ -489,7 +488,7 @@
             $metadata            = CalculatedDerivedAttributeMetadata::
                                    getByNameAndModelClassName('calcnumber', 'ProductTemplate');
             $testCalculatedValue = CalculatedNumberUtil::calculateByFormulaAndModelAndResolveFormat($metadata->getFormula(), $productTemplate);
-            $this->assertEquals(132                                     , intval(str_replace(',',"", $testCalculatedValue)));
+            $this->assertEquals(132                                     , intval(str_replace(',', "", $testCalculatedValue))); // Not Coding Standard
         }
 
         /**

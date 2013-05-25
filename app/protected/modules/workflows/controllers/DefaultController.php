@@ -526,7 +526,7 @@
                 $workflow                    = new Workflow();
                 $workflow->setType($type);
             }
-            elseif($isBeingCopied)
+            elseif ($isBeingCopied)
             {
                 $savedWorkflow               = new SavedWorkflow();
                 $oldWorkflow                 = SavedWorkflow::getById(intval($id));

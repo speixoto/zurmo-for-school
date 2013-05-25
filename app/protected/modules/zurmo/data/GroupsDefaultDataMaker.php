@@ -94,6 +94,9 @@
             $everyone->setRight('ProductsModule',      ProductsModule::RIGHT_ACCESS_PRODUCTS, Right::ALLOW);
             $everyone->setRight('ProductsModule',      ProductsModule::RIGHT_CREATE_PRODUCTS, Right::ALLOW);
             $everyone->setRight('ProductsModule',      ProductsModule::RIGHT_DELETE_PRODUCTS, Right::ALLOW);
+            $everyone->setRight('ProductTemplatesModule',      ProductTemplatesModule::RIGHT_ACCESS_PRODUCT_TEMPLATES, Right::ALLOW);
+            $everyone->setRight('ProductTemplatesModule',      ProductTemplatesModule::RIGHT_CREATE_PRODUCT_TEMPLATES, Right::ALLOW);
+            $everyone->setRight('ProductTemplatesModule',      ProductTemplatesModule::RIGHT_DELETE_PRODUCT_TEMPLATES, Right::ALLOW);
             $saved = $everyone->save();
             assert('$saved');
         }

@@ -37,11 +37,17 @@
     /**
      * The base View for a module's related list view.
      */
-    abstract class RelatedListView extends ListView implements PortletViewInterface,RelatedPortletViewInterface
+    abstract class RelatedListView extends ListView implements PortletViewInterface, RelatedPortletViewInterface
     {
         protected $params;
         protected $viewData;
         protected $uniqueLayoutId;
+
+        /**
+         * Override so viewToolbar renders during renderPortletHeadContent instead of renderContent
+         * @var bool
+         */
+        protected $renderViewToolBarDuringRenderContent = false;
 
         /**
          * Signal to use ExtendedGridView
@@ -129,6 +135,11 @@
                                                                         'pageSize' => $pageSize,
                                                                     )
                                                                 ));
+        }
+
+        public function renderPortletHeadContent()
+        {
+            return $this->renderViewToolBar();
         }
 
         public function isUniqueToAPage()

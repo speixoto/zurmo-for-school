@@ -133,7 +133,7 @@
         {
             return ZurmoHtml::tag('div', array(
                         'id' => ModelElement::MODAL_CONTAINER_PREFIX . '-' . $this->getFormName()
-                   ),'');
+                   ), '');
         }
 
         protected function renderConfigSaveAjax($formName)

@@ -88,6 +88,11 @@
             $this->uniquePageId   = get_called_class();
         }
 
+        public function renderPortletHeadContent()
+        {
+            return null;
+        }
+
         public static function getDefaultMetadata()
         {
             $metadata = array(

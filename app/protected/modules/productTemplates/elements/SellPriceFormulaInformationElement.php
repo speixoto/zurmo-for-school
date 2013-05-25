@@ -29,16 +29,16 @@
         protected function renderControlNonEditable()
         {
             assert('$this->model->{$this->attribute} instanceof SellPriceFormula');
-            $sellPriceFormulaModel	    = $this->model->{$this->attribute};
-            $type			    = $sellPriceFormulaModel->type;
-            $discountOrMarkupPercentage	    = $sellPriceFormulaModel->discountOrMarkupPercentage;
+            $sellPriceFormulaModel      = $this->model->{$this->attribute};
+            $type                       = $sellPriceFormulaModel->type;
+            $discountOrMarkupPercentage     = $sellPriceFormulaModel->discountOrMarkupPercentage;
             $displayedSellPriceFormulaList  = SellPriceFormula::getDisplayedSellPriceFormulaArray();
             $content = '';
-            if($type != null)
+            if ($type != null)
             {
                 $content = $displayedSellPriceFormulaList[$type];
 
-                if($type != SellPriceFormula::TYPE_EDITABLE)
+                if ($type != SellPriceFormula::TYPE_EDITABLE)
                 {
                     $content = str_replace('{discount}', $discountOrMarkupPercentage/100, $content);
                 }
@@ -59,25 +59,25 @@
             assert('$this->model->{$this->attribute} instanceof SellPriceFormula');
             $this->registerScripts();
             $sellPriceFormulaModel  = $this->model->{$this->attribute};
-            $content		    = $this->renderNameDropDown($sellPriceFormulaModel, $this->form, $this->attribute, 'type') . "\n";
-            $content		    .= $this->renderDiscountOrMarkupPercentageTextField($sellPriceFormulaModel, $this->form, $this->attribute, 'discountOrMarkupPercentage') . "\n";
+            $content                = $this->renderNameDropDown($sellPriceFormulaModel, $this->form, $this->attribute, 'type') . "\n";
+            $content               .= $this->renderDiscountOrMarkupPercentageTextField($sellPriceFormulaModel, $this->form, $this->attribute, 'discountOrMarkupPercentage') . "\n";
             return $content;
         }
 
         protected function renderNameDropDown($model, $form, $inputNameIdPrefix, $attribute)
         {
-            $id					   = $this->getEditableInputId($inputNameIdPrefix, $attribute);
+            $id                    = $this->getEditableInputId($inputNameIdPrefix, $attribute);
             $discountOrMarkupPercentageTextFieldId = $this->getEditableInputId($inputNameIdPrefix, 'discountOrMarkupPercentage');
-            $sellPriceValueId			   =  $this->getEditableInputId('sellPrice', 'value');
+            $sellPriceValueId              =  $this->getEditableInputId('sellPrice', 'value');
             $htmlOptions = array(
-                'name'	    => $this->getEditableInputName($this->attribute, 'type'),
-                'id'	    => $id,
+                'name'      => $this->getEditableInputName($this->attribute, 'type'),
+                'id'        => $id,
                 'onchange'  => 'showHideDiscountOrMarkupPercentageTextField($(this).val(), \'' . $discountOrMarkupPercentageTextFieldId . '\');
                               enableDisableSellPriceElementBySellPriceFormula($(this).val(), \'' . $sellPriceValueId . '\', "sellPrice");
                               calculateSellPriceBySellPriceFormula()'
             );
-            $dropDownField			   = $form->dropDownList($model, $attribute, SellPriceFormula::getTypeDropDownArray(), $htmlOptions);
-            $error				   = $form->error($model, $attribute, array('inputID' => $id));
+            $dropDownField         = $form->dropDownList($model, $attribute, SellPriceFormula::getTypeDropDownArray(), $htmlOptions);
+            $error                 = $form->error($model, $attribute, array('inputID' => $id));
             return $dropDownField . $error;
         }
 
@@ -126,7 +126,7 @@
 
         protected function resolveInputDisplayStyle($model)
         {
-            if($model->type == SellPriceFormula::TYPE_PROFIT_MARGIN || $model->type == SellPriceFormula::TYPE_MARKUP_OVER_COST || $model->type == SellPriceFormula::TYPE_DISCOUNT_FROM_LIST)
+            if ($model->type == SellPriceFormula::TYPE_PROFIT_MARGIN || $model->type == SellPriceFormula::TYPE_MARKUP_OVER_COST || $model->type == SellPriceFormula::TYPE_DISCOUNT_FROM_LIST)
             {
                 return 'display:block';
             }

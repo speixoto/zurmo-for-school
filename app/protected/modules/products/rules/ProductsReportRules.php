@@ -35,58 +35,22 @@
      ********************************************************************************/
 
     /**
-     * Class utilized by 'select' modal popup in the edit view
+     * Report rules to be used with the Products module.
      */
-    class ProductTemplateSelectFromRelatedEditModalListLinkProvider extends ModalListLinkProvider
+    class ProductsReportRules extends SecuredReportRules
     {
         /**
-         * Id of input field in display for saving back a selected
-         * record from the modal list view.
-         * @see $sourceIdFieldId
+         * @return array
          */
-        protected $sourceIdFieldId;
-
-        /**
-         * Name of input field in display for saving back a selected
-         * record from the modal list view.
-         * @see $sourceNameFieldId
-         */
-        protected $sourceNameFieldId;
-
-        protected $modalId;
-
-        /**
-         * sourceIdFieldName and sourceNameFieldId are needed to know
-         * which fields in the parent form to populate data with
-         * upon selecting a row in the listview
-         *
-         */
-        public function __construct($sourceIdFieldId, $sourceNameFieldId, $modalId = null)
+        public static function getDefaultMetadata()
         {
-            assert('is_string($sourceIdFieldId)');
-            assert('is_string($sourceNameFieldId)');
-            $this->sourceIdFieldId   = $sourceIdFieldId;
-            $this->sourceNameFieldId = $sourceNameFieldId;
-            $this->modalId           = $modalId;
-        }
-
-        public function getLinkString($attributeString)
-        {
-            if ($this->modalId == null)
-            {
-                $modalId = 'modalContainer';
-            }
-            else
-            {
-                $modalId = $this->modalId;
-            }
-            $url = Yii::app()->createUrl("productTemplates/default/details");
-            $string  = 'ZurmoHtml::link(';
-            $string .= $attributeString . ', ';
-            $string .= '"javascript:transferModalValues(\"#' . $modalId . '\", " . CJavaScript::encode(array(\'' . $this->sourceIdFieldId . '\' => $data->id, \'' . $this->sourceNameFieldId . '\' => strval(' . $attributeString . '))) . ");
-                        copyProductTemplateDataForProduct(\'$data->id\', \'' . $url . '\')"';
-            $string .= ')';
-            return $string;
+            $metadata = array(
+                'Product' => array(
+                    'nonReportable' =>
+                    array('products', 'product'),
+                )
+            );
+            return array_merge(parent::getDefaultMetadata(), $metadata);
         }
     }
 ?>

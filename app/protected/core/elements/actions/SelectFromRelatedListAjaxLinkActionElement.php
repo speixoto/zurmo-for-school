@@ -36,19 +36,18 @@
 
     class SelectFromRelatedListAjaxLinkActionElement extends AjaxLinkActionElement
     {
-        public function __construct($controllerId, $moduleId, $modelId, $params = array())
-        {
-            if (!isset($params['htmlOptions']))
-            {
-                $params['htmlOptions'] = array();
-            }
-            $params['htmlOptions'] = array_merge(array('class' => 'simple-link'), $params['htmlOptions']);
-            parent::__construct($controllerId, $moduleId, $modelId, $params);
-        }
-
         public function getActionType()
         {
             return null;
+        }
+
+        public function renderMenuItem()
+        {
+            return array('label'  => $this->getLabel(),
+                'url'             => $this->getDefaultRoute(),
+                'linkOptions'     => $this->getHtmlOptions(),
+                'ajaxLinkOptions' => $this->getAjaxOptions()
+            );
         }
 
         protected function getDefaultLabel()

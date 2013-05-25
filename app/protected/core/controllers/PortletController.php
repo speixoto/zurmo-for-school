@@ -139,7 +139,7 @@
                 $portlet->params['relationModel'] = $modelClassName::getById((int)$portlet->params['relationModelId']);
             }
             $view = new AjaxPageView(new PortletRefreshView($portlet, $uniqueLayoutId, $this->getModule()->getId(),
-                                                            $portletsAreRemovable));
+                                                            (bool)$portletsAreRemovable));
             echo $view->render();
         }
     }

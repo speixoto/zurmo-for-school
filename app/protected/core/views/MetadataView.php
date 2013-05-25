@@ -293,11 +293,27 @@
             return true;
         }
 
+        protected function renderWrapperAndActionElementMenu($title = null)
+        {
+            assert('is_string($title) || $title === null');
+            $content              = null;
+            $actionElementContent = $this->renderActionElementMenu($title);
+            if ($actionElementContent != null)
+            {
+                $content .= '<div class="view-toolbar-container toolbar-mbmenu clearfix"><div class="view-toolbar">';
+                $content .= $actionElementContent;
+                $content .= '</div></div>';
+            }
+            return $content;
+        }
+
         /**
          * Render a menu above the form layout. This includes buttons and/or
          * links to go to different views or process actions such as save or delete
-         * @return A string containing the element's content.
-          */
+         * @param null $title
+         * @return mixed  A string containing the element's content.
+         * @throws NotSupportedException
+         */
         protected function renderActionElementMenu($title = null)
         {
             if ($title == null)

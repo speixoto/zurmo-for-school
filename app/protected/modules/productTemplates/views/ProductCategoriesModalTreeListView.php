@@ -88,7 +88,7 @@
 
         protected function makeTreeMenuNodeLink($label, $action, $roleId)
         {
-            if($this->modalId == null)
+            if ($this->modalId == null)
             {
                 $modalId = 'modalContainer';
             }

@@ -48,7 +48,7 @@
         public static function divisionForZero($dividend, $divisor)
         {
             assert('is_numeric($dividend) || is_string($dividend)');
-            if($dividend == 0)
+            if ($dividend == 0)
             {
                 return 0;
             }
@@ -56,7 +56,6 @@
             {
                 return $dividend / $divisor;
             }
-
         }
     }
 ?>

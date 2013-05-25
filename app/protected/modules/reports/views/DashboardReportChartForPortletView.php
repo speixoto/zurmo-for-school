@@ -97,7 +97,7 @@
          */
         public function getTitle()
         {
-            if($this->getSavedReport() == null)
+            if ($this->getSavedReport() == null)
             {
                 return Zurmo::t('ReportsModule', 'Report Chart');
             }
@@ -116,7 +116,7 @@
             {
                 $formModel->reportId = $this->getSavedReportId();
             }
-            if($this->getSavedReport() != null)
+            if ($this->getSavedReport() != null)
             {
                 $formModel->reportName = strval($this->getSavedReport());
             }
@@ -125,11 +125,11 @@
 
         public function renderContent()
         {
-            if($this->getSavedReportId() == null)
+            if ($this->getSavedReportId() == null)
             {
                 return $this->renderSelectAReportFirstContent();
             }
-            elseif($this->getSavedReport() == null)
+            elseif ($this->getSavedReport() == null)
             {
                 return $this->renderWarningMessageContent();
             }
@@ -192,7 +192,7 @@
 
         protected function getSavedReport()
         {
-            if($this->savedReport == null && $this->getSavedReportId() != null && !$this->savedReportHasBeenResolved)
+            if ($this->savedReport == null && $this->getSavedReportId() != null && !$this->savedReportHasBeenResolved)
             {
                 $this->resolveSavedReportAndWarningData();
             }
@@ -205,14 +205,14 @@
             {
                 $savedReport = SavedReport::getById((int)$this->getSavedReportId());
 
-                if(!ControllerSecurityUtil::doesCurrentUserHavePermissionOnSecurableItem($savedReport, Permission::READ))
+                if (!ControllerSecurityUtil::doesCurrentUserHavePermissionOnSecurableItem($savedReport, Permission::READ))
                 {
                     $this->warningMessage = Zurmo::t('ReportsModule', 'You have tried to access a report you do not have access to');
                 }
                 else
                 {
                     $report = SavedReportToReportAdapter::makeReportBySavedReport($savedReport);
-                    if($report->getChart()->type == null)
+                    if ($report->getChart()->type == null)
                     {
                         $this->warningMessage = Zurmo::t('ReportsModule', 'This report does not have a chart to display');
                     }
@@ -226,7 +226,7 @@
             {
                 $this->warningMessage = Zurmo::t('ReportsModule', 'You have tried to access a report that is no longer available');
             }
-            catch(AccessDeniedSecurityException $e)
+            catch (AccessDeniedSecurityException $e)
             {
                 $this->warningMessage = Zurmo::t('ReportsModule', 'You have tried to access a report you do not have access to');
             }

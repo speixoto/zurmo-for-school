@@ -36,6 +36,5 @@
 
     class ProductTemplatesModuleEditView extends GlobalSearchEnabledModuleEditView
     {
-        
     }
 ?>

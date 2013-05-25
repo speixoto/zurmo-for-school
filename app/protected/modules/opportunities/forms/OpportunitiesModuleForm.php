@@ -57,15 +57,15 @@
             $validator = new RedBeanModelTypeValidator();
             $validator->type = 'integer';
             $valid     = true;
-            if(!is_array($this->stageToProbabilityMapping))
+            if (!is_array($this->stageToProbabilityMapping))
             {
                 $this->addError('stageToProbabilityMapping', Zurmo::t('Core', '{attribute} must be {type}.',
                                 array('{type}' => 'integer')));
                 $valid = false;
             }
-            foreach($this->stageToProbabilityMapping as $probability)
+            foreach ($this->stageToProbabilityMapping as $probability)
             {
-                if(!$validator->validateValue($probability))
+                if (!$validator->validateValue($probability))
                 {
                     $this->addError('stageToProbabilityMapping',
                                     Zurmo::t('OpportunitiesModule', 'Mapped Probabilities must be integers'));

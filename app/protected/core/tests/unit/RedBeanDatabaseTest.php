@@ -54,7 +54,6 @@
             $databaseType = RedBeanDatabase::getDatabaseTypeFromDsnString($dsn);
         }
 
-
         //@expectedException FailedAssertionException
         public function testGetDatabaseInfoFromConnectionString()
         {
@@ -77,7 +76,6 @@
                 'databaseName' => 'zurmo',
             );
             $this->assertEquals($compareData, $databaseConnectionInfo);
-
 
             $dsn = 'mysql:host=localhost;dbname=zurmo;port=3306;'; // Not Coding Standard
             $databaseConnectionInfo = RedBeanDatabase::getDatabaseInfoFromDsnString($dsn);

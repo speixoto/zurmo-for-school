@@ -154,7 +154,7 @@
 
         public function testProcessAfterSaveWhenSendIsImmediateAndToAContactThatIsTheTriggeredModel()
         {
-            foreach(EmailMessage::getAll() as $emailMessage)
+            foreach (EmailMessage::getAll() as $emailMessage)
             {
                 $emailMessage->delete();
             }
@@ -201,7 +201,7 @@
 
         public function testProcessAfterSaveWhenSendIsImmediateAndToAContactThatIsRelatedToTheTriggeredModel()
         {
-            foreach(EmailMessage::getAll() as $emailMessage)
+            foreach (EmailMessage::getAll() as $emailMessage)
             {
                 $emailMessage->delete();
             }

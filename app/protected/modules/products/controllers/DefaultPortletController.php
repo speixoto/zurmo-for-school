@@ -36,6 +36,5 @@
 
     class ProductsDefaultPortletController extends ZurmoPortletController
     {
-	
     }
 ?>

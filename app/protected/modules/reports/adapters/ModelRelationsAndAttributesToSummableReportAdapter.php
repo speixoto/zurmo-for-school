@@ -92,7 +92,7 @@
             assert('is_string($type)');
             $labels = array_merge(static::translatedDisplayCalculationShortLabels(),
                                   static::translatedGroupByCalculationShortLabels());
-            if(isset($labels[$type]))
+            if (isset($labels[$type]))
             {
                 return $labels[$type];
             }
@@ -614,7 +614,7 @@
                 {
                     $resolvedAttribute = $groupBy->getResolvedAttribute();
                     $calculationOrModifierType = $this->getCalculationOrModifierType($resolvedAttribute);
-                    if($this->isAttributeACalculationOrModifier($resolvedAttribute) && $calculationOrModifierType !== $resolvedAttribute)
+                    if ($this->isAttributeACalculationOrModifier($resolvedAttribute) && $calculationOrModifierType !== $resolvedAttribute)
                     {
                         $realAttributeName = static::resolveRealAttributeName($resolvedAttribute);
                         $label = $this->resolveDisplayCalculationLabel($realAttributeName,

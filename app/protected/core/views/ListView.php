@@ -46,6 +46,12 @@
         protected $dataProvider;
 
         /**
+         * Override and set to false if you want the viewToolbar to render during renderPortletHeadContent instead
+         * @var bool
+         */
+        protected $renderViewToolBarDuringRenderContent = true;
+
+        /**
          * True/false to decide if each row in the list view widget
          * will have a checkbox.
          */
@@ -123,7 +129,11 @@
             $cClipWidget->beginClip("ListView");
             $cClipWidget->widget($this->getGridViewWidgetPath(), $this->getCGridViewParams());
             $cClipWidget->endClip();
-            $content = $this->renderViewToolBar();
+            $content     = null;
+            if ($this->renderViewToolBarDuringRenderContent)
+            {
+                $content .= $this->renderViewToolBar();
+            }
             $content .= $cClipWidget->getController()->clips['ListView'] . "\n";
             if ($this->rowsAreSelectable)
             {

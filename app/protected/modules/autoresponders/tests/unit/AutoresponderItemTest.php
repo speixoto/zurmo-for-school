@@ -50,7 +50,7 @@
 
         public function testCreateAndGetAutoresponderItemById()
         {
-            $time                                       = DateTimeUtil::convertTimestampToDbFormatDateTime(strtotime('+1 week'));
+            $time                                       = DateTimeUtil::convertTimestampToDbFormatDateTime(strtotime('+1 week')); // Not Coding Standard
             $autoresponderItem                          = new AutoresponderItem();
             $autoresponderItem->processed               = 0;
             $autoresponderItem->processDateTime         = $time;
@@ -75,7 +75,7 @@
             $this->assertArrayHasKey('processDateTime', $errors);
             $this->assertEquals('Process Date Time cannot be blank.', $errors['processDateTime'][0]);
 
-            $time                                       = DateTimeUtil::convertTimestampToDbFormatDateTime(strtotime('+1 week'));
+            $time                                       = DateTimeUtil::convertTimestampToDbFormatDateTime(strtotime('+1 week')); // Not Coding Standard
             $autoresponderItem                          = new AutoresponderItem();
             $autoresponderItem->processed               = 1;
             $autoresponderItem->processDateTime         = $time;
@@ -94,7 +94,7 @@
         {
             for ($i = 0; $i < 5; $i++)
             {
-                $time                               = DateTimeUtil::convertTimestampToDbFormatDateTime(strtotime('+1 day'));
+                $time                               = DateTimeUtil::convertTimestampToDbFormatDateTime(strtotime('+1 day')); // Not Coding Standard
                 $processed                          = 0;
                 if ($i % 2)
                 {
@@ -202,7 +202,7 @@
             {
                 $contact = ContactTestHelper::createContactByNameForOwner('contact 0' . $i, Yii::app()->user->userModel);
                 $this->assertNotNull($contact);
-                $time                               = DateTimeUtil::convertTimestampToDbFormatDateTime(strtotime('+1 day'));
+                $time                               = DateTimeUtil::convertTimestampToDbFormatDateTime(strtotime('+1 day')); // Not Coding Standard
                 if ($i % 3)
                 {
                     $processed      = 1;
@@ -266,7 +266,7 @@
                 }
                 else
                 {
-                    $pastOrFuture   = "+";
+                    $pastOrFuture   = "+"; // Not Coding Standard
                     $processed      = 0;
                 }
                 if ($i % 2)
@@ -305,7 +305,7 @@
             $autoresponder3NotProcessedFiveDaysFromNow   = AutoresponderItem::getByProcessedAndAutoresponderIdWithProcessDateTime(
                                                                                     0,
                                                                                     $autoresponder3->id,
-                                                                                    strtotime("+5 day"));
+                                                                                    strtotime("+5 day")); // Not Coding Standard
             $this->assertNotEmpty($autoresponder3NotProcessedFiveDaysFromNow);
             $this->assertCount(1, $autoresponder3NotProcessedFiveDaysFromNow);
             $autoresponder4ProcessedBeforeNow   = AutoresponderItem::getByProcessedAndAutoresponderIdWithProcessDateTime(
@@ -325,7 +325,7 @@
             $autoresponder4NotProcessedFiveDaysFromNow   = AutoresponderItem::getByProcessedAndAutoresponderIdWithProcessDateTime(
                                                                                         0,
                                                                                         $autoresponder4->id,
-                                                                                        strtotime("+5 day"));
+                                                                                        strtotime("+5 day")); // Not Coding Standard
             $this->assertNotEmpty($autoresponder4NotProcessedFiveDaysFromNow);
             $this->assertCount(2, $autoresponder4NotProcessedFiveDaysFromNow);
         }

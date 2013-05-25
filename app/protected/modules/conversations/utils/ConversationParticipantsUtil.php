@@ -50,11 +50,12 @@
             {
                 return self::isUserAParticipant($model, Yii::app()->user->userModel);
             }
-            catch(AccessDeniedSecurityException $e)
+            catch (AccessDeniedSecurityException $e)
             {
                 return false;
             }
         }
+
         /**
          * Given a Conversation and User, determine if the user is already a conversationParticipant.
          * @param Conversation $model

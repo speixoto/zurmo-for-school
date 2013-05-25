@@ -50,11 +50,11 @@
                 $controllerModuleId = $controller->resolveAndGetModuleId();
                 if ($controller != null && isset($item['moduleId']))
                 {
-                    if($item['moduleId'] == 'products' && ($controllerModuleId == 'products' || $controllerModuleId == 'productTemplates'))
+                    if ($item['moduleId'] == 'products' && ($controllerModuleId == 'products' || $controllerModuleId == 'productTemplates'))
                     {
                         $items[$key]['active'] = true;
                     }
-                    elseif($item['moduleId'] == $controllerModuleId)
+                    elseif ($item['moduleId'] == $controllerModuleId)
                     {
                         $items[$key]['active'] = true;
                     }

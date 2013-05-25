@@ -68,6 +68,11 @@
             return $cClipWidget->getController()->clips['RssReader'];
         }
 
+        public function renderPortletHeadContent()
+        {
+            return null;
+        }
+
         public static function getDefaultMetadata()
         {
             return array(

@@ -97,7 +97,7 @@
             {
                 return Permission::ALL;
             }
-            elseif($this->treatCreatedByUserAsOwnerForPermissions &&
+            elseif ($this->treatCreatedByUserAsOwnerForPermissions &&
                    $createdByUser->id > 0 &&
                    $createdByUser->isSame($permitable))
             {

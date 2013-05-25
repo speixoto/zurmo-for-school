@@ -45,8 +45,8 @@
 
         public static function getTranslatedRightsLabels()
         {
-            $params					  = LabelUtil::getTranslationParamsForAllModules();
-            $labels					  = array();
+            $params                   = LabelUtil::getTranslationParamsForAllModules();
+            $labels                   = array();
             $labels[self::RIGHT_CREATE_PRODUCT_TEMPLATES] = Zurmo::t('ProductTemplatesModule',
                                                                         'Create ProductTemplatesModulePluralLabel',     $params);
             $labels[self::RIGHT_DELETE_PRODUCT_TEMPLATES] = Zurmo::t('ProductTemplatesModule',
@@ -126,12 +126,17 @@
 
         public static function getDemoDataMakerClassName()
         {
-            return 'ProductTemplatesDemoDataMaker';
+            return array('ProductTemplatesDemoDataMaker', 'ProductCategoriesDemoDataMaker');
         }
 
         public static function getGlobalSearchFormClassName()
         {
             return 'ProductTemplatesSearchForm';
+        }
+
+        public static function isReportable()
+        {
+            return true;
         }
     }
 ?>
