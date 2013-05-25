@@ -33,7 +33,7 @@
 
         public static function getDependencies()
         {
-            return array('opportunities');
+            return array();
         }
 
         public function makeAll(& $demoDataHelper)
@@ -81,7 +81,7 @@
         public static function getProductTemplateForProduct($product)
         {
             $templateCategoryMapping = array(
-                                                'A1mazing Kid Sample'                       => 'Amazing Kid',
+                                                'Amazing Kid Sample'                        => 'Amazing Kid',
                                                 'You Can Do Anything Sample'                => 'You Can Do Anything',
                                                 'A Bend in the River November Issue'        => 'A Bend in the River',
                                                 'A Gift of Monotheists October Issue'       => 'A Gift of Monotheists',
