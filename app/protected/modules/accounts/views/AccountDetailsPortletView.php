@@ -90,27 +90,8 @@
          * @return string
          */
         public function getTitle() {
-            $starLink = $this->getStarringLink();
+            $starLink = StarredUtil::getToggleStarStatusLink($this->model, null);
             return parent::getTitle() . $starLink;
-        }
-
-        protected function getStarringLink()
-        {
-            $starredClass = 'unstarred';
-            if(StarredUtil::isModelStarred($this->model))
-            {
-                $starredClass = 'starred';
-            }
-            $starId = 'star-' . get_class($this->model) . '-' . $this->model->id;
-            $link = ZurmoHtml::ajaxLink(
-                        Zurmo::t('AccountsModule', 'Toggle star status'),
-                        Yii::app()->createUrl('zurmo/default/toggleStar',
-                                array('modelClassName' => get_class($this->model),
-                                      'modelId'        => $this->model->id)),
-                        array('success' => "function(data){\$('#{$starId}').removeClass().addClass(data)}"),
-                        array('class'   => $starredClass,
-                              'id'      => $starId,));
-            return $link;
         }
 
         /**

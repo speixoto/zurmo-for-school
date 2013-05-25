@@ -207,5 +207,30 @@
             }
             return 'starred';
         }
+
+        public static function getToggleStarStatusLink($data, $row)
+        {
+            $starredClass   = 'unstarred';
+            $text           = ' star';
+            if(StarredUtil::isModelStarred($data))
+            {
+                $starredClass = 'starred';
+            }
+            $starId = 'star-' . get_class($data) . '-' . $data->id;
+            $link = ZurmoHtml::ajaxLink(
+                        $text,
+                        Yii::app()->createUrl('zurmo/default/toggleStar',
+                                array('modelClassName' => get_class($data),
+                                      'modelId'        => $data->id)),
+                        array('success' => "function(data){\$('#{$starId}').removeClass().addClass(data)}"),
+                        array('class'   => $starredClass,
+                              'id'      => $starId,));
+            return $link;
+        }
+
+        public static function renderToggleStarStatusLink($data, $row)
+        {
+            echo static::getToggleStarStatusLink($data, $row);
+        }
     }
 ?>
