@@ -34,59 +34,37 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    abstract class SubmitButtonActionElement extends ActionElement
+    /**
+     * Action bar view for the contact web forms search and list view
+     */
+    class SecuredActionBarForContactWebFormsSearchAndListView extends SecuredActionBarForSearchAndListView
     {
-        protected $formRequiredToUse = true;
-
-        public function render()
+        /**
+         * @return array
+         */
+        public static function getDefaultMetadata()
         {
-            $htmlOptions = $this->getHtmlOptions();
-            $request     = Yii::app()->getRequest();
-            if ($request->enableCsrfValidation && isset($htmlOptions['csrf']) && $htmlOptions['csrf'])
-            {
-                $htmlOptions['params'][$request->csrfTokenName] = $request->getCsrfToken();
-            }
-            if (isset($htmlOptions['params']))
-            {
-                $params = CJavaScript::encode($htmlOptions['params']);
-                unset($htmlOptions['params']);
-            }
-            else
-            {
-                $params = '{}';
-            }
-            if (isset($htmlOptions['class']))
-            {
-                $htmlOptions['class']  .= ' z-button';
-            }
-            else
-            {
-                $htmlOptions['class']   = 'z-button';
-            }
-            $cs = Yii::app()->getClientScript();
-            $cs->registerCoreScript('jquery');
-            $cs->registerCoreScript('yii');
-            if (Yii::app()->getClientScript()->isIsolationMode())
-            {
-                $handler = "jQQ.isolate (function(jQuery,$)
-                            {
-                                jQuery.yii.submitForm(document.getElementById('saveyt1'), '', $params);
-                            }); return false;";
-            }
-            else
-            {
-                $handler = "jQuery.yii.submitForm(this, '', $params); return false;";
-            }
-            if (isset($htmlOptions['onclick']))
-            {
-                $htmlOptions['onclick']  = $htmlOptions['onclick'] . $handler;
-            }
-            else
-            {
-                $htmlOptions['onclick']  = $handler;
-            }
-            $aContent                = ZurmoHtml::wrapLink($this->getLabel());
-            return ZurmoHtml::link($aContent, '#', $htmlOptions);
+            $metadata = array(
+                'global' => array(
+                    'toolbar' => array(
+                        'elements' => array(
+                            array(
+                                'type'            => 'ContactWebFormsCreateLink',
+                                'htmlOptions'     => array('class' => 'icon-create'),
+                            ),
+                            array(
+                                'type'            => 'ContactWebFormsListLink',
+                                'htmlOptions'     => array( 'class' => 'icon-marketing-lists' )
+                            ),
+                            array(
+                                'type'            => 'ContactWebFormEntriesListLink',
+                                'htmlOptions'     => array( 'class' => 'icon-email-templates' )
+                            ),
+                        ),
+                    ),
+                ),
+            );
+            return $metadata;
         }
     }
 ?>

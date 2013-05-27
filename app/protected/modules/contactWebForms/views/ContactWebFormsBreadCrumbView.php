@@ -34,59 +34,17 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    abstract class SubmitButtonActionElement extends ActionElement
+    /**
+     * View that renders contact web forms module breadcrumb content
+     */
+    class ContactWebFormsBreadCrumbView extends BreadCrumbView
     {
-        protected $formRequiredToUse = true;
-
-        public function render()
+        /**
+         * @return string
+         */
+        protected function getHomeLinkLabel()
         {
-            $htmlOptions = $this->getHtmlOptions();
-            $request     = Yii::app()->getRequest();
-            if ($request->enableCsrfValidation && isset($htmlOptions['csrf']) && $htmlOptions['csrf'])
-            {
-                $htmlOptions['params'][$request->csrfTokenName] = $request->getCsrfToken();
-            }
-            if (isset($htmlOptions['params']))
-            {
-                $params = CJavaScript::encode($htmlOptions['params']);
-                unset($htmlOptions['params']);
-            }
-            else
-            {
-                $params = '{}';
-            }
-            if (isset($htmlOptions['class']))
-            {
-                $htmlOptions['class']  .= ' z-button';
-            }
-            else
-            {
-                $htmlOptions['class']   = 'z-button';
-            }
-            $cs = Yii::app()->getClientScript();
-            $cs->registerCoreScript('jquery');
-            $cs->registerCoreScript('yii');
-            if (Yii::app()->getClientScript()->isIsolationMode())
-            {
-                $handler = "jQQ.isolate (function(jQuery,$)
-                            {
-                                jQuery.yii.submitForm(document.getElementById('saveyt1'), '', $params);
-                            }); return false;";
-            }
-            else
-            {
-                $handler = "jQuery.yii.submitForm(this, '', $params); return false;";
-            }
-            if (isset($htmlOptions['onclick']))
-            {
-                $htmlOptions['onclick']  = $htmlOptions['onclick'] . $handler;
-            }
-            else
-            {
-                $htmlOptions['onclick']  = $handler;
-            }
-            $aContent                = ZurmoHtml::wrapLink($this->getLabel());
-            return ZurmoHtml::link($aContent, '#', $htmlOptions);
+            return Zurmo::t('ContactWebFormsModule', 'Contact Web Forms');
         }
     }
 ?>

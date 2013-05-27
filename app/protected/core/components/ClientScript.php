@@ -43,6 +43,8 @@
     {
         private $shouldRenderCoreScripts = true;
 
+        private $isolationMode = false;
+
         /**
          * Used in AJAX calls to make sure
          * .js files are not rendered again
@@ -111,6 +113,16 @@
                     }
                 }
             }
+        }
+
+        public function setIsolationMode()
+        {
+            $this->isolationMode = true;
+        }
+
+        public function isIsolationMode()
+        {
+            return $this->isolationMode;
         }
     }
 ?>

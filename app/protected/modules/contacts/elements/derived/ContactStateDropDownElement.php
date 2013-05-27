@@ -69,7 +69,12 @@
         {
             assert('$attribute == "null"');
             parent::__construct($model, $attribute, $form, $params);
-            $this->attribute = 'state';
+            $this->attribute = $this->resolveAttributeName();
+        }
+
+        protected function resolveAttributeName()
+        {
+            return 'state';
         }
 
         protected function getDropDownArray()

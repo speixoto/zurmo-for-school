@@ -34,59 +34,18 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    abstract class SubmitButtonActionElement extends ActionElement
+    /**
+     * Helper class for working with tracking
+     */
+    abstract class ContactWebFormsUserConfigUtil extends BaseControlUserConfigUtil
     {
-        protected $formRequiredToUse = true;
+        const CONFIG_MODULE_NAME        = 'ContactWebFormsModule';
 
-        public function render()
+        const CONFIG_KEY                = 'UserIdOfUserToRunContactWebFormAs';
+
+        public static function getUserToRunAs($setOnMissing = true)
         {
-            $htmlOptions = $this->getHtmlOptions();
-            $request     = Yii::app()->getRequest();
-            if ($request->enableCsrfValidation && isset($htmlOptions['csrf']) && $htmlOptions['csrf'])
-            {
-                $htmlOptions['params'][$request->csrfTokenName] = $request->getCsrfToken();
-            }
-            if (isset($htmlOptions['params']))
-            {
-                $params = CJavaScript::encode($htmlOptions['params']);
-                unset($htmlOptions['params']);
-            }
-            else
-            {
-                $params = '{}';
-            }
-            if (isset($htmlOptions['class']))
-            {
-                $htmlOptions['class']  .= ' z-button';
-            }
-            else
-            {
-                $htmlOptions['class']   = 'z-button';
-            }
-            $cs = Yii::app()->getClientScript();
-            $cs->registerCoreScript('jquery');
-            $cs->registerCoreScript('yii');
-            if (Yii::app()->getClientScript()->isIsolationMode())
-            {
-                $handler = "jQQ.isolate (function(jQuery,$)
-                            {
-                                jQuery.yii.submitForm(document.getElementById('saveyt1'), '', $params);
-                            }); return false;";
-            }
-            else
-            {
-                $handler = "jQuery.yii.submitForm(this, '', $params); return false;";
-            }
-            if (isset($htmlOptions['onclick']))
-            {
-                $htmlOptions['onclick']  = $htmlOptions['onclick'] . $handler;
-            }
-            else
-            {
-                $htmlOptions['onclick']  = $handler;
-            }
-            $aContent                = ZurmoHtml::wrapLink($this->getLabel());
-            return ZurmoHtml::link($aContent, '#', $htmlOptions);
+            return parent::getUserToRunAs($setOnMissing);
         }
     }
 ?>

@@ -34,59 +34,39 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    abstract class SubmitButtonActionElement extends ActionElement
+    /**
+     * Adapter class to get place-able attributes from model
+     */
+    class ContactWebFormModelAttributesAdapter extends ModelAttributesAdapter
     {
-        protected $formRequiredToUse = true;
-
-        public function render()
+        public function getAttributes()
         {
-            $htmlOptions = $this->getHtmlOptions();
-            $request     = Yii::app()->getRequest();
-            if ($request->enableCsrfValidation && isset($htmlOptions['csrf']) && $htmlOptions['csrf'])
+            $attributes = array();
+            foreach ($this->model->attributeNames() as $attributeName)
             {
-                $htmlOptions['params'][$request->csrfTokenName] = $request->getCsrfToken();
+                if (!$this->model->isRelation($attributeName) ||
+                    ($this->model->isOwnedRelation($attributeName) &&
+                     $this->model->getRelationType($attributeName) == RedBeanModel::HAS_ONE))
+                {
+                    if ($this->model instanceof Item)
+                    {
+                        $isAudited = $this->model->isAttributeAudited($attributeName);
+                    }
+                    else
+                    {
+                        $isAudited = false;
+                    }
+                    ModelAttributeCollectionUtil::populateCollection(
+                                        $attributes,
+                                        $attributeName,
+                                        $this->model->getAttributeLabel($attributeName),
+                                        ModelAttributeToDesignerTypeUtil::getDesignerType($this->model, $attributeName),
+                                        $this->model->isAttributeRequired($attributeName),
+                                        $this->model->isAttributeReadOnly($attributeName),
+                                        $isAudited);
+                }
             }
-            if (isset($htmlOptions['params']))
-            {
-                $params = CJavaScript::encode($htmlOptions['params']);
-                unset($htmlOptions['params']);
-            }
-            else
-            {
-                $params = '{}';
-            }
-            if (isset($htmlOptions['class']))
-            {
-                $htmlOptions['class']  .= ' z-button';
-            }
-            else
-            {
-                $htmlOptions['class']   = 'z-button';
-            }
-            $cs = Yii::app()->getClientScript();
-            $cs->registerCoreScript('jquery');
-            $cs->registerCoreScript('yii');
-            if (Yii::app()->getClientScript()->isIsolationMode())
-            {
-                $handler = "jQQ.isolate (function(jQuery,$)
-                            {
-                                jQuery.yii.submitForm(document.getElementById('saveyt1'), '', $params);
-                            }); return false;";
-            }
-            else
-            {
-                $handler = "jQuery.yii.submitForm(this, '', $params); return false;";
-            }
-            if (isset($htmlOptions['onclick']))
-            {
-                $htmlOptions['onclick']  = $htmlOptions['onclick'] . $handler;
-            }
-            else
-            {
-                $htmlOptions['onclick']  = $handler;
-            }
-            $aContent                = ZurmoHtml::wrapLink($this->getLabel());
-            return ZurmoHtml::link($aContent, '#', $htmlOptions);
+            return $attributes;
         }
     }
 ?>

@@ -40,7 +40,9 @@
                 'zurmo/default/unsupportedBrowser',
                 'zurmo/default/login',
                 'tracking/default/track',
-                'min/serve');
+                'min/serve',
+                'contacts/external/form',
+                'contacts/external/sourceFiles');
 
         public function attach($owner)
         {
@@ -309,6 +311,11 @@
                 if (strpos($reqestedUrl, $url) === 0)
                 {
                     $isUrlAllowedToGuests = true;
+//                    if (strpos($reqestedUrl, 'contacts/external/form') !== false ||
+//                        strpos($reqestedUrl, 'contacts/external/sourceFiles') !== false)
+//                    {
+//                        Yii::app()->user->userModel = User::getByUsername('super');
+//                    }
                 }
             }
 

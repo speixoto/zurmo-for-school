@@ -34,59 +34,27 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    abstract class SubmitButtonActionElement extends ActionElement
+    class ContactWebFormListViewColumnAdapter extends TextListViewColumnAdapter
     {
-        protected $formRequiredToUse = true;
-
-        public function render()
+        public function renderGridViewData()
         {
-            $htmlOptions = $this->getHtmlOptions();
-            $request     = Yii::app()->getRequest();
-            if ($request->enableCsrfValidation && isset($htmlOptions['csrf']) && $htmlOptions['csrf'])
+            if ($this->getIsLink())
             {
-                $htmlOptions['params'][$request->csrfTokenName] = $request->getCsrfToken();
-            }
-            if (isset($htmlOptions['params']))
-            {
-                $params = CJavaScript::encode($htmlOptions['params']);
-                unset($htmlOptions['params']);
+                return array(
+                    'name' => $this->attribute,
+                    'type' => 'raw',
+                    'value' => $this->view->getRelatedLinkString(
+                               '$data->' . $this->attribute, $this->attribute, 'contactWebForm'),
+                );
             }
             else
             {
-                $params = '{}';
+                return array(
+                    'name'  => $this->attribute,
+                    'value' => 'strval($data->' . $this->attribute . ')',
+                    'type'  => 'raw',
+                );
             }
-            if (isset($htmlOptions['class']))
-            {
-                $htmlOptions['class']  .= ' z-button';
-            }
-            else
-            {
-                $htmlOptions['class']   = 'z-button';
-            }
-            $cs = Yii::app()->getClientScript();
-            $cs->registerCoreScript('jquery');
-            $cs->registerCoreScript('yii');
-            if (Yii::app()->getClientScript()->isIsolationMode())
-            {
-                $handler = "jQQ.isolate (function(jQuery,$)
-                            {
-                                jQuery.yii.submitForm(document.getElementById('saveyt1'), '', $params);
-                            }); return false;";
-            }
-            else
-            {
-                $handler = "jQuery.yii.submitForm(this, '', $params); return false;";
-            }
-            if (isset($htmlOptions['onclick']))
-            {
-                $htmlOptions['onclick']  = $htmlOptions['onclick'] . $handler;
-            }
-            else
-            {
-                $htmlOptions['onclick']  = $handler;
-            }
-            $aContent                = ZurmoHtml::wrapLink($this->getLabel());
-            return ZurmoHtml::link($aContent, '#', $htmlOptions);
         }
     }
 ?>
