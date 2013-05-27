@@ -81,12 +81,9 @@
                                           Yii::app()->user->userModel);
             $compareData                = array(
                                             'accounts'      => 'Accounts',
-                                            'campaigns'     => 'Campaigns',
                                             'contacts'      => 'Contacts',
                                             'leads'         => 'Leads',
-                                            'opportunities' => 'Opportunities',
-                                            'productTemplates' => 'Catalog Items',
-                                            'products'      => 'Products',
+                                            'opportunities' => 'Opportunities'
                                           );
             $this->assertEquals($compareData, $scopeModulesAndLabels);
         }

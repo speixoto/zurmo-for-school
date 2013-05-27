@@ -52,7 +52,6 @@
                 $this->populateModelData($productTemplate, $i);
                 $saved               = $productTemplate->save();
                 assert('$saved');
-                //print $productTemplate->id . "\n";
                 $productTemplates[]      = $productTemplate->id;
             }
             $demoDataHelper->setRangeByModelName('ProductTemplate', $productTemplates[0], $productTemplates[count($productTemplates)-1]);
@@ -74,7 +73,7 @@
                     $categoryId = $category->id;
                 }
             }
-            $productCategory         = ProductCategory::getById($categoryId);
+            $productCategory           = ProductCategory::getById($categoryId);
             $model->name               = $name;
             $model->productCategories->add($productCategory);
             $model->priceFrequency     = 2;
@@ -83,6 +82,9 @@
             $model->sellPrice->value   = 200;
             $model->status             = ProductTemplate::STATUS_ACTIVE;
             $model->type               = ProductTemplate::TYPE_PRODUCT;
+            $sellPriceFormula          = new SellPriceFormula();
+            $sellPriceFormula->type    = SellPriceFormula::TYPE_EDITABLE;
+            $model->sellPriceFormula   = $sellPriceFormula;
         }
 
         private static function getProductCategoryForTemplate($template)

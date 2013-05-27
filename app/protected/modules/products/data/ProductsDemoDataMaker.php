@@ -66,13 +66,24 @@
             $stage                  = RandomDataUtil::getRandomValueFromArray(static::getCustomFieldDataByName('ProductStages'));
             $productRandomData      = ZurmoRandomDataUtil::getRandomDataByModuleAndModelClassNames('ProductsModule', 'Product');
             $name                   = $productRandomData['names'][$counter];
+            $productTemplateName    = self::getProductTemplateForProduct($name);
+            $allTemplates = ProductTemplate::getAll();
 
+            foreach($allTemplates as $template)
+            {
+                if($template->name == $productTemplateName)
+                {
+                    $templateId = $template->id;
+                }
+            }
+            $productTemplate       = ProductTemplate::getById($templateId);
             $model->name            = $name;
             $model->quantity        = mt_rand(1, 95);
+            $model->productTemplate = $productTemplate;
             $model->stage->value    = $stage;
-            $model->priceFrequency  = ProductTemplate::PRICE_FREQUENCY_MONTHLY;
-            $model->sellPrice->value= 200;
-            $model->type            = ProductTemplate::TYPE_PRODUCT;
+            $model->priceFrequency  = $productTemplate->priceFrequency;
+            $model->sellPrice->value= $productTemplate->sellPrice->value;
+            $model->type            = $productTemplate->type;
         }
 
         public static function getProductTemplateForProduct($product)

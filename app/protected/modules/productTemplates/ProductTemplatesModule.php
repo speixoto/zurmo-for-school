@@ -138,5 +138,10 @@
         {
             return true;
         }
+
+        public static function modelsAreNeverGloballySearched()
+        {
+            return true;
+        }
     }
 ?>
