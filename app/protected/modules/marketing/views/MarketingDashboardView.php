@@ -62,7 +62,6 @@
 
         public function __construct($controllerId, $moduleId, $uniqueLayoutId, $params)
         {
-            assert('$model instanceof Dashboard');
             $this->controllerId        = $controllerId;
             $this->moduleId            = $moduleId;
             $this->uniqueLayoutId      = $uniqueLayoutId;

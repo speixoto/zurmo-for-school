@@ -42,16 +42,13 @@
         protected function renderContent()
         {
             $content  = '<div class="clearfix">';
-            $content .= '<h1>' . Zurmo::t('HomeModule', 'Welcome to Zurmo'). '</h1>';
-            $content .= static::renderSocialLinksContent();
-            $content .= '<div id="welcome-content">';
+            $content .= '<h1>' . Zurmo::t('MarketingModule', 'How does Email Marketing work in Zurmo?'). '</h1>';
+            $content .= '<div id="marketing-intro-content">';
             $content .= '<p>';
-            $content .= Zurmo::t('HomeModule', 'Using a CRM shouldn\'t be a chore. With Zurmo, you can earn points, ' .
-                               'collect badges, and compete against co-workers while getting your job done.');
+            $content .= 'STEP 1,2,3 and graphics';
             $content .= '</p>';
             $content .= '</div>';
             $content .= $this->renderHideLinkContent();
-            $content .= '</div>';
             $content .= '</div>';
             return $content;
         }
@@ -59,13 +56,11 @@
 
         protected function renderHideLinkContent()
         {
-            if ($this->hasDashboardAccess)
-            {
-                $label    = '<span></span>' . Zurmo::t('HomeModule', 'Don\'t show me this screen again');
-                $content  = '<div class="hide-welcome">'.ZurmoHtml::link($label, Yii::app()->createUrl('home/default/hideWelcome'));
-                $content .= ' <i>(' . Zurmo::t('HomeModule', 'Don\'t worry you can turn it on again') . ')</i></div>';
-                return $content;
-            }
+            //todo: should use ajax, then when done remove div from UI
+            $label    = '<span></span>' . Zurmo::t('MarketingModule', 'Dismiss');
+            $content  = '<div class="hide-marketing-intro">'.ZurmoHtml::link($label, Yii::app()->createUrl('marketing/default/hideIntro'));
+            $content .= '</div>';
+            return $content;
         }
     }
 ?>

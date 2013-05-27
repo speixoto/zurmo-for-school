@@ -86,7 +86,7 @@
 
         public function getTitle()
         {
-            $title  = Zurmo::t('MarketingModule', 'What should we put here TODO'); //todo: relabel
+            $title  = Zurmo::t('MarketingModule', 'Marketing Dashboard');
             return $title;
         }
 
@@ -163,6 +163,11 @@
         }
 
         public static function canUserConfigure()
+        {
+            return false;
+        }
+
+        public static function canUserRemove()
         {
             return false;
         }
