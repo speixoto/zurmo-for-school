@@ -82,14 +82,14 @@
             return array(
                 'autoFill'  => false,
                 'select'    => $this->getWidgetSelectActionJS(),
-                'search'    => 'js:function(event, ui) { makeOrRemoveTogglableSpinner(true,  $(this).parent()) }',
-                'open'      => 'js:function(event, ui) { makeOrRemoveTogglableSpinner(false, $(this).parent()) }',
-                'close'     => 'js:function(event, ui) { makeOrRemoveTogglableSpinner(false, $(this).parent()) }',
+                'search'    => 'js:function(event, ui) { $(this).makeOrRemoveTogglableSpinner(true,  $(this).parent()) }',
+                'open'      => 'js:function(event, ui) { $(this).makeOrRemoveTogglableSpinner(false, $(this).parent()) }',
+                'close'     => 'js:function(event, ui) { $(this).makeOrRemoveTogglableSpinner(false, $(this).parent()) }',
                 'response'  => 'js:function(event, ui)
                     {
                         if (ui.content.length < 1)
                         {
-                            makeOrRemoveTogglableSpinner(false, $(this).parent());
+                            $(this).makeOrRemoveTogglableSpinner(false, $(this).parent());
                         }
                     }'
             );
@@ -119,7 +119,7 @@
                                                 },
                                     beforeSend: function(request, settings)
                                                 {
-                                                    makeSmallLoadingSpinner(listGridViewId);
+                                                    $(this).makeSmallLoadingSpinner(listGridViewId);
                                                     $("#" + listGridViewId).addClass("loading");
                                                     if (disableTextBox == true)
                                                     {

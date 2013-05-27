@@ -152,7 +152,7 @@
                                                     },
                                         beforeSend: function(request, settings)
                                                     {
-                                                        makeSmallLoadingSpinner(true);
+                                                        $(this).makeSmallLoadingSpinner(true);
                                                         if (disableDropDown == true)
                                                         {
                                                             $(dropDown).attr("disabled", "disabled");

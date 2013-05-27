@@ -101,7 +101,7 @@ $(document).on('click', ".action-button", function(event) {
 
     _parent.addClass('loading-ajax');
     $(this).addClass('loading');
-    attachLoadingSpinnerForLanguageActivation(this, true);
+    $(this).attachLoadingSpinnerForLanguageActivation(this, true);
 
     $.ajax({
         'url':_ajaxUrl,
@@ -115,7 +115,7 @@ $(document).on('click', ".action-button", function(event) {
                 permanent: false,
                 showIcon: true,
             });
-            attachLoadingSpinnerForLanguageActivation(this);
+            $(this).attachLoadingSpinnerForLanguageActivation(this);
             $(this).removeClass('loading');
             _parent.removeClass('loading-ajax');
         }
