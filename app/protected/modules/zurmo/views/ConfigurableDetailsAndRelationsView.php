@@ -54,12 +54,11 @@
 
         protected function renderContent()
         {
-            $getData = GetUtil::getData();
             $metadata         = self::getMetadata();
-            if(isset($getData['lockPortlets']))
+            if (isset($_GET['lockPortlets']))
             {
-                $lockPortlets = (bool)$getData['lockPortlets'];
-                if($lockPortlets == '1')
+                $lockPortlets = (bool)$_GET['lockPortlets'];
+                if ($lockPortlets == '1')
                 {
                     ZurmoDefaultViewUtil::setLockKeyForDetailsAndRelationsView('lockPortletsForDetailsAndRelationsView', true);
                 }
@@ -73,7 +72,7 @@
             $isViewLocked           = ZurmoDefaultViewUtil::getLockKeyForDetailsAndRelationsView('lockPortletsForDetailsAndRelationsView');
             $portletsAreRemovable   = true;
             $portletsAreMovable     = true;
-            if($isViewLocked == true)
+            if ($isViewLocked == true)
             {
                 $portletsAreRemovable   = false;
                 $portletsAreMovable     = false;
@@ -87,7 +86,7 @@
                                                     false,
                                                     $portletsAreMovable,
                                                     false,
-                                                    '50,50',
+                                                    '75,25', // Not Coding Standard
                                                     $portletsAreRemovable);
             $content          .=  $configurableView->render();
             $content          .= $this->renderScripts();
@@ -96,28 +95,23 @@
 
         protected function renderActionElementBar($renderedInForm)
         {
-            $getData = GetUtil::getData();
-            if (Yii::app()->userInterface->isMobile() === false)
+            $isViewLocked     = ZurmoDefaultViewUtil::getLockKeyForDetailsAndRelationsView('lockPortletsForDetailsAndRelationsView');
+            $url              = Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/details?id=' . $_GET['id']);
+            $lockTitle = Zurmo::t('Core', 'Unlock to edit this screen\'s layout ');
+            $unlockTitle = Zurmo::t('Core', 'Lock and prevent layout changes to this screen');
+            $toolbarContent = '';
+            if ($isViewLocked === false)
             {
-                $isViewLocked     = ZurmoDefaultViewUtil::getLockKeyForDetailsAndRelationsView('lockPortletsForDetailsAndRelationsView');
-                $url              = Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/details?id=' . $getData['id']);
-                $lockLink = '';
-                if($isViewLocked === true)
-                {
-                    $lockLink = "<a href='" . $url . "&lockPortlets=0' class='icon-lock'>" . Zurmo::t('Core', 'Unlock') . "</a>";
-                }
-                else
-                {
-                    $lockLink = "<a href='" . $url . "&lockPortlets=1' class='icon-unlock'>" . Zurmo::t('Core', 'Lock') . "</a>";
-                }
+                $toolbarContent .= '<div class="view-toolbar">' . parent::renderActionElementBar($renderedInForm) .
+                                   '<a href="' . $url . '&lockPortlets=1" class="icon-unlock"
+                                   title="'.$unlockTitle.'"><!--' . Zurmo::t('Core', 'Lock') . '--></a></div>'; // Not Coding Standard
             }
             else
             {
-                $lockLink = '';
+                $toolbarContent .= '<div class="view-toolbar"><a href="' . $url . '&lockPortlets=0" class="icon-lock"
+                                    title="'.$lockTitle.'"><!--' . Zurmo::t('Core', 'Unlock') . '--></a></div>'; // Not Coding Standard
             }
-            $content  = '<div class="view-toolbar-container clearfix"><div class="view-toolbar">';
-            $content .= $lockLink . parent::renderActionElementBar($renderedInForm);
-            $content .= '</div></div>';
+            $content = ZurmoHtml::tag('div', array('class' => 'view-toolbar-container widgets-lock clearfix '), $toolbarContent);
             return $content;
         }
 

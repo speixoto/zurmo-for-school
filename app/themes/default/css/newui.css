@@ -7742,7 +7742,6 @@ a.simple-link:before {
 .ui-sortable > .ui-state-highlight {
   min-height: 45px;
   background: #efefef;
-  margin-bottom: 15px;
 }
 /*=Checkboxes*/
 label.hasCheckBox {
@@ -8611,9 +8610,6 @@ div.wide.form label.hasCheckBox {
   display: table;
   clear: both;
 }
-.attributesContainer + h3 {
-  margin-top: 0 !important;
-}
 .left-column {
   padding: 15px 15px 15px 15px;
   float: left;
@@ -8625,9 +8621,6 @@ div.wide.form label.hasCheckBox {
 }
 .left-column.full-width + .right-column {
   display: none;
-}
-.left-column .ui-notice {
-  margin-bottom: 15px;
 }
 .right-column {
   float: right;
@@ -9040,6 +9033,10 @@ div.wide.form label.hasCheckBox {
   height: auto !important;
 }
 /*=For single meeting, contact etc..*/
+.AppContent.TableOfContentsView .toolbar-mbmenu,
+.AppContent.SecuredEditAndDetailsView .toolbar-mbmenu {
+  top: 8px;
+}
 .wrapper {
   float: left;
   width: 100%;
@@ -9236,9 +9233,6 @@ div.wide.form label.hasCheckBox {
   -o-text-shadow: none;
   -ms-text-shadow: none;
   text-shadow: none;
-}
-.details-table .toolbar-mbmenu {
-  top: -35px;
 }
 .AttributeDetailsView .toolbar-mbmenu {
   top: 8px;
@@ -17527,6 +17521,39 @@ a.user-link {
 }
 .margetags-guide-link .simple-link {
   margin-left: 0;
+}
+.icon-notice:before {
+  content: "j";
+  font-weight: normal;
+  font-size: 24px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  padding: 0 0 0 0;
+  margin: 0 6px 0 -30px;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  vertical-align: middle;
+  position: relative;
+}
+.general-issue-notice {
+  text-align: center;
+  width: 75%;
+  margin: 10px auto 15px auto;
+  position: relative;
+}
+.general-issue-notice .icon-notice {
+  display: block;
+  line-height: 1;
+  margin-bottom: 10px;
+}
+.general-issue-notice .icon-notice:before {
+  margin: 0;
+  font-size: 100px;
+  line-height: 60px !important;
+}
+.general-issue-notice p {
+  font-size: 14px;
+  line-height: 21px;
 }
 #MashableInboxActionBarForViews .view-toolbar ul:first-child > li > a {
   border-left: none;
