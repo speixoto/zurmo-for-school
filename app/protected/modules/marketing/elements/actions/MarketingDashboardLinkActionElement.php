@@ -34,53 +34,25 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class MarketingModule extends SecurableModule
+    /**
+     * Link element to take you to the marketing dashboard
+     */
+    class MarketingDashboardLinkActionElement extends EditLinkActionElement
     {
-        const RIGHT_ACCESS_MARKETING = 'Access Marketing Tab';
-
-        public function getDependencies()
+        /**
+         * @return string
+         */
+        protected function getDefaultLabel()
         {
-            return array(
-                'configuration',
-                'zurmo',
-            );
+            return Zurmo::t('MarketingModule', 'Dashboard');
         }
 
-        public static function getTranslatedRightsLabels()
+        /**
+         * @return string
+         */
+        protected function getDefaultRoute()
         {
-            $labels                                         = array();
-            $labels[self::RIGHT_ACCESS_MARKETING] = Zurmo::t('MarketingModule', 'Access Marketing Tab');
-            return $labels;
-        }
-
-        public static function getDefaultMetadata()
-        {
-            $metadata = array();
-            $metadata['global'] = array(
-                'tabMenuItems' => array(
-                    array(
-                        'label'  => "eval:Zurmo::t('MarketingModule', 'Marketing')",
-                        'url'    => array('/marketing/default/dashboardDetails'),
-                        'mobile' => false,
-                    ),
-                ),
-            );
-            return $metadata;
-        }
-
-        public static function getAccessRight()
-        {
-            return self::RIGHT_ACCESS_MARKETING;
-        }
-
-        protected static function getSingularModuleLabel($language)
-        {
-            return Zurmo::t('MarketingModule', 'Marketing', array(), null, $language);
-        }
-
-        protected static function getPluralModuleLabel($language)
-        {
-            return static::getSingularModuleLabel($language);
+            return Yii::app()->createUrl('marketing/default');
         }
     }
 ?>

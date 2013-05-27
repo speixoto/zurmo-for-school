@@ -34,53 +34,38 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class MarketingModule extends SecurableModule
+    /**
+     * View to when first coming to the marketing dashboard. Provides an overview of how marketing works
+     */
+    class MarketingDashboardIntroView extends View
     {
-        const RIGHT_ACCESS_MARKETING = 'Access Marketing Tab';
-
-        public function getDependencies()
+        protected function renderContent()
         {
-            return array(
-                'configuration',
-                'zurmo',
-            );
+            $content  = '<div class="clearfix">';
+            $content .= '<h1>' . Zurmo::t('HomeModule', 'Welcome to Zurmo'). '</h1>';
+            $content .= static::renderSocialLinksContent();
+            $content .= '<div id="welcome-content">';
+            $content .= '<p>';
+            $content .= Zurmo::t('HomeModule', 'Using a CRM shouldn\'t be a chore. With Zurmo, you can earn points, ' .
+                               'collect badges, and compete against co-workers while getting your job done.');
+            $content .= '</p>';
+            $content .= '</div>';
+            $content .= $this->renderHideLinkContent();
+            $content .= '</div>';
+            $content .= '</div>';
+            return $content;
         }
 
-        public static function getTranslatedRightsLabels()
-        {
-            $labels                                         = array();
-            $labels[self::RIGHT_ACCESS_MARKETING] = Zurmo::t('MarketingModule', 'Access Marketing Tab');
-            return $labels;
-        }
 
-        public static function getDefaultMetadata()
+        protected function renderHideLinkContent()
         {
-            $metadata = array();
-            $metadata['global'] = array(
-                'tabMenuItems' => array(
-                    array(
-                        'label'  => "eval:Zurmo::t('MarketingModule', 'Marketing')",
-                        'url'    => array('/marketing/default/dashboardDetails'),
-                        'mobile' => false,
-                    ),
-                ),
-            );
-            return $metadata;
-        }
-
-        public static function getAccessRight()
-        {
-            return self::RIGHT_ACCESS_MARKETING;
-        }
-
-        protected static function getSingularModuleLabel($language)
-        {
-            return Zurmo::t('MarketingModule', 'Marketing', array(), null, $language);
-        }
-
-        protected static function getPluralModuleLabel($language)
-        {
-            return static::getSingularModuleLabel($language);
+            if ($this->hasDashboardAccess)
+            {
+                $label    = '<span></span>' . Zurmo::t('HomeModule', 'Don\'t show me this screen again');
+                $content  = '<div class="hide-welcome">'.ZurmoHtml::link($label, Yii::app()->createUrl('home/default/hideWelcome'));
+                $content .= ' <i>(' . Zurmo::t('HomeModule', 'Don\'t worry you can turn it on again') . ')</i></div>';
+                return $content;
+            }
         }
     }
 ?>

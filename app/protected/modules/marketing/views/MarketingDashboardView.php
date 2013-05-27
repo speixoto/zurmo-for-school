@@ -34,41 +34,69 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * Action bar view for the marketing search and list user interface. Provides buttons like create, and links to
-     * queues.
-     */
-    class SecuredActionBarForMarketingSearchAndListView extends SecuredActionBarForSearchAndListView
+    class MarketingDashboardView extends PortletFrameView
     {
-        /**
-         * @return array
-         */
         public static function getDefaultMetadata()
         {
             $metadata = array(
                 'global' => array(
-                    'toolbar' => array(
-                        'elements' => array(
-                            array('type'  => 'MarketingCreateLink',
-                                'htmlOptions' => array('class' => 'icon-create'),
-                            ),
-                            array(
-                                'type'            => 'MarketingDashboardLink',
-                                'htmlOptions'     => array( 'class' => 'icon-marketing-dashboard' )
-                            ),
-                            array(
-                                'type'            => 'MarketingListsLink',
-                                'htmlOptions'     => array( 'class' => 'icon-marketing-lists' )
-                            ),
-                            array(
-                                'type'            => EmailTemplatesForMarketingLinkActionElement::getType(),
-                                'htmlOptions'     => array( 'class' => 'icon-email-templates' )
-                            ),
+                    'toolbar' => array(),
+                    'columns' => array(
+                        array(
+                            'rows' => array(
+                               array(
+                                    'type' => 'MarketingOverallMetrics',
+                                ),
+                                /**
+                                array(
+                                    'type' => 'OverallEmailOpensByLocation',
+                                ),
+                                **/
+                            )
                         ),
-                    ),
-                ),
+                    )
+                )
             );
             return $metadata;
+        }
+
+        public function __construct($controllerId, $moduleId, $uniqueLayoutId, $params)
+        {
+            assert('$model instanceof Dashboard');
+            $this->controllerId        = $controllerId;
+            $this->moduleId            = $moduleId;
+            $this->uniqueLayoutId      = $uniqueLayoutId;
+            $this->layoutType          = '100';
+            $this->params              = $params;
+        }
+
+        public function isUniqueToAPage()
+        {
+            return true;
+        }
+
+        /**
+         * Override to allow for making a default set of portlets
+         * via metadata optional.
+         *
+         */
+        protected function getPortlets($uniqueLayoutId, $metadata)
+        {
+            assert('is_string($uniqueLayoutId)');
+            assert('is_array($metadata)');
+            $portlets = Portlet::getByLayoutIdAndUserSortedByColumnIdAndPosition($uniqueLayoutId, Yii::app()->user->userModel->id, $this->params);
+            if (empty($portlets))
+            {
+                $portlets = Portlet::makePortletsUsingMetadataSortedByColumnIdAndPosition($uniqueLayoutId, $metadata, Yii::app()->user->userModel, $this->params);
+                Portlet::savePortlets($portlets);
+            }
+            return PortletsSecurityUtil::resolvePortletsForCurrentUser($portlets);
+        }
+
+        protected function renderContent()
+        {
+            $this->portlets = $this->getPortlets($this->uniqueLayoutId, self::getMetadata());
+            return $this->renderPortlets($this->uniqueLayoutId);
         }
     }
 ?>
