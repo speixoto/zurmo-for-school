@@ -92,52 +92,44 @@
 
         public function renderContent()
         {
-            return 'something goes here';
-            $content .= $this->renderNewSocialItemContent();
-            $content .= $this->renderSocialItemsContent();
+            $content  = ZurmoHtml::tag('h3', array(), Zurmo::t('MarketingModule', 'What is going on with Marketing?'));
+            $content .= $this->renderConfigureElementsContent();
+            $content .= $this->renderMetricsWrapperContent();
             return $content;
         }
-//todo: remove
-        /**
-         * If this is an ajax call, it is most likely a paging request which means we should not show the view for
-         * posting a new social item.
-         */
-        protected function renderNewSocialItemContent()
+
+        protected function renderConfigureElementsContent()
         {
-            if (ArrayUtil::getArrayValue(GetUtil::getData(), 'ajax') != null)
-            {
-                return;
-            }
-            $socialItem = new  SocialItem();
-            $urlParameters = array('relatedUserId'            => $this->params['relationModel']->id,
-                'redirectUrl'              => $this->getPortletDetailsUrl()); //After save, the url to go to.
-            $uniquePageId  = get_called_class();
-            $inlineView    = new SocialItemInlineEditView($socialItem, 'default', 'socialItems', 'inlineCreateSave',
-                $urlParameters, $uniquePageId);
-            return $inlineView->render();
+            return 'date picker, and grouping picker';
         }
-//todo: remove
-        protected function renderSocialItemsContent()
+
+        protected function renderMetricsWrapperContent()
         {
-            $uniquePageId  = get_called_class();
-            $dataProvider  = $this->getDataProvider($uniquePageId);
-            $view          = new SocialItemsListView($dataProvider, 'default', 'socialItems',
-                $this->resolveAndGetPaginationRoute(),
-                $this->resolveAndGetPaginationParams(),
-                $this->getNonAjaxRedirectUrl(),
-                $uniquePageId,
-                $this->params);
-            return $view->render();
+            $content  = ZurmoHtml::tag('div', array(), $this->renderOverallListPerformanceContent());
+            $content .= ZurmoHtml::tag('div', array(), $this->renderEmailsInThisListContent());
+            $content .= ZurmoHtml::tag('div', array(), $this->renderListGrowthContent());
+            return $content;
         }
-//todo: probably remove?
-        protected function resolveAndGetPaginationRoute()
+
+        protected function renderOverallListPerformanceContent()
         {
-            return 'defaultPortlet/myListDetails';
+            $content  = ZurmoHtml::tag('h3', array(), Zurmo::t('MarketingModule', 'Overall List Performance'));
+            $content .= 'todo chart';
+            return $content;
         }
-//todo probably remove?
-        protected function resolveAndGetPaginationParams()
+
+        protected function renderEmailsInThisListContent()
         {
-            return array_merge(GetUtil::getData(), array('portletId' => $this->params['portletId']));
+            $content  = ZurmoHtml::tag('h3', array(), Zurmo::t('MarketingModule', 'Emails in this list'));
+            $content .= 'todo chart';
+            return $content;
+        }
+
+        protected function renderListGrowthContent()
+        {
+            $content  = ZurmoHtml::tag('h3', array(), Zurmo::t('MarketingModule', 'List Growth'));
+            $content .= 'todo chart';
+            return $content;
         }
 
         /**
