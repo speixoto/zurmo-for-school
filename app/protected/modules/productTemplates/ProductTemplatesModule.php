@@ -124,9 +124,9 @@
             return self::RIGHT_DELETE_PRODUCT_TEMPLATES;
         }
 
-        public static function getDemoDataMakerClassName()
+        public static function getDemoDataMakerClassNames()
         {
-            return array('ProductTemplatesDemoDataMaker', 'ProductCategoriesDemoDataMaker');
+            return array('ProductCategoriesDemoDataMaker', 'ProductTemplatesDemoDataMaker');
         }
 
         public static function getGlobalSearchFormClassName()

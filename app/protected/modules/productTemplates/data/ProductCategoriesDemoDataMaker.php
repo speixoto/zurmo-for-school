@@ -33,7 +33,7 @@
 
         public static function getDependencies()
         {
-            return array('productCatalogs');
+            return array();
         }
 
         public function makeAll(& $demoDataHelper)
@@ -41,11 +41,11 @@
             assert('$demoDataHelper instanceof DemoDataHelper');
             $productCategories = array();
             $productCatalog    = ProductCatalog::resolveAndGetByName(ProductCatalog::DEFAULT_NAME);
-            for ($i = 0; $i < $this->resolveQuantityToLoad(); $i++)
+            for ($i = 0; $i < 3; $i++)
             {
                 $productCategory = new ProductCategory();
                 $productCategory->productCatalogs->add($productCatalog);
-                $this->populateModel($productCategory);
+                $this->populateModelData($productCategory, $i);
                 $saved = $productCategory->save();
                 assert('$saved');
                 $productCategories[] = $productCategory->id;
@@ -53,13 +53,13 @@
             $demoDataHelper->setRangeByModelName('ProductCategory', $productCategories[0], $productCategories[count($productCategories)-1]);
         }
 
-        public function populateModel(& $model)
+        public function populateModelData(& $model, $counter)
         {
             assert('$model instanceof ProductCategory');
             parent::populateModel($model);
             $productCategoryRandomData = ZurmoRandomDataUtil::getRandomDataByModuleAndModelClassNames(
                                         'ProductTemplatesModule', 'ProductCategory');
-            $name        = RandomDataUtil::getRandomValueFromArray($productCategoryRandomData['names']);
+            $name        = $productCategoryRandomData['names'][$counter];
             $model->name = $name;
         }
     }

@@ -124,7 +124,7 @@
             return 'ProductsDefaultDataMaker';
         }
 
-        public static function getDemoDataMakerClassName()
+        public static function getDemoDataMakerClassNames()
         {
             return array('ProductsDemoDataMaker');
         }
