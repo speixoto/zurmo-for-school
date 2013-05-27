@@ -9219,6 +9219,7 @@ div.wide.form label.hasCheckBox {
   padding-bottom: 3px;
   display: none;
   font-weight: normal !important;
+  right: 0;
 }
 .toolbar-mbmenu .options-menu ul a {
   text-indent: 0;
@@ -16951,12 +16952,14 @@ a.user-link {
 }
 .ReportResultsComponentForPortletView {
   position: relative;
+  min-height: 60px;
 }
 .ReportResultsComponentForPortletView .big-spinner {
+  display: block;
   float: left;
   position: relative;
   left: 50%;
-  margin: 30px 0 0 -21px;
+  margin: 10px 0 0 -21px;
   height: 65px;
 }
 .ReportResultsGridView #report-results-grid-view {
