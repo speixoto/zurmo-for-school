@@ -7742,6 +7742,7 @@ a.simple-link:before {
 .ui-sortable > .ui-state-highlight {
   min-height: 45px;
   background: #efefef;
+  margin-bottom: 15px;
 }
 /*=Checkboxes*/
 label.hasCheckBox {
@@ -8610,6 +8611,9 @@ div.wide.form label.hasCheckBox {
   display: table;
   clear: both;
 }
+.attributesContainer + h3 {
+  margin-top: 0 !important;
+}
 .left-column {
   padding: 15px 15px 15px 15px;
   float: left;
@@ -8621,6 +8625,9 @@ div.wide.form label.hasCheckBox {
 }
 .left-column.full-width + .right-column {
   display: none;
+}
+.left-column .ui-notice {
+  margin-bottom: 15px;
 }
 .right-column {
   float: right;
@@ -13876,8 +13883,8 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
 }
 .AttributeEditView .sortable .remove-sortable-item-link {
   position: absolute;
-  left: 4px;
-  top: 4px;
+  left: 3px;
+  top: 3px;
   z-index: 100;
 }
 .AttributeEditView .sortable .remove-sortable-item-link span {
@@ -13887,7 +13894,7 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
 .AttributeEditView .sortable .remove-sortable-item-link:after {
   content: "_";
   font-weight: normal;
-  font-size: 18px;
+  font-size: 22px;
   font-family: "ZurmoGamificationSymblyReguRg";
   text-indent: 0 !important;
   color: #A7A7A7;
