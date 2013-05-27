@@ -72,6 +72,12 @@
          */
         private $listAttributesSelector;
 
+        /**
+         * True to scope data by starred only
+         * @var boolean
+         */
+        public $filterByStarred;
+
         public function __construct(RedBeanModel $model)
         {
             parent::__construct($model);
@@ -195,7 +201,7 @@
 
         public static function getNonSearchableAttributes()
         {
-            return array(self::ANY_MIXED_ATTRIBUTES_SCOPE_NAME, self::SELECTED_LIST_ATTRIBUTES);
+            return array(self::ANY_MIXED_ATTRIBUTES_SCOPE_NAME, self::SELECTED_LIST_ATTRIBUTES, 'filterByStarred');
         }
 
         public function getSearchableAttributes()

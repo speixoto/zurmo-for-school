@@ -83,7 +83,7 @@
             $this->assertTrue($account->save());
             StarredUtil::markModelAsStarred($account);
             $tableName            = StarredUtil::getStarredTableName('Account');
-            $sql                  = "SELECT id FROM {$tableName} WHERE userId = :userId AND modelId = :modelId;";
+            $sql                  = "SELECT id FROM {$tableName} WHERE user_id = :userId AND model_id = :modelId;";
             $rows                 = R::getAll($sql,
                                               $values=array(
                                                 ':userId'    => $super->id,
@@ -108,7 +108,7 @@
             StarredUtil::markModelAsStarred($account);
             StarredUtil::unmarkModelAsStarred($account);
             $tableName            = StarredUtil::getStarredTableName('Account');
-            $sql                  = "SELECT id FROM {$tableName} WHERE userId = :userId AND modelId = :modelId;";
+            $sql                  = "SELECT id FROM {$tableName} WHERE user_id = :userId AND model_id = :modelId;";
             $rows                 = R::getAll($sql,
                                               $values=array(
                                                 ':userId'    => $super->id,
@@ -138,7 +138,7 @@
             StarredUtil::markModelAsStarred($account);
 
             $tableName            = StarredUtil::getStarredTableName('Account');
-            $sql                  = "SELECT id FROM {$tableName} WHERE modelId = :modelId;";
+            $sql                  = "SELECT id FROM {$tableName} WHERE model_id = :modelId;";
             $rows                 = R::getAll($sql,
                                               $values=array(
                                                 ':modelId'   => $account->id,
@@ -146,7 +146,7 @@
             $this->assertCount(2, $rows);
 
             StarredUtil::unmarkModelAsStarredForAllUsers($account);
-            $sql                  = "SELECT id FROM {$tableName} WHERE modelId = :modelId;";
+            $sql                  = "SELECT id FROM {$tableName} WHERE model_id = :modelId;";
             $rows                 = R::getAll($sql,
                                               $values=array(
                                                 ':modelId'   => $account->id,

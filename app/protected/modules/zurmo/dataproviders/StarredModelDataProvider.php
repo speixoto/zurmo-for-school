@@ -34,37 +34,21 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class StarredListView extends SecuredListView
+    class StarredModelDataProvider extends RedBeanModelDataProvider
     {
-        /**
-         * Get the meta data and merge with standard CGridView column elements
-         * to create a column array that fits the CGridView columns API
-         */
-         protected function getCGridViewColumns()
-         {
-            $columns        = parent::getCGridViewColumns();
-            if ($this->rowsAreSelectable)
-            {
-                $firstColumn = array_shift($columns);
-             }
-            array_unshift($columns, $this->getCGridViewStarColumn());
-            if ($this->rowsAreSelectable)
-            {
-                array_unshift($columns, $firstColumn);
-            }
-            return $columns;
-        }
-
-        protected function getCGridViewStarColumn()
+        protected function resolveExtraSql(RedBeanModelJoinTablesQueryAdapter &$joinTablesAdapter, &$where)
         {
-            $starred = 'StarredUtil::isModelStarred($data)';
-            $checkBoxHtmlOptions = array();
-            $firstColumn = array(
-                    'class'     => 'DataColumn',
-                    'value'     => array('StarredUtil','renderToggleStarStatusLink'),
-                    'id'        => $this->gridId . $this->gridIdSuffix . '_columnStar',
-                );
-            return $firstColumn;
+            $user                   = Yii::app()->user->userModel;
+            $quote                  = DatabaseCompatibilityUtil::getQuote();
+            $starredTableName       = StarredUtil::getStarredTableName($this->modelClassName);
+            $extraOnQueryPart       = "and {$quote}{$starredTableName}{$quote}.{$quote}user_id{$quote} = {$user->id}";
+            $starredTableAliasName  = $joinTablesAdapter->addLeftTableAndGetAliasName(
+                                                        $starredTableName,
+                                                        'id',
+                                                        null,
+                                                        'modelId',
+                                                        $extraOnQueryPart);
+            $where                 .= "{$quote}$starredTableAliasName{$quote}.{$quote}user_id{$quote} = {$user->id}";
         }
     }
 ?>

@@ -331,6 +331,11 @@
                 else
                 {
                     $content .= $this->renderStaticSearchRows($panel, $maxCellsPerRow, $form);
+                    if(in_array('StarredInterface', class_implements($this->model->getModel())))
+                    {
+                        $checkBox = $form->checkBox($this->model, 'filterByStarred');
+                        $content .= $checkBox;
+                    }
                 }
                 if ($key == 1)
                 {

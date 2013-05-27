@@ -81,8 +81,8 @@
             assert('is_string($modelStarredTableName) && $modelStarredTableName  != ""');
             R::exec("create table if not exists {$modelStarredTableName} (
                         id int(11)         unsigned NOT NULL PRIMARY KEY AUTO_INCREMENT ,
-                        userId int(11)     unsigned NOT NULL,
-                        modelId int(11)    unsigned NOT NULL
+                        user_id int(11)     unsigned NOT NULL,
+                        model_id int(11)    unsigned NOT NULL
                      )");
         }
 
@@ -141,7 +141,7 @@
                 return;
             }
             $tableName = static::getStarredTableName($modelClassName);
-            $sql       = "DELETE FROM {$tableName} WHERE userId = :userId AND modelId = :modelId;";
+            $sql       = "DELETE FROM {$tableName} WHERE user_id = :userId AND model_id = :modelId;";
             R::exec($sql, array(
                 ':userId'  => $userId,
                 ':modelId' => $modelId,
@@ -162,7 +162,7 @@
                 throw new NotSupportedException();
             }
             $tableName = static::getStarredTableName($modelClassName);
-            $sql       = "SELECT id FROM {$tableName} WHERE userId = :userId AND modelId = :modelId;";
+            $sql       = "SELECT id FROM {$tableName} WHERE user_id = :userId AND model_id = :modelId;";
             $rows      = R::getAll($sql,
                                    $values=array(
                                     ':userId'    => $userId,
@@ -183,7 +183,7 @@
                 throw new NotSupportedException();
             }
             $tableName = static::getStarredTableName($modelClassName);
-            $sql       = "DELETE FROM {$tableName} WHERE modelId = :modelId;";
+            $sql       = "DELETE FROM {$tableName} WHERE model_id = :modelId;";
             R::exec($sql, array(
                 ':modelId' => $model->id,
             ));
