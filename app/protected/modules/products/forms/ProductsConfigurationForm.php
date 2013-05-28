@@ -44,7 +44,7 @@
          * @see ProductsMashableFilterRadioElement
          * @var string
          */
-        const  FILTERED_BY_ALL_STAGES = 'all';
+        const  FILTERED_BY_ALL_STAGES = 'All';
         const  OPEN_STAGE = 'Open';
         const  LOST_STAGE = 'Lost';
         const  WON_STAGE  = 'Won';

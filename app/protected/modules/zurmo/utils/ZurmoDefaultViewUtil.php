@@ -380,7 +380,7 @@
 
         public static function getLockKeyForDetailsAndRelationsView($key)
         {
-            return Yii::app()->user->getState($key, '-1');
+            return Yii::app()->user->getState($key);
         }
     }
 ?>

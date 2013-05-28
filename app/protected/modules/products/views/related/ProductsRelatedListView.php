@@ -438,12 +438,20 @@
                                                         'operatorType'         => 'equals',
                                                         'value'                => (int)$this->params['relationModel']->id,
                                                     );
-            $searchAttributeData['clauses'][] = array(
-                                                        'attributeName'        => 'stage',
-                                                        'operatorType'         => 'equals',
-                                                        'value'                => $form->filteredByStage,
-                                                     );
-            $searchAttributeData['structure'] = '1';
+            if($form->filteredByStage != ProductsConfigurationForm::FILTERED_BY_ALL_STAGES)
+            {
+                $searchAttributeData['clauses'][] = array(
+                                                            'attributeName'        => 'stage',
+                                                            'relatedAttributeName' => 'value',
+                                                            'operatorType'         => 'equals',
+                                                            'value'                => $form->filteredByStage,
+                                                         );
+                $searchAttributeData['structure'] = '1 and 2';
+            }
+            else
+            {
+                $searchAttributeData['structure'] = '1';
+            }
             return $searchAttributeData;
         }
 

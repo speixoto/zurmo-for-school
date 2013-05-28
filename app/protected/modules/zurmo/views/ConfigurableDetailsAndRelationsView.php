@@ -71,7 +71,7 @@
 
             $isViewLocked           = ZurmoDefaultViewUtil::getLockKeyForDetailsAndRelationsView('lockPortletsForDetailsAndRelationsView');
             //Default case for the first time
-            if($isViewLocked == '-1')
+            if($isViewLocked === null)
             {
               ZurmoDefaultViewUtil::setLockKeyForDetailsAndRelationsView('lockPortletsForDetailsAndRelationsView', true);
               $isViewLocked = true;
