@@ -6071,6 +6071,15 @@ body > .ui-autocomplete {
 #RecentlyViewedView li.type-WorkflowsModule em:before {
   content: '\20AC';
 }
+#RecentlyViewedView li.type-ProductModule em:before {
+  content: '\003E';
+}
+#RecentlyViewedView li.type-ProductTemplateModule em:before {
+  content: '\00AC';
+}
+#RecentlyViewedView li.type-ProductCategoryModule em:before {
+  content: '\00D7';
+}
 /*=Content*/
 .AppContent {
   -webkit-border-radius: 0 0 5px 5px;
@@ -6425,6 +6434,7 @@ form .view-toolbar-container,
   content: "!";
   top: -2px;
 }
+#MarketingCreateLinkActionElement .parent > a:before,
 #MarketingListAddSubscriberLinkActionElement .parent > a:before,
 #MashableInboxCreateDropdown .parent > a:before,
 .icon-create:before {
@@ -6472,7 +6482,6 @@ form .view-toolbar-container,
   position: relative;
   top: -2px;
   margin: 0;
-  color: #c43d53;
 }
 .icon-unlock {
   padding: 0 10px !important;
@@ -6491,7 +6500,6 @@ form .view-toolbar-container,
   position: relative;
   top: -2px;
   margin: 0;
-  color: #7CB830;
 }
 .icon-change-dashborad:before {
   content: "/";
@@ -6910,7 +6918,7 @@ form .view-toolbar-container,
   top: -2px;
 }
 .icon-combined:before {
-  content: '\00AE';
+  content: '\00A7';
   font-weight: normal;
   font-size: 26px;
   font-family: "ZurmoGamificationSymblyReguRg";
@@ -7006,6 +7014,48 @@ form .view-toolbar-container,
   vertical-align: middle;
   position: relative;
   top: -1px;
+}
+.icon-products:before {
+  content: '\003E';
+  font-weight: normal;
+  font-size: 24px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  padding: 0 0 0 0;
+  margin: 0 6px 0 -30px;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  vertical-align: middle;
+  position: relative;
+  top: -2px;
+}
+.icon-catalog-items:before {
+  content: '\00AC';
+  font-weight: normal;
+  font-size: 27px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  padding: 0 0 0 0;
+  margin: 0 6px 0 -30px;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  vertical-align: middle;
+  position: relative;
+  top: -1px;
+}
+.icon-product-categories:before {
+  content: '\00D7';
+  font-weight: normal;
+  font-size: 26px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  padding: 0 0 0 0;
+  margin: 0 6px 0 -30px;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  vertical-align: middle;
+  position: relative;
+  top: -2px;
 }
 .icon-mobile:before {
   content: '\2018';
@@ -8015,6 +8065,30 @@ div.wide.form label.hasCheckBox {
   font-family: "ZurmoGamificationSymblyReguRg";
   line-height: 52%;
 }
+.zero-components-view .Product .large-icon:after,
+.splash-view .Product .large-icon:after {
+  content: '\003E';
+  font-weight: normal;
+  font-size: 300px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  line-height: 52%;
+}
+.zero-components-view .ProductTemplate .large-icon:after,
+.splash-view .ProductTemplate .large-icon:after {
+  content: '\00AC';
+  font-weight: normal;
+  font-size: 300px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  line-height: 52%;
+}
+.zero-components-view .ProductCategory .large-icon:after,
+.splash-view .ProductCategory .large-icon:after {
+  content: '\00D7';
+  font-weight: normal;
+  font-size: 300px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  line-height: 52%;
+}
 #NoUserEmailConfigurationYetView .z-label {
   z-index: auto;
 }
@@ -9013,6 +9087,12 @@ div.wide.form label.hasCheckBox {
   margin-top: 0;
   margin-left: 0;
 }
+.details-table h1 + .toolbar-mbmenu {
+  top: -35px;
+}
+.details-table h1 + .toolbar-mbmenu .parent > ul {
+  top: 27px;
+}
 .after-form-details-content {
   color: #545454 !important;
   float: none;
@@ -9033,6 +9113,10 @@ div.wide.form label.hasCheckBox {
   height: auto !important;
 }
 /*=For single meeting, contact etc..*/
+.AppContent.TableOfContentsView .toolbar-mbmenu,
+.AppContent.SecuredEditAndDetailsView .toolbar-mbmenu {
+  top: 8px;
+}
 .wrapper {
   float: left;
   width: 100%;
@@ -9215,6 +9299,8 @@ div.wide.form label.hasCheckBox {
   padding-bottom: 3px;
   display: none;
   font-weight: normal !important;
+  right: 0;
+  z-index: 9999;
 }
 .toolbar-mbmenu .options-menu ul a {
   text-indent: 0;
@@ -9229,9 +9315,6 @@ div.wide.form label.hasCheckBox {
   -o-text-shadow: none;
   -ms-text-shadow: none;
   text-shadow: none;
-}
-.details-table .toolbar-mbmenu {
-  top: -35px;
 }
 .AttributeDetailsView .toolbar-mbmenu {
   top: 8px;
@@ -10984,6 +11067,7 @@ div.hasHalfs .twoThirds {
   box-shadow: inset 0 1px 0 0 #ffffff;
   position: relative;
   border-bottom: 1px solid #CCC;
+  z-index: 999;
 }
 .juiportlet-columns .juiportlet-widget .juiportlet-widget-head h3 {
   float: left;
@@ -10993,83 +11077,6 @@ div.hasHalfs .twoThirds {
 .collapse ~ h3 {
   margin-left: 0;
 }
-/*.juiportlet-widget-head */
-a.remove {
-  /*float: right;
-	display: inline;
-	width: 13px;
-	height: 40px;
-	margin-right:8px;
-	text-indent: -9999em;
-	outline: none;
-	position:relative;
-	z-index:9999;
-	*/
-
-  /*.b-shadow(inset 0 1px 0 0 #ffffff);
-	float: right;
-	display: inline;
-	text-indent: -9999em;
-	outline: none;
-	position: relative;
-	z-index: 9999;
-	line-height: 1 !important;
-	#gradient > .vertical(#f6f6f6, #ededed);
-	border:1px solid #CCC;
-	border-left: none;
-	width: 14px;
-	height: 20px;
-	border-radius: 0 15% 15% 0;
-	margin-right: -15px;
-	margin-top: 10px;
-	.icon{
-	    line-height:1;
-	    position:relative;
-	    float:right;
-	}
-	.icon:after{
-		position: relative;
-		left: -1px;
-		margin-top: -2px;
-		line-height: 1;
-		content:"—";
-		.symbly(22px);
-		text-indent:0;
-		display:block;
-		float:left;
-		color:#A7A7A7;
-		.t-shadow( rgba( 255, 255, 255, 0.8 ) 0 1px 0  );
-	}*/
-
-}
-/*
-.juiportlet-widget-head a.edit {
-	float: right;
-	display: inline;
-	width: 14px;
-	height: 40px;
-	text-indent: -9999em;
-	margin-right:8px;
-	outline: none;
-	position:relative;
-	.icon{
-	    line-height:1;
-	    position:relative;
-	    float:right;
-	}
-	.icon:after{
-		position:absolute;
-		top:7px;
-		right:0;
-		content:"n";
-		.symbly(24px);
-		text-indent:0;
-		display:block;
-		float:right;
-		color:#A7A7A7;
-	}
-}
-*/
 .juiportlet-widget-head a.collapse {
   float: left;
   display: none;
@@ -11087,6 +11094,8 @@ a.remove {
 }
 .juiportlet-widget-content {
   padding: 0 0 0 0;
+  position: relative;
+  z-index: 1;
 }
 .juiportlet-widget-content > li {
   padding: 10px 15px;
@@ -13876,8 +13885,8 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
 }
 .AttributeEditView .sortable .remove-sortable-item-link {
   position: absolute;
-  left: 4px;
-  top: 4px;
+  left: 3px;
+  top: 3px;
   z-index: 100;
 }
 .AttributeEditView .sortable .remove-sortable-item-link span {
@@ -13887,7 +13896,7 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
 .AttributeEditView .sortable .remove-sortable-item-link:after {
   content: "_";
   font-weight: normal;
-  font-size: 18px;
+  font-size: 22px;
   font-family: "ZurmoGamificationSymblyReguRg";
   text-indent: 0 !important;
   color: #A7A7A7;
@@ -16950,12 +16959,14 @@ a.user-link {
 }
 .ReportResultsComponentForPortletView {
   position: relative;
+  min-height: 60px;
 }
 .ReportResultsComponentForPortletView .big-spinner {
+  display: block;
   float: left;
   position: relative;
   left: 50%;
-  margin: 30px 0 0 -21px;
+  margin: 10px 0 0 -21px;
   height: 65px;
 }
 .ReportResultsGridView #report-results-grid-view {
@@ -17520,6 +17531,39 @@ a.user-link {
 }
 .margetags-guide-link .simple-link {
   margin-left: 0;
+}
+.icon-notice:before {
+  content: "j";
+  font-weight: normal;
+  font-size: 24px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  padding: 0 0 0 0;
+  margin: 0 6px 0 -30px;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  vertical-align: middle;
+  position: relative;
+}
+.general-issue-notice {
+  text-align: center;
+  width: 75%;
+  margin: 10px auto 15px auto;
+  position: relative;
+}
+.general-issue-notice .icon-notice {
+  display: block;
+  line-height: 1;
+  margin-bottom: 10px;
+}
+.general-issue-notice .icon-notice:before {
+  margin: 0;
+  font-size: 100px;
+  line-height: 60px !important;
+}
+.general-issue-notice p {
+  font-size: 14px;
+  line-height: 21px;
 }
 #MashableInboxActionBarForViews .view-toolbar ul:first-child > li > a {
   border-left: none;

@@ -50,15 +50,15 @@
                             ),
                             array(
                                 'type'            => 'ProductsLink',
-                                'htmlOptions'     => array( 'class' => 'icon-workflows' )
+                                'htmlOptions'     => array( 'class' => 'icon-products' )
                             ),
                             array(
                                 'type'            => 'ProductTemplatesLink',
-                                'htmlOptions'     => array( 'class' => 'icon-by-time-workflow-in-queues' )
+                                'htmlOptions'     => array( 'class' => 'icon-catalog-items' )
                             ),
                             array(
                                 'type'            => 'ProductCategoriesLink',
-                                'htmlOptions'     => array( 'class' => 'icon-by-workflow-message-in-queues' )
+                                'htmlOptions'     => array( 'class' => 'icon-product-categories' )
                             ),
                         ),
                     ),
