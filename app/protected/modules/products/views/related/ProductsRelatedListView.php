@@ -205,19 +205,16 @@
 
         protected function renderContent()
         {
-            $content        = $this->renderViewToolBar();
-            //$content      .= $this->renderAddProductLink();
-            //$content      .= $this->renderConfigurationForm();
             $cClipWidget    = new CClipWidget();
             $cClipWidget->beginClip("ListView");
             $cClipWidget->widget($this->getGridViewWidgetPath(), $this->getCGridViewParams());
             $cClipWidget->endClip();
-            $content        .= $cClipWidget->getController()->clips['ListView'] . "\n";
+            $content        = $cClipWidget->getController()->clips['ListView'] . "\n";
             if ($this->rowsAreSelectable)
             {
                 $content    .= ZurmoHtml::hiddenField($this->gridId . $this->gridIdSuffix . '-selectedIds', implode(",", $this->selectedIds)) . "\n"; // Not Coding Standard
             }
-                $content        .= $this->renderScripts();
+            $content        .= $this->renderScripts();
             return $content;
         }
 
@@ -271,6 +268,11 @@
                     'paginationParams' => array_merge($defaultData, array('portletId' => $this->params['portletId'])),
                     'route'         => 'defaultPortlet/details',
                 );
+        }
+
+        public function renderPortletHeadContent()
+        {
+            return $this->renderWrapperAndActionElementMenu(Zurmo::t('Core', 'Options'));
         }
     }
 ?>
