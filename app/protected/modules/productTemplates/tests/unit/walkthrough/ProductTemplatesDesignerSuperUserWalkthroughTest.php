@@ -271,15 +271,15 @@
         {
             $super              = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
             $baseCurrency       = Currency::getByCode(Yii::app()->currencyHelper->getBaseCode());
-            //Search a created opportunity using the customfield.
+            //Search a created product using the customfield.
             $this->resetPostArray();
             $this->setGetArray(array('ProductTemplatesSearchForm' => array(
                                                 'name'                      => 'myNewProductTemplate',
                                                 'type'                      => ProductTemplate::TYPE_PRODUCT,
                                                 'description'               => 'Test Description',
-                                                'sellPrice'                 => array ('currency' => array ('id' => $baseCurrency->id), 'value' => 200),
-                                                'cost'                      => array ('currency' => array ('id' => $baseCurrency->id), 'value' => 200),
-                                                'listPrice'                 => array ('currency' => array ('id' => $baseCurrency->id), 'value' => 200),
+                                                'sellPrice'                 => array ('value' => 200),
+                                                'cost'                      => array ('value' => 200),
+                                                'listPrice'                 => array ('value' => 200),
                                                 'priceFrequency'            => 2,
                                                 'status'                    => ProductTemplate::STATUS_ACTIVE,
                                                 'sellPriceFormula'          => array ( 'type' => SellPriceFormula::TYPE_EDITABLE ),

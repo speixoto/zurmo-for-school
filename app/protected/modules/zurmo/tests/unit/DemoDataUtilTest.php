@@ -60,6 +60,10 @@
             $this->assertEquals(0, Note::getCount());
             $this->assertEquals(0, Task::getCount());
             $this->assertEquals(1, User::getCount());
+            $this->assertEquals(0, ProductCatalog::getCount());
+            $this->assertEquals(0, ProductCategory::getCount());
+            $this->assertEquals(0, ProductTemplate::getCount());
+            $this->assertEquals(0, Product::getCount());
             $messageLogger   = new MessageLogger();
             DemoDataUtil::unsetLoadedModules();
             DemoDataUtil::load($messageLogger, 3);
@@ -72,6 +76,10 @@
             $this->assertEquals(12, Note::getCount());
             $this->assertEquals(9,  Task::getCount());
             $this->assertEquals(9,  User::getCount());
+            $this->assertEquals(1, ProductCatalog::getCount());
+            $this->assertEquals(3, ProductCategory::getCount());
+            $this->assertEquals(5, ProductTemplate::getCount());
+            $this->assertEquals(5, Product::getCount());
         }
     }
 ?>

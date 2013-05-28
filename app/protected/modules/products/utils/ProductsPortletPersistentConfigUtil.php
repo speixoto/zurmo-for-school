@@ -35,48 +35,13 @@
      ********************************************************************************/
 
     /**
-     * Renders an action bar specifically for the listview.
+     * Helper class for working with product portlet persistent configs
      */
-    class ActionBarForCategoriesTreeListView extends ActionBarForSecurityTreeListView
+    class ProductsPortletPersistentConfigUtil extends PortletPersistentConfigUtil
     {
-        public static function getDefaultMetadata()
+        protected static function getModuleName()
         {
-            $metadata = array(
-                'global' => array(
-                    'toolbar' => array(
-                        'elements' => array(
-                            array('type'          => 'ProductCreateLink',
-                                'htmlOptions'     => array('class' => 'icon-create'),
-                            ),
-                            array(
-                                'type'            => 'ProductsLink',
-                                'htmlOptions'     => array( 'class' => 'icon-products' )
-                            ),
-                            array(
-                                'type'            => 'ProductTemplatesLink',
-                                'htmlOptions'     => array( 'class' => 'icon-catalog-items' )
-                            ),
-                            array(
-                                'type'            => 'ProductCategoriesLink',
-                                'htmlOptions'     => array( 'class' => 'icon-product-categories' )
-                            ),
-                        ),
-                    ),
-                ),
-            );
-            return $metadata;
-        }
-
-        protected function makeModel()
-        {
-            return new ProductCategory(false);
-        }
-
-        protected function shouldRenderToolBarElement($element, $elementInformation)
-        {
-            assert('$element instanceof ActionElement');
-            assert('is_array($elementInformation)');
-            return true;
+            return 'ProductsModule';
         }
     }
 ?>

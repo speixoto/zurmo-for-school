@@ -35,48 +35,31 @@
      ********************************************************************************/
 
     /**
-     * Renders an action bar specifically for the listview.
+     * Form to help manage filtering by stage.
      */
-    class ActionBarForCategoriesTreeListView extends ActionBarForSecurityTreeListView
+    class ProductsConfigurationForm extends CFormModel
     {
-        public static function getDefaultMetadata()
+        /**
+         * Value to be used to signal that the filtering is for all stages and not a specific one.
+         * @see ProductsMashableFilterRadioElement
+         * @var string
+         */
+        const  FILTERED_BY_ALL_STAGES = 'All';
+        const  OPEN_STAGE = 'Open';
+        const  LOST_STAGE = 'Lost';
+        const  WON_STAGE  = 'Won';
+        /**
+         * What model to filter by if any for the latest activity feed.  Defaults to not filtering on anything, thus
+         * showing all available models that implement the MashableActivityInterface.
+         * @var string
+         */
+        public $filteredByStage = self::FILTERED_BY_ALL_STAGES;
+
+        public function rules()
         {
-            $metadata = array(
-                'global' => array(
-                    'toolbar' => array(
-                        'elements' => array(
-                            array('type'          => 'ProductCreateLink',
-                                'htmlOptions'     => array('class' => 'icon-create'),
-                            ),
-                            array(
-                                'type'            => 'ProductsLink',
-                                'htmlOptions'     => array( 'class' => 'icon-products' )
-                            ),
-                            array(
-                                'type'            => 'ProductTemplatesLink',
-                                'htmlOptions'     => array( 'class' => 'icon-catalog-items' )
-                            ),
-                            array(
-                                'type'            => 'ProductCategoriesLink',
-                                'htmlOptions'     => array( 'class' => 'icon-product-categories' )
-                            ),
-                        ),
-                    ),
-                ),
+            return array(
+                array('filteredByStage', 'type', 'type' => 'string')
             );
-            return $metadata;
-        }
-
-        protected function makeModel()
-        {
-            return new ProductCategory(false);
-        }
-
-        protected function shouldRenderToolBarElement($element, $elementInformation)
-        {
-            assert('$element instanceof ActionElement');
-            assert('is_array($elementInformation)');
-            return true;
         }
     }
 ?>

@@ -124,7 +124,7 @@
             return 'ProductsDefaultDataMaker';
         }
 
-        public static function getDemoDataMakerClassName()
+        public static function getDemoDataMakerClassNames()
         {
             return array('ProductsDemoDataMaker');
         }
@@ -140,6 +140,11 @@
         }
 
         public static function isReportable()
+        {
+            return true;
+        }
+
+        public static function modelsAreNeverGloballySearched()
         {
             return true;
         }
