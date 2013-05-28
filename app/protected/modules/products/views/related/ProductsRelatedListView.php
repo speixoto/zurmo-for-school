@@ -432,19 +432,17 @@
         protected function makeProductSearchAttributeData($form)
         {
             $searchAttributeData = array();
-            $searchAttributeData['clauses'] = array(
-                1 => array(
-                    'attributeName'        => $this->getRelationAttributeName(),
-                    'relatedAttributeName' => 'id',
-                    'operatorType'         => 'equals',
-                    'value'                => (int)$this->params['relationModel']->id,
-                ),
-                2 => array(
-                    'attributeName'        => 'stage',
-                    'operatorType'         => 'equals',
-                    'value'                => $form->filteredByStage,
-                ),
-            );
+            $searchAttributeData['clauses'][] = array(
+                                                        'attributeName'        => $this->getRelationAttributeName(),
+                                                        'relatedAttributeName' => 'id',
+                                                        'operatorType'         => 'equals',
+                                                        'value'                => (int)$this->params['relationModel']->id,
+                                                    );
+            $searchAttributeData['clauses'][] = array(
+                                                        'attributeName'        => 'stage',
+                                                        'operatorType'         => 'equals',
+                                                        'value'                => $form->filteredByStage,
+                                                     );
             $searchAttributeData['structure'] = '1';
             return $searchAttributeData;
         }
