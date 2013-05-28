@@ -223,8 +223,9 @@
                                 array('modelClassName' => get_class($data),
                                       'modelId'        => $data->id)),
                         array('success' => "function(data){\$('#{$starId}').removeClass().addClass(data)}"),
-                        array('class'   => $starredClass,
-                              'id'      => $starId,));
+                        array('class'       => $starredClass,
+                              'id'          => $starId,
+                              'namespace'   => 'update',));
             return $link;
         }
 

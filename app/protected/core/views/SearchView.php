@@ -333,7 +333,7 @@
                     $content .= $this->renderStaticSearchRows($panel, $maxCellsPerRow, $form);
                     if(in_array('StarredInterface', class_implements($this->model->getModel())))
                     {
-                        $checkBox = $form->checkBox($this->model, 'filterByStarred');
+                        $checkBox = $form->checkBox($this->model, 'filterByStarred', array('onchange' => "js:jQuery.yii.submitForm(this, '', {}); return false;"));
                         $content .= $checkBox;
                     }
                 }

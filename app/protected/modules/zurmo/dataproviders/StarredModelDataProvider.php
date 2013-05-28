@@ -38,6 +38,10 @@
     {
         protected function resolveExtraSql(RedBeanModelJoinTablesQueryAdapter &$joinTablesAdapter, &$where)
         {
+            if ($where != '')
+            {
+                $where .= ' and ';
+            }
             $user                   = Yii::app()->user->userModel;
             $quote                  = DatabaseCompatibilityUtil::getQuote();
             $starredTableName       = StarredUtil::getStarredTableName($this->modelClassName);
@@ -46,7 +50,7 @@
                                                         $starredTableName,
                                                         'id',
                                                         null,
-                                                        'modelId',
+                                                        'model_id',
                                                         $extraOnQueryPart);
             $where                 .= "{$quote}$starredTableAliasName{$quote}.{$quote}user_id{$quote} = {$user->id}";
         }

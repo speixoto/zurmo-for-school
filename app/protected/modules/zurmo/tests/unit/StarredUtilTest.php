@@ -193,5 +193,23 @@
             $this->assertEquals('unstarred', StarredUtil::toggleModelStarStatus('Account', $account->id));
             $this->assertFalse(StarredUtil::isModelStarred($account));
         }
+
+        public function testGetToggleStarStatusLink()
+        {
+            $super = User::getByUsername('super');
+            Yii::app()->user->userModel = $super;
+
+            $account              = new Account();
+            $account->owner       = $super;
+            $account->name        = 'Test Account';
+            $account->officePhone = '1234567890';
+            $this->assertTrue($account->save());
+
+            $dataProvider = new RedBeanModelDataProvider('Account');
+            $data = $dataProvider->getData();
+            $link = StarredUtil::getToggleStarStatusLink($data[0], null);
+            $this->assertContains('unstarred', $link);
+            $this->assertContains('star-Account-' . $account->id, $link);
+        }
     }
 ?>

@@ -43,7 +43,7 @@
         const ANY_MIXED_ATTRIBUTES_SCOPE_NAME = 'anyMixedAttributesScope';
 
         const SELECTED_LIST_ATTRIBUTES        = 'selectedListAttributes';
-
+        
         private $dynamicAttributeData;
 
         private $dynamicAttributeNames = array();

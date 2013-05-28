@@ -268,7 +268,6 @@
             {
                 $model                     = new $modelClassName(false);
                 $searchForm                = new $formModelClassName($model);
-                //$rawPostFormData           = $_POST[$formModelClassName];
                 if (isset($_POST[$formModelClassName][SearchForm::ANY_MIXED_ATTRIBUTES_SCOPE_NAME]))
                 {
                     $searchForm->setAnyMixedAttributesScope($_POST[$formModelClassName][SearchForm::ANY_MIXED_ATTRIBUTES_SCOPE_NAME]);
@@ -280,6 +279,11 @@
                     $listAttributesSelector->setSelected($_POST[$formModelClassName][SearchForm::SELECTED_LIST_ATTRIBUTES]);
                     $searchForm->setListAttributesSelector($listAttributesSelector);
                     unset($_POST[$formModelClassName][SearchForm::SELECTED_LIST_ATTRIBUTES]);
+                }
+                if (isset($_POST[$formModelClassName]['filterByStarred']))
+                {
+                    $searchForm->filterByStarred = $_POST[$formModelClassName]['filterByStarred'];
+                    unset($_POST[$formModelClassName]['filterByStarred']);
                 }
                 $sanitizedSearchData = $this->resolveAndSanitizeDynamicSearchAttributesByPostData(
                                                                 $_POST[$formModelClassName], $searchForm);
@@ -300,7 +304,7 @@
                 }
                 if (!$searchForm->validate())
                 {
-                     $errorData = array();
+                    $errorData = array();
                     foreach ($searchForm->getErrors() as $attribute => $errors)
                     {
                             $errorData[ZurmoHtml::activeId($searchForm, $attribute)] = $errors;

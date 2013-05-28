@@ -145,5 +145,10 @@
 
             return $sortDescending;
         }
+
+        public function resolveFilterByStarredFromSourceData()
+        {
+            $filterByStarred =  SearchUtil::resolveFilterByStarredFromGetArray($this->model, get_class($this->model));
+        }
     }
 ?>

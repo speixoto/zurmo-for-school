@@ -167,6 +167,19 @@
             return $sortDescending;
         }
 
+        public static function resolveFilterByStarredFromGetArray($searchModel, $getArrayName)
+        {
+            if (!empty($_GET[$getArrayName]) && isset($_GET[$getArrayName]['filterByStarred']))
+            {
+                if (!is_bool($_GET[$getArrayName]['filterByStarred']))
+                {
+                    throw new NotImplementedException('Value must be boolean');
+                }
+                $filterByStarred = $_GET[$getArrayName]['filterByStarred'];
+                $searchModel->filterByStarred = $filterByStarred;
+            }
+        }
+
         /**
          * Convert incoming sort array into the sortAttribute part
          * Examples: 'name.desc'  'officeFax'
