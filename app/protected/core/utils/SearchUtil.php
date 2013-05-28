@@ -171,10 +171,6 @@
         {
             if (!empty($_GET[$getArrayName]) && isset($_GET[$getArrayName]['filterByStarred']))
             {
-                if (!is_bool($_GET[$getArrayName]['filterByStarred']))
-                {
-                    throw new NotImplementedException('Value must be boolean');
-                }
                 $filterByStarred = $_GET[$getArrayName]['filterByStarred'];
                 $searchModel->filterByStarred = $filterByStarred;
             }
