@@ -92,6 +92,11 @@
             }
         }
 
+        public function getFilterByStarred()
+        {
+            return SearchUtil::getFilterByStarredFromGetArray(get_class($this->model));
+        }
+
         public function resolveSearchAttributesFromSourceData()
         {
             return SearchUtil::resolveSearchAttributesFromGetArray(get_class($this->model), get_class($this->model));
@@ -148,7 +153,7 @@
 
         public function resolveFilterByStarredFromSourceData()
         {
-            $filterByStarred =  SearchUtil::resolveFilterByStarredFromGetArray($this->model, get_class($this->model));
+            SearchUtil::resolveFilterByStarredFromGetArray($this->model, get_class($this->model));
         }
     }
 ?>

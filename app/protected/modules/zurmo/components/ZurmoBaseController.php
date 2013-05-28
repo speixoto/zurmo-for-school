@@ -180,6 +180,7 @@
                 {
                     SavedSearchUtil::resolveSearchFormByStickyDataAndModel($stickySearchData, $searchModel);
                     SavedSearchUtil::resolveSearchFormByStickySortData($getData, $searchModel, $stickySearchData);
+                    SearchUtil::resolveSearchFormByStickyFilterByStarredData($getData, $searchModel, $stickySearchData);
                     $dataCollection = new SavedSearchAttributesDataCollection($searchModel);
                 }
                 else

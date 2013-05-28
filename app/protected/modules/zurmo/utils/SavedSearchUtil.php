@@ -135,6 +135,10 @@
             assert('is_array($stickyData)');
             $stickyData['dynamicClauses']          = $dataCollection->getSanitizedDynamicSearchAttributes();
             $stickyData['dynamicStructure']        = $dataCollection->getDynamicStructure();
+            if($dataCollection->getFilterByStarred() != null)
+            {
+                $stickyData['filterByStarred']         = $dataCollection->getFilterByStarred();
+            }
             $anyMixedAttributes                    = $dataCollection->resolveSearchAttributesFromSourceData();
             if (isset($anyMixedAttributes['anyMixedAttributes']))
             {
@@ -182,7 +186,6 @@
                     }
                 }
             }
-
             StickySearchUtil::setDataByKeyAndData($key, $stickyData);
         }
 

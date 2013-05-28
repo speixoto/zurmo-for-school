@@ -139,6 +139,15 @@
             return array($sortAttribute, $sortDescending);
         }
 
+        public static function resolveSearchFormByStickyFilterByStarredData
+                (array $getData, SearchForm $searchForm, $stickyData)
+        {
+            if (isset($stickyData['filterByStarred']))
+            {
+                $searchForm->filterByStarred = $stickyData['filterByStarred'];
+            }
+        }
+
         /**
          * Get the sort attribute array by resolving the GET array
          * for the information.
@@ -169,9 +178,9 @@
 
         public static function resolveFilterByStarredFromGetArray($searchModel, $getArrayName)
         {
-            if (!empty($_GET[$getArrayName]) && isset($_GET[$getArrayName]['filterByStarred']))
+            $filterByStarred = static::getFilterByStarredFromGetArray($getArrayName);
+            if(isset($filterByStarred))
             {
-                $filterByStarred = $_GET[$getArrayName]['filterByStarred'];
                 $searchModel->filterByStarred = $filterByStarred;
             }
         }
@@ -455,6 +464,16 @@
                 isset($_GET[$getArrayName][DynamicSearchForm::DYNAMIC_STRUCTURE_NAME]))
             {
                 return $_GET[$getArrayName][DynamicSearchForm::DYNAMIC_STRUCTURE_NAME];
+            }
+        }
+
+        public static function getFilterByStarredFromGetArray($getArrayName)
+        {
+            assert('is_string($getArrayName)');
+            if (!empty($_GET[$getArrayName]) && isset($_GET[$getArrayName]['filterByStarred']))
+            {
+                $filterByStarred = $_GET[$getArrayName]['filterByStarred'];
+                return $filterByStarred;
             }
         }
     }
