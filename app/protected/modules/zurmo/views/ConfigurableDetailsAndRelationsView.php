@@ -59,7 +59,7 @@
             if(isset($getData['lockPortlets']))
             {
                 $lockPortlets = (bool)$getData['lockPortlets'];
-                if($lockPortlets == '1')
+                if($lockPortlets)
                 {
                     ZurmoDefaultViewUtil::setLockKeyForDetailsAndRelationsView('lockPortletsForDetailsAndRelationsView', true);
                 }
