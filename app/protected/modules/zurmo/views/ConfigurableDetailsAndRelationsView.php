@@ -128,7 +128,7 @@
             {
                 $toolbarContent = parent::renderActionElementBar($renderedInForm);
             }
-            $content = ZurmoHtml::tag('div', array('class' => 'view-toolbar-container widgets-lock clearfix '), $toolbarContent);
+            $toolbarContent = ZurmoHtml::tag('div', array('class' => 'view-toolbar-container widgets-lock clearfix '), $toolbarContent);
             return $toolbarContent;
         }
 
