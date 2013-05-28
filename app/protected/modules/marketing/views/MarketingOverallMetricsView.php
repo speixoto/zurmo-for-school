@@ -55,6 +55,54 @@
 
         protected $viewData;
 
+        protected $formModel;
+
+        public static function canUserConfigure()
+        {
+            return true;
+        }
+
+        public static function canUserRemove()
+        {
+            return false;
+        }
+
+        /**
+         * What kind of PortletRules this view follows
+         * @return PortletRulesType as string.
+         */
+        public static function getPortletRulesType()
+        {
+            return 'ModelDetails';
+        }
+
+        public function renderPortletHeadContent()
+        {
+            return null;
+        }
+
+        public static function getDefaultMetadata()
+        {
+            $metadata = array(
+                'perUser' => array(
+                    'beginDate' => "eval:DateTimeCalculatorUtil::calculateNewByDaysFromNow(-30,
+                                    new DateTime(null, new DateTimeZone(Yii::app()->timeZoneHelper->getForCurrentUser())));",
+                    'endDate'   => "eval:DateTimeCalculatorUtil::calculateNewByDaysFromNow(0,
+                                    new DateTime(null, new DateTimeZone(Yii::app()->timeZoneHelper->getForCurrentUser())));",
+                    'groupBy'   => MarketingOverallMetricsForm::GROUPING_TYPE_WEEK,
+                ),
+            );
+            return $metadata;
+        }
+
+        /**
+         * The view's module class name.
+         */
+        public static function getModuleClassName()
+        {
+            return 'MarketingModule';
+        }
+
         /**
          * Some extra assertions are made to ensure this view is used in a way that it supports.
          */
@@ -67,21 +115,6 @@
             $this->viewData       = $viewData;
             $this->params         = $params;
             $this->uniqueLayoutId = $uniqueLayoutId;
-        }
-
-        public function renderPortletHeadContent()
-        {
-            return null;
-        }
-
-        public static function getDefaultMetadata()
-        {
-            $metadata = array(
-                'perUser' => array(
-                    'title' => "eval:Zurmo::t('MarketingModule', 'Overall Metrics')",
-                ),
-            );
-            return $metadata;
         }
 
         public function getTitle()
@@ -100,7 +133,13 @@
 
         protected function renderConfigureElementsContent()
         {
-            return 'date picker, and grouping picker';
+            $dateRangeContent  = DateTimeUtil::resolveValueForDateLocaleFormattedDisplay($this->resolveForm()->beginDate)
+                                 . ' - ' .
+                                 DateTimeUtil::resolveValueForDateLocaleFormattedDisplay($this->resolveForm()->endDate);
+            $content           = ZurmoHtml::tag('div', array(), $dateRangeContent);
+            $content          .= $this->renderGroupByConfigurationForm();
+            $content          .= 'REMOVE ' . $this->resolveForm()->groupBy;
+            return $content;
         }
 
         protected function renderMetricsWrapperContent()
@@ -145,6 +184,16 @@
         }
 
         /**
+         * Call to save the portlet configuration
+         */
+        protected function getPortletSaveConfigurationUrl()
+        {
+            return Yii::app()->createUrl('/' . $this->moduleId . '/defaultPortlet/modalConfigSave',
+                array_merge($_GET, array( 'portletId' => $this->params['portletId'],
+                            'uniqueLayoutId' => $this->uniqueLayoutId)));
+        }
+
+        /**
          * Url to go to after an action is completed. Typically returns user to either a model's detail view or
          * the home page dashboard.
          */
@@ -154,31 +203,84 @@
                 array( 'id' => $this->params['relationModel']->id));
         }
 
-        public static function canUserConfigure()
+        public function getConfigurationView()
         {
-            return false;
+
+            return new MarketingOverallMetricsConfigView($this->resolveForm(), $this->params);
         }
 
-        public static function canUserRemove()
+        protected function resolveForm()
         {
-            return false;
+            if($this->formModel !== null)
+            {
+                return $this->formModel;
+            }
+            $formModel = new MarketingOverallMetricsForm();
+            if ($this->viewData!='')
+            {
+                $formModel->setAttributes($this->viewData);
+            }
+            else
+            {
+                $metadata        = self::getMetadata();
+                $perUserMetadata = $metadata['perUser'];
+                $this->resolveEvaluateSubString($perUserMetadata, null);
+                $formModel->setAttributes($perUserMetadata);
+            }
+            $this->formModel = $formModel;
+            return $formModel;
         }
 
-        /**
-         * What kind of PortletRules this view follows
-         * @return PortletRulesType as string.
-         */
-        public static function getPortletRulesType()
+        protected function renderGroupByConfigurationForm()
         {
-            return 'ModelDetails';
+            $clipWidget = new ClipWidget();
+            list($form, $formStart) = $clipWidget->renderBeginWidget(
+                'ZurmoActiveForm',
+                array(
+                    'id' => $this->getFormId(),
+                )
+            );
+            $content  = $formStart;
+            $content .= $this->renderGroupByConfigurationFormLayout($form);
+            $formEnd  = $clipWidget->renderEndWidget();
+            $content .= $formEnd;
+            $this->registerGroupByConfigurationFormLayoutScripts($form);
+            return $content;
         }
 
-        /**
-         * The view's module class name.
-         */
-        public static function getModuleClassName()
+        protected function getFormId()
         {
-            return 'MarketingModule';
+            return 'marketing-metrics-group-by-configuration-form-' . $this->uniqueLayoutId;
+        }
+
+        protected function renderGroupByConfigurationFormLayout($form)
+        {
+            assert('$form instanceof ZurmoActiveForm');
+            $groupByElement = new MarketingMetricsGroupByRadioElement($this->resolveForm(), 'groupBy', $form);
+            return ZurmoHtml::tag('div', array('id' => $this->getFormId() . '_groupBy_area'), $groupByElement->render());
+        }
+
+        protected function registerGroupByConfigurationFormLayoutScripts($form)
+        {
+            assert('$form instanceof ZurmoActiveForm');
+            $ajaxSubmitScript = ZurmoHtml::ajax(array(
+                'type'       => 'POST',
+                'data'       => 'js:$("#' . $form->getId() . '").serialize()',
+                'url'        =>  $this->getPortletSaveConfigurationUrl(),
+                //'beforeSend' => 'js:function(){makeSmallLoadingSpinner(true, "#MarketingDashboardView");
+                //                $("#MarketingDashboardView").addClass("loading");}',
+                'complete' => 'function(XMLHttpRequest, textStatus){juiPortlets.refresh();}',
+                'update' => '#' . $this->uniqueLayoutId,
+
+            ));
+            Yii::app()->clientScript->registerScript($this->uniqueLayoutId . 'groupByChangeScript', "
+            $('#" . $this->getFormId() . "_groupBy_area').buttonset();
+            $('#" . $this->getFormId() . "_groupBy_area').change(function()
+                {
+                    " . $ajaxSubmitScript . "
+                }
+            );
+            ");
         }
     }
 ?>
