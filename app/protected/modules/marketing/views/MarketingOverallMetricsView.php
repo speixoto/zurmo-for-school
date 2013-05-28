@@ -152,22 +152,38 @@
 
         protected function renderOverallListPerformanceContent()
         {
+
+            $chartDataProvider  = ChartDataProviderFactory::createByType('MarketingListPerformance');
+            $chartDataProvider->setBeginDate($this->resolveForm()->beginDate);
+            $chartDataProvider->setEndDate($this->resolveForm()->beginDate);
+            $chartDataProvider->setGroupBy($this->resolveForm()->groupBy);
             $content  = ZurmoHtml::tag('h3', array(), Zurmo::t('MarketingModule', 'Overall List Performance'));
-            $content .= 'todo chart';
+            $content .= MarketingMetricsUtil::renderOverallListPerformanceChartContent(
+                        $chartDataProvider, $this->uniqueLayoutId . 'OverallListPerformance');
             return $content;
         }
 
         protected function renderEmailsInThisListContent()
         {
+            $chartDataProvider  = ChartDataProviderFactory::createByType('MarketingEmailsInThisList');
+            $chartDataProvider->setBeginDate($this->resolveForm()->beginDate);
+            $chartDataProvider->setEndDate($this->resolveForm()->beginDate);
+            $chartDataProvider->setGroupBy($this->resolveForm()->groupBy);
             $content  = ZurmoHtml::tag('h3', array(), Zurmo::t('MarketingModule', 'Emails in this list'));
-            $content .= 'todo chart';
+            $content .= MarketingMetricsUtil::renderEmailsInThisListChartContent(
+                        $chartDataProvider, $this->uniqueLayoutId . 'EmailsInThisList');
             return $content;
         }
 
         protected function renderListGrowthContent()
         {
+            $chartDataProvider  = ChartDataProviderFactory::createByType('MarketingListGrowth');
+            $chartDataProvider->setBeginDate($this->resolveForm()->beginDate);
+            $chartDataProvider->setEndDate($this->resolveForm()->beginDate);
+            $chartDataProvider->setGroupBy($this->resolveForm()->groupBy);
             $content  = ZurmoHtml::tag('h3', array(), Zurmo::t('MarketingModule', 'List Growth'));
-            $content .= 'todo chart';
+            $content .= MarketingMetricsUtil::renderListGrowthChartContent(
+                        $chartDataProvider, $this->uniqueLayoutId . 'ListGrowth');
             return $content;
         }
 
