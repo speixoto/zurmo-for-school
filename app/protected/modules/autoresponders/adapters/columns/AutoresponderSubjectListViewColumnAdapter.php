@@ -58,7 +58,7 @@
         {
             $url = Yii::app()->createUrl('/autoresponders/default/edit',
                                                                 array('id' => $id, 'redirectUrl' => $redirectUrl));
-            return ZurmoHtml::link($subject, $url);
+            return ZurmoHtml::link($subject, $url, array('class' => 'edit-autoresponder-link'));
         }
 
         protected static function renderMetricsContent(Autoresponder $autoresponder)
@@ -79,13 +79,16 @@
                                         array('{quantity}' => ZurmoHtml::tag('strong', array(), $sentQuantity))));
             $content .= ZurmoHtml::tag('div', array('class' => 'autoresponder-stats'),
                                         Zurmo::t('MarketingModule', '{quantity} opens ({openRate}%)',
-                                        array('{quantity}' => ZurmoHtml::tag('strong', array(), $openQuantity), '{openRate}' => $openRate)));
+                                        array('{quantity}' => ZurmoHtml::tag('strong', array(), $openQuantity),
+                                              '{openRate}' => ZurmoHtml::tag('span', array(), $openRate))));
             $content .= ZurmoHtml::tag('div', array('class' => 'autoresponder-stats'),
                                         Zurmo::t('MarketingModule', '{quantity} unique clicks ({clickRate}%)',
-                                        array('{quantity}' => ZurmoHtml::tag('strong', array(), $clickQuantity), '{clickRate}' => $clickRate)));
+                                        array('{quantity}' => ZurmoHtml::tag('strong', array(), $clickQuantity),
+                                              '{clickRate}' => ZurmoHtml::tag('span', array(), $clickRate))));
             $content .= ZurmoHtml::tag('div', array('class' => 'autoresponder-stats'),
                                         Zurmo::t('MarketingModule', '{quantity} Opt-outs ({optOutRate}%)',
-                                        array('{quantity}' => ZurmoHtml::tag('strong', array(), $optOutQuantity), '{optOutRate}' => $optOutRate)));
+                                        array('{quantity}' => ZurmoHtml::tag('strong', array(), $optOutQuantity),
+                                              '{optOutRate}' => ZurmoHtml::tag('span', array(), $optOutRate))));
             return $content;
         }
     }
