@@ -7121,6 +7121,33 @@ form .view-toolbar-container,
   position: relative;
   top: 0;
 }
+.icon-kanban-board-view-type:before {
+  font-weight: normal;
+  font-size: 26px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  padding: 0 0 0 0;
+  margin: 0 6px 0 -30px;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  vertical-align: middle;
+  position: relative;
+  content: '\00AE';
+}
+.icon-grid-view-type:before {
+  font-weight: normal;
+  font-size: 26px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  padding: 0 0 0 0;
+  margin: 0 6px 0 -30px;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  vertical-align: middle;
+  position: relative;
+  content: '\00B0';
+  top: -2px;
+}
 /*=Footer*/
 #FooterView {
   margin: 20px 3% 0 3%;
@@ -18154,18 +18181,6 @@ a.user-link {
 }
 .icon-kanban-board-view-type:before,
 .icon-grid-view-type:before {
-  content: "z";
-  font-weight: normal;
-  font-size: 24px;
-  font-family: "ZurmoGamificationSymblyReguRg";
-  padding: 0 0 0 0;
-  margin: 0 6px 0 -30px;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-  vertical-align: middle;
-  position: relative;
-  top: -2px;
   margin: 0;
 }
 .icon-kanban-board-view-type span,
