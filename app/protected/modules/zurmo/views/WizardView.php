@@ -183,8 +183,8 @@
             return array(
                         'validateOnSubmit'  => true,
                         'validateOnChange'  => false,
-                        'beforeValidate'    => 'js:beforeValidateAction',
-                        'afterValidate'     => 'js:afterValidateAjaxAction',
+                        'beforeValidate'    => 'js:$(this).beforeValidateAction',
+                        'afterValidate'     => 'js:$(this).afterValidateAjaxAction',
                         'afterValidateAjax' => $this->renderConfigSaveAjax(static::getFormId()),
                     );
         }
@@ -255,7 +255,7 @@
             // Begin Not Coding Standard
             $script = "
                 $('#" . $componentViewClassName::getTreeDivId() . "').addClass('loading');
-                makeLargeLoadingSpinner('" . $componentViewClassName::getTreeDivId() . "');
+                $(this).makeLargeLoadingSpinner('" . $componentViewClassName::getTreeDivId() . "');
                 $.ajax({
                     url : '" . $url . "',
                     type : 'POST',

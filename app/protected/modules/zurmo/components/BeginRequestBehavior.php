@@ -40,7 +40,9 @@
                 'zurmo/default/unsupportedBrowser',
                 'zurmo/default/login',
                 'tracking/default/track',
-                'min/serve');
+                'min/serve',
+                'contacts/external/form',
+                'contacts/external/sourceFiles');
 
         public function attach($owner)
         {

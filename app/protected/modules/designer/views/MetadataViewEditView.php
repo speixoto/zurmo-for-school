@@ -132,8 +132,8 @@
                     'data' => 'js:designer.prepareSaveLayout("edit-form")',
                     'dataType' => 'json',
                     'type' => 'POST',
-                    'beforeSend' => 'js:function(){attachLoadingOnSubmit("edit-form");}',
-                    'complete'   => 'js:function(){detachLoadingOnSubmit("edit-form");}',
+                    'beforeSend' => 'js:function(){$(this).attachLoadingOnSubmit("edit-form");}',
+                    'complete'   => 'js:function(){$(this).detachLoadingOnSubmit("edit-form");}',
                     'success' => 'function(data){designer.updateFlashBarAfterSaveLayout(data, "' . $notificationBarId . '")}', // Not Coding Standard
                     'error' => 'function(data){ ' . // Not Coding Standard
                         'var data = {' . // Not Coding Standard

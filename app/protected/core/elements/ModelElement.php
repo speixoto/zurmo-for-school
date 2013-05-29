@@ -164,19 +164,19 @@
                                   {
                                        var context = $("#' . $this->getIdForTextField() . '").parent();
                                        $(".model-select-icon", context).fadeOut(100);
-                                       makeOrRemoveTogglableSpinner(true, context);
+                                       $(this).makeOrRemoveTogglableSpinner(true, context);
                                   }',
                     'open'     => 'js: function(event, ui)
                                   {
                                        var context = $("#' . $this->getIdForTextField() . '").parent();
                                        $(".model-select-icon", context).fadeIn(250);
-                                       makeOrRemoveTogglableSpinner(false, context);
+                                       $(this).makeOrRemoveTogglableSpinner(false, context);
                                   }',
                     'close'    => 'js: function(event, ui)
                                   {
                                        var context = $("#' . $this->getIdForTextField() . '").parent();
                                        $(".model-select-icon", context).fadeIn(250);
-                                       makeOrRemoveTogglableSpinner(false, context);
+                                       $(this).makeOrRemoveTogglableSpinner(false, context);
                                   }',
                     'response' => 'js: function(event, ui)
                                   {
@@ -184,7 +184,7 @@
                                        {
                                            var context = $("#' . $this->getIdForTextField() . '").parent();
                                            $(".model-select-icon", context).fadeIn(250);
-                                           makeOrRemoveTogglableSpinner(false, context);
+                                           $(this).makeOrRemoveTogglableSpinner(false, context);
                                        }
                                   }'
                 ),

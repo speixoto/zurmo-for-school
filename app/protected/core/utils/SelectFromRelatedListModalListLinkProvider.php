@@ -94,10 +94,10 @@
             $string  .= '"#", ';
             $string  .= 'array("onclick" => ZurmoHtml::ajax(array(';
             $string  .= '"url"      => Yii::app()->createUrl("' . $this->moduleId . '/defaultPortlet/selectFromRelatedListSave", $_GET),'; // Not Coding Standard
-            $string  .= '"beforeSend" => "function ( xhr ) {jQuery(\'#modalContainer\').html(\'\');makeLargeLoadingSpinner(true, \'#modalContainer\');}",'; // Not Coding Standard
+            $string  .= '"beforeSend" => "function ( xhr ) {jQuery(\'#modalContainer\').html(\'\');$(this).makeLargeLoadingSpinner(true, \'#modalContainer\');}",'; // Not Coding Standard
             $string  .= '"complete" => "function(XMLHttpRequest, textStatus){\$(\"#modalContainer\").dialog(\"close\");}",'; // Not Coding Standard
             $string  .= '"success"  => "function(dataOrHtml, textStatus, xmlReq){';
-            $string  .= 'processAjaxSuccessUpdateHtmlOrShowDataOnFailure(dataOrHtml, \"' .
+            $string  .= '$(this).processAjaxSuccessUpdateHtmlOrShowDataOnFailure(dataOrHtml, \"' .
                         $this->uniquePortletPageId . '\")}",'; // Not Coding Standard
             $string  .= '"error"    => "function(xhr, textStatus, errorThrown) {alert(\'' .
                         CJavaScript::quote(Zurmo::t('Core', 'There was an error processing your request')) . '\');}",'; // Not Coding Standard

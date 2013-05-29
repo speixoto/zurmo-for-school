@@ -107,7 +107,7 @@
             // Begin Not Coding Standard
             return "js:function(){
                 jQuery('#{$containerId}').html('');
-                makeLargeLoadingSpinner(true, '#{$containerId}');
+                $(this).makeLargeLoadingSpinner(true, '#{$containerId}');
                 window.scrollTo(0, 0);
                 jQuery('#{$containerId}').dialog({
                     'title' : '{$modalTitle}',
