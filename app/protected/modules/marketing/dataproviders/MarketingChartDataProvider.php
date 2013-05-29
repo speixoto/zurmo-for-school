@@ -35,44 +35,60 @@
      ********************************************************************************/
 
     /**
-     * Action bar view for the marketing search and list user interface. Provides buttons like create, and links to
-     * queues.
+     * Base date provider for working with marketing metrics that have a begin date, end date, and group by
      */
-    class SecuredActionBarForMarketingSearchAndListView extends SecuredActionBarForSearchAndListView
+    abstract class MarketingChartDataProvider extends ChartDataProvider
     {
+        protected $beginDate;
+
+        protected $endDate;
+
+        protected $groupBy;
+
         /**
-         * @return array
+         * @var MarketingList
          */
-        public static function getDefaultMetadata()
+        protected $marketingList;
+
+        /**
+         * @var Campaign
+         */
+        protected $campaign;
+
+        public function setBeginDate($beginDate)
         {
-            $metadata = array(
-                'global' => array(
-                    'toolbar' => array(
-                        'elements' => array(
-                            array('type'  => 'MarketingCreateLink',
-                                'htmlOptions' => array('class' => 'icon-create'),
-                            ),
-                            array(
-                                'type'            => 'MarketingDashboardLink',
-                                'htmlOptions'     => array( 'class' => 'icon-marketing-dashboard' )
-                            ),
-                            array(
-                                'type'            => 'MarketingListsLink',
-                                'htmlOptions'     => array( 'class' => 'icon-marketing-lists' )
-                            ),
-                            array(
-                                'type'            => 'CampaignsLink',
-                                'htmlOptions'     => array( 'class' => 'icon-marketing-campaigns' )
-                            ),
-                            array(
-                                'type'            => EmailTemplatesForMarketingLinkActionElement::getType(),
-                                'htmlOptions'     => array( 'class' => 'icon-email-templates' )
-                            ),
-                        ),
-                    ),
-                ),
-            );
-            return $metadata;
+            assert('is_string($beginDate)');
+            $this->beginDate = $beginDate;
+        }
+
+        public function setEndDate($endDate)
+        {
+            assert('is_string($endDate)');
+            $this->endDate = $endDate;
+        }
+
+        public function setGroupBy($groupBy)
+        {
+            assert('is_string($groupBy)');
+            $this->groupBy = $groupBy;
+        }
+
+        public function setMarketingList(MarketingList $marketingList)
+        {
+            if($this->campaign != null)
+            {
+                throw new NotSupportedException();
+            }
+            $this->marketingList = $marketingList;
+        }
+
+        public function setCampaign(Campaign $campaign)
+        {
+            if($this->marketingList != null)
+            {
+                throw new NotSupportedException();
+            }
+            $this->campaign = $campaign;
         }
     }
 ?>

@@ -35,44 +35,37 @@
      ********************************************************************************/
 
     /**
-     * Action bar view for the marketing search and list user interface. Provides buttons like create, and links to
-     * queues.
+     * Class used for displaying the overall performance metrics for the marketing dashboard
      */
-    class SecuredActionBarForMarketingSearchAndListView extends SecuredActionBarForSearchAndListView
+    class MarketingOverallMetricsView extends MarketingMetricsView implements PortletViewInterface
     {
+        protected $formModelClassName = 'MarketingOverallMetricsForm';
         /**
-         * @return array
+         * The view's module class name.
          */
-        public static function getDefaultMetadata()
+        public static function getModuleClassName()
         {
-            $metadata = array(
-                'global' => array(
-                    'toolbar' => array(
-                        'elements' => array(
-                            array('type'  => 'MarketingCreateLink',
-                                'htmlOptions' => array('class' => 'icon-create'),
-                            ),
-                            array(
-                                'type'            => 'MarketingDashboardLink',
-                                'htmlOptions'     => array( 'class' => 'icon-marketing-dashboard' )
-                            ),
-                            array(
-                                'type'            => 'MarketingListsLink',
-                                'htmlOptions'     => array( 'class' => 'icon-marketing-lists' )
-                            ),
-                            array(
-                                'type'            => 'CampaignsLink',
-                                'htmlOptions'     => array( 'class' => 'icon-marketing-campaigns' )
-                            ),
-                            array(
-                                'type'            => EmailTemplatesForMarketingLinkActionElement::getType(),
-                                'htmlOptions'     => array( 'class' => 'icon-email-templates' )
-                            ),
-                        ),
-                    ),
-                ),
-            );
-            return $metadata;
+            return 'MarketingModule';
+        }
+
+        public function getTitle()
+        {
+            $title  = Zurmo::t('MarketingModule', 'Marketing Dashboard');
+            return $title;
+        }
+
+        public function renderContent()
+        {
+            $content  = ZurmoHtml::tag('h3', array(), Zurmo::t('MarketingModule', 'What is going on with Marketing?'));
+            $content .= $this->renderConfigureElementsContent();
+            $content .= $this->renderMetricsWrapperContent();
+            return $content;
+        }
+
+        public function getConfigurationView()
+        {
+
+            return new MarketingOverallMetricsConfigView($this->resolveForm(), $this->params);
         }
     }
 ?>

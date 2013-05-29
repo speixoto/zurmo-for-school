@@ -35,44 +35,44 @@
      ********************************************************************************/
 
     /**
-     * Action bar view for the marketing search and list user interface. Provides buttons like create, and links to
-     * queues.
+     * Form for configuring the marketing overall metrics portlet
      */
-    class SecuredActionBarForMarketingSearchAndListView extends SecuredActionBarForSearchAndListView
+    class MarketingOverallMetricsForm extends ConfigurableMetadataModel
     {
-        /**
-         * @return array
-         */
-        public static function getDefaultMetadata()
+        const GROUPING_TYPE_DAY   = 'Day';
+
+        const GROUPING_TYPE_WEEK  = 'Week';
+
+        const GROUPING_TYPE_MONTH = 'Month';
+
+        public $beginDate;
+
+        public $endDate;
+
+        public $groupBy;
+
+        public function rules()
         {
-            $metadata = array(
-                'global' => array(
-                    'toolbar' => array(
-                        'elements' => array(
-                            array('type'  => 'MarketingCreateLink',
-                                'htmlOptions' => array('class' => 'icon-create'),
-                            ),
-                            array(
-                                'type'            => 'MarketingDashboardLink',
-                                'htmlOptions'     => array( 'class' => 'icon-marketing-dashboard' )
-                            ),
-                            array(
-                                'type'            => 'MarketingListsLink',
-                                'htmlOptions'     => array( 'class' => 'icon-marketing-lists' )
-                            ),
-                            array(
-                                'type'            => 'CampaignsLink',
-                                'htmlOptions'     => array( 'class' => 'icon-marketing-campaigns' )
-                            ),
-                            array(
-                                'type'            => EmailTemplatesForMarketingLinkActionElement::getType(),
-                                'htmlOptions'     => array( 'class' => 'icon-email-templates' )
-                            ),
-                        ),
-                    ),
-                ),
+            return array(
+                array('beginDate',    'required'),
+                array('beginDate',    'date', 'format' => 'yyyy-MM-dd'),
+                array('endDate',      'required'),
+                array('endDate',      'date', 'format' => 'yyyy-MM-dd'),
+                array('groupBy',      'type', 'type' => 'string')
             );
-            return $metadata;
+        }
+
+        public function attributeLabels()
+        {
+            return array(
+                'beginDate' => Zurmo::t('MarketingModule', 'Begin Date'),
+                'endDate'   => Zurmo::t('MarketingModule', 'End Date'),
+            );
+        }
+
+        public function __toString()
+        {
+            return $this->title;
         }
     }
 ?>

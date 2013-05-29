@@ -35,44 +35,75 @@
      ********************************************************************************/
 
     /**
-     * Action bar view for the marketing search and list user interface. Provides buttons like create, and links to
-     * queues.
+     * A configuration view
+     *
      */
-    class SecuredActionBarForMarketingSearchAndListView extends SecuredActionBarForSearchAndListView
+    class MarketingOverallMetricsConfigView extends ModalConfigEditView
     {
-        /**
-         * @return array
-         */
         public static function getDefaultMetadata()
         {
             $metadata = array(
                 'global' => array(
                     'toolbar' => array(
                         'elements' => array(
-                            array('type'  => 'MarketingCreateLink',
-                                'htmlOptions' => array('class' => 'icon-create'),
-                            ),
-                            array(
-                                'type'            => 'MarketingDashboardLink',
-                                'htmlOptions'     => array( 'class' => 'icon-marketing-dashboard' )
-                            ),
-                            array(
-                                'type'            => 'MarketingListsLink',
-                                'htmlOptions'     => array( 'class' => 'icon-marketing-lists' )
-                            ),
-                            array(
-                                'type'            => 'CampaignsLink',
-                                'htmlOptions'     => array( 'class' => 'icon-marketing-campaigns' )
-                            ),
-                            array(
-                                'type'            => EmailTemplatesForMarketingLinkActionElement::getType(),
-                                'htmlOptions'     => array( 'class' => 'icon-email-templates' )
+                            array('type' => 'SaveButton'),
+                        ),
+                    ),
+                    'panelsDisplayType' => FormLayout::PANELS_DISPLAY_TYPE_ALL,
+                    'panels' => array(
+                        array(
+                            'rows' => array(
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'beginDate', 'type' => 'Date'),
+                                            ),
+                                        ),
+                                    )
+                                ),
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'endDate', 'type' => 'Date'),
+                                            ),
+                                        ),
+                                    )
+                                ),
                             ),
                         ),
                     ),
                 ),
             );
             return $metadata;
+        }
+
+        /**
+         * Supports sanitizing date attributes
+         * @see ModalConfigEditView::validate()
+         */
+        public function validate()
+        {
+            $this->setMetadataFromPost(ArrayUtil::getArrayValue($_POST, $this->getPostArrayName()));
+            echo ZurmoActiveForm::validate($this->model, null, false);
+        }
+
+        /**
+         * Supports sanitizing date attributes
+         * @see ModalConfigEditView::setMetadataFromPost()
+         */
+        public function setMetadataFromPost($postData)
+        {
+            if (isset($postData['beginDate']) && !empty($postData['beginDate']))
+            {
+                $postData['beginDate'] = DateTimeUtil::resolveValueForDateDBFormatted($postData['beginDate']);
+            }
+            if (isset($postData['endDate']) && !empty($postData['endDate']))
+            {
+                $postData['endDate']   = DateTimeUtil::resolveValueForDateDBFormatted($postData['endDate']);
+            }
+            $this->model->setAttributes($postData);
         }
     }
 ?>

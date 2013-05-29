@@ -35,44 +35,32 @@
      ********************************************************************************/
 
     /**
-     * Action bar view for the marketing search and list user interface. Provides buttons like create, and links to
-     * queues.
+     * View to when first coming to the marketing dashboard. Provides an overview of how marketing works
      */
-    class SecuredActionBarForMarketingSearchAndListView extends SecuredActionBarForSearchAndListView
+    class MarketingDashboardIntroView extends View
     {
-        /**
-         * @return array
-         */
-        public static function getDefaultMetadata()
+        protected function renderContent()
         {
-            $metadata = array(
-                'global' => array(
-                    'toolbar' => array(
-                        'elements' => array(
-                            array('type'  => 'MarketingCreateLink',
-                                'htmlOptions' => array('class' => 'icon-create'),
-                            ),
-                            array(
-                                'type'            => 'MarketingDashboardLink',
-                                'htmlOptions'     => array( 'class' => 'icon-marketing-dashboard' )
-                            ),
-                            array(
-                                'type'            => 'MarketingListsLink',
-                                'htmlOptions'     => array( 'class' => 'icon-marketing-lists' )
-                            ),
-                            array(
-                                'type'            => 'CampaignsLink',
-                                'htmlOptions'     => array( 'class' => 'icon-marketing-campaigns' )
-                            ),
-                            array(
-                                'type'            => EmailTemplatesForMarketingLinkActionElement::getType(),
-                                'htmlOptions'     => array( 'class' => 'icon-email-templates' )
-                            ),
-                        ),
-                    ),
-                ),
-            );
-            return $metadata;
+            $content  = '<div class="clearfix">';
+            $content .= '<h1>' . Zurmo::t('MarketingModule', 'How does Email Marketing work in Zurmo?'). '</h1>';
+            $content .= '<div id="marketing-intro-content">';
+            $content .= '<p>';
+            $content .= 'STEP 1,2,3 and graphics';
+            $content .= '</p>';
+            $content .= '</div>';
+            $content .= $this->renderHideLinkContent();
+            $content .= '</div>';
+            return $content;
+        }
+
+
+        protected function renderHideLinkContent()
+        {
+            //todo: should use ajax, then when done remove div from UI
+            $label    = '<span></span>' . Zurmo::t('MarketingModule', 'Dismiss');
+            $content  = '<div class="hide-marketing-intro">'.ZurmoHtml::link($label, Yii::app()->createUrl('marketing/default/hideIntro'));
+            $content .= '</div>';
+            return $content;
         }
     }
 ?>

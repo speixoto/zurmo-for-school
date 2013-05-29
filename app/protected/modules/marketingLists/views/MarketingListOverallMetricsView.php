@@ -35,44 +35,55 @@
      ********************************************************************************/
 
     /**
-     * Action bar view for the marketing search and list user interface. Provides buttons like create, and links to
-     * queues.
+     * Class for displaying metrics specific to a marketing list
      */
-    class SecuredActionBarForMarketingSearchAndListView extends SecuredActionBarForSearchAndListView
+    class MarketingListOverallMetricsView extends MarketingMetricsView implements PortletViewInterface
     {
+        protected $formModelClassName = 'MarketingOverallMetricsForm';
         /**
-         * @return array
+         * The view's module class name.
          */
-        public static function getDefaultMetadata()
+        public static function getModuleClassName()
         {
-            $metadata = array(
-                'global' => array(
-                    'toolbar' => array(
-                        'elements' => array(
-                            array('type'  => 'MarketingCreateLink',
-                                'htmlOptions' => array('class' => 'icon-create'),
-                            ),
-                            array(
-                                'type'            => 'MarketingDashboardLink',
-                                'htmlOptions'     => array( 'class' => 'icon-marketing-dashboard' )
-                            ),
-                            array(
-                                'type'            => 'MarketingListsLink',
-                                'htmlOptions'     => array( 'class' => 'icon-marketing-lists' )
-                            ),
-                            array(
-                                'type'            => 'CampaignsLink',
-                                'htmlOptions'     => array( 'class' => 'icon-marketing-campaigns' )
-                            ),
-                            array(
-                                'type'            => EmailTemplatesForMarketingLinkActionElement::getType(),
-                                'htmlOptions'     => array( 'class' => 'icon-email-templates' )
-                            ),
-                        ),
-                    ),
-                ),
-            );
-            return $metadata;
+            return 'MarketingListsModule';
+        }
+
+        public function getTitle()
+        {
+            $title  = Zurmo::t('MarketingListsModule', 'List Dashboard');
+            return $title;
+        }
+
+        public function renderContent()
+        {
+            $content  = ZurmoHtml::tag('h3', array(), Zurmo::t('MarketingListsModule', 'What is going on with this list?'));
+            $content .= $this->renderConfigureElementsContent();
+            $content .= $this->renderMetricsWrapperContent();
+            $content = ZurmoHtml::tag('div', array('class' => $this->getWrapperDivClass()), $content);
+            return $content;
+        }
+
+        public function getConfigurationView()
+        {
+            return new MarketingOverallMetricsConfigView($this->resolveForm(), $this->params);
+        }
+
+        /**
+         * Override to supply a marketing list
+         * @param string $type
+         * @return ChartDataProvider
+         */
+        protected function resolveChartDataProvider($type)
+        {
+            assert('is_string($type)');
+            $chartDataProvider = parent::resolveChartDataProvider($type);
+            $chartDataProvider->setMarketingList($this->params['relationModel']);
+            return $chartDataProvider;
+        }
+
+        protected function getWrapperDivClass()
+        {
+            return MarketingListDetailsAndRelationsView::METRICS_PORTLET_CLASS;
         }
     }
 ?>

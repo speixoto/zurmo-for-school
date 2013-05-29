@@ -34,47 +34,56 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class MarketingListDetailsAndRelationsView extends DetailsAndRelationsView
+    /**
+     * Class to render a fly-out link from the campaign detailview.  When this link is clicked, a little div will
+     * open up that display additional information about the campaign
+     */
+    class CampaignsDetailsLinkActionElement extends LinkActionElement
     {
-        const METRICS_PORTLET_CLASS     = 'marketing-list-metrics-container';
-
-        const MEMBERS_PORTLET_CLASS     = 'marketing-list-members-portlet-container';
-
-        const AUTORESPONDERS_PORTLET_CLASS  = 'marketing-list-autoresponder-portlet-container';
-
-        public static function getDefaultMetadata()
+        public function getActionType()
         {
-            $metadata = array(
-                'global' => array(
-                    'leftTopView' => array(
-                        'viewClassName' => 'MarketingListDetailsView',
-                    ),
-                    'leftBottomView' => array(
-                        'showAsTabbed' => false,
-                        'columns' => array(
-                            array(
-                                'rows' => array(
-                                    array(
-                                        'type' => 'MarketingListOverallMetrics'
-                                    ),
-                                    array(
-                                        'type' => 'MarketingListMembersPortlet'
-                                    ),
-                                    array(
-                                        'type' => 'AutorespondersPortlet'
-                                    ),
-                                )
-                            )
-                        )
-                    ),
-                )
-            );
-            return $metadata;
+            return 'Details';
         }
 
-        public function isUniqueToAPage()
+        protected function getDefaultLabel()
         {
-            return true;
+            return Zurmo::t('CampaignsModule', 'Details');
+        }
+
+        protected function getDefaultRoute()
+        {
+            return null;
+        }
+
+        public function render()
+        {
+            $items = array($this->renderMenuItem());
+            $cClipWidget = new CClipWidget();
+            $cClipWidget->beginClip("CampaignDetailsMenu");
+            $cClipWidget->widget('application.core.widgets.MinimalDynamicLabelMbMenu', array(
+                'htmlOptions' => array('id' => 'ListViewDetailsActionMenu'),
+                'items'                   => $items,
+            ));
+            $cClipWidget->endClip();
+            return $cClipWidget->getController()->clips['CampaignDetailsMenu'];
+        }
+
+        public function renderMenuItem()
+        {
+            $detailsOverlayView = new CampaignDetailsOverlayView($this->controllerId,
+                                                                        $this->moduleId,
+                                                                        $this->params['model']
+                                                                        );
+            return array('label'        => $this->getLabel(),
+                         'url'          => $this->getRoute(),
+                         'itemOptions'  => array('class' => 'hasDetailsFlyout'),
+                         'items'        => array(
+                                               array(
+                                                   'label'                 => '',
+                                                   'dynamicLabelContent'   => $detailsOverlayView->render(),
+                                               )
+                                           )
+                         );
         }
     }
 ?>

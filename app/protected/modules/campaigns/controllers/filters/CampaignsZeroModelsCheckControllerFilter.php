@@ -35,44 +35,36 @@
      ********************************************************************************/
 
     /**
-     * Action bar view for the marketing search and list user interface. Provides buttons like create, and links to
-     * queues.
+     * Filter used by campaigns controller for showing if marketing lists exist yet
      */
-    class SecuredActionBarForMarketingSearchAndListView extends SecuredActionBarForSearchAndListView
+    class CampaignsZeroModelsCheckControllerFilter extends ZeroModelsCheckControllerFilter
     {
-        /**
-         * @return array
-         */
-        public static function getDefaultMetadata()
+        public $activeActionElementType;
+
+        public $breadcrumbLinks;
+
+        protected function getMessageViewClassName()
         {
-            $metadata = array(
-                'global' => array(
-                    'toolbar' => array(
-                        'elements' => array(
-                            array('type'  => 'MarketingCreateLink',
-                                'htmlOptions' => array('class' => 'icon-create'),
-                            ),
-                            array(
-                                'type'            => 'MarketingDashboardLink',
-                                'htmlOptions'     => array( 'class' => 'icon-marketing-dashboard' )
-                            ),
-                            array(
-                                'type'            => 'MarketingListsLink',
-                                'htmlOptions'     => array( 'class' => 'icon-marketing-lists' )
-                            ),
-                            array(
-                                'type'            => 'CampaignsLink',
-                                'htmlOptions'     => array( 'class' => 'icon-marketing-campaigns' )
-                            ),
-                            array(
-                                'type'            => EmailTemplatesForMarketingLinkActionElement::getType(),
-                                'htmlOptions'     => array( 'class' => 'icon-email-templates' )
-                            ),
-                        ),
-                    ),
-                ),
-            );
-            return $metadata;
+            return 'CampaignsZeroModelsYetView';
+        }
+
+        protected function resolveAndRenderView(View $messageView)
+        {
+            $gridViewId              = 'notUsed';
+            $pageVar                 = 'notUsed';
+            $listModel               = new Campaign();
+            $actionBarView           = new SecuredActionBarForMarketingSearchAndListView(
+                                       'default',
+                                       'marketing',
+                                       $listModel,
+                                       $gridViewId,
+                                       $pageVar,
+                                       false, $this->activeActionElementType);
+            $mixedView               = new ActionBarAndZeroModelsYetView($actionBarView, $messageView);
+            $view                    = new CampaignsPageView(MarketingDefaultViewUtil::
+                                       makeViewWithBreadcrumbsForCurrentUser(
+                                       $this->controller, $mixedView, $this->breadcrumbLinks, 'MarketingBreadCrumbView'));
+            echo $view->render();
         }
     }
 ?>

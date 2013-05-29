@@ -37,7 +37,7 @@
     /**
      * Class to render link to toggle portlets for a report grid view
      */
-    class MarketingListsTogglePortletsLinkActionElement extends LinkActionElement
+    class CampaignsTogglePortletsLinkActionElement extends LinkActionElement
     {
         /**
          * @return null
@@ -54,22 +54,10 @@
         {
             $content  = null;
             $metricsClass           = $this->getMetricsPortletClass();
-            $membersClass           = $this->getMembersPortletClass();
-            $autorespondersClass    = $this->getAutorespondersPortletClass();
             if($metricsClass)
             {
-                $membersTranslatedLabel = Zurmo::t('MarketingListsModule', 'Dashboard');
+                $membersTranslatedLabel = Zurmo::t('CampaignsModule', 'Dashboard');
                 $content                .= $this->getCheckboxContent($membersTranslatedLabel, $metricsClass);
-            }
-            if ($membersClass)
-            {
-                $membersTranslatedLabel = Zurmo::t('MarketingListsModule', 'Members');
-                $content                .= $this->getCheckboxContent($membersTranslatedLabel, $membersClass);
-            }
-            if ($autorespondersClass)
-            {
-                $autorespondersTranslatedLabel = Zurmo::t('MarketingListsModule', 'Autoresponders');
-                $content                .= $this->getCheckboxContent($autorespondersTranslatedLabel, $autorespondersClass);
             }
             return ZurmoHtml::tag('div', $this->getHtmlOptions(), $content );
         }
@@ -78,7 +66,7 @@
         {
             $htmlOptions = array('onClick' => 'js:$(".' . $class . '").parentsUntil("li").parent().toggle();');
             $label       = ZurmoHtml::label($translatedLabel, $translatedLabel,
-                                                                array('class' => 'label-for-marketing-list-widgets'));
+                                                                array('class' => 'label-for-campaign-widgets'));
             $content    = ZurmoHtml::checkBox($translatedLabel, true, $htmlOptions) . $label;
             return $content;
         }
@@ -88,7 +76,7 @@
          */
         protected function getDefaultLabel()
         {
-            return Zurmo::t('MarketingListsModule', 'Toggle View');
+            return Zurmo::t('CampaignsModule', 'Toggle View');
         }
 
         /**
@@ -102,16 +90,6 @@
         protected function getMetricsPortletClass()
         {
             return ArrayUtil::getArrayValueWithExceptionIfNotFound($this->params, 'metricsPortletClass');
-        }
-
-        protected function getMembersPortletClass()
-        {
-            return ArrayUtil::getArrayValueWithExceptionIfNotFound($this->params, 'membersPortletClass');
-        }
-
-        protected function getAutorespondersPortletClass()
-        {
-            return ArrayUtil::getArrayValueWithExceptionIfNotFound($this->params, 'autorespondersPortletClass');
         }
     }
 ?>

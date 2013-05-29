@@ -34,45 +34,48 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * Action bar view for the marketing search and list user interface. Provides buttons like create, and links to
-     * queues.
-     */
-    class SecuredActionBarForMarketingSearchAndListView extends SecuredActionBarForSearchAndListView
+    class CampaignDetailsView extends SecuredDetailsView
     {
-        /**
-         * @return array
-         */
+        public static function assertModelIsValid($model)
+        {
+            assert('$model instanceof Campaign');
+        }
+
         public static function getDefaultMetadata()
         {
             $metadata = array(
                 'global' => array(
                     'toolbar' => array(
                         'elements' => array(
-                            array('type'  => 'MarketingCreateLink',
-                                'htmlOptions' => array('class' => 'icon-create'),
-                            ),
-                            array(
-                                'type'            => 'MarketingDashboardLink',
-                                'htmlOptions'     => array( 'class' => 'icon-marketing-dashboard' )
-                            ),
-                            array(
-                                'type'            => 'MarketingListsLink',
-                                'htmlOptions'     => array( 'class' => 'icon-marketing-lists' )
-                            ),
-                            array(
-                                'type'            => 'CampaignsLink',
-                                'htmlOptions'     => array( 'class' => 'icon-marketing-campaigns' )
-                            ),
-                            array(
-                                'type'            => EmailTemplatesForMarketingLinkActionElement::getType(),
-                                'htmlOptions'     => array( 'class' => 'icon-email-templates' )
-                            ),
+                            array('type'        => 'CampaignsDetailsLink',
+                                'model'                         => 'eval:$this->model',
+                                'htmlOptions'                   => array('class' => 'icon-details')),
+                            array('type'        => 'CampaignsOptionsLink',
+                                'htmlOptions'                   => array('class' => 'icon-edit')),
+                            array('type'        => 'CampaignsTogglePortletsLink',
+                                'htmlOptions'                   => array('class' => 'hasCheckboxes'),
+                                'metricsPortletClass'           => CampaignDetailsAndRelationsView::METRICS_PORTLET_CLASS),
                         ),
                     ),
                 ),
             );
             return $metadata;
+        }
+
+        public function getTitle()
+        {
+            return strval($this->model);
+        }
+
+        protected function renderContent()
+        {
+            // TODO: @Shoaibi/@Jason: Low: Do security walkthrough
+            $actionElementBarContent        = $this->renderActionElementBar(false);
+            $content                        = $this->renderTitleContent();
+            $content                       .= ZurmoHtml::tag('div', array('class' => 'view-toolbar-container clearfix'),
+                                                ZurmoHtml::tag('div', array('class' => 'view-toolbar'),
+                                                                                    $actionElementBarContent));
+            return $content;
         }
     }
 ?>

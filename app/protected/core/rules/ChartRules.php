@@ -65,6 +65,8 @@
 
         const TYPE_STACKED_AREA          = 'StackedArea';
 
+        const TYPE_LINE                  = 'Line';
+
         /**
          * @return array of chart types that require a second series and range to render.
          */

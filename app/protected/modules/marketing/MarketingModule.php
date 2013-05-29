@@ -60,7 +60,7 @@
                 'tabMenuItems' => array(
                     array(
                         'label'  => "eval:Zurmo::t('MarketingModule', 'Marketing')",
-                        'url'    => array('/emailTemplates/default/listForMarketing'),
+                        'url'    => array('/marketing/default/dashboardDetails'),
                         'mobile' => false,
                     ),
                 ),

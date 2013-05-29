@@ -35,44 +35,62 @@
      ********************************************************************************/
 
     /**
-     * Action bar view for the marketing search and list user interface. Provides buttons like create, and links to
-     * queues.
+     * Element for deciding the grouping day, week, or month for a marketing metrics portlet
      */
-    class SecuredActionBarForMarketingSearchAndListView extends SecuredActionBarForSearchAndListView
+    class MarketingMetricsGroupByRadioElement extends Element
     {
         /**
-         * @return array
+         * Renders the setting as a radio list.
+         * @return A string containing the element's content.
          */
-        public static function getDefaultMetadata()
+        protected function renderControlEditable()
         {
-            $metadata = array(
-                'global' => array(
-                    'toolbar' => array(
-                        'elements' => array(
-                            array('type'  => 'MarketingCreateLink',
-                                'htmlOptions' => array('class' => 'icon-create'),
-                            ),
-                            array(
-                                'type'            => 'MarketingDashboardLink',
-                                'htmlOptions'     => array( 'class' => 'icon-marketing-dashboard' )
-                            ),
-                            array(
-                                'type'            => 'MarketingListsLink',
-                                'htmlOptions'     => array( 'class' => 'icon-marketing-lists' )
-                            ),
-                            array(
-                                'type'            => 'CampaignsLink',
-                                'htmlOptions'     => array( 'class' => 'icon-marketing-campaigns' )
-                            ),
-                            array(
-                                'type'            => EmailTemplatesForMarketingLinkActionElement::getType(),
-                                'htmlOptions'     => array( 'class' => 'icon-email-templates' )
-                            ),
-                        ),
-                    ),
-                ),
+            assert('$this->model instanceof MarketingOverallMetricsForm'); //todo: add as needed
+            $content = $this->form->radioButtonList(
+                $this->model,
+                $this->attribute,
+                $this->getArray(),
+                $this->getEditableHtmlOptions()
             );
-            return $metadata;
+            return $content;
+        }
+
+        protected function renderControlNonEditable()
+        {
+            throw new NotImplementedException();
+        }
+
+        /**
+         * Override to ensure label is pointing to the right input id
+         * @return A string containing the element's label
+         * @throws NotImplementedException
+         */
+        protected function renderLabel()
+        {
+            if ($this->form === null)
+            {
+                throw new NotImplementedException();
+            }
+            $for = ZurmoHtml::ID_PREFIX . $this->getEditableInputId();
+            return $this->form->labelEx($this->model, $this->attribute, array('for' => $for));
+        }
+
+        public function getEditableHtmlOptions()
+        {
+            $htmlOptions = array(
+                'name'      => $this->getEditableInputName(),
+                'id'        => $this->getEditableInputId(),
+                'separator' => '',
+                'template'  => '{input}{label}',
+            );
+            return $htmlOptions;
+        }
+
+        protected function getArray()
+        {
+            return array(MarketingOverallMetricsForm::GROUPING_TYPE_DAY   => Zurmo::t('Core', 'Day'),
+                         MarketingOverallMetricsForm::GROUPING_TYPE_WEEK  => Zurmo::t('Core', 'Week'),
+                         MarketingOverallMetricsForm::GROUPING_TYPE_MONTH => Zurmo::t('Core', 'Month'));
         }
     }
 ?>

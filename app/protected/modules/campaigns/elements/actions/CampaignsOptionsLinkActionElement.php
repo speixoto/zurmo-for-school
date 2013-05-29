@@ -35,44 +35,42 @@
      ********************************************************************************/
 
     /**
-     * Action bar view for the marketing search and list user interface. Provides buttons like create, and links to
-     * queues.
+     * Campaigns Options link.
      */
-    class SecuredActionBarForMarketingSearchAndListView extends SecuredActionBarForSearchAndListView
+    class CampaignsOptionsLinkActionElement extends LinkActionElement
     {
-        /**
-         * @return array
-         */
-        public static function getDefaultMetadata()
+        public function getActionType()
         {
-            $metadata = array(
-                'global' => array(
-                    'toolbar' => array(
-                        'elements' => array(
-                            array('type'  => 'MarketingCreateLink',
-                                'htmlOptions' => array('class' => 'icon-create'),
-                            ),
-                            array(
-                                'type'            => 'MarketingDashboardLink',
-                                'htmlOptions'     => array( 'class' => 'icon-marketing-dashboard' )
-                            ),
-                            array(
-                                'type'            => 'MarketingListsLink',
-                                'htmlOptions'     => array( 'class' => 'icon-marketing-lists' )
-                            ),
-                            array(
-                                'type'            => 'CampaignsLink',
-                                'htmlOptions'     => array( 'class' => 'icon-marketing-campaigns' )
-                            ),
-                            array(
-                                'type'            => EmailTemplatesForMarketingLinkActionElement::getType(),
-                                'htmlOptions'     => array( 'class' => 'icon-email-templates' )
-                            ),
-                        ),
-                    ),
-                ),
-            );
-            return $metadata;
+            return 'Delete';
+        }
+
+        protected function getDefaultLabel()
+        {
+            return Zurmo::t('CampaignsModule', 'Options');
+        }
+
+        protected function getDefaultRoute()
+        {
+            return null;
+        }
+
+        public function render()
+        {
+            $deleteElement          = new CampaignDeleteLinkActionElement($this->controllerId, $this->moduleId, $this->modelId);
+            $deleteElementContent   = $deleteElement->renderMenuItem();
+            $editElement            = new EditLinkActionElement($this->controllerId, $this->moduleId, $this->modelId);
+            $editElementContent     = $editElement->renderMenuItem();
+            // TODO: @Shoaibi/@Jason: Low: securable on these items from the outside coming in?
+            $menuItems              = array('label' => $this->getLabel(), 'url' => null,
+                                            'items' => array( $editElementContent, $deleteElementContent));
+            $cClipWidget            = new CClipWidget();
+            $cClipWidget->beginClip("ActionMenu");
+            $cClipWidget->widget('application.core.widgets.MbMenu', array(
+                                                'htmlOptions'   => array('id' => 'ListViewOptionsActionMenu'),
+                                                'items'         => array($menuItems),
+                                            ));
+            $cClipWidget->endClip();
+            return $cClipWidget->getController()->clips['ActionMenu'];
         }
     }
 ?>
