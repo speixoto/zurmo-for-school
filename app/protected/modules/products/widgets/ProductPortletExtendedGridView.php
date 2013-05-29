@@ -56,6 +56,10 @@
             $annualTotal            = 0;
             foreach ($models as $model)
             {
+                if($persistantProductConfigItemValue === null)
+                {
+                    $persistantProductConfigItemValue = ProductsConfigurationForm::FILTERED_BY_ALL_STAGES;
+                }
                 if($persistantProductConfigItemValue != ProductsConfigurationForm::FILTERED_BY_ALL_STAGES)
                 {
                     if($model->stage->value != $persistantProductConfigItemValue)
@@ -63,6 +67,7 @@
                         continue;
                     }
                 }
+                
                 if ($model->priceFrequency == ProductTemplate::PRICE_FREQUENCY_ONE_TIME)
                 {
                     $oneTimeTotal += $model->sellPrice->value * $model->quantity;
