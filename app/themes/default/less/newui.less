@@ -2657,6 +2657,14 @@ div.wide.form{
 	table{
 		border-bottom:none;
 	}
+	.filters-bar{
+		width: auto;
+		top:20px;
+		> div{
+			float: left;
+			padding-left: 15px;
+		}
+	}
 }
 
 .SecuredListView{
@@ -3127,7 +3135,14 @@ div.wide.form{
 			display: none;
 		}
 	}
+	.left-column{
+		padding: 0 15px 0 0;
+	}
+	.right-column{
+		padding: 0 0 15px 0;
+	}
 }
+
 .right-column{
 	float: right;
 	width: 30%;
@@ -3147,7 +3162,7 @@ div.wide.form{
 		}
 	}
 	h3{
-		margin:15px 0 0 15px;
+		margin:0 0 15px 0;
 	}
 	table{
 		border-bottom:none;
@@ -3507,7 +3522,9 @@ div.wide.form{
 		margin-left:0;
 	}
 	h1 + .toolbar-mbmenu{
-		top: -35px;
+		top: 6px;
+		right: 0px;
+		position: absolute;
 		.parent > ul{
 			top: 27px;
 		}
@@ -3543,7 +3560,7 @@ div.wide.form{
 .AppContent.TableOfContentsView,
 .AppContent.SecuredEditAndDetailsView{
 	.toolbar-mbmenu{
-		top:8px;
+		//top:8px;
 	}
 }
 

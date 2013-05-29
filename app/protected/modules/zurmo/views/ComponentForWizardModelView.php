@@ -133,6 +133,7 @@
         {
             $content  = $this->renderTitleContent();
             $content .= $this->renderFormContent();
+            $content  = ZurmoHtml::tag('div', array('class' => 'left-column full-width clearfix'), $content);
             $actionElementContent = $this->renderActionElementBar(true);
             if ($actionElementContent != null)
             {

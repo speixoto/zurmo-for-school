@@ -8147,6 +8147,14 @@ div.wide.form label.hasCheckBox {
 #search-form table {
   border-bottom: none;
 }
+#search-form .filters-bar {
+  width: auto;
+  top: 20px;
+}
+#search-form .filters-bar > div {
+  float: left;
+  padding-left: 15px;
+}
 .SecuredListView {
   float: left;
   width: 100%;
@@ -8696,6 +8704,12 @@ div.wide.form label.hasCheckBox {
 .left-column.full-width + .right-column {
   display: none;
 }
+.left-column .left-column {
+  padding: 0 15px 0 0;
+}
+.left-column .right-column {
+  padding: 0 0 15px 0;
+}
 .right-column {
   float: right;
   width: 30%;
@@ -8714,7 +8728,7 @@ div.wide.form label.hasCheckBox {
 #modal-edit-form h3,
 #edit-form h3,
 #delete-form h3 {
-  margin: 15px 0 0 15px;
+  margin: 0 0 15px 0;
 }
 #modal-edit-form table,
 #edit-form table,
@@ -9088,7 +9102,9 @@ div.wide.form label.hasCheckBox {
   margin-left: 0;
 }
 .details-table h1 + .toolbar-mbmenu {
-  top: -35px;
+  top: 6px;
+  right: 0px;
+  position: absolute;
 }
 .details-table h1 + .toolbar-mbmenu .parent > ul {
   top: 27px;
@@ -9113,10 +9129,6 @@ div.wide.form label.hasCheckBox {
   height: auto !important;
 }
 /*=For single meeting, contact etc..*/
-.AppContent.TableOfContentsView .toolbar-mbmenu,
-.AppContent.SecuredEditAndDetailsView .toolbar-mbmenu {
-  top: 8px;
-}
 .wrapper {
   float: left;
   width: 100%;
@@ -15332,6 +15344,9 @@ a.close-ModalGameNotification.simple-link {
   float: none;
   margin-bottom: 0;
 }
+#UserDetailsView {
+  padding: 0 20px 20px 0;
+}
 #UserDetailsView .details-table {
   zoom: 1;
   position: relative !important;
@@ -15992,7 +16007,7 @@ a.dashboard-link .z-label {
   padding: 0 0 0 0 !important;
 }
 #CommentInlineEditForModelView h2 {
-  margin: 0 0 0 0;
+  margin: 0 0 10px 0;
 }
 #CommentInlineEditForModelView .wide.form {
   padding: 0;
@@ -16067,6 +16082,9 @@ a.dashboard-link .z-label {
 }
 #MissionEditView .panel {
   width: 100% !important;
+}
+#MissionEditView .view-toolbar-container + .left-column {
+  display: none;
 }
 .mission-change-status-link {
   margin: 0 5px !important;
@@ -17346,12 +17364,13 @@ a.user-link {
 .all-related-field {
   float: left;
   width: 80%;
-  padding-left: 15px;
 }
 .all-related-field .value-data {
   width: 42.5%;
+  float: left;
 }
 .all-related-field > span {
+  width: 15%;
   float: left;
   line-height: 26px;
 }
@@ -17752,6 +17771,9 @@ a.user-link {
 .mergetag-guide-modal li {
   margin-bottom: 4px;
 }
+.marketing-list-members-portlet-container .portlet-view-toolbar {
+  float: left;
+}
 #marketing-list-member-configuration-form {
   position: relative;
   padding: 15px;
@@ -17803,6 +17825,10 @@ a.user-link {
 #marketing-list-member-configuration-form input[type="text"]:focus {
   outline: none !important;
   box-shadow: none !important;
+}
+#marketing-list-member-configuration-form .list-view-items-summary-clone {
+  margin-top: 51px;
+  font-weight: bold;
 }
 .MarketingListMembersListView {
   margin-bottom: 0;
@@ -17905,6 +17931,8 @@ a.user-link {
 }
 #MarketingListMembersConfigurationForm_filteredBySubscriptionType_area {
   margin-left: 15px;
+  width: auto;
+  top: 20px;
 }
 .marketing-list-member-stats {
   margin: 5px 0 0 0;
