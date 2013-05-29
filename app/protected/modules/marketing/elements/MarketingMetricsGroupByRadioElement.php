@@ -40,18 +40,24 @@
     class MarketingMetricsGroupByRadioElement extends Element
     {
         /**
-         * Renders the setting as a radio list.
+         * Renders the setting as a links. Also adds hidden variable to form to ensure form can get serialized
+         * during an ajax call.
          * @return A string containing the element's content.
          */
         protected function renderControlEditable()
         {
-            assert('$this->model instanceof MarketingOverallMetricsForm'); //todo: add as needed
-            $content = $this->form->radioButtonList(
-                $this->model,
-                $this->attribute,
-                $this->getArray(),
-                $this->getEditableHtmlOptions()
-            );
+            assert('$this->model instanceof MarketingOverallMetricsForm');
+            $hiddenInputName     = 'marketingMetricsGroupByNotUsedName';
+            $content             = ZurmoHtml::hiddenField($hiddenInputName);
+            foreach($this->getValuesAndLabels() as $value => $label)
+            {
+                $class    = $this->form->getId() . 'marketingMetricsGroupByLink';
+                if($this->model->{$this->attribute} == $value)
+                {
+                    $class .= ' active';
+                }
+                $content .= ZurmoHtml::link($label, '#', array('data-value' => $value, 'class' => $class));
+            }
             return $content;
         }
 
@@ -86,7 +92,7 @@
             return $htmlOptions;
         }
 
-        protected function getArray()
+        protected function getValuesAndLabels()
         {
             return array(MarketingOverallMetricsForm::GROUPING_TYPE_DAY   => Zurmo::t('Core', 'Day'),
                          MarketingOverallMetricsForm::GROUPING_TYPE_WEEK  => Zurmo::t('Core', 'Week'),
