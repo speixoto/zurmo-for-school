@@ -146,7 +146,8 @@
         {
             return array('groupByAttribute'               => $this->groupByAttribute,
                          'groupByAttributeVisibleValues'  => $this->groupByAttributeVisibleValues,
-                         'groupByDataAndTranslatedLabels' => $this->groupByDataAndTranslatedLabels);
+                         'groupByDataAndTranslatedLabels' => $this->groupByDataAndTranslatedLabels,
+                         'selectedTheme' => $this->getSelectedTheme());
         }
 
         public function getGroupByAttributeVisibleValues()
