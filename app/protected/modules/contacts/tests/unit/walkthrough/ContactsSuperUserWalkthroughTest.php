@@ -271,9 +271,9 @@
             $contact1->forget();
             $contact1 = Contact::getById($superContactId);
             $portlets = Portlet::getByLayoutIdAndUserSortedByColumnIdAndPosition(
-                                    'ContactDetailsAndRelationsViewLeftBottomView', $super->id, array());
-            $this->assertEquals(1, count($portlets));
-            $this->assertEquals(2, count($portlets[1]));
+                                    'ContactDetailsAndRelationsView', $super->id, array());
+            $this->assertEquals(2, count($portlets));
+            $this->assertEquals(3, count($portlets[1]));
             $opportunity = Opportunity::getById($superOpportunityId);
             $this->assertEquals(0, $contact1->opportunities->count());
             $this->assertEquals(0, $opportunity->contacts->count());
@@ -281,7 +281,7 @@
                                         'relationAttributeName' => 'contacts',
                                         'relationModuleId'      => 'contacts',
                                         'relationModelId'       => $superContactId,
-                                        'uniqueLayoutId'        => 'ContactDetailsAndRelationsViewLeftBottomView_' .
+                                        'uniqueLayoutId'        => 'ContactDetailsAndRelationsView_' .
                                                                     $portlets[1][1]->id)
             );
 
@@ -293,7 +293,7 @@
                                         'relationAttributeName' => 'contacts',
                                         'relationModuleId'      => 'contacts',
                                         'relationModelId'       => $superContactId,
-                                        'uniqueLayoutId'        => 'ContactDetailsAndRelationsViewLeftBottomView_' .
+                                        'uniqueLayoutId'        => 'ContactDetailsAndRelationsView_' .
                                                                     $portlets[1][1]->id)
             );
             $this->resetPostArray();
@@ -320,9 +320,9 @@
             //Save a layout change. Collapse all portlets in the Contact Details View.
             //At this point portlets for this view should be created because we have already loaded the 'details' page in a request above.
             $portlets = Portlet::getByLayoutIdAndUserSortedByColumnIdAndPosition(
-                                    'ContactDetailsAndRelationsViewLeftBottomView', $super->id, array());
-            $this->assertEquals (2, count($portlets[1])         );
-            $this->assertFalse  (array_key_exists(2, $portlets) );
+                                    'ContactDetailsAndRelationsView', $super->id, array());
+            $this->assertEquals (3, count($portlets[1]));
+            $this->assertFalse  (array_key_exists(3, $portlets) );
             $portletPostData = array();
             $portletCount = 0;
             foreach ($portlets as $column => $columnPortlets)
@@ -330,29 +330,29 @@
                 foreach ($columnPortlets as $position => $portlet)
                 {
                     $this->assertEquals('0', $portlet->collapsed);
-                    $portletPostData['ContactDetailsAndRelationsViewLeftBottomView_' . $portlet->id] = array(
+                    $portletPostData['ContactDetailsAndRelationsView_' . $portlet->id] = array(
                         'collapsed' => 'true',
                         'column'    => 0,
-                        'id'        => 'ContactDetailsAndRelationsViewLeftBottomView_' . $portlet->id,
+                        'id'        => 'ContactDetailsAndRelationsView_' . $portlet->id,
                         'position'  => $portletCount,
                     );
                     $portletCount++;
                 }
             }
             //There should have been a total of 2 portlets.
-            $this->assertEquals(2, $portletCount);
+            $this->assertEquals(6, $portletCount);
             $this->resetGetArray();
             $this->setPostArray(array(
                 'portletLayoutConfiguration' => array(
                     'portlets' => $portletPostData,
-                    'uniqueLayoutId' => 'ContactDetailsAndRelationsViewLeftBottomView',
+                    'uniqueLayoutId' => 'ContactDetailsAndRelationsView',
                 )
             ));
             $this->runControllerWithNoExceptionsAndGetContent('home/defaultPortlet/saveLayout', true);
             //Now test that all the portlets are collapsed and moved to the first column.
             $portlets = Portlet::getByLayoutIdAndUserSortedByColumnIdAndPosition(
-                            'ContactDetailsAndRelationsViewLeftBottomView', $super->id, array());
-            $this->assertEquals (2, count($portlets[1])         );
+                            'ContactDetailsAndRelationsView', $super->id, array());
+            $this->assertEquals (6, count($portlets[1])         );
             $this->assertFalse  (array_key_exists(2, $portlets) );
             foreach ($portlets as $column => $columns)
             {
@@ -625,12 +625,14 @@
             $this->setGetArray(array('id' => $account[0]->id));
             //Run Mass Delete using progress save for page2.
             $content = $this->runControllerWithNoExceptionsAndGetContent('contacts/default/getAccountAddressesToCopy');
+            // Begin Not Coding Standard
             $compareContent = '{"billingAddress_city":null,"billingAddress_country":null,"billingAddress_invalid":"0","billingAddre'
                             . 'ss_latitude":null,"billingAddress_longitude":null,"billingAddress_postalCode":null,"billingAddress_street1":'
                             . '"some street","billingAddress_street2":null,"billingAddress_state":null,"shippingAddress_city":null,"shippin'
                             . 'gAddress_country":null,"shippingAddress_invalid":"0","shippingAddress_latitude":null,"shippingAddress_longit'
                             . 'ude":null,"shippingAddress_postalCode":null,"shippingAddress_street1":"some street 2","shippingAddress_stree'
                             . 't2":null,"shippingAddress_state":null}';
+            // End Not Coding Standard
             $this->assertEquals($compareContent, $content);
         }
     }

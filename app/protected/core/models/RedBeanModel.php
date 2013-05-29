@@ -279,6 +279,7 @@
             $ids       = R::getCol($sql);
             return $ids;
         }
+
         /**
          * @param boolean $selectCount If true then make this a count query. If false, select ids from rows.
          * @param array $quotedExtraSelectColumnNameAndAliases - extra columns to select.
@@ -2247,7 +2248,7 @@
             assert('is_string($relatedModelClassName)');
             assert('$relatedModelClassName != ""');
             assert('is_int($id)');
-            assert('$id > 0');
+            //assert('$id > 0');
             assert('$modelClassName === null || is_string($modelClassName) && $modelClassName != ""');
             if ($modelClassName === null)
             {

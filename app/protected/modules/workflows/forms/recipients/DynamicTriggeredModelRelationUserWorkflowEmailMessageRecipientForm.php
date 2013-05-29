@@ -204,7 +204,7 @@
         protected function resolveModelClassName()
         {
             $modelClassName = $this->modelClassName;
-            if($this->relation == null)
+            if ($this->relation == null)
             {
                 return $modelClassName;
             }

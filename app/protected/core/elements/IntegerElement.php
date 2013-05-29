@@ -45,7 +45,7 @@
          */
         protected function renderControlNonEditable()
         {
-            if($this->model instanceof RedBeanModel && $this->model->isAttributeFormattedAsProbability($this->attribute))
+            if ($this->model instanceof RedBeanModel && $this->model->isAttributeFormattedAsProbability($this->attribute))
             {
                 $resolvedValue = NumberUtil::divisionForZero($this->model->{$this->attribute}, 100);
                 return Yii::app()->numberFormatter->formatPercentage((int)$resolvedValue);

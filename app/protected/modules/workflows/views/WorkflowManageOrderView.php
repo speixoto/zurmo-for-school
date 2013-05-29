@@ -149,7 +149,7 @@
                 array(  'type'       => 'POST',
                         'dataType'   => 'json',
                         'data'       => 'js:$("#' . static::getFormId() . '").serialize()',
-                        'complete'   => 'js:function(){detachLoadingOnSubmit("' . static::getFormId() . '");}',
+                        'complete'   => 'js:function(){$(this).detachLoadingOnSubmit("' . static::getFormId() . '");}',
                         'success'    => 'function(data)
                                         {
                                             $("#FlashMessageBar").jnotifyAddMessage(
@@ -161,7 +161,7 @@
                 array('id'       => 'save-order',
                       'class'    => 'attachLoading z-button',
                       'onclick'    => 'js:$(this).addClass("loading").addClass("loading-ajax-submit");
-                                                        makeOrRemoveLoadingSpinner(true, "#" + $(this).attr("id"));'));
+                                                        $(this).makeOrRemoveLoadingSpinner(true, "#" + $(this).attr("id"));'));
         }
 
         /**
@@ -180,8 +180,8 @@
             return array(
                 'validateOnSubmit'  => true,
                 'validateOnChange'  => false,
-                'beforeValidate'    => 'js:beforeValidateAction',
-                'afterValidate'     => 'js:afterValidateAjaxAction',
+                'beforeValidate'    => 'js:$(this).beforeValidateAction',
+                'afterValidate'     => 'js:$(this).afterValidateAjaxAction',
                 'afterValidateAjax' => $this->renderConfigSaveAjax(static::getFormId()),
             );
         }

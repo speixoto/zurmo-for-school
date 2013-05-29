@@ -140,7 +140,7 @@
                     'url'     =>  $ajaxOnChangeUrl,
                     'beforeSend' => 'js:function(){
                         $("#' . $inputDivId . '").html("<span class=\"loading z-spinner\"></span>");
-                        makeOrRemoveLoadingSpinner(true, "#' . $inputDivId . '", "dark");
+                        $(this).makeOrRemoveLoadingSpinner(true, "#' . $inputDivId . '", "dark");
                         }',
                     'success' => 'js:function(data){ $("#' . $inputDivId . '").html(data); }',
             ));

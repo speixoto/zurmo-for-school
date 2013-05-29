@@ -110,6 +110,11 @@
             $this->uniqueLayoutId = $uniqueLayoutId;
         }
 
+        public function renderPortletHeadContent()
+        {
+            return null;
+        }
+
         /**
          * @return null
          */
@@ -174,7 +179,7 @@
             return ZurmoHtml::ajaxLink('refresh', $this->getPortletDetailsUrl(), array(
                     'type'   => 'GET',
                     'beforeSend' => 'function ( xhr ) {jQuery("#' . $containerId .
-                                    '").html("");makeLargeLoadingSpinner(true, "#' . $containerId . '");}',
+                                    '").html("");$(this).makeLargeLoadingSpinner(true, "#' . $containerId . '");}',
                     'success' => 'js:function(data)
                     {
                         $("#' . $containerId . '").parent().html(data);

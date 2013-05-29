@@ -125,7 +125,8 @@
                 $_GET['modalTransferInformation']['sourceModelId'],
                 static::getGroupsOrderedByNonDeletablesFirst(false),
                 $_GET['modalTransferInformation']['sourceIdFieldId'],
-                $_GET['modalTransferInformation']['sourceNameFieldId']
+                $_GET['modalTransferInformation']['sourceNameFieldId'],
+                $_GET['modalTransferInformation']['modalId']
             );
             Yii::app()->getClientScript()->setToAjaxMode();
             $pageTitle           = Zurmo::t('ZurmoModule', 'Select a Parent Group');

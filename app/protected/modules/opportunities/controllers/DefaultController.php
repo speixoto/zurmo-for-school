@@ -139,7 +139,6 @@
             $opportunity = Opportunity::getById(intval($id));
             ControllerSecurityUtil::resolveAccessCanCurrentUserWriteModel($opportunity);
             $this->processEdit($opportunity, $redirectUrl);
-
         }
 
         public function actionCopy($id)

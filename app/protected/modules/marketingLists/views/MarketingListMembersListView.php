@@ -114,7 +114,6 @@
 
         public static function getSummaryCloneQueryPath()
         {
-            // TODO: @Shoaibi/@Amit: Critical: Style and position this summary clone
             return "function() { return $(this).parent().find('.list-view-items-summary-clone');}";
         }
 
@@ -263,7 +262,7 @@
                 'data'       => 'js:$("#' . $form->getId() . '").serialize()',
                 'url'        =>  $urlScript,
                 'update'     => '#' . $this->uniquePageId,
-                'beforeSend' => 'js:function(){makeSmallLoadingSpinner("' . $this->getGridViewId() . '"); $("#' . $form->getId() . '").parent().children(".cgrid-view").addClass("loading");}',
+                'beforeSend' => 'js:function(){$(this).makeSmallLoadingSpinner("' . $this->getGridViewId() . '"); $("#' . $form->getId() . '").parent().children(".cgrid-view").addClass("loading");}',
                 'complete'   => 'js:function()
                         {
                                             $("#' . $form->getId() . '").parent().children(".cgrid-view").removeClass("loading");
@@ -273,7 +272,7 @@
             if ($this->showFilteredBySubscriptionType)
             {
                 Yii::app()->clientScript->registerScript($this->uniquePageId . '_filteredBySubscriptionType', "
-                    createButtonSetIfNotAlreadyExist('#MarketingListMembersConfigurationForm_filteredBySubscriptionType_area');
+                    $(this).createButtonSetIfNotAlreadyExist('#MarketingListMembersConfigurationForm_filteredBySubscriptionType_area');
                     $('#MarketingListMembersConfigurationForm_filteredBySubscriptionType_area').unbind('change.action').bind('change.action', function(event)
                         {
                             " . $ajaxSubmitScript . "

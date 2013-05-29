@@ -41,8 +41,11 @@
     {
         public static function generateCampaignItemsForDueCampaigns($pageSize = null)
         {
-            // TODO: @Shoaibi/@Jason: Critical: We could have a throttle here too.
             $dueCampaigns   = Campaign::getByStatusAndSendingTime(Campaign::STATUS_ACTIVE, time(), $pageSize);
+            if (!is_array($dueCampaigns))
+            {
+                $dueCampaigns   = array($dueCampaigns);
+            }
             foreach ($dueCampaigns as $dueCampaign)
             {
                 if (static::generateCampaignItems($dueCampaign))

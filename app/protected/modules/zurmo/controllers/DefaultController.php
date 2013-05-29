@@ -446,7 +446,7 @@
         protected function getSortAttributeFromSavedSearchData($savedSearch)
         {
             $unserializedData = unserialize($savedSearch->serializedData);
-            if(isset($unserializedData['sortAttribute']))
+            if (isset($unserializedData['sortAttribute']))
             {
                 return $unserializedData['sortAttribute'];
             }
@@ -457,7 +457,7 @@
         protected function getSortDescendingFromSavedSearchData($savedSearch)
         {
             $unserializedData = unserialize($savedSearch->serializedData);
-            if(isset($unserializedData['sortDescending']))
+            if (isset($unserializedData['sortDescending']))
             {
                 return $unserializedData['sortDescending'];
             }

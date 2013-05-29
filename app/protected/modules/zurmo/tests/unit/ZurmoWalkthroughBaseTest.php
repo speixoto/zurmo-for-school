@@ -466,12 +466,14 @@
 
         protected function createCalculatedNumberCustomFieldByModule($moduleClassName, $name)
         {
-            $formulaForModule = array('AccountsModule'      => 'employees + annualRevenue',
-                                      'ContactsModule'      => 'decimalCstm + integerCstm',
-                                      'MeetingsModule'      => 'decimalCstm - integerCstm',
-                                      'NotesModule'         => 'decimalCstm + integerCstm',
-                                      'OpportunitiesModule' => 'decimalCstm * integerCstm',
-                                      'TasksModule'         => 'decimalCstm * integerCstm');
+            $formulaForModule = array('AccountsModule'          => 'employees + annualRevenue',
+                                      'ContactsModule'          => 'decimalCstm + integerCstm',
+                                      'MeetingsModule'          => 'decimalCstm - integerCstm',
+                                      'NotesModule'             => 'decimalCstm + integerCstm',
+                                      'OpportunitiesModule'     => 'decimalCstm * integerCstm',
+                                      'TasksModule'             => 'decimalCstm * integerCstm',
+                                      'ProductTemplatesModule'  => 'decimalCstm * integerCstm',
+                                      'ProductsModule'          => 'decimalCstm * integerCstm');
 
             $extraPostData = array('formula' => $formulaForModule[$moduleClassName]);
             $this->createCustomAttributeWalkthroughSequence($moduleClassName, $name, 'CalculatedNumber', $extraPostData, null, true);

@@ -76,8 +76,9 @@
 
         protected function getHtmlOptions()
         {
-            $htmlOptions = array('class' => 'simple-link');
-            return $htmlOptions;
+            $htmlOptionsInParams = parent::getHtmlOptions();
+            $defaultHtmlOptions  = array('id' => 'mergetag-guide', 'class' => 'simple-link');
+            return CMap::mergeArray($defaultHtmlOptions, $htmlOptionsInParams);
         }
 
         protected function registerScript()

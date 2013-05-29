@@ -51,7 +51,8 @@
                                      $modelId,
                                      $groups,
                                      $sourceIdFieldId,
-                                     $sourceNameFieldId)
+                                     $sourceNameFieldId,
+                                     $modalId)
         {
             assert('$modelId != null');
             parent::__construct     ($controllerId,
@@ -59,7 +60,8 @@
                                      $modelId,
                                      $groups,
                                      $sourceIdFieldId,
-                                     $sourceNameFieldId);
+                                     $sourceNameFieldId,
+                                     $modalId);
         }
 
         /**

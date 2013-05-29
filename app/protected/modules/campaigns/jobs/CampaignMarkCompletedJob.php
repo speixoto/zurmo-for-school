@@ -37,7 +37,7 @@
     /**
      * A job for marking campaigns as completed which have all recipients processed.
      */
-    class CampaignMarkCompletedJob extends BaseJob
+    class CampaignMarkCompletedJob extends AutoresponderOrCampaignBaseJob
     {
         /**
          * @returns Translated label that describes this job type.
@@ -48,24 +48,13 @@
         }
 
         /**
-         * @return The type of the NotificationRules
-         */
-        public static function getType()
-        {
-            return 'CampaignMarkCompleted';
-        }
-
-        public static function getRecommendedRunFrequencyContent()
-        {
-            return Zurmo::t('JobsManagerModule', 'Every hour');
-        }
-
-        /**
          * @see BaseJob::run()
          */
         public function run()
         {
-            return CampaignsUtil::markProcessedCampaignsAsCompleted();
+            // we use same size user specified for outgoing items
+            $batchSize = $this->resolveBatchSize();
+            return CampaignsUtil::markProcessedCampaignsAsCompleted($batchSize);
         }
     }
 ?>

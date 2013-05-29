@@ -1999,7 +1999,7 @@
             $metadata              = CalculatedDerivedAttributeMetadata::
                                      getByNameAndModelClassName('testCalculatedValue', 'Account');
             $testCalculatedValue   = CalculatedNumberUtil::calculateByFormulaAndModelAndResolveFormat($metadata->getFormula(), $account);
-            $this->assertEquals(774.56,                      (double)$testCalculatedValue);
+            $this->assertEquals('$774.56',                   $testCalculatedValue);
 
             unset($testCalculatedValue);
             $account->forget();

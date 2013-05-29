@@ -72,7 +72,6 @@
             $element->editableTemplate = '{label}{content}';
             $content  = $this->form->errorSummary($this->model);
             $content .= $element->render();
-            $content  = ZurmoHtml::tag('div', array('class' => 'left-column full-width'), $content);
             return $content;
         }
 

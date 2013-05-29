@@ -48,7 +48,7 @@
         {
             assert('is_string($resolvedModelClassName)');
             assert('is_string($resolvedAttributeName)');
-            if($resolvedAttributeName == 'permissions')
+            if ($resolvedAttributeName == 'permissions')
             {
                 return self::makeForExplicitReadWriteModelPermissions($resolvedModelClassName);
             }

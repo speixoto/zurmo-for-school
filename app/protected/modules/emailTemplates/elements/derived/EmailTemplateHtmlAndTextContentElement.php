@@ -85,8 +85,7 @@
                 $controllerId           = $this->getControllerId();
                 $moduleId               = $this->getModuleId();
                 $modelId                = $this->model->id;
-                $params                 = array('htmlOptions' => array('id' => 'mergetag-guide', 'class' => 'simple-link'));
-                $tagsGuideLinkElement   = new MergeTagGuideAjaxLinkActionElement($controllerId, $moduleId, $modelId, $params);
+                $tagsGuideLinkElement   = new MergeTagGuideAjaxLinkActionElement($controllerId, $moduleId, $modelId);
                 $tagsGuideLink          = $tagsGuideLinkElement->render();
             }
             $tabContent         = ZurmoHtml::tag('div', array('class' => 'tabs-nav'), $textTabHyperLink . $htmlTabHyperLink . $tagsGuideLink);

@@ -71,20 +71,20 @@
         public function resolveValueAndSetToModel(WorkflowActionProcessingModelAdapter $adapter, $attribute)
         {
             assert('is_string($attribute)');
-            if($adapter->getModel()->id < 0)
+            if ($adapter->getModel()->id < 0)
             {
                 throw new NotSupportedException();
             }
-            if($this->type == self::TYPE_DYNAMIC_SAME_AS_TRIGGERED_MODEL)
+            if ($this->type == self::TYPE_DYNAMIC_SAME_AS_TRIGGERED_MODEL)
             {
                 $explicitReadWriteModelPermissions = ExplicitReadWriteModelPermissionsUtil::makeBySecurableItem($adapter->getTriggeredModel());
             }
-            elseif($this->type == self::TYPE_DYNAMIC_OWNER)
+            elseif ($this->type == self::TYPE_DYNAMIC_OWNER)
             {
                 //Do nothing, by default this will take.
                 return;
             }
-            elseif($this->type == self::TYPE_DYNAMIC_EVERYONE_GROUP)
+            elseif ($this->type == self::TYPE_DYNAMIC_EVERYONE_GROUP)
             {
                 $explicitReadWriteModelPermissions = ExplicitReadWriteModelPermissionsUtil::makeBySecurableItem($adapter->getModel());
                 $explicitReadWriteModelPermissions->addReadWritePermitable(Group::getByName(Group::EVERYONE_GROUP_NAME));
@@ -106,7 +106,7 @@
 
             $success = ExplicitReadWriteModelPermissionsUtil::
                        resolveExplicitReadWriteModelPermissions($adapter->getModel(), $explicitReadWriteModelPermissions);
-            if(!$success)
+            if (!$success)
             {
                 throw new FailedToResolveExplicitReadWriteModelPermissionsException();
             }
@@ -122,7 +122,7 @@
             $data[self::TYPE_DYNAMIC_SAME_AS_TRIGGERED_MODEL] = Zurmo::t('WorkflowsModule', 'Same as triggered record');
             $data[self::TYPE_DYNAMIC_OWNER]                   = Zurmo::t('ZurmoModule', 'Owner');
             $groups = ExplicitReadWriteModelPermissionsElement::getSelectableGroupsData();
-            foreach($groups as $id => $name)
+            foreach ($groups as $id => $name)
             {
                 $data[$id]  = Zurmo::t('Zurmo', 'Owner and users in {groupName}', array('{groupName}' => $name));
             }

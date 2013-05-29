@@ -35,64 +35,17 @@
      ********************************************************************************/
 
     /**
-     * Base class used for wrapping model detail views into a portlet ready view.
-     *
+     * Helper class for working with tracking
      */
-    abstract class DetailsForPortletView extends ConfigurableMetadataView implements PortletViewInterface
+    abstract class TrackingUtil extends BaseControlUserConfigUtil
     {
-        protected $params;
+        const CONFIG_MODULE_NAME        = 'TrackingModule';
 
-        protected $controllerId;
+        const CONFIG_KEY                = 'UserIdOfUserToRunTrackingAs';
 
-        protected $moduleId;
-
-        protected $model;
-
-        protected $uniqueLayoutId;
-
-        protected $viewData;
-
-        public function __construct($viewData, $params, $uniqueLayoutId)
+        public static function getUserToRunAs($setOnMissing = true)
         {
-            assert('isset($params["controllerId"])');
-            assert('isset($params["relationModuleId"])');
-            assert('isset($params["relationModel"])');
-            $this->viewData       = $viewData;
-            $this->params         = $params;
-            $this->controllerId   = $params["controllerId"];
-            $this->moduleId       = $params["relationModuleId"];
-            $this->model          = $params["relationModel"];
-            $this->uniqueLayoutId = $uniqueLayoutId;
-        }
-
-        public static function getDefaultMetadata()
-        {
-            return array(
-                'perUser' => array(
-                    'title' => null,
-                ),
-            );
-        }
-
-        public function renderContent()
-        {
-            $viewClassName = $this->getDetailsViewClassName();
-            $view = new $viewClassName('Details', $this->controllerId, $this->moduleId, $this->model);
-            return $view->render();
-        }
-
-        public static function canUserConfigure()
-        {
-            return false;
-        }
-
-        /**
-         * What kind of PortletRules this view follows
-         * @return PortletRulesType as string.
-         */
-        public static function getPortletRulesType()
-        {
-            return 'ModelDetails';
+            return parent::getUserToRunAs($setOnMissing);
         }
     }
 ?>

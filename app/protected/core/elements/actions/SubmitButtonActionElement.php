@@ -66,7 +66,17 @@
             $cs = Yii::app()->getClientScript();
             $cs->registerCoreScript('jquery');
             $cs->registerCoreScript('yii');
-            $handler                 = "jQuery.yii.submitForm(this, '', $params); return false;";
+            if (Yii::app()->getClientScript()->isIsolationMode())
+            {
+                $handler = "jQQ.isolate (function(jQuery,$)
+                            {
+                                jQuery.yii.submitForm(document.getElementById('saveyt1'), '', $params);
+                            }); return false;";
+            }
+            else
+            {
+                $handler = "jQuery.yii.submitForm(this, '', $params); return false;";
+            }
             if (isset($htmlOptions['onclick']))
             {
                 $htmlOptions['onclick']  = $htmlOptions['onclick'] . $handler;

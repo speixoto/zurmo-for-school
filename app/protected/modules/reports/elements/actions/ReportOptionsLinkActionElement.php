@@ -61,7 +61,6 @@
             $this->showCopy = false;
         }
 
-
         /**
          * @return string
          */

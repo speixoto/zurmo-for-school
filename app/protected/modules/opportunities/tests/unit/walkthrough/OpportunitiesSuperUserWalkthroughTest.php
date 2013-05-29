@@ -299,9 +299,9 @@
             $opportunity1->forget();
             $opportunity = Opportunity::getById($superOpportunityId);
             $portlets = Portlet::getByLayoutIdAndUserSortedByColumnIdAndPosition(
-                                    'OpportunityDetailsAndRelationsViewLeftBottomView', $super->id, array());
-            $this->assertEquals(1, count($portlets));
-            $this->assertEquals(2, count($portlets[1]));
+                                    'OpportunityDetailsAndRelationsView', $super->id, array());
+            $this->assertEquals(2, count($portlets));
+            $this->assertEquals(3, count($portlets[1]));
             $contact = Contact::getById($superContactId);
             $this->assertEquals(0, $contact->opportunities->count());
             $this->assertEquals(0, $opportunity->contacts->count());
@@ -309,7 +309,7 @@
                                      'relationAttributeName' => 'opportunities',
                                      'relationModuleId'      => 'opportunities',
                                      'relationModelId'       => $superOpportunityId,
-                                     'uniqueLayoutId'        => 'OpportunityDetailsAndRelationsViewLeftBottomView_' .
+                                     'uniqueLayoutId'        => 'OpportunityDetailsAndRelationsView_' .
                                                                 $portlets[1][1]->id)
             );
 
@@ -321,7 +321,7 @@
                                         'relationAttributeName' => 'opportunities',
                                         'relationModuleId'      => 'opportunities',
                                         'relationModelId'       => $superOpportunityId,
-                                        'uniqueLayoutId'        => 'OpportunityDetailsAndRelationsViewLeftBottomView_' .
+                                        'uniqueLayoutId'        => 'OpportunityDetailsAndRelationsView_' .
                                                                    $portlets[1][1]->id)
             );
             $this->resetPostArray();
@@ -348,9 +348,9 @@
             //At this point portlets for this view should be created because we have
             //already loaded the 'details' page in a request above.
             $portlets = Portlet::getByLayoutIdAndUserSortedByColumnIdAndPosition(
-                                    'OpportunityDetailsAndRelationsViewLeftBottomView', $super->id, array());
-            $this->assertEquals (2, count($portlets[1])         );
-            $this->assertFalse  (array_key_exists(2, $portlets) );
+                                    'OpportunityDetailsAndRelationsView', $super->id, array());
+            $this->assertEquals(3, count($portlets[1]));
+            $this->assertFalse(array_key_exists(3, $portlets) );
             $portletPostData = array();
             $portletCount = 0;
             foreach ($portlets as $column => $columnPortlets)
@@ -358,29 +358,29 @@
                 foreach ($columnPortlets as $position => $portlet)
                 {
                     $this->assertEquals('0', $portlet->collapsed);
-                    $portletPostData['OpportunityDetailsAndRelationsViewLeftBottomView_' . $portlet->id] = array(
+                    $portletPostData['OpportunityDetailsAndRelationsView_' . $portlet->id] = array(
                         'collapsed' => 'true',
                         'column'    => 0,
-                        'id'        => 'OpportunityDetailsAndRelationsViewLeftBottomView_' . $portlet->id,
+                        'id'        => 'OpportunityDetailsAndRelationsView_' . $portlet->id,
                         'position'  => $portletCount,
                     );
                     $portletCount++;
                 }
             }
             //There should have been a total of 3 portlets.
-            $this->assertEquals(2, $portletCount);
+            $this->assertEquals(6, $portletCount);
             $this->resetGetArray();
             $this->setPostArray(array(
                 'portletLayoutConfiguration' => array(
                     'portlets' => $portletPostData,
-                    'uniqueLayoutId' => 'OpportunityDetailsAndRelationsViewLeftBottomView',
+                    'uniqueLayoutId' => 'OpportunityDetailsAndRelationsView',
                 )
             ));
             $this->runControllerWithNoExceptionsAndGetContent('home/defaultPortlet/saveLayout', true);
             //Now test that all the portlets are collapsed and moved to the first column.
             $portlets = Portlet::getByLayoutIdAndUserSortedByColumnIdAndPosition(
-                            'OpportunityDetailsAndRelationsViewLeftBottomView', $super->id, array());
-            $this->assertEquals (2, count($portlets[1])         );
+                            'OpportunityDetailsAndRelationsView', $super->id, array());
+            $this->assertEquals (6, count($portlets[1]));
             $this->assertFalse  (array_key_exists(2, $portlets) );
             foreach ($portlets as $column => $columns)
             {
