@@ -69,7 +69,6 @@
 
         public function actionList()
         {
-            $activeActionElementType        = 'ProductTemplatesLink';
             $title                          = Zurmo::t('ProductTemplatesModule', 'Categories');
             $breadcrumbLinks                = array(
                                                      $title,
