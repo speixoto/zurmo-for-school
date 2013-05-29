@@ -6523,6 +6523,7 @@ form .view-toolbar-container,
   top: -2px;
   margin: 0;
 }
+.icon-marketing-dashboard:before,
 .icon-change-dashborad:before {
   content: "/";
   font-weight: normal;
@@ -7146,6 +7147,20 @@ form .view-toolbar-container,
   vertical-align: middle;
   position: relative;
   content: '\00B0';
+  top: -2px;
+}
+.icon-marketing-campaigns:before {
+  font-weight: normal;
+  font-size: 28px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  padding: 0 0 0 0;
+  margin: 0 6px 0 -30px;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  vertical-align: middle;
+  position: relative;
+  content: '\002C';
   top: -2px;
 }
 /*=Footer*/
@@ -9855,46 +9870,36 @@ div.hasHalfs > div input {
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
 }
-div.hasParallelFields .fifth,
-div.hasHalfs .fifth {
+.fifth {
   width: 19%;
 }
-div.hasParallelFields .twoFifths,
-div.hasHalfs .twoFifths {
+.twoFifths {
   width: 36.5%;
 }
-div.hasParallelFields .threeFifths,
-div.hasHalfs .threeFifths {
+.threeFifths {
   width: 55.5%;
   margin-right: 4%;
 }
-div.hasParallelFields .fourFifths,
-div.hasHalfs .fourFifths {
+.fourFifths {
   width: 73%;
   margin-right: 4%;
 }
-div.hasParallelFields .fifth + .twoFifths,
-div.hasHalfs .fifth + .twoFifths {
+.fifth + .twoFifths {
   margin-right: 4%;
 }
-div.hasParallelFields .half,
-div.hasHalfs .half {
+.half {
   width: 48%;
 }
-div.hasParallelFields .quarter,
-div.hasHalfs .quarter {
+.quarter {
   width: 23%;
 }
-div.hasParallelFields .threeQuarters,
-div.hasHalfs .threeQuarters {
+.threeQuarters {
   width: 73%;
 }
-div.hasParallelFields .third,
-div.hasHalfs .third {
+.third {
   width: 32%;
 }
-div.hasParallelFields .twoThirds,
-div.hasHalfs .twoThirds {
+.twoThirds {
   width: 64%;
 }
 .juiportlet-widget.OpportunitiesForAccountRelatedListView div.button-column,
@@ -17178,10 +17183,12 @@ a.user-link {
 #series-and-range-areas .buffer {
   padding-left: 22px;
 }
+#CampaignDetailsView h1,
 #MarketingListDetailsView h1,
 #ReportDetailsView h1 {
   margin-bottom: 15px;
 }
+#CampaignDetailsView .view-toolbar ul:first-child > li > a,
 #MarketingListDetailsView .view-toolbar ul:first-child > li > a,
 #ReportDetailsView .view-toolbar ul:first-child > li > a {
   border-left: none;
@@ -17207,8 +17214,7 @@ a.user-link {
   position: relative;
   top: 3px;
 }
-.label-for-marketing-list-widgets,
-.label-for-report-widgets {
+.hasCheckboxes .hasCheckBox + label {
   padding-right: 15px;
   margin: 0 !important;
   font-size: 11px !important;
@@ -17775,6 +17781,7 @@ a.user-link {
   position: relative;
   top: 0;
 }
+.autoresponder-combined-content,
 .email-template-combined-content {
   padding: 0 15px;
 }
@@ -18003,13 +18010,26 @@ a.user-link {
 .portlet-with-toolbar .view-toolbar .parent > ul {
   top: auto;
 }
+#CampaignDetailsView,
 #MarketingListDetailsView {
   position: relative;
   z-index: 10;
 }
+#CampaignDetailsView + div,
 #MarketingListDetailsView + div {
   position: relative;
   z-index: 1;
+}
+.marketing-graph {
+  float: left;
+  margin-left: 2%;
+  padding-bottom: 15px;
+}
+.marketing-graph:first-child {
+  margin-left: 0;
+}
+.marketing-graph h3 {
+  padding-left: 15px;
 }
 #kanban-holder {
   background: #fff;

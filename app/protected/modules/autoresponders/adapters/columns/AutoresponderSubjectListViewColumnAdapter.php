@@ -74,14 +74,18 @@
 
 
             $content = null;
-            $content .= ZurmoHtml::tag('div', array(), Zurmo::t('MarketingModule', '{quantity} sent',
-                                        array('{quantity}' => $sentQuantity)));
-            $content .= ZurmoHtml::tag('div', array(), Zurmo::t('MarketingModule', '{quantity} opens ({openRate}%)',
-                                        array('{quantity}' => $openQuantity, '{openRate}' => $openRate)));
-            $content .= ZurmoHtml::tag('div', array(), Zurmo::t('MarketingModule', '{quantity} unique clicks ({clickRate}%)',
-                                        array('{quantity}' => $clickQuantity, '{clickRate}' => $clickRate)));
-            $content .= ZurmoHtml::tag('div', array(), Zurmo::t('MarketingModule', '{quantity} Opt-outs ({optOutRate}%)',
-                                        array('{quantity}' => $optOutQuantity, '{optOutRate}' => $optOutRate)));
+            $content .= ZurmoHtml::tag('div', array('class' => 'autoresponder-stats'),
+                                        Zurmo::t('MarketingModule', '{quantity} sent',
+                                        array('{quantity}' => ZurmoHtml::tag('strong', array(), $sentQuantity))));
+            $content .= ZurmoHtml::tag('div', array('class' => 'autoresponder-stats'),
+                                        Zurmo::t('MarketingModule', '{quantity} opens ({openRate}%)',
+                                        array('{quantity}' => ZurmoHtml::tag('strong', array(), $openQuantity), '{openRate}' => $openRate)));
+            $content .= ZurmoHtml::tag('div', array('class' => 'autoresponder-stats'),
+                                        Zurmo::t('MarketingModule', '{quantity} unique clicks ({clickRate}%)',
+                                        array('{quantity}' => ZurmoHtml::tag('strong', array(), $clickQuantity), '{clickRate}' => $clickRate)));
+            $content .= ZurmoHtml::tag('div', array('class' => 'autoresponder-stats'),
+                                        Zurmo::t('MarketingModule', '{quantity} Opt-outs ({optOutRate}%)',
+                                        array('{quantity}' => ZurmoHtml::tag('strong', array(), $optOutQuantity), '{optOutRate}' => $optOutRate)));
             return $content;
         }
     }
