@@ -179,10 +179,10 @@
         public function getThemeNamesAndLabels()
         {
             //todo:
-            return array('' => 'None',
-                         'kanban-background-football' => 'Football',
-                         'kanban-background-tennis' => 'Tennis',
-                         'kanban-background-motor' => 'Motor');
+            return array(''                           => Zurmo::t('Core', 'None'),
+                         'kanban-background-football' => Zurmo::t('Core', 'Football'),
+                         'kanban-background-tennis'   => Zurmo::t('Core', 'Tennis'),
+                         'kanban-background-motor'    => Zurmo::t('Core', 'Motor Sport'));
         }
 
         public function setClearSticky()
