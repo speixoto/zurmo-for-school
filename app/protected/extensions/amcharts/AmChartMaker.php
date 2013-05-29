@@ -220,6 +220,24 @@
                 //General properties
                 $this->resolveColumnAndBarGeneralProperties();
             }
+            elseif ($this->type == ChartRules::TYPE_LINE)
+            {
+                //Chart
+
+                //Graph
+                $this->addGraphProperties('type',                   "'line'");
+
+                //Axis
+
+                //ValueAxis
+
+                //Legend
+                $this->addLegendProperties('borderAlpha',           0.2);
+                $this->addLegendProperties('valueWidth',            0);
+                $this->addLegendProperties('horizontalGap',         10);
+                //General properties
+                $this->resolveLineGeneralProperties();
+            }
             elseif ($this->type == ChartRules::TYPE_STACKED_COLUMN_2D)
             {
                 //Chart
@@ -511,7 +529,29 @@
             $this->addGraphProperties('cornerRadiusTop',        0);
             $this->addGraphProperties('cornerRadiusBottom',     0);
             $this->addGraphProperties('lineAlpha',              0);
+        }
 
+        protected function resolveLineGeneralProperties()
+        {
+            $this->addCategoryAxisProperties('title',           "'{$this->xAxisName}'");
+            $this->addCategoryAxisProperties('unitPosition',    "'left'");
+            $this->addCategoryAxisProperties('unit',            "'{$this->xAxisUnitContent}'");
+            $this->addCategoryAxisProperties('usePrefixes',     true);
+            $this->addCategoryAxisProperties('inside',          0);
+            $this->addCategoryAxisProperties('dashLength',      2);
+            $this->addCategoryAxisProperties('gridAlpha',       0);
+            $this->addCategoryAxisProperties('autoGridCount',   "'false'");
+
+            $this->addValueAxisProperties('title',              "'$this->yAxisName'");
+            $this->addValueAxisProperties('unitPosition',       "'left'");
+            $this->addValueAxisProperties('unit',               "'{$this->yAxisUnitContent}'");
+            $this->addValueAxisProperties('usePrefixes',        true);
+            $this->addValueAxisProperties('minimum',            0);
+            $this->addValueAxisProperties('dashLength',         2);
+            $this->addGraphProperties('bullet',                 "'round'");
+            $this->addGraphProperties('colorField',             "'color'");
+            $this->addChartProperties('usePrefixes',            true);
+            $this->addGraphProperties('lineAlpha',              1);
         }
 
         private function renderOnEmptyDataMessage()

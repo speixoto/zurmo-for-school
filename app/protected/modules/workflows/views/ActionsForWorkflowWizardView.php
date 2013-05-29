@@ -151,7 +151,6 @@
             $content  = $this->renderAttributeSelectorContentAndWrapper();
             $content .= $this->renderZeroComponentsContentAndWrapper();
             $content .= $this->renderActionsContentAndWrapper();
-            $content  = ZurmoHtml::tag('div', array('class' => 'left-column full-width'), $content);
             $this->registerScripts();
             return $content;
         }

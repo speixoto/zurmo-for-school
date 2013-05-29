@@ -97,6 +97,49 @@
             return SearchUtil::getFilterByStarredFromGetArray(get_class($this->model));
         }
 
+        public function hasKanbanBoard()
+        {
+            if($this->model->getKanbanBoard() == null)
+            {
+                return false;
+            }
+            return true;
+        }
+
+        public function getKanbanBoard()
+        {
+            return $this->model->getKanbanBoard();
+        }
+
+        public function shouldClearStickyForKanbanBoard()
+        {
+            if($this->model->getKanbanBoard() == null)
+            {
+                throw new NotSupportedException();
+            }
+            elseif($this->model->getKanbanBoard()->getClearSticky())
+            {
+                return true;
+            }
+            return false;
+        }
+
+        public function getKanbanBoardGroupByAttributeVisibleValuesFromModel()
+        {
+            if($this->model->getKanbanBoard() != null)
+            {
+                return $this->model->getKanbanBoard()->getGroupByAttributeVisibleValues();
+            }
+        }
+
+        public function getKanbanBoardSelectedThemeFromModel()
+        {
+            if($this->model->getKanbanBoard() != null)
+            {
+                return $this->model->getKanbanBoard()->getSelectedTheme();
+            }
+        }
+
         public function resolveSearchAttributesFromSourceData()
         {
             return SearchUtil::resolveSearchAttributesFromGetArray(get_class($this->model), get_class($this->model));
@@ -111,6 +154,12 @@
         {
             return SearchUtil::resolveSelectedListAttributesForSearchModelFromGetArray($this->model, get_class($this->model));
         }
+
+        public function resolveKanbanBoardOptionsForSearchModelFromSourceData()
+        {
+            return KanbanBoard::resolveKanbanBoardOptionsForSearchModelFromGetArray($this->model, get_class($this->model));
+        }
+
 
         public function resolveSortAttributeFromSourceData($name)
         {

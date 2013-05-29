@@ -266,7 +266,12 @@ a.ModalGameNotification a,
 .tabs-container,
 .email-template-content,
 .tabs-container > .tab,
-.email-template-content > .tab {
+.email-template-content > .tab,
+#kanban-board,
+#kanban-board .drop-zone-container,
+#kanban-board .drop-zone,
+.kanban-column,
+.kanban-card > div {
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
@@ -327,7 +332,8 @@ a.ModalGameNotification a,
 #edit-form,
 #delete-form,
 .right-side-edit-view-panel,
-.pager ul {
+.pager ul,
+#kanban-board {
   zoom: 1;
 }
 .clearfix:before,
@@ -335,7 +341,8 @@ a.ModalGameNotification a,
 #edit-form:before,
 #delete-form:before,
 .right-side-edit-view-panel:before,
-.pager ul:before {
+.pager ul:before,
+#kanban-board:before {
   content: "";
   display: table;
 }
@@ -344,7 +351,8 @@ a.ModalGameNotification a,
 #edit-form:after,
 #delete-form:after,
 .right-side-edit-view-panel:after,
-.pager ul:after {
+.pager ul:after,
+#kanban-board:after {
   content: "";
   display: table;
   clear: both;
@@ -892,6 +900,7 @@ body.blue .xhtml-validation-info,
 body.blue .performance-info,
 body.blue tr:hover .pencil,
 body.blue .ui-dialog .ui-dialog-title div.wide.form a,
+body.blue #kanban-board-options-link,
 body.blue #select-list-attributes-link,
 body.blue #more-search-linkmodal,
 body.blue #more-search-link,
@@ -961,6 +970,7 @@ body.blue .configuration-list td:last-child a:hover span:before,
 body.blue .addfileinput-button:hover span,
 body.blue #HomeDashboardPortletSelectionView li span,
 body.blue .hide-welcome span,
+body.blue #kanban-board-options-link:hover,
 body.blue #more-search-link:hover,
 body.blue #select-list-attributes-link:hover {
   color: #7cb830;
@@ -1460,6 +1470,7 @@ body.brown .xhtml-validation-info,
 body.brown .performance-info,
 body.brown tr:hover .pencil,
 body.brown .ui-dialog .ui-dialog-title div.wide.form a,
+body.brown #kanban-board-options-link,
 body.brown #select-list-attributes-link,
 body.brown #more-search-linkmodal,
 body.brown #more-search-link,
@@ -1529,6 +1540,7 @@ body.brown .configuration-list td:last-child a:hover span:before,
 body.brown .addfileinput-button:hover span,
 body.brown #HomeDashboardPortletSelectionView li span,
 body.brown .hide-welcome span,
+body.brown #kanban-board-options-link:hover,
 body.brown #more-search-link:hover,
 body.brown #select-list-attributes-link:hover {
   color: #b88f30;
@@ -2028,6 +2040,7 @@ body.lime .xhtml-validation-info,
 body.lime .performance-info,
 body.lime tr:hover .pencil,
 body.lime .ui-dialog .ui-dialog-title div.wide.form a,
+body.lime #kanban-board-options-link,
 body.lime #select-list-attributes-link,
 body.lime #more-search-linkmodal,
 body.lime #more-search-link,
@@ -2097,6 +2110,7 @@ body.lime .configuration-list td:last-child a:hover span:before,
 body.lime .addfileinput-button:hover span,
 body.lime #HomeDashboardPortletSelectionView li span,
 body.lime .hide-welcome span,
+body.lime #kanban-board-options-link:hover,
 body.lime #more-search-link:hover,
 body.lime #select-list-attributes-link:hover {
   color: #bcc98e;
@@ -2596,6 +2610,7 @@ body.cherry .xhtml-validation-info,
 body.cherry .performance-info,
 body.cherry tr:hover .pencil,
 body.cherry .ui-dialog .ui-dialog-title div.wide.form a,
+body.cherry #kanban-board-options-link,
 body.cherry #select-list-attributes-link,
 body.cherry #more-search-linkmodal,
 body.cherry #more-search-link,
@@ -2665,6 +2680,7 @@ body.cherry .configuration-list td:last-child a:hover span:before,
 body.cherry .addfileinput-button:hover span,
 body.cherry #HomeDashboardPortletSelectionView li span,
 body.cherry .hide-welcome span,
+body.cherry #kanban-board-options-link:hover,
 body.cherry #more-search-link:hover,
 body.cherry #select-list-attributes-link:hover {
   color: #933140;
@@ -3164,6 +3180,7 @@ body.turquoise .xhtml-validation-info,
 body.turquoise .performance-info,
 body.turquoise tr:hover .pencil,
 body.turquoise .ui-dialog .ui-dialog-title div.wide.form a,
+body.turquoise #kanban-board-options-link,
 body.turquoise #select-list-attributes-link,
 body.turquoise #more-search-linkmodal,
 body.turquoise #more-search-link,
@@ -3233,6 +3250,7 @@ body.turquoise .configuration-list td:last-child a:hover span:before,
 body.turquoise .addfileinput-button:hover span,
 body.turquoise #HomeDashboardPortletSelectionView li span,
 body.turquoise .hide-welcome span,
+body.turquoise #kanban-board-options-link:hover,
 body.turquoise #more-search-link:hover,
 body.turquoise #select-list-attributes-link:hover {
   color: #44bbcc;
@@ -3732,6 +3750,7 @@ body.violet .xhtml-validation-info,
 body.violet .performance-info,
 body.violet tr:hover .pencil,
 body.violet .ui-dialog .ui-dialog-title div.wide.form a,
+body.violet #kanban-board-options-link,
 body.violet #select-list-attributes-link,
 body.violet #more-search-linkmodal,
 body.violet #more-search-link,
@@ -3801,6 +3820,7 @@ body.violet .configuration-list td:last-child a:hover span:before,
 body.violet .addfileinput-button:hover span,
 body.violet #HomeDashboardPortletSelectionView li span,
 body.violet .hide-welcome span,
+body.violet #kanban-board-options-link:hover,
 body.violet #more-search-link:hover,
 body.violet #select-list-attributes-link:hover {
   color: #91a1dc;
@@ -4300,6 +4320,7 @@ body.honey .xhtml-validation-info,
 body.honey .performance-info,
 body.honey tr:hover .pencil,
 body.honey .ui-dialog .ui-dialog-title div.wide.form a,
+body.honey #kanban-board-options-link,
 body.honey #select-list-attributes-link,
 body.honey #more-search-linkmodal,
 body.honey #more-search-link,
@@ -4369,6 +4390,7 @@ body.honey .configuration-list td:last-child a:hover span:before,
 body.honey .addfileinput-button:hover span,
 body.honey #HomeDashboardPortletSelectionView li span,
 body.honey .hide-welcome span,
+body.honey #kanban-board-options-link:hover,
 body.honey #more-search-link:hover,
 body.honey #select-list-attributes-link:hover {
   color: #abbc42;
@@ -4796,7 +4818,7 @@ body.honey .action-reject:hover .z-label {
 .color-swatch.honey .theme-color-3 {
   background: #582823;
 }
-body.light-noise-diagonal,
+.background-texture-1 body.light-noise-diagonal,
 .texture-swatch.light-noise-diagonal .background-texture-1 {
   background: url(../patterns/light-noise-diagonal/light-noise-diagonal.png) left top repeat;
 }
@@ -7099,6 +7121,33 @@ form .view-toolbar-container,
   position: relative;
   top: 0;
 }
+.icon-kanban-board-view-type:before {
+  font-weight: normal;
+  font-size: 26px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  padding: 0 0 0 0;
+  margin: 0 6px 0 -30px;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  vertical-align: middle;
+  position: relative;
+  content: '\00AE';
+}
+.icon-grid-view-type:before {
+  font-weight: normal;
+  font-size: 26px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  padding: 0 0 0 0;
+  margin: 0 6px 0 -30px;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  vertical-align: middle;
+  position: relative;
+  content: '\00B0';
+  top: -2px;
+}
 /*=Footer*/
 #FooterView {
   margin: 20px 3% 0 3%;
@@ -7289,7 +7338,7 @@ td {
   margin-top: 2px;
   float: left;
 }
-.stacked-list td:first-child div:first-child {
+.stacked-list tr:first-child > div:first-child {
   font-size: 13px;
   font-weight: bold;
   margin: 0 0 3px 0;
@@ -8147,6 +8196,14 @@ div.wide.form label.hasCheckBox {
 #search-form table {
   border-bottom: none;
 }
+#search-form .filters-bar {
+  width: auto;
+  top: 20px;
+}
+#search-form .filters-bar > div {
+  float: left;
+  padding-left: 15px;
+}
 .SecuredListView {
   float: left;
   width: 100%;
@@ -8316,6 +8373,9 @@ div.wide.form label.hasCheckBox {
   line-height: 25px;
   font-size: 11px;
 }
+.search-form-tools > a {
+  margin-right: 25px;
+}
 #more-search-linkmodal,
 #more-search-link {
   margin-left: 0;
@@ -8330,9 +8390,7 @@ div.wide.form label.hasCheckBox {
   top: 1px;
   margin-left: 5px;
 }
-#select-list-attributes-link {
-  margin-left: 25px;
-}
+#kanban-board-options-link:after,
 #select-list-attributes-link:after {
   content: "÷";
   font-weight: normal;
@@ -8400,6 +8458,7 @@ div.wide.form label.hasCheckBox {
 #ModalView .items thead tr:first-child th {
   border-top: none;
 }
+.kanban-board-options-view,
 .select-list-attributes-view,
 .search-view-1 {
   margin-top: 15px;
@@ -8409,14 +8468,7 @@ div.wide.form label.hasCheckBox {
   float: left;
   width: 100%;
 }
-.select-list-attributes-view label,
-.search-view-1 label {
-  padding-top: 7px;
-  padding-right: 10px;
-  width: 100%;
-  display: block;
-  text-align: left;
-}
+.kanban-board-options-view #cancel-advanced-search,
 .select-list-attributes-view #cancel-advanced-search,
 .search-view-1 #cancel-advanced-search {
   color: #656565;
@@ -8426,21 +8478,33 @@ div.wide.form label.hasCheckBox {
   -ms-text-shadow: none;
   text-shadow: none;
 }
+.kanban-board-options-view #cancel-advanced-search .z-label,
 .select-list-attributes-view #cancel-advanced-search .z-label,
 .search-view-1 #cancel-advanced-search .z-label {
   background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
 }
+.kanban-board-options-view .view-toolbar-container,
 .select-list-attributes-view .view-toolbar-container,
 .search-view-1 .view-toolbar-container {
   border-top: 1px solid #CCCCCC;
 }
+.kanban-board-options-view > div,
 .select-list-attributes-view > div,
 .search-view-1 > div {
   display: block;
 }
+.kanban-board-options-view .view-toolbar-container,
 .select-list-attributes-view .view-toolbar-container,
 .search-view-1 .view-toolbar-container {
   display: inline-block;
+}
+.select-list-attributes-view label,
+.search-view-1 label {
+  padding-top: 7px;
+  padding-right: 10px;
+  width: 100%;
+  display: block;
+  text-align: left;
 }
 .select-list-attributes-view table {
   border-bottom: none;
@@ -8474,7 +8538,6 @@ div.wide.form label.hasCheckBox {
   border-radius: 3px;
   color: #fff !important;
   font-size: 11px;
-  margin-left: 10px;
 }
 #clear-search-link .icon-clear {
   font-weight: normal;
@@ -8696,6 +8759,12 @@ div.wide.form label.hasCheckBox {
 .left-column.full-width + .right-column {
   display: none;
 }
+.left-column .left-column {
+  padding: 0 15px 0 0;
+}
+.left-column .right-column {
+  padding: 0 0 15px 0;
+}
 .right-column {
   float: right;
   width: 30%;
@@ -8714,7 +8783,7 @@ div.wide.form label.hasCheckBox {
 #modal-edit-form h3,
 #edit-form h3,
 #delete-form h3 {
-  margin: 15px 0 0 15px;
+  margin: 0 0 15px 0;
 }
 #modal-edit-form table,
 #edit-form table,
@@ -9088,7 +9157,9 @@ div.wide.form label.hasCheckBox {
   margin-left: 0;
 }
 .details-table h1 + .toolbar-mbmenu {
-  top: -35px;
+  top: 6px;
+  right: 0px;
+  position: absolute;
 }
 .details-table h1 + .toolbar-mbmenu .parent > ul {
   top: 27px;
@@ -9113,10 +9184,6 @@ div.wide.form label.hasCheckBox {
   height: auto !important;
 }
 /*=For single meeting, contact etc..*/
-.AppContent.TableOfContentsView .toolbar-mbmenu,
-.AppContent.SecuredEditAndDetailsView .toolbar-mbmenu {
-  top: 8px;
-}
 .wrapper {
   float: left;
   width: 100%;
@@ -12412,7 +12479,7 @@ table.configuration-list td:last-child a .z-label:before {
 }
 .texture-swatch span {
   width: 90px;
-  background: #DDDEDE;
+  background: #FFF;
   border: 3px solid #DDDEDE;
   margin-top: -3px;
 }
@@ -15332,6 +15399,9 @@ a.close-ModalGameNotification.simple-link {
   float: none;
   margin-bottom: 0;
 }
+#UserDetailsView {
+  padding: 0 20px 20px 0;
+}
 #UserDetailsView .details-table {
   zoom: 1;
   position: relative !important;
@@ -15992,7 +16062,7 @@ a.dashboard-link .z-label {
   padding: 0 0 0 0 !important;
 }
 #CommentInlineEditForModelView h2 {
-  margin: 0 0 0 0;
+  margin: 0 0 10px 0;
 }
 #CommentInlineEditForModelView .wide.form {
   padding: 0;
@@ -16067,6 +16137,9 @@ a.dashboard-link .z-label {
 }
 #MissionEditView .panel {
   width: 100% !important;
+}
+#MissionEditView .view-toolbar-container + .left-column {
+  display: none;
 }
 .mission-change-status-link {
   margin: 0 5px !important;
@@ -17346,12 +17419,13 @@ a.user-link {
 .all-related-field {
   float: left;
   width: 80%;
-  padding-left: 15px;
 }
 .all-related-field .value-data {
   width: 42.5%;
+  float: left;
 }
 .all-related-field > span {
+  width: 15%;
   float: left;
   line-height: 26px;
 }
@@ -17752,6 +17826,9 @@ a.user-link {
 .mergetag-guide-modal li {
   margin-bottom: 4px;
 }
+.marketing-list-members-portlet-container .portlet-view-toolbar {
+  float: left;
+}
 #marketing-list-member-configuration-form {
   position: relative;
   padding: 15px;
@@ -17803,6 +17880,10 @@ a.user-link {
 #marketing-list-member-configuration-form input[type="text"]:focus {
   outline: none !important;
   box-shadow: none !important;
+}
+#marketing-list-member-configuration-form .list-view-items-summary-clone {
+  margin-top: 51px;
+  font-weight: bold;
 }
 .MarketingListMembersListView {
   margin-bottom: 0;
@@ -17905,6 +17986,8 @@ a.user-link {
 }
 #MarketingListMembersConfigurationForm_filteredBySubscriptionType_area {
   margin-left: 15px;
+  width: auto;
+  top: 20px;
 }
 .marketing-list-member-stats {
   margin: 5px 0 0 0;
@@ -17919,6 +18002,193 @@ a.user-link {
 }
 .portlet-with-toolbar .view-toolbar .parent > ul {
   top: auto;
+}
+#MarketingListDetailsView {
+  position: relative;
+  z-index: 10;
+}
+#MarketingListDetailsView + div {
+  position: relative;
+  z-index: 1;
+}
+#kanban-holder {
+  background: #fff;
+  margin: 0;
+  padding: 0;
+  background-size: 100% 100%;
+}
+#kanban-holder #kanban-board,
+#kanban-holder .kanban-column,
+#kanban-holder .kanban-column > div {
+  margin-bottom: 0 !important;
+}
+#kanban-holder .empty {
+  padding: 10px;
+}
+#kanban-holder.kanban-background-football {
+  background: #ffffff url(../images/kanban/football.jpg) left bottom repeat;
+}
+#kanban-holder.kanban-background-tennis {
+  background: #ffffff url(../images/kanban/tennis.jpg) left bottom repeat;
+}
+#kanban-holder.kanban-background-motor {
+  background: #ffffff url(../images/kanban/asphalt.jpg) center bottom repeat;
+}
+.kanban-background-football .background-texture-1 {
+  background: #ffffff url(../images/kanban/swatch-football.jpg) left top repeat;
+}
+.kanban-background-tennis .background-texture-1 {
+  background: #ffffff url(../images/kanban/swatch-tennis.jpg) left top repeat;
+}
+.kanban-background-motor .background-texture-1 {
+  background: #ffffff url(../images/kanban/swatch-asphalt.jpg) left top repeat;
+}
+#kanban-board .drop-zone-container {
+  padding: 37px 2px 2px 2px;
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 100%;
+}
+#kanban-board .drop-zone {
+  position: relative;
+}
+.kanban-column {
+  float: left;
+  border-left: 1px solid #dfdfdf;
+}
+.kanban-column:first-child {
+  border-left: none;
+}
+.kanban-column ul {
+  list-style: none;
+  padding: 5px 5px;
+  position: relative;
+  z-index: 5;
+  min-height: 600px;
+}
+.column-header {
+  font-weight: bold !important;
+  height: 35px;
+  line-height: 35px;
+  background: rgba(255, 255, 255, 0.8) url(../images/table-items-header.png) left top repeat-x;
+  padding: 0 0 0 5px;
+  white-space: nowrap;
+  border-bottom: 1px solid #dfdfdf;
+}
+/*
+@themeColor        : #282A76;
+    @themeColor2       : #7CB830;
+    @themeColorBtn     : #97c43d;
+    @themeColorBtn2    : darken(@themeColorBtn, 10%);
+    */
+.kanban-card > div {
+  position: relative;
+  width: 100%;
+  display: block;
+  margin: 0 0 5px 0 !important;
+  background: #f0f0f0;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  -ms-border-radius: 3px;
+  -o-border-radius: 3px;
+  border-radius: 3px;
+  padding: 5px 5px 15px 10px;
+  -webkit-box-shadow: inset 0 0 0 1px rgba(204, 204, 204, 0.3) , 1px 1px 1px 0px rgba(153, 153, 153, 0.15);
+  -moz-box-shadow: inset 0 0 0 1px rgba(204, 204, 204, 0.3) , 1px 1px 1px 0px rgba(153, 153, 153, 0.15);
+  -o-box-shadow: inset 0 0 0 1px rgba(204, 204, 204, 0.3) , 1px 1px 1px 0px rgba(153, 153, 153, 0.15);
+  -ms-box-shadow: inset 0 0 0 1px rgba(204, 204, 204, 0.3) , 1px 1px 1px 0px rgba(153, 153, 153, 0.15);
+  box-shadow: inset 0 0 0 1px rgba(204, 204, 204, 0.3) , 1px 1px 1px 0px rgba(153, 153, 153, 0.15);
+}
+.kanban-card span {
+  display: block;
+  margin-bottom: 3px;
+}
+.kanban-card .opportunity-name {
+  font-size: 12px;
+  font-weight: normal;
+}
+.kanban-card .account-name {
+  font-size: 14px;
+  font-weight: bold;
+  color: #666;
+}
+.kanban-card .opportunity-amount {
+  font-size: 20px;
+  font-weight: bold;
+  text-align: right;
+  color: #222363;
+  -webkit-text-shadow: 0 1px 0 rgba(255, 255, 255, 0.9);
+  -moz-text-shadow: 0 1px 0 rgba(255, 255, 255, 0.9);
+  -o-text-shadow: 0 1px 0 rgba(255, 255, 255, 0.9);
+  -ms-text-shadow: 0 1px 0 rgba(255, 255, 255, 0.9);
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.9);
+  line-height: 1;
+  margin-bottom: 5px;
+}
+.kanban-card .closing-date {
+  font-size: 11px;
+  text-align: right;
+}
+.kanban-card .closing-date i {
+  text-align: left;
+  font-weight: normal;
+  font-size: 12px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+}
+.kanban-card .closing-date i:after {
+  content: "z";
+}
+.kanban-card .opportunity-owner {
+  position: absolute;
+  right: 5px;
+  bottom: 5px;
+  text-align: right;
+  display: block;
+  line-height: 1;
+}
+.kanban-card .opportunity-owner span {
+  display: inline-block;
+  top: -7px;
+  position: relative;
+  margin: 0 5px;
+}
+.kanban-card .opportunity-owner img {
+  background: #DFDFDF;
+  padding: 1px;
+}
+.kanban-card .hidden-content > a {
+  font-size: 11px;
+  position: relative;
+  top: 5px;
+}
+.kanban-card .hidden-content > div {
+  display: none;
+  padding: 10px 0 5px 0;
+}
+.kanban-card.clone {
+  position: absolute;
+  z-index: 10000;
+}
+.kanban-board-options-panel {
+  width: 50%;
+  float: left;
+}
+.kanban-board-options-panel h3 {
+  margin-bottom: 10px;
+}
+.icon-kanban-board-view-type,
+.icon-grid-view-type {
+  padding-left: 10px !important;
+}
+.icon-kanban-board-view-type:before,
+.icon-grid-view-type:before {
+  margin: 0;
+}
+.icon-kanban-board-view-type span,
+.icon-grid-view-type span {
+  display: none;
 }
 /*********************************************************************************
  * Zurmo is a customer relationship management program developed by

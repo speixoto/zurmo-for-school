@@ -31,6 +31,12 @@
 // feasible for technical reasons, the Appropriate Legal Notices must display the words
 // "Copyright Zurmo Inc. 2013. All rights reserved".
 
+.marketing-list-members-portlet-container{
+	.portlet-view-toolbar{
+		float: left;
+	}
+}
+
 //#marketing-list-member-select-contact-or-report-form,
 #marketing-list-member-configuration-form{
 	position: relative;
@@ -60,6 +66,10 @@
 			outline: none !important;
 			box-shadow:none !important;
 		}
+	}
+	.list-view-items-summary-clone{
+		margin-top: 51px;
+		font-weight: bold;
 	}
 }
 
@@ -148,6 +158,8 @@
 
 #MarketingListMembersConfigurationForm_filteredBySubscriptionType_area{
 	margin-left: 15px;
+	width: auto;
+	top: 20px;
 }
 
 .marketing-list-member-stats{
@@ -165,5 +177,14 @@
 		.parent > ul{
 			top: auto;
 		}
+	}
+}
+
+#MarketingListDetailsView{
+	position: relative;
+	z-index: 10;
+	+ div{
+		position: relative;
+		z-index: 1;
 	}
 }

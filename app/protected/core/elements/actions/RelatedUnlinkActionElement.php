@@ -56,7 +56,7 @@
             $confirmTitle       = Yii::app()->format->text($confirmTitle);
             $htmlOptions        = parent::getHtmlOptions();
             $htmlOptions['id']      = $this->getLinkId();
-            $htmlOptions['onclick'] = 'if (!onAjaxSubmitRelatedListAction("' . $confirmTitle . '", "' . $this->getGridId() . '")){return;};';
+            $htmlOptions['onclick'] = 'if (!$(this).onAjaxSubmitRelatedListAction("' . $confirmTitle . '", "' . $this->getGridId() . '")){return;};';
             $htmlOptions['namespace']   = 'portlet';
             return $htmlOptions;
         }

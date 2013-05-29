@@ -84,6 +84,11 @@
             {
                 $data[SearchForm::SELECTED_LIST_ATTRIBUTES]  = $searchForm->getListAttributesSelector()->getSelected();
             }
+            if ($searchForm->getKanbanBoard() != null)
+            {
+                $data[KanbanBoard::GROUP_BY_ATTRIBUTE_VISIBLE_VALUES] = $searchForm->getKanbanBoard()->getGroupByAttributeVisibleValues();
+                $data[KanbanBoard::SELECTED_THEME]                    = $searchForm->getKanbanBoard()->getSelectedTheme();
+            }
             $savedSearch->serializedData = serialize($data);
             return $savedSearch;
         }
@@ -109,6 +114,17 @@
                 {
                     $searchForm->getListAttributesSelector()->setSelected(
                                     $unserializedData[SearchForm::SELECTED_LIST_ATTRIBUTES]);
+                }
+                if (isset($unserializedData[KanbanBoard::GROUP_BY_ATTRIBUTE_VISIBLE_VALUES]) &&
+                    $searchForm->getKanbanBoard() != null)
+                {
+                    $searchForm->getKanbanBoard()->setIsActive();
+                    $searchForm->getKanbanBoard()->setGroupByAttributeVisibleValues(
+                        $unserializedData[KanbanBoard::GROUP_BY_ATTRIBUTE_VISIBLE_VALUES]);
+                }
+                if (isset($unserializedData[KanbanBoard::SELECTED_THEME]) && $searchForm->getKanbanBoard() != null)
+                {
+                    $searchForm->getKanbanBoard()->setSelectedTheme($unserializedData[KanbanBoard::SELECTED_THEME]);
                 }
                 if (isset($unserializedData['dynamicStructure']))
                 {
@@ -145,16 +161,16 @@
                 $stickyData['anyMixedAttributes']      = $anyMixedAttributes['anyMixedAttributes'];
             }
             $dataCollection->resolveAnyMixedAttributesScopeForSearchModelFromSourceData();
-
             $dataCollection->resolveSelectedListAttributesForSearchModelFromSourceData();
+            $dataCollection->resolveKanbanBoardOptionsForSearchModelFromSourceData();
 
             $stickyData['anyMixedAttributesScope']            = $dataCollection->getAnyMixedAttributesScopeFromModel();
             $stickyData[SearchForm::SELECTED_LIST_ATTRIBUTES] = $dataCollection->getSelectedListAttributesFromModel();
+            static::resolveKanbanBoardDataByCollection($dataCollection, $stickyData);
             if ($dataCollection instanceof SavedSearchAttributesDataCollection)
             {
                 $stickyData['savedSearchId'] = $dataCollection->getSavedSearchId();
             }
-
             // Resolve the sort and desc attribute from source data and set it in sticky array
             $listSortModel = get_class($dataCollection->getModel()->getModel());
 
@@ -225,7 +241,18 @@
             {
                 $model->getListAttributesSelector()->setSelected($stickyData[SearchForm::SELECTED_LIST_ATTRIBUTES]);
             }
-
+            if (isset($stickyData[KanbanBoard::GROUP_BY_ATTRIBUTE_VISIBLE_VALUES]) &&
+                $model->getKanbanBoard() != null && !$model->getKanbanBoard()->getClearSticky())
+            {
+                $model->getKanbanBoard()->setIsActive();
+                $model->getKanbanBoard()->setGroupByAttributeVisibleValues(
+                    $stickyData[KanbanBoard::GROUP_BY_ATTRIBUTE_VISIBLE_VALUES]);
+            }
+            if (isset($stickyData[KanbanBoard::SELECTED_THEME]) && $model->getKanbanBoard() != null
+                && !$model->getKanbanBoard()->getClearSticky())
+            {
+                $model->getKanbanBoard()->setSelectedTheme($stickyData[KanbanBoard::SELECTED_THEME]);
+            }
             // If the sort attribute is not in get request but in sticky data, set it into get array
             $listModelClassName = get_class($model->getModel());
             if (!isset($_GET[$listModelClassName . '_sort']) && isset($stickyData['sortAttribute']))
@@ -257,6 +284,21 @@
                 {
                     $searchForm->sortDescending = $stickyData['sortDescending'];
                 }
+            }
+        }
+
+        protected static function resolveKanbanBoardDataByCollection(SearchAttributesDataCollection $dataCollection, & $stickyData)
+        {
+            if($dataCollection->hasKanbanBoard() && $dataCollection->getKanbanBoard()->getIsActive() &&
+               !$dataCollection->shouldClearStickyForKanbanBoard())
+            {
+                $stickyData[KanbanBoard::GROUP_BY_ATTRIBUTE_VISIBLE_VALUES] = $dataCollection->getKanbanBoardGroupByAttributeVisibleValuesFromModel();
+                $stickyData[KanbanBoard::SELECTED_THEME]                    = $dataCollection->getKanbanBoardSelectedThemeFromModel();
+            }
+            elseif($dataCollection->hasKanbanBoard() && $dataCollection->shouldClearStickyForKanbanBoard())
+            {
+                unset($stickyData[KanbanBoard::GROUP_BY_ATTRIBUTE_VISIBLE_VALUES]);
+                unset($stickyData[KanbanBoard::SELECTED_THEME]);
             }
         }
     }

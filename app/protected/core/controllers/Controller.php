@@ -90,6 +90,7 @@
             $dataCollection->resolveAnyMixedAttributesScopeForSearchModelFromSourceData();
             $dataCollection->resolveSelectedListAttributesForSearchModelFromSourceData();
             $dataCollection->resolveFilterByStarredFromSourceData();
+            $dataCollection->resolveKanbanBoardOptionsForSearchModelFromSourceData();
             $sanitizedSearchAttributes = GetUtil::sanitizePostByDesignerTypeForSavingModel($searchModel,
                                                                                            $searchAttributes);
             $sortAttribute             = $dataCollection->resolveSortAttributeFromSourceData($listModelClassName);
@@ -101,6 +102,7 @@
             );
             $metadata                  = static::resolveDynamicSearchMetadata($searchModel, $metadataAdapter->getAdaptedMetadata(),
                                                                               $dataCollection);
+            $this->resolveKanbanBoardMetadataBeforeMakingDataProvider($searchModel, $metadata);
             $this->resolveMetadataBeforeMakingDataProvider($metadata);
             $dataProviderClassName = 'RedBeanModelDataProvider';
             if($searchModel->filterByStarred)
@@ -116,6 +118,18 @@
                 $pageSize,
                 $stateMetadataAdapterClassName
             );
+        }
+
+        protected function resolveKanbanBoardMetadataBeforeMakingDataProvider($searchForm, & $metadata)
+        {
+            if($searchForm instanceof SearchForm)
+            {
+                if($searchForm instanceof SearchForm && !Yii::app()->userInterface->isMobile()
+                   && $searchForm->getKanbanBoard() != null && $searchForm->getKanbanBoard()->getIsActive())
+                {
+                    $searchForm->getKanbanBoard()->resolveVisibleValuesForAdaptedMetadata($metadata);
+                }
+            }
         }
 
         protected function resolveMetadataBeforeMakingDataProvider(& $metadata)

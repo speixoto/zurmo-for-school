@@ -74,7 +74,6 @@
         {
             $content  = $this->renderAttributesAndRelationsTreeContent();
             $content .= ZurmoHtml::tag('div', array('class' => 'dynamic-droppable-area'), $this->renderRightSideContent());
-            $content  = ZurmoHtml::tag('div', array('class' => 'left-column full-width'), $content);
             return $content;
         }
 
@@ -245,7 +244,7 @@
                     'beforeSend' => 'js:function()
                     {
                         $(".ui-overlay-block").fadeIn(50);
-                        makeLargeLoadingSpinner(true, ".ui-overlay-block"); //- add spinner to block anything else
+                        $(this).makeLargeLoadingSpinner(true, ".ui-overlay-block"); //- add spinner to block anything else
                     }',
                     'success' => 'js:function(data)
                     {
@@ -254,7 +253,7 @@
                         ul.append(data);
                         ' . $this->getReportAttributeRowAddOrRemoveExtraScript() . '
                         $(".' . static::getZeroComponentsClassName() . '").fadeOut(150);
-                        makeLargeLoadingSpinner(false, ".ui-overlay-block");
+                        $(this).makeLargeLoadingSpinner(false, ".ui-overlay-block");
                         $(".ui-overlay-block").fadeOut(50);
                         window.scrollTo(0, ul.find("li:last-child > div").offset().top);
                         ul.find("li:last-child > div").addClass("glow").animate({backgroundColor:"#f0f0f0"}, 2000);
@@ -276,7 +275,7 @@
                     'beforeSend' => 'js:function()
                     {
                         $(".ui-overlay-block").fadeIn(50);
-                        makeLargeLoadingSpinner(true, ".ui-overlay-block"); //- add spinner to block anything else
+                        $(this).makeLargeLoadingSpinner(true, ".ui-overlay-block"); //- add spinner to block anything else
                     }',
                     'success' => 'js:function(data)
                     {
@@ -285,7 +284,7 @@
                         ul.append(data);
                         ' . $this->getReportAttributeRowAddOrRemoveExtraScript() . '
                         $(".' . static::getZeroComponentsClassName() . '").hide();
-                        makeLargeLoadingSpinner(false, ".ui-overlay-block");
+                        $(this).makeLargeLoadingSpinner(false, ".ui-overlay-block");
                         $(".ui-overlay-block").fadeOut(50);
                         window.scrollTo(0, ul.find("li:last-child > div").offset().top);
                         ul.find("li:last-child > div").addClass("glow").animate({backgroundColor:"#f0f0f0"}, 2000);

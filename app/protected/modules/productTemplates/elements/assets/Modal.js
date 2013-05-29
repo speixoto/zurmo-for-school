@@ -32,11 +32,11 @@ function addProductRowToPortletGridView(productTemplateId, url, relationAttribut
             beforeSend: function(xhr)
                        {
                            $('#modalContainer').html('');
-                           makeLargeLoadingSpinner(true, '#modalContainer');
+                           $(this).makeLargeLoadingSpinner(true, '#modalContainer');
                        },
             success: function(dataOrHtml, textStatus, xmlReq)
                      {
-                         processAjaxSuccessUpdateHtmlOrShowDataOnFailure(dataOrHtml, uniquePortletPageId);
+                         $(this).processAjaxSuccessUpdateHtmlOrShowDataOnFailure(dataOrHtml, uniquePortletPageId);
                      },
             complete:function(XMLHttpRequest, textStatus)
                      {

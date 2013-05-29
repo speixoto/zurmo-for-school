@@ -1771,6 +1771,17 @@ form,
 	top:0;
 }
 
+.icon-kanban-board-view-type:before{
+	.view-toolbar-icons(26px);
+	content: '\00AE';
+}
+
+.icon-grid-view-type:before{
+	.view-toolbar-icons(26px);
+	content: '\00B0';
+	top:-2px
+}
+
 /*=Footer*/
 #FooterView{
 	margin:20px 3% 0 3%;
@@ -1951,14 +1962,11 @@ caption, th, td {
 			float:left;
 		}
 	}
-	td:first-child{
-		div{
-			//.smaller();
-			&:first-child{
-				font-size: 13px;
-				font-weight: bold;
-				margin:0 0 3px 0;
-			}
+	tr:first-child{
+		> div:first-child{
+			font-size: 13px;
+			font-weight: bold;
+			margin:0 0 3px 0;
 		}
 	}
 }
@@ -2657,6 +2665,14 @@ div.wide.form{
 	table{
 		border-bottom:none;
 	}
+	.filters-bar{
+		width: auto;
+		top:20px;
+		> div{
+			float: left;
+			padding-left: 15px;
+		}
+	}
 }
 
 .SecuredListView{
@@ -2757,6 +2773,9 @@ div.wide.form{
 	input[type="submit"]{
 		++.z-button;
 	}
+	> a{
+		margin-right: 25px;
+	}
 }
 
 #more-search-linkmodal,
@@ -2771,8 +2790,8 @@ div.wide.form{
 	}
 }
 
+#kanban-board-options-link,
 #select-list-attributes-link{
-	margin-left:25px;
 	&:after{
 		content: "÷";
 		.symbly(14px);
@@ -2841,6 +2860,7 @@ div.wide.form{
 	}
 }
 
+.kanban-board-options-view,
 .select-list-attributes-view,
 .search-view-1{
 	margin-top:15px;
@@ -2849,13 +2869,6 @@ div.wide.form{
 	height:auto;
 	float: left;
 	width: 100%;
-	label{
-		padding-top:7px;
-		padding-right:10px;
-		width:100%;
-		display:block;
-		text-align:left;
-	}
 	#cancel-advanced-search{
 		color:#656565;
 		.t-shadow(none);
@@ -2871,6 +2884,17 @@ div.wide.form{
 	}
 	.view-toolbar-container{
 		display: inline-block;
+	}
+}
+
+.select-list-attributes-view,
+.search-view-1{
+	label{
+		padding-top:7px;
+		padding-right:10px;
+		width:100%;
+		display:block;
+		text-align:left;
 	}
 }
 
@@ -2900,7 +2924,7 @@ div.wide.form{
 
 #clear-search-link{
 	.z-link();
-	margin-left:10px;
+	//margin-left:10px;
 	.icon-clear{
 		.symbly(16px);
 	}
@@ -3127,7 +3151,14 @@ div.wide.form{
 			display: none;
 		}
 	}
+	.left-column{
+		padding: 0 15px 0 0;
+	}
+	.right-column{
+		padding: 0 0 15px 0;
+	}
 }
+
 .right-column{
 	float: right;
 	width: 30%;
@@ -3147,7 +3178,7 @@ div.wide.form{
 		}
 	}
 	h3{
-		margin:15px 0 0 15px;
+		margin:0 0 15px 0;
 	}
 	table{
 		border-bottom:none;
@@ -3507,7 +3538,9 @@ div.wide.form{
 		margin-left:0;
 	}
 	h1 + .toolbar-mbmenu{
-		top: -35px;
+		top: 6px;
+		right: 0px;
+		position: absolute;
 		.parent > ul{
 			top: 27px;
 		}
@@ -3543,7 +3576,7 @@ div.wide.form{
 .AppContent.TableOfContentsView,
 .AppContent.SecuredEditAndDetailsView{
 	.toolbar-mbmenu{
-		top:8px;
+		//top:8px;
 	}
 }
 
@@ -5070,4 +5103,5 @@ div.hasHalfs{
 @import 'inbox.less';
 @import 'email-templates.less';
 @import 'marketing.less';
+@import 'kanban.less';
 @import 'media-queries.less';

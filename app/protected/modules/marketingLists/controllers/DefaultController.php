@@ -172,8 +172,7 @@
                                             $_GET['modalTransferInformation']['sourceNameFieldId'],
                                             $_GET['modalTransferInformation']['modalId']
             );
-            echo ModalSearchListControllerUtil::setAjaxModeAndRenderModalSearchList($this, $modalListLinkProvider,
-                                                'ContactsStateMetadataAdapter');
+            echo ModalSearchListControllerUtil::setAjaxModeAndRenderModalSearchList($this, $modalListLinkProvider);
         }
 
         protected static function getSearchFormClassName()

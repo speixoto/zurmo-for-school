@@ -63,7 +63,7 @@
             return array(
                         'validateOnSubmit'  => true,
                         'validateOnChange'  => false,
-                        'beforeValidate'    => 'js:beforeValidateAction',
+                        'beforeValidate'    => 'js:$(this).beforeValidateAction',
                         'afterValidate'     => 'js:afterDynamicSearchValidateAjaxAction',
                         'afterValidateAjax' => $this->renderConfigSaveAjax($this->getSearchFormId()),
                     );
@@ -238,14 +238,14 @@
                                     array('type' => 'GET',
                                           'data' => 'js:\'rowNumber=\' + $(\'#rowCounter-' . $this->getSearchFormId(). '\').val()',
                                           'beforeSend' => 'js:function(){
-                                            makeOrRemoveLoadingSpinner(true, "#' . $this->getSearchFormId() . '", "dark");
+                                            $(this).makeOrRemoveLoadingSpinner(true, "#' . $this->getSearchFormId() . '", "dark");
                                             }',
                                           'success' => 'js:function(data){
                                             $(\'#' . $this->getRowCounterInputId(). '\').val(parseInt($(\'#' . $this->getRowCounterInputId() . '\').val()) + 1)
                                             $(\'#addExtraAdvancedSearchRowButton-' . $this->getSearchFormId() . '\').parent().before(data);
                                             rebuildDynamicSearchRowNumbersAndStructureInput("' . $this->getSearchFormId() . '");
                                             resolveClearLinkPrefixLabelAndVisibility("' . $this->getSearchFormId() . '");
-                                            makeOrRemoveLoadingSpinner(false, "#' . $this->getSearchFormId() . '");
+                                            $(this).makeOrRemoveLoadingSpinner(false, "#' . $this->getSearchFormId() . '");
                                           }'),
                                     array('id' => 'addExtraAdvancedSearchRowButton-' . $this->getSearchFormId(), 'namespace' => 'add'));
             // End Not Coding Standard
