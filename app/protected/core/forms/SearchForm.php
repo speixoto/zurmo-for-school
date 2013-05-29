@@ -210,7 +210,8 @@
             return array(self::ANY_MIXED_ATTRIBUTES_SCOPE_NAME,
                          self::SELECTED_LIST_ATTRIBUTES,
                          KanbanBoard::GROUP_BY_ATTRIBUTE_VISIBLE_VALUES,
-                         KanbanBoard::SELECTED_THEME);
+                         KanbanBoard::SELECTED_THEME,
+                         'filterByStarred');
         }
 
         public function getSearchableAttributes()
