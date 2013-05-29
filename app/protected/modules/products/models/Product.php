@@ -145,7 +145,7 @@
 
         public static function getGamificationRulesType()
         {
-            //return 'ProductGamification';
+            return 'ProductGamification';
         }
     }
 ?>

@@ -35,38 +35,41 @@
      ********************************************************************************/
 
     /**
-     * Class used for displaying the overall performance metrics for the marketing dashboard
+     * Class for defining the badge associated with creating a new product
      */
-    class MarketingOverallMetricsView extends MarketingMetricsView implements PortletViewInterface
+    class CreateProductGameBadgeRules extends GameBadgeRules
     {
-        protected $formModelClassName = 'MarketingOverallMetricsForm';
-        /**
-         * The view's module class name.
-         */
-        public static function getModuleClassName()
+        public static $valuesIndexedByGrade = array(
+            1  => 1,
+            2  => 5,
+            3  => 10,
+            4  => 25,
+            5  => 50,
+            6  => 75,
+            7  => 100,
+            8  => 125,
+            9  => 150,
+            10 => 175,
+            11 => 200,
+            12 => 225,
+            13 => 250
+        );
+
+        public static function getPassiveDisplayLabel($value)
         {
-            return 'MarketingModule';
+            return Zurmo::t('ProductsModule', '{n} ProductsModuleSingularLabel created|{n} ProductsModulePluralLabel created',
+                          array_merge(array($value), LabelUtil::getTranslationParamsForAllModules()));
         }
 
-        public function getTitle()
+        public static function badgeGradeUserShouldHaveByPointsAndScores($userPointsByType, $userScoresByType)
         {
-            $title  = Zurmo::t('MarketingModule', 'Marketing Dashboard');
-            return $title;
-        }
-
-        public function renderContent()
-        {
-            $content  = ZurmoHtml::tag('h3', array(), Zurmo::t('MarketingModule', 'What is going on with Marketing?'));
-            $content .= $this->renderConfigureElementsContent();
-            $content  = ZurmoHtml::tag('div', array('class' => 'left-column full-width'), $content);
-            $content .= $this->renderMetricsWrapperContent();
-            return $content;
-        }
-
-        public function getConfigurationView()
-        {
-
-            return new MarketingOverallMetricsConfigView($this->resolveForm(), $this->params);
+            assert('is_array($userPointsByType)');
+            assert('is_array($userScoresByType)');
+            if (isset($userScoresByType['CreateProduct']))
+            {
+                return static::getBadgeGradeByValue((int)$userScoresByType['CreateProduct']->value);
+            }
+            return 0;
         }
     }
 ?>

@@ -945,7 +945,8 @@ body.blue .showAllCommentsLink,
 body.blue .treeview span:hover .z-action-link,
 body.blue .drop-zone,
 body.blue .missing-chart,
-body.blue a.active-tab {
+body.blue a.active-tab,
+body.blue .edit-autoresponder-link {
   color: #282a76;
 }
 body.blue #notifications-flyout .single-notification h4,
@@ -1515,7 +1516,8 @@ body.brown .showAllCommentsLink,
 body.brown .treeview span:hover .z-action-link,
 body.brown .drop-zone,
 body.brown .missing-chart,
-body.brown a.active-tab {
+body.brown a.active-tab,
+body.brown .edit-autoresponder-link {
   color: #547980;
 }
 body.brown #notifications-flyout .single-notification h4,
@@ -2085,7 +2087,8 @@ body.lime .showAllCommentsLink,
 body.lime .treeview span:hover .z-action-link,
 body.lime .drop-zone,
 body.lime .missing-chart,
-body.lime a.active-tab {
+body.lime a.active-tab,
+body.lime .edit-autoresponder-link {
   color: #2b434f;
 }
 body.lime #notifications-flyout .single-notification h4,
@@ -2655,7 +2658,8 @@ body.cherry .showAllCommentsLink,
 body.cherry .treeview span:hover .z-action-link,
 body.cherry .drop-zone,
 body.cherry .missing-chart,
-body.cherry a.active-tab {
+body.cherry a.active-tab,
+body.cherry .edit-autoresponder-link {
   color: #6c8092;
 }
 body.cherry #notifications-flyout .single-notification h4,
@@ -3225,7 +3229,8 @@ body.turquoise .showAllCommentsLink,
 body.turquoise .treeview span:hover .z-action-link,
 body.turquoise .drop-zone,
 body.turquoise .missing-chart,
-body.turquoise a.active-tab {
+body.turquoise a.active-tab,
+body.turquoise .edit-autoresponder-link {
   color: #447799;
 }
 body.turquoise #notifications-flyout .single-notification h4,
@@ -3795,7 +3800,8 @@ body.violet .showAllCommentsLink,
 body.violet .treeview span:hover .z-action-link,
 body.violet .drop-zone,
 body.violet .missing-chart,
-body.violet a.active-tab {
+body.violet a.active-tab,
+body.violet .edit-autoresponder-link {
   color: #4a3970;
 }
 body.violet #notifications-flyout .single-notification h4,
@@ -4365,7 +4371,8 @@ body.honey .showAllCommentsLink,
 body.honey .treeview span:hover .z-action-link,
 body.honey .drop-zone,
 body.honey .missing-chart,
-body.honey a.active-tab {
+body.honey a.active-tab,
+body.honey .edit-autoresponder-link {
   color: #46201c;
 }
 body.honey #notifications-flyout .single-notification h4,
@@ -6102,6 +6109,10 @@ body > .ui-autocomplete {
 #RecentlyViewedView li.type-ProductCategoryModule em:before {
   content: '\00D7';
 }
+#RecentlyViewedView li.type-CampaignsModule em:before {
+  content: '\002C';
+  font-size: 26px;
+}
 /*=Content*/
 .AppContent {
   -webkit-border-radius: 0 0 5px 5px;
@@ -6523,6 +6534,7 @@ form .view-toolbar-container,
   top: -2px;
   margin: 0;
 }
+.icon-marketing-dashboard:before,
 .icon-change-dashborad:before {
   content: "/";
   font-weight: normal;
@@ -7146,6 +7158,20 @@ form .view-toolbar-container,
   vertical-align: middle;
   position: relative;
   content: '\00B0';
+  top: -2px;
+}
+.icon-marketing-campaigns:before {
+  font-weight: normal;
+  font-size: 28px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  padding: 0 0 0 0;
+  margin: 0 6px 0 -30px;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  vertical-align: middle;
+  position: relative;
+  content: '\002C';
   top: -2px;
 }
 /*=Footer*/
@@ -9855,46 +9881,36 @@ div.hasHalfs > div input {
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
 }
-div.hasParallelFields .fifth,
-div.hasHalfs .fifth {
+.fifth {
   width: 19%;
 }
-div.hasParallelFields .twoFifths,
-div.hasHalfs .twoFifths {
+.twoFifths {
   width: 36.5%;
 }
-div.hasParallelFields .threeFifths,
-div.hasHalfs .threeFifths {
+.threeFifths {
   width: 55.5%;
   margin-right: 4%;
 }
-div.hasParallelFields .fourFifths,
-div.hasHalfs .fourFifths {
+.fourFifths {
   width: 73%;
   margin-right: 4%;
 }
-div.hasParallelFields .fifth + .twoFifths,
-div.hasHalfs .fifth + .twoFifths {
+.fifth + .twoFifths {
   margin-right: 4%;
 }
-div.hasParallelFields .half,
-div.hasHalfs .half {
+.half {
   width: 48%;
 }
-div.hasParallelFields .quarter,
-div.hasHalfs .quarter {
+.quarter {
   width: 23%;
 }
-div.hasParallelFields .threeQuarters,
-div.hasHalfs .threeQuarters {
+.threeQuarters {
   width: 73%;
 }
-div.hasParallelFields .third,
-div.hasHalfs .third {
+.third {
   width: 32%;
 }
-div.hasParallelFields .twoThirds,
-div.hasHalfs .twoThirds {
+.twoThirds {
   width: 64%;
 }
 .juiportlet-widget.OpportunitiesForAccountRelatedListView div.button-column,
@@ -17178,10 +17194,12 @@ a.user-link {
 #series-and-range-areas .buffer {
   padding-left: 22px;
 }
+#CampaignDetailsView h1,
 #MarketingListDetailsView h1,
 #ReportDetailsView h1 {
   margin-bottom: 15px;
 }
+#CampaignDetailsView .view-toolbar ul:first-child > li > a,
 #MarketingListDetailsView .view-toolbar ul:first-child > li > a,
 #ReportDetailsView .view-toolbar ul:first-child > li > a {
   border-left: none;
@@ -17207,8 +17225,7 @@ a.user-link {
   position: relative;
   top: 3px;
 }
-.label-for-marketing-list-widgets,
-.label-for-report-widgets {
+.hasCheckboxes .hasCheckBox + label {
   padding-right: 15px;
   margin: 0 !important;
   font-size: 11px !important;
@@ -17775,6 +17792,7 @@ a.user-link {
   position: relative;
   top: 0;
 }
+.autoresponder-combined-content,
 .email-template-combined-content {
   padding: 0 15px;
 }
@@ -18003,13 +18021,50 @@ a.user-link {
 .portlet-with-toolbar .view-toolbar .parent > ul {
   top: auto;
 }
+#CampaignDetailsView,
 #MarketingListDetailsView {
   position: relative;
   z-index: 10;
 }
+#CampaignDetailsView + div,
 #MarketingListDetailsView + div {
   position: relative;
   z-index: 1;
+}
+.marketing-graph {
+  float: left;
+  margin-left: 2%;
+  padding-bottom: 15px;
+}
+.marketing-graph:first-child {
+  margin-left: 0;
+}
+.marketing-graph h3 {
+  padding-left: 15px;
+}
+.edit-autoresponder-link {
+  display: block;
+  margin-bottom: 10px;
+  font-size: 14px;
+  font-weight: bold;
+}
+.autoresponder-stats {
+  width: 23%;
+  float: left;
+  margin-left: 2%;
+  text-align: left;
+  font-size: 12px;
+}
+.autoresponder-stats strong {
+  font-size: 30px;
+  font-weight: bold;
+  display: block;
+}
+.autoresponder-stats span {
+  font-weight: bold;
+}
+a + .autoresponder-stats {
+  margin-left: 0;
 }
 #kanban-holder {
   background: #fff;

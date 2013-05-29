@@ -580,19 +580,19 @@
                     ),
                 ),
                 'ProductsModule'  => array(
-                    'RIGHT_CREATE_PRODUCT_TEMPLATES' => array(
+                    'RIGHT_CREATE_PRODUCTS' => array(
                         'displayName' => ProductsModule::RIGHT_CREATE_PRODUCTS,
                         'explicit'    => null,
                         'inherited'   => null,
                         'effective'   => Right::DENY,
                     ),
-                    'RIGHT_DELETE_PRODUCT_TEMPLATES' => array(
+                    'RIGHT_DELETE_PRODUCTS' => array(
                         'displayName' => ProductsModule::RIGHT_DELETE_PRODUCTS,
                         'explicit'    => null,
                         'inherited'   => null,
                         'effective'   => Right::DENY,
                     ),
-                    'RIGHT_ACCESS_PRODUCT_TEMPLATES' => array(
+                    'RIGHT_ACCESS_PRODUCTS' => array(
                         'displayName' => ProductsModule::RIGHT_ACCESS_PRODUCTS,
                         'explicit'    => null,
                         'inherited'   => null,

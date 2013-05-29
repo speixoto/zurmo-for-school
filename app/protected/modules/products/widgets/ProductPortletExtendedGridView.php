@@ -44,6 +44,9 @@
 
         protected function renderTotalBarDetails()
         {
+            $persistantProductConfigItemValue = ProductsPortletPersistentConfigUtil::getForCurrentUserByPortletIdAndKey(
+                                                                                                $this->params['portletId'],
+                                                                                                'filteredByStage');
             $relationModelClassName = get_class($this->params["relationModel"]);
             $relationModelId        = $this->params["relationModel"]->id;
             $relationModel          = $relationModelClassName::getById($relationModelId);
@@ -53,6 +56,18 @@
             $annualTotal            = 0;
             foreach ($models as $model)
             {
+                if($persistantProductConfigItemValue === null)
+                {
+                    $persistantProductConfigItemValue = ProductsConfigurationForm::FILTERED_BY_ALL_STAGES;
+                }
+                if($persistantProductConfigItemValue != ProductsConfigurationForm::FILTERED_BY_ALL_STAGES)
+                {
+                    if($model->stage->value != $persistantProductConfigItemValue)
+                    {
+                        continue;
+                    }
+                }
+                
                 if ($model->priceFrequency == ProductTemplate::PRICE_FREQUENCY_ONE_TIME)
                 {
                     $oneTimeTotal += $model->sellPrice->value * $model->quantity;
@@ -69,8 +84,17 @@
                 }
             }
 
-            $currencySymbol     = Yii::app()->locale->getCurrencySymbol(Yii::app()->currencyHelper->getCodeForCurrentUserForDisplay());
-            echo Zurmo::t("Core", "Total: ") . $currencySymbol . $oneTimeTotal . Zurmo::t("Core", " One Time") . ", " . $currencySymbol . $monthlyTotal . Zurmo::t("Core", " Monthly") . ", " . $currencySymbol . $annualTotal . Zurmo::t("Core", " Annually");
+            $oneTimeTotal = Yii::app()->numberFormatter->formatCurrency($oneTimeTotal,
+                                                                Yii::app()->currencyHelper->getCodeForCurrentUserForDisplay());
+            $monthlyTotal = Yii::app()->numberFormatter->formatCurrency($monthlyTotal,
+                                                                Yii::app()->currencyHelper->getCodeForCurrentUserForDisplay());
+            $annualTotal  = Yii::app()->numberFormatter->formatCurrency($annualTotal,
+                                                                Yii::app()->currencyHelper->getCodeForCurrentUserForDisplay());
+            //$currencySymbol     = Yii::app()->locale->getCurrencySymbol(Yii::app()->currencyHelper->getCodeForCurrentUserForDisplay());
+            echo Zurmo::t("Core", "Total: ") .
+                $oneTimeTotal . Zurmo::t("Core", " One Time") .
+                ", " . $monthlyTotal . Zurmo::t("Core", " Monthly") .
+                ", " . $annualTotal . Zurmo::t("Core", " Annually");
         }
     }
 ?>

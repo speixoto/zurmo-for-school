@@ -35,38 +35,18 @@
      ********************************************************************************/
 
     /**
-     * Class used for displaying the overall performance metrics for the marketing dashboard
+     * Class defining rules for Product Template gamification behavior.
      */
-    class MarketingOverallMetricsView extends MarketingMetricsView implements PortletViewInterface
+    class ProductTemplateGamificationRules extends GamificationRules
     {
-        protected $formModelClassName = 'MarketingOverallMetricsForm';
-        /**
-         * The view's module class name.
-         */
-        public static function getModuleClassName()
+        public static function getPointTypesAndValuesForCreateModel()
         {
-            return 'MarketingModule';
+            return array(GamePoint::TYPE_NEW_CATALOG_ITEM => 10);
         }
 
-        public function getTitle()
+        public static function getPointTypesAndValuesForUpdateModel()
         {
-            $title  = Zurmo::t('MarketingModule', 'Marketing Dashboard');
-            return $title;
-        }
-
-        public function renderContent()
-        {
-            $content  = ZurmoHtml::tag('h3', array(), Zurmo::t('MarketingModule', 'What is going on with Marketing?'));
-            $content .= $this->renderConfigureElementsContent();
-            $content  = ZurmoHtml::tag('div', array('class' => 'left-column full-width'), $content);
-            $content .= $this->renderMetricsWrapperContent();
-            return $content;
-        }
-
-        public function getConfigurationView()
-        {
-
-            return new MarketingOverallMetricsConfigView($this->resolveForm(), $this->params);
+            return array(GamePoint::TYPE_EDIT_CATALOG_ITEM => 10);
         }
     }
 ?>

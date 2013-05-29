@@ -148,7 +148,7 @@
 
         public static function getGamificationRulesType()
         {
-            //return 'ProductTemplateGamification';
+            return 'ProductTemplateGamification';
         }
 
         protected function beforeDelete()

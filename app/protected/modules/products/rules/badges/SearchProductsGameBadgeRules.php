@@ -35,38 +35,19 @@
      ********************************************************************************/
 
     /**
-     * Class used for displaying the overall performance metrics for the marketing dashboard
+     * Class for defining the badge associated with searching Products
      */
-    class MarketingOverallMetricsView extends MarketingMetricsView implements PortletViewInterface
+    class SearchProductsGameBadgeRules extends SearchModelsGameBadgeRules
     {
-        protected $formModelClassName = 'MarketingOverallMetricsForm';
-        /**
-         * The view's module class name.
-         */
-        public static function getModuleClassName()
+        public static function getPassiveDisplayLabel($value)
         {
-            return 'MarketingModule';
+            return Zurmo::t('ProductsModule', '{n} ProductsModuleSingularLabel search completed|{n} ProductsModuleSingularLabel searches completed',
+                          array_merge(array($value), LabelUtil::getTranslationParamsForAllModules()));
         }
 
-        public function getTitle()
+        public static function badgeGradeUserShouldHaveByPointsAndScores($userPointsByType, $userScoresByType)
         {
-            $title  = Zurmo::t('MarketingModule', 'Marketing Dashboard');
-            return $title;
-        }
-
-        public function renderContent()
-        {
-            $content  = ZurmoHtml::tag('h3', array(), Zurmo::t('MarketingModule', 'What is going on with Marketing?'));
-            $content .= $this->renderConfigureElementsContent();
-            $content  = ZurmoHtml::tag('div', array('class' => 'left-column full-width'), $content);
-            $content .= $this->renderMetricsWrapperContent();
-            return $content;
-        }
-
-        public function getConfigurationView()
-        {
-
-            return new MarketingOverallMetricsConfigView($this->resolveForm(), $this->params);
+            return static::badgeGradeUserShouldHaveByPointsAndScoresByModelClassName($userPointsByType, $userScoresByType, 'Product');
         }
     }
 ?>

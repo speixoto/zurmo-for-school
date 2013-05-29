@@ -70,6 +70,26 @@
          */
         const TYPE_TIME_MANAGEMENT      = 'TimeManagement';
 
+        /**
+         * @var String
+         */
+        const TYPE_NEW_PRODUCT        = 'NewProduct';
+
+        /**
+         * @var String
+         */
+        const TYPE_EDIT_PRODUCT       = 'EditProduct';
+
+        /**
+         * @var String
+         */
+        const TYPE_NEW_CATALOG_ITEM   = 'NewCatalogItem';
+
+        /**
+         * @var String
+         */
+        const TYPE_EDIT_CATALOG_ITEM  = 'EditCatalogItem';
+
         public function __toString()
         {
             if (trim($this->type) == '')
