@@ -268,7 +268,6 @@
             {
                 $model                     = new $modelClassName(false);
                 $searchForm                = new $formModelClassName($model);
-                //$rawPostFormData           = $_POST[$formModelClassName];
                 if (isset($_POST[$formModelClassName][SearchForm::ANY_MIXED_ATTRIBUTES_SCOPE_NAME]))
                 {
                     $searchForm->setAnyMixedAttributesScope($_POST[$formModelClassName][SearchForm::ANY_MIXED_ATTRIBUTES_SCOPE_NAME]);
@@ -280,6 +279,14 @@
                     $listAttributesSelector->setSelected($_POST[$formModelClassName][SearchForm::SELECTED_LIST_ATTRIBUTES]);
                     $searchForm->setListAttributesSelector($listAttributesSelector);
                     unset($_POST[$formModelClassName][SearchForm::SELECTED_LIST_ATTRIBUTES]);
+                }
+                if (isset($_POST[$formModelClassName][KanbanBoard::GROUP_BY_ATTRIBUTE_VISIBLE_VALUES]))
+                {
+                    unset($_POST[$formModelClassName][KanbanBoard::GROUP_BY_ATTRIBUTE_VISIBLE_VALUES]);
+                }
+                if (isset($_POST[$formModelClassName][KanbanBoard::SELECTED_THEME]))
+                {
+                    unset($_POST[$formModelClassName][KanbanBoard::SELECTED_THEME]);
                 }
                 $sanitizedSearchData = $this->resolveAndSanitizeDynamicSearchAttributesByPostData(
                                                                 $_POST[$formModelClassName], $searchForm);
