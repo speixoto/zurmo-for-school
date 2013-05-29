@@ -35,44 +35,27 @@
      ********************************************************************************/
 
     /**
-     * Action bar view for the marketing search and list user interface. Provides buttons like create, and links to
-     * queues.
+     * Specifically for when showing campaigns
      */
-    class SecuredActionBarForMarketingSearchAndListView extends SecuredActionBarForSearchAndListView
+    class CampaignsZeroModelsYetView extends ZeroModelsYetView
     {
         /**
-         * @return array
+         * @return string
          */
-        public static function getDefaultMetadata()
+        protected function getCreateLinkDisplayLabel()
         {
-            $metadata = array(
-                'global' => array(
-                    'toolbar' => array(
-                        'elements' => array(
-                            array('type'  => 'MarketingCreateLink',
-                                'htmlOptions' => array('class' => 'icon-create'),
-                            ),
-                            array(
-                                'type'            => 'MarketingDashboardLink',
-                                'htmlOptions'     => array( 'class' => 'icon-marketing-dashboard' )
-                            ),
-                            array(
-                                'type'            => 'MarketingListsLink',
-                                'htmlOptions'     => array( 'class' => 'icon-marketing-lists' )
-                            ),
-                            array(
-                                'type'            => 'CampaignsLink',
-                                'htmlOptions'     => array( 'class' => 'icon-marketing-campaigns' )
-                            ),
-                            array(
-                                'type'            => EmailTemplatesForMarketingLinkActionElement::getType(),
-                                'htmlOptions'     => array( 'class' => 'icon-email-templates' )
-                            ),
-                        ),
-                    ),
-                ),
-            );
-            return $metadata;
+            return Zurmo::t('CampaignsModule', 'Create Campaign');
+        }
+
+        /**
+         * @return string
+         */
+        protected function getMessageContent()
+        {
+            return Zurmo::t('MarketingListsModule', '<h2>"Business has only two functions - marketing and innovation."' .
+                                                    '</h2><i>- Milan Kundera</i>' .
+                                                    '</i><div class="large-icon"></div><p>Go ahead and perform an ' .
+                                                    'important business function, and be the first to create a Campaign!</p>');
         }
     }
 ?>

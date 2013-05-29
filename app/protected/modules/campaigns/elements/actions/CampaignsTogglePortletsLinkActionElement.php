@@ -35,44 +35,61 @@
      ********************************************************************************/
 
     /**
-     * Action bar view for the marketing search and list user interface. Provides buttons like create, and links to
-     * queues.
+     * Class to render link to toggle portlets for a report grid view
      */
-    class SecuredActionBarForMarketingSearchAndListView extends SecuredActionBarForSearchAndListView
+    class CampaignsTogglePortletsLinkActionElement extends LinkActionElement
     {
         /**
-         * @return array
+         * @return null
          */
-        public static function getDefaultMetadata()
+        public function getActionType()
         {
-            $metadata = array(
-                'global' => array(
-                    'toolbar' => array(
-                        'elements' => array(
-                            array('type'  => 'MarketingCreateLink',
-                                'htmlOptions' => array('class' => 'icon-create'),
-                            ),
-                            array(
-                                'type'            => 'MarketingDashboardLink',
-                                'htmlOptions'     => array( 'class' => 'icon-marketing-dashboard' )
-                            ),
-                            array(
-                                'type'            => 'MarketingListsLink',
-                                'htmlOptions'     => array( 'class' => 'icon-marketing-lists' )
-                            ),
-                            array(
-                                'type'            => 'CampaignsLink',
-                                'htmlOptions'     => array( 'class' => 'icon-marketing-campaigns' )
-                            ),
-                            array(
-                                'type'            => EmailTemplatesForMarketingLinkActionElement::getType(),
-                                'htmlOptions'     => array( 'class' => 'icon-email-templates' )
-                            ),
-                        ),
-                    ),
-                ),
-            );
-            return $metadata;
+            return null;
+        }
+
+        /**
+         * @return string
+         */
+        public function render()
+        {
+            $content  = null;
+            $metricsClass           = $this->getMetricsPortletClass();
+            if($metricsClass)
+            {
+                $membersTranslatedLabel = Zurmo::t('CampaignsModule', 'Dashboard');
+                $content                .= $this->getCheckboxContent($membersTranslatedLabel, $metricsClass);
+            }
+            return ZurmoHtml::tag('div', $this->getHtmlOptions(), $content );
+        }
+
+        protected function getCheckboxContent($translatedLabel, $class)
+        {
+            $htmlOptions = array('onClick' => 'js:$(".' . $class . '").parentsUntil("li").parent().toggle();');
+            $label       = ZurmoHtml::label($translatedLabel, $translatedLabel,
+                                                                array('class' => 'label-for-campaign-widgets'));
+            $content    = ZurmoHtml::checkBox($translatedLabel, true, $htmlOptions) . $label;
+            return $content;
+        }
+
+        /**
+         * @return string
+         */
+        protected function getDefaultLabel()
+        {
+            return Zurmo::t('CampaignsModule', 'Toggle View');
+        }
+
+        /**
+         * @return null
+         */
+        protected function getDefaultRoute()
+        {
+            return null;
+        }
+
+        protected function getMetricsPortletClass()
+        {
+            return ArrayUtil::getArrayValueWithExceptionIfNotFound($this->params, 'metricsPortletClass');
         }
     }
 ?>

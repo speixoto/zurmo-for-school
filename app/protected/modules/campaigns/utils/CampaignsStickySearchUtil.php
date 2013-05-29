@@ -35,44 +35,19 @@
      ********************************************************************************/
 
     /**
-     * Action bar view for the marketing search and list user interface. Provides buttons like create, and links to
-     * queues.
+     * Extended class to populate the breadcrumbs correctly
      */
-    class SecuredActionBarForMarketingSearchAndListView extends SecuredActionBarForSearchAndListView
+    class CampaignsStickySearchUtil extends StickySearchUtil
     {
-        /**
-         * @return array
-         */
-        public static function getDefaultMetadata()
+        protected static function resolveStickyDetailsAndRelationsBreadCrumbViewClassName()
         {
-            $metadata = array(
-                'global' => array(
-                    'toolbar' => array(
-                        'elements' => array(
-                            array('type'  => 'MarketingCreateLink',
-                                'htmlOptions' => array('class' => 'icon-create'),
-                            ),
-                            array(
-                                'type'            => 'MarketingDashboardLink',
-                                'htmlOptions'     => array( 'class' => 'icon-marketing-dashboard' )
-                            ),
-                            array(
-                                'type'            => 'MarketingListsLink',
-                                'htmlOptions'     => array( 'class' => 'icon-marketing-lists' )
-                            ),
-                            array(
-                                'type'            => 'CampaignsLink',
-                                'htmlOptions'     => array( 'class' => 'icon-marketing-campaigns' )
-                            ),
-                            array(
-                                'type'            => EmailTemplatesForMarketingLinkActionElement::getType(),
-                                'htmlOptions'     => array( 'class' => 'icon-email-templates' )
-                            ),
-                        ),
-                    ),
-                ),
-            );
-            return $metadata;
+            return 'MarketingStickyDetailsAndRelationsBreadCrumbView';
+        }
+
+        protected static function resolveBreadcrumbLinks(RedBeanModel $model)
+        {
+            return array(Zurmo::t('CampaignsModule', 'Campaigns') => array('default/list'),
+                         strval($model));
         }
     }
 ?>

@@ -35,55 +35,55 @@
      ********************************************************************************/
 
     /**
-     * Class for displaying metrics specific to a marketing list
+     * Class to render a fly-out link from the campaign detailview.  When this link is clicked, a little div will
+     * open up that display additional information about the campaign
      */
-    class MarketingListOverallMetricsView extends MarketingMetricsView implements PortletViewInterface
+    class CampaignsDetailsLinkActionElement extends LinkActionElement
     {
-        protected $formModelClassName = 'MarketingOverallMetricsForm';
-        /**
-         * The view's module class name.
-         */
-        public static function getModuleClassName()
+        public function getActionType()
         {
-            return 'MarketingListsModule';
+            return 'Details';
         }
 
-        public function getTitle()
+        protected function getDefaultLabel()
         {
-            $title  = Zurmo::t('MarketingListsModule', 'List Dashboard');
-            return $title;
+            return Zurmo::t('CampaignsModule', 'Details');
         }
 
-        public function renderContent()
+        protected function getDefaultRoute()
         {
-            $content  = ZurmoHtml::tag('h3', array(), Zurmo::t('MarketingListsModule', 'What is going on with this list?'));
-            $content .= $this->renderConfigureElementsContent();
-            $content .= $this->renderMetricsWrapperContent();
-            $content = ZurmoHtml::tag('div', array('class' => $this->getWrapperDivClass()), $content);
-            return $content;
+            return null;
         }
 
-        public function getConfigurationView()
+        public function render()
         {
-            return new MarketingOverallMetricsConfigView($this->resolveForm(), $this->params);
+            $items = array($this->renderMenuItem());
+            $cClipWidget = new CClipWidget();
+            $cClipWidget->beginClip("CampaignDetailsMenu");
+            $cClipWidget->widget('application.core.widgets.MinimalDynamicLabelMbMenu', array(
+                'htmlOptions' => array('id' => 'ListViewDetailsActionMenu'),
+                'items'                   => $items,
+            ));
+            $cClipWidget->endClip();
+            return $cClipWidget->getController()->clips['CampaignDetailsMenu'];
         }
 
-        /**
-         * Override to supply a marketing list
-         * @param string $type
-         * @return ChartDataProvider
-         */
-        protected function resolveChartDataProvider($type)
+        public function renderMenuItem()
         {
-            assert('is_string($type)');
-            $chartDataProvider = parent::resolveChartDataProvider($type);
-            $chartDataProvider->setMarketingList($this->params['relationModel']);
-            return $chartDataProvider;
-        }
-
-        protected function getWrapperDivClass()
-        {
-            return MarketingListDetailsAndRelationsView::METRICS_PORTLET_CLASS;
+            $detailsOverlayView = new CampaignDetailsOverlayView($this->controllerId,
+                                                                        $this->moduleId,
+                                                                        $this->params['model']
+                                                                        );
+            return array('label'        => $this->getLabel(),
+                         'url'          => $this->getRoute(),
+                         'itemOptions'  => array('class' => 'hasDetailsFlyout'),
+                         'items'        => array(
+                                               array(
+                                                   'label'                 => '',
+                                                   'dynamicLabelContent'   => $detailsOverlayView->render(),
+                                               )
+                                           )
+                         );
         }
     }
 ?>

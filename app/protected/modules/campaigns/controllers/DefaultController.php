@@ -34,23 +34,20 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class MarketingListsDefaultController extends ZurmoModuleController
+    class CampaignsDefaultController extends ZurmoModuleController
     {
         const ZERO_MODELS_CHECK_FILTER_PATH =
-            'application.modules.marketingLists.controllers.filters.MarketingListsZeroModelsCheckControllerFilter';
-
-        const USER_CONTACT_OR_LEAD_ACCESS_FILTER_PATH =
-            'application.modules.marketingLists.controllers.filters.UserCanAccessContactsOrLeadsForMarketingListControllerFilter';
+            'application.modules.campaigns.controllers.filters.CampaignsZeroModelsCheckControllerFilter';
 
         public static function getListBreadcrumbLinks()
         {
-            $title = Zurmo::t('MarketingListsModule', 'Lists');
+            $title = Zurmo::t('CampaignsModule', 'Campaigns');
             return array($title);
         }
 
         public static function getDetailsAndEditBreadcrumbLinks()
         {
-            return array(Zurmo::t('MarketingListsModule', 'Lists') => array('default/list'));
+            return array(Zurmo::t('CampaignsModule', 'Campaigns') => array('default/list'));
         }
 
         public function filters()
@@ -58,13 +55,9 @@
             return array_merge(parent::filters(),
                 array(
                     array(
-                        static::USER_CONTACT_OR_LEAD_ACCESS_FILTER_PATH . ' + create, details',
-                        'controller' => $this,
-                    ),
-                    array(
                         static::ZERO_MODELS_CHECK_FILTER_PATH . ' + list',
                         'controller'                    => $this,
-                        'activeActionElementType'       => 'MarketingListsLink',
+                        'activeActionElementType'       => 'CampaignsLink',
                         'breadcrumbLinks'               => static::getListBreadcrumbLinks(),
                     ),
                 )
@@ -80,16 +73,16 @@
         {
             $pageSize                       = Yii::app()->pagination->resolveActiveForCurrentUserByType(
                                                                         'listPageSize', get_class($this->getModule()));
-            $marketingList                  = new MarketingList(false);
-            $searchForm                     = new MarketingListsSearchForm($marketingList);
-            $listAttributesSelector         = new ListAttributesSelector('MarketingListsListView',
+            $campaign                       = new Campaign(false);
+            $searchForm                     = new CampaignsSearchForm($campaign);
+            $listAttributesSelector         = new ListAttributesSelector('CampaignsListView',
                                                                                 get_class($this->getModule()));
             $searchForm->setListAttributesSelector($listAttributesSelector);
             $dataProvider = $this->resolveSearchDataProvider(
                 $searchForm,
                 $pageSize,
                 null,
-                'MarketingListsSearchView'
+                'CampaignsSearchView'
             );
             if (isset($_GET['ajax']) && $_GET['ajax'] == 'list-view')
             {
@@ -97,14 +90,14 @@
                     $searchForm,
                     $dataProvider
                 );
-                $view = new MarketingListsPageView($mixedView);
+                $view = new CampaignsPageView($mixedView);
             }
             else
             {
                 $mixedView = $this->makeActionBarSearchAndListView($searchForm, $dataProvider,
-                             'SecuredActionBarForMarketingSearchAndListView', null, 'MarketingListsLink');
+                             'SecuredActionBarForMarketingSearchAndListView', null, 'CampaignsLink');
                 $breadcrumbLinks = static::getListBreadcrumbLinks();
-                $view      = new MarketingListsPageView(MarketingDefaultViewUtil::
+                $view      = new CampaignsPageView(MarketingDefaultViewUtil::
                                  makeViewWithBreadcrumbsForCurrentUser($this, $mixedView, $breadcrumbLinks,
                                  'MarketingBreadCrumbView'));
             }
@@ -114,11 +107,12 @@
         public function actionCreate()
         {
            $breadcrumbLinks    = static::getDetailsAndEditBreadcrumbLinks();
-           $breadcrumbLinks[]  = Zurmo::t('MarketingListsModule', 'Create');
-           $editView = new MarketingListEditView($this->getId(), $this->getModule()->getId(),
-                                                 $this->attemptToSaveModelFromPost(new MarketingList()),
-                                                 Zurmo::t('Default', 'Create Marketing List'));
-            $view               = new MarketingListsPageView(MarketingDefaultViewUtil::
+           $breadcrumbLinks[]  = Zurmo::t('CampaignsModule', 'Create');
+            //todo: wizard
+           $editView = new CampaignEditView($this->getId(), $this->getModule()->getId(),
+                                                 $this->attemptToSaveModelFromPost(new Campaign()),
+                                                 Zurmo::t('Default', 'Create Campaign'));
+            $view               = new CampaignsPageView(MarketingDefaultViewUtil::
                                   makeViewWithBreadcrumbsForCurrentUser($this, $editView,
                                   $breadcrumbLinks, 'MarketingBreadCrumbView'));
             echo $view->render();
@@ -126,32 +120,33 @@
 
         public function actionDetails($id)
         {
-            $marketingList = static::getModelAndCatchNotFoundAndDisplayError('MarketingList', intval($id));
-            ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($marketingList);
+            $campaign = static::getModelAndCatchNotFoundAndDisplayError('Campaign', intval($id));
+            ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($campaign);
             AuditEvent::logAuditEvent('ZurmoModule', ZurmoModule::AUDIT_EVENT_ITEM_VIEWED,
-                                            array(strval($marketingList), 'MarketingListsModule'), $marketingList);
-            $breadCrumbView             = MarketingListsStickySearchUtil::
+                                            array(strval($campaign), 'CampaignsModule'), $campaign);
+            $breadCrumbView             = CampaignsStickySearchUtil::
                                           resolveBreadCrumbViewForDetailsControllerAction($this,
-                                          'MarketingListsSearchView', $marketingList);
-            $detailsAndRelationsView    = $this->makeDetailsAndRelationsView($marketingList, 'MarketingListsModule',
-                                                                                'MarketingListDetailsAndRelationsView',
+                                          'CampaignsSearchView', $campaign);
+            $detailsAndRelationsView    = $this->makeDetailsAndRelationsView($campaign, 'CampaignsModule',
+                                                                                'CampaignDetailsAndRelationsView',
                                                                                 Yii::app()->request->getRequestUri(),
                                                                                 $breadCrumbView);
-            $view                       = new MarketingListsPageView(MarketingDefaultViewUtil::
-                                                makeStandardViewForCurrentUser($this, $detailsAndRelationsView));
+            $view                       = new CampaignsPageView(MarketingDefaultViewUtil::
+                                              makeStandardViewForCurrentUser($this, $detailsAndRelationsView));
             echo $view->render();
         }
 
         public function actionEdit($id)
         {
-            $marketingList = MarketingList::getById(intval($id));
-            ControllerSecurityUtil::resolveAccessCanCurrentUserWriteModel($marketingList);
+            $campaign           = Campaign::getById(intval($id));
+            ControllerSecurityUtil::resolveAccessCanCurrentUserWriteModel($campaign);
             $breadcrumbLinks    = static::getDetailsAndEditBreadcrumbLinks();
-            $breadcrumbLinks[]  = StringUtil::getChoppedStringContent(strval($marketingList), 25);
-            $editView = new MarketingListEditView($this->getId(), $this->getModule()->getId(),
-                                                 $this->attemptToSaveModelFromPost($marketingList),
-                                                 strval($marketingList));
-            $view               = new MarketingListsPageView(MarketingDefaultViewUtil::
+            $breadcrumbLinks[]  = StringUtil::getChoppedStringContent(strval($campaign), 25);
+            //todo: wizard
+            $editView = new CampaignEditView($this->getId(), $this->getModule()->getId(),
+                                                 $this->attemptToSaveModelFromPost($campaign),
+                                                 strval($campaign));
+            $view               = new CampaignsPageView(MarketingDefaultViewUtil::
                                   makeViewWithBreadcrumbsForCurrentUser($this, $editView,
                                   $breadcrumbLinks, 'MarketingBreadCrumbView'));
             echo $view->render();
@@ -159,9 +154,9 @@
 
         public function actionDelete($id)
         {
-            $marketingList = static::getModelAndCatchNotFoundAndDisplayError('MarketingList', intval($id));
-            ControllerSecurityUtil::resolveAccessCanCurrentUserDeleteModel($marketingList);
-            $marketingList->delete();
+            $campaign = static::getModelAndCatchNotFoundAndDisplayError('Campaign', intval($id));
+            ControllerSecurityUtil::resolveAccessCanCurrentUserDeleteModel($campaign);
+            $campaign->delete();
             $this->redirect(array($this->getId() . '/index'));
         }
 
@@ -177,7 +172,7 @@
 
         protected static function getSearchFormClassName()
         {
-            return 'MarketingListsSearchForm';
+            return 'CampaignsSearchForm';
         }
     }
 ?>
