@@ -1176,6 +1176,21 @@ body > .ui-autocomplete{
 			content: '\20AC';
 		}
 	}
+	li.type-ProductModule{
+		em:before{
+			content: '\003E';
+		}
+	}
+	li.type-ProductTemplateModule{
+		em:before{
+			content: '\00AC';
+		}
+	}
+	li.type-ProductCategoryModule{
+		em:before{
+			content: '\00D7';
+		}
+	}
 }
 
 /*=Content*/
@@ -1458,6 +1473,7 @@ form,
 	top:-2px;
 }
 
+#MarketingCreateLinkActionElement .parent > a:before,
 #MarketingListAddSubscriberLinkActionElement .parent > a:before,
 #MashableInboxCreateDropdown .parent > a:before,
 .icon-create:before{
@@ -1480,7 +1496,6 @@ form,
 		.view-toolbar-icons();
 		top:-2px;
 		margin: 0;
-		color: #c43d53;
 	}
 }
 
@@ -1491,7 +1506,6 @@ form,
 		.view-toolbar-icons();
 		top:-2px;
 		margin: 0;
-		color: #7CB830;
 	}
 }
 
@@ -1680,7 +1694,7 @@ form,
 }
 
 .icon-combined:before{
-	content:'\00AE';
+	content:'\00A7';
 	.view-toolbar-icons(26px);
 	top:-2px;
 }
@@ -1719,6 +1733,24 @@ form,
 	content:'\00B6';
 	.view-toolbar-icons(25px);
 	top:-1px;
+}
+
+.icon-products:before{
+	content:'\003E';
+	.view-toolbar-icons();
+	top:-2px;
+}
+
+.icon-catalog-items:before{
+	content:'\00AC';
+	.view-toolbar-icons(27px);
+	top:-1px;
+}
+
+.icon-product-categories:before{
+	content:'\00D7';
+	.view-toolbar-icons(26px);
+	top:-2px;
 }
 
 .icon-mobile:before{
@@ -2576,6 +2608,21 @@ div.wide.form{
 		.symbly(300px);
 		line-height: 52%;
 	}
+	.Product .large-icon:after{
+		content: '\003E';
+		.symbly(300px);
+		line-height: 52%;
+	}
+	.ProductTemplate .large-icon:after{
+		content: '\00AC';
+		.symbly(300px);
+		line-height: 52%;
+	}
+	.ProductCategory .large-icon:after{
+		content: '\00D7';
+		.symbly(300px);
+		line-height: 52%;
+	}
 }
 
 
@@ -2609,6 +2656,14 @@ div.wide.form{
 	}
 	table{
 		border-bottom:none;
+	}
+	.filters-bar{
+		width: auto;
+		top:20px;
+		> div{
+			float: left;
+			padding-left: 15px;
+		}
 	}
 }
 
@@ -3080,7 +3135,14 @@ div.wide.form{
 			display: none;
 		}
 	}
+	.left-column{
+		padding: 0 15px 0 0;
+	}
+	.right-column{
+		padding: 0 0 15px 0;
+	}
 }
+
 .right-column{
 	float: right;
 	width: 30%;
@@ -3100,7 +3162,7 @@ div.wide.form{
 		}
 	}
 	h3{
-		margin:15px 0 0 15px;
+		margin:0 0 15px 0;
 	}
 	table{
 		border-bottom:none;
@@ -3459,6 +3521,14 @@ div.wide.form{
 		margin-top:0;
 		margin-left:0;
 	}
+	h1 + .toolbar-mbmenu{
+		top: 6px;
+		right: 0px;
+		position: absolute;
+		.parent > ul{
+			top: 27px;
+		}
+	}
 }
 
 .after-form-details-content{
@@ -3490,7 +3560,7 @@ div.wide.form{
 .AppContent.TableOfContentsView,
 .AppContent.SecuredEditAndDetailsView{
 	.toolbar-mbmenu{
-		top:8px;
+		//top:8px;
 	}
 }
 
@@ -3550,9 +3620,6 @@ div.wide.form{
 }
 
 .toolbar-mbmenu{
-	//position:absolute;
-	//top: 8px;//-35px;
-	//right:10px;
 	margin:0 10px 0 0;
 	float:right;
 	width:auto;
@@ -3599,6 +3666,7 @@ div.wide.form{
 		display:none;
 		font-weight:normal !important;
 		right:0;
+		z-index: 9999;
 		a{
 			text-indent:0;
 			.smaller();

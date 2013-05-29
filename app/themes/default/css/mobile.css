@@ -916,8 +916,17 @@ body > div {
 .juiportlet-widget {
   margin-right: 0 !important;
 }
+.juiportlet-widget-head .view-toolbar-container {
+  right: 0 !important;
+}
+.juiportlet-widget-head .portlet-toolbar .z-label {
+  padding: 0 5px;
+}
 .latest-activity-toolbar {
   padding: 10px 5px !important;
+}
+.latest-activity-toolbar > div:first-child {
+  margin-bottom: 10px;
 }
 #filter-latest-activities-link {
   margin-left: 5px !important;
@@ -931,6 +940,9 @@ body > div {
   line-height: 1;
   float: left;
   margin: 10px 0 0 2px;
+}
+.filter-portlet-model-bar > .ui-buttonset {
+  padding-top: 0;
 }
 #more-search-link,
 #select-list-attributes-link,
@@ -1025,7 +1037,7 @@ div:not(#MashableInboxActionBarForViews) .toolbar-mbmenu .options-menu > li > a 
 }
 div:not(#LeaderboardView) .toolbar-mbmenu .options-menu > li > a:after,
 div:not(#MashableInboxActionBarForViews) .toolbar-mbmenu .options-menu > li > a:after {
-  content: "n";
+  content: "{";
   font-weight: normal;
   font-size: 24px;
   font-family: "ZurmoGamificationSymblyReguRg";

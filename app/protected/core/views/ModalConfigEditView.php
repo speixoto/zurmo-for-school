@@ -75,8 +75,8 @@
                     'clientOptions' => array(
                         'validateOnSubmit'  => true,
                         'validateOnChange'  => false,
-                        'beforeValidate'    => 'js:beforeValidateAction',
-                        'afterValidate'     => 'js:afterValidateAjaxAction',
+                        'beforeValidate'    => 'js:$(this).beforeValidateAction',
+                        'afterValidate'     => 'js:$(this).afterValidateAjaxAction',
                         'afterValidateAjax' => $afterValidateAjax,
                     ),
                 )

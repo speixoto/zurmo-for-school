@@ -6071,6 +6071,15 @@ body > .ui-autocomplete {
 #RecentlyViewedView li.type-WorkflowsModule em:before {
   content: '\20AC';
 }
+#RecentlyViewedView li.type-ProductModule em:before {
+  content: '\003E';
+}
+#RecentlyViewedView li.type-ProductTemplateModule em:before {
+  content: '\00AC';
+}
+#RecentlyViewedView li.type-ProductCategoryModule em:before {
+  content: '\00D7';
+}
 /*=Content*/
 .AppContent {
   -webkit-border-radius: 0 0 5px 5px;
@@ -6425,6 +6434,7 @@ form .view-toolbar-container,
   content: "!";
   top: -2px;
 }
+#MarketingCreateLinkActionElement .parent > a:before,
 #MarketingListAddSubscriberLinkActionElement .parent > a:before,
 #MashableInboxCreateDropdown .parent > a:before,
 .icon-create:before {
@@ -6472,7 +6482,6 @@ form .view-toolbar-container,
   position: relative;
   top: -2px;
   margin: 0;
-  color: #c43d53;
 }
 .icon-unlock {
   padding: 0 10px !important;
@@ -6491,7 +6500,6 @@ form .view-toolbar-container,
   position: relative;
   top: -2px;
   margin: 0;
-  color: #7CB830;
 }
 .icon-change-dashborad:before {
   content: "/";
@@ -6910,7 +6918,7 @@ form .view-toolbar-container,
   top: -2px;
 }
 .icon-combined:before {
-  content: '\00AE';
+  content: '\00A7';
   font-weight: normal;
   font-size: 26px;
   font-family: "ZurmoGamificationSymblyReguRg";
@@ -7006,6 +7014,48 @@ form .view-toolbar-container,
   vertical-align: middle;
   position: relative;
   top: -1px;
+}
+.icon-products:before {
+  content: '\003E';
+  font-weight: normal;
+  font-size: 24px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  padding: 0 0 0 0;
+  margin: 0 6px 0 -30px;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  vertical-align: middle;
+  position: relative;
+  top: -2px;
+}
+.icon-catalog-items:before {
+  content: '\00AC';
+  font-weight: normal;
+  font-size: 27px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  padding: 0 0 0 0;
+  margin: 0 6px 0 -30px;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  vertical-align: middle;
+  position: relative;
+  top: -1px;
+}
+.icon-product-categories:before {
+  content: '\00D7';
+  font-weight: normal;
+  font-size: 26px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  padding: 0 0 0 0;
+  margin: 0 6px 0 -30px;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  vertical-align: middle;
+  position: relative;
+  top: -2px;
 }
 .icon-mobile:before {
   content: '\2018';
@@ -8015,6 +8065,30 @@ div.wide.form label.hasCheckBox {
   font-family: "ZurmoGamificationSymblyReguRg";
   line-height: 52%;
 }
+.zero-components-view .Product .large-icon:after,
+.splash-view .Product .large-icon:after {
+  content: '\003E';
+  font-weight: normal;
+  font-size: 300px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  line-height: 52%;
+}
+.zero-components-view .ProductTemplate .large-icon:after,
+.splash-view .ProductTemplate .large-icon:after {
+  content: '\00AC';
+  font-weight: normal;
+  font-size: 300px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  line-height: 52%;
+}
+.zero-components-view .ProductCategory .large-icon:after,
+.splash-view .ProductCategory .large-icon:after {
+  content: '\00D7';
+  font-weight: normal;
+  font-size: 300px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  line-height: 52%;
+}
 #NoUserEmailConfigurationYetView .z-label {
   z-index: auto;
 }
@@ -8072,6 +8146,14 @@ div.wide.form label.hasCheckBox {
 }
 #search-form table {
   border-bottom: none;
+}
+#search-form .filters-bar {
+  width: auto;
+  top: 20px;
+}
+#search-form .filters-bar > div {
+  float: left;
+  padding-left: 15px;
 }
 .SecuredListView {
   float: left;
@@ -8622,6 +8704,12 @@ div.wide.form label.hasCheckBox {
 .left-column.full-width + .right-column {
   display: none;
 }
+.left-column .left-column {
+  padding: 0 15px 0 0;
+}
+.left-column .right-column {
+  padding: 0 0 15px 0;
+}
 .right-column {
   float: right;
   width: 30%;
@@ -8640,7 +8728,7 @@ div.wide.form label.hasCheckBox {
 #modal-edit-form h3,
 #edit-form h3,
 #delete-form h3 {
-  margin: 15px 0 0 15px;
+  margin: 0 0 15px 0;
 }
 #modal-edit-form table,
 #edit-form table,
@@ -9013,6 +9101,14 @@ div.wide.form label.hasCheckBox {
   margin-top: 0;
   margin-left: 0;
 }
+.details-table h1 + .toolbar-mbmenu {
+  top: 6px;
+  right: 0px;
+  position: absolute;
+}
+.details-table h1 + .toolbar-mbmenu .parent > ul {
+  top: 27px;
+}
 .after-form-details-content {
   color: #545454 !important;
   float: none;
@@ -9033,10 +9129,6 @@ div.wide.form label.hasCheckBox {
   height: auto !important;
 }
 /*=For single meeting, contact etc..*/
-.AppContent.TableOfContentsView .toolbar-mbmenu,
-.AppContent.SecuredEditAndDetailsView .toolbar-mbmenu {
-  top: 8px;
-}
 .wrapper {
   float: left;
   width: 100%;
@@ -9220,6 +9312,7 @@ div.wide.form label.hasCheckBox {
   display: none;
   font-weight: normal !important;
   right: 0;
+  z-index: 9999;
 }
 .toolbar-mbmenu .options-menu ul a {
   text-indent: 0;
@@ -10986,6 +11079,7 @@ div.hasHalfs .twoThirds {
   box-shadow: inset 0 1px 0 0 #ffffff;
   position: relative;
   border-bottom: 1px solid #CCC;
+  z-index: 999;
 }
 .juiportlet-columns .juiportlet-widget .juiportlet-widget-head h3 {
   float: left;
@@ -10995,83 +11089,6 @@ div.hasHalfs .twoThirds {
 .collapse ~ h3 {
   margin-left: 0;
 }
-/*.juiportlet-widget-head */
-a.remove {
-  /*float: right;
-	display: inline;
-	width: 13px;
-	height: 40px;
-	margin-right:8px;
-	text-indent: -9999em;
-	outline: none;
-	position:relative;
-	z-index:9999;
-	*/
-
-  /*.b-shadow(inset 0 1px 0 0 #ffffff);
-	float: right;
-	display: inline;
-	text-indent: -9999em;
-	outline: none;
-	position: relative;
-	z-index: 9999;
-	line-height: 1 !important;
-	#gradient > .vertical(#f6f6f6, #ededed);
-	border:1px solid #CCC;
-	border-left: none;
-	width: 14px;
-	height: 20px;
-	border-radius: 0 15% 15% 0;
-	margin-right: -15px;
-	margin-top: 10px;
-	.icon{
-	    line-height:1;
-	    position:relative;
-	    float:right;
-	}
-	.icon:after{
-		position: relative;
-		left: -1px;
-		margin-top: -2px;
-		line-height: 1;
-		content:"—";
-		.symbly(22px);
-		text-indent:0;
-		display:block;
-		float:left;
-		color:#A7A7A7;
-		.t-shadow( rgba( 255, 255, 255, 0.8 ) 0 1px 0  );
-	}*/
-
-}
-/*
-.juiportlet-widget-head a.edit {
-	float: right;
-	display: inline;
-	width: 14px;
-	height: 40px;
-	text-indent: -9999em;
-	margin-right:8px;
-	outline: none;
-	position:relative;
-	.icon{
-	    line-height:1;
-	    position:relative;
-	    float:right;
-	}
-	.icon:after{
-		position:absolute;
-		top:7px;
-		right:0;
-		content:"n";
-		.symbly(24px);
-		text-indent:0;
-		display:block;
-		float:right;
-		color:#A7A7A7;
-	}
-}
-*/
 .juiportlet-widget-head a.collapse {
   float: left;
   display: none;
@@ -11089,6 +11106,8 @@ a.remove {
 }
 .juiportlet-widget-content {
   padding: 0 0 0 0;
+  position: relative;
+  z-index: 1;
 }
 .juiportlet-widget-content > li {
   padding: 10px 15px;
@@ -15325,6 +15344,9 @@ a.close-ModalGameNotification.simple-link {
   float: none;
   margin-bottom: 0;
 }
+#UserDetailsView {
+  padding: 0 20px 20px 0;
+}
 #UserDetailsView .details-table {
   zoom: 1;
   position: relative !important;
@@ -15985,7 +16007,7 @@ a.dashboard-link .z-label {
   padding: 0 0 0 0 !important;
 }
 #CommentInlineEditForModelView h2 {
-  margin: 0 0 0 0;
+  margin: 0 0 10px 0;
 }
 #CommentInlineEditForModelView .wide.form {
   padding: 0;
@@ -16060,6 +16082,9 @@ a.dashboard-link .z-label {
 }
 #MissionEditView .panel {
   width: 100% !important;
+}
+#MissionEditView .view-toolbar-container + .left-column {
+  display: none;
 }
 .mission-change-status-link {
   margin: 0 5px !important;
@@ -17339,12 +17364,13 @@ a.user-link {
 .all-related-field {
   float: left;
   width: 80%;
-  padding-left: 15px;
 }
 .all-related-field .value-data {
   width: 42.5%;
+  float: left;
 }
 .all-related-field > span {
+  width: 15%;
   float: left;
   line-height: 26px;
 }
@@ -17745,6 +17771,9 @@ a.user-link {
 .mergetag-guide-modal li {
   margin-bottom: 4px;
 }
+.marketing-list-members-portlet-container .portlet-view-toolbar {
+  float: left;
+}
 #marketing-list-member-configuration-form {
   position: relative;
   padding: 15px;
@@ -17796,6 +17825,10 @@ a.user-link {
 #marketing-list-member-configuration-form input[type="text"]:focus {
   outline: none !important;
   box-shadow: none !important;
+}
+#marketing-list-member-configuration-form .list-view-items-summary-clone {
+  margin-top: 51px;
+  font-weight: bold;
 }
 .MarketingListMembersListView {
   margin-bottom: 0;
@@ -17898,6 +17931,8 @@ a.user-link {
 }
 #MarketingListMembersConfigurationForm_filteredBySubscriptionType_area {
   margin-left: 15px;
+  width: auto;
+  top: 20px;
 }
 .marketing-list-member-stats {
   margin: 5px 0 0 0;
@@ -17912,6 +17947,14 @@ a.user-link {
 }
 .portlet-with-toolbar .view-toolbar .parent > ul {
   top: auto;
+}
+#MarketingListDetailsView {
+  position: relative;
+  z-index: 10;
+}
+#MarketingListDetailsView + div {
+  position: relative;
+  z-index: 1;
 }
 /*********************************************************************************
  * Zurmo is a customer relationship management program developed by

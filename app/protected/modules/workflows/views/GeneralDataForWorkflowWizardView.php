@@ -79,8 +79,6 @@
             $leftSideContent  .= '<tr>' . $element->render() . '</tr>';
             $leftSideContent  .= '</table>';
             $leftSideContent   = ZurmoHtml::tag('div', array('class' => 'panel'), $leftSideContent);
-            $leftSideContent   = ZurmoHtml::tag('div', array('class' => 'left-column full-width'), $leftSideContent);
-
             $content = '<div class="attributesContainer">';
             $content .= $leftSideContent;
             $content .= '</div>';

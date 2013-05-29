@@ -96,7 +96,6 @@
             $content  = $this->renderAddEmailMessageLinkContentAndWrapper();
             $content .= $this->renderZeroComponentsContentAndWrapper();
             $content .= $this->renderEmailMessagesContentAndWrapper();
-            $content  = ZurmoHtml::tag('div', array('class' => 'left-column full-width'), $content);
             $this->registerScripts();
             return $content;
         }
@@ -163,7 +162,7 @@
                             $moduleClassNameId . '\"]:checked").val() + ' .
                             '\'&rowNumber=\' + $(\'#' . $rowCounterInputId . '\').val()',
                         'url'     =>  $url,
-                        'beforeSend' => 'js:function(){ makeOrRemoveLoadingSpinner(true, "#" + $(this).attr("id")); }',
+                        'beforeSend' => 'js:function(){ $(this).makeOrRemoveLoadingSpinner(true, "#" + $(this).attr("id")); }',
                         'success' => 'js:function(data)
                         {
                             $(\'#' . $rowCounterInputId . '\').val(parseInt($(\'#' . $rowCounterInputId . '\').val()) + 1);
