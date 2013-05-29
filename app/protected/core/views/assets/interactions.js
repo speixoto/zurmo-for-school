@@ -415,12 +415,11 @@ $.fn.onAjaxSubmitRelatedListAction = function(confirmTitle, gridId){
 
 /*Takes care of padding in input of type has-lang-label*/
 $.fn.resolvePaddingForHasLangLabel = function(context){
-    if ( $("span", context).width() > 80 ){
-        $("input", context).css({paddingLeft: $("span", context).width() });
+    if ( $("span", context).outerWidth() > 80 ){
+        $("input", context).css({paddingLeft: $("span", context).outerWidth() });
     } else {
         $("input", context).css({paddingLeft: 80 });
     }
-    console.log(context);
 };
 
 /*
