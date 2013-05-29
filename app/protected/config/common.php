@@ -374,6 +374,7 @@
             ),
             'users',
             'maps',
+            'contactWebForms',
         ),
 
         'params' => array(

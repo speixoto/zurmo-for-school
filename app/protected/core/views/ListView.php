@@ -86,6 +86,8 @@
 
         private $listAttributesSelector;
 
+        private $kanbanBoard;
+
         /**
          * Constructs a list view specifying the controller as
          * well as the model that will have its details displayed.isDisplayAttributeACalculationOrModifier
@@ -98,13 +100,15 @@
             $selectedIds,
             $gridIdSuffix = null,
             $gridViewPagerParams = array(),
-            $listAttributesSelector = null
+            $listAttributesSelector = null,
+            $kanbanBoard            = null
         )
         {
             assert('is_array($selectedIds)');
             assert('is_string($modelClassName)');
             assert('is_array($this->gridViewPagerParams)');
             assert('$listAttributesSelector == null || $listAttributesSelector instanceof ListAttributesSelector');
+            assert('$kanbanBoard === null || $kanbanBoard instanceof $kanbanBoard');
             $this->controllerId           = $controllerId;
             $this->moduleId               = $moduleId;
             $this->modelClassName         = $modelClassName;
@@ -115,6 +119,7 @@
             $this->gridViewPagerParams    = $gridViewPagerParams;
             $this->gridId                 = 'list-view';
             $this->listAttributesSelector = $listAttributesSelector;
+            $this->kanbanBoard            = $kanbanBoard;
         }
 
         /**
@@ -135,7 +140,7 @@
                 $content .= $this->renderViewToolBar();
             }
             $content .= $cClipWidget->getController()->clips['ListView'] . "\n";
-            if ($this->rowsAreSelectable)
+            if ($this->getRowsAreSelectable())
             {
                 $content .= ZurmoHtml::hiddenField($this->gridId . $this->gridIdSuffix . '-selectedIds', implode(",", $this->selectedIds)) . "\n"; // Not Coding Standard
             }
@@ -149,15 +154,31 @@
             {
                 $widget = 'application.core.widgets.StackedExtendedGridView';
             }
-            else
+            elseif($this->kanbanBoard === null || !$this->kanbanBoard->getIsActive())
             {
                 $widget = 'application.core.widgets.ExtendedGridView';
+            }
+            elseif($this->kanbanBoard->getIsActive())
+            {
+                $widget = $this->kanbanBoard->getGridViewWidgetPath();
+            }
+            else
+            {
+                throw new NotSupportedException();
             }
             return $widget;
         }
 
+        /**
+         * For a Kanban Board view, the rows are never selectable.
+         * @return bool
+         */
         public function getRowsAreSelectable()
         {
+            if($this->kanbanBoard != null)
+            {
+                return false;
+            }
             return $this->rowsAreSelectable;
         }
 
@@ -170,8 +191,7 @@
         {
             $columns = $this->getCGridViewColumns();
             assert('is_array($columns)');
-
-            return array(
+            $params = array(
                 'id' => $this->getGridViewId(),
                 'htmlOptions' => array(
                     'class' => 'cgrid-view'
@@ -191,6 +211,7 @@
                 'summaryText'          => static::getSummaryText(),
                 'summaryCssClass'      => static::getSummaryCssClass(),
             );
+            return $this->resolveCGridViewParamsForKanbanBoard($params);
         }
 
         protected static function getGridTemplate()
@@ -273,7 +294,7 @@
          protected function getCGridViewColumns()
          {
             $columns = array();
-            if ($this->rowsAreSelectable)
+            if ($this->getRowsAreSelectable())
             {
                 $firstColumn = $this->getCGridViewFirstColumn();
                 array_push($columns, $firstColumn);
@@ -337,13 +358,13 @@
 
         protected function getCGridViewBeforeAjaxUpdate()
         {
-            if ($this->rowsAreSelectable)
+            if ($this->getRowsAreSelectable())
             {
-                return 'js:function(id, options) { makeSmallLoadingSpinner(true, "#" + id); addListViewSelectedIdsToUrl(id, options); }';
+                return 'js:function(id, options) { $(this).makeSmallLoadingSpinner(true, "#" + id); addListViewSelectedIdsToUrl(id, options); }';
             }
             else
             {
-                return 'js:function(id, options) { makeSmallLoadingSpinner(true, "#" + id); }';
+                return 'js:function(id, options) { $(this).makeSmallLoadingSpinner(true, "#" + id); }';
             }
         }
 
@@ -391,7 +412,7 @@
 
         protected function getCGridViewSelectableRowsCount()
         {
-            if ($this->rowsAreSelectable)
+            if ($this->getRowsAreSelectable())
             {
                 return 2;
             }
@@ -512,6 +533,16 @@
         public function getControllerId()
         {
             return $this->controllerId;
+        }
+
+        private function resolveCGridViewParamsForKanbanBoard(array $params)
+        {
+            if(Yii::app()->userInterface->isMobile() || $this->kanbanBoard === null || !$this->kanbanBoard->getIsActive())
+            {
+                return $params;
+            }
+            $params = array_merge($params, $this->kanbanBoard->getGridViewParams());
+            return array_merge($params, $this->resolveExtraParamsForKanbanBoard());
         }
     }
 ?>

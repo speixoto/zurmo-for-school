@@ -36,6 +36,8 @@
 
     class MarketingListDetailsAndRelationsView extends DetailsAndRelationsView
     {
+        const METRICS_PORTLET_CLASS     = 'marketing-list-metrics-container';
+
         const MEMBERS_PORTLET_CLASS     = 'marketing-list-members-portlet-container';
 
         const AUTORESPONDERS_PORTLET_CLASS  = 'marketing-list-autoresponder-portlet-container';
@@ -52,6 +54,9 @@
                         'columns' => array(
                             array(
                                 'rows' => array(
+                                    array(
+                                        'type' => 'MarketingListOverallMetrics'
+                                    ),
                                     array(
                                         'type' => 'MarketingListMembersPortlet'
                                     ),

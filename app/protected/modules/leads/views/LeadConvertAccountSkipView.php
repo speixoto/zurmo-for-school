@@ -108,7 +108,7 @@
 
         protected function resolveFormHtmlOptions()
         {
-            $data = array('onSubmit' => 'js:return attachLoadingOnSubmit("' . static::getFormId() . '")');
+            $data = array('onSubmit' => 'js:return $(this).attachLoadingOnSubmit("' . static::getFormId() . '")');
             return $data;
         }
     }
