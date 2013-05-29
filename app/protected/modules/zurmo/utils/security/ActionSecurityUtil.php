@@ -63,7 +63,6 @@
         public static function canUserPerformAction($actionType, $model, $user)
         {
             assert('$user instanceof User && $user->id > 0');
-            assert('$model instanceof Item');
             assert('$actionType == null || is_string($actionType)');
             if (!$model instanceof SecurableItem)
             {
