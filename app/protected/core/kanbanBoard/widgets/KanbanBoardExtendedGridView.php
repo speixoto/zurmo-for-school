@@ -219,11 +219,11 @@
                 'beforeSend' => 'js:function()
                     {
                         $(".ui-overlay-block").fadeIn(50);
-                        makeLargeLoadingSpinner(true, ".ui-overlay-block"); //- add spinner to block anything else
+                        $(this).makeLargeLoadingSpinner(true, ".ui-overlay-block"); //- add spinner to block anything else
                     }',
                 'success' => 'js:function(data)
                     {
-                        makeLargeLoadingSpinner(false, ".ui-overlay-block");
+                        $(this).makeLargeLoadingSpinner(false, ".ui-overlay-block");
                         $(".ui-overlay-block").fadeOut(50);
                     }'
             ));
