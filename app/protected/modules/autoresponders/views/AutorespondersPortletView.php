@@ -57,6 +57,11 @@
             return $metadata;
         }
 
+        public function renderPortletHeadContent()
+        {
+            return $this->renderViewToolBar();
+        }
+
         public function getTitle()
         {
             return Zurmo::t('AutorespondersModule', 'Autoresponders');
@@ -107,9 +112,9 @@
             return array('marketingListId' => $this->modelId);
         }
 
-        protected function shouldRenderViewToolBar()
+        protected function shouldRenderActionElementBar()
         {
-            return true;
+            return false;
         }
     }
 ?>
