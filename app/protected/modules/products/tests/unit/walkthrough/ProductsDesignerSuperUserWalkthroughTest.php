@@ -205,7 +205,7 @@
             $datetime       = Yii::app()->dateFormatter->format(DateTimeUtil::getLocaleDateTimeFormat(), time());
             $datetimeAssert = date('Y-m-d H:i:')."00";
             $baseCurrency   = Currency::getByCode(Yii::app()->currencyHelper->getBaseCode());
-
+            $explicitReadWriteModelPermission = ExplicitReadWriteModelPermissionsUtil::MIXED_TYPE_EVERYONE_GROUP;
             //Retrieve the account id and the super account id.
             $accountId   = self::getModelIdByModelNameAndName ('Account', 'superAccount');
             $superUserId = $super->id;
@@ -216,12 +216,12 @@
                             'name'                              => 'myNewProduct',
                             'owner'                             => array('id' => $superUserId),
                             'type'                              => 1,
-                            'sellPrice'                         => array ('currency' => array ('id' => 1), 'value' => 200),
+                            'sellPrice'                         => array ('currency' => array ('id' => $baseCurrency->id), 'value' => 200),
                             'account'                           => array('id' => $accountId),
                             'quantity'                          => 10,
                             'priceFrequency'                    => 2,
                             'stage'                             => array('value' => 'Open'),
-                            'explicitReadWriteModelPermissions' => array('nonEveryoneGroup' => 4, 'type' => 1),
+                            'explicitReadWriteModelPermissions' => array('type' => $explicitReadWriteModelPermission),
                             'checkboxCstm'                      => '1',
                             'currencyCstm'                      => array('value'    => 45,
                                                                          'currency' => array('id' => $baseCurrency->id)),
@@ -249,8 +249,8 @@
             //Retrieve the permission of the product.
             $explicitReadWriteModelPermissions = ExplicitReadWriteModelPermissionsUtil::
                                                  makeBySecurableItem($product);
-//            $readWritePermitables              = $explicitReadWriteModelPermissions->getReadWritePermitables();
-//            $readOnlyPermitables               = $explicitReadWriteModelPermissions->getReadOnlyPermitables();
+            $readWritePermitables              = $explicitReadWriteModelPermissions->getReadWritePermitables();
+            $readOnlyPermitables               = $explicitReadWriteModelPermissions->getReadOnlyPermitables();
 
             $this->assertEquals($product->name                       , 'myNewProduct');
             $this->assertEquals($product->quantity                   , 10);
@@ -259,8 +259,8 @@
             $this->assertEquals($product->type                       , 1);
             $this->assertEquals($product->stage->value               , 'Open');
             $this->assertEquals($product->owner->id                  , $superUserId);
-            //$this->assertEquals(0                                        , count($readWritePermitables));
-            //$this->assertEquals(0                                        , count($readOnlyPermitables));
+            $this->assertEquals(1                                    , count($readWritePermitables));
+            $this->assertEquals(0                                    , count($readOnlyPermitables));
             $this->assertEquals($product->checkboxCstm               , '1');
             $this->assertEquals($product->currencyCstm->value        , 45);
             $this->assertEquals($product->currencyCstm->currency->id , $baseCurrency->id);
@@ -284,7 +284,7 @@
             $metadata            = CalculatedDerivedAttributeMetadata::
                                    getByNameAndModelClassName('calcnumber', 'Product');
             $testCalculatedValue = CalculatedNumberUtil::calculateByFormulaAndModelAndResolveFormat($metadata->getFormula(), $product);
-            $this->assertEquals(1476                                     , $testCalculatedValue);
+            $this->assertEquals(1476                                     , intval(str_replace(',', '', $testCalculatedValue)));
         }
 
         /**
@@ -304,7 +304,7 @@
                                                 'name'               => 'myNewProduct',
                                                 'owner'              => array('id' => $superUserId),
                                                 'type'               => 1,
-                                                'sellPrice'          => array ('currency' => array('id' => 1), 'value' => 200),
+                                                'sellPrice'          => array ('value' => 200),
                                                 'account'            => array('id' => $accountId),
                                                 'quantity'           => 10,
                                                 'priceFrequency'     => 2,
@@ -326,10 +326,10 @@
                                                 'radioCstm'          => array('value'  =>  'd'),
                                                 'dateCstm__Date'     => array('type'   =>  'Today'),
                                                 'datetimeCstm__DateTime' => array('type'   =>  'Today')),
-                                     'ajax' =>  'list-view'));
-            //$content = $this->runControllerWithNoExceptionsAndGetContent('products/default');
+                                                'ajax' =>  'list-view'));
+            $content = $this->runControllerWithNoExceptionsAndGetContent('products/default');
 
-            //$this->assertTrue(strpos($content, "myNewProduct") > 0);
+            $this->assertTrue(strpos($content, "myNewProduct") > 0);
         }
 
         /**
@@ -360,7 +360,7 @@
                             'name'                              => 'myEditProduct',
                             'owner'                             => array('id' => $superUserId),
                             'type'                              => 1,
-                            'sellPrice'                         => array ('currency' => array('id' => 1), 'value' => 200),
+                            'sellPrice'                         => array ('currency' => array('id' => $baseCurrency->id), 'value' => 200),
                             'account'                           => array('id' => $accountId),
                             'quantity'                          => 10,
                             'priceFrequency'                    => 2,
@@ -430,7 +430,7 @@
             $metadata            = CalculatedDerivedAttributeMetadata::
                                    getByNameAndModelClassName('calcnumber', 'Product');
             $testCalculatedValue = CalculatedNumberUtil::calculateByFormulaAndModelAndResolveFormat($metadata->getFormula(), $product);
-            $this->assertEquals(132                                      , $testCalculatedValue);
+            $this->assertEquals(132                                      , intval(str_replace(',', '', $testCalculatedValue)));
         }
 
         /**
@@ -460,7 +460,7 @@
                             'name'                              => 'myEditProduct',
                             'owner'                             => array('id' => $superUserId),
                             'type'                              => 1,
-                            'sellPrice'                         => array ('currency' => array('id' => 1), 'value' => 200),
+                            'sellPrice'                         => array ('currency' => array('id' => $baseCurrency->id), 'value' => 200),
                             'account'                           => array('id' => $accountId),
                             'quantity'                          => 10,
                             'priceFrequency'                    => 2,
@@ -531,7 +531,7 @@
             $metadata            = CalculatedDerivedAttributeMetadata::
                                    getByNameAndModelClassName('calcnumber', 'Product');
             $testCalculatedValue = CalculatedNumberUtil::calculateByFormulaAndModelAndResolveFormat($metadata->getFormula(), $product);
-            $this->assertEquals(132                                      , $testCalculatedValue);
+            $this->assertEquals(132                                      , intval(str_replace(',', '', $testCalculatedValue)));
         }
 
         /**
@@ -555,9 +555,9 @@
                         'ajax'                    =>  'list-view')
             );
             //TODO Need to ask Jason
-            //$content = $this->runControllerWithNoExceptionsAndGetContent('products/default');
+            $content = $this->runControllerWithNoExceptionsAndGetContent('products/default');
 
-            //$this->assertTrue(strpos($content, "myEditProduct") > 0);
+            $this->assertTrue(strpos($content, "myEditProduct") > 0);
         }
 
         /**
@@ -600,10 +600,10 @@
                         'ajax'                    =>  'list-view')
             );
             //TODO Need to ask Jason
-            //$content = $this->runControllerWithNoExceptionsAndGetContent('products/default');
+            $content = $this->runControllerWithNoExceptionsAndGetContent('products/default');
 
             //Assert that the edit Product does not exits after the search.
-            //$this->assertTrue(strpos($content, "No results found.") > 0);
+            $this->assertTrue(strpos($content, "No results found.") > 0);
         }
 
         /**

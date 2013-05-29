@@ -113,5 +113,10 @@
         {
             return Zurmo::t('CampaignsModule', 'Campaigns', array(), null, $language);
         }
+
+        public static function modelsAreNeverGloballySearched()
+        {
+            return true;
+        }
     }
 ?>

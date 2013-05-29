@@ -744,7 +744,7 @@
                             'name'               => 'myEditProduct',
                             'owner'              => array('id' => $superUserId),
                             'type'               => 1,
-                            'sellPrice'          => array ('currency' => array ('id' => $currencyId), 'value' => 200),
+                            'sellPrice'          => array ('value' => 200),
                             'account'            => array('id' => $accountId),
                             'quantity'           => 10,
                             'stage'              => array('value' => 'Open'),

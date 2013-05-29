@@ -35,60 +35,31 @@
      ********************************************************************************/
 
     /**
-     * View class for selecting the module for the report wizard user interface
+     * Form to help manage filtering by stage.
      */
-    class ModuleForReportWizardView extends ComponentForReportWizardView
+    class ProductsConfigurationForm extends CFormModel
     {
         /**
-         * @return string
+         * Value to be used to signal that the filtering is for all stages and not a specific one.
+         * @see ProductsMashableFilterRadioElement
+         * @var string
          */
-        public static function getWizardStepTitle()
-        {
-            return Zurmo::t('Core', 'Select Module');
-        }
-
+        const  FILTERED_BY_ALL_STAGES = 'All';
+        const  OPEN_STAGE = 'Open';
+        const  LOST_STAGE = 'Lost';
+        const  WON_STAGE  = 'Won';
         /**
-         * @return string
+         * What model to filter by if any for the latest activity feed.  Defaults to not filtering on anything, thus
+         * showing all available models that implement the MashableActivityInterface.
+         * @var string
          */
-        public static function getPreviousPageLinkId()
-        {
-            return 'moduleCancelLink';
-        }
+        public $filteredByStage = self::FILTERED_BY_ALL_STAGES;
 
-        /**
-         * @return string
-         */
-        public static function getNextPageLinkId()
+        public function rules()
         {
-            return 'moduleNextLink';
-        }
-
-        /**
-         * @return string
-         */
-        protected function renderFormContent()
-        {
-            $element  = new ModuleForReportRadioDropDownElement($this->model, 'moduleClassName', $this->form);
-            $element->editableTemplate = '{label}{content}';
-            $content  = $this->form->errorSummary($this->model);
-            $content .= $element->render();
-            return $content;
-        }
-
-        /**
-         * @return string
-         */
-        protected function renderPreviousPageLinkContent()
-        {
-            if ($this->model->isNew())
-            {
-                $label = Zurmo::t('Core', 'Cancel');
-            }
-            else
-            {
-                $label = Zurmo::t('Core', 'Cancel Changes');
-            }
-            return ZurmoHtml::link(ZurmoHtml::tag('span', array('class' => 'z-label'), $label), '#', array('id' => static::getPreviousPageLinkId()));
+            return array(
+                array('filteredByStage', 'type', 'type' => 'string')
+            );
         }
     }
 ?>
