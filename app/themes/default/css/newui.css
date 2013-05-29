@@ -17948,6 +17948,14 @@ a.user-link {
 .portlet-with-toolbar .view-toolbar .parent > ul {
   top: auto;
 }
+#MarketingListDetailsView {
+  position: relative;
+  z-index: 10;
+}
+#MarketingListDetailsView + div {
+  position: relative;
+  z-index: 1;
+}
 /*********************************************************************************
  * Zurmo is a customer relationship management program developed by
  * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
