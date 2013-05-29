@@ -41,12 +41,12 @@
     {
         public static function getPointTypesAndValuesForCreateModel()
         {
-            return array(GamePoint::TYPE_NEW_PRODUCT => 20);
+            return array(GamePoint::TYPE_SALES => 20);
         }
 
         public static function getPointTypesAndValuesForUpdateModel()
         {
-            return array(GamePoint::TYPE_EDIT_PRODUCT => 10);
+            return array(GamePoint::TYPE_SALES => 10);
         }
     }
 ?>
