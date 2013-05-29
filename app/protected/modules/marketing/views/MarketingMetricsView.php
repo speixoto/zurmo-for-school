@@ -137,16 +137,16 @@
                                  DateTimeUtil::resolveValueForDateLocaleFormattedDisplay($this->resolveForm()->endDate);
             $content           = ZurmoHtml::tag('div', array(), $dateRangeContent);
             $content          .= $this->renderGroupByConfigurationForm();
-            $content          .= 'REMOVE ' . $this->resolveForm()->groupBy;
             return $content;
         }
 
         protected function renderMetricsWrapperContent()
         {
-            $content  = ZurmoHtml::tag('div', array(), $this->renderOverallListPerformanceContent());
-            $content .= ZurmoHtml::tag('div', array(), $this->renderEmailsInThisListContent());
-            $content .= ZurmoHtml::tag('div', array(), $this->renderListGrowthContent());
-            return $content;
+            $cssClass = 'third marketing-graph';
+            $content  = ZurmoHtml::tag('div', array('class' => $cssClass), $this->renderOverallListPerformanceContent());
+            $content .= ZurmoHtml::tag('div', array('class' => $cssClass), $this->renderEmailsInThisListContent());
+            $content .= ZurmoHtml::tag('div', array('class' => $cssClass), $this->renderListGrowthContent());
+            return ZurmoHtml::tag('div', array('class' => 'graph-container clearfix'), $content);
         }
 
         protected function renderOverallListPerformanceContent()

@@ -1191,6 +1191,12 @@ body > .ui-autocomplete{
 			content: '\00D7';
 		}
 	}
+	li.type-CampaignsModule{
+		em:before{
+			content: '\002C';
+			font-size: 26px;
+		}
+	}
 }
 
 /*=Content*/
@@ -1509,6 +1515,7 @@ form,
 	}
 }
 
+.icon-marketing-dashboard:before,
 .icon-change-dashborad:before{
 	content: "/";
 	.view-toolbar-icons();
@@ -1779,6 +1786,12 @@ form,
 .icon-grid-view-type:before{
 	.view-toolbar-icons(26px);
 	content: '\00B0';
+	top:-2px
+}
+
+.icon-marketing-campaigns:before{
+	.view-toolbar-icons(28px);
+	content: '\002C';
 	top:-2px
 }
 
@@ -4083,38 +4096,39 @@ div.hasHalfs{
 			.box-sizing();
 		}
 	}
-	.fifth{
-		width:19%;
-	}
-	.twoFifths{
-		width:36.5%;
-	}
-	.threeFifths{
-		width:55.5%;
-		margin-right:4%;
-	}
-	.fourFifths{
-		width:73%;
-		margin-right:4%;
-	}
-	.fifth + .twoFifths{
-		margin-right:4%;
-	}
-	.half{
-		width:48%;
-	}
-	.quarter{
-		width:23%;
-	}
-	.threeQuarters{
-		width:73%;
-	}
-	.third{
-		width:32%;
-	}
-	.twoThirds{
-		width:64%;
-	}
+}
+
+.fifth{
+	width:19%;
+}
+.twoFifths{
+	width:36.5%;
+}
+.threeFifths{
+	width:55.5%;
+	margin-right:4%;
+}
+.fourFifths{
+	width:73%;
+	margin-right:4%;
+}
+.fifth + .twoFifths{
+	margin-right:4%;
+}
+.half{
+	width:48%;
+}
+.quarter{
+	width:23%;
+}
+.threeQuarters{
+	width:73%;
+}
+.third{
+	width:32%;
+}
+.twoThirds{
+	width:64%;
 }
 
 .juiportlet-widget.OpportunitiesForAccountRelatedListView,

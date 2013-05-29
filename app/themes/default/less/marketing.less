@@ -180,6 +180,7 @@
 	}
 }
 
+#CampaignDetailsView,
 #MarketingListDetailsView{
 	position: relative;
 	z-index: 10;
@@ -187,4 +188,46 @@
 		position: relative;
 		z-index: 1;
 	}
+}
+
+.marketing-graph{
+	float: left;
+	margin-left:2%;
+	padding-bottom: 15px;
+	&:first-child{
+		margin-left: 0;
+	}
+	h3{
+		padding-left: 15px;
+	}
+}
+
+.graph-container{
+
+}
+
+.edit-autoresponder-link{
+	display: block;
+	margin-bottom:10px;
+	font-size: 14px;
+	font-weight: bold;
+}
+
+.autoresponder-stats{
+	.quarter();
+	float: left;
+	margin-left: 2%;
+	text-align: left;
+	font-size: 12px;
+	strong{
+		font-size: 26px;
+		font-weight: bold;
+		display: block;
+	}
+	span{
+		font-weight: bold;
+	}
+}
+a + .autoresponder-stats{
+	margin-left: 0;
 }
