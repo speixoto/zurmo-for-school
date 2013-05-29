@@ -179,7 +179,10 @@
         public function getThemeNamesAndLabels()
         {
             //todo:
-            return array('' => 'None', 'todo1' => 'implement something', 'todo2' => 'implement something else');
+            return array('' => 'None',
+                         'kanban-background-football' => 'Football',
+                         'kanban-background-tennis' => 'Tennis',
+                         'kanban-background-motor' => 'Motor');
         }
 
         public function setClearSticky()

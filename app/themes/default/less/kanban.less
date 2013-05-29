@@ -32,43 +32,39 @@
 // "Copyright Zurmo Inc. 2013. All rights reserved".
 
 #kanban-holder{
+	background: #fff;
 	margin: 0;
 	padding: 0;
-	//background: #fff !important;
-	//background:#fff url(../images/kanban/chalk.jpg) left 36px no-repeat;
-	//background:#fff url(../images/kanban/cork.jpg) left 36px no-repeat;
-	//background:#fff url(../images/kanban/football.jpg) left 36px no-repeat;
-	//background:#fff url(../images/kanban/denim.jpg) left 36px repeat;
-	background:#fff url(../images/kanban/greenboard.jpg) left 36px repeat;
-	//background:#fff url(../images/kanban/leather.jpg) left 36px repeat;
-	//background:#fff url(../images/kanban/pinstripes.jpg) left 36px repeat;
-	//background:#fff url(../images/kanban/pinstripes_2.jpg) left 36px repeat;
-	//background:#fff url(../images/kanban/velvet.jpg) left 36px repeat;
-	//background:#fff url(../images/kanban/wood.jpg) left 36px repeat;
-	//background:#fff url(../images/kanban/black_wood.jpg) left 36px repeat;
-	//background:#fff url(../images/kanban/space1.jpg) left 36px no-repeat;
-	//background:#fff url(../images/kanban/space2.jpg) left 36px no-repeat;
-	//background:#fff url(../images/kanban/space3.jpg) left 36px no-repeat;
-	//background:#fff url(../images/kanban/space4.jpg) left 36px no-repeat;
-	//background:#fff url(../images/kanban/peblles.jpg) left 36px no-repeat;
 	background-size: 100% 100%;
-	//background:#fff url(../images/kanban/black_linen.png) left 36px;
-	//background:#fff url(../images/kanban/black_linen_v2.png) left 36px;
-	//background:#fff url(../images/kanban/grey_wash_wall.png) left 36px;
-	//background:#fff url(../images/kanban/low_contrast_linen.png) left 36px;
-	//background:#fff url(../images/kanban/stressed_linen.png) left 36px;
-	//background: #fff url(../images/landscape-1.png) left bottom repeat-x;
-	//background: #fff url(../images/landscape-2.png) left bottom repeat-x;
-	//background: #fff url(../images/landscape-3.png) left bottom repeat-x;
-	//background: #fff url(../images/landscape-4.png) left bottom repeat-x;
-	//background: #fff url(../images/landscape-5.png) left bottom repeat-x;
-	//background: #fff url(../images/landscape-6.png) left bottom repeat-x;
-
 	#kanban-board,
 	.kanban-column,
 	.kanban-column > div{
 		margin-bottom: 0 !important;
 	}
+}
+
+#kanban-holder.kanban-background-football{
+	background: #fff url(../images/kanban/football.jpg) left 36px repeat;
+}
+
+#kanban-holder.kanban-background-tennis{
+	background: #fff url(../images/kanban/tennis.jpg) left 36px repeat;
+}
+
+#kanban-holder.kanban-background-motor{
+	background:#fff url(../images/kanban/motor.jpg) left 36px repeat;
+}
+
+.kanban-background-football .background-texture-1{
+	background: #fff url(../images/kanban/swatch-football.jpg) left top repeat;
+}
+
+.kanban-background-tennis .background-texture-1{
+	background: #fff url(../images/kanban/swatch-tennis.jpg) left top repeat;
+}
+
+.kanban-background-motor .background-texture-1{
+	background:#fff url(../images/kanban/swatch-asphalt.jpg) left top repeat;
 }
 
 
@@ -212,5 +208,19 @@
 	float: left;
 	h3{
 		margin-bottom: 10px;
+	}
+}
+
+.icon-kanban-board-view-type,
+.icon-grid-view-type{
+	padding-left: 10px !important;
+	&:before{
+		content: "z";
+		.view-toolbar-icons();
+		top:-2px;
+		margin:0;
+	}
+	span{
+		display: none;
 	}
 }

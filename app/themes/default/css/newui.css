@@ -4781,7 +4781,7 @@ body.honey .action-reject:hover .z-label {
 .color-swatch.honey .theme-color-3 {
   background: #582823;
 }
-body.light-noise-diagonal,
+.background-texture-1 body.light-noise-diagonal,
 .texture-swatch.light-noise-diagonal .background-texture-1 {
   background: url(../patterns/light-noise-diagonal/light-noise-diagonal.png) left top repeat;
 }
@@ -12300,7 +12300,7 @@ table.configuration-list td:last-child a .z-label:before {
 }
 .texture-swatch span {
   width: 90px;
-  background: #DDDEDE;
+  background: #FFF;
   border: 3px solid #DDDEDE;
   margin-top: -3px;
 }
@@ -17744,15 +17744,33 @@ a.user-link {
   top: auto;
 }
 #kanban-holder {
+  background: #fff;
   margin: 0;
   padding: 0;
-  background: #ffffff url(../images/kanban/greenboard.jpg) left 36px repeat;
   background-size: 100% 100%;
 }
 #kanban-holder #kanban-board,
 #kanban-holder .kanban-column,
 #kanban-holder .kanban-column > div {
   margin-bottom: 0 !important;
+}
+#kanban-holder.kanban-background-football {
+  background: #ffffff url(../images/kanban/football.jpg) left 36px repeat;
+}
+#kanban-holder.kanban-background-tennis {
+  background: #ffffff url(../images/kanban/tennis.jpg) left 36px repeat;
+}
+#kanban-holder.kanban-background-motor {
+  background: #ffffff url(../images/kanban/motor.jpg) left 36px repeat;
+}
+.kanban-background-football .background-texture-1 {
+  background: #ffffff url(../images/kanban/swatch-football.jpg) left top repeat;
+}
+.kanban-background-tennis .background-texture-1 {
+  background: #ffffff url(../images/kanban/swatch-tennis.jpg) left top repeat;
+}
+.kanban-background-motor .background-texture-1 {
+  background: #ffffff url(../images/kanban/swatch-asphalt.jpg) left top repeat;
 }
 #kanban-board .drop-zone-container {
   padding: 37px 2px 2px 2px;
@@ -17888,6 +17906,30 @@ a.user-link {
 }
 .kanban-board-options-panel h3 {
   margin-bottom: 10px;
+}
+.icon-kanban-board-view-type,
+.icon-grid-view-type {
+  padding-left: 10px !important;
+}
+.icon-kanban-board-view-type:before,
+.icon-grid-view-type:before {
+  content: "z";
+  font-weight: normal;
+  font-size: 24px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  padding: 0 0 0 0;
+  margin: 0 6px 0 -30px;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  vertical-align: middle;
+  position: relative;
+  top: -2px;
+  margin: 0;
+}
+.icon-kanban-board-view-type span,
+.icon-grid-view-type span {
+  display: none;
 }
 /*********************************************************************************
  * Zurmo is a customer relationship management program developed by

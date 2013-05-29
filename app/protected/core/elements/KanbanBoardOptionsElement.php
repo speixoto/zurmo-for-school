@@ -115,9 +115,8 @@
         {
             $htmlOptions             = array();
             $htmlOptions['id']       = $this->getEditableInputId(KanbanBoard::SELECTED_THEME);
-            $htmlOptions['template'] =  '<div class="radio-input color-swatch {value}">{input}<span class="theme-color-1">' .
-                '</span><span class="theme-color-2"></span>' .
-                '<span class="theme-color-3"></span>{label}</div>';
+            $htmlOptions['template'] =  '<div class="radio-input texture-swatch {value}">{input}<span class="background-texture-1">' .
+                                        '</span>{label}</div>';
             $htmlOptions['class']    = 'ignore-clearform';
             return $htmlOptions;
         }
@@ -156,16 +155,17 @@
         public function registerThemeScript()
         {
             //todo: implement
-            return;
+            //return;
             $removeScript = null;
-            foreach (Yii::app()->themeManager->getThemeColorNamesAndLabels() as $value => $notUsed)
+            foreach ($this->model->getKanbanBoard()->getThemeNamesAndLabels() as $value => $notUsed)
             {
-                $removeScript .= '$(document.body).removeClass("' . $value . '");' . "\n";
+                $removeScript .= '$("#kanban-holder").removeClass("' . $value . '");' . "\n";
             }
             // Begin Not Coding Standard
             $script = "$('input[name=\"" . $this->getEditableInputName() . "\"]').live('change', function(){
                           $removeScript
-                          $(document.body).addClass(this.value);
+                          alert(this.value);
+                          $('#kanban-holder').addClass(this.value);
                           });
                       ";
             // End Not Coding Standard
