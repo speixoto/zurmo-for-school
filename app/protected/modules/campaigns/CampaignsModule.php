@@ -44,7 +44,7 @@
 
         public function getDependencies()
         {
-            return array();
+            return array('marketing');
         }
 
         public function getRootModelNames()

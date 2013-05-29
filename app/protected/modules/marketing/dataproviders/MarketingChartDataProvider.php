@@ -45,6 +45,16 @@
 
         protected $groupBy;
 
+        /**
+         * @var MarketingList
+         */
+        protected $marketingList;
+
+        /**
+         * @var Campaign
+         */
+        protected $campaign;
+
         public function setBeginDate($beginDate)
         {
             assert('is_string($beginDate)');
@@ -61,6 +71,24 @@
         {
             assert('is_string($groupBy)');
             $this->groupBy = $groupBy;
+        }
+
+        public function setMarketingList(MarketingList $marketingList)
+        {
+            if($this->campaign != null)
+            {
+                throw new NotSupportedException();
+            }
+            $this->marketingList = $marketingList;
+        }
+
+        public function setCampaign(Campaign $campaign)
+        {
+            if($this->marketingList != null)
+            {
+                throw new NotSupportedException();
+            }
+            $this->campaign = $campaign;
         }
     }
 ?>

@@ -35,86 +35,17 @@
      ********************************************************************************/
 
     /**
-     * Base class used for displaying the overall performance metrics for the marketing dashboard
+     * Class used for displaying the overall performance metrics for the marketing dashboard
      */
-    class MarketingOverallMetricsView extends ConfigurableMetadataView implements PortletViewInterface
+    class MarketingOverallMetricsView extends MarketingMetricsView implements PortletViewInterface
     {
-        /**
-         * Portlet parameters passed in from the portlet.
-         * @var array
-         */
-        protected $params;
-
-        protected $controllerId;
-
-        protected $moduleId;
-
-        protected $model;
-
-        protected $uniqueLayoutId;
-
-        protected $viewData;
-
-        protected $formModel;
-
-        public static function canUserConfigure()
-        {
-            return true;
-        }
-
-        public static function canUserRemove()
-        {
-            return false;
-        }
-
-        /**
-         * What kind of PortletRules this view follows
-         * @return PortletRulesType as string.
-         */
-        public static function getPortletRulesType()
-        {
-            return 'ModelDetails';
-        }
-
-        public function renderPortletHeadContent()
-        {
-            return null;
-        }
-
-        public static function getDefaultMetadata()
-        {
-            $metadata = array(
-                'perUser' => array(
-                    'beginDate' => "eval:DateTimeCalculatorUtil::calculateNewByDaysFromNow(-30,
-                                    new DateTime(null, new DateTimeZone(Yii::app()->timeZoneHelper->getForCurrentUser())));",
-                    'endDate'   => "eval:DateTimeCalculatorUtil::calculateNewByDaysFromNow(0,
-                                    new DateTime(null, new DateTimeZone(Yii::app()->timeZoneHelper->getForCurrentUser())));",
-                    'groupBy'   => MarketingOverallMetricsForm::GROUPING_TYPE_WEEK,
-                ),
-            );
-            return $metadata;
-        }
-
+        protected $formModelClassName = 'MarketingOverallMetricsForm';
         /**
          * The view's module class name.
          */
         public static function getModuleClassName()
         {
             return 'MarketingModule';
-        }
-
-        /**
-         * Some extra assertions are made to ensure this view is used in a way that it supports.
-         */
-        public function __construct($viewData, $params, $uniqueLayoutId)
-        {
-            assert('is_array($viewData) || $viewData == null');
-            assert('isset($params["portletId"])');
-            assert('is_string($uniqueLayoutId)');
-            $this->moduleId       = 'home';
-            $this->viewData       = $viewData;
-            $this->params         = $params;
-            $this->uniqueLayoutId = $uniqueLayoutId;
         }
 
         public function getTitle()
@@ -131,172 +62,10 @@
             return $content;
         }
 
-        protected function renderConfigureElementsContent()
-        {
-            $dateRangeContent  = DateTimeUtil::resolveValueForDateLocaleFormattedDisplay($this->resolveForm()->beginDate)
-                                 . ' - ' .
-                                 DateTimeUtil::resolveValueForDateLocaleFormattedDisplay($this->resolveForm()->endDate);
-            $content           = ZurmoHtml::tag('div', array(), $dateRangeContent);
-            $content          .= $this->renderGroupByConfigurationForm();
-            $content          .= 'REMOVE ' . $this->resolveForm()->groupBy;
-            return $content;
-        }
-
-        protected function renderMetricsWrapperContent()
-        {
-            $content  = ZurmoHtml::tag('div', array(), $this->renderOverallListPerformanceContent());
-            $content .= ZurmoHtml::tag('div', array(), $this->renderEmailsInThisListContent());
-            $content .= ZurmoHtml::tag('div', array(), $this->renderListGrowthContent());
-            return $content;
-        }
-
-        protected function renderOverallListPerformanceContent()
-        {
-
-            $chartDataProvider  = ChartDataProviderFactory::createByType('MarketingListPerformance');
-            $chartDataProvider->setBeginDate($this->resolveForm()->beginDate);
-            $chartDataProvider->setEndDate($this->resolveForm()->beginDate);
-            $chartDataProvider->setGroupBy($this->resolveForm()->groupBy);
-            $content  = ZurmoHtml::tag('h3', array(), Zurmo::t('MarketingModule', 'Overall List Performance'));
-            $content .= MarketingMetricsUtil::renderOverallListPerformanceChartContent(
-                        $chartDataProvider, $this->uniqueLayoutId . 'OverallListPerformance');
-            return $content;
-        }
-
-        protected function renderEmailsInThisListContent()
-        {
-            $chartDataProvider  = ChartDataProviderFactory::createByType('MarketingEmailsInThisList');
-            $chartDataProvider->setBeginDate($this->resolveForm()->beginDate);
-            $chartDataProvider->setEndDate($this->resolveForm()->beginDate);
-            $chartDataProvider->setGroupBy($this->resolveForm()->groupBy);
-            $content  = ZurmoHtml::tag('h3', array(), Zurmo::t('MarketingModule', 'Emails in this list'));
-            $content .= MarketingMetricsUtil::renderEmailsInThisListChartContent(
-                        $chartDataProvider, $this->uniqueLayoutId . 'EmailsInThisList');
-            return $content;
-        }
-
-        protected function renderListGrowthContent()
-        {
-            $chartDataProvider  = ChartDataProviderFactory::createByType('MarketingListGrowth');
-            $chartDataProvider->setBeginDate($this->resolveForm()->beginDate);
-            $chartDataProvider->setEndDate($this->resolveForm()->beginDate);
-            $chartDataProvider->setGroupBy($this->resolveForm()->groupBy);
-            $content  = ZurmoHtml::tag('h3', array(), Zurmo::t('MarketingModule', 'List Growth'));
-            $content .= MarketingMetricsUtil::renderListGrowthChartContent(
-                        $chartDataProvider, $this->uniqueLayoutId . 'ListGrowth');
-            return $content;
-        }
-
-        /**
-         * After a portlet action is completed, the portlet must be refreshed. This is the url to correctly
-         * refresh the portlet content.
-         */
-        protected function getPortletDetailsUrl()
-        {
-            return Yii::app()->createUrl('/' . $this->moduleId . '/defaultPortlet/details',
-                array_merge($_GET, array( 'portletId' =>
-                $this->params['portletId'],
-                    'uniqueLayoutId' => $this->uniqueLayoutId)));
-        }
-
-        /**
-         * Call to save the portlet configuration
-         */
-        protected function getPortletSaveConfigurationUrl()
-        {
-            return Yii::app()->createUrl('/' . $this->moduleId . '/defaultPortlet/modalConfigSave',
-                array_merge($_GET, array( 'portletId' => $this->params['portletId'],
-                            'uniqueLayoutId' => $this->uniqueLayoutId)));
-        }
-
-        /**
-         * Url to go to after an action is completed. Typically returns user to either a model's detail view or
-         * the home page dashboard.
-         */
-        protected function getNonAjaxRedirectUrl()
-        {
-            return Yii::app()->createUrl('/' . $this->moduleId . '/default/details',
-                array( 'id' => $this->params['relationModel']->id));
-        }
-
         public function getConfigurationView()
         {
 
             return new MarketingOverallMetricsConfigView($this->resolveForm(), $this->params);
-        }
-
-        protected function resolveForm()
-        {
-            if($this->formModel !== null)
-            {
-                return $this->formModel;
-            }
-            $formModel = new MarketingOverallMetricsForm();
-            if ($this->viewData!='')
-            {
-                $formModel->setAttributes($this->viewData);
-            }
-            else
-            {
-                $metadata        = self::getMetadata();
-                $perUserMetadata = $metadata['perUser'];
-                $this->resolveEvaluateSubString($perUserMetadata, null);
-                $formModel->setAttributes($perUserMetadata);
-            }
-            $this->formModel = $formModel;
-            return $formModel;
-        }
-
-        protected function renderGroupByConfigurationForm()
-        {
-            $clipWidget = new ClipWidget();
-            list($form, $formStart) = $clipWidget->renderBeginWidget(
-                'ZurmoActiveForm',
-                array(
-                    'id' => $this->getFormId(),
-                )
-            );
-            $content  = $formStart;
-            $content .= $this->renderGroupByConfigurationFormLayout($form);
-            $formEnd  = $clipWidget->renderEndWidget();
-            $content .= $formEnd;
-            $this->registerGroupByConfigurationFormLayoutScripts($form);
-            return $content;
-        }
-
-        protected function getFormId()
-        {
-            return 'marketing-metrics-group-by-configuration-form-' . $this->uniqueLayoutId;
-        }
-
-        protected function renderGroupByConfigurationFormLayout($form)
-        {
-            assert('$form instanceof ZurmoActiveForm');
-            $groupByElement = new MarketingMetricsGroupByRadioElement($this->resolveForm(), 'groupBy', $form);
-            return ZurmoHtml::tag('div', array('id' => $this->getFormId() . '_groupBy_area'), $groupByElement->render());
-        }
-
-        protected function registerGroupByConfigurationFormLayoutScripts($form)
-        {
-            assert('$form instanceof ZurmoActiveForm');
-            $ajaxSubmitScript = ZurmoHtml::ajax(array(
-                'type'       => 'POST',
-                'data'       => 'js:$("#' . $form->getId() . '").serialize()',
-                'url'        =>  $this->getPortletSaveConfigurationUrl(),
-                //'beforeSend' => 'js:function(){makeSmallLoadingSpinner(true, "#MarketingDashboardView");
-                //                $("#MarketingDashboardView").addClass("loading");}',
-                'complete' => 'function(XMLHttpRequest, textStatus){juiPortlets.refresh();}',
-                'update' => '#' . $this->uniqueLayoutId,
-
-            ));
-            Yii::app()->clientScript->registerScript($this->uniqueLayoutId . 'groupByChangeScript', "
-            $('#" . $this->getFormId() . "_groupBy_area').buttonset();
-            $('#" . $this->getFormId() . "_groupBy_area').change(function()
-                {
-                    " . $ajaxSubmitScript . "
-                }
-            );
-            ");
         }
     }
 ?>

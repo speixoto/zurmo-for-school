@@ -34,47 +34,56 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class MarketingListDetailsAndRelationsView extends DetailsAndRelationsView
+    /**
+     * Class for displaying metrics specific to a marketing list
+     */
+    class MarketingListOverallMetricsView extends MarketingMetricsView implements PortletViewInterface
     {
-        const METRICS_PORTLET_CLASS     = 'marketing-list-metrics-container';
-
-        const MEMBERS_PORTLET_CLASS     = 'marketing-list-members-portlet-container';
-
-        const AUTORESPONDERS_PORTLET_CLASS  = 'marketing-list-autoresponder-portlet-container';
-
-        public static function getDefaultMetadata()
+        protected $formModelClassName = 'MarketingOverallMetricsForm';
+        /**
+         * The view's module class name.
+         */
+        public static function getModuleClassName()
         {
-            $metadata = array(
-                'global' => array(
-                    'leftTopView' => array(
-                        'viewClassName' => 'MarketingListDetailsView',
-                    ),
-                    'leftBottomView' => array(
-                        'showAsTabbed' => false,
-                        'columns' => array(
-                            array(
-                                'rows' => array(
-                                    array(
-                                        'type' => 'MarketingListOverallMetrics'
-                                    ),
-                                    array(
-                                        'type' => 'MarketingListMembersPortlet'
-                                    ),
-                                    array(
-                                        'type' => 'AutorespondersPortlet'
-                                    ),
-                                )
-                            )
-                        )
-                    ),
-                )
-            );
-            return $metadata;
+            return 'MarketingModule';
         }
 
-        public function isUniqueToAPage()
+        public function getTitle()
         {
-            return true;
+            $title  = Zurmo::t('MarketingListsModule', 'List Dashboard');
+            return $title;
+        }
+
+        public function renderContent()
+        {
+            $content  = ZurmoHtml::tag('h3', array(), Zurmo::t('MarketingListsModule', 'What is going on with this list?'));
+            $content .= $this->renderConfigureElementsContent();
+            $content .= $this->renderMetricsWrapperContent();
+            $content = ZurmoHtml::tag('div', array('class' => $this->getWrapperDivClass()), $content);
+            return $content;
+        }
+
+        public function getConfigurationView()
+        {
+            return new MarketingOverallMetricsConfigView($this->resolveForm(), $this->params);
+        }
+
+        /**
+         * Override to supply marketing list id
+         * @param string $type
+         * @return ChartDataProvider
+         */
+        protected function resolveChartDataProvider($type)
+        {
+            assert('is_string($type)');
+            $chartDataProvider = parent::resolveChartDataProvider($type);
+            $chartDataProvider->setMarketingList($this->params['relationModel']);
+            return $chartDataProvider;
+        }
+
+        protected function getWrapperDivClass()
+        {
+            return MarketingListDetailsAndRelationsView::METRICS_PORTLET_CLASS;
         }
     }
 ?>
