@@ -54,7 +54,7 @@
                     'name'              => Zurmo::t('ContactWebFormsModule', 'Name', array(), null, $language),
                     'redirectUrl'       => Zurmo::t('ContactWebFormsModule', 'Redirect Url',  array(), null, $language),
                     'submitButtonLabel' => Zurmo::t('ContactWebFormsModule', 'Submit Button Label',  array(), null, $language),
-                    'defaultState'      => Zurmo::t('ContactWebFormsModule', 'Status',  array(), null, $language),
+                    'defaultState'      => Zurmo::t('ContactWebFormsModule', 'Default Status',  array(), null, $language),
                 )
             );
         }
@@ -120,8 +120,11 @@
                 'rules' => array(
                     array('name',              'required'),
                     array('name',              'type', 'type' => 'string'),
+                    array('redirectUrl',       'required'),
                     array('redirectUrl',       'url'),
+                    array('submitButtonLabel', 'required'),
                     array('submitButtonLabel', 'type', 'type' => 'string'),
+                    array('submitButtonLabel', 'default', 'value' => 'Submit'),
                     array('defaultState',      'required'),
                     array('serializedData',    'required'),
                     array('serializedData',    'type', 'type' => 'string'),

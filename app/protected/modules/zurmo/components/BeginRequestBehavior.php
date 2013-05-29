@@ -311,11 +311,6 @@
                 if (strpos($reqestedUrl, $url) === 0)
                 {
                     $isUrlAllowedToGuests = true;
-//                    if (strpos($reqestedUrl, 'contacts/external/form') !== false ||
-//                        strpos($reqestedUrl, 'contacts/external/sourceFiles') !== false)
-//                    {
-//                        Yii::app()->user->userModel = User::getByUsername('super');
-//                    }
                 }
             }
 

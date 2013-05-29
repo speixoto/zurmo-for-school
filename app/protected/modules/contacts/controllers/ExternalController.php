@@ -35,89 +35,32 @@
         {
             Yii::app()->user->userModel = ContactWebFormsUserConfigUtil::getUserToRunAs();
             Yii::app()->getClientScript()->setIsolationMode();
-            $contactWebForm           = static::getModelAndCatchNotFoundAndDisplayError('ContactWebForm', intval($id));
-            $contactWebFormAttributes = unserialize($contactWebForm->serializedData);
-            $viewClassName            = 'ContactExternalEditAndDetailsView';
-            $moduleClassName          = 'ContactsModule';
-            $modelClassName           = $moduleClassName::getPrimaryModelName();
-            $editableMetadata         = $viewClassName::getMetadata();
-            $designerRulesType        = $viewClassName::getDesignerRulesType();
-            $designerRulesClassName   = $designerRulesType . 'DesignerRules';
-            $designerRules            = new $designerRulesClassName();
-            $modelAttributesAdapter   = DesignerModelToViewUtil::getModelAttributesAdapter($viewClassName, $modelClassName);
-            $derivedAttributesAdapter = new DerivedAttributesAdapter($modelClassName);
-            $attributeCollection      = array_merge($modelAttributesAdapter->getAttributes(),
-                                                    $derivedAttributesAdapter->getAttributes());
-            $attributesLayoutAdapter  = AttributesLayoutAdapterUtil::makeAttributesLayoutAdapter($attributeCollection,
-                                                                                                 $designerRules,
-                                                                                                 $editableMetadata);
-            $layoutMetadataAdapter    = new LayoutMetadataAdapter(
-                                                    $viewClassName,
-                                                    $moduleClassName,
-                                                    $editableMetadata,
-                                                    $designerRules,
-                                                    $attributesLayoutAdapter->getPlaceableLayoutAttributes(),
-                                                    $attributesLayoutAdapter->getRequiredDerivedLayoutAttributeTypes());
-            $metadata                 = $layoutMetadataAdapter->resolveMetadataFromSelectedListAttributes($viewClassName,
-                                                                                                          $contactWebFormAttributes);
+            $contactWebForm = static::getModelAndCatchNotFoundAndDisplayError('ContactWebForm', intval($id));
+            $metadata       = static::getMetadataByWebForm($contactWebForm);
             if (is_string($contactWebForm->submitButtonLabel) && !empty($contactWebForm->submitButtonLabel))
             {
                 $metadata['global']['toolbar']['elements'][0]['label'] = $contactWebForm->submitButtonLabel;
             }
-            $contact                  = new Contact();
-            $contact->state           = $contactWebForm->defaultState;
-            $contact->owner           = $contactWebForm->defaultOwner;
-            $postVariableName         = get_class($contact);
-            $containedView            = new ContactExternalEditAndDetailsView('Edit',
-                                            $this->getId(),
-                                            $this->getModule()->getId(),
-                                            $this->attemptToSaveModelFromPost($contact, null, false),
-                                            $metadata);
+            $this->attemptToValidate($contactWebForm);
+            $contact                                 = new Contact();
+            $contact->state                          = $contactWebForm->defaultState;
+            $contact->owner                          = $contactWebForm->defaultOwner;
+            $postVariableName                        = get_class($contact);
+            $containedView                           = new ContactExternalEditAndDetailsView('Edit',
+                                                            $this->getId(),
+                                                            $this->getModule()->getId(),
+                                                            $this->attemptToSaveModelFromPost($contact, null, false),
+                                                            $metadata);
             $view = new ContactWebFormsExternalPageView(ZurmoExternalViewUtil::
                                                         makeExternalViewForCurrentUser($containedView));
-            if (isset($_POST[$postVariableName]))
+            if (isset($_POST[$postVariableName]) && isset($contact->id) && intval($contact->id) > 0)
             {
-                if ($contact->validate())
-                {
-                    $contactWebFormEntryStatus       = ContactWebFormEntry::STATUS_SUCCESS;
-                    $contactWebFormEntryMessage      = ContactWebFormEntry::STATUS_SUCCESS_MESSAGE;
-                    $contactWebFormEntryContact      = $contact;
-                }
-                else
-                {
-                    $contactWebFormEntryStatus       = ContactWebFormEntry::STATUS_ERROR;
-                    $contactWebFormEntryMessage      = ContactWebFormEntry::STATUS_ERROR_MESSAGE;
-                    $contactWebFormEntryContact      = null;
-                }
-                $contactFormAttributes               = $_POST[$postVariableName];
-                $contactFormAttributes['owner']      = $contact->owner->id;
-                $contactFormAttributes['state']      = $contact->state->id;
-                $hashIndex                           = Yii::app()->getRequest()->getPost(ContactWebFormEntry::HIDDEN_FIELD);
-                $contactWebFormEntry                 = ContactWebFormEntry::getByHashIndex($hashIndex);
-                if ($contactWebFormEntry === null)
-                {
-                    $contactWebFormEntry             = new ContactWebFormEntry();
-                }
-                $contactWebFormEntry->serializedData = serialize($contactFormAttributes);
-                $contactWebFormEntry->status         = $contactWebFormEntryStatus;
-                $contactWebFormEntry->message        = $contactWebFormEntryMessage;
-                $contactWebFormEntry->contactWebForm = $contactWebForm;
-                $contactWebFormEntry->contact        = $contactWebFormEntryContact;
-                $contactWebFormEntry->hashIndex      = $_POST['hashIndex'];
-                $contactWebFormEntry->save();
-                if (isset($contact->id) && intval($contact->id) > 0)
-                {
-                    $containedView                   = new ContactExternalEditAndDetailsView('Details',
-                                                       $this->getId(),
-                                                       $this->getModule()->getId(),
-                                                       $this->attemptToSaveModelFromPost($contact, null, false),
-                                                       $metadata);
-                    $containedView->setCssClasses(array_merge($containedView->getCssClasses(), array('AppContent')));
-                    echo $containedView->render();
-                    Yii::app()->end(0, false);
-                }
+                static::resolveContactWebFormEntry($contactWebForm, $contact);
+                $responseData                        = array();
+                $responseData['redirectUrl']         = $contactWebForm->redirectUrl;
+                echo CJSON::encode($responseData);
+                Yii::app()->end(0, false);
             }
-            $this->attemptToValidateAjaxFromPost($contact, 'Contact');
             $rawXHtml                                = $view->render();
             $rawXHtml                                = ZurmoExternalViewUtil::resolveAndCombineScripts($rawXHtml);
             $combinedHtml                            = array();
@@ -126,6 +69,66 @@
             header("content-type: application/json");
             echo 'renderFormCallback('. CJSON::encode($combinedHtml) . ');';
             Yii::app()->end(0, false);
+        }
+
+        protected function attemptToValidate($contactWebForm)
+        {
+            if (isset($_POST['ajax']) && $_POST['ajax'] == 'edit-form')
+            {
+                $contact        = new Contact();
+                $contact->setAttributes($_POST['Contact']);
+                $contact->state = $contactWebForm->defaultState;
+                $contact->owner = $contactWebForm->defaultOwner;
+                static::resolveContactWebFormEntry($contactWebForm, $contact);
+                if ($contact->validate())
+                {
+                    echo CJSON::encode(array());
+                }
+                else
+                {
+                    $errorData = ZurmoActiveForm::makeErrorsDataAndResolveForOwnedModelAttributes($contact);
+                    echo CJSON::encode($errorData);
+                }
+                Yii::app()->end(0, false);
+            }
+        }
+
+        public static function resolveContactWebFormEntry($contactWebForm, $contact)
+        {
+            $contactFormAttributes               = $_POST['Contact'];
+            $contactFormAttributes['owner']      = $contactWebForm->defaultOwner->id;
+            $contactFormAttributes['state']      = $contactWebForm->defaultState->id;
+            if ($contact->validate())
+            {
+                $contactWebFormEntryStatus       = ContactWebFormEntry::STATUS_SUCCESS;
+                $contactWebFormEntryMessage      = ContactWebFormEntry::STATUS_SUCCESS_MESSAGE;
+            }
+            else
+            {
+                $contactWebFormEntryStatus       = ContactWebFormEntry::STATUS_ERROR;
+                $contactWebFormEntryMessage      = ContactWebFormEntry::STATUS_ERROR_MESSAGE;
+            }
+            if (isset($contact->id) && intval($contact->id) > 0)
+            {
+                $contactWebFormEntryContact      = $contact;
+            }
+            else
+            {
+                $contactWebFormEntryContact      = null;
+            }
+            $hashIndex                           = Yii::app()->getRequest()->getPost(ContactWebFormEntry::HIDDEN_FIELD);
+            $contactWebFormEntry                 = ContactWebFormEntry::getByHashIndex($hashIndex);
+            if ($contactWebFormEntry === null)
+            {
+                $contactWebFormEntry             = new ContactWebFormEntry();
+            }
+            $contactWebFormEntry->serializedData = serialize($contactFormAttributes);
+            $contactWebFormEntry->status         = $contactWebFormEntryStatus;
+            $contactWebFormEntry->message        = $contactWebFormEntryMessage;
+            $contactWebFormEntry->contactWebForm = $contactWebForm;
+            $contactWebFormEntry->contact        = $contactWebFormEntryContact;
+            $contactWebFormEntry->hashIndex      = $hashIndex;
+            $contactWebFormEntry->save();
         }
 
         public function actionSourceFiles($webFormId)
@@ -148,6 +151,36 @@
             header("content-type: application/javascript");
             echo $jsOutput;
             Yii::app()->end(0, false);
+        }
+
+        public static function getMetadataByWebForm(ContactWebForm $contactWebForm)
+        {
+            assert('$contactWebForm instanceof ContactWebForm');
+            $contactWebFormAttributes = unserialize($contactWebForm->serializedData);
+            $viewClassName            = 'ContactExternalEditAndDetailsView';
+            $moduleClassName          = 'ContactsModule';
+            $modelClassName           = $moduleClassName::getPrimaryModelName();
+            $editableMetadata         = $viewClassName::getMetadata();
+            $designerRulesType        = $viewClassName::getDesignerRulesType();
+            $designerRulesClassName   = $designerRulesType . 'DesignerRules';
+            $designerRules            = new $designerRulesClassName();
+            $modelAttributesAdapter   = DesignerModelToViewUtil::getModelAttributesAdapter($viewClassName, $modelClassName);
+            $derivedAttributesAdapter = new DerivedAttributesAdapter($modelClassName);
+            $attributeCollection      = array_merge($modelAttributesAdapter->getAttributes(),
+                                        $derivedAttributesAdapter->getAttributes());
+            $attributesLayoutAdapter  = AttributesLayoutAdapterUtil::makeAttributesLayoutAdapter($attributeCollection,
+                                        $designerRules,
+                                        $editableMetadata);
+            $layoutMetadataAdapter    = new LayoutMetadataAdapter(
+                                            $viewClassName,
+                                            $moduleClassName,
+                                            $editableMetadata,
+                                            $designerRules,
+                                            $attributesLayoutAdapter->getPlaceableLayoutAttributes(),
+                                            $attributesLayoutAdapter->getRequiredDerivedLayoutAttributeTypes());
+            $metadata                 = $layoutMetadataAdapter->resolveMetadataFromSelectedListAttributes($viewClassName,
+                                        $contactWebFormAttributes);
+            return $metadata;
         }
     }
 ?>

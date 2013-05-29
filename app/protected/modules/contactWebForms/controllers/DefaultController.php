@@ -92,7 +92,7 @@
             }
             $titleBarAndEditView = $this->makeEditAndDetailsView(
                                           $this->attemptToSaveModelFromPost($contactWebForm), 'Edit');
-            $view = new ContactWebFormsPageView(ZurmoDefaultViewUtil::
+            $view = new ContactWebFormsPageView(ZurmoDefaultAdminViewUtil::
                                                 makeViewWithBreadcrumbsForCurrentUser($this, $titleBarAndEditView,
                                                 $breadcrumbLinks, 'ContactWebFormsBreadCrumbView'));
             echo $view->render();
@@ -111,7 +111,7 @@
             }
             $titleBarAndEditView = $this->makeEditAndDetailsView(
                                           $this->attemptToSaveModelFromPost($contactWebForm), 'Edit');
-            $view = new ContactWebFormsPageView(ZurmoDefaultViewUtil::
+            $view = new ContactWebFormsPageView(ZurmoDefaultAdminViewUtil::
                                                 makeViewWithBreadcrumbsForCurrentUser($this, $titleBarAndEditView,
                                                 $breadcrumbLinks, 'ContactWebFormsBreadCrumbView'));
             echo $view->render();
@@ -124,7 +124,7 @@
             $breadCrumbTitle = $contactWebForm->name;
             $breadcrumbLinks = array($breadCrumbTitle);
             $titleBarAndDetailsView = $this->makeEditAndDetailsView($contactWebForm, 'Details');
-            $view = new ContactWebFormsPageView(ZurmoDefaultViewUtil::
+            $view = new ContactWebFormsPageView(ZurmoDefaultAdminViewUtil::
                                                 makeViewWithBreadcrumbsForCurrentUser($this, $titleBarAndDetailsView,
                                                 $breadcrumbLinks, 'ContactWebFormsBreadCrumbView'));
             echo $view->render();

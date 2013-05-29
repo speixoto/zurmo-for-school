@@ -83,16 +83,24 @@
         {
             $formId = $this->getFormId();
             return ZurmoHtml::ajax(array(
-                                         'type'   => 'POST',
-                                         'data'   => 'js:$("#' . $formId . '").serialize()',
-                                         'url'    =>  $this->getValidateAndSaveUrl(),
-                                         'replace' => '#ContactExternalEditAndDetailsView',
+                                         'type'    => 'POST',
+                                         'data'    => 'js:$("#' . $formId . '").serialize()',
+                                         'url'     =>  $this->getValidateAndSaveUrl(),
+                                         'success' => 'js: function(data)
+                                                       {
+                                                            data = jQuery.parseJSON(data);
+                                                            if (typeof data.redirectUrl !== \'undefined\' &&
+                                                                $(this).isValidUrl(data.redirectUrl))
+                                                            {
+                                                                window.location.href = data.redirectUrl;
+                                                            }
+                                                       }'
                                   ));
         }
 
         protected function getValidateAndSaveUrl()
         {
-            return Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/form',
+            return Yii::app()->createAbsoluteUrl($this->moduleId . '/' . $this->controllerId . '/form',
                                         array('id' => Yii::app()->getRequest()->getQuery('id')));
         }
 

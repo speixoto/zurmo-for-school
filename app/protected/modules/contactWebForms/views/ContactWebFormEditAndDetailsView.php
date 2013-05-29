@@ -128,5 +128,14 @@
         {
             return null;
         }
+
+        protected function renderBeforeFormLayoutForDetailsContent()
+        {
+            $embedScript = '<div id="zurmoExternalWebForm">' .
+                            '<script type="text/javascript" ' .
+                            'src="' . Yii::app()->createAbsoluteUrl('contacts/external/sourceFiles/', array('id' => $this->model->id)) . '">' .
+                            '</script></div>';
+            return '<div style="margin: 15px;"><pre><code>' . htmlspecialchars($embedScript) . '</code></pre></div>';
+        }
     }
 ?>
