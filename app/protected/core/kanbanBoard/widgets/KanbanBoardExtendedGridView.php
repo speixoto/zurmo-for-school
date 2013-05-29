@@ -65,6 +65,8 @@
 
         public $cardColumns = array();
 
+        public $selectedTheme;
+
         /**
          * Need to grab one more than max count to check if we are over the max so we can properly display a message
          * @return int
@@ -90,11 +92,12 @@
             $columnsData = $this->resolveDataIntoKanbanColumns();
             $width       = ' style="width:' . 100 / count($columnsData) . '%;"';
             echo "<tbody>\n";
-            echo "<tr><td id=\"kanban-holder\">\n";
+            echo "<tr><td id=\"kanban-holder\" class='". $this->selectedTheme . "'>\n";
             if ($n > static::$maxCount)
             {
                 $this->renderOverMaxCountText();
             }
+
             elseif($n > 0)
             {
                 echo "<div id=\"kanban-board\">\n";
@@ -103,23 +106,15 @@
                     echo "<div class=\"kanban-column\" $width>\n";
                     echo "<div data-value='" . $attributeValue . "' class='droppable-dynamic-rows-container'>\n";
                     echo ZurmoHtml::tag('div', array('class' => 'column-header'), $this->resolveGroupByColumnHeaderLabel($attributeValue));
-                    //todo: swap all these declarations with ZurmoHtml::tag and maybe also in stacked Extended do the same thing?
-                    echo "<ul>\n";
+                    $listItems = '';
                     foreach($attributeValueAndData as $row)
                     {
-                        echo "<li data-id='" . $this->dataProvider->data[$row]->id . "' class='kanban-card item-to-place'>\n";
-                        //Amit's stuff from here
-                        echo '<div>'; // we need this to wrap everything
-                        echo $this->renderCardDetailsContent($row);
-                        //echo '<div class="hidden-content">';
-                        //echo '<a href="#" onclick="$(this).next().fadeToggle(); return false;">Toggle Details</a>';
-                        //$this->renderRowAsTableCellOrDiv($row, self::ROW_TYPE_DIV);
-                        //echo '</div>';
-                        echo '</div>';
-                        //End Amit's stuff
-                        echo "</li>\n";
+                        $listItems .= ZurmoHtml::tag('li',
+                                                      array('class' => 'kanban-card item-to-place',
+                                                            'data-id' => $this->dataProvider->data[$row]->id),
+                                                      ZurmoHtml::tag('div', array(), $this->renderCardDetailsContent($row)));
                     }
-                    echo "</ul>\n";
+                    echo ZurmoHtml::tag('ul', array(), $listItems);
                     $dropZone =  ZurmoHtml::tag('div', array('class' => 'drop-zone'), '');
                     echo ZurmoHtml::tag('div', array('class' => 'drop-zone-container'), $dropZone);
                     echo "</div>\n";

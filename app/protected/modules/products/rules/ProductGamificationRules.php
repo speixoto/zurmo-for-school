@@ -34,31 +34,19 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class MyListConfigViewDesignerRules extends SearchViewDesignerRules
+    /**
+     * Class defining rules for Product gamification behavior.
+     */
+    class ProductGamificationRules extends GamificationRules
     {
-        public function getDisplayName()
+        public static function getPointTypesAndValuesForCreateModel()
         {
-            return Zurmo::t('DesignerModule', 'Portlet Configuration View');
+            return array(GamePoint::TYPE_NEW_PRODUCT => 20);
         }
 
-        public function maxCellsPerRow()
+        public static function getPointTypesAndValuesForUpdateModel()
         {
-            return 1;
-        }
-
-        /**
-         * Utilizes information from the view to build a display name.
-         * @return string - display name
-         */
-        public function resolveDisplayNameByView($viewClassName)
-        {
-            assert('is_string($viewClassName)');
-            $displayDescription = $viewClassName::getDisplayDescription();
-            if ($displayDescription != null)
-            {
-                return $this->getDisplayName() . ' - ' . $displayDescription;
-            }
-            return $this->getDisplayName();
+            return array(GamePoint::TYPE_EDIT_PRODUCT => 10);
         }
     }
 ?>

@@ -34,31 +34,42 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class MyListConfigViewDesignerRules extends SearchViewDesignerRules
+    /**
+     * Class for defining the badge associated with creating a new product template
+     */
+    class CreateProductTemplateGameBadgeRules extends GameBadgeRules
     {
-        public function getDisplayName()
+        public static $valuesIndexedByGrade = array(
+            1  => 1,
+            2  => 3,
+            3  => 5,
+            4  => 10,
+            5  => 20,
+            6  => 30,
+            7  => 40,
+            8  => 50,
+            9  => 60,
+            10 => 70,
+            11 => 80,
+            12 => 90,
+            13 => 100
+        );
+
+        public static function getPassiveDisplayLabel($value)
         {
-            return Zurmo::t('DesignerModule', 'Portlet Configuration View');
+            return Zurmo::t('ProductTemplatesModule', '{n} ProductTemplatesModuleSingularLabel created|{n} ProductTemplatesModulePluralLabel created',
+                          array_merge(array($value), LabelUtil::getTranslationParamsForAllModules()));
         }
 
-        public function maxCellsPerRow()
+        public static function badgeGradeUserShouldHaveByPointsAndScores($userPointsByType, $userScoresByType)
         {
-            return 1;
-        }
-
-        /**
-         * Utilizes information from the view to build a display name.
-         * @return string - display name
-         */
-        public function resolveDisplayNameByView($viewClassName)
-        {
-            assert('is_string($viewClassName)');
-            $displayDescription = $viewClassName::getDisplayDescription();
-            if ($displayDescription != null)
+            assert('is_array($userPointsByType)');
+            assert('is_array($userScoresByType)');
+            if (isset($userScoresByType['CreateProductTemplate']))
             {
-                return $this->getDisplayName() . ' - ' . $displayDescription;
+                return static::getBadgeGradeByValue((int)$userScoresByType['CreateProductTemplate']->value);
             }
-            return $this->getDisplayName();
+            return 0;
         }
     }
 ?>

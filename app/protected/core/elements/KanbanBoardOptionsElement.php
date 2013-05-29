@@ -162,9 +162,8 @@
                 $removeScript .= '$("#kanban-holder").removeClass("' . $value . '");' . "\n";
             }
             // Begin Not Coding Standard
-            $script = "$('input[name=\"" . $this->getEditableInputName() . "\"]').live('change', function(){
+            $script = "$('input[name=\"" . $this->getEditableInputName(KanbanBoard::SELECTED_THEME) . "\"]').live('change', function(){
                           $removeScript
-                          alert(this.value);
                           $('#kanban-holder').addClass(this.value);
                           });
                       ";

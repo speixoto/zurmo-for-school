@@ -18022,14 +18022,17 @@ a.user-link {
 #kanban-holder .kanban-column > div {
   margin-bottom: 0 !important;
 }
+#kanban-holder .empty {
+  padding: 10px;
+}
 #kanban-holder.kanban-background-football {
-  background: #ffffff url(../images/kanban/football.jpg) left 36px repeat;
+  background: #ffffff url(../images/kanban/football.jpg) left bottom repeat;
 }
 #kanban-holder.kanban-background-tennis {
-  background: #ffffff url(../images/kanban/tennis.jpg) left 36px repeat;
+  background: #ffffff url(../images/kanban/tennis.jpg) left bottom repeat;
 }
 #kanban-holder.kanban-background-motor {
-  background: #ffffff url(../images/kanban/motor.jpg) left 36px repeat;
+  background: #ffffff url(../images/kanban/asphalt.jpg) center bottom repeat;
 }
 .kanban-background-football .background-texture-1 {
   background: #ffffff url(../images/kanban/swatch-football.jpg) left top repeat;

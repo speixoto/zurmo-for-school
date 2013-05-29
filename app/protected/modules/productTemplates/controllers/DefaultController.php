@@ -159,8 +159,9 @@
                 die();
             }
             ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($productTemplate);
+            AuditEvent::logAuditEvent('ZurmoModule', ZurmoModule::AUDIT_EVENT_ITEM_VIEWED, array(strval($productTemplate), 'ProductTemplatesModule'), $productTemplate);
             $detailsView        = new ProductTemplateDetailsView($this->getId(), $this->getModule()->getId(), $productTemplate);
-            $view       = new ProductTemplatesPageView(ProductDefaultViewUtil::
+            $view               = new ProductTemplatesPageView(ProductDefaultViewUtil::
                                                             makeViewWithBreadcrumbsForCurrentUser(
                                                                 $this, $detailsView, $breadcrumbLinks, 'ProductBreadCrumbView'));
             echo $view->render();

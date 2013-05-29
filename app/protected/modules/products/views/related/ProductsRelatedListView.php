@@ -432,7 +432,7 @@
         protected function makeProductSearchAttributeData($form)
         {
             $searchAttributeData = array();
-            $searchAttributeData['clauses'][] = array(
+            $searchAttributeData['clauses'][1] = array(
                                                         'attributeName'        => $this->getRelationAttributeName(),
                                                         'relatedAttributeName' => 'id',
                                                         'operatorType'         => 'equals',
@@ -440,7 +440,7 @@
                                                     );
             if($form->filteredByStage != ProductsConfigurationForm::FILTERED_BY_ALL_STAGES)
             {
-                $searchAttributeData['clauses'][] = array(
+                $searchAttributeData['clauses'][2] = array(
                                                             'attributeName'        => 'stage',
                                                             'relatedAttributeName' => 'value',
                                                             'operatorType'         => 'equals',

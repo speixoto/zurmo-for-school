@@ -34,31 +34,20 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class MyListConfigViewDesignerRules extends SearchViewDesignerRules
+    /**
+     * Class for defining the badge associated with searching Products
+     */
+    class SearchProductsGameBadgeRules extends SearchModelsGameBadgeRules
     {
-        public function getDisplayName()
+        public static function getPassiveDisplayLabel($value)
         {
-            return Zurmo::t('DesignerModule', 'Portlet Configuration View');
+            return Zurmo::t('ProductsModule', '{n} ProductsModuleSingularLabel search completed|{n} ProductsModuleSingularLabel searches completed',
+                          array_merge(array($value), LabelUtil::getTranslationParamsForAllModules()));
         }
 
-        public function maxCellsPerRow()
+        public static function badgeGradeUserShouldHaveByPointsAndScores($userPointsByType, $userScoresByType)
         {
-            return 1;
-        }
-
-        /**
-         * Utilizes information from the view to build a display name.
-         * @return string - display name
-         */
-        public function resolveDisplayNameByView($viewClassName)
-        {
-            assert('is_string($viewClassName)');
-            $displayDescription = $viewClassName::getDisplayDescription();
-            if ($displayDescription != null)
-            {
-                return $this->getDisplayName() . ' - ' . $displayDescription;
-            }
-            return $this->getDisplayName();
+            return static::badgeGradeUserShouldHaveByPointsAndScoresByModelClassName($userPointsByType, $userScoresByType, 'Product');
         }
     }
 ?>
