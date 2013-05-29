@@ -57,11 +57,12 @@
 
         public function actionList()
         {
-            $pageSize = Yii::app()->pagination->resolveActiveForCurrentUserByType(
-                            'listPageSize', get_class($this->getModule()));
-            $opportunity                    = new Opportunity(false);
-            $searchForm                     = new OpportunitiesSearchForm($opportunity);
-            $listAttributesSelector         = new ListAttributesSelector('OpportunitiesListView', get_class($this->getModule()));
+            $pageSize    = Yii::app()->pagination->resolveActiveForCurrentUserByType(
+                           'listPageSize', get_class($this->getModule()));
+            $opportunity = new Opportunity(false);
+            $searchForm  = new OpportunitiesSearchForm($opportunity);
+            $searchForm->setKanbanBoard(new KanbanBoard($opportunity, 'stage'));
+            $listAttributesSelector = new ListAttributesSelector('OpportunitiesListView', get_class($this->getModule()));
             $searchForm->setListAttributesSelector($listAttributesSelector);
             $dataProvider = $this->resolveSearchDataProvider(
                 $searchForm,
@@ -79,9 +80,11 @@
             }
             else
             {
-                $mixedView = $this->makeActionBarSearchAndListView($searchForm, $dataProvider);
-                $view = new OpportunitiesPageView(ZurmoDefaultViewUtil::
-                                         makeStandardViewForCurrentUser($this, $mixedView));
+                $activeActionElementType = $this->resolveActiveElementTypeForKanbanBoard($searchForm);
+                $mixedView = $this->makeActionBarSearchAndListView($searchForm, $dataProvider,
+                             'OpportunitiesSecuredActionBarForSearchAndListView', null, $activeActionElementType);
+                $view      = new OpportunitiesPageView(ZurmoDefaultViewUtil::
+                             makeStandardViewForCurrentUser($this, $mixedView));
             }
             echo $view->render();
         }
