@@ -71,7 +71,10 @@
                                                     $leftBottomMetadataForPortlets,
                                                     false,
                                                     false,
-                                                    $metadata['global']['leftBottomView']['showAsTabbed']);
+                                                    $metadata['global']['leftBottomView']['showAsTabbed'],
+                                                    '100',
+                                                    false
+                                                );
             if (isset($metadata['global']['rightTopView']))
             {
                 $renderRightSide                         = true;
@@ -83,6 +86,9 @@
                                                      $this->params,
                                                      $rightTopMetadataForPortlets,
                                                      false,
+                                                     false,
+                                                     false,
+                                                     '100',
                                                      false);
             }
             else
