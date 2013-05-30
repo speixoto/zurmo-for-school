@@ -144,10 +144,10 @@
             return $rawXHtml;
         }
 
-        public static function getContentsFromSource($url)
+        public static function getContentsFromSource($path)
         {
-            $scriptFileContents = file_get_contents($url);
-            if (strpos($url, 'jquery.min.js') === false && strpos($url, 'jquery.ui.min.js') === false)
+            $scriptFileContents = file_get_contents($path);
+            if (strpos($path, 'jquery.min.js') === false && strpos($path, 'jquery.ui.min.js') === false)
             {
                 $scriptFileContents = "jQQ.isolate (function(jQuery,$) { " . $scriptFileContents . " });";
             }
@@ -186,7 +186,7 @@
             {
                 if ($scriptTagNode->hasAttribute('src'))
                 {
-                    $fileContents .= self::getContentsFromSource(realpath(INSTANCE_ROOT . '/../../') . $scriptTagNode->getAttribute('src'));
+                    $fileContents .= self::getContentsFromSource(realpath(Yii::app()->basePath . '/../../../') . $scriptTagNode->getAttribute('src'));
                 }
             }
             $scriptFileName = self::EXTERNAL_SCRIPT_FILE_NAME;
