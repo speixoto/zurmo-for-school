@@ -34,7 +34,7 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class Opportunity extends OwnedSecurableItem
+    class Opportunity extends OwnedSecurableItem implements StarredInterface
     {
         public static function getByName($name)
         {

@@ -86,6 +86,15 @@
         }
 
         /**
+         * Override to add a starring link to the title
+         * @return string
+         */
+        public function getTitle() {
+            $starLink = StarredUtil::getToggleStarStatusLink($this->model, null);
+            return parent::getTitle() . $starLink;
+        }
+
+        /**
          * Module Id for the link to models from rows in the grid view.
          */
         private function resolveModuleId()

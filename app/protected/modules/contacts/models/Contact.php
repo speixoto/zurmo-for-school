@@ -34,7 +34,7 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class Contact extends Person
+    class Contact extends Person implements StarredInterface
     {
         public static function getByName($name)
         {

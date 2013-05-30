@@ -62,7 +62,8 @@
 
         public function getTitle()
         {
-            return strval($this->model);
+            $starLink = StarredUtil::getToggleStarStatusLink($this->model, null);
+            return strval($this->model) . $starLink;
         }
 
         protected function renderRightSideContent($form = null)
