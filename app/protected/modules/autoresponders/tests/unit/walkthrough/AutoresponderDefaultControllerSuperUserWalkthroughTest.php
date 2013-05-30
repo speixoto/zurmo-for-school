@@ -104,7 +104,7 @@
             $redirectUrl    = 'http://www.zurmo.com/';
             $this->setGetArray(array('marketingListId' => static::$marketingListId , 'redirectUrl' => $redirectUrl));
             $content = $this->runControllerWithNoExceptionsAndGetContent('autoresponders/default/create');
-            $this->assertTrue(strpos($content, 'emailTemplates/default/index">Marketing</a> &#47; <a href=') !== false);
+            $this->assertTrue(strpos($content, 'marketing/default/index">Marketing</a> &#47; <a href=') !== false);
             $this->assertTrue(strpos($content, 'marketingLists/default/list">Lists</a> &#47; <a href=') !== false);
             $this->assertTrue(strpos($content, 'marketingLists/default/details?id=' . static::$marketingListId .
                                                 '">MarketingListName</a> &#47; <span>Create</span></div>') !== false);
@@ -261,7 +261,7 @@
             $this->setGetArray(array('id' => $autoresponderId, 'redirectUrl' => $redirectUrl));
             $content = $this->runControllerWithNoExceptionsAndGetContent('autoresponders/default/details');
             $this->assertTrue(strpos($content, '<div class="breadcrumbs">') !== false);
-            $this->assertTrue(strpos($content, 'emailTemplates/default/index">Marketing</a> &#47; <a href=') !== false);
+            $this->assertTrue(strpos($content, 'marketing/default/index">Marketing</a> &#47; <a href=') !== false);
             $this->assertTrue(strpos($content, 'marketingLists/default/list">Lists</a> &#47; <a href=') !== false);
             $this->assertTrue(strpos($content, 'marketingLists/default/details?id=' . static::$marketingListId .
                                                 '">MarketingListName</a> &#47; <span>Subject 04</span></div>') !== false);
@@ -320,7 +320,7 @@
             $this->setGetArray(array('id' => $autoresponderId, 'redirectUrl' => $redirectUrl));
             $content = $this->runControllerWithNoExceptionsAndGetContent('autoresponders/default/edit');
             $this->assertTrue(strpos($content, '<div class="breadcrumbs">') !== false);
-            $this->assertTrue(strpos($content, 'emailTemplates/default/index">Marketing</a> &#47; <a href=') !== false);
+            $this->assertTrue(strpos($content, 'marketing/default/index">Marketing</a> &#47; <a href=') !== false);
             $this->assertTrue(strpos($content, 'marketingLists/default/list">Lists</a> &#47; <a href=') !== false);
             $this->assertTrue(strpos($content, 'marketingLists/default/details?id=' . static::$marketingListId .
                                                 '">MarketingListName</a> &#47; <span>Subject 04</span></div>') !== false);
