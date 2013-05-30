@@ -31,6 +31,7 @@ class phaEditColumn extends phaAbsActiveColumn {
 
         $valueId = $data->{$this->modelId};
         $this->htmlEditFieldOptions['itemId'] = $valueId;
+        $this->htmlEditFieldOptions['style']  = 'width:50px;';
         $fieldUID = $this->getViewDivClass();
 
         echo CHtml::tag('div', array(
@@ -86,17 +87,18 @@ class phaEditColumn extends phaAbsActiveColumn {
         function phaACOpenEditField(itemValue, gridUID, grid ) {
             phaACHideEditField( phaACOpenEditItem, phaACOpenEditGrid );
             var id   = $(itemValue).attr("valueid");
-	    phaACOpenEditItem = id;
+            phaACOpenEditItem = id;
             $("#viewValue-" + gridUID + "-"+id).hide();
-	    var inputValue = $("#field-" + gridUID + "-" + phaACOpenEditItem+" input").val();
-	    inputValue = inputValue.replace("$","");
-	    $("#field-" + gridUID + "-" + phaACOpenEditItem+" input").val(inputValue);
+            var inputValue = $("#field-" + gridUID + "-" + phaACOpenEditItem+" input").val();
+            inputValue = inputValue.replace("$","");
+            $("#field-" + gridUID + "-" + phaACOpenEditItem+" input").val(inputValue);
             $("#field-" + gridUID + "-" + id).show();
             $("#field-" + gridUID + "-" + id+" input")
                 .focus()
                 .keydown(function(event) {
                     switch (event.keyCode) {
                        case 27:
+                       case 9:
                           phaACHideEditField( phaACOpenEditItem, gridUID );
                        break;
                        case 13:
