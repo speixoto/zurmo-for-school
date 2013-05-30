@@ -111,16 +111,6 @@
             return true;
         }
 
-        public static function isReportable()
-        {
-            return true;
-        }
-
-        public static function canHaveWorkflow()
-        {
-            return true;
-        }
-
         public static function modelsAreNeverGloballySearched()
         {
             return true;

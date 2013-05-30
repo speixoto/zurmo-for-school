@@ -69,22 +69,6 @@
                 'globalSearchAttributeNames' => array(
                     'name',
                 ),
-                'tabMenuItems' => array(
-                    array(
-                        'label'  => "eval:Zurmo::t('ProductTemplatesModule', 'ProductTemplatesModulePluralLabel', \$translationParams)",
-                        'url'    => array('/productTemplates/default'),
-                        'right'  => self::RIGHT_ACCESS_PRODUCT_TEMPLATES,
-                        'mobile' => true,
-                    ),
-                ),
-                'shortcutsCreateMenuItems' => array(
-                    array(
-                        'label'  => "eval:Zurmo::t('ProductTemplatesModule', 'ProductTemplatesModuleSingularLabel', \$translationParams)",
-                        'url'    => array('/productTemplates/default/create'),
-                        'right'  => self::RIGHT_CREATE_PRODUCT_TEMPLATES,
-                        'mobile' => true,
-                    ),
-                )
             );
             return $metadata;
         }
