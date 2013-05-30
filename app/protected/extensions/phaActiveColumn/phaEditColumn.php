@@ -99,13 +99,16 @@ class phaEditColumn extends phaAbsActiveColumn {
                     switch (event.keyCode) {
                        case 27:
                        case 9:
-                          phaACHideEditField( phaACOpenEditItem, gridUID );
-                       break;
+                          phaACHideEditField(phaACOpenEditItem, gridUID);
+                          break;
                        case 13:
-                           phaACEditFieldSend( itemValue, gridUID );
-                       break;
+                          phaACEditFieldSend(itemValue, gridUID);
+                          break;
                        default: break;
                     }
+                })
+                .blur(function(){
+                    phaACHideEditField(phaACOpenEditItem, gridUID);
                 });
 
 
