@@ -130,9 +130,8 @@
                     array('operationType',          'type',    'type' => 'integer'),
                     array('operationType',          'numerical', 'min' => static::OPERATION_SUBSCRIBE,
                                                                                     'max' => static::OPERATION_UNSUBSCRIBE),
-                    array('enableTracking',          'type',    'type' => 'integer'),
-                    array('enableTracking',          'numerical', 'min' => 0, 'max' => 1), // boolean gives error during schema build
-                    array('enableTracking',          'default', 'value' => 0),
+                    array('enableTracking',          'boolean'),
+                    array('enableTracking',          'default', 'value' => false),
 
                 ),
                 'relations' => array(

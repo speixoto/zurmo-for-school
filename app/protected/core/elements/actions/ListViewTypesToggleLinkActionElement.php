@@ -60,8 +60,12 @@
             $listUrl        = Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/list/',
                               array('kanbanBoard' => false));
             $content        = null;
-            $content       .= ZurmoHtml::link('<span>Kanban</span>', $kanbanBoardUrl, array('class' => $this->resolveKanbanBoardClass()));
-            $content       .= ZurmoHtml::link('<span>Grid</span>', $listUrl, array('class' => $this->resolveGridClass()));
+            $content       .= ZurmoHtml::link('<span>Kanban</span>', $kanbanBoardUrl,
+                                              array('class' => $this->resolveKanbanBoardClass(),
+                                                    'title' => Zurmo::t('Core', 'View as Kanban Board')));
+            $content       .= ZurmoHtml::link('<span>Grid</span>', $listUrl,
+                                              array('class' => $this->resolveGridClass(),
+                                                    'title' => Zurmo::t('Core', 'View as Grid')));
             return $content;
         }
 

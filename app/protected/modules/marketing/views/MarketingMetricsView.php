@@ -251,9 +251,10 @@
         {
             assert('$form instanceof ZurmoActiveForm');
             $ajaxSubmitScript = ZurmoHtml::ajax(array(
-                'type'       => 'POST',
-                'data'       => 'js:$("#' . $form->getId() . '").serialize()',
-                'url'        =>  $this->getPortletSaveConfigurationUrl(),
+                'type'     => 'POST',
+                'data'     => 'js:$("#' . $form->getId() . '").serialize() + \'&' . get_class($this->resolveForm()) .
+                              '[groupBy]=\' + $(this).data("value")',
+                'url'      =>  $this->getPortletSaveConfigurationUrl(),
                 //'beforeSend' => 'js:function(){makeSmallLoadingSpinner(true, "#MarketingDashboardView");
                 //                $("#MarketingDashboardView").addClass("loading");}',
                 'complete' => 'function(XMLHttpRequest, textStatus){juiPortlets.refresh();}',
@@ -261,8 +262,7 @@
 
             ));
             Yii::app()->clientScript->registerScript($this->uniqueLayoutId . 'groupByChangeScript', "
-            $('#" . $this->getFormId() . "_groupBy_area').buttonset();
-            $('#" . $this->getFormId() . "_groupBy_area').change(function()
+            $('." . $this->getFormId() . "marketingMetricsGroupByLink').click(function()
                 {
                     " . $ajaxSubmitScript . "
                 }
