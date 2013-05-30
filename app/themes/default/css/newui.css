@@ -268,6 +268,9 @@ a.ModalGameNotification a,
 .email-template-content,
 .tabs-container > .tab,
 .email-template-content > .tab,
+#marketing-intro-steps > div,
+#marketing-intro-steps h3,
+#marketing-intro-steps p,
 #kanban-board,
 #kanban-board .drop-zone-container,
 #kanban-board .drop-zone,
@@ -974,6 +977,7 @@ body.blue .configuration-list td:last-child a:hover span:before,
 body.blue .addfileinput-button:hover span,
 body.blue #HomeDashboardPortletSelectionView li span,
 body.blue .hide-welcome span,
+body.blue .hide-marketing-intro span,
 body.blue #kanban-board-options-link:hover,
 body.blue #more-search-link:hover,
 body.blue #select-list-attributes-link:hover {
@@ -1547,6 +1551,7 @@ body.brown .configuration-list td:last-child a:hover span:before,
 body.brown .addfileinput-button:hover span,
 body.brown #HomeDashboardPortletSelectionView li span,
 body.brown .hide-welcome span,
+body.brown .hide-marketing-intro span,
 body.brown #kanban-board-options-link:hover,
 body.brown #more-search-link:hover,
 body.brown #select-list-attributes-link:hover {
@@ -2120,6 +2125,7 @@ body.lime .configuration-list td:last-child a:hover span:before,
 body.lime .addfileinput-button:hover span,
 body.lime #HomeDashboardPortletSelectionView li span,
 body.lime .hide-welcome span,
+body.lime .hide-marketing-intro span,
 body.lime #kanban-board-options-link:hover,
 body.lime #more-search-link:hover,
 body.lime #select-list-attributes-link:hover {
@@ -2693,6 +2699,7 @@ body.cherry .configuration-list td:last-child a:hover span:before,
 body.cherry .addfileinput-button:hover span,
 body.cherry #HomeDashboardPortletSelectionView li span,
 body.cherry .hide-welcome span,
+body.cherry .hide-marketing-intro span,
 body.cherry #kanban-board-options-link:hover,
 body.cherry #more-search-link:hover,
 body.cherry #select-list-attributes-link:hover {
@@ -3266,6 +3273,7 @@ body.turquoise .configuration-list td:last-child a:hover span:before,
 body.turquoise .addfileinput-button:hover span,
 body.turquoise #HomeDashboardPortletSelectionView li span,
 body.turquoise .hide-welcome span,
+body.turquoise .hide-marketing-intro span,
 body.turquoise #kanban-board-options-link:hover,
 body.turquoise #more-search-link:hover,
 body.turquoise #select-list-attributes-link:hover {
@@ -3839,6 +3847,7 @@ body.violet .configuration-list td:last-child a:hover span:before,
 body.violet .addfileinput-button:hover span,
 body.violet #HomeDashboardPortletSelectionView li span,
 body.violet .hide-welcome span,
+body.violet .hide-marketing-intro span,
 body.violet #kanban-board-options-link:hover,
 body.violet #more-search-link:hover,
 body.violet #select-list-attributes-link:hover {
@@ -4412,6 +4421,7 @@ body.honey .configuration-list td:last-child a:hover span:before,
 body.honey .addfileinput-button:hover span,
 body.honey #HomeDashboardPortletSelectionView li span,
 body.honey .hide-welcome span,
+body.honey .hide-marketing-intro span,
 body.honey #kanban-board-options-link:hover,
 body.honey #more-search-link:hover,
 body.honey #select-list-attributes-link:hover {
@@ -6231,14 +6241,15 @@ body > .ui-autocomplete {
 #ActionBarSearchAndListView > :nth-child(6) {
   z-index: 5;
 }
-/*=dashboard
-#HomeDashboardView{
-	.parent > ul{
-		min-width: 160px;
-		margin-top:0;
-	}
+/*=dashboard*/
+#HomeDashboardView .view-toolbar-container {
+  position: relative;
+  z-index: 10;
 }
-*/
+#HomeDashboardView .juiportlet-columns {
+  position: relative;
+  z-index: 1;
+}
 /*=Inner toolbar*/
 .float-bar {
   width: 100%;
@@ -6588,7 +6599,7 @@ form .view-toolbar-container,
   margin: 0;
 }
 .icon-marketing-dashboard:before,
-.icon-change-dashborad:before {
+#ChangeDashboardsMenu .parent > a:before {
   content: "/";
   font-weight: normal;
   font-size: 24px;
@@ -17901,6 +17912,9 @@ a.user-link {
 .mergetag-guide-modal li {
   margin-bottom: 4px;
 }
+.juiportlet-columns-MarketingDashboard .juiportlet-widget {
+  margin-right: 0;
+}
 .marketing-list-members-portlet-container .portlet-view-toolbar {
   float: left;
 }
@@ -18135,7 +18149,7 @@ a + .autoresponder-stats {
 .metrics-details h3 {
   width: auto;
   float: left;
-  line-height: 26px;
+  color: #545454 !important;
 }
 .metrics-details div,
 .metrics-details form {
@@ -18147,15 +18161,128 @@ a + .autoresponder-stats {
   float: left;
 }
 .metrics-details > div {
-  font-size: 11px;
-  line-height: 26px;
+  font-size: 14px;
+  line-height: 1;
   font-weight: bold;
   color: #656565;
+  display: block;
+  margin-bottom: 10px;
+  /*&:after{
+			content: "|";
+			font-weight: bold;
+			padding:0 8px;
+		}*/
+
 }
-.metrics-details > div:after {
-  content: "|";
-  font-weight: bold;
-  padding: 0 8px;
+#marketing-intro-content {
+  margin-bottom: 30px;
+}
+#marketing-intro-steps {
+  float: left;
+  width: 100%;
+  margin: 30px 0 15px 0;
+}
+#marketing-intro-steps > div {
+  float: left;
+  margin-left: 2%;
+  min-height: 150px;
+  height: 150px;
+  background-color: rgba(51, 51, 51, 0.75);
+  background-repeat: repeat-x;
+  background-image: -moz-linear-gradient(top, rgba(34, 34, 34, 0.85), rgba(51, 51, 51, 0.75));
+  background-image: -ms-linear-gradient(top, rgba(34, 34, 34, 0.85), rgba(51, 51, 51, 0.75));
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, rgba(34, 34, 34, 0.85)), color-stop(100%, rgba(51, 51, 51, 0.75)));
+  background-image: -webkit-linear-gradient(top, rgba(34, 34, 34, 0.85), rgba(51, 51, 51, 0.75));
+  background-image: -o-linear-gradient(top, rgba(34, 34, 34, 0.85), rgba(51, 51, 51, 0.75));
+  background-image: linear-gradient(top, rgba(34, 34, 34, 0.85), rgba(51, 51, 51, 0.75));
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='rgba(34, 34, 34, 0.85)', endColorstr='rgba(51, 51, 51, 0.75)', GradientType=0);
+  color: #EFEFEF;
+  border: 1px solid #333;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -ms-border-radius: 4px;
+  -o-border-radius: 4px;
+  border-radius: 4px;
+  -webkit-box-shadow: inset 0 1px 1px 0 rgba(200, 200, 200, 0.4), 0 1px 0 0 #111;
+  -moz-box-shadow: inset 0 1px 1px 0 rgba(200, 200, 200, 0.4), 0 1px 0 0 #111;
+  -o-box-shadow: inset 0 1px 1px 0 rgba(200, 200, 200, 0.4), 0 1px 0 0 #111;
+  -ms-box-shadow: inset 0 1px 1px 0 rgba(200, 200, 200, 0.4), 0 1px 0 0 #111;
+  box-shadow: inset 0 1px 1px 0 rgba(200, 200, 200, 0.4), 0 1px 0 0 #111;
+  padding: 1px 0 0 0;
+}
+#marketing-intro-steps > div:first-child {
+  margin-left: 0;
+}
+#marketing-intro-steps h3 {
+  color: #fff;
+  font-size: 14px;
+  padding: 34px 0 0 10px;
+  font-weight: normal;
+  -webkit-text-shadow: 0 1px 0 #000000;
+  -moz-text-shadow: 0 1px 0 #000000;
+  -o-text-shadow: 0 1px 0 #000000;
+  -ms-text-shadow: 0 1px 0 #000000;
+  text-shadow: 0 1px 0 #000000;
+  position: relative;
+  float: left;
+  line-height: 1;
+  width: 85px;
+  height: 100%;
+  border-right: 1px solid #222222;
+}
+#marketing-intro-steps h3 strong {
+  display: block;
+  font-size: 50px;
+  line-height: 1;
+}
+#marketing-intro-steps h3 span {
+  color: #fff;
+  display: inline-block;
+  font-weight: 100 !important;
+  font-size: 80%;
+  line-height: 50px;
+  margin-top: -5px;
+}
+#marketing-intro-steps p {
+  padding: 10px 10px 0 10px;
+  margin-left: 85px;
+  font-size: 13px;
+  line-height: 21px;
+  border-left: 1px solid #333333;
+  height: 100%;
+  color: #ececec;
+}
+#marketing-intro-steps p strong {
+  color: #fff;
+  display: block;
+  font-size: 14px;
+  line-height: 22px;
+}
+#marketing-intro-steps span {
+  display: block;
+}
+.hide-marketing-intro {
+  display: block;
+  clear: both;
+  position: relative;
+  top: 30px;
+  font-size: 11px;
+  clear: none;
+  position: static;
+  top: 0;
+}
+.hide-marketing-intro span {
+  font-weight: normal;
+  font-size: 26px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  line-height: 9px;
+  border: none;
+  margin-right: 5px;
+  outline: none !important;
+  display: inline-block;
+}
+.hide-marketing-intro span:before {
+  content: "•";
 }
 #kanban-holder {
   background: #fff;
@@ -18172,22 +18299,22 @@ a + .autoresponder-stats {
   padding: 10px;
 }
 #kanban-holder.kanban-background-football {
-  background: #ffffff url(../images/kanban/football.jpg) left bottom repeat;
+  background: #ffffff url(../images/kanban/football.jpg) left bottom no-repeat;
 }
 #kanban-holder.kanban-background-tennis {
-  background: #ffffff url(../images/kanban/tennis.jpg) left bottom repeat;
+  background: #ffffff url(../images/kanban/tennis.jpg) left bottom no-repeat;
 }
 #kanban-holder.kanban-background-motor {
-  background: #ffffff url(../images/kanban/asphalt.jpg) center bottom repeat;
+  background: #ffffff url(../images/kanban/asphalt.jpg) center bottom no-repeat;
 }
 .kanban-background-football .background-texture-1 {
-  background: #ffffff url(../images/kanban/swatch-football.jpg) left top repeat;
+  background: #ffffff url(../images/kanban/swatch-football.jpg) left top no-repeat;
 }
 .kanban-background-tennis .background-texture-1 {
-  background: #ffffff url(../images/kanban/swatch-tennis.jpg) left top repeat;
+  background: #ffffff url(../images/kanban/swatch-tennis.jpg) left top no-repeat;
 }
 .kanban-background-motor .background-texture-1 {
-  background: #ffffff url(../images/kanban/swatch-asphalt.jpg) left top repeat;
+  background: #ffffff url(../images/kanban/swatch-asphalt.jpg) left top no-repeat;
 }
 #kanban-board .drop-zone-container {
   padding: 37px 2px 2px 2px;

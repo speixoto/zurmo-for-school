@@ -31,6 +31,12 @@
 // feasible for technical reasons, the Appropriate Legal Notices must display the words
 // "Copyright Zurmo Inc. 2013. All rights reserved".
 
+.juiportlet-columns-MarketingDashboard{
+	.juiportlet-widget{
+		margin-right: 0;
+	}
+}
+
 .marketing-list-members-portlet-container{
 	.portlet-view-toolbar{
 		float: left;
@@ -242,7 +248,7 @@ a + .autoresponder-stats{
 	h3{
 		width: auto;
 		float: left;
-		line-height:26px
+		color:#545454 !important;
 	}
 	div, form{
 		width: auto;
@@ -252,14 +258,96 @@ a + .autoresponder-stats{
 		}
 	}
 	> div{
-		.smaller();
-		line-height: 26px;
+		font-size: 14px;
+		line-height: 1;
 		font-weight: bold;
 		color: #656565;
-		&:after{
+		display: block;
+		margin-bottom: 10px;
+		/*&:after{
 			content: "|";
 			font-weight: bold;
 			padding:0 8px;
+		}*/
+	}
+}
+
+#marketing-intro-content{
+	margin-bottom: 30px;
+}
+
+#marketing-intro-steps{
+	float: left;
+	width: 100%;
+	margin: 30px 0 15px 0;
+
+	> div{
+		float: left;
+		margin-left: 2%;
+		min-height: 150px;
+		height: 150px;
+		#gradient > .vertical( rgba(34, 34, 34, 0.85), rgba(51,51,51, 0.75) );
+		color: #EFEFEF;
+		border: 1px solid #333;
+		.radius(4px);
+		.b-shadow(~"inset 0 1px 1px 0 rgba(200, 200, 200, 0.4), 0 1px 0 0 #111");
+		++.border-box;
+		padding:1px 0 0 0;
+		&:first-child{
+			margin-left: 0;
 		}
 	}
+	h3{
+		++.border-box;
+		color: #fff;
+		font-size: 14px;
+		padding: 34px 0 0 10px;
+		font-weight: normal;
+		.t-shadow(0 1px 0 #000);
+		position: relative;
+		float: left;
+		line-height: 1;
+		strong{
+			display: block;
+			font-size: 50px;
+			line-height: 1;
+		}
+		span{
+			color: #fff;
+			display: inline-block;
+			font-weight: 100 !important;
+			font-size: 80%;
+			line-height: 50px;
+			margin-top: -5px;
+		}
+		width: 85px;
+		height: 100%;
+		border-right: 1px solid rgb(34, 34, 34);
+	}
+	p{
+		++.border-box;
+		padding: 10px 10px 0 10px;
+		margin-left: 85px;
+		font-size: 13px;
+		line-height: 21px;
+		border-left: 1px solid rgb(51, 51, 51);
+		height: 100%;
+		color: #ececec;
+		strong{
+			color: #fff;
+			display: block;
+			font-size: 14px;
+			line-height: 22px;
+		}
+	}
+	span{
+		display: block;
+	}
+}
+
+.hide-marketing-intro{
+	.hide-welcome();
+	clear: none;
+	position: static;
+	top: 0;
 }

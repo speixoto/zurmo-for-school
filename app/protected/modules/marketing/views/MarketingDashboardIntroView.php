@@ -41,13 +41,21 @@
     {
         protected function renderContent()
         {
-            $content  = '<div class="clearfix">';
+            $content  = '<div id="marketing-intro-content">';
             $content .= '<h1>' . Zurmo::t('MarketingModule', 'How does Email Marketing work in Zurmo?'). '</h1>';
-            $content .= '<div id="marketing-intro-content">';
-            $content .= '<p>';
-            $content .= 'STEP 1,2,3 and graphics';
-            $content .= '</p>';
+
+            $content .= '<div id="marketing-intro-steps" class="clearfix">';
+            $content .= '<div class="third"><h3>Step <strong>1<span>➜</span></strong></h3>';
+            $content .= '<p><strong>Group</strong>Group together the email recipients into a list, use different lists for different purposes</p>';
             $content .= '</div>';
+            $content .= '<div class="third"><h3>Step <strong>2<span>➜</span></strong></h3>';
+            $content .= '<p><strong>Create</strong>Create the template for the email you are going to send, import and use either full, rich HTML templates or plain text</p>';
+            $content .= '</div>';
+            $content .= '<div class="third"><h3>Step <strong>3</strong></h3>';
+            $content .= '<p><strong>Launch</strong>Create a campaign where you can schedule your email to go out, pick the List(s) of recipients, add and schedule autoresponders and track your overall campaign performance</p>';
+            $content .= '</div>';
+            $content .= '</div>';
+
             $content .= $this->renderHideLinkContent();
             $content .= '</div>';
             return $content;
