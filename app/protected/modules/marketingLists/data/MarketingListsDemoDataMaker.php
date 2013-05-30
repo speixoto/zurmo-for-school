@@ -75,10 +75,11 @@
                 $this->seedData =  ZurmoRandomDataUtil::getRandomDataByModuleAndModelClassNames('MarketingListsModule',
                                                                                                 'MarketingList');
             }
-            $model->name        = $this->seedData['name'][$this->index];
-            $model->description = $this->seedData['description'][$this->index];
-            $model->fromName    = $this->seedData['fromName'][$this->index];
-            $model->fromAddress = $this->seedData['fromAddress'][$this->index];
+            $model->name                = $this->seedData['name'][$this->index];
+            $model->description         = $this->seedData['description'][$this->index];
+            $model->fromName            = $this->seedData['fromName'][$this->index];
+            $model->fromAddress         = $this->seedData['fromAddress'][$this->index];
+            $model->anyoneCanSubscribe    = (rand(10, 20) %2);
         }
     }
 ?>

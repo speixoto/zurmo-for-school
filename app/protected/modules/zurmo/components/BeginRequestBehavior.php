@@ -40,6 +40,7 @@
                 'zurmo/default/unsupportedBrowser',
                 'zurmo/default/login',
                 'tracking/default/track',
+                'marketingLists/public/',
                 'min/serve');
 
         public function attach($owner)
@@ -302,11 +303,11 @@
             {
                 $allowedGuestUserUrls[] = Yii::app()->createUrl($allowedGuestUserRoute);
             }
-            $reqestedUrl = Yii::app()->getRequest()->getUrl();
+            $requestedUrl = Yii::app()->getRequest()->getUrl();
             $isUrlAllowedToGuests = false;
             foreach ($allowedGuestUserUrls as $url)
             {
-                if (strpos($reqestedUrl, $url) === 0)
+                if (strpos($requestedUrl, $url) === 0)
                 {
                     $isUrlAllowedToGuests = true;
                 }

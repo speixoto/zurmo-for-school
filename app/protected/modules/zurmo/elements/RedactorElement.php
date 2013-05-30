@@ -34,33 +34,30 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class AutoresponderOrCampaignBatchSizeConfigUtil
+    class RedactorElement extends Element
     {
-        const CONFIG_KEY             = 'AutoresponderOrCampaignBatchSize';
-
-        const CONFIG_MODULE_NAME     = 'AutorespondersModule';
-
-        const CONFIG_DEFAULT_VALUE   = 200;
-
-        public static function getBatchSize($returnDefaultIfMissing = true, $setDefaultIfMissing = false)
+        protected function renderControlNonEditable()
         {
-            $size = ZurmoConfigurationUtil::getByModuleName(static::CONFIG_MODULE_NAME, static::CONFIG_KEY);
-            if (empty($size) && $returnDefaultIfMissing)
-            {
-                $size = static::CONFIG_DEFAULT_VALUE;
-                if ($setDefaultIfMissing)
-                {
-                    // TODO: @Shoaibi: Critical: Add tests that cover following
-                    static::setBatchSize($size);
-                }
-            }
-            return $size;
+            assert('$this->attribute != null');
+            return $this->model->{$this->attribute};
         }
 
-        public static function setBatchSize($size)
+        protected function renderControlEditable()
         {
-            assert('is_int($size) || $size === null');
-            ZurmoConfigurationUtil::setByModuleName(static::CONFIG_MODULE_NAME, static::CONFIG_KEY, $size);
+            assert('$this->attribute != null');
+            $id                      = $this->getEditableInputId();
+            $htmlOptions             = array();
+            $htmlOptions['id']       = $id;
+            $htmlOptions['name']     = $this->getEditableInputName();
+            $cClipWidget             = new CClipWidget();
+            $cClipWidget->beginClip("Redactor");
+            $cClipWidget->widget('application.core.widgets.Redactor', array(
+                                        'htmlOptions' => $htmlOptions,
+                                        'content'     => $this->model->{$this->attribute},
+                                ));
+            $cClipWidget->endClip();
+            $content                 = $cClipWidget->getController()->clips['Redactor'];
+            return $content;
         }
     }
 ?>

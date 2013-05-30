@@ -74,7 +74,9 @@
             $this->assertEquals('demoCompany',                   $form->applicationName);
             $this->assertEquals(Yii::app()->user->userModel->id, $form->userIdOfUserToRunWorkflowsAs);
             $this->assertEquals(Yii::app()->user->userModel->id, $form->userIdOfUserToRunTrackingAs);
-            $this->assertEquals(AutoresponderOrCampaignBatchSizeConfigUtil::CONFIG_DEFAULT_VALUE, $form->campaignOrAutoresponderBatchSize);
+            $this->assertEquals(AutoresponderOrCampaignBatchSizeConfigUtil::CONFIG_DEFAULT_VALUE, $form->autoresponderOrCampaignBatchSize);
+            $this->assertEquals(AutoresponderOrCampaignMailFooterContentUtil::getContentByType(false), $form->autoresponderOrCampaignFooterPlainText);
+            $this->assertEquals(AutoresponderOrCampaignMailFooterContentUtil::getContentByType(true), $form->autoresponderOrCampaignFooterRichText);
             $this->assertEquals($logoFileName,                   $form->logoFileData['name']);
             $form->timeZone              = 'America/Chicago';
             $form->listPageSize          = 60;
@@ -84,8 +86,10 @@
             $form->applicationName       = 'demoCompany2';
             $form->userIdOfUserToRunWorkflowsAs = $billy->id;
             $form->userIdOfUserToRunTrackingAs  = $billy->id;
-            $form->campaignOrAutoresponderBatchSize = 20;
+            $form->autoresponderOrCampaignBatchSize = 20;
             $logoFileName2               = 'testLogo.png';
+            $form->autoresponderOrCampaignFooterPlainText   = 'abc';
+            $form->autoresponderOrCampaignFooterRichText    = 'def';
             $logoFilePath2               = Yii::getPathOfAlias('application.modules.zurmo.tests.unit.files') . DIRECTORY_SEPARATOR . $logoFileName2;
             copy($logoFilePath2, sys_get_temp_dir() . DIRECTORY_SEPARATOR . $logoFileName2);
             copy($logoFilePath2, sys_get_temp_dir() . DIRECTORY_SEPARATOR . ZurmoConfigurationForm::LOGO_THUMB_FILE_NAME_PREFIX . $logoFileName2);
@@ -100,7 +104,9 @@
             $this->assertEquals('demoCompany2',     $form->applicationName);
             $this->assertEquals($billy->id,         $form->userIdOfUserToRunWorkflowsAs);
             $this->assertEquals($billy->id,         $form->userIdOfUserToRunTrackingAs);
-            $this->assertEquals(20, $form->campaignOrAutoresponderBatchSize);
+            $this->assertEquals(20, $form->autoresponderOrCampaignBatchSize);
+            $this->assertEquals('abc', $form->autoresponderOrCampaignFooterPlainText);
+            $this->assertEquals('def', $form->autoresponderOrCampaignFooterRichText);
             $this->assertEquals($logoFileName2,     $form->logoFileData['name']);
         }
     }
