@@ -327,7 +327,7 @@
             'application.modules.install.utils.InstallUtil',
             'application.modules.api.components.ApiRequest',
             'application.extensions.wideImage.WideImage',
-	    'application.extensions.phaActiveColumn.*',
+            'application.extensions.phaActiveColumn.*',
         ),
 
         'modules' => array(
@@ -374,6 +374,7 @@
             ),
             'users',
             'maps',
+            'contactWebForms',
         ),
 
         'params' => array(

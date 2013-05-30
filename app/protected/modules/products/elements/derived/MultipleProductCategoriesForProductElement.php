@@ -58,7 +58,7 @@
                                         'sourceUrl'   => Yii::app()->createUrl('productTemplates/default/autoCompleteAllProductCategoriesForMultiSelectAutoComplete'),
                                         'htmlOptions' => array(
                                         'disabled' => $this->getDisabledValue(),
-						    ),
+                            ),
                                         'hintText' => Zurmo::t('ProductsModule', 'Type a ' . ProductCategory::getModelLabelByTypeAndLanguage('SingularLowerCase'),
                                                                 LabelUtil::getTranslationParamsForAllModules())
             ));

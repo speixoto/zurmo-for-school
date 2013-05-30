@@ -41,7 +41,8 @@
                 'zurmo/default/login',
                 'tracking/default/track',
                 'marketingLists/public/',
-                'min/serve');
+                'min/serve',
+                'contacts/external/');
 
         public function attach($owner)
         {

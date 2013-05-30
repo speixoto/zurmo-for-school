@@ -125,6 +125,7 @@
         {
             $moreSearchOptionsLink        = $this->resolveMoreSearchOptionsLinkContent();
             $selectListAttributesLink     = $this->getSelectListAttributesLinkContent();
+            $kanbanBoardOptionsLink       = $this->getKanbanBoardOptionsLinkContent();
             $clearSearchLabelPrefix       = $this->getClearSearchLabelPrefixContent();
             $clearSearchLabel             = $this->getClearSearchLabelContent();
             $clearSearchLinkStartingStyle = $this->getClearSearchLinkStartingStyle();
@@ -139,6 +140,7 @@
             $content  = '<div class="search-form-tools">';
             $content .= $moreSearchOptionsLink;
             $content .= $selectListAttributesLink;
+            $content .= $kanbanBoardOptionsLink;
             $content .= $clearSearchLink;
             $content .= $this->renderFormBottomPanelExtraLinks();
             $content .= $this->renderClearingSearchInputContent();
@@ -210,6 +212,7 @@
                 $('#more-search-link" . $this->gridIdSuffix . "').unbind('click.more');
                 $('#more-search-link" . $this->gridIdSuffix . "').bind('click.more',  function(event){
                         $('.select-list-attributes-view').hide();
+                        $('.kanban-board-options-view').hide();
                         $(this).closest('form').find('.search-view-1').toggle();
                         return false;
                     }
@@ -232,6 +235,7 @@
                         $(this).closest('form').find('.search-view-1').hide();
                         " . $this->getHideOrShowClearSearchLinkScript() . "
                         $('.select-list-attributes-view').hide();
+                        $('.kanban-board-options-view').hide();
                         $('#" . $this->gridId . $this->gridIdSuffix . "-selectedIds').val(null);
                         $.fn.yiiGridView.update('" . $this->gridId . $this->gridIdSuffix . "',
                         {
@@ -339,6 +343,7 @@
                 $content .= '</div>';
             }
             $content .= $this->renderListAttributesSelectionContent($form);
+            $content .= $this->renderKanbanBoardOptionsContent($form);
             $content .= $this->renderFormBottomPanel();
 
             return $content;
@@ -368,6 +373,7 @@
                 $('#select-list-attributes-link" . $this->gridIdSuffix . "').bind('click.more',  function(event)
                     {
                         $(this).closest('form').find('.search-view-1').hide();
+                        $(this).closest('form').find('.kanban-board-options-view').hide();
                         $('.select-list-attributes-view').toggle();
                         return false;
                     }
@@ -391,6 +397,50 @@
             return ZurmoHtml::tag('div', array('class' => 'select-list-attributes-view',
                                             'style'    => 'display:none'), $content);
         }
+
+        protected function getKanbanBoardOptionsLinkContent()
+        {
+            if ($this->model->getKanbanBoard() != null && $this->model->getKanbanBoard()->getIsActive())
+            {
+                return ZurmoHtml::link(Zurmo::t('Core', 'Options'), '#', array('id' => 'kanban-board-options-link' . $this->gridIdSuffix));
+            }
+        }
+
+        protected function renderKanbanBoardOptionsContent(ZurmoActiveForm $form)
+        {
+            if ($this->model->getKanbanBoard() == null || !$this->model->getKanbanBoard()->getIsActive())
+            {
+                return;
+            }
+            Yii::app()->clientScript->registerScript('kanbanBoardOptions' . $this->getSearchFormId(), "
+                $('#kanban-board-options-link" . $this->gridIdSuffix . "').unbind('click.more');
+                $('#kanban-board-options-link" . $this->gridIdSuffix . "').bind('click.more',  function(event)
+                    {
+                        $(this).closest('form').find('.search-view-1').hide();
+                        $('.select-list-attributes-view').hide();
+                        $('.kanban-board-options-view').toggle();
+                        return false;
+                    }
+                );
+                $('#kanban-board-options-reset').unbind('click.close');
+                $('#kanban-board-options-reset').bind('click.close', function()
+                    {
+                        $('.kanban-board-options-view').hide();
+                    }
+                );
+                $('#kanban-board-options-apply').unbind('click.close');
+                $('#kanban-board-options-apply').bind('click.close', function()
+                    {
+                        $('.kanban-board-options-view').hide();
+                    }
+                );
+                ");
+            $element = new KanbanBoardOptionsElement($this->model, null, $form, array());
+            $element->editableTemplate = '{content}';
+            $content = $element->render();
+            return ZurmoHtml::tag('div', array('class' => 'kanban-board-options-view', 'style' => 'display:none'), $content);
+        }
+
 
         protected function renderViewToolBarContainerForAdvancedSearch($form)
         {
@@ -570,7 +620,7 @@
         {
             return ZurmoHtml::tag('div', array(
                         'id' => ModelElement::MODAL_CONTAINER_PREFIX . '-' . $this->getSearchFormId()
-                   ),'');
+                   ), '');
         }
     }
 ?>

@@ -136,7 +136,7 @@
             assert($saved); // Not Coding Standard
             $group = Group::getByName(Group::EVERYONE_GROUP_NAME);
             $saved = $group->save();
-            assert($saved);
+            assert($saved); // Not Coding Standard
         }
 
         public function setup()

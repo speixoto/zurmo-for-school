@@ -337,7 +337,7 @@
             $metadata            = CalculatedDerivedAttributeMetadata::
                                    getByNameAndModelClassName('calcnumber', 'Opportunity');
             $testCalculatedValue = CalculatedNumberUtil::calculateByFormulaAndModelAndResolveFormat($metadata->getFormula(), $opportunity);
-            $this->assertEquals(1476                                     , $testCalculatedValue);
+            $this->assertEquals('1,476'                                    , $testCalculatedValue); // Not Coding Standard
         }
 
         /**

@@ -129,5 +129,10 @@
         {
             throw new NotImplementedException();
         }
+
+        public function renderPortletHeadContent()
+        {
+            return null;
+        }
     }
 ?>

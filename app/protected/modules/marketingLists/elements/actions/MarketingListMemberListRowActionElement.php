@@ -100,7 +100,7 @@
                         {
                             linkUrl = $(this).attr("href");
                             linkId  = $(this).attr("id");
-                            if (linkId.indexOf("delete") !== -1 && !onAjaxSubmitRelatedListAction("' . $unlinkConfirmMessage . '", "' . $this->getGridId() . '"))
+                            if (linkId.indexOf("delete") !== -1 && !$(this).onAjaxSubmitRelatedListAction("' . $unlinkConfirmMessage . '", "' . $this->getGridId() . '"))
                             {
                                 event.preventDefault();
                                 return false

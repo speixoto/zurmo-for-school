@@ -44,7 +44,7 @@
 
         public function getDependencies()
         {
-            return array();
+            return array('marketing');
         }
 
         public function getRootModelNames()
@@ -112,6 +112,11 @@
         protected static function getPluralModuleLabel($language)
         {
             return Zurmo::t('CampaignsModule', 'Campaigns', array(), null, $language);
+        }
+
+        public static function modelsAreNeverGloballySearched()
+        {
+            return true;
         }
     }
 ?>

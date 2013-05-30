@@ -41,7 +41,7 @@
             assert('$demoDataHelper instanceof DemoDataHelper');
             $currencies = Currency::getAll('id');
             $productTemplates = array();
-            for ($i = 0; $i < $this->resolveQuantityToLoad(); $i++)
+            for ($i = 0; $i < 5; $i++)
             {
                 $productTemplate = new ProductTemplate();
                 $currencyValue                   = new CurrencyValue();
@@ -49,32 +49,42 @@
                 $productTemplate->cost           = $currencyValue;
                 $productTemplate->listPrice      = $currencyValue;
                 $productTemplate->sellPrice      = $currencyValue;
-                $this->populateModel($productTemplate);
-                $saved				 = $productTemplate->save();
+                $this->populateModelData($productTemplate, $i);
+                $saved               = $productTemplate->save();
                 assert('$saved');
-                $productTemplates[]		 = $productTemplate->id;
+                $productTemplates[]      = $productTemplate->id;
             }
             $demoDataHelper->setRangeByModelName('ProductTemplate', $productTemplates[0], $productTemplates[count($productTemplates)-1]);
         }
 
-        public function populateModel(& $model)
+        public function populateModelData(& $model, $counter)
         {
             assert('$model instanceof ProductTemplate');
             parent::populateModel($model);
             $productTemplateRandomData = ZurmoRandomDataUtil::getRandomDataByModuleAndModelClassNames(
                                             'ProductTemplatesModule', 'ProductTemplate');
-            $name                      = RandomDataUtil::getRandomValueFromArray($productTemplateRandomData['names']);
+            $name                      = $productTemplateRandomData['names'][$counter];
             $productCategoryName       = self::getProductCategoryForTemplate($name);
-            $productCategories         = ProductCategory::getByName($productCategoryName);
-            $productCategory           = $productCategories[0];
+            $allCats = ProductCategory::getAll();
+            foreach($allCats as $category)
+            {
+                if($category->name == $productCategoryName)
+                {
+                    $categoryId = $category->id;
+                }
+            }
+            $productCategory           = ProductCategory::getById($categoryId);
             $model->name               = $name;
             $model->productCategories->add($productCategory);
             $model->priceFrequency     = 2;
-            $model->cost->value        = mt_rand(5, 350) * 1000;
-            $model->listPrice->value   = mt_rand(5, 350) * 1000;
-            $model->sellPrice->value   = mt_rand(5, 350) * 1000;
+            $model->cost->value        = 200;
+            $model->listPrice->value   = 200;
+            $model->sellPrice->value   = 200;
             $model->status             = ProductTemplate::STATUS_ACTIVE;
             $model->type               = ProductTemplate::TYPE_PRODUCT;
+            $sellPriceFormula          = new SellPriceFormula();
+            $sellPriceFormula->type    = SellPriceFormula::TYPE_EDITABLE;
+            $model->sellPriceFormula   = $sellPriceFormula;
         }
 
         private static function getProductCategoryForTemplate($template)

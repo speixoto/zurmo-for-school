@@ -221,6 +221,11 @@
             return $this->getView()->render();
         }
 
+        public function renderHeadContent()
+        {
+            return $this->getView()->renderPortletHeadContent();
+        }
+
         public function isEditable()
         {
             $className = get_class($this->getView());
@@ -230,7 +235,7 @@
 //        public function isRemovable()
 //        {
 //            $className = get_class($this->getView());
-//            if(method_exists($className, 'canUserRemove'))
+//            if (method_exists($className, 'canUserRemove'))
 //            {
 //                return $className::canUserRemove();
 //            }

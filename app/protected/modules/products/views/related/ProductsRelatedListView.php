@@ -29,7 +29,7 @@
         /**
          * Form that has the information for how to display the latest products view.
          */
-        protected $configurationForm;
+        protected $configurationForm = 'ProductsConfigurationForm';
 
         /**
          * The url to use as the redirect url when going to another action. This will return the user
@@ -45,6 +45,22 @@
         protected $uniquePageId;
 
         protected $params;
+
+        protected $showStageFilter = true;
+
+        protected static $persistantProductPortletConfigs = array(
+            'filteredByStage'
+        );
+
+        function __construct($viewData, $params, $uniqueLayoutId)
+        {
+            parent::__construct($viewData, $params, $uniqueLayoutId);
+            $this->uniquePageId        = get_called_class();
+            $productsConfigurationForm = $this->getConfigurationForm();
+            $this->resolveProductsConfigFormFromRequest($productsConfigurationForm);
+            $this->configurationForm   = $productsConfigurationForm;
+            $this->moduleId            = $this->params['relationModuleId'];
+        }
 
         public static function getDefaultMetadata()
         {
@@ -119,7 +135,7 @@
         protected static function getGridTemplate()
         {
             $preloader = '<div class="list-preloader"><span class="z-spinner"></span></div>';
-            return "\n{items}\n{pager}\n{totalBarDetails}" . $preloader;
+            return "\n{items}\n{pager}\n<span class='empty'><strong>{totalBarDetails}</strong></span>" . $preloader;
         }
 
         /**
@@ -129,7 +145,8 @@
          */
         protected function getCGridViewAfterAjaxUpdate()
         {
-            return 'js:function(id, data) {
+            return 'js:function(id, data)
+                    {
                         processAjaxSuccessError(id, data);
                     }';
         }
@@ -152,7 +169,7 @@
          */
          protected function getCGridViewColumns()
          {
-            $columns	     = array();
+            $columns         = array();
             if ($this->rowsAreSelectable)
             {
                 $firstColumn = $this->getCGridViewFirstColumn();
@@ -168,7 +185,7 @@
                     {
                         foreach ($cell['elements'] as $columnInformation)
                         {
-                            $columnClassName	= 'Product' . ucfirst($columnInformation['attributeName']) . 'RelatedListViewColumnAdapter';
+                            $columnClassName    = 'Product' . ucfirst($columnInformation['attributeName']) . 'RelatedListViewColumnAdapter';
                             $columnAdapter      = new $columnClassName($columnInformation['attributeName'], $this, array_slice($columnInformation, 1));
                             $column = $columnAdapter->renderGridViewData();
                             if (!isset($column['class']))
@@ -182,7 +199,7 @@
             }
 
             //Add total to the grid view
-            $columnClassName	= 'ProductTotalRelatedListViewColumnAdapter';
+            $columnClassName    = 'ProductTotalRelatedListViewColumnAdapter';
             $columnAdapter      = new ProductTotalRelatedListViewColumnAdapter('total', $this, array());
             $column             = $columnAdapter->renderGridViewData();
             array_push($columns, $column);
@@ -204,19 +221,17 @@
 
         protected function renderContent()
         {
-            $content        = $this->renderViewToolBar();
-            //$content	    .= $this->renderAddProductLink();
-            //$content	    .= $this->renderConfigurationForm();
-            $cClipWidget    = new CClipWidget();
+            $content         = $this->renderConfigurationForm();
+            $cClipWidget     = new CClipWidget();
             $cClipWidget->beginClip("ListView");
             $cClipWidget->widget($this->getGridViewWidgetPath(), $this->getCGridViewParams());
             $cClipWidget->endClip();
-            $content	    .= $cClipWidget->getController()->clips['ListView'] . "\n";
+            $content        .= $cClipWidget->getController()->clips['ListView'] . "\n";
             if ($this->rowsAreSelectable)
             {
                 $content    .= ZurmoHtml::hiddenField($this->gridId . $this->gridIdSuffix . '-selectedIds', implode(",", $this->selectedIds)) . "\n"; // Not Coding Standard
             }
-                $content	    .= $this->renderScripts();
+            $content        .= $this->renderScripts();
             return $content;
         }
 
@@ -241,7 +256,7 @@
                     'class' => 'cgrid-view'
                 ),
                 'loadingCssClass'      => 'loading',
-                'dataProvider'         => $this->getDataProvider(),
+                'dataProvider'         => $this->getProductsDataProvider($this->configurationForm),
                 'selectableRows'       => $this->getCGridViewSelectableRowsCount(),
                 'pager'                => $this->getCGridViewPagerParams(),
                 'beforeAjaxUpdate'     => $this->getCGridViewBeforeAjaxUpdate(),
@@ -270,6 +285,183 @@
                     'paginationParams' => array_merge($defaultData, array('portletId' => $this->params['portletId'])),
                     'route'         => 'defaultPortlet/details',
                 );
+        }
+
+        public function renderPortletHeadContent()
+        {
+            return $this->renderWrapperAndActionElementMenu(Zurmo::t('Core', 'Options'));
+        }
+
+        protected function renderConfigurationForm()
+        {
+            $formName   = 'product-configuration-form';
+            $clipWidget = new ClipWidget();
+            list($form, $formStart) = $clipWidget->renderBeginWidget(
+                'ZurmoActiveForm',
+                array(
+                    'id' => $formName,
+                )
+            );
+            $content  = $formStart;
+            $content .= $this->renderConfigurationFormLayout($form);
+            $formEnd  = $clipWidget->renderEndWidget();
+            $content .= $formEnd;
+            $this->registerConfigurationFormLayoutScripts($form);
+            return $content;
+        }
+
+        protected function renderConfigurationFormLayout($form)
+        {
+            assert('$form instanceof ZurmoActiveForm');
+            $content      = null;
+            $innerContent = null;
+            if ($this->showStageFilter)
+            {
+                $element                   = new ProductStageFilterRadioElement($this->configurationForm,
+                                                                                          'filteredByStage',
+                                                                                          $form);
+                $element->editableTemplate =  '<div id="ProductsConfigurationForm_filteredByStage_area">{content}</div>';
+                $stageFilterContent        = $element->render();
+                $innerContent             .= $stageFilterContent;
+            }
+            if ($innerContent != null)
+            {
+                $content .= '<div class="horizontal-line latest-activity-toolbar">';
+                $content .= $innerContent;
+                $content .= '</div>' . "\n";
+            }
+            return $content;
+        }
+
+        protected function registerConfigurationFormLayoutScripts($form)
+        {
+            assert('$form instanceof ZurmoActiveForm');
+            $urlScript = $this->getPortletDetailsUrl(); // Not Coding Standard
+            $ajaxSubmitScript = ZurmoHtml::ajax(array(
+                    'type'       => 'GET',
+                    'data'       => 'js:$("#' . $form->getId() . '").serialize()',
+                    'url'        =>  $urlScript,
+                    'update'     => '#' . $this->uniqueLayoutId,
+                    'beforeSend' => 'js:function(){$(this).makeSmallLoadingSpinner(true, "#' . $this->getGridViewId() . '"); $("#' . $form->getId() . '").parent().children(".cgrid-view").addClass("loading");}',
+                    'complete'   => 'js:function()
+                    {
+                                        $("#' . $form->getId() . '").parent().children(".cgrid-view").removeClass("loading");
+                                        $("#filter-portlet-model-bar-' . $this->uniquePageId . '").show();
+                    }'
+            ));
+            Yii::app()->clientScript->registerScript($this->uniquePageId, "
+            $('#ProductsConfigurationForm_filteredByStage_area').buttonset();
+            $('#ProductsConfigurationForm_filteredByStage_area').change(function()
+                {
+                    " . $ajaxSubmitScript . "
+                }
+            );
+            ");
+        }
+
+        protected function getConfigurationForm()
+        {
+            return new ProductsConfigurationForm();
+        }
+
+        protected function resolveProductsConfigFormFromRequest(&$productsConfigurationForm)
+        {
+            $excludeFromRestore = array();
+            if (isset($_GET[get_class($productsConfigurationForm)]))
+            {
+                $productsConfigurationForm->setAttributes($_GET[get_class($productsConfigurationForm)]);
+                $excludeFromRestore = $this->saveUserSettingsFromConfigForm($productsConfigurationForm);
+            }
+            $this->restoreUserSettingsToConfigFrom($productsConfigurationForm, $excludeFromRestore);
+        }
+
+        protected function saveUserSettingsFromConfigForm(&$productsConfigurationForm)
+        {
+            $savedConfigs = array();
+            foreach (static::$persistantProductPortletConfigs as $persistantProductConfigItem)
+            {
+                if ($productsConfigurationForm->$persistantProductConfigItem !==
+                    ProductsPortletPersistentConfigUtil::getForCurrentUserByPortletIdAndKey($this->params['portletId'],
+                                                                                            $persistantProductConfigItem))
+                {
+                    ProductsPortletPersistentConfigUtil::setForCurrentUserByPortletIdAndKey($this->params['portletId'],
+                                                            $persistantProductConfigItem,
+                                                            $productsConfigurationForm->$persistantProductConfigItem
+                                                        );
+                    $savedConfigs[] = $persistantProductConfigItem;
+                }
+            }
+            return $savedConfigs;
+        }
+
+        protected function restoreUserSettingsToConfigFrom(&$productsConfigurationForm, $excludeFromRestore)
+        {
+            foreach (static::$persistantProductPortletConfigs as $persistantProductConfigItem)
+            {
+                if (in_array($persistantProductConfigItem, $excludeFromRestore))
+                {
+                    continue;
+                }
+                $persistantProductConfigItemValue = ProductsPortletPersistentConfigUtil::getForCurrentUserByPortletIdAndKey(
+                                                                                                $this->params['portletId'],
+                                                                                                $persistantProductConfigItem);
+                if (isset($persistantProductConfigItemValue))
+                {
+                    $productsConfigurationForm->$persistantProductConfigItem = $persistantProductConfigItemValue;
+                }
+            }
+            return $productsConfigurationForm;
+        }
+
+        /**
+         * After a portlet action is completed, the portlet must be refreshed. This is the url to correctly
+         * refresh the portlet content.
+         */
+        protected function getPortletDetailsUrl()
+        {
+            $params = array_merge($_GET, array('portletId'      => $this->params['portletId'],
+                                               'uniqueLayoutId' => $this->uniqueLayoutId,
+                                               'redirectUrl'    => null,
+                                               'portletParams'  => array('relationModuleId' => $this->moduleId,
+                                               'relationModelId'=> $this->params['relationModel']->id)
+                                               )
+                                  );
+            return Yii::app()->createUrl('/' . $this->moduleId . '/defaultPortlet/modalRefresh',$params);
+        }
+
+        protected function makeProductSearchAttributeData($form)
+        {
+            $searchAttributeData = array();
+            $searchAttributeData['clauses'][1] = array(
+                                                        'attributeName'        => $this->getRelationAttributeName(),
+                                                        'relatedAttributeName' => 'id',
+                                                        'operatorType'         => 'equals',
+                                                        'value'                => (int)$this->params['relationModel']->id,
+                                                    );
+            if($form->filteredByStage != ProductsConfigurationForm::FILTERED_BY_ALL_STAGES)
+            {
+                $searchAttributeData['clauses'][2] = array(
+                                                            'attributeName'        => 'stage',
+                                                            'relatedAttributeName' => 'value',
+                                                            'operatorType'         => 'equals',
+                                                            'value'                => $form->filteredByStage,
+                                                         );
+                $searchAttributeData['structure'] = '1 and 2';
+            }
+            else
+            {
+                $searchAttributeData['structure'] = '1';
+            }
+            return $searchAttributeData;
+        }
+
+        protected function getProductsDataProvider($form)
+        {
+            if ($this->dataProvider == null)
+            {
+                $this->dataProvider = $this->makeDataProviderBySearchAttributeData($this->makeProductSearchAttributeData($form));
+            }
+            return $this->dataProvider;
         }
     }
 ?>

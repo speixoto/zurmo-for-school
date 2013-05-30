@@ -95,7 +95,7 @@
             $compareWhere  = "(({$quote}emailmessagesender{$quote}.{$quote}personoraccount_item_id{$quote} IN(4,5)) or (1 = "; // Not Coding Standard
             $compareWhere .= "(select 1 from {$quote}emailmessagerecipient{$quote} emailmessagerecipient where ";
             $compareWhere .= "{$quote}emailmessagerecipient{$quote}.{$quote}emailmessage_id` = {$quote}emailmessage";
-            $compareWhere .= "{$quote}.id and {$quote}emailmessagerecipient{$quote}.{$quote}personoraccount_item_id` IN(4,5) limit 1)))";
+            $compareWhere .= "{$quote}.id and {$quote}emailmessagerecipient{$quote}.{$quote}personoraccount_item_id` IN(4,5) limit 1)))"; // Not Coding Standard
             $this->assertEquals($compareWhere, $where);
 
             $sql = EmailMessage::makeSubsetOrCountSqlQuery('emailmessage', $joinTablesAdapter, 1, 5, $where, null);
@@ -139,7 +139,7 @@
             $compareSubsetSql .= "{$quote}ownedsecurableitem{$quote}.{$quote}securableitem_id{$quote} ";
             $compareSubsetSql .= "and {$quote}munge_id{$quote} in ('" . join("', '", $mungeIds) . "') ";
             $compareSubsetSql .= "where (" . $compareWhere . ') ';
-            $compareSubsetSql .= "and ({$quote}ownedsecurableitem{$quote}.{$quote}owner__user_id{$quote} = " . Yii::app()->user->userModel->id. " ";
+            $compareSubsetSql .= "and ({$quote}ownedsecurableitem{$quote}.{$quote}owner__user_id{$quote} = " . Yii::app()->user->userModel->id. " "; // Not Coding Standard
             $compareSubsetSql .= "OR {$quote}emailmessage_read{$quote}.{$quote}munge_id{$quote} IS NOT NULL) ";  // Not Coding Standard
             $compareSubsetSql .= "and {$quote}ownedsecurableitem{$quote}.{$quote}id{$quote} = ";
             $compareSubsetSql .= "{$quote}emailmessage{$quote}.{$quote}ownedsecurableitem_id{$quote} ";

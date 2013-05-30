@@ -40,9 +40,9 @@
      */
     abstract class SearchForm extends ModelForm
     {
-        const ANY_MIXED_ATTRIBUTES_SCOPE_NAME = 'anyMixedAttributesScope';
+        const ANY_MIXED_ATTRIBUTES_SCOPE_NAME       = 'anyMixedAttributesScope';
 
-        const SELECTED_LIST_ATTRIBUTES        = 'selectedListAttributes';
+        const SELECTED_LIST_ATTRIBUTES              = 'selectedListAttributes';
 
         private $dynamicAttributeData;
 
@@ -71,6 +71,12 @@
          * @var ListAttributesSelector
          */
         private $listAttributesSelector;
+
+        /**
+         * When utilized, shows a kanban board view instead of a listview
+         * @var null | object KanbanBoard
+         */
+        private $kanbanBoard;
 
         public function __construct(RedBeanModel $model)
         {
@@ -195,7 +201,10 @@
 
         public static function getNonSearchableAttributes()
         {
-            return array(self::ANY_MIXED_ATTRIBUTES_SCOPE_NAME, self::SELECTED_LIST_ATTRIBUTES);
+            return array(self::ANY_MIXED_ATTRIBUTES_SCOPE_NAME,
+                         self::SELECTED_LIST_ATTRIBUTES,
+                         KanbanBoard::GROUP_BY_ATTRIBUTE_VISIBLE_VALUES,
+                         KanbanBoard::SELECTED_THEME);
         }
 
         public function getSearchableAttributes()
@@ -583,6 +592,22 @@
         public function getListAttributesSelector()
         {
             return $this->listAttributesSelector;
+        }
+
+        /**
+         * @see KanbanBoard class
+         */
+        public function setKanbanBoard(KanbanBoard $kanbanBoard)
+        {
+            $this->kanbanBoard = $kanbanBoard;
+        }
+
+        /**
+         * @return null|object KanbanBoard
+         */
+        public function getKanbanBoard()
+        {
+            return $this->kanbanBoard;
         }
     }
 ?>

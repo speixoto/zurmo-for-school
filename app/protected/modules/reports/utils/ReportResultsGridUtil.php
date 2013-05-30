@@ -58,7 +58,7 @@
 
         protected static function resolveModuleClassName($attribute, ReportResultsRowData $data)
         {
-            if(get_class($data->getModel($attribute)) == 'Contact' &&
+            if (get_class($data->getModel($attribute)) == 'Contact' &&
                 LeadsUtil::isStateALead($data->getModel($attribute)->state))
             {
                 return 'LeadsModule';

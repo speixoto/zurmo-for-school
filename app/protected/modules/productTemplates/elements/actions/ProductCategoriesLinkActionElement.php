@@ -54,5 +54,19 @@
         {
             return Yii::app()->createUrl('productTemplates/category/list/');
         }
+
+        public function render()
+        {
+            if (RightsUtil::canUserAccessModule(
+                    'ProductTemplatesModule',
+                    Yii::app()->user->userModel))
+            {
+                return ZurmoHtml::link($this->resolveLabelAndWrap(), $this->route, $this->getHtmlOptions());
+            }
+            else
+            {
+                return '';
+            }
+        }
     }
 ?>

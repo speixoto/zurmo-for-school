@@ -163,14 +163,14 @@
             $data[static::TYPE_STATIC_GROUP]                             =
                 StaticGroupWorkflowEmailMessageRecipientForm::getTypeLabel();
 
-            if(is_subclass_of($modelClassName, 'Contact') || $modelClassName == 'Contact')
+            if (is_subclass_of($modelClassName, 'Contact') || $modelClassName == 'Contact')
             {
                 $data[static::TYPE_DYNAMIC_TRIGGERED_MODEL] =
                     DynamicTriggeredModelWorkflowEmailMessageRecipientForm::getTypeLabel();
             }
             $form = new DynamicTriggeredModelRelationWorkflowEmailMessageRecipientForm($modelClassName, $workflowType);
             $relationValuesAndLabels = $form->getRelationValuesAndLabels();
-            if(!empty($relationValuesAndLabels))
+            if (!empty($relationValuesAndLabels))
             {
                 $data[static::TYPE_DYNAMIC_TRIGGERED_MODEL_RELATION]                             =
                     DynamicTriggeredModelRelationWorkflowEmailMessageRecipientForm::getTypeLabel();

@@ -248,7 +248,7 @@
             if ($this->type == WorkflowActionAttributeForm::TYPE_STATIC)
             {
                 $value = $this->value;
-                if($this->shouldResolveValueForMergeTags)
+                if ($this->shouldResolveValueForMergeTags)
                 {
                     $value = $this->resolveValueForMergeTags($value, $adapter);
                 }
@@ -280,7 +280,7 @@
         public function resolveNullAlternativeValueAndSetToModel(WorkflowActionProcessingModelAdapter $adapter, $attribute)
         {
             assert('is_string($attribute)');
-            if($this->shouldSetValue || !$this->shouldSetNullAlternativeValue())
+            if ($this->shouldSetValue || !$this->shouldSetNullAlternativeValue())
             {
                 throw new NotSupportedException();
             }

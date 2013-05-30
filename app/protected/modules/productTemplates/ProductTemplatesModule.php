@@ -26,9 +26,9 @@
 
     class ProductTemplatesModule extends SecurableModule
     {
-        const RIGHT_CREATE_PRODUCT_TEMPLATES = 'Create ProductTemplates';
-        const RIGHT_DELETE_PRODUCT_TEMPLATES = 'Delete ProductTemplates';
-        const RIGHT_ACCESS_PRODUCT_TEMPLATES = 'Access ProductTemplates Tab';
+        const RIGHT_CREATE_PRODUCT_TEMPLATES = 'Create Catalog Items';
+        const RIGHT_DELETE_PRODUCT_TEMPLATES = 'Delete Catalog Items';
+        const RIGHT_ACCESS_PRODUCT_TEMPLATES = 'Access Catalog Items Tab';
 
         public function getDependencies()
         {
@@ -45,8 +45,8 @@
 
         public static function getTranslatedRightsLabels()
         {
-            $params					  = LabelUtil::getTranslationParamsForAllModules();
-            $labels					  = array();
+            $params                   = LabelUtil::getTranslationParamsForAllModules();
+            $labels                   = array();
             $labels[self::RIGHT_CREATE_PRODUCT_TEMPLATES] = Zurmo::t('ProductTemplatesModule',
                                                                         'Create ProductTemplatesModulePluralLabel',     $params);
             $labels[self::RIGHT_DELETE_PRODUCT_TEMPLATES] = Zurmo::t('ProductTemplatesModule',
@@ -124,14 +124,24 @@
             return self::RIGHT_DELETE_PRODUCT_TEMPLATES;
         }
 
-        public static function getDemoDataMakerClassName()
+        public static function getDemoDataMakerClassNames()
         {
-            return 'ProductTemplatesDemoDataMaker';
+            return array('ProductCategoriesDemoDataMaker', 'ProductTemplatesDemoDataMaker');
         }
 
         public static function getGlobalSearchFormClassName()
         {
             return 'ProductTemplatesSearchForm';
+        }
+
+        public static function isReportable()
+        {
+            return true;
+        }
+
+        public static function modelsAreNeverGloballySearched()
+        {
+            return true;
         }
     }
 ?>

@@ -57,7 +57,7 @@
             {
                 if ($name == self::DEFAULT_NAME)
                 {
-                    $catalog	   = new ProductCatalog();
+                    $catalog       = new ProductCatalog();
                     $catalog->name = self::DEFAULT_NAME;
                     $saved         = $catalog->save();
                     assert('$saved');
@@ -167,7 +167,7 @@
         protected function beforeDelete()
         {
             parent::beforeDelete();
-            if($this->name != self::DEFAULT_NAME)
+            if ($this->name != self::DEFAULT_NAME)
             {
                 return true;
             }

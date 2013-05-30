@@ -63,18 +63,18 @@
         {
             $content  = null;
             $content .= $this->renderBeforeTableContent();
-	    $modelClassName = $this->modelClassName;
+            $modelClassName = $this->modelClassName;
             if (count($this->attributesCollection) > 0)
             {
                 $content .= '<div>';
                 $content .= $this->renderTitleContent();
                 $content .= '<ul class="configuration-list">';
-		foreach ($this->attributesCollection as $attributeName => $information)
+                foreach ($this->attributesCollection as $attributeName => $information)
                 {
                     $route = $this->moduleId . '/' . $this->controllerId . '/AttributeEdit/';
 
                     $attributeFormClassName = AttributesFormFactory::getFormClassNameByAttributeType($information['elementType']);
-		    if ($information['elementType'] == 'EmailAddressInformation' ||
+                    if ($information['elementType'] == 'EmailAddressInformation' ||
                         $information['elementType'] == 'Address' ||
                         $information['elementType'] == 'User' ||
                         $information['isReadOnly'] ||

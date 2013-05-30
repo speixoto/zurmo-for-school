@@ -98,5 +98,10 @@
                 SellPriceFormula::TYPE_SAME_AS_LIST        => SameAsListSellPriceFormulaRules::getDisplaySellPriceFormula(),
             );
         }
+
+        public static function getModuleClassName()
+        {
+            return 'ProductTemplatesModule';
+        }
     }
 ?>

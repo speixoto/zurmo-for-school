@@ -31,6 +31,12 @@
 // feasible for technical reasons, the Appropriate Legal Notices must display the words
 // "Copyright Zurmo Inc. 2013. All rights reserved".
 
+.marketing-list-members-portlet-container{
+	.portlet-view-toolbar{
+		float: left;
+	}
+}
+
 //#marketing-list-member-select-contact-or-report-form,
 #marketing-list-member-configuration-form{
 	position: relative;
@@ -60,6 +66,10 @@
 			outline: none !important;
 			box-shadow:none !important;
 		}
+	}
+	.list-view-items-summary-clone{
+		margin-top: 51px;
+		font-weight: bold;
 	}
 }
 
@@ -148,6 +158,8 @@
 
 #MarketingListMembersConfigurationForm_filteredBySubscriptionType_area{
 	margin-left: 15px;
+	width: auto;
+	top: 20px;
 }
 
 .marketing-list-member-stats{
@@ -166,4 +178,57 @@
 			top: auto;
 		}
 	}
+}
+
+#ReportDetailsView,
+#CampaignDetailsView,
+#MarketingListDetailsView{
+	position: relative;
+	z-index: 10;
+	+ div{
+		position: relative;
+		z-index: 1;
+	}
+}
+
+.marketing-graph{
+	float: left;
+	margin-left:2%;
+	padding-bottom: 15px;
+	&:first-child{
+		margin-left: 0;
+	}
+	h3{
+		padding-left: 15px;
+	}
+}
+
+.graph-container{
+
+}
+
+.edit-autoresponder-link{
+	display: block;
+	margin-bottom:10px;
+	font-size: 14px;
+	font-weight: bold;
+}
+
+.autoresponder-stats{
+	.quarter();
+	float: left;
+	margin-left: 2%;
+	text-align: left;
+	font-size: 12px;
+	strong{
+		font-size: 26px;
+		font-weight: bold;
+		display: block;
+	}
+	span{
+		//font-weight: bold;
+	}
+}
+a + .autoresponder-stats{
+	margin-left: 0;
 }

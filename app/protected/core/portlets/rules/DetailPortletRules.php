@@ -40,6 +40,5 @@
      */
     class DetailPortletRules extends PortletRules
     {
-        
     }
 ?>

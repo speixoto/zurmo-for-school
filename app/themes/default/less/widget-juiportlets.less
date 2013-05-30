@@ -37,7 +37,6 @@
 		min-height: 400px;
 		height: auto !important;
 		height: 400px;
-
 		+ .juiportlet-column{
 			.juiportlet-widget {
 				margin-right: 0;
@@ -86,7 +85,6 @@
 }
 
 .juiportlet-columns .juiportlet-widget .juiportlet-widget-head {
-	//overflow: hidden;
 	width: 100%;
 	height: 40px;
 	line-height: 40px;
@@ -94,7 +92,7 @@
 	.b-shadow(inset 0 1px 0 0 #ffffff);
 	position:relative;
 	border-bottom:1px solid #CCC;
-	cursor: move;
+	z-index: 999;
 }
 
 .juiportlet-columns .juiportlet-widget .juiportlet-widget-head h3 {
@@ -102,83 +100,9 @@
 	position: relative;
 	margin-left:15px;
 }
+
 .collapse ~ h3{
 	margin-left:0;
-}
-
-/*.juiportlet-widget-head */
-a.remove {
-	/*float: right;
-	display: inline;
-	width: 13px;
-	height: 40px;
-	margin-right:8px;
-	text-indent: -9999em;
-	outline: none;
-	position:relative;
-	z-index:9999;
-	*/
-	.b-shadow(inset 0 1px 0 0 #ffffff);
-	float: right;
-	display: inline;
-	text-indent: -9999em;
-	outline: none;
-	position: relative;
-	z-index: 9999;
-	line-height: 1 !important;
-	#gradient > .vertical(#f6f6f6, #ededed);
-	border:1px solid #CCC;
-	border-left: none;
-	width: 14px;
-	height: 20px;
-	border-radius: 0 15% 15% 0;
-	margin-right: -15px;
-	margin-top: 10px;
-	.icon{
-	    line-height:1;
-	    position:relative;
-	    float:right;
-	}
-	.icon:after{
-		position: relative;
-		left: -1px;
-		margin-top: -2px;
-		line-height: 1;
-		content:"—";
-		.symbly(22px);
-		text-indent:0;
-		display:block;
-		float:left;
-		color:#A7A7A7;
-		.t-shadow( rgba( 255, 255, 255, 0.8 ) 0 1px 0  );
-	}
-}
-
-.juiportlet-widget-head a.edit {
-	float: right;
-	display: inline;
-	width: 14px;
-	height: 40px;
-	text-indent: -9999em;
-	margin-right:8px;
-	outline: none;
-	position:relative;
-	.icon{
-	    line-height:1;
-	    position:relative;
-	    float:right;
-	}
-	.icon:after{
-		position:absolute;
-		top:7px;
-		right:0;
-		content:"n";
-		.symbly(24px);
-		text-indent:0;
-		display:block;
-		float:right;
-		color:#A7A7A7;
-	}
 }
 
 .juiportlet-widget-head a.collapse {
@@ -199,6 +123,8 @@ a.remove {
 
 .juiportlet-widget-content{
 	padding:0 0 0 0;
+	position: relative;
+	z-index: 1;
 }
 
 .juiportlet-widget-content > li{

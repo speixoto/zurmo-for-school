@@ -61,7 +61,7 @@ function rebuildDynamicSearchRowNumbersAndStructureInput(formId)
 
 function afterDynamicSearchValidateAjaxAction(form, data, hasError)
 {
-    if(!afterValidateAction(form, data, hasError))
+    if(!$(this).afterValidateAction(form, data, hasError))
     {
         $(this).closest('form').find('.search-view-1').show();       
         return false;

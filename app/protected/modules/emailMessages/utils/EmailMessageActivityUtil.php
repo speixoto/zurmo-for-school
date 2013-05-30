@@ -41,7 +41,7 @@
     {
         const IMAGE_PATH            =   '/default/images/1x1-pixel.png';
 
-        const VALID_HASH_PATTERN    = '~^[A-Z0-9\+=/]+~i';
+        const VALID_HASH_PATTERN    = '~^[A-Z0-9\+=/]+~i'; // Not Coding Standard
 
         protected static $baseQueryStringArray;
 
@@ -291,11 +291,13 @@
 
         protected static function getBaseLinkRegex()
         {
+            // Begin Not Coding Standard
             $baseLinkRegex = <<<PTN
 (([\w-]+://?|www[.])[^\s()<>]+(?:\([\w\d]+\)|([^[:punct:]\s]|/)))
 PTN;
             // (?i)\b((?:https?://|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'".,<>?«»“”‘’]))
             return $baseLinkRegex;
+            // End Not Coding Standard
         }
 
         protected static function getPlainLinkRegex($isHtmlContent)
@@ -314,7 +316,7 @@ PTN;
         protected static function getHrefLinkRegex()
         {
             $baseLinkRegex  = static::getBaseLinkRegex();
-            $hrefPrefixedLinkRegex  = '<a [^>]*href=(\'|")' . $baseLinkRegex . '(\'|")';
+            $hrefPrefixedLinkRegex  = '<a [^>]*href=(\'|")' . $baseLinkRegex . '(\'|")'; // Not Coding Standard
             $linkRegex = '%' . $hrefPrefixedLinkRegex . '%i';
             return $linkRegex;
         }

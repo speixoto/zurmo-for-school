@@ -88,6 +88,7 @@
                     'anyMixedAttributes'      => '',
                     'name'                    => 'superProduct'
                 ),
+                'multiselect_ProductsSearchForm_anyMixedAttributesScope' => 'All',
                 'Product_page'   => '1',
                 'export'         => '',
                 'ajax'           => '',
@@ -104,6 +105,7 @@
                     'anyMixedAttributes'      => '',
                     'name'                    => 'superProduct'
                 ),
+                'multiselect_ProductsSearchForm_anyMixedAttributesScope' => 'All',
                 'Product_page'   => '1',
                 'export'         => '',
                 'ajax'           => '',
@@ -120,6 +122,7 @@
                     'anyMixedAttributes'      => '',
                     'name'                    => 'missingName'
                 ),
+                'multiselect_ProductsSearchForm_anyMixedAttributesScope' => 'All',
                 'Product_page' => '1',
                 'export'       => '',
                 'ajax'         => '',
@@ -203,6 +206,7 @@
                     'anyMixedAttributes'      => '',
                     'quantity'                => ''
                 ),
+                'multiselect_ProductsSearchForm_anyMixedAttributesScope' => 'All',
                 'Product_page'   => '1',
                 'export'         => '',
                 'ajax'           => '',

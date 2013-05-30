@@ -38,12 +38,23 @@
     {
         public function render()
         {
-            return ZurmoHtml::link($this->resolveLabelAndWrap(), $this->route, $this->getHtmlOptions());
+            return ZurmoHtml::link($this->resolveLabelAndWrap(), $this->route, $this->resolveHtmlOptionsForRendering());
         }
 
         public function renderMenuItem()
         {
-            return array('label' => $this->getLabel(), 'url' => $this->route, 'linkOptions' => $this->getHtmlOptions());
+            return array('label'       => $this->getLabel(), 'url' => $this->route,
+                         'linkOptions' => $this->resolveHtmlOptionsForRenderingMenuItem());
+        }
+
+        protected function resolveHtmlOptionsForRendering()
+        {
+            return $this->getHtmlOptions();
+        }
+
+        protected function resolveHtmlOptionsForRenderingMenuItem()
+        {
+            return $this->getHtmlOptions();
         }
     }
 ?>

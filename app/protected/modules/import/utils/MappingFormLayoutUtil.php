@@ -63,6 +63,7 @@
             assert('is_array($mappableAttributeIndicesAndDerivedTypesForExtraColumns)');
             $this->mappingFormModelClassName                               = $mappingFormModelClassName;
             $this->form                                                    = $form;
+            $this->form->id                                                = 'edit-form';
             $this->mappableAttributeIndicesAndDerivedTypesForImportColumns = $mappableAttributeIndicesAndDerivedTypesForImportColumns;
             $this->mappableAttributeIndicesAndDerivedTypesForExtraColumns  = $mappableAttributeIndicesAndDerivedTypesForExtraColumns;
         }

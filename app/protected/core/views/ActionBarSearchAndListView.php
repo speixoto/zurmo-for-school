@@ -48,14 +48,14 @@
             assert('is_string($actionBarViewClassName)');
             assert('is_string($activeActionElementType) || $activeActionElementType == null');
             parent::__construct(3, 1);
-
             $searchViewClassName = $viewPrefixName . 'SearchView';
             $searchView          = new $searchViewClassName($searchModel, get_class($listModel));
             $listViewClassName   = $viewPrefixName . 'ListView';
             $listView            = new $listViewClassName($controllerId, $moduleId,
                                                           get_class($listModel), $dataProvider,
                                                           $selectedIds, null, array(),
-                                                          $searchModel->getListAttributesSelector());
+                                                          $searchModel->getListAttributesSelector(),
+                                                          $this->resolveKanbanBoard($searchModel));
             $actionBarView       = new $actionBarViewClassName($controllerId, $moduleId, $listModel,
                                                                $listView->getGridViewId(),
                                                                $dataProvider->getPagination()->pageVar,
@@ -68,6 +68,11 @@
         public function isUniqueToAPage()
         {
             return true;
+        }
+
+        protected function resolveKanbanBoard(SearchForm $searchModel)
+        {
+            return $searchModel->getKanbanBoard();
         }
     }
 ?>

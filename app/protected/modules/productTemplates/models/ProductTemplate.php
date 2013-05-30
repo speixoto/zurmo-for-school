@@ -122,8 +122,8 @@
                     'sellPrice'           => 'CurrencyValue',
                     'type'                => 'ProductTemplateTypeDropDown',
                     'status'              => 'ProductTemplateStatusDropDown',
-                    'priceFrequency'	  => 'ProductTemplatePriceFrequencyDropDown',
-                    'sellPriceFormula'	  => 'SellPriceFormulaInformation'
+                    'priceFrequency'      => 'ProductTemplatePriceFrequencyDropDown',
+                    'sellPriceFormula'    => 'SellPriceFormulaInformation'
 
                 ),
                 'customFields' => array(
@@ -148,19 +148,26 @@
 
         public static function getGamificationRulesType()
         {
-            //return 'ProductTemplateGamification';
+            return 'ProductTemplateGamification';
         }
 
         protected function beforeDelete()
         {
-            parent::beforeDelete();
-            if(count($this->products) == 0 )
+            if ($this->getScenario() != 'autoBuildDatabase')
             {
-                return true;
+                parent::beforeDelete();
+                if (count($this->products) == 0 )
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
             }
             else
             {
-                return false;
+                return parent::beforeDelete();
             }
         }
 

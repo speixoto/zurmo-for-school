@@ -53,8 +53,16 @@
                                 'htmlOptions' => array('class' => 'icon-create'),
                             ),
                             array(
+                                'type'            => 'MarketingDashboardLink',
+                                'htmlOptions'     => array( 'class' => 'icon-marketing-dashboard' )
+                            ),
+                            array(
                                 'type'            => 'MarketingListsLink',
                                 'htmlOptions'     => array( 'class' => 'icon-marketing-lists' )
+                            ),
+                            array(
+                                'type'            => 'CampaignsLink',
+                                'htmlOptions'     => array( 'class' => 'icon-marketing-campaigns' )
                             ),
                             array(
                                 'type'            => EmailTemplatesForMarketingLinkActionElement::getType(),

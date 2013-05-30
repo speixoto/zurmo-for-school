@@ -40,6 +40,10 @@
      */
     class StackedExtendedGridView extends ExtendedGridView
     {
+        const ROW_TYPE_TD  = 'td';
+
+        const ROW_TYPE_DIV = 'div';
+
         /**
         * Renders the data items for the grid view.
         */
@@ -105,7 +109,17 @@
             {
                 echo '<tr>';
             }
-            echo '<td>';
+            $this->renderRowAsTableCellOrDiv($row, self::ROW_TYPE_TD);
+            echo "</tr>\n";
+        }
+
+        /**
+         * Render the column for either a TD or DIV.
+         */
+        protected function renderRowAsTableCellOrDiv($row, $type)
+        {
+            assert('$type == self::ROW_TYPE_TD || $type == self::ROW_TYPE_DIV');
+            echo static::renderRowTypeForOpenTag($type);
             foreach ($this->columns as $column)
             {
                 if ($column instanceof RowMenuColumn)
@@ -122,18 +136,49 @@
                     $column->renderDataCell($row);
                 }
             }
-            echo "</td>\n";
+            echo static::renderRowTypeForCloseTag($type);
             foreach ($this->columns as $column)
             {
                 if ($column instanceof RowMenuColumn)
                 {
                     $column->attachBehavior('stackedDataCell', new StackedGridColumnBehavior());
-                    echo "<td>\n";
+                    echo static::renderRowTypeForOpenTag($type);
                     $column->renderStackedDataCell($row);
-                    echo "</td>\n";
+                    echo static::renderRowTypeForCloseTag($type);
                 }
             }
-            echo "</tr>\n";
+        }
+
+        /**
+         * @param $type 'td' or 'div'
+         * @return string
+         */
+        protected static function renderRowTypeForOpenTag($type)
+        {
+            if($type == self::ROW_TYPE_TD)
+            {
+                return "<td>\n";
+            }
+            else
+            {
+                return "<div>\n";
+            }
+        }
+
+        /**
+         * @param $type 'td' or 'div'
+         * @return string
+         */
+        protected static function renderRowTypeForCloseTag($type)
+        {
+            if($type == self::ROW_TYPE_TD)
+            {
+                return "</td>\n";
+            }
+            else
+            {
+                return "</div>\n";
+            }
         }
     }
 ?>

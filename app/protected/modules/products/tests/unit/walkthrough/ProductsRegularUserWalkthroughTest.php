@@ -108,15 +108,13 @@
             $content = $this->runControllerWithNoExceptionsAndGetContent('products/default/list');
 
             $this->assertFalse(strpos($content, 'John Kenneth Galbraith') === false);
-            //TODO Need to ask Jason
             $this->runControllerWithNoExceptionsAndGetContent('products/default/create');
-
             //Test nobody can view an existing product he owns.
             $product = ProductTestHelper::createProductByNameForOwner('productOwnedByNobody', $nobody);
 
             //At this point the listview for products should show the search/list and not the helper screen.
             $content = $this->runControllerWithNoExceptionsAndGetContent('products/default/list');
-            $this->assertTrue(strpos($content, 'Description') === false);
+            $this->assertTrue(strpos($content, 'John Kenneth Galbraith') === false);
 
             $this->setGetArray(array('id' => $product->id));
             $this->runControllerWithNoExceptionsAndGetContent('products/default/edit');
@@ -143,6 +141,8 @@
             $this->runControllerShouldResultInAccessFailureAndGetContent('products/default/edit');
             $this->setGetArray(array('id' => $product->id));
             $this->runControllerShouldResultInAccessFailureAndGetContent('products/default/details');
+            $this->setGetArray(array('id' => $product->id));
+            $this->runControllerShouldResultInAccessFailureAndGetContent('products/default/delete');
 
             //give nobody access to read
             Yii::app()->user->userModel = $super;
@@ -157,10 +157,16 @@
             //Test nobody, access to edit should fail.
             $this->setGetArray(array('id' => $product->id));
             $this->runControllerShouldResultInAccessFailureAndGetContent('products/default/edit');
+            $this->setGetArray(array('id' => $product->id));
+            $this->runControllerShouldResultInAccessFailureAndGetContent('products/default/delete');
 
+            $productId  = $product->id;
+            $product->forget();
+            $product    = Product::getById($productId);
             //give nobody access to read and write
             Yii::app()->user->userModel = $super;
             $product->addPermissions($nobody, Permission::READ_WRITE_CHANGE_PERMISSIONS);
+            //TODO :Its wierd that giving opportunity errors
             $this->assertTrue($product->save());
 
             //Now the nobody user should be able to access the edit view and still the details view.
@@ -170,6 +176,9 @@
             $this->setGetArray(array('id' => $product->id));
             $this->runControllerWithNoExceptionsAndGetContent('products/default/edit');
 
+            $productId  = $product->id;
+            $product->forget();
+            $product    = Product::getById($productId);
             //revoke nobody access to read
             Yii::app()->user->userModel = $super;
             $product->addPermissions($nobody, Permission::READ_WRITE_CHANGE_PERMISSIONS, Permission::DENY);
@@ -227,6 +236,10 @@
             $this->setGetArray(array('id' => $product2->id));
             $this->runControllerWithNoExceptionsAndGetContent('products/default/details');
 
+            $productId  = $product2->id;
+            $product2->forget();
+            $product2   = Product::getById($productId);
+
             //give userInChildRole access to read and write
             Yii::app()->user->userModel = $super;
             $product2->addPermissions($userInChildRole, Permission::READ_WRITE_CHANGE_PERMISSIONS);
@@ -242,6 +255,9 @@
             $this->setGetArray(array('id' => $product2->id));
             $this->runControllerWithNoExceptionsAndGetContent('products/default/edit');
 
+            $productId  = $product2->id;
+            $product2->forget();
+            $product2   = Product::getById($productId);
             //revoke userInChildRole access to read and write
             Yii::app()->user->userModel = $super;
             $product2->addPermissions($userInChildRole, Permission::READ_WRITE_CHANGE_PERMISSIONS, Permission::DENY);
@@ -328,6 +344,9 @@
             $this->setGetArray(array('id' => $product3->id));
             $this->runControllerWithNoExceptionsAndGetContent('products/default/details');
 
+            $productId  = $product3->id;
+            $product3->forget();
+            $product3   = Product::getById($productId);
             //give parentGroup access to read and write
             Yii::app()->user->userModel = $super;
             $product3->addPermissions($parentGroup, Permission::READ_WRITE_CHANGE_PERMISSIONS);
@@ -344,6 +363,9 @@
             $this->setGetArray(array('id' => $product3->id));
             $this->runControllerWithNoExceptionsAndGetContent('products/default/edit');
 
+            $productId  = $product3->id;
+            $product3->forget();
+            $product3   = Product::getById($productId);
             //revoke parentGroup access to read and write
             Yii::app()->user->userModel = $super;
             $product3->addPermissions($parentGroup, Permission::READ_WRITE_CHANGE_PERMISSIONS, Permission::DENY);
@@ -427,7 +449,7 @@
             $this->assertFalse(strpos($content, '<strong>3</strong>&#160;Products selected for removal') === false);
             $pageSize = Yii::app()->pagination->getForCurrentUserByType('massDeleteProgressPageSize');
             $this->assertEquals(5, $pageSize);
-            //calculating leads after adding 6 new records
+            //calculating products after adding 6 new records
             $products = Product::getAll();
             $this->assertEquals(15, count($products));
             //Deleting 6 opportunities for pagination scenario
@@ -467,7 +489,7 @@
             $confused = User::getByUsername('confused');
             $nobody = User::getByUsername('nobody');
 
-            //Load MassDelete view for the 8 opportunities.
+            //Load MassDelete view for the 6 products
             $products = Product::getAll();
             $this->assertEquals(9, count($products));
 

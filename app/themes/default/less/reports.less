@@ -154,6 +154,7 @@
     }
 }
 
+
 .droppable-dynamic-rows-container{
     &.ui-droppable{
         float: left;
@@ -493,24 +494,29 @@
     .dynamic-rows{
         float: none;
         ul{
-            padding: 15px 15px 5px 15px;
+            //padding: 15px 15px 5px 15px;
         }
     }
+	.first-date-area{
+		margin-top: 0;
+	}
     .view-toolbar-container{
-        clear: left;
-        margin:0 15px 15px 15px;
-        .box-sizing();
-        width: auto;
+        //clear: left;
+        //margin:0 15px 15px 15px;
+        ++.border-box;
+        width: 100%;
     }
 }
 
 .ReportResultsComponentForPortletView{
     position: relative;
+	min-height: 60px;
     .big-spinner{
+	    display:block;
         float: left;
         position: relative;
         left: 50%;
-        margin:30px 0 0 -21px;
+        margin:10px 0 0 -21px;
 	    height: 65px;
     }
 }
@@ -657,6 +663,7 @@
     }
 }
 
+#CampaignDetailsView,
 #MarketingListDetailsView,
 #ReportDetailsView{
     h1{
@@ -688,16 +695,19 @@
         margin-right: 0;
         position: relative;
         top:3px;
+	    + label{
+		    padding-right: 15px;
+		    margin: 0 !important;
+		    .smaller() !important;
+		    font-weight: bold !important;
+	    }
     }
+	&:last-child{
+
+	}
+
 }
 
-.label-for-marketing-list-widgets,
-.label-for-report-widgets{
-    padding-right: 15px;
-    margin: 0 !important;
-    .smaller() !important;
-    font-weight: bold !important;
-}
 
 #reset-runtime-filters{
     .z-label{
@@ -920,12 +930,16 @@
     ++.border-box;
     float: left;
     width: 80%;
-    padding-left: 15px;
+    //padding-left: 15px;
+
+
     .value-data{
         width: 42.5%;
+	    float:left;
     }
     > span{
-        float: left;
+	    width: 15%;
+	   float:left;
         line-height: 26px;
         + .value-data{
             float: left;
@@ -1115,3 +1129,31 @@
 		margin-left: 0;
 	}
 }
+
+
+.icon-notice:before{
+	content: "j";
+	.view-toolbar-icons();
+}
+
+.general-issue-notice{
+	text-align: center;
+	width:75%;
+	margin:10px auto 15px auto;
+	position: relative;
+	.icon-notice{
+		display: block;
+		line-height: 1;
+		margin-bottom: 10px;
+	}
+	.icon-notice:before{
+		margin: 0;
+		font-size:100px;
+		line-height: 60px !important;
+	}
+	p{
+		font-size: 14px;
+		line-height: 21px;
+	}
+}
+

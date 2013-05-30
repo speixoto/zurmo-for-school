@@ -72,7 +72,7 @@
 
         public function getLinkString($attributeString)
         {
-            if($this->modalId == null)
+            if ($this->modalId == null)
             {
                 $modalId = 'modalContainer';
             }
@@ -84,7 +84,7 @@
             $string  = 'ZurmoHtml::link(';
             $string .= $attributeString . ', ';
             $string .= '"javascript:transferModalValues(\"#' . $modalId . '\", " . CJavaScript::encode(array(\'' . $this->sourceIdFieldId . '\' => $data->id, \'' . $this->sourceNameFieldId . '\' => strval(' . $attributeString . '))) . ");
-			copyProductTemplateDataForProduct(\'$data->id\', \'' . $url . '\')"';
+                        copyProductTemplateDataForProduct(\'$data->id\', \'' . $url . '\')"';
             $string .= ')';
             return $string;
         }

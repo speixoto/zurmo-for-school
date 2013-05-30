@@ -279,6 +279,7 @@
             $ids       = R::getCol($sql);
             return $ids;
         }
+
         /**
          * @param boolean $selectCount If true then make this a count query. If false, select ids from rows.
          * @param array $quotedExtraSelectColumnNameAndAliases - extra columns to select.

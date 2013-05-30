@@ -151,7 +151,6 @@
             $content  = $this->renderAttributeSelectorContentAndWrapper();
             $content .= $this->renderZeroComponentsContentAndWrapper();
             $content .= $this->renderActionsContentAndWrapper();
-            $content  = ZurmoHtml::tag('div', array('class' => 'left-column full-width'), $content);
             $this->registerScripts();
             return $content;
         }
@@ -382,7 +381,7 @@
                             {
                                 xhr.abort();
                             }
-                            catch(error)
+                            catch (error)
                             {
                                 console.log(error);
                             }
@@ -397,7 +396,7 @@
                 }',
                 'success' => 'js:function(data){
                     //when ajax comes back after choosing something in thedropdown
-                     $("#actionsNextLink").parent().parent().hide();
+                    $("#actionsNextLink").parent().parent().hide();
                     $(".droppable-dynamic-rows-container.' . ComponentForWorkflowForm::TYPE_ACTIONS .
                         '").find(".dynamic-rows").find("ul:first").children().hide();
                     $(\'#' . $rowCounterInputId . '\').val(parseInt($(\'#' . $rowCounterInputId . '\').val()) + 1);
@@ -405,6 +404,7 @@
                         '").find(".dynamic-rows").find("ul:first").append(data);
                     rebuildWorkflowActionRowNumbers("' . get_class($this) . '");
                     $(".' . static::getZeroComponentsClassName() . '").hide();
+                    $("#' . self::ACTION_TYPE_NAME . '").val("").attr("disabled", "disabled");
                     $("#' . self::ACTION_TYPE_NAME . '").val("");
                     $("#' . self::ACTION_TYPE_RELATION_DIV_ID . '").html("");
                     $("#' . self::ACTION_TYPE_RELATION_DIV_ID . '").hide();
@@ -426,6 +426,7 @@
             $script = '
                 $(".remove-dynamic-row-link").live("click", function()
                 {
+                    $("#' . self::ACTION_TYPE_NAME . '").val("").removeAttr("disabled");
                     size = $(this).parent().parent().parent().find("li").size();
                     $(this).parentsUntil("ul").siblings().show();
                     $(this).parent().parent().remove(); //removes the <li>
@@ -481,6 +482,7 @@
             //when clicking the EDIT button on each row
             $script = "$('.edit-dynamic-row-link').live('click', function()
             {
+                $('#" . self::ACTION_TYPE_NAME . "').attr('disabled', 'disabled');
                 $('#' + $(this).data().row.toString()).toggleClass('expanded-row');
                 $('#' + $(this).data().row.toString() + ' .toggle-me').toggle();
                 $('#' + $(this).data().row.toString() + ' .edit-dynamic-row-link').toggle();

@@ -35,64 +35,55 @@
      ********************************************************************************/
 
     /**
-     * Base class used for wrapping model detail views into a portlet ready view.
-     *
+     * Class to render a fly-out link from the campaign detailview.  When this link is clicked, a little div will
+     * open up that display additional information about the campaign
      */
-    abstract class DetailsForPortletView extends ConfigurableMetadataView implements PortletViewInterface
+    class CampaignsDetailsLinkActionElement extends LinkActionElement
     {
-        protected $params;
-
-        protected $controllerId;
-
-        protected $moduleId;
-
-        protected $model;
-
-        protected $uniqueLayoutId;
-
-        protected $viewData;
-
-        public function __construct($viewData, $params, $uniqueLayoutId)
+        public function getActionType()
         {
-            assert('isset($params["controllerId"])');
-            assert('isset($params["relationModuleId"])');
-            assert('isset($params["relationModel"])');
-            $this->viewData       = $viewData;
-            $this->params         = $params;
-            $this->controllerId   = $params["controllerId"];
-            $this->moduleId       = $params["relationModuleId"];
-            $this->model          = $params["relationModel"];
-            $this->uniqueLayoutId = $uniqueLayoutId;
+            return 'Details';
         }
 
-        public static function getDefaultMetadata()
+        protected function getDefaultLabel()
         {
-            return array(
-                'perUser' => array(
-                    'title' => null,
-                ),
-            );
+            return Zurmo::t('CampaignsModule', 'Details');
         }
 
-        public function renderContent()
+        protected function getDefaultRoute()
         {
-            $viewClassName = $this->getDetailsViewClassName();
-            $view = new $viewClassName('Details', $this->controllerId, $this->moduleId, $this->model);
-            return $view->render();
+            return null;
         }
 
-        public static function canUserConfigure()
+        public function render()
         {
-            return false;
+            $items = array($this->renderMenuItem());
+            $cClipWidget = new CClipWidget();
+            $cClipWidget->beginClip("CampaignDetailsMenu");
+            $cClipWidget->widget('application.core.widgets.MinimalDynamicLabelMbMenu', array(
+                'htmlOptions' => array('id' => 'ListViewDetailsActionMenu'),
+                'items'                   => $items,
+            ));
+            $cClipWidget->endClip();
+            return $cClipWidget->getController()->clips['CampaignDetailsMenu'];
         }
 
-        /**
-         * What kind of PortletRules this view follows
-         * @return PortletRulesType as string.
-         */
-        public static function getPortletRulesType()
+        public function renderMenuItem()
         {
-            return 'ModelDetails';
+            $detailsOverlayView = new CampaignDetailsOverlayView($this->controllerId,
+                                                                        $this->moduleId,
+                                                                        $this->params['model']
+                                                                        );
+            return array('label'        => $this->getLabel(),
+                         'url'          => $this->getRoute(),
+                         'itemOptions'  => array('class' => 'hasDetailsFlyout'),
+                         'items'        => array(
+                                               array(
+                                                   'label'                 => '',
+                                                   'dynamicLabelContent'   => $detailsOverlayView->render(),
+                                               )
+                                           )
+                         );
         }
     }
 ?>

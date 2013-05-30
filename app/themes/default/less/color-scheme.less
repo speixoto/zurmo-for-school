@@ -79,6 +79,7 @@ a:link, a:active, a:visited{
     tr:hover .pencil,
     .ui-dialog .ui-dialog-title
     div.wide.form a,
+    #kanban-board-options-link,
     #select-list-attributes-link,
     #more-search-linkmodal,
     #more-search-link,
@@ -124,7 +125,8 @@ a:link, a:active, a:visited{
     .z-action-link,
     .drop-zone,
     .missing-chart,
-    a.active-tab
+    a.active-tab,
+    .edit-autoresponder-link
     {
         color: @themeColor;
     }
@@ -153,6 +155,7 @@ a:link, a:active, a:visited{
     .addfileinput-button:hover span,
     #HomeDashboardPortletSelectionView li span,
     .hide-welcome span,
+    #kanban-board-options-link:hover,
     #more-search-link:hover,
     #select-list-attributes-link:hover
     {
@@ -224,7 +227,8 @@ a:link, a:active, a:visited{
     .toolbar-mbmenu .options-menu ul a:hover,
     #ShortcutsMenu ul a:hover,
     .view-toolbar .parent > ul a:hover,
-    .edit-row-menu ul a:hover 
+    .edit-row-menu ul a:hover,
+    .edit-portlet-menu ul a:hover
     {
         background-color: @themeColor2 !important;
         color:#fff !important;
@@ -603,7 +607,7 @@ body.honey{
 }
 
 //background:#DDDEDE;
-
+.background-texture-1
 body.light-noise-diagonal,
 .texture-swatch.light-noise-diagonal .background-texture-1{
     background: url(../patterns/light-noise-diagonal/light-noise-diagonal.png) left top repeat;

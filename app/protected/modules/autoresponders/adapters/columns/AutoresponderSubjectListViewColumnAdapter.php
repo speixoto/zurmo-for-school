@@ -39,8 +39,7 @@
         public function renderGridViewData()
         {
             $className  = get_class($this);
-            $value      = $className . '::resolveSubjectWithRedirectURl($data->subject, $data->id, "' .
-                                                                                        $this->view->redirectUrl . '")';
+            $value      = $className . '::resolveSubjectAndMetricsSummary($data, "' . $this->view->redirectUrl . '")';
             return array(
                 'name'  => 'Name',
                 'value' => $value,
@@ -48,11 +47,49 @@
             );
         }
 
+        public static function resolveSubjectAndMetricsSummary(Autoresponder $autoresponder, $redirectUrl)
+        {
+            $content  = static::resolveSubjectWithRedirectURl($autoresponder->subject, $autoresponder->id, $redirectUrl);
+            $content .= static::renderMetricsContent($autoresponder);
+            return $content;
+        }
+
         public static function resolveSubjectWithRedirectURl($subject, $id, $redirectUrl)
         {
             $url = Yii::app()->createUrl('/autoresponders/default/edit',
                                                                 array('id' => $id, 'redirectUrl' => $redirectUrl));
-            return ZurmoHtml::link($subject, $url);
+            return ZurmoHtml::link($subject, $url, array('class' => 'edit-autoresponder-link'));
+        }
+
+        protected static function renderMetricsContent(Autoresponder $autoresponder)
+        {
+            //todo: finish
+            $sentQuantity   = 50000; //todo: format for integer
+            $openQuantity   = 10000;
+            $openRate       = $openQuantity / $sentQuantity; //todo: resolve if 0 so we aren't dividing by zero, and round
+            $clickQuantity  = 1000;
+            $clickRate      = $clickQuantity / $sentQuantity; //todo: resolve if 0 so we aren't dividing by zero, and round
+            $optOutQuantity = 100;
+            $optOutRate     = $optOutQuantity / $sentQuantity; //todo: resolve if 0 so we aren't dividing by zero, and round
+
+
+            $content = null;
+            $content .= ZurmoHtml::tag('div', array('class' => 'autoresponder-stats'),
+                                        Zurmo::t('MarketingModule', '{quantity} sent',
+                                        array('{quantity}' => ZurmoHtml::tag('strong', array(), $sentQuantity))));
+            $content .= ZurmoHtml::tag('div', array('class' => 'autoresponder-stats'),
+                                        Zurmo::t('MarketingModule', '{quantity} opens ({openRate}%)',
+                                        array('{quantity}' => ZurmoHtml::tag('strong', array(), $openQuantity),
+                                              '{openRate}' => ZurmoHtml::tag('span', array(), $openRate))));
+            $content .= ZurmoHtml::tag('div', array('class' => 'autoresponder-stats'),
+                                        Zurmo::t('MarketingModule', '{quantity} unique clicks ({clickRate}%)',
+                                        array('{quantity}' => ZurmoHtml::tag('strong', array(), $clickQuantity),
+                                              '{clickRate}' => ZurmoHtml::tag('span', array(), $clickRate))));
+            $content .= ZurmoHtml::tag('div', array('class' => 'autoresponder-stats'),
+                                        Zurmo::t('MarketingModule', '{quantity} Opt-outs ({optOutRate}%)',
+                                        array('{quantity}' => ZurmoHtml::tag('strong', array(), $optOutQuantity),
+                                              '{optOutRate}' => ZurmoHtml::tag('span', array(), $optOutRate))));
+            return $content;
         }
     }
 ?>

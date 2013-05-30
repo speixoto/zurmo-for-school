@@ -35,20 +35,54 @@
             return array($title);
         }
 
+        public static function getDetailsAndEditBreadcrumbLinks()
+        {
+            return array(Zurmo::t('ProductTemplatesModule', 'Catalog Items') => array('default/list'));
+        }
+
         public function filters()
         {
             $modelClassName             = $this->getModule()->getPrimaryModelName();
             $viewClassName              = $modelClassName . 'EditAndDetailsView';
             $zeroModelsYetViewClassName = 'ProductTemplatesZeroModelsYetView';
             $pageViewClassName          = 'ProductTemplatesPageView';
-            return array_merge(parent::filters(),
-                array(
-                    array(
+
+            $filters = array();
+            $filters[] = array(
+                    ZurmoBaseController::RIGHTS_FILTER_PATH .
+                    ' - modalList,details,autoCompleteAllProductCategoriesForMultiSelectAutoComplete',
+                    'moduleClassName' => 'ProductTemplatesModule',
+                    'rightName' => ProductTemplatesModule::getAccessRight(),
+            );
+            $filters[] = array(
+                    ZurmoBaseController::RIGHTS_FILTER_PATH . ' + create',
+                    'moduleClassName' => 'ProductTemplatesModule',
+                    'rightName' => ProductTemplatesModule::getCreateRight(),
+            );
+            $filters[] = array(
+                    ZurmoBaseController::RIGHTS_FILTER_PATH . ' + delete',
+                    'moduleClassName' => 'ProductTemplatesModule',
+                    'rightName' => ProductTemplatesModule::getDeleteRight(),
+            );
+            $filters[] = array(
+                    ZurmoBaseController::RIGHTS_FILTER_PATH . ' + massEdit, massEditProgressSave',
+                    'moduleClassName' => 'ZurmoModule',
+                    'rightName' => ZurmoModule::RIGHT_BULK_WRITE,
+            );
+
+            $filters[] = array(
+                    ZurmoBaseController::RIGHTS_FILTER_PATH . ' + massDelete',
+                    'moduleClassName' => 'ZurmoModule',
+                    'rightName' => ZurmoModule::RIGHT_BULK_DELETE,
+            );
+
+            $filters[] = array(
                         ZurmoBaseController::REQUIRED_ATTRIBUTES_FILTER_PATH . ' + create, createFromRelation, edit',
                         'moduleClassName' => get_class($this->getModule()),
                         'viewClassName'   => $viewClassName,
-                   ),
-                    array(
+            );
+
+            $filters[] = array(
                         static::ZERO_MODELS_CHECK_FILTER_PATH . ' + list, index',
                         'controller'                 => $this,
                         'zeroModelsYetViewClassName' => $zeroModelsYetViewClassName,
@@ -57,9 +91,9 @@
                         'defaultViewUtilClassName'   => 'ProductDefaultViewUtil',
                         'activeActionElementType'    => 'ProductTemplatesLink',
                         'breadcrumbLinks'            => static::getListBreadcrumbLinks()
-                   ),
-               )
-            );
+                   );
+
+            return $filters;
         }
 
         public function actionList()
@@ -72,29 +106,26 @@
             $listAttributesSelector         = new ListAttributesSelector('ProductTemplatesListView', get_class($this->getModule()));
             $searchForm->setListAttributesSelector($listAttributesSelector);
             $dataProvider = $this->resolveSearchDataProvider(
-								$searchForm,
-								$pageSize,
-								null,
-								'ProductTemplatesSearchView'
-							    );
-            $title           = Zurmo::t('ProductTemplatesModule', 'Catalog Items');
-            $breadcrumbLinks = array(
-                 $title,
-            );
+                                $searchForm,
+                                $pageSize,
+                                null,
+                                'ProductTemplatesSearchView'
+                                );
+            $breadcrumbLinks = static::getListBreadcrumbLinks();
             if (isset($_GET['ajax']) && $_GET['ajax'] == 'list-view')
             {
                 $mixedView  = $this->makeListView(
                     $searchForm,
                     $dataProvider
                 );
-                $view	    = new ProductTemplatesPageView($mixedView);
+                $view       = new ProductTemplatesPageView($mixedView);
             }
             else
             {
                 $mixedView  = $this->makeActionBarSearchAndListView($searchForm, $dataProvider,
-								    'SecuredActionBarForProductsSearchAndListView',
-								    null, $activeActionElementType);
-                $view	    = new ProductTemplatesPageView(ProductDefaultViewUtil::
+                                    'SecuredActionBarForProductsSearchAndListView',
+                                    null, $activeActionElementType);
+                $view       = new ProductTemplatesPageView(ProductDefaultViewUtil::
                                                                makeViewWithBreadcrumbsForCurrentUser(
                                                                     $this, $mixedView, $breadcrumbLinks, 'ProductBreadCrumbView'));
             }
@@ -103,19 +134,17 @@
 
         public function actionDetails($id)
         {
-            $title           = Zurmo::t('ProductTemplatesModule', 'Catalog Item Detail');
-            $breadcrumbLinks = array(
-                 $title,
-            );
             $productTemplate = static::getModelAndCatchNotFoundAndDisplayError('ProductTemplate', intval($id));
-            if(Yii::app()->request->isAjaxRequest)
+            $breadcrumbLinks    = static::getDetailsAndEditBreadcrumbLinks();
+            $breadcrumbLinks[]  = StringUtil::getChoppedStringContent(strval($productTemplate), 25);
+            if (Yii::app()->request->isAjaxRequest)
             {
                 $categoryOutput = array();
                 $productType = $productTemplate->type;
                 $productPriceFrequency = $productTemplate->priceFrequency;
                 $productSellPriceCurrency = $productTemplate->sellPrice->currency->id;
                 $productSellPriceValue = $productTemplate->sellPrice->value;
-                foreach($productTemplate->productCategories as $category)
+                foreach ($productTemplate->productCategories as $category)
                 {
                     $categoryOutput[] = array( 'id' => $category->id, 'name' => $category->name);
                 }
@@ -130,8 +159,9 @@
                 die();
             }
             ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($productTemplate);
+            AuditEvent::logAuditEvent('ZurmoModule', ZurmoModule::AUDIT_EVENT_ITEM_VIEWED, array(strval($productTemplate), 'ProductTemplatesModule'), $productTemplate);
             $detailsView        = new ProductTemplateDetailsView($this->getId(), $this->getModule()->getId(), $productTemplate);
-            $view		= new ProductTemplatesPageView(ProductDefaultViewUtil::
+            $view               = new ProductTemplatesPageView(ProductDefaultViewUtil::
                                                             makeViewWithBreadcrumbsForCurrentUser(
                                                                 $this, $detailsView, $breadcrumbLinks, 'ProductBreadCrumbView'));
             echo $view->render();
@@ -139,26 +169,21 @@
 
         public function actionCreate()
         {
-            $title           = Zurmo::t('ProductTemplatesModule', 'Create Catalog Item');
-            $breadcrumbLinks = array(
-                 $title,
-            );
+            $breadcrumbLinks    = static::getDetailsAndEditBreadcrumbLinks();
+            $breadcrumbLinks[]  = Zurmo::t('ProductTemplatesModule', 'Create');
             $editAndDetailsView = $this->makeEditAndDetailsView(
                                             $this->attemptToSaveModelFromPost(new ProductTemplate()), 'Edit');
-            $view		= new ProductTemplatesPageView(ProductDefaultViewUtil::
-									makeViewWithBreadcrumbsForCurrentUser(
-										$this, $editAndDetailsView, $breadcrumbLinks, 'ProductBreadCrumbView'));
+            $view       = new ProductTemplatesPageView(ProductDefaultViewUtil::
+                                    makeViewWithBreadcrumbsForCurrentUser(
+                                        $this, $editAndDetailsView, $breadcrumbLinks, 'ProductBreadCrumbView'));
             echo $view->render();
         }
 
         public function actionEdit($id, $redirectUrl = null)
         {
-            $title           = Zurmo::t('ProductTemplatesModule', 'Edit Catalog Item');
-            $breadcrumbLinks = array(
-                 $title,
-            );
-            $productTemplate = ProductTemplate::getById(intval($id));
-            ControllerSecurityUtil::resolveAccessCanCurrentUserWriteModel($productTemplate);
+            $productTemplate   = ProductTemplate::getById(intval($id));
+            $breadcrumbLinks   = static::getDetailsAndEditBreadcrumbLinks();
+            $breadcrumbLinks[] = StringUtil::getChoppedStringContent(strval($productTemplate), 25);
             $view            = new ProductTemplatesPageView(ProductDefaultViewUtil::
                                                                  makeViewWithBreadcrumbsForCurrentUser($this,
                                                                  $this->makeEditAndDetailsView(
@@ -230,7 +255,7 @@
         public function actionMassEditProgressSave()
         {
             $pageSize           = Yii::app()->pagination->resolveActiveForCurrentUserByType('massEditProgressPageSize');
-            $productTemplate	= new ProductTemplate(false);
+            $productTemplate    = new ProductTemplate(false);
             $dataProvider       = $this->getDataProviderByResolvingSelectAllFromGet(
                                                                                     new ProductTemplatesSearchForm($productTemplate),
                                                                                     $pageSize,
@@ -288,7 +313,7 @@
                                                             $dataProvider
                                                         );
 
-            if($productTemplate === false)
+            if ($productTemplate === false)
             {
                 Yii::app()->user->setFlash('notification', Zurmo::t('ProductTemplatesModule', 'One of the catalog item selected is  associated to products in the system hence could not be deleted'));
                 $this->redirect(Zurmo::app()->request->getUrlReferrer());
@@ -318,7 +343,7 @@
         public function actionMassDeleteProgress()
         {
             $pageSize           = Yii::app()->pagination->resolveActiveForCurrentUserByType('massDeleteProgressPageSize');
-            $productTemplate	= new ProductTemplate(false);
+            $productTemplate    = new ProductTemplate(false);
             $dataProvider       = $this->getDataProviderByResolvingSelectAllFromGet(
                                                                                         new ProductTemplatesSearchForm($productTemplate),
                                                                                         $pageSize,
@@ -350,7 +375,7 @@
             $productTemplate = ProductTemplate::GetById(intval($id));
             ControllerSecurityUtil::resolveAccessCanCurrentUserDeleteModel($productTemplate);
             //Check if product template has associated products
-            if($productTemplate->delete())
+            if ($productTemplate->delete())
             {
                 $this->redirect(array($this->getId() . '/index'));
             }
@@ -359,7 +384,6 @@
                 Yii::app()->user->setFlash('notification', Zurmo::t('ProductTemplatesModule', 'The product template is associated to products in the system hence could not be deleted'));
                 $this->redirect(Zurmo::app()->request->getUrlReferrer());
             }
-
         }
 
         protected static function getSearchFormClassName()
@@ -374,19 +398,10 @@
 
         public function actionAutoCompleteAllProductCategoriesForMultiSelectAutoComplete($term)
         {
-            $pageSize	  = Yii::app()->pagination->resolveActiveForCurrentUserByType(
+            $pageSize     = Yii::app()->pagination->resolveActiveForCurrentUserByType(
                             'autoCompleteListPageSize', get_class($this->getModule()));
-            $adapterName  = self::resolveProductCategoryStateAdapterByModulesUserHasAccessTo('ProductTemplatesModule',
-                                                                                        'ProductTemplatesModule',
-                                                                                         Yii::app()->user->userModel);
-            if ($adapterName === false)
-            {
-                $messageView = new AccessFailureView();
-                $view        = new AccessFailurePageView($messageView);
-                echo $view->render();
-                Yii::app()->end(0, false);
-            }
-            $productCategories	    = self::getProductCategoriesByPartialName($term, $pageSize, $adapterName);
+            $adapterName  = null;
+            $productCategories      = self::getProductCategoriesByPartialName($term, $pageSize, $adapterName);
             $autoCompleteResults    = array();
             foreach ($productCategories as $productCategory)
             {
@@ -403,13 +418,13 @@
             assert('is_string($partialName)');
             assert('is_int($pageSize)');
             assert('$stateMetadataAdapterClassName == null || is_string($stateMetadataAdapterClassName)');
-            $joinTablesAdapter	= new RedBeanModelJoinTablesQueryAdapter('ProductCategory');
-            $metadata		= array('clauses' => array(), 'structure' => '');
+            $joinTablesAdapter  = new RedBeanModelJoinTablesQueryAdapter('ProductCategory');
+            $metadata           = array('clauses' => array(), 'structure' => '');
             if ($stateMetadataAdapterClassName != null)
             {
-                $stateMetadataAdapter	= new $stateMetadataAdapterClassName($metadata);
-                $metadata		= $stateMetadataAdapter->getAdaptedDataProviderMetadata();
-                $metadata['structure']	= '(' . $metadata['structure'] . ')';
+                $stateMetadataAdapter   = new $stateMetadataAdapterClassName($metadata);
+                $metadata               = $stateMetadataAdapter->getAdaptedDataProviderMetadata();
+                $metadata['structure']  = '(' . $metadata['structure'] . ')';
             }
             $where  = RedBeanModelDataProvider::makeWhere('ProductCategory', $metadata, $joinTablesAdapter);
             if ($where != null)
@@ -438,35 +453,6 @@
             else
             {
                 return strval($productCategory);
-            }
-        }
-
-        public static function resolveProductCategoryStateAdapterByModulesUserHasAccessTo( $moduleClassNameFirstStates,
-                                                                                    $moduleClassNameLaterStates,
-                                                                                    $user)
-        {
-            assert('is_string($moduleClassNameFirstStates)');
-            assert('is_string($moduleClassNameLaterStates)');
-            assert('$user instanceof User && $user->id > 0');
-            $canAccessFirstStatesModule  = RightsUtil::canUserAccessModule($moduleClassNameFirstStates, $user);
-            $canAccessLaterStatesModule = RightsUtil::canUserAccessModule($moduleClassNameLaterStates, $user);
-            if ($canAccessFirstStatesModule && $canAccessLaterStatesModule)
-            {
-                return null;
-            }
-            elseif (!$canAccessFirstStatesModule && $canAccessLaterStatesModule)
-            {
-                $prefix = substr($moduleClassNameLaterStates, 0, strlen($moduleClassNameLaterStates) - strlen('Module'));
-                return $prefix . 'StateMetadataAdapter';
-            }
-            elseif ($canAccessFirstStatesModule && !$canAccessLaterStatesModule)
-            {
-                $prefix = substr($moduleClassNameFirstStates, 0, strlen($moduleClassNameFirstStates) - strlen('Module'));
-                return $prefix . 'StateMetadataAdapter';
-            }
-            else
-            {
-                return false;
             }
         }
 

@@ -77,24 +77,21 @@
                                                     null,
                                                     'ProductsSearchView'
                                                 );
-            $title                          = Zurmo::t('ProductsModule', 'Products');
-            $breadcrumbLinks                = array(
-                                                    $title,
-                                                    );
+            $breadcrumbLinks                = static::getListBreadcrumbLinks();
             if (isset($_GET['ajax']) && $_GET['ajax'] == 'list-view')
             {
                 $mixedView  = $this->makeListView(
-						    $searchForm,
-						    $dataProvider
-						);
-                $view	    = new ProductsPageView($mixedView);
+                            $searchForm,
+                            $dataProvider
+                        );
+                $view       = new ProductsPageView($mixedView);
             }
             else
             {
                 $mixedView  = $this->makeActionBarSearchAndListView($searchForm, $dataProvider,
-								    'SecuredActionBarForProductsSearchAndListView',
-								    null, $activeActionElementType);
-                $view	    = new ProductsPageView(ZurmoDefaultViewUtil::
+                                   'SecuredActionBarForProductsSearchAndListView',
+                                    null, $activeActionElementType);
+                $view       = new ProductsPageView(ZurmoDefaultViewUtil::
                                                     makeViewWithBreadcrumbsForCurrentUser(
                                                         $this, $mixedView, $breadcrumbLinks, 'ProductBreadCrumbView'));
             }
@@ -103,13 +100,11 @@
 
         public function actionDetails($id)
         {
-            $title              = Zurmo::t('ProductsModule', 'Product Detail');
-            $breadcrumbLinks    = array(
-                                        $title,
-                                        );
             $product            = static::getModelAndCatchNotFoundAndDisplayError('Product', intval($id));
             ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($product);
-            $detailsView	    = new ProductDetailsView($this->getId(), $this->getModule()->getId(), $product);
+            $breadcrumbLinks = array(StringUtil::getChoppedStringContent(strval($product), 25));
+            AuditEvent::logAuditEvent('ZurmoModule', ZurmoModule::AUDIT_EVENT_ITEM_VIEWED, array(strval($product), 'ProductsModule'), $product);
+            $detailsView        = new ProductDetailsView($this->getId(), $this->getModule()->getId(), $product);
             $view               = new ProductsPageView(ProductDefaultViewUtil::
                                                          makeViewWithBreadcrumbsForCurrentUser(
                                                             $this, $detailsView, $breadcrumbLinks, 'ProductBreadCrumbView'));
@@ -130,12 +125,9 @@
 
         public function actionEdit($id, $redirectUrl = null)
         {
-            $title           = Zurmo::t('ProductsModule', 'Edit Product');
-            $breadcrumbLinks = array(
-                 $title,
-            );
             $product         = Product::getById(intval($id));
             ControllerSecurityUtil::resolveAccessCanCurrentUserWriteModel($product);
+            $breadcrumbLinks = array(StringUtil::getChoppedStringContent(strval($product), 25));
             $view            = new ProductsPageView(ProductDefaultViewUtil::
                                                         makeViewWithBreadcrumbsForCurrentUser($this,
                                                             $this->makeEditAndDetailsView(
@@ -168,13 +160,13 @@
         {
             $pageSize           = Yii::app()->pagination->resolveActiveForCurrentUserByType('massEditProgressPageSize');
             $product            = new Product(false);
-            $activeAttributes	= $this->resolveActiveAttributesFromMassEditPost();
+            $activeAttributes   = $this->resolveActiveAttributesFromMassEditPost();
             $dataProvider       = $this->getDataProviderByResolvingSelectAllFromGet(
-										    new ProductsSearchForm($product),
-										    $pageSize,
-										    Yii::app()->user->userModel->id,
-										    null,
-										    'ProductsSearchView');
+                                            new ProductsSearchForm($product),
+                                            $pageSize,
+                                            Yii::app()->user->userModel->id,
+                                            null,
+                                            'ProductsSearchView');
             $selectedRecordCount = $this->getSelectedRecordCountByResolvingSelectAllFromGet($dataProvider);
             $product             = $this->processMassEdit(
                                         $pageSize,
@@ -205,21 +197,21 @@
          */
         public function actionMassEditProgressSave()
         {
-            $pageSize	    = Yii::app()->pagination->resolveActiveForCurrentUserByType('massEditProgressPageSize');
-            $product	    = new Product(false);
+            $pageSize       = Yii::app()->pagination->resolveActiveForCurrentUserByType('massEditProgressPageSize');
+            $product        = new Product(false);
             $dataProvider   = $this->getDataProviderByResolvingSelectAllFromGet(
-										    new ProductsSearchForm($product),
-										    $pageSize,
-										    Yii::app()->user->userModel->id,
-										    null,
-										    'ProductsSearchView'
-										);
+                                            new ProductsSearchForm($product),
+                                            $pageSize,
+                                            Yii::app()->user->userModel->id,
+                                            null,
+                                            'ProductsSearchView'
+                                        );
             $this->processMassEditProgressSave(
-						'Product',
-						$pageSize,
-						ProductsModule::getModuleLabelByTypeAndLanguage('Plural'),
-						$dataProvider
-					      );
+                        'Product',
+                        $pageSize,
+                        ProductsModule::getModuleLabelByTypeAndLanguage('Plural'),
+                        $dataProvider
+                    );
         }
 
         /**
@@ -242,18 +234,18 @@
             $breadcrumbLinks = array(
                  $title,
             );
-            $pageSize		    = Yii::app()->pagination->resolveActiveForCurrentUserByType('massDeleteProgressPageSize');
-            $product		    = new Product(false);
+            $pageSize           = Yii::app()->pagination->resolveActiveForCurrentUserByType('massDeleteProgressPageSize');
+            $product            = new Product(false);
 
-            $activeAttributes	    = $this->resolveActiveAttributesFromMassDeletePost();
-            $dataProvider	    = $this->getDataProviderByResolvingSelectAllFromGet(
-											new ProductsSearchForm($product),
-											$pageSize,
-											Yii::app()->user->userModel->id,
-											null,
-											'ProductsSearchView');
-            $selectedRecordCount= $this->getSelectedRecordCountByResolvingSelectAllFromGet($dataProvider);
-            $product		    = $this->processMassDelete(
+            $activeAttributes   = $this->resolveActiveAttributesFromMassDeletePost();
+            $dataProvider       = $this->getDataProviderByResolvingSelectAllFromGet(
+                                            new ProductsSearchForm($product),
+                                            $pageSize,
+                                            Yii::app()->user->userModel->id,
+                                            null,
+                                            'ProductsSearchView');
+            $selectedRecordCount = $this->getSelectedRecordCountByResolvingSelectAllFromGet($dataProvider);
+            $product             = $this->processMassDelete(
                                                             $pageSize,
                                                             $activeAttributes,
                                                             $selectedRecordCount,
@@ -262,7 +254,7 @@
                                                             ProductsModule::getModuleLabelByTypeAndLanguage('Plural'),
                                                             $dataProvider
                                                           );
-            $massDeleteView	    = $this->makeMassDeleteView(
+            $massDeleteView     = $this->makeMassDeleteView(
                                                              $product,
                                                              $activeAttributes,
                                                              $selectedRecordCount,
@@ -282,15 +274,15 @@
          */
         public function actionMassDeleteProgress()
         {
-            $pageSize	    = Yii::app()->pagination->resolveActiveForCurrentUserByType('massDeleteProgressPageSize');
-            $product	    = new Product(false);
+            $pageSize       = Yii::app()->pagination->resolveActiveForCurrentUserByType('massDeleteProgressPageSize');
+            $product        = new Product(false);
             $dataProvider   = $this->getDataProviderByResolvingSelectAllFromGet(
-										  new ProductsSearchForm($product),
-										  $pageSize,
-										  Yii::app()->user->userModel->id,
-										  null,
-										  'ProductsSearchView'
-										);
+                                          new ProductsSearchForm($product),
+                                          $pageSize,
+                                          Yii::app()->user->userModel->id,
+                                          null,
+                                          'ProductsSearchView'
+                                        );
             $this->processMassDeleteProgress(
                                                 'Product',
                                                 $pageSize,
@@ -343,11 +335,11 @@
             assert('$value != null && $value != ""');
             $id         = intval($id);
             $value      = intval($value);
-            $product	= Product::getById($id);
+            $product    = Product::getById($id);
             ControllerSecurityUtil::resolveAccessCanCurrentUserWriteModel($product);
             switch($attribute)
             {
-                case 'quantity'	    : $product->quantity	 = $value;
+                case 'quantity'     : $product->quantity     = $value;
                                         break;
                 case 'sellPrice'    : $product->sellPrice->value = $value;
                                         break;
@@ -358,9 +350,9 @@
         }
 
         public function actionCreateProductFromProductTemplate($relationModuleId, $portletId, $uniqueLayoutId, $id,
-								$relationModelId, $relationAttributeName, $relationModelClassName = null)
+                                $relationModelId, $relationAttributeName, $relationModelClassName = null)
         {
-            if($relationModelClassName == null)
+            if ($relationModelClassName == null)
             {
                 $relationModelClassName = Yii::app()->getModule($relationModuleId)->getPrimaryModelName();
             }

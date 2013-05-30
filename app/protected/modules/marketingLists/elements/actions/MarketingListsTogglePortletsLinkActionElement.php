@@ -53,8 +53,14 @@
         public function render()
         {
             $content  = null;
+            $metricsClass           = $this->getMetricsPortletClass();
             $membersClass           = $this->getMembersPortletClass();
             $autorespondersClass    = $this->getAutorespondersPortletClass();
+            if($metricsClass)
+            {
+                $membersTranslatedLabel = Zurmo::t('MarketingListsModule', 'Dashboard');
+                $content                .= $this->getCheckboxContent($membersTranslatedLabel, $metricsClass);
+            }
             if ($membersClass)
             {
                 $membersTranslatedLabel = Zurmo::t('MarketingListsModule', 'Members');
@@ -91,6 +97,11 @@
         protected function getDefaultRoute()
         {
             return null;
+        }
+
+        protected function getMetricsPortletClass()
+        {
+            return ArrayUtil::getArrayValueWithExceptionIfNotFound($this->params, 'metricsPortletClass');
         }
 
         protected function getMembersPortletClass()

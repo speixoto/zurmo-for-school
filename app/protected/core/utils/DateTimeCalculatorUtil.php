@@ -59,21 +59,21 @@
          * The calculation will be done for now. This is a dateTime calculation.
          */
         const NOW = 4;
-        
+
         /**
          * The calculation will be done for Week. This is a dateTime calculation.
          */
         const WEEK = 5;
-        
+
         /**
          * The calculation will be done for Month. This is a dateTime calculation.
          */
         const MONTH = 6;
-        
+
         /**
          * The calculation will be done for Year. This is a dateTime calculation.
          */
-        const YEAR = 7;        
+        const YEAR = 7;
 
         /**
          * Calculate a date/time stamp given a calculation value and DateTime object
@@ -121,7 +121,7 @@
                 $dateTime->modify('+1 year'); // Not Coding Standard
                 return Yii::app()->dateFormatter->format(DatabaseCompatibilityUtil::getDateFormat(),
                             $dateTime->getTimestamp());
-            }            
+            }
             throw new NotSupportedException();
         }
 

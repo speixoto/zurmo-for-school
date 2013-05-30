@@ -74,9 +74,8 @@
                     'campaign'                      => array(RedBeanModel::HAS_ONE, 'Campaign', RedBeanModel::NOT_OWNED),
                 ),
                 'rules' => array(
-                    array('processed',              'type', 'type' => 'integer'),
-                    array('processed',              'default', 'value' => 0),
-                    array('processed',              'numerical', 'min' => 0, 'max' => 1),
+                    array('processed',              'boolean'),
+                    array('processed',              'default', 'value' => false),
                 ),
                 'elements' => array(
                 ),

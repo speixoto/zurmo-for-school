@@ -311,7 +311,7 @@
         public static function getNonConfigurableAttributes()
         {
             $metadata = static::getDefaultMetadata();
-            if(isset($metadata[get_called_class()]['nonConfigurableAttributes']))
+            if (isset($metadata[get_called_class()]['nonConfigurableAttributes']))
             {
                 return $metadata[get_called_class()]['nonConfigurableAttributes'];
             }
