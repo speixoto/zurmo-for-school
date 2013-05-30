@@ -206,5 +206,53 @@
                                 );
             $this->runControllerWithRedirectExceptionAndGetContent('users/default/changeAvatar');
         }
+		
+        public function testRegularUserAccessGroupsAndRolesButNotCreateAndDelete()
+        {
+            $user = UserTestHelper::createBasicUser('Dood1');
+            $group = new Group();
+            $group->name = 'Doods';
+            $group->users->add($user);
+            $this->assertTrue($group->save());
+            $this->assertEquals(1, count($user->groups));
+            $this->assertEquals('Doods', $user->groups[0]->name);
+
+            $role = new Role();
+            $role->name = 'myRole';
+            $saved = $role->save();
+            $this->assertTrue($saved);
+            
+            $user->setRight('GroupsModule', GroupsModule::RIGHT_ACCESS_GROUPS);
+            $user->setRight('RolesModule', RolesModule::RIGHT_ACCESS_ROLES);
+            $user->setRight('ZurmoModule', ZurmoModule::RIGHT_ACCESS_ADMINISTRATION);
+            $this->assertTrue($user->save());
+            $user = $this->logoutCurrentUserLoginNewUserAndGetByUsername('Dood1');
+            //Check Create button not present in group
+            $content = $this->runControllerWithNoExceptionsAndGetContent('zurmo/group/list');
+            $find = 'Create';
+            $this->assertEquals(0, preg_match('~\b' . $find . '\b~i', $content));
+            //Check Delete button not present in group
+            $this->setGetArray(array('id' => $group->id));
+            $content = $this->runControllerWithNoExceptionsAndGetContent('zurmo/group/edit');
+            $find = 'Delete Group';
+            $this->assertEquals(0, preg_match('~\b' . $find . '\b~i', $content));
+            //Check Create button not present in role
+            $content = $this->runControllerWithNoExceptionsAndGetContent('zurmo/role/list');
+            $find = 'Create';
+            $this->assertEquals(0, preg_match('~\b' . $find . '\b~i', $content));
+            //Check Delete button not present in role
+            $this->setGetArray(array('id' => $role->id));
+            $content = $this->runControllerWithNoExceptionsAndGetContent('zurmo/role/details');
+            $find = 'Delete Group';
+            $this->assertEquals(0, preg_match('~\b' . $find . '\b~i', $content));
+            //Access to create action in group should fail.
+            $this->runControllerShouldResultInAccessFailureAndGetContent('zurmo/group/create');
+            //Access to delete action in group should fail.
+            $this->runControllerShouldResultInAccessFailureAndGetContent('zurmo/group/delete');
+            //Access to create action in role should fail.
+            $this->runControllerShouldResultInAccessFailureAndGetContent('zurmo/role/create');
+            //Access to delete action in role should fail.
+            $this->runControllerShouldResultInAccessFailureAndGetContent('zurmo/role/delete');
+        }
     }
 ?>

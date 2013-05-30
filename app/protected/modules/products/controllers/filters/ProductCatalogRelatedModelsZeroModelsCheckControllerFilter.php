@@ -37,7 +37,7 @@
     /**
      * Filter used by product controller for showing if marketing lists exist yet
      */
-    class ProductListsZeroModelsCheckControllerFilter extends ZeroModelsCheckControllerFilter
+    class ProductCatalogRelatedModelsZeroModelsCheckControllerFilter extends ZeroModelsCheckControllerFilter
     {
         public $activeActionElementType;
 

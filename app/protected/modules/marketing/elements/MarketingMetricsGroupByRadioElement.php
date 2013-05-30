@@ -48,7 +48,8 @@
         {
             assert('$this->model instanceof MarketingOverallMetricsForm');
             $hiddenInputName     = 'marketingMetricsGroupByNotUsedName';
-            $content             = ZurmoHtml::hiddenField($hiddenInputName);
+            $hiddenInput         = ZurmoHtml::hiddenField($hiddenInputName);
+            $content = '';
             foreach($this->getValuesAndLabels() as $value => $label)
             {
                 $class    = $this->form->getId() . 'marketingMetricsGroupByLink';
@@ -58,6 +59,8 @@
                 }
                 $content .= ZurmoHtml::link($label, '#', array('data-value' => $value, 'class' => $class));
             }
+            $content = ZurmoHtml::tag('div', array('class' => 'pills'), $content);
+            $content = $hiddenInput . $content;
             return $content;
         }
 
