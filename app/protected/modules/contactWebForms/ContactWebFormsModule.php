@@ -46,6 +46,7 @@
 
         public static function getTranslatedRightsLabels()
         {
+            //todo: fix this to be reflecting the name of 'contacts' i think.
             $params                                       = LabelUtil::getTranslationParamsForAllModules();
             $labels                                       = array();
             $labels[self::RIGHT_CREATE_CONTACT_WEB_FORMS] = Zurmo::t('ContactWebFormsModule', 'Create ContactWebFormsModulePluralLabel',     $params);
@@ -106,16 +107,6 @@
         }
 
         public static function hasPermissions()
-        {
-            return true;
-        }
-
-        public static function isReportable()
-        {
-            return true;
-        }
-
-        public static function canHaveWorkflow()
         {
             return true;
         }

@@ -36,21 +36,25 @@
 
     class MarketingListTestHelper
     {
-        public static function createMarketingListByName($name, $description = null, $fromName = null, $fromAddress = null)
+        public static function createMarketingListByName($name, $description = null, $fromName = null,
+                                                                        $fromAddress = null, $anyoneCanSubscribe = 0)
         {
-            $marketingList  = static::populateMarketingListByName($name, $description, $fromName, $fromAddress);
+            $marketingList  = static::populateMarketingListByName($name, $description, $fromName,
+                                                                                $fromAddress, $anyoneCanSubscribe);
             $saved          = $marketingList->save();
             assert('$saved');
             return $marketingList;
         }
 
-        public static function populateMarketingListByName($name, $description = null, $fromName = null, $fromAddress = null)
+        public static function populateMarketingListByName($name, $description = null, $fromName = null,
+                                                                            $fromAddress = null, $anyoneCanSubscribe = 0)
         {
-            $marketingList              = new MarketingList();
-            $marketingList->name        = $name;
-            $marketingList->description = $description;
-            $marketingList->fromName    = $fromName;
-            $marketingList->fromAddress = $fromAddress;
+            $marketingList                      = new MarketingList();
+            $marketingList->name                = $name;
+            $marketingList->description         = $description;
+            $marketingList->fromName            = $fromName;
+            $marketingList->fromAddress         = $fromAddress;
+            $marketingList->anyoneCanSubscribe    = $anyoneCanSubscribe;
             return $marketingList;
         }
     }

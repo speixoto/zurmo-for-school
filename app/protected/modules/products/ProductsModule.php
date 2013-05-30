@@ -73,13 +73,6 @@
                         'right' => self::RIGHT_ACCESS_PRODUCTS,
                     ),
                 ),
-                'shortcutsCreateMenuItems' => array(
-                    array(
-                        'label' => "eval:Zurmo::t('ProductsModule', 'ProductsModuleSingularLabel', \$translationParams)",
-                        'url'   => array('/products/default/create'),
-                        'right' => self::RIGHT_CREATE_PRODUCTS,
-                    ),
-                )
             );
             return $metadata;
         }

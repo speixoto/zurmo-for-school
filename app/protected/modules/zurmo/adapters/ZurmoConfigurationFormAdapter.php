@@ -45,18 +45,20 @@
          */
         public static function makeFormFromGlobalConfiguration()
         {
-            $form                                        = new ZurmoConfigurationForm();
-            $form->applicationName                       = ZurmoConfigurationUtil::getByModuleName('ZurmoModule', 'applicationName');
-            $form->timeZone                              = Yii::app()->timeZoneHelper->getGlobalValue();
-            $form->listPageSize                          = Yii::app()->pagination->getGlobalValueByType('listPageSize');
-            $form->subListPageSize                       = Yii::app()->pagination->getGlobalValueByType('subListPageSize');
-            $form->modalListPageSize                     = Yii::app()->pagination->getGlobalValueByType('modalListPageSize');
-            $form->dashboardListPageSize                 = Yii::app()->pagination->getGlobalValueByType('dashboardListPageSize');
-            $form->gamificationModalNotificationsEnabled = Yii::app()->gameHelper->modalNotificationsEnabled;
-            $form->realtimeUpdatesEnabled                = static::getRealtimeUpdatesEnabled();
-            $form->userIdOfUserToRunWorkflowsAs          = WorkflowUtil::getUserToRunAs()->id;
-            $form->userIdOfUserToRunTrackingAs           = TrackingUtil::getUserToRunAs()->id;
-            $form->campaignOrAutoresponderBatchSize      = AutoresponderOrCampaignBatchSizeConfigUtil::getBatchSize();
+            $form                                         = new ZurmoConfigurationForm();
+            $form->applicationName                        = ZurmoConfigurationUtil::getByModuleName('ZurmoModule', 'applicationName');
+            $form->timeZone                               = Yii::app()->timeZoneHelper->getGlobalValue();
+            $form->listPageSize                           = Yii::app()->pagination->getGlobalValueByType('listPageSize');
+            $form->subListPageSize                        = Yii::app()->pagination->getGlobalValueByType('subListPageSize');
+            $form->modalListPageSize                      = Yii::app()->pagination->getGlobalValueByType('modalListPageSize');
+            $form->dashboardListPageSize                  = Yii::app()->pagination->getGlobalValueByType('dashboardListPageSize');
+            $form->gamificationModalNotificationsEnabled  = Yii::app()->gameHelper->modalNotificationsEnabled;
+            $form->realtimeUpdatesEnabled                 = static::getRealtimeUpdatesEnabled();
+            $form->userIdOfUserToRunWorkflowsAs           = WorkflowUtil::getUserToRunAs()->id;
+            $form->userIdOfUserToRunTrackingAs            = TrackingUtil::getUserToRunAs()->id;
+            $form->autoresponderOrCampaignBatchSize       = AutoresponderOrCampaignBatchSizeConfigUtil::getBatchSize();
+            $form->autoresponderOrCampaignFooterPlainText = AutoresponderOrCampaignMailFooterContentUtil::getContentByType(false);
+            $form->autoresponderOrCampaignFooterRichText  = AutoresponderOrCampaignMailFooterContentUtil::getContentByType(true);
             self::getLogoAttributes($form);
             return $form;
         }
@@ -80,7 +82,9 @@
                                                     (boolean) $form->realtimeUpdatesEnabled);
             WorkflowUtil::setUserToRunAs  (User::getById((int)$form->userIdOfUserToRunWorkflowsAs));
             TrackingUtil::setUserToRunAs           (User::getById((int)$form->userIdOfUserToRunTrackingAs));
-            AutoresponderOrCampaignBatchSizeConfigUtil::setBatchSize((int)$form->campaignOrAutoresponderBatchSize);
+            AutoresponderOrCampaignBatchSizeConfigUtil::setBatchSize((int)$form->autoresponderOrCampaignBatchSize);
+            AutoresponderOrCampaignMailFooterContentUtil::setContentByType($form->autoresponderOrCampaignFooterPlainText, false);
+            AutoresponderOrCampaignMailFooterContentUtil::setContentByType($form->autoresponderOrCampaignFooterRichText, true);
             self::setLogoAttributes($form);
         }
 

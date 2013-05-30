@@ -52,7 +52,7 @@
 
         protected function getDefaultLabel()
         {
-            return Zurmo::t('ProductsModule', 'Catalog');
+            return Zurmo::t('ProductsModule', 'Select From Catalog');
         }
     }
 ?>

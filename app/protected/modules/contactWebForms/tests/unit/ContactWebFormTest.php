@@ -40,12 +40,11 @@
 
         public function testCreateAndGetContactWebFormById()
         {
-            $contact     = new Contact();
-            $adapter     = new ModelAttributesAdapter($contact);
-            $attributes  = $adapter->getAttributes();
-            $attributes  = ArrayUtil::subValueSort($attributes, 'attributeLabel', 'asort');
-            $attributes  = array_keys($attributes);
-
+            $allAttributes                      = ContactWebFormsUtil::getAllAttributes();
+            $placedAttributes                   = array('firstName', 'lastName', 'companyName', 'jobTitle');
+            $contactFormAttributes              = ContactWebFormsUtil::getAllPlacedAttributes($allAttributes,
+                                                                                              $placedAttributes);
+            $attributes                         = array_keys($contactFormAttributes);
             $this->assertTrue(ContactsModule::loadStartingData());
             $contactStates                      = ContactState::getByName('New');
             $contactWebForm                     = new ContactWebForm();
@@ -59,63 +58,11 @@
             $id                                 = $contactWebForm->id;
             unset($contactWebForm);
             $contactWebForm = ContactWebForm::getById($id);
-            $this->assertEquals('Test Form', $contactWebForm->name);
-            $this->assertEquals('http://google.com', $contactWebForm->redirectUrl);
-            $this->assertEquals('Save', $contactWebForm->submitButtonLabel);
-            $this->assertEquals('New', $contactWebForm->defaultState->name);
-            $this->assertEquals($attributes, unserialize($contactWebForm->serializedData));
-        }
-
-        public function testGetMetadataFromContactWebFormById()
-        {
-            $id = 1;
-            $contactWebForm = ContactWebForm::getById(intval($id));
-            $contactWebFormAttributes = unserialize($contactWebForm->serializedData);
-            $layout     = array();
-            $panels	    = array();
-            $rows		= array();
-
-            foreach ($contactWebFormAttributes as $attribute)
-            {
-                $rows[]['cells'][] = array('detailViewOnly' => 1,
-                                           'element'        => $attribute);
-            }
-            $panels[]['rows'] = $rows;
-            $layout['panels'] = $panels;
-
-            $viewClassName            = 'ContactEditAndDetailsView';
-            $moduleClassName          = 'ContactsModule';
-            $modelClassName           = $moduleClassName::getPrimaryModelName();
-            $editableMetadata         = $viewClassName::getMetadata();
-            $designerRulesType        = $viewClassName::getDesignerRulesType();
-            $designerRulesClassName   = $designerRulesType . 'DesignerRules';
-            $designerRules            = new $designerRulesClassName();
-            $modelAttributesAdapter   = DesignerModelToViewUtil::getModelAttributesAdapter($viewClassName, $modelClassName);
-            $derivedAttributesAdapter = new DerivedAttributesAdapter($modelClassName);
-            $attributeCollection      = array_merge($modelAttributesAdapter->getAttributes(),
-                                                    $derivedAttributesAdapter->getAttributes());
-            $attributesLayoutAdapter  = AttributesLayoutAdapterUtil::makeAttributesLayoutAdapter(
-                $attributeCollection,
-                $designerRules,
-                $editableMetadata
-            );
-
-            $layoutMetadataAdapter = new LayoutMetadataAdapter(
-                $viewClassName,
-                $moduleClassName,
-                $editableMetadata,
-                $designerRules,
-                $attributesLayoutAdapter->getPlaceableLayoutAttributes(),
-                $attributesLayoutAdapter->getRequiredDerivedLayoutAttributeTypes()
-            );
-            $savableMetadata = array();
-            $metadata = $layoutMetadataAdapter->resolveMetadataFromLayout($layout, $savableMetadata);
-
-            foreach ($metadata['panels'][0]['rows'] as $cell)
-            {
-                $this->assertTrue(in_array($cell['cells'][0]['elements'][0]['attributeName'], $contactWebFormAttributes));
-                $this->assertNotEquals('', $cell['cells'][0]['elements'][0]['attributeName']);
-            }
+            $this->assertEquals('Test Form'         , $contactWebForm->name);
+            $this->assertEquals('http://google.com' , $contactWebForm->redirectUrl);
+            $this->assertEquals('Save'              , $contactWebForm->submitButtonLabel);
+            $this->assertEquals('New'               , $contactWebForm->defaultState->name);
+            $this->assertEquals($attributes         , unserialize($contactWebForm->serializedData));
         }
     }
 ?>

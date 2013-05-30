@@ -53,14 +53,17 @@
             $itemOwnerModel             = $item->$ownerModelRelationName;
             assert('is_object($itemOwnerModel)');
             assert('get_class($itemOwnerModel) === "Autoresponder" || get_class($itemOwnerModel) === "Campaign"');
+            $marketingList                  = $itemOwnerModel->marketingList;
+            assert('is_object($marketingList)');
+            assert('get_class($marketingList) === "MarketingList"');
             $textContent                = $itemOwnerModel->textContent;
             $htmlContent                = $itemOwnerModel->htmlContent;
-            static::resolveContent($textContent, $htmlContent, $contact);
-            static::resolveContentForTracking($textContent, $htmlContent, $itemOwnerModel->enableTracking,
-                                                                                $item->id, $itemClass, $contact);
+            static::resolveContent($textContent, $htmlContent, $contact, $itemOwnerModel->enableTracking,
+                                                                $item->id, $itemClass, $contact, $marketingList->id);
             try
             {
-                $item->emailMessage = static::resolveEmailMessage($textContent, $htmlContent, $itemOwnerModel, $contact);
+                $item->emailMessage = static::resolveEmailMessage($textContent, $htmlContent, $itemOwnerModel,
+                                                                                            $contact, $marketingList);
             }
             catch (MissingRecipientsForEmailMessageException $e)
             {
@@ -69,7 +72,15 @@
             static::markItemAsProcessed($item);
         }
 
-        protected static function resolveContent(& $textContent, & $htmlContent, Contact $contact)
+        protected static function resolveContent(& $textContent, & $htmlContent, Contact $contact,
+                                                            $enableTracking, $modelId, $modelType, $marketingListId)
+        {
+            static::resolveContentForMergeTags($textContent, $htmlContent, $contact);
+            static::resolveContentForTrackingAndFooter($textContent, $htmlContent, $enableTracking, $modelId,
+                                                                                $modelType, $contact, $marketingListId);
+        }
+
+        protected static function resolveContentForMergeTags(& $textContent, & $htmlContent, Contact $contact)
         {
             // TODO: @Shoaibi/@Jason: High: we might add support for language
             $language               = null;
@@ -99,18 +110,20 @@
             }
         }
 
-        protected static function resolveContentForTracking(& $textContent, & $htmlContent, $enableTracking, $modelId,
-                                                                                                    $modelType, $contact)
+        protected static function resolveContentForTrackingAndFooter(& $textContent, & $htmlContent, $enableTracking, $modelId,
+                                                                        $modelType, Contact $contact, $marketingListId)
         {
             $personId                 = $contact->getClassId('Person');
             $activityUtil             = $modelType . 'ActivityUtil';
-            $activityUtil::resolveContentForTracking($enableTracking, $textContent, $modelId, $modelType, $personId, false);
-            $activityUtil::resolveContentForTracking($enableTracking, $htmlContent, $modelId, $modelType, $personId, true);
+            $activityUtil::resolveContentForTrackingAndFooter($enableTracking, $textContent, $modelId, $modelType,
+                                                                                    $personId, $marketingListId, false);
+            $activityUtil::resolveContentForTrackingAndFooter($enableTracking, $htmlContent, $modelId, $modelType,
+                                                                                    $personId, $marketingListId, true);
         }
 
-        protected static function resolveEmailMessage($textContent, $htmlContent, Item $itemOwnerModel, Contact $contact)
+        protected static function resolveEmailMessage($textContent, $htmlContent, Item $itemOwnerModel,
+                                                                        Contact $contact, MarketingList $marketingList)
         {
-            $marketingList                  = $itemOwnerModel->marketingList;
             $emailMessage                   = new EmailMessage();
             $emailMessage->owner            = $marketingList->owner;
             $emailMessage->subject          = $itemOwnerModel->subject;

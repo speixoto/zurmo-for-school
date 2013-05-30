@@ -50,6 +50,7 @@
                 $size = static::CONFIG_DEFAULT_VALUE;
                 if ($setDefaultIfMissing)
                 {
+                    // TODO: @Shoaibi: Critical: Add tests that cover following
                     static::setBatchSize($size);
                 }
             }

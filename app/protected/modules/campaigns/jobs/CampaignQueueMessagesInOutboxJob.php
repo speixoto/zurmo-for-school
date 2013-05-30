@@ -60,6 +60,7 @@
                                                                                         $batchSize);
             if (!is_array($campaignItemsToProcess))
             {
+                // TODO: @Shoaibi: Critical: Add tests to cover:
                 $campaignItemsToProcess = array($campaignItemsToProcess);
             }
             foreach ($campaignItemsToProcess as $campaignItem)

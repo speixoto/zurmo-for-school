@@ -34,39 +34,30 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * Filter used by product controller for showing if marketing lists exist yet
-     */
-    class ProductListsZeroModelsCheckControllerFilter extends ZeroModelsCheckControllerFilter
+    class RedactorElement extends Element
     {
-        public $activeActionElementType;
-
-        public $breadcrumbLinks;
-
-        protected function getMessageViewClassName()
+        protected function renderControlNonEditable()
         {
-            return $this->zeroModelsYetViewClassName;
+            assert('$this->attribute != null');
+            return $this->model->{$this->attribute};
         }
 
-        protected function resolveAndRenderView(View $messageView)
+        protected function renderControlEditable()
         {
-            $gridViewId              = 'notUsed';
-            $pageVar                 = 'notUsed';
-            $modelClassName          = $this->modelClassName;
-            $listModel               = new $modelClassName();
-            $actionBarView           = new SecuredActionBarForProductsZeroModelView(
-                                       get_class($this->controller),
-                                       get_class($this->controller->getModule()),
-                                       $listModel,
-                                       $gridViewId,
-                                       $pageVar,
-                                       false, $this->activeActionElementType);
-            $pageViewClassName       = $this->pageViewClassName;
-            $mixedView               = new ActionBarAndZeroModelsYetView($actionBarView, $messageView);
-            $view                    = new $pageViewClassName(ProductDefaultViewUtil::
-                                                                     makeViewWithBreadcrumbsForCurrentUser(
-                                                                         $this->controller, $mixedView, $this->breadcrumbLinks, 'ProductBreadCrumbView'));
-            echo $view->render();
+            assert('$this->attribute != null');
+            $id                      = $this->getEditableInputId();
+            $htmlOptions             = array();
+            $htmlOptions['id']       = $id;
+            $htmlOptions['name']     = $this->getEditableInputName();
+            $cClipWidget             = new CClipWidget();
+            $cClipWidget->beginClip("Redactor");
+            $cClipWidget->widget('application.core.widgets.Redactor', array(
+                                        'htmlOptions' => $htmlOptions,
+                                        'content'     => $this->model->{$this->attribute},
+                                ));
+            $cClipWidget->endClip();
+            $content                 = $cClipWidget->getController()->clips['Redactor'];
+            return $content;
         }
     }
 ?>

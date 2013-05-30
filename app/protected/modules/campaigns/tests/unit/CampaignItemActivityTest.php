@@ -189,11 +189,21 @@
             $saved              = CampaignItemActivity::createNewActivity($type, $campaignItem->id, $person->id, $url);
             $this->assertTrue($saved);
 
+            $contact            = ContactTestHelper::createContactByNameForOwner('contact 02', $this->user);
+            $personId           = $contact->getClassId('Person');
             // now try same thing but with a url this time.
             $type               = CampaignItemActivity::TYPE_CLICK;
             $url                = 'http://www.zurmo.com';
-            $saved              = CampaignItemActivity::createNewActivity($type, $campaignItem->id, $person->id, $url);
+            $saved              = CampaignItemActivity::createNewActivity($type, $campaignItem->id, $personId, $url);
             $this->assertTrue($saved);
+
+            // test that creating the one with url created one with open too:
+            $activity           = CampaignItemActivity::getByTypeAndModelIdAndPersonIdAndUrl(
+                                                                                        CampaignItemActivity::TYPE_OPEN,
+                                                                                        $campaignItem->id,
+                                                                                        $personId);
+            $this->assertNotEmpty($activity);
+            $this->assertCount(1, $activity);
         }
 
         /**
@@ -222,11 +232,14 @@
             $this->assertEquals($campaignItem,      $activity->campaignItem);
 
             // now try same thing but with a url this time.
+            $contact                                = Contact::getByName('contact 02 contact 02son');
+            $personId                               = $contact[0]->getClassId('Person');
+            $person                                 = Person::getById($personId);
             $type                                   = CampaignItemActivity::TYPE_CLICK;
             $url                                    = 'http://www.zurmo.com';
             $activities                             = CampaignItemActivity::getByTypeAndModelIdAndPersonIdAndUrl($type,
                                                                                                     $campaignItem->id,
-                                                                                                    $person->id,
+                                                                                                    $personId,
                                                                                                     $url);
             $this->assertNotEmpty($activities);
             $this->assertCount(1,                  $activities);

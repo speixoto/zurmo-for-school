@@ -53,6 +53,7 @@
          */
         public function run()
         {
+            // TODO: @Shoaibi: Critical: Add tests that return only one item.
             $batchSize = $this->resolveBatchSize();
             $autoresponderItemsToProcess    = AutoresponderItem::getByProcessedAndProcessDateTime(
                                                                                         0,

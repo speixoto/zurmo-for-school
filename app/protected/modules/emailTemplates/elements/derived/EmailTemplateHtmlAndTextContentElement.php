@@ -103,24 +103,32 @@
 
         protected function registerTabbedContentScripts()
         {
-            Yii::app()->clientScript->registerScript('email-templates-tab-switch-handler', "
-                    $('.tabs-nav a:not(.simple-link)').click( function()
-                    {
-                        //the menu items
-                        $('.active-tab', $(this).parent()).removeClass('active-tab');
-                        $(this).addClass('active-tab');
-                        //the sections
-                        var _old = $('.tab.active-tab'); //maybe add context here for tab-container
-                        _old.fadeToggle();
-                        var _new = $( $(this).attr('href') );
-                        _new.fadeToggle(150, 'linear', function()
+            $scriptName = 'email-templates-tab-switch-handler';
+            if (Yii::app()->clientScript->isScriptRegistered($scriptName))
+            {
+                return;
+            }
+            else
+            {
+                Yii::app()->clientScript->registerScript($scriptName, "
+                        $('.tabs-nav a:not(.simple-link)').click( function()
                         {
-                                _old.removeClass('active-tab');
-                                _new.addClass('active-tab');
+                            //the menu items
+                            $('.active-tab', $(this).parent()).removeClass('active-tab');
+                            $(this).addClass('active-tab');
+                            //the sections
+                            var _old = $('.tab.active-tab'); //maybe add context here for tab-container
+                            _old.fadeToggle();
+                            var _new = $( $(this).attr('href') );
+                            _new.fadeToggle(150, 'linear', function()
+                            {
+                                    _old.removeClass('active-tab');
+                                    _new.addClass('active-tab');
+                            });
+                            return false;
                         });
-                        return false;
-                    });
-                ");
+                    ");
+            }
         }
 
         protected function renderControlNonEditable()

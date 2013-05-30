@@ -59,7 +59,9 @@
                                             'listPageSize'                                  => '',
                                             'modalListPageSize'                             => '',
                                             'subListPageSize'                               => '',
-                                            'campaignOrAutoresponderBatchSize'              => '',
+                                            'autoresponderOrCampaignBatchSize'              => '',
+                                            'autoresponderOrCampaignFooterPlainText'        => '',
+                                            'autoresponderOrCampaignFooterRichText'         => '',
                                             'timeZone'                                      => 'America/Chicago'),
                                       )
                                );
@@ -69,19 +71,23 @@
             $this->assertFalse(strpos($content, 'Popup list page size cannot be blank.') === false);
             $this->assertFalse(strpos($content, 'Sublist page size cannot be blank.') === false);
             $this->assertFalse(strpos($content, 'Campaign/Autoresponder batch size cannot be blank.') === false);
+            $this->assertFalse(strpos($content, 'Campaign/Autoresponder Footer(Plain Text) cannot be blank.') === false);
+            $this->assertFalse(strpos($content, 'Campaign/Autoresponder Footer(Rich Text) cannot be blank.') === false);
 
             //checking with proper values for required fields
             $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
             $this->setPostArray(array('save'                    => 'Save',
                                       'ZurmoConfigurationForm'  => array(
-                                            'applicationName'                           => 'Demo Company Inc.',
-                                            'dashboardListPage'                         => '5',
-                                            'gamificationModalNotificationsEnabled'     => '0',
-                                            'listPageSize'                              => '10',
-                                            'modalListPageSize'                         => '5',
-                                            'subListPageSize'                           => '5',
-                                            'campaignOrAutoresponderBatchSize'          => '10',
-                                            'timeZone'                                  => 'America/Chicago'),
+                                                'applicationName'                           => 'Demo Company Inc.',
+                                                'dashboardListPage'                         => '5',
+                                                'gamificationModalNotificationsEnabled'     => '0',
+                                                'listPageSize'                              => '10',
+                                                'modalListPageSize'                         => '5',
+                                                'subListPageSize'                           => '5',
+                                                'autoresponderOrCampaignBatchSize'          => '10',
+                                                'autoresponderOrCampaignFooterPlainText'    => 'abc',
+                                                'autoresponderOrCampaignFooterRichText'     => 'def',
+                                                'timeZone'                                  => 'America/Chicago'),
                                       )
                                );
             $this->runControllerWithRedirectExceptionAndGetContent('zurmo/default/configurationEdit');
