@@ -58,16 +58,17 @@
         {
             $content  = ZurmoHtml::tag('h3', array(), Zurmo::t('CampaignsModule', 'What is going on with this campaign?'));
             $content .= $this->renderConfigureElementsContent();
+            $content = ZurmoHtml::tag('div', array('class' => 'left-column full-width metrics-details ' . $this->getWrapperDivClass()), $content);
             $content .= $this->renderMetricsWrapperContent();
-            $content = ZurmoHtml::tag('div', array('class' => $this->getWrapperDivClass()), $content);
             return $content;
         }
 
         protected function renderMetricsWrapperContent()
         {
-            $content  = ZurmoHtml::tag('div', array(), $this->renderOverallListPerformanceContent());
-            $content .= ZurmoHtml::tag('div', array(), $this->renderEmailsInThisListContent());
-            return $content;
+            $cssClass = 'half marketing-graph';
+            $content  = ZurmoHtml::tag('div', array('class' => $cssClass), $this->renderOverallListPerformanceContent());
+            $content .= ZurmoHtml::tag('div', array('class' => $cssClass), $this->renderEmailsInThisListContent());
+            return ZurmoHtml::tag('div', array('class' => 'graph-container clearfix'), $content);
         }
 
         public function getConfigurationView()

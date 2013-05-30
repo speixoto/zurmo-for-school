@@ -2029,6 +2029,12 @@ caption, th, td {
 	}
 }
 
+.juiportlet-widget-content .stacked-list{
+	tr:first-child td{
+		border-top: none !important;
+	}
+}
+
 
 .sort-link:after{
 //content:"↑";
@@ -2766,11 +2772,15 @@ div.wide.form{
 	position:relative;
 }
 
-.juiportlet-widget-content .cgrid-view{
+.juiportlet-widget-content{
 	width: 100%;
-	.b-shadow(none);
-	//.clearfix();
-	overflow: hidden;
+	height: 100%;
+	display:block;
+	.cgrid-view{
+		width: 100%;
+		.b-shadow(none);
+		overflow-x: hidden;
+	}
 }
 
 .search-view-0{

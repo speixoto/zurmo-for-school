@@ -7422,6 +7422,9 @@ td {
   font-weight: bold;
   margin: 0 0 3px 0;
 }
+.juiportlet-widget-content .stacked-list tr:first-child td {
+  border-top: none !important;
+}
 .sort-link:after {
   margin-left: 10px;
   font-size: 12px;
@@ -8379,6 +8382,11 @@ div.wide.form label.hasCheckBox {
 .cgrid-view {
   position: relative;
 }
+.juiportlet-widget-content {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
 .juiportlet-widget-content .cgrid-view {
   width: 100%;
   -webkit-box-shadow: none;
@@ -8386,7 +8394,7 @@ div.wide.form label.hasCheckBox {
   -o-box-shadow: none;
   -ms-box-shadow: none;
   box-shadow: none;
-  overflow: hidden;
+  overflow-x: hidden;
 }
 .search-view-0 {
   margin: 15px 0 0 0;
@@ -18092,6 +18100,9 @@ a.user-link {
 }
 .marketing-graph h3 {
   padding-left: 15px;
+}
+.marketing-graph.half {
+  width: 49%;
 }
 .graph-container {
   clear: left;
