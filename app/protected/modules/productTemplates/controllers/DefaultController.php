@@ -27,7 +27,7 @@
     class ProductTemplatesDefaultController extends ZurmoModuleController
     {
         const ZERO_MODELS_CHECK_FILTER_PATH =
-            'application.modules.products.controllers.filters.ProductListsZeroModelsCheckControllerFilter';
+            'application.modules.productTemplates.controllers.filters.ProductTemplatesZeroModelsCheckControllerFilter';
 
         public static function getListBreadcrumbLinks()
         {
@@ -46,52 +46,32 @@
             $viewClassName              = $modelClassName . 'EditAndDetailsView';
             $zeroModelsYetViewClassName = 'ProductTemplatesZeroModelsYetView';
             $pageViewClassName          = 'ProductTemplatesPageView';
-
-            $filters = array();
-            $filters[] = array(
-                    ZurmoBaseController::RIGHTS_FILTER_PATH .
-                    ' - modalList,details,autoCompleteAllProductCategoriesForMultiSelectAutoComplete',
-                    'moduleClassName' => 'ProductTemplatesModule',
-                    'rightName' => ProductTemplatesModule::getAccessRight(),
+            //Need to remove the general access rights filter
+            $filters = array_slice(parent::filters(),1);
+            $filters = array_merge(array(
+                                        array(
+                                            ZurmoBaseController::RIGHTS_FILTER_PATH .
+                                            ' - modalList,details,autoCompleteAllProductCategoriesForMultiSelectAutoComplete',
+                                            'moduleClassName' => get_class($this->getModule()),
+                                            'rightName' => ProductTemplatesModule::getAccessRight(),
+                                        ),
+                                        array(
+                                            ZurmoBaseController::REQUIRED_ATTRIBUTES_FILTER_PATH . ' + create, createFromRelation, edit',
+                                            'moduleClassName' => get_class($this->getModule()),
+                                            'viewClassName'   => $viewClassName,
+                                        ),
+                                        array(
+                                            static::ZERO_MODELS_CHECK_FILTER_PATH . ' + list, index',
+                                            'controller'                 => $this,
+                                            'zeroModelsYetViewClassName' => $zeroModelsYetViewClassName,
+                                            'modelClassName'             => $modelClassName,
+                                            'pageViewClassName'          => $pageViewClassName,
+                                            'defaultViewUtilClassName'   => 'ProductDefaultViewUtil',
+                                            'activeActionElementType'    => 'ProductTemplatesLink',
+                                            'breadcrumbLinks'            => static::getListBreadcrumbLinks()
+                                       ),
+                                   ),$filters
             );
-            $filters[] = array(
-                    ZurmoBaseController::RIGHTS_FILTER_PATH . ' + create',
-                    'moduleClassName' => 'ProductTemplatesModule',
-                    'rightName' => ProductTemplatesModule::getCreateRight(),
-            );
-            $filters[] = array(
-                    ZurmoBaseController::RIGHTS_FILTER_PATH . ' + delete',
-                    'moduleClassName' => 'ProductTemplatesModule',
-                    'rightName' => ProductTemplatesModule::getDeleteRight(),
-            );
-            $filters[] = array(
-                    ZurmoBaseController::RIGHTS_FILTER_PATH . ' + massEdit, massEditProgressSave',
-                    'moduleClassName' => 'ZurmoModule',
-                    'rightName' => ZurmoModule::RIGHT_BULK_WRITE,
-            );
-
-            $filters[] = array(
-                    ZurmoBaseController::RIGHTS_FILTER_PATH . ' + massDelete',
-                    'moduleClassName' => 'ZurmoModule',
-                    'rightName' => ZurmoModule::RIGHT_BULK_DELETE,
-            );
-
-            $filters[] = array(
-                        ZurmoBaseController::REQUIRED_ATTRIBUTES_FILTER_PATH . ' + create, createFromRelation, edit',
-                        'moduleClassName' => get_class($this->getModule()),
-                        'viewClassName'   => $viewClassName,
-            );
-
-            $filters[] = array(
-                        static::ZERO_MODELS_CHECK_FILTER_PATH . ' + list, index',
-                        'controller'                 => $this,
-                        'zeroModelsYetViewClassName' => $zeroModelsYetViewClassName,
-                        'modelClassName'             => $modelClassName,
-                        'pageViewClassName'          => $pageViewClassName,
-                        'defaultViewUtilClassName'   => 'ProductDefaultViewUtil',
-                        'activeActionElementType'    => 'ProductTemplatesLink',
-                        'breadcrumbLinks'            => static::getListBreadcrumbLinks()
-                   );
 
             return $filters;
         }

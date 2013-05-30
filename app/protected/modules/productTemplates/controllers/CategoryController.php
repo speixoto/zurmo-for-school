@@ -27,7 +27,7 @@
     class ProductTemplatesCategoryController extends ZurmoModuleController
     {
         const ZERO_MODELS_CHECK_FILTER_PATH =
-            'application.modules.products.controllers.filters.ProductListsZeroModelsCheckControllerFilter';
+            'application.modules.productTemplates.controllers.filters.ProductTemplatesZeroModelsCheckControllerFilter';
 
         public static function getListBreadcrumbLinks()
         {
