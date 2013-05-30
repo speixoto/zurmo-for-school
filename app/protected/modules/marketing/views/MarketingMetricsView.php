@@ -244,7 +244,7 @@
         {
             assert('$form instanceof ZurmoActiveForm');
             $groupByElement = new MarketingMetricsGroupByRadioElement($this->resolveForm(), 'groupBy', $form);
-            return ZurmoHtml::tag('div', array('id' => $this->getFormId() . '_groupBy_area'), $groupByElement->render());
+            return ZurmoHtml::tag('div', array('id' => $this->getFormId() . '_groupBy_area', 'class' => 'mini-pillbox'), $groupByElement->render());
         }
 
         protected function registerGroupByConfigurationFormLayoutScripts($form)

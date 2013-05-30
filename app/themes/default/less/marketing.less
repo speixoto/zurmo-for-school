@@ -201,10 +201,14 @@
 	h3{
 		padding-left: 15px;
 	}
+	&.half{
+		width: 49%;
+	}
 }
 
 .graph-container{
-
+	clear:left;
+	margin: 15px 0 0 0;
 }
 
 .edit-autoresponder-link{
@@ -231,4 +235,31 @@
 }
 a + .autoresponder-stats{
 	margin-left: 0;
+}
+
+.metrics-details{
+	text-align: right;
+	h3{
+		width: auto;
+		float: left;
+		line-height:26px
+	}
+	div, form{
+		width: auto;
+		display:inline-block;
+		label{
+			float: left;
+		}
+	}
+	> div{
+		.smaller();
+		line-height: 26px;
+		font-weight: bold;
+		color: #656565;
+		&:after{
+			content: "|";
+			font-weight: bold;
+			padding:0 8px;
+		}
+	}
 }

@@ -44,6 +44,7 @@
             $processingCampaigns = Campaign::getByStatus(Campaign::STATUS_PROCESSING, $pageSize);
             if (!is_array($processingCampaigns))
             {
+                // TODO: @Shoaibi: Critical: Add tests to cover following:
                 $processingCampaigns = array($processingCampaigns);
             }
             foreach ($processingCampaigns as $processingCampaign)

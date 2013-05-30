@@ -160,18 +160,26 @@
 
         protected function registerScripts()
         {
-            Yii::app()->clientScript->registerScript($this->getListViewGridId() . '-updateFlashBar', '
-                function updateFlashBar(data, flashBarId)
-                {
-                    $("#" + flashBarId).jnotifyAddMessage(
+            $scriptName = $this->getListViewGridId() . '-updateFlashBar';
+            if (Yii::app()->clientScript->isScriptRegistered($scriptName))
+            {
+                return;
+            }
+            else
+            {
+                Yii::app()->clientScript->registerScript($scriptName, '
+                    function updateFlashBar(data, flashBarId)
                     {
-                        text: data.message,
-                        permanent: false,
-                        showIcon: true,
-                        type: data.type
-                    });
-                }
-            ');
+                        $("#" + flashBarId).jnotifyAddMessage(
+                        {
+                            text: data.message,
+                            permanent: false,
+                            showIcon: true,
+                            type: data.type
+                        });
+                    }
+                ');
+            }
         }
 
         protected function getModelId()

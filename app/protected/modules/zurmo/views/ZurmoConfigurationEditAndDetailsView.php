@@ -118,7 +118,7 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'campaignOrAutoresponderBatchSize',
+                                                array('attributeName' => 'autoresponderOrCampaignBatchSize',
                                                                                                 'type' => 'Integer'),
                                             ),
                                         ),
@@ -159,6 +159,26 @@
                                         array(
                                             'elements' => array(
                                                 array('attributeName' => 'realtimeUpdatesEnabled', 'type' => 'CheckBox'),
+                                            ),
+                                        ),
+                                    )
+                                ),
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'autoresponderOrCampaignFooterPlainText',
+                                                                                                'type' => 'TextArea'),
+                                            ),
+                                        ),
+                                    )
+                                ),
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'autoresponderOrCampaignFooterRichText',
+                                                                                                'type' => 'Redactor'),
                                             ),
                                         ),
                                     )

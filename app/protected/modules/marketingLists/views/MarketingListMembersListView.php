@@ -304,38 +304,46 @@
         protected function registerScriptsForDynamicMemberCountUpdate()
         {
             // Begin Not Coding Standard
-            Yii::app()->clientScript->registerScript($this->uniquePageId.'_dynamicMemberCountUpdate', '
-                function updateMemberStats(newCount, oldContent, elementClass)
-                {
-                    countStrippedOldContent = oldContent.substr(oldContent.indexOf(" "));
-                    $(elementClass).html(newCount + countStrippedOldContent);
-                }
+            $scriptName = $this->uniquePageId.'_dynamicMemberCountUpdate';
+            if (Yii::app()->clientScript->isScriptRegistered($scriptName))
+            {
+                return;
+            }
+            else
+            {
+                Yii::app()->clientScript->registerScript($scriptName, '
+                    function updateMemberStats(newCount, oldContent, elementClass)
+                    {
+                        countStrippedOldContent = oldContent.substr(oldContent.indexOf(" "));
+                        $(elementClass).html(newCount + countStrippedOldContent);
+                    }
 
-                $("#' . $this->getGridViewId() . ' .pager .refresh a").unbind("click.dynamicMemberCountUpdate").bind("click.dynamicMemberCountUpdate", function (event)
-                {
-                    var modelId                 = "' . $this->getModelId() . '";
-                    var subscriberCountClass    = ".' . MarketingListDetailsOverlayView::SUBSCRIBERS_STATS_CLASS . '";
-                    var unsubscriberCountClass  = ".' . MarketingListDetailsOverlayView::UNSUBSCRIBERS_STATS_CLASS . '";
-                    var subscriberHtml          = $(subscriberCountClass).html();
-                    var unsubscriberHtml        = $(unsubscriberCountClass).html();
-                    var url                     = "' . MarketingListDetailsOverlayView::getMemberCountUpdateUrl() . '";
-                    $.ajax(
-                            {
-                                url:        url,
-                                dataType:   "json",
-                                data:       { marketingListId: modelId },
-                                success:    function(data, status, request) {
-                                                updateMemberStats(data.subscriberCount, subscriberHtml, subscriberCountClass);
-                                                updateMemberStats(data.unsubscriberCount, unsubscriberHtml, unsubscriberCountClass);
-                                            },
-                                error:      function(request, status, error) {
-                                                // TODO: @Shoaibi/@Jason: Medium: What should we do here?
-                                            },
-                            }
-                        );
-                    });
-                ');
-            // End Not Coding Standard
+                    $("#' . $this->getGridViewId() . ' .pager .refresh a").unbind("click.dynamicMemberCountUpdate").bind("click.dynamicMemberCountUpdate", function (event)
+                    {
+                        var modelId                 = "' . $this->getModelId() . '";
+                        var subscriberCountClass    = ".' . MarketingListDetailsOverlayView::SUBSCRIBERS_STATS_CLASS . '";
+                        var unsubscriberCountClass  = ".' . MarketingListDetailsOverlayView::UNSUBSCRIBERS_STATS_CLASS . '";
+                        var subscriberHtml          = $(subscriberCountClass).html();
+                        var unsubscriberHtml        = $(unsubscriberCountClass).html();
+                        var url                     = "' . MarketingListDetailsOverlayView::getMemberCountUpdateUrl() . '";
+                        $.ajax(
+                                {
+                                    url:        url,
+                                    dataType:   "json",
+                                    data:       { marketingListId: modelId },
+                                    success:    function(data, status, request) {
+                                                    updateMemberStats(data.subscriberCount, subscriberHtml, subscriberCountClass);
+                                                    updateMemberStats(data.unsubscriberCount, unsubscriberHtml, unsubscriberCountClass);
+                                                },
+                                    error:      function(request, status, error) {
+                                                    // TODO: @Shoaibi/@Jason: Medium: What should we do here?
+                                                },
+                                }
+                            );
+                        });
+                    ');
+                // End Not Coding Standard
+            }
         }
 
         protected function getModelId()

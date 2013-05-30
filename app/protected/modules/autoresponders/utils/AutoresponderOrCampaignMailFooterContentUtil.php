@@ -34,33 +34,52 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class AutoresponderOrCampaignBatchSizeConfigUtil
+    class AutoresponderOrCampaignMailFooterContentUtil
     {
-        const CONFIG_KEY             = 'AutoresponderOrCampaignBatchSize';
+        const CONFIG_KEY_PLAIN                      = 'AutoresponderOrCampaignFooterPlainText';
 
-        const CONFIG_MODULE_NAME     = 'AutorespondersModule';
+        const CONFIG_KEY_RICH_TEXT                  = 'AutoresponderOrCampaignFooterRichText';
 
-        const CONFIG_DEFAULT_VALUE   = 200;
+        const CONFIG_MODULE_NAME                    = 'AutorespondersModule';
 
-        public static function getBatchSize($returnDefaultIfMissing = true, $setDefaultIfMissing = false)
+        const UNSUBSCRIBE_URL_PLACEHOLDER           = '{{UNSUBSCRIBE_URL}}';
+
+        const MANAGE_SUBSCRIPTIONS_URL_PLACEHOLDER  = '{{MANAGE_SUBSCRIPTIONS_URL}}';
+
+        public static function getContentByType($isHtmlContent, $returnDefault = true)
         {
-            $size = ZurmoConfigurationUtil::getByModuleName(static::CONFIG_MODULE_NAME, static::CONFIG_KEY);
-            if (empty($size) && $returnDefaultIfMissing)
+            $key        = static::resolveConfigKeyByContentType($isHtmlContent);
+            $content    = ZurmoConfigurationUtil::getByModuleName(static::CONFIG_MODULE_NAME, $key);
+            if (empty($content) && $returnDefault)
             {
-                $size = static::CONFIG_DEFAULT_VALUE;
-                if ($setDefaultIfMissing)
-                {
-                    // TODO: @Shoaibi: Critical: Add tests that cover following
-                    static::setBatchSize($size);
-                }
+                $content = static::resolveDefaultValue();
             }
-            return $size;
+            return $content;
         }
 
-        public static function setBatchSize($size)
+        public static function setContentByType($content, $isHtmlContent)
         {
-            assert('is_int($size) || $size === null');
-            ZurmoConfigurationUtil::setByModuleName(static::CONFIG_MODULE_NAME, static::CONFIG_KEY, $size);
+            // TODO: @Shoaibi: Critical: Tests
+            $key        = static::resolveConfigKeyByContentType($isHtmlContent);
+            ZurmoConfigurationUtil::setByModuleName(static::CONFIG_MODULE_NAME, $key, $content);
+        }
+
+        protected static function resolveConfigKeyByContentType($isHtmlContent)
+        {
+            if ($isHtmlContent)
+            {
+                return static::CONFIG_KEY_RICH_TEXT;
+            }
+            else
+            {
+                return static::CONFIG_KEY_PLAIN;
+            }
+        }
+
+        protected static function resolveDefaultValue()
+        {
+            $content     = static::UNSUBSCRIBE_URL_PLACEHOLDER . ' | ' . static::MANAGE_SUBSCRIPTIONS_URL_PLACEHOLDER;
+            return $content;
         }
     }
 ?>
