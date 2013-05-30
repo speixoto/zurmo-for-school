@@ -129,5 +129,18 @@
         {
             return $this->renderWrapperAndActionElementMenu();
         }
+
+        protected function renderActionElementMenu($title = null)
+        {
+            $isViewLocked = ZurmoDefaultViewUtil::getLockKeyForDetailsAndRelationsView('lockPortletsForDetailsAndRelationsView');
+            if($isViewLocked)
+            {
+                return null;
+            }
+            else
+            {
+                return parent::renderActionElementMenu($title);
+            }
+        }
     }
 ?>
