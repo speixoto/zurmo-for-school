@@ -245,6 +245,7 @@ a.ModalGameNotification a,
 .dynamic-row-field,
 .value-data,
 .report-runtime-availability,
+#RuntimeFiltersForPortletView .view-toolbar-container,
 .hasDrillDownContent,
 .first-series-and-range-area > div,
 .second-series-and-range-area > div,
@@ -956,6 +957,8 @@ body.blue .view-toolbar a.active,
 body.blue .view-toolbar a.active span,
 body.blue .portlet-toolbar .icon-delete:before,
 body.blue .portlet-toolbar .icon-edit:before,
+body.blue .mini-pillbox a:hover,
+body.blue .mini-pillbox a.active,
 body.blue #StickyListMenu > li > a:hover > span,
 body.blue .addfileinput-button:hover span .pager a:hover:before,
 body.blue .pager a:hover:after,
@@ -1527,6 +1530,8 @@ body.brown .view-toolbar a.active,
 body.brown .view-toolbar a.active span,
 body.brown .portlet-toolbar .icon-delete:before,
 body.brown .portlet-toolbar .icon-edit:before,
+body.brown .mini-pillbox a:hover,
+body.brown .mini-pillbox a.active,
 body.brown #StickyListMenu > li > a:hover > span,
 body.brown .addfileinput-button:hover span .pager a:hover:before,
 body.brown .pager a:hover:after,
@@ -2098,6 +2103,8 @@ body.lime .view-toolbar a.active,
 body.lime .view-toolbar a.active span,
 body.lime .portlet-toolbar .icon-delete:before,
 body.lime .portlet-toolbar .icon-edit:before,
+body.lime .mini-pillbox a:hover,
+body.lime .mini-pillbox a.active,
 body.lime #StickyListMenu > li > a:hover > span,
 body.lime .addfileinput-button:hover span .pager a:hover:before,
 body.lime .pager a:hover:after,
@@ -2669,6 +2676,8 @@ body.cherry .view-toolbar a.active,
 body.cherry .view-toolbar a.active span,
 body.cherry .portlet-toolbar .icon-delete:before,
 body.cherry .portlet-toolbar .icon-edit:before,
+body.cherry .mini-pillbox a:hover,
+body.cherry .mini-pillbox a.active,
 body.cherry #StickyListMenu > li > a:hover > span,
 body.cherry .addfileinput-button:hover span .pager a:hover:before,
 body.cherry .pager a:hover:after,
@@ -3240,6 +3249,8 @@ body.turquoise .view-toolbar a.active,
 body.turquoise .view-toolbar a.active span,
 body.turquoise .portlet-toolbar .icon-delete:before,
 body.turquoise .portlet-toolbar .icon-edit:before,
+body.turquoise .mini-pillbox a:hover,
+body.turquoise .mini-pillbox a.active,
 body.turquoise #StickyListMenu > li > a:hover > span,
 body.turquoise .addfileinput-button:hover span .pager a:hover:before,
 body.turquoise .pager a:hover:after,
@@ -3811,6 +3822,8 @@ body.violet .view-toolbar a.active,
 body.violet .view-toolbar a.active span,
 body.violet .portlet-toolbar .icon-delete:before,
 body.violet .portlet-toolbar .icon-edit:before,
+body.violet .mini-pillbox a:hover,
+body.violet .mini-pillbox a.active,
 body.violet #StickyListMenu > li > a:hover > span,
 body.violet .addfileinput-button:hover span .pager a:hover:before,
 body.violet .pager a:hover:after,
@@ -4382,6 +4395,8 @@ body.honey .view-toolbar a.active,
 body.honey .view-toolbar a.active span,
 body.honey .portlet-toolbar .icon-delete:before,
 body.honey .portlet-toolbar .icon-edit:before,
+body.honey .mini-pillbox a:hover,
+body.honey .mini-pillbox a.active,
 body.honey #StickyListMenu > li > a:hover > span,
 body.honey .addfileinput-button:hover span .pager a:hover:before,
 body.honey .pager a:hover:after,
@@ -4877,6 +4892,12 @@ body.light-toast,
 .disabled {
   pointer-events: none;
   background: #EFEFEF;
+}
+.right {
+  float: right;
+}
+.left {
+  float: left;
 }
 html,
 body {
@@ -6430,6 +6451,38 @@ form .view-toolbar-container,
 .portlet-view-toolbar > a:active,
 .view-toolbar .parent > a:active,
 .portlet-view-toolbar .parent > a:active {
+  color: #656565;
+  box-shadow: inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #ffffff;
+}
+.mini-pillbox label {
+  margin-right: 10px;
+  font-size: 11px !important;
+  line-height: 26px !important;
+}
+.mini-pillbox .pills {
+  display: inline-block;
+  font-size: 11px;
+  border: 1px solid #b7b7b7;
+  border-top-color: #e7e7e7;
+  border-left-color: #d7d7d7;
+  border-right-color: #d7d7d7;
+  border-radius: 4px;
+  background: url(../images/view-toolbar-gradient.png) left bottom repeat-x;
+}
+.mini-pillbox a {
+  font-weight: 700;
+  position: relative;
+  color: #656565;
+  text-shadow: #fff 0 1px 0;
+  padding: 0 6px;
+  line-height: 24px;
+  display: inline-block;
+  border-left: 1px solid #bababa;
+}
+.mini-pillbox a:first-child {
+  border-left: none;
+}
+.mini-pillbox a:active {
   color: #656565;
   box-shadow: inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #ffffff;
 }
@@ -8333,6 +8386,7 @@ div.wide.form label.hasCheckBox {
   -o-box-shadow: none;
   -ms-box-shadow: none;
   box-shadow: none;
+  overflow: hidden;
 }
 .search-view-0 {
   margin: 15px 0 0 0;
@@ -17035,16 +17089,11 @@ a.user-link {
 #RuntimeFiltersForPortletView .dynamic-rows {
   float: none;
 }
-#RuntimeFiltersForPortletView .dynamic-rows ul {
-  padding: 15px 15px 5px 15px;
+#RuntimeFiltersForPortletView .first-date-area {
+  margin-top: 0;
 }
 #RuntimeFiltersForPortletView .view-toolbar-container {
-  clear: left;
-  margin: 0 15px 15px 15px;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-  width: auto;
+  width: 100%;
 }
 .ReportResultsComponentForPortletView {
   position: relative;
@@ -18021,11 +18070,13 @@ a.user-link {
 .portlet-with-toolbar .view-toolbar .parent > ul {
   top: auto;
 }
+#ReportDetailsView,
 #CampaignDetailsView,
 #MarketingListDetailsView {
   position: relative;
   z-index: 10;
 }
+#ReportDetailsView + div,
 #CampaignDetailsView + div,
 #MarketingListDetailsView + div {
   position: relative;
@@ -18042,6 +18093,10 @@ a.user-link {
 .marketing-graph h3 {
   padding-left: 15px;
 }
+.graph-container {
+  clear: left;
+  margin: 15px 0 0 0;
+}
 .edit-autoresponder-link {
   display: block;
   margin-bottom: 10px;
@@ -18056,15 +18111,40 @@ a.user-link {
   font-size: 12px;
 }
 .autoresponder-stats strong {
-  font-size: 30px;
+  font-size: 26px;
   font-weight: bold;
   display: block;
 }
-.autoresponder-stats span {
-  font-weight: bold;
-}
 a + .autoresponder-stats {
   margin-left: 0;
+}
+.metrics-details {
+  text-align: right;
+}
+.metrics-details h3 {
+  width: auto;
+  float: left;
+  line-height: 26px;
+}
+.metrics-details div,
+.metrics-details form {
+  width: auto;
+  display: inline-block;
+}
+.metrics-details div label,
+.metrics-details form label {
+  float: left;
+}
+.metrics-details > div {
+  font-size: 11px;
+  line-height: 26px;
+  font-weight: bold;
+  color: #656565;
+}
+.metrics-details > div:after {
+  content: "|";
+  font-weight: bold;
+  padding: 0 8px;
 }
 #kanban-holder {
   background: #fff;
