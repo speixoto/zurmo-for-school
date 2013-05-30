@@ -131,10 +131,10 @@
             $contactWebFormEntry->save();
         }
 
-        public function actionSourceFiles($webFormId)
+        public function actionSourceFiles($id)
         {
             Yii::app()->user->userModel = ContactWebFormsUserConfigUtil::getUserToRunAs();
-            $formContentUrl          = Yii::app()->createAbsoluteUrl('contacts/external/form/', array('id' => $webFormId));
+            $formContentUrl          = Yii::app()->createAbsoluteUrl('contacts/external/form/', array('id' => $id));
             $renderFormFileUrl       = Yii::app()->getAssetManager()->getPublishedUrl(Yii::getPathOfAlias('application.core.views.assets') .
                                        DIRECTORY_SEPARATOR . 'renderExternalForm.js');
             if ($renderFormFileUrl === false || file_exists($renderFormFileUrl) === false)
