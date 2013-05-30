@@ -70,6 +70,10 @@
             return true;
         }
 
+        /**
+         * @param SearchForm $searchModel
+         * @return null|object
+         */
         protected function resolveKanbanBoard(SearchForm $searchModel)
         {
             return $searchModel->getKanbanBoard();

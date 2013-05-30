@@ -166,6 +166,9 @@
             return $dataProvider;
         }
 
+        /**
+         * @param $searchModel
+         */
         private function resolveKanbanBoardIsActiveByGet($searchModel)
         {
             if (!$searchModel instanceof SearchForm || $searchModel->getKanbanBoard() == null)
@@ -188,6 +191,11 @@
             }
         }
 
+        /**
+         * @param $searchModel
+         * @param $pageSize
+         * @return int
+         */
         private function resolvePageSizeForKanbanBoard($searchModel, $pageSize)
         {
             if (!$searchModel instanceof SearchForm)

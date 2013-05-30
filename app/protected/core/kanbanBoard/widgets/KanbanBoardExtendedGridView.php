@@ -63,8 +63,14 @@
          */
         public $groupByDataAndTranslatedLabels = array();
 
+        /**
+         * @var array
+         */
         public $cardColumns = array();
 
+        /**
+         * @var string
+         */
         public $selectedTheme;
 
         /**
@@ -97,7 +103,6 @@
             {
                 $this->renderOverMaxCountText();
             }
-
             elseif($n > 0)
             {
                 echo "<div id=\"kanban-board\">\n";
@@ -125,7 +130,6 @@
             else
             {
                 $this->renderEmptyText();
-
             }
             echo "</td></tr>\n";
             echo "</tbody>\n";
@@ -140,6 +144,9 @@
             echo CHtml::tag('span', array('class'=>'empty'), $label);
         }
 
+        /**
+         * @return int
+         */
         protected function getOffset()
         {
             $pagination = $this->dataProvider->getPagination();
@@ -154,7 +161,10 @@
             return $offset;
         }
 
-
+        /**
+         * @param $value
+         * @return string
+         */
         protected function resolveGroupByColumnHeaderLabel($value)
         {
             if(isset($this->groupByDataAndTranslatedLabels[$value]))
@@ -164,6 +174,9 @@
             return $value;
         }
 
+        /**
+         * @return array
+         */
         protected function resolveDataIntoKanbanColumns()
         {
             $columnsData = $this->makeColumnsDataAndStructure();
@@ -177,6 +190,9 @@
             return $columnsData;
         }
 
+        /**
+         * @return array
+         */
         protected function makeColumnsDataAndStructure()
         {
             $columnsData = array();
@@ -235,6 +251,10 @@
             return  Yii::app()->createUrl($moduleId . '/default/updateAttributeValue', array('attribute' => $this->groupByAttribute));
         }
 
+        /**
+         * @param array $row
+         * @return string
+         */
         protected function renderCardDetailsContent($row)
         {
             $cardDetails = null;
