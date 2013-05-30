@@ -182,28 +182,38 @@
          */
         public function testCreateNewActivity()
         {
-            $url                                = null;
-            $type                               = AutoresponderItemActivity::TYPE_OPEN;
-            $autoresponderItems                 = AutoresponderItem::getAll();
+            $url                            = null;
+            $type                           = AutoresponderItemActivity::TYPE_OPEN;
+            $autoresponderItems             = AutoresponderItem::getAll();
             $this->assertNotEmpty($autoresponderItems);
-            $autoresponderItem                  = $autoresponderItems[0];
-            $persons                            = Person::getAll();
+            $autoresponderItem              = $autoresponderItems[0];
+            $persons                        = Person::getAll();
             $this->assertNotEmpty($persons);
-            $person                             = $persons[0];
-            $saved                              = AutoresponderItemActivity::createNewActivity($type,
-                                                                                                $autoresponderItem->id,
-                                                                                                $person->id,
-                                                                                                $url);
+            $person                         = $persons[0];
+            $saved                          = AutoresponderItemActivity::createNewActivity($type,
+                                                                                            $autoresponderItem->id,
+                                                                                            $person->id,
+                                                                                            $url);
             $this->assertTrue($saved);
 
             // now try same thing but with a url this time.
-            $type                               = AutoresponderItemActivity::TYPE_CLICK;
-            $url                                = 'http://www.zurmo.com';
-            $saved                              = AutoresponderItemActivity::createNewActivity($type,
-                                                                                                $autoresponderItem->id,
-                                                                                                $person->id,
-                                                                                                $url);
+            $contact                        = ContactTestHelper::createContactByNameForOwner('contact 02', $this->user);
+            $personId                       = $contact->getClassId('Person');
+            $type                           = AutoresponderItemActivity::TYPE_CLICK;
+            $url                            = 'http://www.zurmo.com';
+            $saved                          = AutoresponderItemActivity::createNewActivity($type,
+                                                                                            $autoresponderItem->id,
+                                                                                            $personId,
+                                                                                            $url);
             $this->assertTrue($saved);
+
+            // test that creating the one with url created one with open too:
+            $activity                       = AutoresponderItemActivity::getByTypeAndModelIdAndPersonIdAndUrl(
+                                                                                AutoresponderItemActivity::TYPE_OPEN,
+                                                                                $autoresponderItem->id,
+                                                                                $personId);
+            $this->assertNotEmpty($activity);
+            $this->assertCount(1, $activity);
         }
 
         /**
@@ -233,11 +243,14 @@
             $this->assertEquals($autoresponderItem,         $activity->autoresponderItem);
 
             // now try same thing but with a url this time.
+            $contact                                        = Contact::getByName('contact 02 contact 02son');
+            $personId                                       = $contact[0]->getClassId('Person');
+            $person                                         = Person::getById($personId);
             $type                                           = AutoresponderItemActivity::TYPE_CLICK;
             $url                                            = 'http://www.zurmo.com';
             $activities = AutoresponderItemActivity::getByTypeAndModelIdAndPersonIdAndUrl($type,
                                                                                             $autoresponderItem->id,
-                                                                                            $person->id,
+                                                                                            $personId,
                                                                                             $url);
             $this->assertNotEmpty($activities);
             $this->assertCount(1,                       $activities);

@@ -152,7 +152,8 @@
                                                                                            $relationName,
                                                                                            $personId, $url = null,
                                                                                             $sortBy = 'latestDateTime',
-                                                                                            $pageSize = null)
+                                                                                            $pageSize = null,
+                                                                                            $countOnly = false)
         {
             assert('is_int($type)');
             assert('is_int($personId) || is_string($personId)');
@@ -192,6 +193,10 @@
             }
             $joinTablesAdapter                = new RedBeanModelJoinTablesQueryAdapter(get_called_class());
             $where = RedBeanModelDataProvider::makeWhere(get_called_class(), $searchAttributeData, $joinTablesAdapter);
+            if ($countOnly)
+            {
+                return self::getCount($joinTablesAdapter, $where, get_called_class(), true);
+            }
             return self::getSubset($joinTablesAdapter, null, $pageSize, $where, $sortBy);
         }
 
@@ -220,9 +225,41 @@
             }
             else
             {
+                static::createNewOpenActivityForFirstClickTrackingActivity($type,
+                                                                            $personId,
+                                                                            $relationName,
+                                                                            $relatedModel);
                 return true;
             }
         }
+
+        protected static function createNewOpenActivityForFirstClickTrackingActivity($type, $personId,
+                                                                                        $relationName, $relatedModel)
+        {
+            if(static::shouldCreateOpenActivityForTrackingActivity($type, $personId, $relationName, $relatedModel->id))
+            {
+                return static::createNewChildActivity(static::TYPE_OPEN, $personId, null, $relationName, $relatedModel);
+            }
+        }
+
+        protected static function shouldCreateOpenActivityForTrackingActivity($type, $personId, $relationName, $modelId)
+        {
+            if ($type === static::TYPE_CLICK)
+            {
+                $existingActivitiesCount = static::getChildActivityByTypeAndModelIdAndModelRelationNameAndPersonIdAndUrl(
+                                                                                                        $type,
+                                                                                                        $modelId,
+                                                                                                        $relationName,
+                                                                                                        $personId,
+                                                                                                        null,
+                                                                                                        null,
+                                                                                                        null,
+                                                                                                        true);
+                return ($existingActivitiesCount == 1);
+            }
+            return false;
+        }
+
 
         protected static function getLabel($language = null)
         {
