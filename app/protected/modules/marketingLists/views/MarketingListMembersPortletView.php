@@ -135,22 +135,34 @@
         {
             if ($this->shouldRenderViewToolBar())
             {
-                $actionElementBar       = $this->renderViewToolBar();
+                $actionElementBar = $this->renderViewToolBar();
+            }
+            elseif($this->shouldRenderActionElementBar())
+            {
+                $actionElementBar = ZurmoHtml::tag('div', array('class' => 'portlet-view-toolbar view-toolbar'),
+                                                                                $this->renderActionElementBar(false));
             }
             else
             {
-                $actionElementBar       = ZurmoHtml::tag('div', array('class' => 'portlet-view-toolbar view-toolbar'),
-                                                                                $this->renderActionElementBar(false));
+                $actionElementBar = null;
             }
-            $searchAndList    = $this->renderSearchFormAndListContent();
-            $content = ZurmoHtml::tag('div', array('class' => $this->getWrapperDivClass()), $actionElementBar);
-            $content .= $searchAndList;
+            $content = null;
+            if($actionElementBar != null)
+            {
+                $content .= ZurmoHtml::tag('div', array('class' => $this->getWrapperDivClass()), $actionElementBar);
+            }
+            $content .= $this->renderSearchFormAndListContent();
             return $content;
         }
 
         protected function shouldRenderViewToolBar()
         {
             return false;
+        }
+
+        protected function shouldRenderActionElementBar()
+        {
+            return true;
         }
 
         public static function canUserConfigure()

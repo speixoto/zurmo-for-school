@@ -137,16 +137,16 @@
                                  DateTimeUtil::resolveValueForDateLocaleFormattedDisplay($this->resolveForm()->endDate);
             $content           = ZurmoHtml::tag('div', array(), $dateRangeContent);
             $content          .= $this->renderGroupByConfigurationForm();
-            $content          .= 'REMOVE ' . $this->resolveForm()->groupBy;
             return $content;
         }
 
         protected function renderMetricsWrapperContent()
         {
-            $content  = ZurmoHtml::tag('div', array(), $this->renderOverallListPerformanceContent());
-            $content .= ZurmoHtml::tag('div', array(), $this->renderEmailsInThisListContent());
-            $content .= ZurmoHtml::tag('div', array(), $this->renderListGrowthContent());
-            return $content;
+            $cssClass = 'third marketing-graph';
+            $content  = ZurmoHtml::tag('div', array('class' => $cssClass), $this->renderOverallListPerformanceContent());
+            $content .= ZurmoHtml::tag('div', array('class' => $cssClass), $this->renderEmailsInThisListContent());
+            $content .= ZurmoHtml::tag('div', array('class' => $cssClass), $this->renderListGrowthContent());
+            return ZurmoHtml::tag('div', array('class' => 'graph-container clearfix'), $content);
         }
 
         protected function renderOverallListPerformanceContent()
@@ -251,9 +251,10 @@
         {
             assert('$form instanceof ZurmoActiveForm');
             $ajaxSubmitScript = ZurmoHtml::ajax(array(
-                'type'       => 'POST',
-                'data'       => 'js:$("#' . $form->getId() . '").serialize()',
-                'url'        =>  $this->getPortletSaveConfigurationUrl(),
+                'type'     => 'POST',
+                'data'     => 'js:$("#' . $form->getId() . '").serialize() + \'&' . get_class($this->resolveForm()) .
+                              '[groupBy]=\' + $(this).data("value")',
+                'url'      =>  $this->getPortletSaveConfigurationUrl(),
                 //'beforeSend' => 'js:function(){makeSmallLoadingSpinner(true, "#MarketingDashboardView");
                 //                $("#MarketingDashboardView").addClass("loading");}',
                 'complete' => 'function(XMLHttpRequest, textStatus){juiPortlets.refresh();}',
@@ -261,8 +262,7 @@
 
             ));
             Yii::app()->clientScript->registerScript($this->uniqueLayoutId . 'groupByChangeScript', "
-            $('#" . $this->getFormId() . "_groupBy_area').buttonset();
-            $('#" . $this->getFormId() . "_groupBy_area').change(function()
+            $('." . $this->getFormId() . "marketingMetricsGroupByLink').click(function()
                 {
                     " . $ajaxSubmitScript . "
                 }

@@ -34,39 +34,30 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * Class used for displaying the overall performance metrics for the marketing dashboard
-     */
-    class MarketingOverallMetricsView extends MarketingMetricsView implements PortletViewInterface
+    class ReportSearchTest extends ZurmoBaseTest
     {
-        protected $formModelClassName = 'MarketingOverallMetricsForm';
-        /**
-         * The view's module class name.
-         */
-        public static function getModuleClassName()
+        public static function setUpBeforeClass()
         {
-            return 'MarketingModule';
+            parent::setUpBeforeClass();
+            SecurityTestHelper::createSuperAdmin();
+            SavedReportTestHelper::makeSummationWithDrillDownReport();
+            SavedReportTestHelper::makeSimpleContactRowsAndColumnsReport();
         }
 
-        public function getTitle()
+        public function setUp()
         {
-            $title  = Zurmo::t('MarketingModule', 'Marketing Dashboard');
-            return $title;
+            parent::setUp();
+            Yii::app()->user->userModel = User::getByUsername('super');
         }
 
-        public function renderContent()
+        public function testGetReportsByPartialName()
         {
-            $content  = ZurmoHtml::tag('h3', array(), Zurmo::t('MarketingModule', 'What is going on with Marketing?'));
-            $content .= $this->renderConfigureElementsContent();
-            $content  = ZurmoHtml::tag('div', array('class' => 'left-column full-width'), $content);
-            $content .= $this->renderMetricsWrapperContent();
-            return $content;
-        }
-
-        public function getConfigurationView()
-        {
-
-            return new MarketingOverallMetricsConfigView($this->resolveForm(), $this->params);
+            $this->assertEquals(2, count(SavedReport::getAll()));
+            $this->assertEquals(2, count(ReportSearch::getReportsByPartialName('a', 5)));
+            $this->assertEquals(0, count(ReportSearch::getReportsByPartialName('a', 5, 'AccountsModule')));
+            $this->assertEquals(1, count(ReportSearch::getReportsByPartialName('a', 5, 'ReportsTestModule')));
+            $this->assertEquals(1, count(ReportSearch::getReportsByPartialName('a', 5, 'ReportsTestModule', Report::TYPE_SUMMATION)));
+            $this->assertEquals(0, count(ReportSearch::getReportsByPartialName('a', 5, 'ContactsModule', Report::TYPE_SUMMATION)));
         }
     }
 ?>

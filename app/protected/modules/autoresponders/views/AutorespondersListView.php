@@ -190,6 +190,11 @@
             );
         }
 
+        protected function getCGridViewParams()
+        {
+            return array_merge(parent::getCGridViewParams(), array('hideHeader' => true));
+        }
+
         protected function getPortletId()
         {
             return ArrayUtil::getArrayValueWithExceptionIfNotFound($this->params, 'portletId');

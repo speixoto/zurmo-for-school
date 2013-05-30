@@ -38,7 +38,7 @@
     {
         public function getDisplayName()
         {
-            return Zurmo::t('DesignerModule', 'My List Configuration View');
+            return Zurmo::t('DesignerModule', 'Portlet Configuration View');
         }
 
         public function maxCellsPerRow()

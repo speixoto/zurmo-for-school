@@ -77,10 +77,7 @@
                                                     null,
                                                     'ProductsSearchView'
                                                 );
-            $title                          = Zurmo::t('ProductsModule', 'Products');
-            $breadcrumbLinks                = array(
-                                                    $title,
-                                                    );
+            $breadcrumbLinks                = static::getListBreadcrumbLinks();
             if (isset($_GET['ajax']) && $_GET['ajax'] == 'list-view')
             {
                 $mixedView  = $this->makeListView(
@@ -103,12 +100,9 @@
 
         public function actionDetails($id)
         {
-            $title              = Zurmo::t('ProductsModule', 'Product Detail');
-            $breadcrumbLinks    = array(
-                                        $title,
-                                        );
             $product            = static::getModelAndCatchNotFoundAndDisplayError('Product', intval($id));
             ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($product);
+            $breadcrumbLinks = array(StringUtil::getChoppedStringContent(strval($product), 25));
             AuditEvent::logAuditEvent('ZurmoModule', ZurmoModule::AUDIT_EVENT_ITEM_VIEWED, array(strval($product), 'ProductsModule'), $product);
             $detailsView        = new ProductDetailsView($this->getId(), $this->getModule()->getId(), $product);
             $view               = new ProductsPageView(ProductDefaultViewUtil::
@@ -131,12 +125,9 @@
 
         public function actionEdit($id, $redirectUrl = null)
         {
-            $title           = Zurmo::t('ProductsModule', 'Edit Product');
-            $breadcrumbLinks = array(
-                 $title,
-            );
             $product         = Product::getById(intval($id));
             ControllerSecurityUtil::resolveAccessCanCurrentUserWriteModel($product);
+            $breadcrumbLinks = array(StringUtil::getChoppedStringContent(strval($product), 25));
             $view            = new ProductsPageView(ProductDefaultViewUtil::
                                                         makeViewWithBreadcrumbsForCurrentUser($this,
                                                             $this->makeEditAndDetailsView(

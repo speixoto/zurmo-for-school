@@ -72,6 +72,7 @@
             $content  = $this->renderRefreshLink();
             $content .= '<div class="wrapper">';
             $content .= '<div class="wide form">';
+            $content .= '<div class="left-column full-width">';
             $clipWidget = new ClipWidget();
             list($form, $formStart) = $clipWidget->renderBeginWidget(
                                                             'WizardActiveForm',
@@ -89,7 +90,7 @@
             $content       .= $this->renderViewToolBarContainer($form);
             $formEnd        = $clipWidget->renderEndWidget();
             $content       .= $formEnd;
-            $content       .= '</div></div>';
+            $content       .= '</div></div></div>';
             return $content;
         }
 
