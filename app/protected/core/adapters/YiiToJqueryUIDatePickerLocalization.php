@@ -87,6 +87,8 @@
                         return 'dd-mm-y';
                 case 'd/MM/yy':     //en_au format
                         return 'd/mm/y';
+                case 'dd.MM.yyyy':  //tr format
+                        return 'dd.mm.yy';
                 default :
                     throw new NotImplementedException();
             }
