@@ -100,7 +100,7 @@
 
         protected function renderTitleContent()
         {
-            return '';
+            return null;
         }
 
         public static function canUserRemove()
