@@ -93,6 +93,11 @@
             return $this->renderBadgeContent();
         }
 
+        public function renderPortletHeadContent()
+        {
+            return null;
+        }
+
         protected function renderBadgeContent()
         {
             $content = null;

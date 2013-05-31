@@ -169,5 +169,10 @@
             return Zurmo::t('AccountsModule', 'Create AccountsModuleSingularLabel',
                                      LabelUtil::getTranslationParamsForAllModules());
         }
+
+        public static function getModuleClassName()
+        {
+            return 'AccountsModule';
+        }
     }
 ?>

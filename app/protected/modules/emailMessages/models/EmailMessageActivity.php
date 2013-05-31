@@ -37,7 +37,7 @@
     /**
      * Model for storing an email message item activity.
      */
-    class EmailMessageActivity extends RedBeanModel
+    class EmailMessageActivity extends Item
     {
         const TYPE_OPEN     = 1;
 
@@ -74,8 +74,7 @@
                     array('latestDateTime',         'type', 'type' => 'datetime'),
                     array('type',                   'required'),
                     array('type',                   'type', 'type' => 'integer'),
-                    array('type',                   'in', 'range' => array_keys(static::getTypesArray()),
-                                                                                        'except' => 'autoBuildDatabase'),
+                    array('type',                   'numerical', 'min' => static::TYPE_OPEN, 'max' => static::TYPE_CLICK),
                     array('quantity',               'required'),
                     array('quantity',                'type', 'type' => 'integer'),
                     array('quantity',               'numerical', 'integerOnly' => true),
@@ -117,6 +116,7 @@
 
         public static function getSearchAttributeDataByTypeAndPersonIdAndUrl($type, $personId, $url = null)
         {
+            // TODO: @Shoaibi: Critical: Tests
             assert('is_int($type)');
             assert('is_int($personId)');
             assert('is_string($url) || $url === null');
@@ -152,7 +152,8 @@
                                                                                            $relationName,
                                                                                            $personId, $url = null,
                                                                                             $sortBy = 'latestDateTime',
-                                                                                            $pageSize = null)
+                                                                                            $pageSize = null,
+                                                                                            $countOnly = false)
         {
             assert('is_int($type)');
             assert('is_int($personId) || is_string($personId)');
@@ -192,6 +193,10 @@
             }
             $joinTablesAdapter                = new RedBeanModelJoinTablesQueryAdapter(get_called_class());
             $where = RedBeanModelDataProvider::makeWhere(get_called_class(), $searchAttributeData, $joinTablesAdapter);
+            if ($countOnly)
+            {
+                return self::getCount($joinTablesAdapter, $where, get_called_class(), true);
+            }
             return self::getSubset($joinTablesAdapter, null, $pageSize, $where, $sortBy);
         }
 
@@ -220,8 +225,39 @@
             }
             else
             {
+                static::createNewOpenActivityForFirstClickTrackingActivity($type,
+                                                                            $personId,
+                                                                            $relationName,
+                                                                            $relatedModel);
                 return true;
             }
+        }
+
+        protected static function createNewOpenActivityForFirstClickTrackingActivity($type, $personId,
+                                                                                        $relationName, $relatedModel)
+        {
+            if (static::shouldCreateOpenActivityForTrackingActivity($type, $personId, $relationName, $relatedModel->id))
+            {
+                return static::createNewChildActivity(static::TYPE_OPEN, $personId, null, $relationName, $relatedModel);
+            }
+        }
+
+        protected static function shouldCreateOpenActivityForTrackingActivity($type, $personId, $relationName, $modelId)
+        {
+            if ($type === static::TYPE_CLICK)
+            {
+                $existingActivitiesCount = static::getChildActivityByTypeAndModelIdAndModelRelationNameAndPersonIdAndUrl(
+                                                                                                        $type,
+                                                                                                        $modelId,
+                                                                                                        $relationName,
+                                                                                                        $personId,
+                                                                                                        null,
+                                                                                                        null,
+                                                                                                        null,
+                                                                                                        true);
+                return ($existingActivitiesCount == 1);
+            }
+            return false;
         }
 
         protected static function getLabel($language = null)
@@ -240,14 +276,22 @@
 
         public function beforeSave()
         {
-            $this->latestDateTime = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
-            return true;
+            if (parent::beforeSave())
+            {
+                $this->latestDateTime = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
+                return true;
+            }
+            return false;
         }
 
         public function __toString()
         {
-            $types  = static::getTypesArray();
-            $type   = $types[intval($this->type)];
+            $type   = intval($this->type);
+            if ($type)
+            {
+                $types  = static::getTypesArray();
+                $type   = $types[intval($this->type)];
+            }
             return $this->latestDateTime . ': ' . strval($this->person) . '/' . $type;
         }
     }

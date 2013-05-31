@@ -36,19 +36,18 @@
 
     class SelectFromRelatedListAjaxLinkActionElement extends AjaxLinkActionElement
     {
-        public function __construct($controllerId, $moduleId, $modelId, $params = array())
-        {
-            if (!isset($params['htmlOptions']))
-            {
-                $params['htmlOptions'] = array();
-            }
-            $params['htmlOptions'] = array_merge(array('class' => 'simple-link'), $params['htmlOptions']);
-            parent::__construct($controllerId, $moduleId, $modelId, $params);
-        }
-
         public function getActionType()
         {
             return null;
+        }
+
+        public function renderMenuItem()
+        {
+            return array('label'  => $this->getLabel(),
+                'url'             => $this->getDefaultRoute(),
+                'linkOptions'     => $this->getHtmlOptions(),
+                'ajaxLinkOptions' => $this->getAjaxOptions()
+            );
         }
 
         protected function getDefaultLabel()
@@ -58,13 +57,14 @@
 
         protected function getDefaultRoute()
         {
-            return Yii::app()->createUrl($this->moduleId . '/default/selectFromRelatedList/',
+            return Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/selectFromRelatedList/',
                     array(
                     'uniqueLayoutId'          => $this->getUniqueLayoutId(),
                     'portletId'               => $this->getPortletId(),
                     'relationAttributeName'   => $this->params['relationAttributeName'],
                     'relationModelId'         => $this->params['relationModelId'],
                     'relationModuleId'        => $this->params['relationModuleId'],
+                    'relationModelClassName'  => $this->getRelationModelClassName(),
                     )
             );
         }
@@ -74,6 +74,15 @@
             if (isset($this->params['uniqueLayoutId']))
             {
                 return $this->params['uniqueLayoutId'];
+            }
+            return null;
+        }
+
+        protected function getRelationModelClassName()
+        {
+            if (isset($this->params['relationModelClassName']))
+            {
+                return $this->params['relationModelClassName'];
             }
             return null;
         }

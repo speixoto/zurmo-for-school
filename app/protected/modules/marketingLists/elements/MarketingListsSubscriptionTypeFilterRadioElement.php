@@ -53,7 +53,7 @@
                                             $this->getArray(),
                                             $this->getEditableHtmlOptions()
                                         );
-            return Zurmo::t('MarketingListsModule', 'View') . ':' . $content;
+            return ZurmoHtml::tag('strong', array(), Zurmo::t('MarketingListsModule', 'View') . ':') . $content;
         }
 
         protected function renderControlNonEditable()

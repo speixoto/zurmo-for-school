@@ -230,7 +230,7 @@
             $this->runControllerWithNoExceptionsAndGetContent('opportunities/default/details');
             $this->runControllerWithNoExceptionsAndGetContent('opportunities/default/list');
             $this->setGetArray(array(
-                'modalTransferInformation' => array('sourceIdFieldId' => 'x', 'sourceNameFieldId' => 'y')
+                'modalTransferInformation' => array('sourceIdFieldId' => 'x', 'sourceNameFieldId' => 'y', 'modalId' => 'z')
             ));
             $this->resetPostArray();
             $this->runControllerWithNoExceptionsAndGetContent('opportunities/default/modalList');
@@ -336,8 +336,8 @@
             $this->assertContains('gardening'                            , $opportunity->tagcloudCstm->values);
             $metadata            = CalculatedDerivedAttributeMetadata::
                                    getByNameAndModelClassName('calcnumber', 'Opportunity');
-            $testCalculatedValue = CalculatedNumberUtil::calculateByFormulaAndModel($metadata->getFormula(), $opportunity);
-            $this->assertEquals(1476                                     , $testCalculatedValue);
+            $testCalculatedValue = CalculatedNumberUtil::calculateByFormulaAndModelAndResolveFormat($metadata->getFormula(), $opportunity);
+            $this->assertEquals('1,476'                                    , $testCalculatedValue); // Not Coding Standard
         }
 
         /**
@@ -493,7 +493,7 @@
             $this->assertEquals(0                                        , $opportunity->tagcloudCstm->values->count());
             $metadata            = CalculatedDerivedAttributeMetadata::
                                    getByNameAndModelClassName('calcnumber', 'Opportunity');
-            $testCalculatedValue = CalculatedNumberUtil::calculateByFormulaAndModel($metadata->getFormula(), $opportunity);
+            $testCalculatedValue = CalculatedNumberUtil::calculateByFormulaAndModelAndResolveFormat($metadata->getFormula(), $opportunity);
             $this->assertEquals(132                                      , $testCalculatedValue);
         }
 
@@ -598,7 +598,7 @@
             $this->assertContains('surfing'                              , $opportunity->tagcloudCstm->values);
             $metadata            = CalculatedDerivedAttributeMetadata::
                                    getByNameAndModelClassName('calcnumber', 'Opportunity');
-            $testCalculatedValue = CalculatedNumberUtil::calculateByFormulaAndModel($metadata->getFormula(), $opportunity);
+            $testCalculatedValue = CalculatedNumberUtil::calculateByFormulaAndModelAndResolveFormat($metadata->getFormula(), $opportunity);
             $this->assertEquals(132                                      , $testCalculatedValue);
         }
 

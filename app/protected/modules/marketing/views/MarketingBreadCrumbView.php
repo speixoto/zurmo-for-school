@@ -53,7 +53,7 @@
          */
         protected function resolveModuleId()
         {
-            return 'emailTemplates';
+            return 'marketing';
         }
 
         /**

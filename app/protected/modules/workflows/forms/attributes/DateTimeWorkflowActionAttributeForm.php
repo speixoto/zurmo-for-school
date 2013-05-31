@@ -152,7 +152,7 @@
         {
             assert('is_string($attribute)');
             parent::resolveNullAlternativeValueAndSetToModel($adapter, $attribute);
-            if($adapter->getModel()->{$attribute} === null)
+            if ($adapter->getModel()->{$attribute} === null)
             {
                 $adapter->getModel()->{$attribute} = '0000-00-00 00:00:00';
             }

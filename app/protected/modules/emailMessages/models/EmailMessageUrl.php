@@ -37,10 +37,11 @@
     /**
      * Model for storing an email message urls.
      */
-    class EmailMessageUrl extends RedBeanModel
+    class EmailMessageUrl extends OwnedModel
     {
         public static function getModuleClassName()
         {
+            // TODO: @Shoaibi: Critical: Add Tests to cover:
             return 'EmailMessagesModule';
         }
 

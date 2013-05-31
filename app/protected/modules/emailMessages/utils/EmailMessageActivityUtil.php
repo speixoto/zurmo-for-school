@@ -39,15 +39,71 @@
      */
     class EmailMessageActivityUtil
     {
-        const IMAGE_PATH    =   '/default/images/1x1-pixel.png';
+        const IMAGE_PATH            =   '/default/images/1x1-pixel.png';
+
+        const VALID_HASH_PATTERN    = '~^[A-Z0-9\+=/]+~i'; // Not Coding Standard
 
         protected static $baseQueryStringArray;
 
-        public static function resolveContentForTracking($tracking, & $content, $modelId, $modelType, $personId, $isHtmlContent = false)
+        public static function resolveContentForTrackingAndFooter($tracking, & $content, $modelId, $modelType, $personId,
+                                                                            $marketingListId, $isHtmlContent = false)
+        {
+            $trackingAdded = static::resolveContentForTracking($tracking, $content, $modelId, $modelType,
+                                                                                            $personId, $isHtmlContent);
+            if (!$trackingAdded)
+            {
+                return false;
+            }
+            static::resolveContentForFooter($content, $personId, $marketingListId, $isHtmlContent);
+            return true;
+        }
+
+        public static function resolveQueryStringArrayForHash($hash, $validateQueryStringArray = true,
+                                                                                            $validateForTracking = true)
+        {
+            $hash = urldecode(trim($hash));
+            if (static::isValidHash($hash))
+            {
+                $queryStringArray   = array();
+                $decryptedString    = ZurmoPasswordSecurityUtil::decrypt($hash);
+                if ($decryptedString)
+                {
+                    parse_str($decryptedString, $queryStringArray);
+                    if ($validateQueryStringArray)
+                    {
+                        if ($validateForTracking)
+                        {
+                            static::validateAndResolveFullyQualifiedQueryStringArrayForTracking($queryStringArray);
+                        }
+                        else
+                        {
+                            static::validateQueryStringArrayForMarketingListPublicController($queryStringArray);
+                        }
+                    }
+                    return $queryStringArray;
+                }
+            }
+            throw new NotSupportedException();
+        }
+
+        public static function resolveQueryStringFromUrlAndCreateOrUpdateActivity()
+        {
+            // TODO: @Shoaibi: Critical: Tests
+            $hash = Yii::app()->request->getQuery('id');
+            if (!$hash)
+            {
+                throw new NotSupportedException();
+            }
+            $queryStringArray = static::resolveQueryStringArrayForHash($hash);
+            return static::processActivityFromQueryStringArray($queryStringArray);
+        }
+
+        protected static function resolveContentForTracking($tracking, & $content, $modelId, $modelType, $personId,
+                                                                                                        $isHtmlContent)
         {
             if (!$tracking)
             {
-                return false;
+                return true;
             }
             if (strpos($content, static::resolveBaseTrackingUrl()) !== false) // it already contains few tracking  urls in the content
             {
@@ -57,34 +113,6 @@
             static::resolveContentForEmailOpenTracking($content, $isHtmlContent);
             static::resolveContentForLinkClickTracking($content, $isHtmlContent);
             return true;
-        }
-
-        public static function resolveQueryStringArrayForHash($hash)
-        {
-            if (ctype_xdigit($hash))
-            {
-                $queryStringArray   = array();
-                $decodedString      = @pack("H*", $hash);
-                if ($decodedString)
-                {
-                    $shuffledBackString = str_rot13($decodedString);
-                    parse_str($shuffledBackString, $queryStringArray);
-                    static::validateAndResolveFullyQualifiedQueryStringArray($queryStringArray);
-                    return $queryStringArray;
-                }
-            }
-            throw new NotSupportedException();
-        }
-
-        public static function resolveQueryStringFromUrlAndCreateOrUpdateActivity()
-        {
-            $hash = Yii::app()->request->getQuery('id');
-            if (!$hash)
-            {
-                throw new NotSupportedException();
-            }
-            $queryStringArray = static::resolveQueryStringArrayForHash($hash);
-            return static::processActivityFromQueryStringArray($queryStringArray);
         }
 
         protected static function processActivityFromQueryStringArray($queryStringArray)
@@ -165,6 +193,7 @@
             $trackingUrl        = static::resolveAbsoluteTrackingUrlByHash($hash);
             $applicationName    = ZurmoConfigurationUtil::getByModuleName('ZurmoModule', 'applicationName');
             $imageTag           = ZurmoHtml::image($trackingUrl, $applicationName, array('width' => 1, 'height' => 1));
+            $imageTag           = ZurmoHtml::tag('br') . $imageTag;
             if ($bodyTagPosition = strpos($content, '</body>'))
             {
                 $content = substr_replace($content , $imageTag . '</body>' , $bodyTagPosition, strlen('</body>'));
@@ -245,17 +274,14 @@
 
         protected static function resolveHashForQueryStringArray($queryStringArray)
         {
-            // TODO: @Shoaibi/@Ivica: Critical: core/utils/ZurmoPasswordSecurityUtil's encrypt and decrypt
-            // there might be problem with walkthrough tests as outgoing would be through util, using perInstanceTest.php and controller would use perInstance.php
-            // core/utils/ZurmoPasswordSecurityUtil's encrypt and decrypt
             $queryString            = http_build_query($queryStringArray);
-            $shuffledQueryString    = str_rot13($queryString);
-            $encodedString          = bin2hex($shuffledQueryString);
-            if (!$encodedString)
+            $encryptedString        = ZurmoPasswordSecurityUtil::encrypt($queryString);
+            if (!$encryptedString || !static::isValidHash($encryptedString))
             {
                 throw new NotSupportedException();
             }
-            return $encodedString;
+            $encryptedString        = urlencode($encryptedString);
+            return $encryptedString;
         }
 
         protected static function resolveBaseQueryStringArray($modelId, $modelType, $personId)
@@ -265,11 +291,13 @@
 
         protected static function getBaseLinkRegex()
         {
+            // Begin Not Coding Standard
             $baseLinkRegex = <<<PTN
 (([\w-]+://?|www[.])[^\s()<>]+(?:\([\w\d]+\)|([^[:punct:]\s]|/)))
 PTN;
             // (?i)\b((?:https?://|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'".,<>?«»“”‘’]))
             return $baseLinkRegex;
+            // End Not Coding Standard
         }
 
         protected static function getPlainLinkRegex($isHtmlContent)
@@ -288,7 +316,7 @@ PTN;
         protected static function getHrefLinkRegex()
         {
             $baseLinkRegex  = static::getBaseLinkRegex();
-            $hrefPrefixedLinkRegex  = '<a [^>]*href=(\'|")' . $baseLinkRegex . '(\'|")';
+            $hrefPrefixedLinkRegex  = '<a [^>]*href=(\'|")' . $baseLinkRegex . '(\'|")'; // Not Coding Standard
             $linkRegex = '%' . $hrefPrefixedLinkRegex . '%i';
             return $linkRegex;
         }
@@ -305,7 +333,77 @@ PTN;
             }
         }
 
-        protected static function validateAndResolveFullyQualifiedQueryStringArray(& $queryStringArray)
+        protected static function resolveContentForFooter(& $content, $personId, $marketingListId, $isHtmlContent)
+        {
+            $placeholderFooterContent = static::resolveFooterPlaceholderContentByType($isHtmlContent);
+            static::resolveFooterPlaceholders($content, $placeholderFooterContent, $personId,
+                                                                                    $marketingListId, $isHtmlContent);
+        }
+
+        protected static function resolveFooterPlaceholders(& $content, $placeholderContent, $personId,
+                                                                                    $marketingListId, $isHtmlContent)
+        {
+            $hash                           = static::resolveHashForFooter($personId, $marketingListId);
+            $unsubscribeUrlPlaceholder      = AutoresponderOrCampaignMailFooterContentUtil::UNSUBSCRIBE_URL_PLACEHOLDER;
+            $manageSubscriptionsPlaceholder = AutoresponderOrCampaignMailFooterContentUtil::
+                                                                                MANAGE_SUBSCRIPTIONS_URL_PLACEHOLDER;
+            $unsubscribeUrl                 = static::resolveUnsubscribeUrl($hash);
+            $manageSubscriptionsUrl         = static::resolveManageSubscriptionsUrl($hash);
+            $unsubscribeTranslated          = Zurmo::t('MarketingListsModule', 'Unsubscribe');
+            $manageSubscriptionsTranslated  = Zurmo::t('MarketingListsModule', 'Manage Subscriptions');
+            if ($isHtmlContent)
+            {
+                $unsubscribeUrl = ZurmoHtml::link($unsubscribeTranslated, $unsubscribeUrl);
+                $manageSubscriptionsUrl = ZurmoHtml::link($manageSubscriptionsTranslated, $manageSubscriptionsUrl);
+            }
+            $placeholderContent = str_replace($unsubscribeUrlPlaceholder, $unsubscribeUrl, $placeholderContent);
+            $placeholderContent = str_replace($manageSubscriptionsPlaceholder, $manageSubscriptionsUrl,
+                                                                                                $placeholderContent);
+            if ($isHtmlContent)
+            {
+                $placeholderContent = ZurmoHtml::tag('br') . $placeholderContent;
+            }
+            else
+            {
+                $placeholderContent = PHP_EOL . $placeholderContent;
+            }
+            $content            .= $placeholderContent;
+        }
+
+        protected static function resolveFooterPlaceholderContentByType($isHtmlContent)
+        {
+            return AutoresponderOrCampaignMailFooterContentUtil::getContentByType($isHtmlContent);
+        }
+
+        public static function resolveHashForFooter($personId, $marketingListId)
+        {
+            $queryStringArray       = compact('personId', 'marketingListId');
+            return static::resolveHashForQueryStringArray($queryStringArray);
+        }
+
+        protected static function resolveUnsubscribeUrl($hash)
+        {
+            $baseUrl = static::resolveUnsubscribeBaseUrl();
+            return Yii::app()->createAbsoluteUrl($baseUrl, array('hash' => $hash));
+        }
+
+        protected static function resolveManageSubscriptionsUrl($hash)
+        {
+            $baseUrl = static::resolveManageSubscriptionsBaseUrl();
+            return Yii::app()->createAbsoluteUrl($baseUrl, array('hash' => $hash));
+        }
+
+        protected static function resolveUnsubscribeBaseUrl()
+        {
+            return '/marketingLists/public/unsubscribe';
+        }
+
+        protected static function resolveManageSubscriptionsBaseUrl()
+        {
+            return '/marketingLists/public/manageSubscriptions';
+        }
+
+        protected static function validateAndResolveFullyQualifiedQueryStringArrayForTracking(& $queryStringArray)
         {
             $rules = array(
                         'modelId' => array(
@@ -337,6 +435,14 @@ PTN;
             }
         }
 
+        protected static function validateQueryStringArrayForMarketingListPublicController($queryStringArray)
+        {
+            if (empty($queryStringArray['personId']) || empty($queryStringArray['marketingListId']))
+            {
+                throw new NotSupportedException;
+            }
+        }
+
         protected static function resolveModelClassNameByModelType($modelType)
         {
             return $modelType . 'Activity';
@@ -345,6 +451,27 @@ PTN;
         protected static function resolveFullyQualifiedImagePath()
         {
             return Yii::app()->themeManager->basePath . static::IMAGE_PATH;
+        }
+
+        protected static function replaceSpacesWithPlusSymbol(& $hash)
+        {
+            // + in url often becomes space, we need to reverse that.
+            $hash = str_replace(' ', '+', $hash); // Not Coding Standard
+        }
+
+        protected static function isValidHash($hash)
+        {
+            if (empty($hash))
+            {
+                return false;
+            }
+            $matches = array();
+            $matchesCount = preg_match_all(static::VALID_HASH_PATTERN, $hash, $matches);
+            if (!$matchesCount || ($matches[0][0] !== $hash))
+            {
+                return false;
+            }
+            return true;
         }
     }
 ?>

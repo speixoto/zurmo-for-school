@@ -34,7 +34,7 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class OpportunityDetailsAndRelationsView extends DetailsAndRelationsView
+    class OpportunityDetailsAndRelationsView extends ConfigurableDetailsAndRelationsView
     {
         public function isUniqueToAPage()
         {
@@ -45,38 +45,42 @@
         {
             $metadata = array(
                 'global' => array(
-                    'leftTopView' => array(
-                        'viewClassName' => 'OpportunityEditAndDetailsView',
-                    ),
-                    'leftBottomView' => array(
-                        'showAsTabbed' => false,
-                        'columns' => array(
-                            array(
-                                'rows' => array(
-                                    array(
-                                        'type' => 'NoteInlineEditForPortlet'
-                                    ),
-                                    array(
-                                        'type' => 'OpportunityLatestActivitiesForPortlet'
-                                    ),
+                    'toolbar' => array(
+                        'elements' => array(
+                            array(  'type'           => 'AddPortletAjaxLinkOnDetailView',
+                                    'uniqueLayoutId' => 'eval:$this->uniqueLayoutId',
+                                    'ajaxOptions'    => 'eval:static::resolveAjaxOptionsForAddPortlet()',
+                                    'htmlOptions'    => array('id' => 'AddPortletLink',
+                                    'class'          => 'icon-add'
                                 )
+                            ),
+                        ),
+                    ),
+                    'columns' => array(
+                        array(
+                            'rows' => array(
+                               array(
+                                    'type' => 'OpportunityDetailsPortlet',
+                                ),
+                               array(
+                                    'type' => 'NoteInlineEditForPortlet',
+                                ),
+                                array(
+                                    'type' => 'OpportunityLatestActivitiesForPortlet',
+                                ),
                             )
-                        )
-                    ),
-                    'rightTopView' => array(
-                        'columns' => array(
-                            array(
-                                'rows' => array(
-                                    array(
-                                        'type' => 'UpcomingMeetingsForOpportunityCalendar',
+                        ),
+                        array(
+                            'rows' => array(
+                                array(
+                                     'type' => 'UpcomingMeetingsForOpportunityCalendar',
                                     ),
-                                    array(
-                                        'type' => 'OpenTasksForOpportunityRelatedList',
+                                array(
+                                     'type' => 'OpenTasksForOpportunityRelatedList',
                                     ),
-                                    array(
-                                        'type' => 'ContactsForOpportunityRelatedList',
+                                array(
+                                     'type' => 'ContactsForOpportunityRelatedList',
                                     )
-                                )
                             )
                         )
                     )

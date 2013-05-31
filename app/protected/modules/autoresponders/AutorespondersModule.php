@@ -53,13 +53,6 @@
             return 'Autoresponder';
         }
 
-        /*
-        public static function getGlobalSearchFormClassName()
-        {
-            return 'AutorespondersSearchForm';
-        }
-        */
-
         public static function modelsAreNeverGloballySearched()
         {
             return true;
@@ -76,13 +69,21 @@
             return $metadata;
         }
 
-        /*
         public static function getDemoDataMakerClassNames()
         {
             return array('AutorespondersDemoDataMaker',
-                            'AutoresponderItemsDemoDataMaker',
-                            'AutoresponderItemActivitiesDemoDataMaker');
+                         'AutoresponderItemsDemoDataMaker',
+                         'AutoresponderItemActivitiesDemoDataMaker');
         }
-        */
+
+        protected static function getSingularModuleLabel($language)
+        {
+            return Zurmo::t('AutorespondersModule', 'Autoresponder', array(), null, $language);
+        }
+
+        protected static function getPluralModuleLabel($language)
+        {
+            return Zurmo::t('AutorespondersModule', 'Autoresponders', array(), null, $language);
+        }
     }
 ?>

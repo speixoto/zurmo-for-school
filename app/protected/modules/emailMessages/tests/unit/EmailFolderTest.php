@@ -53,7 +53,7 @@
             $this->assertEquals(0, count($boxes));
             $box = EmailBox::resolveAndGetByName(EmailBox::NOTIFICATIONS_NAME);
             $this->assertEquals(EmailBox::NOTIFICATIONS_NAME, $box->name);
-            $this->assertEquals(7, $box->folders->count());
+            $this->assertEquals(8, $box->folders->count());
             $this->assertTrue($box->id > 0);
 
             $folder = EmailFolder::getByBoxAndType($box, EmailFolder::TYPE_OUTBOX);
@@ -78,7 +78,7 @@
             Yii::app()->user->userModel = $billy;
 
             $folders = EmailFolder::getAll();
-            $this->assertEquals(7, count($folders));
+            $this->assertEquals(8, count($folders));
 
             $box = new EmailBox();
             $box->name = 'Some new mailbox';
@@ -112,12 +112,12 @@
             $this->assertEquals(EmailFolder::TYPE_INBOX, $box->folders[0]->type);
 
             $folders = EmailFolder::getAll();
-            $this->assertEquals(8, count($folders));
+            $this->assertEquals(9, count($folders));
             //Now delete billy's inbox
             $folder->delete();
 
             $folders = EmailFolder::getAll();
-            $this->assertEquals(7, count($folders));
+            $this->assertEquals(8, count($folders));
 
             $box->forget();
             unset($box);

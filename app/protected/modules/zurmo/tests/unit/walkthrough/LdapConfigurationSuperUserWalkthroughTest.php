@@ -121,7 +121,7 @@
             $content = $this->runControllerWithNoExceptionsAndGetContent('zurmo/ldap/testConnection');
             $this->assertTrue(strpos($content, "Successfully Connected to Ldap Server") > 0);
         }
-        
+
         /*
         *To show the fix for resolveBindRegisteredDomain with incorrect Base Domain
         */

@@ -208,9 +208,6 @@
             $userCanDelete->setRight('ContactsModule', ContactsModule::RIGHT_ACCESS_CONTACTS);
             $userCanDelete->setRight('ContactsModule', ContactsModule::RIGHT_CREATE_CONTACTS);
             $userCanDelete->setRight('LeadsModule', LeadsModule::RIGHT_ACCESS_LEADS);
-            $contact              = ContactTestHelper::createContactByNameForOwner('gail', $userCanDelete);
-            $startingContactState = ContactsUtil::getStartingState();
-            $startingLeadState    = LeadsUtil::getStartingState();
             $message1 = EmailMessageTestHelper::createArchivedUnmatchedReceivedMessage($userCanDelete);
             $this->setGetArray(array('id' => $message1->id));
             $this->runControllerWithNoExceptionsAndGetContent('emailMessages/default/delete', true);

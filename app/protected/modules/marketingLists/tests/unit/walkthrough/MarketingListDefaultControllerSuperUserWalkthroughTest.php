@@ -45,8 +45,10 @@
             $super = User::getByUsername('super');
             Yii::app()->user->userModel = $super;
 
-            MarketingListTestHelper::createMarketingListByName('MarketingListName', 'MarketingList Description');
-            MarketingListTestHelper::createMarketingListByName('MarketingListName2', 'MarketingList Description2');
+            MarketingListTestHelper::createMarketingListByName('MarketingListName', 'MarketingList Description',
+                                                                                            'first', 'first@zurmo.com');
+            MarketingListTestHelper::createMarketingListByName('MarketingListName2', 'MarketingList Description2',
+                                                                                        'second', 'second@zurmo.com');
             ReadPermissionsOptimizationUtil::rebuild();
         }
 
@@ -81,7 +83,100 @@
             $this->setGetArray(array('ajax' => 'list-view'));
             $content = $this->runControllerWithNoExceptionsAndGetContent('marketingLists/default/list');
             $this->assertTrue(strpos($content, 'anyMixedAttributes') === false);
-            $this->resetGetArray();
+        }
+
+        /**
+         * @depends testSuperUserAllDefaultControllerActions
+         */
+        public function testSuperUserListSearchAction()
+        {
+            StickyReportUtil::clearDataByKey('MarketingListsSearchForm');
+            $this->setGetArray(array(
+                'MarketingListsSearchForm' => array(
+                    'anyMixedAttributesScope'    => array('All'),
+                    'anyMixedAttributes'         => 'xyz',
+                ) ,
+            ));
+            $content    = $this->runControllerWithNoExceptionsAndGetContent('marketingLists/default/list');
+            $this->assertTrue(strpos($content, 'No results found.') !== false);
+
+            StickyReportUtil::clearDataByKey('MarketingListsSearchForm');
+            $this->setGetArray(array(
+                'MarketingListsSearchForm' => array(
+                    'anyMixedAttributesScope'    => array('All'),
+                    'anyMixedAttributes'         => 'Marketing',
+                ) ,
+            ));
+            $content    = $this->runControllerWithNoExceptionsAndGetContent('marketingLists/default/list');
+            $this->assertTrue(strpos($content, '2 result(s)') !== false);
+            $this->assertEquals(2, substr_count($content, 'MarketingListName'));
+            $this->assertTrue(strpos($content, 'Clark Kent') === false);
+
+            StickyReportUtil::clearDataByKey('MarketingListsSearchForm');
+            $this->setGetArray(array(
+                'MarketingListsSearchForm' => array(
+                    'anyMixedAttributesScope'    => array('All'),
+                    'anyMixedAttributes'         => 'Marketing',
+                    'selectedListAttributes'     => array('name', 'createdByUser', 'fromAddress', 'fromName'),
+                ) ,
+            ));
+            $content    = $this->runControllerWithNoExceptionsAndGetContent('marketingLists/default/list');
+            $this->assertTrue(strpos($content, '2 result(s)') !== false);
+            $this->assertEquals(2, substr_count($content, 'MarketingListName'));
+            $this->assertTrue(strpos($content, 'Clark Kent') !== false);
+            $this->assertEquals(2, substr_count($content, 'Clark Kent'));
+            $this->assertTrue(strpos($content, '@zurmo.com') !== false);
+            $this->assertEquals(4, substr_count($content, '@zurmo.com'));
+            $this->assertEquals(2, substr_count($content, 'first@zurmo.com'));
+            $this->assertEquals(2, substr_count($content, 'second@zurmo.com'));
+
+            StickyReportUtil::clearDataByKey('MarketingListsSearchForm');
+            $this->setGetArray(array(
+                'clearingSearch'            =>  1,
+                'MarketingListsSearchForm'  => array(
+                    'anyMixedAttributesScope'    => array('All'),
+                    'anyMixedAttributes'         => '',
+                    'selectedListAttributes'     => array('name', 'createdByUser', 'fromAddress', 'fromName'),
+                    'dynamicClauses'             => array(array(
+                        'attributeIndexOrDerivedType'   => 'fromAddress',
+                        'structurePosition'             => 1,
+                        'fromAddress'                   => 'second@zurmo.com',
+                    )),
+                    'dynamicStructure'          => '1',
+                ) ,
+            ));
+            $content    = $this->runControllerWithNoExceptionsAndGetContent('marketingLists/default/list');
+            $this->assertTrue(strpos($content, '1 result(s)') !== false);
+            $this->assertEquals(1, substr_count($content, 'MarketingListName2'));
+            $this->assertTrue(strpos($content, 'Clark Kent') !== false);
+            $this->assertEquals(1, substr_count($content, 'Clark Kent'));
+            $this->assertTrue(strpos($content, '@zurmo.com') !== false);
+            $this->assertEquals(2, substr_count($content, '@zurmo.com'));
+            $this->assertEquals(2, substr_count($content, 'second@zurmo.com'));
+
+            StickyReportUtil::clearDataByKey('MarketingListsSearchForm');
+            $this->setGetArray(array(
+                'clearingSearch'            =>  1,
+                'MarketingListsSearchForm'  =>  array(
+                    'anyMixedAttributesScope'    => array('All'),
+                    'anyMixedAttributes'         => '',
+                    'selectedListAttributes'     => array('name', 'createdByUser', 'fromAddress', 'fromName'),
+                    'dynamicClauses'             => array(array(
+                        'attributeIndexOrDerivedType'   => 'fromName',
+                        'structurePosition'             => 1,
+                        'fromName'                   => 'first',
+                    )),
+                    'dynamicStructure'          => '1',
+                ) ,
+            ));
+            $content    = $this->runControllerWithNoExceptionsAndGetContent('marketingLists/default/list');
+            $this->assertTrue(strpos($content, '1 result(s)') !== false);
+            $this->assertEquals(1, substr_count($content, 'MarketingListName'));
+            $this->assertTrue(strpos($content, 'Clark Kent') !== false);
+            $this->assertEquals(1, substr_count($content, 'Clark Kent'));
+            $this->assertTrue(strpos($content, '@zurmo.com') !== false);
+            $this->assertEquals(2, substr_count($content, '@zurmo.com'));
+            $this->assertEquals(2, substr_count($content, 'first@zurmo.com'));
         }
 
         /**
@@ -150,10 +245,10 @@
             $this->assertTrue(strpos($content, '<span>Options</span></a>') !== false);
             $this->assertTrue(strpos($content, '<span>Edit</span></a></li>') !== false);
             $this->assertTrue(strpos($content, '<span>Delete</span></a></li>') !== false);
-            $this->assertTrue(strpos($content, '<h3>Members</h3></div>') !== false);
-            $this->assertTrue(strpos($content, '<span>Add Member</span></a>') !== false);
+            $this->assertTrue(strpos($content, '<h3>Contacts/Leads</h3>') !== false);
+            $this->assertTrue(strpos($content, '<span>Add Contact/Lead</span></a>') !== false);
             $this->assertTrue(strpos($content, 'From Contacts/Leads</label>') !== false);
-            $this->assertTrue(strpos($content, 'From a Report</label>') !== false);
+            $this->assertTrue(strpos($content, 'From Report</label>') !== false);
             $this->assertTrue(strpos($content, '<span>Subscribe</span></a>') !== false);
             $this->assertTrue(strpos($content, '<span>Unsubscribe</span></a>') !== false);
             $this->assertTrue(strpos($content, '<span>Delete</span></a>') !== false);

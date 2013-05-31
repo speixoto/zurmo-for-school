@@ -36,22 +36,21 @@
 
     class AutoresponderTestHelper
     {
-        public static function createAutoresponder($name, $subject, $textContent, $htmlContent, $secondsFromOperation,
+        public static function createAutoresponder($subject, $textContent, $htmlContent, $secondsFromOperation,
                                                                           $operationType, $enableTracking = false,
                                                                           $marketingList = null, $runValidation = true)
         {
             assert('is_bool($runValidation)');
-            $autoresponder  = static::fillAutoresponder($name, $subject, $textContent, $htmlContent,
-                                                $secondsFromOperation, $operationType, $enableTracking, $marketingList);
-            $saved          = $autoresponder->unrestrictedSave($runValidation);
+            $autoresponder  = static::populateAutoresponder($subject, $textContent, $htmlContent, $secondsFromOperation,
+                                                                        $operationType, $enableTracking, $marketingList);
+            $saved          = $autoresponder->save($runValidation);
             assert('$saved');
             return $autoresponder;
         }
 
-        public static function fillAutoresponder($name, $subject, $textContent, $htmlContent, $secondsFromOperation,
+        public static function populateAutoresponder($subject, $textContent, $htmlContent, $secondsFromOperation,
                                                         $operationType, $enableTracking = false, $marketingList = null)
         {
-            assert('is_string($name)');
             assert('is_string($subject)');
             assert('is_string($textContent)');
             assert('is_string($htmlContent) || $htmlContent === null');
@@ -68,7 +67,6 @@
                 }
             }
             $autoresponder                          = new Autoresponder();
-            $autoresponder->name                    = $name;
             $autoresponder->subject                 = $subject;
             $autoresponder->textContent             = $textContent;
             $autoresponder->htmlContent             = $htmlContent;

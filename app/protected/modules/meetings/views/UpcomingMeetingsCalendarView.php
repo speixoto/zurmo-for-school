@@ -114,7 +114,7 @@
                     type     : 'GET',
                     'beforeSend' : function(){
                                         jQuery('#modalContainer').html('');
-                                        makeLargeLoadingSpinner(true, '#modalContainer');
+                                        $(this).makeLargeLoadingSpinner(true, '#modalContainer');
                                         jQuery('#modalContainer').dialog({'title': dateText,
                                                                           'autoOpen':true,
                                                                           'modal': true,

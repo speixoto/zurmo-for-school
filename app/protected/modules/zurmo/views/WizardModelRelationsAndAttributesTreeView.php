@@ -99,7 +99,7 @@
             )));
             $cClipWidget->endClip();
             $content .= $cClipWidget->getController()->clips['ZurmoTreeView'];
-            $script = 'makeLargeLoadingSpinner(true, "#' . $this->getTreeId() . '");';
+            $script = '$(this).makeLargeLoadingSpinner(true, "#' . $this->getTreeId() . '");';
             Yii::app()->getClientScript()->registerScript($this->getTreeId(), $script);
             return $content;
         }

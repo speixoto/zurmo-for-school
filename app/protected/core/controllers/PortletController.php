@@ -127,7 +127,6 @@
         public function actionModalRefresh($portletId, $uniqueLayoutId, $redirectUrl, array $portletParams = array(),
                                            $portletsAreRemovable = true)
         {
-            assert('is_bool($portletsAreRemovable)');
             $portlet = Portlet::getById(intval($portletId));
             $portlet->params = array_merge(array(
                     'controllerId' => 'default',
@@ -140,7 +139,7 @@
                 $portlet->params['relationModel'] = $modelClassName::getById((int)$portlet->params['relationModelId']);
             }
             $view = new AjaxPageView(new PortletRefreshView($portlet, $uniqueLayoutId, $this->getModule()->getId(),
-                                                            $portletsAreRemovable));
+                                                            (bool)$portletsAreRemovable));
             echo $view->render();
         }
     }

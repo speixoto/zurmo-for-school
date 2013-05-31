@@ -34,32 +34,63 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
+    /**
+     * Helper class for working with report search
+     */
     class ReportSearch
     {
-        public static function getReportsByPartialName($partialName, $pageSize, $moduleClassName, $type)
+        /**
+         * @param $partialName
+         * @param $pageSize
+         * @param null|string $moduleClassName
+         * @param null|string $type
+         * @return Array of SavedReport models
+         */
+        public static function getReportsByPartialName($partialName, $pageSize, $moduleClassName = null, $type = null)
         {
             assert('is_string($partialName)');
             assert('is_int($pageSize)');
-            assert('is_string($moduleClassName)');
+            assert('is_string($moduleClassName) || $moduleClassName == null');
+            assert('is_string($type) || $type == null');
             $searchAttributeData = array();
             $searchAttributeData['clauses'] = array(
                 1 => array(
-                    'attributeName'             => 'moduleClassName',
-                    'operatorType'              => 'equals',
-                    'value'                     => $moduleClassName,
-                ),
-                2 => array(
                     'attributeName'             => 'name',
                     'operatorType'              => 'contains',
                     'value'                     => $partialName
                 ),
-                3 => array(
+
+            );
+            $clauseCount = 2;
+            if ($moduleClassName != null)
+            {
+                $searchAttributeData['clauses'][$clauseCount] = array(
+                    'attributeName'             => 'moduleClassName',
+                    'operatorType'              => 'equals',
+                    'value'                     => $moduleClassName,
+                );
+                $clauseCount++;
+            }
+            if ($type != null)
+            {
+                $searchAttributeData['clauses'][$clauseCount] = array(
                     'attributeName'             => 'type',
                     'operatorType'              => 'equals',
                     'value'                     => $type
-                ),
-            );
-            $searchAttributeData['structure'] = '(1 and 2 and 3)';
+                );
+            }
+            if ($clauseCount == 1)
+            {
+                $searchAttributeData['structure'] = '(1)';
+            }
+            elseif ($clauseCount == 2)
+            {
+                $searchAttributeData['structure'] = '(1 and 2)';
+            }
+            else
+            {
+                $searchAttributeData['structure'] = '(1 and 2 and 3)';
+            }
             $joinTablesAdapter = new RedBeanModelJoinTablesQueryAdapter('SavedReport');
             $where             = RedBeanModelDataProvider::makeWhere('SavedReport', $searchAttributeData, $joinTablesAdapter);
             return SavedReport::getSubset($joinTablesAdapter, null, $pageSize, $where, 'name');

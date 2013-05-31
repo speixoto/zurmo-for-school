@@ -124,7 +124,7 @@
             $attributes                 = array_values($this->mergeTags[1]);
             $this->resolveFullyQualifiedMergeTagsRegularExpression($mergeTags);
             $content                    = preg_replace($mergeTags, $attributes, $this->content, -1, $resolvedMergeTagsCount);
-            if(!empty($content))
+            if (!empty($content))
             {
                 $this->content = $content;
             }

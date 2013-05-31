@@ -228,6 +228,14 @@
             $this->assertEquals(4, $savedWorkflow->order);
             $saved = $savedWorkflow->save();
             $this->assertTrue($saved);
+
+            //Try to resolve order for the same
+            SavedWorkflowsUtil::resolveOrder($savedWorkflow);
+            $this->assertEquals(4, $savedWorkflow->order);
+
+            //Resolve order when copying.  It should increase
+            SavedWorkflowsUtil::resolveOrder($savedWorkflow, true);
+            $this->assertEquals(5, $savedWorkflow->order);
         }
 
         /**

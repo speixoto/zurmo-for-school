@@ -106,7 +106,7 @@
                 }
             }
             $this->assertNotEmpty($selectedIdsArray);
-            $selectedIds        = join(',', $selectedIdsArray);
+            $selectedIds        = join(',', $selectedIdsArray); // Not Coding Standard
             $this->setGetArray(
                             array(
                                 'selectedIds'               => $selectedIds,
@@ -143,7 +143,7 @@
                 }
             }
             $this->assertNotEmpty($selectedIdsArray);
-            $selectedIds        = join(',', $selectedIdsArray);
+            $selectedIds        = join(',', $selectedIdsArray); // Not Coding Standard
             $pageSize           = Yii::app()->pagination->getForCurrentUserByType('massEditProgressPageSize');
             $this->assertEquals(5, $pageSize);
             // MassSubscribe for selected ids for page 1
@@ -153,7 +153,7 @@
                                 'selectedIds'                               => $selectedIds,
                                 'selectAll'                                 => '',
                                 'massSubscribe'                             => '',
-                                'MarketingListMembersForPortletView_page'   => 1
+                                'MarketingListMembersPortletView_page'   => 1
                             )
                         );
             $this->setPostArray(
@@ -204,7 +204,7 @@
             $this->setGetArray(
                             array(
                                 'selectAll'                                 => '1',           // Not Coding Standard
-                                'MarketingListMembersForPortletView_page'   => 1,
+                                'MarketingListMembersPortletView_page'   => 1,
                                 'id'                                        => $listId
                             )
                         );
@@ -313,7 +313,7 @@
                 }
             }
             $this->assertNotEmpty($selectedIdsArray);
-            $selectedIds        = join(',', $selectedIdsArray);
+            $selectedIds        = join(',', $selectedIdsArray); // Not Coding Standard
             $this->setGetArray(
                             array(
                                 'selectedIds'               => $selectedIds,
@@ -350,7 +350,7 @@
                 }
             }
             $this->assertNotEmpty($selectedIdsArray);
-            $selectedIds        = join(',', $selectedIdsArray);
+            $selectedIds        = join(',', $selectedIdsArray); // Not Coding Standard
             $pageSize           = Yii::app()->pagination->getForCurrentUserByType('massEditProgressPageSize');
             $this->assertEquals(5, $pageSize);
             // MassUnsubscribe for selected ids for page 1
@@ -360,7 +360,7 @@
                                 'selectedIds'                               => $selectedIds,
                                 'selectAll'                                 => '',
                                 'massUnsubscribe'                           => '',
-                                'MarketingListMembersForPortletView_page'   => 1
+                                'MarketingListMembersPortletView_page'   => 1
                             )
                         );
             $this->setPostArray(
@@ -411,7 +411,7 @@
             $this->setGetArray(
                             array(
                                 'selectAll'                                 => '1',           // Not Coding Standard
-                                'MarketingListMembersForPortletView_page'   => 1,
+                                'MarketingListMembersPortletView_page'   => 1,
                                 'id'                                        => $listId
                             )
                         );
@@ -514,7 +514,7 @@
                 }
             }
             $this->assertNotEmpty($selectedIdsArray);
-            $selectedIds        = join(',', $selectedIdsArray);
+            $selectedIds        = join(',', $selectedIdsArray); // Not Coding Standard
             $this->setGetArray(
                             array(
                                 'selectedIds'           => $selectedIds,
@@ -553,7 +553,7 @@
                 }
             }
             $this->assertNotEmpty($selectedIdsArray);
-            $selectedIds        = join(',', $selectedIdsArray);
+            $selectedIds        = join(',', $selectedIdsArray); // Not Coding Standard
             $pageSize           = Yii::app()->pagination->getForCurrentUserByType('massDeleteProgressPageSize');
             $this->assertEquals(5, $pageSize);
             // MassDelete for selected ids for page 1
@@ -563,7 +563,7 @@
                                 'selectedIds'                               => $selectedIds,
                                 'selectAll'                                 => '',
                                 'massDelete'                                => '',
-                                'MarketingListMembersForPortletView_page'   => 1
+                                'MarketingListMembersPortletView_page'   => 1
                             )
                         );
             $this->setPostArray(
@@ -621,7 +621,7 @@
             $this->setGetArray(
                             array(
                                 'selectAll'                                 => '1',           // Not Coding Standard
-                                'MarketingListMembersForPortletView_page'   => 1,
+                                'MarketingListMembersPortletView_page'   => 1,
                                 'id'                                        => $listId
                             )
                         );

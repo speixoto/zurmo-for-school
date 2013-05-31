@@ -152,6 +152,7 @@
          */
         protected function beforeSave()
         {
+             $this->isNewModel = $this->id < 0;
              if (parent::beforeSave())
              {
                 if ($this->unrestrictedGet('id') < 0)
@@ -165,7 +166,6 @@
                         }
                     }
                 }
-                $this->isNewModel = $this->id < 0;
                 return true;
              }
              else
@@ -306,6 +306,16 @@
                 'modifiedByUser'     => Zurmo::t('ZurmoModule', 'Modified By User', array(), null, $language),
                 'modifiedDateTime'   => Zurmo::t('ZurmoModule', 'Modified Date Time', array(), null, $language),
             ));
+        }
+
+        public static function getNonConfigurableAttributes()
+        {
+            $metadata = static::getDefaultMetadata();
+            if (isset($metadata[get_called_class()]['nonConfigurableAttributes']))
+            {
+                return $metadata[get_called_class()]['nonConfigurableAttributes'];
+            }
+            return array();
         }
     }
 ?>

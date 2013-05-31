@@ -229,9 +229,9 @@
                                             $(\'#addExtraColumnButton\').parent().parent().prev().after(data);
                                           }'),
                                     array('id'      => 'addExtraColumnButton', 'class' => 'attachLoading z-button',
-                                          'onclick' => 'js:if($(this).hasClass("loading")) {return false;}
+                                          'onclick' => 'js:if ($(this).hasClass("loading")) {return false;}
                                                         $(this).addClass("loading").addClass("loading-ajax-submit");
-                                                        makeOrRemoveLoadingSpinner(true, "#" + $(this).attr("id"));'));
+                                                        $(this).makeOrRemoveLoadingSpinner(true, "#" + $(this).attr("id"));'));
             // End Not Coding Standard
             return $content;
         }

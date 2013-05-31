@@ -133,7 +133,7 @@
 
         public function getModelCreationTimeContent(RedBeanModel $model)
         {
-            return MashableUtil::getTimeSinceLatestUpdate($model->createdDateTime);
+            return DateTimeUtil::getTimeSinceDisplayContent($model->createdDateTime);
         }
 
         public function getSearchAttributeData($searchTerm = null)

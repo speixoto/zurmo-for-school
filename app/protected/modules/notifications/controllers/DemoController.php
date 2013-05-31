@@ -90,5 +90,18 @@
             NotificationsUtil::submit($message, $rules);
             echo 'Test notification created';
         }
+
+        /**
+         * This will send an email alert along with the notification.
+         * @throws NotSupportedException
+         */
+        public function actionCreateStuckJobNotification()
+        {
+            if (Yii::app()->user->userModel->username != 'super')
+            {
+                throw new NotSupportedException();
+            }
+            MonitorJob::makeJobStuckNotification(array('Process Outbound Email Job', 'Process Inbound Email Job'));
+        }
     }
 ?>

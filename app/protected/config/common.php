@@ -327,6 +327,7 @@
             'application.modules.install.utils.InstallUtil',
             'application.modules.api.components.ApiRequest',
             'application.extensions.wideImage.WideImage',
+            'application.extensions.phaActiveColumn.*',
         ),
 
         'modules' => array(
@@ -358,6 +359,8 @@
             'notifications',
             'opportunities',
             'reports',
+            'products',
+            'productTemplates',
             'rssReader',
             'workflows',
             'socialItems',
@@ -371,6 +374,7 @@
             ),
             'users',
             'maps',
+            'contactWebForms',
         ),
 
         'params' => array(

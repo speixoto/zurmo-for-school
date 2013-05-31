@@ -277,7 +277,7 @@
 
         protected static function resolveResolveSubqueryValue(Array $clauseInformation)
         {
-            if(null == $resolveAsSubquery = ArrayUtil::getArrayValue($clauseInformation, 'resolveAsSubquery'))
+            if (null == $resolveAsSubquery = ArrayUtil::getArrayValue($clauseInformation, 'resolveAsSubquery'))
             {
                 return false;
             }

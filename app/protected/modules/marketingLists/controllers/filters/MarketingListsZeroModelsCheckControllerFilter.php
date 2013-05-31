@@ -35,7 +35,7 @@
      ********************************************************************************/
 
     /**
-     * Filter used by email template controller for showing if marketing lists exist yet
+     * Filter used by marketing lists controller for showing if marketing lists exist yet
      */
     class MarketingListsZeroModelsCheckControllerFilter extends ZeroModelsCheckControllerFilter
     {
@@ -52,7 +52,7 @@
         {
             $gridViewId              = 'notUsed';
             $pageVar                 = 'notUsed';
-            $listModel               = new EmailTemplate();
+            $listModel               = new MarketingList();
             $actionBarView           = new SecuredActionBarForMarketingSearchAndListView(
                                        'default',
                                        'marketing',

@@ -118,8 +118,8 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'userIdOfUserToRunWorkflowsAs',
-                                                    'type'          => 'UserToRunWorkflowsAs'),
+                                                array('attributeName' => 'autoresponderOrCampaignBatchSize',
+                                                                                                'type' => 'Integer'),
                                             ),
                                         ),
                                     )
@@ -128,7 +128,28 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'gamificationModalNotificationsEnabled', 'type' => 'CheckBox'),
+                                                array('attributeName' => 'userIdOfUserToRunWorkflowsAs',
+                                                                            'type'          => 'UserToRunWorkflowsAs'),
+                                            ),
+                                        ),
+                                    )
+                                ),
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'userIdOfUserToRunTrackingAs',
+                                                                            'type'          => 'UserToRunTrackingAs'),
+                                            ),
+                                        ),
+                                    )
+                                ),
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'gamificationModalNotificationsEnabled',
+                                                                                                'type' => 'CheckBox'),
                                             ),
                                         ),
                                     )
@@ -138,6 +159,26 @@
                                         array(
                                             'elements' => array(
                                                 array('attributeName' => 'realtimeUpdatesEnabled', 'type' => 'CheckBox'),
+                                            ),
+                                        ),
+                                    )
+                                ),
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'autoresponderOrCampaignFooterPlainText',
+                                                                                                'type' => 'TextArea'),
+                                            ),
+                                        ),
+                                    )
+                                ),
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'autoresponderOrCampaignFooterRichText',
+                                                                                                'type' => 'Redactor'),
                                             ),
                                         ),
                                     )

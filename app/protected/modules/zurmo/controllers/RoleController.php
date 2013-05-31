@@ -36,14 +36,9 @@
 
     class ZurmoRoleController extends ZurmoModuleController
     {
-        public function filters()
+        public function resolveModuleClassNameForFilters()
         {
-            return array(
-                array(
-                    ZurmoBaseController::RIGHTS_FILTER_PATH,
-                    'moduleClassName' => 'RolesModule',
-               ),
-            );
+            return 'RolesModule';
         }
 
         public function resolveAndGetModuleId()
@@ -141,7 +136,8 @@
                 $_GET['modalTransferInformation']['sourceModelId'],
                 Role::getAll('name'),
                 $_GET['modalTransferInformation']['sourceIdFieldId'],
-                $_GET['modalTransferInformation']['sourceNameFieldId']
+                $_GET['modalTransferInformation']['sourceNameFieldId'],
+                $_GET['modalTransferInformation']['modalId']
             );
             Yii::app()->getClientScript()->setToAjaxMode();
             $view = new ModalView($this, $rolesModalTreeView);

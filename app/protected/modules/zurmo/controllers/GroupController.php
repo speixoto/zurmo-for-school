@@ -48,14 +48,9 @@
             }
         }
 
-        public function filters()
+        public function resolveModuleClassNameForFilters()
         {
-            return array(
-                array(
-                    ZurmoBaseController::RIGHTS_FILTER_PATH,
-                    'moduleClassName' => 'GroupsModule',
-               ),
-            );
+            return 'GroupsModule';
         }
 
         public function resolveAndGetModuleId()
@@ -130,7 +125,8 @@
                 $_GET['modalTransferInformation']['sourceModelId'],
                 static::getGroupsOrderedByNonDeletablesFirst(false),
                 $_GET['modalTransferInformation']['sourceIdFieldId'],
-                $_GET['modalTransferInformation']['sourceNameFieldId']
+                $_GET['modalTransferInformation']['sourceNameFieldId'],
+                $_GET['modalTransferInformation']['modalId']
             );
             Yii::app()->getClientScript()->setToAjaxMode();
             $pageTitle           = Zurmo::t('ZurmoModule', 'Select a Parent Group');

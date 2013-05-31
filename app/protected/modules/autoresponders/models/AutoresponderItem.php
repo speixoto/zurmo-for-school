@@ -36,10 +36,6 @@
 
     class AutoresponderItem extends OwnedModel
     {
-        const PROCESSED = 1;
-
-        const NOT_PROCESSED = 0;
-
         public static function getModuleClassName()
         {
             return 'AutorespondersModule';
@@ -80,9 +76,8 @@
                 'rules' => array(
                     array('processDateTime',        'required'),
                     array('processDateTime',        'type', 'type' => 'datetime'),
-                    array('processed',              'type', 'type' => 'integer'),
-                    array('processed',              'default', 'value' => static::NOT_PROCESSED),
-                    array('processed',              'numerical', 'min' => static::NOT_PROCESSED, 'max' => static::PROCESSED),
+                    array('processed',              'boolean'),
+                    array('processed',              'default', 'value' => false),
                 ),
                 'elements' => array(
                 ),
@@ -218,12 +213,12 @@
 
         public static function addNewItem($processed, $processDateTime, $contact, $autoresponder)
         {
-            $autoresponderItem = new self;
-            $autoresponderItem->processed = $processed;
-            $autoresponderItem->processDateTime = $processDateTime;
-            $autoresponderItem->contact = $contact;
-            $autoresponderItem->autoresponder = $autoresponder;
-            $saved = $autoresponderItem->unrestrictedSave();
+            $autoresponderItem                              = new self;
+            $autoresponderItem->processed                   = $processed;
+            $autoresponderItem->processDateTime             = $processDateTime;
+            $autoresponderItem->contact                     = $contact;
+            $autoresponderItem->autoresponder               = $autoresponder;
+            $saved                                          = $autoresponderItem->unrestrictedSave();
             assert('$saved');
             if (!$saved)
             {

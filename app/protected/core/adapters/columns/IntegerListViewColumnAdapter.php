@@ -47,14 +47,14 @@
 
         public static function renderNonEditableStatically($model, $attribute)
         {
-            if($model instanceof RedBeanModel && $model->isAttributeFormattedAsProbability($attribute))
+            if ($model instanceof RedBeanModel && $model->isAttributeFormattedAsProbability($attribute))
             {
                 $resolvedValue = NumberUtil::divisionForZero($model->{$attribute}, 100);
-                return Yii::app()->numberFormatter->formatPercentage($resolvedValue);
+                return Yii::app()->numberFormatter->formatPercentage((int)$resolvedValue);
             }
             else
             {
-                return $model->{$attribute};
+                return Yii::app()->format->formatNumber((int)$model->{$attribute});
             }
         }
     }

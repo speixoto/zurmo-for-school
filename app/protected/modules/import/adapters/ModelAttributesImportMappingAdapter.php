@@ -42,6 +42,9 @@
     {
         protected $model;
 
+        /**
+         * @param RedBeanModel $model
+         */
         public function __construct(RedBeanModel $model)
         {
             assert('$model !== null');

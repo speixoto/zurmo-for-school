@@ -45,8 +45,8 @@
                 'global' => array(
                     'toolbar' => array(
                         'elements' => array(
-                            array('type'           => 'CancelLink', 'renderType' => 'Edit'),
                             array('type'           => 'SaveButton', 'renderType' => 'Edit'),
+                            array('type'           => 'CancelToListLink', 'renderType' => 'Edit'),
                             array('type'           => 'GroupDeleteLink')
                         ),
                     ),
@@ -86,7 +86,9 @@
          * for example.
          * Checks for $elementInformation['resolveToDisplay'] to be present and if it is,
          * will run the resolveName as a function on the group model.
-         * @return boolean
+         * @param $element
+         * @param $elementInformation
+         * @return bool
          */
         protected function shouldRenderToolBarElement($element, $elementInformation)
         {
@@ -104,7 +106,12 @@
                     return false;
                 }
             }
-            return true;
+            $actionType = $element->getActionType();
+            if ($actionType == null || $actionType != 'Delete')
+            {
+                return true;
+            }
+            return RightsUtil::doesUserHaveAllowByRightName('GroupsModule', $actionType, Yii::app()->user->userModel);
         }
 
         /**

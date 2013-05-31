@@ -35,7 +35,7 @@
      ********************************************************************************/
 
     /**
-     * Class to render a fly-out link from the report detailsview.  When this link is clicked, a little div will
+     * Class to render a fly-out link from the marketing list detailsview.  When this link is clicked, a little div will
      * open up that display additional information about the marketing list
      */
     class MarketingListsDetailsLinkActionElement extends LinkActionElement

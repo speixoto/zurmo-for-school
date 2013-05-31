@@ -42,7 +42,7 @@
     {
         const LDAP_CONFIGURATION_FILTER_PATH =
               'application.modules.zurmo.controllers.filters.LdapExtensionCheckControllerFilter';
-              
+
         public function filters()
         {
             return array(
@@ -51,7 +51,7 @@
                 )
             );
         }
-        
+
         public function actionConfigurationEditLdap()
         {
             $configurationForm = LdapConfigurationFormAdapter::makeFormFromGlobalConfiguration();

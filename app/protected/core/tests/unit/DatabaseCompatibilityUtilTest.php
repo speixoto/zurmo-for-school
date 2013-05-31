@@ -249,9 +249,6 @@
             $this->assertEquals($compareQueryPart, $queryPart);
         }
 
-        /**
-        * @expectedException FailedAssertionException
-        */
         public function testResolveToLowerForStringComparison()
         {
             $queryPart = DatabaseCompatibilityUtil::resolveToLowerForStringComparison('equals', 'test@zumrmo.com');
@@ -262,7 +259,34 @@
             $compareQueryPart = "> '5'";
             $this->assertEquals($compareQueryPart, $queryPart);
 
-            $queryPart = DatabaseCompatibilityUtil::resolveToLowerForStringComparison('greaterThan', 5);
+            if (YII_DEBUG)
+            {
+                try
+                {
+                    $queryPart = DatabaseCompatibilityUtil::resolveToLowerForStringComparison('greaterThan', 5);
+                    $this->fail();
+                }
+                catch (FailedAssertionException $e)
+                {
+                }
+            }
+            else
+            {
+                $queryPart = DatabaseCompatibilityUtil::resolveToLowerForStringComparison('greaterThan', 5);
+                $compareQueryPart = "> '5'";
+                $this->assertEquals($compareQueryPart, $queryPart);
+            }
+
+            /*
+            try
+            {
+                $databaseConnectionInfo = RedBeanDatabase::getDatabaseInfoFromDsnString($dsn);
+                $this->fail();
+            }
+            catch (NotSupportedException $e)
+            {
+            }
+            */
         }
 
         public function testBulkInsert()

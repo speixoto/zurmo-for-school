@@ -318,6 +318,7 @@
                             //droppable-cell-container must be present for save to work
                             $content .= '<div class="' . $cssClassName . ' droppable-cell-container-helper ui-state-hover">';
                         }
+
                         if (is_array($cell['elements']))
                         {
                             assert('count($cell["elements"]) == 1');

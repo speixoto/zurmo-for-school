@@ -162,6 +162,7 @@
                     'users',
                     'roles',
                     'workflows',
+                    'contactWebForms',
                 ),
                 'tabMenuItemsModuleOrdering' => array(
                     'home',
@@ -172,6 +173,7 @@
                     'opportunities',
                     'marketing',
                     'reports',
+                    'products',
                 )
             );
             return $metadata;

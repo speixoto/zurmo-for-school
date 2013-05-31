@@ -87,7 +87,7 @@
                                 url                 = hostInfo + selectedOptionValue;
                                 if (selectedOptionValue.indexOf('/') == 0)
                                 {
-                                    if (isValidUrl(url))
+                                    if ($(this).isValidUrl(url))
                                     {
                                         window.location.href = url;
                                     }

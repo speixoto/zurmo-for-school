@@ -47,6 +47,10 @@
         public $dashboardListPageSize;
         public $gamificationModalNotificationsEnabled;
         public $userIdOfUserToRunWorkflowsAs;
+        public $userIdOfUserToRunTrackingAs;
+        public $autoresponderOrCampaignBatchSize;
+        public $autoresponderOrCampaignFooterPlainText;
+        public $autoresponderOrCampaignFooterRichText;
         public $realtimeUpdatesEnabled;
         public $logoFileData;
 
@@ -80,21 +84,34 @@
                 array('logoFileData',                           'type',      'type' => 'array'),
                 array('userIdOfUserToRunWorkflowsAs',           'type',      'type' => 'integer'),
                 array('userIdOfUserToRunWorkflowsAs',           'numerical', 'min'  => 1),
+                array('userIdOfUserToRunTrackingAs',            'type',      'type' => 'integer'),
+                array('userIdOfUserToRunTrackingAs',            'numerical', 'min' => 1),
+                array('autoresponderOrCampaignBatchSize',       'required'),
+                array('autoresponderOrCampaignBatchSize',       'type',      'type' => 'integer'),
+                array('autoresponderOrCampaignBatchSize',       'numerical', 'min' => 1),
+                array('autoresponderOrCampaignFooterPlainText', 'required'),
+                array('autoresponderOrCampaignFooterPlainText', 'type',    'type' => 'string'),
+                array('autoresponderOrCampaignFooterRichText',  'required'),
+                array('autoresponderOrCampaignFooterRichText',  'type',    'type' => 'string'),
             );
         }
 
         public function attributeLabels()
         {
             return array(
-                'applicationName'                       => Zurmo::t('ZurmoModule', 'Application Name'),
-                'timeZone'                              => Zurmo::t('ZurmoModule', 'Time zone'),
-                'listPageSize'                          => Zurmo::t('ZurmoModule', 'List page size'),
-                'subListPageSize'                       => Zurmo::t('ZurmoModule', 'Sublist page size'),
-                'modalListPageSize'                     => Zurmo::t('ZurmoModule', 'Popup list page size'),
-                'dashboardListPageSize'                 => Zurmo::t('ZurmoModule', 'Dashboard portlet list page size'),
-                'gamificationModalNotificationsEnabled' => Zurmo::t('ZurmoModule', 'Enable game notification popup'),
-                'realtimeUpdatesEnabled'                => Zurmo::t('ZurmoModule', 'Enable real-time updates'),
-                'userIdOfUserToRunWorkflowsAs'          => Zurmo::t('ZurmoModule', 'Run workflows from'),
+                'applicationName'                        => Zurmo::t('ZurmoModule', 'Application Name'),
+                'timeZone'                               => Zurmo::t('ZurmoModule', 'Time zone'),
+                'listPageSize'                           => Zurmo::t('ZurmoModule', 'List page size'),
+                'subListPageSize'                        => Zurmo::t('ZurmoModule', 'Sublist page size'),
+                'modalListPageSize'                      => Zurmo::t('ZurmoModule', 'Popup list page size'),
+                'dashboardListPageSize'                  => Zurmo::t('ZurmoModule', 'Dashboard portlet list page size'),
+                'gamificationModalNotificationsEnabled'  => Zurmo::t('ZurmoModule', 'Enable game notification popup'),
+                'realtimeUpdatesEnabled'                 => Zurmo::t('ZurmoModule', 'Enable real-time updates'),
+                'userIdOfUserToRunWorkflowsAs'           => Zurmo::t('ZurmoModule', 'Run workflows from'),
+                'userIdOfUserToRunTrackingAs'            => Zurmo::t('ZurmoModule', 'Run tracking requests from'),
+                'autoresponderOrCampaignBatchSize'       => Zurmo::t('ZurmoModule', 'Campaign/Autoresponder batch size'),
+                'autoresponderOrCampaignFooterPlainText' => Zurmo::t('ZurmoModule', 'Campaign/Autoresponder Footer(Plain Text)'),
+                'autoresponderOrCampaignFooterRichText'  => Zurmo::t('ZurmoModule', 'Campaign/Autoresponder Footer(Rich Text)'),
             );
         }
     }

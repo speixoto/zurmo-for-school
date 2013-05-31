@@ -1998,8 +1998,8 @@
             $this->assertEquals('ccc3',                      $account->testStreamCstm->value);
             $metadata              = CalculatedDerivedAttributeMetadata::
                                      getByNameAndModelClassName('testCalculatedValue', 'Account');
-            $testCalculatedValue   = CalculatedNumberUtil::calculateByFormulaAndModel($metadata->getFormula(), $account);
-            $this->assertEquals(774.56,                      (double)$testCalculatedValue);
+            $testCalculatedValue   = CalculatedNumberUtil::calculateByFormulaAndModelAndResolveFormat($metadata->getFormula(), $account);
+            $this->assertEquals('$774.56',                   $testCalculatedValue);
 
             unset($testCalculatedValue);
             $account->forget();

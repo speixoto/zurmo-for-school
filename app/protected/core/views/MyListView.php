@@ -58,6 +58,11 @@
             $this->moduleId          = $this->resolveModuleId();
         }
 
+        public function renderPortletHeadContent()
+        {
+            return null;
+        }
+
         protected function getShowTableOnEmpty()
         {
             return false;
@@ -101,10 +106,10 @@
 
         protected function makeDataProviderBySearchAttributeData($searchAttributeData)
         {
-            $sortAttribute            = SearchUtil::resolveSortAttributeFromGetArray($this->modelClassName);
-            $sortDescending           = SearchUtil::resolveSortDescendingFromGetArray($this->modelClassName);
             assert('is_array($searchAttributeData)');
-            $pageSize                 = Yii::app()->pagination->resolveActiveForCurrentUserByType('dashboardListPageSize');
+            list($sortAttribute, $sortDescending)  =
+                    SearchUtil::resolveSortFromStickyData($this->modelClassName, $this->uniqueLayoutId);
+            $pageSize = Yii::app()->pagination->resolveActiveForCurrentUserByType('dashboardListPageSize');
             $redBeanModelDataProvider = new RedBeanModelDataProvider($this->modelClassName, $sortAttribute, $sortDescending,
                                                                 $searchAttributeData, array(
                                                                     'pagination' => array(

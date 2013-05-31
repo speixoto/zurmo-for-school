@@ -39,7 +39,6 @@
      */
     class CampaignItemActivity extends EmailMessageActivity
     {
-        // TODO: @Shoaibi: Critical: Tests?
         public static function getModuleClassName()
         {
             return 'CampaignsModule';
@@ -59,7 +58,6 @@
         public static function getByTypeAndModelIdAndPersonIdAndUrl($type, $modelId, $personId, $url = null,
                                                                     $sortBy = 'latestDateTime', $pageSize = null)
         {
-            // TODO: @Shoaibi: Critical: Tests?
             $modelRelationName = 'campaignItem';
             return parent::getChildActivityByTypeAndModelIdAndModelRelationNameAndPersonIdAndUrl($type, $modelId,
                                                                 $modelRelationName, $personId, $url, $sortBy, $pageSize);
@@ -67,7 +65,6 @@
 
         public static function createNewActivity($type, $modelId, $personId, $url = null)
         {
-            // TODO: @Shoaibi: Critical: Tests?
             $relatedModel = CampaignItem::getById(intval($modelId));
             if (!$relatedModel)
             {

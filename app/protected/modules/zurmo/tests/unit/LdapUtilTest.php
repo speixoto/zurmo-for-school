@@ -38,8 +38,8 @@
     {
         public static function setUpBeforeClass()
         {
-            parent::setUpBeforeClass();  
-            SecurityTestHelper::createSuperAdmin();            
+            parent::setUpBeforeClass();
+            SecurityTestHelper::createSuperAdmin();
         }
 
         public function testResolveBindRegisteredDomain()
@@ -51,9 +51,9 @@
             }
             //to show the fix for resolveBindRegisteredDomain with incorrect Base Domain
             $bindRegisteredDomain = LdapUtil::resolveBindRegisteredDomain('testUser', 'test');
-            $this->assertEquals('testUser', $bindRegisteredDomain);                                
+            $this->assertEquals('testUser', $bindRegisteredDomain);
             //to show the fix for resolveBindRegisteredDomain with correct Base Domain
-            $bindRegisteredDomain = LdapUtil::resolveBindRegisteredDomain('test', 'dc=server,dc=local');            
+            $bindRegisteredDomain = LdapUtil::resolveBindRegisteredDomain('test', 'dc=server,dc=local'); // Not Coding Standard
             $this->assertEquals('test@server.local', $bindRegisteredDomain);
         }
     }

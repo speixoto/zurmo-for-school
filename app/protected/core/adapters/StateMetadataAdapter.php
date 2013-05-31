@@ -38,7 +38,7 @@
      * Adapter class to manipulate state information
      * for a module into metadata.
      */
-    abstract class StateMetadataAdapter
+    abstract class StateMetadataAdapter implements StateMetadataAdapterInterface
     {
         protected $metadata;
 

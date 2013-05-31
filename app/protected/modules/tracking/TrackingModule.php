@@ -43,5 +43,15 @@
                 'campaigns',
             );
         }
+
+        protected static function getSingularModuleLabel($language)
+        {
+            return Zurmo::t('TrackingModule', 'Tracking', array(), null, $language);
+        }
+
+        protected static function getPluralModuleLabel($language)
+        {
+            return static::getSingularModuleLabel($language);
+        }
     }
 ?>

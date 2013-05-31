@@ -76,8 +76,7 @@
         protected function renderControlNonEditable()
         {
             $formula = $this->calculatedDerivedAttributeMetadata->getFormula();
-            $content = CalculatedNumberUtil::calculateByFormulaAndModel($formula, $this->model);
-            return Yii::app()->format->text($content);
+            return CalculatedNumberUtil::calculateByFormulaAndModelAndResolveFormat($formula, $this->model);
         }
 
         /**

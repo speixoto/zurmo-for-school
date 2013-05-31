@@ -43,7 +43,6 @@
      */
     abstract class ModelElement extends Element implements ElementActionTypeInterface
     {
-
         const MODAL_CONTAINER_PREFIX = 'modalContainer';
 
         /**
@@ -157,7 +156,7 @@
                 'id'      => $this->getIdForTextField(),
                 'value'   => $this->getName(),
                 'source'  => Yii::app()->createUrl($this->resolveModuleId() . '/' . $this->getAutoCompleteControllerId()
-                                                        . '/' . static::$autoCompleteActionId),
+                                                   . '/' . static::$autoCompleteActionId, $this->getAutoCompleteUrlParams()),
                 'options' => array(
                     'select'   => 'js:function(event, ui){ jQuery("#' . $idInputName . '").val(ui.item["id"]).trigger("change");}', // Not Coding Standard
                     'appendTo' => 'js:$("#' . $this->getIdForTextField() . '").parent().parent()',
@@ -165,19 +164,19 @@
                                   {
                                        var context = $("#' . $this->getIdForTextField() . '").parent();
                                        $(".model-select-icon", context).fadeOut(100);
-                                       makeOrRemoveTogglableSpinner(true, context);
+                                       $(this).makeOrRemoveTogglableSpinner(true, context);
                                   }',
                     'open'     => 'js: function(event, ui)
                                   {
                                        var context = $("#' . $this->getIdForTextField() . '").parent();
                                        $(".model-select-icon", context).fadeIn(250);
-                                       makeOrRemoveTogglableSpinner(false, context);
+                                       $(this).makeOrRemoveTogglableSpinner(false, context);
                                   }',
                     'close'    => 'js: function(event, ui)
                                   {
                                        var context = $("#' . $this->getIdForTextField() . '").parent();
                                        $(".model-select-icon", context).fadeIn(250);
-                                       makeOrRemoveTogglableSpinner(false, context);
+                                       $(this).makeOrRemoveTogglableSpinner(false, context);
                                   }',
                     'response' => 'js: function(event, ui)
                                   {
@@ -185,7 +184,7 @@
                                        {
                                            var context = $("#' . $this->getIdForTextField() . '").parent();
                                            $(".model-select-icon", context).fadeIn(250);
-                                           makeOrRemoveTogglableSpinner(false, context);
+                                           $(this).makeOrRemoveTogglableSpinner(false, context);
                                        }
                                   }'
                 ),
@@ -196,6 +195,11 @@
             ));
             $cClipWidget->endClip();
             return $cClipWidget->getController()->clips['ModelElement'];
+        }
+
+        protected function getAutoCompleteUrlParams()
+        {
+            return array();
         }
 
         protected function getAutoCompleteControllerId()
@@ -212,9 +216,8 @@
         {
             $id = $this->getIdForSelectLink();
             $content = ZurmoHtml::ajaxLink('<span class="model-select-icon"></span><span class="z-spinner"></span>',
-                Yii::app()->createUrl($this->resolveModuleId() . '/' . $this->getSelectLinkControllerId() . '/'. static::$modalActionId .'/', array(
-                'modalTransferInformation' => $this->getModalTransferInformation(),
-                )),
+                Yii::app()->createUrl($this->resolveModuleId() . '/' . $this->getSelectLinkControllerId() . '/'.
+                                      static::$modalActionId .'/', $this->getSelectLinkUrlParams()),
                 $this->resolveAjaxOptionsForSelectingModel($id),
                 array(
                 'id'        => $id,
@@ -223,6 +226,13 @@
                 )
             );
             return $content;
+        }
+
+        protected function getSelectLinkUrlParams()
+        {
+            return array(
+                'modalTransferInformation' => $this->getModalTransferInformation(),
+            );
         }
 
         protected function resolveAjaxOptionsForSelectingModel($formId)

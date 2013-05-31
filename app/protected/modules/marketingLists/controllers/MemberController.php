@@ -140,7 +140,7 @@
             }
             else
             {
-                return intval(Yii::app()->request->getQuery('MarketingListMembersForPortletView_page'));
+                return intval(Yii::app()->request->getQuery('MarketingListMembersPortletView_page'));
             }
         }
 
@@ -168,9 +168,10 @@
             $metadata = array(
                             'clauses'   => array(
                                         1   => array(
-                                                'attributeName' => 'marketingList',
-                                                'operatorType'  => 'equals',
-                                                'value'         => Yii::app()->request->getQuery('id')
+                                                'attributeName'         => 'marketingList',
+                                                'relatedAttributeName'  => 'id',
+                                                'operatorType'          => 'equals',
+                                                'value'                 => Yii::app()->request->getQuery('id')
                                             ),
                                         ),
                             'structure' => 1

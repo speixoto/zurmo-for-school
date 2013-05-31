@@ -38,12 +38,14 @@
     {
         protected function renderContent()
         {
-            $syntaxtContent     = $this->renderSyntaxContent();
+            $syntaxContent     = $this->renderSyntaxContent();
             $examplesContent    = $this->renderExamplesContent();
+            $specialTagsContent = $this->renderSpecialTagsContent();
             $content            = Zurmo::t('EmailTemplatesModule', 'Merge tags are a quick way to introduce ' .
                                            'reader-specific dynamic information into emails.');
-            $content           .= $syntaxtContent;
+            $content           .= $syntaxContent;
             $content           .= $examplesContent;
+            $content           .= $specialTagsContent;
             $content            = ZurmoHtml::tag('div', array('id' => 'mergetag-guide-modal-content',
                                                                 'class' => 'mergetag-guide-modal'),
                                                         $content);
@@ -107,6 +109,26 @@
             $examplesContent    = ZurmoHtml::tag('div', array('id' => 'mergetag-examples-body'), $examplesContent);
             $content            .= $examplesContent;
             $content            = ZurmoHtml::tag('div', array('id' => 'mergetag-examples'), $content);
+            return $content;
+        }
+
+        protected function renderSpecialTagsContent()
+        {
+            $content                = ZurmoHtml::tag('h4', array(), 'Special Tags');
+            $content                = ZurmoHtml::tag('div', array('id' => 'mergetag-special-tags-head'), $content);
+            $specialTagsContent     = null;
+            $specialTagsItems       = array();
+            $specialTagsItems[]     = $this->renderBoldMergeTag(MergeTagsUtil::TAG_PREFIX . "MODEL" .
+                                        MergeTagsUtil::CAPITAL_DELIMITER . "URL" . MergeTagsUtil::TAG_SUFFIX) .
+                                        " : prints absolute url to the current model attached to template.";
+            foreach ($specialTagsItems as $specialTagsItem)
+            {
+                $specialTagsContent .= ZurmoHtml::tag('li', array(), $specialTagsItem);
+            }
+            $specialTagsContent     = ZurmoHtml::tag('ul', array(), $specialTagsContent);
+            $specialTagsContent     = ZurmoHtml::tag('div', array('id' => 'mergetag-special-tags-body'), $specialTagsContent);
+            $content                .= $specialTagsContent;
+            $content                = ZurmoHtml::tag('div', array('id' => 'mergetag-special-tags'), $content);
             return $content;
         }
 

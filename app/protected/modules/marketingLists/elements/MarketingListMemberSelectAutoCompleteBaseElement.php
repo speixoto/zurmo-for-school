@@ -82,14 +82,14 @@
             return array(
                 'autoFill'  => false,
                 'select'    => $this->getWidgetSelectActionJS(),
-                'search'    => 'js:function(event, ui) { makeOrRemoveTogglableSpinner(true,  $(this).parent()) }',
-                'open'      => 'js:function(event, ui) { makeOrRemoveTogglableSpinner(false, $(this).parent()) }',
-                'close'     => 'js:function(event, ui) { makeOrRemoveTogglableSpinner(false, $(this).parent()) }',
+                'search'    => 'js:function(event, ui) { $(this).makeOrRemoveTogglableSpinner(true,  $(this).parent()) }',
+                'open'      => 'js:function(event, ui) { $(this).makeOrRemoveTogglableSpinner(false, $(this).parent()) }',
+                'close'     => 'js:function(event, ui) { $(this).makeOrRemoveTogglableSpinner(false, $(this).parent()) }',
                 'response'  => 'js:function(event, ui)
                     {
                         if (ui.content.length < 1)
                         {
-                            makeOrRemoveTogglableSpinner(false, $(this).parent());
+                            $(this).makeOrRemoveTogglableSpinner(false, $(this).parent());
                         }
                     }'
             );
@@ -112,9 +112,14 @@
                                 {
                                     url:        url,
                                     dataType:   "json",
-                                    data:       { marketingListId: modelId, id: ui.item.id, type: selectType },
-                                    beforeSend: function(request, settings) {
-                                                    makeSmallLoadingSpinner(listGridViewId);
+                                    data:       {
+                                                    marketingListId: modelId,
+                                                    id: ui.item.id,
+                                                     type: selectType
+                                                },
+                                    beforeSend: function(request, settings)
+                                                {
+                                                    $(this).makeSmallLoadingSpinner(listGridViewId);
                                                     $("#" + listGridViewId).addClass("loading");
                                                     if (disableTextBox == true)
                                                     {
@@ -125,23 +130,27 @@
                                                         $("." + radioButtonClass).attr("disabled", "disabled");
                                                     }
                                                 },
-                                    success:    function(data, status, request) {
+                                    success:    function(data, status, request)
+                                                {
                                                     $("#" + listGridViewId).find(".pager").find(".refresh").find("a").click();
                                                     updateFlashBar(data, notificationBarId);
                                                 },
-                                    error:      function(request, status, error) {
+                                    error:      function(request, status, error)
+                                                {
                                                     var data = {' . // Not Coding Standard
                                                                 '   "message" : "' . Zurmo::t('MarketingListsModule', 'There was an error processing your request'). '",
                                                                     "type"    : "error"
                                                                 };
                                                     updateFlashBar(data, notificationBarId);
                                                 },
-                                    complete:   function(request, status) {
+                                    complete:   function(request, status)
+                                                {
                                                     $(searchBox).removeAttr("disabled");
                                                     $(searchBox).val("");
                                                     $("." + radioButtonClass).removeAttr("disabled");
                                                     $("#" + listGridViewId).removeClass("loading");
                                                     event.preventDefault();
+                                                    return false;
                                                 }
                                 }
                             );
@@ -151,18 +160,26 @@
 
         protected function registerScripts()
         {
-            Yii::app()->clientScript->registerScript($this->getListViewGridId() . '-updateFlashBar', '
-                function updateFlashBar(data, flashBarId)
-                {
-                    $("#" + flashBarId).jnotifyAddMessage(
+            $scriptName = $this->getListViewGridId() . '-updateFlashBar';
+            if (Yii::app()->clientScript->isScriptRegistered($scriptName))
+            {
+                return;
+            }
+            else
+            {
+                Yii::app()->clientScript->registerScript($scriptName, '
+                    function updateFlashBar(data, flashBarId)
                     {
-                        text: data.message,
-                        permanent: false,
-                        showIcon: true,
-                        type: data.type
-                    });
-                }
-            ');
+                        $("#" + flashBarId).jnotifyAddMessage(
+                        {
+                            text: data.message,
+                            permanent: false,
+                            showIcon: true,
+                            type: data.type
+                        });
+                    }
+                ');
+            }
         }
 
         protected function getModelId()

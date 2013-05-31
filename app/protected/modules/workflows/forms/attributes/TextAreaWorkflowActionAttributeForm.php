@@ -40,6 +40,12 @@
     class TextAreaWorkflowActionAttributeForm extends WorkflowActionAttributeForm
     {
         /**
+         * TextArea attributes supports merge tags
+         * @var bool
+         */
+        protected $shouldResolveValueForMergeTags = true;
+
+        /**
          * @return string
          */
         public function getValueElementType()

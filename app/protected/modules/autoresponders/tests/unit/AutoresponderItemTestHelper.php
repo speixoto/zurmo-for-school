@@ -38,14 +38,18 @@
     {
         public static function createAutoresponderItem($processed, $processDateTime, $autoresponder = null, $contact = null)
         {
-            $autoresponderItem  = static::fillAutoresponderItem($processed, $processDateTime, $autoresponder, $contact);
+            $autoresponderItem  = static::populateAutoresponderItem($processed, $processDateTime, $autoresponder, $contact);
             $saved              = $autoresponderItem->unrestrictedSave();
             assert('$saved');
             return $autoresponderItem;
         }
 
-        public static function fillAutoresponderItem($processed, $processDateTime, $autoresponder = null, $contact = null)
+        public static function populateAutoresponderItem($processed, $processDateTime, $autoresponder = null, $contact = null)
         {
+            assert('is_string($processed) || is_int($processed)');
+            assert('is_string($processDateTime)');
+            assert('is_object($autoresponder) || $autoresponder === null');
+            assert('is_object($contact) || $contact === null');
             if (empty($autoresponder))
             {
                 $autoresponders = Autoresponder::getAll();

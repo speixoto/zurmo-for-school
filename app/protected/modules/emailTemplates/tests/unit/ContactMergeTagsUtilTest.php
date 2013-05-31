@@ -633,5 +633,22 @@
             $this->assertEquals($compareContent, $resolvedContent);
             $this->assertEmpty($this->invalidTags);
         }
+
+        /**
+         * @depends testUserMergeTag
+         */
+        public function testModelUrlMergeTag()
+        {
+            $content                        = '[[MODEL^URL]]';
+            $mergeTagsUtil                  = MergeTagsUtilFactory::make(EmailTemplate::TYPE_CONTACT, null, $content);
+            $this->assertTrue($mergeTagsUtil instanceof MergeTagsUtil);
+            $this->assertTrue($mergeTagsUtil instanceof ContactMergeTagsUtil);
+            $resolvedContent                = $mergeTagsUtil->resolveMergeTags(self::$emailTemplate, $this->invalidTags);
+            $this->assertTrue($resolvedContent !== false);
+            $this->assertNotEquals($resolvedContent, $content);
+            $expectedSuffix                 = '/emailTemplates/default/details?id=' . static::$emailTemplate->id;
+            $this->assertTrue(strpos($resolvedContent, $expectedSuffix) !== false);
+            $this->assertEmpty($this->invalidTags);
+        }
     }
 ?>

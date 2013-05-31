@@ -38,6 +38,7 @@
     {
         public static function getModuleClassName()
         {
+            // TODO: @Shoaibi: Critical: Add Tests to cover:
             return 'MarketingListsModule';
         }
 
@@ -109,7 +110,7 @@
                     'attributeName'             => 'marketingList',
                     'relatedAttributeName'      => 'id',
                     'operatorType'              => 'equals',
-                    'value'                     => $marketingListId,
+                    'value'                     => intval($marketingListId),
                 ),
             );
             $searchAttributeData['structure'] = '(1 and 2)';
@@ -118,14 +119,82 @@
             return self::getCount($joinTablesAdapter, $where, get_called_class(), true);
         }
 
+        public static function getByMarketingListIdContactIdAndSubscribed($marketingListId, $contactId, $unsubscribed)
+        {
+            // TODO: @Shoaibi: Critical: Add Tests to cover:
+            $searchAttributeData = array();
+            $searchAttributeData['clauses'] = array(
+                1 => array(
+                    'attributeName'             => 'unsubscribed',
+                    'operatorType'              => 'equals',
+                    'value'                     => intval($unsubscribed)
+                ),
+                2 => array(
+                    'attributeName'             => 'contact',
+                    'relatedAttributeName'      => 'id',
+                    'operatorType'              => 'equals',
+                    'value'                     => intval($contactId),
+                ),
+                3 => array(
+                    'attributeName'             => 'marketingList',
+                    'relatedAttributeName'      => 'id',
+                    'operatorType'              => 'equals',
+                    'value'                     => intval($marketingListId),
+                ),
+            );
+            $searchAttributeData['structure'] = '(1 and 2 and 3)';
+            $joinTablesAdapter  = new RedBeanModelJoinTablesQueryAdapter(get_called_class());
+            $where              = RedBeanModelDataProvider::makeWhere(get_called_class(), $searchAttributeData, $joinTablesAdapter);
+            $member             = self::getSubset($joinTablesAdapter, null, null, $where, null);
+            if (count($member) > 1)
+            {
+                CVarDumper::dump($member);
+                throw new NotSupportedException();
+            }
+            elseif (count($member) === 0)
+            {
+                return false;
+            }
+            return $member;
+        }
+
+        public static function getByContactIdAndSubscribed($contactId, $unsubscribed)
+        {
+            // TODO: @Shoaibi: Critical: Add Tests to cover:
+            $searchAttributeData = array();
+            $searchAttributeData['clauses'] = array(
+                1 => array(
+                    'attributeName'             => 'unsubscribed',
+                    'operatorType'              => 'equals',
+                    'value'                     => intval($unsubscribed)
+                ),
+                2 => array(
+                    'attributeName'             => 'contact',
+                    'relatedAttributeName'      => 'id',
+                    'operatorType'              => 'equals',
+                    'value'                     => intval($contactId),
+                ),
+            );
+            $searchAttributeData['structure'] = '(1 and 2)';
+            $joinTablesAdapter = new RedBeanModelJoinTablesQueryAdapter(get_called_class());
+            $where             = RedBeanModelDataProvider::makeWhere(get_called_class(), $searchAttributeData, $joinTablesAdapter);
+            $members           = self::getSubset($joinTablesAdapter, null, null, $where, null);
+            return $members;
+        }
+
         public function onCreated()
         {
+            parent::onCreated();
             $this->unrestrictedSet('createdDateTime',  DateTimeUtil::convertTimestampToDbFormatDateTime(time()));
             $this->unrestrictedSet('modifiedDateTime', DateTimeUtil::convertTimestampToDbFormatDateTime(time()));
         }
 
         public function beforeSave()
         {
+            if (!parent::beforeSave())
+            {
+                return false;
+            }
             if ($this->id < 0 || (isset($this->originalAttributeValues['unsubscribed']) &&
                                             $this->originalAttributeValues['unsubscribed'] != $this->unsubscribed))
             {
@@ -134,17 +203,11 @@
                 {
                     $operation = Autoresponder::OPERATION_UNSUBSCRIBE;
                 }
-                AutoresponderItem::
-                    registerAutoresponderItemsByAutoresponderOperation($operation, $this->marketingList->id, $this->contact);
+                AutoresponderItem::registerAutoresponderItemsByAutoresponderOperation($operation,
+                                                                                        $this->marketingList->id,
+                                                                                        $this->contact);
             }
             $this->modifiedDateTime     = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
-            return true;
-        }
-
-        public function beforeDelete()
-        {
-            AutoresponderItem::
-                registerAutoresponderItemsByAutoresponderOperation(Autoresponder::OPERATION_REMOVE, $this->marketingList->id, $this->contact);
             return true;
         }
     }

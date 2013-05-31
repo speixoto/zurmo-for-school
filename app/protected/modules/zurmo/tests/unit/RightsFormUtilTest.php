@@ -81,6 +81,26 @@
                         'effective'   => Right::DENY,
                     ),
                 ),
+                'CampaignsModule' => array(
+                    'RIGHT_CREATE_CAMPAIGNS'   => array(
+                        'displayName' => CampaignsModule::RIGHT_CREATE_CAMPAIGNS,
+                        'explicit'    => null,
+                        'inherited'   => null,
+                        'effective'   => Right::DENY,
+                    ),
+                    'RIGHT_DELETE_CAMPAIGNS'   => array(
+                        'displayName' => CampaignsModule::RIGHT_DELETE_CAMPAIGNS,
+                        'explicit'    => null,
+                        'inherited'   => null,
+                        'effective'   => Right::DENY,
+                    ),
+                    'RIGHT_ACCESS_CAMPAIGNS'   => array(
+                        'displayName' => CampaignsModule::RIGHT_ACCESS_CAMPAIGNS,
+                        'explicit'    => null,
+                        'inherited'   => null,
+                        'effective'   => Right::DENY,
+                    ),
+                ),
                 'ContactsModule' => array(
                     'RIGHT_CREATE_CONTACTS'   => array(
                         'displayName' => ContactsModule::RIGHT_CREATE_CONTACTS,
@@ -96,6 +116,26 @@
                     ),
                     'RIGHT_ACCESS_CONTACTS'   => array(
                         'displayName' => ContactsModule::RIGHT_ACCESS_CONTACTS,
+                        'explicit'    => null,
+                        'inherited'   => null,
+                        'effective'   => Right::DENY,
+                    ),
+                ),
+                'ContactWebFormsModule' => array(
+                    'RIGHT_CREATE_CONTACT_WEB_FORMS'   => array(
+                        'displayName' => ContactWebFormsModule::RIGHT_CREATE_CONTACT_WEB_FORMS,
+                        'explicit'    => null,
+                        'inherited'   => null,
+                        'effective'   => Right::DENY,
+                    ),
+                    'RIGHT_DELETE_CONTACT_WEB_FORMS'   => array(
+                        'displayName' => ContactWebFormsModule::RIGHT_DELETE_CONTACT_WEB_FORMS,
+                        'explicit'    => null,
+                        'inherited'   => null,
+                        'effective'   => Right::DENY,
+                    ),
+                    'RIGHT_ACCESS_CONTACT_WEB_FORMS'   => array(
+                        'displayName' => ContactWebFormsModule::RIGHT_ACCESS_CONTACT_WEB_FORMS,
                         'explicit'    => null,
                         'inherited'   => null,
                         'effective'   => Right::DENY,
@@ -539,6 +579,46 @@
                         'effective'   => Right::DENY,
                     ),
                 ),
+                'ProductTemplatesModule'  => array(
+                    'RIGHT_CREATE_PRODUCT_TEMPLATES' => array(
+                        'displayName' => ProductTemplatesModule::RIGHT_CREATE_PRODUCT_TEMPLATES,
+                        'explicit'    => null,
+                        'inherited'   => null,
+                        'effective'   => Right::DENY,
+                    ),
+                    'RIGHT_DELETE_PRODUCT_TEMPLATES' => array(
+                        'displayName' => ProductTemplatesModule::RIGHT_DELETE_PRODUCT_TEMPLATES,
+                        'explicit'    => null,
+                        'inherited'   => null,
+                        'effective'   => Right::DENY,
+                    ),
+                    'RIGHT_ACCESS_PRODUCT_TEMPLATES' => array(
+                        'displayName' => ProductTemplatesModule::RIGHT_ACCESS_PRODUCT_TEMPLATES,
+                        'explicit'    => null,
+                        'inherited'   => null,
+                        'effective'   => Right::DENY,
+                    ),
+                ),
+                'ProductsModule'  => array(
+                    'RIGHT_CREATE_PRODUCTS' => array(
+                        'displayName' => ProductsModule::RIGHT_CREATE_PRODUCTS,
+                        'explicit'    => null,
+                        'inherited'   => null,
+                        'effective'   => Right::DENY,
+                    ),
+                    'RIGHT_DELETE_PRODUCTS' => array(
+                        'displayName' => ProductsModule::RIGHT_DELETE_PRODUCTS,
+                        'explicit'    => null,
+                        'inherited'   => null,
+                        'effective'   => Right::DENY,
+                    ),
+                    'RIGHT_ACCESS_PRODUCTS' => array(
+                        'displayName' => ProductsModule::RIGHT_ACCESS_PRODUCTS,
+                        'explicit'    => null,
+                        'inherited'   => null,
+                        'effective'   => Right::DENY,
+                    ),
+                ),
             );
             $this->assertEquals($compareData, $data);
             $group->forget();
@@ -578,6 +658,26 @@
                         'effective'   => Right::DENY,
                     ),
                 ),
+                'CampaignsModule' => array(
+                    'RIGHT_CREATE_CAMPAIGNS'   => array(
+                        'displayName' => CampaignsModule::RIGHT_CREATE_CAMPAIGNS,
+                        'explicit'    => null,
+                        'inherited'   => null,
+                        'effective'   => Right::DENY,
+                    ),
+                    'RIGHT_DELETE_CAMPAIGNS'   => array(
+                        'displayName' => CampaignsModule::RIGHT_DELETE_CAMPAIGNS,
+                        'explicit'    => null,
+                        'inherited'   => null,
+                        'effective'   => Right::DENY,
+                    ),
+                    'RIGHT_ACCESS_CAMPAIGNS'   => array(
+                        'displayName' => CampaignsModule::RIGHT_ACCESS_CAMPAIGNS,
+                        'explicit'    => null,
+                        'inherited'   => null,
+                        'effective'   => Right::DENY,
+                    ),
+                ),
                 'ContactsModule' => array(
                     'RIGHT_CREATE_CONTACTS'   => array(
                         'displayName' => ContactsModule::RIGHT_CREATE_CONTACTS,
@@ -593,6 +693,26 @@
                     ),
                     'RIGHT_ACCESS_CONTACTS'   => array(
                         'displayName' => ContactsModule::RIGHT_ACCESS_CONTACTS,
+                        'explicit'    => null,
+                        'inherited'   => null,
+                        'effective'   => Right::DENY,
+                    ),
+                ),
+                'ContactWebFormsModule' => array(
+                    'RIGHT_CREATE_CONTACT_WEB_FORMS'   => array(
+                        'displayName' => ContactWebFormsModule::RIGHT_CREATE_CONTACT_WEB_FORMS,
+                        'explicit'    => null,
+                        'inherited'   => null,
+                        'effective'   => Right::DENY,
+                    ),
+                    'RIGHT_DELETE_CONTACT_WEB_FORMS'   => array(
+                        'displayName' => ContactWebFormsModule::RIGHT_DELETE_CONTACT_WEB_FORMS,
+                        'explicit'    => null,
+                        'inherited'   => null,
+                        'effective'   => Right::DENY,
+                    ),
+                    'RIGHT_ACCESS_CONTACT_WEB_FORMS'   => array(
+                        'displayName' => ContactWebFormsModule::RIGHT_ACCESS_CONTACT_WEB_FORMS,
                         'explicit'    => null,
                         'inherited'   => null,
                         'effective'   => Right::DENY,
@@ -1036,6 +1156,46 @@
                         'effective'   => Right::DENY,
                     ),
                 ),
+                'ProductTemplatesModule'  => array(
+                    'RIGHT_CREATE_PRODUCT_TEMPLATES' => array(
+                        'displayName' => ProductTemplatesModule::RIGHT_CREATE_PRODUCT_TEMPLATES,
+                        'explicit'    => null,
+                        'inherited'   => null,
+                        'effective'   => Right::DENY,
+                    ),
+                    'RIGHT_DELETE_PRODUCT_TEMPLATES' => array(
+                        'displayName' => ProductTemplatesModule::RIGHT_DELETE_PRODUCT_TEMPLATES,
+                        'explicit'    => null,
+                        'inherited'   => null,
+                        'effective'   => Right::DENY,
+                    ),
+                    'RIGHT_ACCESS_PRODUCT_TEMPLATES' => array(
+                        'displayName' => ProductTemplatesModule::RIGHT_ACCESS_PRODUCT_TEMPLATES,
+                        'explicit'    => null,
+                        'inherited'   => null,
+                        'effective'   => Right::DENY,
+                    ),
+                ),
+                'ProductsModule'  => array(
+                    'RIGHT_CREATE_PRODUCTS' => array(
+                        'displayName' => ProductsModule::RIGHT_CREATE_PRODUCTS,
+                        'explicit'    => null,
+                        'inherited'   => null,
+                        'effective'   => Right::DENY,
+                    ),
+                    'RIGHT_DELETE_PRODUCTS' => array(
+                        'displayName' => ProductsModule::RIGHT_DELETE_PRODUCTS,
+                        'explicit'    => null,
+                        'inherited'   => null,
+                        'effective'   => Right::DENY,
+                    ),
+                    'RIGHT_ACCESS_PRODUCTS' => array(
+                        'displayName' => ProductsModule::RIGHT_ACCESS_PRODUCTS,
+                        'explicit'    => null,
+                        'inherited'   => null,
+                        'effective'   => Right::DENY,
+                    ),
+                ),
             );
             $this->assertEquals($compareData, $form->data);
             $group->forget();
@@ -1071,6 +1231,26 @@
                         'effective'   => Right::DENY,
                     ),
                 ),
+                'CampaignsModule' => array(
+                    'RIGHT_CREATE_CAMPAIGNS'   => array(
+                        'displayName' => CampaignsModule::RIGHT_CREATE_CAMPAIGNS,
+                        'explicit'    => null,
+                        'inherited'   => null,
+                        'effective'   => Right::DENY,
+                    ),
+                    'RIGHT_DELETE_CAMPAIGNS'   => array(
+                        'displayName' => CampaignsModule::RIGHT_DELETE_CAMPAIGNS,
+                        'explicit'    => null,
+                        'inherited'   => null,
+                        'effective'   => Right::DENY,
+                    ),
+                    'RIGHT_ACCESS_CAMPAIGNS'   => array(
+                        'displayName' => CampaignsModule::RIGHT_ACCESS_CAMPAIGNS,
+                        'explicit'    => null,
+                        'inherited'   => null,
+                        'effective'   => Right::DENY,
+                    ),
+                ),
                 'ContactsModule' => array(
                     'RIGHT_CREATE_CONTACTS'   => array(
                         'displayName' => ContactsModule::RIGHT_CREATE_CONTACTS,
@@ -1086,6 +1266,26 @@
                     ),
                     'RIGHT_ACCESS_CONTACTS'   => array(
                         'displayName' => ContactsModule::RIGHT_ACCESS_CONTACTS,
+                        'explicit'    => null,
+                        'inherited'   => null,
+                        'effective'   => Right::DENY,
+                    ),
+                ),
+                'ContactWebFormsModule' => array(
+                    'RIGHT_CREATE_CONTACT_WEB_FORMS'   => array(
+                        'displayName' => ContactWebFormsModule::RIGHT_CREATE_CONTACT_WEB_FORMS,
+                        'explicit'    => null,
+                        'inherited'   => null,
+                        'effective'   => Right::DENY,
+                    ),
+                    'RIGHT_DELETE_CONTACT_WEB_FORMS'   => array(
+                        'displayName' => ContactWebFormsModule::RIGHT_DELETE_CONTACT_WEB_FORMS,
+                        'explicit'    => null,
+                        'inherited'   => null,
+                        'effective'   => Right::DENY,
+                    ),
+                    'RIGHT_ACCESS_CONTACT_WEB_FORMS'   => array(
+                        'displayName' => ContactWebFormsModule::RIGHT_ACCESS_CONTACT_WEB_FORMS,
                         'explicit'    => null,
                         'inherited'   => null,
                         'effective'   => Right::DENY,
@@ -1529,6 +1729,46 @@
                         'effective'   => Right::DENY,
                     ),
                 ),
+                'ProductTemplatesModule'  => array(
+                    'RIGHT_CREATE_PRODUCT_TEMPLATES' => array(
+                        'displayName' => ProductTemplatesModule::RIGHT_CREATE_PRODUCT_TEMPLATES,
+                        'explicit'    => null,
+                        'inherited'   => null,
+                        'effective'   => Right::DENY,
+                    ),
+                    'RIGHT_DELETE_PRODUCT_TEMPLATES' => array(
+                        'displayName' => ProductTemplatesModule::RIGHT_DELETE_PRODUCT_TEMPLATES,
+                        'explicit'    => null,
+                        'inherited'   => null,
+                        'effective'   => Right::DENY,
+                    ),
+                    'RIGHT_ACCESS_PRODUCT_TEMPLATES' => array(
+                        'displayName' => ProductTemplatesModule::RIGHT_ACCESS_PRODUCT_TEMPLATES,
+                        'explicit'    => null,
+                        'inherited'   => null,
+                        'effective'   => Right::DENY,
+                    ),
+                ),
+                'ProductsModule'  => array(
+                    'RIGHT_CREATE_PRODUCTS' => array(
+                        'displayName' => ProductsModule::RIGHT_CREATE_PRODUCTS,
+                        'explicit'    => null,
+                        'inherited'   => null,
+                        'effective'   => Right::DENY,
+                    ),
+                    'RIGHT_DELETE_PRODUCTS' => array(
+                        'displayName' => ProductsModule::RIGHT_DELETE_PRODUCTS,
+                        'explicit'    => null,
+                        'inherited'   => null,
+                        'effective'   => Right::DENY,
+                    ),
+                    'RIGHT_ACCESS_PRODUCTS' => array(
+                        'displayName' => ProductsModule::RIGHT_ACCESS_PRODUCTS,
+                        'explicit'    => null,
+                        'inherited'   => null,
+                        'effective'   => Right::DENY,
+                    ),
+                ),
             );
             $this->assertEquals($compareData, $form->data);
             $fakePost = array(
@@ -1563,6 +1803,26 @@
                         'effective'   => Right::DENY,
                     ),
                 ),
+                'CampaignsModule' => array(
+                    'RIGHT_CREATE_CAMPAIGNS'   => array(
+                        'displayName' => CampaignsModule::RIGHT_CREATE_CAMPAIGNS,
+                        'explicit'    => null,
+                        'inherited'   => null,
+                        'effective'   => Right::DENY,
+                    ),
+                    'RIGHT_DELETE_CAMPAIGNS'   => array(
+                        'displayName' => CampaignsModule::RIGHT_DELETE_CAMPAIGNS,
+                        'explicit'    => null,
+                        'inherited'   => null,
+                        'effective'   => Right::DENY,
+                    ),
+                    'RIGHT_ACCESS_CAMPAIGNS'   => array(
+                        'displayName' => CampaignsModule::RIGHT_ACCESS_CAMPAIGNS,
+                        'explicit'    => null,
+                        'inherited'   => null,
+                        'effective'   => Right::DENY,
+                    ),
+                ),
                 'ContactsModule' => array(
                     'RIGHT_CREATE_CONTACTS'   => array(
                         'displayName' => ContactsModule::RIGHT_CREATE_CONTACTS,
@@ -1578,6 +1838,26 @@
                     ),
                     'RIGHT_ACCESS_CONTACTS'   => array(
                         'displayName' => ContactsModule::RIGHT_ACCESS_CONTACTS,
+                        'explicit'    => null,
+                        'inherited'   => null,
+                        'effective'   => Right::DENY,
+                    ),
+                ),
+                'ContactWebFormsModule' => array(
+                    'RIGHT_CREATE_CONTACT_WEB_FORMS'   => array(
+                        'displayName' => ContactWebFormsModule::RIGHT_CREATE_CONTACT_WEB_FORMS,
+                        'explicit'    => null,
+                        'inherited'   => null,
+                        'effective'   => Right::DENY,
+                    ),
+                    'RIGHT_DELETE_CONTACT_WEB_FORMS'   => array(
+                        'displayName' => ContactWebFormsModule::RIGHT_DELETE_CONTACT_WEB_FORMS,
+                        'explicit'    => null,
+                        'inherited'   => null,
+                        'effective'   => Right::DENY,
+                    ),
+                    'RIGHT_ACCESS_CONTACT_WEB_FORMS'   => array(
+                        'displayName' => ContactWebFormsModule::RIGHT_ACCESS_CONTACT_WEB_FORMS,
                         'explicit'    => null,
                         'inherited'   => null,
                         'effective'   => Right::DENY,
@@ -2016,6 +2296,46 @@
                     ),
                     'RIGHT_ACCESS_MARKETING_LISTS' => array(
                         'displayName' => MarketingListsModule::RIGHT_ACCESS_MARKETING_LISTS,
+                        'explicit'    => null,
+                        'inherited'   => null,
+                        'effective'   => Right::DENY,
+                    ),
+                ),
+                'ProductTemplatesModule'  => array(
+                    'RIGHT_CREATE_PRODUCT_TEMPLATES' => array(
+                        'displayName' => ProductTemplatesModule::RIGHT_CREATE_PRODUCT_TEMPLATES,
+                        'explicit'    => null,
+                        'inherited'   => null,
+                        'effective'   => Right::DENY,
+                    ),
+                    'RIGHT_DELETE_PRODUCT_TEMPLATES' => array(
+                        'displayName' => ProductTemplatesModule::RIGHT_DELETE_PRODUCT_TEMPLATES,
+                        'explicit'    => null,
+                        'inherited'   => null,
+                        'effective'   => Right::DENY,
+                    ),
+                    'RIGHT_ACCESS_PRODUCT_TEMPLATES' => array(
+                        'displayName' => ProductTemplatesModule::RIGHT_ACCESS_PRODUCT_TEMPLATES,
+                        'explicit'    => null,
+                        'inherited'   => null,
+                        'effective'   => Right::DENY,
+                    ),
+                ),
+                'ProductsModule'  => array(
+                    'RIGHT_CREATE_PRODUCTS' => array(
+                        'displayName' => ProductsModule::RIGHT_CREATE_PRODUCTS,
+                        'explicit'    => null,
+                        'inherited'   => null,
+                        'effective'   => Right::DENY,
+                    ),
+                    'RIGHT_DELETE_PRODUCTS' => array(
+                        'displayName' => ProductsModule::RIGHT_DELETE_PRODUCTS,
+                        'explicit'    => null,
+                        'inherited'   => null,
+                        'effective'   => Right::DENY,
+                    ),
+                    'RIGHT_ACCESS_PRODUCTS' => array(
+                        'displayName' => ProductsModule::RIGHT_ACCESS_PRODUCTS,
                         'explicit'    => null,
                         'inherited'   => null,
                         'effective'   => Right::DENY,

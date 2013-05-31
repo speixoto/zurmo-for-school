@@ -61,6 +61,21 @@
         const NOW = 4;
 
         /**
+         * The calculation will be done for Week. This is a dateTime calculation.
+         */
+        const WEEK = 5;
+
+        /**
+         * The calculation will be done for Month. This is a dateTime calculation.
+         */
+        const MONTH = 6;
+
+        /**
+         * The calculation will be done for Year. This is a dateTime calculation.
+         */
+        const YEAR = 7;
+
+        /**
          * Calculate a date/time stamp given a calculation value and DateTime object
          * @param $calculation corresponds to a calculation value from this class.
          * @see http://www.php.net/manual/en/class.datetime.php
@@ -88,6 +103,24 @@
             if ($calculation == self::NOW)
             {
                 return DateTimeUtil::convertTimestampToDbFormatDateTime(time());
+            }
+            if ($calculation == self::WEEK)
+            {
+                $dateTime->modify('+7 day'); // Not Coding Standard
+                return Yii::app()->dateFormatter->format(DatabaseCompatibilityUtil::getDateFormat(),
+                            $dateTime->getTimestamp());
+            }
+            if ($calculation == self::MONTH)
+            {
+                $dateTime->modify('+1 month'); // Not Coding Standard
+                return Yii::app()->dateFormatter->format(DatabaseCompatibilityUtil::getDateFormat(),
+                            $dateTime->getTimestamp());
+            }
+            if ($calculation == self::YEAR)
+            {
+                $dateTime->modify('+1 year'); // Not Coding Standard
+                return Yii::app()->dateFormatter->format(DatabaseCompatibilityUtil::getDateFormat(),
+                            $dateTime->getTimestamp());
             }
             throw new NotSupportedException();
         }

@@ -89,6 +89,8 @@
                             $('#ModuleForReportWizardView').hide();
                             " . $this->renderTreeViewAjaxScriptContent($formName, 'FiltersForReportWizardView') . "
                             $('#FiltersForReportWizardView').show();
+                            $('.StepsAndProgressBarForWizardView').find('.progress-bar').width('25%');
+                            $('.StepsAndProgressBarForWizardView').find('.current-step').removeClass('current-step').next().addClass('current-step');
                         }
                         if (linkId == '" . FiltersForReportWizardView::getNextPageLinkId() . "')
                         {
@@ -97,6 +99,8 @@
                             $('#FiltersForReportWizardView').hide();
                             " . $this->renderTreeViewAjaxScriptContent($formName, 'GroupBysForReportWizardView') . "
                             $('#GroupBysForReportWizardView').show();
+                            $('.StepsAndProgressBarForWizardView').find('.progress-bar').width('37.5%');
+                            $('.StepsAndProgressBarForWizardView').find('.current-step').removeClass('current-step').next().addClass('current-step');
                         }
                         if (linkId == '" . GroupBysForReportWizardView::getNextPageLinkId() . "')
                         {
@@ -105,6 +109,8 @@
                             $('#GroupBysForReportWizardView').hide();
                             " . $this->renderTreeViewAjaxScriptContent($formName, 'DisplayAttributesForReportWizardView') . "
                             $('#DisplayAttributesForReportWizardView').show();
+                            $('.StepsAndProgressBarForWizardView').find('.progress-bar').width('50%');
+                            $('.StepsAndProgressBarForWizardView').find('.current-step').removeClass('current-step').next().addClass('current-step');
                         }
                         if (linkId == '" . DisplayAttributesForReportWizardView::getNextPageLinkId() . "')
                         {
@@ -113,6 +119,8 @@
                             $('#DisplayAttributesForReportWizardView').hide();
                             " . $this->renderTreeViewAjaxScriptContent($formName, 'DrillDownDisplayAttributesForReportWizardView') . "
                             $('#DrillDownDisplayAttributesForReportWizardView').show();
+                            $('.StepsAndProgressBarForWizardView').find('.progress-bar').width('62.5%');
+                            $('.StepsAndProgressBarForWizardView').find('.current-step').removeClass('current-step').next().addClass('current-step');
                         }
                         if (linkId == '" . DrillDownDisplayAttributesForReportWizardView::getNextPageLinkId() . "')
                         {
@@ -121,6 +129,8 @@
                             $('#DrillDownDisplayAttributesForReportWizardView').hide();
                             " . $this->renderTreeViewAjaxScriptContent($formName, 'OrderBysForReportWizardView') . "
                             $('#OrderBysForReportWizardView').show();
+                            $('.StepsAndProgressBarForWizardView').find('.progress-bar').width('75%');
+                            $('.StepsAndProgressBarForWizardView').find('.current-step').removeClass('current-step').next().addClass('current-step');
                         }
                         if (linkId == '" . OrderBysForReportWizardView::getNextPageLinkId() . "')
                         {
@@ -129,6 +139,8 @@
                             $('#OrderBysForReportWizardView').hide();
                             " . $this->renderLoadChartSeriesAndRangesScriptContent($formName) . "
                             $('#ChartForReportWizardView').show();
+                            $('.StepsAndProgressBarForWizardView').find('.progress-bar').width('87.5%');
+                            $('.StepsAndProgressBarForWizardView').find('.current-step').removeClass('current-step').next().addClass('current-step');
                         }
                         if (linkId == '" . ChartForReportWizardView::getNextPageLinkId() . "')
                         {
@@ -136,6 +148,8 @@
                                 ReportWizardForm::GENERAL_DATA_VALIDATION_SCENARIO . "');
                             $('#ChartForReportWizardView').hide();
                             $('#GeneralDataForReportWizardView').show();
+                            $('.StepsAndProgressBarForWizardView').find('.progress-bar').width('100%');
+                            $('.StepsAndProgressBarForWizardView').find('.current-step').removeClass('current-step').next().addClass('current-step');
                         }
                         if (linkId == '" . GeneralDataForReportWizardView::getNextPageLinkId() . "')
                         {
@@ -169,6 +183,8 @@
                         $('#" . WizardActiveForm::makeErrorsSummaryId(static::getFormId()) . "').hide();
                         $('#ModuleForReportWizardView').show();
                         $('#FiltersForReportWizardView').hide();
+                        $('.StepsAndProgressBarForWizardView').find('.progress-bar').width('12.5%');
+                        $('.StepsAndProgressBarForWizardView').find('.current-step').removeClass('current-step').prev().addClass('current-step');
                         return false;
                     }
                 );
@@ -179,6 +195,8 @@
                         ReportWizardForm::FILTERS_VALIDATION_SCENARIO . "');
                         $('#FiltersForReportWizardView').show();
                         $('#GroupBysForReportWizardView').hide();
+                        $('.StepsAndProgressBarForWizardView').find('.progress-bar').width('25%');
+                        $('.StepsAndProgressBarForWizardView').find('.current-step').removeClass('current-step').prev().addClass('current-step');
                         return false;
                     }
                 );
@@ -189,6 +207,8 @@
                         ReportWizardForm::GROUP_BYS_VALIDATION_SCENARIO . "');
                         $('#GroupBysForReportWizardView').show();
                         $('#DisplayAttributesForReportWizardView').hide();
+                        $('.StepsAndProgressBarForWizardView').find('.progress-bar').width('37.5%');
+                        $('.StepsAndProgressBarForWizardView').find('.current-step').removeClass('current-step').prev().addClass('current-step');
                         return false;
                     }
                 );
@@ -199,6 +219,8 @@
                         ReportWizardForm::DISPLAY_ATTRIBUTES_VALIDATION_SCENARIO . "');
                         $('#DisplayAttributesForReportWizardView').show();
                         $('#DrillDownDisplayAttributesForReportWizardView').hide();
+                        $('.StepsAndProgressBarForWizardView').find('.progress-bar').width('50%');
+                        $('.StepsAndProgressBarForWizardView').find('.current-step').removeClass('current-step').prev().addClass('current-step');
                         return false;
                     }
                 );
@@ -209,6 +231,8 @@
                         ReportWizardForm::DRILL_DOWN_DISPLAY_ATTRIBUTES_VALIDATION_SCENARIO . "');
                         $('#DrillDownDisplayAttributesForReportWizardView').show();
                         $('#OrderBysForReportWizardView').hide();
+                        $('.StepsAndProgressBarForWizardView').find('.progress-bar').width('62.5%');
+                        $('.StepsAndProgressBarForWizardView').find('.current-step').removeClass('current-step').prev().addClass('current-step');
                         return false;
                     }
                 );
@@ -219,6 +243,8 @@
                         ReportWizardForm::ORDER_BYS_VALIDATION_SCENARIO . "');
                         $('#OrderBysForReportWizardView').show();
                         $('#ChartForReportWizardView').hide();
+                        $('.StepsAndProgressBarForWizardView').find('.progress-bar').width('75%');
+                        $('.StepsAndProgressBarForWizardView').find('.current-step').removeClass('current-step').prev().addClass('current-step');
                         return false;
                     }
                 );
@@ -229,6 +255,8 @@
                         ReportWizardForm::CHART_VALIDATION_SCENARIO . "');
                         $('#ChartForReportWizardView').show();
                         $('#GeneralDataForReportWizardView').hide();
+                        $('.StepsAndProgressBarForWizardView').find('.progress-bar').width('87.5%');
+                        $('.StepsAndProgressBarForWizardView').find('.current-step').removeClass('current-step').prev().addClass('current-step');
                         return false;
                     }
                 );

@@ -191,5 +191,15 @@
                                  'something' => 'somethingElse');
             $this->assertEquals($compareData, $realAttributesMetadata);
         }
+
+        public function testGetNonSearchableAttributes()
+        {
+            $data        = SearchForm::getNonSearchableAttributes();
+            $compareData = array(SearchForm::ANY_MIXED_ATTRIBUTES_SCOPE_NAME,
+                                 SearchForm::SELECTED_LIST_ATTRIBUTES,
+                                 KanbanBoard::GROUP_BY_ATTRIBUTE_VISIBLE_VALUES,
+                                 KanbanBoard::SELECTED_THEME);
+            $this->assertEquals($compareData, $data);
+        }
     }
 ?>
