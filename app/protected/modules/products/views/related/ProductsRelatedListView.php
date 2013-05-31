@@ -137,7 +137,7 @@
         protected static function getGridTemplate()
         {
             $preloader = '<div class="list-preloader"><span class="z-spinner"></span></div>';
-            return "\n{items}\n{pager}\n<span class='empty'><strong>{totalBarDetails}</strong></span>" . $preloader;
+            return "\n{items}\n{pager}\n<span class='products-portlet-totals'>{totalBarDetails}</span>" . $preloader;
         }
 
         /**
@@ -328,7 +328,7 @@
             }
             if ($innerContent != null)
             {
-                $content .= '<div class="horizontal-line latest-activity-toolbar">';
+                $content .= '<div class="filter-portlet-model-bar">';
                 $content .= $innerContent;
                 $content .= '</div>' . "\n";
             }

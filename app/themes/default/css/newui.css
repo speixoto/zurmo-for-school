@@ -975,7 +975,7 @@ body.blue .configuration-list li a:hover span:before,
 body.blue .configuration-list td:last-child a:hover,
 body.blue .configuration-list td:last-child a:hover span:before,
 body.blue .addfileinput-button:hover span,
-body.blue #HomeDashboardPortletSelectionView li span,
+body.blue .available-portlets span,
 body.blue .hide-welcome span,
 body.blue .hide-marketing-intro span,
 body.blue #kanban-board-options-link:hover,
@@ -1549,7 +1549,7 @@ body.brown .configuration-list li a:hover span:before,
 body.brown .configuration-list td:last-child a:hover,
 body.brown .configuration-list td:last-child a:hover span:before,
 body.brown .addfileinput-button:hover span,
-body.brown #HomeDashboardPortletSelectionView li span,
+body.brown .available-portlets span,
 body.brown .hide-welcome span,
 body.brown .hide-marketing-intro span,
 body.brown #kanban-board-options-link:hover,
@@ -2123,7 +2123,7 @@ body.lime .configuration-list li a:hover span:before,
 body.lime .configuration-list td:last-child a:hover,
 body.lime .configuration-list td:last-child a:hover span:before,
 body.lime .addfileinput-button:hover span,
-body.lime #HomeDashboardPortletSelectionView li span,
+body.lime .available-portlets span,
 body.lime .hide-welcome span,
 body.lime .hide-marketing-intro span,
 body.lime #kanban-board-options-link:hover,
@@ -2697,7 +2697,7 @@ body.cherry .configuration-list li a:hover span:before,
 body.cherry .configuration-list td:last-child a:hover,
 body.cherry .configuration-list td:last-child a:hover span:before,
 body.cherry .addfileinput-button:hover span,
-body.cherry #HomeDashboardPortletSelectionView li span,
+body.cherry .available-portlets span,
 body.cherry .hide-welcome span,
 body.cherry .hide-marketing-intro span,
 body.cherry #kanban-board-options-link:hover,
@@ -3271,7 +3271,7 @@ body.turquoise .configuration-list li a:hover span:before,
 body.turquoise .configuration-list td:last-child a:hover,
 body.turquoise .configuration-list td:last-child a:hover span:before,
 body.turquoise .addfileinput-button:hover span,
-body.turquoise #HomeDashboardPortletSelectionView li span,
+body.turquoise .available-portlets span,
 body.turquoise .hide-welcome span,
 body.turquoise .hide-marketing-intro span,
 body.turquoise #kanban-board-options-link:hover,
@@ -3845,7 +3845,7 @@ body.violet .configuration-list li a:hover span:before,
 body.violet .configuration-list td:last-child a:hover,
 body.violet .configuration-list td:last-child a:hover span:before,
 body.violet .addfileinput-button:hover span,
-body.violet #HomeDashboardPortletSelectionView li span,
+body.violet .available-portlets span,
 body.violet .hide-welcome span,
 body.violet .hide-marketing-intro span,
 body.violet #kanban-board-options-link:hover,
@@ -4419,7 +4419,7 @@ body.honey .configuration-list li a:hover span:before,
 body.honey .configuration-list td:last-child a:hover,
 body.honey .configuration-list td:last-child a:hover span:before,
 body.honey .addfileinput-button:hover span,
-body.honey #HomeDashboardPortletSelectionView li span,
+body.honey .available-portlets span,
 body.honey .hide-welcome span,
 body.honey .hide-marketing-intro span,
 body.honey #kanban-board-options-link:hover,
@@ -11144,6 +11144,23 @@ div.hasHalfs > div input {
   position: relative;
   top: 1px;
 }
+/*Products Portlet*/
+.products-portlet-totals {
+  display: block;
+  padding: 10px 0;
+  text-indent: 10px;
+  border-top: 1px solid #DFDFDF;
+  background: #111111 url(../images/datepicker-header.png) left top repeat-x !important;
+  color: #FFF;
+  font-weight: bold;
+}
+.editable-cell {
+  border-bottom: 1px dotted #ccc;
+  width: auto;
+  display: inline-block;
+  padding-bottom: 2px;
+  margin-top: 3px;
+}
 .juiportlet-columns .juiportlet-column {
   float: left;
   min-height: 400px;
@@ -12603,28 +12620,28 @@ table.configuration-list td:last-child a .z-label:before {
 .uploaded-logo ~ .file-size {
   vertical-align: top;
 }
-#HomeDashboardPortletSelectionView ul {
+.available-portlets {
   padding: 20px;
   list-style: none;
   zoom: 1;
 }
-#HomeDashboardPortletSelectionView ul:before {
+.available-portlets:before {
   content: "";
   display: table;
 }
-#HomeDashboardPortletSelectionView ul:after {
+.available-portlets:after {
   content: "";
   display: table;
   clear: both;
 }
-#HomeDashboardPortletSelectionView ul li {
+.available-portlets li {
   width: 50%;
   float: left;
   margin-bottom: 15px;
   color: #666;
   vertical-align: middle;
 }
-#HomeDashboardPortletSelectionView ul span {
+.available-portlets span {
   font-weight: normal;
   font-size: 24px;
   font-family: "ZurmoGamificationSymblyReguRg";
@@ -12634,11 +12651,11 @@ table.configuration-list td:last-child a .z-label:before {
   outline: none !important;
   display: inline-block;
 }
-#HomeDashboardPortletSelectionView ul a {
+.available-portlets a {
   outline: none !important;
   cursor: pointer;
 }
-#HomeDashboardPortletSelectionView ul a:foucs {
+.available-portlets a:foucs {
   outline: none;
 }
 /*Edit Portlet*/
@@ -18285,7 +18302,7 @@ a + .autoresponder-stats {
   content: "•";
 }
 #kanban-holder {
-  background: #fff;
+  background: #ffffff url(../images/kanban/yoga1.jpg) left bottom no-repeat;
   margin: 0;
   padding: 0;
   background-size: 100% 100%;
