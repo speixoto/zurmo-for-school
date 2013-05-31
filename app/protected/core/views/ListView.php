@@ -175,7 +175,7 @@
          */
         public function getRowsAreSelectable()
         {
-            if ($this->kanbanBoard != null)
+            if ($this->kanbanBoard != null && $this->kanbanBoard->getIsActive())
             {
                 return false;
             }

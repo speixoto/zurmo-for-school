@@ -34,53 +34,63 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * Action bar view for the marketing search and list user interface. Provides buttons like create, and links to
-     * queues.
-     */
-    class SecuredActionBarForMarketingSearchAndListView extends SecuredActionBarForSearchAndListView
+    class MarketingIntroLinkActionElement extends LinkActionElement
     {
-        /**
-         * @return array
-         */
-        public static function getDefaultMetadata()
+        public function getActionType()
         {
-            $metadata = array(
-                'global' => array(
-                    'toolbar' => array(
-                        'elements' => array(
-                            array('type'  => 'MarketingCreateLink',
-                                'htmlOptions' => array('class' => 'icon-create'),
-                            ),
-                            array(
-                                'type'            => 'MarketingDashboardLink',
-                                'htmlOptions'     => array( 'class' => 'icon-marketing-dashboard' )
-                            ),
-                            array(
-                                'type'            => 'MarketingListsLink',
-                                'htmlOptions'     => array( 'class' => 'icon-marketing-lists' )
-                            ),
-                            array(
-                                'type'            => 'CampaignsLink',
-                                'htmlOptions'     => array( 'class' => 'icon-marketing-campaigns' )
-                            ),
-                            array(
-                                'type'            => EmailTemplatesForMarketingLinkActionElement::getType(),
-                                'htmlOptions'     => array( 'class' => 'icon-email-templates' )
-                            ),
-                        ),
-                    ),
-                    'secondToolbar' => array(
-                        'elements' => array(
-                            array('type'  => 'MarketingIntroLink',
-                                'htmlOptions' => array('class' => 'icon-intro-change-this'), //todo: need new class name
-                            ),
-                        ),
-                    ),
+            return null;
+        }
 
+        public function render()
+        {
+            if($this->moduleId == 'marketing' && $this->controllerId == 'default' &&
+               (Yii::app()->controller->action->id == 'dashboardDetails' ||
+                Yii::app()->controller->action->id == null ||
+                Yii::app()->controller->action->id == 'index'))
+            {
+                $items          = array($this->renderMenuItem());
+                $clipName       = get_class($this);
+                $cClipWidget    = new CClipWidget();
+                $cClipWidget->beginClip($clipName);
+                $cClipWidget->widget('application.core.widgets.MinimalDynamicLabelMbMenu', array(
+                    'htmlOptions'   => array(
+                        'id' => $clipName,
+                        'class' => 'clickable-mbmenu'
+                    ),
+                    'items'         => $items,
+                ));
+                $cClipWidget->endClip();
+                return $cClipWidget->getController()->clips[$clipName];
+            }
+        }
+
+        public function renderMenuItem()
+        {
+            return array(
+                'label' => $this->getLabel(),
+                'url'   => $this->getRoute(),
+                'items' => array(
+                    array(
+                        'label'                 => '',
+                        'dynamicLabelContent'   => $this->renderHideOrShowContent(),
+                    ),
                 ),
             );
-            return $metadata;
+        }
+
+        protected function getDefaultLabel()
+        {
+            return Zurmo::t('MarketingModule', '?');
+        }
+
+        protected function getDefaultRoute()
+        {
+            return null;
+        }
+
+        protected function renderHideOrShowContent()
+        {
+            return 'something should go here';
         }
     }
 ?>

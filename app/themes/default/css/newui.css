@@ -6131,13 +6131,13 @@ body > .ui-autocomplete {
 #RecentlyViewedView li.type-WorkflowsModule em:before {
   content: '\20AC';
 }
-#RecentlyViewedView li.type-ProductModule em:before {
+#RecentlyViewedView li.type-ProductsModule em:before {
   content: '\003E';
 }
-#RecentlyViewedView li.type-ProductTemplateModule em:before {
+#RecentlyViewedView li.type-ProductTemplatesModule em:before {
   content: '\00AC';
 }
-#RecentlyViewedView li.type-ProductCategoryModule em:before {
+#RecentlyViewedView li.type-ProductsCategoryModule em:before {
   content: '\00D7';
 }
 #RecentlyViewedView li.type-CampaignsModule em:before {
@@ -6321,6 +6321,9 @@ body > .ui-autocomplete {
 .juiportlet-widget-head .view-toolbar-container {
   float: right;
   width: auto;
+}
+.juiportlet-widget-head .view-toolbar {
+  margin-bottom: 0;
 }
 .unread-count {
   display: inline-block;
@@ -10073,17 +10076,19 @@ div.hasHalfs > div input {
 }
 .edit-portlet-menu ul,
 .edit-row-menu ul {
-  width: 110px;
+  min-width: 110px;
   margin-left: -85px;
   list-style: none;
   top: 20px;
   font-size: 11px;
 }
 .edit-portlet-menu {
+  line-height: 1;
+  margin-top: 9px;
   margin-right: 15px;
 }
 .edit-portlet-menu ul {
-  top: 32px;
+  top: 20px;
 }
 /*Upcoming Meeting Pager*/
 .pager {
@@ -15096,6 +15101,18 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
 .EarlyBird .badge-icon:before {
   content: "#";
 }
+.game-badge-CreateProduct .badge-icon:before,
+.CreateProduct .badge-icon:before {
+  content: '\003E';
+}
+.game-badge-CreateProductTemplate .badge-icon:before,
+.CreateProductTemplate .badge-icon:before {
+  content: '\00AC';
+}
+.game-badge-CreateProductCategory .badge-icon:before,
+.CreateProductCategory .badge-icon:before {
+  content: '\00D7';
+}
 /*Big Icons for popup badges*/
 .game-level-change .badge-icon:before {
   content: ";";
@@ -18111,13 +18128,22 @@ a.user-link {
 }
 #ReportDetailsView,
 #CampaignDetailsView,
-#MarketingListDetailsView {
+#MarketingListDetailsView,
+#SecuredActionBarForMarketingSearchAndListView {
   position: relative;
   z-index: 10;
 }
 #ReportDetailsView + div,
 #CampaignDetailsView + div,
-#MarketingListDetailsView + div {
+#MarketingListDetailsView + div,
+#SecuredActionBarForMarketingSearchAndListView + div {
+  position: relative;
+  z-index: 5;
+}
+#ReportDetailsView + div + div,
+#CampaignDetailsView + div + div,
+#MarketingListDetailsView + div + div,
+#SecuredActionBarForMarketingSearchAndListView + div + div {
   position: relative;
   z-index: 1;
 }
@@ -18287,6 +18313,8 @@ a + .autoresponder-stats {
   clear: none;
   position: static;
   top: 0;
+  float: right;
+  margin-bottom: 30px;
 }
 .hide-marketing-intro span {
   font-weight: normal;
@@ -18302,7 +18330,7 @@ a + .autoresponder-stats {
   content: "•";
 }
 #kanban-holder {
-  background: #ffffff url(../images/kanban/yoga1.jpg) left bottom no-repeat;
+  background: #fff;
   margin: 0;
   padding: 0;
   background-size: 100% 100%;
@@ -18346,6 +18374,11 @@ a + .autoresponder-stats {
 }
 .kanban-column {
   float: left;
+  /*position: absolute;
+	top: 0;
+	bottom: 0;
+	display: block;*/
+
   border-left: 1px solid #dfdfdf;
 }
 .kanban-column:first-child {
