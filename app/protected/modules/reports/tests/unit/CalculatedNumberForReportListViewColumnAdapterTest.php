@@ -135,7 +135,7 @@
             $this->assertEquals('$412.00', $value);
             //Get value for calculated2 which is on a relateds model
             $value = CalculatedNumberForReportListViewColumnAdapter::resolveValue('attribute0', $reportResultsRowData);
-            $this->assertEquals(207, $value);
+            $this->assertEquals('$207.00', $value);
         }
     }
 ?>

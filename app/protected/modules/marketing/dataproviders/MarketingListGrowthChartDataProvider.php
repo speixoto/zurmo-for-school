@@ -54,8 +54,6 @@
             //anything meaningful
             //emails sent today, for those emails, how many unique opens, how many unique clicks
 
-
-
             $chartData = array();
             $chartData[] = array('existingSubscribers' => 5,  'newSubscribers' => 7,   'displayLabel' => 'Apr 17');
             $chartData[] = array('existingSubscribers' => 10, 'newSubscribers' => 17,  'displayLabel' => 'Apr 18');

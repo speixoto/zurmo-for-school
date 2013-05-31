@@ -155,7 +155,7 @@
                                   array('outboundType',              'length',    'max' => 4),
                                   array('outboundHost',              'length',    'max' => 64),
                                   array('outboundUsername',          'length',    'max' => 64),
-                                  array('outboundPassword',          'length',    'max' => 64),
+                                  array('outboundPassword',          'length',    'max' => 128),
                                   array('outboundSecurity',          'length',    'max' => 3),
                                   array('fromAddress',               'email'),
                                   array('replyToAddress',            'email'),
@@ -238,21 +238,15 @@
         }
 
         /**
-         * Encrypt password before validate
-         * @return true to signal success and that validate can proceed.
+         * Encrypt password after validate
          */
         public function afterValidate()
         {
-            if (!parent::afterValidate())
-            {
-                return false;
-            }
-
+            parent::afterValidate();
             if ($this->outboundPassword !== null && $this->outboundPassword !== '')
             {
                 $this->outboundPassword = ZurmoPasswordSecurityUtil::encrypt($this->outboundPassword);
              }
-            return true;
         }
     }
 ?>

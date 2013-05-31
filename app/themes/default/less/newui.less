@@ -1272,14 +1272,18 @@ body > .ui-autocomplete{
 	}
 }
 
-/*=dashboard
+/*=dashboard*/
 #HomeDashboardView{
-	.parent > ul{
-		min-width: 160px;
-		margin-top:0;
+	.view-toolbar-container{
+		position: relative;
+		z-index: 10;
+	}
+	.juiportlet-columns{
+		position: relative;
+		z-index: 1;
 	}
 }
-*/
+
 /*=Inner toolbar*/
 .float-bar{
 	width: 100%;
@@ -1561,7 +1565,7 @@ form,
 }
 
 .icon-marketing-dashboard:before,
-.icon-change-dashborad:before{
+#ChangeDashboardsMenu .parent > a:before{
 	content: "/";
 	.view-toolbar-icons();
 	top:-2px;

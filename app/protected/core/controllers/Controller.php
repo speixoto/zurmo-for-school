@@ -116,10 +116,10 @@
 
         protected function resolveKanbanBoardMetadataBeforeMakingDataProvider($searchForm, & $metadata)
         {
-            if($searchForm instanceof SearchForm)
+            if ($searchForm instanceof SearchForm)
             {
-                if($searchForm instanceof SearchForm && !Yii::app()->userInterface->isMobile()
-                   && $searchForm->getKanbanBoard() != null && $searchForm->getKanbanBoard()->getIsActive())
+                if ($searchForm instanceof SearchForm && !Yii::app()->userInterface->isMobile() &&
+                   $searchForm->getKanbanBoard() != null && $searchForm->getKanbanBoard()->getIsActive())
                 {
                     $searchForm->getKanbanBoard()->resolveVisibleValuesForAdaptedMetadata($metadata);
                 }

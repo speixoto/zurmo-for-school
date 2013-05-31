@@ -77,7 +77,7 @@
             if ($searchModel->getKanbanBoard() != null && !empty($_GET[$getArrayName]))
             {
                 assert('$searchModel instanceof SearchForm');
-                if(isset($_GET[$getArrayName][self::GROUP_BY_ATTRIBUTE_VISIBLE_VALUES]))
+                if (isset($_GET[$getArrayName][self::GROUP_BY_ATTRIBUTE_VISIBLE_VALUES]))
                 {
                     if (!is_array($_GET[$getArrayName][self::GROUP_BY_ATTRIBUTE_VISIBLE_VALUES]))
                     {
@@ -90,7 +90,7 @@
                     }
                     $searchModel->getKanbanBoard()->setGroupByAttributeVisibleValues($groupByAttributeVisibleValues);
                 }
-                if(isset($_GET[$getArrayName][self::SELECTED_THEME]))
+                if (isset($_GET[$getArrayName][self::SELECTED_THEME]))
                 {
                     if (empty($_GET[$getArrayName][self::SELECTED_THEME]))
                     {
@@ -105,6 +105,9 @@
             }
         }
 
+        /**
+         * @return string
+         */
         public static function getGridViewWidgetPath()
         {
             return 'application.core.kanbanBoard.widgets.KanbanBoardExtendedGridView';
@@ -119,7 +122,7 @@
         {
             $this->model            = $model;
             $this->groupByAttribute = $groupByAttribute;
-            if(!$this->model->{$this->groupByAttribute} instanceof CustomField)
+            if (!$this->model->{$this->groupByAttribute} instanceof CustomField)
             {
                 throw new NotSupportedException();
             }
@@ -127,6 +130,9 @@
             $this->groupByAttributeVisibleValues  = array_keys($this->groupByDataAndTranslatedLabels);
         }
 
+        /**
+         * @return bool
+         */
         public function getIsActive()
         {
             return $this->active;
@@ -142,45 +148,65 @@
             $this->active = false;
         }
 
+        /**
+         * @return array
+         */
         public function getGridViewParams()
         {
             return array('groupByAttribute'               => $this->groupByAttribute,
                          'groupByAttributeVisibleValues'  => $this->groupByAttributeVisibleValues,
                          'groupByDataAndTranslatedLabels' => $this->groupByDataAndTranslatedLabels,
-                         'selectedTheme' => $this->getSelectedTheme());
+                         'selectedTheme'                  => $this->getSelectedTheme());
         }
 
+        /**
+         * @return array
+         */
         public function getGroupByAttributeVisibleValues()
         {
             return $this->groupByAttributeVisibleValues;
         }
 
+        /**
+         * @param $groupByAttributeVisibleValues
+         */
         public function setGroupByAttributeVisibleValues($groupByAttributeVisibleValues)
         {
             assert('$groupByAttributeVisibleValues === null || is_array($groupByAttributeVisibleValues)');
             $this->groupByAttributeVisibleValues = $groupByAttributeVisibleValues;
         }
 
+        /**
+         * @return array
+         */
         public function getGroupByDataAndTranslatedLabels()
         {
             return $this->groupByDataAndTranslatedLabels;
         }
 
+        /**
+         * @return mixed
+         */
         public function getSelectedTheme()
         {
             return $this->selectedTheme;
         }
 
+        /**
+         * @param $selectedTheme
+         */
         public function setSelectedTheme($selectedTheme)
         {
             assert('is_string($selectedTheme) || $selectedTheme == null');
             $this->selectedTheme = $selectedTheme;
         }
 
+        /**
+         * @return array
+         */
         public function getThemeNamesAndLabels()
         {
-            //todo:
-            return array(''                           => Zurmo::t('Core', 'None'),
+            return array(''                           => Zurmo::t('Core', 'White'),
                          'kanban-background-football' => Zurmo::t('Core', 'Football'),
                          'kanban-background-tennis'   => Zurmo::t('Core', 'Tennis'),
                          'kanban-background-motor'    => Zurmo::t('Core', 'Motor Sport'));
@@ -191,11 +217,17 @@
             $this->clearSticky = true;
         }
 
+        /**
+         * @return bool
+         */
         public function getClearSticky()
         {
             return $this->clearSticky;
         }
 
+        /**
+         * @param array $metadata
+         */
         public function resolveVisibleValuesForAdaptedMetadata(& $metadata)
         {
             $clauseCount = count($metadata['clauses']);
@@ -236,6 +268,9 @@
             }
         }
 
+        /**
+         * @return array
+         */
         protected function resolveGroupByDataAndTranslatedLabels()
         {
             $dropDownModel = $this->model->{$this->groupByAttribute};

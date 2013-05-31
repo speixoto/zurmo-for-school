@@ -68,7 +68,7 @@
             $cs->registerCoreScript('yii');
             if (Yii::app()->getClientScript()->isIsolationMode())
             {
-                $handler = "jQQ.isolate (function(jQuery,$)
+                $handler = "jQQ.isolate (function(jQuery, $)
                             {
                                 jQuery.yii.submitForm(document.getElementById('saveyt1'), '', $params);
                             }); return false;";

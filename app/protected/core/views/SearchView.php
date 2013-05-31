@@ -398,6 +398,9 @@
                                             'style'    => 'display:none'), $content);
         }
 
+        /**
+         * @return string
+         */
         protected function getKanbanBoardOptionsLinkContent()
         {
             if ($this->model->getKanbanBoard() != null && $this->model->getKanbanBoard()->getIsActive())
@@ -406,6 +409,10 @@
             }
         }
 
+        /**
+         * @param ZurmoActiveForm $form
+         * @return string
+         */
         protected function renderKanbanBoardOptionsContent(ZurmoActiveForm $form)
         {
             if ($this->model->getKanbanBoard() == null || !$this->model->getKanbanBoard()->getIsActive())
@@ -440,7 +447,6 @@
             $content = $element->render();
             return ZurmoHtml::tag('div', array('class' => 'kanban-board-options-view', 'style' => 'display:none'), $content);
         }
-
 
         protected function renderViewToolBarContainerForAdvancedSearch($form)
         {

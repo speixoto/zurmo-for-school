@@ -50,6 +50,7 @@
         public static function resolveSubjectAndMetricsSummary(Autoresponder $autoresponder, $redirectUrl)
         {
             $content  = static::resolveSubjectWithRedirectURl($autoresponder->subject, $autoresponder->id, $redirectUrl);
+            $content .= static::renderExtraInfoContent($autoresponder);
             $content .= static::renderMetricsContent($autoresponder);
             return $content;
         }
@@ -59,6 +60,26 @@
             $url = Yii::app()->createUrl('/autoresponders/default/edit',
                                                                 array('id' => $id, 'redirectUrl' => $redirectUrl));
             return ZurmoHtml::link($subject, $url, array('class' => 'edit-autoresponder-link'));
+        }
+
+        protected static function renderExtraInfoContent(Autoresponder $autoresponder)
+        {
+            $operationValuesAndLabels = Autoresponder::getOperationTypeDropDownArray();
+            if (!isset($operationValuesAndLabels[$autoresponder->operationType]))
+            {
+                return;
+            }
+            $intervalValuesAndLabels = Autoresponder::getIntervalDropDownArray();
+            if (!isset($intervalValuesAndLabels[$autoresponder->secondsFromOperation]))
+            {
+                return;
+            }
+            $content = null;
+            $content .= Zurmo::t('AutorespondersModule',
+                                 'Send {timeFrame} after {operation}',
+                                 array('{timeFrame}' => $intervalValuesAndLabels[$autoresponder->secondsFromOperation],
+                                       '{operation}' => $operationValuesAndLabels[$autoresponder->operationType]));
+            return $content;
         }
 
         protected static function renderMetricsContent(Autoresponder $autoresponder)
@@ -71,7 +92,6 @@
             $clickRate      = $clickQuantity / $sentQuantity; //todo: resolve if 0 so we aren't dividing by zero, and round
             $optOutQuantity = 100;
             $optOutRate     = $optOutQuantity / $sentQuantity; //todo: resolve if 0 so we aren't dividing by zero, and round
-
 
             $content = null;
             $content .= ZurmoHtml::tag('div', array('class' => 'autoresponder-stats'),

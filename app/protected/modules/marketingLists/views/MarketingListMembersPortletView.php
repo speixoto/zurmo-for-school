@@ -137,7 +137,7 @@
             {
                 $actionElementBar = $this->renderViewToolBar();
             }
-            elseif($this->shouldRenderActionElementBar())
+            elseif ($this->shouldRenderActionElementBar())
             {
                 $actionElementBar = ZurmoHtml::tag('div', array('class' => 'portlet-view-toolbar view-toolbar'),
                                                                                 $this->renderActionElementBar(false));
@@ -147,7 +147,7 @@
                 $actionElementBar = null;
             }
             $content = null;
-            if($actionElementBar != null)
+            if ($actionElementBar != null)
             {
                 $content .= ZurmoHtml::tag('div', array('class' => $this->getWrapperDivClass()), $actionElementBar);
             }

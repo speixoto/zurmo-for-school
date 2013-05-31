@@ -48,6 +48,7 @@
         const  OPEN_STAGE = 'Open';
         const  LOST_STAGE = 'Lost';
         const  WON_STAGE  = 'Won';
+
         /**
          * What model to filter by if any for the latest activity feed.  Defaults to not filtering on anything, thus
          * showing all available models that implement the MashableActivityInterface.

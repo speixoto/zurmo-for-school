@@ -52,6 +52,8 @@
             'filteredByStage'
         );
 
+        protected $relationModuleId;
+
         function __construct($viewData, $params, $uniqueLayoutId)
         {
             parent::__construct($viewData, $params, $uniqueLayoutId);
@@ -59,7 +61,7 @@
             $productsConfigurationForm = $this->getConfigurationForm();
             $this->resolveProductsConfigFormFromRequest($productsConfigurationForm);
             $this->configurationForm   = $productsConfigurationForm;
-            $this->moduleId            = $this->params['relationModuleId'];
+            $this->relationModuleId    = $this->params['relationModuleId'];
         }
 
         public static function getDefaultMetadata()
@@ -419,14 +421,14 @@
          */
         protected function getPortletDetailsUrl()
         {
-            $params = array_merge($_GET, array('portletId'      => $this->params['portletId'],
-                                               'uniqueLayoutId' => $this->uniqueLayoutId,
-                                               'redirectUrl'    => null,
-                                               'portletParams'  => array('relationModuleId' => $this->moduleId,
-                                               'relationModelId'=> $this->params['relationModel']->id)
+            $params = array_merge($_GET, array('portletId'       => $this->params['portletId'],
+                                               'uniqueLayoutId'  => $this->uniqueLayoutId,
+                                               'redirectUrl'     => null,
+                                               'portletParams'   => array('relationModuleId' => $this->relationModuleId,
+                                               'relationModelId' => $this->params['relationModel']->id)
                                                )
                                   );
-            return Yii::app()->createUrl('/' . $this->moduleId . '/defaultPortlet/modalRefresh',$params);
+            return Yii::app()->createUrl('/' . $this->relationModuleId . '/defaultPortlet/modalRefresh', $params);
         }
 
         protected function makeProductSearchAttributeData($form)
@@ -438,7 +440,7 @@
                                                         'operatorType'         => 'equals',
                                                         'value'                => (int)$this->params['relationModel']->id,
                                                     );
-            if($form->filteredByStage != ProductsConfigurationForm::FILTERED_BY_ALL_STAGES)
+            if ($form->filteredByStage != ProductsConfigurationForm::FILTERED_BY_ALL_STAGES)
             {
                 $searchAttributeData['clauses'][2] = array(
                                                             'attributeName'        => 'stage',

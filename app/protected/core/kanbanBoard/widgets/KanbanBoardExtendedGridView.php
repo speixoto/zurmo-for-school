@@ -63,8 +63,14 @@
          */
         public $groupByDataAndTranslatedLabels = array();
 
+        /**
+         * @var array
+         */
         public $cardColumns = array();
 
+        /**
+         * @var string
+         */
         public $selectedTheme;
 
         /**
@@ -97,17 +103,16 @@
             {
                 $this->renderOverMaxCountText();
             }
-
-            elseif($n > 0)
+            elseif ($n > 0)
             {
                 echo "<div id=\"kanban-board\">\n";
-                foreach($columnsData as $attributeValue => $attributeValueAndData)
+                foreach ($columnsData as $attributeValue => $attributeValueAndData)
                 {
                     echo "<div class=\"kanban-column\" $width>\n";
                     echo "<div data-value='" . $attributeValue . "' class='droppable-dynamic-rows-container'>\n";
                     echo ZurmoHtml::tag('div', array('class' => 'column-header'), $this->resolveGroupByColumnHeaderLabel($attributeValue));
                     $listItems = '';
-                    foreach($attributeValueAndData as $row)
+                    foreach ($attributeValueAndData as $row)
                     {
                         $listItems .= ZurmoHtml::tag('li',
                                                       array('class' => 'kanban-card item-to-place',
@@ -125,7 +130,6 @@
             else
             {
                 $this->renderEmptyText();
-
             }
             echo "</td></tr>\n";
             echo "</tbody>\n";
@@ -137,9 +141,12 @@
         public function renderOverMaxCountText()
         {
             $label = Zurmo::t('Core', 'There are too many results to display. Try filtering your search or switching to the grid view.');
-            echo CHtml::tag('span', array('class'=>'empty'), $label);
+            echo CHtml::tag('span', array('class' => 'empty'), $label);
         }
 
+        /**
+         * @return int
+         */
         protected function getOffset()
         {
             $pagination = $this->dataProvider->getPagination();
@@ -154,22 +161,28 @@
             return $offset;
         }
 
-
+        /**
+         * @param $value
+         * @return string
+         */
         protected function resolveGroupByColumnHeaderLabel($value)
         {
-            if(isset($this->groupByDataAndTranslatedLabels[$value]))
+            if (isset($this->groupByDataAndTranslatedLabels[$value]))
             {
                 return $this->groupByDataAndTranslatedLabels[$value];
             }
             return $value;
         }
 
+        /**
+         * @return array
+         */
         protected function resolveDataIntoKanbanColumns()
         {
             $columnsData = $this->makeColumnsDataAndStructure();
-            foreach($this->dataProvider->data as $row => $data)
+            foreach ($this->dataProvider->data as $row => $data)
             {
-                if(isset($columnsData[$data->{$this->groupByAttribute}->value]))
+                if (isset($columnsData[$data->{$this->groupByAttribute}->value]))
                 {
                     $columnsData[$data->{$this->groupByAttribute}->value][] = $row;
                 }
@@ -177,10 +190,13 @@
             return $columnsData;
         }
 
+        /**
+         * @return array
+         */
         protected function makeColumnsDataAndStructure()
         {
             $columnsData = array();
-            foreach($this->groupByAttributeVisibleValues as $value)
+            foreach ($this->groupByAttributeVisibleValues as $value)
             {
                 $columnsData[$value] = array();
             }
@@ -193,7 +209,8 @@
                 Yii::app()->getAssetManager()->publish(
                     Yii::getPathOfAlias('application.core.kanbanBoard.widgets.assets')) . '/KanbanUtils.js');
             $script = '
-                $(".droppable-dynamic-rows-container").live("drop", function(event, ui){
+                $(".droppable-dynamic-rows-container").live("drop", function(event, ui)
+                {
                    ' . $this->getAjaxForDroppedAttribute() . '
                    $("ul", this).append(ui.draggable);
                 });
@@ -235,15 +252,18 @@
             return  Yii::app()->createUrl($moduleId . '/default/updateAttributeValue', array('attribute' => $this->groupByAttribute));
         }
 
+        /**
+         * @param array $row
+         * @return string
+         */
         protected function renderCardDetailsContent($row)
         {
             $cardDetails = null;
-            foreach($this->cardColumns as $cardData)
+            foreach ($this->cardColumns as $cardData)
             {
                 $content      = $this->evaluateExpression($cardData['value'], array('data' => $this->dataProvider->data[$row],
                                                                                     'offset' => ($this->getOffset() + $row)));
                 $cardDetails .= ZurmoHtml::tag('span', array('class' => $cardData['class']), $content);
-
             }
             $userUrl      = Yii::app()->createUrl('/users/default/details', array('id' => $this->dataProvider->data[$row]->owner->id));
             $cardDetails .= ZurmoHtml::link($this->dataProvider->data[$row]->owner->getAvatarImage(20), $userUrl,

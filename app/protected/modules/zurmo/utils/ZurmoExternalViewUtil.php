@@ -54,7 +54,7 @@
                 {
                     $headBody['js'][] = $child->getAttribute('src');
                 }
-                else if ($child->nodeName == 'link' && $child->hasAttribute('rel'))
+                elseif ($child->nodeName == 'link' && $child->hasAttribute('rel'))
                 {
                     if ($child->getAttribute('rel') == 'stylesheet')
                     {
@@ -63,7 +63,7 @@
                                                    'href' => $child->getAttribute('href'));
                     }
                 }
-                else if ($child->nodeName == 'style')
+                elseif ($child->nodeName == 'style')
                 {
                     $headBody['style'][] = $child->nodeValue;
                 }
@@ -93,7 +93,7 @@
         {
             $scriptTagNodes = $bodyContent->getElementsByTagName('script');
             $scriptTags     = array();
-            foreach($scriptTagNodes as $scriptTagNode)
+            foreach ($scriptTagNodes as $scriptTagNode)
             {
                 $bodyContent->removeChild($scriptTagNode);
                 $scriptTagDetail = array();
@@ -149,7 +149,7 @@
             $scriptFileContents = file_get_contents($path);
             if (strpos($path, 'jquery.min.js') === false && strpos($path, 'jquery.ui.min.js') === false)
             {
-                $scriptFileContents = "jQQ.isolate (function(jQuery,$) { " . $scriptFileContents . " });";
+                $scriptFileContents = "jQQ.isolate (function(jQuery, $) { " . $scriptFileContents . " });";
             }
             return $scriptFileContents;
         }

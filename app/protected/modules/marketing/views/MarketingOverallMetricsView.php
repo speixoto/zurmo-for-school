@@ -40,6 +40,7 @@
     class MarketingOverallMetricsView extends MarketingMetricsView implements PortletViewInterface
     {
         protected $formModelClassName = 'MarketingOverallMetricsForm';
+
         /**
          * The view's module class name.
          */
@@ -65,7 +66,6 @@
 
         public function getConfigurationView()
         {
-
             return new MarketingOverallMetricsConfigView($this->resolveForm(), $this->params);
         }
     }

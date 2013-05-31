@@ -42,6 +42,7 @@
         const TYPE_KANBAN_BOARD = 'KanbanBoard';
 
         const TYPE_GRID         = 'Grid';
+
         /**
          * @return null
          */
@@ -85,7 +86,7 @@
         protected function resolveKanbanBoardClass()
         {
             $kanbanBoardClass = 'icon-kanban-board-view-type';
-            if($this->getActive() == static::TYPE_KANBAN_BOARD)
+            if ($this->getActive() == static::TYPE_KANBAN_BOARD)
             {
                 $kanbanBoardClass .= ' active';
             }
@@ -98,7 +99,7 @@
         protected function resolveGridClass()
         {
             $gridClass = 'icon-grid-view-type';
-            if($this->getActive() == static::TYPE_GRID)
+            if ($this->getActive() == static::TYPE_GRID)
             {
                 $gridClass .= ' active';
             }

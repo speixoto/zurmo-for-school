@@ -28,7 +28,7 @@
     {
         const STATUS_SUCCESS          = 1;
 
-        const STATUS_ERROR	          = 2;
+        const STATUS_ERROR            = 2;
 
         const STATUS_SUCCESS_MESSAGE  = 'Success';
 

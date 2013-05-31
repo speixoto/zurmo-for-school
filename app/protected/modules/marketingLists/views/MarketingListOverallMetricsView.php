@@ -40,6 +40,7 @@
     class MarketingListOverallMetricsView extends MarketingMetricsView implements PortletViewInterface
     {
         protected $formModelClassName = 'MarketingOverallMetricsForm';
+
         /**
          * The view's module class name.
          */
@@ -58,7 +59,7 @@
         {
             $content  = ZurmoHtml::tag('h3', array(), Zurmo::t('MarketingListsModule', 'What is going on with this list?'));
             $content .= $this->renderConfigureElementsContent();
-            $content = ZurmoHtml::tag('div', array('class' => 'left-column full-width metrics-details '.$this->getWrapperDivClass()), $content);
+            $content = ZurmoHtml::tag('div', array('class' => 'left-column full-width metrics-details ' . $this->getWrapperDivClass()), $content);
             $content .= $this->renderMetricsWrapperContent();
             return $content;
         }

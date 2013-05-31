@@ -149,7 +149,7 @@
             {
                 return false;
             }
-            if($this->activeActionElementType == ListViewTypesToggleLinkActionElement::TYPE_KANBAN_BOARD &&
+            if ($this->activeActionElementType == ListViewTypesToggleLinkActionElement::TYPE_KANBAN_BOARD &&
                 ($elementInformation['type'] == 'MassEditLink' ||
                 $elementInformation['type'] == 'MassDeleteLink' ||
                 $elementInformation['type'] == 'ExportLink'))
