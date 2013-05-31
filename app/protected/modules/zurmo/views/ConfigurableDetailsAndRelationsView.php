@@ -126,15 +126,30 @@
             return ModalView::getAjaxOptionsForModalLink($title);
         }
 
+        /**
+         * Resolves url for lock/unlock functionality
+         * @param string $id
+         * @param string $lockPortlets
+         * @return string
+         */
         private function resolveLockPortletUrl($id, $lockPortlets)
         {
-           $url = Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/details',
+            assert('is_string($lockPortlets)');
+            assert('is_string($id)');
+            $url = Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/details',
                                                         array('id' => $id, 'lockPortlets' => $lockPortlets));
-           return $url;
+            return $url;
         }
 
+        /**
+         * Resolves portlet configurable parameters
+         * @param boolean $portletsAreMovable
+         * @param boolean $portletsAreRemovable
+         */
         private function resolvePortletConfigurableParams(& $portletsAreMovable, & $portletsAreRemovable)
         {
+            assert('is_bool($portletsAreMovable)');
+            assert('is_bool($portletsAreRemovable)');
             $getData = GetUtil::getData();
             if(isset($getData['lockPortlets']))
             {
