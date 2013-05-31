@@ -38,7 +38,6 @@
     {
         const TOGGLE_UNSUBSCRIBED_COOKIE_NAME = 'toggleUnsubscribed_Message';
 
-        // TODO: @Shoaibi: Critical: Tests
         public function filters()
         {
             return array();
@@ -130,7 +129,6 @@
             }
             if (empty($members))
             {
-                // TODO: @Shoaibi: Critical: Review this logic.
                 $marketingList  = MarketingList::getById(intval($marketingListId));
                 if ($unsubscribed === 1 && !empty($marketingList) && $marketingList->anyoneCanSubscribe &&
                                                             !$marketingList->memberAlreadyExists($contact->id))
