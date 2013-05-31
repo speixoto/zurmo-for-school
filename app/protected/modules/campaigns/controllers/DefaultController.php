@@ -106,11 +106,14 @@
 
         public function actionCreate()
         {
-           $breadcrumbLinks    = static::getDetailsAndEditBreadcrumbLinks();
-           $breadcrumbLinks[]  = Zurmo::t('CampaignsModule', 'Create');
-            //todo: wizard
-           $editView = new CampaignEditView($this->getId(), $this->getModule()->getId(),
-                                                 $this->attemptToSaveModelFromPost(new Campaign()),
+           $breadcrumbLinks            = static::getDetailsAndEditBreadcrumbLinks();
+           $breadcrumbLinks[]          = Zurmo::t('CampaignsModule', 'Create');
+           $campaign                   = new Campaign();
+           $campaign->status           = Campaign::STATUS_ACTIVE;
+           $campaign->supportsRichText = true;
+           $campaign->enableTracking   = true;
+           $editView                   = new CampaignEditView($this->getId(), $this->getModule()->getId(),
+                                                 $this->attemptToSaveModelFromPost($campaign),
                                                  Zurmo::t('Default', 'Create Campaign'));
             $view               = new CampaignsPageView(MarketingDefaultViewUtil::
                                   makeViewWithBreadcrumbsForCurrentUser($this, $editView,
@@ -173,6 +176,11 @@
         protected static function getSearchFormClassName()
         {
             return 'CampaignsSearchForm';
+        }
+
+        protected static function getZurmoControllerUtil()
+        {
+            return new CampaignZurmoControllerUtil();
         }
     }
 ?>

@@ -110,7 +110,7 @@
             return self::getSubset($joinTablesAdapter, null, $pageSize, $where, null);
         }
 
-        public static function getByProcessedAndSendingDateTime($processed, $timestamp = null, $pageSize = null)
+        public static function getByProcessedAndSendOnDateTime($processed, $timestamp = null, $pageSize = null)
         {
             if (empty($timestamp))
             {
@@ -127,7 +127,7 @@
                 ),
                 2 => array(
                     'attributeName'             => 'campaign',
-                    'relatedAttributeName'      => 'sendingDateTime',
+                    'relatedAttributeName'      => 'sendOnDateTime',
                     'operatorType'              => 'lessThan',
                     'value'                     => $dateTime,
                 ),
@@ -138,7 +138,7 @@
             return self::getSubset($joinTablesAdapter, null, $pageSize, $where, null);
         }
 
-        public static function getByProcessedAndStatusAndSendingDateTime($processed, $status, $timestamp = null, $pageSize = null)
+        public static function getByProcessedAndStatusAndSendOnDateTime($processed, $status, $timestamp = null, $pageSize = null)
         {
             if (empty($timestamp))
             {
@@ -162,7 +162,7 @@
                 ),
                 3 => array(
                     'attributeName'             => 'campaign',
-                    'relatedAttributeName'      => 'sendingDateTime',
+                    'relatedAttributeName'      => 'sendOnDateTime',
                     'operatorType'              => 'lessThan',
                     'value'                     => $dateTime,
                 ),

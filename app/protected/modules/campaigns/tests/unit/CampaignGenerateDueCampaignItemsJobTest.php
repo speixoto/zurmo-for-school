@@ -93,7 +93,6 @@
                                                 Campaign::STATUS_PROCESSING,
                                                 null,
                                                 null,
-                                                null,
                                                 $marketingList);
             CampaignTestHelper::createCampaign('Incomplete',
                                                 'subject',
@@ -106,7 +105,6 @@
                                                 Campaign::STATUS_INCOMPLETE,
                                                 null,
                                                 null,
-                                                null,
                                                 $marketingList);
             CampaignTestHelper::createCampaign('Paused',
                                                 'subject',
@@ -117,7 +115,6 @@
                                                 null,
                                                 Campaign::TYPE_MARKETING_LIST,
                                                 Campaign::STATUS_PAUSED,
-                                                null,
                                                 null,
                                                 null,
                                                 $marketingList);
@@ -144,7 +141,6 @@
                                                 null,
                                                 Campaign::TYPE_MARKETING_LIST,
                                                 Campaign::STATUS_ACTIVE,
-                                                null,
                                                 $tenDaysFromNowDateTime,
                                                 null,
                                                 $marketingList);
@@ -169,7 +165,6 @@
                                                 null,
                                                 Campaign::TYPE_MARKETING_LIST,
                                                 Campaign::STATUS_ACTIVE,
-                                                null,
                                                 null,
                                                 null,
                                                 $marketingList);
@@ -209,7 +204,6 @@
                                                 null,
                                                 Campaign::TYPE_MARKETING_LIST,
                                                 Campaign::STATUS_ACTIVE,
-                                                null,
                                                 null,
                                                 null,
                                                 $marketingList);
@@ -264,7 +258,6 @@
                                                                             null,
                                                                             null,
                                                                             Campaign::TYPE_MARKETING_LIST,
-                                                                            null,
                                                                             null,
                                                                             null,
                                                                             null,

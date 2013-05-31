@@ -40,6 +40,10 @@
         {
             $metadata = array(
                 'global' => array(
+                    'nonPlaceableAttributeNames' => array(
+                        'htmlContent',
+                        'textContent',
+                    ),
                      'panels' => array(
                         array(
                             'rows' => array(

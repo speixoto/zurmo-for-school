@@ -90,6 +90,7 @@
 
         /**
          * Returns the display name for the model class.
+         * @param null $language
          * @return dynamic label name based on module.
          */
         protected static function getLabel($language = null)
@@ -99,6 +100,7 @@
 
         /**
          * Returns the display name for plural of the model class.
+         * @param null $language
          * @return dynamic label name based on module.
          */
         protected static function getPluralLabel($language = null)
@@ -139,7 +141,7 @@
             {
                 $sendingTimestamp = time();
             }
-            $sendingDateTime = DateTimeUtil::convertTimestampToDbFormatDateTime($sendingTimestamp);
+            $sendOnDateTime = DateTimeUtil::convertTimestampToDbFormatDateTime($sendingTimestamp);
             assert('is_int($status)');
             $searchAttributeData = array();
             $searchAttributeData['clauses'] = array(
@@ -149,9 +151,9 @@
                     'value'                     => intval($status),
                 ),
                 2 => array(
-                    'attributeName'             => 'sendingDateTime',
+                    'attributeName'             => 'sendOnDateTime',
                     'operatorType'              => 'lessThan',
-                    'value'                     => $sendingDateTime,
+                    'value'                     => $sendOnDateTime,
                 ),
             );
             $searchAttributeData['structure'] = '(1 and 2)';
@@ -169,8 +171,7 @@
                     'name',
                     'subject',
                     'status',
-                    'sendNow',
-                    'sendingDateTime',
+                    'sendOnDateTime',
                     'supportsRichText',
                     'enableTracking',
                     'htmlContent',
@@ -182,21 +183,17 @@
                     array('name',                   'required'),
                     array('name',                   'type',    'type' => 'string'),
                     array('name',                   'length',  'min'  => 3, 'max' => 64),
-                    //array('type',                 'required'), // TODO: @Shoaibi: Medium: We don't need type for now.
+                    array('type',                   'required'),
                     array('type',                   'type',    'type' => 'integer'),
-                    array('type',                   'numerical',  'min'  => static::TYPE_MARKETING_LIST,
-                                                                                        'max' => static::TYPE_DYNAMIC),
                     array('type',                   'default', 'value' => static::TYPE_MARKETING_LIST),
                     array('status',                 'required'),
                     array('status',                 'type',    'type' => 'integer'),
-                    array('status',                 'numerical',  'min'  => static::STATUS_INCOMPLETE,
-                                                                                    'max' => static::STATUS_COMPLETED),
+                    array('type',                   'default', 'value' => static::STATUS_ACTIVE),
                     array('supportsRichText',       'required'),
                     array('supportsRichText',       'boolean'),
-                    array('sendNow',                'required'),
-                    array('sendNow',                'boolean'),
-                    array('sendingDateTime',        'type', 'type' => 'datetime'),
-                    array('sendingDateTime',        'validateSendDateTimeAgainstSendNow'),
+                    array('sendOnDateTime',         'required'),
+                    array('sendOnDateTime',         'type', 'type' => 'datetime'),
+                    array('sendOnDateTime',         'dateTimeDefault', 'value' => DateTimeCalculatorUtil::NOW),
                     array('fromName',                'required'),
                     array('fromName',               'type',    'type' => 'string'),
                     array('fromName',               'length',  'min'  => 3, 'max' => 64),
@@ -215,6 +212,7 @@
                     array('textContent',            'CampaignMergeTagsValidator', 'except' => 'autoBuildDatabase'),
                     array('enableTracking',         'boolean'),
                     array('enableTracking',         'default', 'value' => false),
+                    array('marketingList',          'required'),
                 ),
                 'relations' => array(
                     'campaignItems'     => array(RedBeanModel::HAS_MANY, 'CampaignItem'),
@@ -222,26 +220,16 @@
                     'files'             => array(RedBeanModel::HAS_MANY,  'FileModel', RedBeanModel::OWNED)
                 ),
                 'elements' => array(
-                    'htmlContent'                   => 'TextArea',
-                    'textContent'                   => 'TextArea',
-                    'supportsRichText'              => 'CheckBox',
-                    'enableTracking'                => 'CheckBox',
-                    'sendNow'                       => 'CheckBox',
-                    'sendDateTime'                  => 'DateTime',
+                    'marketingList'    => 'MarketingList',
+                    'htmlContent'      => 'TextArea',
+                    'textContent'      => 'TextArea',
+                    'supportsRichText' => 'CheckBox',
+                    'enableTracking'   => 'CheckBox',
+                    'sendDateTime'     => 'DateTime',
                 ),
                 'defaultSortAttribute' => 'name',
             );
             return $metadata;
-        }
-
-        public function validateSendDateTimeAgainstSendNow($attribute, $params)
-        {
-            if (!$this->hasErrors('sendNow') && $this->sendNow == 0 && empty($this->$attribute))
-            {
-                $this->addError($attribute, Zurmo::t('CampaignsModule', 'Send On cannot be blank.'));
-                return false;
-            }
-            return true;
         }
 
         public function beforeSave()
@@ -249,11 +237,6 @@
             if (!parent::beforeSave())
             {
                 return false;
-            }
-            if ($this->sendNow == 1 && empty($this->sendingDateTime))
-            {
-                // set sendingDateTime to a past date so its sending immediately in next job execution.
-                $this->sendingDateTime = DateTimeUtil::convertTimestampToDbFormatDateTime(time() - 180);
             }
             return true;
         }
@@ -265,9 +248,8 @@
                     'name'                  => Zurmo::t('ZurmoModule', 'Name', null,  null, $language),
                     'type'                  => Zurmo::t('Core', 'Type', null,  null, $language),
                     'status'                => Zurmo::t('CampaignsModule', 'Status', null,  null, $language),
-                    'sendNow'               => Zurmo::t('CampaignsModule', 'Send Now?', null,  null, $language),
-                    'sendingDateTime'       => Zurmo::t('CampaignsModule', 'Send On', null,  null, $language),
-                    'supportsRichText'      => Zurmo::t('CampaignsModule', 'Supports Rich Text(HTML) outgoing emails',
+                    'sendOnDateTime'       => Zurmo::t('CampaignsModule', 'Send On', null,  null, $language),
+                    'supportsRichText'      => Zurmo::t('CampaignsModule', 'Supports HTML',
                                                                                                 null,  null, $language),
                     'fromName'              => Zurmo::t('CampaignsModule', 'From Name', null,  null, $language),
                     'fromAddress'           => Zurmo::t('CampaignsModule', 'From Address', null,  null, $language),
@@ -276,6 +258,11 @@
                     'textContent'           => Zurmo::t('EmailMessagesModule', 'Text Content', null,  null, $language),
                 )
             );
+        }
+
+        public static function hasReadPermissionsOptimization()
+        {
+            return true;
         }
     }
 ?>

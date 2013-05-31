@@ -84,12 +84,11 @@
             $model->name                    = $this->seedData['name'][$this->index];
             $model->subject                 = $this->seedData['subject'][$this->index];
             $model->status                  = RandomDataUtil::getRandomValueFromArray($statusKeys);
-            $model->sendNow                 = (rand() % 2);
-            if (!$model->sendNow)
+            if (!(rand() % 2))
             {
                 $timestamp              += rand(500, 5000);
             }
-            $model->sendingDateTime         = DateTimeUtil::convertTimestampToDbFormatDateTime($timestamp);
+            $model->sendOnDateTime         = DateTimeUtil::convertTimestampToDbFormatDateTime($timestamp);
             $model->supportsRichText        = (rand() % 2);
             $model->htmlContent             = $this->seedData['htmlContent'][$this->index];
             $model->textContent             = $this->seedData['textContent'][$this->index];

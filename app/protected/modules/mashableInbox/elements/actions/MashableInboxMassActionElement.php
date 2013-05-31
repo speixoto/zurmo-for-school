@@ -63,7 +63,7 @@
 
         protected function getDefaultLabel()
         {
-            return Zurmo::t('MashableInbox', 'Options');
+            return Zurmo::t('Core', 'Options');
         }
 
         protected function getListViewGridId()

@@ -38,7 +38,7 @@
     {
         public static function getDashboardBreadcrumbLinks()
         {
-            $title = Zurmo::t('MarketingModule', 'Dashboard');
+            $title = Zurmo::t('HomeModule', 'Dashboard');
             return array($title);
         }
 

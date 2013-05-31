@@ -35,42 +35,26 @@
      ********************************************************************************/
 
     /**
-     * Campaigns Options link.
+     * Display the marketing list selection. This is a
+     * combination of a type-ahead input text field
+     * and a selection button which renders a modal list view
+     * to search on marketing list.  Also includes a hidden input for the user
+     * id.
      */
-    class CampaignsOptionsLinkActionElement extends LinkActionElement
+    class MarketingListElement extends ModelElement
     {
-        public function getActionType()
-        {
-            return 'Delete';
-        }
+        protected static $moduleId = 'marketingLists';
 
-        protected function getDefaultLabel()
+        /**
+         * Render a hidden input, a text input with an auto-complete
+         * event, and a select button. These three items together
+         * form the Marketing List Editable Element
+         * @return The element's content as a string.
+         */
+        protected function renderControlEditable()
         {
-            return Zurmo::t('Core', 'Options');
-        }
-
-        protected function getDefaultRoute()
-        {
-            return null;
-        }
-
-        public function render()
-        {
-            $deleteElement          = new CampaignDeleteLinkActionElement($this->controllerId, $this->moduleId, $this->modelId);
-            $deleteElementContent   = $deleteElement->renderMenuItem();
-            $editElement            = new EditLinkActionElement($this->controllerId, $this->moduleId, $this->modelId);
-            $editElementContent     = $editElement->renderMenuItem();
-            // TODO: @Shoaibi/@Jason: Low: securable on these items from the outside coming in?
-            $menuItems              = array('label' => $this->getLabel(), 'url' => null,
-                                            'items' => array( $editElementContent, $deleteElementContent));
-            $cClipWidget            = new CClipWidget();
-            $cClipWidget->beginClip("ActionMenu");
-            $cClipWidget->widget('application.core.widgets.MbMenu', array(
-                                                'htmlOptions'   => array('id' => 'ListViewOptionsActionMenu'),
-                                                'items'         => array($menuItems),
-                                            ));
-            $cClipWidget->endClip();
-            return $cClipWidget->getController()->clips['ActionMenu'];
+            assert('$this->model->{$this->attribute} instanceof MarketingList');
+            return parent::renderControlEditable();
         }
     }
 ?>

@@ -34,43 +34,48 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * Campaigns Options link.
-     */
-    class CampaignsOptionsLinkActionElement extends LinkActionElement
+    class MarketingListsModalSearchView extends SearchView
     {
-        public function getActionType()
+        /**
+         * @var bool
+         */
+        protected $showAdvancedSearch = false;
+
+        public static function getDefaultMetadata()
         {
-            return 'Delete';
+            $metadata = array(
+                'global' => array(
+                    'panels' => array(
+                        array(
+                            'locked' => true,
+                            'title'  => 'Basic Search',
+                            'rows'   => array(
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'anyMixedAttributes',
+                                                      'type' => 'AnyMixedAttributesSearch', 'wide' => true),
+                                            ),
+                                        ),
+                                    )
+                                ),
+                            ),
+                        ),
+                    ),
+                ),
+            );
+            return $metadata;
         }
 
-        protected function getDefaultLabel()
+        public static function getDesignerRulesType()
         {
-            return Zurmo::t('Core', 'Options');
+            return 'ModalSearchView';
         }
 
-        protected function getDefaultRoute()
+        public static function getModelForMetadataClassName()
         {
-            return null;
-        }
-
-        public function render()
-        {
-            $deleteElement          = new CampaignDeleteLinkActionElement($this->controllerId, $this->moduleId, $this->modelId);
-            $deleteElementContent   = $deleteElement->renderMenuItem();
-            $editElement            = new EditLinkActionElement($this->controllerId, $this->moduleId, $this->modelId);
-            $editElementContent     = $editElement->renderMenuItem();
-            // TODO: @Shoaibi/@Jason: Low: securable on these items from the outside coming in?
-            $menuItems              = array('label' => $this->getLabel(), 'url' => null,
-                                            'items' => array( $editElementContent, $deleteElementContent));
-            $cClipWidget            = new CClipWidget();
-            $cClipWidget->beginClip("ActionMenu");
-            $cClipWidget->widget('application.core.widgets.MbMenu', array(
-                                                'htmlOptions'   => array('id' => 'ListViewOptionsActionMenu'),
-                                                'items'         => array($menuItems),
-                                            ));
-            $cClipWidget->endClip();
-            return $cClipWidget->getController()->clips['ActionMenu'];
+            return 'MarketingListsSearchForm';
         }
     }
 ?>

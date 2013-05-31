@@ -81,7 +81,6 @@
                                                                         null,
                                                                         null,
                                                                         null,
-                                                                        null,
                                                                         $marketingList);
             $processed          = 0;
             $campaignItem       = CampaignItemTestHelper::createCampaignItem($processed, $campaign, $contact);
@@ -196,7 +195,6 @@
                                                                         null,
                                                                         null,
                                                                         null,
-                                                                        null,
                                                                         $marketingList);
             $processed          = 0;
             $campaignItem  = CampaignItemTestHelper::createCampaignItem($processed, $campaign, $contact);
@@ -271,7 +269,6 @@
                                                                         'fromAddress03@zurmo.com',
                                                                         null,
                                                                         Campaign::TYPE_MARKETING_LIST,
-                                                                        null,
                                                                         null,
                                                                         null,
                                                                         null,
@@ -418,7 +415,6 @@
                                                                         null,
                                                                         null,
                                                                         null,
-                                                                        null,
                                                                         $marketingList);
             $processed          = 0;
             $campaignItem       = CampaignItemTestHelper::createCampaignItem($processed, $campaign, $contact);
@@ -534,7 +530,6 @@
                                                                         null,
                                                                         null,
                                                                         null,
-                                                                        null,
                                                                         $marketingList);
             $processed          = 0;
             $campaignItem       = CampaignItemTestHelper::createCampaignItem($processed, $campaign, $contact);
@@ -610,7 +605,6 @@
                                                                         'fromAddress06@zurmo.com',
                                                                         null,
                                                                         Campaign::TYPE_MARKETING_LIST,
-                                                                        null,
                                                                         null,
                                                                         null,
                                                                         null,

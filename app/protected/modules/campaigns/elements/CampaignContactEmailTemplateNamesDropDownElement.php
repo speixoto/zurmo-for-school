@@ -34,43 +34,11 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * Campaigns Options link.
-     */
-    class CampaignsOptionsLinkActionElement extends LinkActionElement
+    class CampaignContactEmailTemplateNamesDropDownElement extends  ContactEmailTemplateNamesDropDownElement
     {
-        public function getActionType()
+        protected function getModuleId()
         {
-            return 'Delete';
-        }
-
-        protected function getDefaultLabel()
-        {
-            return Zurmo::t('Core', 'Options');
-        }
-
-        protected function getDefaultRoute()
-        {
-            return null;
-        }
-
-        public function render()
-        {
-            $deleteElement          = new CampaignDeleteLinkActionElement($this->controllerId, $this->moduleId, $this->modelId);
-            $deleteElementContent   = $deleteElement->renderMenuItem();
-            $editElement            = new EditLinkActionElement($this->controllerId, $this->moduleId, $this->modelId);
-            $editElementContent     = $editElement->renderMenuItem();
-            // TODO: @Shoaibi/@Jason: Low: securable on these items from the outside coming in?
-            $menuItems              = array('label' => $this->getLabel(), 'url' => null,
-                                            'items' => array( $editElementContent, $deleteElementContent));
-            $cClipWidget            = new CClipWidget();
-            $cClipWidget->beginClip("ActionMenu");
-            $cClipWidget->widget('application.core.widgets.MbMenu', array(
-                                                'htmlOptions'   => array('id' => 'ListViewOptionsActionMenu'),
-                                                'items'         => array($menuItems),
-                                            ));
-            $cClipWidget->endClip();
-            return $cClipWidget->getController()->clips['ActionMenu'];
+            return 'Campaign';
         }
     }
 ?>

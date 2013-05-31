@@ -67,7 +67,6 @@
                                                                                         Campaign::STATUS_ACTIVE,
                                                                                         null,
                                                                                         null,
-                                                                                        null,
                                                                                         $marketingList);
             $campaignActiveAllItemsProcessedId      = $campaignActiveAllItemsProcessed->id;
             CampaignItemTestHelper::createCampaignItem(1,
@@ -84,7 +83,6 @@
                                                                                         Campaign::STATUS_PROCESSING,
                                                                                         null,
                                                                                         null,
-                                                                                        null,
                                                                                         $marketingList);
             $campaignProcessingAllItemsProcessedId      = $campaignProcessingAllItemsProcessed->id;
             CampaignItemTestHelper::createCampaignItem(1,
@@ -99,7 +97,6 @@
                                                                                         null,
                                                                                         Campaign::TYPE_MARKETING_LIST,
                                                                                         Campaign::STATUS_PROCESSING,
-                                                                                        null,
                                                                                         null,
                                                                                         null,
                                                                                         $marketingList);
@@ -141,7 +138,6 @@
                                                                         Campaign::STATUS_PROCESSING,
                                                                         null,
                                                                         null,
-                                                                        null,
                                                                         $marketingList);
             $this->assertNotNull($campaign01);
             $campaign01Id   = $campaign01->id;
@@ -157,7 +153,6 @@
                                                                         Campaign::STATUS_PROCESSING,
                                                                         null,
                                                                         null,
-                                                                        null,
                                                                         $marketingList);
             $this->assertNotNull($campaign02);
             $campaign02Id   = $campaign02->id;
@@ -171,7 +166,6 @@
                                                                         null,
                                                                         Campaign::TYPE_MARKETING_LIST,
                                                                         Campaign::STATUS_PROCESSING,
-                                                                        null,
                                                                         null,
                                                                         null,
                                                                         $marketingList);

@@ -34,43 +34,16 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * Campaigns Options link.
-     */
-    class CampaignsOptionsLinkActionElement extends LinkActionElement
+    class MarketingListsModalSearchAndListView extends ModalSearchAndListView
     {
-        public function getActionType()
+        public static function getListViewClassName()
         {
-            return 'Delete';
+            return 'MarketingListsModalListView';
         }
 
-        protected function getDefaultLabel()
+        public static function getSearchViewClassName()
         {
-            return Zurmo::t('Core', 'Options');
-        }
-
-        protected function getDefaultRoute()
-        {
-            return null;
-        }
-
-        public function render()
-        {
-            $deleteElement          = new CampaignDeleteLinkActionElement($this->controllerId, $this->moduleId, $this->modelId);
-            $deleteElementContent   = $deleteElement->renderMenuItem();
-            $editElement            = new EditLinkActionElement($this->controllerId, $this->moduleId, $this->modelId);
-            $editElementContent     = $editElement->renderMenuItem();
-            // TODO: @Shoaibi/@Jason: Low: securable on these items from the outside coming in?
-            $menuItems              = array('label' => $this->getLabel(), 'url' => null,
-                                            'items' => array( $editElementContent, $deleteElementContent));
-            $cClipWidget            = new CClipWidget();
-            $cClipWidget->beginClip("ActionMenu");
-            $cClipWidget->widget('application.core.widgets.MbMenu', array(
-                                                'htmlOptions'   => array('id' => 'ListViewOptionsActionMenu'),
-                                                'items'         => array($menuItems),
-                                            ));
-            $cClipWidget->endClip();
-            return $cClipWidget->getController()->clips['ActionMenu'];
+            return 'MarketingListsModalSearchView';
         }
     }
 ?>
