@@ -18186,7 +18186,6 @@ a + .autoresponder-stats {
   float: left;
   margin-left: 2%;
   min-height: 150px;
-  height: 150px;
   background-color: rgba(51, 51, 51, 0.75);
   background-repeat: repeat-x;
   background-image: -moz-linear-gradient(top, rgba(34, 34, 34, 0.85), rgba(51, 51, 51, 0.75));
@@ -18226,9 +18225,10 @@ a + .autoresponder-stats {
   position: relative;
   float: left;
   line-height: 1;
-  width: 85px;
   height: 100%;
-  border-right: 1px solid #222222;
+  min-height: 149px;
+  width: 85px;
+  border-right: 1px solid #282828;
 }
 #marketing-intro-steps h3 strong {
   display: block;
@@ -18244,12 +18244,12 @@ a + .autoresponder-stats {
   margin-top: -5px;
 }
 #marketing-intro-steps p {
-  padding: 10px 10px 0 10px;
+  min-height: 149px;
+  padding: 10px 10px 10px 10px;
   margin-left: 85px;
   font-size: 13px;
   line-height: 21px;
   border-left: 1px solid #333333;
-  height: 100%;
   color: #ececec;
 }
 #marketing-intro-steps p strong {
