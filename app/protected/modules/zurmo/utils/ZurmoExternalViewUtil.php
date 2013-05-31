@@ -178,7 +178,7 @@
             }
         }
 
-        public static function publishExternalScripts($dom)
+        protected static function publishExternalScripts($dom)
         {
             $scriptTags   = $dom->getElementsByTagName('script');
             $fileContents = '';
@@ -186,7 +186,11 @@
             {
                 if ($scriptTagNode->hasAttribute('src'))
                 {
-                    $fileContents .= self::getContentsFromSource(realpath(Yii::app()->basePath . '/../../../') . $scriptTagNode->getAttribute('src'));
+                    $assetsBasePath             = Yii::app()->assetManager->basePath;
+                    $scriptSrcPath              = $scriptTagNode->getAttribute('src');
+                    $scriptPathRelativeToAssets = substr($scriptSrcPath, strpos($scriptSrcPath, 'assets') + 6);
+                    $scriptFullPath             = $assetsBasePath . $scriptPathRelativeToAssets;
+                    $fileContents              .= self::getContentsFromSource($scriptFullPath);
                 }
             }
             $scriptFileName = self::EXTERNAL_SCRIPT_FILE_NAME;
