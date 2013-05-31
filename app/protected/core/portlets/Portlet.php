@@ -258,5 +258,22 @@
             }
             return parent::beforeDelete();
         }
+
+        public static function checkIfPortletExistByViewTypeLayoutIdAndUser($viewType, $uniqueLayoutId, $userId)
+        {
+            assert('is_integer($userId) && $userId >= 1');
+            $sql = "select count(1) as cnt "          .
+                   'from portlet '                                       .
+                   "where layoutid = '$uniqueLayoutId' and viewtype = '$viewType' and _user_id = $userId";
+            $row = R::getRow($sql);
+            if($row['cnt'] > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
     }
 ?>
