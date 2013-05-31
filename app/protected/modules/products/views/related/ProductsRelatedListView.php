@@ -421,14 +421,14 @@
          */
         protected function getPortletDetailsUrl()
         {
-            $params = array_merge($_GET, array('portletId'      => $this->params['portletId'],
-                                               'uniqueLayoutId' => $this->uniqueLayoutId,
-                                               'redirectUrl'    => null,
-                                               'portletParams'  => array('relationModuleId' => $this->relationModuleId,
-                                               'relationModelId'=> $this->params['relationModel']->id)
+            $params = array_merge($_GET, array('portletId'       => $this->params['portletId'],
+                                               'uniqueLayoutId'  => $this->uniqueLayoutId,
+                                               'redirectUrl'     => null,
+                                               'portletParams'   => array('relationModuleId' => $this->relationModuleId,
+                                               'relationModelId' => $this->params['relationModel']->id)
                                                )
                                   );
-            return Yii::app()->createUrl('/' . $this->relationModuleId . '/defaultPortlet/modalRefresh',$params);
+            return Yii::app()->createUrl('/' . $this->relationModuleId . '/defaultPortlet/modalRefresh', $params);
         }
 
         protected function makeProductSearchAttributeData($form)
@@ -440,7 +440,7 @@
                                                         'operatorType'         => 'equals',
                                                         'value'                => (int)$this->params['relationModel']->id,
                                                     );
-            if($form->filteredByStage != ProductsConfigurationForm::FILTERED_BY_ALL_STAGES)
+            if ($form->filteredByStage != ProductsConfigurationForm::FILTERED_BY_ALL_STAGES)
             {
                 $searchAttributeData['clauses'][2] = array(
                                                             'attributeName'        => 'stage',

@@ -50,10 +50,10 @@
             $hiddenInputName     = 'marketingMetricsGroupByNotUsedName';
             $hiddenInput         = ZurmoHtml::hiddenField($hiddenInputName);
             $content = '';
-            foreach($this->getValuesAndLabels() as $value => $label)
+            foreach ($this->getValuesAndLabels() as $value => $label)
             {
                 $class    = $this->form->getId() . 'marketingMetricsGroupByLink';
-                if($this->model->{$this->attribute} == $value)
+                if ($this->model->{$this->attribute} == $value)
                 {
                     $class .= ' active';
                 }

@@ -575,7 +575,7 @@
             $formatType          = CalculatedNumberUtil::FORMAT_TYPE_INTEGER;
             $currencyCode        = null;
             $testCalculatedValue = CalculatedNumberUtil::calculateByFormulaAndModelAndResolveFormat($metadata->getFormula(), $account[0]);
-            $this->assertEquals('472,000,630'                               , $testCalculatedValue);
+            $this->assertEquals('472,000,630'                               , $testCalculatedValue); // Not Coding Standard
         }
 
         /**
@@ -712,7 +712,7 @@
             $metadata            = CalculatedDerivedAttributeMetadata::
                                    getByNameAndModelClassName('calcnumber', 'Account');
             $testCalculatedValue = CalculatedNumberUtil::calculateByFormulaAndModelAndResolveFormat($metadata->getFormula(), $account[0]);
-            $this->assertEquals('472,000,630'                               , $testCalculatedValue);
+            $this->assertEquals('472,000,630'                               , $testCalculatedValue); // Not Coding Standard
         }
 
         /**

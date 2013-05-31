@@ -244,8 +244,8 @@
                 $model->getKanbanBoard()->setGroupByAttributeVisibleValues(
                     $stickyData[KanbanBoard::GROUP_BY_ATTRIBUTE_VISIBLE_VALUES]);
             }
-            if (isset($stickyData[KanbanBoard::SELECTED_THEME]) && $model->getKanbanBoard() != null
-                && !$model->getKanbanBoard()->getClearSticky())
+            if (isset($stickyData[KanbanBoard::SELECTED_THEME]) && $model->getKanbanBoard() != null &&
+                !$model->getKanbanBoard()->getClearSticky())
             {
                 $model->getKanbanBoard()->setSelectedTheme($stickyData[KanbanBoard::SELECTED_THEME]);
             }
@@ -289,13 +289,13 @@
          */
         protected static function resolveKanbanBoardDataByCollection(SearchAttributesDataCollection $dataCollection, & $stickyData)
         {
-            if($dataCollection->hasKanbanBoard() && $dataCollection->getKanbanBoard()->getIsActive() &&
+            if ($dataCollection->hasKanbanBoard() && $dataCollection->getKanbanBoard()->getIsActive() &&
                !$dataCollection->shouldClearStickyForKanbanBoard())
             {
                 $stickyData[KanbanBoard::GROUP_BY_ATTRIBUTE_VISIBLE_VALUES] = $dataCollection->getKanbanBoardGroupByAttributeVisibleValuesFromModel();
                 $stickyData[KanbanBoard::SELECTED_THEME]                    = $dataCollection->getKanbanBoardSelectedThemeFromModel();
             }
-            elseif($dataCollection->hasKanbanBoard() && $dataCollection->shouldClearStickyForKanbanBoard())
+            elseif ($dataCollection->hasKanbanBoard() && $dataCollection->shouldClearStickyForKanbanBoard())
             {
                 unset($stickyData[KanbanBoard::GROUP_BY_ATTRIBUTE_VISIBLE_VALUES]);
                 unset($stickyData[KanbanBoard::SELECTED_THEME]);

@@ -64,10 +64,10 @@
         {
             $getData  = GetUtil::getData();
             $metadata = self::getMetadata();
-            if(isset($getData['lockPortlets']))
+            if (isset($getData['lockPortlets']))
             {
                 $lockPortlets = (bool)$getData['lockPortlets'];
-                if($lockPortlets)
+                if ($lockPortlets)
                 {
                     ZurmoDefaultViewUtil::setLockKeyForDetailsAndRelationsView('lockPortletsForDetailsAndRelationsView', true);
                 }
@@ -78,7 +78,7 @@
             }
             $isViewLocked = ZurmoDefaultViewUtil::getLockKeyForDetailsAndRelationsView('lockPortletsForDetailsAndRelationsView');
             //Default case for the first time
-            if($isViewLocked === null)
+            if ($isViewLocked === null)
             {
                 ZurmoDefaultViewUtil::setLockKeyForDetailsAndRelationsView('lockPortletsForDetailsAndRelationsView', true);
                 $isViewLocked = true;
@@ -123,14 +123,18 @@
                 $toolbarContent = '';
                 if ($isViewLocked === false)
                 {
+                    // Begin Not Coding Standard
                     $toolbarContent .= '<div class="view-toolbar">' . parent::renderActionElementBar($renderedInForm) .
                                        '<a href="' . $url . '&lockPortlets=1" class="icon-unlock"
-                                       title="'.$unlockTitle.'"><!--' . Zurmo::t('Core', 'Lock') . '--></a></div>'; // Not Coding Standard
+                                       title="'.$unlockTitle.'"><!--' . Zurmo::t('Core', 'Lock') . '--></a></div>';
+                    // End Not Coding Standard
                 }
                 else
                 {
+                    // Begin Not Coding Standard
                     $toolbarContent .= '<div class="view-toolbar"><a href="' . $url . '&lockPortlets=0" class="icon-lock"
-                                        title="'.$lockTitle.'"><!--' . Zurmo::t('Core', 'Unlock') . '--></a></div>'; // Not Coding Standard
+                                        title="'.$lockTitle.'"><!--' . Zurmo::t('Core', 'Unlock') . '--></a></div>';
+                    // End Not Coding Standard
                 }
             }
             else

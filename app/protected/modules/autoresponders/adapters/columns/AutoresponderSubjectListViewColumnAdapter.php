@@ -65,12 +65,12 @@
         protected static function renderExtraInfoContent(Autoresponder $autoresponder)
         {
             $operationValuesAndLabels = Autoresponder::getOperationTypeDropDownArray();
-            if(!isset($operationValuesAndLabels[$autoresponder->operationType]))
+            if (!isset($operationValuesAndLabels[$autoresponder->operationType]))
             {
                 return;
             }
             $intervalValuesAndLabels = Autoresponder::getIntervalDropDownArray();
-            if(!isset($intervalValuesAndLabels[$autoresponder->secondsFromOperation]))
+            if (!isset($intervalValuesAndLabels[$autoresponder->secondsFromOperation]))
             {
                 return;
             }
@@ -92,7 +92,6 @@
             $clickRate      = $clickQuantity / $sentQuantity; //todo: resolve if 0 so we aren't dividing by zero, and round
             $optOutQuantity = 100;
             $optOutRate     = $optOutQuantity / $sentQuantity; //todo: resolve if 0 so we aren't dividing by zero, and round
-
 
             $content = null;
             $content .= ZurmoHtml::tag('div', array('class' => 'autoresponder-stats'),

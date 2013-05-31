@@ -75,7 +75,7 @@
 
         public function setMarketingList(MarketingList $marketingList)
         {
-            if($this->campaign != null)
+            if ($this->campaign != null)
             {
                 throw new NotSupportedException();
             }
@@ -84,7 +84,7 @@
 
         public function setCampaign(Campaign $campaign)
         {
-            if($this->marketingList != null)
+            if ($this->marketingList != null)
             {
                 throw new NotSupportedException();
             }

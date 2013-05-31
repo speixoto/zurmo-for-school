@@ -133,7 +133,7 @@
         protected function renderActionElementMenu($title = null)
         {
             $isViewLocked = ZurmoDefaultViewUtil::getLockKeyForDetailsAndRelationsView('lockPortletsForDetailsAndRelationsView');
-            if($isViewLocked)
+            if ($isViewLocked)
             {
                 return null;
             }

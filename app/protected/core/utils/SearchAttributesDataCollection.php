@@ -94,7 +94,7 @@
 
         public function hasKanbanBoard()
         {
-            if($this->model->getKanbanBoard() == null)
+            if ($this->model->getKanbanBoard() == null)
             {
                 return false;
             }
@@ -108,11 +108,11 @@
 
         public function shouldClearStickyForKanbanBoard()
         {
-            if($this->model->getKanbanBoard() == null)
+            if ($this->model->getKanbanBoard() == null)
             {
                 throw new NotSupportedException();
             }
-            elseif($this->model->getKanbanBoard()->getClearSticky())
+            elseif ($this->model->getKanbanBoard()->getClearSticky())
             {
                 return true;
             }
@@ -121,7 +121,7 @@
 
         public function getKanbanBoardGroupByAttributeVisibleValuesFromModel()
         {
-            if($this->model->getKanbanBoard() != null)
+            if ($this->model->getKanbanBoard() != null)
             {
                 return $this->model->getKanbanBoard()->getGroupByAttributeVisibleValues();
             }
@@ -129,7 +129,7 @@
 
         public function getKanbanBoardSelectedThemeFromModel()
         {
-            if($this->model->getKanbanBoard() != null)
+            if ($this->model->getKanbanBoard() != null)
             {
                 return $this->model->getKanbanBoard()->getSelectedTheme();
             }
@@ -154,7 +154,6 @@
         {
             return KanbanBoard::resolveKanbanBoardOptionsForSearchModelFromGetArray($this->model, get_class($this->model));
         }
-
 
         public function resolveSortAttributeFromSourceData($name)
         {

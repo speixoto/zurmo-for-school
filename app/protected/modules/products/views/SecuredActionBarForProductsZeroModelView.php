@@ -50,7 +50,7 @@
                     'toolbar' => array(
                         'elements' => array(
                             array('type'          => 'ProductCreateLink',
-                                  'htmlOptions'	  => array('class' => 'icon-create'),
+                                  'htmlOptions'   => array('class' => 'icon-create'),
                                  ),
                             array(
                                 'type'            => 'ProductsLink',

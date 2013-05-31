@@ -155,7 +155,7 @@
          */
         protected static function renderRowTypeForOpenTag($type)
         {
-            if($type == self::ROW_TYPE_TD)
+            if ($type == self::ROW_TYPE_TD)
             {
                 return "<td>\n";
             }
@@ -171,7 +171,7 @@
          */
         protected static function renderRowTypeForCloseTag($type)
         {
-            if($type == self::ROW_TYPE_TD)
+            if ($type == self::ROW_TYPE_TD)
             {
                 return "</td>\n";
             }

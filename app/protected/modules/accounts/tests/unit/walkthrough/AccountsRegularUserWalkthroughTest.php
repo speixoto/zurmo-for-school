@@ -720,7 +720,7 @@
             $accounts = Account::getAll();
             $this->assertEquals(0, count($accounts));
         }
-		
+
         public function testCloningWithAnotherUser()
         {
             $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');

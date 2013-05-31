@@ -69,9 +69,9 @@
             $productTemplateName    = self::getProductTemplateForProduct($name);
             $allTemplates = ProductTemplate::getAll();
 
-            foreach($allTemplates as $template)
+            foreach ($allTemplates as $template)
             {
-                if($template->name == $productTemplateName)
+                if ($template->name == $productTemplateName)
                 {
                     $templateId = $template->id;
                 }

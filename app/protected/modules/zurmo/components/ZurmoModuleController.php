@@ -61,13 +61,13 @@
             $modelClassName = $this->getModule()->getPrimaryModelName();
             $model          = $modelClassName::getById(intval($id));
             ControllerSecurityUtil::resolveAccessCanCurrentUserWriteModel($model);
-            if(!$model->isAttribute($attribute) || !$model->{$attribute} instanceof CustomField)
+            if (!$model->isAttribute($attribute) || !$model->{$attribute} instanceof CustomField)
             {
                 throw new NotSupportedException();
             }
             $model->{$attribute}->value = $value;
             $saved                      = $model->save();
-            if(!$saved)
+            if (!$saved)
             {
                 throw new FailedToSaveModelException();
             }

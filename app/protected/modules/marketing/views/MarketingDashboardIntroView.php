@@ -61,7 +61,6 @@
             return $content;
         }
 
-
         protected function renderHideLinkContent()
         {
             //todo: should use ajax, then when done remove div from UI

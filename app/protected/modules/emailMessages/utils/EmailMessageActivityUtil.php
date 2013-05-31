@@ -354,7 +354,7 @@ PTN;
             if ($isHtmlContent)
             {
                 $unsubscribeUrl = ZurmoHtml::link($unsubscribeTranslated, $unsubscribeUrl);
-                $manageSubscriptionsUrl =ZurmoHtml::link($manageSubscriptionsTranslated, $manageSubscriptionsUrl);
+                $manageSubscriptionsUrl = ZurmoHtml::link($manageSubscriptionsTranslated, $manageSubscriptionsUrl);
             }
             $placeholderContent = str_replace($unsubscribeUrlPlaceholder, $unsubscribeUrl, $placeholderContent);
             $placeholderContent = str_replace($manageSubscriptionsPlaceholder, $manageSubscriptionsUrl,
@@ -456,7 +456,7 @@ PTN;
         protected static function replaceSpacesWithPlusSymbol(& $hash)
         {
             // + in url often becomes space, we need to reverse that.
-            $hash = str_replace(' ', '+', $hash);
+            $hash = str_replace(' ', '+', $hash); // Not Coding Standard
         }
 
         protected static function isValidHash($hash)

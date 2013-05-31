@@ -48,11 +48,12 @@
             $industryFieldData = CustomFieldData::getByName('Industries');
             $industryFieldData->defaultValue = $values[1];
             $industryFieldData->serializedData = serialize($values);
-            if(!$industryFieldData->save())
+            if (!$industryFieldData->save())
             {
                 throw new FailedToSaveRedBeanModelException();
             }
         }
+
         public function testResolveKanbanBoardOptionsForSearchModelFromGetArray()
         {
             $_GET['test'] = array('groupByAttributeVisibleValues' => '', 'selectedTheme' => '');
@@ -107,7 +108,7 @@
                                      'Automotive'              => 'Automotive',
                                      'Adult Entertainment'     => 'Adult Entertainment',
                                      'Financial Services'      => 'Financial Services',
-                                     'Mercenaries & Armaments' => 'Mercenaries & Armaments',),
+                                     'Mercenaries & Armaments' => 'Mercenaries & Armaments'),
                                  'selectedTheme' => null);
             $this->assertEquals($compareData, $params);
         }
@@ -164,7 +165,6 @@
                                                 'operatorType'         => 'equals',
                                                 'value'                => 'Mercenaries & Armaments');
             $this->assertEquals($compareData, $metadata);
-
 
             //Now resolve with pre-existing metadata
             $metadata = array('clauses' => array(1 => 'firstClause'), 'structure' => '1');

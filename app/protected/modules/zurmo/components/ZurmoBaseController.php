@@ -175,17 +175,16 @@
             {
                 return;
             }
-            if(isset($_GET['kanbanBoard']) && $_GET['kanbanBoard'] && !Yii::app()->userInterface->isMobile())
+            if (isset($_GET['kanbanBoard']) && $_GET['kanbanBoard'] && !Yii::app()->userInterface->isMobile())
             {
                 $searchModel->getKanbanBoard()->setIsActive();
-
             }
-            elseif(isset($_GET['kanbanBoard']) && !$_GET['kanbanBoard'])
+            elseif (isset($_GET['kanbanBoard']) && !$_GET['kanbanBoard'])
             {
                 $searchModel->getKanbanBoard()->setIsNotActive();
                 $searchModel->getKanbanBoard()->setClearSticky();
             }
-            elseif(Yii::app()->userInterface->isMobile())
+            elseif (Yii::app()->userInterface->isMobile())
             {
                 $searchModel->getKanbanBoard()->setIsNotActive();
             }
@@ -202,7 +201,7 @@
             {
                 return $pageSize;
             }
-            if($searchModel->getKanbanBoard() !== null && $searchModel->getKanbanBoard()->getIsActive())
+            if ($searchModel->getKanbanBoard() !== null && $searchModel->getKanbanBoard()->getIsActive())
             {
                 $pageSize = KanbanBoardExtendedGridView::resolvePageSizeForMaxCount();
             }
@@ -1172,7 +1171,7 @@
 
         protected function resolveActiveElementTypeForKanbanBoard(SearchForm $searchForm)
         {
-            if($searchForm->getKanbanBoard()->getIsActive())
+            if ($searchForm->getKanbanBoard()->getIsActive())
             {
                 return ListViewTypesToggleLinkActionElement::TYPE_KANBAN_BOARD;
             }
@@ -1180,7 +1179,6 @@
             {
                 return ListViewTypesToggleLinkActionElement::TYPE_GRID;
             }
-
         }
     }
 ?>
