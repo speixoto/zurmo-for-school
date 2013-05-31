@@ -47,6 +47,7 @@
 
         protected function renderContent()
         {
+            $this->registerScripts();
             if(Yii::app()->request->cookies[$this->panelId . '-panel'] == $this->cookieValue)
             {
                 return false;
@@ -77,7 +78,6 @@
             $label    = '<span></span>' . Zurmo::t('MarketingModule', 'Dismiss');
             $content  = '<div class="' . $this->linkId . '">'.ZurmoHtml::link($label, '#');
             $content .= '</div>';
-            Yii::app()->clientScript->registerScript($this->linkId, $this->registerScripts());
             return $content;
         }
 
@@ -88,7 +88,7 @@
                 document.cookie = '{$this->panelId}-panel={$this->cookieValue}';
                 return false;
             })";
-            return $script;
+            Yii::app()->clientScript->registerScript($this->linkId, $script);
         }
     }
 ?>
