@@ -238,21 +238,15 @@
         }
 
         /**
-         * Encrypt password before validate
-         * @return true to signal success and that validate can proceed.
+         * Encrypt password after validate
          */
         public function afterValidate()
         {
-            if (!parent::afterValidate())
-            {
-                return false;
-            }
-
+            parent::afterValidate();
             if ($this->outboundPassword !== null && $this->outboundPassword !== '')
             {
                 $this->outboundPassword = ZurmoPasswordSecurityUtil::encrypt($this->outboundPassword);
              }
-            return true;
         }
     }
 ?>
