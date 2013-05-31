@@ -113,7 +113,6 @@
                                     'AccountsModule',
                                     'accounts/default/details');
             $this->assertEquals(null, $link);
-
         }
     }
 ?>
