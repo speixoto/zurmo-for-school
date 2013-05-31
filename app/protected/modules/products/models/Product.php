@@ -148,15 +148,10 @@
             return 'ProductGamification';
         }
 
-        protected function beforeSave()
+        protected function beforeValidate()
         {
-            parent::beforeSave();
-            if($this->sellPrice->value < 0)
-            {
-                $this->addError('sellPrice', Zurmo::t('ProductsModule', 'Sell price should be greater than 0'));
-                return false;
-            }
-            return true;
+            $this->sellPrice->setScenario('productCatalogSave');
+            return parent::beforeValidate();
         }
     }
 ?>
