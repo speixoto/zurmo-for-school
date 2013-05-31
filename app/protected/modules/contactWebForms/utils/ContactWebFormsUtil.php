@@ -66,7 +66,7 @@
                         $items[$attributeName] = array('{content}'            => $attributeData['attributeLabel'],
                                                        '{checkedAndReadOnly}' => $checkedAndReadOnly);
                     }
-                    else if ($contactWebFormAttributes !== null)
+                    elseif ($contactWebFormAttributes !== null)
                     {
                         $checkedAndReadOnly    = ' checked="checked" ';
                         $items[$attributeName] = array('{content}'            => $attributeData['attributeLabel'],

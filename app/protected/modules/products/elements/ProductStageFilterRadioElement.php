@@ -53,7 +53,7 @@
                 $this->getArray(),
                 $this->getEditableHtmlOptions()
             );
-            return Zurmo::t('ProductsModule', 'View') . ':' . $content;
+            return ZurmoHtml::tag('strong', array(), Zurmo::t('ProductsModule', 'View')) . ':' . $content;
         }
 
         protected function renderControlNonEditable()
@@ -89,10 +89,10 @@
         protected function getArray()
         {
             $data = array(
-                            ProductsConfigurationForm::FILTERED_BY_ALL_STAGES => Zurmo::t('Products','All'),
-                            ProductsConfigurationForm::OPEN_STAGE             => Zurmo::t('Products','Open'),
-                            ProductsConfigurationForm::LOST_STAGE             => Zurmo::t('Products','Lost'),
-                            ProductsConfigurationForm::WON_STAGE              => Zurmo::t('Products','Won'),
+                            ProductsConfigurationForm::FILTERED_BY_ALL_STAGES => Zurmo::t('Products', 'All'),
+                            ProductsConfigurationForm::OPEN_STAGE             => Zurmo::t('Products', 'Open'),
+                            ProductsConfigurationForm::LOST_STAGE             => Zurmo::t('Products', 'Lost'),
+                            ProductsConfigurationForm::WON_STAGE              => Zurmo::t('Products', 'Won'),
                         );
 
             return $data;

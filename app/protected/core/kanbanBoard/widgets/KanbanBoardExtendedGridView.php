@@ -103,16 +103,16 @@
             {
                 $this->renderOverMaxCountText();
             }
-            elseif($n > 0)
+            elseif ($n > 0)
             {
                 echo "<div id=\"kanban-board\">\n";
-                foreach($columnsData as $attributeValue => $attributeValueAndData)
+                foreach ($columnsData as $attributeValue => $attributeValueAndData)
                 {
                     echo "<div class=\"kanban-column\" $width>\n";
                     echo "<div data-value='" . $attributeValue . "' class='droppable-dynamic-rows-container'>\n";
                     echo ZurmoHtml::tag('div', array('class' => 'column-header'), $this->resolveGroupByColumnHeaderLabel($attributeValue));
                     $listItems = '';
-                    foreach($attributeValueAndData as $row)
+                    foreach ($attributeValueAndData as $row)
                     {
                         $listItems .= ZurmoHtml::tag('li',
                                                       array('class' => 'kanban-card item-to-place',
@@ -141,7 +141,7 @@
         public function renderOverMaxCountText()
         {
             $label = Zurmo::t('Core', 'There are too many results to display. Try filtering your search or switching to the grid view.');
-            echo CHtml::tag('span', array('class'=>'empty'), $label);
+            echo CHtml::tag('span', array('class' => 'empty'), $label);
         }
 
         /**
@@ -167,7 +167,7 @@
          */
         protected function resolveGroupByColumnHeaderLabel($value)
         {
-            if(isset($this->groupByDataAndTranslatedLabels[$value]))
+            if (isset($this->groupByDataAndTranslatedLabels[$value]))
             {
                 return $this->groupByDataAndTranslatedLabels[$value];
             }
@@ -180,9 +180,9 @@
         protected function resolveDataIntoKanbanColumns()
         {
             $columnsData = $this->makeColumnsDataAndStructure();
-            foreach($this->dataProvider->data as $row => $data)
+            foreach ($this->dataProvider->data as $row => $data)
             {
-                if(isset($columnsData[$data->{$this->groupByAttribute}->value]))
+                if (isset($columnsData[$data->{$this->groupByAttribute}->value]))
                 {
                     $columnsData[$data->{$this->groupByAttribute}->value][] = $row;
                 }
@@ -196,7 +196,7 @@
         protected function makeColumnsDataAndStructure()
         {
             $columnsData = array();
-            foreach($this->groupByAttributeVisibleValues as $value)
+            foreach ($this->groupByAttributeVisibleValues as $value)
             {
                 $columnsData[$value] = array();
             }
@@ -209,7 +209,8 @@
                 Yii::app()->getAssetManager()->publish(
                     Yii::getPathOfAlias('application.core.kanbanBoard.widgets.assets')) . '/KanbanUtils.js');
             $script = '
-                $(".droppable-dynamic-rows-container").live("drop", function(event, ui){
+                $(".droppable-dynamic-rows-container").live("drop", function(event, ui)
+                {
                    ' . $this->getAjaxForDroppedAttribute() . '
                    $("ul", this).append(ui.draggable);
                 });
@@ -258,12 +259,11 @@
         protected function renderCardDetailsContent($row)
         {
             $cardDetails = null;
-            foreach($this->cardColumns as $cardData)
+            foreach ($this->cardColumns as $cardData)
             {
                 $content      = $this->evaluateExpression($cardData['value'], array('data' => $this->dataProvider->data[$row],
                                                                                     'offset' => ($this->getOffset() + $row)));
                 $cardDetails .= ZurmoHtml::tag('span', array('class' => $cardData['class']), $content);
-
             }
             $userUrl      = Yii::app()->createUrl('/users/default/details', array('id' => $this->dataProvider->data[$row]->owner->id));
             $cardDetails .= ZurmoHtml::link($this->dataProvider->data[$row]->owner->getAvatarImage(20), $userUrl,

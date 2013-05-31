@@ -53,8 +53,6 @@
             //anything meaningful
             //emails sent today, for those emails, how many unique opens, how many unique clicks
 
-
-
             $chartData = array();
             $chartData[] = array('uniqueClickThroughRate' => 5,  'uniqueOpenRate' => 7,   'displayLabel' => 'Apr 17');
             $chartData[] = array('uniqueClickThroughRate' => 10, 'uniqueOpenRate' => 17,  'displayLabel' => 'Apr 18');

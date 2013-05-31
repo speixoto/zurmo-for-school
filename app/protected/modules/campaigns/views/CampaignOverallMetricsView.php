@@ -40,6 +40,7 @@
     class CampaignOverallMetricsView extends MarketingMetricsView implements PortletViewInterface
     {
         protected $formModelClassName = 'MarketingOverallMetricsForm';
+
         /**
          * The view's module class name.
          */

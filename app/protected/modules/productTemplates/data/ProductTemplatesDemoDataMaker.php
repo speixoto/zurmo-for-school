@@ -66,9 +66,9 @@
             $name                      = $productTemplateRandomData['names'][$counter];
             $productCategoryName       = self::getProductCategoryForTemplate($name);
             $allCats = ProductCategory::getAll();
-            foreach($allCats as $category)
+            foreach ($allCats as $category)
             {
-                if($category->name == $productCategoryName)
+                if ($category->name == $productCategoryName)
                 {
                     $categoryId = $category->id;
                 }

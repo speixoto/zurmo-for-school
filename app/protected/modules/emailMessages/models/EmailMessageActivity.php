@@ -236,7 +236,7 @@
         protected static function createNewOpenActivityForFirstClickTrackingActivity($type, $personId,
                                                                                         $relationName, $relatedModel)
         {
-            if(static::shouldCreateOpenActivityForTrackingActivity($type, $personId, $relationName, $relatedModel->id))
+            if (static::shouldCreateOpenActivityForTrackingActivity($type, $personId, $relationName, $relatedModel->id))
             {
                 return static::createNewChildActivity(static::TYPE_OPEN, $personId, null, $relationName, $relatedModel);
             }
@@ -259,7 +259,6 @@
             }
             return false;
         }
-
 
         protected static function getLabel($language = null)
         {

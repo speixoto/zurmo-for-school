@@ -47,10 +47,10 @@
             Yii::app()->user->userModel = $super;
             $nobody = User::getByUsername('nobody');
             Yii::app()->user->userModel = $nobody;
-            
+
             $everyoneGroup = Group::getByName(Group::EVERYONE_GROUP_NAME);
             assert($everyoneGroup->save()); // Not Coding Standard
-            
+
             $group1        = new Group();
             $group1->name  = 'Group1';
             $group1->users->add($nobody);
@@ -69,13 +69,13 @@
             $this->runControllerShouldResultInAccessFailureAndGetContent('reports/default/details');
             $this->setGetArray(array('id' => $savedReports[0]->id));
             $this->resetPostArray();
-            $this->runControllerShouldResultInAccessFailureAndGetContent('reports/default/edit');			
+            $this->runControllerShouldResultInAccessFailureAndGetContent('reports/default/edit');
         }
 
         public static function makeRowsAndColumnsReportPostData()
         {
             $group1 = Group::getByName('Group1');
-            
+
             return array(
                 'validationScenario' => 'ValidateForDisplayAttributes',
                 'RowsAndColumnsReportWizardForm' => array(
@@ -108,7 +108,7 @@
                 'OrderBysRowCounter' => '0',
             );
         }
-		
+
         public function testRegularUserControllerActionsWithElevationToEdit()
         {
             $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
@@ -120,14 +120,14 @@
             $nobody->setRight('ReportsModule', ReportsModule::RIGHT_CREATE_REPORTS);
             $nobody->setRight('ReportsModule', ReportsModule::RIGHT_DELETE_REPORTS);
             assert($nobody->save()); // Not Coding Standard
-            
+
             $explicitReadWriteModelPermissions = new ExplicitReadWriteModelPermissions();
             $this->assertEquals(0, $explicitReadWriteModelPermissions->getReadOnlyPermitablesCount());
             $this->assertEquals(0, $explicitReadWriteModelPermissions->getReadWritePermitablesCount());
 
             //Now add permitables and test retrieving them.
             $explicitReadWriteModelPermissions->addReadWritePermitable($group1);
-            
+
             $savedReports = SavedReport::getAll();
             $this->assertEquals(1, count($savedReports));
             $nobody = $this->logoutCurrentUserLoginNewUserAndGetByUsername('nobody');

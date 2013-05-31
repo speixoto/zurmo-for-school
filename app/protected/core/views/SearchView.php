@@ -448,7 +448,6 @@
             return ZurmoHtml::tag('div', array('class' => 'kanban-board-options-view', 'style' => 'display:none'), $content);
         }
 
-
         protected function renderViewToolBarContainerForAdvancedSearch($form)
         {
             $content  = '<div class="view-toolbar-container clearfix">';

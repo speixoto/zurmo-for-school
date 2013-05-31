@@ -26,6 +26,16 @@
 
     class ContactWebFormsListView extends SecuredListView
     {
+        public function __construct($controllerId, $moduleId, $modelClassName, $dataProvider, $selectedIds,
+                                    $gridIdSuffix           = null,
+                                    $gridViewPagerParams    = array(),
+                                    $listAttributesSelector = null,
+                                    $kanbanBoard            = null)
+        {
+            parent::__construct($controllerId, $moduleId, $modelClassName, $dataProvider, $selectedIds,
+                                $gridIdSuffix, $gridViewPagerParams, $listAttributesSelector, $kanbanBoard);
+            $this->setRowsAreSelectable(false);
+        }
         public static function getDefaultMetadata()
         {
             $metadata = array(

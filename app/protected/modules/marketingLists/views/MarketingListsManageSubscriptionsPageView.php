@@ -96,6 +96,7 @@
             }
             else
             {
+                // Begin Not Coding Standard
                 Yii::app()->clientScript->registerScript($scriptName, '
                     var notificationBarId   = "FlashMessageBar";
                     var cookieName          = "' . MarketingListsPublicController::TOGGLE_UNSUBSCRIBED_COOKIE_NAME. '";
@@ -104,13 +105,11 @@
                     {
                         cookieValue = cookieValue.split("+").join(" ");
                         $.cookie(cookieName, null, { expires : -1, path:  "/" });
-                        var data = {
-                                    "message" : cookieValue,
-                                    "type"    : "message"
-                                    };
+                        var data = {"message" : cookieValue, "type"    : "message"};
                         updateFlashBar(data, notificationBarId);
                     }
                 ');
+                // End Not Coding Standard
             }
         }
     }

@@ -54,7 +54,7 @@
         {
             $content  = null;
             $metricsClass           = $this->getMetricsPortletClass();
-            if($metricsClass)
+            if ($metricsClass)
             {
                 $membersTranslatedLabel = Zurmo::t('CampaignsModule', 'Dashboard');
                 $content                .= $this->getCheckboxContent($membersTranslatedLabel, $metricsClass);

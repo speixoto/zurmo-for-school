@@ -137,7 +137,7 @@
         protected static function getGridTemplate()
         {
             $preloader = '<div class="list-preloader"><span class="z-spinner"></span></div>';
-            return "\n{items}\n{pager}\n<span class='empty'><strong>{totalBarDetails}</strong></span>" . $preloader;
+            return "\n{items}\n{pager}\n<span class='products-portlet-totals'>{totalBarDetails}</span>" . $preloader;
         }
 
         /**
@@ -328,7 +328,7 @@
             }
             if ($innerContent != null)
             {
-                $content .= '<div class="horizontal-line latest-activity-toolbar">';
+                $content .= '<div class="filter-portlet-model-bar">';
                 $content .= $innerContent;
                 $content .= '</div>' . "\n";
             }
@@ -422,14 +422,14 @@
         protected function getPortletDetailsUrl()
         {
             $redirectUrl = $this->params['redirectUrl'];
-            $params = array_merge($_GET, array('portletId'      => $this->params['portletId'],
-                                               'uniqueLayoutId' => $this->uniqueLayoutId,
+            $params = array_merge($_GET, array('portletId'       => $this->params['portletId'],
+                                               'uniqueLayoutId'  => $this->uniqueLayoutId,
                                                'redirectUrl'    => $redirectUrl,
-                                               'portletParams'  => array('relationModuleId' => $this->relationModuleId,
+                                               'portletParams'   => array('relationModuleId' => $this->relationModuleId,
                                                                          'relationModelId'=> $this->params['relationModel']->id)
                                                )
                                   );
-            return Yii::app()->createUrl('/' . $this->relationModuleId . '/defaultPortlet/modalRefresh',$params);
+            return Yii::app()->createUrl('/' . $this->relationModuleId . '/defaultPortlet/modalRefresh', $params);
         }
 
         protected function makeProductSearchAttributeData($form)
@@ -441,7 +441,7 @@
                                                         'operatorType'         => 'equals',
                                                         'value'                => (int)$this->params['relationModel']->id,
                                                     );
-            if($form->filteredByStage != ProductsConfigurationForm::FILTERED_BY_ALL_STAGES)
+            if ($form->filteredByStage != ProductsConfigurationForm::FILTERED_BY_ALL_STAGES)
             {
                 $searchAttributeData['clauses'][2] = array(
                                                             'attributeName'        => 'stage',

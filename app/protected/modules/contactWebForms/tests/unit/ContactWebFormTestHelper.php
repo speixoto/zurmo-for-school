@@ -26,7 +26,7 @@
 
     class ContactWebFormTestHelper
     {
-        public static function createContactWebFormByName($name, $owner=null)
+        public static function createContactWebFormByName($name, $owner = null)
         {
             if ($owner === null)
             {

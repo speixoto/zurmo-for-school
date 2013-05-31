@@ -206,7 +206,7 @@
                                 );
             $this->runControllerWithRedirectExceptionAndGetContent('users/default/changeAvatar');
         }
-		
+
         public function testRegularUserAccessGroupsAndRolesButNotCreateAndDelete()
         {
             $user = UserTestHelper::createBasicUser('Dood1');
@@ -221,7 +221,7 @@
             $role->name = 'myRole';
             $saved = $role->save();
             $this->assertTrue($saved);
-            
+
             $user->setRight('GroupsModule', GroupsModule::RIGHT_ACCESS_GROUPS);
             $user->setRight('RolesModule', RolesModule::RIGHT_ACCESS_ROLES);
             $user->setRight('ZurmoModule', ZurmoModule::RIGHT_ACCESS_ADMINISTRATION);

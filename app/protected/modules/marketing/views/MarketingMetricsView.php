@@ -272,11 +272,11 @@
 
         protected function resolveForm()
         {
-            if($this->formModel !== null)
+            if ($this->formModel !== null)
             {
                 return $this->formModel;
             }
-            if($this->formModelClassName == null)
+            if ($this->formModelClassName == null)
             {
                 throw new NotSupportedException();
             }

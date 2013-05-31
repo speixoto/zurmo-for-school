@@ -47,11 +47,11 @@
             $zeroModelsYetViewClassName = 'ProductTemplatesZeroModelsYetView';
             $pageViewClassName          = 'ProductTemplatesPageView';
             //Need to remove the general access rights filter
-            $filters = array_slice(parent::filters(),1);
+            $filters = array_slice(parent::filters(), 1);
             $filters = array_merge(array(
                                         array(
                                             ZurmoBaseController::RIGHTS_FILTER_PATH .
-                                            ' - modalList,details,autoCompleteAllProductCategoriesForMultiSelectAutoComplete',
+                                            ' - modalList,details,autoCompleteAllProductCategoriesForMultiSelectAutoComplete', // Not Coding Standard
                                             'moduleClassName' => get_class($this->getModule()),
                                             'rightName' => ProductTemplatesModule::getAccessRight(),
                                         ),
@@ -70,7 +70,7 @@
                                             'activeActionElementType'    => 'ProductTemplatesLink',
                                             'breadcrumbLinks'            => static::getListBreadcrumbLinks()
                                        ),
-                                   ),$filters
+                                   ), $filters
             );
 
             return $filters;

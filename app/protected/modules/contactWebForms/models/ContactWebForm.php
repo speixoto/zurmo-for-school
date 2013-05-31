@@ -121,7 +121,7 @@
                     array('name',              'required'),
                     array('name',              'type', 'type' => 'string'),
                     array('redirectUrl',       'required'),
-                    array('redirectUrl',       'url'),
+                    array('redirectUrl',       'url', 'defaultScheme' => 'http'),
                     array('submitButtonLabel', 'required'),
                     array('submitButtonLabel', 'type', 'type' => 'string'),
                     array('submitButtonLabel', 'default', 'value' => 'Submit'),

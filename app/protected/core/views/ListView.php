@@ -154,11 +154,11 @@
             {
                 $widget = 'application.core.widgets.StackedExtendedGridView';
             }
-            elseif($this->kanbanBoard === null || !$this->kanbanBoard->getIsActive())
+            elseif ($this->kanbanBoard === null || !$this->kanbanBoard->getIsActive())
             {
                 $widget = 'application.core.widgets.ExtendedGridView';
             }
-            elseif($this->kanbanBoard->getIsActive())
+            elseif ($this->kanbanBoard->getIsActive())
             {
                 $widget = $this->kanbanBoard->getGridViewWidgetPath();
             }
@@ -175,7 +175,7 @@
          */
         public function getRowsAreSelectable()
         {
-            if($this->kanbanBoard != null)
+            if ($this->kanbanBoard != null)
             {
                 return false;
             }
@@ -537,7 +537,7 @@
 
         private function resolveCGridViewParamsForKanbanBoard(array $params)
         {
-            if(Yii::app()->userInterface->isMobile() || $this->kanbanBoard === null || !$this->kanbanBoard->getIsActive())
+            if (Yii::app()->userInterface->isMobile() || $this->kanbanBoard === null || !$this->kanbanBoard->getIsActive())
             {
                 return $params;
             }

@@ -70,9 +70,10 @@
             $cClipWidget->endClip();
             $content = $cClipWidget->getController()->clips['attributesList'];
 
+            // Begin Not Coding Standard
             $script = "$('label.hasCheckBox > input[type=checkbox]').live('change', function()
                        {
-                           if($(this).is(':checked'))
+                           if ($(this).is(':checked'))
                            {
                                 var attributeId      = $(this).val();
                                 var elementId        = $(this).attr('id');
@@ -88,7 +89,7 @@
                        });
                        $('ul#yw1 li > input[type=checkbox]').live('change', function()
                        {
-                           if(!$(this).is(':checked'))
+                           if (!$(this).is(':checked'))
                            {
                                 var attributeId      = $(this).val();
                                 var elementId        = $(this).attr('id');
@@ -100,6 +101,7 @@
                                 $('span#ContactWebForm_serializedData').append(attributeElement);
                            }
                        });";
+            // End Not Coding Standard
             Yii::app()->clientScript->registerScript('addOrRemoveFormAttributes', $script);
             $content .= $this->form->checkBoxList($this->model,
                                                   $this->attribute,

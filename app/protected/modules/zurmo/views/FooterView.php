@@ -42,6 +42,7 @@
         {
             $this->showUserInterfaceTypeSelector = $showUserInterfaceTypeSelector;
         }
+
         protected function renderContent()
         {
             //Do not remove the Zurmo logo or Zurmo Copyright notice.

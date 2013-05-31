@@ -284,7 +284,7 @@
             $metadata            = CalculatedDerivedAttributeMetadata::
                                    getByNameAndModelClassName('calcnumber', 'Product');
             $testCalculatedValue = CalculatedNumberUtil::calculateByFormulaAndModelAndResolveFormat($metadata->getFormula(), $product);
-            $this->assertEquals(1476                                     , intval(str_replace(',', '', $testCalculatedValue)));
+            $this->assertEquals(1476                                     , intval(str_replace(',', '', $testCalculatedValue))); // Not Coding Standard
         }
 
         /**
@@ -430,7 +430,7 @@
             $metadata            = CalculatedDerivedAttributeMetadata::
                                    getByNameAndModelClassName('calcnumber', 'Product');
             $testCalculatedValue = CalculatedNumberUtil::calculateByFormulaAndModelAndResolveFormat($metadata->getFormula(), $product);
-            $this->assertEquals(132                                      , intval(str_replace(',', '', $testCalculatedValue)));
+            $this->assertEquals(132                                      , intval(str_replace(',', '', $testCalculatedValue))); // Not Coding Standard
         }
 
         /**
@@ -531,7 +531,7 @@
             $metadata            = CalculatedDerivedAttributeMetadata::
                                    getByNameAndModelClassName('calcnumber', 'Product');
             $testCalculatedValue = CalculatedNumberUtil::calculateByFormulaAndModelAndResolveFormat($metadata->getFormula(), $product);
-            $this->assertEquals(132                                      , intval(str_replace(',', '', $testCalculatedValue)));
+            $this->assertEquals(132                                      , intval(str_replace(',', '', $testCalculatedValue))); // Not Coding Standard
         }
 
         /**

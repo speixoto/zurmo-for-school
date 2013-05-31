@@ -77,7 +77,7 @@
             if ($searchModel->getKanbanBoard() != null && !empty($_GET[$getArrayName]))
             {
                 assert('$searchModel instanceof SearchForm');
-                if(isset($_GET[$getArrayName][self::GROUP_BY_ATTRIBUTE_VISIBLE_VALUES]))
+                if (isset($_GET[$getArrayName][self::GROUP_BY_ATTRIBUTE_VISIBLE_VALUES]))
                 {
                     if (!is_array($_GET[$getArrayName][self::GROUP_BY_ATTRIBUTE_VISIBLE_VALUES]))
                     {
@@ -90,7 +90,7 @@
                     }
                     $searchModel->getKanbanBoard()->setGroupByAttributeVisibleValues($groupByAttributeVisibleValues);
                 }
-                if(isset($_GET[$getArrayName][self::SELECTED_THEME]))
+                if (isset($_GET[$getArrayName][self::SELECTED_THEME]))
                 {
                     if (empty($_GET[$getArrayName][self::SELECTED_THEME]))
                     {
@@ -122,7 +122,7 @@
         {
             $this->model            = $model;
             $this->groupByAttribute = $groupByAttribute;
-            if(!$this->model->{$this->groupByAttribute} instanceof CustomField)
+            if (!$this->model->{$this->groupByAttribute} instanceof CustomField)
             {
                 throw new NotSupportedException();
             }

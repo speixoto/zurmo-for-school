@@ -121,25 +121,27 @@
             return $htmlOptions;
         }
 
-
         /**
          * On keyUp, the search should be conducted.
          */
         protected function registerEditableValuesScripts()
         {
             $defaultSelectedAttributes = $this->model->getListAttributesSelector()->getMetadataDefinedListAttributeNames();
+            // Begin Not Coding Standard
             Yii::app()->clientScript->registerScript('kanbanBoardOptionsScripts', "
                 $('#kanban-board-options-reset').unbind('click.reset');
                 $('#kanban-board-options-reset').bind('click.reset', function()
                     {
                         $('.kanban-board-options-view').hide();
                         var inputName = '" .$this->getEditableInputName(KanbanBoard::GROUP_BY_ATTRIBUTE_VISIBLE_VALUES) . "[]';
-                        $('input[name=\"' + inputName + '\"]').each(function(){
+                        $('input[name=\"' + inputName + '\"]').each(function()
+                        {
                             $(this).attr('checked', true);
                             $(this).parent().addClass('c_on');
                         });
-                        $('input[name=\"" . $this->getEditableInputName(KanbanBoard::SELECTED_THEME) . "\"]').each(function(){
-                            if($(this).val() == '')
+                        $('input[name=\"" . $this->getEditableInputName(KanbanBoard::SELECTED_THEME) . "\"]').each(function()
+                        {
+                            if ($(this).val() == '')
                             {
                                 $(this).attr('checked', true);
                             }
@@ -150,6 +152,7 @@
                         });
                     }
                 );");
+            // End Not Coding Standard
         }
 
         public function registerThemeScript()
