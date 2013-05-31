@@ -100,7 +100,7 @@
 
         protected function renderTitleContent()
         {
-            return '';
+            return null;
         }
 
         public static function canUserRemove()
@@ -128,6 +128,19 @@
         public function renderPortletHeadContent()
         {
             return $this->renderWrapperAndActionElementMenu();
+        }
+
+        protected function renderActionElementMenu($title = null)
+        {
+            $isViewLocked = ZurmoDefaultViewUtil::getLockKeyForDetailsAndRelationsView('lockPortletsForDetailsAndRelationsView');
+            if($isViewLocked)
+            {
+                return null;
+            }
+            else
+            {
+                return parent::renderActionElementMenu($title);
+            }
         }
     }
 ?>

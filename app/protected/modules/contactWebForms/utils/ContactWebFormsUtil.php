@@ -64,13 +64,13 @@
                     {
                         $checkedAndReadOnly    = ' checked="checked" disabled="disabled" ';
                         $items[$attributeName] = array('{content}'            => $attributeData['attributeLabel'],
-                            '{checkedAndReadOnly}' => $checkedAndReadOnly);
+                                                       '{checkedAndReadOnly}' => $checkedAndReadOnly);
                     }
                     else if ($contactWebFormAttributes !== null)
                     {
                         $checkedAndReadOnly    = ' checked="checked" ';
                         $items[$attributeName] = array('{content}'            => $attributeData['attributeLabel'],
-                            '{checkedAndReadOnly}' => $checkedAndReadOnly);
+                                                       '{checkedAndReadOnly}' => $checkedAndReadOnly);
                     }
                 }
             }

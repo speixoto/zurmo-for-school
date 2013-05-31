@@ -107,7 +107,8 @@
                                      'Automotive'              => 'Automotive',
                                      'Adult Entertainment'     => 'Adult Entertainment',
                                      'Financial Services'      => 'Financial Services',
-                                     'Mercenaries & Armaments' => 'Mercenaries & Armaments',));
+                                     'Mercenaries & Armaments' => 'Mercenaries & Armaments',),
+                                 'selectedTheme' => null);
             $this->assertEquals($compareData, $params);
         }
 
@@ -123,8 +124,11 @@
             $kanbanBoard = new KanbanBoard(new AAA(), 'industry');
             $kanbanBoard->setSelectedTheme('red');
             $this->assertEquals('red', $kanbanBoard->getSelectedTheme());
-            $themeNamesAndLabelsCompare = array('todo1' => 'implement something', 'todo2' => 'implement something else',
-                                                '' => 'None');
+            $themeNamesAndLabelsCompare = array('' => 'White',
+                                                'kanban-background-football'    => 'Football',
+                                                'kanban-background-tennis'      => 'Tennis',
+                                                'kanban-background-motor'       => 'Motor Sport',
+                                                );
             $this->assertEquals($themeNamesAndLabelsCompare, $kanbanBoard->getThemeNamesAndLabels());
         }
 

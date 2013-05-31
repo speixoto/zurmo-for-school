@@ -24,45 +24,41 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class ContactWebFormTest extends ZurmoBaseTest
+    class ContactWebFormTestHelper
     {
-        public static function setUpBeforeClass()
+        public static function createContactWebFormByName($name, $owner=null)
         {
-            parent::setUpBeforeClass();
-            SecurityTestHelper::createSuperAdmin();
-        }
-
-        public function setUp()
-        {
-            parent::setUp();
-            Yii::app()->user->userModel = User::getByUsername('super');
-        }
-
-        public function testCreateAndGetContactWebFormById()
-        {
+            if ($owner === null)
+            {
+                $owner = Yii::app()->user->userModel;
+            }
             $allAttributes                      = ContactWebFormsUtil::getAllAttributes();
             $placedAttributes                   = array('firstName', 'lastName', 'companyName', 'jobTitle');
             $contactFormAttributes              = ContactWebFormsUtil::getAllPlacedAttributes($allAttributes,
                                                                                               $placedAttributes);
             $attributes                         = array_keys($contactFormAttributes);
-            $this->assertTrue(ContactsModule::loadStartingData());
+            ContactsModule::loadStartingData();
             $contactStates                      = ContactState::getByName('New');
             $contactWebForm                     = new ContactWebForm();
-            $contactWebForm->name               = 'Test Form';
-            $contactWebForm->redirectUrl        = 'http://google.com';
+            $contactWebForm->name               = $name;
+            $contactWebForm->redirectUrl        = 'http://www.zurmo.com/';
             $contactWebForm->submitButtonLabel  = 'Save';
             $contactWebForm->defaultState       = $contactStates[0];
             $contactWebForm->serializedData     = serialize($attributes);
-            $contactWebForm->defaultOwner       = Yii::app()->user->userModel;
-            $this->assertTrue($contactWebForm->save());
-            $id                                 = $contactWebForm->id;
-            unset($contactWebForm);
-            $contactWebForm = ContactWebForm::getById($id);
-            $this->assertEquals('Test Form'         , $contactWebForm->name);
-            $this->assertEquals('http://google.com' , $contactWebForm->redirectUrl);
-            $this->assertEquals('Save'              , $contactWebForm->submitButtonLabel);
-            $this->assertEquals('New'               , $contactWebForm->defaultState->name);
-            $this->assertEquals($attributes         , unserialize($contactWebForm->serializedData));
+            $contactWebForm->defaultOwner       = $owner;
+            $saved                              = $contactWebForm->save();
+            assert('$saved');
+            return $contactWebForm;
+        }
+
+        public static function getContactWebFormAttributes()
+        {
+            $allAttributes                              = ContactWebFormsUtil::getAllAttributes();
+            $placedAttributes                           = array('firstName', 'lastName', 'companyName', 'jobTitle');
+            $contactFormAttributes                      = ContactWebFormsUtil::getAllPlacedAttributes($allAttributes,
+                                                                                                      $placedAttributes);
+            $attributes                                 = array_keys($contactFormAttributes);
+            return $attributes;
         }
     }
 ?>

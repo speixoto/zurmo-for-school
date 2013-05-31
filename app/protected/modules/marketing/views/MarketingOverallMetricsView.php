@@ -58,7 +58,7 @@
         {
             $content  = ZurmoHtml::tag('h3', array(), Zurmo::t('MarketingModule', 'What is going on with Marketing?'));
             $content .= $this->renderConfigureElementsContent();
-            $content  = ZurmoHtml::tag('div', array('class' => 'left-column full-width'), $content);
+            $content  = ZurmoHtml::tag('div', array('class' => 'left-column full-width metrics-details'), $content);
             $content .= $this->renderMetricsWrapperContent();
             return $content;
         }

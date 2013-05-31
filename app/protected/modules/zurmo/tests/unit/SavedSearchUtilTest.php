@@ -65,6 +65,7 @@
             $kanbanBoard                  = new KanbanBoard(new AAA(), 'industry');
             $kanbanBoard->setGroupByAttributeVisibleValues(array('c', 'd'));
             $kanbanBoard->setSelectedTheme('red');
+            $searchForm->setKanbanBoard($kanbanBoard);
             $savedSearch                    = SavedSearchUtil::makeSavedSearchBySearchForm($searchForm, 'someView', $stickyData);
             $this->assertTrue($savedSearch->id < 0);
             $unserializedData = unserialize($savedSearch->serializedData);

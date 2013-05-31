@@ -245,6 +245,7 @@ a.ModalGameNotification a,
 .dynamic-row-field,
 .value-data,
 .report-runtime-availability,
+#RuntimeFiltersForPortletView .view-toolbar-container,
 .hasDrillDownContent,
 .first-series-and-range-area > div,
 .second-series-and-range-area > div,
@@ -267,6 +268,9 @@ a.ModalGameNotification a,
 .email-template-content,
 .tabs-container > .tab,
 .email-template-content > .tab,
+#marketing-intro-steps > div,
+#marketing-intro-steps h3,
+#marketing-intro-steps p,
 #kanban-board,
 #kanban-board .drop-zone-container,
 #kanban-board .drop-zone,
@@ -956,6 +960,8 @@ body.blue .view-toolbar a.active,
 body.blue .view-toolbar a.active span,
 body.blue .portlet-toolbar .icon-delete:before,
 body.blue .portlet-toolbar .icon-edit:before,
+body.blue .mini-pillbox a:hover,
+body.blue .mini-pillbox a.active,
 body.blue #StickyListMenu > li > a:hover > span,
 body.blue .addfileinput-button:hover span .pager a:hover:before,
 body.blue .pager a:hover:after,
@@ -971,6 +977,7 @@ body.blue .configuration-list td:last-child a:hover span:before,
 body.blue .addfileinput-button:hover span,
 body.blue #HomeDashboardPortletSelectionView li span,
 body.blue .hide-welcome span,
+body.blue .hide-marketing-intro span,
 body.blue #kanban-board-options-link:hover,
 body.blue #more-search-link:hover,
 body.blue #select-list-attributes-link:hover {
@@ -1527,6 +1534,8 @@ body.brown .view-toolbar a.active,
 body.brown .view-toolbar a.active span,
 body.brown .portlet-toolbar .icon-delete:before,
 body.brown .portlet-toolbar .icon-edit:before,
+body.brown .mini-pillbox a:hover,
+body.brown .mini-pillbox a.active,
 body.brown #StickyListMenu > li > a:hover > span,
 body.brown .addfileinput-button:hover span .pager a:hover:before,
 body.brown .pager a:hover:after,
@@ -1542,6 +1551,7 @@ body.brown .configuration-list td:last-child a:hover span:before,
 body.brown .addfileinput-button:hover span,
 body.brown #HomeDashboardPortletSelectionView li span,
 body.brown .hide-welcome span,
+body.brown .hide-marketing-intro span,
 body.brown #kanban-board-options-link:hover,
 body.brown #more-search-link:hover,
 body.brown #select-list-attributes-link:hover {
@@ -2098,6 +2108,8 @@ body.lime .view-toolbar a.active,
 body.lime .view-toolbar a.active span,
 body.lime .portlet-toolbar .icon-delete:before,
 body.lime .portlet-toolbar .icon-edit:before,
+body.lime .mini-pillbox a:hover,
+body.lime .mini-pillbox a.active,
 body.lime #StickyListMenu > li > a:hover > span,
 body.lime .addfileinput-button:hover span .pager a:hover:before,
 body.lime .pager a:hover:after,
@@ -2113,6 +2125,7 @@ body.lime .configuration-list td:last-child a:hover span:before,
 body.lime .addfileinput-button:hover span,
 body.lime #HomeDashboardPortletSelectionView li span,
 body.lime .hide-welcome span,
+body.lime .hide-marketing-intro span,
 body.lime #kanban-board-options-link:hover,
 body.lime #more-search-link:hover,
 body.lime #select-list-attributes-link:hover {
@@ -2669,6 +2682,8 @@ body.cherry .view-toolbar a.active,
 body.cherry .view-toolbar a.active span,
 body.cherry .portlet-toolbar .icon-delete:before,
 body.cherry .portlet-toolbar .icon-edit:before,
+body.cherry .mini-pillbox a:hover,
+body.cherry .mini-pillbox a.active,
 body.cherry #StickyListMenu > li > a:hover > span,
 body.cherry .addfileinput-button:hover span .pager a:hover:before,
 body.cherry .pager a:hover:after,
@@ -2684,6 +2699,7 @@ body.cherry .configuration-list td:last-child a:hover span:before,
 body.cherry .addfileinput-button:hover span,
 body.cherry #HomeDashboardPortletSelectionView li span,
 body.cherry .hide-welcome span,
+body.cherry .hide-marketing-intro span,
 body.cherry #kanban-board-options-link:hover,
 body.cherry #more-search-link:hover,
 body.cherry #select-list-attributes-link:hover {
@@ -3240,6 +3256,8 @@ body.turquoise .view-toolbar a.active,
 body.turquoise .view-toolbar a.active span,
 body.turquoise .portlet-toolbar .icon-delete:before,
 body.turquoise .portlet-toolbar .icon-edit:before,
+body.turquoise .mini-pillbox a:hover,
+body.turquoise .mini-pillbox a.active,
 body.turquoise #StickyListMenu > li > a:hover > span,
 body.turquoise .addfileinput-button:hover span .pager a:hover:before,
 body.turquoise .pager a:hover:after,
@@ -3255,6 +3273,7 @@ body.turquoise .configuration-list td:last-child a:hover span:before,
 body.turquoise .addfileinput-button:hover span,
 body.turquoise #HomeDashboardPortletSelectionView li span,
 body.turquoise .hide-welcome span,
+body.turquoise .hide-marketing-intro span,
 body.turquoise #kanban-board-options-link:hover,
 body.turquoise #more-search-link:hover,
 body.turquoise #select-list-attributes-link:hover {
@@ -3811,6 +3830,8 @@ body.violet .view-toolbar a.active,
 body.violet .view-toolbar a.active span,
 body.violet .portlet-toolbar .icon-delete:before,
 body.violet .portlet-toolbar .icon-edit:before,
+body.violet .mini-pillbox a:hover,
+body.violet .mini-pillbox a.active,
 body.violet #StickyListMenu > li > a:hover > span,
 body.violet .addfileinput-button:hover span .pager a:hover:before,
 body.violet .pager a:hover:after,
@@ -3826,6 +3847,7 @@ body.violet .configuration-list td:last-child a:hover span:before,
 body.violet .addfileinput-button:hover span,
 body.violet #HomeDashboardPortletSelectionView li span,
 body.violet .hide-welcome span,
+body.violet .hide-marketing-intro span,
 body.violet #kanban-board-options-link:hover,
 body.violet #more-search-link:hover,
 body.violet #select-list-attributes-link:hover {
@@ -4382,6 +4404,8 @@ body.honey .view-toolbar a.active,
 body.honey .view-toolbar a.active span,
 body.honey .portlet-toolbar .icon-delete:before,
 body.honey .portlet-toolbar .icon-edit:before,
+body.honey .mini-pillbox a:hover,
+body.honey .mini-pillbox a.active,
 body.honey #StickyListMenu > li > a:hover > span,
 body.honey .addfileinput-button:hover span .pager a:hover:before,
 body.honey .pager a:hover:after,
@@ -4397,6 +4421,7 @@ body.honey .configuration-list td:last-child a:hover span:before,
 body.honey .addfileinput-button:hover span,
 body.honey #HomeDashboardPortletSelectionView li span,
 body.honey .hide-welcome span,
+body.honey .hide-marketing-intro span,
 body.honey #kanban-board-options-link:hover,
 body.honey #more-search-link:hover,
 body.honey #select-list-attributes-link:hover {
@@ -4877,6 +4902,12 @@ body.light-toast,
 .disabled {
   pointer-events: none;
   background: #EFEFEF;
+}
+.right {
+  float: right;
+}
+.left {
+  float: left;
 }
 html,
 body {
@@ -6210,14 +6241,15 @@ body > .ui-autocomplete {
 #ActionBarSearchAndListView > :nth-child(6) {
   z-index: 5;
 }
-/*=dashboard
-#HomeDashboardView{
-	.parent > ul{
-		min-width: 160px;
-		margin-top:0;
-	}
+/*=dashboard*/
+#HomeDashboardView .view-toolbar-container {
+  position: relative;
+  z-index: 10;
 }
-*/
+#HomeDashboardView .juiportlet-columns {
+  position: relative;
+  z-index: 1;
+}
 /*=Inner toolbar*/
 .float-bar {
   width: 100%;
@@ -6433,6 +6465,38 @@ form .view-toolbar-container,
   color: #656565;
   box-shadow: inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #ffffff;
 }
+.mini-pillbox label {
+  margin-right: 10px;
+  font-size: 11px !important;
+  line-height: 26px !important;
+}
+.mini-pillbox .pills {
+  display: inline-block;
+  font-size: 11px;
+  border: 1px solid #b7b7b7;
+  border-top-color: #e7e7e7;
+  border-left-color: #d7d7d7;
+  border-right-color: #d7d7d7;
+  border-radius: 4px;
+  background: url(../images/view-toolbar-gradient.png) left bottom repeat-x;
+}
+.mini-pillbox a {
+  font-weight: 700;
+  position: relative;
+  color: #656565;
+  text-shadow: #fff 0 1px 0;
+  padding: 0 6px;
+  line-height: 24px;
+  display: inline-block;
+  border-left: 1px solid #bababa;
+}
+.mini-pillbox a:first-child {
+  border-left: none;
+}
+.mini-pillbox a:active {
+  color: #656565;
+  box-shadow: inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #ffffff;
+}
 .hasDetailsFlyout .DetailsView > div:not(.view-toolbar-container) {
   border: none;
   background: none;
@@ -6535,7 +6599,7 @@ form .view-toolbar-container,
   margin: 0;
 }
 .icon-marketing-dashboard:before,
-.icon-change-dashborad:before {
+#ChangeDashboardsMenu .parent > a:before {
   content: "/";
   font-weight: normal;
   font-size: 24px;
@@ -7368,6 +7432,9 @@ td {
   font-size: 13px;
   font-weight: bold;
   margin: 0 0 3px 0;
+}
+.juiportlet-widget-content .stacked-list tr:first-child td {
+  border-top: none !important;
 }
 .sort-link:after {
   margin-left: 10px;
@@ -8326,6 +8393,11 @@ div.wide.form label.hasCheckBox {
 .cgrid-view {
   position: relative;
 }
+.juiportlet-widget-content {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
 .juiportlet-widget-content .cgrid-view {
   width: 100%;
   -webkit-box-shadow: none;
@@ -8333,6 +8405,7 @@ div.wide.form label.hasCheckBox {
   -o-box-shadow: none;
   -ms-box-shadow: none;
   box-shadow: none;
+  overflow-x: hidden;
 }
 .search-view-0 {
   margin: 15px 0 0 0;
@@ -17035,16 +17108,11 @@ a.user-link {
 #RuntimeFiltersForPortletView .dynamic-rows {
   float: none;
 }
-#RuntimeFiltersForPortletView .dynamic-rows ul {
-  padding: 15px 15px 5px 15px;
+#RuntimeFiltersForPortletView .first-date-area {
+  margin-top: 0;
 }
 #RuntimeFiltersForPortletView .view-toolbar-container {
-  clear: left;
-  margin: 0 15px 15px 15px;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-  width: auto;
+  width: 100%;
 }
 .ReportResultsComponentForPortletView {
   position: relative;
@@ -17844,6 +17912,9 @@ a.user-link {
 .mergetag-guide-modal li {
   margin-bottom: 4px;
 }
+.juiportlet-columns-MarketingDashboard .juiportlet-widget {
+  margin-right: 0;
+}
 .marketing-list-members-portlet-container .portlet-view-toolbar {
   float: left;
 }
@@ -18021,11 +18092,13 @@ a.user-link {
 .portlet-with-toolbar .view-toolbar .parent > ul {
   top: auto;
 }
+#ReportDetailsView,
 #CampaignDetailsView,
 #MarketingListDetailsView {
   position: relative;
   z-index: 10;
 }
+#ReportDetailsView + div,
 #CampaignDetailsView + div,
 #MarketingListDetailsView + div {
   position: relative;
@@ -18042,6 +18115,13 @@ a.user-link {
 .marketing-graph h3 {
   padding-left: 15px;
 }
+.marketing-graph.half {
+  width: 49%;
+}
+.graph-container {
+  clear: left;
+  margin: 15px 0 0 0;
+}
 .edit-autoresponder-link {
   display: block;
   margin-bottom: 10px;
@@ -18056,15 +18136,153 @@ a.user-link {
   font-size: 12px;
 }
 .autoresponder-stats strong {
-  font-size: 30px;
+  font-size: 26px;
   font-weight: bold;
   display: block;
 }
-.autoresponder-stats span {
-  font-weight: bold;
-}
 a + .autoresponder-stats {
   margin-left: 0;
+}
+.metrics-details {
+  text-align: right;
+}
+.metrics-details h3 {
+  width: auto;
+  float: left;
+  color: #545454 !important;
+}
+.metrics-details div,
+.metrics-details form {
+  width: auto;
+  display: inline-block;
+}
+.metrics-details div label,
+.metrics-details form label {
+  float: left;
+}
+.metrics-details > div {
+  font-size: 14px;
+  line-height: 1;
+  font-weight: bold;
+  color: #656565;
+  display: block;
+  margin-bottom: 10px;
+  /*&:after{
+			content: "|";
+			font-weight: bold;
+			padding:0 8px;
+		}*/
+
+}
+#marketing-intro-content {
+  margin-bottom: 30px;
+}
+#marketing-intro-steps {
+  float: left;
+  width: 100%;
+  margin: 30px 0 15px 0;
+}
+#marketing-intro-steps > div {
+  float: left;
+  margin-left: 2%;
+  min-height: 150px;
+  height: 150px;
+  background-color: rgba(51, 51, 51, 0.75);
+  background-repeat: repeat-x;
+  background-image: -moz-linear-gradient(top, rgba(34, 34, 34, 0.85), rgba(51, 51, 51, 0.75));
+  background-image: -ms-linear-gradient(top, rgba(34, 34, 34, 0.85), rgba(51, 51, 51, 0.75));
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, rgba(34, 34, 34, 0.85)), color-stop(100%, rgba(51, 51, 51, 0.75)));
+  background-image: -webkit-linear-gradient(top, rgba(34, 34, 34, 0.85), rgba(51, 51, 51, 0.75));
+  background-image: -o-linear-gradient(top, rgba(34, 34, 34, 0.85), rgba(51, 51, 51, 0.75));
+  background-image: linear-gradient(top, rgba(34, 34, 34, 0.85), rgba(51, 51, 51, 0.75));
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='rgba(34, 34, 34, 0.85)', endColorstr='rgba(51, 51, 51, 0.75)', GradientType=0);
+  color: #EFEFEF;
+  border: 1px solid #333;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -ms-border-radius: 4px;
+  -o-border-radius: 4px;
+  border-radius: 4px;
+  -webkit-box-shadow: inset 0 1px 1px 0 rgba(200, 200, 200, 0.4), 0 1px 0 0 #111;
+  -moz-box-shadow: inset 0 1px 1px 0 rgba(200, 200, 200, 0.4), 0 1px 0 0 #111;
+  -o-box-shadow: inset 0 1px 1px 0 rgba(200, 200, 200, 0.4), 0 1px 0 0 #111;
+  -ms-box-shadow: inset 0 1px 1px 0 rgba(200, 200, 200, 0.4), 0 1px 0 0 #111;
+  box-shadow: inset 0 1px 1px 0 rgba(200, 200, 200, 0.4), 0 1px 0 0 #111;
+  padding: 1px 0 0 0;
+}
+#marketing-intro-steps > div:first-child {
+  margin-left: 0;
+}
+#marketing-intro-steps h3 {
+  color: #fff;
+  font-size: 14px;
+  padding: 34px 0 0 10px;
+  font-weight: normal;
+  -webkit-text-shadow: 0 1px 0 #000000;
+  -moz-text-shadow: 0 1px 0 #000000;
+  -o-text-shadow: 0 1px 0 #000000;
+  -ms-text-shadow: 0 1px 0 #000000;
+  text-shadow: 0 1px 0 #000000;
+  position: relative;
+  float: left;
+  line-height: 1;
+  width: 85px;
+  height: 100%;
+  border-right: 1px solid #222222;
+}
+#marketing-intro-steps h3 strong {
+  display: block;
+  font-size: 50px;
+  line-height: 1;
+}
+#marketing-intro-steps h3 span {
+  color: #fff;
+  display: inline-block;
+  font-weight: 100 !important;
+  font-size: 80%;
+  line-height: 50px;
+  margin-top: -5px;
+}
+#marketing-intro-steps p {
+  padding: 10px 10px 0 10px;
+  margin-left: 85px;
+  font-size: 13px;
+  line-height: 21px;
+  border-left: 1px solid #333333;
+  height: 100%;
+  color: #ececec;
+}
+#marketing-intro-steps p strong {
+  color: #fff;
+  display: block;
+  font-size: 14px;
+  line-height: 22px;
+}
+#marketing-intro-steps span {
+  display: block;
+}
+.hide-marketing-intro {
+  display: block;
+  clear: both;
+  position: relative;
+  top: 30px;
+  font-size: 11px;
+  clear: none;
+  position: static;
+  top: 0;
+}
+.hide-marketing-intro span {
+  font-weight: normal;
+  font-size: 26px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  line-height: 9px;
+  border: none;
+  margin-right: 5px;
+  outline: none !important;
+  display: inline-block;
+}
+.hide-marketing-intro span:before {
+  content: "•";
 }
 #kanban-holder {
   background: #fff;
@@ -18081,22 +18299,22 @@ a + .autoresponder-stats {
   padding: 10px;
 }
 #kanban-holder.kanban-background-football {
-  background: #ffffff url(../images/kanban/football.jpg) left bottom repeat;
+  background: #ffffff url(../images/kanban/football.jpg) left bottom no-repeat;
 }
 #kanban-holder.kanban-background-tennis {
-  background: #ffffff url(../images/kanban/tennis.jpg) left bottom repeat;
+  background: #ffffff url(../images/kanban/tennis.jpg) left bottom no-repeat;
 }
 #kanban-holder.kanban-background-motor {
-  background: #ffffff url(../images/kanban/asphalt.jpg) center bottom repeat;
+  background: #ffffff url(../images/kanban/asphalt.jpg) center bottom no-repeat;
 }
 .kanban-background-football .background-texture-1 {
-  background: #ffffff url(../images/kanban/swatch-football.jpg) left top repeat;
+  background: #ffffff url(../images/kanban/swatch-football.jpg) left top no-repeat;
 }
 .kanban-background-tennis .background-texture-1 {
-  background: #ffffff url(../images/kanban/swatch-tennis.jpg) left top repeat;
+  background: #ffffff url(../images/kanban/swatch-tennis.jpg) left top no-repeat;
 }
 .kanban-background-motor .background-texture-1 {
-  background: #ffffff url(../images/kanban/swatch-asphalt.jpg) left top repeat;
+  background: #ffffff url(../images/kanban/swatch-asphalt.jpg) left top no-repeat;
 }
 #kanban-board .drop-zone-container {
   padding: 37px 2px 2px 2px;

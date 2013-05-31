@@ -283,6 +283,10 @@
             }
         }
 
+        /**
+         * @param SearchAttributesDataCollection $dataCollection
+         * @param array $stickyData
+         */
         protected static function resolveKanbanBoardDataByCollection(SearchAttributesDataCollection $dataCollection, & $stickyData)
         {
             if($dataCollection->hasKanbanBoard() && $dataCollection->getKanbanBoard()->getIsActive() &&
