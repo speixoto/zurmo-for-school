@@ -1184,17 +1184,17 @@ body > .ui-autocomplete{
 			content: '\20AC';
 		}
 	}
-	li.type-ProductModule{
+	li.type-ProductsModule{
 		em:before{
 			content: '\003E';
 		}
 	}
-	li.type-ProductTemplateModule{
+	li.type-ProductTemplatesModule{
 		em:before{
 			content: '\00AC';
 		}
 	}
-	li.type-ProductCategoryModule{
+	li.type-ProductsCategoryModule{
 		em:before{
 			content: '\00D7';
 		}
@@ -1342,6 +1342,9 @@ body > .ui-autocomplete{
 	.view-toolbar-container{
 		float: right;
 		width: auto;
+	}
+	.view-toolbar{
+		margin-bottom: 0;
 	}
 }
 
@@ -4256,7 +4259,7 @@ div.hasHalfs{
 		}
 	}
 	ul{
-		width:110px;
+		min-width:110px;
 		margin-left:-85px;
 		list-style: none;
 		++.headerDropDown;
@@ -4266,9 +4269,11 @@ div.hasHalfs{
 }
 
 .edit-portlet-menu{
+	line-height: 1;
+	margin-top:9px;
 	margin-right: 15px;
 	ul{
-		top: 32px;
+		top: 20px;
 	}
 }
 

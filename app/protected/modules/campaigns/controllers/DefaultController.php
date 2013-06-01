@@ -36,6 +36,9 @@
 
     class CampaignsDefaultController extends ZurmoModuleController
     {
+        const USER_REQUIRED_MODULES_ACCESS_FILTER_PATH =
+            'application.modules.campaigns.controllers.filters.UserCanAccessRequiredModulesForCampaignCheckControllerFilter';
+
         const ZERO_MODELS_CHECK_FILTER_PATH =
             'application.modules.campaigns.controllers.filters.CampaignsZeroModelsCheckControllerFilter';
 
@@ -54,6 +57,10 @@
         {
             return array_merge(parent::filters(),
                 array(
+                    array(
+                        static::USER_REQUIRED_MODULES_ACCESS_FILTER_PATH,
+                        'controller' => $this,
+                    ),
                     array(
                         static::ZERO_MODELS_CHECK_FILTER_PATH . ' + list',
                         'controller'                    => $this,
@@ -106,11 +113,14 @@
 
         public function actionCreate()
         {
-           $breadcrumbLinks    = static::getDetailsAndEditBreadcrumbLinks();
-           $breadcrumbLinks[]  = Zurmo::t('CampaignsModule', 'Create');
-            //todo: wizard
-           $editView = new CampaignEditView($this->getId(), $this->getModule()->getId(),
-                                                 $this->attemptToSaveModelFromPost(new Campaign()),
+           $breadcrumbLinks            = static::getDetailsAndEditBreadcrumbLinks();
+           $breadcrumbLinks[]          = Zurmo::t('CampaignsModule', 'Create');
+           $campaign                   = new Campaign();
+           $campaign->status           = Campaign::STATUS_ACTIVE;
+           $campaign->supportsRichText = true;
+           $campaign->enableTracking   = true;
+           $editView                   = new CampaignEditView($this->getId(), $this->getModule()->getId(),
+                                                 $this->attemptToSaveModelFromPost($campaign),
                                                  Zurmo::t('Default', 'Create Campaign'));
             $view               = new CampaignsPageView(MarketingDefaultViewUtil::
                                   makeViewWithBreadcrumbsForCurrentUser($this, $editView,
@@ -173,6 +183,11 @@
         protected static function getSearchFormClassName()
         {
             return 'CampaignsSearchForm';
+        }
+
+        protected static function getZurmoControllerUtil()
+        {
+            return new CampaignZurmoControllerUtil();
         }
     }
 ?>

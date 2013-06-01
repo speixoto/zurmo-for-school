@@ -167,13 +167,22 @@
 
         public function actionModalList()
         {
-            // TODO: @Shoaibi/@Jason: Critical: Do we even need this?
             $modalListLinkProvider = new SelectFromRelatedEditModalListLinkProvider(
                                             $_GET['modalTransferInformation']['sourceIdFieldId'],
                                             $_GET['modalTransferInformation']['sourceNameFieldId'],
                                             $_GET['modalTransferInformation']['modalId']
             );
             echo ModalSearchListControllerUtil::setAjaxModeAndRenderModalSearchList($this, $modalListLinkProvider);
+        }
+
+        public function actionGetInfoToCopyToCampaign($id)
+        {
+            $marketingList = static::getModelAndCatchNotFoundAndDisplayError('MarketingList', intval($id));
+            ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($marketingList);
+            $data = array();
+            $data['fromName']    = $marketingList->fromName;
+            $data['fromAddress'] = $marketingList->fromAddress;
+            echo CJSON::encode($data);
         }
 
         protected static function getSearchFormClassName()

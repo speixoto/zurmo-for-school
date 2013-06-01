@@ -38,21 +38,24 @@
     {
         public static function createCampaign($name, $subject, $textContent, $htmlContent = null, $fromName = null,
                                             $fromAddress = null, $supportsRichText = null, $type = null, $status = null,
-                                            $sendNow = null, $sendingDateTime = null, $enableTracking = null,
+                                            $sendOnDateTime = null, $enableTracking = null,
                                             $marketingList = null, $runValidation = true)
         {
             assert('is_bool($runValidation)');
             $campaign       = static::populateCampaign($name, $subject, $textContent, $htmlContent, $fromName,
-                                                    $fromAddress, $supportsRichText, $type, $status, $sendNow,
-                                                    $sendingDateTime, $enableTracking, $marketingList);
+                                                    $fromAddress, $supportsRichText, $type, $status,
+                                                    $sendOnDateTime, $enableTracking, $marketingList);
             $saved          = $campaign->save($runValidation);
-            assert('$saved');
+            if(!$saved)
+            {
+                throw new FailedToSaveModelException();
+            }
             return $campaign;
         }
 
         public static function populateCampaign($name, $subject, $textContent, $htmlContent = null, $fromName = null,
                                                 $fromAddress = null, $supportsRichText = null, $type = null,
-                                                $status = null, $sendNow = null, $sendingDateTime = null,
+                                                $status = null, $sendOnDateTime = null,
                                                 $enableTracking = null, $marketingList = null)
         {
             assert('is_string($name)');
@@ -64,39 +67,34 @@
             assert('is_string($supportsRichText) || is_int($supportsRichText) || $supportsRichText === null');
             assert('is_string($type) || is_int($type) || $type === null');
             assert('is_string($status) || is_int($status) || $status === null');
-            assert('is_string($sendNow) || is_int($sendNow) || $sendNow === null');
-            assert('is_string($sendingDateTime) || is_int($sendingDateTime) || $sendingDateTime === null');
+            assert('is_string($sendOnDateTime) || is_int($sendOnDateTime) || $sendOnDateTime === null');
             assert('is_bool($enableTracking) || is_int($enableTracking) || $enableTracking === null');
             assert('is_object($marketingList) || $marketingList === null');
-            if (!isset($supportsRichText))
+            if ($supportsRichText == null)
             {
                 $supportsRichText   = 1;
             }
-            if (!isset($type))
+            if($sendOnDateTime == null)
+            {
+                $sendOnDateTime = '0000-00-00 00:00:00';
+            }
+            if ($type == null)
             {
                 $type               = Campaign::TYPE_MARKETING_LIST;
             }
-            if (!isset($status))
+            if ($status == null)
             {
                 $status             = Campaign::STATUS_ACTIVE;
             }
-            if (isset($sendingDateTime))
-            {
-                $sendNow            = 0;
-            }
-            elseif (!isset($sendNow))
-            {
-                $sendNow            = 1;
-            }
-            if (!isset($enableTracking))
+            if ($enableTracking == null)
             {
                 $enableTracking     = 1;
             }
-            if (!isset($fromName))
+            if ($fromName == null)
             {
                 $fromName       = 'Support Team';
             }
-            if (!isset($fromAddress))
+            if ($fromAddress == null)
             {
                 $fromAddress    = 'support@zurmo.com';
             }
@@ -108,7 +106,6 @@
                     $marketingList  = RandomDataUtil::getRandomValueFromArray($marketingLists);
                 }
             }
-
             $campaign                           = new Campaign();
             $campaign->name                     = $name;
             $campaign->subject                  = $subject;
@@ -120,8 +117,7 @@
             $campaign->fromAddress              = $fromAddress;
             $campaign->supportsRichText         = $supportsRichText;
             $campaign->enableTracking           = $enableTracking;
-            $campaign->sendNow                  = $sendNow;
-            $campaign->sendingDateTime          = $sendingDateTime;
+            $campaign->sendOnDateTime          = $sendOnDateTime;
             $campaign->marketingList            = $marketingList;
             return $campaign;
         }

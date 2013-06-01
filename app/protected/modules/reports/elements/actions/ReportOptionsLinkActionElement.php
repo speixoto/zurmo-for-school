@@ -114,7 +114,7 @@
          */
         protected function getDefaultLabel()
         {
-            return Zurmo::t('ReportsModule', 'Options');
+            return Zurmo::t('Core', 'Options');
         }
 
         /**

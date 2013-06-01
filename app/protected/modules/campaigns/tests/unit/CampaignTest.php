@@ -35,11 +35,14 @@
      ********************************************************************************/
     class CampaignTest extends ZurmoBaseTest
     {
+        public static $marketingList;
+
         public static function setUpBeforeClass()
         {
             parent::setUpBeforeClass();
             SecurityTestHelper::createSuperAdmin();
             SecurityTestHelper::createUsers();
+            self::$marketingList = MarketingListTestHelper::createMarketingListByName('a new list');
         }
 
         public function setUp()
@@ -62,7 +65,8 @@
             $campaign->textContent      = 'Test Text Content';
             $campaign->fromName         = 'From Name';
             $campaign->fromAddress      = 'from@zurmo.com';
-            $campaign->sendNow          = 1;
+            $campaign->sendOnDateTime   = '0000-00-00 00:00:00';
+            $campaign->marketingList    = self::$marketingList;
             $this->assertTrue($campaign->save());
             $id                         = $campaign->id;
             unset($campaign);
@@ -76,6 +80,8 @@
             $this->assertEquals('Test Subject',                             $campaign->subject);
             $this->assertEquals('Test Html Content',                        $campaign->htmlContent);
             $this->assertEquals('Test Text Content',                        $campaign->textContent);
+            $this->assertEquals('0000-00-00 00:00:00',                      $campaign->sendOnDateTime);
+            $this->assertEquals(self::$marketingList->id,                   $campaign->marketingList->id);
         }
 
         /**
@@ -102,30 +108,8 @@
             $this->assertEquals('From Address cannot be blank.', $errors['fromAddress'][0]);
             $this->assertArrayHasKey('textContent', $errors);
             $this->assertEquals('Please provide at least one of the contents field.', $errors['textContent'][0]);
-            $this->assertArrayHasKey('sendNow', $errors);
-            $this->assertEquals('Send Now? cannot be blank.', $errors['sendNow'][0]);
-
-            $campaign->sendNow          = 0;
-            $this->assertFalse($campaign->save());
-            $errors = $campaign->getErrors();
-            $this->assertNotEmpty($errors);
-            $this->assertCount(8, $errors);
-            $this->assertArrayHasKey('name', $errors);
-            $this->assertEquals('Name cannot be blank.', $errors['name'][0]);
-            $this->assertArrayHasKey('status', $errors);
-            $this->assertEquals('Status cannot be blank.', $errors['status'][0]);
-            $this->assertArrayHasKey('supportsRichText', $errors);
-            $this->assertEquals('Supports Rich Text(HTML) outgoing emails cannot be blank.', $errors['supportsRichText'][0]);
-            $this->assertArrayHasKey('subject', $errors);
-            $this->assertEquals('Subject cannot be blank.', $errors['subject'][0]);
-            $this->assertArrayHasKey('fromName', $errors);
-            $this->assertEquals('From Name cannot be blank.', $errors['fromName'][0]);
-            $this->assertArrayHasKey('fromAddress', $errors);
-            $this->assertEquals('From Address cannot be blank.', $errors['fromAddress'][0]);
-            $this->assertArrayHasKey('textContent', $errors);
-            $this->assertEquals('Please provide at least one of the contents field.', $errors['textContent'][0]);
-            $this->assertArrayHasKey('sendingDateTime', $errors);
-            $this->assertEquals('Send On cannot be blank.', $errors['sendingDateTime'][0]);
+            $this->assertArrayHasKey('marketingList', $errors);
+            $this->assertEquals('Name cannot be blank.', $errors['marketingList']['name'][0]);
 
             $campaign->name             = 'Test Campaign Name2';
             $campaign->type             = Campaign::TYPE_MARKETING_LIST;
@@ -136,9 +120,9 @@
             $campaign->subject          = 'Test Subject2';
             $campaign->htmlContent      = 'Test Html Content2';
             $campaign->textContent      = 'Test Text Content2';
-            $campaign->sendNow          = 1;
             $campaign->fromName         = 'From Name2';
             $campaign->fromAddress      = 'from2@zurmo.com';
+            $campaign->marketingList    = self::$marketingList;
             $this->assertTrue($campaign->save());
             $id                         = $campaign->id;
             unset($campaign);
@@ -153,8 +137,7 @@
             $this->assertEquals('Test Subject2',                            $campaign->subject);
             $this->assertEquals('Test Html Content2',                       $campaign->htmlContent);
             $this->assertEquals('Test Text Content2',                       $campaign->textContent);
-            $this->assertEquals(1,                         $campaign->sendNow);
-            $this->assertTrue((time() + 15) > DateTimeUtil::convertDbFormatDateTimeToTimestamp($campaign->sendingDateTime));
+            $this->assertTrue((time() + 15) > DateTimeUtil::convertDbFormatDateTimeToTimestamp($campaign->sendOnDateTime));
         }
 
         /**
@@ -216,7 +199,6 @@
             $this->assertEquals('Test Subject2',                            $campaign->subject);
             $this->assertEquals('Test Html Content2',                       $campaign->htmlContent);
             $this->assertEquals('Test Text Content2',                       $campaign->textContent);
-            $this->assertEquals(1,                         $campaign->sendNow);
 
             $duePausedCampaigns = Campaign::getByStatus(Campaign::STATUS_PAUSED);
             $this->assertNotEmpty($duePausedCampaigns);
@@ -253,7 +235,6 @@
             $this->assertEquals('Test Subject2',                            $campaign->subject);
             $this->assertEquals('Test Html Content2',                       $campaign->htmlContent);
             $this->assertEquals('Test Text Content2',                       $campaign->textContent);
-            $this->assertEquals(1,                         $campaign->sendNow);
 
             $duePausedCampaigns = Campaign::getByStatusAndSendingTime(Campaign::STATUS_PAUSED);
             $this->assertNotEmpty($duePausedCampaigns);

@@ -34,73 +34,63 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * Class to render link to toggle portlets for a report grid view
-     */
-    class CampaignsTogglePortletsLinkActionElement extends LinkActionElement
+    class MarketingIntroLinkActionElement extends LinkActionElement
     {
-        /**
-         * @return null
-         */
         public function getActionType()
         {
             return null;
         }
 
-        /**
-         * @return string
-         */
         public function render()
         {
-            $content  = null;
-            $metricsClass           = $this->getMetricsPortletClass();
-            $campaignItemsClass     = $this->getCampaignItemsPortletClass();
-            if ($metricsClass)
+            if($this->moduleId == 'marketing' && $this->controllerId == 'default' &&
+               (Yii::app()->controller->action->id == 'dashboardDetails' ||
+                Yii::app()->controller->action->id == null ||
+                Yii::app()->controller->action->id == 'index'))
             {
-                $membersTranslatedLabel = Zurmo::t('HomeModule', 'Dashboard');
-                $content                .= $this->getCheckboxContent($membersTranslatedLabel, $metricsClass);
+                $items          = array($this->renderMenuItem());
+                $clipName       = get_class($this);
+                $cClipWidget    = new CClipWidget();
+                $cClipWidget->beginClip($clipName);
+                $cClipWidget->widget('application.core.widgets.MinimalDynamicLabelMbMenu', array(
+                    'htmlOptions'   => array(
+                        'id' => $clipName,
+                        'class' => 'clickable-mbmenu'
+                    ),
+                    'items'         => $items,
+                ));
+                $cClipWidget->endClip();
+                return $cClipWidget->getController()->clips[$clipName];
             }
-            if ($campaignItemsClass)
-            {
-                $campaignItemsTranslatedLabel = Zurmo::t('CampaignsModule', 'Email Recipients');
-                $content                .= $this->getCheckboxContent($campaignItemsTranslatedLabel, $campaignItemsClass);
-            }
-            return ZurmoHtml::tag('div', $this->getHtmlOptions(), $content );
         }
 
-        protected function getCheckboxContent($translatedLabel, $class)
+        public function renderMenuItem()
         {
-            $htmlOptions = array('onClick' => 'js:$(".' . $class . '").parentsUntil("li").parent().toggle();');
-            $label       = ZurmoHtml::label($translatedLabel, $translatedLabel,
-                                                                array('class' => 'label-for-campaign-widgets'));
-            $content    = ZurmoHtml::checkBox($translatedLabel, true, $htmlOptions) . $label;
-            return $content;
+            return array(
+                'label' => $this->getLabel(),
+                'url'   => $this->getRoute(),
+                'items' => array(
+                    array(
+                        'label'                 => '',
+                        'dynamicLabelContent'   => $this->renderHideOrShowContent(),
+                    ),
+                ),
+            );
         }
 
-        /**
-         * @return string
-         */
         protected function getDefaultLabel()
         {
-            return Zurmo::t('CampaignsModule', 'Toggle View');
+            return Zurmo::t('MarketingModule', '?');
         }
 
-        /**
-         * @return null
-         */
         protected function getDefaultRoute()
         {
             return null;
         }
 
-        protected function getMetricsPortletClass()
+        protected function renderHideOrShowContent()
         {
-            return ArrayUtil::getArrayValueWithExceptionIfNotFound($this->params, 'metricsPortletClass');
-        }
-
-        protected function getCampaignItemsPortletClass()
-        {
-            return ArrayUtil::getArrayValueWithExceptionIfNotFound($this->params, 'campaignItemsPortletClass');
+            return 'something should go here';
         }
     }
 ?>

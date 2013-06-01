@@ -93,7 +93,6 @@
                                                                             Campaign::STATUS_ACTIVE,
                                                                             null,
                                                                             null,
-                                                                            null,
                                                                             $marketingList);
             $campaignActiveId       = $campaignActive->id;
             $this->assertNotNull($campaignActive);
@@ -108,7 +107,6 @@
                                                                             Campaign::STATUS_INCOMPLETE,
                                                                             null,
                                                                             null,
-                                                                            null,
                                                                             $marketingList);
             $campaignIncompleteId   = $campaignIncomplete->id;
             $this->assertNotNull($campaignIncomplete);
@@ -121,7 +119,6 @@
                                                                             null,
                                                                             Campaign::TYPE_MARKETING_LIST,
                                                                             Campaign::STATUS_PAUSED,
-                                                                            null,
                                                                             null,
                                                                             null,
                                                                             $marketingList);
@@ -161,7 +158,6 @@
                                                                                 Campaign::STATUS_PROCESSING,
                                                                                 null,
                                                                                 null,
-                                                                                null,
                                                                                 $marketingList);
             $campaignProcessingId    = $campaignProcessing->id;
             $this->assertNotNull($campaignProcessing);
@@ -190,7 +186,6 @@
                                                                             null,
                                                                             Campaign::TYPE_MARKETING_LIST,
                                                                             Campaign::STATUS_PROCESSING,
-                                                                            null,
                                                                             null,
                                                                             null,
                                                                             $marketingList);
@@ -224,7 +219,6 @@
                                                                         Campaign::STATUS_PROCESSING,
                                                                         null,
                                                                         null,
-                                                                        null,
                                                                         $marketingList);
             $this->assertNotNull($campaign01);
             $campaign01Id   = $campaign01->id;
@@ -240,7 +234,6 @@
                                                                         Campaign::STATUS_PROCESSING,
                                                                         null,
                                                                         null,
-                                                                        null,
                                                                         $marketingList);
             $this->assertNotNull($campaign02);
             $campaign02Id   = $campaign02->id;
@@ -254,7 +247,6 @@
                                                                         null,
                                                                         Campaign::TYPE_MARKETING_LIST,
                                                                         Campaign::STATUS_PROCESSING,
-                                                                        null,
                                                                         null,
                                                                         null,
                                                                         $marketingList);

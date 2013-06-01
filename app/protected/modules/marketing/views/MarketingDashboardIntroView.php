@@ -39,19 +39,25 @@
      */
     class MarketingDashboardIntroView extends View
     {
-        protected $panelId     = 'marketing-intro-content';
+        const PANEL_ID     = 'marketing-intro-content';
 
-        protected $linkId      = 'hide-marketing-intro';
+        const LINK_ID      = 'hide-marketing-intro';
 
         protected $cookieValue = 'hidden';
 
+        public static function resolveCookieId()
+        {
+            return self::PANEL_ID . '-panel';
+        }
+
         protected function renderContent()
         {
-            if(Yii::app()->request->cookies[$this->panelId . '-panel'] == $this->cookieValue)
+            $this->registerScripts();
+            if(Yii::app()->request->cookies[self::resolveCookieId()] == $this->cookieValue)
             {
                 return false;
             }
-            $content  = '<div id="' . $this->panelId . '">';
+            $content  = '<div id="' . self::PANEL_ID . '">';
             $content .= '<h1>' . Zurmo::t('MarketingModule', 'How does Email Marketing work in Zurmo?'). '</h1>';
 
             $content .= '<div id="marketing-intro-steps" class="clearfix">';
@@ -75,20 +81,19 @@
         {
             //todo: should use ajax, then when done remove div from UI
             $label    = '<span></span>' . Zurmo::t('MarketingModule', 'Dismiss');
-            $content  = '<div class="' . $this->linkId . '">'.ZurmoHtml::link($label, '#');
+            $content  = '<div class="' . self::LINK_ID . '">'.ZurmoHtml::link($label, '#');
             $content .= '</div>';
-            Yii::app()->clientScript->registerScript($this->linkId, $this->registerScripts());
             return $content;
         }
 
         protected function registerScripts()
         {
-            $script = "$('.{$this->linkId}').click(function(){
-                $('#{$this->panelId}').slideToggle();
-                document.cookie = '{$this->panelId}-panel={$this->cookieValue}';
+            $script = "$('." . self::LINK_ID . "').click(function(){
+                $('#" . self::PANEL_ID . "').slideToggle();
+                document.cookie = '" . self::resolveCookieId() . "={$this->cookieValue}';
                 return false;
             })";
-            return $script;
+            Yii::app()->clientScript->registerScript(self::LINK_ID, $script);
         }
     }
 ?>
