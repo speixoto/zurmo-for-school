@@ -259,14 +259,23 @@
             return parent::beforeDelete();
         }
 
-        public static function checkIfPortletExistByViewTypeLayoutIdAndUser($viewType, $uniqueLayoutId, $userId)
+        /**
+         * Check if the portlet is already added to the detail view. This would
+         * take care of the case where user click on the link in select portlet
+         * list more than one time
+         * @param string $viewType
+         * @param string $uniqueLayoutId
+         * @param int $userId
+         * @return boolean
+         */
+        public static function doesPortletExistByViewTypeLayoutIdAndUser($viewType, $uniqueLayoutId, $userId)
         {
             assert('is_integer($userId) && $userId >= 1');
-            $sql = "select count(1) as cnt "          .
+            $sql = "select count(*) as count "          .
                    'from portlet '                                       .
                    "where layoutid = '$uniqueLayoutId' and viewtype = '$viewType' and _user_id = $userId";
             $row = R::getRow($sql);
-            if($row['cnt'] > 0)
+            if($row['count'] > 0)
             {
                 return true;
             }
