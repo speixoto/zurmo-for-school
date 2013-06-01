@@ -34,25 +34,41 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class CampaignDetailsOverlayView extends DetailsView
+    /**
+     * Class for defining the badge associated with creating a new campaign
+     */
+    class CreateCampaignGameBadgeRules extends GameBadgeRules
     {
-        const DESCRIPTION_CLASS          = 'campaign-description';
+        public static $valuesIndexedByGrade = array(
+            1  => 1,
+            2  => 3,
+            3  => 5,
+            4  => 10,
+            5  => 20,
+            6  => 30,
+            7  => 40,
+            8  => 50,
+            9  => 60,
+            10 => 70,
+            11 => 80,
+            12 => 90,
+            13 => 100
+        );
 
-        protected function renderContent()
+        public static function getPassiveDisplayLabel($value)
         {
-            $content  = $this->renderDescriptionContent();
-            $content .= $this->renderAfterFormLayoutForDetailsContent();
-            return $content;
+            return Zurmo::t('CampaignsModule', '{n} Campaign created|{n} Campaigns created', array($value));
         }
 
-        protected function renderDescriptionContent()
+        public static function badgeGradeUserShouldHaveByPointsAndScores($userPointsByType, $userScoresByType)
         {
-            $innerContent  = '<b>' . $this->model->getAttributeLabel('sendOnDateTime') . ':</b> ';
-            $innerContent .= DateTimeUtil::convertDbFormattedDateTimeToLocaleFormattedDisplay($this->model->sendOnDateTime);
-            $innerContent .= "</BR><b>" . $this->model->getAttributeLabel('subject') . ':</b> ';
-            $innerContent .= $this->model->subject;
-            $content       = ZurmoHtml::tag('div', array('class' => static::DESCRIPTION_CLASS), $innerContent);
-            return $content;
+            assert('is_array($userPointsByType)');
+            assert('is_array($userScoresByType)');
+            if (isset($userScoresByType['CreateCampaign']))
+            {
+                return static::getBadgeGradeByValue((int)$userScoresByType['CreateCampaign']->value);
+            }
+            return 0;
         }
     }
 ?>

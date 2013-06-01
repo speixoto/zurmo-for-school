@@ -88,7 +88,7 @@
             {
                 $timestamp              += rand(500, 5000);
             }
-            $model->sendOnDateTime         = DateTimeUtil::convertTimestampToDbFormatDateTime($timestamp);
+            $model->sendOnDateTime          = DateTimeUtil::convertTimestampToDbFormatDateTime($timestamp);
             $model->supportsRichText        = (rand() % 2);
             $model->htmlContent             = $this->seedData['htmlContent'][$this->index];
             $model->textContent             = $this->seedData['textContent'][$this->index];

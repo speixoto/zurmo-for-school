@@ -36,6 +36,9 @@
 
     class CampaignsDefaultController extends ZurmoModuleController
     {
+        const USER_REQUIRED_MODULES_ACCESS_FILTER_PATH =
+            'application.modules.campaigns.controllers.filters.UserCanAccessRequiredModulesForCampaignCheckControllerFilter';
+
         const ZERO_MODELS_CHECK_FILTER_PATH =
             'application.modules.campaigns.controllers.filters.CampaignsZeroModelsCheckControllerFilter';
 
@@ -54,6 +57,10 @@
         {
             return array_merge(parent::filters(),
                 array(
+                    array(
+                        static::USER_REQUIRED_MODULES_ACCESS_FILTER_PATH,
+                        'controller' => $this,
+                    ),
                     array(
                         static::ZERO_MODELS_CHECK_FILTER_PATH . ' + list',
                         'controller'                    => $this,

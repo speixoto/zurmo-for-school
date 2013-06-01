@@ -34,25 +34,19 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class CampaignDetailsOverlayView extends DetailsView
+    /**
+     * Class defining rules for Campaign gamification behavior.
+     */
+    class CampaignGamificationRules extends GamificationRules
     {
-        const DESCRIPTION_CLASS          = 'campaign-description';
-
-        protected function renderContent()
+        public static function getPointTypesAndValuesForCreateModel()
         {
-            $content  = $this->renderDescriptionContent();
-            $content .= $this->renderAfterFormLayoutForDetailsContent();
-            return $content;
+            return array(GamePoint::TYPE_COMMUNICATION => 25);
         }
 
-        protected function renderDescriptionContent()
+        public static function getPointTypesAndValuesForUpdateModel()
         {
-            $innerContent  = '<b>' . $this->model->getAttributeLabel('sendOnDateTime') . ':</b> ';
-            $innerContent .= DateTimeUtil::convertDbFormattedDateTimeToLocaleFormattedDisplay($this->model->sendOnDateTime);
-            $innerContent .= "</BR><b>" . $this->model->getAttributeLabel('subject') . ':</b> ';
-            $innerContent .= $this->model->subject;
-            $content       = ZurmoHtml::tag('div', array('class' => static::DESCRIPTION_CLASS), $innerContent);
-            return $content;
+            return array(GamePoint::TYPE_COMMUNICATION => 10);
         }
     }
 ?>

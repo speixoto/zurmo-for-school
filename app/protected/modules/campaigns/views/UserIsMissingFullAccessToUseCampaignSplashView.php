@@ -34,25 +34,26 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class CampaignDetailsOverlayView extends DetailsView
+    /**
+     * If a user has access to workflow, but not email templates, then that user cannot properly use workflow.
+     */
+    class UserIsMissingFullAccessToUseCampaignSplashView extends SplashView
     {
-        const DESCRIPTION_CLASS          = 'campaign-description';
-
-        protected function renderContent()
+        /**
+         * @return null|string
+         */
+        protected function getIconName()
         {
-            $content  = $this->renderDescriptionContent();
-            $content .= $this->renderAfterFormLayoutForDetailsContent();
-            return $content;
+            return 'Warning';
         }
 
-        protected function renderDescriptionContent()
+        /**
+         * @return string
+         */
+        protected function getMessageContent()
         {
-            $innerContent  = '<b>' . $this->model->getAttributeLabel('sendOnDateTime') . ':</b> ';
-            $innerContent .= DateTimeUtil::convertDbFormattedDateTimeToLocaleFormattedDisplay($this->model->sendOnDateTime);
-            $innerContent .= "</BR><b>" . $this->model->getAttributeLabel('subject') . ':</b> ';
-            $innerContent .= $this->model->subject;
-            $content       = ZurmoHtml::tag('div', array('class' => static::DESCRIPTION_CLASS), $innerContent);
-            return $content;
+            return Zurmo::t('CampaignsModule', '<h2>Not so fast!</h2><div class="large-icon"></div>' .
+            '<p>To manage campaigns you must have access to email templates and marketing lists. Contact the CRM administrator about this issue.</p>');
         }
     }
 ?>

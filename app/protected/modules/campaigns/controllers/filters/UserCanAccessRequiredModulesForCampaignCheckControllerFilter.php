@@ -34,25 +34,27 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class CampaignDetailsOverlayView extends DetailsView
+    /**
+     * Filter used by campaign controller to ascertain if the user can access email templates and marketing lists, which is a requirement
+     * to use campaigns
+     */
+    class UserCanAccessRequiredModulesForCampaignCheckControllerFilter extends CFilter
     {
-        const DESCRIPTION_CLASS          = 'campaign-description';
+        public $controller;
 
-        protected function renderContent()
+        protected function preFilter($filterChain)
         {
-            $content  = $this->renderDescriptionContent();
-            $content .= $this->renderAfterFormLayoutForDetailsContent();
-            return $content;
-        }
-
-        protected function renderDescriptionContent()
-        {
-            $innerContent  = '<b>' . $this->model->getAttributeLabel('sendOnDateTime') . ':</b> ';
-            $innerContent .= DateTimeUtil::convertDbFormattedDateTimeToLocaleFormattedDisplay($this->model->sendOnDateTime);
-            $innerContent .= "</BR><b>" . $this->model->getAttributeLabel('subject') . ':</b> ';
-            $innerContent .= $this->model->subject;
-            $content       = ZurmoHtml::tag('div', array('class' => static::DESCRIPTION_CLASS), $innerContent);
-            return $content;
+            if (!RightsUtil::canUserAccessModule('EmailTemplatesModule', Yii::app()->user->userModel) ||
+                !RightsUtil::canUserAccessModule('MarketingListsModule', Yii::app()->user->userModel))
+            {
+                $messageView        = new UserIsMissingFullAccessToUseCampaignSplashView();
+                $pageViewClassName  = $this->controller->getModule()->getPluralCamelCasedName() . 'PageView';
+                $view               = new $pageViewClassName(ZurmoDefaultAdminViewUtil::
+                                      makeStandardViewForCurrentUser($this->controller, $messageView));
+                echo $view->render();
+                return false;
+            }
+            return true;
         }
     }
 ?>
