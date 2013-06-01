@@ -54,10 +54,16 @@
         {
             $content  = null;
             $metricsClass           = $this->getMetricsPortletClass();
+            $campaignItemsClass     = $this->getCampaignItemsPortletClass();
             if ($metricsClass)
             {
                 $membersTranslatedLabel = Zurmo::t('HomeModule', 'Dashboard');
                 $content                .= $this->getCheckboxContent($membersTranslatedLabel, $metricsClass);
+            }
+            if ($campaignItemsClass)
+            {
+                $campaignItemsTranslatedLabel = Zurmo::t('CampaignsModule', 'Email Recipients');
+                $content                .= $this->getCheckboxContent($campaignItemsTranslatedLabel, $campaignItemsClass);
             }
             return ZurmoHtml::tag('div', $this->getHtmlOptions(), $content );
         }
@@ -90,6 +96,11 @@
         protected function getMetricsPortletClass()
         {
             return ArrayUtil::getArrayValueWithExceptionIfNotFound($this->params, 'metricsPortletClass');
+        }
+
+        protected function getCampaignItemsPortletClass()
+        {
+            return ArrayUtil::getArrayValueWithExceptionIfNotFound($this->params, 'campaignItemsPortletClass');
         }
     }
 ?>

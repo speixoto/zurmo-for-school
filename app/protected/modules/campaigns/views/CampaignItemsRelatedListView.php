@@ -34,28 +34,41 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class CampaignDetailsView extends SecuredDetailsView
+    class CampaignItemsRelatedListView extends RelatedListView
     {
-        public static function assertModelIsValid($model)
+
+        protected function renderContent()
         {
-            assert('$model instanceof Campaign');
+            $content = parent::renderContent();
+            return ZurmoHtml::tag('div', array('class' => $this->getWrapperDivClass()), $content);
+        }
+
+        protected function getRelationAttributeName()
+        {
+            return 'campaign';
         }
 
         public static function getDefaultMetadata()
         {
             $metadata = array(
+                'perUser' => array(
+                    'title' => "eval:Zurmo::t('CampaignsModule', 'Email Recipients')",
+                ),
                 'global' => array(
-                    'toolbar' => array(
-                        'elements' => array(
-                            array('type'        => 'CampaignsDetailsLink',
-                                'model'                         => 'eval:$this->model',
-                                'htmlOptions'                   => array('class' => 'icon-details')),
-                            array('type'        => 'CampaignsOptionsLink',
-                                'htmlOptions'                   => array('class' => 'icon-edit')),
-                            array('type'        => 'CampaignsTogglePortletsLink',
-                                'htmlOptions'                   => array('class' => 'hasCheckboxes'),
-                                'metricsPortletClass'           => CampaignDetailsAndRelationsView::METRICS_PORTLET_CLASS,
-                                'campaignItemsPortletClass'     => CampaignDetailsAndRelationsView::CAMPAIGN_ITEMS_PORTLET_CLASS),
+                    'gridViewType' => RelatedListView::GRID_VIEW_TYPE_NORMAL,
+                    'panels' => array(
+                        array(
+                            'rows' => array(
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'null', 'type' => 'CampaignItemSummary'),
+                                            ),
+                                        ),
+                                    )
+                                ),
+                            ),
                         ),
                     ),
                 ),
@@ -63,20 +76,36 @@
             return $metadata;
         }
 
-        public function getTitle()
+        public function getModelClassName()
         {
-            return strval($this->model);
+            return 'CampaignItem';
         }
 
-        protected function renderContent()
+        public static function getModuleClassName()
         {
-            // TODO: @Shoaibi/@Jason: Low: Do security walkthrough
-            $actionElementBarContent        = $this->renderActionElementBar(false);
-            $content                        = $this->renderTitleContent();
-            $content                       .= ZurmoHtml::tag('div', array('class' => 'view-toolbar-container clearfix'),
-                                                ZurmoHtml::tag('div', array('class' => 'view-toolbar'),
-                                                                                    $actionElementBarContent));
-            return $content;
+            return 'CampaignsModule';
+        }
+
+        protected function getEmptyText()
+        {
+            $moduleLabel     = Zurmo::t('CampaignsModule', 'Email Recipients');
+            return Zurmo::t('Core', 'No {moduleLabelPluralLowerCase} found', array('{moduleLabelPluralLowerCase}' => $moduleLabel));
+        }
+
+        protected function getCGridViewLastColumn()
+        {
+            return array();
+        }
+
+        protected function getWrapperDivClass()
+        {
+            return CampaignDetailsAndRelationsView::CAMPAIGN_ITEMS_PORTLET_CLASS;
+        }
+
+        protected function getCGridViewParams()
+        {
+            return array_merge(parent::getCGridViewParams(),
+                array('hideHeader'     => true));
         }
     }
 ?>
