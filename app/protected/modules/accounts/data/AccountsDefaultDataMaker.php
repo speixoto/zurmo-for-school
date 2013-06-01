@@ -42,22 +42,22 @@
         public function make()
         {
             $values = array(
-                'Automotive',
-                'Banking',
-                'Business Services',
-                'Energy',
-                'Financial Services',
-                'Insurance',
-                'Manufacturing',
-                'Retail',
-                'Technology',
+                Zurmo::t('CustomField', 'Automotive'),
+                Zurmo::t('CustomField', 'Banking'),
+                Zurmo::t('CustomField', 'Business Services'),
+                Zurmo::t('CustomField', 'Energy'),
+                Zurmo::t('CustomField', 'Financial Services'),
+                Zurmo::t('CustomField', 'Insurance'),
+                Zurmo::t('CustomField', 'Manufacturing'),
+                Zurmo::t('CustomField', 'Retail'),
+                Zurmo::t('CustomField', 'Technology'),
             );
             static::makeCustomFieldDataByValuesAndDefault('Industries', $values);
 
             $values = array(
-                'Prospect',
-                'Customer',
-                'Vendor',
+                Zurmo::t('CustomField', 'Prospect'),
+                Zurmo::t('CustomField', 'Customer'),
+                Zurmo::t('CustomField', 'Vendor'),
             );
             static::makeCustomFieldDataByValuesAndDefault('AccountTypes', $values);
         }
