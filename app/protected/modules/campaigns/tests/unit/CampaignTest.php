@@ -99,7 +99,7 @@
             $this->assertArrayHasKey('status', $errors);
             $this->assertEquals('Status cannot be blank.', $errors['status'][0]);
             $this->assertArrayHasKey('supportsRichText', $errors);
-            $this->assertEquals('Supports Rich Text(HTML) outgoing emails cannot be blank.', $errors['supportsRichText'][0]);
+            $this->assertEquals('Supports HTML cannot be blank.', $errors['supportsRichText'][0]);
             $this->assertArrayHasKey('subject', $errors);
             $this->assertEquals('Subject cannot be blank.', $errors['subject'][0]);
             $this->assertArrayHasKey('fromName', $errors);
