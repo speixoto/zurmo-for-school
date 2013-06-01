@@ -39,19 +39,35 @@
      */
     class MarketingDashboardIntroView extends View
     {
+        const PANEL_ID     = 'marketing-intro-content';
+
+        const LINK_ID      = 'hide-marketing-intro';
+
+        protected $cookieValue = 'hidden';
+
+        public static function resolveCookieId()
+        {
+            return self::PANEL_ID . '-panel';
+        }
+
         protected function renderContent()
         {
-            $content  = '<div id="marketing-intro-content">';
+            $this->registerScripts();
+            if(Yii::app()->request->cookies[self::resolveCookieId()] == $this->cookieValue)
+            {
+                return false;
+            }
+            $content  = '<div id="' . self::PANEL_ID . '">';
             $content .= '<h1>' . Zurmo::t('MarketingModule', 'How does Email Marketing work in Zurmo?'). '</h1>';
 
             $content .= '<div id="marketing-intro-steps" class="clearfix">';
-            $content .= '<div class="third"><h3>Step <strong>1<span>➜</span></strong></h3>';
+            $content .= '<div class="third"><h3>Step<strong>1<span>➜</span></strong></h3>';
             $content .= '<p><strong>Group</strong>Group together the email recipients into a list, use different lists for different purposes</p>';
             $content .= '</div>';
-            $content .= '<div class="third"><h3>Step <strong>2<span>➜</span></strong></h3>';
+            $content .= '<div class="third"><h3>Step<strong>2<span>➜</span></strong></h3>';
             $content .= '<p><strong>Create</strong>Create the template for the email you are going to send, import and use either full, rich HTML templates or plain text</p>';
             $content .= '</div>';
-            $content .= '<div class="third"><h3>Step <strong>3</strong></h3>';
+            $content .= '<div class="third"><h3>Step<strong>3</strong></h3>';
             $content .= '<p><strong>Launch</strong>Create a campaign where you can schedule your email to go out, pick the List(s) of recipients, add and schedule autoresponders and track your overall campaign performance</p>';
             $content .= '</div>';
             $content .= '</div>';
@@ -65,9 +81,19 @@
         {
             //todo: should use ajax, then when done remove div from UI
             $label    = '<span></span>' . Zurmo::t('MarketingModule', 'Dismiss');
-            $content  = '<div class="hide-marketing-intro">'.ZurmoHtml::link($label, Yii::app()->createUrl('marketing/default/hideIntro'));
+            $content  = '<div class="' . self::LINK_ID . '">'.ZurmoHtml::link($label, '#');
             $content .= '</div>';
             return $content;
+        }
+
+        protected function registerScripts()
+        {
+            $script = "$('." . self::LINK_ID . "').click(function(){
+                $('#" . self::PANEL_ID . "').slideToggle();
+                document.cookie = '" . self::resolveCookieId() . "={$this->cookieValue}';
+                return false;
+            })";
+            Yii::app()->clientScript->registerScript(self::LINK_ID, $script);
         }
     }
 ?>

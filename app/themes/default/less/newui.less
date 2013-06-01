@@ -1184,17 +1184,17 @@ body > .ui-autocomplete{
 			content: '\20AC';
 		}
 	}
-	li.type-ProductModule{
+	li.type-ProductsModule{
 		em:before{
 			content: '\003E';
 		}
 	}
-	li.type-ProductTemplateModule{
+	li.type-ProductTemplatesModule{
 		em:before{
 			content: '\00AC';
 		}
 	}
-	li.type-ProductCategoryModule{
+	li.type-ProductsCategoryModule{
 		em:before{
 			content: '\00D7';
 		}
@@ -1342,6 +1342,9 @@ body > .ui-autocomplete{
 	.view-toolbar-container{
 		float: right;
 		width: auto;
+	}
+	.view-toolbar{
+		margin-bottom: 0;
 	}
 }
 
@@ -4256,7 +4259,7 @@ div.hasHalfs{
 		}
 	}
 	ul{
-		width:110px;
+		min-width:110px;
 		margin-left:-85px;
 		list-style: none;
 		++.headerDropDown;
@@ -4266,9 +4269,11 @@ div.hasHalfs{
 }
 
 .edit-portlet-menu{
+	line-height: 1;
+	margin-top:9px;
 	margin-right: 15px;
 	ul{
-		top: 32px;
+		top: 20px;
 	}
 }
 
@@ -5154,6 +5159,25 @@ div.hasHalfs{
 		position: relative;
 		top:1px;
 	}
+}
+
+/*Products Portlet*/
+.products-portlet-totals{
+	display: block;
+	padding: 10px 0;
+	text-indent: 10px;
+	border-top: 1px solid #DFDFDF;
+	background:#111 url(../images/datepicker-header.png) left top repeat-x !important;
+	color:#FFF;
+	font-weight: bold;
+}
+
+.editable-cell{
+	border-bottom: 1px dotted #ccc;
+	width: auto;
+	display: inline-block;
+	padding-bottom: 2px;
+	margin-top: 3px;
 }
 
 @import 'widget-juiportlets.less';

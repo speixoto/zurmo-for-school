@@ -52,7 +52,7 @@
         protected function renderContent()
         {
             $placedViewTypes = $this->getPlacedViewTypes();
-            $content = '<ul>';
+            $content = '<ul class="available-portlets">';
             $modules = Module::getModuleObjects();
             foreach ($modules as $module)
             {

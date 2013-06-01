@@ -47,8 +47,11 @@
 
         protected function renderDescriptionContent()
         {
-            //todo: just subject? probably should show more
-            $content = ZurmoHtml::tag('div', array('class' => static::DESCRIPTION_CLASS), $this->model->subject);
+            $innerContent  = '<b>' . $this->model->getAttributeLabel('sendOnDateTime') . ':</b> ';
+            $innerContent .= DateTimeUtil::convertDbFormattedDateTimeToLocaleFormattedDisplay($this->model->sendOnDateTime);
+            $innerContent .= "</BR><b>" . $this->model->getAttributeLabel('subject') . ':</b> ';
+            $innerContent .= $this->model->subject;
+            $content       = ZurmoHtml::tag('div', array('class' => static::DESCRIPTION_CLASS), $innerContent);
             return $content;
         }
     }

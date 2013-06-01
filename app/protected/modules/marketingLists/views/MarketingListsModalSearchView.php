@@ -34,28 +34,33 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class CampaignDetailsView extends SecuredDetailsView
+    class MarketingListsModalSearchView extends SearchView
     {
-        public static function assertModelIsValid($model)
-        {
-            assert('$model instanceof Campaign');
-        }
+        /**
+         * @var bool
+         */
+        protected $showAdvancedSearch = false;
 
         public static function getDefaultMetadata()
         {
             $metadata = array(
                 'global' => array(
-                    'toolbar' => array(
-                        'elements' => array(
-                            array('type'        => 'CampaignsDetailsLink',
-                                'model'                         => 'eval:$this->model',
-                                'htmlOptions'                   => array('class' => 'icon-details')),
-                            array('type'        => 'CampaignsOptionsLink',
-                                'htmlOptions'                   => array('class' => 'icon-edit')),
-                            array('type'        => 'CampaignsTogglePortletsLink',
-                                'htmlOptions'                   => array('class' => 'hasCheckboxes'),
-                                'metricsPortletClass'           => CampaignDetailsAndRelationsView::METRICS_PORTLET_CLASS,
-                                'campaignItemsPortletClass'     => CampaignDetailsAndRelationsView::CAMPAIGN_ITEMS_PORTLET_CLASS),
+                    'panels' => array(
+                        array(
+                            'locked' => true,
+                            'title'  => 'Basic Search',
+                            'rows'   => array(
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'anyMixedAttributes',
+                                                      'type' => 'AnyMixedAttributesSearch', 'wide' => true),
+                                            ),
+                                        ),
+                                    )
+                                ),
+                            ),
                         ),
                     ),
                 ),
@@ -63,20 +68,14 @@
             return $metadata;
         }
 
-        public function getTitle()
+        public static function getDesignerRulesType()
         {
-            return strval($this->model);
+            return 'ModalSearchView';
         }
 
-        protected function renderContent()
+        public static function getModelForMetadataClassName()
         {
-            // TODO: @Shoaibi/@Jason: Low: Do security walkthrough
-            $actionElementBarContent        = $this->renderActionElementBar(false);
-            $content                        = $this->renderTitleContent();
-            $content                       .= ZurmoHtml::tag('div', array('class' => 'view-toolbar-container clearfix'),
-                                                ZurmoHtml::tag('div', array('class' => 'view-toolbar'),
-                                                                                    $actionElementBarContent));
-            return $content;
+            return 'MarketingListsSearchForm';
         }
     }
 ?>

@@ -34,41 +34,26 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class CampaignDetailsAndRelationsView extends DetailsAndRelationsView
+    /**
+     * Filter used by campaign controller to ascertain if the user can access email templates and marketing lists, which is a requirement
+     * to use campaigns
+     */
+    class UserCanAccessRequiredModulesForCampaignCheckControllerFilter extends CFilter
     {
-        const METRICS_PORTLET_CLASS        = 'campaign-metrics-container';
+        public $controller;
 
-        const CAMPAIGN_ITEMS_PORTLET_CLASS = 'campaign-items-container';
-
-        public static function getDefaultMetadata()
+        protected function preFilter($filterChain)
         {
-            $metadata = array(
-                'global' => array(
-                    'leftTopView' => array(
-                        'viewClassName' => 'CampaignDetailsView',
-                    ),
-                    'leftBottomView' => array(
-                        'showAsTabbed' => false,
-                        'columns' => array(
-                            array(
-                                'rows' => array(
-                                    array(
-                                        'type' => 'CampaignOverallMetrics'
-                                    ),
-                                    array(
-                                        'type' => 'CampaignItemsRelatedList'
-                                    ),
-                                )
-                            )
-                        )
-                    ),
-                )
-            );
-            return $metadata;
-        }
-
-        public function isUniqueToAPage()
-        {
+            if (!RightsUtil::canUserAccessModule('EmailTemplatesModule', Yii::app()->user->userModel) ||
+                !RightsUtil::canUserAccessModule('MarketingListsModule', Yii::app()->user->userModel))
+            {
+                $messageView        = new UserIsMissingFullAccessToUseCampaignSplashView();
+                $pageViewClassName  = $this->controller->getModule()->getPluralCamelCasedName() . 'PageView';
+                $view               = new $pageViewClassName(ZurmoDefaultAdminViewUtil::
+                                      makeStandardViewForCurrentUser($this->controller, $messageView));
+                echo $view->render();
+                return false;
+            }
             return true;
         }
     }

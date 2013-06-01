@@ -975,7 +975,7 @@ body.blue .configuration-list li a:hover span:before,
 body.blue .configuration-list td:last-child a:hover,
 body.blue .configuration-list td:last-child a:hover span:before,
 body.blue .addfileinput-button:hover span,
-body.blue #HomeDashboardPortletSelectionView li span,
+body.blue .available-portlets span,
 body.blue .hide-welcome span,
 body.blue .hide-marketing-intro span,
 body.blue #kanban-board-options-link:hover,
@@ -1549,7 +1549,7 @@ body.brown .configuration-list li a:hover span:before,
 body.brown .configuration-list td:last-child a:hover,
 body.brown .configuration-list td:last-child a:hover span:before,
 body.brown .addfileinput-button:hover span,
-body.brown #HomeDashboardPortletSelectionView li span,
+body.brown .available-portlets span,
 body.brown .hide-welcome span,
 body.brown .hide-marketing-intro span,
 body.brown #kanban-board-options-link:hover,
@@ -2123,7 +2123,7 @@ body.lime .configuration-list li a:hover span:before,
 body.lime .configuration-list td:last-child a:hover,
 body.lime .configuration-list td:last-child a:hover span:before,
 body.lime .addfileinput-button:hover span,
-body.lime #HomeDashboardPortletSelectionView li span,
+body.lime .available-portlets span,
 body.lime .hide-welcome span,
 body.lime .hide-marketing-intro span,
 body.lime #kanban-board-options-link:hover,
@@ -2697,7 +2697,7 @@ body.cherry .configuration-list li a:hover span:before,
 body.cherry .configuration-list td:last-child a:hover,
 body.cherry .configuration-list td:last-child a:hover span:before,
 body.cherry .addfileinput-button:hover span,
-body.cherry #HomeDashboardPortletSelectionView li span,
+body.cherry .available-portlets span,
 body.cherry .hide-welcome span,
 body.cherry .hide-marketing-intro span,
 body.cherry #kanban-board-options-link:hover,
@@ -3271,7 +3271,7 @@ body.turquoise .configuration-list li a:hover span:before,
 body.turquoise .configuration-list td:last-child a:hover,
 body.turquoise .configuration-list td:last-child a:hover span:before,
 body.turquoise .addfileinput-button:hover span,
-body.turquoise #HomeDashboardPortletSelectionView li span,
+body.turquoise .available-portlets span,
 body.turquoise .hide-welcome span,
 body.turquoise .hide-marketing-intro span,
 body.turquoise #kanban-board-options-link:hover,
@@ -3845,7 +3845,7 @@ body.violet .configuration-list li a:hover span:before,
 body.violet .configuration-list td:last-child a:hover,
 body.violet .configuration-list td:last-child a:hover span:before,
 body.violet .addfileinput-button:hover span,
-body.violet #HomeDashboardPortletSelectionView li span,
+body.violet .available-portlets span,
 body.violet .hide-welcome span,
 body.violet .hide-marketing-intro span,
 body.violet #kanban-board-options-link:hover,
@@ -4419,7 +4419,7 @@ body.honey .configuration-list li a:hover span:before,
 body.honey .configuration-list td:last-child a:hover,
 body.honey .configuration-list td:last-child a:hover span:before,
 body.honey .addfileinput-button:hover span,
-body.honey #HomeDashboardPortletSelectionView li span,
+body.honey .available-portlets span,
 body.honey .hide-welcome span,
 body.honey .hide-marketing-intro span,
 body.honey #kanban-board-options-link:hover,
@@ -6131,13 +6131,13 @@ body > .ui-autocomplete {
 #RecentlyViewedView li.type-WorkflowsModule em:before {
   content: '\20AC';
 }
-#RecentlyViewedView li.type-ProductModule em:before {
+#RecentlyViewedView li.type-ProductsModule em:before {
   content: '\003E';
 }
-#RecentlyViewedView li.type-ProductTemplateModule em:before {
+#RecentlyViewedView li.type-ProductTemplatesModule em:before {
   content: '\00AC';
 }
-#RecentlyViewedView li.type-ProductCategoryModule em:before {
+#RecentlyViewedView li.type-ProductsCategoryModule em:before {
   content: '\00D7';
 }
 #RecentlyViewedView li.type-CampaignsModule em:before {
@@ -6321,6 +6321,9 @@ body > .ui-autocomplete {
 .juiportlet-widget-head .view-toolbar-container {
   float: right;
   width: auto;
+}
+.juiportlet-widget-head .view-toolbar {
+  margin-bottom: 0;
 }
 .unread-count {
   display: inline-block;
@@ -10073,17 +10076,19 @@ div.hasHalfs > div input {
 }
 .edit-portlet-menu ul,
 .edit-row-menu ul {
-  width: 110px;
+  min-width: 110px;
   margin-left: -85px;
   list-style: none;
   top: 20px;
   font-size: 11px;
 }
 .edit-portlet-menu {
+  line-height: 1;
+  margin-top: 9px;
   margin-right: 15px;
 }
 .edit-portlet-menu ul {
-  top: 32px;
+  top: 20px;
 }
 /*Upcoming Meeting Pager*/
 .pager {
@@ -11143,6 +11148,23 @@ div.hasHalfs > div input {
   margin-right: 15px;
   position: relative;
   top: 1px;
+}
+/*Products Portlet*/
+.products-portlet-totals {
+  display: block;
+  padding: 10px 0;
+  text-indent: 10px;
+  border-top: 1px solid #DFDFDF;
+  background: #111111 url(../images/datepicker-header.png) left top repeat-x !important;
+  color: #FFF;
+  font-weight: bold;
+}
+.editable-cell {
+  border-bottom: 1px dotted #ccc;
+  width: auto;
+  display: inline-block;
+  padding-bottom: 2px;
+  margin-top: 3px;
 }
 .juiportlet-columns .juiportlet-column {
   float: left;
@@ -12603,28 +12625,28 @@ table.configuration-list td:last-child a .z-label:before {
 .uploaded-logo ~ .file-size {
   vertical-align: top;
 }
-#HomeDashboardPortletSelectionView ul {
+.available-portlets {
   padding: 20px;
   list-style: none;
   zoom: 1;
 }
-#HomeDashboardPortletSelectionView ul:before {
+.available-portlets:before {
   content: "";
   display: table;
 }
-#HomeDashboardPortletSelectionView ul:after {
+.available-portlets:after {
   content: "";
   display: table;
   clear: both;
 }
-#HomeDashboardPortletSelectionView ul li {
+.available-portlets li {
   width: 50%;
   float: left;
   margin-bottom: 15px;
   color: #666;
   vertical-align: middle;
 }
-#HomeDashboardPortletSelectionView ul span {
+.available-portlets span {
   font-weight: normal;
   font-size: 24px;
   font-family: "ZurmoGamificationSymblyReguRg";
@@ -12634,11 +12656,11 @@ table.configuration-list td:last-child a .z-label:before {
   outline: none !important;
   display: inline-block;
 }
-#HomeDashboardPortletSelectionView ul a {
+.available-portlets a {
   outline: none !important;
   cursor: pointer;
 }
-#HomeDashboardPortletSelectionView ul a:foucs {
+.available-portlets a:foucs {
   outline: none;
 }
 /*Edit Portlet*/
@@ -15078,6 +15100,18 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
 .game-badge-EarlyBird .badge-icon:before,
 .EarlyBird .badge-icon:before {
   content: "#";
+}
+.game-badge-CreateProduct .badge-icon:before,
+.CreateProduct .badge-icon:before {
+  content: '\003E';
+}
+.game-badge-CreateProductTemplate .badge-icon:before,
+.CreateProductTemplate .badge-icon:before {
+  content: '\00AC';
+}
+.game-badge-CreateProductCategory .badge-icon:before,
+.CreateProductCategory .badge-icon:before {
+  content: '\00D7';
 }
 /*Big Icons for popup badges*/
 .game-level-change .badge-icon:before {
@@ -18094,13 +18128,22 @@ a.user-link {
 }
 #ReportDetailsView,
 #CampaignDetailsView,
-#MarketingListDetailsView {
+#MarketingListDetailsView,
+#SecuredActionBarForMarketingSearchAndListView {
   position: relative;
   z-index: 10;
 }
 #ReportDetailsView + div,
 #CampaignDetailsView + div,
-#MarketingListDetailsView + div {
+#MarketingListDetailsView + div,
+#SecuredActionBarForMarketingSearchAndListView + div {
+  position: relative;
+  z-index: 5;
+}
+#ReportDetailsView + div + div,
+#CampaignDetailsView + div + div,
+#MarketingListDetailsView + div + div,
+#SecuredActionBarForMarketingSearchAndListView + div + div {
   position: relative;
   z-index: 1;
 }
@@ -18186,7 +18229,6 @@ a + .autoresponder-stats {
   float: left;
   margin-left: 2%;
   min-height: 150px;
-  height: 150px;
   background-color: rgba(51, 51, 51, 0.75);
   background-repeat: repeat-x;
   background-image: -moz-linear-gradient(top, rgba(34, 34, 34, 0.85), rgba(51, 51, 51, 0.75));
@@ -18226,9 +18268,10 @@ a + .autoresponder-stats {
   position: relative;
   float: left;
   line-height: 1;
-  width: 85px;
   height: 100%;
-  border-right: 1px solid #222222;
+  min-height: 149px;
+  width: 85px;
+  border-right: 1px solid #282828;
 }
 #marketing-intro-steps h3 strong {
   display: block;
@@ -18244,12 +18287,12 @@ a + .autoresponder-stats {
   margin-top: -5px;
 }
 #marketing-intro-steps p {
-  padding: 10px 10px 0 10px;
+  min-height: 149px;
+  padding: 10px 10px 10px 10px;
   margin-left: 85px;
   font-size: 13px;
   line-height: 21px;
   border-left: 1px solid #333333;
-  height: 100%;
   color: #ececec;
 }
 #marketing-intro-steps p strong {
@@ -18270,6 +18313,8 @@ a + .autoresponder-stats {
   clear: none;
   position: static;
   top: 0;
+  float: right;
+  margin-bottom: 30px;
 }
 .hide-marketing-intro span {
   font-weight: normal;
@@ -18329,6 +18374,11 @@ a + .autoresponder-stats {
 }
 .kanban-column {
   float: left;
+  /*position: absolute;
+	top: 0;
+	bottom: 0;
+	display: block;*/
+
   border-left: 1px solid #dfdfdf;
 }
 .kanban-column:first-child {

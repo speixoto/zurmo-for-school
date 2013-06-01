@@ -44,7 +44,7 @@
          */
         protected function getDefaultLabel()
         {
-            return Zurmo::t('MarketingModule', 'Dashboard');
+            return Zurmo::t('HomeModule', 'Dashboard');
         }
 
         /**
