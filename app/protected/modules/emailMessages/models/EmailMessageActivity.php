@@ -39,9 +39,13 @@
      */
     class EmailMessageActivity extends Item
     {
-        const TYPE_OPEN     = 1;
+        const TYPE_OPEN        = 1;
 
-        const TYPE_CLICK    = 2;
+        const TYPE_CLICK       = 2;
+
+        const TYPE_UNSUBSCRIBE = 3;
+
+        const TYPE_BOUNCE      = 4;
 
         public static function getTypesArray()
         {
@@ -148,7 +152,7 @@
             return $searchAttributeData;
         }
 
-        protected static function getChildActivityByTypeAndModelIdAndModelRelationNameAndPersonIdAndUrl($type, $modelId,
+        public static function getChildActivityByTypeAndModelIdAndModelRelationNameAndPersonIdAndUrl($type, $modelId,
                                                                                            $relationName,
                                                                                            $personId, $url = null,
                                                                                             $sortBy = 'latestDateTime',

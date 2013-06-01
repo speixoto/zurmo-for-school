@@ -58,10 +58,7 @@
             {
                 $campaign                       = new Campaign();
                 $this->populateModel($campaign);
-                if ($campaign->type === Campaign::TYPE_MARKETING_LIST)
-                {
-                    $campaign->marketingList        = $demoDataHelper->getRandomByModelName('MarketingList');
-                }
+                $campaign->marketingList        = $demoDataHelper->getRandomByModelName('MarketingList');
                 $saved                          = $campaign->save();
                 assert('$saved');
                 $campaigns[]                    = $campaign->id;
@@ -80,16 +77,15 @@
             }
             $statusKeys                     = array_keys(Campaign::getStatusDropDownArray());
             $timestamp                      = time();
-            $model->type                    = (rand() % 2) + 1;
+            $model->type                    = Campaign::TYPE_MARKETING_LIST;
             $model->name                    = $this->seedData['name'][$this->index];
             $model->subject                 = $this->seedData['subject'][$this->index];
             $model->status                  = RandomDataUtil::getRandomValueFromArray($statusKeys);
-            $model->sendNow                 = (rand() % 2);
-            if (!$model->sendNow)
+            if (!(rand() % 2))
             {
-                $timestamp              += rand(500, 5000);
+                $timestamp                 += rand(500, 5000);
             }
-            $model->sendingDateTime         = DateTimeUtil::convertTimestampToDbFormatDateTime($timestamp);
+            $model->sendOnDateTime          = DateTimeUtil::convertTimestampToDbFormatDateTime($timestamp);
             $model->supportsRichText        = (rand() % 2);
             $model->htmlContent             = $this->seedData['htmlContent'][$this->index];
             $model->textContent             = $this->seedData['textContent'][$this->index];

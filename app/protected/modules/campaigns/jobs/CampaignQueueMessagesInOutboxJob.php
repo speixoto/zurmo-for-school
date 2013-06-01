@@ -53,7 +53,7 @@
         public function run()
         {
             $batchSize = $this->resolveBatchSize();
-            $campaignItemsToProcess    = CampaignItem::getByProcessedAndStatusAndSendingDateTime(
+            $campaignItemsToProcess    = CampaignItem::getByProcessedAndStatusAndSendOnDateTime(
                                                                                         0,
                                                                                         Campaign::STATUS_ACTIVE,
                                                                                         time(),

@@ -81,7 +81,6 @@
                                                                                 null,
                                                                                 null,
                                                                                 null,
-                                                                                null,
                                                                                 $marketingList,
                                                                                 false);
             $processed                  = 0;
@@ -104,7 +103,6 @@
                                                                                 null,
                                                                                 null,
                                                                                 Campaign::TYPE_MARKETING_LIST,
-                                                                                null,
                                                                                 null,
                                                                                 null,
                                                                                 0,
@@ -142,7 +140,6 @@
                                                                                 null,
                                                                                 null,
                                                                                 Campaign::TYPE_MARKETING_LIST,
-                                                                                null,
                                                                                 null,
                                                                                 null,
                                                                                 null,
@@ -198,7 +195,6 @@
                                                                                 Campaign::TYPE_MARKETING_LIST,
                                                                                 null,
                                                                                 null,
-                                                                                null,
                                                                                 0,
                                                                                 $marketingList);
             $processed                  = 0;
@@ -246,7 +242,6 @@
                                                                                 null,
                                                                                 null,
                                                                                 Campaign::TYPE_MARKETING_LIST,
-                                                                                null,
                                                                                 null,
                                                                                 null,
                                                                                 null,
@@ -298,7 +293,6 @@
                                                                                 null,
                                                                                 null,
                                                                                 Campaign::TYPE_MARKETING_LIST,
-                                                                                null,
                                                                                 null,
                                                                                 null,
                                                                                 null,
@@ -380,7 +374,6 @@
                                                                         null,
                                                                         null,
                                                                         null,
-                                                                        null,
                                                                         $marketingList);
             $this->assertNotNull($campaign);
             $campaign->forgetAll();
@@ -440,7 +433,6 @@
                                                                             null,
                                                                             null,
                                                                             Campaign::TYPE_MARKETING_LIST,
-                                                                            null,
                                                                             null,
                                                                             null,
                                                                             null,

@@ -118,5 +118,9 @@
                                              '<div class="file-upload-box">{content}{error}</div></td>';
             }
         }
+
+        protected function renderRightSideFormLayoutForEdit($form)
+        {
+        }
     }
 ?>

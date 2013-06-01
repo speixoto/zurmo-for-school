@@ -61,6 +61,12 @@
                                  'url'     => Yii::app()->createUrl('emailTemplates/default/create',
                                               array('type' => EmailTemplate::TYPE_CONTACT)));
             }
+            if (RightsUtil::doesUserHaveAllowByRightName('CampaignsModule', CampaignsModule::getCreateRight(),
+                Yii::app()->user->userModel))
+            {
+                $items[] = array('label'   => Zurmo::t('CampaignsModule', 'Create Campaign'),
+                                 'url'     => Yii::app()->createUrl('campaigns/default/create'));
+            }
             if (!empty($items))
             {
                 $menuItems = array( 'label' => $this->getLabel(),

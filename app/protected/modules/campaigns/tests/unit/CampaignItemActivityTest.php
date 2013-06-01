@@ -79,7 +79,6 @@
                                                                         null,
                                                                         null,
                                                                         null,
-                                                                        null,
                                                                         $marketingList);
             $processed          = 0;
             $campaignItem       = CampaignItemTestHelper::createCampaignItem($processed, $campaign, $contact);

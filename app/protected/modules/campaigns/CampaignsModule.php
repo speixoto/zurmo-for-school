@@ -118,5 +118,10 @@
         {
             return true;
         }
+
+        public static function hasPermissions()
+        {
+            return true;
+        }
     }
 ?>

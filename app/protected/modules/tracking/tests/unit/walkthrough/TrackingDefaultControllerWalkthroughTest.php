@@ -74,18 +74,16 @@
             static::$personId               = $contact->getClassId('Person');
             static::$autoresponderItemId    = $autoresponderItem->id;
             $campaign                       = CampaignTestHelper::createCampaign('campaign 01',
-                                                                                    'subject 01',
-                                                                                    'text Content 01',
-                                                                                    'html Content 01',
-                                                                                    'fromName 01',
-                                                                                    'fromAddress01@zurmo.com',
-                                                                                    null,
-                                                                                    Campaign::TYPE_MARKETING_LIST,
-                                                                                    null,
-                                                                                    null,
-                                                                                    null,
-                                                                                    null,
-                                                                                    $marketingList);
+                                                                                 'subject 01',
+                                                                                 'text Content 01',
+                                                                                 'html Content 01',
+                                                                                 'fromName 01',
+                                                                                 'fromAddress01@zurmo.com',
+                                                                                 Campaign::TYPE_MARKETING_LIST,
+                                                                                 Campaign::STATUS_ACTIVE,
+                                                                                 null,
+                                                                                 null,
+                                                                                 $marketingList);
             $processed                      = 0;
             $campaignItem                   = CampaignItemTestHelper::createCampaignItem($processed, $campaign, $contact);
             static::$campaignItemId         = $campaignItem->id;

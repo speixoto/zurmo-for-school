@@ -34,42 +34,27 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class CampaignDetailsAndRelationsView extends DetailsAndRelationsView
+    /**
+     * Display the marketing list selection. This is a
+     * combination of a type-ahead input text field
+     * and a selection button which renders a modal list view
+     * to search on marketing list.  Also includes a hidden input for the user
+     * id.
+     */
+    class MarketingListElement extends ModelElement
     {
-        const METRICS_PORTLET_CLASS        = 'campaign-metrics-container';
+        protected static $moduleId = 'marketingLists';
 
-        const CAMPAIGN_ITEMS_PORTLET_CLASS = 'campaign-items-container';
-
-        public static function getDefaultMetadata()
+        /**
+         * Render a hidden input, a text input with an auto-complete
+         * event, and a select button. These three items together
+         * form the Marketing List Editable Element
+         * @return The element's content as a string.
+         */
+        protected function renderControlEditable()
         {
-            $metadata = array(
-                'global' => array(
-                    'leftTopView' => array(
-                        'viewClassName' => 'CampaignDetailsView',
-                    ),
-                    'leftBottomView' => array(
-                        'showAsTabbed' => false,
-                        'columns' => array(
-                            array(
-                                'rows' => array(
-                                    array(
-                                        'type' => 'CampaignOverallMetrics'
-                                    ),
-                                    array(
-                                        'type' => 'CampaignItemsRelatedList'
-                                    ),
-                                )
-                            )
-                        )
-                    ),
-                )
-            );
-            return $metadata;
-        }
-
-        public function isUniqueToAPage()
-        {
-            return true;
+            assert('$this->model->{$this->attribute} instanceof MarketingList');
+            return parent::renderControlEditable();
         }
     }
 ?>

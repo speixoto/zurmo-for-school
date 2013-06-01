@@ -34,49 +34,16 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class CampaignDetailsView extends SecuredDetailsView
+    class MarketingListsModalSearchAndListView extends ModalSearchAndListView
     {
-        public static function assertModelIsValid($model)
+        public static function getListViewClassName()
         {
-            assert('$model instanceof Campaign');
+            return 'MarketingListsModalListView';
         }
 
-        public static function getDefaultMetadata()
+        public static function getSearchViewClassName()
         {
-            $metadata = array(
-                'global' => array(
-                    'toolbar' => array(
-                        'elements' => array(
-                            array('type'        => 'CampaignsDetailsLink',
-                                'model'                         => 'eval:$this->model',
-                                'htmlOptions'                   => array('class' => 'icon-details')),
-                            array('type'        => 'CampaignsOptionsLink',
-                                'htmlOptions'                   => array('class' => 'icon-edit')),
-                            array('type'        => 'CampaignsTogglePortletsLink',
-                                'htmlOptions'                   => array('class' => 'hasCheckboxes'),
-                                'metricsPortletClass'           => CampaignDetailsAndRelationsView::METRICS_PORTLET_CLASS,
-                                'campaignItemsPortletClass'     => CampaignDetailsAndRelationsView::CAMPAIGN_ITEMS_PORTLET_CLASS),
-                        ),
-                    ),
-                ),
-            );
-            return $metadata;
-        }
-
-        public function getTitle()
-        {
-            return strval($this->model);
-        }
-
-        protected function renderContent()
-        {
-            // TODO: @Shoaibi/@Jason: Low: Do security walkthrough
-            $actionElementBarContent        = $this->renderActionElementBar(false);
-            $content                        = $this->renderTitleContent();
-            $content                       .= ZurmoHtml::tag('div', array('class' => 'view-toolbar-container clearfix'),
-                                                ZurmoHtml::tag('div', array('class' => 'view-toolbar'),
-                                                                                    $actionElementBarContent));
-            return $content;
+            return 'MarketingListsModalSearchView';
         }
     }
 ?>

@@ -34,42 +34,7 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class CampaignDetailsAndRelationsView extends DetailsAndRelationsView
+    class CampaignZurmoControllerUtil extends FileZurmoControllerUtil
     {
-        const METRICS_PORTLET_CLASS        = 'campaign-metrics-container';
-
-        const CAMPAIGN_ITEMS_PORTLET_CLASS = 'campaign-items-container';
-
-        public static function getDefaultMetadata()
-        {
-            $metadata = array(
-                'global' => array(
-                    'leftTopView' => array(
-                        'viewClassName' => 'CampaignDetailsView',
-                    ),
-                    'leftBottomView' => array(
-                        'showAsTabbed' => false,
-                        'columns' => array(
-                            array(
-                                'rows' => array(
-                                    array(
-                                        'type' => 'CampaignOverallMetrics'
-                                    ),
-                                    array(
-                                        'type' => 'CampaignItemsRelatedList'
-                                    ),
-                                )
-                            )
-                        )
-                    ),
-                )
-            );
-            return $metadata;
-        }
-
-        public function isUniqueToAPage()
-        {
-            return true;
-        }
     }
 ?>

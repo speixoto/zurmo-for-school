@@ -111,12 +111,12 @@
                     array('fromAddress',        'type', 'type' => 'string'),
                     array('fromAddress',        'length',  'min'  => 6, 'max' => 64),
                     array('fromAddress',        'email', 'except' => 'autoBuildDatabase'),
-                    array('anyoneCanSubscribe', 'type',    'type' => 'integer'),
-                    array('anyoneCanSubscribe', 'numerical', 'min' => 0, 'max' => 1),
-                    array('anyoneCanSubscribe', 'default', 'value' => 0),
+                    array('anyoneCanSubscribe', 'boolean'),
+                    array('anyoneCanSubscribe', 'default', 'value' => false),
                 ),
                 'elements' => array(
-                    'description'                  => 'TextArea',
+                    'anyoneCanSubscribe' => 'CheckBox',
+                    'description'        => 'TextArea',
                 ),
                 'defaultSortAttribute' => 'name',
             );

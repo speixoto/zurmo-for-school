@@ -70,6 +70,14 @@
                             ),
                         ),
                     ),
+                    'secondToolbar' => array(
+                        'elements' => array(
+                            array('type'  => 'MarketingIntroLink',
+                                'htmlOptions' => array('class' => 'icon-intro-change-this'), //todo: need new class name
+                            ),
+                        ),
+                    ),
+
                 ),
             );
             return $metadata;
