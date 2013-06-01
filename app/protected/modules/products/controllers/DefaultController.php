@@ -364,16 +364,17 @@
             $product->stage->value      = Product::OPEN_STAGE;
             $product->productTemplate   = $productTemplate;
             $product->priceFrequency    = $productTemplate->priceFrequency;
-            $product->sellPrice->value  = $productTemplate->sellPrice->value;
+            $product->sellPrice         = $productTemplate->sellPrice;
             $product->type              = $productTemplate->type;
 
             $relationModel              = $relationModelClassName::getById((int)$relationModelId);
             $product->$relationAttributeName = $relationModel;
             $product->save();
+            $redirectUrl = Yii::app()->createUrl('/' . $relationModuleId . '/default/details', array('id' => $relationModelId));
             $this->redirect(array('/' . $relationModuleId . '/defaultPortlet/modalRefresh',
                                     'portletId'            => $portletId,
                                     'uniqueLayoutId'       => $uniqueLayoutId,
-                                    'redirectUrl'          => null,
+                                    'redirectUrl'          => $redirectUrl,
                                     'portletParams'        => array(  'relationModuleId' => $relationModuleId,
                                                                       'relationModelId'  => $relationModelId),
                             ));

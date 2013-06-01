@@ -208,5 +208,18 @@
         {
             return Zurmo::t('ProductTemplatesModule', 'Catalog Items', array(), null, $language);
         }
+
+        /**
+         * Sets the scenario for currencyvalue elements to positiveValue for the validation of the price
+         * using the rule in CurrencyValue
+         * @return bool
+         */
+        protected function beforeValidate()
+        {
+            $this->sellPrice->setScenario('positiveValue');
+            $this->cost->setScenario('positiveValue');
+            $this->listPrice->setScenario('positiveValue');
+            return parent::beforeValidate();
+        }
     }
 ?>
