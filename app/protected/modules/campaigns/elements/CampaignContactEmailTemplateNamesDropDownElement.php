@@ -34,15 +34,11 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class ProductNameRelatedListViewColumnAdapter extends TextListViewColumnAdapter
+    class CampaignContactEmailTemplateNamesDropDownElement extends  ContactEmailTemplateNamesDropDownElement
     {
-        public function renderGridViewData()
+        protected function getModuleId()
         {
-                return array(
-                    'name'  => $this->attribute,
-                    'value' => array('ProductElementUtil', 'getProductNameLinkString'),
-                    'type'  => 'raw',
-                );
+            return 'Campaign';
         }
     }
 ?>

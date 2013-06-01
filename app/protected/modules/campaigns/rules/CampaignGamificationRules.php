@@ -34,15 +34,19 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class ProductNameRelatedListViewColumnAdapter extends TextListViewColumnAdapter
+    /**
+     * Class defining rules for Campaign gamification behavior.
+     */
+    class CampaignGamificationRules extends GamificationRules
     {
-        public function renderGridViewData()
+        public static function getPointTypesAndValuesForCreateModel()
         {
-                return array(
-                    'name'  => $this->attribute,
-                    'value' => array('ProductElementUtil', 'getProductNameLinkString'),
-                    'type'  => 'raw',
-                );
+            return array(GamePoint::TYPE_COMMUNICATION => 25);
+        }
+
+        public static function getPointTypesAndValuesForUpdateModel()
+        {
+            return array(GamePoint::TYPE_COMMUNICATION => 10);
         }
     }
 ?>

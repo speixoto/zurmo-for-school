@@ -51,7 +51,8 @@
         public function testFindMungableModelClassNames()
         {
             $modelClassNames = ReadPermissionsOptimizationUtil::findMungableModelClassNames();
-            $compareData = array('Account', 'Contact', 'Conversation', 'EmailMessage', 'EmailTemplate', 'MarketingList', 'Meeting', 'Mission',
+            $compareData = array('Account', 'Campaign', 'Contact', 'Conversation', 'EmailMessage', 'EmailTemplate',
+                                 'MarketingList', 'Meeting', 'Mission',
                                  'Note', 'Opportunity', 'SavedReport', 'Product', 'SocialItem', 'Task', 'ContactWebForm');
             $this->assertEquals($compareData, $modelClassNames);
             $modelClassNames2 = ReadPermissionsOptimizationUtil::getMungableModelClassNames();

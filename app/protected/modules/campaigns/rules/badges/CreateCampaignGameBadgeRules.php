@@ -34,15 +34,41 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class ProductNameRelatedListViewColumnAdapter extends TextListViewColumnAdapter
+    /**
+     * Class for defining the badge associated with creating a new campaign
+     */
+    class CreateCampaignGameBadgeRules extends GameBadgeRules
     {
-        public function renderGridViewData()
+        public static $valuesIndexedByGrade = array(
+            1  => 1,
+            2  => 3,
+            3  => 5,
+            4  => 10,
+            5  => 20,
+            6  => 30,
+            7  => 40,
+            8  => 50,
+            9  => 60,
+            10 => 70,
+            11 => 80,
+            12 => 90,
+            13 => 100
+        );
+
+        public static function getPassiveDisplayLabel($value)
         {
-                return array(
-                    'name'  => $this->attribute,
-                    'value' => array('ProductElementUtil', 'getProductNameLinkString'),
-                    'type'  => 'raw',
-                );
+            return Zurmo::t('CampaignsModule', '{n} Campaign created|{n} Campaigns created', array($value));
+        }
+
+        public static function badgeGradeUserShouldHaveByPointsAndScores($userPointsByType, $userScoresByType)
+        {
+            assert('is_array($userPointsByType)');
+            assert('is_array($userScoresByType)');
+            if (isset($userScoresByType['CreateCampaign']))
+            {
+                return static::getBadgeGradeByValue((int)$userScoresByType['CreateCampaign']->value);
+            }
+            return 0;
         }
     }
 ?>

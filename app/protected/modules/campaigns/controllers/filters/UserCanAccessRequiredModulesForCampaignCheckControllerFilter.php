@@ -34,15 +34,27 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class ProductNameRelatedListViewColumnAdapter extends TextListViewColumnAdapter
+    /**
+     * Filter used by campaign controller to ascertain if the user can access email templates and marketing lists, which is a requirement
+     * to use campaigns
+     */
+    class UserCanAccessRequiredModulesForCampaignCheckControllerFilter extends CFilter
     {
-        public function renderGridViewData()
+        public $controller;
+
+        protected function preFilter($filterChain)
         {
-                return array(
-                    'name'  => $this->attribute,
-                    'value' => array('ProductElementUtil', 'getProductNameLinkString'),
-                    'type'  => 'raw',
-                );
+            if (!RightsUtil::canUserAccessModule('EmailTemplatesModule', Yii::app()->user->userModel) ||
+                !RightsUtil::canUserAccessModule('MarketingListsModule', Yii::app()->user->userModel))
+            {
+                $messageView        = new UserIsMissingFullAccessToUseCampaignSplashView();
+                $pageViewClassName  = $this->controller->getModule()->getPluralCamelCasedName() . 'PageView';
+                $view               = new $pageViewClassName(ZurmoDefaultAdminViewUtil::
+                                      makeStandardViewForCurrentUser($this->controller, $messageView));
+                echo $view->render();
+                return false;
+            }
+            return true;
         }
     }
 ?>

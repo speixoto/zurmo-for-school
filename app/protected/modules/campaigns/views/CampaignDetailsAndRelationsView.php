@@ -36,7 +36,9 @@
 
     class CampaignDetailsAndRelationsView extends DetailsAndRelationsView
     {
-        const METRICS_PORTLET_CLASS     = 'campaign-metrics-container';
+        const METRICS_PORTLET_CLASS        = 'campaign-metrics-container';
+
+        const CAMPAIGN_ITEMS_PORTLET_CLASS = 'campaign-items-container';
 
         public static function getDefaultMetadata()
         {
@@ -52,6 +54,9 @@
                                 'rows' => array(
                                     array(
                                         'type' => 'CampaignOverallMetrics'
+                                    ),
+                                    array(
+                                        'type' => 'CampaignItemsRelatedList'
                                     ),
                                 )
                             )

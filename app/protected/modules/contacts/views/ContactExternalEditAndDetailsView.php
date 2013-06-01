@@ -69,14 +69,15 @@
 
         protected function resolveActiveFormAjaxValidationOptions()
         {
-            return array('enableAjaxValidation' => true,
-                         'clientOptions' => array(
-                             'validateOnSubmit'  => true,
-                             'validateOnChange'  => false,
-                             'beforeValidate'    => 'js:$(this).beforeValidateAction',
-                             'afterValidate'     => 'js:$(this).afterValidateAjaxAction',
-                             'afterValidateAjax' => $this->renderConfigSaveAjax(),
-                        ));
+            $ajaxValidationOptions = array('enableAjaxValidation' => true,
+                                           'clientOptions'        => array(
+                                                'validateOnSubmit'  => true,
+                                                'validateOnChange'  => false,
+                                                'beforeValidate'    => 'js:$(this).beforeValidateAction',
+                                                'afterValidate'     => 'js:$(this).afterValidateAjaxAction',
+                                                'afterValidateAjax' => $this->renderConfigSaveAjax()));
+            return array_merge($ajaxValidationOptions,
+                               array('action' => $this->getValidateAndSaveUrl()));
         }
 
         protected function renderConfigSaveAjax()

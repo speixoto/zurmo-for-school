@@ -34,15 +34,26 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class ProductNameRelatedListViewColumnAdapter extends TextListViewColumnAdapter
+    /**
+     * If a user has access to workflow, but not email templates, then that user cannot properly use workflow.
+     */
+    class UserIsMissingFullAccessToUseCampaignSplashView extends SplashView
     {
-        public function renderGridViewData()
+        /**
+         * @return null|string
+         */
+        protected function getIconName()
         {
-                return array(
-                    'name'  => $this->attribute,
-                    'value' => array('ProductElementUtil', 'getProductNameLinkString'),
-                    'type'  => 'raw',
-                );
+            return 'Warning';
+        }
+
+        /**
+         * @return string
+         */
+        protected function getMessageContent()
+        {
+            return Zurmo::t('CampaignsModule', '<h2>Not so fast!</h2><div class="large-icon"></div>' .
+            '<p>To manage campaigns you must have access to email templates and marketing lists. Contact the CRM administrator about this issue.</p>');
         }
     }
 ?>

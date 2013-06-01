@@ -34,15 +34,27 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class ProductNameRelatedListViewColumnAdapter extends TextListViewColumnAdapter
+    /**
+     * Display the marketing list selection. This is a
+     * combination of a type-ahead input text field
+     * and a selection button which renders a modal list view
+     * to search on marketing list.  Also includes a hidden input for the user
+     * id.
+     */
+    class MarketingListElement extends ModelElement
     {
-        public function renderGridViewData()
+        protected static $moduleId = 'marketingLists';
+
+        /**
+         * Render a hidden input, a text input with an auto-complete
+         * event, and a select button. These three items together
+         * form the Marketing List Editable Element
+         * @return The element's content as a string.
+         */
+        protected function renderControlEditable()
         {
-                return array(
-                    'name'  => $this->attribute,
-                    'value' => array('ProductElementUtil', 'getProductNameLinkString'),
-                    'type'  => 'raw',
-                );
+            assert('$this->model->{$this->attribute} instanceof MarketingList');
+            return parent::renderControlEditable();
         }
     }
 ?>

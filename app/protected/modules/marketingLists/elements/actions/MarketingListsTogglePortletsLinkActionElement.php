@@ -58,7 +58,7 @@
             $autorespondersClass    = $this->getAutorespondersPortletClass();
             if ($metricsClass)
             {
-                $membersTranslatedLabel = Zurmo::t('MarketingListsModule', 'Dashboard');
+                $membersTranslatedLabel = Zurmo::t('HomeModule', 'Dashboard');
                 $content                .= $this->getCheckboxContent($membersTranslatedLabel, $metricsClass);
             }
             if ($membersClass)

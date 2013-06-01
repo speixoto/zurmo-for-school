@@ -44,5 +44,13 @@
             return Yii::app()->numberFormatter->formatCurrency( $currencyValueModel->value * $data->quantity,
                                                                 $currencyValueModel->currency->code);
         }
+
+        public static function getProductNameLinkString($data, $row)
+        {
+            $productName = $data->name;
+            $url         = Yii::app()->createUrl('products/default/details', array('id' => $data->id));
+
+            return ZurmoHtml::link($productName, $url);
+        }
     }
 ?>

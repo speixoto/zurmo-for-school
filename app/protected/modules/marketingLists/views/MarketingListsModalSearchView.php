@@ -34,15 +34,48 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class ProductNameRelatedListViewColumnAdapter extends TextListViewColumnAdapter
+    class MarketingListsModalSearchView extends SearchView
     {
-        public function renderGridViewData()
+        /**
+         * @var bool
+         */
+        protected $showAdvancedSearch = false;
+
+        public static function getDefaultMetadata()
         {
-                return array(
-                    'name'  => $this->attribute,
-                    'value' => array('ProductElementUtil', 'getProductNameLinkString'),
-                    'type'  => 'raw',
-                );
+            $metadata = array(
+                'global' => array(
+                    'panels' => array(
+                        array(
+                            'locked' => true,
+                            'title'  => 'Basic Search',
+                            'rows'   => array(
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'anyMixedAttributes',
+                                                      'type' => 'AnyMixedAttributesSearch', 'wide' => true),
+                                            ),
+                                        ),
+                                    )
+                                ),
+                            ),
+                        ),
+                    ),
+                ),
+            );
+            return $metadata;
+        }
+
+        public static function getDesignerRulesType()
+        {
+            return 'ModalSearchView';
+        }
+
+        public static function getModelForMetadataClassName()
+        {
+            return 'MarketingListsSearchForm';
         }
     }
 ?>

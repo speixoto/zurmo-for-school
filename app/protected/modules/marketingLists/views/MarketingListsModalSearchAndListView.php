@@ -34,15 +34,16 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class ProductNameRelatedListViewColumnAdapter extends TextListViewColumnAdapter
+    class MarketingListsModalSearchAndListView extends ModalSearchAndListView
     {
-        public function renderGridViewData()
+        public static function getListViewClassName()
         {
-                return array(
-                    'name'  => $this->attribute,
-                    'value' => array('ProductElementUtil', 'getProductNameLinkString'),
-                    'type'  => 'raw',
-                );
+            return 'MarketingListsModalListView';
+        }
+
+        public static function getSearchViewClassName()
+        {
+            return 'MarketingListsModalSearchView';
         }
     }
 ?>

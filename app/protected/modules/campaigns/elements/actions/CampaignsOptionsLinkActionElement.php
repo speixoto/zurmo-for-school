@@ -46,7 +46,7 @@
 
         protected function getDefaultLabel()
         {
-            return Zurmo::t('CampaignsModule', 'Options');
+            return Zurmo::t('Core', 'Options');
         }
 
         protected function getDefaultRoute()

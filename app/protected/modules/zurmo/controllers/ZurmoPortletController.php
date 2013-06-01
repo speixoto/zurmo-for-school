@@ -234,14 +234,19 @@
         {
             assert('!empty($_GET["uniqueLayoutId"])');
             assert('!empty($_GET["portletType"])');
-            $portletCollection = Portlet::getByLayoutIdAndUserSortedByColumnIdAndPosition($_GET['uniqueLayoutId'], Yii::app()->user->userModel->id, array());
-            if (!empty($portletCollection))
+            $isPortletAlreadyAdded = Portlet::doesPortletExistByViewTypeLayoutIdAndUser($_GET['portletType'], $_GET['uniqueLayoutId'], Yii::app()->user->userModel->id);
+            if($isPortletAlreadyAdded === false)
             {
-                foreach ($portletCollection[1] as $position => $portlet)
+                $portletCollection = Portlet::getByLayoutIdAndUserSortedByColumnIdAndPosition($_GET['uniqueLayoutId'], Yii::app()->user->userModel->id, array());
+                if (!empty($portletCollection))
                 {
-                        $portlet->position = $portlet->position + 1;
-                        $portlet->save();
+                    foreach ($portletCollection[1] as $position => $portlet)
+                    {
+                            $portlet->position = $portlet->position + 1;
+                            $portlet->save();
+                    }
                 }
+                Portlet::makePortletUsingViewType($_GET['portletType'], $_GET['uniqueLayoutId'], Yii::app()->user->userModel);
             }
             if (!empty($_GET['modelId']))
             {
@@ -251,7 +256,6 @@
             {
                 $dashboardId = '';
             }
-            Portlet::makePortletUsingViewType($_GET['portletType'], $_GET['uniqueLayoutId'], Yii::app()->user->userModel);
             $this->redirect(array('/' . $this->resolveAndGetModuleId() . '/default/details', 'id' => $dashboardId));
         }
     }

@@ -64,32 +64,9 @@
         {
             $getData  = GetUtil::getData();
             $metadata = self::getMetadata();
-            if (isset($getData['lockPortlets']))
-            {
-                $lockPortlets = (bool)$getData['lockPortlets'];
-                if ($lockPortlets)
-                {
-                    ZurmoDefaultViewUtil::setLockKeyForDetailsAndRelationsView('lockPortletsForDetailsAndRelationsView', true);
-                }
-                else
-                {
-                    ZurmoDefaultViewUtil::setLockKeyForDetailsAndRelationsView('lockPortletsForDetailsAndRelationsView', false);
-                }
-            }
-            $isViewLocked = ZurmoDefaultViewUtil::getLockKeyForDetailsAndRelationsView('lockPortletsForDetailsAndRelationsView');
-            //Default case for the first time
-            if ($isViewLocked === null)
-            {
-                ZurmoDefaultViewUtil::setLockKeyForDetailsAndRelationsView('lockPortletsForDetailsAndRelationsView', true);
-                $isViewLocked = true;
-            }
             $portletsAreRemovable   = true;
             $portletsAreMovable     = true;
-            if ($isViewLocked == true)
-            {
-                $portletsAreRemovable   = false;
-                $portletsAreMovable     = false;
-            }
+            $this->resolvePortletConfigurableParams($portletsAreMovable, $portletsAreRemovable);
             $content          = $this->renderActionElementBar(true);
             $viewClassName    = static::getModelRelationsSecuredPortletFrameViewClassName();
             $configurableView = new $viewClassName( $this->controllerId,
@@ -114,32 +91,27 @@
         protected function renderActionElementBar($renderedInForm)
         {
             $getData = GetUtil::getData();
+            $toolbarContent = '';
             if (Yii::app()->userInterface->isMobile() === false)
             {
                 $isViewLocked     = ZurmoDefaultViewUtil::getLockKeyForDetailsAndRelationsView('lockPortletsForDetailsAndRelationsView');
-                $url              = Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/details?id=' . $getData['id']);
                 $lockTitle        = Zurmo::t('Core', 'Unlock to edit this screen\'s layout');
                 $unlockTitle      = Zurmo::t('Core', 'Lock and prevent layout changes to this screen');
-                $toolbarContent = '';
                 if ($isViewLocked === false)
                 {
-                    // Begin Not Coding Standard
-                    $toolbarContent .= '<div class="view-toolbar">' . parent::renderActionElementBar($renderedInForm) .
-                                       '<a href="' . $url . '&lockPortlets=1" class="icon-unlock"
-                                       title="'.$unlockTitle.'"><!--' . Zurmo::t('Core', 'Lock') . '--></a></div>';
-                    // End Not Coding Standard
+                    $url = $this->resolveLockPortletUrl($getData['id'], '1');
+                    $link = ZurmoHtml::link('<!--' . Zurmo::t('Core', 'Lock') . '-->', $url, array('class' => 'icon-unlock',
+                                                                                                    'title' => $unlockTitle));
+                    $content = parent::renderActionElementBar($renderedInForm) . $link;
                 }
                 else
                 {
-                    // Begin Not Coding Standard
-                    $toolbarContent .= '<div class="view-toolbar"><a href="' . $url . '&lockPortlets=0" class="icon-lock"
-                                        title="'.$lockTitle.'"><!--' . Zurmo::t('Core', 'Unlock') . '--></a></div>';
-                    // End Not Coding Standard
+                    $url = $this->resolveLockPortletUrl($getData['id'], '0');
+                    $link = ZurmoHtml::link('<!--' . Zurmo::t('Core', 'Unlock') . '-->', $url, array('class' => 'icon-lock',
+                                                                                                      'title' => $lockTitle));
+                    $content = $link;
                 }
-            }
-            else
-            {
-                $toolbarContent = parent::renderActionElementBar($renderedInForm);
+                $toolbarContent = ZurmoHtml::tag('div', array('class' => 'view-toolbar'), $content);
             }
             $toolbarContent = ZurmoHtml::tag('div', array('class' => 'view-toolbar-container widgets-lock clearfix '), $toolbarContent);
             return $toolbarContent;
@@ -152,6 +124,57 @@
         {
             $title = Zurmo::t('HomeModule', 'Add Portlet');
             return ModalView::getAjaxOptionsForModalLink($title);
+        }
+
+        /**
+         * Resolves url for lock/unlock functionality
+         * @param string $id
+         * @param string $lockPortlets
+         * @return string
+         */
+        private function resolveLockPortletUrl($id, $lockPortlets)
+        {
+            assert('is_string($lockPortlets)');
+            assert('is_string($id)');
+            $url = Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/details',
+                                                        array('id' => $id, 'lockPortlets' => $lockPortlets));
+            return $url;
+        }
+
+        /**
+         * Resolves portlet configurable parameters
+         * @param boolean $portletsAreMovable
+         * @param boolean $portletsAreRemovable
+         */
+        private function resolvePortletConfigurableParams(& $portletsAreMovable, & $portletsAreRemovable)
+        {
+            assert('is_bool($portletsAreMovable)');
+            assert('is_bool($portletsAreRemovable)');
+            $getData = GetUtil::getData();
+            if(isset($getData['lockPortlets']))
+            {
+                $lockPortlets = (bool)$getData['lockPortlets'];
+                if($lockPortlets)
+                {
+                    ZurmoDefaultViewUtil::setLockKeyForDetailsAndRelationsView('lockPortletsForDetailsAndRelationsView', true);
+                }
+                else
+                {
+                    ZurmoDefaultViewUtil::setLockKeyForDetailsAndRelationsView('lockPortletsForDetailsAndRelationsView', false);
+                }
+            }
+            $isViewLocked = ZurmoDefaultViewUtil::getLockKeyForDetailsAndRelationsView('lockPortletsForDetailsAndRelationsView');
+            //Default case for the first time
+            if($isViewLocked === null)
+            {
+                ZurmoDefaultViewUtil::setLockKeyForDetailsAndRelationsView('lockPortletsForDetailsAndRelationsView', true);
+                $isViewLocked = true;
+            }
+            if ($isViewLocked == true)
+            {
+                $portletsAreRemovable   = false;
+                $portletsAreMovable     = false;
+            }
         }
     }
 ?>
