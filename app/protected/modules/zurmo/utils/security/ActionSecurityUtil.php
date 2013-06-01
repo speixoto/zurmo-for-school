@@ -107,6 +107,10 @@
             assert('is_string($moduleClassName)');
             assert('is_string($linkRoute)');
             assert('$offset === null || is_int($offset)');
+            if($model->id <= 0)
+            {
+                return null;
+            }
             if (!ActionSecurityUtil::canCurrentUserPerformAction('Details', $model))
             {
                 return null;
