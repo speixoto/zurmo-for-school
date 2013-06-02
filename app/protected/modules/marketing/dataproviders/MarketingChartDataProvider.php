@@ -154,6 +154,21 @@
                 DateTimeUtil::DISPLAY_FORMAT_ABBREVIATED_MONTH_AND_DAY_WIDTH);
         }
 
+        protected static function resolveChartDataBaseGroupElements()
+        {
+            return array();
+        }
+
+        public function getXAxisName()
+        {
+            return null;
+        }
+
+        public function getYAxisName()
+        {
+            return null;
+        }
+
         public function setBeginDate($beginDate)
         {
             assert('is_string($beginDate)');
@@ -203,33 +218,67 @@
             }
         }
 
-        protected static function addEmailMessageDayDateClause(RedBeanModelSelectQueryAdapter $selectQueryAdapter, $columnName)
+        protected function resolveIndexGroupByToUse()
         {
-            assert('is_string($columnName)');
-            $quote       = DatabaseCompatibilityUtil::getQuote();
-            $emailMessageTableName = EmailMessage::getTableName('EmailMessage');
-            $queryString = "DATE_FORMAT({$quote}{$emailMessageTableName}{$quote}.{$quote}{$columnName}{$quote}, '%Y-%m-%d')";
-            $selectQueryAdapter->addClauseByQueryString($queryString, static::DAY_DATE);
+            if($this->groupBy == MarketingOverallMetricsForm::GROUPING_TYPE_DAY)
+            {
+                return self::DAY_DATE;
+            }
+            elseif($this->groupBy == MarketingOverallMetricsForm::GROUPING_TYPE_WEEK)
+            {
+                return self::FIRST_DAY_OF_WEEK_DATE;
+            }
+            elseif($this->groupBy == MarketingOverallMetricsForm::GROUPING_TYPE_MONTH)
+            {
+                return self::FIRST_DAY_OF_MONTH_DATE;
+            }
+            else
+            {
+                throw new NotSupportedException();
+            }
         }
 
-        protected static function addEmailMessageFirstDayOfWeekDateClause(RedBeanModelSelectQueryAdapter $selectQueryAdapter, $columnName)
+        protected function resolveGroupBy($modelClassName, $attributeName)
         {
-            assert('is_string($columnName)');
-            $quote                 = DatabaseCompatibilityUtil::getQuote();
-            $emailMessageTableName = EmailMessage::getTableName('EmailMessage');
-            $queryString = "DATE_FORMAT(DATE_ADD({$columnName}, INTERVAL(2-DAYOFWEEK(" .
-                           "{$quote}{$emailMessageTableName}{$quote}.{$quote}{$columnName}{$quote})) day), '%Y-%m-%d')";
-            $selectQueryAdapter->addClauseByQueryString($queryString, static::FIRST_DAY_OF_WEEK_DATE);
+            assert('is_string($modelClassName)');
+            assert('is_string($attributeName)');
+            $quote                     = DatabaseCompatibilityUtil::getQuote();
+            $tableName                 = $modelClassName::getTableName($modelClassName);
+            $columnName                = $modelClassName::getColumnNameByAttribute($attributeName);
+            $groupByColumnString       = "{$quote}{$tableName}{$quote}.{$quote}{$columnName}{$quote}";
+            if($this->groupBy == MarketingOverallMetricsForm::GROUPING_TYPE_DAY)
+            {
+                return $groupByColumnString;
+            }
+            elseif($this->groupBy == MarketingOverallMetricsForm::GROUPING_TYPE_WEEK)
+            {
+                return "YEARWEEK(" . $groupByColumnString . ")";
+            }
+            elseif($this->groupBy == MarketingOverallMetricsForm::GROUPING_TYPE_MONTH)
+            {
+                return "extract(YEAR_MONTH from " . $groupByColumnString . ")";
+            }
+            else
+            {
+                throw new NotSupportedException();
+            }
         }
 
-        protected static function addEmailMessageFirstDayOfMonthDateClause(RedBeanModelSelectQueryAdapter $selectQueryAdapter, $columnName)
+        protected function resolveChartDataStructure()
         {
-            assert('is_string($columnName)');
-            $quote                 = DatabaseCompatibilityUtil::getQuote();
-            $emailMessageTableName = EmailMessage::getTableName('EmailMessage');
-            $queryString = "DATE_FORMAT(DATE_ADD({$columnName}, INTERVAL(1-DAYOFMONTH(" .
-                           "{$quote}{$emailMessageTableName}{$quote}.{$quote}{$columnName}{$quote})) day), '%Y-%m-%d')";
-            $selectQueryAdapter->addClauseByQueryString($queryString, static::FIRST_DAY_OF_MONTH_DATE);
+            $chartData           = array();
+            $groupedDateTimeData = static::makeGroupedDateTimeData($this->beginDate, $this->endDate, $this->groupBy);
+            //echo "<pre>";
+            //print_r($groupedDateTimeData);
+            //echo "</pre>";
+            foreach($groupedDateTimeData as $groupData)
+            {
+                $chartData[$groupData['beginDate']] = array_merge(static::resolveChartDataBaseGroupElements(),
+                    array('displayLabel'        => $groupData['displayLabel'],
+                        'dateBalloonLabel'    =>
+                        $this->resolveDateBalloonLabel($groupData['displayLabel'])));
+            }
+            return $chartData;
         }
     }
 ?>

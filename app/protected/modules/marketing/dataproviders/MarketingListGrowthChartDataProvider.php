@@ -36,16 +36,6 @@
 
     class MarketingListGrowthChartDataProvider extends MarketingChartDataProvider
     {
-        public function getXAxisName()
-        {
-            return null;
-        }
-
-        public function getYAxisName()
-        {
-            return null;
-        }
-
         public function getChartData()
         {
             $chartData = array();

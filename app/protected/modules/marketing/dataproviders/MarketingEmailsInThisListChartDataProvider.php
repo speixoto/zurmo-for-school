@@ -34,18 +34,8 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class MarketingEmailsInThisListChartDataProvider extends MarketingChartDataProvider
+    class MarketingEmailsInThisListChartDataProvider extends MarketingGroupByEmailMessagesChartDataProvider
     {
-        public function getXAxisName()
-        {
-            return null;
-        }
-
-        public function getYAxisName()
-        {
-            return null;
-        }
-
         public function getChartData()
         {
             //todo: hard to read the label text in the graph
