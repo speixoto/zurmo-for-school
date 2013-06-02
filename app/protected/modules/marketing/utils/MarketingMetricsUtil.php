@@ -127,10 +127,10 @@
             $amChart->type = ChartRules::TYPE_STACKED_COLUMN_2D;
             $amChart->addSerialGraph('existingSubscribers', 'column',
                                      array('title'       => "'" . Zurmo::t('MarketingModule', 'Existing Subscribers') . "'",
-                                           'balloonText' => "'" . Zurmo::t('MarketingModule', 'Existing Subscribers') . ": [[value]]'"));
+                                           'balloonText' => "'[[dateBalloonLabel]]<br>" . Zurmo::t('MarketingModule', 'Existing Subscribers') . ": [[value]]'"));
             $amChart->addSerialGraph('newSubscribers', 'column',
                                      array('title'       => "'" . Zurmo::t('MarketingModule', 'New Subscribers') . "'",
-                                           'balloonText' => "'" . Zurmo::t('MarketingModule', 'New Subscribers') . ": [[value]]'"));
+                                           'balloonText' => "'[[dateBalloonLabel]]<br>" . Zurmo::t('MarketingModule', 'New Subscribers') . ": [[value]]'"));
             $amChart->xAxisName        = $chartDataProvider->getXAxisName();
             $amChart->yAxisName        = $chartDataProvider->getYAxisName();
             $javascript = $amChart->javascriptChart();

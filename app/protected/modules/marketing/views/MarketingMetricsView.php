@@ -181,7 +181,7 @@
             assert('is_string($type)');
             $chartDataProvider  = ChartDataProviderFactory::createByType($type);
             $chartDataProvider->setBeginDate($this->resolveForm()->beginDate);
-            $chartDataProvider->setEndDate($this->resolveForm()->beginDate);
+            $chartDataProvider->setEndDate($this->resolveForm()->endDate);
             $chartDataProvider->setGroupBy($this->resolveForm()->groupBy);
             return $chartDataProvider;
         }

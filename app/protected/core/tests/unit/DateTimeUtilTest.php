@@ -43,6 +43,75 @@
             Yii::app()->setLanguage('en');
         }
 
+        //todo:getDatesBetweenTwoDatesInARange($beginDate, $endDate)
+
+        //todo:getMonthStartAndEndDatesBetweenTwoDatesInARange($beginDate, $endDate)
+        //todo:test year spanning range for days, weeks and months
+        //todo:test timzeon stuff on these??
+
+        public function testGetDatesBetweenTwoDatesInARange()
+        {
+            $monthsData = DateTimeUtil::getDatesBetweenTwoDatesInARange('2013-01-20', '2013-01-24');
+            echo "<pre>";
+            print_r($monthsData);
+            echo "</pre>";
+            $monthsData = DateTimeUtil::getDatesBetweenTwoDatesInARange('2013-06-29', '2013-07-01');
+            echo "<pre>";
+            print_r($monthsData);
+            echo "</pre>";
+            $monthsData = DateTimeUtil::getDatesBetweenTwoDatesInARange('2012-12-28', '2013-01-03');
+            echo "<pre>";
+            print_r($monthsData);
+            echo "</pre>";
+            echo 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx' . "\n";
+        }
+
+        public function testGetWeekStartAndEndDatesBetweenTwoDatesInARange()
+        {
+            $monthsData = DateTimeUtil::getWeekStartAndEndDatesBetweenTwoDatesInARange('2013-01-20', '2013-08-03');
+            echo "<pre>";
+            print_r($monthsData);
+            echo "</pre>";
+            $monthsData = DateTimeUtil::getWeekStartAndEndDatesBetweenTwoDatesInARange('2013-01-21', '2013-01-28');
+            echo "<pre>";
+            print_r($monthsData);
+            echo "</pre>";
+            $monthsData = DateTimeUtil::getWeekStartAndEndDatesBetweenTwoDatesInARange('2013-01-20', '2013-01-26');
+            echo "<pre>";
+            print_r($monthsData);
+            echo "</pre>";
+            $monthsData = DateTimeUtil::getWeekStartAndEndDatesBetweenTwoDatesInARange('2013-01-20', '2014-01-26');
+            echo "<pre>";
+            print_r($monthsData);
+            echo "</pre>";
+            $monthsData = DateTimeUtil::getWeekStartAndEndDatesBetweenTwoDatesInARange('2012-12-28', '2013-01-03');
+            echo "<pre>";
+            print_r($monthsData);
+            echo "</pre>";
+            echo '------------------' . "\n";
+        }
+
+        public function testGetMonthStartAndEndDatesBetweenTwoDatesInARange()
+        {
+            $monthsData = DateTimeUtil::getMonthStartAndEndDatesBetweenTwoDatesInARange('2013-02-01', '2013-06-01');
+            echo "<pre>";
+            print_r($monthsData);
+            echo "</pre>";
+            $monthsData = DateTimeUtil::getMonthStartAndEndDatesBetweenTwoDatesInARange('2013-01-20', '2013-08-03');
+            echo "<pre>";
+            print_r($monthsData);
+            echo "</pre>";
+            $monthsData = DateTimeUtil::getMonthStartAndEndDatesBetweenTwoDatesInARange('2013-01-20', '2013-01-26');
+            echo "<pre>";
+            print_r($monthsData);
+            echo "</pre>";
+            $monthsData = DateTimeUtil::getMonthStartAndEndDatesBetweenTwoDatesInARange('2013-01-20', '2014-01-26');
+            echo "<pre>";
+            print_r($monthsData);
+            echo "</pre>";
+            exit;
+        }
+
         public function testGetTimeSinceDisplayContent()
         {
             //30 minutes ago
