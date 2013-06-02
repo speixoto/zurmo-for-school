@@ -40,8 +40,13 @@
      */
     class DateTimeUtil
     {
-        const DATETIME_FORMAT_DATE_WIDTH = 'short';
-        const DATETIME_FORMAT_TIME_WIDTH = 'short';
+        const DATETIME_FORMAT_DATE_WIDTH                     = 'short';
+
+        const DATETIME_FORMAT_TIME_WIDTH                     = 'short';
+
+        const DISPLAY_FORMAT_ABBREVIATED_MONTH_ONLY_WIDTH    = 'Display Format Abbreviated Month';
+
+        const DISPLAY_FORMAT_ABBREVIATED_MONTH_AND_DAY_WIDTH = 'Display Format Abbreviated Month And Day';
 
         /**
          * Given a datetime, return a string representation of how much time has elapsed since the $dateTime to now
@@ -100,19 +105,19 @@
         public static function getLocaleDateTimeFormat()
         {
             $dateTimePattern = Yii::app()->locale->getDateTimeFormat();
-            $timeFormat      = Yii::app()->locale->getTimeFormat(DateTimeUtil::DATETIME_FORMAT_TIME_WIDTH);
-            $dateFormat      = Yii::app()->locale->getDateFormat(DateTimeUtil::DATETIME_FORMAT_DATE_WIDTH);
+            $timeFormat      = Yii::app()->locale->getTimeFormat(self::DATETIME_FORMAT_TIME_WIDTH);
+            $dateFormat      = Yii::app()->locale->getDateFormat(self::DATETIME_FORMAT_DATE_WIDTH);
             return strtr($dateTimePattern, array('{0}' => $timeFormat, '{1}' => $dateFormat));
         }
 
-        public static function getLocaleDateFormat()
+        public static function getLocaleDateFormat($dateWidth = self::DATETIME_FORMAT_DATE_WIDTH)
         {
-            return Yii::app()->locale->getDateFormat(DateTimeUtil::DATETIME_FORMAT_DATE_WIDTH);
+            return Yii::app()->locale->getDateFormat($dateWidth);
         }
 
-        public static function getLocaleTimeFormat()
+        public static function getLocaleTimeFormat($timeWidth = self::DATETIME_FORMAT_TIME_WIDTH)
         {
-            return Yii::app()->locale->getTimeFormat(DateTimeUtil::DATETIME_FORMAT_TIME_WIDTH);
+            return Yii::app()->locale->getTimeFormat($timeWidth);
         }
 
         public static function isLocaleTimeDisplayedAs12Hours()
@@ -126,8 +131,8 @@
         }
 
         public static function resolveTimeStampForDateTimeLocaleFormattedDisplay($value,
-                                    $dateWidth = DateTimeUtil::DATETIME_FORMAT_DATE_WIDTH,
-                                    $timeWidth = DateTimeUtil::DATETIME_FORMAT_TIME_WIDTH)
+                                    $dateWidth = self::DATETIME_FORMAT_DATE_WIDTH,
+                                    $timeWidth = self::DATETIME_FORMAT_TIME_WIDTH)
         {
             if ($value == null)
             {
@@ -136,7 +141,15 @@
             return Yii::app()->dateFormatter->formatDateTime($value, $dateWidth, $timeWidth);
         }
 
-        public static function resolveValueForDateLocaleFormattedDisplay($date)
+        /**
+         * DateFormatter format can take a pattern found here:
+         * (See {@link http://www.unicode.org/reports/tr35/#Date_Format_Patterns})
+         * @param $date
+         * @param string $dateWidth
+         * @return null
+         */
+        public static function resolveValueForDateLocaleFormattedDisplay(
+                                    $date, $displayFormat = null)
         {
             if ($date == null)
             {
@@ -147,7 +160,19 @@
             {
                 return null;
             }
-            return Yii::app()->dateFormatter->format(DateTimeUtil::getLocaleDateFormat(), $parsedTimeStamp);
+            if($displayFormat == self::DISPLAY_FORMAT_ABBREVIATED_MONTH_ONLY_WIDTH)
+            {
+                $month = Yii::app()->dateFormatter->format('M', $parsedTimeStamp);
+                return Yii::app()->locale->getMonthName($month, 'abbreviated', true);
+            }
+            elseif($displayFormat == self::DISPLAY_FORMAT_ABBREVIATED_MONTH_AND_DAY_WIDTH)
+            {
+                $month    = Yii::app()->dateFormatter->format('M', $parsedTimeStamp);
+                $content  = Yii::app()->locale->getMonthName($month, 'abbreviated', true);
+                $content .= ' ' . Yii::app()->dateFormatter->format('d', $parsedTimeStamp);
+                return $content;
+            }
+            return Yii::app()->dateFormatter->format(static::getLocaleDateFormat(self::DATETIME_FORMAT_DATE_WIDTH), $parsedTimeStamp);
         }
 
         public static function resolveValueForDateDBFormatted($value)
@@ -215,8 +240,8 @@
         }
 
         public static function convertTimestampToDisplayFormat($timestamp,
-                                    $dateWidth = DateTimeUtil::DATETIME_FORMAT_DATE_WIDTH,
-                                    $timeWidth = DateTimeUtil::DATETIME_FORMAT_TIME_WIDTH)
+                                    $dateWidth = self::DATETIME_FORMAT_DATE_WIDTH,
+                                    $timeWidth = self::DATETIME_FORMAT_TIME_WIDTH)
         {
             assert('is_int($timestamp)');
             return self::resolveTimeStampForDateTimeLocaleFormattedDisplay($timestamp, $dateWidth, $timeWidth);
@@ -244,8 +269,8 @@
         }
 
         public static function convertDbFormattedDateTimeToLocaleFormattedDisplay($dbFormatDateTime,
-                                    $dateWidth = DateTimeUtil::DATETIME_FORMAT_DATE_WIDTH,
-                                    $timeWidth = DateTimeUtil::DATETIME_FORMAT_TIME_WIDTH)
+                                    $dateWidth = self::DATETIME_FORMAT_DATE_WIDTH,
+                                    $timeWidth = self::DATETIME_FORMAT_TIME_WIDTH)
         {
             assert('is_string($dbFormatDateTime) || $dbFormatDateTime == null');
             if ($dbFormatDateTime == null || $dbFormatDateTime == '0000-00-00 00:00:00')
@@ -290,8 +315,8 @@
             assert('is_string($dateValue) && DateTimeUtil::isValidDbFormattedDate($dateValue)');
             $greaterThanValue = $dateValue . ' 00:00:00';
             $adjustedTimeStamp = Yii::app()->timeZoneHelper->convertFromLocalTimeStampForCurrentUser(
-                                 DateTimeUtil::convertDbFormatDateTimeToTimestamp($greaterThanValue));
-            return               DateTimeUtil::convertTimestampToDbFormatDateTime($adjustedTimeStamp);
+                                 static::convertDbFormatDateTimeToTimestamp($greaterThanValue));
+            return               static::convertTimestampToDbFormatDateTime($adjustedTimeStamp);
         }
 
         /**
@@ -307,8 +332,8 @@
             assert('is_string($dateValue) && DateTimeUtil::isValidDbFormattedDate($dateValue)');
             $lessThanValue     = $dateValue . ' 23:59:59';
             $adjustedTimeStamp = Yii::app()->timeZoneHelper->convertFromLocalTimeStampForCurrentUser(
-                                 DateTimeUtil::convertDbFormatDateTimeToTimestamp($lessThanValue));
-            return               DateTimeUtil::convertTimestampToDbFormatDateTime($adjustedTimeStamp);
+                                 static::convertDbFormatDateTimeToTimestamp($lessThanValue));
+            return               static::convertTimestampToDbFormatDateTime($adjustedTimeStamp);
         }
 
         public static function getFirstDayOfAMonthDate($stringTime = null)
@@ -365,6 +390,121 @@
         {
             assert('is_string($date)');
             return $date . ' 00:00:00';
+        }
+
+        /**
+         * Given 2 dates in a range, return an array of all days that occur during that range
+         * @param string $beginDate
+         * @param string $endDate
+         * @return array
+         */
+        public static function getDatesBetweenTwoDatesInARange($beginDate, $endDate)
+        {
+            assert('is_string($beginDate)');
+            assert('is_string($endDate)');
+            $beginTimeStamp = strtotime($beginDate);
+            $endTimeStamp   = strtotime($endDate);
+            $quantityOfDays = round(($endTimeStamp - $beginTimeStamp) / 86400) + 1;
+            $daysData       = array();
+            for ($i = 0; $i < $quantityOfDays; $i++)
+            {
+                $daysData[] = date('Y-m-d', ($beginTimeStamp + ($i * 86400)));
+            }
+            return $daysData;
+        }
+
+        /**
+         * Given 2 dates in a range, return an array of all weeks in the date range organized by start/end date of
+         * those months
+         * @param string $beginDate
+         * @param string $endDate
+         * @return array
+         */
+        public static function getWeekStartAndEndDatesBetweenTwoDatesInARange($beginDate, $endDate)
+        {
+            assert('is_string($beginDate)');
+            assert('is_string($endDate)');
+            $weekTimeStamp      = strtotime($beginDate);
+            $endTimeStamp        = strtotime($endDate);
+            $weeksData          = array();
+            while($weekTimeStamp < $endTimeStamp)
+            {
+                $date = new DateTime(date('Y-m-d', $weekTimeStamp));
+                $date->modify('this week last monday');
+                $beginDateOfWeek = $date->format('Y-m-d');
+                $date->modify('this week next sunday');
+                $endDateOfWeek =$date->format('Y-m-d');
+                $weeksData[$beginDateOfWeek] = $endDateOfWeek;
+                $weekTimeStamp = strtotime("+1 week", $weekTimeStamp);
+            }
+            //Capture dates in last week if needed
+            $date = new DateTime(date('Y-m-d', $weekTimeStamp));
+            $date->modify('this week last monday');
+            $beginDateOfWeek = $date->format('Y-m-d');
+            if($beginDateOfWeek < $endDate)
+            {
+                $date->modify('this week next sunday');
+                $endDateOfWeek =$date->format('Y-m-d');
+                $weeksData[$beginDateOfWeek] = $endDateOfWeek;
+                $weekTimeStamp               = strtotime("+1 week", $weekTimeStamp);
+            }
+            if($endDateOfWeek < $endDate)
+            {
+                $date = new DateTime(date('Y-m-d', $weekTimeStamp));
+                $date->modify('this week last monday');
+                $beginDateOfWeek = $date->format('Y-m-d');
+                $date->modify('this week next sunday');
+                $endDateOfWeek =$date->format('Y-m-d');
+                $weeksData[$beginDateOfWeek] = $endDateOfWeek;
+            }
+            return $weeksData;
+        }
+
+        /**
+         * Given 2 dates in a range, return an array of all months in the date range organized by start/end date of
+         * those months
+         * @param string $beginDate
+         * @param string $endDate
+         * @return array
+         */
+        public static function getMonthStartAndEndDatesBetweenTwoDatesInARange($beginDate, $endDate)
+        {
+            assert('is_string($beginDate)');
+            assert('is_string($endDate)');
+            $monthTimeStamp      = strtotime($beginDate);
+            $endTimeStamp        = strtotime($endDate);
+            $monthsData          = array();
+            while($monthTimeStamp < $endTimeStamp)
+            {
+                $date = new DateTime(date('Y-m-d', $monthTimeStamp));
+                $date->modify('first day of this month');
+                $beginDateOfMonth = $date->format('Y-m-d');
+                $date->modify('last day of this month');
+                $endDateOfMonth =$date->format('Y-m-d');
+                $monthsData[$beginDateOfMonth] = $endDateOfMonth;
+                $monthTimeStamp = strtotime("+1 month", $monthTimeStamp);
+            }
+            //Capture dates in last month if needed
+            $date = new DateTime(date('Y-m-d', $monthTimeStamp));
+            $date->modify('first day of this month');
+            $beginDateOfMonth = $date->format('Y-m-d');
+            if($beginDateOfMonth < $endDate)
+            {
+                $date->modify('last day of this month');
+                $endDateOfMonth =$date->format('Y-m-d');
+                $monthsData[$beginDateOfMonth] = $endDateOfMonth;
+                $monthTimeStamp = strtotime("+1 month", $monthTimeStamp);
+            }
+            if($endDateOfMonth < $endDate)
+            {
+                $date = new DateTime(date('Y-m-d', $monthTimeStamp));
+                $date->modify('first day of this month');
+                $beginDateOfMonth = $date->format('Y-m-d');
+                $date->modify('last day of this month');
+                $endDateOfMonth =$date->format('Y-m-d');
+                $monthsData[$beginDateOfMonth] = $endDateOfMonth;
+            }
+            return $monthsData;
         }
     }
 ?>

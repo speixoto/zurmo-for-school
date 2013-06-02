@@ -260,10 +260,11 @@
             $modelClassName  = get_called_class();
             $moduleClassName = $modelClassName::getModuleClassName();
             //Currently only adds munge if the module is securable and this model supports it.
-            if (static::hasReadPermissionsOptimization() &&$moduleClassName != null &&
+            if (static::hasReadPermissionsOptimization() && $moduleClassName != null &&
                 is_subclass_of($moduleClassName, 'SecurableModule'))
             {
                 $permission = PermissionsUtil::getActualPermissionDataForReadByModuleNameForCurrentUser($moduleClassName);
+
                 if ($permission == Permission::NONE || $permission == Permission::DENY)
                 {
                     $quote                               = DatabaseCompatibilityUtil::getQuote();

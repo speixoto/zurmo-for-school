@@ -55,6 +55,85 @@
          */
         protected $campaign;
 
+
+        /**
+         * Given a begin date, end date and grouping type, return array of data that includes information on how the
+         * grouping breaks up by the date range including the start/end dateTime for each range and a display label
+         * @param string $beginDate
+         * @param string $endDate
+         * @param string $groupBy
+         * @throws NotSupportedException
+         * @return array
+         */
+        public static function makeGroupedDateTimeData($beginDate, $endDate, $groupBy)
+        {
+            assert('is_string($beginDate)');
+            assert('is_string($endDate)');
+            assert('is_string($groupBy)');
+            $data = array();
+            if($groupBy == MarketingOverallMetricsForm::GROUPING_TYPE_DAY)
+            {
+                foreach(DateTimeUtil::getDatesBetweenTwoDatesInARange($beginDate, $endDate) as $date)
+                {
+                    $data[] = array('beginDate' => $date, 'endDate' => $date,
+                                    'displayLabel' => static::resolveAbbreviatedDayMonthDisplayLabel($date));
+                }
+            }
+            elseif($groupBy == MarketingOverallMetricsForm::GROUPING_TYPE_WEEK)
+            {
+                foreach(DateTimeUtil::
+                        getWeekStartAndEndDatesBetweenTwoDatesInARange($beginDate, $endDate) as $beginWeekDate => $endWeekDate)
+                {
+                    if($beginWeekDate < $beginDate)
+                    {
+                        $beginWeekDate = $beginDate;
+                    }
+                    if($endWeekDate > $endDate)
+                    {
+                        $endWeekDate   = $endDate;
+                    }
+                    $data[] = array('beginDate'    => $beginWeekDate, 'endDate' => $endWeekDate,
+                                    'displayLabel' => static::resolveAbbreviatedDayMonthDisplayLabel($beginWeekDate));
+                }
+            }
+            elseif($groupBy == MarketingOverallMetricsForm::GROUPING_TYPE_MONTH)
+            {
+                foreach(DateTimeUtil::
+                        getMonthStartAndEndDatesBetweenTwoDatesInARange($beginDate, $endDate) as $beginMonthDate => $endMonthDate)
+                {
+                    if($beginMonthDate < $beginDate)
+                    {
+                        $beginMonthDate = $beginDate;
+                    }
+                    if($endMonthDate > $endDate)
+                    {
+                        $endMonthDate   = $endDate;
+                    }
+                    $data[] = array('beginDate'    => $beginMonthDate, 'endDate' => $endMonthDate,
+                                    'displayLabel' => static::resolveAbbreviatedMonthDisplayLabel($beginMonthDate));
+                }
+            }
+            else
+            {
+                throw new NotSupportedException();
+            }
+            return $data;
+        }
+
+        protected static function resolveAbbreviatedMonthDisplayLabel($date)
+        {
+            assert('is_string($date)');
+            return DateTimeUtil::resolveValueForDateLocaleFormattedDisplay($date,
+                DateTimeUtil::DISPLAY_FORMAT_ABBREVIATED_MONTH_ONLY_WIDTH);
+        }
+
+        protected static function resolveAbbreviatedDayMonthDisplayLabel($date)
+        {
+            assert('is_string($date)');
+            return DateTimeUtil::resolveValueForDateLocaleFormattedDisplay($date,
+                DateTimeUtil::DISPLAY_FORMAT_ABBREVIATED_MONTH_AND_DAY_WIDTH);
+        }
+
         public function setBeginDate($beginDate)
         {
             assert('is_string($beginDate)');
@@ -89,6 +168,19 @@
                 throw new NotSupportedException();
             }
             $this->campaign = $campaign;
+        }
+
+        protected function resolveDateBalloonLabel($displayLabel)
+        {
+            assert('is_string($displayLabel)');
+            if($this->groupBy == MarketingOverallMetricsForm::GROUPING_TYPE_WEEK)
+            {
+                return Zurmo::t('Core', 'Week of {dateLabel}', array('{dateLabel}' => $displayLabel));
+            }
+            else
+            {
+                return $displayLabel;
+            }
         }
     }
 ?>
