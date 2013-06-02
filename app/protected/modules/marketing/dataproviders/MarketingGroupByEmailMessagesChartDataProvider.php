@@ -86,7 +86,7 @@
             return $sql;
         }
 
-        protected static function resolveAutoresponderTypeSubQuery($type)
+        public static function resolveAutoresponderTypeSubQuery($type)
         {
             assert('is_int($type)');
             $quote                         = DatabaseCompatibilityUtil::getQuote();

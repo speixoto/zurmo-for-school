@@ -38,28 +38,7 @@
     {
         public function getChartData()
         {
-            //anything meaningful
-            //emails sent today, for those emails, how many unique opens, how many unique clicks
-/**
-            $chartData = array();
-            $chartData[] = array('queued' => 2,  'sent' => 50, 'opened' => 10, 'clicked' => 5, 'bounced' => 2, 'optedOut' => 3, 'displayLabel' => 'Apr 17');
-            $chartData[] = array('queued' => 4,  'sent' => 60, 'opened' => 20, 'clicked' => 5, 'bounced' => 2, 'optedOut' => 3, 'displayLabel' => 'Apr 18');
-            $chartData[] = array('queued' => 6,  'sent' => 70, 'opened' => 30, 'clicked' => 5, 'bounced' => 2, 'optedOut' => 3, 'displayLabel' => 'Apr 19');
-            $chartData[] = array('queued' => 8,  'sent' => 80, 'opened' => 40, 'clicked' => 5, 'bounced' => 2, 'optedOut' => 3, 'displayLabel' => 'Apr 20');
-            $chartData[] = array('queued' => 10,  'sent' => 90, 'opened' => 50, 'clicked' => 5, 'bounced' => 2, 'optedOut' => 3, 'displayLabel' => 'Apr 21');
-            $chartData[] = array('queued' => 12,  'sent' => 100, 'opened' => 60, 'clicked' => 5, 'bounced' => 2, 'optedOut' => 3, 'displayLabel' => 'Apr 22');
-            //echo "<pre>";
-            //print_r($chartData);
-            //echo "</pre>";
-            return $chartData;
-**/
-
-
-
             $chartData = $this->resolveChartDataStructure();
-            //echo "<pre>";
-            //print_r($chartData);
-            // echo "</pre>";
             $rows      = $this->makeCombinedData();
             foreach ($rows as $row)
             {
@@ -79,9 +58,6 @@
             {
                 $newChartData[] = $data;
             }
-            // echo "<pre>";
-            // print_r($newChartData);
-            //echo "</pre>";
             return $newChartData;
         }
 

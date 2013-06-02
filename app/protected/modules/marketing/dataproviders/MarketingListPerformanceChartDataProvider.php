@@ -38,25 +38,7 @@
     {
         public function getChartData()
         {
-            $chartData = array();
-            /**
-            $chartData[] = array('uniqueClickThroughRate' => 5,  'uniqueOpenRate' => 7,   'displayLabel' => 'Apr 17');
-            $chartData[] = array('uniqueClickThroughRate' => 10, 'uniqueOpenRate' => 17,  'displayLabel' => 'Apr 18');
-            $chartData[] = array('uniqueClickThroughRate' => 15, 'uniqueOpenRate' => 22,  'displayLabel' => 'Apr 19');
-            $chartData[] = array('uniqueClickThroughRate' => 14, 'uniqueOpenRate' => 20,  'displayLabel' => 'Apr 20');
-            $chartData[] = array('uniqueClickThroughRate' => 12, 'uniqueOpenRate' => 18,  'displayLabel' => 'Apr 21');
-            $chartData[] = array('uniqueClickThroughRate' => 11, 'uniqueOpenRate' => 16,  'displayLabel' => 'Apr 22');
-             * **/
-            //echo "<pre>";
-            //print_r($chartData);
-            //echo "</pre>";
-            //return $chartData;
-
-
             $chartData = $this->resolveChartDataStructure();
-            //echo "<pre>";
-            //print_r($chartData);
-           // echo "</pre>";
             $rows      = $this->makeCombinedData();
             foreach ($rows as $row)
             {
@@ -74,9 +56,6 @@
             {
                 $newChartData[] = $data;
             }
-           // echo "<pre>";
-           // print_r($newChartData);
-            //echo "</pre>";
             return $newChartData;
         }
 
@@ -92,11 +71,7 @@
                 $searchAttributeData = static::makeCampaignsSearchAttributeData('sentDateTime', $beginDateTime,
                                        $endDateTime, $this->campaign);
                 $sql                 = static::makeCampaignsSqlQuery($searchAttributeData, $groupBy);
-                //echo $sql . "<BR>";
                 $rows                = R::getAll($sql);
-               // echo "<pre>";
-               // print_r($rows);
-                //echo "</pre>";
                 foreach ($rows as $row)
                 {
                     $chartIndexToCompare = $row[$this->resolveIndexGroupByToUse()];
@@ -108,11 +83,7 @@
                 $searchAttributeData = static::makeAutorespondersSearchAttributeData('sentDateTime', $beginDateTime,
                                        $endDateTime, $this->marketingList);
                 $sql                 = static::makeAutorespondersSqlQuery($searchAttributeData, $groupBy);
-                //echo $sql . "<BR>";
                 $rows                = R::getAll($sql);
-                // echo "<pre>";
-                // print_r($rows);
-                //echo "</pre>";
                 foreach ($rows as $row)
                 {
                     $chartIndexToCompare = $row[$this->resolveIndexGroupByToUse()];
@@ -128,9 +99,6 @@
                     }
                 }
             }
-           // echo "<pre>";
-           // print_r($combinedRows);
-            //echo "</pre>";
             return $combinedRows;
         }
 
@@ -146,9 +114,9 @@
             $joinTablesAdapter         = new RedBeanModelJoinTablesQueryAdapter('Campaign');
             $where                     = RedBeanModelDataProvider::makeWhere('Campaign', $searchAttributeData, $joinTablesAdapter);
             Campaign::resolveReadPermissionsOptimizationToSqlQuery(Yii::app()->user->userModel,
-                $joinTablesAdapter,
-                $where,
-                $selectDistinct);
+                                         $joinTablesAdapter,
+                                         $where,
+                                         $selectDistinct);
             $selectQueryAdapter        = new RedBeanModelSelectQueryAdapter($selectDistinct);
             $uniqueOpensSelectPart     = static::resolveCampaignTypeSubQuery(EmailMessageActivity::TYPE_OPEN);
             $uniqueClicksSelectPart    = static::resolveCampaignTypeSubQuery(EmailMessageActivity::TYPE_CLICK);
@@ -177,9 +145,9 @@
             $sentDateTimeColumnName     = EmailMessage::getColumnNameByAttribute('sentDateTime');
             $joinTablesAdapter          = new RedBeanModelJoinTablesQueryAdapter('Autoresponder');
             MarketingList::resolveReadPermissionsOptimizationToSqlQuery(Yii::app()->user->userModel,
-                $joinTablesAdapter,
-                $where,
-                $selectDistinct);
+                                          $joinTablesAdapter,
+                                          $where,
+                                          $selectDistinct);
             $selectQueryAdapter     = new RedBeanModelSelectQueryAdapter($selectDistinct);
             $uniqueOpensSelectPart  = static::resolveAutoresponderTypeSubQuery(EmailMessageActivity::TYPE_OPEN);
             $uniqueClicksSelectPart = static::resolveAutoresponderTypeSubQuery(EmailMessageActivity::TYPE_CLICK);

@@ -48,12 +48,28 @@
         }
 
 
-        public function testSomething()
+        public function testMakeGroupedDateTimeData()
         {
+            $beginDate = '2013-06-01';
+            $endDate   = '2013-06-04';
+            $groupedDateTimeData = MarketingChartDataProvider::makeGroupedDateTimeData(
+                                   $beginDate, $endDate, MarketingOverallMetricsForm::GROUPING_TYPE_DAY);
+            $compareData = array(array('beginDate' => '2013-06-01', 'endDate' => '2013-06-01', 'displayLabel' => 'Jun 1'),
+                                 array('beginDate' => '2013-06-02', 'endDate' => '2013-06-02', 'displayLabel' => 'Jun 2'),
+                                 array('beginDate' => '2013-06-03', 'endDate' => '2013-06-03', 'displayLabel' => 'Jun 3'),
+                                 array('beginDate' => '2013-06-04', 'endDate' => '2013-06-04', 'displayLabel' => 'Jun 4'),
+            );
+            $this->assertEquals($compareData, $groupedDateTimeData);
+            $groupedDateTimeData = MarketingChartDataProvider::makeGroupedDateTimeData(
+                                   $beginDate, $endDate, MarketingOverallMetricsForm::GROUPING_TYPE_WEEK);
+            $compareData = array(array('beginDate' => '2013-05-27', 'endDate' => '2013-06-02', 'displayLabel' => 'May 27'),
+                                 array('beginDate' => '2013-06-03', 'endDate' => '2013-06-09', 'displayLabel' => 'Jun 3'));
+            $this->assertEquals($compareData, $groupedDateTimeData);
 
+            $groupedDateTimeData = MarketingChartDataProvider::makeGroupedDateTimeData(
+                                   $beginDate, $endDate, MarketingOverallMetricsForm::GROUPING_TYPE_MONTH);
+            $compareData = array(array('beginDate' => '2013-06-01', 'endDate' => '2013-06-04', 'displayLabel' => 'Jun'));
+            $this->assertEquals($compareData, $groupedDateTimeData);
         }
-            //makeGroupedDateTimeData($beginDate, $endDate, $groupBy)
-        //somehow test for timezone changes too by switching to anotheruser, but only have to do this once really for code coverage
-        //todo: test the new functions in DateTimeUtil that get ranges
     }
 ?>

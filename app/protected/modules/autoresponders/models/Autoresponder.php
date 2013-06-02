@@ -200,11 +200,6 @@
             return self::getSubset($joinTablesAdapter, null, $pageSize, $where, 'secondsFromOperation');
         }
 
-        public function __toString()
-        {
-            return strval($this->subject);
-        }
-
         protected static function translatedAttributeLabels($language)
         {
             return array_merge(parent::translatedAttributeLabels($language),
@@ -218,5 +213,12 @@
                 )
             );
         }
+
+        public function __toString()
+        {
+            return strval($this->subject);
+        }
+
+
     }
 ?>

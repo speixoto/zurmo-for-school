@@ -112,14 +112,6 @@
                 foreach(DateTimeUtil::
                         getWeekStartAndEndDatesBetweenTwoDatesInARange($beginDate, $endDate) as $beginWeekDate => $endWeekDate)
                 {
-                    if($beginWeekDate < $beginDate)
-                    {
-                        $beginWeekDate = $beginDate;
-                    }
-                    if($endWeekDate > $endDate)
-                    {
-                        $endWeekDate   = $endDate;
-                    }
                     $data[] = array('beginDate'    => $beginWeekDate, 'endDate' => $endWeekDate,
                                     'displayLabel' => static::resolveAbbreviatedDayMonthDisplayLabel($beginWeekDate));
                 }

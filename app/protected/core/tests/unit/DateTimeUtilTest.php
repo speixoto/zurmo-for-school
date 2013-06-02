@@ -52,64 +52,95 @@
         public function testGetDatesBetweenTwoDatesInARange()
         {
             $monthsData = DateTimeUtil::getDatesBetweenTwoDatesInARange('2013-01-20', '2013-01-24');
-            echo "<pre>";
-            print_r($monthsData);
-            echo "</pre>";
+            $compareData = array('2013-01-20',
+                                 '2013-01-21',
+                                 '2013-01-22',
+                                 '2013-01-23',
+                                 '2013-01-24');
+            $this->assertEquals($compareData, $monthsData);
             $monthsData = DateTimeUtil::getDatesBetweenTwoDatesInARange('2013-06-29', '2013-07-01');
-            echo "<pre>";
-            print_r($monthsData);
-            echo "</pre>";
+            $compareData = array('2013-06-29',
+                                 '2013-06-30',
+                                 '2013-07-01');
+            $this->assertEquals($compareData, $monthsData);
             $monthsData = DateTimeUtil::getDatesBetweenTwoDatesInARange('2012-12-28', '2013-01-03');
-            echo "<pre>";
-            print_r($monthsData);
-            echo "</pre>";
-            echo 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx' . "\n";
+            $compareData = array('2012-12-28',
+                                 '2012-12-29',
+                                 '2012-12-30',
+                                 '2012-12-31',
+                                 '2013-01-01',
+                                 '2013-01-02',
+                                 '2013-01-03');
+            $this->assertEquals($compareData, $monthsData);
         }
 
         public function testGetWeekStartAndEndDatesBetweenTwoDatesInARange()
         {
             $monthsData = DateTimeUtil::getWeekStartAndEndDatesBetweenTwoDatesInARange('2013-01-20', '2013-08-03');
-            echo "<pre>";
-            print_r($monthsData);
-            echo "</pre>";
+            $this->assertEquals('2013-01-20', $monthsData['2013-01-14']);
+            $this->assertEquals('2013-08-04', $monthsData['2013-07-29']);
             $monthsData = DateTimeUtil::getWeekStartAndEndDatesBetweenTwoDatesInARange('2013-01-21', '2013-01-28');
-            echo "<pre>";
-            print_r($monthsData);
-            echo "</pre>";
+            $compareData = array(
+                '2013-01-14' => '2013-01-20',
+                '2013-01-21' => '2013-01-27',
+                '2013-01-28' => '2013-02-03');
+            $this->assertEquals($compareData, $monthsData);
             $monthsData = DateTimeUtil::getWeekStartAndEndDatesBetweenTwoDatesInARange('2013-01-20', '2013-01-26');
-            echo "<pre>";
-            print_r($monthsData);
-            echo "</pre>";
+            $compareData = array(
+                '2013-01-14' => '2013-01-20',
+                '2013-01-21' => '2013-01-27');
+            $this->assertEquals($compareData, $monthsData);
             $monthsData = DateTimeUtil::getWeekStartAndEndDatesBetweenTwoDatesInARange('2013-01-20', '2014-01-26');
-            echo "<pre>";
-            print_r($monthsData);
-            echo "</pre>";
+            $this->assertEquals('2013-01-20', $monthsData['2013-01-14']);
+            $this->assertEquals('2014-01-26', $monthsData['2014-01-20']);
             $monthsData = DateTimeUtil::getWeekStartAndEndDatesBetweenTwoDatesInARange('2012-12-28', '2013-01-03');
-            echo "<pre>";
-            print_r($monthsData);
-            echo "</pre>";
-            echo '------------------' . "\n";
+            $compareData = array(
+                '2012-12-24' => '2012-12-30',
+                '2012-12-31' => '2013-01-06');
+            $this->assertEquals($compareData, $monthsData);
         }
 
         public function testGetMonthStartAndEndDatesBetweenTwoDatesInARange()
         {
             $monthsData = DateTimeUtil::getMonthStartAndEndDatesBetweenTwoDatesInARange('2013-02-01', '2013-06-01');
-            echo "<pre>";
-            print_r($monthsData);
-            echo "</pre>";
+            $compareData = array(
+                '2013-02-01' => '2013-02-28',
+                '2013-03-01' => '2013-03-31',
+                '2013-04-01' => '2013-04-30',
+                '2013-05-01' => '2013-05-31',
+                '2013-06-01' => '2013-06-30');
+            $this->assertEquals($compareData, $monthsData);
             $monthsData = DateTimeUtil::getMonthStartAndEndDatesBetweenTwoDatesInARange('2013-01-20', '2013-08-03');
-            echo "<pre>";
-            print_r($monthsData);
-            echo "</pre>";
+            $compareData = array(
+                '2013-01-01' => '2013-01-31',
+                '2013-02-01' => '2013-02-28',
+                '2013-03-01' => '2013-03-31',
+                '2013-04-01' => '2013-04-30',
+                '2013-05-01' => '2013-05-31',
+                '2013-06-01' => '2013-06-30',
+                '2013-07-01' => '2013-07-31',
+                '2013-08-01' => '2013-08-31');
+            $this->assertEquals($compareData, $monthsData);
             $monthsData = DateTimeUtil::getMonthStartAndEndDatesBetweenTwoDatesInARange('2013-01-20', '2013-01-26');
-            echo "<pre>";
-            print_r($monthsData);
-            echo "</pre>";
+            $compareData = array(
+                '2013-01-01' => '2013-01-31');
+            $this->assertEquals($compareData, $monthsData);
             $monthsData = DateTimeUtil::getMonthStartAndEndDatesBetweenTwoDatesInARange('2013-01-20', '2014-01-26');
-            echo "<pre>";
-            print_r($monthsData);
-            echo "</pre>";
-            exit;
+            $compareData = array(
+                '2013-01-01' => '2013-01-31',
+                '2013-02-01' => '2013-02-28',
+                '2013-03-01' => '2013-03-31',
+                '2013-04-01' => '2013-04-30',
+                '2013-05-01' => '2013-05-31',
+                '2013-06-01' => '2013-06-30',
+                '2013-07-01' => '2013-07-31',
+                '2013-08-01' => '2013-08-31',
+                '2013-09-01' => '2013-09-30',
+                '2013-10-01' => '2013-10-31',
+                '2013-11-01' => '2013-11-30',
+                '2013-12-01' => '2013-12-31',
+                '2014-01-01' => '2014-01-31');
+            $this->assertEquals($compareData, $monthsData);
         }
 
         public function testGetTimeSinceDisplayContent()

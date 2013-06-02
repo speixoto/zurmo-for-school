@@ -39,30 +39,13 @@
         public function getChartData()
         {
             $chartData = array();
-            /**
-            $chartData[] = array('existingSubscribers' => 5,  'newSubscribers' => 7,   'displayLabel' => 'Apr 17');
-            $chartData[] = array('existingSubscribers' => 10, 'newSubscribers' => 17,  'displayLabel' => 'Apr 18');
-            $chartData[] = array('existingSubscribers' => 15, 'newSubscribers' => 22,  'displayLabel' => 'Apr 19');
-            $chartData[] = array('existingSubscribers' => 14, 'newSubscribers' => 20,  'displayLabel' => 'Apr 20');
-            $chartData[] = array('existingSubscribers' => 12, 'newSubscribers' => 18,  'displayLabel' => 'Apr 21');
-            $chartData[] = array('existingSubscribers' => 11, 'newSubscribers' => 16,  'displayLabel' => 'Apr 22');
-             * **/
-            //echo "<pre>";
-            //print_r($chartData);
-            //echo "</pre>";
-
-            $chartData = array();
             $groupedDateTimeData = static::makeGroupedDateTimeData($this->beginDate, $this->endDate, $this->groupBy);
-            //echo "<pre>";
-            //print_r($groupedDateTimeData);
-            //echo "</pre>";
             foreach($groupedDateTimeData as $groupData)
             {
                 $beginDateTime       = DateTimeUtil::convertDateIntoTimeZoneAdjustedDateTimeBeginningOfDay($groupData['beginDate']);
                 $endDateTime         = DateTimeUtil::convertDateIntoTimeZoneAdjustedDateTimeEndOfDay($groupData['endDate']);
                 $searchAttributedata = static::makeSearchAttributeData($endDateTime, $this->marketingList);
                 $sql                 = static::makeColumnSqlQuery($beginDateTime, $searchAttributedata);
-               // echo "<BR>" . $sql . "<BR><BR>";
                 $row                 = R::getRow($sql);
                 $columnData          = array(MarketingChartDataProvider::NEW_SUBSCRIBERS_COUNT      =>
                                                 ArrayUtil::getArrayValueAndResolveNullAsZero($row,
@@ -75,9 +58,6 @@
                 );
                 $chartData[]         = $columnData;
             }
-            //echo "<pre>";
-            //print_r($chartData);
-            //echo "</pre>";
             return $chartData;
         }
 

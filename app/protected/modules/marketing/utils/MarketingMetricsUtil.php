@@ -58,6 +58,7 @@
                                            'balloonText' => "'" . Zurmo::t('MarketingModule', 'Open Rate') . ": [[value]]%'"));
             $amChart->xAxisName        = $chartDataProvider->getXAxisName();
             $amChart->yAxisName        = $chartDataProvider->getYAxisName();
+            $amChart->addValueAxisProperties('maximum', 100);
             $javascript = $amChart->javascriptChart();
             Yii::app()->getClientScript()->registerScript(__CLASS__ . $uniqueId, $javascript);
             $cClipWidget = new CClipWidget();
@@ -97,8 +98,8 @@
                                      array('title'       => "'" . Zurmo::t('MarketingModule', 'Bounced') . "'",
                                            'balloonText' => "'" . Zurmo::t('MarketingModule', 'Bounced') . ": [[value]]'"));
             $amChart->addSerialGraph(MarketingChartDataProvider::UNSUBSCRIBED, 'column',
-                                     array('title'       => "'" . Zurmo::t('MarketingModule', 'Opted Out') . "'",
-                                           'balloonText' => "'" . Zurmo::t('MarketingModule', 'Opted Out') . ": [[value]]'"));
+                                     array('title'       => "'" . Zurmo::t('MarketingModule', 'Unsubscribed') . "'",
+                                           'balloonText' => "'" . Zurmo::t('MarketingModule', 'Unsubscribed') . ": [[value]]'"));
 
             $amChart->xAxisName        = $chartDataProvider->getXAxisName();
             $amChart->yAxisName        = $chartDataProvider->getYAxisName();
