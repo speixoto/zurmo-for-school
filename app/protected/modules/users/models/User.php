@@ -77,6 +77,7 @@
             {
                 throw new ApiNoRightWebApiLoginException();
             }
+            $user->login();
             return $user;
         }
 
@@ -432,22 +433,23 @@
         {
             return array_merge(parent::translatedAttributeLabels($language),
                 array(
-                    'currency'        => Zurmo::t('ZurmoModule', 'Currency', array(), null, $language),
-                    'emailAccounts'   => Zurmo::t('EmailMessagesModule', 'Email Accounts', array(), null, $language),
-                    'emailBoxes'      => Zurmo::t('EmailMessagesModule', 'Email Boxes', array(), null, $language),
-                    'emailSignatures' => Zurmo::t('EmailMessagesModule', 'Email Signatures', array(), null, $language),
-                    'fullName'        => Zurmo::t('ZurmoModule', 'Name',       array(), null, $language),
-                    'groups'          => Zurmo::t('ZurmoModule', 'Groups', array(), null, $language),
-                    'hash'            => Zurmo::t('UsersModule', 'Hash',       array(), null, $language),
-                    'isActive'        => Zurmo::t('UsersModule', 'Is Active',  array(), null, $language),
-                    'language'        => Zurmo::t('ZurmoModule', 'Language',   array(), null, $language),
-                    'manager'         => Zurmo::t('UsersModule', 'Manager',    array(), null, $language),
-                    'primaryEmail'    => Zurmo::t('ZurmoModule', 'Email',      array(), null, $language),
-                    'primaryAddress'  => Zurmo::t('ZurmoModule', 'Address',    array(), null, $language),
-                    'role'            => Zurmo::t('ZurmoModule', 'Role', array(), null, $language),
-                    'timeZone'        => Zurmo::t('UsersModule', 'Time Zone',  array(), null, $language),
-                    'title'           => Zurmo::t('ZurmoModule', 'Salutation', array(), null, $language),
-                    'username'        => Zurmo::t('UsersModule', 'Username',   array(), null, $language),
+                    'currency'          => Zurmo::t('ZurmoModule',         'Currency',          array(), null, $language),
+                    'emailAccounts'     => Zurmo::t('EmailMessagesModule', 'Email Accounts',    array(), null, $language),
+                    'emailBoxes'        => Zurmo::t('EmailMessagesModule', 'Email Boxes',       array(), null, $language),
+                    'emailSignatures'   => Zurmo::t('EmailMessagesModule', 'Email Signatures',  array(), null, $language),
+                    'fullName'          => Zurmo::t('ZurmoModule',         'Name',              array(), null, $language),
+                    'groups'            => Zurmo::t('ZurmoModule',         'Groups',            array(), null, $language),
+                    'hash'              => Zurmo::t('UsersModule',         'Hash',              array(), null, $language),
+                    'isActive'          => Zurmo::t('UsersModule',         'Is Active',         array(), null, $language),
+                    'language'          => Zurmo::t('ZurmoModule',         'Language',          array(), null, $language),
+                    'manager'           => Zurmo::t('UsersModule',         'Manager',           array(), null, $language),
+                    'primaryEmail'      => Zurmo::t('ZurmoModule',         'Email',             array(), null, $language),
+                    'primaryAddress'    => Zurmo::t('ZurmoModule',         'Address',           array(), null, $language),
+                    'role'              => Zurmo::t('ZurmoModule',         'Role',              array(), null, $language),
+                    'timeZone'          => Zurmo::t('UsersModule',         'Time Zone',         array(), null, $language),
+                    'title'             => Zurmo::t('ZurmoModule',         'Salutation',        array(), null, $language),
+                    'username'          => Zurmo::t('UsersModule',         'Username',          array(), null, $language),
+                    'lastLoginDateTime' => Zurmo::t('UsersModule',         'Last Login',        array(), null, $language),
                 )
             );
         }
@@ -651,17 +653,19 @@
                     'timeZone',
                     'username',
                     'serializedAvatarData',
-                    'isActive'
+                    'isActive',
+                    'lastLoginDateTime',
                 ),
                 'relations' => array(
-                    'currency'   => array(RedBeanModel::HAS_ONE,             'Currency'),
-                    'groups'     => array(RedBeanModel::MANY_MANY,           'Group'),
-                    'manager'    => array(RedBeanModel::HAS_ONE,             'User', RedBeanModel::NOT_OWNED,
-                                         RedBeanModel::LINK_TYPE_SPECIFIC, 'manager'),
-                    'role'       => array(RedBeanModel::HAS_MANY_BELONGS_TO, 'Role'),
-                    'emailBoxes' => array(RedBeanModel::HAS_MANY,            'EmailBox'),
-                    'emailAccounts'    => array(RedBeanModel::HAS_MANY,            'EmailAccount'),
-                    'emailSignatures'  => array(RedBeanModel::HAS_MANY,            'EmailSignature',         RedBeanModel::OWNED),
+                    'currency'          => array(RedBeanModel::HAS_ONE,             'Currency'),
+                    'groups'            => array(RedBeanModel::MANY_MANY,           'Group'),
+                    'manager'           => array(RedBeanModel::HAS_ONE,             'User',
+                                                    RedBeanModel::NOT_OWNED,            RedBeanModel::LINK_TYPE_SPECIFIC,  'manager'),
+                    'role'              => array(RedBeanModel::HAS_MANY_BELONGS_TO, 'Role'),
+                    'emailBoxes'        => array(RedBeanModel::HAS_MANY,            'EmailBox'),
+                    'emailAccounts'     => array(RedBeanModel::HAS_MANY,            'EmailAccount'),
+                    'emailSignatures'   => array(RedBeanModel::HAS_MANY,            'EmailSignature',
+                                                    RedBeanModel::OWNED),
                 ),
                 'foreignRelations' => array(
                     'Dashboard',
@@ -683,9 +687,10 @@
                     array('username', 'match',   'pattern' => '/^[^A-Z]+$/', // Not Coding Standard
                                                'message' => 'Username must be lowercase.'),
                     array('username', 'length',  'max'   => 64),
-                    array('serializedAvatarData',   'type',  'type' => 'string'),
+                    array('serializedAvatarData', 'type', 'type' => 'string'),
                     array('isActive', 'readOnly'),
-                    array('isActive', 'boolean')
+                    array('isActive', 'boolean'),
+                    array('lastLoginDateTime',    'type', 'type' => 'datetime'),
                 ),
                 'elements' => array(
                 ),
@@ -839,6 +844,12 @@
                 return array('firstName', $attribute);
             }
             return parent::getSortAttributesByAttribute($attribute);
+        }
+
+        protected function login()
+        {
+            $this->unrestrictedSet('lastLoginDateTime',  DateTimeUtil::convertTimestampToDbFormatDateTime(time()));
+            $this->save();
         }
     }
 ?>
