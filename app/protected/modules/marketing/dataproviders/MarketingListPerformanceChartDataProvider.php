@@ -63,8 +63,8 @@
                 $chartIndexToCompare = $row[$this->resolveIndexGroupByToUse()];
                 if($chartData[$chartIndexToCompare])
                 {
-                    $uniqueOpenRate         = NumberUtil::divisionForZero($row[self::UNIQUE_OPENS_COUNT], $row[self::COUNT]);
-                    $uniqueClickThroughRate = NumberUtil::divisionForZero($row[self::UNIQUE_CLICKS_COUNT], $row[self::COUNT]);
+                    $uniqueOpenRate         = NumberUtil::divisionForZero($row[self::UNIQUE_OPENS], $row[self::COUNT]);
+                    $uniqueClickThroughRate = NumberUtil::divisionForZero($row[self::UNIQUE_CLICKS], $row[self::COUNT]);
                     $chartData[$chartIndexToCompare][self::UNIQUE_OPEN_RATE]          = round($uniqueOpenRate * 100, 2);
                     $chartData[$chartIndexToCompare][self::UNIQUE_CLICK_THROUGH_RATE] = round($uniqueClickThroughRate * 100, 2);
                 }
@@ -92,7 +92,7 @@
                 $searchAttributeData = static::makeCampaignsSearchAttributeData('sentDateTime', $beginDateTime,
                                        $endDateTime, $this->campaign);
                 $sql                 = static::makeCampaignsSqlQuery($searchAttributeData, $groupBy);
-               // echo $sql . "<BR>";
+                //echo $sql . "<BR>";
                 $rows                = R::getAll($sql);
                // echo "<pre>";
                // print_r($rows);
@@ -108,7 +108,7 @@
                 $searchAttributeData = static::makeAutorespondersSearchAttributeData('sentDateTime', $beginDateTime,
                                        $endDateTime, $this->marketingList);
                 $sql                 = static::makeAutorespondersSqlQuery($searchAttributeData, $groupBy);
-               // echo $sql . "<BR>";
+                //echo $sql . "<BR>";
                 $rows                = R::getAll($sql);
                 // echo "<pre>";
                 // print_r($rows);
@@ -122,9 +122,9 @@
                     }
                     else
                     {
-                        $combinedRows[$chartIndexToCompare][self::COUNT]               += $row[self::COUNT];
-                        $combinedRows[$chartIndexToCompare][self::UNIQUE_OPENS_COUNT]  += $row[self::UNIQUE_OPENS_COUNT];
-                        $combinedRows[$chartIndexToCompare][self::UNIQUE_CLICKS_COUNT] += $row[self::UNIQUE_CLICKS_COUNT];
+                        $combinedRows[$chartIndexToCompare][self::COUNT]         += $row[self::COUNT];
+                        $combinedRows[$chartIndexToCompare][self::UNIQUE_OPENS]  += $row[self::UNIQUE_OPENS];
+                        $combinedRows[$chartIndexToCompare][self::UNIQUE_CLICKS] += $row[self::UNIQUE_CLICKS];
                     }
                 }
             }
@@ -143,24 +143,24 @@
             $campaignItemTableName     = CampaignItem::getTableName('CampaignItem');
             $emailMessageTableName     = EmailMessage::getTableName('EmailMessage');
             $sentDateTimeColumnName    = EmailMessage::getColumnNameByAttribute('sentDateTime');
-
-            $selectQueryAdapter        = new RedBeanModelSelectQueryAdapter($selectDistinct);
             $joinTablesAdapter         = new RedBeanModelJoinTablesQueryAdapter('Campaign');
+            $where                     = RedBeanModelDataProvider::makeWhere('Campaign', $searchAttributeData, $joinTablesAdapter);
             Campaign::resolveReadPermissionsOptimizationToSqlQuery(Yii::app()->user->userModel,
-                                         $joinTablesAdapter,
-                                         $where,
-                                         $selectDistinct);
-            $uniqueOpensSelectPart = static::resolveCampaignTypeSubQuery(EmailMessageActivity::TYPE_OPEN);
-            $uniqueClicksSelectPart = static::resolveCampaignTypeSubQuery(EmailMessageActivity::TYPE_CLICK);
+                $joinTablesAdapter,
+                $where,
+                $selectDistinct);
+            $selectQueryAdapter        = new RedBeanModelSelectQueryAdapter($selectDistinct);
+            $uniqueOpensSelectPart     = static::resolveCampaignTypeSubQuery(EmailMessageActivity::TYPE_OPEN);
+            $uniqueClicksSelectPart    = static::resolveCampaignTypeSubQuery(EmailMessageActivity::TYPE_CLICK);
             static::addEmailMessageDayDateClause            ($selectQueryAdapter, $sentDateTimeColumnName);
             static::addEmailMessageFirstDayOfWeekDateClause ($selectQueryAdapter, $sentDateTimeColumnName);
             static::addEmailMessageFirstDayOfMonthDateClause($selectQueryAdapter, $sentDateTimeColumnName);
             $selectQueryAdapter->addNonSpecificCountClause();
-            $selectQueryAdapter->addClauseByQueryString("count((" . $uniqueOpensSelectPart  . "))",  static::UNIQUE_OPENS_COUNT);
-            $selectQueryAdapter->addClauseByQueryString("count((" . $uniqueClicksSelectPart . "))", static::UNIQUE_CLICKS_COUNT);
+            $selectQueryAdapter->addClauseByQueryString("count((" . $uniqueOpensSelectPart  . "))",  static::UNIQUE_OPENS);
+            $selectQueryAdapter->addClauseByQueryString("count((" . $uniqueClicksSelectPart . "))", static::UNIQUE_CLICKS);
             $joinTablesAdapter->addLeftTableAndGetAliasName($campaignItemTableName, 'id', $campaignTableName, 'campaign_id');
             $joinTablesAdapter->addLeftTableAndGetAliasName($emailMessageTableName, 'emailmessage_id', $campaignItemTableName, 'id');
-            $where   = RedBeanModelDataProvider::makeWhere('Campaign', $searchAttributeData, $joinTablesAdapter);
+
             $sql   = SQLQueryUtil::makeQuery($campaignTableName, $selectQueryAdapter, $joinTablesAdapter, null, null, $where, null, $groupBy);
             return $sql;
         }
@@ -170,35 +170,29 @@
             $quote                      = DatabaseCompatibilityUtil::getQuote();
             $where                      = null;
             $selectDistinct             = false;
+            $marketingListTableName     = Autoresponder::getTableName('MarketingList');
             $autoresponderTableName     = Autoresponder::getTableName('Autoresponder');
             $autoresponderItemTableName = AutoresponderItem::getTableName('AutoresponderItem');
             $emailMessageTableName      = EmailMessage::getTableName('EmailMessage');
             $sentDateTimeColumnName     = EmailMessage::getColumnNameByAttribute('sentDateTime');
-            $selectQueryAdapter         = new RedBeanModelSelectQueryAdapter($selectDistinct);
             $joinTablesAdapter          = new RedBeanModelJoinTablesQueryAdapter('Autoresponder');
-
-            //todo:@story task, add this permission thing as a final thing to look into.
-            //todo: do we need to filter on markting list? because we have perms on the related marketing list? probably? but not really when you are in a
-            //todo: look what we did in reporting, we should be able to add munge on related marketing list when needed
-            //todo: add todo to test from outside when regular user as unit test
-            //marketing list specifically... it wouldnt matter
-            /**
-            Autoresponder::resolveReadPermissionsOptimizationToSqlQuery(Yii::app()->user->userModel,
+            MarketingList::resolveReadPermissionsOptimizationToSqlQuery(Yii::app()->user->userModel,
                 $joinTablesAdapter,
                 $where,
                 $selectDistinct);
-             * **/
-            $uniqueOpensSelectPart = static::resolveAutoresponderTypeSubQuery(EmailMessageActivity::TYPE_OPEN);
+            $selectQueryAdapter     = new RedBeanModelSelectQueryAdapter($selectDistinct);
+            $uniqueOpensSelectPart  = static::resolveAutoresponderTypeSubQuery(EmailMessageActivity::TYPE_OPEN);
             $uniqueClicksSelectPart = static::resolveAutoresponderTypeSubQuery(EmailMessageActivity::TYPE_CLICK);
             static::addEmailMessageDayDateClause            ($selectQueryAdapter, $sentDateTimeColumnName);
             static::addEmailMessageFirstDayOfWeekDateClause ($selectQueryAdapter, $sentDateTimeColumnName);
             static::addEmailMessageFirstDayOfMonthDateClause($selectQueryAdapter, $sentDateTimeColumnName);
             $selectQueryAdapter->addNonSpecificCountClause();
-            $selectQueryAdapter->addClauseByQueryString("count((" . $uniqueOpensSelectPart  . "))",  static::UNIQUE_OPENS_COUNT);
-            $selectQueryAdapter->addClauseByQueryString("count((" . $uniqueClicksSelectPart . "))", static::UNIQUE_CLICKS_COUNT);
+            $selectQueryAdapter->addClauseByQueryString("count((" . $uniqueOpensSelectPart  . "))",  static::UNIQUE_OPENS);
+            $selectQueryAdapter->addClauseByQueryString("count((" . $uniqueClicksSelectPart . "))", static::UNIQUE_CLICKS);
+            $joinTablesAdapter->addFromTableAndGetAliasName($marketingListTableName, 'marketinglist_id');
             $joinTablesAdapter->addLeftTableAndGetAliasName($autoresponderItemTableName, 'id', $autoresponderTableName, 'autoresponder_id');
             $joinTablesAdapter->addLeftTableAndGetAliasName($emailMessageTableName, 'emailmessage_id', $autoresponderItemTableName, 'id');
-            $where   = RedBeanModelDataProvider::makeWhere('Autoresponder', $searchAttributeData, $joinTablesAdapter);
+            $where = RedBeanModelDataProvider::makeWhere('Autoresponder', $searchAttributeData, $joinTablesAdapter);
             $sql   = SQLQueryUtil::makeQuery($autoresponderTableName, $selectQueryAdapter, $joinTablesAdapter, null, null, $where, null, $groupBy);
             return $sql;
         }

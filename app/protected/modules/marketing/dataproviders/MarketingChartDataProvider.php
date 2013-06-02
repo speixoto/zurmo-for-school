@@ -47,9 +47,17 @@
 
         const UNIQUE_CLICK_THROUGH_RATE  = 'uniqueClickThroughRate';
 
-        const UNIQUE_OPENS_COUNT         = 'uniqueOpensCount';
+        const QUEUED                     = 'queued';
 
-        const UNIQUE_CLICKS_COUNT        = 'uniqueClicksCount';
+        const SENT                       = 'sent';
+
+        const UNIQUE_OPENS               = 'uniqueOpens';
+
+        const UNIQUE_CLICKS              = 'uniqueClicks';
+
+        const BOUNCED                    = 'bounced';
+
+        const UNSUBSCRIBED               = 'optedOut';
 
         const DAY_DATE                   = 'dayDate';
 

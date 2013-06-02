@@ -64,10 +64,10 @@
                 $sql                 = static::makeColumnSqlQuery($beginDateTime, $searchAttributedata);
                // echo "<BR>" . $sql . "<BR><BR>";
                 $row                 = R::getRow($sql);
-                $columnData          = array('newSubscribers'      =>
+                $columnData          = array(MarketingChartDataProvider::NEW_SUBSCRIBERS_COUNT      =>
                                                 ArrayUtil::getArrayValueAndResolveNullAsZero($row,
                                                     static::NEW_SUBSCRIBERS_COUNT),
-                                             'existingSubscribers' =>
+                                             MarketingChartDataProvider::EXISTING_SUBSCRIBERS_COUNT  =>
                                                 ArrayUtil::getArrayValueAndResolveNullAsZero($row,
                                                     static::EXISTING_SUBSCRIBERS_COUNT),
                                              'displayLabel'        => $groupData['displayLabel'],
@@ -91,14 +91,15 @@
             $marketingListMemberTableName = MarketingListMember::getTableName('MarketingListMember');
             $createdDateTimeColumnName = MarketingListMember::getColumnNameByAttribute('createdDateTime');
             $unsubscribedColumnName    = MarketingListMember::getColumnNameByAttribute('unsubscribed');
-            $selectQueryAdapter        = new RedBeanModelSelectQueryAdapter($selectDistinct);
             $joinTablesAdapter         = new RedBeanModelJoinTablesQueryAdapter('MarketingList');
+            $where = RedBeanModelDataProvider::makeWhere('MarketingList', $searchAttributeData, $joinTablesAdapter);
             MarketingList::resolveReadPermissionsOptimizationToSqlQuery(Yii::app()->user->userModel,
-                                         $joinTablesAdapter,
-                                         $where,
-                                         $selectDistinct);
-            $newSubscriberSelectPart = "sum(CASE WHEN {$quote}{$marketingListMemberTableName}{$quote}.{$quote}{$createdDateTimeColumnName}" .
-                                       $quote . " > '$beginDateTime' THEN 1 ELSE 0 END)";
+                $joinTablesAdapter,
+                $where,
+                $selectDistinct);
+            $selectQueryAdapter        = new RedBeanModelSelectQueryAdapter($selectDistinct);
+            $newSubscriberSelectPart   = "sum(CASE WHEN {$quote}{$marketingListMemberTableName}{$quote}.{$quote}{$createdDateTimeColumnName}" .
+                                         $quote . " > '$beginDateTime' THEN 1 ELSE 0 END)";
             $existingSubscriberSelectPart = "sum(CASE WHEN {$quote}{$marketingListMemberTableName}{$quote}.{$quote}{$createdDateTimeColumnName}" .
                                             $quote . " < '$beginDateTime' AND " .
                                             "{$quote}{$marketingListMemberTableName}{$quote}.{$quote}" .
@@ -106,7 +107,6 @@
             $selectQueryAdapter->addClauseByQueryString($newSubscriberSelectPart,      static::NEW_SUBSCRIBERS_COUNT);
             $selectQueryAdapter->addClauseByQueryString($existingSubscriberSelectPart, static::EXISTING_SUBSCRIBERS_COUNT);
             $joinTablesAdapter->addLeftTableAndGetAliasName($marketingListMemberTableName, 'id', $marketingListTableName, 'marketinglist_id');
-            $where = RedBeanModelDataProvider::makeWhere('MarketingList', $searchAttributeData, $joinTablesAdapter);
             $sql   = SQLQueryUtil::makeQuery($marketingListTableName, $selectQueryAdapter, $joinTablesAdapter, null, null, $where);
             return $sql;
         }

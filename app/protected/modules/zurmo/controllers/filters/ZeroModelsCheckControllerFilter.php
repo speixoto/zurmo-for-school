@@ -85,7 +85,7 @@
                 return true;
             }
 
-            $messageViewClassName = $this->zeroModelsYetViewClassName;
+            $messageViewClassName = $this->getMessageViewClassName();
             if ($messageViewClassName == null)
             {
                 $messageViewClassName     = $this->controller->getModule()->getPluralCamelCasedName() . 'ZeroModelsYetView';
