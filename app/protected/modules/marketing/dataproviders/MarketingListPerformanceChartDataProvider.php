@@ -36,16 +36,6 @@
 
     class MarketingListPerformanceChartDataProvider extends MarketingChartDataProvider
     {
-        const UNIQUE_OPENS_COUNT      = 'uniqueOpensCount';
-
-        const UNIQUE_CLICKS_COUNT     = 'uniqueClicksCount';
-
-        const DAY_DATE                = 'dayDate';
-
-        const FIRST_DAY_OF_WEEK_DATE  = 'firstDayOfWeekDate';
-
-        const FIRST_DAY_OF_MONTH_DATE = 'firstDayOfMonthDate';
-
         public function getXAxisName()
         {
             return null;
@@ -58,11 +48,6 @@
 
         public function getChartData()
         {
-            //todo: pass through form params like date begin/end and grouping
-            //todo: we need demo data then for campaign items, autoresponder items, tracking etc to have these charts render
-            //anything meaningful
-            //emails sent today, for those emails, how many unique opens, how many unique clicks
-
             $chartData = array();
             /**
             $chartData[] = array('uniqueClickThroughRate' => 5,  'uniqueOpenRate' => 7,   'displayLabel' => 'Apr 17');
@@ -79,44 +64,91 @@
 
 
             $chartData = $this->resolveChartDataStructure();
-            echo "<pre>";
-            print_r($chartData);
-            echo "</pre>";
+            //echo "<pre>";
+            //print_r($chartData);
+           // echo "</pre>";
+            $rows      = $this->makeCombinedData();
+            foreach ($rows as $row)
+            {
+                $chartIndexToCompare = $row[$this->resolveIndexGroupByToUse()];
+                if($chartData[$chartIndexToCompare])
+                {
+                    $uniqueOpenRate         = NumberUtil::divisionForZero($row[self::UNIQUE_OPENS_COUNT], $row[self::COUNT]);
+                    $uniqueClickThroughRate = NumberUtil::divisionForZero($row[self::UNIQUE_CLICKS_COUNT], $row[self::COUNT]);
+                    $chartData[$chartIndexToCompare][self::UNIQUE_OPEN_RATE]          = round($uniqueOpenRate * 100, 2);
+                    $chartData[$chartIndexToCompare][self::UNIQUE_CLICK_THROUGH_RATE] = round($uniqueClickThroughRate * 100, 2);
+                }
+            }
+            $newChartData = array();
+            foreach($chartData as $data)
+            {
+                $newChartData[] = $data;
+            }
+           // echo "<pre>";
+           // print_r($newChartData);
+            //echo "</pre>";
+            return $newChartData;
+        }
 
-//todo: convert indexes to nothing
 
-
-
-//todo: combine 2 queries one is marketing list the other is cmapaigns
-//todo: only use 1 and filter if on marketing lists or cmpaings
-
+        protected function makeCombinedData()
+        {
+            $combinedRows        = array();
             $groupBy             = $this->resolveGroupBy();
             $beginDateTime       = DateTimeUtil::convertDateIntoTimeZoneAdjustedDateTimeBeginningOfDay($this->beginDate);
             $endDateTime         = DateTimeUtil::convertDateIntoTimeZoneAdjustedDateTimeEndOfDay($this->endDate);
-            $searchAttributeData = static::makeCampaignsSearchAttributeData($endDateTime, $this->campaign);
-            $sql                 = static::makeCampaignsSqlQuery($beginDateTime, $searchAttributeData, $groupBy);
-            echo $sql . "<BR>";
-            exit;
-            $rows                = R::getAll($sql);
-            $chartData           = array();
-            foreach ($rows as $row)
+            if($this->marketingList == null)
             {
-                $chartData[] = array(
-                    'value'        => $utf8_text = $this->resolveCurrencyValueConversionRateForCurrentUserForDisplay($row['amount']),
-                    'displayLabel' => static::resolveLabelByValueAndLabels($row['source'], $labels),
-                );
+                $searchAttributeData = static::makeCampaignsSearchAttributeData($beginDateTime, $endDateTime, $this->campaign);
+                $sql                 = static::makeCampaignsSqlQuery($searchAttributeData, $groupBy);
+                echo $sql . "<BR>";
+                $rows                = R::getAll($sql);
+               // echo "<pre>";
+               // print_r($rows);
+                //echo "</pre>";
+                foreach ($rows as $row)
+                {
+                    $chartIndexToCompare = $row[$this->resolveIndexGroupByToUse()];
+                    $combinedRows[$chartIndexToCompare] = $row;
+                }
             }
-            return $chartData;
+            if($this->campaign == null)
+            {
+                $searchAttributeData = static::makeAutorespondersSearchAttributeData($beginDateTime, $endDateTime, $this->marketingList);
+                $sql                 = static::makeAutorespondersSqlQuery($searchAttributeData, $groupBy);
+               // echo $sql . "<BR>";
+                $rows                = R::getAll($sql);
+                // echo "<pre>";
+                // print_r($rows);
+                //echo "</pre>";
+                foreach ($rows as $row)
+                {
+                    $chartIndexToCompare = $row[$this->resolveIndexGroupByToUse()];
+                    if(!isset($combinedRows[$chartIndexToCompare]))
+                    {
+                        $combinedRows[$chartIndexToCompare] = $row;
+                    }
+                    else
+                    {
+                        $combinedRows[$chartIndexToCompare][self::COUNT]               += $row[self::COUNT];
+                        $combinedRows[$chartIndexToCompare][self::UNIQUE_OPENS_COUNT]  += $row[self::UNIQUE_OPENS_COUNT];
+                        $combinedRows[$chartIndexToCompare][self::UNIQUE_CLICKS_COUNT] += $row[self::UNIQUE_CLICKS_COUNT];
+                    }
+                }
+            }
+           // echo "<pre>";
+           // print_r($combinedRows);
+            //echo "</pre>";
+            return $combinedRows;
         }
 
-        protected static function makeCampaignsSqlQuery($beginDateTime, $searchAttributeData, $groupBy)
+        protected static function makeCampaignsSqlQuery($searchAttributeData, $groupBy)
         {
-            assert('is_string($beginDateTime)');
             $quote                     = DatabaseCompatibilityUtil::getQuote();
             $where                     = null;
             $selectDistinct            = false;
             $campaignTableName         = Campaign::getTableName('Campaign');
-            $campaignItemTableName     = Campaign::getTableName('CampaignItem');
+            $campaignItemTableName     = CampaignItem::getTableName('CampaignItem');
             $emailMessageTableName     = EmailMessage::getTableName('EmailMessage');
             $sentDateTimeColumnName    = EmailMessage::getColumnNameByAttribute('sentDateTime');
 
@@ -126,43 +158,40 @@
                                          $joinTablesAdapter,
                                          $where,
                                          $selectDistinct);
-            //todo: fix use of tables, columns, also constants on type
-            //todo:!!!! weeeks. if you gorup by week what day is extracted?
-
-            //day - need just date_format
-            //DATE_FORMAT(DATE_ADD(createddatetime, INTERVAL(2-DAYOFWEEK({$quote}{$emailMessageTableName}{$quote}.{$quote}{$sentDateTimeColumnName}{$quote})) day), '%Y-%m-%d')
-            //month first day of month? what about in ranging?
-            //todo: the challenge is this returns the FIRST date of something regardless of $this->beginDate,endDate so we need
-            //to keep that in mind when comparing chartData template.
-            //todo: NEED TO ADD HERE CLAUSE IN SUBS WHEN CAMPAIGN is present, because we need to also filter by that.
-            //todo:we can probably turn this sub into another query function and just use natural zurmo to do it. ADD FILTERING BY DATE ALSO (BEGIN/END
-            $uniqueOpensSelectPart = "(select count(DISTINCT person_id) from campaignitemactivity, emailmessageactivity where emailmessageactivity_id = emailmessageactivity.id and type=1)";
-            $uniqueClicksSelectPart = "(select count(DISTINCT person_id) from campaignitemactivity, emailmessageactivity where emailmessageactivity_id = emailmessageactivity.id and type=2)";
-            $selectQueryAdapter->addClauseByQueryString("DATE_FORMAT(day({$quote}{$emailMessageTableName}{$quote}.{$quote}{$sentDateTimeColumnName}{$quote}), '%Y-%m-%d')", static::DAY_DATE);
-            $selectQueryAdapter->addClauseByQueryString("DATE_FORMAT(DATE_ADD(sentdatetime, INTERVAL(2-DAYOFWEEK({$quote}{$emailMessageTableName}{$quote}.{$quote}{$sentDateTimeColumnName}{$quote})) day), '%Y-%m-%d')", static::FIRST_DAY_OF_WEEK_DATE);
-            $selectQueryAdapter->addClauseByQueryString("DATE_FORMAT(DATE_ADD(sentdatetime, INTERVAL(1-DAYOFMONTH({$quote}{$emailMessageTableName}{$quote}.{$quote}{$sentDateTimeColumnName}{$quote})) day), '%Y-%m-%d')", static::FIRST_DAY_OF_MONTH_DATE);
+            $uniqueOpensSelectPart = static::resolveCampaignTypeSubQuery(EmailMessageActivity::TYPE_OPEN);
+            $uniqueClicksSelectPart = static::resolveCampaignTypeSubQuery(EmailMessageActivity::TYPE_CLICK);
+            static::addEmailMessageDayDateClause            ($selectQueryAdapter, $sentDateTimeColumnName);
+            static::addEmailMessageFirstDayOfWeekDateClause ($selectQueryAdapter, $sentDateTimeColumnName);
+            static::addEmailMessageFirstDayOfMonthDateClause($selectQueryAdapter, $sentDateTimeColumnName);
             $selectQueryAdapter->addNonSpecificCountClause();
-            $selectQueryAdapter->addClauseByQueryString($uniqueOpensSelectPart,  static::UNIQUE_OPENS_COUNT);
-            $selectQueryAdapter->addClauseByQueryString($uniqueClicksSelectPart, static::UNIQUE_CLICKS_COUNT);
+            $selectQueryAdapter->addClauseByQueryString("count((" . $uniqueOpensSelectPart  . "))",  static::UNIQUE_OPENS_COUNT);
+            $selectQueryAdapter->addClauseByQueryString("count((" . $uniqueClicksSelectPart . "))", static::UNIQUE_CLICKS_COUNT);
             $joinTablesAdapter->addLeftTableAndGetAliasName($campaignItemTableName, 'id', $campaignTableName, 'campaign_id');
             $joinTablesAdapter->addLeftTableAndGetAliasName($emailMessageTableName, 'emailmessage_id', $campaignItemTableName, 'id');
-            //todo: groupings
-            //todo: potential munge problem with email messages, not sure how to dealwith that, i suppose we can ignore it since we are
-            //raw sqling...
             $where   = RedBeanModelDataProvider::makeWhere('Campaign', $searchAttributeData, $joinTablesAdapter);
-            //todo: add month,day,week,qualifier, u have to use m/y together, for example, same with day/m/y week/m/y
-            //todo: well you can do year_month
             $sql   = SQLQueryUtil::makeQuery($campaignTableName, $selectQueryAdapter, $joinTablesAdapter, null, null, $where, null, $groupBy);
             return $sql;
         }
-//todo: ADD BEGIN DATE SINCE NOW THAT MATTERS....
-        protected static function makeCampaignsSearchAttributeData($endDateTime, $campaign)
+
+        protected static function makeCampaignsSearchAttributeData($beginDateTime, $endDateTime, $campaign)
         {
+            assert('is_string($beginDateTime)');
             assert('is_string($endDateTime)');
             assert('$campaign == null || ($campaign instanceof Campaign && $campaign->id > 0)');
             $searchAttributeData = array();
             $searchAttributeData['clauses'] = array(
                 1 => array(
+                    'attributeName' => 'campaignItems',
+                    'relatedModelData' => array(
+                        'attributeName'     => 'emailMessage',
+                        'relatedModelData'  => array(
+                            'attributeName'     => 'sentDateTime',
+                            'operatorType'      => 'greaterThanOrEqualTo',
+                            'value'             => $beginDateTime,
+                        ),
+                    ),
+                ),
+                2 => array(
                     'attributeName' => 'campaignItems',
                     'relatedModelData' => array(
                         'attributeName'     => 'emailMessage',
@@ -176,17 +205,160 @@
             );
             if($campaign instanceof Campaign && $campaign->id > 0)
             {
-                $searchAttributeData['clauses'][2] = array(
+                $searchAttributeData['clauses'][3] = array(
                     'attributeName'        => 'id',
                     'operatorType'         => 'equals',
                     'value'                => $campaign->id);
-                $searchAttributeData['structure'] = '1 and 2';
+                $searchAttributeData['structure'] = '1 and 2 and 3';
             }
             else
             {
-                $searchAttributeData['structure'] = '1';
+                $searchAttributeData['structure'] = '1 and 2';
             }
             return $searchAttributeData;
+        }
+
+        protected static function resolveCampaignTypeSubQuery($type)
+        {
+            assert('is_int($type)');
+            $quote                         = DatabaseCompatibilityUtil::getQuote();
+            $where                         = null;
+            $selectDistinct                = true;
+            $campaignItemTableName         = CampaignItem::getTableName('CampaignItem');
+            $campaignItemActivityTableName = CampaignItemActivity::getTableName('CampaignItemActivity');
+            $emailMessageActivityTableName = EmailMessageActivity::getTableName('EmailMessageActivity');
+            $selectQueryAdapter            = new RedBeanModelSelectQueryAdapter($selectDistinct);
+            $joinTablesAdapter             = new RedBeanModelJoinTablesQueryAdapter('CampaignItemActivity');
+            $selectQueryAdapter->addClauseByQueryString("campaign_id");
+            $joinTablesAdapter->addFromTableAndGetAliasName($emailMessageActivityTableName, 'emailmessageactivity_id',
+                                             $campaignItemActivityTableName);
+            $where                         = "type = " . $type . " and {$quote}{$campaignItemActivityTableName}{$quote}" .
+                                             ".campaignitem_id = {$quote}{$campaignItemTableName}{$quote}.id";
+            $sql                           = SQLQueryUtil::makeQuery($campaignItemActivityTableName, $selectQueryAdapter,
+                                             $joinTablesAdapter, null, null, $where);
+            return $sql;
+        }
+
+        protected static function makeAutorespondersSqlQuery($searchAttributeData, $groupBy)
+        {
+            $quote                      = DatabaseCompatibilityUtil::getQuote();
+            $where                      = null;
+            $selectDistinct             = false;
+            $autoresponderTableName     = Autoresponder::getTableName('Autoresponder');
+            $autoresponderItemTableName = AutoresponderItem::getTableName('AutoresponderItem');
+            $emailMessageTableName      = EmailMessage::getTableName('EmailMessage');
+            $sentDateTimeColumnName     = EmailMessage::getColumnNameByAttribute('sentDateTime');
+            $selectQueryAdapter         = new RedBeanModelSelectQueryAdapter($selectDistinct);
+            $joinTablesAdapter          = new RedBeanModelJoinTablesQueryAdapter('Autoresponder');
+
+            //todo:@story task, add this permission thing as a final thing to look into.
+            //todo: do we need to filter on markting list? because we have perms on the related marketing list? probably? but not really when you are in a
+            //todo: look what we did in reporting, we should be able to add munge on related marketing list when needed
+            //marketing list specifically... it wouldnt matter
+            /**
+            Autoresponder::resolveReadPermissionsOptimizationToSqlQuery(Yii::app()->user->userModel,
+                $joinTablesAdapter,
+                $where,
+                $selectDistinct);
+             * **/
+            //todo: fix use of tables, columns, also constants on type
+            $uniqueOpensSelectPart = static::resolveAutoresponderTypeSubQuery(EmailMessageActivity::TYPE_OPEN);
+            $uniqueClicksSelectPart = static::resolveAutoresponderTypeSubQuery(EmailMessageActivity::TYPE_CLICK);
+            static::addEmailMessageDayDateClause            ($selectQueryAdapter, $sentDateTimeColumnName);
+            static::addEmailMessageFirstDayOfWeekDateClause ($selectQueryAdapter, $sentDateTimeColumnName);
+            static::addEmailMessageFirstDayOfMonthDateClause($selectQueryAdapter, $sentDateTimeColumnName);
+            $selectQueryAdapter->addNonSpecificCountClause();
+            $selectQueryAdapter->addClauseByQueryString("count((" . $uniqueOpensSelectPart  . "))",  static::UNIQUE_OPENS_COUNT);
+            $selectQueryAdapter->addClauseByQueryString("count((" . $uniqueClicksSelectPart . "))", static::UNIQUE_CLICKS_COUNT);
+            $joinTablesAdapter->addLeftTableAndGetAliasName($autoresponderItemTableName, 'id', $autoresponderTableName, 'autoresponder_id');
+            $joinTablesAdapter->addLeftTableAndGetAliasName($emailMessageTableName, 'emailmessage_id', $autoresponderItemTableName, 'id');
+            $where   = RedBeanModelDataProvider::makeWhere('Autoresponder', $searchAttributeData, $joinTablesAdapter);
+            $sql   = SQLQueryUtil::makeQuery($autoresponderTableName, $selectQueryAdapter, $joinTablesAdapter, null, null, $where, null, $groupBy);
+            return $sql;
+        }
+
+        protected static function makeAutorespondersSearchAttributeData($beginDateTime, $endDateTime, $marketingList)
+        {
+            assert('is_string($beginDateTime)');
+            assert('is_string($endDateTime)');
+            assert('$marketingList == null || ($marketingList instanceof MarketingList && $marketingList->id > 0)');
+            $searchAttributeData = array();
+            $searchAttributeData['clauses'] = array(
+                1 => array(
+                    'attributeName' => 'autoresponderItems',
+                    'relatedModelData' => array(
+                        'attributeName'     => 'emailMessage',
+                        'relatedModelData'  => array(
+                            'attributeName'     => 'sentDateTime',
+                            'operatorType'      => 'greaterThanOrEqualTo',
+                            'value'             => $beginDateTime,
+                        ),
+                    ),
+                ),
+                2 => array(
+                    'attributeName' => 'autoresponderItems',
+                    'relatedModelData' => array(
+                        'attributeName'     => 'emailMessage',
+                        'relatedModelData'  => array(
+                            'attributeName'     => 'sentDateTime',
+                            'operatorType'      => 'lessThanOrEqualTo',
+                            'value'             => $endDateTime,
+                        ),
+                    ),
+                ),
+            );
+            if($marketingList instanceof MarketingList && $marketingList->id > 0)
+            {
+                $searchAttributeData['clauses'][3] = array(
+                    'attributeName'        => 'marketingList',
+                    'operatorType'         => 'equals',
+                    'value'                => $marketingList->id);
+                $searchAttributeData['structure'] = '1 and 2 and 3';
+            }
+            else
+            {
+                $searchAttributeData['structure'] = '1 and 2';
+            }
+            return $searchAttributeData;
+        }
+
+        protected static function resolveAutoresponderTypeSubQuery($type)
+        {
+            //todo: clean up usage of columns etc.
+            assert('is_int($type)');
+            $quote                         = DatabaseCompatibilityUtil::getQuote();
+            $where                         = null;
+            $selectDistinct                = true;
+            $autoresponderItemActivityTableName     = AutoresponderItemActivity::getTableName('AutoresponderItemActivity');
+            $emailMessageActivityTableName = EmailMessageActivity::getTableName('EmailMessageActivity');
+            $selectQueryAdapter            = new RedBeanModelSelectQueryAdapter($selectDistinct);
+            $joinTablesAdapter             = new RedBeanModelJoinTablesQueryAdapter('AutoresponderItemActivity');
+            $selectQueryAdapter->addClauseByQueryString("autoresponder_id");
+            $joinTablesAdapter->addFromTableAndGetAliasName($emailMessageActivityTableName, 'emailmessageactivity_id', $autoresponderItemActivityTableName);
+            $where                         = "type = " . $type . " and AutoresponderItemActivity.autoresponderitem_id = autoresponderitem.id";
+            $sql                           = SQLQueryUtil::makeQuery($autoresponderItemActivityTableName, $selectQueryAdapter,
+                $joinTablesAdapter, null, null, $where);
+            return $sql;
+        }
+
+        protected function resolveIndexGroupByToUse()
+        {
+            if($this->groupBy == MarketingOverallMetricsForm::GROUPING_TYPE_DAY)
+            {
+                return self::DAY_DATE;
+            }
+            elseif($this->groupBy == MarketingOverallMetricsForm::GROUPING_TYPE_WEEK)
+            {
+                return self::FIRST_DAY_OF_WEEK_DATE;
+            }
+            elseif($this->groupBy == MarketingOverallMetricsForm::GROUPING_TYPE_MONTH)
+            {
+                return self::FIRST_DAY_OF_MONTH_DATE;
+            }
+            else
+            {
+                throw new NotSupportedException();
+            }
         }
 
         protected function resolveChartDataStructure()
@@ -198,10 +370,10 @@
             //echo "</pre>";
             foreach($groupedDateTimeData as $groupData)
             {
-                $chartData[$groupData['beginDate']] = array('uniqueClickThroughRate' => 0,
-                                                            'uniqueOpenRate'         => 0,
-                                                            'displayLabel'           => $groupData['displayLabel'],
-                                                            'dateBalloonLabel'       =>
+                $chartData[$groupData['beginDate']] = array(self::UNIQUE_CLICK_THROUGH_RATE => 0,
+                                                            self::UNIQUE_OPEN_RATE          => 0,
+                                                            'displayLabel'                  => $groupData['displayLabel'],
+                                                            'dateBalloonLabel'              =>
                                                             $this->resolveDateBalloonLabel($groupData['displayLabel']));
             }
             return $chartData;

@@ -36,10 +36,6 @@
 
     class MarketingListGrowthChartDataProvider extends MarketingChartDataProvider
     {
-        const NEW_SUBSCRIBERS_COUNT      = 'newSubscribersCount';
-
-        const EXISTING_SUBSCRIBERS_COUNT = 'existingSubscribersCount';
-
         public function getXAxisName()
         {
             return null;

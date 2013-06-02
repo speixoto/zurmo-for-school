@@ -39,6 +39,26 @@
      */
     abstract class MarketingChartDataProvider extends ChartDataProvider
     {
+        const NEW_SUBSCRIBERS_COUNT      = 'newSubscribersCount';
+
+        const EXISTING_SUBSCRIBERS_COUNT = 'existingSubscribersCount';
+
+        const UNIQUE_OPEN_RATE           = 'uniqueOpenRate';
+
+        const UNIQUE_CLICK_THROUGH_RATE  = 'uniqueClickThroughRate';
+
+        const UNIQUE_OPENS_COUNT         = 'uniqueOpensCount';
+
+        const UNIQUE_CLICKS_COUNT        = 'uniqueClicksCount';
+
+        const DAY_DATE                   = 'dayDate';
+
+        const FIRST_DAY_OF_WEEK_DATE     = 'firstDayOfWeekDate';
+
+        const FIRST_DAY_OF_MONTH_DATE    = 'firstDayOfMonthDate';
+
+        const COUNT                      = 'count(*)';
+
         protected $beginDate;
 
         protected $endDate;
@@ -181,6 +201,35 @@
             {
                 return $displayLabel;
             }
+        }
+
+        protected static function addEmailMessageDayDateClause(RedBeanModelSelectQueryAdapter $selectQueryAdapter, $columnName)
+        {
+            assert('is_string($columnName)');
+            $quote       = DatabaseCompatibilityUtil::getQuote();
+            $emailMessageTableName = EmailMessage::getTableName('EmailMessage');
+            $queryString = "DATE_FORMAT({$quote}{$emailMessageTableName}{$quote}.{$quote}{$columnName}{$quote}, '%Y-%m-%d')";
+            $selectQueryAdapter->addClauseByQueryString($queryString, static::DAY_DATE);
+        }
+
+        protected static function addEmailMessageFirstDayOfWeekDateClause(RedBeanModelSelectQueryAdapter $selectQueryAdapter, $columnName)
+        {
+            assert('is_string($columnName)');
+            $quote                 = DatabaseCompatibilityUtil::getQuote();
+            $emailMessageTableName = EmailMessage::getTableName('EmailMessage');
+            $queryString = "DATE_FORMAT(DATE_ADD({$columnName}, INTERVAL(2-DAYOFWEEK(" .
+                           "{$quote}{$emailMessageTableName}{$quote}.{$quote}{$columnName}{$quote})) day), '%Y-%m-%d')";
+            $selectQueryAdapter->addClauseByQueryString($queryString, static::FIRST_DAY_OF_WEEK_DATE);
+        }
+
+        protected static function addEmailMessageFirstDayOfMonthDateClause(RedBeanModelSelectQueryAdapter $selectQueryAdapter, $columnName)
+        {
+            assert('is_string($columnName)');
+            $quote                 = DatabaseCompatibilityUtil::getQuote();
+            $emailMessageTableName = EmailMessage::getTableName('EmailMessage');
+            $queryString = "DATE_FORMAT(DATE_ADD({$columnName}, INTERVAL(1-DAYOFMONTH(" .
+                           "{$quote}{$emailMessageTableName}{$quote}.{$quote}{$columnName}{$quote})) day), '%Y-%m-%d')";
+            $selectQueryAdapter->addClauseByQueryString($queryString, static::FIRST_DAY_OF_MONTH_DATE);
         }
     }
 ?>
