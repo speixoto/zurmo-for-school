@@ -59,15 +59,15 @@
 
         public static function getTranslatedLabelByValue(CustomFieldData $customFieldData, $value, $language)
         {
+            assert('is_string($value)');
+            assert('is_string($language)');
             if ($customFieldData->serializedLabels != null)
             {
-                $customLabels        = unserialize($customFieldData->serializedLabels);
-                //todo: need to do data order/value pairing like in getDataLabelsByLanguage so we would need to cache
-                //getting the data labels statically below, i think that would be easiest.
-                //if (isset($customLabels[$language[$value]))
-                //{
-                //    return $customLabels[$value];
-                //}
+                $data   = self::getDataIndexedByDataAndTranslatedLabelsByLanguage($customFieldData, $language);
+                if (isset($data[$value]))
+                {
+                    return $data[$value];
+                }
             }
             return $value;
         }
@@ -97,7 +97,7 @@
                 }
                 else
                 {
-                    $labels[] = Zurmo::t('Core', $dataName, array(), null, $language);
+                    $labels[] = Zurmo::t('CustomField', $dataName, array(), null, $language);
                 }
             }
             return $labels;

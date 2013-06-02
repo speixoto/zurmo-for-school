@@ -99,7 +99,8 @@ class phaEditColumn extends phaAbsActiveColumn {
                     switch (event.keyCode) {
                        case 27:
                        case 9:
-                          phaACHideEditField(phaACOpenEditItem, gridUID);
+                          //phaACHideEditField(phaACOpenEditItem, gridUID);
+                          phaACEditFieldSend(itemValue, gridUID);
                           break;
                        case 13:
                           phaACEditFieldSend(itemValue, gridUID);
@@ -108,7 +109,8 @@ class phaEditColumn extends phaAbsActiveColumn {
                     }
                 })
                 .blur(function(){
-                    phaACHideEditField(phaACOpenEditItem, gridUID);
+                    //phaACHideEditField(phaACOpenEditItem, gridUID);
+                    phaACEditFieldSend(itemValue, gridUID);
                 });
 
 
@@ -124,20 +126,25 @@ class phaEditColumn extends phaAbsActiveColumn {
             phaACOpenEditGrid = "";
         }
         function phaACEditFieldSend( itemValue, gridUID ) {
-	    var id = $(itemValue).parents(".cgrid-view").attr("id");
-	    $.ajax({
-                type: "GET",
-                dataType: "json",
-		url: phaACActionUrls[gridUID],
-		cache: false,
-                data: {
-                    item: phaACOpenEditItem,
-                    value: $("#field-"+phaACOpenEditGrid+"-"+phaACOpenEditItem+" input").val()
-                },
-                success: function(data){
-                  $("#"+id).yiiGridView.update( id );
-                }
-            });
+            var passedValue = $("#field-"+phaACOpenEditGrid+"-"+phaACOpenEditItem+" input").val();
+            $("#viewValue-" + gridUID + "-"+phaACOpenEditItem).html(passedValue);
+            $("#field-" + gridUID + "-" + phaACOpenEditItem).hide();
+            $("#field-" + gridUID + "-" + phaACOpenEditItem+" input").unbind("keydown");
+            $("#viewValue-" + gridUID + "-" + phaACOpenEditItem).show();
+            var id = $(itemValue).parents(".cgrid-view").attr("id");
+            $.ajax({
+                    type: "GET",
+                    dataType: "json",
+                    url: phaACActionUrls[gridUID],
+                    cache: false,
+                    data: {
+                        item: phaACOpenEditItem,
+                        value: passedValue
+                    },
+                    success: function(data){
+                      $("#"+id).yiiGridView.update( id );
+                    }
+                });
         }
         ';
 

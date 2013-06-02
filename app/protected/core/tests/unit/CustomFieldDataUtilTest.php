@@ -114,5 +114,33 @@
             $compareData      = array('Item 1' => 'Item 1 fr', 'Item 2' => 'Item 2', 'Item 3' => 'Item 3 fr');
             $this->assertEquals($compareData, $dataAndLabels);
         }
+
+        public function testGetTranslatedLabelByValue()
+        {
+            $this->assertEquals('en', Yii::app()->language);
+            $values = array(
+                'Item 1',
+                'Item 2',
+                'Item 3',
+            );
+            $labels = array(
+                'fr' => array('Item 1 fr',
+                              '',
+                              'Item 3 fr'),
+            );
+            $customFieldData = CustomFieldData::getByName('Items2');
+            $customFieldData->serializedData   = serialize($values);
+            $customFieldData->serializedLabels = serialize($labels);
+            $this->assertTrue($customFieldData->save());
+            $id = $customFieldData->id;
+            $customFieldData->forget();
+            unset($customFieldData);
+
+            $customFieldData = CustomFieldData::getById($id);
+            $value           = CustomFieldDataUtil::getTranslatedLabelByValue($customFieldData, 'Item 1', 'en');
+            $this->assertEquals('Item 1', $value);
+            $value           = CustomFieldDataUtil::getTranslatedLabelByValue($customFieldData, 'Item 1', 'fr');
+            $this->assertEquals('Item 1 fr', $value);
+        }
     }
 ?>

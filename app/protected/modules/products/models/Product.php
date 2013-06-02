@@ -147,5 +147,16 @@
         {
             return 'ProductGamification';
         }
+
+        /**
+         * Sets the scenario for currencyvalue elements to positiveValue for the validation of the price
+         * using the rule in CurrencyValue
+         * @return bool
+         */
+        protected function beforeValidate()
+        {
+            $this->sellPrice->setScenario('positiveValue');
+            return parent::beforeValidate();
+        }
     }
 ?>

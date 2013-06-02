@@ -70,17 +70,17 @@
 
                 if ($model->priceFrequency == ProductTemplate::PRICE_FREQUENCY_ONE_TIME)
                 {
-                    $oneTimeTotal += $model->sellPrice->value * $model->quantity;
+                    $oneTimeTotal += $this->getAdjustedTotalByCurrency($model);
                 }
 
                 if ($model->priceFrequency == ProductTemplate::PRICE_FREQUENCY_MONTHLY)
                 {
-                    $monthlyTotal += $model->sellPrice->value * $model->quantity;
+                    $monthlyTotal += $this->getAdjustedTotalByCurrency($model);
                 }
 
                 if ($model->priceFrequency == ProductTemplate::PRICE_FREQUENCY_ANNUALLY)
                 {
-                    $annualTotal += $model->sellPrice->value * $model->quantity;
+                    $annualTotal  += $this->getAdjustedTotalByCurrency($model);
                 }
             }
 
@@ -95,6 +95,27 @@
                 $oneTimeTotal . Zurmo::t("Core", " One Time") .
                 ", " . $monthlyTotal . Zurmo::t("Core", " Monthly") .
                 ", " . $annualTotal . Zurmo::t("Core", " Annually");
+        }
+
+        /**
+         * Gets the adjusted value of the price by comparing the currency to the
+         * base currency
+         * @param RedBeanModel $model
+         * @return float
+         */
+        protected function getAdjustedTotalByCurrency($model)
+        {
+            $price = 0;
+            $currentUserCurrency    = Yii::app()->currencyHelper->getActiveCurrencyForCurrentUser();
+            if($model->sellPrice->rateToBase == $currentUserCurrency->rateToBase )
+            {
+                $price = $model->sellPrice->value * $model->quantity;
+            }
+            else
+            {
+                $price = ($model->sellPrice->value*($model->sellPrice->rateToBase)) * $model->quantity;
+            }
+            return $price;
         }
     }
 ?>

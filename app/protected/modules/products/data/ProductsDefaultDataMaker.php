@@ -32,9 +32,9 @@
         public function make()
         {
             $values = array(
-                'Open',
-                'Lost',
-                'Won',
+                Zurmo::t('CustomField', 'Open'),
+                Zurmo::t('CustomField', 'Lost'),
+                Zurmo::t('CustomField', 'Won'),
             );
             static::makeCustomFieldDataByValuesAndDefault('ProductStages', $values);
         }

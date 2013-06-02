@@ -41,7 +41,12 @@
     {
         public function make()
         {
-            $values = array('Mr.', 'Mrs.', 'Ms.', 'Dr.');
+            $values = array(
+                Zurmo::t('CustomField', 'Mr.'),
+                Zurmo::t('CustomField', 'Mrs.'),
+                Zurmo::t('CustomField', 'Ms.'),
+                Zurmo::t('CustomField', 'Dr.')
+            );
             static::makeCustomFieldDataByValuesAndDefault('Titles', $values);
             Currency::getAll(); //build base currency.
         }

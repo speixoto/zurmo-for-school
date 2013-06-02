@@ -421,11 +421,12 @@
          */
         protected function getPortletDetailsUrl()
         {
+            $redirectUrl = $this->params['redirectUrl'];
             $params = array_merge($_GET, array('portletId'       => $this->params['portletId'],
                                                'uniqueLayoutId'  => $this->uniqueLayoutId,
-                                               'redirectUrl'     => null,
+                                               'redirectUrl'    => $redirectUrl,
                                                'portletParams'   => array('relationModuleId' => $this->relationModuleId,
-                                               'relationModelId' => $this->params['relationModel']->id)
+                                                                         'relationModelId'=> $this->params['relationModel']->id)
                                                )
                                   );
             return Yii::app()->createUrl('/' . $this->relationModuleId . '/defaultPortlet/modalRefresh', $params);
