@@ -54,7 +54,7 @@
             assert('$demoDataHelper->isSetRange("User")');
 
             $marketingLists = array();
-            for ($this->index = 0; $this->index < 10; $this->index++)
+            for ($this->index = 0; $this->index < 5; $this->index++)
             {
                 $marketingList              = new MarketingList();
                 $marketingList->owner       = $demoDataHelper->getRandomByModelName('User');

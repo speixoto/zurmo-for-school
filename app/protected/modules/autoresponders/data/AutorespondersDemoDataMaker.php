@@ -56,7 +56,7 @@
             $autoresponders = array();
             foreach(MarketingList::getAll() as $marketingList)
             {
-                for ($this->index = 0; $this->index < 2; $this->index++)
+                for ($this->index = 0; $this->index < 4; $this->index++)
                 {
                     $autoresponder                  = new Autoresponder();
                     $autoresponder->marketingList   = $marketingList;
