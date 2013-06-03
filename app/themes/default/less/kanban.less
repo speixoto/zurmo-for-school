@@ -36,6 +36,8 @@
 	margin: 0;
 	padding: 0;
 	background-size: 100% 100%;
+	//height: 600px;
+	vertical-align: top;
 	#kanban-board,
 	.kanban-column,
 	.kanban-column > div{
@@ -75,6 +77,9 @@
 #kanban-board{
 	++.clearfix;
 	++.border-box;
+	display: table;
+	vertical-align: top;
+	height: 100%;
 	.drop-zone-container{
 		padding: 37px 2px 2px 2px;
 		++.border-box;
@@ -95,12 +100,11 @@
 
 .kanban-column{
 	++.border-box;
-	float: left;
-	/*position: absolute;
-	top: 0;
-	bottom: 0;
-	display: block;*/
+	white-space: normal;
+	display: table-cell;//inline-block;
+	vertical-align: top;
 	border-left: 1px solid #dfdfdf;
+	position: relative;
 	&:first-child{
 		border-left: none;
 	}
@@ -110,6 +114,11 @@
 		position: relative;
 		z-index: 5;
 		min-height: 600px;
+	}
+	.droppable-dynamic-rows-container{
+		//position: absolute;
+		width: 100%;
+		height: 100%;
 	}
 }
 

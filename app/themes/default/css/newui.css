@@ -18334,6 +18334,7 @@ a + .autoresponder-stats {
   margin: 0;
   padding: 0;
   background-size: 100% 100%;
+  vertical-align: top;
 }
 #kanban-holder #kanban-board,
 #kanban-holder .kanban-column,
@@ -18361,6 +18362,11 @@ a + .autoresponder-stats {
 .kanban-background-motor .background-texture-1 {
   background: #ffffff url(../images/kanban/swatch-asphalt.jpg) left top no-repeat;
 }
+#kanban-board {
+  display: table;
+  vertical-align: top;
+  height: 100%;
+}
 #kanban-board .drop-zone-container {
   padding: 37px 2px 2px 2px;
   position: absolute;
@@ -18373,13 +18379,11 @@ a + .autoresponder-stats {
   position: relative;
 }
 .kanban-column {
-  float: left;
-  /*position: absolute;
-	top: 0;
-	bottom: 0;
-	display: block;*/
-
+  white-space: normal;
+  display: table-cell;
+  vertical-align: top;
   border-left: 1px solid #dfdfdf;
+  position: relative;
 }
 .kanban-column:first-child {
   border-left: none;
@@ -18390,6 +18394,10 @@ a + .autoresponder-stats {
   position: relative;
   z-index: 5;
   min-height: 600px;
+}
+.kanban-column .droppable-dynamic-rows-container {
+  width: 100%;
+  height: 100%;
 }
 .column-header {
   font-weight: bold !important;
