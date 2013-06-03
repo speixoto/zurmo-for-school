@@ -53,15 +53,19 @@
             assert('$demoDataHelper->isSetRange("Campaign")');
 
             $items = array();
-            for ($i = 0; $i < $this->resolveQuantityToLoad(); $i++)
+
+            foreach(Campaign::getAll() as $campaign)
             {
-                $item                   = new CampaignItem();
-                $item->campaign         = $demoDataHelper->getRandomByModelName('Campaign');
-                $item->contact          = $demoDataHelper->getRandomByModelName('Contact');
-                $this->populateModel($item);
-                $saved                  = $item->unrestrictedSave();
-                assert('$saved');
-                $items[]                = $item->id;
+                foreach($campaign->marketingList->marketingListMembers as $marketingListMember)
+                {
+                    $item                   = new CampaignItem();
+                    $item->campaign         = $campaign;
+                    $item->contact          = $marketingListMember->contact;
+                    $this->populateModel($item);
+                    $saved                  = $item->unrestrictedSave();
+                    assert('$saved');
+                    $items[]                = $item->id;
+                }
             }
             $demoDataHelper->setRangeByModelName('CampaignItem', $items[0], $items[count($items)-1]);
         }
