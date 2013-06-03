@@ -48,6 +48,7 @@
             'Loyalty Member - Enroll Now',
             'Loyalty Members - Free Lunch',
             'Loyalty Members - Bring a friend',
+            'Loyalty Members - Trip to Rome',
         ),
         'subject'                       => array(
             'Special Offer: 10% Discount for new clients',

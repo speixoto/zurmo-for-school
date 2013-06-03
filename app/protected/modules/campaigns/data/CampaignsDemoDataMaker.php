@@ -63,7 +63,10 @@
                 $saved                          = $campaign->save();
                 if(!$saved)
                 {
-                    throw FailedToSaveModelException();
+                    echo "<pre>";
+                    print_r($campaign->getErrors());
+                    echo "</pre>";
+                    throw new FailedToSaveModelException();
                 }
                 $campaign = Campaign::getById($campaign->id);
                 ReadPermissionsOptimizationUtil::
