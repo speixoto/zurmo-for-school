@@ -96,20 +96,21 @@
             $data        = $this->dataProvider->getData();
             $n           = count($data);
             $columnsData = $this->resolveDataIntoKanbanColumns();
-            $width       = ' style="width:' . 100 / count($columnsData) . '%;"';
-            echo "<tbody>\n";
-            echo "<tr><td id=\"kanban-holder\" class='". $this->selectedTheme . "'>\n";
+            $width       = 100 / count($columnsData);
+            echo "<tbody>";
+            echo "<tr><td id=\"kanban-holder\" class='". $this->selectedTheme . "'>";
             if ($n > static::$maxCount)
             {
                 $this->renderOverMaxCountText();
             }
             elseif ($n > 0)
             {
-                echo "<div id=\"kanban-board\">\n";
+                $counter = 0;
+                echo "<div id=\"kanban-board\" class=\"clearfix\">";
                 foreach ($columnsData as $attributeValue => $attributeValueAndData)
                 {
-                    echo "<div class=\"kanban-column\" $width>\n";
-                    echo "<div data-value='" . $attributeValue . "' class='droppable-dynamic-rows-container'>\n";
+                    echo '<div class="kanban-column" style="width:'.$width.'%;">';
+                    echo "<div data-value='" . $attributeValue . "' class='droppable-dynamic-rows-container'>";
                     echo ZurmoHtml::tag('div', array('class' => 'column-header'), $this->resolveGroupByColumnHeaderLabel($attributeValue));
                     $listItems = '';
                     foreach ($attributeValueAndData as $row)
@@ -122,17 +123,18 @@
                     echo ZurmoHtml::tag('ul', array(), $listItems);
                     $dropZone =  ZurmoHtml::tag('div', array('class' => 'drop-zone'), '');
                     echo ZurmoHtml::tag('div', array('class' => 'drop-zone-container'), $dropZone);
-                    echo "</div>\n";
-                    echo "</div>\n";
+                    echo "</div>";
+                    echo "</div>";
+                    $counter++;
                 }
-                echo "</div>\n";
+                echo "</div>";
             }
             else
             {
                 $this->renderEmptyText();
             }
-            echo "</td></tr>\n";
-            echo "</tbody>\n";
+            echo "</td></tr>";
+            echo "</tbody>";
         }
 
         /**
