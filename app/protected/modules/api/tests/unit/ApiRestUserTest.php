@@ -255,6 +255,8 @@
             // We need to unset some empty values from response and dates.
             unset($response['data']['modifiedDateTime']);
             unset($compareData['modifiedDateTime']);
+            unset($response['data']['lastLoginDateTime']);
+            unset($compareData['lastLoginDateTime']);
             $compareData['firstName'] = "John";
             ksort($compareData);
             ksort($response['data']);
