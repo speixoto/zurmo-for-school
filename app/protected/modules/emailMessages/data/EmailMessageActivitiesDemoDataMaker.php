@@ -77,7 +77,7 @@
             $emailMessage->recipients->add($recipient);
             $emailMessage->folder       = EmailFolder::getByBoxAndType($box, EmailFolder::TYPE_ARCHIVED);
             $emailMessage->sentDateTime = DateTimeUtil::convertTimestampToDbFormatDateTime(time() - $interval);
-            $emailMessage->createdDateTime =
+            $emailMessage->createdDateTime = $emailMessage->sentDateTime;
             $saved = $emailMessage->save();
             if (!$saved)
             {
