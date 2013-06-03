@@ -51,6 +51,9 @@
         {
             $content  = static::resolveSubjectWithRedirectURl($autoresponder->subject, $autoresponder->id, $redirectUrl);
             $content .= static::renderExtraInfoContent($autoresponder);
+
+            $content = ZurmoHtml::tag('div', array('class' => 'autoresponder-extra-info'), $content);
+
             $content .= static::renderMetricsContent($autoresponder);
             return $content;
         }

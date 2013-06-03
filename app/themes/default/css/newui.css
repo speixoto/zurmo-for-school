@@ -8212,6 +8212,14 @@ div.wide.form label.hasCheckBox {
   font-family: "ZurmoGamificationSymblyReguRg";
   line-height: 52%;
 }
+.zero-components-view .Campaign .large-icon:after,
+.splash-view .Campaign .large-icon:after {
+  content: '\002C';
+  font-weight: normal;
+  font-size: 300px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  line-height: 52%;
+}
 .zero-components-view .Product .large-icon:after,
 .splash-view .Product .large-icon:after {
   content: '\003E';
@@ -18178,13 +18186,21 @@ a.user-link {
   margin: 15px 0 0 0;
 }
 .edit-autoresponder-link {
-  display: block;
-  margin-bottom: 10px;
   font-size: 14px;
   font-weight: bold;
+  font-style: normal;
+}
+.edit-autoresponder-link:after {
+  content: " — ";
+  font-weight: 400;
+  color: #545454;
+}
+.autoresponder-extra-info {
+  margin-bottom: 10px;
+  font-style: italic;
 }
 .autoresponder-stats {
-  width: 23%;
+  width: 19%;
   float: left;
   margin-left: 2%;
   text-align: left;
