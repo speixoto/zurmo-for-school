@@ -43,7 +43,7 @@
 
         public static function getDependencies()
         {
-            return array('contacts');
+            return array('contacts', 'marketingLists');
         }
 
         public function makeAll(& $demoDataHelper)
