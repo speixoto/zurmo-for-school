@@ -7496,6 +7496,8 @@ tr.even {
 .empty {
   display: block;
   font-size: 11px;
+  font-weight: bold;
+  background: rgba(255, 255, 255, 0.5);
 }
 td.empty {
   display: table-cell !important;
@@ -9463,6 +9465,7 @@ div.wide.form label.hasCheckBox {
   margin-left: 5px;
 }
 .toolbar-mbmenu .options-menu ul {
+  white-space: nowrap;
   margin-top: 0;
   padding-top: 3px;
   padding-bottom: 3px;
@@ -11165,6 +11168,15 @@ div.hasHalfs > div input {
   display: inline-block;
   padding-bottom: 2px;
   margin-top: 3px;
+}
+.editable-cell:after {
+  content: "!";
+  font-weight: normal;
+  font-size: 20px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  position: relative;
+  right: -10px;
+  top: 1px;
 }
 .juiportlet-columns .juiportlet-column {
   float: left;
@@ -18334,6 +18346,7 @@ a + .autoresponder-stats {
   margin: 0;
   padding: 0;
   background-size: 100% 100%;
+  vertical-align: top;
 }
 #kanban-holder #kanban-board,
 #kanban-holder .kanban-column,
@@ -18342,6 +18355,14 @@ a + .autoresponder-stats {
 }
 #kanban-holder .empty {
   padding: 10px;
+}
+#kanban-holder .general-issue-notice {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.6);
+  padding: 15px 0;
+}
+#kanban-holder .general-issue-notice p {
+  font-weight: bold;
 }
 #kanban-holder.kanban-background-football {
   background: #ffffff url(../images/kanban/football.jpg) left bottom no-repeat;
@@ -18352,6 +18373,9 @@ a + .autoresponder-stats {
 #kanban-holder.kanban-background-motor {
   background: #ffffff url(../images/kanban/asphalt.jpg) center bottom no-repeat;
 }
+#kanban-holder.kanban-background-yoga {
+  background: #ffffff url(../images/kanban/yoga.jpg) right top no-repeat;
+}
 .kanban-background-football .background-texture-1 {
   background: #ffffff url(../images/kanban/swatch-football.jpg) left top no-repeat;
 }
@@ -18360,6 +18384,15 @@ a + .autoresponder-stats {
 }
 .kanban-background-motor .background-texture-1 {
   background: #ffffff url(../images/kanban/swatch-asphalt.jpg) left top no-repeat;
+}
+.kanban-background-yoga .background-texture-1 {
+  background: #ffffff url(../images/kanban/swatch-yoga.jpg) left top no-repeat;
+}
+#kanban-board {
+  display: table;
+  vertical-align: top;
+  height: 100%;
+  width: 100%;
 }
 #kanban-board .drop-zone-container {
   padding: 37px 2px 2px 2px;
@@ -18373,13 +18406,11 @@ a + .autoresponder-stats {
   position: relative;
 }
 .kanban-column {
-  float: left;
-  /*position: absolute;
-	top: 0;
-	bottom: 0;
-	display: block;*/
-
+  white-space: normal;
+  display: table-cell;
+  vertical-align: top;
   border-left: 1px solid #dfdfdf;
+  position: relative;
 }
 .kanban-column:first-child {
   border-left: none;
@@ -18390,6 +18421,10 @@ a + .autoresponder-stats {
   position: relative;
   z-index: 5;
   min-height: 600px;
+}
+.kanban-column .droppable-dynamic-rows-container {
+  width: 100%;
+  height: 100%;
 }
 .column-header {
   font-weight: bold !important;
