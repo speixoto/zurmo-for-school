@@ -34,7 +34,7 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class MarketingListsPublicController extends ZurmoModuleController
+    class MarketingListsExternalController extends ZurmoModuleController
     {
         const TOGGLE_UNSUBSCRIBED_COOKIE_NAME = 'toggleUnsubscribed_Message';
 
@@ -69,12 +69,14 @@
         {
             $contact                = null;
             $personId               = null;
+            $marketingListId        = null;
             extract($this->resolveHashForMarketingListIdAndPersonIdandContact($hash));
             $marketingLists         = MarketingList::getByUnsubscribedAndAnyoneCanSubscribe($contact->id);
             $listView               = new MarketingListsManageSubscriptionsListView($this->getId(),
                                                                                         $this->getModule()->getId(),
                                                                                         $marketingLists,
-                                                                                        $personId);
+                                                                                        $personId,
+                                                                                        $marketingListId);
             if (isset($_GET['ajax']) && $_GET['ajax'] == 'list-view')
             {
                 echo $listView->render();
@@ -105,9 +107,10 @@
                 $this->toggleUnsubscribedForMembers($members, $newUnsubcribedValued);
                 $this->toggleOptOutForContact($contact, $optOut, $newUnsubcribedValued);
                 $message = $this->resolveStatusMessage($newUnsubcribedValued, $optOut);
+                // TODO: @Shoaibi: Critical: Call a function to create activity is operation was unsubscribe and createNewActivity is set., ensure it works with tests
             }
             $this->setToggleUnsubscribedCookie($message);
-            $url = Yii::app()->createUrl('/marketingLists/public/manageSubscriptions', array('hash' => $hash));
+            $url = Yii::app()->createUrl('/marketingLists/external/manageSubscriptions', array('hash' => $hash));
             $this->redirect($url);
         }
 

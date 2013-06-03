@@ -54,6 +54,7 @@
             {
                 return false;
             }
+            // TODO: @Shoaibi: Critical: send modelId, modelType
             static::resolveContentForFooter($content, $personId, $marketingListId, $isHtmlContent);
             return true;
         }
@@ -77,7 +78,7 @@
                         }
                         else
                         {
-                            static::validateQueryStringArrayForMarketingListPublicController($queryStringArray);
+                            static::validateQueryStringArrayForMarketingListsExternalController($queryStringArray);
                         }
                     }
                     return $queryStringArray;
@@ -180,7 +181,8 @@
             $type = static::resolveTrackingTypeByQueryStringArray($queryStringArray);
             list($modelId, $modelType, $personId, $url) = array_values($queryStringArray);
             $modelClassName = static::resolveModelClassNameByModelType($modelType);
-            return $modelClassName::createNewActivity($type, $modelId, $personId, $url);
+            $sourceIP       = Yii::app()->request->userHostAddress;
+            return $modelClassName::createNewActivity($type, $modelId, $personId, $url, $sourceIP);
         }
 
         protected static function resolveContentForEmailOpenTracking(& $content, $isHtmlContent = false)
@@ -336,6 +338,7 @@ PTN;
         protected static function resolveContentForFooter(& $content, $personId, $marketingListId, $isHtmlContent)
         {
             $placeholderFooterContent = static::resolveFooterPlaceholderContentByType($isHtmlContent);
+            // TODO: @Shoaibi: Critical: send modelId and modelType
             static::resolveFooterPlaceholders($content, $placeholderFooterContent, $personId,
                                                                                     $marketingListId, $isHtmlContent);
         }
@@ -343,6 +346,7 @@ PTN;
         protected static function resolveFooterPlaceholders(& $content, $placeholderContent, $personId,
                                                                                     $marketingListId, $isHtmlContent)
         {
+            // TODO: @Shoaibi: Critical: send modelId and modelType
             $hash                           = static::resolveHashForFooter($personId, $marketingListId);
             $unsubscribeUrlPlaceholder      = AutoresponderOrCampaignMailFooterContentUtil::UNSUBSCRIBE_URL_PLACEHOLDER;
             $manageSubscriptionsPlaceholder = AutoresponderOrCampaignMailFooterContentUtil::
@@ -377,6 +381,7 @@ PTN;
 
         public static function resolveHashForFooter($personId, $marketingListId)
         {
+            // TODO: @Shoaibi: Critical: use modelId, modelType and createNewActivity = true
             $queryStringArray       = compact('personId', 'marketingListId');
             return static::resolveHashForQueryStringArray($queryStringArray);
         }
@@ -395,12 +400,12 @@ PTN;
 
         protected static function resolveUnsubscribeBaseUrl()
         {
-            return '/marketingLists/public/unsubscribe';
+            return '/marketingLists/external/unsubscribe';
         }
 
         protected static function resolveManageSubscriptionsBaseUrl()
         {
-            return '/marketingLists/public/manageSubscriptions';
+            return '/marketingLists/external/manageSubscriptions';
         }
 
         protected static function validateAndResolveFullyQualifiedQueryStringArrayForTracking(& $queryStringArray)
@@ -435,8 +440,10 @@ PTN;
             }
         }
 
-        protected static function validateQueryStringArrayForMarketingListPublicController($queryStringArray)
+        protected static function validateQueryStringArrayForMarketingListsExternalController($queryStringArray)
         {
+            // TODO: @Shoaibi: Critical: add checks for missing modelId, modelType, createNewActivity
+            // TODO: @Shoaibi: Critical: Add tests for missing modelId, missing modelType or createNewActivity
             if (empty($queryStringArray['personId']) || empty($queryStringArray['marketingListId']))
             {
                 throw new NotSupportedException;

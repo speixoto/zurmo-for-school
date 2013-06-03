@@ -232,15 +232,6 @@
             return $metadata;
         }
 
-        public function beforeSave()
-        {
-            if (!parent::beforeSave())
-            {
-                return false;
-            }
-            return true;
-        }
-
         protected static function translatedAttributeLabels($language)
         {
             return array_merge(parent::translatedAttributeLabels($language),

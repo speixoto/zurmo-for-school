@@ -99,7 +99,7 @@
                 // Begin Not Coding Standard
                 Yii::app()->clientScript->registerScript($scriptName, '
                     var notificationBarId   = "FlashMessageBar";
-                    var cookieName          = "' . MarketingListsPublicController::TOGGLE_UNSUBSCRIBED_COOKIE_NAME. '";
+                    var cookieName          = "' . MarketingListsExternalController::TOGGLE_UNSUBSCRIBED_COOKIE_NAME. '";
                     var cookieValue         = $.cookie(cookieName);
                     if (cookieValue)
                     {

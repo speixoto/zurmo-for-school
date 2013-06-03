@@ -48,9 +48,11 @@
 
         protected $personId;
 
+        protected $sourceMarketingListId;
+
         const TOGGLE_UNSUBSCRIPTION_LINK_CLASS = 'marketingListsManageSubscriptionListView-toggleUnsubscribed';
 
-        public function __construct($controllerId, $moduleId, $marketingLists, $personId)
+        public function __construct($controllerId, $moduleId, $marketingLists, $personId, $sourceMarketingListId)
         {
             assert('is_string($controllerId)');
             assert('is_string($moduleId)');
@@ -59,6 +61,7 @@
             $this->moduleId               = $moduleId;
             $this->marketingLists         = $marketingLists;
             $this->personId               = $personId;
+            $this->sourceMarketingListId  = $sourceMarketingListId;
         }
 
         public function isUniqueToAPage()
@@ -116,7 +119,7 @@
         {
             $title      = Zurmo::t('MarketingListsModule', 'Unsubscribe All/OptOut');
             $hash       = Yii::app()->request->getQuery('hash');
-            $url        = Yii::app()->createUrl('/marketingLists/public/optOut', array('hash' => $hash));
+            $url        = Yii::app()->createUrl('/marketingLists/external/optOut', array('hash' => $hash));
             $options    = array('class' => 'simple-link ' . static::TOGGLE_UNSUBSCRIPTION_LINK_CLASS);
             $link       = ZurmoHtml::link($title, $url, $options);
             return $link;
@@ -125,6 +128,9 @@
         protected function renderToggleSubscriptionSwitch($marketingListId, $subscribed)
         {
             $template           = ZurmoHtml::tag('div', array('class' => 'switch-state clearfix'), '{input}{label}');
+            // TODO: @Shoaibi: Critical: Make it array;
+            // TODO: @Shoaibi: Critical: createNewActivity is false, unless id equals to source one.
+            // TODO: @Shoaibi: Critical: need itemType and itemId
             $hash               = EmailMessageActivityUtil::resolveHashForFooter($this->personId, $marketingListId);
             $subscribeUrl       = $this->getSubscribeUrlByHash($hash);
             $unsubscribeUrl     = $this->getUnsubscribeUrlByHash($hash);
@@ -159,7 +165,7 @@
             {
                 $action = 'un' . $action;
             }
-            return Yii::app()->createUrl('/marketingLists/public/' . $action, array('hash' => $hash));
+            return Yii::app()->createUrl('/marketingLists/external/' . $action, array('hash' => $hash));
         }
 
         public static function getDropDownArray($subscribeUrl, $unsubscribeUrl)
