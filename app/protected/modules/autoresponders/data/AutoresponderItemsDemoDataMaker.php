@@ -53,14 +53,29 @@
             assert('$demoDataHelper->isSetRange("Autoresponder")');
 
             $items = array();
-
-            foreach(Autoresponder::getAll() as $autoresponder)
+            if($this->loadMagnitude >= 100)
             {
-                foreach($autoresponder->marketingList->marketingListMembers as $marketingListMember)
+                foreach(Autoresponder::getAll() as $autoresponder)
+                {
+                    foreach($autoresponder->marketingList->marketingListMembers as $marketingListMember)
+                    {
+                        $item                   = new AutoresponderItem();
+                        $item->autoresponder    = $autoresponder;
+                        $item->contact          = $marketingListMember->contact;
+                        $this->populateModel($item);
+                        $saved                  = $item->unrestrictedSave();
+                        assert('$saved');
+                        $items[]                = $item->id;
+                    }
+                }
+            }
+            else
+            {
+                for ($i = 0; $i < $this->resolveQuantityToLoad(); $i++)
                 {
                     $item                   = new AutoresponderItem();
-                    $item->autoresponder    = $autoresponder;
-                    $item->contact          = $marketingListMember->contact;
+                    $item->autoresponder    = $demoDataHelper->getRandomByModelName('Autoresponder');
+                    $item->contact          = $demoDataHelper->getRandomByModelName('Contact');
                     $this->populateModel($item);
                     $saved                  = $item->unrestrictedSave();
                     assert('$saved');
