@@ -43,7 +43,7 @@
             foreach ($rows as $row)
             {
                 $chartIndexToCompare = $row[$this->resolveIndexGroupByToUse()];
-                if($chartData[$chartIndexToCompare])
+                if(isset($chartData[$chartIndexToCompare]))
                 {
                     $uniqueOpenRate         = NumberUtil::divisionForZero($row[self::UNIQUE_OPENS], $row[self::COUNT]);
                     $uniqueClickThroughRate = NumberUtil::divisionForZero($row[self::UNIQUE_CLICKS], $row[self::COUNT]);

@@ -43,7 +43,7 @@
             foreach ($rows as $row)
             {
                 $chartIndexToCompare = $row[$this->resolveIndexGroupByToUse()];
-                if($chartData[$chartIndexToCompare])
+                if(isset($chartData[$chartIndexToCompare]))
                 {
                     $chartData[$chartIndexToCompare][self::QUEUED]        = $row[self::QUEUED];
                     $chartData[$chartIndexToCompare][self::SENT]          = $row[self::SENT];

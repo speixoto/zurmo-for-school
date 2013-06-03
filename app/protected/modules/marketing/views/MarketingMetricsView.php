@@ -194,8 +194,7 @@
         {
             return Yii::app()->createUrl('/' . $this->moduleId . '/defaultPortlet/details',
                 array_merge($_GET, array( 'portletId' =>
-                $this->params['portletId'],
-                    'uniqueLayoutId' => $this->uniqueLayoutId)));
+                $this->params['portletId'])));
         }
 
         /**
@@ -204,8 +203,7 @@
         protected function getPortletSaveConfigurationUrl()
         {
             return Yii::app()->createUrl('/' . $this->moduleId . '/defaultPortlet/modalConfigSave',
-                array_merge($_GET, array( 'portletId' => $this->params['portletId'],
-                            'uniqueLayoutId' => $this->uniqueLayoutId)));
+                array_merge($_GET, array( 'portletId' => $this->params['portletId'])));
         }
 
         /**
