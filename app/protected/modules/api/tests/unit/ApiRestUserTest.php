@@ -271,6 +271,7 @@
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
             unset($response['data']['modifiedDateTime']);
+            unset($response['data']['lastLoginDateTime']);
             ksort($response['data']);
             $this->assertEquals($compareData, $response['data']);
         }
