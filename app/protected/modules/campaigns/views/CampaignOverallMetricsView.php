@@ -35,10 +35,13 @@
      ********************************************************************************/
 
     /**
-     * Class for displaying metrics specific to a marketing list
+     * Class for displaying metrics specific to a campaign
      */
     class CampaignOverallMetricsView extends MarketingMetricsView implements PortletViewInterface
     {
+        /**
+         * @var string
+         */
         protected $formModelClassName = 'MarketingOverallMetricsForm';
 
         /**
@@ -49,12 +52,18 @@
             return 'CampaignsModule';
         }
 
+        /**
+         * @return string
+         */
         public function getTitle()
         {
             $title  = Zurmo::t('CampaignsModule', 'Campaign Dashboard');
             return $title;
         }
 
+        /**
+         * @return string
+         */
         public function renderContent()
         {
             $content  = ZurmoHtml::tag('h3', array(), Zurmo::t('CampaignsModule', 'What is going on with this campaign?'));
@@ -64,6 +73,9 @@
             return $content;
         }
 
+        /**
+         * @return string
+         */
         protected function renderMetricsWrapperContent()
         {
             $cssClass = 'half marketing-graph';
@@ -72,6 +84,9 @@
             return ZurmoHtml::tag('div', array('class' => 'graph-container clearfix'), $content);
         }
 
+        /**
+         * @return MarketingOverallMetricsConfigView
+         */
         public function getConfigurationView()
         {
             return new MarketingOverallMetricsConfigView($this->resolveForm(), $this->params);
@@ -90,6 +105,9 @@
             return $chartDataProvider;
         }
 
+        /**
+         * @return string
+         */
         protected function getWrapperDivClass()
         {
             return CampaignDetailsAndRelationsView::METRICS_PORTLET_CLASS;

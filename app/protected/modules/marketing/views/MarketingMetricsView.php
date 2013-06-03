@@ -45,18 +45,34 @@
          */
         protected $params;
 
+        /**
+         * @var string
+         */
         protected $controllerId;
 
+        /**
+         * @var string
+         */
         protected $moduleId;
 
-        protected $model;
-
+        /**
+         * @var string
+         */
         protected $uniqueLayoutId;
 
+        /**
+         * @var array
+         */
         protected $viewData;
 
+        /**
+         * @var CFormModel
+         */
         protected $formModel;
 
+        /**
+         * @var string
+         */
         protected $formModelClassName;
 
         abstract public function getConfigurationView();
@@ -70,11 +86,17 @@
             throw new NotImplementedException();
         }
 
+        /**
+         * @return bool
+         */
         public static function canUserConfigure()
         {
             return true;
         }
 
+        /**
+         * @return bool
+         */
         public static function canUserRemove()
         {
             return false;
@@ -89,11 +111,17 @@
             return 'ModelDetails';
         }
 
+        /**
+         * @return null
+         */
         public function renderPortletHeadContent()
         {
             return null;
         }
 
+        /**
+         * @return array
+         */
         public static function getDefaultMetadata()
         {
             $metadata = array(
@@ -122,6 +150,9 @@
             $this->uniqueLayoutId = $uniqueLayoutId;
         }
 
+        /**
+         * @return string
+         */
         public function renderContent()
         {
             $content  = ZurmoHtml::tag('h3', array(), Zurmo::t('MarketingModule', 'What is going on with Marketing?'));
@@ -130,6 +161,9 @@
             return $content;
         }
 
+        /**
+         * @return string
+         */
         protected function renderConfigureElementsContent()
         {
             $dateRangeContent  = DateTimeUtil::resolveValueForDateLocaleFormattedDisplay($this->resolveForm()->beginDate)
@@ -140,6 +174,9 @@
             return $content;
         }
 
+        /**
+         * @return string
+         */
         protected function renderMetricsWrapperContent()
         {
             $cssClass = 'third marketing-graph';
@@ -149,6 +186,9 @@
             return ZurmoHtml::tag('div', array('class' => 'graph-container clearfix'), $content);
         }
 
+        /**
+         * @return string
+         */
         protected function renderOverallListPerformanceContent()
         {
             $chartDataProvider  = $this->resolveChartDataProvider('MarketingListPerformance');
@@ -158,6 +198,9 @@
             return $content;
         }
 
+        /**
+         * @return string
+         */
         protected function renderEmailsInThisListContent()
         {
             $chartDataProvider  = $this->resolveChartDataProvider('MarketingEmailsInThisList');
@@ -167,6 +210,9 @@
             return $content;
         }
 
+        /**
+         * @return string
+         */
         protected function renderListGrowthContent()
         {
             $chartDataProvider  = $this->resolveChartDataProvider('MarketingListGrowth');
@@ -176,6 +222,10 @@
             return $content;
         }
 
+        /**
+         * @param $type
+         * @return ChartDataProvider
+         */
         protected function resolveChartDataProvider($type)
         {
             assert('is_string($type)');
@@ -216,6 +266,9 @@
                 array( 'id' => $this->params['relationModel']->id));
         }
 
+        /**
+         * @return string
+         */
         protected function renderGroupByConfigurationForm()
         {
             $clipWidget = new ClipWidget();
@@ -233,11 +286,18 @@
             return $content;
         }
 
+        /**
+         * @return string
+         */
         protected function getFormId()
         {
             return 'marketing-metrics-group-by-configuration-form-' . $this->uniqueLayoutId;
         }
 
+        /**
+         * @param $form
+         * @return string
+         */
         protected function renderGroupByConfigurationFormLayout($form)
         {
             assert('$form instanceof ZurmoActiveForm');
@@ -245,6 +305,9 @@
             return ZurmoHtml::tag('div', array('id' => $this->getFormId() . '_groupBy_area', 'class' => 'mini-pillbox'), $groupByElement->render());
         }
 
+        /**
+         * @param $form
+         */
         protected function registerGroupByConfigurationFormLayoutScripts($form)
         {
             assert('$form instanceof ZurmoActiveForm');
@@ -268,6 +331,10 @@
             ");
         }
 
+        /**
+         * @return CFormModel
+         * @throws NotSupportedException
+         */
         protected function resolveForm()
         {
             if ($this->formModel !== null)

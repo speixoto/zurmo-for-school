@@ -35,7 +35,7 @@
      ********************************************************************************/
 
     /**
-     * View to when first coming to the marketing dashboard. Provides an overview of how marketing works
+     * View when a user first comes to the marketing dashboard. Provides an overview of how marketing works
      */
     class MarketingDashboardIntroView extends View
     {
@@ -43,13 +43,22 @@
 
         const LINK_ID      = 'hide-marketing-intro';
 
+        /**
+         * @var string
+         */
         protected $cookieValue = 'hidden';
 
+        /**
+         * @return string
+         */
         public static function resolveCookieId()
         {
             return self::PANEL_ID . '-panel';
         }
 
+        /**
+         * @return bool|string
+         */
         protected function renderContent()
         {
             $this->registerScripts();
@@ -61,25 +70,34 @@
             $content .= '<h1>' . Zurmo::t('MarketingModule', 'How does Email Marketing work in Zurmo?'). '</h1>';
 
             $content .= '<div id="marketing-intro-steps" class="clearfix">';
-            $content .= '<div class="third"><h3>Step<strong>1<span>➜</span></strong></h3>';
-            $content .= '<p><strong>Group</strong>Group together the email recipients into a list, use different lists for different purposes</p>';
+            $content .= '<div class="third"><h3>' . Zurmo::t('Core', 'Step') . '<strong>1<span>➜</span></strong></h3>';
+            $content .= '<p><strong>' . Zurmo::t('MarketingModule', 'Group') . '</strong>';
+            $content .= Zurmo::t('MarketingModule', 'Group together the email recipients into a list, use different lists for different purposes');
+            $content .= '</p>';
             $content .= '</div>';
-            $content .= '<div class="third"><h3>Step<strong>2<span>➜</span></strong></h3>';
-            $content .= '<p><strong>Create</strong>Create the template for the email you are going to send, import and use either full, rich HTML templates or plain text</p>';
+            $content .= '<div class="third"><h3>' . Zurmo::t('Core', 'Step') . '<strong>2<span>➜</span></strong></h3>';
+            $content .= '<p><strong>' . Zurmo::t('MarketingModule', 'Create') . '</strong>';
+            $content .= Zurmo::t('MarketingModule', 'Create the template for the email you are going to send, import and use either full, ' .
+                        'rich HTML templates or plain text');
+            $content .= '</p>';
             $content .= '</div>';
-            $content .= '<div class="third"><h3>Step<strong>3</strong></h3>';
-            $content .= '<p><strong>Launch</strong>Create a campaign where you can schedule your email to go out, pick the List(s) of recipients, add and schedule autoresponders and track your overall campaign performance</p>';
+            $content .= '<div class="third"><h3>' . Zurmo::t('Core', 'Step') . '<strong>3</strong></h3>';
+            $content .= '<p><strong>' . Zurmo::t('MarketingModule', 'Launch') . '</strong>';
+            $content .= Zurmo::t('MarketingModule', 'Create a campaign where you can schedule your email to go out, pick the List(s) of recipients, ' .
+                        'add and schedule autoresponders and track your overall campaign performance');
+            $content .= '</p>';
             $content .= '</div>';
             $content .= '</div>';
-
             $content .= $this->renderHideLinkContent();
             $content .= '</div>';
             return $content;
         }
 
+        /**
+         * @return string
+         */
         protected function renderHideLinkContent()
         {
-            //todo: should use ajax, then when done remove div from UI
             $label    = '<span></span>' . Zurmo::t('MarketingModule', 'Dismiss');
             $content  = '<div class="' . self::LINK_ID . '">'.ZurmoHtml::link($label, '#');
             $content .= '</div>';

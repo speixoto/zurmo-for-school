@@ -36,6 +36,9 @@
 
     class MarketingListGrowthChartDataProvider extends MarketingChartDataProvider
     {
+        /**
+         * @return array
+         */
         public function getChartData()
         {
             $chartData = array();
@@ -61,6 +64,11 @@
             return $chartData;
         }
 
+        /**
+         * @param string $beginDateTime
+         * @param array $searchAttributeData
+         * @return string
+         */
         protected static function makeColumnSqlQuery($beginDateTime, $searchAttributeData)
         {
             assert('is_string($beginDateTime)');
@@ -91,6 +99,11 @@
             return $sql;
         }
 
+        /**
+         * @param string $endDateTime
+         * @param null|MarketingList $marketingList
+         * @return array
+         */
         protected static function makeSearchAttributeData($endDateTime, $marketingList)
         {
             assert('is_string($endDateTime)');

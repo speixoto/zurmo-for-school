@@ -36,6 +36,9 @@
 
     class MarketingListPerformanceChartDataProvider extends MarketingGroupByEmailMessagesChartDataProvider
     {
+        /**
+         * @return array
+         */
         public function getChartData()
         {
             $chartData = $this->resolveChartDataStructure();
@@ -59,7 +62,9 @@
             return $newChartData;
         }
 
-
+        /**
+         * @return array
+         */
         protected function makeCombinedData()
         {
             $combinedRows        = array();
@@ -102,6 +107,11 @@
             return $combinedRows;
         }
 
+        /**
+         * @param array $searchAttributeData
+         * @param string $groupBy
+         * @return string
+         */
         protected static function makeCampaignsSqlQuery($searchAttributeData, $groupBy)
         {
             $quote                     = DatabaseCompatibilityUtil::getQuote();
@@ -133,6 +143,11 @@
             return $sql;
         }
 
+        /**
+         * @param array $searchAttributeData
+         * @param string $groupBy
+         * @return string
+         */
         protected static function makeAutorespondersSqlQuery($searchAttributeData, $groupBy)
         {
             $quote                      = DatabaseCompatibilityUtil::getQuote();
@@ -165,6 +180,9 @@
             return $sql;
         }
 
+        /**
+         * @return array
+         */
         protected static function resolveChartDataBaseGroupElements()
         {
             return array(self::UNIQUE_CLICK_THROUGH_RATE => 0, self::UNIQUE_OPEN_RATE => 0);
