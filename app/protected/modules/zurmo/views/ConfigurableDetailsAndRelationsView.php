@@ -99,14 +99,14 @@
                 $unlockTitle      = Zurmo::t('Core', 'Lock and prevent layout changes to this screen');
                 if ($isViewLocked === false)
                 {
-                    $url = $this->resolveLockPortletUrl($getData['id'], '1');
+                    $url = $this->resolveLockPortletUrl((int)$getData['id'], '1');
                     $link = ZurmoHtml::link('<!--' . Zurmo::t('Core', 'Lock') . '-->', $url, array('class' => 'icon-unlock',
                                                                                                     'title' => $unlockTitle));
                     $content = parent::renderActionElementBar($renderedInForm) . $link;
                 }
                 else
                 {
-                    $url = $this->resolveLockPortletUrl($getData['id'], '0');
+                    $url = $this->resolveLockPortletUrl((int)$getData['id'], '0');
                     $link = ZurmoHtml::link('<!--' . Zurmo::t('Core', 'Unlock') . '-->', $url, array('class' => 'icon-lock',
                                                                                                       'title' => $lockTitle));
                     $content = $link;
@@ -135,7 +135,7 @@
         private function resolveLockPortletUrl($id, $lockPortlets)
         {
             assert('is_string($lockPortlets)');
-            assert('is_string($id)');
+            assert('is_int($id)');
             $url = Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/details',
                                                         array('id' => $id, 'lockPortlets' => $lockPortlets));
             return $url;

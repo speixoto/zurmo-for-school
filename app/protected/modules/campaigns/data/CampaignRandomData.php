@@ -44,6 +44,10 @@
             'Infrastructure redesign completed',
             'Christmas Sale',
             'Zurmo Upgrade Complete',
+            'Loyalty Program - Special Deals',
+            'Loyalty Member - Enroll Now',
+            'Loyalty Members - Free Lunch',
+            'Loyalty Members - Bring a friend',
         ),
         'subject'                       => array(
             'Special Offer: 10% Discount for new clients',

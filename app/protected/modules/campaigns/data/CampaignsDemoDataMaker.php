@@ -54,13 +54,18 @@
             assert('$demoDataHelper->isSetRange("MarketingList")');
 
             $campaigns = array();
-            for ($this->index = 0; $this->index < 5; $this->index++)
+            for ($this->index = 0; $this->index < 10; $this->index++)
             {
                 $campaign                       = new Campaign();
                 $this->populateModel($campaign);
                 $campaign->marketingList        = $demoDataHelper->getRandomByModelName('MarketingList');
+                $campaign->addPermissions(Group::getByName(Group::EVERYONE_GROUP_NAME), Permission::READ_WRITE_CHANGE_PERMISSIONS_CHANGE_OWNER);
                 $saved                          = $campaign->save();
                 assert('$saved');
+                $campaign = Campaign::getById($campaign->id);
+                ReadPermissionsOptimizationUtil::
+                    securableItemGivenPermissionsForGroup($campaign, Group::getByName(Group::EVERYONE_GROUP_NAME));
+                $campaign->save();
                 $campaigns[]                    = $campaign->id;
             }
             $demoDataHelper->setRangeByModelName('Campaign', $campaigns[0], $campaigns[count($campaigns)-1]);

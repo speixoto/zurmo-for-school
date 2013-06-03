@@ -54,13 +54,18 @@
             assert('$demoDataHelper->isSetRange("User")');
 
             $marketingLists = array();
-            for ($this->index = 0; $this->index < 5; $this->index++)
+            for ($this->index = 0; $this->index < 10; $this->index++)
             {
                 $marketingList              = new MarketingList();
                 $marketingList->owner       = $demoDataHelper->getRandomByModelName('User');
                 $this->populateModel($marketingList);
+                $marketingList->addPermissions(Group::getByName(Group::EVERYONE_GROUP_NAME), Permission::READ_WRITE_CHANGE_PERMISSIONS_CHANGE_OWNER);
                 $saved                      = $marketingList->save();
                 assert('$saved');
+                $marketingList = MarketingList::getById($marketingList->id);
+                ReadPermissionsOptimizationUtil::
+                    securableItemGivenPermissionsForGroup($marketingList, Group::getByName(Group::EVERYONE_GROUP_NAME));
+                $marketingList->save();
                 $marketingLists[]           = $marketingList->id;
             }
             $demoDataHelper->setRangeByModelName('MarketingList', $marketingLists[0], $marketingLists[count($marketingLists)-1]);

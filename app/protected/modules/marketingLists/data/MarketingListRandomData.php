@@ -45,7 +45,11 @@
             'Companies',
             'New Offers',
             'Upgrades',
-            'Beta'
+            'Beta',
+            'Loyalty Members - Silver',
+            'Loyalty Members - Gold',
+            'Loyalty Members - Platinum',
+            'Loyalty Members - Executive',
         ),
         'description'                  => array(
             'Lorem ipsum dolor sit amet, consectetur adipiscing elit.'.
