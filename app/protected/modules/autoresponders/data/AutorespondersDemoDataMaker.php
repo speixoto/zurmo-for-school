@@ -54,14 +54,17 @@
             assert('$demoDataHelper->isSetRange("MarketingList")');
 
             $autoresponders = array();
-            for ($this->index = 0; $this->index < 4; $this->index++)
+            foreach(MarketingList::getAll() as $marketingList)
             {
-                $autoresponder                  = new Autoresponder();
-                $autoresponder->marketingList   = $demoDataHelper->getRandomByModelName('MarketingList');
-                $this->populateModel($autoresponder);
-                $saved                          = $autoresponder->save();
-                assert('$saved');
-                $autoresponders[]               = $autoresponder->id;
+                for ($this->index = 0; $this->index < 4; $this->index++)
+                {
+                    $autoresponder                  = new Autoresponder();
+                    $autoresponder->marketingList   = $marketingList;
+                    $this->populateModel($autoresponder);
+                    $saved                          = $autoresponder->save();
+                    assert('$saved');
+                    $autoresponders[]               = $autoresponder->id;
+                }
             }
             $demoDataHelper->setRangeByModelName('Autoresponder', $autoresponders[0], $autoresponders[count($autoresponders)-1]);
         }
