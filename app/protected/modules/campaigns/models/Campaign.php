@@ -188,7 +188,7 @@
                     array('type',                   'default', 'value' => static::TYPE_MARKETING_LIST),
                     array('status',                 'required'),
                     array('status',                 'type',    'type' => 'integer'),
-                    array('type',                   'default', 'value' => static::STATUS_ACTIVE),
+                    array('status',                 'default', 'value' => static::STATUS_ACTIVE),
                     array('supportsRichText',       'required'),
                     array('supportsRichText',       'boolean'),
                     array('sendOnDateTime',         'required'),

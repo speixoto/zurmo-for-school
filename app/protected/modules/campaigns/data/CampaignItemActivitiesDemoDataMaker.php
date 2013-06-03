@@ -37,7 +37,7 @@
     /**
      * Class that builds demo campaignItemActivities.
      */
-    class CampaignItemActivitiesDemoDataMaker extends DemoDataMaker
+    class CampaignItemActivitiesDemoDataMaker extends EmailMessageActivitiesDemoDataMaker
     {
         protected $ratioToLoad = 3;
 
@@ -74,6 +74,7 @@
                 $activities[]                   = $activity->id;
             }
             $demoDataHelper->setRangeByModelName('CampaignItemActivity', $activities[0], $activities[count($activities)-1]);
+            $this->populateMarketingItems('CampaignItem');
         }
 
         public function populateModel(& $model)
@@ -87,9 +88,13 @@
             {
                 $model->type        = CampaignItemActivity::TYPE_CLICK;
             }
-            else
+            elseif(mt_rand(1, 10) < 8)
             {
                 $model->type        = CampaignItemActivity::TYPE_OPEN;
+            }
+            else
+            {
+                $model->type        = CampaignItemActivity::TYPE_BOUNCE;
             }
         }
     }

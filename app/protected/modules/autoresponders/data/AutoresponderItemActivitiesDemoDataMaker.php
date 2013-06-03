@@ -37,7 +37,7 @@
     /**
      * Class that builds demo autoresponderItemActivities.
      */
-    class AutoresponderItemActivitiesDemoDataMaker extends DemoDataMaker
+    class AutoresponderItemActivitiesDemoDataMaker extends EmailMessageActivitiesDemoDataMaker
     {
         protected $ratioToLoad = 3;
 
@@ -74,6 +74,7 @@
                 $activities[]                   = $activity->id;
             }
             $demoDataHelper->setRangeByModelName('AutoresponderItemActivity', $activities[0], $activities[count($activities)-1]);
+            $this->populateMarketingItems('AutoresponderItem');
         }
 
         public function populateModel(& $model)
@@ -87,9 +88,13 @@
             {
                 $model->type        = AutoresponderItemActivity::TYPE_CLICK;
             }
-            else
+            elseif(mt_rand(1, 10) < 8)
             {
                 $model->type        = AutoresponderItemActivity::TYPE_OPEN;
+            }
+            else
+            {
+                $model->type        = AutoresponderItemActivity::TYPE_BOUNCE;
             }
         }
     }
