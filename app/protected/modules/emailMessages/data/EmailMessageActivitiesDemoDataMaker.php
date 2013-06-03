@@ -38,7 +38,6 @@
     {
         protected function populateMarketingItems($marketingItemClassName)
         {
-
             foreach($marketingItemClassName::getAll() as $marketingItem)
             {
                 $marketingItem->emailMessage = $this->makeEmailMessage($marketingItem->contact);
@@ -78,7 +77,7 @@
             $emailMessage->recipients->add($recipient);
             $emailMessage->folder       = EmailFolder::getByBoxAndType($box, EmailFolder::TYPE_ARCHIVED);
             $emailMessage->sentDateTime = DateTimeUtil::convertTimestampToDbFormatDateTime(time() - $interval);
-            $emailMessage->createdDateTime = $emailMessage->sentDateTime;
+            $emailMessage->createdDateTime =
             $saved = $emailMessage->save();
             if (!$saved)
             {

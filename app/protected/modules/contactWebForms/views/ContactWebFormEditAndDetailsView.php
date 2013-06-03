@@ -77,7 +77,7 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'defaultState', 'type' => 'AllContactStatesDropDownForContactWebForm'),
+                                                array('attributeName' => 'null', 'type' => 'AllContactStatesDropDownForContactWebForm'),
                                             ),
                                         ),
                                     )

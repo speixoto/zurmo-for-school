@@ -78,9 +78,8 @@
                     array('latestDateTime',         'type', 'type' => 'datetime'),
                     array('type',                   'required'),
                     array('type',                   'type', 'type' => 'integer'),
-                    array('type',                   'numerical', 'min' => static::TYPE_OPEN, 'max' => static::TYPE_CLICK),
                     array('quantity',               'required'),
-                    array('quantity',                'type', 'type' => 'integer'),
+                    array('quantity',               'type', 'type' => 'integer'),
                     array('quantity',               'numerical', 'integerOnly' => true),
                 ),
                 'relations' => array(
