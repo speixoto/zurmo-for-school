@@ -50,8 +50,10 @@
         public static function getTypesArray()
         {
             return array(
-                static::TYPE_OPEN    => Zurmo::t('EmailMessagesModule', 'Open'),
-                static::TYPE_CLICK   => Zurmo::t('EmailMessagesModule', 'Click'),
+                static::TYPE_OPEN           => Zurmo::t('EmailMessagesModule', 'Open'),
+                static::TYPE_CLICK          => Zurmo::t('EmailMessagesModule', 'Click'),
+                static::TYPE_UNSUBSCRIBE    => Zurmo::t('EmailMessagesModule', 'Unsubscribe'),
+                static::TYPE_BOUNCE         => Zurmo::t('EmailMessagesModule', 'Bounce'),
             );
         }
 
@@ -293,7 +295,10 @@
             if ($type)
             {
                 $types  = static::getTypesArray();
-                $type   = $types[intval($this->type)];
+                if(isset($types[intval($this->type)]))
+                {
+                    $type   = $types[intval($this->type)];
+                }
             }
             return $this->latestDateTime . ': ' . strval($this->person) . '/' . $type;
         }

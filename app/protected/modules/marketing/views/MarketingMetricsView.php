@@ -255,7 +255,7 @@
                 'data'     => 'js:$("#' . $form->getId() . '").serialize() + \'&' . get_class($this->resolveForm()) .
                               '[groupBy]=\' + $(this).data("value")',
                 'url'      =>  $this->getPortletSaveConfigurationUrl(),
-                'beforeSend' => 'js:function(){makeSmallLoadingSpinner(true, ".graph-container");
+                'beforeSend' => 'js:function(){$(this).makeSmallLoadingSpinner(true, ".graph-container");
                                 $("#MarketingDashboardView").addClass("loading");}',
                 'complete' => 'function(XMLHttpRequest, textStatus){juiPortlets.refresh();}',
                 'update' => '#' . $this->uniqueLayoutId,
