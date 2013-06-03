@@ -63,9 +63,6 @@
                 $saved                          = $campaign->save();
                 if(!$saved)
                 {
-                    echo "<pre>";
-                    print_r($campaign->getErrors());
-                    echo "</pre>";
                     throw new FailedToSaveModelException();
                 }
                 $campaign = Campaign::getById($campaign->id);

@@ -45,7 +45,7 @@
 
         public static function getDependencies()
         {
-            return array('users',' groups');
+            return array('users');
         }
 
         public function makeAll(& $demoDataHelper)
