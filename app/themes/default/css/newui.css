@@ -11169,6 +11169,15 @@ div.hasHalfs > div input {
   padding-bottom: 2px;
   margin-top: 3px;
 }
+.editable-cell:after {
+  content: "!";
+  font-weight: normal;
+  font-size: 20px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  position: relative;
+  right: -10px;
+  top: 1px;
+}
 .juiportlet-columns .juiportlet-column {
   float: left;
   min-height: 400px;

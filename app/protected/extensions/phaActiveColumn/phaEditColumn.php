@@ -36,8 +36,8 @@ class phaEditColumn extends phaAbsActiveColumn {
 
         echo CHtml::tag('div', array(
             'valueid' => $valueId,
-            'id' => $fieldUID.'-'.$valueId,
-            'class' => $fieldUID
+            'id' => $fieldUID  .'-' . $valueId,
+            'class' => $fieldUID  . ' editable-cell'
         ), $value);
 
         echo CHtml::openTag('div', array(

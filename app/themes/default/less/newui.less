@@ -5181,6 +5181,13 @@ div.hasHalfs{
 	display: inline-block;
 	padding-bottom: 2px;
 	margin-top: 3px;
+	&:after{
+		content:"!";
+		.symbly(20px);
+		position: relative;
+		right: -10px;
+		top: 1px;
+	}
 }
 
 @import 'widget-juiportlets.less';
