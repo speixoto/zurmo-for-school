@@ -65,6 +65,7 @@
                 ),
                 'globalSearchAttributeNames' => array(
                     'quantity',
+                    'name'
                 ),
                 'tabMenuItems' => array(
                     array(

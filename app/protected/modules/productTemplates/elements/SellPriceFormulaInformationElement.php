@@ -40,7 +40,7 @@
 
                 if ($type != SellPriceFormula::TYPE_EDITABLE)
                 {
-                    $content = str_replace('{discount}', $discountOrMarkupPercentage/100, $content);
+                    $content = str_replace('{discount}', $discountOrMarkupPercentage . '%', $content);
                 }
             }
 
