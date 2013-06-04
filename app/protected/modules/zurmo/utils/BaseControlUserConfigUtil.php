@@ -43,7 +43,7 @@
         /**
          * Module name to which this config would belong, not necessarily the module name of translation inside this class
          */
-        const CONFIG_MODULE_NAME       = null;
+        const CONFIG_MODULE_NAME       = 'ZurmoModule';
 
         /**
          * Config key for the control user we are querying
@@ -59,7 +59,7 @@
          * @throws NotSupportedException if there is no user specified and there are no users in the super admin group
          * @throws MissingASuperAdministratorException if there are no super administrators available
          */
-        public static function getUserToRunAs($setOnMissing = false)
+        public static function getUserToRunAs($setOnMissing = true)
         {
             $configModuleName   = static::getConfigModuleId();
             $configKey          = static::getConfigKey();

@@ -128,26 +128,6 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'userIdOfUserToRunWorkflowsAs',
-                                                                            'type'          => 'UserToRunWorkflowsAs'),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'userIdOfUserToRunTrackingAs',
-                                                                            'type'          => 'UserToRunTrackingAs'),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
                                                 array('attributeName' => 'gamificationModalNotificationsEnabled',
                                                                                                 'type' => 'CheckBox'),
                                             ),

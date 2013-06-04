@@ -155,7 +155,7 @@
             }
             else
             {
-                $userToSendMessagesFrom     = Yii::app()->emailHelper->getUserToSendNotificationsAs();
+                $userToSendMessagesFrom     = BaseJobControlUserConfigUtil::getUserToRunAs();
                 $sender->fromAddress        = Yii::app()->emailHelper->resolveFromAddressByUser($userToSendMessagesFrom);
                 $sender->fromName           = strval($userToSendMessagesFrom);
             }

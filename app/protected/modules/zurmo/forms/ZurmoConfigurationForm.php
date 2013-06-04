@@ -46,8 +46,6 @@
         public $modalListPageSize;
         public $dashboardListPageSize;
         public $gamificationModalNotificationsEnabled;
-        public $userIdOfUserToRunWorkflowsAs;
-        public $userIdOfUserToRunTrackingAs;
         public $autoresponderOrCampaignBatchSize;
         public $autoresponderOrCampaignFooterPlainText;
         public $autoresponderOrCampaignFooterRichText;
@@ -82,10 +80,6 @@
                 array('realtimeUpdatesEnabled',                 'boolean'),
                 array('subListPageSize',                        'type',      'type' => 'integer'),
                 array('logoFileData',                           'type',      'type' => 'array'),
-                array('userIdOfUserToRunWorkflowsAs',           'type',      'type' => 'integer'),
-                array('userIdOfUserToRunWorkflowsAs',           'numerical', 'min'  => 1),
-                array('userIdOfUserToRunTrackingAs',            'type',      'type' => 'integer'),
-                array('userIdOfUserToRunTrackingAs',            'numerical', 'min' => 1),
                 array('autoresponderOrCampaignBatchSize',       'required'),
                 array('autoresponderOrCampaignBatchSize',       'type',      'type' => 'integer'),
                 array('autoresponderOrCampaignBatchSize',       'numerical', 'min' => 1),
@@ -107,8 +101,6 @@
                 'dashboardListPageSize'                  => Zurmo::t('ZurmoModule', 'Dashboard portlet list page size'),
                 'gamificationModalNotificationsEnabled'  => Zurmo::t('ZurmoModule', 'Enable game notification popup'),
                 'realtimeUpdatesEnabled'                 => Zurmo::t('ZurmoModule', 'Enable real-time updates'),
-                'userIdOfUserToRunWorkflowsAs'           => Zurmo::t('ZurmoModule', 'Run workflows from'),
-                'userIdOfUserToRunTrackingAs'            => Zurmo::t('ZurmoModule', 'Run tracking requests from'),
                 'autoresponderOrCampaignBatchSize'       => Zurmo::t('ZurmoModule', 'Campaign/Autoresponder batch size'),
                 'autoresponderOrCampaignFooterPlainText' => Zurmo::t('ZurmoModule', 'Campaign/Autoresponder Footer(Plain Text)'),
                 'autoresponderOrCampaignFooterRichText'  => Zurmo::t('ZurmoModule', 'Campaign/Autoresponder Footer(Rich Text)'),

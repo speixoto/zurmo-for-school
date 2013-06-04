@@ -144,7 +144,7 @@
             $sender                     = new EmailMessageSender();
             if ($this->emailMessageForm->sendFromType == EmailMessageForWorkflowForm::SEND_FROM_TYPE_DEFAULT)
             {
-                $userToSendMessagesFrom     = Yii::app()->emailHelper->getUserToSendNotificationsAs();
+                $userToSendMessagesFrom     = BaseJobControlUserConfigUtil::getUserToRunAs();
                 $sender->fromAddress        = Yii::app()->emailHelper->resolveFromAddressByUser($userToSendMessagesFrom);
                 $sender->fromName           = strval($userToSendMessagesFrom);
             }

@@ -204,7 +204,7 @@
             if ($notification->owner->primaryEmail->emailAddress !== null &&
                 !UserConfigurationFormAdapter::resolveAndGetValue($notification->owner, 'turnOffEmailNotifications'))
             {
-                $userToSendMessagesFrom     = Yii::app()->emailHelper->getUserToSendNotificationsAs();
+                $userToSendMessagesFrom     = BaseJobControlUserConfigUtil::getUserToRunAs();
                 $emailMessage               = new EmailMessage();
                 $emailMessage->owner        = Yii::app()->user->userModel;
                 $emailMessage->subject      = strval($notification);

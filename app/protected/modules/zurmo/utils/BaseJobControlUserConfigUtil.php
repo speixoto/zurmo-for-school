@@ -34,29 +34,11 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    // TODO: @Shoaibi/@Jason: Critical: Not Used.
     /**
-     * When processing tracking, the user that processes them must be a super administrator to ensure the
-     * tracking requests can be properly processed.
+     * Helper class for working with jobs
      */
-    class UserToRunTrackingAsElement extends SuperAdministratorToUseElement
+    abstract class BaseJobControlUserConfigUtil extends BaseControlUserConfigUtil
     {
-        /**
-         * @return string
-         */
-        protected static function renderTooltipContent()
-        {
-        }
-
-        protected function renderLabel()
-        {
-            $title       = Zurmo::t('TrackingModule', 'Tracking requests must be processed as a super administrator user.');
-            $content     = parent::renderLabel();
-            $content    .= ZurmoHtml::tag('span', array('id' => 'run-tracking-from-user-tooltip',
-                                                        'class' => 'tooltip', 'title' => $title), '?');
-            $qtip = new ZurmoTip(array('options' => array('position' => array('my' => 'bottom right', 'at' => 'top left'))));
-            $qtip->addQTip("#run-tracking-from-user-tooltip");
-            return $content;
-        }
+        const CONFIG_KEY                = 'UserIdOfUserToRunJobAs';
     }
 ?>

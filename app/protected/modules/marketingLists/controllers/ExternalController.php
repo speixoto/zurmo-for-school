@@ -45,8 +45,7 @@
 
         public function beforeAction($action)
         {
-            // TODO: @Shoaibi: Critical: Change this to unified config
-            Yii::app()->user->userModel = TrackingUtil::getUserToRunAs();
+            Yii::app()->user->userModel = BaseActionControlUserConfigUtil::getUserToRunAs();
             return parent::beforeAction($action);
         }
 

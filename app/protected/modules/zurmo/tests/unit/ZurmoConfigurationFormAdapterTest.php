@@ -72,8 +72,6 @@
             $this->assertEquals(52,                              $form->modalListPageSize);
             $this->assertEquals(53,                              $form->dashboardListPageSize);
             $this->assertEquals('demoCompany',                   $form->applicationName);
-            $this->assertEquals(Yii::app()->user->userModel->id, $form->userIdOfUserToRunWorkflowsAs);
-            $this->assertEquals(Yii::app()->user->userModel->id, $form->userIdOfUserToRunTrackingAs);
             $this->assertEquals(AutoresponderOrCampaignBatchSizeConfigUtil::CONFIG_DEFAULT_VALUE, $form->autoresponderOrCampaignBatchSize);
             $this->assertEquals(AutoresponderOrCampaignMailFooterContentUtil::getContentByType(false), $form->autoresponderOrCampaignFooterPlainText);
             $this->assertEquals(AutoresponderOrCampaignMailFooterContentUtil::getContentByType(true), $form->autoresponderOrCampaignFooterRichText);
@@ -84,8 +82,6 @@
             $form->modalListPageSize     = 62;
             $form->dashboardListPageSize = 63;
             $form->applicationName       = 'demoCompany2';
-            $form->userIdOfUserToRunWorkflowsAs = $billy->id;
-            $form->userIdOfUserToRunTrackingAs  = $billy->id;
             $form->autoresponderOrCampaignBatchSize = 20;
             $logoFileName2               = 'testLogo.png';
             $form->autoresponderOrCampaignFooterPlainText   = 'abc';
@@ -102,8 +98,6 @@
             $this->assertEquals(62,                 $form->modalListPageSize);
             $this->assertEquals(63,                 $form->dashboardListPageSize);
             $this->assertEquals('demoCompany2',     $form->applicationName);
-            $this->assertEquals($billy->id,         $form->userIdOfUserToRunWorkflowsAs);
-            $this->assertEquals($billy->id,         $form->userIdOfUserToRunTrackingAs);
             $this->assertEquals(20, $form->autoresponderOrCampaignBatchSize);
             $this->assertEquals('abc', $form->autoresponderOrCampaignFooterPlainText);
             $this->assertEquals('def', $form->autoresponderOrCampaignFooterRichText);

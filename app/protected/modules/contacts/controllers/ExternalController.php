@@ -31,9 +31,14 @@
             return array();
         }
 
+        public function beforeAction($action)
+        {
+            Yii::app()->user->userModel = BaseActionControlUserConfigUtil::getUserToRunAs();
+            return parent::beforeAction($action);
+        }
+
         public function actionForm($id)
         {
-            Yii::app()->user->userModel = ContactWebFormsUserConfigUtil::getUserToRunAs();
             Yii::app()->getClientScript()->setIsolationMode();
             $contactWebForm = static::getModelAndCatchNotFoundAndDisplayError('ContactWebForm', intval($id));
             $metadata       = static::getMetadataByWebForm($contactWebForm);
@@ -133,7 +138,6 @@
 
         public function actionSourceFiles($id)
         {
-            Yii::app()->user->userModel = ContactWebFormsUserConfigUtil::getUserToRunAs();
             $formContentUrl          = Yii::app()->createAbsoluteUrl('contacts/external/form/', array('id' => $id));
             $renderFormFileUrl       = Yii::app()->getAssetManager()->getPublishedUrl(Yii::getPathOfAlias('application.core.views.assets') .
                                        DIRECTORY_SEPARATOR . 'renderExternalForm.js');

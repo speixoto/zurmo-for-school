@@ -34,18 +34,11 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * Helper class for working with tracking
-     */
-    abstract class ContactWebFormsUserConfigUtil extends BaseControlUserConfigUtil
+    class BaseJobControlUserConfigUtilTest extends BaseControlUserConfigUtilBaseTest
     {
-        const CONFIG_MODULE_NAME        = 'ContactWebFormsModule';
-
-        const CONFIG_KEY                = 'UserIdOfUserToRunContactWebFormAs';
-
-        public static function getUserToRunAs($setOnMissing = true)
+        protected static function resolveConfigUtilClassName()
         {
-            return parent::getUserToRunAs($setOnMissing);
+            return 'BaseJobControlUserConfigUtil';
         }
     }
 ?>

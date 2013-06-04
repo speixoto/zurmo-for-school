@@ -89,8 +89,8 @@
             {
                 try
                 {
-                    $triggeredByUser              = Yii::app()->user->userModel;
-                    Yii::app()->user->userModel = WorkflowUtil::getUserToRunAs();
+                    $triggeredByUser                = Yii::app()->user->userModel;
+                    Yii::app()->user->userModel     = BaseActionControlUserConfigUtil::getUserToRunAs(); // TODO: @Shoaibi/@Jason: Is this frontend thinge?
                     $model->setDoNotProcessWorkflowOnSave();
                     SavedWorkflowsUtil::resolveBeforeSaveByModel($model, $triggeredByUser);
                     $model->setProcessWorkflowOnSave();
@@ -116,7 +116,7 @@
                 {
                     $this->depth                = $this->depth + 1;
                     $triggeredByUser            = Yii::app()->user->userModel;
-                    Yii::app()->user->userModel = WorkflowUtil::getUserToRunAs();
+                    Yii::app()->user->userModel = BaseActionControlUserConfigUtil::getUserToRunAs(); // TODO: @Shoaibi/@Jason: Is this frontend thinge?
                     $model->setDoNotProcessWorkflowOnSave();
                     SavedWorkflowsUtil::resolveAfterSaveByModel($model, $triggeredByUser);
                     $model->setProcessWorkflowOnSave();

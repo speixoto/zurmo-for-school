@@ -35,18 +35,10 @@
      ********************************************************************************/
 
     /**
-     * Helper class for working with tracking
+     * Helper class for working with frontend actions
      */
-    abstract class TrackingUtil extends BaseControlUserConfigUtil
+    abstract class BaseActionControlUserConfigUtil extends BaseControlUserConfigUtil
     {
-        // TODO: @Shoaibi: Tests
-        const CONFIG_MODULE_NAME        = 'TrackingModule';
-
-        const CONFIG_KEY                = 'UserIdOfUserToRunTrackingAs';
-
-        public static function getUserToRunAs($setOnMissing = true)
-        {
-            return parent::getUserToRunAs($setOnMissing);
-        }
+        const CONFIG_KEY                = 'UserIdOfUserToRunActionAs';
     }
 ?>

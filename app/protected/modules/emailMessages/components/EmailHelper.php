@@ -380,52 +380,6 @@
         }
 
         /**
-         * When sending system notifications, it is necessary to use a 'user' who is a super administrator to send
-         * the notifications from.  This will resolve that information and retrieve the best user to use.
-         */
-        public function getUserToSendNotificationsAs()
-        {
-            $keyName      = 'UserIdToSendNotificationsAs';
-            $superGroup   = Group::getByName(Group::SUPER_ADMINISTRATORS_GROUP_NAME);
-            if (null != $userId = ZurmoConfigurationUtil::getByModuleName('EmailMessagesModule', $keyName))
-            {
-                try
-                {
-                    $user  = User::getById($userId);
-
-                    if ($user->groups->contains($superGroup))
-                    {
-                        return $user;
-                    }
-                }
-                catch (NotFoundException $e)
-                {
-                }
-            }
-            if ($superGroup->users->count() == 0)
-            {
-                throw new NotSupportedException();
-            }
-            return $superGroup->users->offsetGet(0);
-        }
-
-        /**
-         * @see getUserToSendNotificationsAs
-         * @param User $user
-         */
-        public function setUserToSendNotificationsAs(User $user)
-        {
-            assert('$user->id > 0');
-            $superGroup   = Group::getByName(Group::SUPER_ADMINISTRATORS_GROUP_NAME);
-            if (!$user->groups->contains($superGroup))
-            {
-                throw new NotSupportedException();
-            }
-            $keyName      = 'UserIdToSendNotificationsAs';
-            ZurmoConfigurationUtil::setByModuleName('EmailMessagesModule', $keyName, $user->id);
-        }
-
-        /**
          * @return integer count of how many emails are queued to go.  This means they are in either the TYPE_OUTBOX
          * folder or the TYPE_OUTBOX_ERROR folder.
          */
