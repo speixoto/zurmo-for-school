@@ -50,18 +50,25 @@
 
         protected $sourceMarketingListId;
 
+        protected $modelId;
+
+        protected $modelType;
+
         const TOGGLE_UNSUBSCRIPTION_LINK_CLASS = 'marketingListsManageSubscriptionListView-toggleUnsubscribed';
 
-        public function __construct($controllerId, $moduleId, $marketingLists, $personId, $sourceMarketingListId)
+        public function __construct($controllerId, $moduleId, $marketingLists, $personId,
+                                                                        $sourceMarketingListId, $modelId, $modelType)
         {
             assert('is_string($controllerId)');
             assert('is_string($moduleId)');
             assert('is_array($marketingLists)');
-            $this->controllerId           = $controllerId;
-            $this->moduleId               = $moduleId;
-            $this->marketingLists         = $marketingLists;
-            $this->personId               = $personId;
-            $this->sourceMarketingListId  = $sourceMarketingListId;
+            $this->controllerId             = $controllerId;
+            $this->moduleId                 = $moduleId;
+            $this->marketingLists           = $marketingLists;
+            $this->personId                 = $personId;
+            $this->sourceMarketingListId    = $sourceMarketingListId;
+            $this->modelId                  = $modelId;
+            $this->modelType                = $modelType;
         }
 
         public function isUniqueToAPage()
@@ -128,10 +135,13 @@
         protected function renderToggleSubscriptionSwitch($marketingListId, $subscribed)
         {
             $template           = ZurmoHtml::tag('div', array('class' => 'switch-state clearfix'), '{input}{label}');
-            // TODO: @Shoaibi: Critical: Make it array;
-            // TODO: @Shoaibi: Critical: createNewActivity is false, unless id equals to source one.
-            // TODO: @Shoaibi: Critical: need itemType and itemId
-            $hash               = EmailMessageActivityUtil::resolveHashForFooter($this->personId, $marketingListId);
+            $createNewActivity  = false;
+            if ($marketingListId == $this->sourceMarketingListId)
+            {
+                $createNewActivity  = true;
+            }
+            $hash               = EmailMessageActivityUtil::resolveHashForFooter($this->personId, $marketingListId,
+                                                                $this->modelId, $this->modelType, $createNewActivity);
             $subscribeUrl       = $this->getSubscribeUrlByHash($hash);
             $unsubscribeUrl     = $this->getUnsubscribeUrlByHash($hash);
             $checkedValue       = $subscribeUrl;

@@ -70,22 +70,19 @@
             $contact                = null;
             $personId               = null;
             $marketingListId        = null;
+            $modelId                = null;
+            $modelType              = null;
             extract($this->resolveHashForMarketingListIdAndPersonIdandContact($hash));
             $marketingLists         = MarketingList::getByUnsubscribedAndAnyoneCanSubscribe($contact->id);
             $listView               = new MarketingListsManageSubscriptionsListView($this->getId(),
                                                                                         $this->getModule()->getId(),
                                                                                         $marketingLists,
                                                                                         $personId,
-                                                                                        $marketingListId);
-            if (isset($_GET['ajax']) && $_GET['ajax'] == 'list-view')
-            {
-                echo $listView->render();
-            }
-            else
-            {
-                $view                   = new MarketingListsManageSubscriptionsPageView($this, $listView);
-                echo $view->render();
-            }
+                                                                                        $marketingListId,
+                                                                                        $modelId,
+                                                                                        $modelType);
+            $view                   = new MarketingListsManageSubscriptionsPageView($this, $listView);
+            echo $view->render();
         }
 
         protected function resolveAndValidateQueryStringHash($hash)
@@ -99,15 +96,18 @@
             $contact                = null;
             $personId               = null;
             $message                = null;
-            $newUnsubcribedValued   = (!$currentUnsubscribedValue);
+            $modelId                = null;
+            $modelType              = null;
+            $createNewActivity      = false;
+            $newUnsubcribedValue   = (!$currentUnsubscribedValue);
             extract($this->resolveHashForMarketingListIdAndPersonIdandContact($hash));
             $members                = $this->resolveMembers($currentUnsubscribedValue, $contact, $marketingListId, $optOut);
             if ($members)
             {
-                $this->toggleUnsubscribedForMembers($members, $newUnsubcribedValued);
-                $this->toggleOptOutForContact($contact, $optOut, $newUnsubcribedValued);
-                $message = $this->resolveStatusMessage($newUnsubcribedValued, $optOut);
-                // TODO: @Shoaibi: Critical: Call a function to create activity is operation was unsubscribe and createNewActivity is set., ensure it works with tests
+                $this->toggleUnsubscribedForMembers($members, $newUnsubcribedValue);
+                $this->toggleOptOutForContact($contact, $optOut, $newUnsubcribedValue);
+                $message = $this->resolveStatusMessage($newUnsubcribedValue, $optOut);
+                $this->createActivityIfRequired($createNewActivity, $newUnsubcribedValue, $modelId, $modelType, $personId);
             }
             $this->setToggleUnsubscribedCookie($message);
             $url = Yii::app()->createUrl('/marketingLists/external/manageSubscriptions', array('hash' => $hash));
@@ -186,6 +186,23 @@
                 }
             }
             return $statusMessage;
+        }
+
+        protected function createActivityIfRequired($createNewActivity, $newUnsubcribedValue, $modelId, $modelType, $personId)
+        {
+            if (!$createNewActivity)
+            {
+                return;
+            }
+            // TODO: @Shoaibi: Critical: Tests to cover $newUnsubscribedValue to 0 or createNewActivity =0
+            if ($newUnsubcribedValue == 1)
+            {
+                $activityClassName  = EmailMessageActivityUtil::resolveModelClassNameByModelType($modelType);
+                $type               = $activityClassName::TYPE_UNSUBSCRIBE;
+                $url                = null;
+                $sourceIP           = Yii::app()->request->userHostAddress;
+                $activityClassName::createNewActivity($type, $modelId, $personId, $url, $sourceIP);
+            }
         }
 
         protected function setToggleUnsubscribedCookie($message)
