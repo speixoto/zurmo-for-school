@@ -140,6 +140,10 @@
             return $data;
         }
 
+        /**
+         * @param $date
+         * @return null\
+         */
         protected static function resolveAbbreviatedMonthDisplayLabel($date)
         {
             assert('is_string($date)');
@@ -147,6 +151,10 @@
                 DateTimeUtil::DISPLAY_FORMAT_ABBREVIATED_MONTH_ONLY_WIDTH);
         }
 
+        /**
+         * @param $date
+         * @return null
+         */
         protected static function resolveAbbreviatedDayMonthDisplayLabel($date)
         {
             assert('is_string($date)');
@@ -154,21 +162,33 @@
                 DateTimeUtil::DISPLAY_FORMAT_ABBREVIATED_MONTH_AND_DAY_WIDTH);
         }
 
+        /**
+         * @return array
+         */
         protected static function resolveChartDataBaseGroupElements()
         {
             return array();
         }
 
+        /**
+         * @return null
+         */
         public function getXAxisName()
         {
             return null;
         }
 
+        /**
+         * @return null
+         */
         public function getYAxisName()
         {
             return null;
         }
 
+        /**
+         * @param $beginDate
+         */
         public function setBeginDate($beginDate)
         {
             assert('is_string($beginDate)');
@@ -205,6 +225,10 @@
             $this->campaign = $campaign;
         }
 
+        /**
+         * @param string $displayLabel
+         * @return string
+         */
         protected function resolveDateBalloonLabel($displayLabel)
         {
             assert('is_string($displayLabel)');
@@ -218,6 +242,10 @@
             }
         }
 
+        /**
+         * @return string
+         * @throws NotSupportedException
+         */
         protected function resolveIndexGroupByToUse()
         {
             if($this->groupBy == MarketingOverallMetricsForm::GROUPING_TYPE_DAY)
@@ -238,6 +266,12 @@
             }
         }
 
+        /**
+         * @param string $modelClassName
+         * @param string $attributeName
+         * @return string
+         * @throws NotSupportedException
+         */
         protected function resolveGroupBy($modelClassName, $attributeName)
         {
             assert('is_string($modelClassName)');
@@ -264,13 +298,13 @@
             }
         }
 
+        /**
+         * @return array
+         */
         protected function resolveChartDataStructure()
         {
             $chartData           = array();
             $groupedDateTimeData = static::makeGroupedDateTimeData($this->beginDate, $this->endDate, $this->groupBy);
-            //echo "<pre>";
-            //print_r($groupedDateTimeData);
-            //echo "</pre>";
             foreach($groupedDateTimeData as $groupData)
             {
                 $chartData[$groupData['beginDate']] = array_merge(static::resolveChartDataBaseGroupElements(),

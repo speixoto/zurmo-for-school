@@ -118,8 +118,8 @@
             $this->assertTrue($result);
             $this->assertNotEquals('Sample Content with no links', $content);
             $this->assertTrue(strpos($content, 'Sample Content with no links') !== false);
-            $this->assertTrue(strpos($content, '/marketingLists/public/') !== false);
-            $this->assertEquals(2, substr_count($content, '/marketingLists/public/'));
+            $this->assertTrue(strpos($content, '/marketingLists/external/') !== false);
+            $this->assertEquals(2, substr_count($content, '/marketingLists/external/'));
         }
 
         /**
@@ -131,8 +131,8 @@
             $result     = static::resolveContent($content, true, false);
             $this->assertTrue($result);
             $this->assertTrue(strpos($content, 'Sample Content with no links') !== false);
-            $this->assertTrue(strpos($content, '/marketingLists/public/') !== false);
-            $this->assertEquals(2, substr_count($content, '/marketingLists/public/'));
+            $this->assertTrue(strpos($content, '/marketingLists/external/') !== false);
+            $this->assertEquals(2, substr_count($content, '/marketingLists/external/'));
         }
 
         /**
@@ -162,8 +162,8 @@ LNK;
             $this->assertFalse(strpos($content, 'www.yahoo.com'));
             $this->assertTrue(strpos($content, '/tracking/default/track?id=') !== false);
             $this->assertEquals(3, substr_count($content, '/tracking/default/track?id='));
-            $this->assertTrue(strpos($content, '/marketingLists/public/') !== false);
-            $this->assertEquals(2, substr_count($content, '/marketingLists/public/'));
+            $this->assertTrue(strpos($content, '/marketingLists/external/') !== false);
+            $this->assertEquals(2, substr_count($content, '/marketingLists/external/'));
         }
 
         /**
@@ -178,8 +178,8 @@ LNK;
             $this->assertTrue(strpos($content, '<a href="http://www.zurmo.org">') !== false);
             $this->assertTrue(strpos($content, '/tracking/default/track?id=') !== false);
             $this->assertEquals(1, substr_count($content, '/tracking/default/track?id='));
-            $this->assertTrue(strpos($content, '/marketingLists/public/') !== false);
-            $this->assertEquals(2, substr_count($content, '/marketingLists/public/'));
+            $this->assertTrue(strpos($content, '/marketingLists/external/') !== false);
+            $this->assertEquals(2, substr_count($content, '/marketingLists/external/'));
         }
 
         /**
@@ -195,8 +195,8 @@ LNK;
             $this->assertTrue(strpos($content, '<img width="1" height="1" src="') !== false);
             $this->assertTrue(strpos($content, '/tracking/default/track?id=') !== false);
             $this->assertEquals(1, substr_count($content, '/tracking/default/track?id='));
-            $this->assertTrue(strpos($content, '/marketingLists/public/') !== false);
-            $this->assertEquals(2, substr_count($content, '/marketingLists/public/'));
+            $this->assertTrue(strpos($content, '/marketingLists/external/') !== false);
+            $this->assertEquals(2, substr_count($content, '/marketingLists/external/'));
         }
 
         /**
@@ -214,8 +214,8 @@ LNK;
             $this->assertEquals(1, substr_count($content, '<img width="1" height="1" src="'));
             $this->assertTrue(strpos($content, '/tracking/default/track?id=') !== false);
             $this->assertEquals(1, substr_count($content, '/tracking/default/track?id='));
-            $this->assertTrue(strpos($content, '/marketingLists/public/') !== false);
-            $this->assertEquals(2, substr_count($content, '/marketingLists/public/'));
+            $this->assertTrue(strpos($content, '/marketingLists/external/') !== false);
+            $this->assertEquals(2, substr_count($content, '/marketingLists/external/'));
         }
 
         /**
@@ -232,8 +232,8 @@ LNK;
             $this->assertTrue(strpos($content, '<p>Sample Content</p><br /><img width="1" height="1" src="') !== false);
             $this->assertTrue(strpos($content, '/tracking/default/track?id=') !== false);
             $this->assertEquals(1, substr_count($content, '/tracking/default/track?id='));
-            $this->assertTrue(strpos($content, '/marketingLists/public/') !== false);
-            $this->assertEquals(2, substr_count($content, '/marketingLists/public/'));
+            $this->assertTrue(strpos($content, '/marketingLists/external/') !== false);
+            $this->assertEquals(2, substr_count($content, '/marketingLists/external/'));
         }
 
         /**
@@ -263,8 +263,8 @@ HTML;
             $this->assertTrue(strpos($content, '<img width="1" height="1" src="') !== false);
             $this->assertTrue(strpos($content, '/tracking/default/track?id=') !== false);
             $this->assertEquals(2, substr_count($content, '/tracking/default/track?id='));
-            $this->assertTrue(strpos($content, '/marketingLists/public/') !== false);
-            $this->assertEquals(2, substr_count($content, '/marketingLists/public/'));
+            $this->assertTrue(strpos($content, '/marketingLists/external/') !== false);
+            $this->assertEquals(2, substr_count($content, '/marketingLists/external/'));
         }
 
         /**
@@ -399,8 +399,8 @@ HTML;
                     substr_count($content, 'http://www.zurmo.com/zurmo/app/index.php/min/serve/g/js/lm/1366697751.js'));
             $this->assertTrue(strpos($content, '<img width="1" height="1" src=') !== false);
             $this->assertEquals(1, substr_count($content, '<img width="1" height="1" src='));
-            $this->assertTrue(strpos($content, '/marketingLists/public/') !== false);
-            $this->assertEquals(2, substr_count($content, '/marketingLists/public/'));
+            $this->assertTrue(strpos($content, '/marketingLists/external/') !== false);
+            $this->assertEquals(2, substr_count($content, '/marketingLists/external/'));
         }
 
         public function testResolveQueryStringArrayForHashWithAndWithoutUrlInQueryString()
@@ -452,7 +452,7 @@ HTML;
             $this->assertTrue($result);
             $this->assertTrue(strpos($content, 'This is some text content') !== false);
             $this->assertTrue(strpos($content, 'PlainTextFooter') !== false);
-            $this->assertTrue(strpos($content, '/marketingLists/public/') === false);
+            $this->assertTrue(strpos($content, '/marketingLists/external/') === false);
         }
 
         /**
@@ -466,7 +466,7 @@ HTML;
             $this->assertTrue($result);
             $this->assertTrue(strpos($content, 'This is some html content') !== false);
             $this->assertTrue(strpos($content, 'RichTextFooter') !== false);
-            $this->assertTrue(strpos($content, '/marketingLists/public/') === false);
+            $this->assertTrue(strpos($content, '/marketingLists/external/') === false);
         }
 
         protected static function resolveContent(& $content, $tracking = true, $isHtmlContent = true)

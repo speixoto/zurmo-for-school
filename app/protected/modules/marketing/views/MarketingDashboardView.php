@@ -36,6 +36,9 @@
 
     class MarketingDashboardView extends PortletFrameView
     {
+        /**
+         * @return array
+         */
         public static function getDefaultMetadata()
         {
             $metadata = array(
@@ -47,11 +50,6 @@
                                array(
                                     'type' => 'MarketingOverallMetrics',
                                 ),
-                                /**
-                                array(
-                                    'type' => 'OverallEmailOpensByLocation',
-                                ),
-                                **/
                             )
                         ),
                     )
@@ -60,6 +58,12 @@
             return $metadata;
         }
 
+        /**
+         * @param string $controllerId
+         * @param string $moduleId
+         * @param string $uniqueLayoutId
+         * @param array $params
+         */
         public function __construct($controllerId, $moduleId, $uniqueLayoutId, $params)
         {
             $this->controllerId        = $controllerId;
@@ -69,6 +73,9 @@
             $this->params              = $params;
         }
 
+        /**
+         * @return bool
+         */
         public function isUniqueToAPage()
         {
             return true;
@@ -92,6 +99,9 @@
             return PortletsSecurityUtil::resolvePortletsForCurrentUser($portlets);
         }
 
+        /**
+         * @return string content
+         */
         protected function renderContent()
         {
             $this->portlets = $this->getPortlets($this->uniqueLayoutId, self::getMetadata());

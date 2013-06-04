@@ -45,7 +45,6 @@
             $gridView->setView($header, 0, 0);
             $gridView->setView($flashMessageView, 1, 0);
             $gridView->setView($listView, 2, 0);
-            // TODO: @Shoaibi/@Jason: Critical: Do we need footer view? change interface type buttons?
             $gridView->setView(new FooterView(false), 3, 0);
             $this->registerScripts();
             parent::__construct($gridView);
@@ -99,7 +98,7 @@
                 // Begin Not Coding Standard
                 Yii::app()->clientScript->registerScript($scriptName, '
                     var notificationBarId   = "FlashMessageBar";
-                    var cookieName          = "' . MarketingListsPublicController::TOGGLE_UNSUBSCRIBED_COOKIE_NAME. '";
+                    var cookieName          = "' . MarketingListsExternalController::TOGGLE_UNSUBSCRIBED_COOKIE_NAME. '";
                     var cookieValue         = $.cookie(cookieName);
                     if (cookieValue)
                     {

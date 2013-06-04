@@ -34,6 +34,9 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
+    /**
+     * Helper class for working with marketing metrics
+     */
     class MarketingMetricsUtil
     {
         /**

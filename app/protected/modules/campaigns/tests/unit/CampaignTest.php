@@ -93,11 +93,9 @@
             $this->assertFalse($campaign->save());
             $errors                     = $campaign->getErrors();
             $this->assertNotEmpty($errors);
-            $this->assertCount(8, $errors);
+            $this->assertCount(7, $errors);
             $this->assertArrayHasKey('name', $errors);
             $this->assertEquals('Name cannot be blank.', $errors['name'][0]);
-            $this->assertArrayHasKey('status', $errors);
-            $this->assertEquals('Status cannot be blank.', $errors['status'][0]);
             $this->assertArrayHasKey('supportsRichText', $errors);
             $this->assertEquals('Supports HTML cannot be blank.', $errors['supportsRichText'][0]);
             $this->assertArrayHasKey('subject', $errors);
@@ -223,7 +221,7 @@
             $totalCampaigns     = Campaign::getAll();
             $this->assertNotEmpty($totalCampaigns);
             $this->assertCount(2, $totalCampaigns);
-            $dueActiveCampaigns = Campaign::getByStatusAndSendingTime(Campaign::STATUS_ACTIVE, time());
+            $dueActiveCampaigns = Campaign::getByStatusAndSendingTime(Campaign::STATUS_ACTIVE, time() + 100);
             $this->assertNotEmpty($dueActiveCampaigns);
             $this->assertCount(1, $dueActiveCampaigns);
             $campaign = $dueActiveCampaigns[0];

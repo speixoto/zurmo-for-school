@@ -90,6 +90,11 @@
         {
             $moduleLabel     = Zurmo::t('CampaignsModule', 'Email Recipients');
             return Zurmo::t('Core', 'No {moduleLabelPluralLowerCase} found', array('{moduleLabelPluralLowerCase}' => $moduleLabel));
+            /*
+            $content  = '<div class="general-issue-notice"><span class="icon-notice"></span><p>';
+            $content .= Zurmo::t('ReportsModule', 'Select a report with a chart');
+            $content .= '</p></div>';
+            */
         }
 
         protected function getCGridViewLastColumn()

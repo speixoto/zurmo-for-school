@@ -84,6 +84,7 @@
             $model->quantity        = rand(10, 100);
             $timestamp              = time() - rand(100, 1000);
             $model->latestDateTime  = DateTimeUtil::convertTimestampToDbFormatDateTime($timestamp);
+            $model->latestSourceIP  = '10.11.12.13';
             if ($model->emailMessageUrl->id > 0)
             {
                 $model->type        = CampaignItemActivity::TYPE_CLICK;

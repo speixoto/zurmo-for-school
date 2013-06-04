@@ -53,15 +53,17 @@
 
         public function testCreateAndGetAutoresponderItemActivityById()
         {
-            $autoresponderItemActivity              = new AutoresponderItemActivity();
-            $autoresponderItemActivity->type        = AutoresponderItemActivity::TYPE_OPEN;
-            $autoresponderItemActivity->quantity    = 10;
+            $autoresponderItemActivity                  = new AutoresponderItemActivity();
+            $autoresponderItemActivity->type            = AutoresponderItemActivity::TYPE_OPEN;
+            $autoresponderItemActivity->quantity        = 10;
+            $autoresponderItemActivity->latestSourceIP  = '10.11.12.13';
             $this->assertTrue($autoresponderItemActivity->save());
             $id = $autoresponderItemActivity->id;
             unset($autoresponderItemActivity);
             $autoresponderItemActivity              = AutoresponderItemActivity::getById($id);
             $this->assertEquals(AutoresponderItemActivity::TYPE_OPEN    ,   $autoresponderItemActivity->type);
             $this->assertEquals(10                                      ,   $autoresponderItemActivity->quantity);
+            $this->assertEquals('10.11.12.13'                           ,   $autoresponderItemActivity->latestSourceIP);
         }
 
         public function testCreateAndGetAutoresponderItemActivityWithAutoresponderItemById()
@@ -90,6 +92,7 @@
             $autoresponderItemActivity                      = new AutoresponderItemActivity();
             $autoresponderItemActivity->type                = AutoresponderItemActivity::TYPE_CLICK;
             $autoresponderItemActivity->quantity            = 1;
+            $autoresponderItemActivity->latestSourceIP      = '11.12.13.14';
             $autoresponderItemActivity->autoresponderItem   = $autoresponderItem;
             $this->assertTrue($autoresponderItemActivity->save());
             $id = $autoresponderItemActivity->id;
@@ -97,6 +100,7 @@
             $autoresponderItemActivity = AutoresponderItemActivity::getById($id);
             $this->assertEquals(AutoresponderItemActivity::TYPE_CLICK,   $autoresponderItemActivity->type);
             $this->assertEquals(1                                    ,   $autoresponderItemActivity->quantity);
+            $this->assertEquals('11.12.13.14'                        ,   $autoresponderItemActivity->latestSourceIP);
             $this->assertEquals($autoresponderItem                   ,   $autoresponderItemActivity->autoresponderItem);
         }
 
@@ -117,15 +121,17 @@
 
             $autoresponderItemActivity->type                    = AutoresponderItemActivity::TYPE_CLICK;
             $autoresponderItemActivity->quantity                = 5;
-            $emailMessageUrl                               = new EmailMessageUrl();
-            $emailMessageUrl->url                          = 'http://www.example.com';
+            $emailMessageUrl                                    = new EmailMessageUrl();
+            $emailMessageUrl->url                               = 'http://www.example.com';
             $autoresponderItemActivity->emailMessageUrl         = $emailMessageUrl;
+            $autoresponderItemActivity->latestSourceIP          = '12.13.14.15';
             $this->assertTrue($autoresponderItemActivity->save());
             $id = $autoresponderItemActivity->id;
             unset($autoresponderItemActivity);
             $autoresponderItemActivity = AutoresponderItemActivity::getById($id);
             $this->assertEquals(AutoresponderItemActivity::TYPE_CLICK,   $autoresponderItemActivity->type);
             $this->assertEquals(5                                    ,   $autoresponderItemActivity->quantity);
+            $this->assertEquals('12.13.14.15'                        ,   $autoresponderItemActivity->latestSourceIP);
             $this->assertEquals('http://www.example.com'             ,   $autoresponderItemActivity->emailMessageUrl->url);
         }
 
@@ -183,6 +189,7 @@
         public function testCreateNewActivity()
         {
             $url                            = null;
+            $sourceIP                       = '13.14.15.16';
             $type                           = AutoresponderItemActivity::TYPE_OPEN;
             $autoresponderItems             = AutoresponderItem::getAll();
             $this->assertNotEmpty($autoresponderItems);
@@ -193,7 +200,8 @@
             $saved                          = AutoresponderItemActivity::createNewActivity($type,
                                                                                             $autoresponderItem->id,
                                                                                             $person->id,
-                                                                                            $url);
+                                                                                            $url,
+                                                                                            $sourceIP);
             $this->assertTrue($saved);
 
             // now try same thing but with a url this time.
@@ -204,7 +212,8 @@
             $saved                          = AutoresponderItemActivity::createNewActivity($type,
                                                                                             $autoresponderItem->id,
                                                                                             $personId,
-                                                                                            $url);
+                                                                                            $url,
+                                                                                            $sourceIP);
             $this->assertTrue($saved);
 
             // test that creating the one with url created one with open too:
