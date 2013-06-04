@@ -36,19 +36,13 @@
 
     class Campaign extends OwnedSecurableItem
     {
-        const TYPE_MARKETING_LIST               = 1;
+        const STATUS_PAUSED                     = 1;
 
-        const TYPE_DYNAMIC                      = 2;
+        const STATUS_ACTIVE                     = 2;
 
-        const STATUS_INCOMPLETE                 = 1;
+        const STATUS_PROCESSING                 = 3;
 
-        const STATUS_PAUSED                     = 2;
-
-        const STATUS_ACTIVE                     = 3;
-
-        const STATUS_PROCESSING                 = 4;
-
-        const STATUS_COMPLETED                  = 5;
+        const STATUS_COMPLETED                  = 4;
 
         public static function getByName($name)
         {
@@ -64,7 +58,6 @@
         {
             // TODO: @Shoaibi: Critical: Add Tests to cover:
             return array(
-                static::STATUS_INCOMPLETE   => Zurmo::t('CampaignsModule', 'Incomplete'),
                 static::STATUS_PAUSED       => Zurmo::t('CampaignsModule', 'Paused'),
                 static::STATUS_ACTIVE       => Zurmo::t('CampaignsModule', 'Active'),
                 static::STATUS_PROCESSING   => Zurmo::t('CampaignsModule', 'Processing'),
@@ -167,7 +160,6 @@
             $metadata = parent::getDefaultMetadata();
             $metadata[__CLASS__] = array(
                 'members' => array(
-                    'type',
                     'name',
                     'subject',
                     'status',
@@ -183,9 +175,6 @@
                     array('name',                   'required'),
                     array('name',                   'type',    'type' => 'string'),
                     array('name',                   'length',  'min'  => 3, 'max' => 64),
-                    array('type',                   'required'),
-                    array('type',                   'type',    'type' => 'integer'),
-                    array('type',                   'default', 'value' => static::TYPE_MARKETING_LIST),
                     array('status',                 'required'),
                     array('status',                 'type',    'type' => 'integer'),
                     array('status',                 'default', 'value' => static::STATUS_ACTIVE),
@@ -238,7 +227,6 @@
             return array_merge(parent::translatedAttributeLabels($language),
                 array(
                     'name'                  => Zurmo::t('ZurmoModule', 'Name', null,  null, $language),
-                    'type'                  => Zurmo::t('Core', 'Type', null,  null, $language),
                     'status'                => Zurmo::t('CampaignsModule', 'Status', null,  null, $language),
                     'sendOnDateTime'       => Zurmo::t('CampaignsModule', 'Send On', null,  null, $language),
                     'supportsRichText'      => Zurmo::t('CampaignsModule', 'Supports HTML',

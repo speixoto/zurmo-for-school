@@ -34,12 +34,13 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
+    Yii::import('application.core.components.ZurmoHttpRequest');
     /**
      * Override class is used specifically by the
      * testing framework to provide an exception
      * during a redirect call.
      */
-    class HttpRequestForTesting extends CHttpRequest
+    class HttpRequestForTesting extends ZurmoHttpRequest
     {
         public function redirect($url, $terminate = true, $statusCode = 302)
         {

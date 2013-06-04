@@ -85,7 +85,6 @@
             }
             $statusKeys                     = array_keys(Campaign::getStatusDropDownArray());
             $timestamp                      = time();
-            $model->type                    = Campaign::TYPE_MARKETING_LIST;
             $model->name                    = $this->seedData['name'][$this->index];
             $model->subject                 = $this->seedData['subject'][$this->index];
             $model->status                  = RandomDataUtil::getRandomValueFromArray($statusKeys);
