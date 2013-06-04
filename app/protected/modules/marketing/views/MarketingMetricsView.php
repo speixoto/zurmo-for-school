@@ -203,7 +203,7 @@
         protected function renderOverallListPerformanceContent()
         {
             $chartDataProvider  = $this->resolveChartDataProvider('MarketingListPerformance');
-            $content  = ZurmoHtml::tag('h3', array(), Zurmo::t('MarketingModule', 'Overall List Performance'));
+            $content  = ZurmoHtml::tag('h3', array(), $this->getOverallListPerformanceTitle());
             $content .= MarketingMetricsUtil::renderOverallListPerformanceChartContent(
                         $chartDataProvider, $this->uniqueLayoutId . 'OverallListPerformance');
             return $content;
@@ -212,13 +212,29 @@
         /**
          * @return string
          */
+        protected function getOverallListPerformanceTitle()
+        {
+            return Zurmo::t('MarketingModule', 'Overall Performance');
+        }
+
+        /**
+         * @return string
+         */
         protected function renderEmailsInThisListContent()
         {
             $chartDataProvider  = $this->resolveChartDataProvider('MarketingEmailsInThisList');
-            $content  = ZurmoHtml::tag('h3', array(), Zurmo::t('MarketingModule', 'Emails in this list'));
+            $content  = ZurmoHtml::tag('h3', array(), $this->getEmailsInThisListTitle());
             $content .= MarketingMetricsUtil::renderEmailsInThisListChartContent(
                         $chartDataProvider, $this->uniqueLayoutId . 'EmailsInThisList');
             return $content;
+        }
+
+        /**
+         * @return string
+         */
+        protected function getEmailsInThisListTitle()
+        {
+            return Zurmo::t('MarketingModule', 'Overall Email Performance');
         }
 
         /**

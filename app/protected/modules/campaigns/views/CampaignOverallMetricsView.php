@@ -112,5 +112,21 @@
         {
             return CampaignDetailsAndRelationsView::METRICS_PORTLET_CLASS;
         }
+
+        /**
+         * @return string
+         */
+        protected function getOverallListPerformanceTitle()
+        {
+            return Zurmo::t('MarketingModule', 'Overall Campaign Performance');
+        }
+
+        /**
+         * @return string
+         */
+        protected function getEmailsInThisListTitle()
+        {
+            return Zurmo::t('MarketingModule', 'Emails in this Campaign');
+        }
     }
 ?>
