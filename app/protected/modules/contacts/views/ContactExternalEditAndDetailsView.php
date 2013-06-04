@@ -84,18 +84,14 @@
         {
             $formId = $this->getFormId();
             return ZurmoHtml::ajax(array(
-                                         'type'    => 'POST',
-                                         'data'    => 'js:$("#' . $formId . '").serialize()',
-                                         'url'     =>  $this->getValidateAndSaveUrl(),
-                                         'success' => 'js: function(data)
-                                                       {
-                                                            data = jQuery.parseJSON(data);
-                                                            if (typeof data.redirectUrl !== \'undefined\' &&
-                                                                $(this).isValidUrl(data.redirectUrl))
-                                                            {
-                                                                window.location.href = data.redirectUrl;
-                                                            }
-                                                       }'
+                                         'type'     => 'POST',
+                                         'data'     => 'js:$("#' . $formId . '").serialize()',
+                                         'dataType' => 'jsonp',
+                                         'url'      =>  $this->getValidateAndSaveUrl(),
+                                         'success'  => 'js: function(redirectUrl)
+                                                        {
+                                                            window.location.href = redirectUrl;
+                                                        }'
                                   ));
         }
 
