@@ -45,7 +45,7 @@
         protected function renderControlEditable()
         {
             $content                 = parent::renderControlEditable();
-            $selector                = '#' . $this->getEditableInputId();
+            $selector                = '$("#' . $this->getEditableInputId() . '").parent().find("div.shadow").html()';
             $previewElementParams    = array('isHtmlContent' => 0,
                                                 'inputId' => $this->getEditableInputId(),
                                                 'selector' => $selector);

@@ -77,7 +77,7 @@
                                                     'content'	=> new CJavaScriptExpression('
                                                                     function()
                                                                      {
-                                                                        return $("' . $selector . '").html();
+                                                                        return ' . $selector . ';
                                                                      }'),
                                                 ));
             }
