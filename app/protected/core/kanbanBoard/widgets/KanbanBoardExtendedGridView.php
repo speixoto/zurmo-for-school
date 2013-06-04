@@ -94,16 +94,16 @@
         public function renderTableBody()
         {
             $data        = $this->dataProvider->getData();
-            $n           = count($data);
+            $modelsCount = count($data);
             $columnsData = $this->resolveDataIntoKanbanColumns();
             $width       = 100 / count($columnsData);
             echo "<tbody>";
             echo "<tr><td id=\"kanban-holder\" class='". $this->selectedTheme . "'>";
-            if ( true || $n > static::$maxCount)
+            if ($modelsCount > static::$maxCount)
             {
                 $this->renderOverMaxCountText();
             }
-            elseif ($n > 0)
+            elseif ($modelsCount > 0)
             {
                 $counter = 0;
                 echo "<div id=\"kanban-board\" class=\"clearfix\">";
