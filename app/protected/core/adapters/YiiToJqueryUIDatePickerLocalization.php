@@ -111,6 +111,8 @@
                     return 'h:mm';
                 case 'ah:mm':       //zh_cn format
                     return 'tth:mm';
+                case 'HH.mm':       //da format
+                    return 'hh.mm';
                 default :
                     throw new NotImplementedException();
             }
