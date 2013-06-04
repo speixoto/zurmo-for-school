@@ -15128,6 +15128,8 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
 .EarlyBird .badge-icon:before {
   content: "#";
 }
+.game-badge-SearchProducts .badge-icon:before,
+.SearchProducts .badge-icon:before,
 .game-badge-CreateProduct .badge-icon:before,
 .CreateProduct .badge-icon:before {
   content: '\003E';
