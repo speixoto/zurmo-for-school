@@ -160,6 +160,7 @@
             {
                 $this->resolveElementDuringFormLayoutRender($element);
             }
+            $spinner = ZurmoHtml::tag('span', array('class' => 'big-spinner'), '');
             return ZurmoHtml::tag('div', array('class' => 'email-template-combined-content'), $element->render());
         }
 

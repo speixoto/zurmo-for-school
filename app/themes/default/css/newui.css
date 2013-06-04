@@ -268,6 +268,8 @@ a.ModalGameNotification a,
 .email-template-content,
 .tabs-container > .tab,
 .email-template-content > .tab,
+.autoresponder-combined-content .big-spinner,
+.email-template-combined-content .big-spinner,
 #marketing-intro-steps > div,
 #marketing-intro-steps h3,
 #marketing-intro-steps p,
@@ -382,6 +384,7 @@ a.ModalGameNotification a,
   -o-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
   -ms-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
   box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
+  white-space: nowrap;
 }
 .modal-view-toolbar a,
 .modal-view-toolbar input[type="submit"],
@@ -15094,6 +15097,10 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
 .EditEmailTemplate .badge-icon:before {
   content: '\00B6';
 }
+.game-badge-CreateCampaign .badge-icon:before,
+.CreateCampaign .badge-icon:before {
+  content: '\002C';
+}
 .game-badge-CreateMarketingList .badge-icon:before,
 .CreateMarketingList .badge-icon:before,
 .game-badge-EditMarketingList .badge-icon:before,
@@ -17917,6 +17924,22 @@ a.user-link {
 .autoresponder-combined-content,
 .email-template-combined-content {
   padding: 0 15px;
+  position: relative;
+}
+.autoresponder-combined-content .big-spinner,
+.email-template-combined-content .big-spinner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1000000;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+}
+.autoresponder-combined-content .spinner,
+.email-template-combined-content .spinner {
+  left: 50% !important;
+  top: 50% !important;
 }
 .tabs-nav {
   border-bottom: 1px solid #dfdfdf;
