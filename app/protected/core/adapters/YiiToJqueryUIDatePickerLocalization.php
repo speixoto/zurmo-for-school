@@ -51,6 +51,10 @@
             {
                 return;
             }
+            if ($language == 'nb')
+            {
+                return 'no';
+            }
             return $language;
         }
 
