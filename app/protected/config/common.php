@@ -236,8 +236,10 @@
                 'timeZone'             => 'America/Chicago',
             ),
             'request' => array(
+                'class' => 'application.core.components.ZurmoHttpRequest',
                 'enableCsrfValidation' => true,
                 'enableCookieValidation' => false, //keep off until we can fix it on linux/windows servers.
+                'tokenEnabledRoutes' => array('contacts/external/'),
             ),
             'statePersister' => array(
                 'class'     => 'application.modules.zurmo.components.ZurmoDbStatePersister',

@@ -191,17 +191,6 @@
                     $fileContents              .= self::getContentsFromSource($scriptFullPath);
                 }
             }
-            $OverrideValidateFileUrl            = Yii::app()->getAssetManager()->getPublishedUrl(
-                                                  Yii::getPathOfAlias('application.core.views.assets') .
-                                                  DIRECTORY_SEPARATOR . 'OverrideValidate.js');
-            if ($OverrideValidateFileUrl === false || file_exists($OverrideValidateFileUrl) === false)
-            {
-                $OverrideValidateFileUrl        = Yii::app()->getAssetManager()->publish(
-                                                  Yii::getPathOfAlias('application.core.views.assets') .
-                                                  DIRECTORY_SEPARATOR . 'OverrideValidate.js');
-            }
-            $scriptFullPath                     = self::getScriptAbsolutePath($OverrideValidateFileUrl);
-            $fileContents                      .= self::getContentsFromSource($scriptFullPath);
             $scriptFileName = self::EXTERNAL_SCRIPT_FILE_NAME;
             if (!is_dir(Yii::getPathOfAlias('application.runtime.assets')))
             {
