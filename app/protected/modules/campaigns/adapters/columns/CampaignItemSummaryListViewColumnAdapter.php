@@ -60,9 +60,15 @@
                                                      array('id' => $contact->id));
             $linkContent     = ActionSecurityUtil::resolveLinkToModelForCurrentUser(strval($contact), $contact,
                                $moduleClassName, $linkRoute);
+            if($linkContent == null){
+                $title       = Zurmo::t('CampaignsModule', 'This recipient is restricted, you do not have access to see it.');
+                $tooltip     = ZurmoHtml::tag('span', array('class' => 'tooltip', 'title' => $title), '?');
+                $linkContent = ZurmoHtml::tag('em', array(), Zurmo::t('CampaignsModule', 'Restricted')) . $tooltip;
+            }
             //todo: @amit if null - need to show 'restricted' in maybe a pill type background color. with a question mark
             //or on hover (without question that shows the tooltip to explain why it is restricted)
-            return $linkContent;
+            //todo: @jason - not sure the wording and on the ::t category, also please render qtip jquery here
+            return ZurmoHtml::tag('div', array('class' => 'email-recipient-name'), $linkContent);
         }
 
         protected static function resolveModuleClassName(Contact $contact)
@@ -82,14 +88,49 @@
             $isQueued     = $campaignItem->isQueued();
             if(!$isQueued)
             {
-                $isSent           = $campaignItem->isSent();
-                $failedToSend     = $campaignItem->hasFailedToSend();
+                $isSent           = $campaignItem->isSent(); //we need to show them if its a continum
+                $failedToSend     = $campaignItem->hasFailedToSend();//we need to show them if its a continum
                 $hasOpened        = $campaignItem->hasAtLeastOneOpenActivity();
                 $hasClicked       = $campaignItem->hasAtLeastOneClickActivity();
                 $hasUnsubscribed  = $campaignItem->hasAtLeastOneUnsubscribeActivity();
                 $hasBounced       = $campaignItem->hasAtLeastOneBounceActivity();
             }
-            $content = 'todo: information about each recipient'; //todo: @amit - discuss with jason about this
+
+            $content = '<div class="continuum">
+                            <div class="clearfix">
+                                <div class="email-recipient-stage-status queued"><i>&#9679;</i><span>Queued</span></div>
+                            </div>
+                       </div>
+
+                       <div class="continuum">
+                            <div class="clearfix">
+                                <div class="email-recipient-stage-status queued stage-true"><i>&#9679;</i><span>Sent</span></div>
+                            </div>
+                       </div>
+
+                       <div class="continuum">
+                            <div class="clearfix">
+                                <div class="email-recipient-stage-status queued stage-true"><i>&#9679;</i><span>Sent</span></div>
+                                <div class="email-recipient-stage-status queued stage-false"><i>&#9679;</i><span>Bounced</span></div>
+                            </div>
+                       </div>
+
+                       <div class="continuum">
+                            <div class="clearfix">
+                                <div class="email-recipient-stage-status queued stage-false"><i>&#9679;</i><span>Sent Failed</span></div>
+                            </div>
+                       </div>
+
+                       <div class="continuum">
+                            <div class="clearfix">
+                                <div class="email-recipient-stage-status queued stage-true"><i>&#9679;</i><span>Sent</span></div>
+                                <div class="email-recipient-stage-status stage-true"><i>&#9679;</i><span>Opened</span></div>
+                                <div class="email-recipient-stage-status stage-true"><i>&#9679;</i><span>Clicked</span></div>
+                                <div class="email-recipient-stage-status stage-false"><i>&#9679;</i><span>Unsubscribed</span></div>
+                            </div>
+                       </div>
+                        ';
+
             return $content;
         }
     }
