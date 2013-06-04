@@ -153,9 +153,9 @@
             $breadcrumbLinks[]  = Zurmo::t('ProductTemplatesModule', 'Create');
             $editAndDetailsView = $this->makeEditAndDetailsView(
                                             $this->attemptToSaveModelFromPost(new ProductTemplate()), 'Edit');
-            $view       = new ProductTemplatesPageView(ProductDefaultViewUtil::
-                                    makeViewWithBreadcrumbsForCurrentUser(
-                                        $this, $editAndDetailsView, $breadcrumbLinks, 'ProductBreadCrumbView'));
+            $view               = new ProductTemplatesPageView(ProductDefaultViewUtil::
+                                                                makeViewWithBreadcrumbsForCurrentUser(
+                                                                    $this, $editAndDetailsView, $breadcrumbLinks, 'ProductBreadCrumbView'));
             echo $view->render();
         }
 
@@ -164,7 +164,7 @@
             $productTemplate   = ProductTemplate::getById(intval($id));
             $breadcrumbLinks   = static::getDetailsAndEditBreadcrumbLinks();
             $breadcrumbLinks[] = StringUtil::getChoppedStringContent(strval($productTemplate), 25);
-            $view            = new ProductTemplatesPageView(ProductDefaultViewUtil::
+            $view              = new ProductTemplatesPageView(ProductDefaultViewUtil::
                                                                  makeViewWithBreadcrumbsForCurrentUser($this,
                                                                  $this->makeEditAndDetailsView(
                                                                      $this->attemptToSaveModelFromPost(
