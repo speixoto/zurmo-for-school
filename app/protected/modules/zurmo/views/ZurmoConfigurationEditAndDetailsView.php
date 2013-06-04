@@ -148,7 +148,7 @@
                                         array(
                                             'elements' => array(
                                                 array('attributeName' => 'autoresponderOrCampaignFooterPlainText',
-                                                                                                'type' => 'TextArea'),
+                                                                                    'type' => 'TextAreaWithPreviewLink'),
                                             ),
                                         ),
                                     )
@@ -158,7 +158,7 @@
                                         array(
                                             'elements' => array(
                                                 array('attributeName' => 'autoresponderOrCampaignFooterRichText',
-                                                                                                'type' => 'Redactor'),
+                                                                                    'type' => 'RedactorWithPreviewLink'),
                                             ),
                                         ),
                                     )

@@ -101,9 +101,9 @@
                 'dashboardListPageSize'                  => Zurmo::t('ZurmoModule', 'Dashboard portlet list page size'),
                 'gamificationModalNotificationsEnabled'  => Zurmo::t('ZurmoModule', 'Enable game notification popup'),
                 'realtimeUpdatesEnabled'                 => Zurmo::t('ZurmoModule', 'Enable real-time updates'),
-                'autoresponderOrCampaignBatchSize'       => Zurmo::t('ZurmoModule', 'Campaign/Autoresponder batch size'),
-                'autoresponderOrCampaignFooterPlainText' => Zurmo::t('ZurmoModule', 'Campaign/Autoresponder Footer(Plain Text)'),
-                'autoresponderOrCampaignFooterRichText'  => Zurmo::t('ZurmoModule', 'Campaign/Autoresponder Footer(Rich Text)'),
+                'autoresponderOrCampaignBatchSize'       => Zurmo::t('ZurmoModule', 'Autoresponder/Campaign batch size'),
+                'autoresponderOrCampaignFooterPlainText' => Zurmo::t('ZurmoModule', 'Autoresponder/Campaign Footer(Plain Text)'),
+                'autoresponderOrCampaignFooterRichText'  => Zurmo::t('ZurmoModule', 'Autoresponder/Campaign Footer(Rich Text)'),
             );
         }
     }

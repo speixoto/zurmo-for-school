@@ -342,35 +342,51 @@ PTN;
                                                                 $marketingListId, $modelId, $modelType, $isHtmlContent);
         }
 
-        protected static function resolveFooterPlaceholders(& $content, $placeholderContent, $personId,
+        public static function resolveFooterPlaceholders(& $content, $placeholderContent, $personId,
                                                                 $marketingListId, $modelId, $modelType, $isHtmlContent)
         {
             $hash                           = static::resolveHashForFooter($personId, $marketingListId, $modelId,
                                                                                                     $modelType, true);
-            $unsubscribeUrlPlaceholder      = AutoresponderOrCampaignMailFooterContentUtil::UNSUBSCRIBE_URL_PLACEHOLDER;
-            $manageSubscriptionsPlaceholder = AutoresponderOrCampaignMailFooterContentUtil::
-                                                                                MANAGE_SUBSCRIPTIONS_URL_PLACEHOLDER;
             $unsubscribeUrl                 = static::resolveUnsubscribeUrl($hash);
             $manageSubscriptionsUrl         = static::resolveManageSubscriptionsUrl($hash);
-            $unsubscribeTranslated          = Zurmo::t('MarketingListsModule', 'Unsubscribe');
-            $manageSubscriptionsTranslated  = Zurmo::t('MarketingListsModule', 'Manage Subscriptions');
+            static::resolvePlaceholderUrlsForHtmlContent($unsubscribeUrl, $manageSubscriptionsUrl, $isHtmlContent);
+            static::resolveFooterTagsWithUrls($placeholderContent, $unsubscribeUrl, $manageSubscriptionsUrl);
+            static::addNewLine($placeholderContent, $isHtmlContent);
+            $content            .= $placeholderContent;
+        }
+
+        protected static function resolvePlaceholderUrlsForHtmlContent(& $unsubscribeUrl, & $manageSubscriptionsUrl,
+                                                                                                        $isHtmlContent)
+        {
             if ($isHtmlContent)
             {
+                $unsubscribeTranslated          = Zurmo::t('MarketingListsModule', 'Unsubscribe');
+                $manageSubscriptionsTranslated  = Zurmo::t('MarketingListsModule', 'Manage Subscriptions');
                 $unsubscribeUrl = ZurmoHtml::link($unsubscribeTranslated, $unsubscribeUrl);
                 $manageSubscriptionsUrl = ZurmoHtml::link($manageSubscriptionsTranslated, $manageSubscriptionsUrl);
             }
+        }
+
+        protected static function resolveFooterTagsWithUrls(& $placeholderContent, $unsubscribeUrl, $manageSubscriptionsUrl)
+        {
+            $unsubscribeUrlPlaceholder      = AutoresponderOrCampaignMailFooterContentUtil::UNSUBSCRIBE_URL_PLACEHOLDER;
+            $manageSubscriptionsPlaceholder = AutoresponderOrCampaignMailFooterContentUtil::
+                                                                                    MANAGE_SUBSCRIPTIONS_URL_PLACEHOLDER;
             $placeholderContent = str_replace($unsubscribeUrlPlaceholder, $unsubscribeUrl, $placeholderContent);
             $placeholderContent = str_replace($manageSubscriptionsPlaceholder, $manageSubscriptionsUrl,
                                                                                                 $placeholderContent);
+        }
+
+        protected static function addNewLine(& $content, $isHtmlContent)
+        {
             if ($isHtmlContent)
             {
-                $placeholderContent = ZurmoHtml::tag('br') . $placeholderContent;
+                $content = ZurmoHtml::tag('br') . $content;
             }
             else
             {
-                $placeholderContent = PHP_EOL . $placeholderContent;
+                $content = PHP_EOL . $content;
             }
-            $content            .= $placeholderContent;
         }
 
         protected static function resolveFooterPlaceholderContentByType($isHtmlContent)
