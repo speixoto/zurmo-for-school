@@ -340,20 +340,16 @@
             ));
             $content = $this->runControllerWithNoExceptionsAndGetContent($this->manageSubscriptionsUrl);
             $this->assertTrue(strpos($content, '<title>ZurmoCRM - Manage Subscriptions</title>') !== false);
-            $this->assertTrue(strpos($content, '/views/MarketingListsManageSubscriptionsPageView.php') !== false);
             $this->assertTrue(strpos($content, '<div id="MarketingListsManageSubscriptionsPageView" ' .
                                                     'class="ZurmoPageView PageView">') !== false);
             $this->assertTrue(strpos($content, '<div class="GridView">') !== false);
-            $this->assertTrue(strpos($content, 'modules/zurmo/views/HeaderLinksView.php') !== false);
             $this->assertTrue(strpos($content, '<div id="HeaderLinksView">') !== false);
             $this->assertTrue(strpos($content, '<div id="corp-logo">') !== false);
             $this->assertTrue(strpos($content, '/home/default"><img src="') !== false);
             $this->assertTrue(strpos($content, '/themes/default/images/Zurmo_logo.png" alt="Zurmo Logo"  ' .
                                                     'height="32" width="107" /></a>') !== false);
-            $this->assertTrue(strpos($content, 'core/views/FlashMessageView.php') !== false);
             $this->assertTrue(strpos($content, '<div id="FlashMessageView">') !== false);
             $this->assertTrue(strpos($content, '<div id = "FlashMessageBar">') !== false);
-            $this->assertTrue(strpos($content, '/views/MarketingListsManageSubscriptionsListView.php') !== false);
             $this->assertTrue(strpos($content, '<div id="MarketingListsManageSubscriptionsListView" ' .
                                                     'class="MetadataView">') !== false);
             $this->assertTrue(strpos($content, '<div class="wrapper">') !== false);
@@ -368,7 +364,6 @@
                                                     'SubscriptionListView-toggleUnsubscribed"') !== false);
             $this->assertTrue(strpos($content, '/marketingLists/external/optOut?hash=') !== false);
             $this->assertTrue(strpos($content, '>Unsubscribe All/OptOut</a>') !== false);
-            $this->assertTrue(strpos($content, 'modules/zurmo/views/FooterView.php') !== false);
             $this->assertTrue(strpos($content, '<div id="FooterView">') !== false);
             $this->assertTrue(strpos($content, '<a href="http://www.zurmo.com" id="credit-link" ' .
                                                     'class="clearfix">') !== false);
@@ -489,20 +484,16 @@
             ));
             $content    = $this->runControllerWithNoExceptionsAndGetContent($this->manageSubscriptionsUrl);
             $this->assertTrue(strpos($content, '<title>ZurmoCRM - Manage Subscriptions</title>') !== false);
-            $this->assertTrue(strpos($content, '/views/MarketingListsManageSubscriptionsPageView.php') !== false);
             $this->assertTrue(strpos($content, '<div id="MarketingListsManageSubscriptionsPageView" ' .
                                                     'class="ZurmoPageView PageView">') !== false);
             $this->assertTrue(strpos($content, '<div class="GridView">') !== false);
-            $this->assertTrue(strpos($content, 'modules/zurmo/views/HeaderLinksView.php') !== false);
             $this->assertTrue(strpos($content, '<div id="HeaderLinksView">') !== false);
             $this->assertTrue(strpos($content, '<div id="corp-logo">') !== false);
             $this->assertTrue(strpos($content, '/home/default"><img src="') !== false);
             $this->assertTrue(strpos($content, '/themes/default/images/Zurmo_logo.png" alt="Zurmo Logo"  ' .
                                                     'height="32" width="107" /></a>') !== false);
-            $this->assertTrue(strpos($content, 'core/views/FlashMessageView.php') !== false);
             $this->assertTrue(strpos($content, '<div id="FlashMessageView">') !== false);
             $this->assertTrue(strpos($content, '<div id = "FlashMessageBar">') !== false);
-            $this->assertTrue(strpos($content, '/views/MarketingListsManageSubscriptionsListView.php') !== false);
             $this->assertTrue(strpos($content, '<div id="MarketingListsManageSubscriptionsListView" ' .
                                                     'class="MetadataView">') !== false);
             $this->assertTrue(strpos($content, '<div class="wrapper">') !== false);
@@ -517,7 +508,6 @@
                                                     'SubscriptionListView-toggleUnsubscribed"') !== false);
             $this->assertTrue(strpos($content, '/marketingLists/external/optOut?hash=') !== false);
             $this->assertTrue(strpos($content, '>Unsubscribe All/OptOut</a></td></tr></table>') !== false);
-            $this->assertTrue(strpos($content, 'modules/zurmo/views/FooterView.php') !== false);
             $this->assertTrue(strpos($content, '<div id="FooterView">') !== false);
             $this->assertTrue(strpos($content, '<a href="http://www.zurmo.com" id="credit-link" ' .
                                                     'class="clearfix">') !== false);
