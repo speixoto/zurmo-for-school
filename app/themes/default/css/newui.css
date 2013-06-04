@@ -270,6 +270,7 @@ a.ModalGameNotification a,
 .email-template-content > .tab,
 .autoresponder-combined-content .big-spinner,
 .email-template-combined-content .big-spinner,
+.email-template-content .big-spinner,
 #marketing-intro-steps > div,
 #marketing-intro-steps h3,
 #marketing-intro-steps p,
@@ -17951,6 +17952,20 @@ a.user-link {
   left: 50% !important;
   top: 50% !important;
 }
+.email-template-content .big-spinner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1000000;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.8);
+  margin: 0;
+}
+.email-template-content .spinner {
+  left: 50% !important;
+  top: 50% !important;
+}
 .tabs-nav {
   border-bottom: 1px solid #dfdfdf;
 }
@@ -18475,6 +18490,32 @@ a + .autoresponder-stats {
 }
 .no-email-recipients-found .icon-notice:before {
   content: "f";
+}
+#MarketingIntroLinkActionElement ul {
+  right: 0;
+}
+#MarketingIntroLinkActionElement ul li {
+  padding: 0 5px 5px 5px;
+}
+#MarketingIntroLinkActionElement ul li .hasCheckBox {
+  display: inline-block;
+  margin-right: 5px;
+  position: relative;
+  top: 4px;
+}
+#MarketingIntroLinkActionElement .parent a {
+  padding-left: 10px;
+}
+#MarketingIntroLinkActionElement .parent > a > span {
+  font-weight: normal;
+  font-size: 24px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  position: relative;
+  top: 2px;
+}
+#MarketingIntroLinkActionElement .parent a:after {
+  margin-left: 2px;
+  top: 0;
 }
 #kanban-holder {
   background: #fff;
