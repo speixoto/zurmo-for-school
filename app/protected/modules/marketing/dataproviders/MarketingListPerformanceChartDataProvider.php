@@ -36,6 +36,9 @@
 
     class MarketingListPerformanceChartDataProvider extends MarketingGroupByEmailMessagesChartDataProvider
     {
+        /**
+         * @return array
+         */
         public function getChartData()
         {
             $chartData = $this->resolveChartDataStructure();
@@ -43,7 +46,7 @@
             foreach ($rows as $row)
             {
                 $chartIndexToCompare = $row[$this->resolveIndexGroupByToUse()];
-                if($chartData[$chartIndexToCompare])
+                if(isset($chartData[$chartIndexToCompare]))
                 {
                     $uniqueOpenRate         = NumberUtil::divisionForZero($row[self::UNIQUE_OPENS], $row[self::COUNT]);
                     $uniqueClickThroughRate = NumberUtil::divisionForZero($row[self::UNIQUE_CLICKS], $row[self::COUNT]);
@@ -59,7 +62,9 @@
             return $newChartData;
         }
 
-
+        /**
+         * @return array
+         */
         protected function makeCombinedData()
         {
             $combinedRows        = array();
@@ -102,6 +107,11 @@
             return $combinedRows;
         }
 
+        /**
+         * @param array $searchAttributeData
+         * @param string $groupBy
+         * @return string
+         */
         protected static function makeCampaignsSqlQuery($searchAttributeData, $groupBy)
         {
             $quote                     = DatabaseCompatibilityUtil::getQuote();
@@ -133,6 +143,11 @@
             return $sql;
         }
 
+        /**
+         * @param array $searchAttributeData
+         * @param string $groupBy
+         * @return string
+         */
         protected static function makeAutorespondersSqlQuery($searchAttributeData, $groupBy)
         {
             $quote                      = DatabaseCompatibilityUtil::getQuote();
@@ -165,6 +180,9 @@
             return $sql;
         }
 
+        /**
+         * @return array
+         */
         protected static function resolveChartDataBaseGroupElements()
         {
             return array(self::UNIQUE_CLICK_THROUGH_RATE => 0, self::UNIQUE_OPEN_RATE => 0);

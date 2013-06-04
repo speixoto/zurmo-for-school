@@ -64,6 +64,9 @@
             return $content;
         }
 
+        /**
+         * @throws NotImplementedException
+         */
         protected function renderControlNonEditable()
         {
             throw new NotImplementedException();
@@ -84,6 +87,9 @@
             return $this->form->labelEx($this->model, $this->attribute, array('for' => $for));
         }
 
+        /**
+         * @return array
+         */
         public function getEditableHtmlOptions()
         {
             $htmlOptions = array(
@@ -95,6 +101,9 @@
             return $htmlOptions;
         }
 
+        /**
+         * @return array
+         */
         protected function getValuesAndLabels()
         {
             return array(MarketingOverallMetricsForm::GROUPING_TYPE_DAY   => Zurmo::t('Core', 'Day'),

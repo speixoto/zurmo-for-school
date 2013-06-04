@@ -36,6 +36,9 @@
 
     class MarketingEmailsInThisListChartDataProvider extends MarketingGroupByEmailMessagesChartDataProvider
     {
+        /**
+         * @return array
+         */
         public function getChartData()
         {
             $chartData = $this->resolveChartDataStructure();
@@ -43,7 +46,7 @@
             foreach ($rows as $row)
             {
                 $chartIndexToCompare = $row[$this->resolveIndexGroupByToUse()];
-                if($chartData[$chartIndexToCompare])
+                if(isset($chartData[$chartIndexToCompare]))
                 {
                     $chartData[$chartIndexToCompare][self::QUEUED]        = $row[self::QUEUED];
                     $chartData[$chartIndexToCompare][self::SENT]          = $row[self::SENT];
@@ -61,8 +64,9 @@
             return $newChartData;
         }
 
-
-
+        /**
+         * @return array
+         */
         protected function makeCombinedData()
         {
             $combinedRows        = array();
@@ -75,11 +79,7 @@
                 $searchAttributeData = static::makeCampaignsSearchAttributeData('createdDateTime', $beginDateTime,
                                        $endDateTime, $this->campaign);
                 $sql                 = static::makeCampaignsSqlQuery($searchAttributeData, $groupBy);
-                //echo $sql . "<BR>";
                 $rows                = R::getAll($sql);
-               // echo "<pre>";
-               // print_r($rows);
-                //echo "</pre>";
                 foreach ($rows as $row)
                 {
                     $chartIndexToCompare = $row[$this->resolveIndexGroupByToUse()];
@@ -91,11 +91,7 @@
                 $searchAttributeData = static::makeAutorespondersSearchAttributeData('createdDateTime', $beginDateTime,
                                        $endDateTime, $this->marketingList);
                 $sql                 = static::makeAutorespondersSqlQuery($searchAttributeData, $groupBy);
-                //echo $sql . "<BR>";
                 $rows                = R::getAll($sql);
-                // echo "<pre>";
-                // print_r($rows);
-                //echo "</pre>";
                 foreach ($rows as $row)
                 {
                     $chartIndexToCompare = $row[$this->resolveIndexGroupByToUse()];
@@ -114,12 +110,14 @@
                     }
                 }
             }
-           // echo "<pre>";
-           // print_r($combinedRows);
-            //echo "</pre>";
             return $combinedRows;
         }
 
+        /**
+         * @param array $searchAttributeData
+         * @param string $groupBy
+         * @return string
+         */
         protected static function makeCampaignsSqlQuery($searchAttributeData, $groupBy)
         {
             $quote                     = DatabaseCompatibilityUtil::getQuote();
@@ -162,6 +160,11 @@
             return $sql;
         }
 
+        /**
+         * @param array $searchAttributeData
+         * @param string $groupBy
+         * @return string
+         */
         protected static function makeAutorespondersSqlQuery($searchAttributeData, $groupBy)
         {
             $quote                      = DatabaseCompatibilityUtil::getQuote();
@@ -205,6 +208,9 @@
             return $sql;
         }
 
+        /**
+         * @return array
+         */
         protected static function resolveChartDataBaseGroupElements()
         {
             return array(self::QUEUED        => 0,

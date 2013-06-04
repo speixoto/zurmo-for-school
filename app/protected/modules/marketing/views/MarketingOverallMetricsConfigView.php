@@ -36,7 +36,6 @@
 
     /**
      * A configuration view
-     *
      */
     class MarketingOverallMetricsConfigView extends ModalConfigEditView
     {

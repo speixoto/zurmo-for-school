@@ -39,6 +39,9 @@
      */
     class MarketingListOverallMetricsView extends MarketingMetricsView implements PortletViewInterface
     {
+        /**
+         * @var string
+         */
         protected $formModelClassName = 'MarketingOverallMetricsForm';
 
         /**

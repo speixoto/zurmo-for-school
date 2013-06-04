@@ -99,7 +99,7 @@
             $width       = 100 / count($columnsData);
             echo "<tbody>";
             echo "<tr><td id=\"kanban-holder\" class='". $this->selectedTheme . "'>";
-            if ($n > static::$maxCount)
+            if ( true || $n > static::$maxCount)
             {
                 $this->renderOverMaxCountText();
             }
@@ -143,7 +143,11 @@
         public function renderOverMaxCountText()
         {
             $label = Zurmo::t('Core', 'There are too many results to display. Try filtering your search or switching to the grid view.');
-            echo CHtml::tag('span', array('class' => 'empty'), $label);
+            //echo CHtml::tag('span', array('class' => 'empty'), $label);
+            $content  = '<div class="general-issue-notice"><span class="icon-notice"></span><p>';
+            $content .= $label;
+            $content .= '</p></div>';
+            echo $content;
         }
 
         /**

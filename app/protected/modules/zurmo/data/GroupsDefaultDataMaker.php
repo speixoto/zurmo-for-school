@@ -48,6 +48,9 @@
             $everyone->setRight('AccountsModule',      AccountsModule::RIGHT_ACCESS_ACCOUNTS, Right::ALLOW);
             $everyone->setRight('AccountsModule',      AccountsModule::RIGHT_CREATE_ACCOUNTS, Right::ALLOW);
             $everyone->setRight('AccountsModule',      AccountsModule::RIGHT_DELETE_ACCOUNTS, Right::ALLOW);
+            $everyone->setRight('CampaignsModule',     CampaignsModule::RIGHT_ACCESS_CAMPAIGNS, Right::ALLOW);
+            $everyone->setRight('CampaignsModule',     CampaignsModule::RIGHT_CREATE_CAMPAIGNS, Right::ALLOW);
+            $everyone->setRight('CampaignsModule',     CampaignsModule::RIGHT_DELETE_CAMPAIGNS, Right::ALLOW);
             $everyone->setRight('ContactsModule',      ContactsModule::RIGHT_ACCESS_CONTACTS, Right::ALLOW);
             $everyone->setRight('ContactsModule',      ContactsModule::RIGHT_CREATE_CONTACTS, Right::ALLOW);
             $everyone->setRight('ContactsModule',      ContactsModule::RIGHT_DELETE_CONTACTS, Right::ALLOW);

@@ -152,7 +152,7 @@
                                                     },
                                         beforeSend: function(request, settings)
                                                     {
-                                                        $(this).makeSmallLoadingSpinner(true);
+                                                        $(this).makeLargeLoadingSpinner(true, ".email-template-combined-content");
                                                         if (disableDropDown == true)
                                                         {
                                                             $(dropDown).attr("disabled", "disabled");
@@ -167,6 +167,7 @@
                                                     },
                                         success:    function(data, status, request)
                                                     {
+                                                        $(this).makeLargeLoadingSpinner(false, ".email-template-combined-content");
                                                         updateContentAreaWithDataFromAjax(textContentElement,
                                                                                             htmlContentElement,
                                                                                             redActorElement,

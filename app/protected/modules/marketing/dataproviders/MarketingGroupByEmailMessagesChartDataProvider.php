@@ -34,8 +34,15 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
+    /**
+     * Base class for working with data that is grouped on email message information
+     */
     abstract class MarketingGroupByEmailMessagesChartDataProvider extends MarketingChartDataProvider
     {
+        /**
+         * @param RedBeanModelSelectQueryAdapter $selectQueryAdapter
+         * @param string $columnName
+         */
         protected static function addEmailMessageDayDateClause(RedBeanModelSelectQueryAdapter $selectQueryAdapter, $columnName)
         {
             assert('is_string($columnName)');
@@ -45,6 +52,10 @@
             $selectQueryAdapter->addClauseByQueryString($queryString, static::DAY_DATE);
         }
 
+        /**
+         * @param RedBeanModelSelectQueryAdapter $selectQueryAdapter
+         * @param string $columnName
+         */
         protected static function addEmailMessageFirstDayOfWeekDateClause(RedBeanModelSelectQueryAdapter $selectQueryAdapter, $columnName)
         {
             assert('is_string($columnName)');
@@ -55,6 +66,10 @@
             $selectQueryAdapter->addClauseByQueryString($queryString, static::FIRST_DAY_OF_WEEK_DATE);
         }
 
+        /**
+         * @param RedBeanModelSelectQueryAdapter $selectQueryAdapter
+         * @param string $columnName
+         */
         protected static function addEmailMessageFirstDayOfMonthDateClause(RedBeanModelSelectQueryAdapter $selectQueryAdapter, $columnName)
         {
             assert('is_string($columnName)');
@@ -65,6 +80,10 @@
             $selectQueryAdapter->addClauseByQueryString($queryString, static::FIRST_DAY_OF_MONTH_DATE);
         }
 
+        /**
+         * @param string $type
+         * @return string
+         */
         protected static function resolveCampaignTypeSubQuery($type)
         {
             assert('is_int($type)');
@@ -86,6 +105,10 @@
             return $sql;
         }
 
+        /**
+         * @param string $type
+         * @return string
+         */
         public static function resolveAutoresponderTypeSubQuery($type)
         {
             assert('is_int($type)');
@@ -106,6 +129,13 @@
             return $sql;
         }
 
+        /**
+         * @param string $dateAttributeName
+         * @param string $beginDateTime
+         * @param string $endDateTime
+         * @param null|Campaign $campaign
+         * @return array
+         */
         protected static function makeCampaignsSearchAttributeData($dateAttributeName, $beginDateTime, $endDateTime, $campaign)
         {
             assert('is_string($dateAttributeName)');
@@ -152,6 +182,13 @@
             return $searchAttributeData;
         }
 
+        /**
+         * @param string $dateAttributeName
+         * @param string $beginDateTime
+         * @param string $endDateTime
+         * @param null|MarketingList $marketingList
+         * @return array
+         */
         protected static function makeAutorespondersSearchAttributeData($dateAttributeName, $beginDateTime, $endDateTime, $marketingList)
         {
             assert('is_string($dateAttributeName)');

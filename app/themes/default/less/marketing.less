@@ -223,14 +223,22 @@
 }
 
 .edit-autoresponder-link{
-	display: block;
-	margin-bottom:10px;
 	font-size: 14px;
 	font-weight: bold;
+	font-style: normal;
+	&:after{
+		content: " — ";
+		font-weight: 400;
+		color: #545454;
+	}
+}
+.autoresponder-extra-info{
+	margin-bottom:10px;
+	font-style: italic;
 }
 
 .autoresponder-stats{
-	.quarter();
+	.fifth();
 	float: left;
 	margin-left: 2%;
 	text-align: left;

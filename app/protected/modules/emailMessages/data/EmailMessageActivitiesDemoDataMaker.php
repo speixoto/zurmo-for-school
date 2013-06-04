@@ -38,7 +38,6 @@
     {
         protected function populateMarketingItems($marketingItemClassName)
         {
-
             foreach($marketingItemClassName::getAll() as $marketingItem)
             {
                 $marketingItem->emailMessage = $this->makeEmailMessage($marketingItem->contact);

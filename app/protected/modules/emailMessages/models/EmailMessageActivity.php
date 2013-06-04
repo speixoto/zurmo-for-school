@@ -83,7 +83,7 @@
                     array('type',                   'type', 'type' => 'integer'),
                     array('type',                   'numerical', 'min' => static::TYPE_OPEN, 'max' => static::TYPE_BOUNCE),
                     array('quantity',               'required'),
-                    array('quantity',                'type', 'type' => 'integer'),
+                    array('quantity',               'type', 'type' => 'integer'),
                     array('quantity',               'numerical', 'integerOnly' => true),
                     array('latestSourceIP',         'type', 'type' => 'string'),
                 ),
@@ -305,7 +305,10 @@
             if ($type)
             {
                 $types  = static::getTypesArray();
-                $type   = $types[intval($this->type)];
+                if(isset($types[intval($this->type)]))
+                {
+                    $type   = $types[intval($this->type)];
+                }
             }
             return $this->latestDateTime . ': ' . strval($this->person) . '/' . $type;
         }
