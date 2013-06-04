@@ -226,6 +226,7 @@
                     'supportsRichText' => 'CheckBox',
                     'enableTracking'   => 'CheckBox',
                     'sendDateTime'     => 'DateTime',
+                    'status'           => 'CampaignStatus',
                 ),
                 'defaultSortAttribute' => 'name',
             );

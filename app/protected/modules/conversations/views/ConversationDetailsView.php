@@ -187,5 +187,13 @@
         {
             return Yii::app()->createUrl('/conversations/default/inlineCreateComment');
         }
+
+        /**
+         * Override to not display anything since conversations detail does not need this.
+         * @return string|void
+         */
+        protected function renderAfterFormLayoutForDetailsContent()
+        {
+        }
     }
 ?>

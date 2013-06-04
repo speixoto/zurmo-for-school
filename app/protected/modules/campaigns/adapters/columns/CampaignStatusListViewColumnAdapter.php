@@ -35,39 +35,21 @@
      ********************************************************************************/
 
     /**
-     * Zurmo specific view for details view.
-     * Used to manipulate elements for a form layout
-     * based on rights/permissions of the current user
+     * Class for working the campaign status
      */
-    abstract class SecuredDetailsView extends DetailsView
+    class CampaignStatusListViewColumnAdapter extends ListViewColumnAdapter
     {
         /**
-         * Override to handle security/access resolution on specific elements.
+         * @return array
          */
-        protected function resolveElementInformationDuringFormLayoutRender(& $elementInformation)
+        public function renderGridViewData()
         {
-            FormLayoutSecurityUtil::resolveElementForNonEditableRender(
-                $this->model, $elementInformation, Yii::app()->user->userModel);
-        }
-
-        protected function shouldRenderToolBarElement($element, $elementInformation)
-        {
-            assert('$element instanceof ActionElement');
-            assert('is_array($elementInformation)');
-            if (!parent::shouldRenderToolBarElement($element, $elementInformation))
-            {
-                return false;
-            }
-            return ActionSecurityUtil::canCurrentUserPerformAction($element->getActionType(), $this->model);
-        }
-
-        protected function renderAfterFormLayoutForDetailsContent()
-        {
-            $content                            = parent::renderAfterFormLayoutForDetailsContent();
-            $ownedSecurableItemDetailsContent   = OwnedSecurableItemDetailsViewUtil::renderAfterFormLayoutForDetailsContent(
-                $this->getModel(),
-                $content);
-            return $ownedSecurableItemDetailsContent;
+            return array(
+                'name'   => 'moduleClassName',
+                'header' => Campaign::getAnAttributeLabel('status'),
+                'type'   => 'raw',
+                'value'  => 'CampaignStatusElement::renderNonEditableStringContent((int)$data->status)'
+            );
         }
     }
 ?>

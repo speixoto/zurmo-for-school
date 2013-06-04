@@ -34,7 +34,7 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class CampaignDetailsOverlayView extends DetailsView
+    class CampaignDetailsOverlayView extends SecuredDetailsView
     {
         const DESCRIPTION_CLASS          = 'campaign-description';
 

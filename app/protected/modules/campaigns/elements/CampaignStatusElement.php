@@ -34,40 +34,36 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * Zurmo specific view for details view.
-     * Used to manipulate elements for a form layout
-     * based on rights/permissions of the current user
-     */
-    abstract class SecuredDetailsView extends DetailsView
+    class CampaignStatusElement extends StaticDropDownElement
     {
         /**
-         * Override to handle security/access resolution on specific elements.
+         * Called from outside to render status value as label. @see CampaignStatusListViewColumnAdapter
+         * Called from outside to render status value as label. @see CampaignStatusListViewColumnAdapter
+         * @param string $status
+         * @return string, translated status if available otherwise just return status value
          */
-        protected function resolveElementInformationDuringFormLayoutRender(& $elementInformation)
+        public static function renderNonEditableStringContent($status)
         {
-            FormLayoutSecurityUtil::resolveElementForNonEditableRender(
-                $this->model, $elementInformation, Yii::app()->user->userModel);
-        }
-
-        protected function shouldRenderToolBarElement($element, $elementInformation)
-        {
-            assert('$element instanceof ActionElement');
-            assert('is_array($elementInformation)');
-            if (!parent::shouldRenderToolBarElement($element, $elementInformation))
+            assert('is_int($status)');
+            $data = Campaign::getStatusDropDownArray();
+            if(isset($data[$status]))
             {
-                return false;
+                return $data[$status];
             }
-            return ActionSecurityUtil::canCurrentUserPerformAction($element->getActionType(), $this->model);
+            return $status;
+        }
+        /**
+         * @return A|void
+         * @throws NotSupportedException
+         */
+        protected function renderControlEditable()
+        {
+            throw new NotSupportedException();
         }
 
-        protected function renderAfterFormLayoutForDetailsContent()
+        protected function getDropDownArray()
         {
-            $content                            = parent::renderAfterFormLayoutForDetailsContent();
-            $ownedSecurableItemDetailsContent   = OwnedSecurableItemDetailsViewUtil::renderAfterFormLayoutForDetailsContent(
-                $this->getModel(),
-                $content);
-            return $ownedSecurableItemDetailsContent;
+            return Campaign::getStatusDropDownArray();
         }
     }
 ?>
