@@ -107,7 +107,7 @@
         /**
          * Called using Ajax.
          */
-        public function actionModalConfigSave($portletId, $uniqueLayoutId)
+        public function actionModalConfigSave($portletId, $uniqueLayoutId, array $portletParams = array())
         {
             $portlet           = Portlet::getById(intval($portletId));
             $configurableView  = $portlet->getView()->getConfigurationView();
@@ -115,18 +115,23 @@
             $portlet->serializedViewData = serialize($configurableView->getViewMetadata());
             $portlet->save();
             $portlet->forget();
-            $this->actionModalRefresh($portletId, $uniqueLayoutId, null);
+            $this->actionModalRefresh($portletId, $uniqueLayoutId, null, $portletParams);
         }
 
         /**
          * Refresh portlet contents within a dashboard or details relation view. In the case of details relation view
          * detect if the relationModelId is populated, in which case resolve and populate the relationModel.
          * Resets controller back to default.
+         * @param string $portletId
+         * @param string $uniqueLayoutId
+         * @param string $redirectUrl
          * @param array $portletParams - optional argument which allows you to override the standard parameters.
+         * @param bool $portletsAreRemovable
          */
         public function actionModalRefresh($portletId, $uniqueLayoutId, $redirectUrl, array $portletParams = array(),
                                            $portletsAreRemovable = true)
         {
+
             $portlet = Portlet::getById(intval($portletId));
             $portlet->params = array_merge(array(
                     'controllerId' => 'default',

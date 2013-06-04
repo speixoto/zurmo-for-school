@@ -50,5 +50,7 @@
         public static function getModuleClassName();
 
         public function renderPortletHeadContent();
+
+        public function getPortletParams();
     }
 ?>

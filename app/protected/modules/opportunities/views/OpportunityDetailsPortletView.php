@@ -62,6 +62,11 @@
             parent::__construct('Details', $this->controllerId, $this->moduleId, $params["relationModel"]);
         }
 
+        public function getPortletParams()
+        {
+            return array();
+        }
+
         public static function getPortletRulesType()
         {
             return 'Detail';

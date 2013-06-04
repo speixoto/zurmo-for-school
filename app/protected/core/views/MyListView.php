@@ -58,6 +58,11 @@
             $this->moduleId          = $this->resolveModuleId();
         }
 
+        public function getPortletParams()
+        {
+            return array();
+        }
+
         public function renderPortletHeadContent()
         {
             return null;

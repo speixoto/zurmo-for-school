@@ -80,6 +80,11 @@
             $this->moduleId          = $this->resolveModuleId();
         }
 
+        public function getPortletParams()
+        {
+            return array();
+        }
+
         protected function getShowTableOnEmpty()
         {
             return false;

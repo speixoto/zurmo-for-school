@@ -70,6 +70,11 @@
             $this->moduleId          = $this->resolveModuleId();
         }
 
+        public function getPortletParams()
+        {
+            return array();
+        }
+
         /**
          * Renders content for a calendar.
          * @return A string containing the element's content.

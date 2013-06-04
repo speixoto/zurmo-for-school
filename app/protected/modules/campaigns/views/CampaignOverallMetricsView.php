@@ -37,7 +37,7 @@
     /**
      * Class for displaying metrics specific to a campaign
      */
-    class CampaignOverallMetricsView extends MarketingMetricsView implements PortletViewInterface
+    class CampaignOverallMetricsView extends MarketingMetricsView
     {
         /**
          * @var string

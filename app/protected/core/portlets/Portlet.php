@@ -190,8 +190,9 @@
 
         public function getView()
         {
-            $className = $this->viewType . 'View';
+            $className                 = $this->viewType . 'View';
             $this->params['portletId'] = $this->id;
+            $this->params['layoutId']  = $this->layoutId;
             $this->view = new $className(unserialize($this->serializedViewData), $this->params, $this->getUniquePortletPageId());
             return $this->view;
         }
@@ -224,6 +225,11 @@
         public function renderHeadContent()
         {
             return $this->getView()->renderPortletHeadContent();
+        }
+
+        public function getPortletParams()
+        {
+            return $this->getView()->getPortletParams();
         }
 
         public function isEditable()

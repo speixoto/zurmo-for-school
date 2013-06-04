@@ -61,14 +61,15 @@
         protected function renderContent()
         {
             $juiPortletItem = array(
-            'id'          => $this->portlet->id,
-            'uniqueId'    => $this->portlet->getUniquePortletPageId(),
-            'title'       => $this->portlet->getTitle(),
-            'content'     => $this->portlet->renderContent(),
-            'headContent' => $this->portlet->renderHeadContent(),
-            'editable'    => $this->portlet->isEditable(),
-            'collapsed'   => $this->portlet->collapsed,
-            'removable'   => $this->arePortletsRemovable(),
+                'id'            => $this->portlet->id,
+                'uniqueId'      => $this->portlet->getUniquePortletPageId(),
+                'title'         => $this->portlet->getTitle(),
+                'content'       => $this->portlet->renderContent(),
+                'headContent'   => $this->portlet->renderHeadContent(),
+                'editable'      => $this->portlet->isEditable(),
+                'collapsed'     => $this->portlet->collapsed,
+                'removable'     => $this->arePortletsRemovable(),
+                'portletParams' => $this->portlet->getPortletParams(),
             );
             $cClipWidget = new CClipWidget();
             $cClipWidget->beginClip("JuiPortlet");

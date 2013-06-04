@@ -40,6 +40,7 @@
 
         public function __construct(Autoresponder $autoresponder)
         {
+            assert('$autoresponder->id > 0');
             $this->autoresponder = $autoresponder;
         }
 
@@ -60,7 +61,7 @@
 
         protected static function makeSearchAttributeData(Autoresponder $autoresponder)
         {
-            assert('$autoresponder->id > 0)');
+            assert('$autoresponder->id > 0');
             $searchAttributeData = array();
             $searchAttributeData['clauses'][1] = array(
                     'attributeName'        => 'id',

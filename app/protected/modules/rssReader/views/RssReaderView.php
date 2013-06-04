@@ -55,6 +55,11 @@
             $this->uniqueLayoutId = $uniqueLayoutId;
         }
 
+        public function getPortletParams()
+        {
+            return array();
+        }
+
         public function renderContent()
         {
             $cClipWidget = new CClipWidget();

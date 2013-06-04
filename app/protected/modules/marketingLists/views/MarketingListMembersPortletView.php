@@ -88,6 +88,11 @@
             $this->uniquePageId   = get_called_class();
         }
 
+        public function getPortletParams()
+        {
+            return array();
+        }
+
         public function renderPortletHeadContent()
         {
             return null;
