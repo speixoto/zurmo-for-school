@@ -37,6 +37,24 @@
             return parent::beforeAction($action);
         }
 
+        public function actionSourceFiles($id)
+        {
+            $formContentUrl          = Yii::app()->createAbsoluteUrl('contacts/external/form/', array('id' => $id));
+            $renderFormFileUrl       = Yii::app()->getAssetManager()->getPublishedUrl(Yii::getPathOfAlias('application.core.views.assets') .
+                                       DIRECTORY_SEPARATOR . 'renderExternalForm.js');
+            if ($renderFormFileUrl === false || file_exists($renderFormFileUrl) === false)
+            {
+                $renderFormFileUrl   = Yii::app()->getAssetManager()->publish(Yii::getPathOfAlias('application.core.views.assets') .
+                                       DIRECTORY_SEPARATOR . 'renderExternalForm.js');
+            }
+            $renderFormFileUrl      = Yii::app()->getRequest()->getHostInfo() . $renderFormFileUrl;
+            $jsOutput               = "var formContentUrl = '" . $formContentUrl . "';";
+            $jsOutput              .= "var externalFormScriptElement = document.createElement('script');
+                                       externalFormScriptElement.src = '" . $renderFormFileUrl . "';
+                                       document.getElementsByTagName('head')[0].appendChild(externalFormScriptElement);";
+            $this->renderResponse($jsOutput);
+        }
+
         public function actionForm($id)
         {
             Yii::app()->getClientScript()->setIsolationMode();
@@ -60,45 +78,43 @@
                                                         makeExternalViewForCurrentUser($containedView));
             if (isset($_POST[$postVariableName]) && isset($contact->id) && intval($contact->id) > 0)
             {
-                static::resolveContactWebFormEntry($contactWebForm, $contact);
-                $callback = Yii::app()->getRequest()->getQuery('callback');
-                echo $callback . "('" . $contactWebForm->redirectUrl . "');";
-                Yii::app()->end(0, false);
+                $this->resolveContactWebFormEntry($contactWebForm, $contact);
+                $responseData                        = array();
+                $responseData['redirectUrl']         = $contactWebForm->redirectUrl;
+                $this->renderResponse(CJSON::encode($responseData));
             }
             $rawXHtml                                = $view->render();
             $rawXHtml                                = ZurmoExternalViewUtil::resolveAndCombineScripts($rawXHtml);
             $combinedHtml                            = array();
             $combinedHtml['head']                    = ZurmoExternalViewUtil::resolveHeadTag($rawXHtml);
             $combinedHtml['body']                    = ZurmoExternalViewUtil::resolveHtmlAndScriptInBody($rawXHtml);
-            header("content-type: application/json");
-            echo 'renderFormCallback('. CJSON::encode($combinedHtml) . ');';
-            Yii::app()->end(0, false);
+            $response = 'renderFormCallback('. CJSON::encode($combinedHtml) . ');';
+            $this->renderResponse($response);
         }
 
         protected function attemptToValidate($contactWebForm)
         {
             if (isset($_POST['ajax']) && $_POST['ajax'] == 'edit-form')
             {
-                $callback       = Yii::app()->getRequest()->getQuery('callback');
                 $contact        = new Contact();
                 $contact->setAttributes($_POST['Contact']);
                 $contact->state = $contactWebForm->defaultState;
                 $contact->owner = $contactWebForm->defaultOwner;
-                static::resolveContactWebFormEntry($contactWebForm, $contact);
+                $this->resolveContactWebFormEntry($contactWebForm, $contact);
                 if ($contact->validate())
                 {
-                    echo $callback . '(' . CJSON::encode(array()) . ');';
+                    $response = CJSON::encode(array());
                 }
                 else
                 {
                     $errorData = ZurmoActiveForm::makeErrorsDataAndResolveForOwnedModelAttributes($contact);
-                    echo $callback . '(' . CJSON::encode($errorData) . ');';
+                    $response = CJSON::encode($errorData);
                 }
-                Yii::app()->end(0, false);
+                $this->renderResponse($response);
             }
         }
 
-        public static function resolveContactWebFormEntry($contactWebForm, $contact)
+        protected function resolveContactWebFormEntry($contactWebForm, $contact)
         {
             $contactFormAttributes               = $_POST['Contact'];
             $contactFormAttributes['owner']      = $contactWebForm->defaultOwner->id;
@@ -136,23 +152,11 @@
             $contactWebFormEntry->save();
         }
 
-        public function actionSourceFiles($id)
+        protected function renderResponse($responseContent)
         {
-            $formContentUrl          = Yii::app()->createAbsoluteUrl('contacts/external/form/', array('id' => $id));
-            $renderFormFileUrl       = Yii::app()->getAssetManager()->getPublishedUrl(Yii::getPathOfAlias('application.core.views.assets') .
-                                       DIRECTORY_SEPARATOR . 'renderExternalForm.js');
-            if ($renderFormFileUrl === false || file_exists($renderFormFileUrl) === false)
-            {
-                $renderFormFileUrl   = Yii::app()->getAssetManager()->publish(Yii::getPathOfAlias('application.core.views.assets') .
-                                       DIRECTORY_SEPARATOR . 'renderExternalForm.js');
-            }
-            $renderFormFileUrl      = Yii::app()->getRequest()->getHostInfo() . $renderFormFileUrl;
-            $jsOutput               = "var formContentUrl = '" . $formContentUrl . "';";
-            $jsOutput              .= "var externalFormScriptElement = document.createElement('script');
-                                       externalFormScriptElement.src = '" . $renderFormFileUrl . "';
-                                       document.getElementsByTagName('head')[0].appendChild(externalFormScriptElement);";
-            header("content-type: application/javascript");
-            echo $jsOutput;
+            header('Access-Control-Allow-Origin: *');
+            header("content-type: application/json");
+            echo $responseContent;
             Yii::app()->end(0, false);
         }
 

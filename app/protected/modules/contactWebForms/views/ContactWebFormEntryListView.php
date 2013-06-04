@@ -45,7 +45,7 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'contactWebForm', 'type' => 'ContactWebForm', 'isLink' => true),
+                                                array('attributeName' => 'contactWebForm', 'type' => 'ContactWebForm', 'isLink' => false),
                                             ),
                                         ),
                                     )
@@ -54,7 +54,7 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'createdDateTime', 'type' => 'DateTime', 'isLink' => true),
+                                                array('attributeName' => 'createdDateTime', 'type' => 'DateTime', 'isLink' => false),
                                             ),
                                         ),
                                     )
@@ -63,7 +63,7 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'contact', 'type' => 'Contact', 'isLink' => true),
+                                                array('attributeName' => 'contact', 'type' => 'Contact', 'isLink' => false),
                                             ),
                                         ),
                                     )

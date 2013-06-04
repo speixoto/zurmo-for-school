@@ -86,11 +86,14 @@
             return ZurmoHtml::ajax(array(
                                          'type'     => 'POST',
                                          'data'     => 'js:$("#' . $formId . '").serialize()',
-                                         'dataType' => 'jsonp',
                                          'url'      =>  $this->getValidateAndSaveUrl(),
-                                         'success'  => 'js: function(redirectUrl)
+                                         'success'  => 'js: function(data)
                                                         {
-                                                            window.location.href = redirectUrl;
+                                                            if (typeof data.redirectUrl !== \'undefined\' &&
+                                                                $(this).isValidUrl(data.redirectUrl))
+                                                            {
+                                                                window.location.href = data.redirectUrl;
+                                                            }
                                                         }'
                                   ));
         }
@@ -134,12 +137,19 @@
 
         protected function renderAfterFormLayout($form)
         {
-            $htmlOptions = array(
+            $hashIndexHtmlOptions = array(
                 'name'     => $this->hiddenField,
                 'id'       => $this->hiddenField,
                 'value'    => md5('ContactWebFormEntry'.time()),
             );
-            return $form->hiddenField($this->model, $this->hiddenField, $htmlOptions);
+            $content = $form->hiddenField($this->model, $this->hiddenField, $hashIndexHtmlOptions);
+            $externalRequestTokenHtmlOptions = array(
+                'name'     => ZurmoHttpRequest::EXTERNAL_REQUEST_TOKEN,
+                'id'       => ZurmoHttpRequest::EXTERNAL_REQUEST_TOKEN,
+                'value'    => ZURMO_TOKEN,
+            );
+            $content .= $form->hiddenField($this->model, ZurmoHttpRequest::EXTERNAL_REQUEST_TOKEN, $externalRequestTokenHtmlOptions);
+            return $content;
         }
     }
 ?>
