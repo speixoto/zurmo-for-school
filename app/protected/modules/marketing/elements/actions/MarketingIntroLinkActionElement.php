@@ -81,7 +81,7 @@
 
         protected function getDefaultLabel()
         {
-            return Zurmo::t('MarketingModule', '?');
+            return Zurmo::t('MarketingModule', 'n');
         }
 
         protected function getDefaultRoute()
@@ -121,7 +121,7 @@
                             {
                                 document.cookie = '" . MarketingDashboardIntroView::resolveCookieId() . "=';
                             }
-                            $('#" . MarketingDashboardIntroView::PANEL_ID . "').toggle();
+                            $('#" . MarketingDashboardIntroView::PANEL_ID . "').slideToggle();
                         });";
             Yii::app()->clientScript->registerScript(get_class() . 'CheckBoxClickScript', $script);
         }

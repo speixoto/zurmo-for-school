@@ -152,7 +152,7 @@
                                                     },
                                         beforeSend: function(request, settings)
                                                     {
-                                                        $(this).makeLargeLoadingSpinner(true, ".email-template-combined-content");
+                                                        $(this).makeLargeLoadingSpinner(true, ".email-template-content");
                                                         if (disableDropDown == true)
                                                         {
                                                             $(dropDown).attr("disabled", "disabled");
@@ -167,7 +167,8 @@
                                                     },
                                         success:    function(data, status, request)
                                                     {
-                                                        $(this).makeLargeLoadingSpinner(false, ".email-template-combined-content");
+                                                        $(this).makeLargeLoadingSpinner(false, ".email-template-content");
+                                                        $(".email-template-content .big-spinner").remove();
                                                         updateContentAreaWithDataFromAjax(textContentElement,
                                                                                             htmlContentElement,
                                                                                             redActorElement,
