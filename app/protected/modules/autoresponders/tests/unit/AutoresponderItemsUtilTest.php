@@ -335,5 +335,44 @@
                 $this->assertEquals($files[$index]['contents'], $emailMessage->files[$index]->fileContent->content);
             }
         }
+
+        /**
+         * @depends testProcessDueAutoresponderItemWithAttachments
+         */
+        public function testProcessDueAutoresponderItemWithOptout()
+        {
+            $email                      = new Email();
+            $email->emailAddress        = 'demo@zurmo.com';
+            $email->optOut              = true;
+            $contact                    = ContactTestHelper::createContactByNameForOwner('contact 06', $this->user);
+            $contact->primaryEmail      = $email;
+            $this->assertTrue($contact->save());
+            $marketingList              = MarketingListTestHelper::createMarketingListByName('marketingList 07',
+                                                                                                    'description',
+                                                                                                    'CustomFromName',
+                                                                                                    'custom@from.com');
+            $autoresponder              = AutoresponderTestHelper::createAutoresponder('subject 07',
+                                                                                'Dr. [[FIRST^NAME]] [[LAST^NAME]]',
+                                                                                '<b>[[LAST^NAME]]</b>, [[FIRST^NAME]]',
+                                                                                1,
+                                                                                Autoresponder::OPERATION_SUBSCRIBE,
+                                                                                true,
+                                                                                $marketingList);
+            $processed                  = 0;
+            $processDateTime            = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
+            $autoresponderItem          = AutoresponderItemTestHelper::createAutoresponderItem($processed,
+                                                                                                    $processDateTime,
+                                                                                                    $autoresponder,
+                                                                                                    $contact);
+            AutoresponderItemsUtil::processDueItem($autoresponderItem);
+            $this->assertEquals(1, $autoresponderItem->processed);
+            $personId                   = $contact->getClassId('Person');
+            $activities                = AutoresponderItemActivity::getByTypeAndModelIdAndPersonIdAndUrl(
+                                                                                AutoresponderItemActivity::TYPE_SKIPPED,
+                                                                                $autoresponderItem->id,
+                                                                                $personId);
+            $this->assertNotEmpty($activities);
+            $this->assertCount(1, $activities);
+        }
     }
 ?>

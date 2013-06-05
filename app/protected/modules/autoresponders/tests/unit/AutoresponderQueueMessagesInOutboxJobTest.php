@@ -310,6 +310,61 @@
                                                                                         0,
                                                                                         $autoresponder->id);
             $this->assertCount(2, $unprocessedItems);
+            AutoresponderOrCampaignBatchSizeConfigUtil::setBatchSize(10);
+            $this->assertTrue($job->run());
+            $unprocessedItems               = AutoresponderItem::getByProcessedAndAutoresponderId(
+                                                                                        0,
+                                                                                        $autoresponder->id);
+            $this->assertCount(0, $unprocessedItems);
+        }
+
+        /**
+         * @depends testRunWithCustomBatchSize
+         */
+        public function testRunWithContactContainingPrimaryEmailOptedOut()
+        {
+            $unprocessedItems           = AutoresponderItem::getByProcessed(0);
+            $this->assertEmpty($unprocessedItems);
+            $job                        = new AutoresponderQueueMessagesInOutboxJob();
+            $email                      = new Email();
+            $email->emailAddress        = 'demo@zurmo.com';
+            $email->optOut              = true;
+            $contact                    = ContactTestHelper::createContactByNameForOwner('contact 07', $this->user);
+            $contact->primaryEmail      = $email;
+            $this->assertTrue($contact->save());
+            $marketingList              = MarketingListTestHelper::createMarketingListByName('marketingList 08',
+                                                                                                'description goes here',
+                                                                                                'fromName',
+                                                                                                'from@domain.com');
+            $autoresponder              = AutoresponderTestHelper::createAutoresponder('subject 08',
+                                                                                    '[[FIRST^NAME]]',
+                                                                                    '[[LAST^NAME]]',
+                                                                                    1,
+                                                                                    Autoresponder::OPERATION_SUBSCRIBE,
+                                                                                    true,
+                                                                                    $marketingList);
+            $processed                  = 0;
+            $processDateTime            = DateTimeUtil::convertTimestampToDbFormatDateTime(time() - rand(10, 500));
+            $autoresponderItem          = AutoresponderItemTestHelper::createAutoresponderItem($processed,
+                                                                                                    $processDateTime,
+                                                                                                    $autoresponder,
+                                                                                                    $contact);
+            $unprocessedItems           = AutoresponderItem::getByProcessedAndAutoresponderId(
+                                                                                                    0,
+                                                                                                    $autoresponder->id);
+            $this->assertCount(1, $unprocessedItems);
+            $this->assertTrue($job->run());
+            $unprocessedItems               = AutoresponderItem::getByProcessedAndAutoresponderId(
+                                                                                                    0,
+                                                                                                    $autoresponder->id);
+            $this->assertCount(0, $unprocessedItems);
+            $personId                   = $contact->getClassId('Person');
+            $activities                = AutoresponderItemActivity::getByTypeAndModelIdAndPersonIdAndUrl(
+                                                                                AutoresponderItemActivity::TYPE_SKIPPED,
+                                                                                $autoresponderItem->id,
+                                                                                $personId);
+            $this->assertNotEmpty($activities);
+            $this->assertCount(1, $activities);
         }
     }
 ?>

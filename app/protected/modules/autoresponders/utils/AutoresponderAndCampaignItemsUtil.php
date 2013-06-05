@@ -53,21 +53,33 @@
             $itemOwnerModel             = $item->$ownerModelRelationName;
             assert('is_object($itemOwnerModel)');
             assert('get_class($itemOwnerModel) === "Autoresponder" || get_class($itemOwnerModel) === "Campaign"');
-            $marketingList              = $itemOwnerModel->marketingList;
-            assert('is_object($marketingList)');
-            assert('get_class($marketingList) === "MarketingList"');
-            $textContent                = $itemOwnerModel->textContent;
-            $htmlContent                = $itemOwnerModel->htmlContent;
-            static::resolveContent($textContent, $htmlContent, $contact, $itemOwnerModel->enableTracking,
-                                                                $item->id, $itemClass, $contact, $marketingList->id);
-            try
+            if ($contact->primaryEmail->optOut)
             {
-                $item->emailMessage = static::resolveEmailMessage($textContent, $htmlContent, $itemOwnerModel,
-                                                                                            $contact, $marketingList);
+                // TODO: @Shoaibi: Critical: Test, ensure activity is created for optout one, no items created.
+                $activityClass  = $itemClass . 'Activity';
+                $personId       = $contact->getClassId('Person');
+                $type           = $activityClass::TYPE_SKIPPED;
+                $modelId        = $item->id;
+                $activityClass::createNewActivity($type, $modelId, $personId);
             }
-            catch (MissingRecipientsForEmailMessageException $e)
+            else
             {
-                // TODO: @Shoaibi/@Jason: Medium: Do something about it.
+                $marketingList              = $itemOwnerModel->marketingList;
+                assert('is_object($marketingList)');
+                assert('get_class($marketingList) === "MarketingList"');
+                $textContent                = $itemOwnerModel->textContent;
+                $htmlContent                = $itemOwnerModel->htmlContent;
+                static::resolveContent($textContent, $htmlContent, $contact, $itemOwnerModel->enableTracking,
+                                                                    $item->id, $itemClass, $contact, $marketingList->id);
+                try
+                {
+                    $item->emailMessage = static::resolveEmailMessage($textContent, $htmlContent, $itemOwnerModel,
+                                                                                                $contact, $marketingList);
+                }
+                catch (MissingRecipientsForEmailMessageException $e)
+                {
+                    // TODO: @Shoaibi/@Jason: Medium: Do something about it.
+                }
             }
             static::markItemAsProcessed($item);
         }

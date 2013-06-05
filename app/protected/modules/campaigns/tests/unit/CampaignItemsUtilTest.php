@@ -470,6 +470,45 @@
             // TODO: @Shoaibi: Medium: Add tests for the other campaign type.
         }
 
+        /**
+         * @depends testGenerateCampaignItemsForDueCampaignsWithCustomBatchSize
+         */
+        public function testProcessDueCampaignItemWithOptout()
+        {
+            $email                      = new Email();
+            $email->emailAddress        = 'demo@zurmo.com';
+            $email->optOut              = true;
+            $contact                    = ContactTestHelper::createContactByNameForOwner('contact 08', $this->user);
+            $contact->primaryEmail      = $email;
+            $this->assertTrue($contact->save());
+            $marketingList              = MarketingListTestHelper::createMarketingListByName('marketingList 08',
+                                                                                                'description',
+                                                                                                'CustomFromName',
+                                                                                                'custom@from.com');
+            $campaign                   = CampaignTestHelper::createCampaign('campaign 08',
+                                                                                'subject 08',
+                                                                                'Dr. [[FIRST^NAME]] [[LAST^NAME]]',
+                                                                                '<b>[[LAST^NAME]]</b>, [[FIRST^NAME]]',
+                                                                                null,
+                                                                                null,
+                                                                                null,
+                                                                                null,
+                                                                                null,
+                                                                                null,
+                                                                                $marketingList);
+            $processed                  = 0;
+            $campaignItem               = CampaignItemTestHelper::createCampaignItem($processed, $campaign, $contact);
+            CampaignItemsUtil::processDueItem($campaignItem);
+            $this->assertEquals(1, $campaignItem->processed);
+            $personId                   = $contact->getClassId('Person');
+            $activities                 = CampaignItemActivity::getByTypeAndModelIdAndPersonIdAndUrl(
+                                                                                CampaignItemActivity::TYPE_SKIPPED,
+                                                                                $campaignItem->id,
+                                                                                $personId);
+            $this->assertNotEmpty($activities);
+            $this->assertCount(1, $activities);
+        }
+
         protected function purgeAllCampaigns()
         {
             $campaigns = Campaign::getAll();

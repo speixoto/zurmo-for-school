@@ -39,13 +39,15 @@
      */
     class EmailMessageActivity extends Item
     {
-        const TYPE_OPEN        = 1;
+        const TYPE_OPEN         = 1;
 
-        const TYPE_CLICK       = 2;
+        const TYPE_CLICK        = 2;
 
-        const TYPE_UNSUBSCRIBE = 3;
+        const TYPE_UNSUBSCRIBE  = 3;
 
-        const TYPE_BOUNCE      = 4;
+        const TYPE_BOUNCE       = 4;
+
+        const TYPE_SKIPPED      = 5;
 
         public static function getTypesArray()
         {
@@ -54,6 +56,7 @@
                 static::TYPE_CLICK          => Zurmo::t('EmailMessagesModule', 'Click'),
                 static::TYPE_UNSUBSCRIBE    => Zurmo::t('EmailMessagesModule', 'Unsubscribe'),
                 static::TYPE_BOUNCE         => Zurmo::t('EmailMessagesModule', 'Bounce'),
+                static::TYPE_SKIPPED        => Zurmo::t('EmailMessagesModule', 'Skipped'),
             );
         }
 
@@ -81,7 +84,7 @@
                     array('latestDateTime',         'type', 'type' => 'datetime'),
                     array('type',                   'required'),
                     array('type',                   'type', 'type' => 'integer'),
-                    array('type',                   'numerical', 'min' => static::TYPE_OPEN, 'max' => static::TYPE_BOUNCE),
+                    array('type',                   'numerical', 'min' => static::TYPE_OPEN, 'max' => static::TYPE_SKIPPED),
                     array('quantity',               'required'),
                     array('quantity',               'type', 'type' => 'integer'),
                     array('quantity',               'numerical', 'integerOnly' => true),

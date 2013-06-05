@@ -169,7 +169,7 @@
             $content    = $this->runControllerWithNoExceptionsAndGetContent('marketingLists/default/list');
             $this->assertTrue(strpos($content, '2 result(s)') !== false);
             $this->assertEquals(2, substr_count($content, 'MarketingListName'));
-            $this->assertTrue(strpos($content, 'nobody nobodyson') === false);
+            $this->assertTrue(strpos($content, 'nobody nobodyson') !== false);
 
             StickyReportUtil::clearDataByKey('MarketingListsSearchForm');
             $this->setGetArray(array(
