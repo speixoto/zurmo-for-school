@@ -60,15 +60,23 @@
                                                      array('id' => $contact->id));
             $linkContent     = ActionSecurityUtil::resolveLinkToModelForCurrentUser(strval($contact), $contact,
                                $moduleClassName, $linkRoute);
-            if($linkContent == null){
-                $title       = Zurmo::t('CampaignsModule', 'This recipient is restricted, you do not have access to see it.');
-                $tooltip     = ZurmoHtml::tag('span', array('class' => 'tooltip', 'title' => $title), '?');
-                $linkContent = ZurmoHtml::tag('em', array(), Zurmo::t('CampaignsModule', 'Restricted')) . $tooltip;
+            if($linkContent == null)
+            {
+                $linkContent = static::renderRestrictedContactAccessLink($contact);
             }
-            //todo: @amit if null - need to show 'restricted' in maybe a pill type background color. with a question mark
-            //or on hover (without question that shows the tooltip to explain why it is restricted)
-            //todo: @jason - not sure the wording and on the ::t category, also please render qtip jquery here
             return ZurmoHtml::tag('div', array('class' => 'email-recipient-name'), $linkContent);
+        }
+
+        protected static function renderRestrictedContactAccessLink(Contact $contact)
+        {
+            $title       = Zurmo::t('CampaignsModule', 'You cannot see this contact due to limited access');
+            $content     = ZurmoHtml::tag('em', array(), Zurmo::t('CampaignsModule', 'Restricted'));
+            $content    .= ZurmoHtml::tag('span', array('id'    => 'restricted-access-contact-tooltip' . $contact->id,
+                                                        'class' => 'tooltip',
+                                                        'title' => $title), '?');
+            $qtip = new ZurmoTip(array('options' => array('position' => array('my' => 'bottom right', 'at' => 'top left'))));
+            $qtip->addQTip('restricted-access-contact-tooltip' . $contact->id);
+            return $content;
         }
 
         protected static function resolveModuleClassName(Contact $contact)
@@ -86,52 +94,78 @@
         protected static function renderMetricsContent(CampaignItem $campaignItem)
         {
             $isQueued     = $campaignItem->isQueued();
-            if(!$isQueued)
+            if($isQueued)
             {
-                $isSent           = $campaignItem->isSent(); //we need to show them if its a continum
-                $failedToSend     = $campaignItem->hasFailedToSend();//we need to show them if its a continum
-                $hasOpened        = $campaignItem->hasAtLeastOneOpenActivity();
-                $hasClicked       = $campaignItem->hasAtLeastOneClickActivity();
-                $hasUnsubscribed  = $campaignItem->hasAtLeastOneUnsubscribeActivity();
-                $hasBounced       = $campaignItem->hasAtLeastOneBounceActivity();
+                $content = static::getQueuedContent();
             }
+            elseif($campaignItem->hasFailedToSend())
+            {
+                $content = static::getSendFailedContent();
+            }
+            else //sent
+            {
+                $content = static::getSentContent();
+                if($campaignItem->hasAtLeastOneOpenActivity())
+                {
+                    $content .= static::getOpenedContent();
+                }
+                if($campaignItem->hasAtLeastOneClickActivity())
+                {
+                    $content .= static::getClickedContent();
+                }
+                if($campaignItem->hasAtLeastOneUnsubscribeActivity())
+                {
+                    $content .= static::getUnsubscribedContent();
+                }
+                if($campaignItem->hasAtLeastOneBounceActivity())
+                {
+                    $content .= static::getBouncedContent();
+                }
+            }
+            $clearFixContent = ZurmoHtml::tag('div', array('class' => 'clearfix'), $content);
+            return ZurmoHtml::tag('div', array('class' => 'continuum'), $clearFixContent);
+        }
 
-            $content = '<div class="continuum">
-                            <div class="clearfix">
-                                <div class="email-recipient-stage-status queued"><i>&#9679;</i><span>Queued</span></div>
-                            </div>
-                       </div>
+        protected static function getQueuedContent()
+        {
+            $content = '<i>&#9679;</i><span>' . Zurmo::t('MarketingModule', 'Queued') . '</span>';
+            return ZurmoHtml::tag('div', array('class' => 'email-recipient-stage-status queued'), $content);
+        }
 
-                       <div class="continuum">
-                            <div class="clearfix">
-                                <div class="email-recipient-stage-status queued stage-true"><i>&#9679;</i><span>Sent</span></div>
-                            </div>
-                       </div>
+        protected static function getSentContent()
+        {
+            $content = '<i>&#9679;</i><span>' . Zurmo::t('MarketingModule', 'Sent') . '</span>';
+            return ZurmoHtml::tag('div', array('class' => 'email-recipient-stage-status stage-true'), $content);
+        }
 
-                       <div class="continuum">
-                            <div class="clearfix">
-                                <div class="email-recipient-stage-status queued stage-true"><i>&#9679;</i><span>Sent</span></div>
-                                <div class="email-recipient-stage-status queued stage-false"><i>&#9679;</i><span>Bounced</span></div>
-                            </div>
-                       </div>
+        protected static function getSendFailedContent()
+        {
+            $content = '<i>&#9679;</i><span>' . Zurmo::t('MarketingModule', 'Send Failed') . '</span>';
+            return ZurmoHtml::tag('div', array('class' => 'email-recipient-stage-status stage-false'), $content);
+        }
 
-                       <div class="continuum">
-                            <div class="clearfix">
-                                <div class="email-recipient-stage-status queued stage-false"><i>&#9679;</i><span>Sent Failed</span></div>
-                            </div>
-                       </div>
+        protected static function getOpenedContent()
+        {
+            $content = '<i>&#9679;</i><span>' . Zurmo::t('MarketingModule', 'Opened') . '</span>';
+            return ZurmoHtml::tag('div', array('class' => 'email-recipient-stage-status stage-true'), $content);
+        }
 
-                       <div class="continuum">
-                            <div class="clearfix">
-                                <div class="email-recipient-stage-status queued stage-true"><i>&#9679;</i><span>Sent</span></div>
-                                <div class="email-recipient-stage-status stage-true"><i>&#9679;</i><span>Opened</span></div>
-                                <div class="email-recipient-stage-status stage-true"><i>&#9679;</i><span>Clicked</span></div>
-                                <div class="email-recipient-stage-status stage-false"><i>&#9679;</i><span>Unsubscribed</span></div>
-                            </div>
-                       </div>
-                        ';
+        protected static function getClickedContent()
+        {
+            $content = '<i>&#9679;</i><span>' . Zurmo::t('MarketingModule', 'Clicked') . '</span>';
+            return ZurmoHtml::tag('div', array('class' => 'email-recipient-stage-status stage-true'), $content);
+        }
 
-            return $content;
+        protected static function getUnsubscribedContent()
+        {
+            $content = '<i>&#9679;</i><span>' . Zurmo::t('MarketingModule', 'Unsubscribed') . '</span>';
+            return ZurmoHtml::tag('div', array('class' => 'email-recipient-stage-status stage-false'), $content);
+        }
+
+        protected static function getBouncedContent()
+        {
+            $content = '<i>&#9679;</i><span>' . Zurmo::t('MarketingModule', 'Bounced') . '</span>';
+            return ZurmoHtml::tag('div', array('class' => 'email-recipient-stage-status stage-false'), $content);
         }
     }
 ?>

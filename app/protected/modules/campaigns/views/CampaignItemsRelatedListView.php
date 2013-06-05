@@ -90,8 +90,7 @@
         {
             $moduleLabel     = Zurmo::t('CampaignsModule', 'Email Recipients');
             $content  = '<div class="general-issue-notice no-email-recipients-found"><span class="icon-notice"></span><p>';
-            $content .= Zurmo::t('Core', 'No {moduleLabelPluralLowerCase} found, they show up once the sending job has started',
-                                 array('{moduleLabelPluralLowerCase}' => $moduleLabel));
+            $content .= Zurmo::t('Core', 'Email recipients will appear here once the campaign begins sending out');
             $content .= '</p></div>';
             return $content;
         }
