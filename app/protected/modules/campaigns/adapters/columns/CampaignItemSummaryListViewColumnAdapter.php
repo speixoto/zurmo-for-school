@@ -73,8 +73,9 @@
             $content    .= ZurmoHtml::tag('span', array('id'    => 'restricted-access-contact-tooltip' . $contact->id,
                                                         'class' => 'tooltip',
                                                         'title' => $title), '?');
-            $qtip = new ZurmoTip(array('options' => array('position' => array('my' => 'bottom right', 'at' => 'top left'))));
-            $qtip->addQTip('restricted-access-contact-tooltip' . $contact->id);
+            $qtip = new ZurmoTip(array('options' => array('position' => array('my' => 'bottom left', 'at' => 'top left',
+                                                          'adjust' => array('x' => 6, 'y' => -1)))));
+            $qtip->addQTip('#restricted-access-contact-tooltip' . $contact->id);
             return $content;
         }
 
