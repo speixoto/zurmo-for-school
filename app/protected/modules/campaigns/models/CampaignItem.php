@@ -268,7 +268,7 @@
         public function hasAtLeastOneOpenActivity()
         {
             $count = CampaignItemActivity::getChildActivityByTypeAndModelIdAndModelRelationNameAndPersonIdAndUrl(
-                                           CampaignItemActivity::TYPE_OPEN, $this->campaign->id, 'campaignItem',
+                                           CampaignItemActivity::TYPE_OPEN, $this->campaign->id, 'campaign',
                                            $this->contact->getClassId('Person'), null, 'latestDateTime', null, true);
             if($count > 0)
             {
@@ -283,7 +283,7 @@
         public function hasAtLeastOneClickActivity()
         {
             $count = CampaignItemActivity::getChildActivityByTypeAndModelIdAndModelRelationNameAndPersonIdAndUrl(
-                                           CampaignItemActivity::TYPE_CLICK, $this->campaign->id, 'campaignItem',
+                                           CampaignItemActivity::TYPE_CLICK, $this->campaign->id, 'campaign',
                                            $this->contact->getClassId('Person'), null, 'latestDateTime', null, true);
             if($count > 0)
             {
@@ -298,7 +298,7 @@
         public function hasAtLeastOneUnsubscribeActivity()
         {
              $count = CampaignItemActivity::getChildActivityByTypeAndModelIdAndModelRelationNameAndPersonIdAndUrl(
-                                           CampaignItemActivity::TYPE_UNSUBSCRIBE, $this->campaign->id, 'campaignItem',
+                                           CampaignItemActivity::TYPE_UNSUBSCRIBE, $this->campaign->id, 'campaign',
                                            $this->contact->getClassId('Person'), null, 'latestDateTime', null, true);
             if($count > 0)
             {
@@ -313,7 +313,7 @@
         public function hasAtLeastOneBounceActivity()
         {
             $count = CampaignItemActivity::getChildActivityByTypeAndModelIdAndModelRelationNameAndPersonIdAndUrl(
-                                           CampaignItemActivity::TYPE_BOUNCE, $this->campaign->id, 'campaignItem',
+                                           CampaignItemActivity::TYPE_BOUNCE, $this->campaign->id, 'campaign',
                                            $this->contact->getClassId('Person'), null, 'latestDateTime', null, true);
             if($count > 0)
             {
