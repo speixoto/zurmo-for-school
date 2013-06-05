@@ -143,6 +143,7 @@
         {
             assert('is_array($viewData) || $viewData == null');
             assert('isset($params["portletId"])');
+            assert('isset($params["layoutId"])');
             assert('is_string($uniqueLayoutId)');
             $this->moduleId       = 'home';
             $this->viewData       = $viewData;
@@ -159,6 +160,16 @@
             $content .= $this->renderConfigureElementsContent();
             $content .= $this->renderMetricsWrapperContent();
             return $content;
+        }
+
+        public function getPortletParams()
+        {
+            if(isset($this->params['relationModel']) && $this->params['relationModel']->id > 0)
+            {
+                return array('relationModuleId' => $this->params['relationModuleId'],
+                             'relationModelId'  => $this->params['relationModel']->id);
+            }
+            return array();
         }
 
         /**
@@ -192,7 +203,7 @@
         protected function renderOverallListPerformanceContent()
         {
             $chartDataProvider  = $this->resolveChartDataProvider('MarketingListPerformance');
-            $content  = ZurmoHtml::tag('h3', array(), Zurmo::t('MarketingModule', 'Overall List Performance'));
+            $content  = ZurmoHtml::tag('h3', array(), $this->getOverallListPerformanceTitle());
             $content .= MarketingMetricsUtil::renderOverallListPerformanceChartContent(
                         $chartDataProvider, $this->uniqueLayoutId . 'OverallListPerformance');
             return $content;
@@ -201,13 +212,29 @@
         /**
          * @return string
          */
+        protected function getOverallListPerformanceTitle()
+        {
+            return Zurmo::t('MarketingModule', 'Overall Performance');
+        }
+
+        /**
+         * @return string
+         */
         protected function renderEmailsInThisListContent()
         {
             $chartDataProvider  = $this->resolveChartDataProvider('MarketingEmailsInThisList');
-            $content  = ZurmoHtml::tag('h3', array(), Zurmo::t('MarketingModule', 'Emails in this list'));
+            $content  = ZurmoHtml::tag('h3', array(), $this->getEmailsInThisListTitle());
             $content .= MarketingMetricsUtil::renderEmailsInThisListChartContent(
                         $chartDataProvider, $this->uniqueLayoutId . 'EmailsInThisList');
             return $content;
+        }
+
+        /**
+         * @return string
+         */
+        protected function getEmailsInThisListTitle()
+        {
+            return Zurmo::t('MarketingModule', 'Overall Email Performance');
         }
 
         /**
@@ -237,33 +264,18 @@
         }
 
         /**
-         * After a portlet action is completed, the portlet must be refreshed. This is the url to correctly
-         * refresh the portlet content.
-         */
-        protected function getPortletDetailsUrl()
-        {
-            return Yii::app()->createUrl('/' . $this->moduleId . '/defaultPortlet/details',
-                array_merge($_GET, array( 'portletId' =>
-                $this->params['portletId'])));
-        }
-
-        /**
          * Call to save the portlet configuration
          */
         protected function getPortletSaveConfigurationUrl()
         {
-            return Yii::app()->createUrl('/' . $this->moduleId . '/defaultPortlet/modalConfigSave',
-                array_merge($_GET, array( 'portletId' => $this->params['portletId'])));
-        }
-
-        /**
-         * Url to go to after an action is completed. Typically returns user to either a model's detail view or
-         * the home page dashboard.
-         */
-        protected function getNonAjaxRedirectUrl()
-        {
-            return Yii::app()->createUrl('/' . $this->moduleId . '/default/details',
-                array( 'id' => $this->params['relationModel']->id));
+            $getData = GetUtil::getData();
+            $getData['portletId'] = $this->params['portletId'];
+            if(!isset($getData['uniqueLayoutId']))
+            {
+                $getData['uniqueLayoutId'] = $this->params['layoutId'];
+            }
+            $getData['portletParams'] = $this->getPortletParams();
+            return Yii::app()->createUrl('/' . $this->moduleId . '/defaultPortlet/modalConfigSave', $getData);
         }
 
         /**

@@ -109,7 +109,17 @@
                                         array(
                                             'elements' => array(
                                                 array('attributeName' => 'enableTracking',
-                                                                        'type' => 'EnableTrackingCheckBox'),
+                                                      'type'          => 'EnableTrackingCheckBox'),
+                                            ),
+                                        ),
+                                    )
+                                ),
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'supportsRichText',
+                                                      'type'          => 'SupportsRichTextCheckBox'),
                                             ),
                                         ),
                                     )
@@ -181,17 +191,6 @@
         {
             return Zurmo::t('Default', 'Create AutorespondersModuleSingularLabel',
                                                                         LabelUtil::getTranslationParamsForAllModules());
-        }
-
-        protected function renderRightSideFormLayoutForEdit($form)
-        {
-            $content  = parent::renderRightSideFormLayoutForEdit($form);
-            $content .= "<h3>".Zurmo::t('ZurmoModule', 'Email Format') . '</h3><div id="owner-box">';
-            $element  = new CheckBoxElement($this->getModel(), 'supportsRichText', $form);
-            $element->editableTemplate = '{content}{error}';
-            $content .= Zurmo::t('Campaign', 'When checked, email will be sent in both text and HTML format.  Uncheck to only send in text format');
-            $content .= $element->render() . '</div>';
-            return $content;
         }
 
         protected function registerCopyInfoFromMarketingListScript()

@@ -30,5 +30,28 @@
         {
             return 'ContactWebFormEntry';
         }
+
+        public function rules()
+        {
+            return array_merge(parent::rules(), array(
+                array('webFormName', 'safe'),
+            ));
+        }
+
+        public function attributeLabels()
+        {
+            return array_merge(parent::attributeLabels(), array(
+                'webFormName' => Zurmo::t('ContactWebFormsModule', 'Web Form Name'),
+            ));
+        }
+
+        public function getAttributesMappedToRealAttributesMetadata()
+        {
+            return array_merge(parent::getAttributesMappedToRealAttributesMetadata(), array(
+                'webFormName' => array(
+                    array('contactWebForm', 'name'),
+                ),
+            ));
+        }
     }
 ?>

@@ -34,48 +34,43 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * Class used for displaying the overall performance metrics for the marketing dashboard
-     */
-    class MarketingOverallMetricsView extends MarketingMetricsView
+    class ZurmoHttpRequest extends CHttpRequest
     {
-        protected $formModelClassName = 'MarketingOverallMetricsForm';
+        public $tokenEnabledRoutes = array();
 
-        /**
-         * The view's module class name.
-         */
-        public static function getModuleClassName()
+        const EXTERNAL_REQUEST_TOKEN = 'externalRequestToken';
+
+        public function validateCsrfToken($event)
         {
-            return 'MarketingModule';
+            if (!$this->isTrustedRequest())
+            {
+                parent::validateCsrfToken($event);
+            }
+            else
+            {
+                return true;
+            }
         }
 
-        /**
-         * @return string
-         */
-        public function getTitle()
+        protected function isTrustedRequest()
         {
-            $title  = Zurmo::t('MarketingModule', 'Marketing Dashboard');
-            return $title;
-        }
-
-        /**
-         * @return string
-         */
-        public function renderContent()
-        {
-            $content  = ZurmoHtml::tag('h3', array(), Zurmo::t('MarketingModule', 'What is going on with Marketing?'));
-            $content .= $this->renderConfigureElementsContent();
-            $content  = ZurmoHtml::tag('div', array('class' => 'left-column full-width metrics-details'), $content);
-            $content .= $this->renderMetricsWrapperContent();
-            return $content;
-        }
-
-        /**
-         * @return MarketingOverallMetricsConfigView
-         */
-        public function getConfigurationView()
-        {
-            return new MarketingOverallMetricsConfigView($this->resolveForm(), $this->params);
+            foreach ($this->tokenEnabledRoutes as $tokenEnabledRoute)
+            {
+                $safeUrls[] = Yii::app()->createUrl($tokenEnabledRoute);
+            }
+            $requestedUrl = Yii::app()->getRequest()->getUrl();
+            foreach ($safeUrls as $url)
+            {
+                if (strpos($requestedUrl, $url) === 0)
+                {
+                    $externalRequestToken = Yii::app()->getRequest()->getPost(self::EXTERNAL_REQUEST_TOKEN);
+                    if ($externalRequestToken === ZURMO_TOKEN)
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
         }
     }
 ?>

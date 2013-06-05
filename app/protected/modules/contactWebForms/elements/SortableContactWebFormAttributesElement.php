@@ -79,11 +79,12 @@
                                 var elementId        = $(this).attr('id');
                                 var attributeLabel   = $('label[for=' + elementId + ']').html();
                                 $(this).closest('div').remove();
-                                var attributeElement = '<li style=\'list-style: none; display: block; float: left; width: 100%;\'>';
-                                attributeElement    += '<input type=\'checkbox\' id=\'ContactWebFormAttribute_' + attributeId + '\' name=\'ContactWebFormAttributes[]\'';
-                                attributeElement    += ' value=\'' + attributeId + '\' checked=\'checked\' style=\'float: left; margin-right: 5px !important;\' />';
+                                var attributeElement = '<li><div class=\"dynamic-row\"><div>';
+                                attributeElement    += '<label class=\"hasCheckBox c_on\"><input type=\'checkbox\' id=\'ContactWebFormAttribute_' + attributeId + '\' name=\'ContactWebFormAttributes[]\'';
+                                attributeElement    += ' value=\'' + attributeId + '\' checked=\'checked\' /></label>';
+                                attributeElement    += '<label for=\'ContactWebFormAttribute_' + attributeId + '\'>' + attributeLabel + '</label>';
                                 attributeElement    += '<input type=\'hidden\' name=\'attributeIndexOrDerivedType[]\' value=\'' + attributeId + '\' />';
-                                attributeElement    += '<label style=\'width: 150px;\' for=\'ContactWebFormAttribute_' + attributeId + '\'>' + attributeLabel + '</label>';
+                                attributeElement    += '</div></div></li>';
                                 $('ul#yw1').append(attributeElement);
                            }
                        });
@@ -121,13 +122,12 @@
 
         protected function renderItemTemplate()
         {
-            return '<li style="list-style: none; display: block; float: left; width: 100%;">
-                        <input type="checkbox" id="ContactWebFormAttribute_{id}" name="ContactWebFormAttributes[]" value="{id}"
-                        {checkedAndReadOnly}
-                        style="float: left; margin-right: 5px !important;" />
-                        <input type="hidden" name="attributeIndexOrDerivedType[]" value="{id}" />
-                        <label style="width: 150px;" for="ContactWebFormAttribute_{id}">{content}</label>' .
-                    '</li>';
+            return '<li><div class="dynamic-row"><div>
+                        <label class="hasCheckBox"><input type="checkbox" id="ContactWebFormAttribute_{id}" name="ContactWebFormAttributes[]" value="{id}"
+                        {checkedAndReadOnly} /></label>
+                        <label for="ContactWebFormAttribute_{id}">{content}</label>' .
+                        '<input type="hidden" name="attributeIndexOrDerivedType[]" value="{id}" />' .
+                    '</div></div></li>';
         }
 
         protected function renderError()

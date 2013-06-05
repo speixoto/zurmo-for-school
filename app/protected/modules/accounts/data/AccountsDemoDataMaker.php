@@ -92,6 +92,7 @@
             assert('$model instanceof Account');
             $email = new Email();
             $email->emailAddress = 'info@' . static::makeDomainByName(strval($model));
+            $email->optOut       = false;
             return $email;
         }
     }

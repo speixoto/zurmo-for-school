@@ -121,14 +121,6 @@
                 foreach(DateTimeUtil::
                         getMonthStartAndEndDatesBetweenTwoDatesInARange($beginDate, $endDate) as $beginMonthDate => $endMonthDate)
                 {
-                    if($beginMonthDate < $beginDate)
-                    {
-                        $beginMonthDate = $beginDate;
-                    }
-                    if($endMonthDate > $endDate)
-                    {
-                        $endMonthDate   = $endDate;
-                    }
                     $data[] = array('beginDate'    => $beginMonthDate, 'endDate' => $endMonthDate,
                                     'displayLabel' => static::resolveAbbreviatedMonthDisplayLabel($beginMonthDate));
                 }
@@ -308,9 +300,9 @@
             foreach($groupedDateTimeData as $groupData)
             {
                 $chartData[$groupData['beginDate']] = array_merge(static::resolveChartDataBaseGroupElements(),
-                    array('displayLabel'        => $groupData['displayLabel'],
-                        'dateBalloonLabel'    =>
-                        $this->resolveDateBalloonLabel($groupData['displayLabel'])));
+                                                        array('displayLabel'     => $groupData['displayLabel'],
+                                                              'dateBalloonLabel' =>
+                                                              $this->resolveDateBalloonLabel($groupData['displayLabel'])));
             }
             return $chartData;
         }

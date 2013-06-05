@@ -114,9 +114,9 @@
                                         array('{quantity}' => ZurmoHtml::tag('strong', array(), $unsubscribedQuantity),
                                               '{unsubscribedRate}' => ZurmoHtml::tag('span', array(), $unsubscribedRate))));
             $content .= ZurmoHtml::tag('div', array('class' => 'autoresponder-stats'),
-                                        Zurmo::t('MarketingModule', '{quantity} Bounces ({unsubscribedRate}%)',
+                                        Zurmo::t('MarketingModule', '{quantity} Bounces ({bouncedRate}%)',
                                         array('{quantity}' => ZurmoHtml::tag('strong', array(), $bouncedQuantity),
-                                              '{bounceRate}' => ZurmoHtml::tag('span', array(), $bouncedRate))));
+                                              '{bouncedRate}' => ZurmoHtml::tag('span', array(), $bouncedRate))));
             return $content;
         }
     }

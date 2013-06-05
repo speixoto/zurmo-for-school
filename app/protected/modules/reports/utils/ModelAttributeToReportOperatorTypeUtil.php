@@ -41,6 +41,12 @@
     {
         public static function resolveOperatorsToIncludeByType(& $data, $type)
         {
+            if ($type == self::AVAILABLE_OPERATORS_TYPE_BOOLEAN)
+            {
+                $data[OperatorRules::TYPE_EQUALS] =
+                    OperatorRules::getTranslatedTypeLabel(OperatorRules::TYPE_EQUALS);
+                return;
+            }
             if ($type == self::AVAILABLE_OPERATORS_TYPE_HAS_ONE)
             {
                 $data[OperatorRules::TYPE_EQUALS] =
@@ -48,6 +54,14 @@
                 return;
             }
             parent::resolveOperatorsToIncludeByType($data, $type);
+        }
+
+        /**
+         * @return string
+         */
+        protected static function getAvailableOperatorsTypeForBoolean()
+        {
+            return static::AVAILABLE_OPERATORS_TYPE_BOOLEAN;
         }
     }
 ?>

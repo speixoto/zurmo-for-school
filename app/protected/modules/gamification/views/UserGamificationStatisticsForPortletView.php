@@ -72,6 +72,11 @@
             $this->uniqueLayoutId = $uniqueLayoutId;
         }
 
+        public function getPortletParams()
+        {
+            return array();
+        }
+
         public function renderPortletHeadContent()
         {
             return null;

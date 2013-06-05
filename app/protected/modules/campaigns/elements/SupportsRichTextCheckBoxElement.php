@@ -34,48 +34,22 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * Class used for displaying the overall performance metrics for the marketing dashboard
-     */
-    class MarketingOverallMetricsView extends MarketingMetricsView
+    class SupportsRichTextCheckBoxElement extends CheckBoxElement
     {
-        protected $formModelClassName = 'MarketingOverallMetricsForm';
-
-        /**
-         * The view's module class name.
-         */
-        public static function getModuleClassName()
+        protected function renderLabel()
         {
-            return 'MarketingModule';
-        }
-
-        /**
-         * @return string
-         */
-        public function getTitle()
-        {
-            $title  = Zurmo::t('MarketingModule', 'Marketing Dashboard');
-            return $title;
-        }
-
-        /**
-         * @return string
-         */
-        public function renderContent()
-        {
-            $content  = ZurmoHtml::tag('h3', array(), Zurmo::t('MarketingModule', 'What is going on with Marketing?'));
-            $content .= $this->renderConfigureElementsContent();
-            $content  = ZurmoHtml::tag('div', array('class' => 'left-column full-width metrics-details'), $content);
-            $content .= $this->renderMetricsWrapperContent();
+            if ($this->form === null)
+            {
+                return $this->getFormattedAttributeLabel();
+            }
+            $title      = Zurmo::t('Campaign', 'When checked, email will be sent in both text and HTML format.  Uncheck to only send text emails');
+            $content    = Zurmo::t('ZurmoModule', 'Support HTML');
+            $content   .= ZurmoHtml::tag('span', array('id' => 'support-rich-text-tooltip',
+                                                        'class' => 'tooltip',
+                                                        'title' => $title), '?');
+            $enableTrackingTip     = new ZurmoTip();
+            $enableTrackingTip->addQTip("#support-rich-text-tooltip");
             return $content;
-        }
-
-        /**
-         * @return MarketingOverallMetricsConfigView
-         */
-        public function getConfigurationView()
-        {
-            return new MarketingOverallMetricsConfigView($this->resolveForm(), $this->params);
         }
     }
 ?>

@@ -73,6 +73,11 @@
             return $cClipWidget->getController()->clips['Chart'];
         }
 
+        public function getPortletParams()
+        {
+            return array();
+        }
+
         public function renderPortletHeadContent()
         {
             return null;

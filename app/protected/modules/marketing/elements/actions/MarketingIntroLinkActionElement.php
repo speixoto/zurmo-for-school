@@ -43,6 +43,7 @@
 
         public function render()
         {
+            $this->registerScripts();
             if($this->moduleId == 'marketing' && $this->controllerId == 'default' &&
                (Yii::app()->controller->action->id == 'dashboardDetails' ||
                 Yii::app()->controller->action->id == null ||
@@ -80,7 +81,7 @@
 
         protected function getDefaultLabel()
         {
-            return Zurmo::t('MarketingModule', '?');
+            return Zurmo::t('MarketingModule', 'n');
         }
 
         protected function getDefaultRoute()
@@ -90,7 +91,39 @@
 
         protected function renderHideOrShowContent()
         {
-            return 'something should go here';
+            $name        = MarketingDashboardIntroView::PANEL_ID . '-checkbox-id';
+            $htmlOptions = array('id' => MarketingDashboardIntroView::PANEL_ID . '-checkbox-id');
+            $checkBox    = ZurmoHtml::checkBox($name, $this->resolveChecked(), $htmlOptions);
+            return $checkBox . Zurmo::t('MarketingModule', 'Show intro message');
+        }
+
+        protected function resolveChecked()
+        {
+            if($this->params['cookieValue'] == MarketingDashboardIntroView::HIDDEN_COOKIE_VALUE)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+
+        protected function registerScripts()
+        {
+            $script = "$('#" . MarketingDashboardIntroView::PANEL_ID . "-checkbox-id').click(function(){
+                            if(!$(this).attr('checked'))
+                            {
+                                document.cookie = '" . MarketingDashboardIntroView::resolveCookieId() . "=" .
+                                                       MarketingDashboardIntroView::HIDDEN_COOKIE_VALUE . "';
+                            }
+                            else
+                            {
+                                document.cookie = '" . MarketingDashboardIntroView::resolveCookieId() . "=';
+                            }
+                            $('#" . MarketingDashboardIntroView::PANEL_ID . "').slideToggle();
+                        });";
+            Yii::app()->clientScript->registerScript(get_class() . 'CheckBoxClickScript', $script);
         }
     }
 ?>

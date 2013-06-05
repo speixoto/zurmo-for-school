@@ -62,12 +62,14 @@
 
         public function actionDashboardDetails()
         {
+
             $params = array(
                 'controllerId' => $this->getId(),
                 'moduleId'     => $this->getModule()->getId(),
             );
             $gridViewId              = 'notUsed';
             $pageVar                 = 'notUsed';
+            $introCookieValue        = Yii::app()->request->cookies[MarketingDashboardIntroView::resolveCookieId()];
             $actionBarView           = new SecuredActionBarForMarketingSearchAndListView(
                                             'default',
                                             'marketing',
@@ -76,7 +78,8 @@
                                             $pageVar,
                                             false,
                                        'MarketingDashboardLink');
-            $introView               = new MarketingDashboardIntroView();
+            $actionBarView->setIntroCookieValue($introCookieValue);
+            $introView               = new MarketingDashboardIntroView($introCookieValue);
             $marketingDashboardView  = new MarketingDashboardView(
                                             $this->getId(),
                                             $this->getModule()->getId(),

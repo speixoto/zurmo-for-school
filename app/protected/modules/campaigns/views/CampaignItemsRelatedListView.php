@@ -89,12 +89,10 @@
         protected function getEmptyText()
         {
             $moduleLabel     = Zurmo::t('CampaignsModule', 'Email Recipients');
-            return Zurmo::t('Core', 'No {moduleLabelPluralLowerCase} found', array('{moduleLabelPluralLowerCase}' => $moduleLabel));
-            /*
-            $content  = '<div class="general-issue-notice"><span class="icon-notice"></span><p>';
-            $content .= Zurmo::t('ReportsModule', 'Select a report with a chart');
+            $content  = '<div class="general-issue-notice no-email-recipients-found"><span class="icon-notice"></span><p>';
+            $content .= Zurmo::t('Core', 'Email recipients will appear here once the campaign begins sending out');
             $content .= '</p></div>';
-            */
+            return $content;
         }
 
         protected function getCGridViewLastColumn()

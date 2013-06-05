@@ -32,7 +32,7 @@
                 $key = ReportResultsRowData::resolveKeyByAttributeName($this->attribute);
                 return array(
                     'name'  => $this->attribute,
-                    'value'  => $frequencyDropdownData['$data->resolveRawValueByDisplayAttributeKey(' . $key . ')'],
+                    'value'  => $frequencyDropdownData['$data->{' . $this->attribute . '}'],
                     'type'  => 'raw',
                 );
         }

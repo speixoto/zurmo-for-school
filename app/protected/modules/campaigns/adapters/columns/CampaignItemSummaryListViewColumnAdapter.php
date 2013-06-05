@@ -56,13 +56,26 @@
         public static function resolveContactWithLink(Contact $contact)
         {
             $moduleClassName = static::resolveModuleClassName($contact);
-            $linkRoute       = Yii::app()->createUrl('/' . $moduleClassName::getDirectoryName() . '/default/details',
-                                                     array('id' => $contact->id));
+            $linkRoute       = '/' . $moduleClassName::getDirectoryName() . '/default/details';
             $linkContent     = ActionSecurityUtil::resolveLinkToModelForCurrentUser(strval($contact), $contact,
                                $moduleClassName, $linkRoute);
-            //todo: @amit if null - need to show 'restricted' in maybe a pill type background color. with a question mark
-            //or on hover (without question that shows the tooltip to explain why it is restricted)
-            return $linkContent;
+            if($linkContent == null)
+            {
+                $linkContent = static::renderRestrictedContactAccessLink($contact);
+            }
+            return ZurmoHtml::tag('div', array('class' => 'email-recipient-name'), $linkContent);
+        }
+
+        protected static function renderRestrictedContactAccessLink(Contact $contact)
+        {
+            $title       = Zurmo::t('CampaignsModule', 'You cannot see this contact due to limited access');
+            $content     = ZurmoHtml::tag('em', array(), Zurmo::t('CampaignsModule', 'Restricted'));
+            $content    .= ZurmoHtml::tag('span', array('id'    => 'restricted-access-contact-tooltip' . $contact->id,
+                                                        'class' => 'tooltip',
+                                                        'title' => $title), '?');
+            $qtip = new ZurmoTip(array('options' => array('position' => array('my' => 'bottom right', 'at' => 'top left'))));
+            $qtip->addQTip('restricted-access-contact-tooltip' . $contact->id);
+            return $content;
         }
 
         protected static function resolveModuleClassName(Contact $contact)
@@ -80,17 +93,78 @@
         protected static function renderMetricsContent(CampaignItem $campaignItem)
         {
             $isQueued     = $campaignItem->isQueued();
-            if(!$isQueued)
+            if($isQueued)
             {
-                $isSent           = $campaignItem->isSent();
-                $failedToSend     = $campaignItem->hasFailedToSend();
-                $hasOpened        = $campaignItem->hasAtLeastOneOpenActivity();
-                $hasClicked       = $campaignItem->hasAtLeastOneClickActivity();
-                $hasUnsubscribed  = $campaignItem->hasAtLeastOneUnsubscribeActivity();
-                $hasBounced       = $campaignItem->hasAtLeastOneBounceActivity();
+                $content = static::getQueuedContent();
             }
-            $content = 'todo: information about each recipient'; //todo: @amit - discuss with jason about this
-            return $content;
+            elseif($campaignItem->hasFailedToSend())
+            {
+                $content = static::getSendFailedContent();
+            }
+            else //sent
+            {
+                $content = static::getSentContent();
+                if($campaignItem->hasAtLeastOneOpenActivity())
+                {
+                    $content .= static::getOpenedContent();
+                }
+                if($campaignItem->hasAtLeastOneClickActivity())
+                {
+                    $content .= static::getClickedContent();
+                }
+                if($campaignItem->hasAtLeastOneUnsubscribeActivity())
+                {
+                    $content .= static::getUnsubscribedContent();
+                }
+                if($campaignItem->hasAtLeastOneBounceActivity())
+                {
+                    $content .= static::getBouncedContent();
+                }
+            }
+            $clearFixContent = ZurmoHtml::tag('div', array('class' => 'clearfix'), $content);
+            return ZurmoHtml::tag('div', array('class' => 'continuum'), $clearFixContent);
+        }
+
+        protected static function getQueuedContent()
+        {
+            $content = '<i>&#9679;</i><span>' . Zurmo::t('MarketingModule', 'Queued') . '</span>';
+            return ZurmoHtml::tag('div', array('class' => 'email-recipient-stage-status queued'), $content);
+        }
+
+        protected static function getSentContent()
+        {
+            $content = '<i>&#9679;</i><span>' . Zurmo::t('MarketingModule', 'Sent') . '</span>';
+            return ZurmoHtml::tag('div', array('class' => 'email-recipient-stage-status stage-true'), $content);
+        }
+
+        protected static function getSendFailedContent()
+        {
+            $content = '<i>&#9679;</i><span>' . Zurmo::t('MarketingModule', 'Send Failed') . '</span>';
+            return ZurmoHtml::tag('div', array('class' => 'email-recipient-stage-status stage-false'), $content);
+        }
+
+        protected static function getOpenedContent()
+        {
+            $content = '<i>&#9679;</i><span>' . Zurmo::t('MarketingModule', 'Opened') . '</span>';
+            return ZurmoHtml::tag('div', array('class' => 'email-recipient-stage-status stage-true'), $content);
+        }
+
+        protected static function getClickedContent()
+        {
+            $content = '<i>&#9679;</i><span>' . Zurmo::t('MarketingModule', 'Clicked') . '</span>';
+            return ZurmoHtml::tag('div', array('class' => 'email-recipient-stage-status stage-true'), $content);
+        }
+
+        protected static function getUnsubscribedContent()
+        {
+            $content = '<i>&#9679;</i><span>' . Zurmo::t('MarketingModule', 'Unsubscribed') . '</span>';
+            return ZurmoHtml::tag('div', array('class' => 'email-recipient-stage-status stage-false'), $content);
+        }
+
+        protected static function getBouncedContent()
+        {
+            $content = '<i>&#9679;</i><span>' . Zurmo::t('MarketingModule', 'Bounced') . '</span>';
+            return ZurmoHtml::tag('div', array('class' => 'email-recipient-stage-status stage-false'), $content);
         }
     }
 ?>

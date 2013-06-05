@@ -77,7 +77,6 @@
                                                                         'fromName 01',
                                                                         'fromAddress01@zurmo.com',
                                                                         null,
-                                                                        Campaign::TYPE_MARKETING_LIST,
                                                                         null,
                                                                         null,
                                                                         null,

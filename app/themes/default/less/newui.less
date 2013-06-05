@@ -1847,6 +1847,19 @@ form,
 	top:-2px
 }
 
+.icon-webforms:before{
+	.view-toolbar-icons();
+	content: '\003C';
+	top:-2px
+}
+
+.icon-webforms-entries:before{
+	.view-toolbar-icons();
+	content: '\005E';
+	top:-2px
+}
+
+
 /*=Footer*/
 #FooterView{
 	margin:20px 3% 0 3%;
@@ -2709,6 +2722,11 @@ div.wide.form{
 		.symbly(300px);
 		line-height: 52%;
 	}
+	.ContactWebForm .large-icon:after{
+		content: '\003C';
+		.symbly(300px);
+		line-height: 52%;
+	}
 }
 
 
@@ -2961,6 +2979,7 @@ div.wide.form{
 	}
 	.view-toolbar-container{
 		border-top:1px solid #CCCCCC;
+		z-index: 1;
 	}
 	> div{
 		display: block;
@@ -4169,6 +4188,12 @@ div.hasHalfs{
 	}
 }
 
+.seventh{
+	width: 12.5%;
+}
+.sixth{
+	width: 15%;
+}
 .fifth{
 	width:19%;
 }
@@ -5172,10 +5197,9 @@ div.hasHalfs{
 /*Products Portlet*/
 .products-portlet-totals{
 	display: block;
-	padding: 10px 0;
-	text-indent: 10px;
+	padding: 10px;
 	border-top: 1px solid #DFDFDF;
-	background:#111 url(../images/datepicker-header.png) left top repeat-x !important;
+	background:#111 url(../images/dark-texture-table-footer.png) left top repeat-x !important;
 	color:#FFF;
 	font-weight: bold;
 }
@@ -5217,4 +5241,5 @@ div.hasHalfs{
 @import 'email-templates.less';
 @import 'marketing.less';
 @import 'kanban.less';
+@import 'webforms.less';
 @import 'media-queries.less';

@@ -37,7 +37,7 @@
     /**
      * Class for displaying metrics specific to a campaign
      */
-    class CampaignOverallMetricsView extends MarketingMetricsView implements PortletViewInterface
+    class CampaignOverallMetricsView extends MarketingMetricsView
     {
         /**
          * @var string
@@ -111,6 +111,22 @@
         protected function getWrapperDivClass()
         {
             return CampaignDetailsAndRelationsView::METRICS_PORTLET_CLASS;
+        }
+
+        /**
+         * @return string
+         */
+        protected function getOverallListPerformanceTitle()
+        {
+            return Zurmo::t('MarketingModule', 'Overall Campaign Performance');
+        }
+
+        /**
+         * @return string
+         */
+        protected function getEmailsInThisListTitle()
+        {
+            return Zurmo::t('MarketingModule', 'Emails in this Campaign');
         }
     }
 ?>

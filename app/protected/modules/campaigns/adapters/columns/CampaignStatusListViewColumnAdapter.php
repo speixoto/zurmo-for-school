@@ -35,47 +35,21 @@
      ********************************************************************************/
 
     /**
-     * Class used for displaying the overall performance metrics for the marketing dashboard
+     * Class for working the campaign status
      */
-    class MarketingOverallMetricsView extends MarketingMetricsView
+    class CampaignStatusListViewColumnAdapter extends ListViewColumnAdapter
     {
-        protected $formModelClassName = 'MarketingOverallMetricsForm';
-
         /**
-         * The view's module class name.
+         * @return array
          */
-        public static function getModuleClassName()
+        public function renderGridViewData()
         {
-            return 'MarketingModule';
-        }
-
-        /**
-         * @return string
-         */
-        public function getTitle()
-        {
-            $title  = Zurmo::t('MarketingModule', 'Marketing Dashboard');
-            return $title;
-        }
-
-        /**
-         * @return string
-         */
-        public function renderContent()
-        {
-            $content  = ZurmoHtml::tag('h3', array(), Zurmo::t('MarketingModule', 'What is going on with Marketing?'));
-            $content .= $this->renderConfigureElementsContent();
-            $content  = ZurmoHtml::tag('div', array('class' => 'left-column full-width metrics-details'), $content);
-            $content .= $this->renderMetricsWrapperContent();
-            return $content;
-        }
-
-        /**
-         * @return MarketingOverallMetricsConfigView
-         */
-        public function getConfigurationView()
-        {
-            return new MarketingOverallMetricsConfigView($this->resolveForm(), $this->params);
+            return array(
+                'name'   => 'moduleClassName',
+                'header' => Campaign::getAnAttributeLabel('status'),
+                'type'   => 'raw',
+                'value'  => 'CampaignStatusElement::renderNonEditableStringContent((int)$data->status)'
+            );
         }
     }
 ?>

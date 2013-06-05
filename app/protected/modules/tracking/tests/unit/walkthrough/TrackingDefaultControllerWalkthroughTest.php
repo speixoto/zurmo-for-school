@@ -80,7 +80,6 @@
                                                                                  'fromName 01',
                                                                                  'fromAddress01@zurmo.com',
                                                                                  null,
-                                                                                 Campaign::TYPE_MARKETING_LIST,
                                                                                  Campaign::STATUS_ACTIVE,
                                                                                  null,
                                                                                  null,

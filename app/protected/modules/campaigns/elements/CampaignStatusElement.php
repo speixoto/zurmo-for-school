@@ -34,48 +34,36 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * Class used for displaying the overall performance metrics for the marketing dashboard
-     */
-    class MarketingOverallMetricsView extends MarketingMetricsView
+    class CampaignStatusElement extends StaticDropDownElement
     {
-        protected $formModelClassName = 'MarketingOverallMetricsForm';
-
         /**
-         * The view's module class name.
+         * Called from outside to render status value as label. @see CampaignStatusListViewColumnAdapter
+         * Called from outside to render status value as label. @see CampaignStatusListViewColumnAdapter
+         * @param string $status
+         * @return string, translated status if available otherwise just return status value
          */
-        public static function getModuleClassName()
+        public static function renderNonEditableStringContent($status)
         {
-            return 'MarketingModule';
+            assert('is_int($status)');
+            $data = Campaign::getStatusDropDownArray();
+            if(isset($data[$status]))
+            {
+                return $data[$status];
+            }
+            return $status;
+        }
+        /**
+         * @return A|void
+         * @throws NotSupportedException
+         */
+        protected function renderControlEditable()
+        {
+            throw new NotSupportedException();
         }
 
-        /**
-         * @return string
-         */
-        public function getTitle()
+        protected function getDropDownArray()
         {
-            $title  = Zurmo::t('MarketingModule', 'Marketing Dashboard');
-            return $title;
-        }
-
-        /**
-         * @return string
-         */
-        public function renderContent()
-        {
-            $content  = ZurmoHtml::tag('h3', array(), Zurmo::t('MarketingModule', 'What is going on with Marketing?'));
-            $content .= $this->renderConfigureElementsContent();
-            $content  = ZurmoHtml::tag('div', array('class' => 'left-column full-width metrics-details'), $content);
-            $content .= $this->renderMetricsWrapperContent();
-            return $content;
-        }
-
-        /**
-         * @return MarketingOverallMetricsConfigView
-         */
-        public function getConfigurationView()
-        {
-            return new MarketingOverallMetricsConfigView($this->resolveForm(), $this->params);
+            return Campaign::getStatusDropDownArray();
         }
     }
 ?>

@@ -39,14 +39,16 @@
      */
     class MarketingDashboardIntroView extends View
     {
-        const PANEL_ID     = 'marketing-intro-content';
+        const PANEL_ID            = 'marketing-intro-content';
 
-        const LINK_ID      = 'hide-marketing-intro';
+        const LINK_ID             = 'hide-marketing-intro';
+
+        const HIDDEN_COOKIE_VALUE = 'hidden';
 
         /**
          * @var string
          */
-        protected $cookieValue = 'hidden';
+        protected $cookieValue;
 
         /**
          * @return string
@@ -56,17 +58,27 @@
             return self::PANEL_ID . '-panel';
         }
 
+        public function __construct($cookieValue)
+        {
+            assert('$cookieValue == null || is_string($cookieValue)');
+            $this->cookieValue = $cookieValue;
+        }
+
         /**
          * @return bool|string
          */
         protected function renderContent()
         {
             $this->registerScripts();
-            if(Yii::app()->request->cookies[self::resolveCookieId()] == $this->cookieValue)
+            if($this->cookieValue == self::HIDDEN_COOKIE_VALUE)
             {
-                return false;
+                $style = "style=display:none;";
             }
-            $content  = '<div id="' . self::PANEL_ID . '">';
+            else
+            {
+                $style = null;
+            }
+            $content  = '<div id="' . self::PANEL_ID . '" ' . $style . '>';
             $content .= '<h1>' . Zurmo::t('MarketingModule', 'How does Email Marketing work in Zurmo?'). '</h1>';
 
             $content .= '<div id="marketing-intro-steps" class="clearfix">';
@@ -107,9 +119,10 @@
         protected function registerScripts()
         {
             $script = "$('." . self::LINK_ID . "').click(function(){
-                $('#" . self::PANEL_ID . "').slideToggle();
-                document.cookie = '" . self::resolveCookieId() . "={$this->cookieValue}';
-                return false;
+                        $('#" . self::PANEL_ID . "').slideToggle();
+                        document.cookie = '" . self::resolveCookieId() . "=" . static::HIDDEN_COOKIE_VALUE . "';
+                        $('#" . self::PANEL_ID . "-checkbox-id').attr('checked', false);
+                        return false;
             })";
             Yii::app()->clientScript->registerScript(self::LINK_ID, $script);
         }

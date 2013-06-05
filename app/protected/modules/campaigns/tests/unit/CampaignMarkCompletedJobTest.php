@@ -89,7 +89,6 @@
                                                                             null,
                                                                             null,
                                                                             null,
-                                                                            Campaign::TYPE_MARKETING_LIST,
                                                                             Campaign::STATUS_ACTIVE,
                                                                             null,
                                                                             null,
@@ -103,8 +102,7 @@
                                                                             null,
                                                                             null,
                                                                             null,
-                                                                            Campaign::TYPE_MARKETING_LIST,
-                                                                            Campaign::STATUS_INCOMPLETE,
+                                                                            Campaign::STATUS_PAUSED,
                                                                             null,
                                                                             null,
                                                                             $marketingList);
@@ -117,7 +115,6 @@
                                                                             null,
                                                                             null,
                                                                             null,
-                                                                            Campaign::TYPE_MARKETING_LIST,
                                                                             Campaign::STATUS_PAUSED,
                                                                             null,
                                                                             null,
@@ -134,7 +131,7 @@
             $this->assertEquals(Campaign::STATUS_ACTIVE, $campaignActive->status);
             $campaignIncomplete         = Campaign::getById($campaignIncompleteId);
             $this->assertNotNull($campaignIncomplete);
-            $this->assertEquals(Campaign::STATUS_INCOMPLETE, $campaignIncomplete->status);
+            $this->assertEquals(Campaign::STATUS_PAUSED, $campaignIncomplete->status);
             $campaignPaused         = Campaign::getById($campaignPausedId);
             $this->assertNotNull($campaignPaused);
             $this->assertEquals(Campaign::STATUS_PAUSED, $campaignPaused->status);
@@ -154,7 +151,6 @@
                                                                                 null,
                                                                                 null,
                                                                                 null,
-                                                                                Campaign::TYPE_MARKETING_LIST,
                                                                                 Campaign::STATUS_PROCESSING,
                                                                                 null,
                                                                                 null,
@@ -184,7 +180,6 @@
                                                                             null,
                                                                             null,
                                                                             null,
-                                                                            Campaign::TYPE_MARKETING_LIST,
                                                                             Campaign::STATUS_PROCESSING,
                                                                             null,
                                                                             null,
@@ -215,7 +210,6 @@
                                                                         null,
                                                                         null,
                                                                         null,
-                                                                        Campaign::TYPE_MARKETING_LIST,
                                                                         Campaign::STATUS_PROCESSING,
                                                                         null,
                                                                         null,
@@ -230,7 +224,6 @@
                                                                         null,
                                                                         null,
                                                                         null,
-                                                                        Campaign::TYPE_MARKETING_LIST,
                                                                         Campaign::STATUS_PROCESSING,
                                                                         null,
                                                                         null,
@@ -245,7 +238,6 @@
                                                                         null,
                                                                         null,
                                                                         null,
-                                                                        Campaign::TYPE_MARKETING_LIST,
                                                                         Campaign::STATUS_PROCESSING,
                                                                         null,
                                                                         null,

@@ -149,7 +149,7 @@
         {
             $content  = "<div class=\"juiportlet-widget-head\">\n";
             $content .= "<h3>" . $item['title'] . "</h3>";
-            $content .= static::renderOptionsMenu($item, $uniqueLayoutId, $moduleId, $renderOnClickEvent);
+            $content .= static::renderOptionsMenu($item, $uniqueLayoutId, $moduleId, $renderOnClickEvent, $item['portletParams']);
             $content .= $item['headContent'] . "\n";
             if (isset($item['collapsed']) && $item['collapsed'])
             {
@@ -166,19 +166,26 @@
             return $content;
         }
 
-        protected static function renderOptionsMenu(array $item, $uniqueLayoutId, $moduleId, $renderOnClickEvent = true)
+        /**
+         * @param array $item
+         * @param $uniqueLayoutId
+         * @param $moduleId
+         * @param bool $renderOnClickEvent
+         * @param array $portletParams - extra params that can be passed to the Get string on page requests
+         * @return mixed
+         */
+        protected static function renderOptionsMenu(array $item, $uniqueLayoutId, $moduleId, $renderOnClickEvent = true, $portletParams = array())
         {
             $menuItems = array('label' => null, 'items' => array());
 
             if (isset($item['editable']) && $item['editable'] == true)
             {
-                $menuItems['items'][] = static::makeEditMenuItem($item['id'], $uniqueLayoutId, $moduleId, $renderOnClickEvent);
+                $menuItems['items'][] = static::makeEditMenuItem($item['id'], $uniqueLayoutId, $moduleId, $renderOnClickEvent, $portletParams);
             }
             if (isset($item['removable']) && $item['removable'] == true)
             {
                 $menuItems['items'][] = array('label' => Zurmo::t('Core', 'Remove Portlet'), 'url' => '#',
                     'linkOptions' => array('class' => 'remove-portlet'));
-                //$content .= "<a href=\"#\" class=\"remove\">CLOSE<span class=\"icon\"></span></a>"; //must be CLOSE - do not translate
             }
             if (count($menuItems['items']) > 0)
             {
@@ -193,7 +200,7 @@
             }
         }
 
-        protected static function makeEditMenuItem($portletId, $uniqueLayoutId, $moduleId, $renderOnClickEvent = true)
+        protected static function makeEditMenuItem($portletId, $uniqueLayoutId, $moduleId, $renderOnClickEvent = true, $portletParams = array())
         {
             $htmlOptions = array(
                         'class' => 'edit',
@@ -211,6 +218,7 @@
             $url = Yii::app()->createUrl($moduleId .'/defaultPortlet/ModalConfigEdit/', array(
                 'uniqueLayoutId' => $uniqueLayoutId,
                 'portletId'      => $portletId,
+                'portletParams'  => $portletParams,
             ));
             return array('label' => Zurmo::t('Core', 'Configure Portlet'), 'url' => $url,
                          'linkOptions' => $htmlOptions, 'ajaxLinkOptions' => static::resolveAjaxOptionsForEditLink());

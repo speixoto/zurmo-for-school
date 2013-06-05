@@ -129,6 +129,7 @@
                                                 'kanban-background-football'    => 'Football',
                                                 'kanban-background-tennis'      => 'Tennis',
                                                 'kanban-background-motor'       => 'Motor Sport',
+                                                'kanban-background-yoga'        => 'Yoga',
                                                 );
             $this->assertEquals($themeNamesAndLabelsCompare, $kanbanBoard->getThemeNamesAndLabels());
         }
