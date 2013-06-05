@@ -12697,6 +12697,12 @@ table.configuration-list td:last-child a .z-label:before {
 .uploaded-logo ~ .file-size {
   vertical-align: top;
 }
+/*footer preview*/
+.footer-preview-modal {
+  padding: 15px;
+  white-space: normal;
+  word-break: break-all;
+}
 .available-portlets {
   padding: 20px;
   list-style: none;

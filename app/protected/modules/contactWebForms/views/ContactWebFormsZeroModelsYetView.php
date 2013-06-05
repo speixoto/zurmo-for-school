@@ -53,11 +53,10 @@
          */
         protected function getMessageContent()
         {
-            return Zurmo::t('ContactWebFormsModule', '<h2>"If you can\'t describe what you are doing as a process, ' .
-                                               'you don\'t know what you\'re doing."</h2><i>- W. Edwards Deming</i>' .
-                                               '</i><div class="large-icon"></div><p>Make life easier and create a ' .
-                                               'workflow process to automate and streamline your business processes. ' .
-                                               'Just make sure you know what you\'re doing.</p>');
+            return Zurmo::t('ContactWebFormsModule', '<h2>"One thing I\'ve learned to appreciate as I\'ve gotten a ' .
+                                               'little older is direct forms of communication."</h2><i>- Billy Corgan</i>' .
+                                               '</i><div class="large-icon"></div><p>Don\'t wait until you\'re older, ' .
+                                               'appreciate direct contact information now by creating the first web form.</p>');
         }
     }
 ?>
