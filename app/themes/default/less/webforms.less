@@ -24,9 +24,7 @@
 
 #ContactWebFormEditAndDetailsView{
 	.ui-sortable{
-		width: 50%;
 		++.clearfix;
-		float: right;
 		list-style: none;
 		.hasCheckBox + label{
 			top: 0;
@@ -35,10 +33,18 @@
 	}
 	#ContactWebForm_serializedData{
 		display: block;
-		width: 50%;
-		float: left;
+		margin-top: -5px;
 	}
 	label + label{
 		margin-left: 0;
+	}
+	.third, .twoThirds{
+		float: left;
+	}
+	.twoThirds{
+		margin-left: 2%;
+	}
+	.dynamic-row .remove-dynamic-row-link {
+		top: 5px;
 	}
 }

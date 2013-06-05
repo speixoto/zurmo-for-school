@@ -42,10 +42,7 @@
         public function testDemoDataMaker()
         {
             $productTemplate                    = new ProductTemplate();
-            $productTemplateRandomData          = ZurmoRandomDataUtil::getRandomDataByModuleAndModelClassNames(
-                                            'ProductTemplatesModule', 'ProductTemplate');
-            $name                               = RandomDataUtil::getRandomValueFromArray($productTemplateRandomData['names']);
-            $productTemplate->name              = $name;
+            $productTemplate->name              = 'Amazing Kid';
             $productTemplate->priceFrequency    = ProductTemplate::PRICE_FREQUENCY_ONE_TIME;
             $productTemplate->cost->value       = 200;
             $productTemplate->listPrice->value  = 200;

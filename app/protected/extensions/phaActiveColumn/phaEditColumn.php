@@ -90,7 +90,8 @@ class phaEditColumn extends phaAbsActiveColumn {
             phaACOpenEditItem = id;
             $("#viewValue-" + gridUID + "-"+id).hide();
             var inputValue = $("#field-" + gridUID + "-" + phaACOpenEditItem+" input").val();
-            inputValue = inputValue.replace(inputValue.charAt(0),"");
+            var matches = inputValue.match(/([0-9]+.[0-9]*)/);
+            inputValue = matches[1];
             $("#field-" + gridUID + "-" + phaACOpenEditItem+" input").val(inputValue);
             $("#field-" + gridUID + "-" + id).show();
             $("#field-" + gridUID + "-" + id+" input")
