@@ -45,6 +45,15 @@
             return $title;
         }
 
+        public static function getDefaultMetadata()
+        {
+            $metadata = array(
+                                'perUser' => array(
+                                    'title' => "eval:Zurmo::t('NotesModule', 'NotesModulePluralLabel', LabelUtil::getTranslationParamsForAllModules())",
+                            ));
+            return $metadata;
+        }
+
         protected function renderInlineEditContent()
         {
             if (null != $messageContent = RequiredAttributesValidViewUtil::
@@ -77,6 +86,11 @@
         public static function getModuleClassName()
         {
             return 'NotesModule';
+        }
+
+        public static function getAllowedOnPortletViewClassNames()
+        {
+            return array('AccountDetailsAndRelationsView', 'ContactDetailsAndRelationsView', 'OpportunityDetailsAndRelationsView');
         }
     }
 ?>

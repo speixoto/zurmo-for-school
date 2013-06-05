@@ -38,7 +38,7 @@
      * Base class used for wrapping a model inline edit view into a portlet ready view.
      */
     abstract class InlineEditForPortletView extends ConfigurableMetadataView
-                                                                  implements PortletViewInterface
+                                                                  implements PortletViewInterface, RelatedPortletViewInterface
     {
         /**
          * Portlet parameters passed in from the portlet.
@@ -133,6 +133,16 @@
         public function renderPortletHeadContent()
         {
             return null;
+        }
+
+        public static function getAllowedOnPortletViewClassNames()
+        {
+            return array();
+        }
+
+        public static function allowMultiplePlacement()
+        {
+            return false;
         }
     }
 ?>
