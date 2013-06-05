@@ -41,7 +41,7 @@
             assert('$demoDataHelper instanceof DemoDataHelper');
             $productCategories = array();
             $productCatalog    = ProductCatalog::resolveAndGetByName(ProductCatalog::DEFAULT_NAME);
-            for ($i = 0; $i < 3; $i++)
+            for ($i = 0; $i < 6; $i++)
             {
                 $productCategory = new ProductCategory();
                 $productCategory->productCatalogs->add($productCatalog);
