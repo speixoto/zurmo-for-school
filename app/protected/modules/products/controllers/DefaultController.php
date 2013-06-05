@@ -104,7 +104,7 @@
             ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($product);
             $breadcrumbLinks = array(StringUtil::getChoppedStringContent(strval($product), 25));
             AuditEvent::logAuditEvent('ZurmoModule', ZurmoModule::AUDIT_EVENT_ITEM_VIEWED, array(strval($product), 'ProductsModule'), $product);
-            $detailsView        = new ProductDetailsView($this->getId(), $this->getModule()->getId(), $product);
+            $detailsView        = new ProductEditAndDetailsView('Details', $this->getId(), $this->getModule()->getId(), $product);
             $view               = new ProductsPageView(ProductDefaultViewUtil::
                                                          makeViewWithBreadcrumbsForCurrentUser(
                                                             $this, $detailsView, $breadcrumbLinks, 'ProductBreadCrumbView'));

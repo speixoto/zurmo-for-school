@@ -46,5 +46,10 @@
             return Zurmo::t('TasksModule', 'TasksModulePluralLabel For ContactsModuleSingularLabel',
                         LabelUtil::getTranslationParamsForAllModules());
         }
+
+        public static function getAllowedOnPortletViewClassNames()
+        {
+            return array('ContactDetailsAndRelationsView');
+        }
     }
 ?>

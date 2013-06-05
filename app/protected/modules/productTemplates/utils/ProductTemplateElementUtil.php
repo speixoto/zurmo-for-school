@@ -111,6 +111,10 @@
                         priceCurrency = $('#ProductTemplate_cost_currency_id').val();
                         $('#ProductTemplate_sellPrice_currency_id').val(priceCurrency);
                         $('#ProductTemplate_listPrice_currency_id').val(priceCurrency);
+                        $('#ProductTemplate_listPrice_currency_id').attr('readonly','readonly');
+                        $('#ProductTemplate_listPrice_currency_id').addClass('disabled');
+                        $('#ProductTemplate_cost_currency_id').removeAttr('readonly');
+                        $('#ProductTemplate_cost_currency_id').removeClass('disabled');
                     }
 
                     if (helperValue == typeMarkOverCost)
@@ -121,6 +125,10 @@
                         priceCurrency = $('#ProductTemplate_cost_currency_id').val();
                         $('#ProductTemplate_sellPrice_currency_id').val(priceCurrency);
                         $('#ProductTemplate_listPrice_currency_id').val(priceCurrency);
+                        $('#ProductTemplate_listPrice_currency_id').attr('readonly','readonly');
+                        $('#ProductTemplate_listPrice_currency_id').addClass('disabled');
+                        $('#ProductTemplate_cost_currency_id').removeAttr('readonly');
+                        $('#ProductTemplate_cost_currency_id').removeClass('disabled');
                     }
 
                     if (helperValue == typeDiscountFromList)
@@ -131,6 +139,10 @@
                         priceCurrency = $('#ProductTemplate_listPrice_currency_id').val();
                         $('#ProductTemplate_sellPrice_currency_id').val(priceCurrency);
                         $('#ProductTemplate_cost_currency_id').val(priceCurrency);
+                        $('#ProductTemplate_cost_currency_id').attr('readonly','readonly');
+                        $('#ProductTemplate_cost_currency_id').addClass('disabled');
+                        $('#ProductTemplate_listPrice_currency_id').removeAttr('readonly');
+                        $('#ProductTemplate_listPrice_currency_id').removeClass('disabled');
                     }
 
                     if (helperValue == typeSameAsList)
@@ -140,6 +152,18 @@
                         priceCurrency = $('#ProductTemplate_listPrice_currency_id').val();
                         $('#ProductTemplate_sellPrice_currency_id').val(priceCurrency);
                         $('#ProductTemplate_cost_currency_id').val(priceCurrency);
+                        $('#ProductTemplate_cost_currency_id').attr('readonly','readonly');
+                        $('#ProductTemplate_cost_currency_id').addClass('disabled');
+                        $('#ProductTemplate_listPrice_currency_id').removeAttr('readonly');
+                        $('#ProductTemplate_listPrice_currency_id').removeClass('disabled');
+                    }
+
+                    if (helperValue == typeEditable)
+                    {
+                        $('#ProductTemplate_cost_currency_id').removeAttr('readonly');
+                        $('#ProductTemplate_listPrice_currency_id').removeAttr('readonly');
+                        $('#ProductTemplate_listPrice_currency_id').removeClass('disabled');
+                        $('#ProductTemplate_cost_currency_id').removeClass('disabled');
                     }
                 }
             ";

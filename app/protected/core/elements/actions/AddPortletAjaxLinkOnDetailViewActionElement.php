@@ -48,7 +48,7 @@
 
         protected function getDefaultRoute()
         {
-            return Yii::app()->createUrl($this->moduleId . '/defaultPortlet/AddList/',
+            return Yii::app()->createUrl($this->moduleId . '/defaultPortlet/addList/',
                     array(
                     'uniqueLayoutId' => $this->getUniqueLayoutId(),
                     'modelId' => $this->modelId,

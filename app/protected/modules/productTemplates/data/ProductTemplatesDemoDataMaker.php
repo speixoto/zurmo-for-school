@@ -47,7 +47,11 @@
                 $currencyValue                   = new CurrencyValue();
                 $currencyValue->currency         = $currencies[array_rand($currencies)];
                 $productTemplate->cost           = $currencyValue;
+                $currencyValue                   = new CurrencyValue();
+                $currencyValue->currency         = $currencies[array_rand($currencies)];
                 $productTemplate->listPrice      = $currencyValue;
+                $currencyValue                   = new CurrencyValue();
+                $currencyValue->currency         = $currencies[array_rand($currencies)];
                 $productTemplate->sellPrice      = $currencyValue;
                 $this->populateModelData($productTemplate, $i);
                 $saved               = $productTemplate->save();
