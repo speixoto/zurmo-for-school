@@ -78,7 +78,7 @@
             $this->assertEquals(9,  User::getCount());
             $this->assertEquals(1, ProductCatalog::getCount());
             $this->assertEquals(6, ProductCategory::getCount());
-            $this->assertEquals(5, ProductTemplate::getCount());
+            $this->assertEquals(32, ProductTemplate::getCount());
             $this->assertEquals(5, Product::getCount());
         }
     }
