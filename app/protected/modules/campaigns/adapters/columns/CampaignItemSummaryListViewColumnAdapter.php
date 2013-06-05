@@ -92,10 +92,15 @@
 
         protected static function renderMetricsContent(CampaignItem $campaignItem)
         {
-            $isQueued     = $campaignItem->isQueued();
-            if($isQueued)
+            $isQueuedOrSkipped     = $campaignItem->isQueuedOrSkipped();
+            $isSkipped             = $campaignItem->isSkipped();
+            if($isQueuedOrSkipped && !$isSkipped)
             {
                 $content = static::getQueuedContent();
+            }
+            elseif($isQueuedOrSkipped && $isSkipped)
+            {
+                $content = static::getSkippedContent();
             }
             elseif($campaignItem->hasFailedToSend())
             {
@@ -129,6 +134,12 @@
         {
             $content = '<i>&#9679;</i><span>' . Zurmo::t('MarketingModule', 'Queued') . '</span>';
             return ZurmoHtml::tag('div', array('class' => 'email-recipient-stage-status queued'), $content);
+        }
+
+        protected static function getSkippedContent()
+        {
+            $content = '<i>&#9679;</i><span>' . Zurmo::t('MarketingModule', 'Skipped') . '</span>';
+            return ZurmoHtml::tag('div', array('class' => 'email-recipient-stage-status stage-false'), $content);
         }
 
         protected static function getSentContent()

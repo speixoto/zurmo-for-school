@@ -368,7 +368,7 @@
             $this->assertCount(0, $unprocessedItems);
             $personId                   = $contact->getClassId('Person');
             $activities                 = CampaignItemActivity::getByTypeAndModelIdAndPersonIdAndUrl(
-                                                                                    CampaignItemActivity::TYPE_SKIPPED,
+                                                                                    CampaignItemActivity::TYPE_SKIP,
                                                                                     $campaignItem->id,
                                                                                     $personId);
             $this->assertNotEmpty($activities);

@@ -228,9 +228,24 @@
          * Return true if the related email message is id < 0 or it is created, but the
          * @return bool
          */
-        public function isQueued()
+        public function isQueuedOrSkipped()
         {
             if($this->emailMessage->id < 0 || $this->emailMessage->folder->type ==  EmailFolder::TYPE_OUTBOX)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        /**
+         * @return bool
+         */
+        public function isSkipped()
+        {
+            $count = CampaignItemActivity::getChildActivityByTypeAndModelIdAndModelRelationNameAndPersonIdAndUrl(
+                                           CampaignItemActivity::TYPE_SKIP, $this->id, 'campaignItem',
+                                           $this->contact->getClassId('Person'), null, 'latestDateTime', null, true);
+            if($count > 0)
             {
                 return true;
             }

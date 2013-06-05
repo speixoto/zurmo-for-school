@@ -58,7 +58,7 @@
                 // TODO: @Shoaibi: Critical: Test, ensure activity is created for optout one, no items created.
                 $activityClass  = $itemClass . 'Activity';
                 $personId       = $contact->getClassId('Person');
-                $type           = $activityClass::TYPE_SKIPPED;
+                $type           = $activityClass::TYPE_SKIP;
                 $modelId        = $item->id;
                 $activityClass::createNewActivity($type, $modelId, $personId);
             }
