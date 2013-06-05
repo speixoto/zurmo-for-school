@@ -48,6 +48,27 @@
             Yii::app()->user->userModel = User::getByUsername('super');
         }
 
+        public function testNonRelatedNonDerivedBooleanAttributeWithFalseValue()
+        {
+            $filter                              = new FilterForReportForm('ReportsTestModule', 'ReportModelTestItem',
+                Report::TYPE_ROWS_AND_COLUMNS);
+            $filter->attributeIndexOrDerivedType = 'boolean';
+            $filter->operator                    = OperatorRules::TYPE_EQUALS;
+            $filter->value                       = '0';
+            $metadataAdapter                     = new FilterForReportFormToDataProviderMetadataAdapter($filter);
+            $metadata                            = $metadataAdapter->getAdaptedMetadata();
+            $compareClauses = array(
+                1 => array(
+                    'attributeName'        => 'boolean',
+                    'operatorType'         => 'equals',
+                    'value'                => 0,
+                ),
+            );
+            $compareStructure = '1';
+            $this->assertEquals($compareClauses, $metadata['clauses']);
+            $this->assertEquals($compareStructure, $metadata['structure']);
+        }
+
         public function testDateAttributeWithModifier()
         {
             $filter                              = new FilterForReportForm('ReportsTestModule', 'ReportModelTestItem',

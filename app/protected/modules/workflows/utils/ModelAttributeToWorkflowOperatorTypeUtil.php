@@ -40,8 +40,6 @@
      */
     class ModelAttributeToWorkflowOperatorTypeUtil extends ModelAttributeToOperatorTypeUtil
     {
-        const AVAILABLE_OPERATORS_TYPE_BOOLEAN        = 'Boolean';
-
         const AVAILABLE_OPERATORS_TYPE_CURRENCY_VALUE = 'CurrencyValue';
 
         /**
