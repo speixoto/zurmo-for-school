@@ -59,8 +59,7 @@
                 $activity                       = new CampaignItemActivity();
                 $campaignItem                   = $demoDataHelper->getRandomByModelName('CampaignItem');
                 $activity->campaignItem         = $campaignItem;
-                $personId                       = $campaignItem->contact;
-                $activity->person               = Person::getById($personId);
+                $activity->person               = $campaignItem->contact;
                 if (rand() % 4)
                 {
                     $emailMessageUrl                = $demoDataHelper->getRandomByModelName('EmailMessageUrl');
