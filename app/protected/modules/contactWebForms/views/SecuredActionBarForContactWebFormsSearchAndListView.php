@@ -54,11 +54,11 @@
                             ),
                             array(
                                 'type'            => 'ContactWebFormsListLink',
-                                'htmlOptions'     => array( 'class' => 'icon-marketing-lists' )
+                                'htmlOptions'     => array( 'class' => 'icon-webforms' )
                             ),
                             array(
                                 'type'            => 'ContactWebFormEntriesListLink',
-                                'htmlOptions'     => array( 'class' => 'icon-email-templates' )
+                                'htmlOptions'     => array( 'class' => 'icon-webforms-entries' )
                             ),
                         ),
                     ),

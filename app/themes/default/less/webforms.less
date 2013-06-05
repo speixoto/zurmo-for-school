@@ -1,0 +1,50 @@
+.webform-embed-code{
+	padding:0;
+	margin-bottom: 15px;
+	word-break: break-all;
+	white-space: normal;
+	code{
+		white-space: normal;
+	}
+	textarea{
+		margin-top: 10px;
+		border: 1px solid #ccc;
+		background: #fff;
+		.b-shadow(inset 0 0 2px 0 #ccc);
+		width: 100%;
+		padding: 5px;
+		++.border-box;
+		.radius(2px);
+		resize: none;
+		white-space: pre;
+		overflow: auto;
+		font-family: "Courier New",Courier,monospace;
+	}
+}
+
+#ContactWebFormEditAndDetailsView{
+	.ui-sortable{
+		++.clearfix;
+		list-style: none;
+		.hasCheckBox + label{
+			top: 0;
+			left: 8px;
+		}
+	}
+	#ContactWebForm_serializedData{
+		display: block;
+		margin-top: -5px;
+	}
+	label + label{
+		margin-left: 0;
+	}
+	.third, .twoThirds{
+		float: left;
+	}
+	.twoThirds{
+		margin-left: 2%;
+	}
+	.dynamic-row .remove-dynamic-row-link {
+		top: 5px;
+	}
+}

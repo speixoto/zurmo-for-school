@@ -77,7 +77,6 @@
                                                                                 null,
                                                                                 null,
                                                                                 null,
-                                                                                Campaign::TYPE_MARKETING_LIST,
                                                                                 null,
                                                                                 null,
                                                                                 null,
@@ -102,7 +101,6 @@
                                                                                 null,
                                                                                 null,
                                                                                 null,
-                                                                                Campaign::TYPE_MARKETING_LIST,
                                                                                 null,
                                                                                 null,
                                                                                 0,
@@ -139,7 +137,6 @@
                                                                                 null,
                                                                                 null,
                                                                                 null,
-                                                                                Campaign::TYPE_MARKETING_LIST,
                                                                                 null,
                                                                                 null,
                                                                                 null,
@@ -153,12 +150,12 @@
             $this->assertEquals($marketingList->owner, $emailMessage->owner);
             $this->assertEquals($campaign->subject, $emailMessage->subject);
             $this->assertTrue(strpos($emailMessage->content->textContent, $campaign->textContent) !== false);
-            $this->assertTrue(strpos($emailMessage->content->textContent, '/marketingLists/public/') !== false);
-            $this->assertEquals(2, substr_count($emailMessage->content->textContent, '/marketingLists/public/'));
+            $this->assertTrue(strpos($emailMessage->content->textContent, '/marketingLists/external/') !== false);
+            $this->assertEquals(2, substr_count($emailMessage->content->textContent, '/marketingLists/external/'));
             $this->assertTrue(strpos($emailMessage->content->htmlContent, $campaign->htmlContent) !== false);
-            $this->assertTrue(strpos($emailMessage->content->htmlContent, '/marketingLists/public/') !== false);
-            $this->assertEquals(2, substr_count($emailMessage->content->htmlContent, '/marketingLists/public/'));
-            $userToSendMessagesFrom     = Yii::app()->emailHelper->getUserToSendNotificationsAs();
+            $this->assertTrue(strpos($emailMessage->content->htmlContent, '/marketingLists/external/') !== false);
+            $this->assertEquals(2, substr_count($emailMessage->content->htmlContent, '/marketingLists/external/'));
+            $userToSendMessagesFrom     = BaseJobControlUserConfigUtil::getUserToRunAs();
             $defaultFromAddress         = Yii::app()->emailHelper->resolveFromAddressByUser($userToSendMessagesFrom);
             $defaultFromName            = strval($userToSendMessagesFrom);
             $this->assertEquals($defaultFromAddress, $emailMessage->sender->fromAddress);
@@ -192,7 +189,6 @@
                                                                                 null,
                                                                                 null,
                                                                                 null,
-                                                                                Campaign::TYPE_MARKETING_LIST,
                                                                                 null,
                                                                                 null,
                                                                                 0,
@@ -205,11 +201,11 @@
             $this->assertEquals($marketingList->owner, $emailMessage->owner);
             $this->assertEquals($campaign->subject, $emailMessage->subject);
             $this->assertTrue(strpos($emailMessage->content->textContent, $campaign->textContent) !== false);
-            $this->assertTrue(strpos($emailMessage->content->textContent, '/marketingLists/public/') !== false);
-            $this->assertEquals(2, substr_count($emailMessage->content->textContent, '/marketingLists/public/'));
+            $this->assertTrue(strpos($emailMessage->content->textContent, '/marketingLists/external/') !== false);
+            $this->assertEquals(2, substr_count($emailMessage->content->textContent, '/marketingLists/external/'));
             $this->assertTrue(strpos($emailMessage->content->htmlContent, $campaign->htmlContent) !== false);
-            $this->assertTrue(strpos($emailMessage->content->htmlContent, '/marketingLists/public/') !== false);
-            $this->assertEquals(2, substr_count($emailMessage->content->htmlContent, '/marketingLists/public/'));
+            $this->assertTrue(strpos($emailMessage->content->htmlContent, '/marketingLists/external/') !== false);
+            $this->assertEquals(2, substr_count($emailMessage->content->htmlContent, '/marketingLists/external/'));
             $this->assertEquals($marketingList->fromAddress, $emailMessage->sender->fromAddress);
             $this->assertEquals($marketingList->fromName, $emailMessage->sender->fromName);
             $this->assertEquals(1, $emailMessage->recipients->count());
@@ -241,7 +237,6 @@
                                                                                 null,
                                                                                 null,
                                                                                 null,
-                                                                                Campaign::TYPE_MARKETING_LIST,
                                                                                 null,
                                                                                 null,
                                                                                 null,
@@ -256,11 +251,11 @@
             $this->assertNotEquals($campaign->textContent, $emailMessage->content->textContent);
             $this->assertNotEquals($campaign->htmlContent, $emailMessage->content->htmlContent);
             $this->assertTrue(strpos($emailMessage->content->textContent, 'Dr. contact 05 contact 05son') !== false);
-            $this->assertTrue(strpos($emailMessage->content->textContent, '/marketingLists/public/') !== false);
-            $this->assertEquals(2, substr_count($emailMessage->content->textContent, '/marketingLists/public/'));
+            $this->assertTrue(strpos($emailMessage->content->textContent, '/marketingLists/external/') !== false);
+            $this->assertEquals(2, substr_count($emailMessage->content->textContent, '/marketingLists/external/'));
             $this->assertTrue(strpos($emailMessage->content->htmlContent, '<b>contact 05son</b>, contact 05') !== false);
-            $this->assertTrue(strpos($emailMessage->content->htmlContent, '/marketingLists/public/') !== false);
-            $this->assertEquals(2, substr_count($emailMessage->content->htmlContent, '/marketingLists/public/'));
+            $this->assertTrue(strpos($emailMessage->content->htmlContent, '/marketingLists/external/') !== false);
+            $this->assertEquals(2, substr_count($emailMessage->content->htmlContent, '/marketingLists/external/'));
             $this->assertEquals($marketingList->fromAddress, $emailMessage->sender->fromAddress);
             $this->assertEquals($marketingList->fromName, $emailMessage->sender->fromName);
             $this->assertEquals(1, $emailMessage->recipients->count());
@@ -292,7 +287,6 @@
                                                                                 null,
                                                                                 null,
                                                                                 null,
-                                                                                Campaign::TYPE_MARKETING_LIST,
                                                                                 null,
                                                                                 null,
                                                                                 null,
@@ -319,11 +313,11 @@
             $this->assertNotEquals($campaign->textContent, $emailMessage->content->textContent);
             $this->assertNotEquals($campaign->htmlContent, $emailMessage->content->htmlContent);
             $this->assertTrue(strpos($emailMessage->content->textContent, 'Dr. contact 06 contact 06son') !== false);
-            $this->assertTrue(strpos($emailMessage->content->textContent, '/marketingLists/public/') !== false);
-            $this->assertEquals(2, substr_count($emailMessage->content->textContent, '/marketingLists/public/'));
+            $this->assertTrue(strpos($emailMessage->content->textContent, '/marketingLists/external/') !== false);
+            $this->assertEquals(2, substr_count($emailMessage->content->textContent, '/marketingLists/external/'));
             $this->assertTrue(strpos($emailMessage->content->htmlContent, '<b>contact 06son</b>, contact 06') !== false);
-            $this->assertTrue(strpos($emailMessage->content->htmlContent, '/marketingLists/public/') !== false);
-            $this->assertEquals(2, substr_count($emailMessage->content->htmlContent, '/marketingLists/public/'));
+            $this->assertTrue(strpos($emailMessage->content->htmlContent, '/marketingLists/external/') !== false);
+            $this->assertEquals(2, substr_count($emailMessage->content->htmlContent, '/marketingLists/external/'));
             $this->assertEquals($marketingList->fromAddress, $emailMessage->sender->fromAddress);
             $this->assertEquals($marketingList->fromName, $emailMessage->sender->fromName);
             $this->assertEquals(1, $emailMessage->recipients->count());
@@ -370,7 +364,6 @@
                                                                         null,
                                                                         null,
                                                                         null,
-                                                                        Campaign::TYPE_MARKETING_LIST,
                                                                         null,
                                                                         null,
                                                                         null,
@@ -432,7 +425,6 @@
                                                                             null,
                                                                             null,
                                                                             null,
-                                                                            Campaign::TYPE_MARKETING_LIST,
                                                                             null,
                                                                             null,
                                                                             null,
@@ -476,6 +468,45 @@
                 $this->assertEquals(Campaign::STATUS_PROCESSING, $campaign->status);
             }
             // TODO: @Shoaibi: Medium: Add tests for the other campaign type.
+        }
+
+        /**
+         * @depends testGenerateCampaignItemsForDueCampaignsWithCustomBatchSize
+         */
+        public function testProcessDueCampaignItemWithOptout()
+        {
+            $email                      = new Email();
+            $email->emailAddress        = 'demo@zurmo.com';
+            $email->optOut              = true;
+            $contact                    = ContactTestHelper::createContactByNameForOwner('contact 08', $this->user);
+            $contact->primaryEmail      = $email;
+            $this->assertTrue($contact->save());
+            $marketingList              = MarketingListTestHelper::createMarketingListByName('marketingList 08',
+                                                                                                'description',
+                                                                                                'CustomFromName',
+                                                                                                'custom@from.com');
+            $campaign                   = CampaignTestHelper::createCampaign('campaign 08',
+                                                                                'subject 08',
+                                                                                'Dr. [[FIRST^NAME]] [[LAST^NAME]]',
+                                                                                '<b>[[LAST^NAME]]</b>, [[FIRST^NAME]]',
+                                                                                null,
+                                                                                null,
+                                                                                null,
+                                                                                null,
+                                                                                null,
+                                                                                null,
+                                                                                $marketingList);
+            $processed                  = 0;
+            $campaignItem               = CampaignItemTestHelper::createCampaignItem($processed, $campaign, $contact);
+            CampaignItemsUtil::processDueItem($campaignItem);
+            $this->assertEquals(1, $campaignItem->processed);
+            $personId                   = $contact->getClassId('Person');
+            $activities                 = CampaignItemActivity::getByTypeAndModelIdAndPersonIdAndUrl(
+                                                                                CampaignItemActivity::TYPE_SKIP,
+                                                                                $campaignItem->id,
+                                                                                $personId);
+            $this->assertNotEmpty($activities);
+            $this->assertCount(1, $activities);
         }
 
         protected function purgeAllCampaigns()

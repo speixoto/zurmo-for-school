@@ -209,7 +209,8 @@
             return array(''                           => Zurmo::t('Core', 'White'),
                          'kanban-background-football' => Zurmo::t('Core', 'Football'),
                          'kanban-background-tennis'   => Zurmo::t('Core', 'Tennis'),
-                         'kanban-background-motor'    => Zurmo::t('Core', 'Motor Sport'));
+                         'kanban-background-motor'    => Zurmo::t('Core', 'Motor Sport'),
+                         'kanban-background-yoga'     => Zurmo::t('Core', 'Yoga'));
         }
 
         public function setClearSticky()

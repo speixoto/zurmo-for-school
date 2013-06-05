@@ -46,5 +46,10 @@
             return Zurmo::t('OpportunitiesModule', 'OpportunitiesModulePluralLabel For AccountsModuleSingularLabel',
                         LabelUtil::getTranslationParamsForAllModules());
         }
+
+        public static function getAllowedOnPortletViewClassNames()
+        {
+            return array('AccountDetailsAndRelationsView');
+        }
     }
 ?>

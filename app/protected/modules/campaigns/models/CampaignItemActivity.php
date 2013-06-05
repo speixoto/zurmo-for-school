@@ -63,7 +63,7 @@
                                                                 $modelRelationName, $personId, $url, $sortBy, $pageSize);
         }
 
-        public static function createNewActivity($type, $modelId, $personId, $url = null)
+        public static function createNewActivity($type, $modelId, $personId, $url = null, $sourceIP = null)
         {
             $relatedModel = CampaignItem::getById(intval($modelId));
             if (!$relatedModel)
@@ -71,7 +71,7 @@
                 throw new NotFoundException();
             }
             $relationName = 'campaignItem';
-            return parent::createNewChildActivity($type, $personId, $url, $relationName, $relatedModel);
+            return parent::createNewChildActivity($type, $personId, $url, $relationName, $relatedModel, $sourceIP);
         }
 
         protected static function getLabel($language = null)

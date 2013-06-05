@@ -34,15 +34,15 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class MarketingListPublicControllerWalkthroughTest extends ZurmoWalkthroughBaseTest
+    class MarketingListsExternalControllerWalkthroughTest extends ZurmoWalkthroughBaseTest
     {
-        protected $subscribeUrl             = '/marketingLists/public/subscribe';
+        protected $subscribeUrl             = '/marketingLists/external/subscribe';
 
-        protected $unsubscribeUrl           = '/marketingLists/public/unsubscribe';
+        protected $unsubscribeUrl           = '/marketingLists/external/unsubscribe';
 
-        protected $optOutUrl                = '/marketingLists/public/optOut';
+        protected $optOutUrl                = '/marketingLists/external/optOut';
 
-        protected $manageSubscriptionsUrl   = '/marketingLists/public/manageSubscriptions';
+        protected $manageSubscriptionsUrl   = '/marketingLists/external/manageSubscriptions';
 
         public static function setUpBeforeClass()
         {
@@ -284,7 +284,7 @@
             $contact    = ContactTestHelper::createContactByNameForOwner('contact 01', Yii::app()->user->userModel);
             Yii::app()->user->userModel = null;
             $personId   = $contact->getClassId('Person');
-            $hash       = EmailMessageActivityUtil::resolveHashForFooter($personId, 100);
+            $hash       = EmailMessageActivityUtil::resolveHashForFooter($personId, 100, 1, 'AutoresponderItem', false);
             $this->setGetArray(array(
                 'hash'    => $hash,
             ));
@@ -301,7 +301,7 @@
             $contact    = ContactTestHelper::createContactByNameForOwner('contact 02', Yii::app()->user->userModel);
             Yii::app()->user->userModel = null;
             $personId   = $contact->getClassId('Person');
-            $hash       = EmailMessageActivityUtil::resolveHashForFooter($personId, 100);
+            $hash       = EmailMessageActivityUtil::resolveHashForFooter($personId, 100, 1, 'AutoresponderItem', false);
             $this->setGetArray(array(
                 'hash'    => $hash,
             ));
@@ -318,7 +318,7 @@
             $contact    = ContactTestHelper::createContactByNameForOwner('contact 03', Yii::app()->user->userModel);
             Yii::app()->user->userModel = null;
             $personId   = $contact->getClassId('Person');
-            $hash       = EmailMessageActivityUtil::resolveHashForFooter($personId, 100);
+            $hash       = EmailMessageActivityUtil::resolveHashForFooter($personId, 100, 1, 'AutoresponderItem', false);
             $this->setGetArray(array(
                 'hash'    => $hash,
             ));
@@ -334,26 +334,22 @@
             $contact    = ContactTestHelper::createContactByNameForOwner('contact 04', Yii::app()->user->userModel);
             Yii::app()->user->userModel = null;
             $personId   = $contact->getClassId('Person');
-            $hash       = EmailMessageActivityUtil::resolveHashForFooter($personId, 100);
+            $hash       = EmailMessageActivityUtil::resolveHashForFooter($personId, 100, 1, 'AutoresponderItem', false);
             $this->setGetArray(array(
                 'hash'    => $hash,
             ));
             $content = $this->runControllerWithNoExceptionsAndGetContent($this->manageSubscriptionsUrl);
             $this->assertTrue(strpos($content, '<title>ZurmoCRM - Manage Subscriptions</title>') !== false);
-            $this->assertTrue(strpos($content, '/views/MarketingListsManageSubscriptionsPageView.php') !== false);
             $this->assertTrue(strpos($content, '<div id="MarketingListsManageSubscriptionsPageView" ' .
                                                     'class="ZurmoPageView PageView">') !== false);
             $this->assertTrue(strpos($content, '<div class="GridView">') !== false);
-            $this->assertTrue(strpos($content, 'modules/zurmo/views/HeaderLinksView.php') !== false);
             $this->assertTrue(strpos($content, '<div id="HeaderLinksView">') !== false);
             $this->assertTrue(strpos($content, '<div id="corp-logo">') !== false);
             $this->assertTrue(strpos($content, '/home/default"><img src="') !== false);
             $this->assertTrue(strpos($content, '/themes/default/images/Zurmo_logo.png" alt="Zurmo Logo"  ' .
                                                     'height="32" width="107" /></a>') !== false);
-            $this->assertTrue(strpos($content, 'core/views/FlashMessageView.php') !== false);
             $this->assertTrue(strpos($content, '<div id="FlashMessageView">') !== false);
             $this->assertTrue(strpos($content, '<div id = "FlashMessageBar">') !== false);
-            $this->assertTrue(strpos($content, '/views/MarketingListsManageSubscriptionsListView.php') !== false);
             $this->assertTrue(strpos($content, '<div id="MarketingListsManageSubscriptionsListView" ' .
                                                     'class="MetadataView">') !== false);
             $this->assertTrue(strpos($content, '<div class="wrapper">') !== false);
@@ -366,9 +362,8 @@
             $this->assertTrue(strpos($content, '<tr><th>Name</th><th>Toggle Subscription</th></tr>') !== false);
             $this->assertTrue(strpos($content, '<td><a class="simple-link marketingListsManage' .
                                                     'SubscriptionListView-toggleUnsubscribed"') !== false);
-            $this->assertTrue(strpos($content, '/marketingLists/public/optOut?hash=') !== false);
-            $this->assertTrue(strpos($content, '3D%253D">Unsubscribe All/OptOut</a></td></tr></table>') !== false);
-            $this->assertTrue(strpos($content, 'modules/zurmo/views/FooterView.php') !== false);
+            $this->assertTrue(strpos($content, '/marketingLists/external/optOut?hash=') !== false);
+            $this->assertTrue(strpos($content, '>Unsubscribe All/OptOut</a>') !== false);
             $this->assertTrue(strpos($content, '<div id="FooterView">') !== false);
             $this->assertTrue(strpos($content, '<a href="http://www.zurmo.com" id="credit-link" ' .
                                                     'class="clearfix">') !== false);
@@ -389,7 +384,8 @@
                                                                                     'from@domain.com',
                                                                                     true);
             Yii::app()->user->userModel = null;
-            $hash       = EmailMessageActivityUtil::resolveHashForFooter(100, $marketingList->id);
+            $hash       = EmailMessageActivityUtil::resolveHashForFooter(100, $marketingList->id, 1,
+                                                                                            'AutoresponderItem', false);
             $this->setGetArray(array(
                 'hash'    => $hash,
             ));
@@ -409,7 +405,8 @@
                                                                                     'from@domain.com',
                                                                                     false);
             Yii::app()->user->userModel = null;
-            $hash       = EmailMessageActivityUtil::resolveHashForFooter(100, $marketingList->id);
+            $hash       = EmailMessageActivityUtil::resolveHashForFooter(100, $marketingList->id, 1,
+                                                                                            'AutoresponderItem', false);
             $this->setGetArray(array(
                 'hash'    => $hash,
             ));
@@ -429,7 +426,8 @@
                                                                                     'from@domain.com',
                                                                                     true);
             Yii::app()->user->userModel = null;
-            $hash       = EmailMessageActivityUtil::resolveHashForFooter(100, $marketingList->id);
+            $hash       = EmailMessageActivityUtil::resolveHashForFooter(100, $marketingList->id, 1,
+                                                                                            'AutoresponderItem', false);
             $this->setGetArray(array(
                 'hash'    => $hash,
             ));
@@ -449,7 +447,8 @@
                                                                                     'from@domain.com',
                                                                                     false);
             Yii::app()->user->userModel = null;
-            $hash       = EmailMessageActivityUtil::resolveHashForFooter(100, $marketingList->id);
+            $hash       = EmailMessageActivityUtil::resolveHashForFooter(100, $marketingList->id, 1,
+                                                                                            'AutoresponderItem', false);
             $this->setGetArray(array(
                 'hash'    => $hash,
             ));
@@ -478,26 +477,23 @@
                 MarketingListMemberTestHelper::createMarketingListMember($unsubscribed, $marketingList, $contact);
             }
             Yii::app()->user->userModel = null;
-            $hash       = EmailMessageActivityUtil::resolveHashForFooter($personId, $marketingList->id);
+            $hash       = EmailMessageActivityUtil::resolveHashForFooter($personId, $marketingList->id, 1,
+                                                                                            'AutoresponderItem', false);
             $this->setGetArray(array(
                 'hash'    => $hash,
             ));
             $content    = $this->runControllerWithNoExceptionsAndGetContent($this->manageSubscriptionsUrl);
             $this->assertTrue(strpos($content, '<title>ZurmoCRM - Manage Subscriptions</title>') !== false);
-            $this->assertTrue(strpos($content, '/views/MarketingListsManageSubscriptionsPageView.php') !== false);
             $this->assertTrue(strpos($content, '<div id="MarketingListsManageSubscriptionsPageView" ' .
                                                     'class="ZurmoPageView PageView">') !== false);
             $this->assertTrue(strpos($content, '<div class="GridView">') !== false);
-            $this->assertTrue(strpos($content, 'modules/zurmo/views/HeaderLinksView.php') !== false);
             $this->assertTrue(strpos($content, '<div id="HeaderLinksView">') !== false);
             $this->assertTrue(strpos($content, '<div id="corp-logo">') !== false);
             $this->assertTrue(strpos($content, '/home/default"><img src="') !== false);
             $this->assertTrue(strpos($content, '/themes/default/images/Zurmo_logo.png" alt="Zurmo Logo"  ' .
                                                     'height="32" width="107" /></a>') !== false);
-            $this->assertTrue(strpos($content, 'core/views/FlashMessageView.php') !== false);
             $this->assertTrue(strpos($content, '<div id="FlashMessageView">') !== false);
             $this->assertTrue(strpos($content, '<div id = "FlashMessageBar">') !== false);
-            $this->assertTrue(strpos($content, '/views/MarketingListsManageSubscriptionsListView.php') !== false);
             $this->assertTrue(strpos($content, '<div id="MarketingListsManageSubscriptionsListView" ' .
                                                     'class="MetadataView">') !== false);
             $this->assertTrue(strpos($content, '<div class="wrapper">') !== false);
@@ -510,9 +506,8 @@
             $this->assertTrue(strpos($content, '<tr><th>Name</th><th>Toggle Subscription</th></tr>') !== false);
             $this->assertTrue(strpos($content, '<td><a class="simple-link marketingListsManage' .
                                                     'SubscriptionListView-toggleUnsubscribed"') !== false);
-            $this->assertTrue(strpos($content, '/marketingLists/public/optOut?hash=') !== false);
-            $this->assertTrue(strpos($content, '3D%253D">Unsubscribe All/OptOut</a></td></tr></table>') !== false);
-            $this->assertTrue(strpos($content, 'modules/zurmo/views/FooterView.php') !== false);
+            $this->assertTrue(strpos($content, '/marketingLists/external/optOut?hash=') !== false);
+            $this->assertTrue(strpos($content, '>Unsubscribe All/OptOut</a></td></tr></table>') !== false);
             $this->assertTrue(strpos($content, '<div id="FooterView">') !== false);
             $this->assertTrue(strpos($content, '<a href="http://www.zurmo.com" id="credit-link" ' .
                                                     'class="clearfix">') !== false);
@@ -521,15 +516,15 @@
             $this->assertTrue(strpos($content, '<tr><td>marketingList 02</td>') !== false);
             $this->assertTrue(strpos($content, '<td><div class="switch">') !== false);
             $this->assertTrue(strpos($content, '<div class="switch-state clearfix">') !== false);
-            $this->assertTrue(strpos($content, '/marketingLists/public/subscribe?hash=') !== false);
-            $this->assertTrue(strpos($content, '%253D%253D" id="marketingListsManage' .
+            $this->assertTrue(strpos($content, '/marketingLists/external/subscribe?hash=') !== false);
+            $this->assertTrue(strpos($content, 'id="marketingListsManage' .
                                                     'SubscriptionListView-toggleUnsubscribed_') !== false);
             $this->assertTrue(strpos($content, 'checked="checked" type="radio" name="marketingListsManage' .
                                                     'SubscriptionListView-toggleUnsubscribed_') !== false);
             $this->assertTrue(strpos($content, '<label for="marketingListsManage' .
                                                     'SubscriptionListView-toggleUnsubscribed_') !== false);
             $this->assertTrue(strpos($content, '_0">Subscribe</label></div>') !== false);
-            $this->assertTrue(strpos($content, '/marketingLists/public/unsubscribe?hash=') !== false);
+            $this->assertTrue(strpos($content, '/marketingLists/external/unsubscribe?hash=') !== false);
             $this->assertTrue(strpos($content, '_1">Unsubcribe</label></div></div></td></tr>') !== false);
             $this->assertTrue(strpos($content, '<tr><td>marketingList 01</td>') !== false);
             $this->assertTrue(strpos($content, '<tr><td>marketingList 03</td>') !== false);
@@ -562,7 +557,8 @@
             $member[0]->delete();
             $personId       = $contact->getClassId('Person');
             Yii::app()->user->userModel = null;
-            $hash           = EmailMessageActivityUtil::resolveHashForFooter($personId, $marketingList->id);
+            $hash           = EmailMessageActivityUtil::resolveHashForFooter($personId, $marketingList->id, 1,
+                                                                                            'AutoresponderItem', false);
             $this->setGetArray(array(
                 'hash'    => $hash,
             ));
@@ -592,7 +588,8 @@
             $member[0]->delete();
             $personId       = $contact->getClassId('Person');
             Yii::app()->user->userModel = null;
-            $hash           = EmailMessageActivityUtil::resolveHashForFooter($personId, $marketingListId);
+            $hash           = EmailMessageActivityUtil::resolveHashForFooter($personId, $marketingListId, 1,
+                                                                                            'AutoresponderItem', false);
             $this->setGetArray(array(
                 'hash'    => $hash,
             ));
@@ -634,7 +631,8 @@
             $this->assertEquals(0, $member[0]->unsubscribed);
             $personId       = $contact->getClassId('Person');
             Yii::app()->user->userModel = null;
-            $hash           = EmailMessageActivityUtil::resolveHashForFooter($personId, $marketingListId);
+            $hash           = EmailMessageActivityUtil::resolveHashForFooter($personId, $marketingListId, 1,
+                                                                                            'AutoresponderItem', false);
             $this->setGetArray(array(
                 'hash'    => $hash,
             ));
@@ -659,7 +657,7 @@
         /**
          * @depends testSubscribeActionToPublicMarketingListAlreadyASubscriberOf
          */
-        public function testUnsubscribeActionToPublicMarketingList()
+        public function testUnsubscribeActionToPublicMarketingListCreatesActivity()
         {
             $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
             $marketingList      = MarketingList::getByName('marketingList 03');
@@ -669,14 +667,35 @@
             $contact            = Contact::getByName('contact 05 contact 05son');
             $this->assertNotEmpty($contact);
             $contact            = $contact[0];
+            $personId           = $contact->getClassId('Person');
             $member             = MarketingListMember::getByMarketingListIdContactIdAndSubscribed($marketingList->id,
                                                                                                     $contact->id,
                                                                                                     0);
             $this->assertNotEmpty($member);
             $this->assertEquals(0, $member[0]->unsubscribed);
-            $personId       = $contact->getClassId('Person');
+            $autoresponder      = AutoresponderTestHelper::createAutoresponder('Autoresponder 01',
+                                                                                'textContent',
+                                                                                'htmlContent',
+                                                                                10,
+                                                                                Autoresponder::OPERATION_UNSUBSCRIBE,
+                                                                                true,
+                                                                                $marketingList);
+            $this->assertNotEmpty($autoresponder);
+            $processDateTime    = DateTimeUtil::convertTimestampToDbFormatDateTime(strtotime('-1 week'));
+            $autoresponderItem  = AutoresponderItemTestHelper::createAutoresponderItem(1, $processDateTime,
+                                                                                        $autoresponder, $contact);
+            $this->assertNotEmpty($autoresponderItem);
+            $autoresponderItemActivities    = AutoresponderItemActivity::getByTypeAndModelIdAndPersonIdAndUrl(
+                                                                            AutoresponderItemActivity::TYPE_UNSUBSCRIBE,
+                                                                            $autoresponderItem->id,
+                                                                            $personId);
+            $this->assertEmpty($autoresponderItemActivities);
             Yii::app()->user->userModel = null;
-            $hash           = EmailMessageActivityUtil::resolveHashForFooter($personId, $marketingListId);
+            $hash           = EmailMessageActivityUtil::resolveHashForFooter($personId,
+                                                                                $marketingListId,
+                                                                                $autoresponderItem->id,
+                                                                                'AutoresponderItem',
+                                                                                true);
             $this->setGetArray(array(
                 'hash'    => $hash,
             ));
@@ -696,10 +715,17 @@
             $this->assertTrue(strpos($content, 'id="marketingListsManageSubscriptionListView-toggleUnsubscribed_' .
                                 $marketingListId . '_1" checked="checked" type="radio" name="marketingListsManage' .
                                 'SubscriptionListView-toggleUnsubscribed_' . $marketingListId) !== false);
+            $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
+            $autoresponderItemActivities    = AutoresponderItemActivity::getByTypeAndModelIdAndPersonIdAndUrl(
+                                                                            AutoresponderItemActivity::TYPE_UNSUBSCRIBE,
+                                                                            $autoresponderItem->id,
+                                                                            $personId);
+            $this->assertNotEmpty($autoresponderItemActivities);
+            $this->assertCount(1, $autoresponderItemActivities);
         }
 
         /**
-         * @depends testUnsubscribeActionToPublicMarketingList
+         * @depends testUnsubscribeActionToPublicMarketingListCreatesActivity
          */
         public function testUnsubscribeActionToPrivateMarketingList()
         {
@@ -719,7 +745,8 @@
             $this->assertEquals(0, $member[0]->unsubscribed);
             $personId       = $contact->getClassId('Person');
             Yii::app()->user->userModel = null;
-            $hash           = EmailMessageActivityUtil::resolveHashForFooter($personId, $marketingListId);
+            $hash           = EmailMessageActivityUtil::resolveHashForFooter($personId, $marketingListId, 1,
+                                                                                            'AutoresponderItem', false);
             $this->setGetArray(array(
                 'hash'    => $hash,
             ));
@@ -762,7 +789,8 @@
             $this->assertEquals(1, $member[0]->unsubscribed);
             $personId       = $contact->getClassId('Person');
             Yii::app()->user->userModel = null;
-            $hash           = EmailMessageActivityUtil::resolveHashForFooter($personId, $marketingListId);
+            $hash           = EmailMessageActivityUtil::resolveHashForFooter($personId, $marketingListId, 1,
+                                                                                            'AutoresponderItem', false);
             $this->setGetArray(array(
                 'hash'    => $hash,
             ));
@@ -787,7 +815,7 @@
         /**
          * @depends testUnsubscribeActionToPublicMarketingListAlreadyUnsubcribedOf
          */
-        public function testUnsubscribeActionToPrivateMarketingListAlreadyUnscribedOf()
+        public function testUnsubscribeActionToPrivateMarketingListAlreadyUnsubscribedOf()
         {
             $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
             $marketingList      = MarketingList::getByName('marketingList 04');
@@ -805,7 +833,8 @@
             $this->assertEquals(1, $member[0]->unsubscribed);
             $personId       = $contact->getClassId('Person');
             Yii::app()->user->userModel = null;
-            $hash           = EmailMessageActivityUtil::resolveHashForFooter($personId, $marketingListId);
+            $hash           = EmailMessageActivityUtil::resolveHashForFooter($personId, $marketingListId, 1,
+                                                                                            'AutoresponderItem', false);
             $this->setGetArray(array(
                 'hash'    => $hash,
             ));
@@ -818,7 +847,7 @@
         }
 
         /**
-         * @depends testUnsubscribeActionToPrivateMarketingListAlreadyUnscribedOf
+         * @depends testUnsubscribeActionToPrivateMarketingListAlreadyUnsubscribedOf
          */
         public function testUnsubscribeActionToPublicMarketingListNotEvenAMemberOf()
         {
@@ -837,7 +866,8 @@
             $member[0]->delete();
             $personId       = $contact->getClassId('Person');
             Yii::app()->user->userModel = null;
-            $hash           = EmailMessageActivityUtil::resolveHashForFooter($personId, $marketingListId);
+            $hash           = EmailMessageActivityUtil::resolveHashForFooter($personId, $marketingListId, 1,
+                                                                                            'AutoresponderItem', false);
             $this->setGetArray(array(
                 'hash'    => $hash,
             ));
@@ -881,7 +911,8 @@
             $member[0]->delete();
             $personId       = $contact->getClassId('Person');
             Yii::app()->user->userModel = null;
-            $hash           = EmailMessageActivityUtil::resolveHashForFooter($personId, $marketingListId);
+            $hash           = EmailMessageActivityUtil::resolveHashForFooter($personId, $marketingListId, 1,
+                                                                                            'AutoresponderItem', false);
             $this->setGetArray(array(
                 'hash'    => $hash,
             ));
@@ -917,7 +948,8 @@
                 }
             }
             Yii::app()->user->userModel = null;
-            $hash           = EmailMessageActivityUtil::resolveHashForFooter($personId, $marketingListIds[0]);
+            $hash           = EmailMessageActivityUtil::resolveHashForFooter($personId, $marketingListIds[0],
+                                                                                        1, 'AutoresponderItem', false);
             $this->setGetArray(array(
                 'hash'    => $hash,
             ));
@@ -926,10 +958,10 @@
             $this->assertTrue(strpos($content, '<tr><td>marketingList 02</td>') !== false);
             $this->assertTrue(strpos($content, '<tr><td>marketingList 03</td>') !== false);
             $this->assertTrue(strpos($content, '<tr><td>marketingList 04</td>') !== false);
-            $this->assertTrue(strpos($content, 'marketingLists/public/subscribe?hash=') !== false);
+            $this->assertTrue(strpos($content, 'marketingLists/external/subscribe?hash=') !== false);
             $this->assertTrue(strpos($content, 'id="marketingListsManage' .
                                         'SubscriptionListView-toggleUnsubscribed_') !== false);
-            $this->assertTrue(strpos($content, '%253D%253D" id="marketingListsManage' .
+            $this->assertTrue(strpos($content, 'id="marketingListsManage' .
                                         'SubscriptionListView-toggleUnsubscribed_') !== false);
             $this->assertTrue(strpos($content, 'type="radio" name="marketingListsManage' .
                                         'SubscriptionListView-toggleUnsubscribed_') !== false);
@@ -951,10 +983,10 @@
             $this->assertTrue(strpos($content, '<tr><td>marketingList 03</td>') !== false);
             $this->assertTrue(strpos($content, '<tr><td>marketingList 02</td>') === false);
             $this->assertTrue(strpos($content, '<tr><td>marketingList 04</td>') === false);
-            $this->assertTrue(strpos($content, 'marketingLists/public/subscribe?hash=') !== false);
+            $this->assertTrue(strpos($content, 'marketingLists/external/subscribe?hash=') !== false);
             $this->assertTrue(strpos($content, 'id="marketingListsManage' .
                                         'SubscriptionListView-toggleUnsubscribed_') !== false);
-            $this->assertTrue(strpos($content, '%253D%253D" id="marketingListsManage' .
+            $this->assertTrue(strpos($content, 'id="marketingListsManage' .
                                         'SubscriptionListView-toggleUnsubscribed_') !== false);
             $this->assertTrue(strpos($content, 'type="radio" name="marketingListsManage' .
                                         'SubscriptionListView-toggleUnsubscribed_') !== false);
@@ -991,7 +1023,8 @@
                                                                                                     1);
             $this->assertNotEmpty($member);
             Yii::app()->user->userModel = null;
-            $hash           = EmailMessageActivityUtil::resolveHashForFooter($personId, $marketingListId);
+            $hash           = EmailMessageActivityUtil::resolveHashForFooter($personId, $marketingListId, 1,
+                                                                                            'AutoresponderItem', false);
             $this->setGetArray(array(
                 'hash'    => $hash,
             ));
@@ -999,10 +1032,10 @@
             $content    = $this->runControllerWithNoExceptionsAndGetContent($this->manageSubscriptionsUrl);
             $this->assertTrue(strpos($content, '<tr><td>marketingList 01</td>') !== false);
             $this->assertTrue(strpos($content, '<tr><td>marketingList 03</td>') !== false);
-            $this->assertTrue(strpos($content, 'marketingLists/public/subscribe?hash=') !== false);
+            $this->assertTrue(strpos($content, 'marketingLists/external/subscribe?hash=') !== false);
             $this->assertTrue(strpos($content, 'id="marketingListsManage' .
                                 'SubscriptionListView-toggleUnsubscribed_') !== false);
-            $this->assertTrue(strpos($content, '%253D%253D" id="marketingListsManage' .
+            $this->assertTrue(strpos($content, 'id="marketingListsManage' .
                                 'SubscriptionListView-toggleUnsubscribed_') !== false);
             $this->assertTrue(strpos($content, 'type="radio" name="marketingListsManage' .
                                 'SubscriptionListView-toggleUnsubscribed_') !== false);

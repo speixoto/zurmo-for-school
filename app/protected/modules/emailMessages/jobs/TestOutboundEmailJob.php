@@ -68,7 +68,7 @@
         public function run()
         {
             $messageContent            = null;
-            $userToSendMessagesFrom    = Yii::app()->emailHelper->getUserToSendNotificationsAs();
+            $userToSendMessagesFrom    = BaseJobControlUserConfigUtil::getUserToRunAs();
             $emailMessage              = new EmailMessage();
             $emailMessage->owner       = Yii::app()->user->userModel;
             $emailMessage->subject     = Zurmo::t('EmailMessagesModule', 'A test email from Zurmo');

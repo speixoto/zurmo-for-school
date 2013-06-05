@@ -34,7 +34,7 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class MarketingListsPublicController extends ZurmoModuleController
+    class MarketingListsExternalController extends ZurmoModuleController
     {
         const TOGGLE_UNSUBSCRIBED_COOKIE_NAME = 'toggleUnsubscribed_Message';
 
@@ -45,8 +45,7 @@
 
         public function beforeAction($action)
         {
-            // TODO: @Shoaibi: Critical: Change this to unified config
-            Yii::app()->user->userModel = TrackingUtil::getUserToRunAs();
+            Yii::app()->user->userModel = BaseActionControlUserConfigUtil::getUserToRunAs();
             return parent::beforeAction($action);
         }
 
@@ -69,21 +68,20 @@
         {
             $contact                = null;
             $personId               = null;
+            $marketingListId        = null;
+            $modelId                = null;
+            $modelType              = null;
             extract($this->resolveHashForMarketingListIdAndPersonIdandContact($hash));
             $marketingLists         = MarketingList::getByUnsubscribedAndAnyoneCanSubscribe($contact->id);
             $listView               = new MarketingListsManageSubscriptionsListView($this->getId(),
                                                                                         $this->getModule()->getId(),
                                                                                         $marketingLists,
-                                                                                        $personId);
-            if (isset($_GET['ajax']) && $_GET['ajax'] == 'list-view')
-            {
-                echo $listView->render();
-            }
-            else
-            {
-                $view                   = new MarketingListsManageSubscriptionsPageView($this, $listView);
-                echo $view->render();
-            }
+                                                                                        $personId,
+                                                                                        $marketingListId,
+                                                                                        $modelId,
+                                                                                        $modelType);
+            $view                   = new MarketingListsManageSubscriptionsPageView($this, $listView);
+            echo $view->render();
         }
 
         protected function resolveAndValidateQueryStringHash($hash)
@@ -97,17 +95,21 @@
             $contact                = null;
             $personId               = null;
             $message                = null;
-            $newUnsubcribedValued   = (!$currentUnsubscribedValue);
+            $modelId                = null;
+            $modelType              = null;
+            $createNewActivity      = false;
+            $newUnsubcribedValue   = (!$currentUnsubscribedValue);
             extract($this->resolveHashForMarketingListIdAndPersonIdandContact($hash));
             $members                = $this->resolveMembers($currentUnsubscribedValue, $contact, $marketingListId, $optOut);
             if ($members)
             {
-                $this->toggleUnsubscribedForMembers($members, $newUnsubcribedValued);
-                $this->toggleOptOutForContact($contact, $optOut, $newUnsubcribedValued);
-                $message = $this->resolveStatusMessage($newUnsubcribedValued, $optOut);
+                $this->toggleUnsubscribedForMembers($members, $newUnsubcribedValue);
+                $this->toggleOptOutForContact($contact, $optOut, $newUnsubcribedValue);
+                $message = $this->resolveStatusMessage($newUnsubcribedValue, $optOut);
+                $this->createActivityIfRequired($createNewActivity, $newUnsubcribedValue, $modelId, $modelType, $personId);
             }
             $this->setToggleUnsubscribedCookie($message);
-            $url = Yii::app()->createUrl('/marketingLists/public/manageSubscriptions', array('hash' => $hash));
+            $url = Yii::app()->createUrl('/marketingLists/external/manageSubscriptions', array('hash' => $hash));
             $this->redirect($url);
         }
 
@@ -183,6 +185,23 @@
                 }
             }
             return $statusMessage;
+        }
+
+        protected function createActivityIfRequired($createNewActivity, $newUnsubcribedValue, $modelId, $modelType, $personId)
+        {
+            if (!$createNewActivity)
+            {
+                return;
+            }
+            // TODO: @Shoaibi: Critical: Tests to cover $newUnsubscribedValue to 0 or createNewActivity =0
+            if ($newUnsubcribedValue == 1)
+            {
+                $activityClassName  = EmailMessageActivityUtil::resolveModelClassNameByModelType($modelType);
+                $type               = $activityClassName::TYPE_UNSUBSCRIBE;
+                $url                = null;
+                $sourceIP           = Yii::app()->request->userHostAddress;
+                $activityClassName::createNewActivity($type, $modelId, $personId, $url, $sourceIP);
+            }
         }
 
         protected function setToggleUnsubscribedCookie($message)

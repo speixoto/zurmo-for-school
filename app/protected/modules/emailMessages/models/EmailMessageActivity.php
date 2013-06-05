@@ -39,19 +39,24 @@
      */
     class EmailMessageActivity extends Item
     {
-        const TYPE_OPEN        = 1;
+        const TYPE_OPEN         = 1;
 
-        const TYPE_CLICK       = 2;
+        const TYPE_CLICK        = 2;
 
-        const TYPE_UNSUBSCRIBE = 3;
+        const TYPE_UNSUBSCRIBE  = 3;
 
-        const TYPE_BOUNCE      = 4;
+        const TYPE_BOUNCE       = 4;
+
+        const TYPE_SKIP         = 5;
 
         public static function getTypesArray()
         {
             return array(
-                static::TYPE_OPEN    => Zurmo::t('EmailMessagesModule', 'Open'),
-                static::TYPE_CLICK   => Zurmo::t('EmailMessagesModule', 'Click'),
+                static::TYPE_OPEN           => Zurmo::t('EmailMessagesModule', 'Open'),
+                static::TYPE_CLICK          => Zurmo::t('EmailMessagesModule', 'Click'),
+                static::TYPE_UNSUBSCRIBE    => Zurmo::t('EmailMessagesModule', 'Unsubscribe'),
+                static::TYPE_BOUNCE         => Zurmo::t('EmailMessagesModule', 'Bounce'),
+                static::TYPE_SKIP           => Zurmo::t('EmailMessagesModule', 'Skipped'),
             );
         }
 
@@ -73,15 +78,16 @@
                     'latestDateTime',
                     'type',
                     'quantity',
+                    'latestSourceIP',
                 ),
                 'rules' => array(
                     array('latestDateTime',         'type', 'type' => 'datetime'),
                     array('type',                   'required'),
                     array('type',                   'type', 'type' => 'integer'),
-                    array('type',                   'numerical', 'min' => static::TYPE_OPEN, 'max' => static::TYPE_CLICK),
                     array('quantity',               'required'),
-                    array('quantity',                'type', 'type' => 'integer'),
+                    array('quantity',               'type', 'type' => 'integer'),
                     array('quantity',               'numerical', 'integerOnly' => true),
+                    array('latestSourceIP',         'type', 'type' => 'string'),
                 ),
                 'relations' => array(
                     'person'                        => array(RedBeanModel::HAS_ONE, 'Person', RedBeanModel::NOT_OWNED),
@@ -204,12 +210,13 @@
             return self::getSubset($joinTablesAdapter, null, $pageSize, $where, $sortBy);
         }
 
-        protected static function createNewChildActivity($type, $personId, $url, $relationName, $relatedModel)
+        protected static function createNewChildActivity($type, $personId, $url, $relationName, $relatedModel, $sourceIP)
         {
             $className                  = get_called_class();
             $activity                   = new $className();
             $activity->quantity         = 1;
             $activity->type             = $type;
+            $activity->latestSourceIP   = $sourceIP;
             if ($url)
             {
                 $emailMessageUrl            = new EmailMessageUrl();
@@ -232,17 +239,23 @@
                 static::createNewOpenActivityForFirstClickTrackingActivity($type,
                                                                             $personId,
                                                                             $relationName,
-                                                                            $relatedModel);
+                                                                            $relatedModel,
+                                                                            $sourceIP);
                 return true;
             }
         }
 
         protected static function createNewOpenActivityForFirstClickTrackingActivity($type, $personId,
-                                                                                        $relationName, $relatedModel)
+                                                                                $relationName, $relatedModel, $sourceIP)
         {
             if (static::shouldCreateOpenActivityForTrackingActivity($type, $personId, $relationName, $relatedModel->id))
             {
-                return static::createNewChildActivity(static::TYPE_OPEN, $personId, null, $relationName, $relatedModel);
+                return static::createNewChildActivity(static::TYPE_OPEN,
+                                                        $personId,
+                                                        null,
+                                                        $relationName,
+                                                        $relatedModel,
+                                                        $sourceIP);
             }
         }
 
@@ -294,7 +307,10 @@
             if ($type)
             {
                 $types  = static::getTypesArray();
-                $type   = $types[intval($this->type)];
+                if(isset($types[intval($this->type)]))
+                {
+                    $type   = $types[intval($this->type)];
+                }
             }
             return $this->latestDateTime . ': ' . strval($this->person) . '/' . $type;
         }

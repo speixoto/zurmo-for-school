@@ -334,9 +334,17 @@
 
         protected function resolveBooleanAttributeClauseAndStructure()
         {
+            if((bool)$this->resolveValueForOperator() === false)
+            {
+                $resolvedOperatorType = OperatorRules::TYPE_DOES_NOT_EQUAL;
+            }
+            else
+            {
+                $resolvedOperatorType = OperatorRules::TYPE_EQUALS;
+            }
             $this->clauses[1] = array('attributeName'        => $this->getRealAttributeName(),
-                                      'operatorType'         => $this->filter->getOperator(),
-                                      'value'                => (bool)$this->resolveValueForOperator());
+                                      'operatorType'         => $resolvedOperatorType,
+                                      'value'                => true);
             $this->structure  = '1';
         }
 

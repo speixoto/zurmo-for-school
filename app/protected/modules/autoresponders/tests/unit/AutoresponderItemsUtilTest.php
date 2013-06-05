@@ -149,12 +149,12 @@
             $this->assertEquals($marketingList->owner, $emailMessage->owner);
             $this->assertEquals($autoresponder->subject, $emailMessage->subject);
             $this->assertTrue(strpos($emailMessage->content->textContent, $autoresponder->textContent) !== false);
-            $this->assertTrue(strpos($emailMessage->content->textContent, '/marketingLists/public/') !== false);
-            $this->assertEquals(2, substr_count($emailMessage->content->textContent, '/marketingLists/public/'));
+            $this->assertTrue(strpos($emailMessage->content->textContent, '/marketingLists/external/') !== false);
+            $this->assertEquals(2, substr_count($emailMessage->content->textContent, '/marketingLists/external/'));
             $this->assertTrue(strpos($emailMessage->content->htmlContent, $autoresponder->htmlContent) !== false);
-            $this->assertTrue(strpos($emailMessage->content->htmlContent, '/marketingLists/public/') !== false);
-            $this->assertEquals(2, substr_count($emailMessage->content->htmlContent, '/marketingLists/public/'));
-            $userToSendMessagesFrom     = Yii::app()->emailHelper->getUserToSendNotificationsAs();
+            $this->assertTrue(strpos($emailMessage->content->htmlContent, '/marketingLists/external/') !== false);
+            $this->assertEquals(2, substr_count($emailMessage->content->htmlContent, '/marketingLists/external/'));
+            $userToSendMessagesFrom     = BaseJobControlUserConfigUtil::getUserToRunAs();
             $defaultFromAddress         = Yii::app()->emailHelper->resolveFromAddressByUser($userToSendMessagesFrom);
             $defaultFromName            = strval($userToSendMessagesFrom);
             $this->assertEquals($defaultFromAddress, $emailMessage->sender->fromAddress);
@@ -200,11 +200,11 @@
             $this->assertEquals($marketingList->owner, $emailMessage->owner);
             $this->assertEquals($autoresponder->subject, $emailMessage->subject);
             $this->assertTrue(strpos($emailMessage->content->textContent, $autoresponder->textContent) !== false);
-            $this->assertTrue(strpos($emailMessage->content->textContent, '/marketingLists/public/') !== false);
-            $this->assertEquals(2, substr_count($emailMessage->content->textContent, '/marketingLists/public/'));
+            $this->assertTrue(strpos($emailMessage->content->textContent, '/marketingLists/external/') !== false);
+            $this->assertEquals(2, substr_count($emailMessage->content->textContent, '/marketingLists/external/'));
             $this->assertTrue(strpos($emailMessage->content->htmlContent, $autoresponder->htmlContent) !== false);
-            $this->assertTrue(strpos($emailMessage->content->htmlContent, '/marketingLists/public/') !== false);
-            $this->assertEquals(2, substr_count($emailMessage->content->htmlContent, '/marketingLists/public/'));
+            $this->assertTrue(strpos($emailMessage->content->htmlContent, '/marketingLists/external/') !== false);
+            $this->assertEquals(2, substr_count($emailMessage->content->htmlContent, '/marketingLists/external/'));
             $this->assertEquals($marketingList->fromAddress, $emailMessage->sender->fromAddress);
             $this->assertEquals($marketingList->fromName, $emailMessage->sender->fromName);
             $this->assertEquals(1, $emailMessage->recipients->count());
@@ -250,11 +250,11 @@
             $this->assertNotEquals($autoresponder->textContent, $emailMessage->content->textContent);
             $this->assertNotEquals($autoresponder->htmlContent, $emailMessage->content->htmlContent);
             $this->assertTrue(strpos($emailMessage->content->textContent, 'Dr. contact 05 contact 05son') !== false);
-            $this->assertTrue(strpos($emailMessage->content->textContent, '/marketingLists/public/') !== false);
-            $this->assertEquals(2, substr_count($emailMessage->content->textContent, '/marketingLists/public/'));
+            $this->assertTrue(strpos($emailMessage->content->textContent, '/marketingLists/external/') !== false);
+            $this->assertEquals(2, substr_count($emailMessage->content->textContent, '/marketingLists/external/'));
             $this->assertTrue(strpos($emailMessage->content->htmlContent, '<b>contact 05son</b>, contact 05') === 0);
-            $this->assertTrue(strpos($emailMessage->content->htmlContent, '/marketingLists/public/') !== false);
-            $this->assertEquals(2, substr_count($emailMessage->content->htmlContent, '/marketingLists/public/'));
+            $this->assertTrue(strpos($emailMessage->content->htmlContent, '/marketingLists/external/') !== false);
+            $this->assertEquals(2, substr_count($emailMessage->content->htmlContent, '/marketingLists/external/'));
             $this->assertEquals($marketingList->fromAddress, $emailMessage->sender->fromAddress);
             $this->assertEquals($marketingList->fromName, $emailMessage->sender->fromName);
             $this->assertEquals(1, $emailMessage->recipients->count());
@@ -312,11 +312,11 @@
             $this->assertNotEquals($autoresponder->textContent, $emailMessage->content->textContent);
             $this->assertNotEquals($autoresponder->htmlContent, $emailMessage->content->htmlContent);
             $this->assertTrue(strpos($emailMessage->content->textContent, 'Dr. contact 06 contact 06son') !== false);
-            $this->assertTrue(strpos($emailMessage->content->textContent, '/marketingLists/public/') !== false);
-            $this->assertEquals(2, substr_count($emailMessage->content->textContent, '/marketingLists/public/'));
+            $this->assertTrue(strpos($emailMessage->content->textContent, '/marketingLists/external/') !== false);
+            $this->assertEquals(2, substr_count($emailMessage->content->textContent, '/marketingLists/external/'));
             $this->assertTrue(strpos($emailMessage->content->htmlContent, '<b>contact 06son</b>, contact 06') === 0);
-            $this->assertTrue(strpos($emailMessage->content->htmlContent, '/marketingLists/public/') !== false);
-            $this->assertEquals(2, substr_count($emailMessage->content->htmlContent, '/marketingLists/public/'));
+            $this->assertTrue(strpos($emailMessage->content->htmlContent, '/marketingLists/external/') !== false);
+            $this->assertEquals(2, substr_count($emailMessage->content->htmlContent, '/marketingLists/external/'));
             $this->assertEquals($marketingList->fromAddress, $emailMessage->sender->fromAddress);
             $this->assertEquals($marketingList->fromName, $emailMessage->sender->fromName);
             $this->assertEquals(1, $emailMessage->recipients->count());
@@ -334,6 +334,45 @@
                 $this->assertEquals($files[$index]['size'], $emailMessage->files[$index]->size);
                 $this->assertEquals($files[$index]['contents'], $emailMessage->files[$index]->fileContent->content);
             }
+        }
+
+        /**
+         * @depends testProcessDueAutoresponderItemWithAttachments
+         */
+        public function testProcessDueAutoresponderItemWithOptout()
+        {
+            $email                      = new Email();
+            $email->emailAddress        = 'demo@zurmo.com';
+            $email->optOut              = true;
+            $contact                    = ContactTestHelper::createContactByNameForOwner('contact 06', $this->user);
+            $contact->primaryEmail      = $email;
+            $this->assertTrue($contact->save());
+            $marketingList              = MarketingListTestHelper::createMarketingListByName('marketingList 07',
+                                                                                                    'description',
+                                                                                                    'CustomFromName',
+                                                                                                    'custom@from.com');
+            $autoresponder              = AutoresponderTestHelper::createAutoresponder('subject 07',
+                                                                                'Dr. [[FIRST^NAME]] [[LAST^NAME]]',
+                                                                                '<b>[[LAST^NAME]]</b>, [[FIRST^NAME]]',
+                                                                                1,
+                                                                                Autoresponder::OPERATION_SUBSCRIBE,
+                                                                                true,
+                                                                                $marketingList);
+            $processed                  = 0;
+            $processDateTime            = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
+            $autoresponderItem          = AutoresponderItemTestHelper::createAutoresponderItem($processed,
+                                                                                                    $processDateTime,
+                                                                                                    $autoresponder,
+                                                                                                    $contact);
+            AutoresponderItemsUtil::processDueItem($autoresponderItem);
+            $this->assertEquals(1, $autoresponderItem->processed);
+            $personId                   = $contact->getClassId('Person');
+            $activities                = AutoresponderItemActivity::getByTypeAndModelIdAndPersonIdAndUrl(
+                                                                                AutoresponderItemActivity::TYPE_SKIP,
+                                                                                $autoresponderItem->id,
+                                                                                $personId);
+            $this->assertNotEmpty($activities);
+            $this->assertCount(1, $activities);
         }
     }
 ?>

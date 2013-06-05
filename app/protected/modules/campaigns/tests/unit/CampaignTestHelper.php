@@ -37,13 +37,13 @@
     class CampaignTestHelper
     {
         public static function createCampaign($name, $subject, $textContent, $htmlContent = null, $fromName = null,
-                                            $fromAddress = null, $supportsRichText = null, $type = null, $status = null,
+                                            $fromAddress = null, $supportsRichText = null, $status = null,
                                             $sendOnDateTime = null, $enableTracking = null,
                                             $marketingList = null, $runValidation = true)
         {
             assert('is_bool($runValidation)');
             $campaign       = static::populateCampaign($name, $subject, $textContent, $htmlContent, $fromName,
-                                                    $fromAddress, $supportsRichText, $type, $status,
+                                                    $fromAddress, $supportsRichText, $status,
                                                     $sendOnDateTime, $enableTracking, $marketingList);
             $saved          = $campaign->save($runValidation);
             if(!$saved)
@@ -54,7 +54,7 @@
         }
 
         public static function populateCampaign($name, $subject, $textContent, $htmlContent = null, $fromName = null,
-                                                $fromAddress = null, $supportsRichText = null, $type = null,
+                                                $fromAddress = null, $supportsRichText = null,
                                                 $status = null, $sendOnDateTime = null,
                                                 $enableTracking = null, $marketingList = null)
         {
@@ -65,7 +65,6 @@
             assert('is_string($fromName) || $fromName === null');
             assert('is_string($fromAddress) || $fromAddress === null');
             assert('is_string($supportsRichText) || is_int($supportsRichText) || $supportsRichText === null');
-            assert('is_string($type) || is_int($type) || $type === null');
             assert('is_string($status) || is_int($status) || $status === null');
             assert('is_string($sendOnDateTime) || is_int($sendOnDateTime) || $sendOnDateTime === null');
             assert('is_bool($enableTracking) || is_int($enableTracking) || $enableTracking === null');
@@ -77,10 +76,6 @@
             if($sendOnDateTime == null)
             {
                 $sendOnDateTime = '0000-00-00 00:00:00';
-            }
-            if ($type == null)
-            {
-                $type               = Campaign::TYPE_MARKETING_LIST;
             }
             if ($status == null)
             {
@@ -98,7 +93,7 @@
             {
                 $fromAddress    = 'support@zurmo.com';
             }
-            if (($type == Campaign::TYPE_MARKETING_LIST) && empty($marketingList))
+            if (empty($marketingList))
             {
                 $marketingLists = MarketingList::getAll();
                 if  (!empty($marketingLists))
@@ -111,7 +106,6 @@
             $campaign->subject                  = $subject;
             $campaign->textContent              = $textContent;
             $campaign->htmlContent              = $htmlContent;
-            $campaign->type                     = $type;
             $campaign->status                   = $status;
             $campaign->fromName                 = $fromName;
             $campaign->fromAddress              = $fromAddress;

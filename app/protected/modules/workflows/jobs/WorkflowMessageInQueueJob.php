@@ -73,7 +73,7 @@
             try
             {
                 $originalUser               = Yii::app()->user->userModel;
-                Yii::app()->user->userModel = WorkflowUtil::getUserToRunAs();
+                Yii::app()->user->userModel = BaseJobControlUserConfigUtil::getUserToRunAs();
                 foreach (WorkflowMessageInQueue::getModelsToProcess(self::$pageSize) as $workflowMessageInQueue)
                 {
                     try

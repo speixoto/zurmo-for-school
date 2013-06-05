@@ -62,6 +62,11 @@
             parent::__construct('Details', $this->controllerId, $this->moduleId, $params["relationModel"]);
         }
 
+        public function getPortletParams()
+        {
+            return array();
+        }
+
         public static function getPortletRulesType()
         {
             return 'Detail';
@@ -128,19 +133,6 @@
         public function renderPortletHeadContent()
         {
             return $this->renderWrapperAndActionElementMenu();
-        }
-
-        protected function renderActionElementMenu($title = null)
-        {
-            $isViewLocked = ZurmoDefaultViewUtil::getLockKeyForDetailsAndRelationsView('lockPortletsForDetailsAndRelationsView');
-            if ($isViewLocked)
-            {
-                return null;
-            }
-            else
-            {
-                return parent::renderActionElementMenu($title);
-            }
         }
     }
 ?>

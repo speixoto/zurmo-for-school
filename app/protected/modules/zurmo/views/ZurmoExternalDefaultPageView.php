@@ -86,10 +86,6 @@
             if (MINIFY_SCRIPTS)
             {
                 Yii::app()->minScript->generateScriptMap('css');
-//                if (!YII_DEBUG && !defined('IS_TEST'))
-//                {
-//                    Yii::app()->minScript->generateScriptMap('js');
-//                }
             }
             if (Yii::app()->browser->getName() == 'msie' && Yii::app()->browser->getVersion() < 9)
             {
@@ -117,15 +113,9 @@
                     Yii::app()->getAssetManager()->publish(
                         Yii::getPathOfAlias('application.core.views.assets')) . '/less-1.2.0.min.js');
             }
-//            Yii::app()->clientScript->registerScriptFile(
-//                Yii::app()->getAssetManager()->publish(
-//                    Yii::getPathOfAlias('application.core.views.assets')) . '/ZurmoDialog.js');
             Yii::app()->clientScript->registerScriptFile(
                 Yii::app()->getAssetManager()->publish(
                     Yii::getPathOfAlias('application.core.views.assets')) . '/interactions.js');
-//            Yii::app()->clientScript->registerScriptFile(
-//                Yii::app()->getAssetManager()->publish(
-//                    Yii::getPathOfAlias('application.core.views.assets')) . '/mobile-interactions.js');
             Yii::app()->clientScript->registerScriptFile(
                 Yii::app()->getAssetManager()->publish(
                     Yii::getPathOfAlias('application.core.views.assets')) . '/jquery.truncateText.js');

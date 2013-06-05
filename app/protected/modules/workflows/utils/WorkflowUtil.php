@@ -37,12 +37,8 @@
     /**
      * Helper class for working with Workflow objects
      */
-    class WorkflowUtil extends BaseControlUserConfigUtil
+    class WorkflowUtil
     {
-        const CONFIG_MODULE_NAME        = 'WorkflowsModule';
-
-        const CONFIG_KEY                = 'UserIdOfUserToRunWorkflowsAs';
-
         /**
          * @param $type
          * @return null | string

@@ -34,6 +34,9 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
+    /**
+     * Helper class for working with marketing metrics
+     */
     class MarketingMetricsUtil
     {
         /**
@@ -50,14 +53,15 @@
             $amChart->data = $chartData;
             $amChart->id =  $uniqueId;
             $amChart->type = ChartRules::TYPE_LINE;
-            $amChart->addSerialGraph('uniqueClickThroughRate', 'column',
+            $amChart->addSerialGraph(MarketingChartDataProvider::UNIQUE_CLICK_THROUGH_RATE, 'column',
                                      array('title'       => "'" . Zurmo::t('MarketingModule', 'Unique CTR') . "'",
                                            'balloonText' => "'" . Zurmo::t('MarketingModule', 'CTR') . ": [[value]]%'"));
-            $amChart->addSerialGraph('uniqueOpenRate', 'column',
+            $amChart->addSerialGraph(MarketingChartDataProvider::UNIQUE_OPEN_RATE, 'column',
                                      array('title'       => "'" . Zurmo::t('MarketingModule', 'Unique Open Rate') . "'",
                                            'balloonText' => "'" . Zurmo::t('MarketingModule', 'Open Rate') . ": [[value]]%'"));
             $amChart->xAxisName        = $chartDataProvider->getXAxisName();
             $amChart->yAxisName        = $chartDataProvider->getYAxisName();
+            $amChart->addValueAxisProperties('maximum', 100);
             $javascript = $amChart->javascriptChart();
             Yii::app()->getClientScript()->registerScript(__CLASS__ . $uniqueId, $javascript);
             $cClipWidget = new CClipWidget();
@@ -81,24 +85,24 @@
             $amChart->data = $chartData;
             $amChart->id =  $uniqueId;
             $amChart->type = ChartRules::TYPE_STACKED_COLUMN_2D;
-            $amChart->addSerialGraph('queued', 'column',
+            $amChart->addSerialGraph(MarketingChartDataProvider::QUEUED, 'column',
                                      array('title'       => "'" . Zurmo::t('MarketingModule', 'Queued') . "'",
                                            'balloonText' => "'" . Zurmo::t('MarketingModule', 'Queued') . ": [[value]]'"));
-            $amChart->addSerialGraph('sent', 'column',
+            $amChart->addSerialGraph(MarketingChartDataProvider::SENT, 'column',
                                      array('title'       => "'" . Zurmo::t('MarketingModule', 'Sent') . "'",
                                            'balloonText' => "'" . Zurmo::t('MarketingModule', 'Sent') . ": [[value]]'"));
-            $amChart->addSerialGraph('opened', 'column',
+            $amChart->addSerialGraph(MarketingChartDataProvider::UNIQUE_OPENS, 'column',
                                      array('title'       => "'" . Zurmo::t('MarketingModule', 'Opened') . "'",
                                            'balloonText' => "'" . Zurmo::t('MarketingModule', 'Opened') . ": [[value]]'"));
-            $amChart->addSerialGraph('clicked', 'column',
+            $amChart->addSerialGraph(MarketingChartDataProvider::UNIQUE_CLICKS, 'column',
                                      array('title'       => "'" . Zurmo::t('MarketingModule', 'Clicked') . "'",
                                            'balloonText' => "'" . Zurmo::t('MarketingModule', 'Clicked') . ": [[value]]'"));
-            $amChart->addSerialGraph('bounced', 'column',
+            $amChart->addSerialGraph(MarketingChartDataProvider::BOUNCED, 'column',
                                      array('title'       => "'" . Zurmo::t('MarketingModule', 'Bounced') . "'",
                                            'balloonText' => "'" . Zurmo::t('MarketingModule', 'Bounced') . ": [[value]]'"));
-            $amChart->addSerialGraph('optedOut', 'column',
-                                     array('title'       => "'" . Zurmo::t('MarketingModule', 'Opted Out') . "'",
-                                           'balloonText' => "'" . Zurmo::t('MarketingModule', 'Opted Out') . ": [[value]]'"));
+            $amChart->addSerialGraph(MarketingChartDataProvider::UNSUBSCRIBED, 'column',
+                                     array('title'       => "'" . Zurmo::t('MarketingModule', 'Unsubscribed') . "'",
+                                           'balloonText' => "'" . Zurmo::t('MarketingModule', 'Unsubscribed') . ": [[value]]'"));
 
             $amChart->xAxisName        = $chartDataProvider->getXAxisName();
             $amChart->yAxisName        = $chartDataProvider->getYAxisName();
@@ -125,12 +129,14 @@
             $amChart->data = $chartData;
             $amChart->id =  $uniqueId;
             $amChart->type = ChartRules::TYPE_STACKED_COLUMN_2D;
-            $amChart->addSerialGraph('existingSubscribers', 'column',
+            $amChart->addSerialGraph(MarketingChartDataProvider::EXISTING_SUBSCRIBERS_COUNT, 'column',
                                      array('title'       => "'" . Zurmo::t('MarketingModule', 'Existing Subscribers') . "'",
-                                           'balloonText' => "'" . Zurmo::t('MarketingModule', 'Existing Subscribers') . ": [[value]]'"));
-            $amChart->addSerialGraph('newSubscribers', 'column',
+                                           'balloonText' => "'[[dateBalloonLabel]]<br>" .
+                                               Zurmo::t('MarketingModule', 'Existing Subscribers') . ": [[value]]'"));
+            $amChart->addSerialGraph(MarketingChartDataProvider::NEW_SUBSCRIBERS_COUNT, 'column',
                                      array('title'       => "'" . Zurmo::t('MarketingModule', 'New Subscribers') . "'",
-                                           'balloonText' => "'" . Zurmo::t('MarketingModule', 'New Subscribers') . ": [[value]]'"));
+                                           'balloonText' => "'[[dateBalloonLabel]]<br>" .
+                                               Zurmo::t('MarketingModule', 'New Subscribers') . ": [[value]]'"));
             $amChart->xAxisName        = $chartDataProvider->getXAxisName();
             $amChart->yAxisName        = $chartDataProvider->getYAxisName();
             $javascript = $amChart->javascriptChart();

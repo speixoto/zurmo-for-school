@@ -34,18 +34,19 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * Helper class for working with tracking
-     */
-    abstract class ContactWebFormsUserConfigUtil extends BaseControlUserConfigUtil
+    class PluginsConfigurationListView extends GridView
     {
-        const CONFIG_MODULE_NAME        = 'ContactWebFormsModule';
+        protected $cssClasses =  array( 'AdministrativeArea' , 'TableOfContentsView' );
 
-        const CONFIG_KEY                = 'UserIdOfUserToRunContactWebFormAs';
-
-        public static function getUserToRunAs($setOnMissing = true)
+        public function __construct()
         {
-            return parent::getUserToRunAs($setOnMissing);
+            parent::__construct(1, 1);
+            $this->setView(new PluginsConfigurationMenuView(), 0, 0);
+        }
+
+        public function isUniqueToAPage()
+        {
+            return true;
         }
     }
 ?>

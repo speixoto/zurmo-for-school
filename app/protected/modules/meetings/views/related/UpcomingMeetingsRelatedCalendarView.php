@@ -37,7 +37,7 @@
     /**
      * Base class for displaying meetings on a calendar for a related model
      */
-    abstract class UpcomingMeetingsRelatedCalendarView extends UpcomingMeetingsCalendarView
+    abstract class UpcomingMeetingsRelatedCalendarView extends UpcomingMeetingsCalendarView implements RelatedPortletViewInterface
     {
         abstract protected function getRelationAttributeName();
 
@@ -120,6 +120,16 @@
         public function resolvePortletModuleId()
         {
             return $this->params['relationModuleId'];
+        }
+
+        public static function getAllowedOnPortletViewClassNames()
+        {
+            return array();
+        }
+
+        public static function allowMultiplePlacement()
+        {
+            return false;
         }
     }
 ?>

@@ -36,8 +36,8 @@ class phaEditColumn extends phaAbsActiveColumn {
 
         echo CHtml::tag('div', array(
             'valueid' => $valueId,
-            'id' => $fieldUID.'-'.$valueId,
-            'class' => $fieldUID
+            'id' => $fieldUID  .'-' . $valueId,
+            'class' => $fieldUID  . ' editable-cell'
         ), $value);
 
         echo CHtml::openTag('div', array(
@@ -90,7 +90,8 @@ class phaEditColumn extends phaAbsActiveColumn {
             phaACOpenEditItem = id;
             $("#viewValue-" + gridUID + "-"+id).hide();
             var inputValue = $("#field-" + gridUID + "-" + phaACOpenEditItem+" input").val();
-            inputValue = inputValue.replace("$","");
+            var matches = inputValue.match(/([0-9]+.[0-9]*)/);
+            inputValue = matches[1];
             $("#field-" + gridUID + "-" + phaACOpenEditItem+" input").val(inputValue);
             $("#field-" + gridUID + "-" + id).show();
             $("#field-" + gridUID + "-" + id+" input")

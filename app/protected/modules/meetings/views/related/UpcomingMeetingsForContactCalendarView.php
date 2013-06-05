@@ -49,5 +49,10 @@
             return Zurmo::t('MeetingsModule', 'MeetingsModulePluralLabel For ContactsModuleSingularLabel',
                         LabelUtil::getTranslationParamsForAllModules());
         }
+
+        public static function getAllowedOnPortletViewClassNames()
+        {
+            return array('ContactDetailsAndRelationsView');
+        }
     }
 ?>

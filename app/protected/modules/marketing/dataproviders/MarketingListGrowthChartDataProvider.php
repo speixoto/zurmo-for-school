@@ -36,74 +36,100 @@
 
     class MarketingListGrowthChartDataProvider extends MarketingChartDataProvider
     {
-        public function getXAxisName()
-        {
-            return null;
-        }
-
-        public function getYAxisName()
-        {
-            return null;
-        }
-
+        /**
+         * @return array
+         */
         public function getChartData()
         {
-            //todo: hard to read the label text in the graph
-            //todo: pass through form params like date begin/end and grouping
-            //todo: we need demo data then for campaign items, autoresponder items, tracking etc to have these charts render
-            //anything meaningful
-            //emails sent today, for those emails, how many unique opens, how many unique clicks
-
             $chartData = array();
-            $chartData[] = array('existingSubscribers' => 5,  'newSubscribers' => 7,   'displayLabel' => 'Apr 17');
-            $chartData[] = array('existingSubscribers' => 10, 'newSubscribers' => 17,  'displayLabel' => 'Apr 18');
-            $chartData[] = array('existingSubscribers' => 15, 'newSubscribers' => 22,  'displayLabel' => 'Apr 19');
-            $chartData[] = array('existingSubscribers' => 14, 'newSubscribers' => 20,  'displayLabel' => 'Apr 20');
-            $chartData[] = array('existingSubscribers' => 12, 'newSubscribers' => 18,  'displayLabel' => 'Apr 21');
-            $chartData[] = array('existingSubscribers' => 11, 'newSubscribers' => 16,  'displayLabel' => 'Apr 22');
-            //echo "<pre>";
-            //print_r($chartData);
-            //echo "</pre>";
-            return $chartData;
-
-            $customFieldData = CustomFieldDataModelUtil::
-                               getDataByModelClassNameAndAttributeName('Opportunity', 'source');
-            $labels          = CustomFieldDataUtil::
-                               getDataIndexedByDataAndTranslatedLabelsByLanguage($customFieldData, Yii::app()->language);
-            $sql             = static::makeChartSqlQuery();
-            $rows            = R::getAll($sql);
-            $chartData       = array();
-            foreach ($rows as $row)
+            $groupedDateTimeData = static::makeGroupedDateTimeData($this->beginDate, $this->endDate, $this->groupBy, false);
+            foreach($groupedDateTimeData as $groupData)
             {
-                $chartData[] = array(
-                    'value'        => $utf8_text = $this->resolveCurrencyValueConversionRateForCurrentUserForDisplay($row['amount']),
-                    'displayLabel' => static::resolveLabelByValueAndLabels($row['source'], $labels),
+                $beginDateTime       = DateTimeUtil::convertDateIntoTimeZoneAdjustedDateTimeBeginningOfDay($groupData['beginDate']);
+                $endDateTime         = DateTimeUtil::convertDateIntoTimeZoneAdjustedDateTimeEndOfDay($groupData['endDate']);
+                $searchAttributedata = static::makeSearchAttributeData($endDateTime, $this->marketingList);
+                $sql                 = static::makeColumnSqlQuery($beginDateTime, $searchAttributedata);
+                $row                 = R::getRow($sql);
+                $columnData          = array(MarketingChartDataProvider::NEW_SUBSCRIBERS_COUNT      =>
+                                                ArrayUtil::getArrayValueAndResolveNullAsZero($row,
+                                                    static::NEW_SUBSCRIBERS_COUNT),
+                                             MarketingChartDataProvider::EXISTING_SUBSCRIBERS_COUNT  =>
+                                                ArrayUtil::getArrayValueAndResolveNullAsZero($row,
+                                                    static::EXISTING_SUBSCRIBERS_COUNT),
+                                             'displayLabel'        => $groupData['displayLabel'],
+                                             'dateBalloonLabel'    => $this->resolveDateBalloonLabel($groupData['displayLabel'])
                 );
+                $chartData[]         = $columnData;
             }
             return $chartData;
         }
 
-        protected static function makeChartSqlQuery()
+        /**
+         * @param string $beginDateTime
+         * @param array $searchAttributeData
+         * @return string
+         */
+        protected static function makeColumnSqlQuery($beginDateTime, $searchAttributeData)
         {
+            assert('is_string($beginDateTime)');
             $quote                     = DatabaseCompatibilityUtil::getQuote();
             $where                     = null;
             $selectDistinct            = false;
-            $joinTablesAdapter         = new RedBeanModelJoinTablesQueryAdapter('Opportunity');
-            Opportunity::resolveReadPermissionsOptimizationToSqlQuery(Yii::app()->user->userModel,
-                                                                      $joinTablesAdapter,
-                                                                      $where,
-                                                                      $selectDistinct);
+            $marketingListTableName    = MarketingList::getTableName('MarketingList');
+            $marketingListMemberTableName = MarketingListMember::getTableName('MarketingListMember');
+            $createdDateTimeColumnName = MarketingListMember::getColumnNameByAttribute('createdDateTime');
+            $unsubscribedColumnName    = MarketingListMember::getColumnNameByAttribute('unsubscribed');
+            $joinTablesAdapter         = new RedBeanModelJoinTablesQueryAdapter('MarketingList');
+            $where = RedBeanModelDataProvider::makeWhere('MarketingList', $searchAttributeData, $joinTablesAdapter);
+            MarketingList::resolveReadPermissionsOptimizationToSqlQuery(Yii::app()->user->userModel,
+                $joinTablesAdapter,
+                $where,
+                $selectDistinct);
             $selectQueryAdapter        = new RedBeanModelSelectQueryAdapter($selectDistinct);
-            $sumPart                   = "{$quote}currencyvalue{$quote}.{$quote}value{$quote} ";
-            $sumPart                  .= "* {$quote}currencyvalue{$quote}.{$quote}ratetobase{$quote}";
-            $selectQueryAdapter->addClause('customfield', 'value', 'source');
-            $selectQueryAdapter->addClauseByQueryString("sum({$sumPart})", 'amount');
-            $joinTablesAdapter->addFromTableAndGetAliasName('customfield', 'source_customfield_id', 'opportunity');
-            $joinTablesAdapter->addFromTableAndGetAliasName('currencyvalue', 'amount_currencyvalue_id', 'opportunity');
-            $groupBy                   = "{$quote}customfield{$quote}.{$quote}value{$quote}";
-            $sql                       = SQLQueryUtil::makeQuery('opportunity', $selectQueryAdapter,
-                                                                 $joinTablesAdapter, null, null, $where, null, $groupBy);
+            $newSubscriberSelectPart   = "sum(CASE WHEN {$quote}{$marketingListMemberTableName}{$quote}.{$quote}{$createdDateTimeColumnName}" .
+                                         $quote . " > '$beginDateTime' THEN 1 ELSE 0 END)";
+            $existingSubscriberSelectPart = "sum(CASE WHEN {$quote}{$marketingListMemberTableName}{$quote}.{$quote}{$createdDateTimeColumnName}" .
+                                            $quote . " < '$beginDateTime' AND " .
+                                            "{$quote}{$marketingListMemberTableName}{$quote}.{$quote}" .
+                                            "{$unsubscribedColumnName}{$quote}=0 THEN 1 ELSE 0 END)";
+            $selectQueryAdapter->addClauseByQueryString($newSubscriberSelectPart,      static::NEW_SUBSCRIBERS_COUNT);
+            $selectQueryAdapter->addClauseByQueryString($existingSubscriberSelectPart, static::EXISTING_SUBSCRIBERS_COUNT);
+            $joinTablesAdapter->addLeftTableAndGetAliasName($marketingListMemberTableName, 'id', $marketingListTableName, 'marketinglist_id');
+            $sql   = SQLQueryUtil::makeQuery($marketingListTableName, $selectQueryAdapter, $joinTablesAdapter, null, null, $where);
             return $sql;
+        }
+
+        /**
+         * @param string $endDateTime
+         * @param null|MarketingList $marketingList
+         * @return array
+         */
+        protected static function makeSearchAttributeData($endDateTime, $marketingList)
+        {
+            assert('is_string($endDateTime)');
+            assert('$marketingList == null || ($marketingList instanceof MarketingList && $marketingList->id > 0)');
+            $searchAttributeData = array();
+            $searchAttributeData['clauses'] = array(
+                1 => array(
+                    'attributeName'        => 'marketingListMembers',
+                    'relatedAttributeName' => 'createdDateTime',
+                    'operatorType'         => 'lessThanOrEqualTo',
+                    'value'                => $endDateTime,
+                ),
+            );
+            if($marketingList instanceof MarketingList && $marketingList->id > 0)
+            {
+                $searchAttributeData['clauses'][2] = array(
+                    'attributeName'        => 'id',
+                    'operatorType'         => 'equals',
+                    'value'                => $marketingList->id);
+                $searchAttributeData['structure'] = '1 and 2';
+            }
+            else
+            {
+                $searchAttributeData['structure'] = '1';
+            }
+            return $searchAttributeData;
         }
     }
 ?>

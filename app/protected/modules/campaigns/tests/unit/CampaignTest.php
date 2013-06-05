@@ -55,7 +55,6 @@
         {
             $campaign                   = new Campaign();
             $campaign->name             = 'Test Campaign Name';
-            $campaign->type             = Campaign::TYPE_MARKETING_LIST;
             $campaign->supportsRichText = 1;
             $campaign->status           = Campaign::STATUS_PAUSED;
             $campaign->fromName         = 'Test From Name';
@@ -72,7 +71,6 @@
             unset($campaign);
             $campaign                   = Campaign::getById($id);
             $this->assertEquals('Test Campaign Name',                       $campaign->name);
-            $this->assertEquals(Campaign::TYPE_MARKETING_LIST,              $campaign->type);
             $this->assertEquals(1,               $campaign->supportsRichText);
             $this->assertEquals(Campaign::STATUS_PAUSED,                    $campaign->status);
             $this->assertEquals('From Name',                           $campaign->fromName);
@@ -93,11 +91,9 @@
             $this->assertFalse($campaign->save());
             $errors                     = $campaign->getErrors();
             $this->assertNotEmpty($errors);
-            $this->assertCount(8, $errors);
+            $this->assertCount(7, $errors);
             $this->assertArrayHasKey('name', $errors);
             $this->assertEquals('Name cannot be blank.', $errors['name'][0]);
-            $this->assertArrayHasKey('status', $errors);
-            $this->assertEquals('Status cannot be blank.', $errors['status'][0]);
             $this->assertArrayHasKey('supportsRichText', $errors);
             $this->assertEquals('Supports HTML cannot be blank.', $errors['supportsRichText'][0]);
             $this->assertArrayHasKey('subject', $errors);
@@ -112,7 +108,6 @@
             $this->assertEquals('Name cannot be blank.', $errors['marketingList']['name'][0]);
 
             $campaign->name             = 'Test Campaign Name2';
-            $campaign->type             = Campaign::TYPE_MARKETING_LIST;
             $campaign->supportsRichText = 0;
             $campaign->status           = Campaign::STATUS_ACTIVE;
             $campaign->fromName         = 'From Name2';
@@ -129,7 +124,6 @@
             $campaign                   = Campaign::getById($id);
 
             $this->assertEquals('Test Campaign Name2',                      $campaign->name);
-            $this->assertEquals(Campaign::TYPE_MARKETING_LIST,              $campaign->type);
             $this->assertEquals(0,         $campaign->supportsRichText);
             $this->assertEquals(Campaign::STATUS_ACTIVE,                    $campaign->status);
             $this->assertEquals('From Name2',                               $campaign->fromName);
@@ -148,7 +142,6 @@
             $campaigns = Campaign::getByName('Test Campaign Name');
             $this->assertEquals(1, count($campaigns));
             $this->assertEquals('Test Campaign Name', $campaigns[0]->name);
-            $this->assertEquals(Campaign::TYPE_MARKETING_LIST,              $campaigns[0]->type);
             $this->assertEquals(1,               $campaigns[0]->supportsRichText);
             $this->assertEquals(Campaign::STATUS_PAUSED,                    $campaigns[0]->status);
             $this->assertEquals('From Name',                                $campaigns[0]->fromName);
@@ -192,7 +185,6 @@
             $this->assertCount(1, $dueActiveCampaigns);
             $campaign = $dueActiveCampaigns[0];
             $this->assertEquals('Test Campaign Name2',                      $campaign->name);
-            $this->assertEquals(Campaign::TYPE_MARKETING_LIST,              $campaign->type);
             $this->assertEquals(0,         $campaign->supportsRichText);
             $this->assertEquals('From Name2',                               $campaign->fromName);
             $this->assertEquals('from2@zurmo.com',                          $campaign->fromAddress);
@@ -205,7 +197,6 @@
             $this->assertCount(1, $duePausedCampaigns);
             $campaign = $duePausedCampaigns[0];
             $this->assertEquals('Test Campaign Name',                       $campaign->name);
-            $this->assertEquals(Campaign::TYPE_MARKETING_LIST,              $campaign->type);
             $this->assertEquals(1,               $campaign->supportsRichText);
             $this->assertEquals(Campaign::STATUS_PAUSED,                    $campaign->status);
             $this->assertEquals('From Name',                                $campaign->fromName);
@@ -223,12 +214,11 @@
             $totalCampaigns     = Campaign::getAll();
             $this->assertNotEmpty($totalCampaigns);
             $this->assertCount(2, $totalCampaigns);
-            $dueActiveCampaigns = Campaign::getByStatusAndSendingTime(Campaign::STATUS_ACTIVE, time());
+            $dueActiveCampaigns = Campaign::getByStatusAndSendingTime(Campaign::STATUS_ACTIVE, time() + 100);
             $this->assertNotEmpty($dueActiveCampaigns);
             $this->assertCount(1, $dueActiveCampaigns);
             $campaign = $dueActiveCampaigns[0];
             $this->assertEquals('Test Campaign Name2',                      $campaign->name);
-            $this->assertEquals(Campaign::TYPE_MARKETING_LIST,              $campaign->type);
             $this->assertEquals(0,         $campaign->supportsRichText);
             $this->assertEquals('From Name2',                               $campaign->fromName);
             $this->assertEquals('from2@zurmo.com',                          $campaign->fromAddress);
@@ -241,7 +231,6 @@
             $this->assertCount(1, $duePausedCampaigns);
             $campaign = $duePausedCampaigns[0];
             $this->assertEquals('Test Campaign Name',                       $campaign->name);
-            $this->assertEquals(Campaign::TYPE_MARKETING_LIST,              $campaign->type);
             $this->assertEquals(1,               $campaign->supportsRichText);
             $this->assertEquals(Campaign::STATUS_PAUSED,                    $campaign->status);
             $this->assertEquals('From Name',                                $campaign->fromName);

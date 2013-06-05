@@ -59,12 +59,13 @@
             if ($metricsClass)
             {
                 $membersTranslatedLabel = Zurmo::t('HomeModule', 'Dashboard');
-                $content                .= $this->getCheckboxContent($membersTranslatedLabel, $metricsClass);
+                $content               .= $this->getCheckboxContent($membersTranslatedLabel, $metricsClass);
             }
             if ($membersClass)
             {
-                $membersTranslatedLabel = Zurmo::t('MarketingListsModule', 'Members');
-                $content                .= $this->getCheckboxContent($membersTranslatedLabel, $membersClass);
+                    $membersTranslatedLabel = Zurmo::t('LeadsModule', 'ContactsModulePluralLabel/LeadsModulePluralLabel',
+                                              LabelUtil::getTranslationParamsForAllModules());
+                $content .= $this->getCheckboxContent($membersTranslatedLabel, $membersClass);
             }
             if ($autorespondersClass)
             {

@@ -443,6 +443,14 @@
             echo file_get_contents($filePath);
         }
 
+        public function actionPreviewFooter($isHtmlContent, $content)
+        {
+            Yii::app()->getClientScript()->setToAjaxMode();
+            $view   = new AutoresponderOrCampaignFooterTextPreviewView((bool)$isHtmlContent, $content);
+            $modalView = new ModalView($this, $view);
+            echo $modalView->render();
+        }
+
         protected function getSortAttributeFromSavedSearchData($savedSearch)
         {
             $unserializedData = unserialize($savedSearch->serializedData);

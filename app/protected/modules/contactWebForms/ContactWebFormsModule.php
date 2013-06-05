@@ -60,7 +60,7 @@
             $metadata = array();
             $metadata['global'] = array(
                 'designerMenuItems' => array(),
-                'globalSearchAttributeNames' => array('name'),
+                'globalSearchAttributeNames' => array('webFormName'),
                 'adminTabMenuItems' => array(
                     array(
                         'label' => "eval:Zurmo::t('ContactWebFormsModule', 'Web Forms')",

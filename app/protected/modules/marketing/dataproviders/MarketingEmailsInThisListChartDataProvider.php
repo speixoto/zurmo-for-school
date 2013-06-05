@@ -34,76 +34,191 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class MarketingEmailsInThisListChartDataProvider extends MarketingChartDataProvider
+    class MarketingEmailsInThisListChartDataProvider extends MarketingGroupByEmailMessagesChartDataProvider
     {
-        public function getXAxisName()
-        {
-            return null;
-        }
-
-        public function getYAxisName()
-        {
-            return null;
-        }
-
+        /**
+         * @return array
+         */
         public function getChartData()
         {
-            //todo: hard to read the label text in the graph
-            //todo: pass through form params like date begin/end and grouping
-            //todo: we need demo data then for campaign items, autoresponder items, tracking etc to have these charts render
-            //anything meaningful
-            //emails sent today, for those emails, how many unique opens, how many unique clicks
-
-            $chartData = array();
-            $chartData[] = array('queued' => 2,  'sent' => 50, 'opened' => 10, 'clicked' => 5, 'bounced' => 2, 'optedOut' => 3, 'displayLabel' => 'Apr 17');
-            $chartData[] = array('queued' => 4,  'sent' => 60, 'opened' => 20, 'clicked' => 5, 'bounced' => 2, 'optedOut' => 3, 'displayLabel' => 'Apr 18');
-            $chartData[] = array('queued' => 6,  'sent' => 70, 'opened' => 30, 'clicked' => 5, 'bounced' => 2, 'optedOut' => 3, 'displayLabel' => 'Apr 19');
-            $chartData[] = array('queued' => 8,  'sent' => 80, 'opened' => 40, 'clicked' => 5, 'bounced' => 2, 'optedOut' => 3, 'displayLabel' => 'Apr 20');
-            $chartData[] = array('queued' => 10,  'sent' => 90, 'opened' => 50, 'clicked' => 5, 'bounced' => 2, 'optedOut' => 3, 'displayLabel' => 'Apr 21');
-            $chartData[] = array('queued' => 12,  'sent' => 100, 'opened' => 60, 'clicked' => 5, 'bounced' => 2, 'optedOut' => 3, 'displayLabel' => 'Apr 22');
-            //echo "<pre>";
-            //print_r($chartData);
-            //echo "</pre>";
-            return $chartData;
-
-            $customFieldData = CustomFieldDataModelUtil::
-                               getDataByModelClassNameAndAttributeName('Opportunity', 'source');
-            $labels          = CustomFieldDataUtil::
-                               getDataIndexedByDataAndTranslatedLabelsByLanguage($customFieldData, Yii::app()->language);
-            $sql             = static::makeChartSqlQuery();
-            $rows            = R::getAll($sql);
-            $chartData       = array();
+            $chartData = $this->resolveChartDataStructure();
+            $rows      = $this->makeCombinedData();
             foreach ($rows as $row)
             {
-                $chartData[] = array(
-                    'value'        => $utf8_text = $this->resolveCurrencyValueConversionRateForCurrentUserForDisplay($row['amount']),
-                    'displayLabel' => static::resolveLabelByValueAndLabels($row['source'], $labels),
-                );
+                $chartIndexToCompare = $row[$this->resolveIndexGroupByToUse()];
+                if(isset($chartData[$chartIndexToCompare]))
+                {
+                    $chartData[$chartIndexToCompare][self::QUEUED]        = $row[self::QUEUED];
+                    $chartData[$chartIndexToCompare][self::SENT]          = $row[self::SENT];
+                    $chartData[$chartIndexToCompare][self::UNIQUE_OPENS]  = $row[self::UNIQUE_OPENS];
+                    $chartData[$chartIndexToCompare][self::UNIQUE_CLICKS] = $row[self::UNIQUE_CLICKS];
+                    $chartData[$chartIndexToCompare][self::BOUNCED]       = $row[self::BOUNCED];
+                    $chartData[$chartIndexToCompare][self::UNSUBSCRIBED]  = $row[self::UNSUBSCRIBED];
+                }
             }
-            return $chartData;
+            $newChartData = array();
+            foreach($chartData as $data)
+            {
+                $newChartData[] = $data;
+            }
+            return $newChartData;
         }
 
-        protected static function makeChartSqlQuery()
+        /**
+         * @return array
+         */
+        protected function makeCombinedData()
+        {
+            $combinedRows        = array();
+            //todo: should fix and get proper table name of attribute instead of passing in item
+            $groupBy             = $this->resolveGroupBy('Item', 'createdDateTime');
+            $beginDateTime       = DateTimeUtil::convertDateIntoTimeZoneAdjustedDateTimeBeginningOfDay($this->beginDate);
+            $endDateTime         = DateTimeUtil::convertDateIntoTimeZoneAdjustedDateTimeEndOfDay($this->endDate);
+            if($this->marketingList == null)
+            {
+                $searchAttributeData = static::makeCampaignsSearchAttributeData('createdDateTime', $beginDateTime,
+                                       $endDateTime, $this->campaign);
+                $sql                 = static::makeCampaignsSqlQuery($searchAttributeData, $groupBy);
+                $rows                = R::getAll($sql);
+                foreach ($rows as $row)
+                {
+                    $chartIndexToCompare = $row[$this->resolveIndexGroupByToUse()];
+                    $combinedRows[$chartIndexToCompare] = $row;
+                }
+            }
+            if($this->campaign == null)
+            {
+                $searchAttributeData = static::makeAutorespondersSearchAttributeData('createdDateTime', $beginDateTime,
+                                       $endDateTime, $this->marketingList);
+                $sql                 = static::makeAutorespondersSqlQuery($searchAttributeData, $groupBy);
+                $rows                = R::getAll($sql);
+                foreach ($rows as $row)
+                {
+                    $chartIndexToCompare = $row[$this->resolveIndexGroupByToUse()];
+                    if(!isset($combinedRows[$chartIndexToCompare]))
+                    {
+                        $combinedRows[$chartIndexToCompare] = $row;
+                    }
+                    else
+                    {
+                        $combinedRows[$chartIndexToCompare][self::QUEUED]        += $row[self::QUEUED];
+                        $combinedRows[$chartIndexToCompare][self::SENT]          += $row[self::SENT];
+                        $combinedRows[$chartIndexToCompare][self::UNIQUE_OPENS]  += $row[self::UNIQUE_OPENS];
+                        $combinedRows[$chartIndexToCompare][self::UNIQUE_CLICKS] += $row[self::UNIQUE_CLICKS];
+                        $combinedRows[$chartIndexToCompare][self::BOUNCED]       += $row[self::BOUNCED];
+                        $combinedRows[$chartIndexToCompare][self::UNSUBSCRIBED]  += $row[self::UNSUBSCRIBED];
+                    }
+                }
+            }
+            return $combinedRows;
+        }
+
+        /**
+         * @param array $searchAttributeData
+         * @param string $groupBy
+         * @return string
+         */
+        protected static function makeCampaignsSqlQuery($searchAttributeData, $groupBy)
         {
             $quote                     = DatabaseCompatibilityUtil::getQuote();
             $where                     = null;
             $selectDistinct            = false;
-            $joinTablesAdapter         = new RedBeanModelJoinTablesQueryAdapter('Opportunity');
-            Opportunity::resolveReadPermissionsOptimizationToSqlQuery(Yii::app()->user->userModel,
-                                                                      $joinTablesAdapter,
-                                                                      $where,
-                                                                      $selectDistinct);
+            $campaignTableName         = Campaign::getTableName('Campaign');
+            $campaignItemTableName     = CampaignItem::getTableName('CampaignItem');
+            $emailMessageTableName     = EmailMessage::getTableName('EmailMessage');
+            $sentDateTimeColumnName    = EmailMessage::getColumnNameByAttribute('sentDateTime');
+            $joinTablesAdapter         = new RedBeanModelJoinTablesQueryAdapter('Campaign');
+            $where                     = RedBeanModelDataProvider::makeWhere('Campaign', $searchAttributeData, $joinTablesAdapter);
+            Campaign::resolveReadPermissionsOptimizationToSqlQuery(Yii::app()->user->userModel,
+                $joinTablesAdapter,
+                $where,
+                $selectDistinct);
             $selectQueryAdapter        = new RedBeanModelSelectQueryAdapter($selectDistinct);
-            $sumPart                   = "{$quote}currencyvalue{$quote}.{$quote}value{$quote} ";
-            $sumPart                  .= "* {$quote}currencyvalue{$quote}.{$quote}ratetobase{$quote}";
-            $selectQueryAdapter->addClause('customfield', 'value', 'source');
-            $selectQueryAdapter->addClauseByQueryString("sum({$sumPart})", 'amount');
-            $joinTablesAdapter->addFromTableAndGetAliasName('customfield', 'source_customfield_id', 'opportunity');
-            $joinTablesAdapter->addFromTableAndGetAliasName('currencyvalue', 'amount_currencyvalue_id', 'opportunity');
-            $groupBy                   = "{$quote}customfield{$quote}.{$quote}value{$quote}";
-            $sql                       = SQLQueryUtil::makeQuery('opportunity', $selectQueryAdapter,
-                                                                 $joinTablesAdapter, null, null, $where, null, $groupBy);
+            $queuedEmailsSelectPart    = "sum(CASE WHEN {$quote}{$emailMessageTableName}{$quote}.{$quote}{$sentDateTimeColumnName}" .
+                                         $quote . " = '0000-00-00 00:00:00' OR {$quote}{$emailMessageTableName}{$quote}" .
+                                         ".{$quote}{$sentDateTimeColumnName}{$quote} IS NULL THEN 1 ELSE 0 END)";
+            $sentEmailsSelectPart      = "sum(CASE WHEN {$quote}{$emailMessageTableName}{$quote}.{$quote}{$sentDateTimeColumnName}" .
+                                         $quote . " > '0000-00-00 00:00:00' THEN 1 ELSE 0 END)";
+            $uniqueOpensSelectPart     = static::resolveCampaignTypeSubQuery(EmailMessageActivity::TYPE_OPEN);
+            $uniqueClicksSelectPart    = static::resolveCampaignTypeSubQuery(EmailMessageActivity::TYPE_CLICK);
+            $bouncedSelectPart         = static::resolveCampaignTypeSubQuery(EmailMessageActivity::TYPE_BOUNCE);
+            $optedOutSelectPart        = static::resolveCampaignTypeSubQuery(EmailMessageActivity::TYPE_UNSUBSCRIBE);
+            static::addEmailMessageDayDateClause            ($selectQueryAdapter, $sentDateTimeColumnName);
+            static::addEmailMessageFirstDayOfWeekDateClause ($selectQueryAdapter, $sentDateTimeColumnName);
+            static::addEmailMessageFirstDayOfMonthDateClause($selectQueryAdapter, $sentDateTimeColumnName);
+            $selectQueryAdapter->addNonSpecificCountClause();
+            $selectQueryAdapter->addClauseByQueryString($queuedEmailsSelectPart,  static::QUEUED);
+            $selectQueryAdapter->addClauseByQueryString($sentEmailsSelectPart,  static::SENT);
+            $selectQueryAdapter->addClauseByQueryString("count((" . $uniqueOpensSelectPart  . "))",  static::UNIQUE_OPENS);
+            $selectQueryAdapter->addClauseByQueryString("count((" . $uniqueClicksSelectPart . "))", static::UNIQUE_CLICKS);
+            $selectQueryAdapter->addClauseByQueryString("count((" . $bouncedSelectPart . "))", static::BOUNCED);
+            $selectQueryAdapter->addClauseByQueryString("count((" . $optedOutSelectPart . "))", static::UNSUBSCRIBED);
+            $joinTablesAdapter->addLeftTableAndGetAliasName($campaignItemTableName, 'id', $campaignTableName, 'campaign_id');
+            $joinTablesAdapter->addLeftTableAndGetAliasName($emailMessageTableName, 'emailmessage_id', $campaignItemTableName, 'id');
+
+            $sql   = SQLQueryUtil::makeQuery($campaignTableName, $selectQueryAdapter, $joinTablesAdapter, null, null, $where, null, $groupBy);
             return $sql;
+        }
+
+        /**
+         * @param array $searchAttributeData
+         * @param string $groupBy
+         * @return string
+         */
+        protected static function makeAutorespondersSqlQuery($searchAttributeData, $groupBy)
+        {
+            $quote                      = DatabaseCompatibilityUtil::getQuote();
+            $where                      = null;
+            $selectDistinct             = false;
+            $marketingListTableName     = Autoresponder::getTableName('MarketingList');
+            $autoresponderTableName     = Autoresponder::getTableName('Autoresponder');
+            $autoresponderItemTableName = AutoresponderItem::getTableName('AutoresponderItem');
+            $emailMessageTableName      = EmailMessage::getTableName('EmailMessage');
+            $sentDateTimeColumnName     = EmailMessage::getColumnNameByAttribute('sentDateTime');
+            $joinTablesAdapter          = new RedBeanModelJoinTablesQueryAdapter('Autoresponder');
+            MarketingList::resolveReadPermissionsOptimizationToSqlQuery(Yii::app()->user->userModel,
+                $joinTablesAdapter,
+                $where,
+                $selectDistinct);
+            $selectQueryAdapter     = new RedBeanModelSelectQueryAdapter($selectDistinct);
+            $queuedEmailsSelectPart = "count(CASE WHEN {$quote}{$emailMessageTableName}{$quote}.{$quote}{$sentDateTimeColumnName}" .
+                                      $quote . " = '0000-00-00 00:00:00' OR {$quote}{$emailMessageTableName}{$quote}" .
+                                      ".{$quote}{$sentDateTimeColumnName}{$quote} IS NULL THEN 1 ELSE 0 END)";
+            $sentEmailsSelectPart   = "count(CASE WHEN {$quote}{$emailMessageTableName}{$quote}.{$quote}{$sentDateTimeColumnName}" .
+                                      $quote . " > '0000-00-00 00:00:00' THEN 1 ELSE 0 END)";
+            $uniqueOpensSelectPart  = static::resolveAutoresponderTypeSubQuery(EmailMessageActivity::TYPE_OPEN);
+            $uniqueClicksSelectPart = static::resolveAutoresponderTypeSubQuery(EmailMessageActivity::TYPE_CLICK);
+            $bouncedSelectPart      = static::resolveAutoresponderTypeSubQuery(EmailMessageActivity::TYPE_BOUNCE);
+            $optedOutSelectPart     = static::resolveAutoresponderTypeSubQuery(EmailMessageActivity::TYPE_UNSUBSCRIBE);
+            static::addEmailMessageDayDateClause            ($selectQueryAdapter, $sentDateTimeColumnName);
+            static::addEmailMessageFirstDayOfWeekDateClause ($selectQueryAdapter, $sentDateTimeColumnName);
+            static::addEmailMessageFirstDayOfMonthDateClause($selectQueryAdapter, $sentDateTimeColumnName);
+            $selectQueryAdapter->addNonSpecificCountClause();
+            $selectQueryAdapter->addClauseByQueryString($queuedEmailsSelectPart,  static::QUEUED);
+            $selectQueryAdapter->addClauseByQueryString($sentEmailsSelectPart,  static::SENT);
+            $selectQueryAdapter->addClauseByQueryString("count((" . $uniqueOpensSelectPart  . "))",  static::UNIQUE_OPENS);
+            $selectQueryAdapter->addClauseByQueryString("count((" . $uniqueClicksSelectPart . "))", static::UNIQUE_CLICKS);
+            $selectQueryAdapter->addClauseByQueryString("count((" . $bouncedSelectPart . "))", static::BOUNCED);
+            $selectQueryAdapter->addClauseByQueryString("count((" . $optedOutSelectPart . "))", static::UNSUBSCRIBED);
+            $joinTablesAdapter->addFromTableAndGetAliasName($marketingListTableName, 'marketinglist_id');
+            $joinTablesAdapter->addLeftTableAndGetAliasName($autoresponderItemTableName, 'id', $autoresponderTableName, 'autoresponder_id');
+            $joinTablesAdapter->addLeftTableAndGetAliasName($emailMessageTableName, 'emailmessage_id', $autoresponderItemTableName, 'id');
+            $where = RedBeanModelDataProvider::makeWhere('Autoresponder', $searchAttributeData, $joinTablesAdapter);
+            $sql   = SQLQueryUtil::makeQuery($autoresponderTableName, $selectQueryAdapter, $joinTablesAdapter, null, null, $where, null, $groupBy);
+            return $sql;
+        }
+
+        /**
+         * @return array
+         */
+        protected static function resolveChartDataBaseGroupElements()
+        {
+            return array(self::QUEUED        => 0,
+                         self::SENT          => 0,
+                         self::UNIQUE_CLICKS => 0,
+                         self::UNIQUE_OPENS  => 0,
+                         self::BOUNCED       => 0,
+                         self::UNSUBSCRIBED  => 0);
         }
     }
 ?>

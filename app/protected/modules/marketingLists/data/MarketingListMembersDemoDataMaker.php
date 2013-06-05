@@ -53,13 +53,16 @@
             assert('$demoDataHelper->isSetRange("MarketingList")');
 
             $members = array();
-            for ($i = 0; $i < $this->resolveQuantityToLoad(); $i++)
+            foreach(MarketingList::getAll() as $marketingList)
             {
-                $member                 = new MarketingListMember();
-                $contact                = $demoDataHelper->getRandomByModelName('Contact');
-                $marketingList          = $demoDataHelper->getRandomByModelName('MarketingList');
-                if (!$marketingList->memberAlreadyExists($contact->id))
+                foreach(Contact::getAll() as $contact)
                 {
+                    $interval               = mt_rand(1,30) * 86400;
+                    $member                 = new MarketingListMember();
+                    $member->setScenario('importModel');
+                    $member->createdDateTime = DateTimeUtil::convertTimestampToDbFormatDateTime(time() - $interval);
+                    $contact                = $contact;
+                    $marketingList          = $marketingList;
                     $member->contact        = $contact;
                     $member->marketingList  = $marketingList;
                     $this->populateModel($member);
@@ -67,6 +70,11 @@
                     assert('$saved');
                     $members[]              = $member->id;
                 }
+            }
+
+            for ($i = 0; $i < $this->resolveQuantityToLoad(); $i++)
+            {
+
             }
             $demoDataHelper->setRangeByModelName('MarketingListMember', $members[0], $members[count($members)-1]);
         }

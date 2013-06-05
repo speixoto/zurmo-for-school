@@ -430,7 +430,8 @@
             $validated = $filter->validate();
             $this->assertFalse($validated);
             $errors = $filter->getErrors();
-            $compareErrors                       = array('value'     => array('Value cannot be blank.'));
+            $compareErrors                       = array('value'     => array('Value cannot be blank.'),
+                                                         'operator'  => array('Operator cannot be blank.'));
             $this->assertEquals($compareErrors, $errors);
 
             //value is expected to be either 0 or 1
@@ -438,9 +439,11 @@
             $validated                           = $filter->validate();
             $this->assertFalse($validated);
             $errors                              = $filter->getErrors();
-            $compareErrors                       = array('value'     => array('Value must be either 1 or 0.'));
+            $compareErrors                       = array('value'     => array('Value must be either 1 or 0.'),
+                                                         'operator'  => array('Operator cannot be blank.'));
             $this->assertEquals($compareErrors, $errors);
 
+            $filter->operator                    = OperatorRules::TYPE_EQUALS;
             $filter->value                       = '1';
             $validated = $filter->validate();
             $this->assertTrue($validated);

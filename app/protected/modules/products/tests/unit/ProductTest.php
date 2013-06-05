@@ -42,10 +42,7 @@
         public function testDemoDataMaker()
         {
             $model                    = new Product();
-            $productRandomData        = ZurmoRandomDataUtil::getRandomDataByModuleAndModelClassNames(
-                                            'ProductsModule', 'Product');
-            $name                     = RandomDataUtil::getRandomValueFromArray($productRandomData['names']);
-
+            $name                     = 'Amazing Kid Sample';
             $productTemplateName      = ProductsDemoDataMaker::getProductTemplateForProduct($name);
             $productTemplate          = ProductTemplateTestHelper::createProductTemplateByName($productTemplateName);
             $model->name              = $name;
@@ -119,9 +116,9 @@
         public function testGetProductsByName()
         {
             Yii::app()->user->userModel = User::getByUsername('super');
-            $productTemplates           = Product::getByName('Product 1');
-            $this->assertEquals(1, count($productTemplates));
-            $this->assertEquals('Product 1', $productTemplates[0]->name);
+            $products           = Product::getByName('Product 1');
+            $this->assertEquals(1, count($products));
+            $this->assertEquals('Product 1', $products[0]->name);
         }
 
         /**

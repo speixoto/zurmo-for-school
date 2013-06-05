@@ -41,7 +41,7 @@
     {
         const IMAGE_PATH            =   '/default/images/1x1-pixel.png';
 
-        const VALID_HASH_PATTERN    = '~^[A-Z0-9\+=/]+~i'; // Not Coding Standard
+        const VALID_HASH_PATTERN    = '~^[A-Z0-9\+=/ ]+~i'; // Not Coding Standard
 
         protected static $baseQueryStringArray;
 
@@ -54,7 +54,7 @@
             {
                 return false;
             }
-            static::resolveContentForFooter($content, $personId, $marketingListId, $isHtmlContent);
+            static::resolveContentForFooter($content, $personId, $marketingListId, $modelId, $modelType, $isHtmlContent);
             return true;
         }
 
@@ -77,7 +77,7 @@
                         }
                         else
                         {
-                            static::validateQueryStringArrayForMarketingListPublicController($queryStringArray);
+                            static::validateQueryStringArrayForMarketingListsExternalController($queryStringArray);
                         }
                     }
                     return $queryStringArray;
@@ -180,7 +180,8 @@
             $type = static::resolveTrackingTypeByQueryStringArray($queryStringArray);
             list($modelId, $modelType, $personId, $url) = array_values($queryStringArray);
             $modelClassName = static::resolveModelClassNameByModelType($modelType);
-            return $modelClassName::createNewActivity($type, $modelId, $personId, $url);
+            $sourceIP       = Yii::app()->request->userHostAddress;
+            return $modelClassName::createNewActivity($type, $modelId, $personId, $url, $sourceIP);
         }
 
         protected static function resolveContentForEmailOpenTracking(& $content, $isHtmlContent = false)
@@ -333,41 +334,59 @@ PTN;
             }
         }
 
-        protected static function resolveContentForFooter(& $content, $personId, $marketingListId, $isHtmlContent)
+        protected static function resolveContentForFooter(& $content, $personId, $marketingListId, $modelId,
+                                                                                            $modelType, $isHtmlContent)
         {
             $placeholderFooterContent = static::resolveFooterPlaceholderContentByType($isHtmlContent);
             static::resolveFooterPlaceholders($content, $placeholderFooterContent, $personId,
-                                                                                    $marketingListId, $isHtmlContent);
+                                                                $marketingListId, $modelId, $modelType, $isHtmlContent);
         }
 
-        protected static function resolveFooterPlaceholders(& $content, $placeholderContent, $personId,
-                                                                                    $marketingListId, $isHtmlContent)
+        public static function resolveFooterPlaceholders(& $content, $placeholderContent, $personId,
+                                                                $marketingListId, $modelId, $modelType, $isHtmlContent)
         {
-            $hash                           = static::resolveHashForFooter($personId, $marketingListId);
-            $unsubscribeUrlPlaceholder      = AutoresponderOrCampaignMailFooterContentUtil::UNSUBSCRIBE_URL_PLACEHOLDER;
-            $manageSubscriptionsPlaceholder = AutoresponderOrCampaignMailFooterContentUtil::
-                                                                                MANAGE_SUBSCRIPTIONS_URL_PLACEHOLDER;
+            $hash                           = static::resolveHashForFooter($personId, $marketingListId, $modelId,
+                                                                                                    $modelType, true);
             $unsubscribeUrl                 = static::resolveUnsubscribeUrl($hash);
             $manageSubscriptionsUrl         = static::resolveManageSubscriptionsUrl($hash);
-            $unsubscribeTranslated          = Zurmo::t('MarketingListsModule', 'Unsubscribe');
-            $manageSubscriptionsTranslated  = Zurmo::t('MarketingListsModule', 'Manage Subscriptions');
+            static::resolvePlaceholderUrlsForHtmlContent($unsubscribeUrl, $manageSubscriptionsUrl, $isHtmlContent);
+            static::resolveFooterTagsWithUrls($placeholderContent, $unsubscribeUrl, $manageSubscriptionsUrl);
+            static::addNewLine($placeholderContent, $isHtmlContent);
+            $content            .= $placeholderContent;
+        }
+
+        protected static function resolvePlaceholderUrlsForHtmlContent(& $unsubscribeUrl, & $manageSubscriptionsUrl,
+                                                                                                        $isHtmlContent)
+        {
             if ($isHtmlContent)
             {
+                $unsubscribeTranslated          = Zurmo::t('MarketingListsModule', 'Unsubscribe');
+                $manageSubscriptionsTranslated  = Zurmo::t('MarketingListsModule', 'Manage Subscriptions');
                 $unsubscribeUrl = ZurmoHtml::link($unsubscribeTranslated, $unsubscribeUrl);
                 $manageSubscriptionsUrl = ZurmoHtml::link($manageSubscriptionsTranslated, $manageSubscriptionsUrl);
             }
+        }
+
+        protected static function resolveFooterTagsWithUrls(& $placeholderContent, $unsubscribeUrl, $manageSubscriptionsUrl)
+        {
+            $unsubscribeUrlPlaceholder      = AutoresponderOrCampaignMailFooterContentUtil::UNSUBSCRIBE_URL_PLACEHOLDER;
+            $manageSubscriptionsPlaceholder = AutoresponderOrCampaignMailFooterContentUtil::
+                                                                                    MANAGE_SUBSCRIPTIONS_URL_PLACEHOLDER;
             $placeholderContent = str_replace($unsubscribeUrlPlaceholder, $unsubscribeUrl, $placeholderContent);
             $placeholderContent = str_replace($manageSubscriptionsPlaceholder, $manageSubscriptionsUrl,
                                                                                                 $placeholderContent);
+        }
+
+        protected static function addNewLine(& $content, $isHtmlContent)
+        {
             if ($isHtmlContent)
             {
-                $placeholderContent = ZurmoHtml::tag('br') . $placeholderContent;
+                $content = ZurmoHtml::tag('br') . $content;
             }
             else
             {
-                $placeholderContent = PHP_EOL . $placeholderContent;
+                $content = PHP_EOL . $content;
             }
-            $content            .= $placeholderContent;
         }
 
         protected static function resolveFooterPlaceholderContentByType($isHtmlContent)
@@ -375,9 +394,10 @@ PTN;
             return AutoresponderOrCampaignMailFooterContentUtil::getContentByType($isHtmlContent);
         }
 
-        public static function resolveHashForFooter($personId, $marketingListId)
+        public static function resolveHashForFooter($personId, $marketingListId, $modelId, $modelType,
+                                                                                            $createNewActivity = true)
         {
-            $queryStringArray       = compact('personId', 'marketingListId');
+            $queryStringArray       = compact('personId', 'marketingListId', 'modelId', 'modelType', 'createNewActivity');
             return static::resolveHashForQueryStringArray($queryStringArray);
         }
 
@@ -395,30 +415,58 @@ PTN;
 
         protected static function resolveUnsubscribeBaseUrl()
         {
-            return '/marketingLists/public/unsubscribe';
+            return '/marketingLists/external/unsubscribe';
         }
 
         protected static function resolveManageSubscriptionsBaseUrl()
         {
-            return '/marketingLists/public/manageSubscriptions';
+            return '/marketingLists/external/manageSubscriptions';
         }
 
         protected static function validateAndResolveFullyQualifiedQueryStringArrayForTracking(& $queryStringArray)
         {
             $rules = array(
-                        'modelId' => array(
-                            'required' => true,
+                        'modelId'       => array(
+                            'required'      => true,
                         ),
-                        'modelType' => array(
-                            'required' => true,
+                        'modelType'     => array(
+                            'required'      => true,
                         ),
-                        'personId' => array(
-                            'required' => true,
+                        'personId'      => array(
+                            'required'      => true,
                         ),
-                        'url'   => array(
+                        'url'           => array(
                             'defaultValue'  => null,
                         ),
                     );
+            static::validateQueryStringArrayAgainstRulesArray($queryStringArray, $rules);
+        }
+
+        protected static function validateQueryStringArrayForMarketingListsExternalController(& $queryStringArray)
+        {
+            // TODO: @Shoaibi: Critical: Tests:
+            $rules = array(
+                'modelId'           => array(
+                    'required'          => true,
+                ),
+                'modelType'         => array(
+                    'required'          => true,
+                ),
+                'personId'          => array(
+                    'required'          => true,
+                ),
+                'marketingListId'   => array(
+                    'required'          => true,
+                ),
+                'createNewActivity' => array(
+                    'defaultValue'      => false,
+                ),
+            );
+            static::validateQueryStringArrayAgainstRulesArray($queryStringArray, $rules);
+        }
+
+        protected static function validateQueryStringArrayAgainstRulesArray(& $queryStringArray, $rules)
+        {
             foreach ($rules as $index => $rule)
             {
                 if (!isset($queryStringArray[$index]))
@@ -435,15 +483,7 @@ PTN;
             }
         }
 
-        protected static function validateQueryStringArrayForMarketingListPublicController($queryStringArray)
-        {
-            if (empty($queryStringArray['personId']) || empty($queryStringArray['marketingListId']))
-            {
-                throw new NotSupportedException;
-            }
-        }
-
-        protected static function resolveModelClassNameByModelType($modelType)
+        public static function resolveModelClassNameByModelType($modelType)
         {
             return $modelType . 'Activity';
         }

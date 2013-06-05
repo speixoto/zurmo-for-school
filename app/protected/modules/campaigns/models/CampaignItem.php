@@ -228,9 +228,24 @@
          * Return true if the related email message is id < 0 or it is created, but the
          * @return bool
          */
-        public function isQueued()
+        public function isQueuedOrSkipped()
         {
             if($this->emailMessage->id < 0 || $this->emailMessage->folder->type ==  EmailFolder::TYPE_OUTBOX)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        /**
+         * @return bool
+         */
+        public function isSkipped()
+        {
+            $count = CampaignItemActivity::getChildActivityByTypeAndModelIdAndModelRelationNameAndPersonIdAndUrl(
+                                           CampaignItemActivity::TYPE_SKIP, $this->id, 'campaignItem',
+                                           $this->contact->getClassId('Person'), null, 'latestDateTime', null, true);
+            if($count > 0)
             {
                 return true;
             }
@@ -268,7 +283,7 @@
         public function hasAtLeastOneOpenActivity()
         {
             $count = CampaignItemActivity::getChildActivityByTypeAndModelIdAndModelRelationNameAndPersonIdAndUrl(
-                                           CampaignItemActivity::TYPE_OPEN, $this->campaign->id, 'campaignItem',
+                                           CampaignItemActivity::TYPE_OPEN, $this->id, 'campaignItem',
                                            $this->contact->getClassId('Person'), null, 'latestDateTime', null, true);
             if($count > 0)
             {
@@ -283,7 +298,7 @@
         public function hasAtLeastOneClickActivity()
         {
             $count = CampaignItemActivity::getChildActivityByTypeAndModelIdAndModelRelationNameAndPersonIdAndUrl(
-                                           CampaignItemActivity::TYPE_CLICK, $this->campaign->id, 'campaignItem',
+                                           CampaignItemActivity::TYPE_CLICK, $this->id, 'campaignItem',
                                            $this->contact->getClassId('Person'), null, 'latestDateTime', null, true);
             if($count > 0)
             {
@@ -298,7 +313,7 @@
         public function hasAtLeastOneUnsubscribeActivity()
         {
              $count = CampaignItemActivity::getChildActivityByTypeAndModelIdAndModelRelationNameAndPersonIdAndUrl(
-                                           CampaignItemActivity::TYPE_UNSUBSCRIBE, $this->campaign->id, 'campaignItem',
+                                           CampaignItemActivity::TYPE_UNSUBSCRIBE, $this->id, 'campaignItem',
                                            $this->contact->getClassId('Person'), null, 'latestDateTime', null, true);
             if($count > 0)
             {
@@ -313,7 +328,7 @@
         public function hasAtLeastOneBounceActivity()
         {
             $count = CampaignItemActivity::getChildActivityByTypeAndModelIdAndModelRelationNameAndPersonIdAndUrl(
-                                           CampaignItemActivity::TYPE_BOUNCE, $this->campaign->id, 'campaignItem',
+                                           CampaignItemActivity::TYPE_BOUNCE, $this->id, 'campaignItem',
                                            $this->contact->getClassId('Person'), null, 'latestDateTime', null, true);
             if($count > 0)
             {

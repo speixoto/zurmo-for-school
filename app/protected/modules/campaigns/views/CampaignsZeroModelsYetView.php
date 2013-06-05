@@ -52,10 +52,10 @@
          */
         protected function getMessageContent()
         {
-            return Zurmo::t('MarketingListsModule', '<h2>"Business has only two functions - marketing and innovation."' .
-                                                    '</h2><i>- Milan Kundera</i>' .
-                                                    '</i><div class="large-icon"></div><p>Go ahead and perform an ' .
-                                                    'important business function, and be the first to create a Campaign!</p>');
+            return Zurmo::t('MarketingListsModule', '<h2>"The two offices of memory are collection and distribution"' .
+                                                    '</h2><i>- Samuel Johnson</i>' .
+                                                    '</i><div class="large-icon"></div><p>Stay fresh in your Contacts\' ' .
+                                                    'memory by creating and distributing an email campaign.</p>');
         }
     }
 ?>

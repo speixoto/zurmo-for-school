@@ -77,7 +77,7 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'defaultState', 'type' => 'AllContactStatesDropDownForContactWebForm'),
+                                                array('attributeName' => 'null', 'type' => 'AllContactStatesDropDownForContactWebForm'),
                                             ),
                                         ),
                                     )
@@ -135,7 +135,8 @@
                             '<script type="text/javascript" ' .
                             'src="' . Yii::app()->createAbsoluteUrl('contacts/external/sourceFiles/', array('id' => $this->model->id)) . '">' .
                             '</script></div>';
-            return '<div style="margin: 15px;"><pre><code>' . htmlspecialchars($embedScript) . '</code></pre></div>';
+            $title = ZurmoHtml::tag('h3', array(), Zurmo::t('ContactWebFormsModule', 'Copy/Paste this code to your web page..'));
+            return '<div class="webform-embed-code">' . $title . '<textarea onclick="this.focus();this.select()" readonly="readonly">' . htmlspecialchars($embedScript) . '</textarea></div>';
         }
     }
 ?>

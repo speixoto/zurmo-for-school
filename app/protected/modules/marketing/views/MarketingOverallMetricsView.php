@@ -37,7 +37,7 @@
     /**
      * Class used for displaying the overall performance metrics for the marketing dashboard
      */
-    class MarketingOverallMetricsView extends MarketingMetricsView implements PortletViewInterface
+    class MarketingOverallMetricsView extends MarketingMetricsView
     {
         protected $formModelClassName = 'MarketingOverallMetricsForm';
 
@@ -49,12 +49,18 @@
             return 'MarketingModule';
         }
 
+        /**
+         * @return string
+         */
         public function getTitle()
         {
             $title  = Zurmo::t('MarketingModule', 'Marketing Dashboard');
             return $title;
         }
 
+        /**
+         * @return string
+         */
         public function renderContent()
         {
             $content  = ZurmoHtml::tag('h3', array(), Zurmo::t('MarketingModule', 'What is going on with Marketing?'));
@@ -64,6 +70,9 @@
             return $content;
         }
 
+        /**
+         * @return MarketingOverallMetricsConfigView
+         */
         public function getConfigurationView()
         {
             return new MarketingOverallMetricsConfigView($this->resolveForm(), $this->params);

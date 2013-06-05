@@ -268,14 +268,20 @@ a.ModalGameNotification a,
 .email-template-content,
 .tabs-container > .tab,
 .email-template-content > .tab,
+.autoresponder-combined-content .big-spinner,
+.email-template-combined-content .big-spinner,
+.email-template-content .big-spinner,
 #marketing-intro-steps > div,
 #marketing-intro-steps h3,
 #marketing-intro-steps p,
+.continuum > div,
+.continuum .email-recipient-stage-status,
 #kanban-board,
 #kanban-board .drop-zone-container,
 #kanban-board .drop-zone,
 .kanban-column,
-.kanban-card > div {
+.kanban-card > div,
+.webform-embed-code textarea {
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
@@ -337,7 +343,8 @@ a.ModalGameNotification a,
 #delete-form,
 .right-side-edit-view-panel,
 .pager ul,
-#kanban-board {
+#kanban-board,
+#ContactWebFormEditAndDetailsView .ui-sortable {
   zoom: 1;
 }
 .clearfix:before,
@@ -346,7 +353,8 @@ a.ModalGameNotification a,
 #delete-form:before,
 .right-side-edit-view-panel:before,
 .pager ul:before,
-#kanban-board:before {
+#kanban-board:before,
+#ContactWebFormEditAndDetailsView .ui-sortable:before {
   content: "";
   display: table;
 }
@@ -356,7 +364,8 @@ a.ModalGameNotification a,
 #delete-form:after,
 .right-side-edit-view-panel:after,
 .pager ul:after,
-#kanban-board:after {
+#kanban-board:after,
+#ContactWebFormEditAndDetailsView .ui-sortable:after {
   content: "";
   display: table;
   clear: both;
@@ -382,6 +391,7 @@ a.ModalGameNotification a,
   -o-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
   -ms-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
   box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
+  white-space: nowrap;
 }
 .modal-view-toolbar a,
 .modal-view-toolbar input[type="submit"],
@@ -7241,6 +7251,34 @@ form .view-toolbar-container,
   content: '\002C';
   top: -2px;
 }
+.icon-webforms:before {
+  font-weight: normal;
+  font-size: 24px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  padding: 0 0 0 0;
+  margin: 0 6px 0 -30px;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  vertical-align: middle;
+  position: relative;
+  content: '\003C';
+  top: -2px;
+}
+.icon-webforms-entries:before {
+  font-weight: normal;
+  font-size: 24px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  padding: 0 0 0 0;
+  margin: 0 6px 0 -30px;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  vertical-align: middle;
+  position: relative;
+  content: '\005E';
+  top: -2px;
+}
 /*=Footer*/
 #FooterView {
   margin: 20px 3% 0 3%;
@@ -7496,6 +7534,8 @@ tr.even {
 .empty {
   display: block;
   font-size: 11px;
+  font-weight: bold;
+  background: rgba(255, 255, 255, 0.5);
 }
 td.empty {
   display: table-cell !important;
@@ -8210,6 +8250,14 @@ div.wide.form label.hasCheckBox {
   font-family: "ZurmoGamificationSymblyReguRg";
   line-height: 52%;
 }
+.zero-components-view .Campaign .large-icon:after,
+.splash-view .Campaign .large-icon:after {
+  content: '\002C';
+  font-weight: normal;
+  font-size: 300px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  line-height: 52%;
+}
 .zero-components-view .Product .large-icon:after,
 .splash-view .Product .large-icon:after {
   content: '\003E';
@@ -8229,6 +8277,14 @@ div.wide.form label.hasCheckBox {
 .zero-components-view .ProductCategory .large-icon:after,
 .splash-view .ProductCategory .large-icon:after {
   content: '\00D7';
+  font-weight: normal;
+  font-size: 300px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  line-height: 52%;
+}
+.zero-components-view .ContactWebForm .large-icon:after,
+.splash-view .ContactWebForm .large-icon:after {
+  content: '\003C';
   font-weight: normal;
   font-size: 300px;
   font-family: "ZurmoGamificationSymblyReguRg";
@@ -8589,6 +8645,7 @@ div.wide.form label.hasCheckBox {
 .select-list-attributes-view .view-toolbar-container,
 .search-view-1 .view-toolbar-container {
   border-top: 1px solid #CCCCCC;
+  z-index: 1;
 }
 .kanban-board-options-view > div,
 .select-list-attributes-view > div,
@@ -9463,6 +9520,7 @@ div.wide.form label.hasCheckBox {
   margin-left: 5px;
 }
 .toolbar-mbmenu .options-menu ul {
+  white-space: nowrap;
   margin-top: 0;
   padding-top: 3px;
   padding-bottom: 3px;
@@ -9956,6 +10014,12 @@ div.hasHalfs > div input {
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
+}
+.seventh {
+  width: 12.5%;
+}
+.sixth {
+  width: 15%;
 }
 .fifth {
   width: 19%;
@@ -11152,10 +11216,9 @@ div.hasHalfs > div input {
 /*Products Portlet*/
 .products-portlet-totals {
   display: block;
-  padding: 10px 0;
-  text-indent: 10px;
+  padding: 10px;
   border-top: 1px solid #DFDFDF;
-  background: #111111 url(../images/datepicker-header.png) left top repeat-x !important;
+  background: #111111 url(../images/dark-texture-table-footer.png) left top repeat-x !important;
   color: #FFF;
   font-weight: bold;
 }
@@ -11165,6 +11228,15 @@ div.hasHalfs > div input {
   display: inline-block;
   padding-bottom: 2px;
   margin-top: 3px;
+}
+.editable-cell:after {
+  content: "!";
+  font-weight: normal;
+  font-size: 20px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  position: relative;
+  right: -10px;
+  top: 1px;
 }
 .juiportlet-columns .juiportlet-column {
   float: left;
@@ -12624,6 +12696,12 @@ table.configuration-list td:last-child a .z-label:before {
 }
 .uploaded-logo ~ .file-size {
   vertical-align: top;
+}
+/*footer preview*/
+.footer-preview-modal {
+  padding: 15px;
+  white-space: normal;
+  word-break: break-all;
 }
 .available-portlets {
   padding: 20px;
@@ -15074,6 +15152,10 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
 .EditEmailTemplate .badge-icon:before {
   content: '\00B6';
 }
+.game-badge-CreateCampaign .badge-icon:before,
+.CreateCampaign .badge-icon:before {
+  content: '\002C';
+}
 .game-badge-CreateMarketingList .badge-icon:before,
 .CreateMarketingList .badge-icon:before,
 .game-badge-EditMarketingList .badge-icon:before,
@@ -15101,6 +15183,8 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
 .EarlyBird .badge-icon:before {
   content: "#";
 }
+.game-badge-SearchProducts .badge-icon:before,
+.SearchProducts .badge-icon:before,
 .game-badge-CreateProduct .badge-icon:before,
 .CreateProduct .badge-icon:before {
   content: '\003E';
@@ -15109,6 +15193,8 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
 .CreateProductTemplate .badge-icon:before {
   content: '\00AC';
 }
+.game-badge-SearchProductTemplates .badge-icon:before,
+.SearchProductTemplates .badge-icon:before,
 .game-badge-CreateProductCategory .badge-icon:before,
 .CreateProductCategory .badge-icon:before {
   content: '\00D7';
@@ -17035,6 +17121,7 @@ a.user-link {
 .EmailMessages .dynamic-row {
   padding: 10px 30px;
 }
+.ui-sortable .dynamic-row:hover,
 .sortable .dynamic-row:hover {
   -webkit-border-radius: 0 3px 3px 0;
   -moz-border-radius: 0 3px 3px 0;
@@ -17043,10 +17130,12 @@ a.user-link {
   border-radius: 0 3px 3px 0;
   background: #f0f0f0 url(../images/drag-handle.png) left top repeat-y;
 }
+.ui-sortable .ui-sortable-helper .dynamic-row,
 .sortable .ui-sortable-helper .dynamic-row {
   cursor: move;
   background-color: #f5f5f5;
 }
+.ui-sortable .expanded-row .dynamic-row:hover,
 .sortable .expanded-row .dynamic-row:hover {
   background-image: none !important;
 }
@@ -17897,6 +17986,36 @@ a.user-link {
 .autoresponder-combined-content,
 .email-template-combined-content {
   padding: 0 15px;
+  position: relative;
+}
+.autoresponder-combined-content .big-spinner,
+.email-template-combined-content .big-spinner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1000000;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+}
+.autoresponder-combined-content .spinner,
+.email-template-combined-content .spinner {
+  left: 50% !important;
+  top: 50% !important;
+}
+.email-template-content .big-spinner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1000000;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.8);
+  margin: 0;
+}
+.email-template-content .spinner {
+  left: 50% !important;
+  top: 50% !important;
 }
 .tabs-nav {
   border-bottom: 1px solid #dfdfdf;
@@ -18166,13 +18285,21 @@ a.user-link {
   margin: 15px 0 0 0;
 }
 .edit-autoresponder-link {
-  display: block;
-  margin-bottom: 10px;
   font-size: 14px;
   font-weight: bold;
+  font-style: normal;
+}
+.edit-autoresponder-link:after {
+  content: " — ";
+  font-weight: 400;
+  color: #545454;
+}
+.autoresponder-extra-info {
+  margin-bottom: 10px;
+  font-style: italic;
 }
 .autoresponder-stats {
-  width: 23%;
+  width: 19%;
   float: left;
   margin-left: 2%;
   text-align: left;
@@ -18329,11 +18456,128 @@ a + .autoresponder-stats {
 .hide-marketing-intro span:before {
   content: "•";
 }
+/*Continuum*/
+.email-recipient-name {
+  float: left;
+  width: 15%;
+  display: block;
+  line-height: 20px;
+}
+.continuum {
+  float: left;
+  display: inline-block;
+  font-size: 11px;
+  margin-right: 10px;
+}
+.continuum > div {
+  display: inline-block;
+  border: 1px solid #b7b7b7;
+  border-top-color: #e7e7e7;
+  border-left-color: #d7d7d7;
+  border-right-color: #d7d7d7;
+  border-radius: 4px;
+  background: url(../images/view-toolbar-gradient-darker.png) left bottom repeat-x;
+  -webkit-box-shadow: inset 0 0 1px 1px #efefef;
+  -moz-box-shadow: inset 0 0 1px 1px #efefef;
+  -o-box-shadow: inset 0 0 1px 1px #efefef;
+  -ms-box-shadow: inset 0 0 1px 1px #efefef;
+  box-shadow: inset 0 0 1px 1px #efefef;
+}
+.continuum .email-recipient-stage-status {
+  width: auto;
+  font-weight: 700;
+  position: relative;
+  color: #545454;
+  text-shadow: #fff 0 1px 0;
+  margin: 0;
+  padding-right: 6px;
+  line-height: 20px;
+  display: inline-block;
+  border-left: 1px solid #bababa;
+}
+.continuum .email-recipient-stage-status:first-child {
+  border-left: none;
+}
+.continuum .email-recipient-stage-status span {
+  font-size: 10px;
+  font-weight: bold;
+}
+.email-recipient-stage-status {
+  float: right;
+  text-align: center;
+  width: 12.5%;
+  float: left;
+  margin-left: 2%;
+  font-size: 11px;
+  font-weight: bold;
+  line-height: 20px;
+}
+.email-recipient-stage-status.stage-true i {
+  color: #97c43d;
+  -webkit-text-shadow: 0 0 5px #97c43d;
+  -moz-text-shadow: 0 0 5px #97c43d;
+  -o-text-shadow: 0 0 5px #97c43d;
+  -ms-text-shadow: 0 0 5px #97c43d;
+  text-shadow: 0 0 5px #97c43d;
+}
+.email-recipient-stage-status.stage-false i {
+  color: #c43d53;
+  -webkit-text-shadow: 0 0 5px #c43d53;
+  -moz-text-shadow: 0 0 5px #c43d53;
+  -o-text-shadow: 0 0 5px #c43d53;
+  -ms-text-shadow: 0 0 5px #c43d53;
+  text-shadow: 0 0 5px #c43d53;
+}
+.email-recipient-stage-status i {
+  font-weight: bold;
+  line-height: 1;
+  padding: 0 6px;
+  color: #ffd900;
+  -webkit-text-shadow: 0 0 5px #ffd900;
+  -moz-text-shadow: 0 0 5px #ffd900;
+  -o-text-shadow: 0 0 5px #ffd900;
+  -ms-text-shadow: 0 0 5px #ffd900;
+  text-shadow: 0 0 5px #ffd900;
+}
+.no-email-recipients-found .icon-notice:before {
+  content: "f";
+}
+#MarketingIntroLinkActionElement ul {
+  right: 0;
+}
+#MarketingIntroLinkActionElement ul li {
+  padding: 0 5px 5px 5px;
+}
+#MarketingIntroLinkActionElement ul li .hasCheckBox {
+  display: inline-block;
+  margin-right: 5px;
+  position: relative;
+  top: 4px;
+}
+#MarketingIntroLinkActionElement .parent a {
+  padding-left: 10px;
+}
+#MarketingIntroLinkActionElement .parent > a > span {
+  font-weight: normal;
+  font-size: 24px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  position: relative;
+  top: 2px;
+}
+#MarketingIntroLinkActionElement .parent a:after {
+  margin-left: 2px;
+  top: 0;
+}
+.screen-options {
+  padding: 5px;
+  text-align: right;
+}
 #kanban-holder {
   background: #fff;
   margin: 0;
   padding: 0;
   background-size: 100% 100%;
+  vertical-align: top;
 }
 #kanban-holder #kanban-board,
 #kanban-holder .kanban-column,
@@ -18342,6 +18586,14 @@ a + .autoresponder-stats {
 }
 #kanban-holder .empty {
   padding: 10px;
+}
+#kanban-holder .general-issue-notice {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.6);
+  padding: 15px 0;
+}
+#kanban-holder .general-issue-notice p {
+  font-weight: bold;
 }
 #kanban-holder.kanban-background-football {
   background: #ffffff url(../images/kanban/football.jpg) left bottom no-repeat;
@@ -18352,6 +18604,9 @@ a + .autoresponder-stats {
 #kanban-holder.kanban-background-motor {
   background: #ffffff url(../images/kanban/asphalt.jpg) center bottom no-repeat;
 }
+#kanban-holder.kanban-background-yoga {
+  background: #ffffff url(../images/kanban/yoga.jpg) right top no-repeat;
+}
 .kanban-background-football .background-texture-1 {
   background: #ffffff url(../images/kanban/swatch-football.jpg) left top no-repeat;
 }
@@ -18360,6 +18615,15 @@ a + .autoresponder-stats {
 }
 .kanban-background-motor .background-texture-1 {
   background: #ffffff url(../images/kanban/swatch-asphalt.jpg) left top no-repeat;
+}
+.kanban-background-yoga .background-texture-1 {
+  background: #ffffff url(../images/kanban/swatch-yoga.jpg) left top no-repeat;
+}
+#kanban-board {
+  display: table;
+  vertical-align: top;
+  height: 100%;
+  width: 100%;
 }
 #kanban-board .drop-zone-container {
   padding: 37px 2px 2px 2px;
@@ -18373,13 +18637,11 @@ a + .autoresponder-stats {
   position: relative;
 }
 .kanban-column {
-  float: left;
-  /*position: absolute;
-	top: 0;
-	bottom: 0;
-	display: block;*/
-
+  white-space: normal;
+  display: table-cell;
+  vertical-align: top;
   border-left: 1px solid #dfdfdf;
+  position: relative;
 }
 .kanban-column:first-child {
   border-left: none;
@@ -18390,6 +18652,10 @@ a + .autoresponder-stats {
   position: relative;
   z-index: 5;
   min-height: 600px;
+}
+.kanban-column .droppable-dynamic-rows-container {
+  width: 100%;
+  height: 100%;
 }
 .column-header {
   font-weight: bold !important;
@@ -18512,6 +18778,60 @@ a + .autoresponder-stats {
 .icon-kanban-board-view-type span,
 .icon-grid-view-type span {
   display: none;
+}
+.webform-embed-code {
+  padding: 0;
+  margin-bottom: 15px;
+  word-break: break-all;
+  white-space: normal;
+}
+.webform-embed-code code {
+  white-space: normal;
+}
+.webform-embed-code textarea {
+  margin-top: 10px;
+  border: 1px solid #ccc;
+  background: #fff;
+  -webkit-box-shadow: inset 0 0 2px 0 #cccccc;
+  -moz-box-shadow: inset 0 0 2px 0 #cccccc;
+  -o-box-shadow: inset 0 0 2px 0 #cccccc;
+  -ms-box-shadow: inset 0 0 2px 0 #cccccc;
+  box-shadow: inset 0 0 2px 0 #cccccc;
+  width: 100%;
+  padding: 5px;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  -ms-border-radius: 2px;
+  -o-border-radius: 2px;
+  border-radius: 2px;
+  resize: none;
+  white-space: pre;
+  overflow: auto;
+  font-family: "Courier New", Courier, monospace;
+}
+#ContactWebFormEditAndDetailsView .ui-sortable {
+  list-style: none;
+}
+#ContactWebFormEditAndDetailsView .ui-sortable .hasCheckBox + label {
+  top: 0;
+  left: 8px;
+}
+#ContactWebFormEditAndDetailsView #ContactWebForm_serializedData {
+  display: block;
+  margin-top: -5px;
+}
+#ContactWebFormEditAndDetailsView label + label {
+  margin-left: 0;
+}
+#ContactWebFormEditAndDetailsView .third,
+#ContactWebFormEditAndDetailsView .twoThirds {
+  float: left;
+}
+#ContactWebFormEditAndDetailsView .twoThirds {
+  margin-left: 2%;
+}
+#ContactWebFormEditAndDetailsView .dynamic-row .remove-dynamic-row-link {
+  top: 5px;
 }
 /*********************************************************************************
  * Zurmo is a customer relationship management program developed by

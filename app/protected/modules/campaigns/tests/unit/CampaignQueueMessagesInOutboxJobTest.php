@@ -90,7 +90,6 @@
                                                                                 null,
                                                                                 null,
                                                                                 null,
-                                                                                Campaign::TYPE_MARKETING_LIST,
                                                                                 Campaign::STATUS_ACTIVE,
                                                                                 null,
                                                                                 0,
@@ -117,7 +116,6 @@
                                                                                 null,
                                                                                 null,
                                                                                 null,
-                                                                                Campaign::TYPE_MARKETING_LIST,
                                                                                 Campaign::STATUS_ACTIVE,
                                                                                 null,
                                                                                 null,
@@ -151,7 +149,6 @@
                                                                                 null,
                                                                                 null,
                                                                                 null,
-                                                                                Campaign::TYPE_MARKETING_LIST,
                                                                                 Campaign::STATUS_ACTIVE,
                                                                                 null,
                                                                                 0,
@@ -188,7 +185,6 @@
                                                                                 null,
                                                                                 null,
                                                                                 null,
-                                                                                Campaign::TYPE_MARKETING_LIST,
                                                                                 Campaign::STATUS_ACTIVE,
                                                                                 null,
                                                                                 null,
@@ -224,7 +220,6 @@
                                                                                 null,
                                                                                 null,
                                                                                 null,
-                                                                                Campaign::TYPE_MARKETING_LIST,
                                                                                 Campaign::STATUS_ACTIVE,
                                                                                 null,
                                                                                 0,
@@ -263,7 +258,6 @@
                                                                                 null,
                                                                                 null,
                                                                                 null,
-                                                                                Campaign::TYPE_MARKETING_LIST,
                                                                                 Campaign::STATUS_ACTIVE,
                                                                                 null,
                                                                                 null,
@@ -303,7 +297,6 @@
                                                                                 null,
                                                                                 null,
                                                                                 null,
-                                                                                Campaign::TYPE_MARKETING_LIST,
                                                                                 Campaign::STATUS_ACTIVE,
                                                                                 null,
                                                                                 null,
@@ -329,6 +322,57 @@
                                                                                         0,
                                                                                         $campaign->id);
             $this->assertCount(2, $unprocessedItems);
+            AutoresponderOrCampaignBatchSizeConfigUtil::setBatchSize(10);
+            $this->assertTrue($job->run());
+            $unprocessedItems               = CampaignItem::getByProcessedAndCampaignId(
+                                                                                        0,
+                                                                                        $campaign->id);
+            $this->assertCount(0, $unprocessedItems);
+        }
+
+        /**
+         * @depends testRunWithCustomBatchSize
+         */
+        public function testRunWithContactContainingPrimaryEmailOptedOut()
+        {
+            $unprocessedItems           = CampaignItem::getByProcessed(0);
+            $this->assertEmpty($unprocessedItems);
+            $job                        = new CampaignQueueMessagesInOutboxJob();
+            $email                      = new Email();
+            $email->emailAddress        = 'demo@zurmo.com';
+            $email->optOut              = true;
+            $contact                    = ContactTestHelper::createContactByNameForOwner('contact 07', $this->user);
+            $contact->primaryEmail      = $email;
+            $this->assertTrue($contact->save());
+            $marketingList              = MarketingListTestHelper::createMarketingListByName('marketingList 08',
+                                                                                                'description goes here',
+                                                                                                'fromName',
+                                                                                                'from@domain.com');
+            $campaign                   = CampaignTestHelper::createCampaign('campaign 08',
+                                                                                'subject',
+                                                                                '[[FIRST^NAME]]',
+                                                                                '[[LAST^NAME]]',
+                                                                                null,
+                                                                                null,
+                                                                                null,
+                                                                                Campaign::STATUS_ACTIVE,
+                                                                                null,
+                                                                                null,
+                                                                                $marketingList);
+            $processed                  = 0;
+            $campaignItem               = CampaignItemTestHelper::createCampaignItem($processed, $campaign, $contact);
+            $unprocessedItems           = CampaignItem::getByProcessedAndCampaignId($processed, $campaign->id);
+            $this->assertCount(1, $unprocessedItems);
+            $this->assertTrue($job->run());
+            $unprocessedItems           = CampaignItem::getByProcessedAndCampaignId($processed, $campaign->id);
+            $this->assertCount(0, $unprocessedItems);
+            $personId                   = $contact->getClassId('Person');
+            $activities                 = CampaignItemActivity::getByTypeAndModelIdAndPersonIdAndUrl(
+                                                                                    CampaignItemActivity::TYPE_SKIP,
+                                                                                    $campaignItem->id,
+                                                                                    $personId);
+            $this->assertNotEmpty($activities);
+            $this->assertCount(1, $activities);
         }
     }
 ?>

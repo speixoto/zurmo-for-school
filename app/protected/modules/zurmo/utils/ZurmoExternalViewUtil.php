@@ -186,10 +186,8 @@
             {
                 if ($scriptTagNode->hasAttribute('src'))
                 {
-                    $assetsBasePath             = Yii::app()->assetManager->basePath;
                     $scriptSrcPath              = $scriptTagNode->getAttribute('src');
-                    $scriptPathRelativeToAssets = substr($scriptSrcPath, strpos($scriptSrcPath, 'assets') + 6);
-                    $scriptFullPath             = $assetsBasePath . $scriptPathRelativeToAssets;
+                    $scriptFullPath             = self::getScriptAbsolutePath($scriptSrcPath);
                     $fileContents              .= self::getContentsFromSource($scriptFullPath);
                 }
             }
@@ -204,6 +202,14 @@
             fclose($fp);
             $publishedUrl   = Yii::app()->getAssetManager()->publish($scriptFilePath);
             return $publishedUrl;
+        }
+
+        protected static function getScriptAbsolutePath($scriptSrcPath)
+        {
+            $assetsBasePath             = Yii::app()->assetManager->basePath;
+            $scriptPathRelativeToAssets = substr($scriptSrcPath, strpos($scriptSrcPath, 'assets') + 6);
+            $scriptFullPath             = $assetsBasePath . $scriptPathRelativeToAssets;
+            return $scriptFullPath;
         }
     }
 ?>

@@ -152,7 +152,7 @@ EOD;
         echo 'Sending Email Message' . "\n";
 
         $emailMessage = new EmailMessage();
-        $emailMessage->owner   = Yii::app()->emailHelper->getUserToSendNotificationsAs();
+        $emailMessage->owner   = BaseJobControlUserConfigUtil::getUserToRunAs();
         $emailMessage->subject = $subject;
         $emailContent              = new EmailMessageContent();
         $emailContent->textContent = $textContent;

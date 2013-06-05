@@ -37,8 +37,11 @@
     /**
      * Class for displaying metrics specific to a marketing list
      */
-    class MarketingListOverallMetricsView extends MarketingMetricsView implements PortletViewInterface
+    class MarketingListOverallMetricsView extends MarketingMetricsView
     {
+        /**
+         * @var string
+         */
         protected $formModelClassName = 'MarketingOverallMetricsForm';
 
         /**
@@ -82,9 +85,28 @@
             return $chartDataProvider;
         }
 
+        /**
+         * @return string
+         */
         protected function getWrapperDivClass()
         {
             return MarketingListDetailsAndRelationsView::METRICS_PORTLET_CLASS;
+        }
+
+        /**
+         * @return string
+         */
+        protected function getOverallListPerformanceTitle()
+        {
+            return Zurmo::t('MarketingModule', 'Overall List Performance');
+        }
+
+        /**
+         * @return string
+         */
+        protected function getEmailsInThisListTitle()
+        {
+            return Zurmo::t('MarketingModule', 'Emails in this List');
         }
     }
 ?>

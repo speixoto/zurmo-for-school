@@ -86,6 +86,9 @@
                 var typeMarkOverCost = " . SellPriceFormula::TYPE_MARKUP_OVER_COST . ";
                 var typeDiscountFromList = " . SellPriceFormula::TYPE_DISCOUNT_FROM_LIST . ";
                 var typeSameAsList = " . SellPriceFormula::TYPE_SAME_AS_LIST . ";
+                $('#ProductTemplate_cost_currency_id').change(function(){calculateSellPriceBySellPriceFormula()});
+                $('#ProductTemplate_listPrice_currency_id').change(function(){calculateSellPriceBySellPriceFormula()});
+                var priceCurrency = '';
                 function calculateSellPriceBySellPriceFormula()
                 {
                     var helperValue = $('#ProductTemplate_sellPriceFormula_type').val();
@@ -102,9 +105,16 @@
                     if (helperValue == typeProfitMargin)
                     {
                         var cost = parseFloat($('#ProductTemplate_cost_value').val());
-                        calculatedSellPrice = parseFloat(cost/(100-discountOrMarkupPercentage));
+                        calculatedSellPrice = parseFloat(cost/(1-discountOrMarkupPercentage));
                         modCalculatesSellPrice = (Math.round(calculatedSellPrice * 100)/100).toFixed(2);
                         $('#ProductTemplate_sellPrice_value').val(modCalculatesSellPrice);
+                        priceCurrency = $('#ProductTemplate_cost_currency_id').val();
+                        $('#ProductTemplate_sellPrice_currency_id').val(priceCurrency);
+                        $('#ProductTemplate_listPrice_currency_id').val(priceCurrency);
+                        $('#ProductTemplate_listPrice_currency_id').attr('readonly','readonly');
+                        $('#ProductTemplate_listPrice_currency_id').addClass('disabled');
+                        $('#ProductTemplate_cost_currency_id').removeAttr('readonly');
+                        $('#ProductTemplate_cost_currency_id').removeClass('disabled');
                     }
 
                     if (helperValue == typeMarkOverCost)
@@ -112,6 +122,13 @@
                         var cost = parseFloat($('#ProductTemplate_cost_value').val());
                         calculatedSellPrice = (discountOrMarkupPercentage * cost) + cost;
                         $('#ProductTemplate_sellPrice_value').val(calculatedSellPrice);
+                        priceCurrency = $('#ProductTemplate_cost_currency_id').val();
+                        $('#ProductTemplate_sellPrice_currency_id').val(priceCurrency);
+                        $('#ProductTemplate_listPrice_currency_id').val(priceCurrency);
+                        $('#ProductTemplate_listPrice_currency_id').attr('readonly','readonly');
+                        $('#ProductTemplate_listPrice_currency_id').addClass('disabled');
+                        $('#ProductTemplate_cost_currency_id').removeAttr('readonly');
+                        $('#ProductTemplate_cost_currency_id').removeClass('disabled');
                     }
 
                     if (helperValue == typeDiscountFromList)
@@ -119,12 +136,34 @@
                         var listPrice = parseFloat($('#ProductTemplate_listPrice_value').val());
                         calculatedSellPrice = listPrice - (listPrice * discountOrMarkupPercentage);
                         $('#ProductTemplate_sellPrice_value').val(calculatedSellPrice);
+                        priceCurrency = $('#ProductTemplate_listPrice_currency_id').val();
+                        $('#ProductTemplate_sellPrice_currency_id').val(priceCurrency);
+                        $('#ProductTemplate_cost_currency_id').val(priceCurrency);
+                        $('#ProductTemplate_cost_currency_id').attr('readonly','readonly');
+                        $('#ProductTemplate_cost_currency_id').addClass('disabled');
+                        $('#ProductTemplate_listPrice_currency_id').removeAttr('readonly');
+                        $('#ProductTemplate_listPrice_currency_id').removeClass('disabled');
                     }
 
                     if (helperValue == typeSameAsList)
                     {
                         var listPrice = parseFloat($('#ProductTemplate_listPrice_value').val());
                         $('#ProductTemplate_sellPrice_value').val(listPrice);
+                        priceCurrency = $('#ProductTemplate_listPrice_currency_id').val();
+                        $('#ProductTemplate_sellPrice_currency_id').val(priceCurrency);
+                        $('#ProductTemplate_cost_currency_id').val(priceCurrency);
+                        $('#ProductTemplate_cost_currency_id').attr('readonly','readonly');
+                        $('#ProductTemplate_cost_currency_id').addClass('disabled');
+                        $('#ProductTemplate_listPrice_currency_id').removeAttr('readonly');
+                        $('#ProductTemplate_listPrice_currency_id').removeClass('disabled');
+                    }
+
+                    if (helperValue == typeEditable)
+                    {
+                        $('#ProductTemplate_cost_currency_id').removeAttr('readonly');
+                        $('#ProductTemplate_listPrice_currency_id').removeAttr('readonly');
+                        $('#ProductTemplate_listPrice_currency_id').removeClass('disabled');
+                        $('#ProductTemplate_cost_currency_id').removeClass('disabled');
                     }
                 }
             ";
