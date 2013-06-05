@@ -269,7 +269,7 @@
         {
             $count = CampaignItemActivity::getChildActivityByTypeAndModelIdAndModelRelationNameAndPersonIdAndUrl(
                                            CampaignItemActivity::TYPE_OPEN, $this->id, 'campaignItem',
-                                           $this->contact->getClassId('Person'), null, 'latestDateTime', null, true);
+                                           $this->contact->id, null, 'latestDateTime', null, true);
             if($count > 0)
             {
                 return true;
@@ -284,7 +284,7 @@
         {
             $count = CampaignItemActivity::getChildActivityByTypeAndModelIdAndModelRelationNameAndPersonIdAndUrl(
                                            CampaignItemActivity::TYPE_CLICK, $this->id, 'campaignItem',
-                                           $this->contact->getClassId('Person'), null, 'latestDateTime', null, true);
+                                           $this->contact->id, null, 'latestDateTime', null, true);
             if($count > 0)
             {
                 return true;
@@ -299,7 +299,7 @@
         {
              $count = CampaignItemActivity::getChildActivityByTypeAndModelIdAndModelRelationNameAndPersonIdAndUrl(
                                            CampaignItemActivity::TYPE_UNSUBSCRIBE, $this->id, 'campaignItem',
-                                           $this->contact->getClassId('Person'), null, 'latestDateTime', null, true);
+                                           $this->contact->id, null, 'latestDateTime', null, true);
             if($count > 0)
             {
                 return true;
@@ -314,7 +314,7 @@
         {
             $count = CampaignItemActivity::getChildActivityByTypeAndModelIdAndModelRelationNameAndPersonIdAndUrl(
                                            CampaignItemActivity::TYPE_BOUNCE, $this->id, 'campaignItem',
-                                           $this->contact->getClassId('Person'), null, 'latestDateTime', null, true);
+                                           $this->contact->id, null, 'latestDateTime', null, true);
             if($count > 0)
             {
                 return true;
