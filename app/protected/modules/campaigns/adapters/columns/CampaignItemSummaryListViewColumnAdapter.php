@@ -56,8 +56,7 @@
         public static function resolveContactWithLink(Contact $contact)
         {
             $moduleClassName = static::resolveModuleClassName($contact);
-            $linkRoute       = Yii::app()->createUrl('/' . $moduleClassName::getDirectoryName() . '/default/details',
-                                                     array('id' => $contact->id));
+            $linkRoute       = '/' . $moduleClassName::getDirectoryName() . '/default/details';
             $linkContent     = ActionSecurityUtil::resolveLinkToModelForCurrentUser(strval($contact), $contact,
                                $moduleClassName, $linkRoute);
             if($linkContent == null)
