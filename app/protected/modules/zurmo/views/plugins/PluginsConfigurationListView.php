@@ -34,65 +34,19 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class MapsModule extends SecurableModule
+    class PluginsConfigurationListView extends GridView
     {
-        const RIGHT_ACCESS_MAPS_ADMINISTRATION = 'Access Maps Administration';
+        protected $cssClasses =  array( 'AdministrativeArea' , 'TableOfContentsView' );
 
-        public function getDependencies()
+        public function __construct()
         {
-            return array(
-                'configuration',
-                'zurmo',
-            );
+            parent::__construct(1, 1);
+            $this->setView(new PluginsConfigurationMenuView(), 0, 0);
         }
 
-        public function getRootModelNames()
+        public function isUniqueToAPage()
         {
-            return array('Address');
-        }
-
-        public static function getTranslatedRightsLabels()
-        {
-            $labels                                         = array();
-            $labels[self::RIGHT_ACCESS_MAPS_ADMINISTRATION] = Zurmo::t('MapsModule', 'Access Maps Administration');
-            return $labels;
-        }
-
-        public static function getDefaultMetadata()
-        {
-            $metadata = array();
-            $metadata['global'] = array(
-                'configureSubMenuItems' => array(
-                    array(
-                        'category'         => ZurmoModule::ADMINISTRATION_CATEGORY_PLUGINS,
-                        'titleLabel'       => "eval:Zurmo::t('MapsModule', 'Maps')",
-                        'descriptionLabel' => "eval:Zurmo::t('MapsModule', 'Manage Map Configuration')",
-                        'route'            => '/maps/default/configurationView',
-                        'right'            => self::RIGHT_ACCESS_MAPS_ADMINISTRATION,
-                    ),
-                ),
-            );
-            return $metadata;
-        }
-
-        public static function getPrimaryModelName()
-        {
-            return 'Address';
-        }
-
-        public static function getAccessRight()
-        {
-            return self::RIGHT_ACCESS_MAPS_ADMINISTRATION;
-        }
-
-        protected static function getSingularModuleLabel($language)
-        {
-            return Zurmo::t('MapsModule', 'Map', array(), null, $language);
-        }
-
-        protected static function getPluralModuleLabel($language)
-        {
-            return Zurmo::t('MapsModule', 'Maps', array(), null, $language);
+            return true;
         }
     }
 ?>

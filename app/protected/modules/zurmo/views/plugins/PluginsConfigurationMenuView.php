@@ -34,65 +34,36 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class MapsModule extends SecurableModule
+    class PluginsConfigurationMenuView extends ConfigureModulesMenuView
     {
-        const RIGHT_ACCESS_MAPS_ADMINISTRATION = 'Access Maps Administration';
-
-        public function getDependencies()
+        public function getTitle()
         {
-            return array(
-                'configuration',
-                'zurmo',
-            );
+            return Zurmo::t('ZurmoModule', 'Plugins');
         }
 
-        public function getRootModelNames()
+        protected function getCategoryData()
         {
-            return array('Address');
-        }
-
-        public static function getTranslatedRightsLabels()
-        {
-            $labels                                         = array();
-            $labels[self::RIGHT_ACCESS_MAPS_ADMINISTRATION] = Zurmo::t('MapsModule', 'Access Maps Administration');
-            return $labels;
-        }
-
-        public static function getDefaultMetadata()
-        {
-            $metadata = array();
-            $metadata['global'] = array(
-                'configureSubMenuItems' => array(
-                    array(
-                        'category'         => ZurmoModule::ADMINISTRATION_CATEGORY_PLUGINS,
-                        'titleLabel'       => "eval:Zurmo::t('MapsModule', 'Maps')",
-                        'descriptionLabel' => "eval:Zurmo::t('MapsModule', 'Manage Map Configuration')",
-                        'route'            => '/maps/default/configurationView',
-                        'right'            => self::RIGHT_ACCESS_MAPS_ADMINISTRATION,
-                    ),
-                ),
-            );
-            return $metadata;
-        }
-
-        public static function getPrimaryModelName()
-        {
-            return 'Address';
-        }
-
-        public static function getAccessRight()
-        {
-            return self::RIGHT_ACCESS_MAPS_ADMINISTRATION;
-        }
-
-        protected static function getSingularModuleLabel($language)
-        {
-            return Zurmo::t('MapsModule', 'Map', array(), null, $language);
-        }
-
-        protected static function getPluralModuleLabel($language)
-        {
-            return Zurmo::t('MapsModule', 'Maps', array(), null, $language);
+            $categories = array();
+            $modules = Module::getModuleObjects();
+            foreach ($modules as $module)
+            {
+                $moduleSubMenuItems = MenuUtil::getAccessibleConfigureSubMenuByCurrentUser(get_class($module));
+                if ($module->isEnabled() && count($moduleSubMenuItems) > 0)
+                {
+                    foreach ($moduleSubMenuItems as $subMenuItem)
+                    {
+                        if (!empty($subMenuItem['category']) &&
+                            $subMenuItem['category'] == ZurmoModule::ADMINISTRATION_CATEGORY_PLUGINS)
+                        {
+                            assert('isset($subMenuItem["titleLabel"])');
+                            assert('isset($subMenuItem["descriptionLabel"])');
+                            assert('isset($subMenuItem["route"])');
+                            $categories[$subMenuItem['category']][] = $subMenuItem;
+                        }
+                    }
+                }
+            }
+            return $categories;
         }
     }
 ?>

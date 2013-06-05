@@ -32,6 +32,9 @@
             'CD-DVD',
             'Books',
             'Music',
+            'Laptops',
+            'Camera',
+            'Handycam'
         )
     );
 ?>
