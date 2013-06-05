@@ -18568,6 +18568,10 @@ a + .autoresponder-stats {
   margin-left: 2px;
   top: 0;
 }
+.screen-options {
+  padding: 5px;
+  text-align: right;
+}
 #kanban-holder {
   background: #fff;
   margin: 0;
