@@ -59,9 +59,7 @@
                 $activity                       = new AutoresponderItemActivity();
                 $autoresponderItem              = $demoDataHelper->getRandomByModelName('AutoresponderItem');
                 $activity->autoresponderItem    = $autoresponderItem;
-                $contact                        = $demoDataHelper->getRandomByModelName('Contact');
-                $personId                       = $contact->getClassId('Person');
-                $activity->person               = Person::getById($personId);
+                $activity->person               = $activity->autoresponderItem->contact;
                 if (rand() % 4)
                 {
                     $emailMessageUrl                = $demoDataHelper->getRandomByModelName('EmailMessageUrl');

@@ -59,8 +59,7 @@
                 $activity                       = new CampaignItemActivity();
                 $campaignItem                   = $demoDataHelper->getRandomByModelName('CampaignItem');
                 $activity->campaignItem         = $campaignItem;
-                $contact                        = $demoDataHelper->getRandomByModelName('Contact');
-                $personId                       = $contact->getClassId('Person');
+                $personId                       = $campaignItem->contact;
                 $activity->person               = Person::getById($personId);
                 if (rand() % 4)
                 {
