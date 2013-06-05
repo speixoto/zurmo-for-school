@@ -90,10 +90,13 @@
          * @param string $beginDate
          * @param string $endDate
          * @param string $groupBy
+         * @param boolean $treatDatesAsDefinitive - if the group begin/end dates should be restricted by the passed
+         * begin end dates, then set this true. If you want the true begin month or end month to be returned then set
+         * to false.
          * @throws NotSupportedException
          * @return array
          */
-        public static function makeGroupedDateTimeData($beginDate, $endDate, $groupBy)
+        public static function makeGroupedDateTimeData($beginDate, $endDate, $groupBy, $treatDatesAsDefinitive = true)
         {
             assert('is_string($beginDate)');
             assert('is_string($endDate)');
@@ -112,8 +115,21 @@
                 foreach(DateTimeUtil::
                         getWeekStartAndEndDatesBetweenTwoDatesInARange($beginDate, $endDate) as $beginWeekDate => $endWeekDate)
                 {
+                    $displayLabel = static::resolveAbbreviatedDayMonthDisplayLabel($beginWeekDate);
+                    if($treatDatesAsDefinitive)
+                    {
+                        if($beginWeekDate < $beginDate)
+                        {
+                            $beginWeekDate = $beginDate;
+                        }
+                        if($endWeekDate > $endDate)
+                        {
+                            $endWeekDate   = $endDate;
+                        }
+                    }
+
                     $data[] = array('beginDate'    => $beginWeekDate, 'endDate' => $endWeekDate,
-                                    'displayLabel' => static::resolveAbbreviatedDayMonthDisplayLabel($beginWeekDate));
+                                    'displayLabel' => $displayLabel);
                 }
             }
             elseif($groupBy == MarketingOverallMetricsForm::GROUPING_TYPE_MONTH)
@@ -121,6 +137,17 @@
                 foreach(DateTimeUtil::
                         getMonthStartAndEndDatesBetweenTwoDatesInARange($beginDate, $endDate) as $beginMonthDate => $endMonthDate)
                 {
+                    if($treatDatesAsDefinitive)
+                    {
+                        if($beginMonthDate < $beginDate)
+                        {
+                            $beginMonthDate = $beginDate;
+                        }
+                        if($endMonthDate > $endDate)
+                        {
+                            $endMonthDate   = $endDate;
+                        }
+                    }
                     $data[] = array('beginDate'    => $beginMonthDate, 'endDate' => $endMonthDate,
                                     'displayLabel' => static::resolveAbbreviatedMonthDisplayLabel($beginMonthDate));
                 }

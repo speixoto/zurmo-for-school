@@ -60,8 +60,8 @@
             $compareClauses = array(
                 1 => array(
                     'attributeName'        => 'boolean',
-                    'operatorType'         => 'equals',
-                    'value'                => 0,
+                    'operatorType'         => 'doesNotEqual',
+                    'value'                => true,
                 ),
             );
             $compareStructure = '1';
