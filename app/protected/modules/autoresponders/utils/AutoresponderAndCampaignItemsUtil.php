@@ -53,7 +53,7 @@
             $itemOwnerModel             = $item->$ownerModelRelationName;
             assert('is_object($itemOwnerModel)');
             assert('get_class($itemOwnerModel) === "Autoresponder" || get_class($itemOwnerModel) === "Campaign"');
-            $marketingList                  = $itemOwnerModel->marketingList;
+            $marketingList              = $itemOwnerModel->marketingList;
             assert('is_object($marketingList)');
             assert('get_class($marketingList) === "MarketingList"');
             $textContent                = $itemOwnerModel->textContent;
