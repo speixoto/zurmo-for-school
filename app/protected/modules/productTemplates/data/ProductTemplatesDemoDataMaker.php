@@ -41,7 +41,10 @@
             assert('$demoDataHelper instanceof DemoDataHelper');
             $currencies = Currency::getAll('id');
             $productTemplates = array();
-            for ($i = 0; $i < 5; $i++)
+            $filePath                  = Yii::getPathOfAlias('application.modules.productTemplates.data.ProductTemplateRandomData') . '.php';
+            require($filePath);
+            $productTemplateRandomData = getProductTemplatesRandomData();
+            for ($i = 0; $i < count($productTemplateRandomData['names']); $i++)
             {
                 $productTemplate = new ProductTemplate();
                 $currencyValue                   = new CurrencyValue();
@@ -65,8 +68,7 @@
         {
             assert('$model instanceof ProductTemplate');
             parent::populateModel($model);
-            $productTemplateRandomData = ZurmoRandomDataUtil::getRandomDataByModuleAndModelClassNames(
-                                            'ProductTemplatesModule', 'ProductTemplate');
+            $productTemplateRandomData = getProductTemplatesRandomData();
             $name                      = $productTemplateRandomData['names'][$counter];
             $productCategoryName       = self::getProductCategoryForTemplate($name);
             $allCats = ProductCategory::getAll();
@@ -78,6 +80,7 @@
                 }
             }
             $productCategory           = ProductCategory::getById($categoryId);
+
             $model->name               = $name;
             $model->productCategories->add($productCategory);
             $model->priceFrequency     = 2;
@@ -100,7 +103,21 @@
                                                 'A Gift of Monotheists' => 'Books',
                                                 'Once in a Lifetime'    => 'Music'
                                             );
-
+            if(!array_key_exists($template, $templateCategoryMapping))
+            {
+                if(strpos($template, 'Sony Vaio - Model') !== false)
+                {
+                    return 'Laptops';
+                }
+                if(strpos($template, 'Nikon') !== false)
+                {
+                    return 'Camera';
+                }
+                if(strpos($template, 'Sony Handycam - Model') !== false)
+                {
+                    return 'Handycam';
+                }
+            }
             return $templateCategoryMapping[$template];
         }
     }
