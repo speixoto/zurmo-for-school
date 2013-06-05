@@ -1847,6 +1847,19 @@ form,
 	top:-2px
 }
 
+.icon-webforms:before{
+	.view-toolbar-icons();
+	content: '\003C';
+	top:-2px
+}
+
+.icon-webforms-entries:before{
+	.view-toolbar-icons();
+	content: '\005E';
+	top:-2px
+}
+
+
 /*=Footer*/
 #FooterView{
 	margin:20px 3% 0 3%;
@@ -2706,6 +2719,11 @@ div.wide.form{
 	}
 	.ProductCategory .large-icon:after{
 		content: '\00D7';
+		.symbly(300px);
+		line-height: 52%;
+	}
+	.ContactWebForm .large-icon:after{
+		content: '\003C';
 		.symbly(300px);
 		line-height: 52%;
 	}
@@ -5223,4 +5241,5 @@ div.hasHalfs{
 @import 'email-templates.less';
 @import 'marketing.less';
 @import 'kanban.less';
+@import 'webforms.less';
 @import 'media-queries.less';

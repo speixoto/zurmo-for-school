@@ -657,12 +657,13 @@ $(window).ready(function(){
 
     $('.clickable-mbmenu').find('a').click(
         function(){
-            var parentUl = $(this).parentsUntil('clickable-mbmenu').parent();
+            var parentUl = $(this).parentsUntil('.clickable-mbmenu').parent();
             if ( parentUl.hasClass('nav-open') === false ){
                 parentUl.addClass('nav-open');
             } else {
                 parentUl.removeClass('nav-open');
             }
+            return false;
         }
     );
 
