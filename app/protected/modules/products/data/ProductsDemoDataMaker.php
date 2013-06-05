@@ -99,7 +99,9 @@
             if(!array_key_exists($product, $productTemplateMapping))
             {
                 $productNameSubstr = explode('-P', $product);
-                if((strpos($product, 'Sony') !== false) || (strpos($product, 'Nikon') !== false))
+                if((strpos($product, 'Laptop') !== false)
+                                            || (strpos($product, 'Camera') !== false)
+                                                                 || (strpos($product, 'Handycam') !== false))
                 {
                     return $productNameSubstr[0];
                 }

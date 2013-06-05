@@ -47,14 +47,15 @@
             for ($i = 0; $i < count($productTemplateRandomData['names']); $i++)
             {
                 $productTemplate = new ProductTemplate();
+                $currencyIndex                   = array_rand($currencies);
                 $currencyValue                   = new CurrencyValue();
-                $currencyValue->currency         = $currencies[array_rand($currencies)];
+                $currencyValue->currency         = $currencies[$currencyIndex];
                 $productTemplate->cost           = $currencyValue;
                 $currencyValue                   = new CurrencyValue();
-                $currencyValue->currency         = $currencies[array_rand($currencies)];
+                $currencyValue->currency         = $currencies[$currencyIndex];
                 $productTemplate->listPrice      = $currencyValue;
                 $currencyValue                   = new CurrencyValue();
-                $currencyValue->currency         = $currencies[array_rand($currencies)];
+                $currencyValue->currency         = $currencies[$currencyIndex];
                 $productTemplate->sellPrice      = $currencyValue;
                 $this->populateModelData($productTemplate, $i);
                 $saved               = $productTemplate->save();
@@ -105,15 +106,15 @@
                                             );
             if(!array_key_exists($template, $templateCategoryMapping))
             {
-                if(strpos($template, 'Sony Vaio - Model') !== false)
+                if(strpos($template, 'Laptop Inc - Model') !== false)
                 {
                     return 'Laptops';
                 }
-                if(strpos($template, 'Nikon') !== false)
+                if(strpos($template, 'Camera Inc') !== false)
                 {
                     return 'Camera';
                 }
-                if(strpos($template, 'Sony Handycam - Model') !== false)
+                if(strpos($template, 'Handycam Inc - Model') !== false)
                 {
                     return 'Handycam';
                 }

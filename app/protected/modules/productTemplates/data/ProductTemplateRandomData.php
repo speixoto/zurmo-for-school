@@ -41,19 +41,19 @@
         for($i=1; $i<10; $i++)
         {
            $randomString = substr(str_shuffle("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0, 6);
-           $templateNames['names'][] = 'Sony Vaio - Model ' . $randomString;
+           $templateNames['names'][] = 'Laptop Inc - Model ' . $randomString;
         }
 
         for($i=1; $i<10; $i++)
         {
            $randomString = substr(str_shuffle("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0, 6);
-           $templateNames['names'][] = 'Nikon Camera 2 MegaPixel - Model ' . $randomString;
+           $templateNames['names'][] = 'Camera Inc 2 MegaPixel - Model ' . $randomString;
         }
 
         for($i=1; $i<10; $i++)
         {
            $randomString = substr(str_shuffle("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0, 6);
-           $templateNames['names'][] = 'Sony Handycam - Model ' . $randomString;
+           $templateNames['names'][] = 'Handycam Inc - Model ' . $randomString;
         }
         return $templateNames;
     }

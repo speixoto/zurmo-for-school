@@ -43,7 +43,9 @@
 
         foreach ($productTemplates as $template)
         {
-            if((strpos($template->name, 'Sony') !== false) || (strpos($template->name, 'Nikon') !== false))
+            if((strpos($template->name, 'Laptop') !== false)
+                                            || (strpos($template->name, 'Camera') !== false)
+                                                                 || (strpos($template->name, 'Handycam') !== false))
             {
                 for($i=1; $i<5; $i++)
                 {
