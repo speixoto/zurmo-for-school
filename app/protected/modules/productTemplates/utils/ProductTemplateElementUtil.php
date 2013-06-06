@@ -295,25 +295,24 @@
             switch($realAttributeName)
             {
                 case 'priceFrequency':
-                                        $dataArray = self::getProductTemplatePriceFrequencyDropdownArray();
-                                        break;
+                    $dataArray = self::getProductTemplatePriceFrequencyDropdownArray();
+                    break;
                 case 'status'        :
-                                        $dataArray = self::getProductTemplateStatusDropdownArray();
-                                        break;
+                    $dataArray = self::getProductTemplateStatusDropdownArray();
+                    break;
                 case 'type'          :
-                                        if ($displayAttribute->getResolvedAttributeModelClassName() == 'SellPriceFormula')
-                                        {
-                                            $dataArray = SellPriceFormula::getTypeDropDownArray();
-                                        }
-                                        else
-                                        {
-                                            $dataArray = self::getProductTemplateTypeDropdownArray();
-                                        }
-                                        break;
-                default             :   break;
+                    if ($displayAttribute->getResolvedAttributeModelClassName() == 'SellPriceFormula')
+                    {
+                        $dataArray = SellPriceFormula::getTypeDropDownArray();
+                    }
+                    else
+                    {
+                        $dataArray = self::getProductTemplateTypeDropdownArray();
+                    }
+                    break;
+                default              :   break;
             }
-
-            $value = $model->resolveRawValueByDisplayAttributeKey(intval($displayAttributeKey));
+            $value = $model->{$attribute};
             if (isset($dataArray[$value]))
             {
                 return $dataArray[$value];
