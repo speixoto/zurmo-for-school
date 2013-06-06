@@ -4324,6 +4324,37 @@ div.hasHalfs{
 	}
 }
 
+.edit-row-menu{
+	> li{
+		position: relative;
+	}
+	> li > a{
+		position: relative;
+		z-index: 10;
+	}
+	ul{
+		white-space: nowrap;
+		left: auto;
+		right: -8px;
+		margin-left:-80px;
+		top:-3px;
+		z-index: 1;
+		padding-right: 28px;
+		> li{
+			float: left;
+			border-left: 1px solid #d8d8d8;
+			&:first-child{
+				border-left: none;
+			}
+		}
+	}
+	> li.over > a{
+		pointer-event:none;
+		opacity:0.5;
+		//z-index: 20;
+	}
+}
+
 /*Upcoming Meeting Pager*/
 .pager{
 	++.border-box;

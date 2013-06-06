@@ -10170,6 +10170,33 @@ div.hasHalfs > div input {
 .edit-portlet-menu ul {
   top: 20px;
 }
+.edit-row-menu > li {
+  position: relative;
+}
+.edit-row-menu > li > a {
+  position: relative;
+  z-index: 10;
+}
+.edit-row-menu ul {
+  white-space: nowrap;
+  left: auto;
+  right: -8px;
+  margin-left: -80px;
+  top: -3px;
+  z-index: 1;
+  padding-right: 28px;
+}
+.edit-row-menu ul > li {
+  float: left;
+  border-left: 1px solid #d8d8d8;
+}
+.edit-row-menu ul > li:first-child {
+  border-left: none;
+}
+.edit-row-menu > li.over > a {
+  pointer-event: none;
+  opacity: 0.5;
+}
 /*Upcoming Meeting Pager*/
 .pager {
   width: 100%;
