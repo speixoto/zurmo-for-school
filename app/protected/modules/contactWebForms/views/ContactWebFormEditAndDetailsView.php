@@ -105,6 +105,15 @@
                                     array(
                                         array(
                                             'elements' => array(
+                                                array('attributeName' => 'excludeStyles', 'type' => 'CheckBox'),
+                                            ),
+                                        ),
+                                    )
+                                ),
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
                                                 array('attributeName' => 'serializedData', 'type' => 'SortableContactWebFormAttributes'),
                                             ),
                                         ),
