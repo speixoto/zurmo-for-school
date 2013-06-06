@@ -52,10 +52,6 @@
                                 'htmlOptions'                   => array('class' => 'icon-details')),
                             array('type'        => 'CampaignsOptionsLink',
                                 'htmlOptions'                   => array('class' => 'icon-edit')),
-                            array('type'        => 'CampaignsTogglePortletsLink',
-                                'htmlOptions'                   => array('class' => 'hasCheckboxes'),
-                                'metricsPortletClass'           => CampaignDetailsAndRelationsView::METRICS_PORTLET_CLASS,
-                                'campaignItemsPortletClass'     => CampaignDetailsAndRelationsView::CAMPAIGN_ITEMS_PORTLET_CLASS),
                         ),
                     ),
                 ),
@@ -65,7 +61,7 @@
 
         public function getTitle()
         {
-            return strval($this->model);
+            return strval($this->model) . ' - ' . Zurmo::t('CampaignsModule', 'Campaign');
         }
 
         protected function renderContent()
