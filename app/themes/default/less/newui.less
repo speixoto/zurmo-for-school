@@ -33,7 +33,7 @@
  * Copyright Zurmo Inc. 2013. All rights reserved.
  ********************************************************************************/
 
-*{
+.zurmo *{
 	margin:0;
 	padding:0;
 }
@@ -91,12 +91,13 @@
 	float: left;
 }
 
-html, body{
-	background:#DDDEDE;
-	min-height:100%;
+html.zurmo,
+html.zurmo body{
+		background:#DDDEDE;
+		min-height:100%;
 }
 
-body{
+.zurmo body{
 	font-family:"Helvetica Neue", Helvetica, Arial, sans-serif;
 	font-size:12px;
 	color: #545454;
@@ -105,19 +106,20 @@ body{
 	-moz-font-smoothing: antialiased;
 	-o-font-smoothing: antialiased;
 	font-smoothing: antialiased;
-}
 
-a:link, a:hover, a:active, a:visited{
-	text-decoration:none;
-	outline: none;
-	img{
-		border:none;
+	a:link, a:hover, a:active, a:visited{
+		text-decoration:none;
+		outline: none;
+		img{
+			border:none;
+		}
+	}
+	a:focus{
+		outline:none;
 	}
 }
 
-a:focus{
-	outline:none;
-}
+
 
 /*=HTML5*/
 article, aside, details, figcaption, figure,

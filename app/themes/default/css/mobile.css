@@ -900,6 +900,11 @@ body > div {
   min-width: auto;
   margin-right: 10px;
 }
+.juiportlet-column-split-left-75,
+.juiportlet-column-split-right-25 {
+  width: 100%;
+  float: none;
+}
 #credit-link {
   line-height: 17px;
   font-size: 10px;
