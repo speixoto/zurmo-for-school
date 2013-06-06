@@ -152,7 +152,9 @@
             $scriptFileContents = file_get_contents($path);
             if (strpos($path, 'jquery.min.js') === false && strpos($path, 'jquery.ui.min.js') === false)
             {
-                $scriptFileContents = "jQQ.isolate (function(jQuery, $) { " . $scriptFileContents . " });";
+                $scriptFileContents = "jQQ.isolate (function(jQuery, $) {
+                                                        $('html').addClass('zurmo-embedded-form-active');"
+                                                        . $scriptFileContents . " });";
             }
             return $scriptFileContents;
         }
