@@ -36,6 +36,14 @@
 
     abstract class EmailMessageActivitiesDemoDataMaker extends DemoDataMaker
     {
+
+        protected $emailBox;
+
+        public function __construct() {
+            $user           = User::getByUsername('super');
+            $this->emailBox = EmailBoxUtil::getDefaultEmailBoxByUser($user);
+        }
+
         protected function populateMarketingItems($marketingItemClassName)
         {
             foreach($marketingItemClassName::getAll() as $marketingItem)
@@ -52,7 +60,6 @@
         protected function makeEmailMessage(Contact $contact)
         {
             $interval = mt_rand(1, 30) * 86400;
-            $box = EmailBoxUtil::getDefaultEmailBoxByUser(Yii::app()->user->userModel);
             //#1 Create Archived - Sent
             $emailMessage              = new EmailMessage();
             $emailMessage->setScenario('importModel');
@@ -75,7 +82,7 @@
             $recipient->personOrAccount = $contact;
             $recipient->type            = EmailMessageRecipient::TYPE_TO;
             $emailMessage->recipients->add($recipient);
-            $emailMessage->folder       = EmailFolder::getByBoxAndType($box, EmailFolder::TYPE_ARCHIVED);
+            $emailMessage->folder       = EmailFolder::getByBoxAndType($this->emailBox, EmailFolder::TYPE_ARCHIVED);
             $emailMessage->sentDateTime = DateTimeUtil::convertTimestampToDbFormatDateTime(time() - $interval);
             $emailMessage->createdDateTime = $emailMessage->sentDateTime;
             $saved = $emailMessage->save();
