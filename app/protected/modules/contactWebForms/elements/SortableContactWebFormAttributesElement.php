@@ -66,8 +66,10 @@
                 ContactWebFormsUtil::getAllNonPlacedAttributes($attributes,
                     $contactWebFormAttributes),
                 $this->getEditableHtmlOptions());
-            $title = ZurmoHtml::tag('h3', array(), Zurmo::t('ContactWebFormModule', 'Available Fields'));
-            $content = ZurmoHtml::tag('div', array('class' => 'third'), $title . $clip );
+            $title   = ZurmoHtml::tag('h3', array(), Zurmo::t('ContactWebFormModule', 'Available Fields'));
+            $content = ZurmoHtml::tag('span', array('class' => 'row-description'),
+                       Zurmo::t('ContactWebFormModule', 'Check the fields that you like to add to your form, you can then change their order or remove them'));
+            $content .=  ZurmoHtml::tag('div', array('class' => 'third'), $title . $clip );
 
             $cClipWidget = new CClipWidget();
             $cClipWidget->beginClip("attributesList");
