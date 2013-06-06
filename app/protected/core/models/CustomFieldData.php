@@ -49,7 +49,7 @@
          * @return CustomFieldData model
          * @throws NotFoundException
          */
-        public static function getByName($name)
+        public static function getByName($name, $shouldCache = true)
         {
             if (isset(self::$cachedModelsByName[$name]))
             {
@@ -77,37 +77,12 @@
                 {
                     $customFieldData = self::makeModel($bean);
                 }
-                self::$cachedModelsByName[$name] = $customFieldData;
-                GeneralCache::cacheEntry('CustomFieldData' . $name, $customFieldData);
+                if ($shouldCache)
+                {
+                    self::$cachedModelsByName[$name] = $customFieldData;
+                    GeneralCache::cacheEntry('CustomFieldData' . $name, $customFieldData);
+                }
                 return $customFieldData;
-            }
-        }
-
-        public static function existsByName($name)
-        {
-            if (isset(self::$cachedModelsByName[$name]))
-            {
-                return true;
-            }
-            try
-            {
-                GeneralCache::getEntry('CustomFieldData' . $name);
-                return true;
-            }
-            catch (NotFoundException $e)
-            {
-                assert('is_string($name)');
-                assert('$name != ""');
-                $bean = R::findOne('customfielddata', "name = :name ", array(':name' => $name));
-                assert('$bean === false || $bean instanceof RedBean_OODBBean');
-                if ($bean === false)
-                {
-                    return false;
-                }
-                else
-                {
-                    return true;
-                }
             }
         }
 

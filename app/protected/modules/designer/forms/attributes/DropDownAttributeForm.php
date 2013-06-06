@@ -216,7 +216,7 @@
          */
         public function validateAttributeNameDoesNotExists() {
             parent::validateAttributeNameDoesNotExists();
-            if (CustomFieldData::existsByName($this->attributeName))
+            if (CustomFieldData::getByName($this->attributeName, false)->id > 0)
             {
                 $this->addError('attributeName', Zurmo::t('DesignerModule', 'A field with this name and data is already used in another module.'));
             }
