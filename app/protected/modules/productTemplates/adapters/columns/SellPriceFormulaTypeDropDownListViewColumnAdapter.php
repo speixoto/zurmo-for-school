@@ -30,9 +30,15 @@
         {
                 return array(
                     'name'  => $this->attribute,
-                    'value' => 'ProductTemplateElementUtil::renderProductTemplateListViewAttributeForReports($data, "' . $this->attribute . '")',
+                    'value' => 'SellPriceFormulaTypeDropDownListViewColumnAdapter::getSellPriceFormulaType($data,"'. $this->attribute . '")',
                     'type'  => 'raw',
                 );
+        }
+
+        public static function getSellPriceFormulaType($data, $attribute)
+        {
+            $dataArray = SellPriceFormula::getTypeDropDownArray();
+            return $dataArray[$data->getModel($attribute)->sellPriceFormula->type];
         }
     }
 ?>

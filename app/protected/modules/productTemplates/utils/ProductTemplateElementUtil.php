@@ -301,14 +301,7 @@
                     $dataArray = self::getProductTemplateStatusDropdownArray();
                     break;
                 case 'type'          :
-                    if ($displayAttribute->getResolvedAttributeModelClassName() == 'SellPriceFormula')
-                    {
-                        $dataArray = SellPriceFormula::getTypeDropDownArray();
-                    }
-                    else
-                    {
-                        $dataArray = self::getProductTemplateTypeDropdownArray();
-                    }
+                    $dataArray = self::getProductTemplateTypeDropdownArray();
                     break;
                 default              :   break;
             }
