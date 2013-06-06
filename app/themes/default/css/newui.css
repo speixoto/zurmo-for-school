@@ -32,7 +32,7 @@
  * feasible for technical reasons, the Appropriate Legal Notices must display the words
  * Copyright Zurmo Inc. 2013. All rights reserved.
  ********************************************************************************/
-* {
+.zurmo * {
   margin: 0;
   padding: 0;
 }
@@ -4919,12 +4919,12 @@ body.light-toast,
 .left {
   float: left;
 }
-html,
-body {
+html.zurmo,
+html.zurmo body {
   background: #DDDEDE;
   min-height: 100%;
 }
-body {
+.zurmo body {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 12px;
   color: #545454;
@@ -4933,20 +4933,20 @@ body {
   -o-font-smoothing: antialiased;
   font-smoothing: antialiased;
 }
-a:link,
-a:hover,
-a:active,
-a:visited {
+.zurmo body a:link,
+.zurmo body a:hover,
+.zurmo body a:active,
+.zurmo body a:visited {
   text-decoration: none;
   outline: none;
 }
-a:link img,
-a:hover img,
-a:active img,
-a:visited img {
+.zurmo body a:link img,
+.zurmo body a:hover img,
+.zurmo body a:active img,
+.zurmo body a:visited img {
   border: none;
 }
-a:focus {
+.zurmo body a:focus {
   outline: none;
 }
 /*=HTML5*/
@@ -18902,12 +18902,21 @@ a + .autoresponder-stats {
   margin: 0;
   filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
 }
+#zurmoExternalWebForm .left-column {
+  padding-bottom: 0;
+}
+#zurmoExternalWebForm .attributesContainer {
+  margin: 0;
+  padding: 0;
+}
 #zurmoExternalWebForm .form-toolbar,
 #zurmoExternalWebForm .view-toolbar-container {
   border: none;
-  text-align: left;
+  text-align: right;
+  padding: 0;
+  margin: 0;
 }
-#zurmoExternalWebForm .attributesContainer {
+#zurmoExternalWebForm .float-bar {
   margin: 0;
 }
 #zurmoExternalWebForm .z-button {
