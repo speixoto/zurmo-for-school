@@ -109,16 +109,6 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'userIdOfUserToSendNotificationsAs',
-                                                      'type' => 'UserToSendNotificationFrom'),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
                                                 array('attributeName' => 'aTestToAddress',
                                                       'type' => 'SendATestEmailTo'),
                                             ),

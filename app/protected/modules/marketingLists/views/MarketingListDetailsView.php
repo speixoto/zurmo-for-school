@@ -54,6 +54,7 @@
                                 'htmlOptions'                   => array('class' => 'icon-edit')),
                             array('type'        => 'MarketingListsTogglePortletsLink',
                                 'htmlOptions'                   => array('class' => 'hasCheckboxes'),
+                                'metricsPortletClass'           => MarketingListDetailsAndRelationsView::METRICS_PORTLET_CLASS,
                                 'membersPortletClass'           => MarketingListDetailsAndRelationsView::MEMBERS_PORTLET_CLASS,
                                 'autorespondersPortletClass'    => MarketingListDetailsAndRelationsView::AUTORESPONDERS_PORTLET_CLASS),
                         ),
@@ -75,8 +76,7 @@
             $content                        = $this->renderTitleContent();
             $content                       .= ZurmoHtml::tag('div', array('class' => 'view-toolbar-container clearfix'),
                                                 ZurmoHtml::tag('div', array('class' => 'view-toolbar'),
-                                                                                    $actionElementBarContent)
-                                                );
+                                                                                    $actionElementBarContent));
             return $content;
         }
     }

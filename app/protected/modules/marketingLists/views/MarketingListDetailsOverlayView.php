@@ -34,7 +34,7 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class MarketingListDetailsOverlayView extends DetailsView
+    class MarketingListDetailsOverlayView extends SecuredDetailsView
     {
         const MEMBER_STATS_CLASS         = 'marketing-list-member-stats';
 

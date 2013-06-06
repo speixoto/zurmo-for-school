@@ -53,20 +53,28 @@
             assert('$demoDataHelper->isSetRange("MarketingList")');
 
             $members = array();
+            foreach(MarketingList::getAll() as $marketingList)
+            {
+                foreach(Contact::getAll() as $contact)
+                {
+                    $interval               = mt_rand(1,30) * 86400;
+                    $member                 = new MarketingListMember();
+                    $member->setScenario('importModel');
+                    $member->createdDateTime = DateTimeUtil::convertTimestampToDbFormatDateTime(time() - $interval);
+                    $contact                = $contact;
+                    $marketingList          = $marketingList;
+                    $member->contact        = $contact;
+                    $member->marketingList  = $marketingList;
+                    $this->populateModel($member);
+                    $saved = $member->unrestrictedSave();
+                    assert('$saved');
+                    $members[]              = $member->id;
+                }
+            }
+
             for ($i = 0; $i < $this->resolveQuantityToLoad(); $i++)
             {
-                $member                 = new MarketingListMember();
-                $contact                = $demoDataHelper->getRandomByModelName('Contact');
-                $marketingList          = $demoDataHelper->getRandomByModelName('MarketingList');
-                $member->contact        = $contact;
-                $this->populateModel($member);
-                if (!$marketingList->marketingListMembers->contains($member))
-                {
-                    $marketingList->marketingListMembers->add($member);
-                    $saved = $marketingList->save();
-                    assert('$saved');
-                }
-                $members[]              = $member->id;
+
             }
             $demoDataHelper->setRangeByModelName('MarketingListMember', $members[0], $members[count($members)-1]);
         }
@@ -75,9 +83,7 @@
         {
             assert('$model instanceof MarketingListMember');
             parent::populateModel($model);
-            $randomData             = ZurmoRandomDataUtil::getRandomDataByModuleAndModelClassNames('MarketingListsModule',
-                                                                                                'MarketingListMember');
-            $model->unsubscribed    = RandomDataUtil::getRandomValueFromArray($randomData['unsubscribed']);
+            $model->unsubscribed    = (rand() % 2);
         }
     }
 ?>

@@ -62,9 +62,9 @@
         {
             $metadata = array();
             $metadata['global'] = array(
-                'configureMenuItems' => array(
+                'configureSubMenuItems' => array(
                     array(
-                        'category'         => ZurmoModule::ADMINISTRATION_CATEGORY_GENERAL,
+                        'category'         => ZurmoModule::ADMINISTRATION_CATEGORY_PLUGINS,
                         'titleLabel'       => "eval:Zurmo::t('MapsModule', 'Maps')",
                         'descriptionLabel' => "eval:Zurmo::t('MapsModule', 'Manage Map Configuration')",
                         'route'            => '/maps/default/configurationView',
@@ -83,6 +83,16 @@
         public static function getAccessRight()
         {
             return self::RIGHT_ACCESS_MAPS_ADMINISTRATION;
+        }
+
+        protected static function getSingularModuleLabel($language)
+        {
+            return Zurmo::t('MapsModule', 'Map', array(), null, $language);
+        }
+
+        protected static function getPluralModuleLabel($language)
+        {
+            return Zurmo::t('MapsModule', 'Maps', array(), null, $language);
         }
     }
 ?>

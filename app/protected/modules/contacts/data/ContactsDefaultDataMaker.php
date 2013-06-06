@@ -44,10 +44,10 @@
             ContactsModule::loadStartingData();
 
             $values = array(
-                'Self-Generated',
-                'Inbound Call',
-                'Tradeshow',
-                'Word of Mouth',
+                Zurmo::t('CustomField', 'Self-Generated'),
+                Zurmo::t('CustomField', 'Inbound Call'),
+                Zurmo::t('CustomField', 'Tradeshow'),
+                Zurmo::t('CustomField', 'Word of Mouth'),
             );
             static::makeCustomFieldDataByValuesAndDefault('LeadSources', $values);
         }

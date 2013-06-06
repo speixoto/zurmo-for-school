@@ -100,8 +100,8 @@
             return array(
                 'enableAjaxValidation' => true,
                 'clientOptions' => array(
-                    'beforeValidate'    => 'js:beforeValidateAction',
-                    'afterValidate'     => 'js:afterValidateAjaxAction',
+                    'beforeValidate'    => 'js:$(this).beforeValidateAction',
+                    'afterValidate'     => 'js:$(this).afterValidateAjaxAction',
                     'validateOnSubmit'  => true,
                     'validateOnChange'  => false,
                     'inputContainer'    => 'td',

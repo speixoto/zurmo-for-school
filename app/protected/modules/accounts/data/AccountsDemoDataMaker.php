@@ -77,7 +77,7 @@
 
             $model->name            = $name;
             $model->website         = static::makeUrlByDomainName($domainName);
-            $model->type->value     =  $type;
+            $model->type->value     = $type;
             $model->industry->value = $industry;
             $model->officePhone     = RandomDataUtil::makeRandomPhoneNumber();
             $model->officeFax       = RandomDataUtil::makeRandomPhoneNumber();
@@ -92,6 +92,7 @@
             assert('$model instanceof Account');
             $email = new Email();
             $email->emailAddress = 'info@' . static::makeDomainByName(strval($model));
+            $email->optOut       = false;
             return $email;
         }
     }

@@ -35,7 +35,7 @@
      ********************************************************************************/
 
     /**
-     * Specifically for when showing email templates for workflow
+     * Specifically for when showing marketing lists
      */
     class MarketingListsZeroModelsYetView extends ZeroModelsYetView
     {

@@ -39,7 +39,10 @@
         public function renderGridViewData()
         {
             return array(
-                'name'  => $this->attribute,
+                'name'   => $this->attribute,
+                'value'  => 'CustomFieldDataUtil::getTranslatedLabelByValue($data->' .
+                           $this->attribute . '->data, (string) $data->' . $this->attribute . ', Yii::app()->language)',
+                'type'   => 'raw',
             );
         }
     }

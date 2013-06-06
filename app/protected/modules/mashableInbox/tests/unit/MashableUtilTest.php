@@ -233,44 +233,11 @@
             $this->assertEquals($content, 'subVar1 will be resolved and {testVar2} too');
         }
 
-        public function testgetTimeSinceLatestUpdate()
-        {
-            //30 minutes ago
-            $timeStampLatestUpdate  = DateTimeUtil::convertTimestampToDbFormatDateTime(time() - (30 * 60));
-            $timeSinceLastestUpdate = MashableUtil::getTimeSinceLatestUpdate($timeStampLatestUpdate);
-            $this->assertEquals($timeSinceLastestUpdate, '0 hours ago');
-
-            //58 minutes ago
-            $timeStampLatestUpdate  = DateTimeUtil::convertTimestampToDbFormatDateTime(time() - (58 * 60));
-            $timeSinceLastestUpdate = MashableUtil::getTimeSinceLatestUpdate($timeStampLatestUpdate);
-            $this->assertEquals($timeSinceLastestUpdate, '0 hours ago');
-
-            //61 minutes ago
-            $timeStampLatestUpdate  = DateTimeUtil::convertTimestampToDbFormatDateTime(time() - (61 * 60));
-            $timeSinceLastestUpdate = MashableUtil::getTimeSinceLatestUpdate($timeStampLatestUpdate);
-            $this->assertEquals($timeSinceLastestUpdate, '1 hour ago');
-
-            //3 hours ago
-            $timeStampLatestUpdate  = DateTimeUtil::convertTimestampToDbFormatDateTime(time() - (3 * 60 * 60));
-            $timeSinceLastestUpdate = MashableUtil::getTimeSinceLatestUpdate($timeStampLatestUpdate);
-            $this->assertEquals($timeSinceLastestUpdate, '3 hours ago');
-
-            //27 hours ago
-            $timeStampLatestUpdate  = DateTimeUtil::convertTimestampToDbFormatDateTime(time() - (27 * 60 * 60));
-            $timeSinceLastestUpdate = MashableUtil::getTimeSinceLatestUpdate($timeStampLatestUpdate);
-            $this->assertEquals($timeSinceLastestUpdate, '1 day ago');
-
-            //10 days ago
-            $timeStampLatestUpdate  = DateTimeUtil::convertTimestampToDbFormatDateTime(time() - (10 * 24 * 60 * 60));
-            $timeSinceLastestUpdate = MashableUtil::getTimeSinceLatestUpdate($timeStampLatestUpdate);
-            $this->assertEquals($timeSinceLastestUpdate, '10 days ago');
-        }
-
         public function testMergeMetada()
         {
             $firstMetadata  = null;
             $secondMetadata = null;
-            $mergedMetadata = MashableUtil::mergeMetada($firstMetadata, $secondMetadata);
+            $mergedMetadata = MashableUtil::mergeMetadata($firstMetadata, $secondMetadata);
             $this->assertEquals($mergedMetadata['clauses'],   array());
             $this->assertEquals($mergedMetadata['structure'], null);
 
@@ -279,7 +246,7 @@
                     'structure'     => '1',
             );
             $secondMetadata = null;
-            $mergedMetadata = MashableUtil::mergeMetada($firstMetadata, $secondMetadata);
+            $mergedMetadata = MashableUtil::mergeMetadata($firstMetadata, $secondMetadata);
             $this->assertEquals(array(1 => 'testClause1'), $mergedMetadata['clauses']);
             $this->assertEquals('1', $mergedMetadata['structure']);
 
@@ -288,7 +255,7 @@
                     'clauses'       => array(1 => 'testClause1'),
                     'structure'     => '1',
             );
-            $mergedMetadata = MashableUtil::mergeMetada($firstMetadata, $secondMetadata);
+            $mergedMetadata = MashableUtil::mergeMetadata($firstMetadata, $secondMetadata);
             $this->assertEquals($mergedMetadata['clauses'],   array(1 => 'testClause1'));
             $this->assertEquals($mergedMetadata['structure'], '1');
 
@@ -300,7 +267,7 @@
                     'clauses'       => array(1 => 'testClause1ForSecondMetadata'),
                     'structure'     => '1',
             );
-            $mergedMetadata = MashableUtil::mergeMetada($firstMetadata, $secondMetadata);
+            $mergedMetadata = MashableUtil::mergeMetadata($firstMetadata, $secondMetadata);
             $this->assertEquals(array(1 => 'testClause1',
                                       2 => 'testClause1ForSecondMetadata'),
                                 $mergedMetadata['clauses']);
@@ -319,7 +286,7 @@
                                         ),
                     'structure'     => '1 and 2',
             );
-            $mergedMetadata = MashableUtil::mergeMetada($firstMetadata, $secondMetadata, false);
+            $mergedMetadata = MashableUtil::mergeMetadata($firstMetadata, $secondMetadata, false);
             $this->assertEquals($mergedMetadata['clauses'],   array(1 => 'testClause1',
                                                                     2 => 'testClause2',
                                                                     3 => 'testClause3',
@@ -335,7 +302,7 @@
                     'clauses'       => array(1 => 'testClause1ForSecondMetadata'),
                     'structure'     => '1',
             );
-            $mergedMetadata = MashableUtil::mergeMetada($firstMetadata, $secondMetadata);
+            $mergedMetadata = MashableUtil::mergeMetadata($firstMetadata, $secondMetadata);
             $this->assertEquals(array(1 => 'testClause1',
                                       2 => 'testClause1ForSecondMetadata'),
                                 $mergedMetadata['clauses']);
@@ -352,7 +319,7 @@
                                              4 => 'testClause4ForSecondMetadata'),
                     'structure'     => '((1 and 2) or (3 and 4))',
             );
-            $mergedMetadata = MashableUtil::mergeMetada($firstMetadata, $secondMetadata);
+            $mergedMetadata = MashableUtil::mergeMetadata($firstMetadata, $secondMetadata);
             $this->assertEquals(array(1 => 'testClause1',
                                       2 => 'testClause1ForSecondMetadata',
                                       3 => 'testClause2ForSecondMetadata',

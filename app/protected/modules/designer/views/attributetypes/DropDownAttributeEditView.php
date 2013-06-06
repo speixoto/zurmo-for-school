@@ -124,7 +124,7 @@
                                       'baseLanguage'           => Yii::app()->languageHelper->getBaseLanguage(),
                                       'activeLanguagesData'    => Yii::app()->languageHelper->getActiveLanguagesData(),
                                       'labelsAttributeName'    => 'customFieldDataLabels'));
-            $content .= $element->render();
+            $content .= ZurmoHtml::tag('div', array('class' => 'left-column full-width'), $element->render());
             return $content;
         }
 

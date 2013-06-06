@@ -110,6 +110,16 @@
             $this->uniqueLayoutId = $uniqueLayoutId;
         }
 
+        public function getPortletParams()
+        {
+            return array();
+        }
+
+        public function renderPortletHeadContent()
+        {
+            return null;
+        }
+
         /**
          * @return null
          */
@@ -145,8 +155,13 @@
                                                         array_merge(GetUtil::getData(), array(
                                                             'portletId'      => $this->params['portletId'],
                                                             'uniqueLayoutId' => $this->uniqueLayoutId,
-                                                            'id'             => $this->params['relationModel']->getId(),
+                                                            'id'             => $this->getSavedReportId(),
                                                             'runReport'      => true)));
+        }
+
+        protected function getSavedReportId()
+        {
+            return $this->params['relationModel']->getId();
         }
 
         /**
@@ -157,7 +172,7 @@
         protected function getNonAjaxRedirectUrl()
         {
             return Yii::app()->createUrl('/' . $this->moduleId . '/default/details',
-                                                        array( 'id' => $this->params['relationModel']->getId()));
+                                                        array( 'id' => $this->getSavedReportId()));
         }
 
         /**
@@ -165,17 +180,30 @@
          */
         protected function renderRefreshLink()
         {
-            $containerId = get_class($this);
+            $containerId = $this->getRefreshLinkContainerId();
             return ZurmoHtml::ajaxLink('refresh', $this->getPortletDetailsUrl(), array(
                     'type'   => 'GET',
                     'beforeSend' => 'function ( xhr ) {jQuery("#' . $containerId .
-                                    '").html("");makeLargeLoadingSpinner(true, "#' . $containerId . '");}',
-                    'update' => '#' . get_class($this)),
-                    array('id'        => 'refreshPortletLink-' . get_class($this),
+                                    '").html("");$(this).makeLargeLoadingSpinner(true, "#' . $containerId . '");}',
+                    'success' => 'js:function(data)
+                    {
+                        $("#' . $containerId . '").parent().html(data);
+                    }'),
+                    array('id'        => $this->getRefreshLinkId(),
                           'class'     => 'refreshPortletLink',
                           'style'     => "display:none;",
                           'live'      => true,
                           'namespace' => 'refresh'));
+        }
+
+        protected function getRefreshLinkContainerId()
+        {
+            return get_class($this);
+        }
+
+        protected function getRefreshLinkId()
+        {
+            return 'refreshPortletLink-' . $this->getRefreshLinkContainerId();
         }
     }
 ?>

@@ -39,12 +39,14 @@
         public function actionDelete($id)
         {
             $member = MarketingListMember::GetById(intval($id));
+            ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($member->marketingList);
             $member->delete();
         }
 
         public function actionToggleUnsubscribed($id)
         {
             $member = MarketingListMember::GetById(intval($id));
+            ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($member->marketingList);
             $member->unsubscribed = (bool)(!$member->unsubscribed);
             if (!$member->unrestrictedSave())
             {
@@ -54,6 +56,8 @@
 
         public function actionCountMembers($marketingListId)
         {
+            $marketingList  = MarketingList::getById($marketingListId);
+            ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($marketingList);
             $countArray = array(
                             'subscriberCount' => MarketingListMember::getCountByMarketingListIdAndUnsubscribed($marketingListId, false),
                             'unsubscriberCount' => MarketingListMember::getCountByMarketingListIdAndUnsubscribed($marketingListId, true)
@@ -69,7 +73,11 @@
             {
                 throw new NotSupportedException();
             }
-            $contactIds =  ($type === 'contact') ? array($id) : SavedReport::getContactIdsByReportId($id);
+            $contactIds = array($id);
+            if  ($type === 'report')
+            {
+                $contactIds = SavedReport::getContactIdsByReportId($id);
+            }
             $subscriberInformation = $this->addNewSubscribers($marketingListId, $contactIds);
             $message = Zurmo::t('MarketingListsModule', '{subscribedCount} subscribed.',
                                                 array('{subscribedCount}' => $subscriberInformation['subscribedCount']));
@@ -85,6 +93,7 @@
         {
             $subscriberInformation = array('subscribedCount' => 0, 'skippedCount' => 0);
             $marketingList         = MarketingList::getById($marketingListId);
+            ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($marketingList);
             foreach ($contactIds as $contactId)
             {
                 if ($marketingList->addNewMember($contactId, false))

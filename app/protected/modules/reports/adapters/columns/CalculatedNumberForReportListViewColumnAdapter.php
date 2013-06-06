@@ -43,7 +43,7 @@
             $metadata          = CalculatedDerivedAttributeMetadata::
                                  getByNameAndModelClassName($displayAttributes[$displayAttributeKey]->getResolvedAttribute(),
                                  $displayAttributes[$displayAttributeKey]->getResolvedAttributeModelClassName());
-            return CalculatedNumberUtil::calculateByFormulaAndModel($metadata->getFormula(), $data->getModel($attribute));
+            return CalculatedNumberUtil::calculateByFormulaAndModelAndResolveFormat($metadata->getFormula(), $data->getModel($attribute));
         }
 
         /**

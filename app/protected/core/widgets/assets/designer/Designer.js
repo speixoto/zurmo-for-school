@@ -530,7 +530,7 @@ var designer = {
     },
     updateFlashBarAfterSaveLayout : function(data, flashBarId)
     {
-        // TODO: @Shoaibi/@Jason: Medium: Port this to a global scope and get rid of MarketingListMemberSelectAutoCompleteBaseElement:123 , LoginPageView:registerUpdateFlashBarScript()
+        // TODO: @Shoaibi/@Jason: Medium: Port this to a global scope and get rid of MarketingListMemberSelectAutoCompleteBaseElement:123 , LoginPageView:registerUpdateFlashBarScript(), ContactEmailTemplateNamesDropDownElement:158
         $('#' + flashBarId).jnotifyAddMessage(
         {
             text: data.message,

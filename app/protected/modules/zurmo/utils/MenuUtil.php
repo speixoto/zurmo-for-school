@@ -161,7 +161,7 @@
                     $tabMenuItems[$item['moduleId']] = $item;
                 }
             }
-            foreach($tabMenuItems as $key => $menuItem)
+            foreach ($tabMenuItems as $key => $menuItem)
             {
                 if (!is_array($menuItem))
                 {

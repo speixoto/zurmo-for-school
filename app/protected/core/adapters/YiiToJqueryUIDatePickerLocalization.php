@@ -51,6 +51,10 @@
             {
                 return;
             }
+            if ($language == 'nb')
+            {
+                return 'no';
+            }
             return $language;
         }
 
@@ -79,13 +83,16 @@
                     return 'dd/mm/yy';
                 case 'yy-M-d':      //zh_cn format
                     return 'y-m-dd';
-                case 'yy/MM/dd':    //ja format
-                case 'yyyy/MM/dd':  //new ja format of Yii 1.11
+                case 'yy/MM/dd':    //ja(old), az, tg, uz format
                     return 'y/mm/dd';
+                case 'yyyy/MM/dd':  //ja(new), si, en_za format
+                    return 'yy/mm/dd';
                 case 'dd-MM-yy':    //nl format
                         return 'dd-mm-y';
                 case 'd/MM/yy':     //en_au format
                         return 'd/mm/y';
+                case 'dd.MM.yyyy':  //tr format
+                        return 'dd.mm.yy';
                 default :
                     throw new NotImplementedException();
             }
@@ -108,6 +115,8 @@
                     return 'h:mm';
                 case 'ah:mm':       //zh_cn format
                     return 'tth:mm';
+                case 'HH.mm':       //da format
+                    return 'hh.mm';
                 default :
                     throw new NotImplementedException();
             }

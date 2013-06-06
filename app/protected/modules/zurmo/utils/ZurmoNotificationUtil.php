@@ -135,7 +135,7 @@
                                         {
                                             unreadMashableInbox = data.unreadMashableInbox;
                                             mashableInboxPlacer.html(unreadMashableInbox);
-                                            if($('#MashableInboxActionBarForViews').length)
+                                            if ($('#MashableInboxActionBarForViews').length)
                                             {
                                                 location.reload();
                                             }

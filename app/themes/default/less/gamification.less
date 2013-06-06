@@ -410,6 +410,13 @@
 	}
 }
 
+.game-badge-CreateCampaign,
+.CreateCampaign{
+	.badge-icon:before{
+		content: '\002C';
+	}
+}
+
 .game-badge-CreateMarketingList,
 .CreateMarketingList,
 .game-badge-EditMarketingList,
@@ -449,6 +456,31 @@
 .EarlyBird{
 	.badge-icon:before{
 		content: "#";
+	}
+}
+
+.game-badge-SearchProducts,
+.SearchProducts,
+.game-badge-CreateProduct,
+.CreateProduct{
+	.badge-icon:before {
+		content: '\003E';
+	}
+}
+
+.game-badge-CreateProductTemplate,
+.CreateProductTemplate{
+	.badge-icon:before {
+		content: '\00AC';
+	}
+}
+
+.game-badge-SearchProductTemplates,
+.SearchProductTemplates,
+.game-badge-CreateProductCategory,
+.CreateProductCategory{
+	.badge-icon:before {
+		content: '\00D7';
 	}
 }
 
@@ -659,6 +691,7 @@ a.close-ModalGameNotification.simple-link{
 }
 
 #UserDetailsView{
+	padding: 0 20px 20px 0;
     .details-table{
         .clearfix() !important;
         position: relative !important;

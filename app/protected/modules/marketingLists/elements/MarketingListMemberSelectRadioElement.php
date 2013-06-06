@@ -83,7 +83,14 @@
                     var hideBoxId           = selectReportBoxId;
                     var showBoxId           = selectContactBoxId;
                     var radioButtonIdSuffix = window.selectContactOrReportRadioButtonSuffix;
-                    var radioButtonIdSuffix = (radioButtonIdSuffix === undefined) ? 0 : radioButtonIdSuffix;
+                    if (radioButtonIdSuffix === undefined)
+                    {
+                        var radioButtonIdSuffix = 0;
+                    }
+                    else
+                    {
+                        var radioButtonIdSuffix = radioButtonIdSuffix;
+                    }
                     var radioButtonId       = "#' . $this->getEditableInputId() . '_" + radioButtonIdSuffix;
                     if ($(radioButtonId).attr("checked") !== "checked")
                     {
@@ -116,8 +123,10 @@
         protected function getArray()
         {
             $data = array(
-                        Zurmo::t('MarketingListsModule', 'From Contacts/Leads'),
-                        Zurmo::t('MarketingListsModule', 'From a Report'),
+                        Zurmo::t('MarketingListsModule', 'From ContactsModulePluralLabel/LeadsModulePluralLabel',
+                                                                        LabelUtil::getTranslationParamsForAllModules()),
+                        Zurmo::t('MarketingListsModule', 'From ReportsModuleSingularLabel',
+                                                                        LabelUtil::getTranslationParamsForAllModules()),
                     );
             return $data;
         }

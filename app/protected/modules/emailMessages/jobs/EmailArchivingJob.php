@@ -67,7 +67,7 @@
         */
         public static function getRunTimeThresholdInSeconds()
         {
-            return 30;
+            return 300;
         }
 
         /**

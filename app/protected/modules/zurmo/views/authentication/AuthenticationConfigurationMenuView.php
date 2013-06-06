@@ -44,24 +44,24 @@
         protected function getCategoryData()
         {
             $categories = array();
-            $module = new ZurmoModule('ZurmoModule', false);
-            $moduleSubMenuItems = MenuUtil::getAccessibleConfigureSubMenuByCurrentUser('ZurmoModule');
-            if ($module->isEnabled() && count($moduleSubMenuItems) > 0)
+            $modules = Module::getModuleObjects();
+            foreach ($modules as $module)
             {
-                foreach ($moduleSubMenuItems as $subMenuItem)
-                    {
-                        if (!empty($subMenuItem['category']))
+                $moduleSubMenuItems = MenuUtil::getAccessibleConfigureSubMenuByCurrentUser(get_class($module));
+                if ($module->isEnabled() && count($moduleSubMenuItems) > 0)
+                {
+                    foreach ($moduleSubMenuItems as $subMenuItem)
                         {
-                            assert('isset($subMenuItem["titleLabel"])');
-                            assert('isset($subMenuItem["descriptionLabel"])');
-                            assert('isset($subMenuItem["route"])');
-                            $categories[$subMenuItem['category']][] = $subMenuItem;
+                            if (!empty($subMenuItem['category']) &&
+                                $subMenuItem['category'] == ZurmoModule::ADMINISTRATION_CATEGORY_AUTHENTICATION)
+                            {
+                                assert('isset($subMenuItem["titleLabel"])');
+                                assert('isset($subMenuItem["descriptionLabel"])');
+                                assert('isset($subMenuItem["route"])');
+                                $categories[$subMenuItem['category']][] = $subMenuItem;
+                            }
                         }
-                        else
-                        {
-                            throw new NotSupportedException();
-                        }
-                    }
+                }
             }
             return $categories;
         }

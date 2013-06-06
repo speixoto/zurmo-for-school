@@ -106,7 +106,6 @@
                         $realAttributeName = static::resolveRealAttributeName($resolvedAttribute);
                         $attributes[$resolvedAttribute] = array('label' => $this->model->getAttributeLabel($realAttributeName));
                     }
-
                 }
             }
             foreach ($existingDisplayAttributes as $displayAttribute)

@@ -57,6 +57,21 @@
             return array_combine($dropDownArray, $labelsArray);
         }
 
+        public static function getTranslatedLabelByValue(CustomFieldData $customFieldData, $value, $language)
+        {
+            assert('is_string($value)');
+            assert('is_string($language)');
+            if ($customFieldData->serializedLabels != null)
+            {
+                $data   = self::getDataIndexedByDataAndTranslatedLabelsByLanguage($customFieldData, $language);
+                if (isset($data[$value]))
+                {
+                    return $data[$value];
+                }
+            }
+            return $value;
+        }
+
         /**
          * Given an array of data names, a language, and an array of custom labels make an array of data names paired
          * with their labels.  If a custom label is available then utilize that for each data name, otherwise fallback
@@ -82,7 +97,7 @@
                 }
                 else
                 {
-                    $labels[] = Zurmo::t('Core', $dataName, array(), null, $language);
+                    $labels[] = Zurmo::t('CustomField', $dataName, array(), null, $language);
                 }
             }
             return $labels;

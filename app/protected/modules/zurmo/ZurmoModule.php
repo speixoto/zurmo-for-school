@@ -38,6 +38,10 @@
     {
         const ADMINISTRATION_CATEGORY_GENERAL = 1;
 
+        const ADMINISTRATION_CATEGORY_AUTHENTICATION = 2;
+
+        const ADMINISTRATION_CATEGORY_PLUGINS = 3;
+
         const RIGHT_ACCESS_ADMINISTRATION         = 'Access Administration Tab';
         const RIGHT_BULK_WRITE                    = 'Mass Update';
         const RIGHT_ACCESS_GLOBAL_CONFIGURATION   = 'Access Global Configuration';
@@ -122,6 +126,13 @@
                         'route'            => '/zurmo/authentication/configurationEdit',
                         'right'            => self::RIGHT_ACCESS_GLOBAL_CONFIGURATION,
                     ),
+                    array(
+                        'category'         => ZurmoModule::ADMINISTRATION_CATEGORY_GENERAL,
+                        'titleLabel'       => "eval:Zurmo::t('ZurmoModule', 'Plugins')",
+                        'descriptionLabel' => "eval:Zurmo::t('ZurmoModule', 'Manage Plugins and Integrations')",
+                        'route'            => '/zurmo/plugins/configurationEdit',
+                        'right'            => self::RIGHT_ACCESS_GLOBAL_CONFIGURATION,
+                    ),
                 ),
                 'headerMenuItems' => array(
                     array(
@@ -146,7 +157,7 @@
                 ),
                 'configureSubMenuItems' => array(
                     array(
-                        'category'         => self::ADMINISTRATION_CATEGORY_GENERAL,
+                        'category'         => self::ADMINISTRATION_CATEGORY_AUTHENTICATION,
                         'titleLabel'       => "eval:Zurmo::t('ZurmoModule', 'LDAP Configuration')",
                         'descriptionLabel' => "eval:Zurmo::t('ZurmoModule', 'Manage LDAP Authentication')",
                         'route'            => '/zurmo/ldap/configurationEditLdap',
@@ -162,6 +173,7 @@
                     'users',
                     'roles',
                     'workflows',
+                    'contactWebForms',
                 ),
                 'tabMenuItemsModuleOrdering' => array(
                     'home',
@@ -172,6 +184,7 @@
                     'opportunities',
                     'marketing',
                     'reports',
+                    'products',
                 )
             );
             return $metadata;

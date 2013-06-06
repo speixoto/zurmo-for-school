@@ -92,6 +92,13 @@
         protected $displayLabel;
 
         /**
+         * Text and TextArea attributes for example since you can have merge tags as these attribute values
+         * that need to get overridden
+         * @var bool
+         */
+        protected $shouldResolveValueForMergeTags = false;
+
+        /**
          * @return string - If the class name is BooleanWorkflowActionAttributeForm,
          * then 'Boolean' will be returned.
          */
@@ -100,6 +107,15 @@
             $type = get_called_class();
             $type = substr($type, 0, strlen($type) - strlen('WorkflowActionAttributeForm'));
             return $type;
+        }
+
+        /**
+         * Return true if the actionAttribute should resolve value before save.  If false, it will resolve value afterSave
+         * @return bool
+         */
+        public static function resolveValueBeforeSave()
+        {
+            return true;
         }
 
         /**
@@ -231,7 +247,12 @@
             assert('is_string($attribute)');
             if ($this->type == WorkflowActionAttributeForm::TYPE_STATIC)
             {
-                $adapter->getModel()->{$attribute} = $this->value;
+                $value = $this->value;
+                if ($this->shouldResolveValueForMergeTags)
+                {
+                    $value = $this->resolveValueForMergeTags($value, $adapter);
+                }
+                $adapter->getModel()->{$attribute} = $value;
             }
             elseif ($this->type == WorkflowActionAttributeForm::TYPE_STATIC_NULL)
             {
@@ -241,6 +262,40 @@
             {
                 throw new NotSupportedException();
             }
+        }
+
+        public function shouldSetNullAlternativeValue()
+        {
+            return false;
+        }
+
+        /**
+         * In the event that the value is not being set, sometimes an attribute still requires an alternative to null.
+         * An example is boolean where the default value should be 0 not NULL. Same is true with dateTime, and date
+         * where the default values should be 0000-00-00 00:00:00 and 0000-00-00 respectively.
+         * @param WorkflowActionProcessingModelAdapter $adapter
+         * @param $attribute
+         * @throws NotSupportedException
+         */
+        public function resolveNullAlternativeValueAndSetToModel(WorkflowActionProcessingModelAdapter $adapter, $attribute)
+        {
+            assert('is_string($attribute)');
+            if ($this->shouldSetValue || !$this->shouldSetNullAlternativeValue())
+            {
+                throw new NotSupportedException();
+            }
+        }
+
+        protected function resolveValueForMergeTags($value, WorkflowActionProcessingModelAdapter $adapter)
+        {
+            $mergeTagsUtil = MergeTagsUtilFactory::make(EmailTemplate::TYPE_WORKFLOW,
+                             Yii::app()->languageHelper->getByUser($adapter->getTriggeredByUser()),
+                             $value);
+            if (false === $resolvedValue  = $mergeTagsUtil->resolveMergeTags($adapter->getTriggeredModel()))
+            {
+                return $value;
+            }
+            return $resolvedValue;
         }
     }
 ?>

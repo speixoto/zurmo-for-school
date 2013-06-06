@@ -67,8 +67,18 @@
         {
             $parentAjaxOptions = parent::getAjaxOptions();
             $modalViewAjaxOptions = ModalView::getAjaxOptionsForModalLink($this->getDefaultLabel());
-            $this->params['ajaxOptions'] = (isset($this->params['ajaxOptions'])) ? $this->params['ajaxOptions'] : array();
+            if (!isset($this->params['ajaxOptions']))
+            {
+                $this->params['ajaxOptions'] = array();
+            }
             return CMap::mergeArray($parentAjaxOptions, $modalViewAjaxOptions, $this->params['ajaxOptions']);
+        }
+
+        protected function getHtmlOptions()
+        {
+            $htmlOptionsInParams = parent::getHtmlOptions();
+            $defaultHtmlOptions  = array('id' => 'mergetag-guide', 'class' => 'simple-link');
+            return CMap::mergeArray($defaultHtmlOptions, $htmlOptionsInParams);
         }
 
         protected function registerScript()

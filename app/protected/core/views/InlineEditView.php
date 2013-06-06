@@ -88,8 +88,8 @@
                     'clientOptions' => array(
                         'validateOnSubmit'  => true,
                         'validateOnChange'  => false,
-                        'beforeValidate'    => 'js:beforeValidateAction',
-                        'afterValidate'     => 'js:afterValidateAjaxAction',
+                        'beforeValidate'    => 'js:$(this).beforeValidateAction',
+                        'afterValidate'     => 'js:$(this).afterValidateAjaxAction',
                         'afterValidateAjax' => $afterValidateAjax,
                     ),
                 )
@@ -114,13 +114,26 @@
             }
             $formEnd = $clipWidget->renderEndWidget();
             $content .= $formEnd;
+            $content .= $this->renderModalContainer();
             $content .= '</div>';
             return $content;
         }
 
         public function getFormName()
         {
+            return self::getFormId();
+        }
+
+        protected static function getFormId()
+        {
             return "inline-edit-form";
+        }
+
+        protected function renderModalContainer()
+        {
+            return ZurmoHtml::tag('div', array(
+                        'id' => ModelElement::MODAL_CONTAINER_PREFIX . '-' . $this->getFormName()
+                   ), '');
         }
 
         protected function renderConfigSaveAjax($formName)

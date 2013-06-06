@@ -59,8 +59,13 @@
                 $marketingList              = new MarketingList();
                 $marketingList->owner       = $demoDataHelper->getRandomByModelName('User');
                 $this->populateModel($marketingList);
+                $marketingList->addPermissions(Group::getByName(Group::EVERYONE_GROUP_NAME), Permission::READ_WRITE_CHANGE_PERMISSIONS_CHANGE_OWNER);
                 $saved                      = $marketingList->save();
                 assert('$saved');
+                $marketingList = MarketingList::getById($marketingList->id);
+                ReadPermissionsOptimizationUtil::
+                    securableItemGivenPermissionsForGroup($marketingList, Group::getByName(Group::EVERYONE_GROUP_NAME));
+                $marketingList->save();
                 $marketingLists[]           = $marketingList->id;
             }
             $demoDataHelper->setRangeByModelName('MarketingList', $marketingLists[0], $marketingLists[count($marketingLists)-1]);
@@ -75,10 +80,11 @@
                 $this->seedData =  ZurmoRandomDataUtil::getRandomDataByModuleAndModelClassNames('MarketingListsModule',
                                                                                                 'MarketingList');
             }
-            $model->name        = $this->seedData['name'][$this->index];
-            $model->description = $this->seedData['description'][$this->index];
-            $model->fromName    = $this->seedData['fromName'][$this->index];
-            $model->fromAddress = $this->seedData['fromAddress'][$this->index];
+            $model->name                = $this->seedData['name'][$this->index];
+            $model->description         = $this->seedData['description'][$this->index];
+            $model->fromName            = $this->seedData['fromName'][$this->index];
+            $model->fromAddress         = $this->seedData['fromAddress'][$this->index];
+            $model->anyoneCanSubscribe    = (rand(10, 20) %2);
         }
     }
 ?>

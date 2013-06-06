@@ -44,13 +44,13 @@
             switch($this->trigger->getOperator())
             {
                 case OperatorRules::TYPE_EQUALS:
-                    if ($model->{$attribute}->id === $this->trigger->value)
+                    if ((int)$model->{$attribute}->id === (int)$this->trigger->value)
                     {
                         return true;
                     }
                     break;
                 case OperatorRules::TYPE_DOES_NOT_EQUAL:
-                    if ($model->{$attribute}->id !== $this->trigger->value)
+                    if ((int)$model->{$attribute}->id !== (int)$this->trigger->value)
                     {
                         return true;
                     }
@@ -79,15 +79,15 @@
                     break;
                 case OperatorRules::TYPE_BECOMES:
                     if (array_key_exists($attribute, $model->originalAttributeValues) &&
-                        $model->{$attribute}->id === $this->trigger->value)
+                        (int)$model->{$attribute}->id === (int)$this->trigger->value)
                     {
                         return true;
                     }
                     break;
                 case OperatorRules::TYPE_WAS:
                     if (array_key_exists($attribute, $model->originalAttributeValues) &&
-                        $model->originalAttributeValues[$attribute][1] ===
-                        $this->trigger->value)
+                        (int)$model->originalAttributeValues[$attribute][1] ===
+                        (int)$this->trigger->value)
                     {
                         return true;
                     }

@@ -163,6 +163,14 @@
         }
 
         /**
+         * @return string
+         */
+        public function getModelClassName()
+        {
+            return $this->_modelClassName;
+        }
+
+        /**
          * @return array
          */
         public function rules()

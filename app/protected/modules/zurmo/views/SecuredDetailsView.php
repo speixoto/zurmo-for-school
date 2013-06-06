@@ -60,5 +60,14 @@
             }
             return ActionSecurityUtil::canCurrentUserPerformAction($element->getActionType(), $this->model);
         }
+
+        protected function renderAfterFormLayoutForDetailsContent()
+        {
+            $content                            = parent::renderAfterFormLayoutForDetailsContent();
+            $ownedSecurableItemDetailsContent   = OwnedSecurableItemDetailsViewUtil::renderAfterFormLayoutForDetailsContent(
+                $this->getModel(),
+                $content);
+            return $ownedSecurableItemDetailsContent;
+        }
     }
 ?>

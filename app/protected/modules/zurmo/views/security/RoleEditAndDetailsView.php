@@ -86,6 +86,30 @@
             return $metadata;
         }
 
+        /**
+         * Override to check for delete rights
+         * Checks for $elementInformation['resolveToDisplay'] to be present and if it is,
+         * will run the resolveName as a function on the group model.
+         * @param $element
+         * @param $elementInformation
+         * @return bool
+         */
+        protected function shouldRenderToolBarElement($element, $elementInformation)
+        {
+            assert('$element instanceof ActionElement');
+            assert('is_array($elementInformation)');
+            if (!parent::shouldRenderToolBarElement($element, $elementInformation))
+            {
+                return false;
+            }
+            $actionType = $element->getActionType();
+            if ($actionType == null || $actionType != 'Delete')
+            {
+                return true;
+            }
+            return RightsUtil::doesUserHaveAllowByRightName('RolesModule', $actionType, Yii::app()->user->userModel);
+        }
+
         protected function getNewModelTitleLabel()
         {
             return Zurmo::t('ZurmoModule', 'Create Role');

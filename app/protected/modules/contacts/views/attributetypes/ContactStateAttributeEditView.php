@@ -116,17 +116,13 @@
 
         protected function renderAfterFormLayout($form)
         {
-            $titleBar = new TitleBarView (Zurmo::t('ContactsModule', 'Contact Statuses'));
-            $content  = $titleBar->render();
-            $content .= '<div class="horizontal-line"></div>' . "\n";
-            $content .= '<div>' . "\n";
+            $content  = ZurmoHtml::tag('h3', array(), Zurmo::t('ContactsModule', 'Contact Statuses'));
             $element  = new EditableDropDownCollectionElement($this->model, 'contactStatesData', $form,
                                 array('specificValueFromDropDownAttributeName' => 'startingStateOrder',
                                       'baseLanguage'           => Yii::app()->languageHelper->getBaseLanguage(),
                                       'activeLanguagesData'    => Yii::app()->languageHelper->getActiveLanguagesData(),
                                       'labelsAttributeName'    => 'contactStatesLabels'));
-            $content .= $element->render();
-            $content .= '</div>' . "\n";
+            $content .= ZurmoHtml::tag('div', array('class' => 'left-column full-width'), $element->render());
             return $content;
         }
     }

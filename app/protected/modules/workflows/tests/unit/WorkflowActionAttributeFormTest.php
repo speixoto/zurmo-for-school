@@ -41,89 +41,119 @@
             $form            = new CheckBoxWorkflowActionAttributeForm('WorkflowModelTestItem', 'boolean');
             $valuesAndLabels = $form->getTypeValuesAndLabels(true, true);
             $this->assertEquals(1, count($valuesAndLabels));
+            $this->assertTrue($form->resolveValueBeforeSave());
 
             $form        = new CurrencyValueWorkflowActionAttributeForm('WorkflowModelTestItem', 'currencyValue');
             $valuesAndLabels = $form->getTypeValuesAndLabels(true, true);
             $this->assertEquals(1, count($valuesAndLabels));
+            $this->assertTrue($form->resolveValueBeforeSave());
 
             $form            = new DateWorkflowActionAttributeForm('WorkflowModelTestItem', 'date');
             $valuesAndLabels = $form->getTypeValuesAndLabels(true, true);
             $this->assertEquals(2, count($valuesAndLabels));
             $valuesAndLabels = $form->getTypeValuesAndLabels(false, true);
             $this->assertEquals(3, count($valuesAndLabels));
+            $this->assertTrue($form->resolveValueBeforeSave());
 
             $form            = new DateTimeWorkflowActionAttributeForm('WorkflowModelTestItem', 'dateTime');
             $valuesAndLabels = $form->getTypeValuesAndLabels(true, true);
             $this->assertEquals(2, count($valuesAndLabels));
             $valuesAndLabels = $form->getTypeValuesAndLabels(false, true);
             $this->assertEquals(3, count($valuesAndLabels));
+            $this->assertTrue($form->resolveValueBeforeSave());
 
             $form        = new DecimalWorkflowActionAttributeForm('WorkflowModelTestItem', 'float');
             $valuesAndLabels = $form->getTypeValuesAndLabels(true, true);
             $this->assertEquals(1, count($valuesAndLabels));
+            $this->assertTrue($form->resolveValueBeforeSave());
 
             $form        = new DropDownWorkflowActionAttributeForm('WorkflowModelTestItem', 'dropDowns');
             $valuesAndLabels = $form->getTypeValuesAndLabels(true, true);
             $this->assertEquals(1, count($valuesAndLabels));
             $valuesAndLabels = $form->getTypeValuesAndLabels(false, true);
             $this->assertEquals(2, count($valuesAndLabels));
+            $this->assertTrue($form->resolveValueBeforeSave());
 
             $form        = new EmailWorkflowActionAttributeForm('WorkflowModelTestItem', 'email');
             $valuesAndLabels = $form->getTypeValuesAndLabels(true, true);
             $this->assertEquals(1, count($valuesAndLabels));
             $valuesAndLabels = $form->getTypeValuesAndLabels(true, false);
             $this->assertEquals(2, count($valuesAndLabels));
+            $this->assertTrue($form->resolveValueBeforeSave());
 
             $form        = new IntegerWorkflowActionAttributeForm('WorkflowModelTestItem', 'integer');
             $valuesAndLabels = $form->getTypeValuesAndLabels(true, true);
             $this->assertEquals(1, count($valuesAndLabels));
+            $this->assertTrue($form->resolveValueBeforeSave());
 
             $form        = new ContactStateWorkflowActionAttributeForm('WorkflowModelTestItem', 'likeContactState');
             $valuesAndLabels = $form->getTypeValuesAndLabels(true, true);
             $this->assertEquals(1, count($valuesAndLabels));
+            $this->assertTrue($form->resolveValueBeforeSave());
 
             $form        = new MultiSelectDropDownWorkflowActionAttributeForm('WorkflowModelTestItem', 'multiDropDown');
             $valuesAndLabels = $form->getTypeValuesAndLabels(true, true);
             $this->assertEquals(1, count($valuesAndLabels));
+            $this->assertTrue($form->resolveValueBeforeSave());
 
             $form        = new PhoneWorkflowActionAttributeForm('WorkflowModelTestItem', 'phone');
             $valuesAndLabels = $form->getTypeValuesAndLabels(true, true);
             $this->assertEquals(1, count($valuesAndLabels));
             $valuesAndLabels = $form->getTypeValuesAndLabels(true, false);
             $this->assertEquals(2, count($valuesAndLabels));
+            $this->assertTrue($form->resolveValueBeforeSave());
 
             $form        = new RadioDropDownWorkflowActionAttributeForm('WorkflowModelTestItem', 'radioDropDown');
             $valuesAndLabels = $form->getTypeValuesAndLabels(true, true);
             $this->assertEquals(1, count($valuesAndLabels));
             $valuesAndLabels = $form->getTypeValuesAndLabels(false, true);
             $this->assertEquals(2, count($valuesAndLabels));
+            $this->assertTrue($form->resolveValueBeforeSave());
 
             $form        = new TagCloudWorkflowActionAttributeForm('WorkflowModelTestItem', 'tagCloud');
             $valuesAndLabels = $form->getTypeValuesAndLabels(true, true);
             $this->assertEquals(1, count($valuesAndLabels));
+            $this->assertTrue($form->resolveValueBeforeSave());
 
             $form        = new TextWorkflowActionAttributeForm('WorkflowModelTestItem', 'text');
             $valuesAndLabels = $form->getTypeValuesAndLabels(true, true);
             $this->assertEquals(1, count($valuesAndLabels));
             $valuesAndLabels = $form->getTypeValuesAndLabels(true, false);
             $this->assertEquals(2, count($valuesAndLabels));
+            $this->assertTrue($form->resolveValueBeforeSave());
 
             $form        = new TextAreaWorkflowActionAttributeForm('WorkflowModelTestItem', 'textArea');
             $valuesAndLabels = $form->getTypeValuesAndLabels(true, true);
             $this->assertEquals(1, count($valuesAndLabels));
             $valuesAndLabels = $form->getTypeValuesAndLabels(true, false);
             $this->assertEquals(2, count($valuesAndLabels));
+            $this->assertTrue($form->resolveValueBeforeSave());
 
             $form        = new UrlWorkflowActionAttributeForm('WorkflowModelTestItem', 'url');
             $valuesAndLabels = $form->getTypeValuesAndLabels(true, true);
             $this->assertEquals(1, count($valuesAndLabels));
             $valuesAndLabels = $form->getTypeValuesAndLabels(true, false);
             $this->assertEquals(2, count($valuesAndLabels));
+            $this->assertTrue($form->resolveValueBeforeSave());
 
             $form        = new UserWorkflowActionAttributeForm('WorkflowModelTestItem', 'user');
             $valuesAndLabels = $form->getTypeValuesAndLabels(true, true);
             $this->assertEquals(2, count($valuesAndLabels));
             $valuesAndLabels = $form->getTypeValuesAndLabels(false, true);
+            $this->assertEquals(4, count($valuesAndLabels));
+            $this->assertTrue($form->resolveValueBeforeSave());
+
+            $form            = new ExplicitReadWriteModelPermissionsWorkflowActionAttributeForm('WorkflowModelTestItem', 'permissions');
+            $valuesAndLabels = $form->getTypeValuesAndLabels(true, true);
+            $this->assertEquals(3, count($valuesAndLabels));
+            $this->assertFalse($form->resolveValueBeforeSave());
+
+            //Make new group and confirm it shows up
+            $group = new Group();
+            $group->name = 'test';
+            $this->assertTrue($group->save());
+            $form            = new ExplicitReadWriteModelPermissionsWorkflowActionAttributeForm('WorkflowModelTestItem', 'permissions');
+            $valuesAndLabels = $form->getTypeValuesAndLabels(true, true);
             $this->assertEquals(4, count($valuesAndLabels));
         }
 

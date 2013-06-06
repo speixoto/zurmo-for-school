@@ -115,7 +115,7 @@
             }
             $formEnd = $clipWidget->renderEndWidget();
             $content .= $formEnd;
-
+            $content .= $this->renderModalContainer();
             $content .= '</div></div>';
             return $content;
         }
@@ -151,6 +151,11 @@
         protected function renderAfterFormLayout($form)
         {
             DropDownUtil::registerScripts();
+        }
+
+        protected function renderModalContainer()
+        {
+            return ZurmoHtml::tag('div', array('id' => ModelElement::MODAL_CONTAINER_PREFIX . '-' . $this->getFormId()), '');
         }
 
         protected function resolveActiveFormAjaxValidationOptions()
@@ -198,7 +203,7 @@
 
         protected function resolveFormHtmlOptions()
         {
-            $data = array('onSubmit' => 'js:return attachLoadingOnSubmit("' . static::getFormId() . '")');
+            $data = array('onSubmit' => 'js:return $(this).attachLoadingOnSubmit("' . static::getFormId() . '")');
             if ($this->viewContainsFileUploadElement)
             {
                 $data['enctype'] = 'multipart/form-data';

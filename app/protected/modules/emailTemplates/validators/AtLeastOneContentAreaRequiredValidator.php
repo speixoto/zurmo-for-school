@@ -43,29 +43,26 @@
         /**
          * Validates the attribute of the model.
          * If there is any error, the error message is added to the model.
-         * @param RedBeanModel $model the model being validated
+         * @param RedBeanModel $object the model being validated
          * @param string $attribute the attribute being validated
+         * @return boolean true if validation passes
          */
         protected function validateAttribute($object, $attribute)
         {
             $textContent = $this->textContentPropertyName;
             $htmlContent = $this->htmlContentPropertyName;
-            if ((empty($object->$textContent) && empty($object->$htmlContent)))
+            // $attribute == $textContent so we don't add duplicate error message.
+            if ((empty($object->$textContent) && empty($object->$htmlContent)) && ($attribute == $textContent))
             {
-                // ensure we don't add a duplicate error message.
-                if ($attribute == $textContent || !$object->hasErrors())
+                if ($this->message !== null)
                 {
-                    if ($this->message !== null)
-                    {
-                        $message = $this->message;
-                    }
-                    else
-                    {
-                        $message = Zurmo::t('EmailTemplatesModule', 'Please provide at least one of the contents field.');
-                    }
-                    $this->addError($object, $attribute, $message);
+                    $message = $this->message;
                 }
-                return false;
+                else
+                {
+                    $message = Zurmo::t('EmailTemplatesModule', 'Please provide at least one of the contents field.');
+                }
+                $this->addError($object, $attribute, $message);
             }
             return true;
         }

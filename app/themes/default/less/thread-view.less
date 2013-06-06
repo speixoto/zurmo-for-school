@@ -57,6 +57,7 @@
 }
 
 .single-coloumn-details-view,
+#MissionDetailsView,
 #ConversationDetailsView,
 #ConversationDetailsAndRelationsView{
     &.AppContent{
@@ -83,18 +84,17 @@
         //margin-right:15px;
     }
     .details-table{
-        .clearfix();
+	    border:1px solid #ccc !important;
+	    .b-shadow(~"inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12)") !important;
+	    #gradient > .vertical-three-colors( #ffffff, #f5f5f5, 80%, #f5f5f5 ) !important;
+	    .clearfix();
     }
+	.toolbar-mbmenu{
+		top: 8px !important;
+	}
 }
 
 /*Sidebar*/
-.thread-info{
-    h3{
-	//border-top:1px solid #fff;
-	//padding-top:10px;
-    }
-}
-
 .thread-details{
     margin:0 0 10px 0 !important;
     width: 100%;
@@ -359,7 +359,7 @@
         padding:0 0 0 0 !important;
     }
     h2{
-        margin:0 0 0 0;
+        margin:0 0 10px 0;
     }
     .wide.form{
         padding:0;
@@ -426,6 +426,9 @@
     .panel{
         width:100% !important;
     }
+	.view-toolbar-container + .left-column{
+		display: none;
+	}
 }
 
 .mission-change-status-link{

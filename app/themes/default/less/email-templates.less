@@ -70,8 +70,43 @@
     }
 }
 
+.autoresponder-combined-content,
 .email-template-combined-content{
 	padding: 0 15px;
+	position: relative;
+	.big-spinner{
+		position: absolute;
+		top: 0;
+		left: 0;
+		z-index: 1000000;
+		width: 100%;
+		height: 100%;
+		//background: rgba(255, 255, 255, 0.9);
+		margin: 0;
+		++.border-box;
+	}
+	.spinner{
+		left: 50% !important;
+		top: 50% !important;
+	}
+}
+
+.email-template-content{
+	.big-spinner{
+		position: absolute;
+		top: 0;
+		left: 0;
+		z-index: 1000000;
+		width: 100%;
+		height: 100%;
+		background: rgba(255, 255, 255, 0.8);
+		margin: 0;
+		++.border-box;
+	}
+	.spinner{
+		left: 50% !important;
+		top: 50% !important;
+	}
 }
 
 .tabs-nav{

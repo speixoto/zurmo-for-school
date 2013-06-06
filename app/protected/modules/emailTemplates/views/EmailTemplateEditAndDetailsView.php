@@ -52,33 +52,41 @@
                         array(
                             'rows' => array(
                                 array('cells' =>
-                                array(
                                     array(
-                                        'elements' => array(
-                                            array('attributeName' => 'modelClassName', 'type' => 'EmailTemplateModelClassName'),
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'modelClassName', 'type' => 'EmailTemplateModelClassName'),
+                                            ),
                                         ),
-                                    ),
-                                )
+                                    )
                                 ),
                                 array('cells' =>
-                                array(
                                     array(
-                                        'elements' => array(
-                                            array('attributeName' => 'name', 'type' => 'Text'),
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'name', 'type' => 'Text'),
+                                            ),
                                         ),
-                                    ),
-                                )
+                                    )
                                 ),
                                 array('cells' =>
-                                array(
                                     array(
-                                        'elements' => array(
-                                            array('attributeName' => 'subject', 'type' => 'Text'),
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'subject', 'type' => 'Text'),
+                                            ),
                                         ),
-                                    ),
-                                )
+                                    )
                                 ),
-
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'null', 'type' => 'Files'),
+                                            ),
+                                        ),
+                                    )
+                                ),
                             ),
                         ),
                     ),
@@ -161,9 +169,6 @@
             {
                 $this->resolveElementDuringFormLayoutRender($element);
             }
-            else
-            {
-            }
             return ZurmoHtml::tag('div', array('class' => 'email-template-combined-content'), $element->render());
         }
 
@@ -172,9 +177,6 @@
             if ($this->alwaysShowErrorSummary())
             {
                 $element->editableTemplate = str_replace('{error}', '', $element->editableTemplate);
-            }
-            else
-            {
             }
         }
 

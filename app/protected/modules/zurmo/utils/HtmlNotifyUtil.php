@@ -45,7 +45,7 @@
             $content   = ZurmoHtml::wrapLabel('&#160', 'ui-icon ui-icon-info') . $message;
             $innerContent = ZurmoHtml::tag('p', array(), $content );
             $innerDiv  = ZurmoHtml::tag('div', array('class' => 'ui-state-highlight ui-corner-all'), $innerContent );
-            return ZurmoHtml::tag('div', array('class' => 'ui-widget'), $innerDiv );
+            return ZurmoHtml::tag('div', array('class' => 'ui-notice ui-widget'), $innerDiv );
         }
 
         public static function renderAlertBoxByMessage($message)

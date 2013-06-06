@@ -159,5 +159,15 @@
         {
             return false;
         }
+
+        protected static function getSingularModuleLabel($language)
+        {
+            return Zurmo::t('WorkflowsModule', 'Workflow', array(), null, $language);
+        }
+
+        protected static function getPluralModuleLabel($language)
+        {
+            return Zurmo::t('WorkflowsModule', 'Workflows', array(), null, $language);
+        }
     }
 ?>

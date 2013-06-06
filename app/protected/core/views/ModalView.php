@@ -107,7 +107,7 @@
             // Begin Not Coding Standard
             return "js:function(){
                 jQuery('#{$containerId}').html('');
-                makeLargeLoadingSpinner(true, '#{$containerId}');
+                $(this).makeLargeLoadingSpinner(true, '#{$containerId}');
                 window.scrollTo(0, 0);
                 jQuery('#{$containerId}').dialog({
                     'title' : '{$modalTitle}',
@@ -117,7 +117,7 @@
                     'dialogClass' : {$class},
                     'height' : {$heightContent},
                     'open': function( event, ui )  { jQuery('#{$containerId}').parent().addClass('openingModal'); },
-                    'close': function( event, ui ) { jQuery('#{$containerId}').parent().removeClass('openingModal'); }
+                    'close': function( event, ui ) { jQuery('#{$containerId}').parent().removeClass('openingModal'); $('#{$containerId}').dialog('destroy'); }
                 });
                 return true;
             }";

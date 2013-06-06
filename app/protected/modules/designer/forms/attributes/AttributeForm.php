@@ -171,7 +171,7 @@
             assert('$this->modelClassName != null');
             $modelClassName = $this->modelClassName;
             $model = new $modelClassName();
-            if ($model->isAttribute($this->attributeName))
+            if ($model->isAttribute(ModelMetadataUtil::resolveName($this->attributeName)))
             {
                 $this->addError('attributeName', Zurmo::t('DesignerModule', 'A field with this name is already used.'));
             }

@@ -40,6 +40,12 @@
     class TextWorkflowActionAttributeForm extends WorkflowActionAttributeForm
     {
         /**
+         * Text attributes supports merge tags
+         * @var bool
+         */
+        protected $shouldResolveValueForMergeTags = true;
+
+        /**
          * Override to make sure the value attribute is set as a string
          */
         public function rules()
