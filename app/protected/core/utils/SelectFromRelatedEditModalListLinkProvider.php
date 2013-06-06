@@ -55,24 +55,31 @@
         protected $sourceNameFieldId;
 
         /**
+         * The id of the modal container where the list view resides
+         * @var type
+         */
+        protected $modalId;
+
+        /**
          * sourceIdFieldName and sourceNameFieldId are needed to know
          * which fields in the parent form to populate data with
          * upon selecting a row in the listview
          *
          */
-        public function __construct($sourceIdFieldId, $sourceNameFieldId)
+        public function __construct($sourceIdFieldId, $sourceNameFieldId, $modalId = ModelElement::MODAL_CONTAINER_PREFIX)
         {
             assert('is_string($sourceIdFieldId)');
             assert('is_string($sourceNameFieldId)');
             $this->sourceIdFieldId   = $sourceIdFieldId;
             $this->sourceNameFieldId = $sourceNameFieldId;
+            $this->modalId           = $modalId;
         }
 
         public function getLinkString($attributeString)
         {
             $string  = 'ZurmoHtml::link(';
             $string .= $attributeString . ', ';
-            $string .= '"javascript:transferModalValues(\"#modalContainer\", " . CJavaScript::encode(array(\'' . $this->sourceIdFieldId . '\' => $data->id, \'' . $this->sourceNameFieldId . '\' => strval(' . $attributeString . '))) . ");"';
+            $string .= '"javascript:transferModalValues(\"#'. $this->modalId . '\", " . CJavaScript::encode(array(\'' . $this->sourceIdFieldId . '\' => $data->id, \'' . $this->sourceNameFieldId . '\' => strval(' . $attributeString . '))) . ");"';
             $string .= ')';
             return $string;
         }

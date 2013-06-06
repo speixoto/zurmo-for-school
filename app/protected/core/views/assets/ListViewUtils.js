@@ -42,16 +42,24 @@ function processAjaxSuccessError(id, data)
     }
 }
 
-function processListViewSummaryClone(listViewId, summaryCssClass)
+function processListViewSummaryClone(listViewId, summaryCssClass, summaryClonePath)
 {
-    replacementContent = $('#' + listViewId).find('.' + summaryCssClass).html();
+    listViewSelector = $('#' + listViewId);
+    replacementContent = $(listViewSelector).find('.' + summaryCssClass).html();
     if (typeof(replacementContent) == 'undefined')
     {
         replacementContent = null;
     }
-    $('#' + listViewId).parent().parent('.GridView')
-    .find('form').first().find('.list-view-items-summary-clone')
-    .html(replacementContent);
+    if (typeof(summaryClonePath) == 'undefined')
+    {
+        summaryClone = $(listViewSelector).parent().parent('.GridView').find('form').first()
+            .find('.list-view-items-summary-clone');
+    }
+    else
+    {
+        summaryClone = summaryClonePath.call($(listViewSelector));
+    }
+    summaryClone.html(replacementContent);
 }
 
 function updateListViewSelectedIds(gridViewId, selectedId, selectedValue)

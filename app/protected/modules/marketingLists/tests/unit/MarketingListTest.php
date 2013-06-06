@@ -93,7 +93,19 @@
             $marketingLists = MarketingList::getByName('Test Marketing List');
             $this->assertEquals(1, count($marketingLists));
             $this->assertEquals('Marketing List',  $marketingLists[0]::getModelLabelByTypeAndLanguage('Singular'));
-            $this->assertEquals('MarketingListsModulePluralLabel', $marketingLists[0]::getModelLabelByTypeAndLanguage('Plural'));
+            $this->assertEquals('Marketing Lists', $marketingLists[0]::getModelLabelByTypeAndLanguage('Plural'));
+        }
+
+        public function testGetByOpenSubscription()
+        {
+            MarketingListTestHelper::createMarketingListByName('anyoneCanSubscribe', 'Some description',
+                                                                                        'Zurmo', 'from@zurmo.com', 1);
+            $anyoneCanSubscribeMarketingLists = MarketingList::getByAnyoneCanSubscribe(1);
+            $this->assertNotEmpty($anyoneCanSubscribeMarketingLists);
+            $this->assertCount(1, $anyoneCanSubscribeMarketingLists);
+            $closeSubscriptionMarketingLists = MarketingList::getByAnyoneCanSubscribe(0);
+            $this->assertNotEmpty($closeSubscriptionMarketingLists);
+            $this->assertCount(1, $closeSubscriptionMarketingLists);
         }
 
         /**
@@ -101,7 +113,6 @@
          */
         public function testDeleteMarketingList()
         {
-            MarketingListTestHelper::createMarketingListByName('Test Marketing List2', 'Description');
             $marketingLists = MarketingList::getAll();
             $this->assertEquals(2, count($marketingLists));
             $marketingLists[0]->delete();

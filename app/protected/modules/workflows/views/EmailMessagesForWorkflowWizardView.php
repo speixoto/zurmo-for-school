@@ -93,11 +93,9 @@
          */
         protected function renderFormContent()
         {
-            $content  = '<div>';
-            $content .= $this->renderAddEmailMessageLinkContentAndWrapper();
+            $content  = $this->renderAddEmailMessageLinkContentAndWrapper();
             $content .= $this->renderZeroComponentsContentAndWrapper();
             $content .= $this->renderEmailMessagesContentAndWrapper();
-            $content .= '</div>';
             $this->registerScripts();
             return $content;
         }
@@ -164,7 +162,7 @@
                             $moduleClassNameId . '\"]:checked").val() + ' .
                             '\'&rowNumber=\' + $(\'#' . $rowCounterInputId . '\').val()',
                         'url'     =>  $url,
-                        'beforeSend' => 'js:function(){ makeOrRemoveLoadingSpinner(true, "#" + $(this).attr("id")); }',
+                        'beforeSend' => 'js:function(){ $(this).makeOrRemoveLoadingSpinner(true, "#" + $(this).attr("id")); }',
                         'success' => 'js:function(data)
                         {
                             $(\'#' . $rowCounterInputId . '\').val(parseInt($(\'#' . $rowCounterInputId . '\').val()) + 1);
@@ -225,9 +223,9 @@
             $script = '
                 $(".remove-dynamic-row-link").live("click", function()
                 {
-                    size = $(this).parent().parent().parent().find("li").size();
-                    $(this).parent().parent().remove(); //removes the <li>
-                    if (size < 2)
+                    var size = $("#' . get_class($this) . ' .dynamic-rows > ul > li").length;
+                    $(this).parentsUntil("li").parent().remove(); //removes the <li>
+                    if (size < 1)
                     {
                         $(".' . static::getZeroComponentsClassName() . '").show();
                     }

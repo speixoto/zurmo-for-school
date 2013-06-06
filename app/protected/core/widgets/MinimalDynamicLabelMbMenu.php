@@ -47,7 +47,12 @@
                 {
                     $rendered   = true;
                     $liClose    = ZurmoHtml::closeTag('li') . "\n";
-                    echo ZurmoHtml::openTag('li', isset($item['itemOptions']) ? $item['itemOptions'] : array());
+                    $liOptions  = array();
+                    if (isset($item['itemOptions']))
+                    {
+                        $liOptions  =  $item['itemOptions'];
+                    }
+                    echo ZurmoHtml::openTag('li', $liOptions);
                     if (isset($item['linkOptions']))
                     {
                          $htmlOptions = $item['linkOptions'];

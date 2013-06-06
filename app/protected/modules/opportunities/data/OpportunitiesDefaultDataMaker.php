@@ -39,15 +39,19 @@
      */
     class OpportunitiesDefaultDataMaker extends DefaultDataMaker
     {
+        /**
+         * If you change the stages using the custom management, then make sure to change stageToProbabilityMapping
+         * in OpportunitiesModule metadata as well.
+         */
         public function make()
         {
             $values = array(
-                        'Prospecting',
-                        'Qualification',
-                        'Negotiating',
-                        'Verbal',
-                        'Closed Won',
-                        'Closed Lost',
+                        Zurmo::t('CustomField', 'Prospecting'),
+                        Zurmo::t('CustomField', 'Qualification'),
+                        Zurmo::t('CustomField', 'Negotiating'),
+                        Zurmo::t('CustomField', 'Verbal'),
+                        Zurmo::t('CustomField', 'Closed Won'),
+                        Zurmo::t('CustomField', 'Closed Lost'),
             );
             $labels = array();
             static::makeCustomFieldDataByValuesAndDefault('SalesStages', $values, $values[0]);

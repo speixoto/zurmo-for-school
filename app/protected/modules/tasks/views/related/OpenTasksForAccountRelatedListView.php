@@ -46,5 +46,10 @@
             return Zurmo::t('TasksModule', 'TasksModulePluralLabel For AccountsModuleSingularLabel',
                         LabelUtil::getTranslationParamsForAllModules());
         }
+
+        public static function getAllowedOnPortletViewClassNames()
+        {
+            return array('AccountDetailsAndRelationsView');
+        }
     }
 ?>

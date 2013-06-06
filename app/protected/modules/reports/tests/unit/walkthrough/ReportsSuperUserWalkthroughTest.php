@@ -168,6 +168,24 @@
             $this->setGetArray(array('id' => $savedReports[0]->id));
             $this->resetPostArray();
             $this->runControllerWithNoExceptionsAndGetContent('reports/default/details');
+            $this->setGetArray(array('id' => $savedReports[0]->id));
+            $this->resetPostArray();
+            $this->runControllerWithNoExceptionsAndGetContent('reports/default/edit');
+            //Save an existing report
+            $this->setGetArray(array('type' => 'RowsAndColumns', 'id' => $savedReports[0]->id));
+            $postData = static::makeRowsAndColumnsReportPostData();
+            $postData['save'] = 'save';
+            $this->setPostArray($postData);
+            $this->runControllerWithExitExceptionAndGetContent('reports/default/save');
+            $this->assertEquals(1, count($savedReports));
+            //Clone existing report
+            $this->setGetArray(array('type' => 'RowsAndColumns', 'id' => $savedReports[0]->id, 'isBeingCopied' => '1'));
+            $postData = static::makeRowsAndColumnsReportPostData();
+            $postData['save'] = 'save';
+            $this->setPostArray($postData);
+            $this->runControllerWithExitExceptionAndGetContent('reports/default/save');
+            $savedReports     = SavedReport::getAll();
+            $this->assertEquals(2, count($savedReports));
         }
 
         /**
@@ -180,7 +198,7 @@
                 return;
             }
             $savedReports = SavedReport::getAll();
-            $this->assertEquals(1, count($savedReports));
+            $this->assertEquals(2, count($savedReports));
             $this->setGetArray(array('id' => $savedReports[0]->id));
             //Test where there is no data to export
             $this->runControllerWithRedirectExceptionAndGetContent('reports/default/export');
@@ -239,7 +257,7 @@
         public function testApplyAndResetRuntimeFilters()
         {
             $savedReports = SavedReport::getAll();
-            $this->assertEquals(1, count($savedReports));
+            $this->assertEquals(2, count($savedReports));
             $this->setGetArray(array('id' => $savedReports[0]->id));
             //validate filters, where it doesn't validate, the value is missing
             $this->setPostArray(array('RowsAndColumnsReportWizardForm' => array('Filters' => array(
@@ -301,11 +319,11 @@
         public function testDelete()
         {
             $savedReports = SavedReport::getAll();
-            $this->assertEquals(2, count($savedReports));
+            $this->assertEquals(3, count($savedReports));
             $this->setGetArray(array('id' => $savedReports[0]->id));
             $this->runControllerWithRedirectExceptionAndGetContent('reports/default/delete');
             $savedReports = SavedReport::getAll();
-            $this->assertEquals(1, count($savedReports));
+            $this->assertEquals(2, count($savedReports));
         }
 
         //todo: test saving a report and changing owner so you don't have permissions anymore. it should do a flashbar and redirect you to the list view.

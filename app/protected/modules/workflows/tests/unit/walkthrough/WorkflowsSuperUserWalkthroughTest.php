@@ -110,11 +110,11 @@
             $this->setGetArray(array('type' => 'OnSave', 'id' => $savedWorkflows[0]->id));
             $data   = array();
             $data['OnSaveWorkflowWizardForm'] = array('description'       => 'someDescription3',
-                'isActive'          => '0',
-                'name'              => 'someName',
-                'triggerOn'         => Workflow::TRIGGER_ON_NEW,
-                'triggersStructure' => '1 AND 2',
-                'moduleClassName'   => 'WorkflowsTestModule');
+                                                        'isActive'          => '0',
+                                                        'name'              => 'someName',
+                                                        'triggerOn'         => Workflow::TRIGGER_ON_NEW,
+                                                        'triggersStructure' => '1 AND 2',
+                                                        'moduleClassName'   => 'WorkflowsTestModule');
             $this->setPostArray($data);
             $this->runControllerWithExitExceptionAndGetContent('workflows/default/save');
             $savedWorkflows = SavedWorkflow::getAll();
@@ -133,7 +133,9 @@
             $savedWorkflow->moduleClassName = 'WorkflowsTestModule';
             $savedWorkflow->triggerOn       = Workflow::TRIGGER_ON_NEW;
             $savedWorkflow->type            = Workflow::TYPE_ON_SAVE;
-            $savedWorkflow->serializedData  = serialize(array('something'));
+            $savedWorkflow->serializedData  = serialize(array(ComponentForWorkflowForm::TYPE_TRIGGERS => array(),
+                                                              ComponentForWorkflowForm::TYPE_ACTIONS => array(),
+                                                              ComponentForWorkflowForm::TYPE_EMAIL_MESSAGES => array()));
             $savedWorkflow->isActive        = true;
             $savedWorkflow->order           = 2;
             $saved                          = $savedWorkflow->save();
@@ -334,6 +336,20 @@
         /**
          * @depends testActionAddEmailMessageRecipient
          */
+        public function testActionAddEmailMessageRecipientForRelatedRecipient()
+        {
+            $this->setGetArray(array('type'               => 'OnSave',
+                'moduleClassName'    => 'WorkflowsTestModule',
+                'rowNumber'          => 4,
+                'recipientType'      => WorkflowEmailMessageRecipientForm::TYPE_DYNAMIC_TRIGGERED_MODEL_RELATION_USER,
+                'recipientRowNumber' => 3));
+            $content = $this->runControllerWithNoExceptionsAndGetContent('workflows/default/addEmailMessageRecipient');
+            $this->assertTrue(strpos($content, '<li class="dynamic-sub-row"><div class="dynamic-sub-row') !== false);
+        }
+
+        /**
+         * @depends testActionAddEmailMessageRecipientForRelatedRecipient
+         */
         public function testTimeQueueController()
         {
             $this->runControllerWithNoExceptionsAndGetContent      ('workflows/defaultTimeQueue/index');
@@ -347,6 +363,33 @@
         {
             $this->runControllerWithNoExceptionsAndGetContent      ('workflows/defaultMessageQueue/index');
             $this->runControllerWithNoExceptionsAndGetContent     ('workflows/defaultMessageQueue/list');
+        }
+
+        /**
+         * @depends testMessageQueueController
+         */
+        public function testCopyingWorkflow()
+        {
+            $savedWorkflows = SavedWorkflow::getAll();
+            $this->assertEquals(1, count($savedWorkflows));
+            $this->setGetArray(array('type' => 'OnSave', 'id' => $savedWorkflows[0]->id));
+            $data   = array();
+            $data['OnSaveWorkflowWizardForm'] = array('description'       => 'someDescription',
+                                                        'isActive'          => '0',
+                                                        'name'              => 'someName',
+                                                        'triggerOn'         => Workflow::TRIGGER_ON_NEW,
+                                                        'triggersStructure' => '1 AND 2',
+                                                        'moduleClassName'   => 'WorkflowsTestModule');
+            $this->setPostArray($data);
+            $this->runControllerWithExitExceptionAndGetContent('workflows/default/save');
+            $savedWorkflows = SavedWorkflow::getAll();
+            $this->assertEquals(1, count($savedWorkflows));
+
+            //Now test copying
+            $this->setGetArray(array('type' => 'OnSave', 'id' => $savedWorkflows[0]->id, 'isBeingCopied' => true));
+            $this->runControllerWithExitExceptionAndGetContent('workflows/default/save');
+            $savedWorkflows = SavedWorkflow::getAll();
+            $this->assertEquals(2, count($savedWorkflows));
         }
     }
 ?>

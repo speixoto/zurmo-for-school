@@ -37,7 +37,7 @@
     /**
      * Extended class to support saving social items
      */
-    class SocialItemZurmoControllerUtil extends ZurmoControllerUtil
+    class SocialItemZurmoControllerUtil extends FileZurmoControllerUtil
     {
         protected $relatedUser;
 
@@ -61,18 +61,6 @@
                 $model->toUser = $this->relatedUser;
             }
             return $this->saveModelFromSanitizedData($sanitizedPostData, $model, $savedSucessfully, $modelToStringValue);
-        }
-
-       /**
-         * Override to handle saving file attachments
-         * (non-PHPdoc)
-         * @see ModelHasRelatedItemsZurmoControllerUtil::afterSetAttributesDuringSave()
-         */
-        protected function afterSetAttributesDuringSave($model, $explicitReadWriteModelPermissions)
-        {
-            assert('$model instanceof Item');
-            parent::afterSetAttributesDuringSave($model, $explicitReadWriteModelPermissions);
-            FileModelUtil::resolveModelsHasManyFilesFromPost($model, 'files', 'filesIds');
         }
     }
 ?>

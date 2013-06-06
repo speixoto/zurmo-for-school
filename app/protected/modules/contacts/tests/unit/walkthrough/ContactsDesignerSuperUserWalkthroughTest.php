@@ -228,7 +228,7 @@
             $this->runControllerWithNoExceptionsAndGetContent('contacts/default/details');
             $this->runControllerWithNoExceptionsAndGetContent('contacts/default/list');
             $this->setGetArray(array(
-                'modalTransferInformation' => array('sourceIdFieldId' => 'x', 'sourceNameFieldId' => 'y')
+                'modalTransferInformation' => array('sourceIdFieldId' => 'x', 'sourceNameFieldId' => 'y', 'modalId' => 'z')
             ));
             $this->resetPostArray();
             $this->runControllerWithNoExceptionsAndGetContent('contacts/default/modalList');
@@ -511,7 +511,7 @@
             $this->assertContains('gardening'                            , $contact->tagcloudCstm->values);
             $metadata            = CalculatedDerivedAttributeMetadata::
                                    getByNameAndModelClassName('calcnumber', 'Contact');
-            $testCalculatedValue = CalculatedNumberUtil::calculateByFormulaAndModel($metadata->getFormula(), $contact);
+            $testCalculatedValue = CalculatedNumberUtil::calculateByFormulaAndModelAndResolveFormat($metadata->getFormula(), $contact);
             $this->assertEquals(135                                      , $testCalculatedValue);
         }
 
@@ -724,7 +724,7 @@
             $this->assertEquals(0                                        , $contact->tagcloudCstm->values->count());
             $metadata            = CalculatedDerivedAttributeMetadata::
                                    getByNameAndModelClassName('calcnumber', 'Contact');
-            $testCalculatedValue = CalculatedNumberUtil::calculateByFormulaAndModel($metadata->getFormula(), $contact);
+            $testCalculatedValue = CalculatedNumberUtil::calculateByFormulaAndModelAndResolveFormat($metadata->getFormula(), $contact);
             $this->assertEquals(23                                       , $testCalculatedValue);
         }
 
@@ -873,7 +873,7 @@
             $this->assertContains('surfing'                              , $contact->tagcloudCstm->values);
             $metadata            = CalculatedDerivedAttributeMetadata::
                                    getByNameAndModelClassName('calcnumber', 'Contact');
-            $testCalculatedValue = CalculatedNumberUtil::calculateByFormulaAndModel($metadata->getFormula(), $contact);
+            $testCalculatedValue = CalculatedNumberUtil::calculateByFormulaAndModelAndResolveFormat($metadata->getFormula(), $contact);
             $this->assertEquals(23                                       , $testCalculatedValue);
         }
 

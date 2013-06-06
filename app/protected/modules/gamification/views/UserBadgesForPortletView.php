@@ -72,6 +72,11 @@
             $this->uniqueLayoutId = $uniqueLayoutId;
         }
 
+        public function getPortletParams()
+        {
+            return array();
+        }
+
         public static function getDefaultMetadata()
         {
             $metadata = array(
@@ -91,6 +96,11 @@
         public function renderContent()
         {
             return $this->renderBadgeContent();
+        }
+
+        public function renderPortletHeadContent()
+        {
+            return null;
         }
 
         protected function renderBadgeContent()

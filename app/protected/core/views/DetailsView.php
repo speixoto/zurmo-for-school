@@ -77,19 +77,19 @@
         {
             $content  = '<div class="details-table">';
             $content .= $this->renderTitleContent();
-            $actionElementContent = $this->renderActionElementMenu();
-            if ($actionElementContent != null)
-            {
-                $content .= '<div class="view-toolbar-container toolbar-mbmenu clearfix"><div class="view-toolbar">';
-                $content .= $actionElementContent;
-                $content .= '</div></div>';
-            }
-            $content .= $this->renderBeforeFormLayoutForDetailsContent();
-            $content .= $this->renderFormLayout();
+            $content .= $this->resolveAndRenderActionElementMenu();
+            $leftContent  = $this->renderBeforeFormLayoutForDetailsContent();
+            $leftContent .= $this->renderFormLayout();
+            $content .= ZurmoHtml::tag('div', array('class' => 'left-column full-width'), $leftContent);
             $content .= $this->renderRightSideContent();
             $content .= $this->renderAfterFormLayoutForDetailsContent();
             $content .= '</div>';
             return $content;
+        }
+
+        protected function resolveAndRenderActionElementMenu()
+        {
+            return $this->renderWrapperAndActionElementMenu();
         }
 
         protected function renderRightSideContent($form = null)
@@ -162,6 +162,7 @@
                                     $elementInformation['wide'] = true;
                                 }
                                 $this->resolveElementInformationDuringFormLayoutRender($elementInformation);
+                                Yii::app()->custom->resolveElementInformationDuringFormLayoutRender($this, $elementInformation);
                                 $elementclassname = $elementInformation['type'] . 'Element';
                                 $element  = new $elementclassname($this->getModel(), $elementInformation['attributeName'],
                                                                   $form, array_slice($elementInformation, 2));

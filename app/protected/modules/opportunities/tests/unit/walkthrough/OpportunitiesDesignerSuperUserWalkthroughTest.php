@@ -230,7 +230,7 @@
             $this->runControllerWithNoExceptionsAndGetContent('opportunities/default/details');
             $this->runControllerWithNoExceptionsAndGetContent('opportunities/default/list');
             $this->setGetArray(array(
-                'modalTransferInformation' => array('sourceIdFieldId' => 'x', 'sourceNameFieldId' => 'y')
+                'modalTransferInformation' => array('sourceIdFieldId' => 'x', 'sourceNameFieldId' => 'y', 'modalId' => 'z')
             ));
             $this->resetPostArray();
             $this->runControllerWithNoExceptionsAndGetContent('opportunities/default/modalList');
@@ -267,7 +267,6 @@
                             'amount'                            => array('value' => 298000,
                                                                          'currency' => array('id' => $baseCurrency->id)),
                             'account'                           => array('id' => $accountId),
-                            'probability'                       => '1',
                             'closeDate'                         => $date,
                             'stage'                             => array('value' => 'Prospecting'),
                             'source'                            => array('value' => 'Self-Generated'),
@@ -308,7 +307,7 @@
             $this->assertEquals($opportunity->amount->value              , '298000');
             $this->assertEquals($opportunity->amount->currency->id       , $baseCurrency->id);
             $this->assertEquals($opportunity->account->id                , $accountId);
-            $this->assertEquals($opportunity->probability                , '1');
+            $this->assertEquals($opportunity->probability                , '10');
             $this->assertEquals($opportunity->stage->value               , 'Prospecting');
             $this->assertEquals($opportunity->source->value              , 'Self-Generated');
             $this->assertEquals($opportunity->description                , 'This is the Description');
@@ -337,8 +336,8 @@
             $this->assertContains('gardening'                            , $opportunity->tagcloudCstm->values);
             $metadata            = CalculatedDerivedAttributeMetadata::
                                    getByNameAndModelClassName('calcnumber', 'Opportunity');
-            $testCalculatedValue = CalculatedNumberUtil::calculateByFormulaAndModel($metadata->getFormula(), $opportunity);
-            $this->assertEquals(1476                                     , $testCalculatedValue);
+            $testCalculatedValue = CalculatedNumberUtil::calculateByFormulaAndModelAndResolveFormat($metadata->getFormula(), $opportunity);
+            $this->assertEquals('1,476'                                    , $testCalculatedValue); // Not Coding Standard
         }
 
         /**
@@ -367,7 +366,6 @@
                                                 'closeDate__Date'    => array('value' => 'Today'),
                                                 'stage'              => array('value' => 'Prospecting'),
                                                 'source'             => array('value' => 'Self-Generated'),
-                                                'probability'        => '1',
                                                 'decimalCstm'        => '123',
                                                 'integerCstm'        => '12',
                                                 'phoneCstm'          => '259-784-2169',
@@ -424,7 +422,6 @@
                                                                          'currency'    => array(
                                                                              'id'      => $baseCurrency->id)),
                             'account'                           => array('id' => $accountId),
-                            'probability'                       => '2',
                             'closeDate'                         => $date,
                             'stage'                             => array('value' => 'Qualification'),
                             'source'                            => array('value' => 'Inbound Call'),
@@ -466,7 +463,7 @@
             $this->assertEquals($opportunity->amount->value              , '288000');
             $this->assertEquals($opportunity->amount->currency->id       , $baseCurrency->id);
             $this->assertEquals($opportunity->account->id                , $accountId);
-            $this->assertEquals($opportunity->probability                , '2');
+            $this->assertEquals($opportunity->probability                , '25');
             $this->assertEquals($opportunity->stage->value               , 'Qualification');
             $this->assertEquals($opportunity->source->value              , 'Inbound Call');
             $this->assertEquals($opportunity->description                , 'This is the Edit Description');
@@ -496,7 +493,7 @@
             $this->assertEquals(0                                        , $opportunity->tagcloudCstm->values->count());
             $metadata            = CalculatedDerivedAttributeMetadata::
                                    getByNameAndModelClassName('calcnumber', 'Opportunity');
-            $testCalculatedValue = CalculatedNumberUtil::calculateByFormulaAndModel($metadata->getFormula(), $opportunity);
+            $testCalculatedValue = CalculatedNumberUtil::calculateByFormulaAndModelAndResolveFormat($metadata->getFormula(), $opportunity);
             $this->assertEquals(132                                      , $testCalculatedValue);
         }
 
@@ -529,7 +526,6 @@
                                                                          'currency' => array(
                                                                          'id' => $baseCurrency->id)),
                             'account'                           => array('id' => $accountId),
-                            'probability'                       => '2',
                             'closeDate'                         => $date,
                             'stage'                             => array('value' => 'Qualification'),
                             'source'                            => array('value' => 'Inbound Call'),
@@ -571,7 +567,7 @@
             $this->assertEquals($opportunity->amount->value              , '288000');
             $this->assertEquals($opportunity->amount->currency->id       , $baseCurrency->id);
             $this->assertEquals($opportunity->account->id                , $accountId);
-            $this->assertEquals($opportunity->probability                , '2');
+            $this->assertEquals($opportunity->probability                , '25');
             $this->assertEquals($opportunity->stage->value               , 'Qualification');
             $this->assertEquals($opportunity->source->value              , 'Inbound Call');
             $this->assertEquals($opportunity->description                , 'This is the Edit Description');
@@ -602,7 +598,7 @@
             $this->assertContains('surfing'                              , $opportunity->tagcloudCstm->values);
             $metadata            = CalculatedDerivedAttributeMetadata::
                                    getByNameAndModelClassName('calcnumber', 'Opportunity');
-            $testCalculatedValue = CalculatedNumberUtil::calculateByFormulaAndModel($metadata->getFormula(), $opportunity);
+            $testCalculatedValue = CalculatedNumberUtil::calculateByFormulaAndModelAndResolveFormat($metadata->getFormula(), $opportunity);
             $this->assertEquals(132                                      , $testCalculatedValue);
         }
 

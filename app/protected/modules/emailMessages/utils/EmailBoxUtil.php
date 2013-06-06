@@ -77,6 +77,11 @@
             $folder->emailBox = $box;
             $box->folders->add($folder);
             $folder           = new EmailFolder();
+            $folder->name     = EmailFolder::getDefaultOutboxFailureName();
+            $folder->type     = EmailFolder::TYPE_OUTBOX_FAILURE;
+            $folder->emailBox = $box;
+            $box->folders->add($folder);
+            $folder           = new EmailFolder();
             $folder->name     = EmailFolder::getDefaultArchivedName();
             $folder->type     = EmailFolder::TYPE_ARCHIVED;
             $folder->emailBox = $box;

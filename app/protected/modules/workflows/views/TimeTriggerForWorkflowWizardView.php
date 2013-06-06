@@ -100,11 +100,9 @@
          */
         protected function renderFormContent()
         {
-            $content  = '<div>';
-            $content .= $this->renderAttributeSelectorContentAndWrapper();
+            $content  = $this->renderAttributeSelectorContentAndWrapper();
             $content .= $this->renderZeroComponentsContentAndWrapper();
             $content .= $this->renderTimeTriggerContentAndWrapper();
-            $content .= '</div>';
             $this->registerScripts();
             return $content;
         }

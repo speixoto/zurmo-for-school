@@ -154,6 +154,20 @@
             $this->assertFalse(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
             $model->likeContactState = self::$newState;
             $this->assertTrue(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+
+            //Test with different cast
+            $workflow = self::makeOnSaveWorkflowAndTriggerWithoutValueType('likeContactState', 'equals', strval(self::$newState->id));
+            $model           = new WorkflowModelTestItem();
+            $model->lastName = 'someLastName';
+            $model->string   = 'someValue';
+            $model->likeContactState = self::$newState;
+            $this->assertTrue(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+            $model->likeContactState = self::$inProgressState;
+            $this->assertFalse(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+            $model         = self::saveAndReloadModel($model);
+            $this->assertFalse(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+            $model->likeContactState = self::$newState;
+            $this->assertTrue(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
         }
 
         /**
@@ -163,6 +177,21 @@
         {
             $workflow = self::makeOnSaveWorkflowAndTriggerWithoutValueType('likeContactState', 'oneOf',
                         array(self::$newState->id, self::$inProgressState->id, self::$recycledState->id));
+            $model           = new WorkflowModelTestItem();
+            $model->lastName = 'someLastName';
+            $model->string   = 'someValue';
+            $model->likeContactState = self::$newState;
+            $this->assertTrue(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+            $model->likeContactState = self::$qualifiedState;
+            $this->assertFalse(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+            $model         = self::saveAndReloadModel($model);
+            $this->assertFalse(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+            $model->likeContactState = self::$recycledState;
+            $this->assertTrue(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+
+            //Test with different cast
+            $workflow = self::makeOnSaveWorkflowAndTriggerWithoutValueType('likeContactState', 'oneOf',
+                        array(strval(self::$newState->id), strval(self::$inProgressState->id), strval(self::$recycledState->id)));
             $model           = new WorkflowModelTestItem();
             $model->lastName = 'someLastName';
             $model->string   = 'someValue';
@@ -193,6 +222,20 @@
             $this->assertTrue(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
             $model->likeContactState = self::$newState;
             $this->assertFalse(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+
+            //Test with different cast
+            $workflow = self::makeOnSaveWorkflowAndTriggerWithoutValueType('likeContactState', 'doesNotEqual', strval(self::$newState->id));
+            $model           = new WorkflowModelTestItem();
+            $model->lastName = 'someLastName';
+            $model->string   = 'someValue';
+            $model->likeContactState = self::$newState;
+            $this->assertFalse(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+            $model->likeContactState = self::$inProgressState;
+            $this->assertTrue(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+            $model         = self::saveAndReloadModel($model);
+            $this->assertTrue(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+            $model->likeContactState = self::$newState;
+            $this->assertFalse(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
         }
 
         /**
@@ -201,6 +244,26 @@
         public function testTriggerBeforeSaveBecomes()
         {
             $workflow = self::makeOnSaveWorkflowAndTriggerWithoutValueType('likeContactState', 'becomes', self::$newState->id);
+            $model           = new WorkflowModelTestItem();
+            $model->lastName = 'someLastName';
+            $model->string   = 'someValue';
+            $model->likeContactState = self::$newState;
+            $this->assertTrue(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+            $model->likeContactState = self::$inProgressState;
+            $this->assertFalse(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+            $model = self::saveAndReloadModel($model);
+
+            //check existing model
+            $model->likeContactState = self::$qualifiedState;
+            $this->assertFalse(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+            $model = self::saveAndReloadModel($model);
+
+            //Now it should be true because it 'becomes' New
+            $model->likeContactState = self::$newState;
+            $this->assertTrue(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+
+            //Test with different cast
+            $workflow = self::makeOnSaveWorkflowAndTriggerWithoutValueType('likeContactState', 'becomes', strval(self::$newState->id));
             $model           = new WorkflowModelTestItem();
             $model->lastName = 'someLastName';
             $model->string   = 'someValue';
@@ -245,6 +308,28 @@
             //Now it should be true because it 'becomes' New
             $model->likeContactState = self::$inProgressState;
             $this->assertTrue(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+
+            //Test with different cast
+            $workflow = self::makeOnSaveWorkflowAndTriggerWithoutValueType('likeContactState', 'becomesOneOf',
+                        array(strval(self::$newState->id), strval(self::$qualifiedState->id) , strval(self::$inProgressState->id)));
+            $model           = new WorkflowModelTestItem();
+            $model->lastName = 'someLastName';
+            $model->string   = 'someValue';
+            $model->likeContactState = self::$newState;
+            $this->assertTrue(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+
+            $model->likeContactState = self::$deadState;
+            $this->assertFalse(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+            $model = self::saveAndReloadModel($model);
+
+            //check existing model
+            $model->likeContactState = self::$customerState;
+            $this->assertFalse(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+            $model = self::saveAndReloadModel($model);
+
+            //Now it should be true because it 'becomes' New
+            $model->likeContactState = self::$inProgressState;
+            $this->assertTrue(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
         }
 
         /**
@@ -253,6 +338,27 @@
         public function testTriggerBeforeSaveWas()
         {
             $workflow = self::makeOnSaveWorkflowAndTriggerWithoutValueType('likeContactState', 'was', self::$newState->id);
+            $model           = new WorkflowModelTestItem();
+            $model->lastName = 'someLastName';
+            $model->string   = 'someValue';
+            $model->likeContactState = self::$newState;
+            $this->assertFalse(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+
+            $model->likeContactState = self::$inProgressState;
+            $this->assertFalse(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+            $model = self::saveAndReloadModel($model);
+
+            //check existing model
+            $model->likeContactState = self::$newState;
+            $this->assertFalse(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+            $model = self::saveAndReloadModel($model);
+
+            //Now it should be true because it 'was' New and is now In Progress
+            $model->likeContactState = self::$inProgressState;
+            $this->assertTrue(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+
+            //Test with different cast
+            $workflow = self::makeOnSaveWorkflowAndTriggerWithoutValueType('likeContactState', 'was', strval(self::$newState->id));
             $model           = new WorkflowModelTestItem();
             $model->lastName = 'someLastName';
             $model->string   = 'someValue';
@@ -280,6 +386,28 @@
         {
             $workflow = self::makeOnSaveWorkflowAndTriggerWithoutValueType('likeContactState', 'wasOneOf',
                         array(self::$qualifiedState->id, self::$newState->id , self::$inProgressState->id));
+            $model           = new WorkflowModelTestItem();
+            $model->lastName = 'someLastName';
+            $model->string   = 'someValue';
+            $model->likeContactState = self::$deadState;
+            $this->assertFalse(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+
+            $model->likeContactState = self::$customerState;
+            $this->assertFalse(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+            $model = self::saveAndReloadModel($model);
+
+            //check existing model
+            $model->likeContactState = self::$newState;
+            $this->assertFalse(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+            $model = self::saveAndReloadModel($model);
+
+            //Now it should be true because it 'was' b and is now something else
+            $model->likeContactState = self::$inProgressState;
+            $this->assertTrue(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+
+            //Test with different cast
+            $workflow = self::makeOnSaveWorkflowAndTriggerWithoutValueType('likeContactState', 'wasOneOf',
+                array(strval(self::$qualifiedState->id), strval(self::$newState->id), strval(self::$inProgressState->id)));
             $model           = new WorkflowModelTestItem();
             $model->lastName = 'someLastName';
             $model->string   = 'someValue';

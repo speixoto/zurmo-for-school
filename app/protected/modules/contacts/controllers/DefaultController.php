@@ -131,7 +131,6 @@
             $contact = Contact::getById(intval($id));
             ControllerSecurityUtil::resolveAccessCanCurrentUserWriteModel($contact);
             $this->processEdit($contact, $redirectUrl);
-
         }
 
         public function actionCopy($id)
@@ -307,7 +306,8 @@
         {
             $modalListLinkProvider = new SelectFromRelatedEditModalListLinkProvider(
                                             $_GET['modalTransferInformation']['sourceIdFieldId'],
-                                            $_GET['modalTransferInformation']['sourceNameFieldId']
+                                            $_GET['modalTransferInformation']['sourceNameFieldId'],
+                                            $_GET['modalTransferInformation']['modalId']
             );
             echo ModalSearchListControllerUtil::setAjaxModeAndRenderModalSearchList($this, $modalListLinkProvider,
                                                 'ContactsStateMetadataAdapter');
@@ -356,11 +356,11 @@
             $account = static::getModelAndCatchNotFoundAndDisplayError('Account', intval($id));
             ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($account);
             $addressData = array();
-            foreach($account->billingAddress->getAttributeNames() as $attribute)
+            foreach ($account->billingAddress->getAttributeNames() as $attribute)
             {
                 $addressData['billingAddress_' . $attribute] = $account->billingAddress->{$attribute};
             }
-            foreach($account->shippingAddress->getAttributeNames() as $attribute)
+            foreach ($account->shippingAddress->getAttributeNames() as $attribute)
             {
                 $addressData['shippingAddress_' . $attribute] = $account->shippingAddress->{$attribute};
             }

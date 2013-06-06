@@ -35,9 +35,25 @@
      ********************************************************************************/
 
     /**
-     * TODO
+     * Class for displaying an integer attribute value in the user interface
      */
     class IntegerElement extends TextElement
     {
+        /**
+         * Renders the attribute from the model.
+         * @return The element's content.
+         */
+        protected function renderControlNonEditable()
+        {
+            if ($this->model instanceof RedBeanModel && $this->model->isAttributeFormattedAsProbability($this->attribute))
+            {
+                $resolvedValue = NumberUtil::divisionForZero($this->model->{$this->attribute}, 100);
+                return Yii::app()->numberFormatter->formatPercentage((int)$resolvedValue);
+            }
+            else
+            {
+                return Yii::app()->format->formatNumber((int)$this->model->{$this->attribute});
+            }
+        }
     }
 ?>

@@ -36,6 +36,8 @@
 
     class MarketingListMemberControllerSuperUserWalkthroughTest extends ZurmoWalkthroughBaseTest
     {
+        protected $user;
+
         public static function setUpBeforeClass()
         {
             parent::setUpBeforeClass();
@@ -50,7 +52,7 @@
             $marketingList2 = MarketingListTestHelper::createMarketingListByName('MarketingList2',
                                                                                         'MarketingList Description2');
 
-            for($i = 0; $i < 17; $i++)
+            for ($i = 0; $i < 17; $i++)
             {
                 if ($i%2)
                 {
@@ -64,13 +66,20 @@
                 $contact2    = ContactTestHelper::createContactWithAccountByNameForOwner('superContact2' . $i, $super, $account);
                 MarketingListMemberTestHelper::createMarketingListMember($unsubscribed, $marketingList1, $contact1);
                 MarketingListMemberTestHelper::createMarketingListMember($unsubscribed, $marketingList2, $contact2);
+
+                ReadPermissionsOptimizationUtil::rebuild();
             }
+        }
+
+        public function setUp()
+        {
+            parent::setUp();
+            $this->user = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
+            Yii::app()->user->userModel = $this->user;
         }
 
         public function testMassSubscribeActionsForSelectedIds()
         {
-            $super              = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
-
             // MassSubscribe view for selected ids
             $listId             = self::getModelIdByModelNameAndName('MarketingList', 'MarketingList1');
             $this->assertNotEmpty($listId);
@@ -82,7 +91,7 @@
             $subscribedCount    = MarketingListMember::getCountByMarketingListIdAndUnsubscribed($listId, 0);
 
             $selectedIdsArray   = array();
-            foreach($members as $member)
+            foreach ($members as $member)
             {
                 if ($member->unsubscribed == 1)
                 {
@@ -94,7 +103,7 @@
                 }
             }
             $this->assertNotEmpty($selectedIdsArray);
-            $selectedIds        = join(',', $selectedIdsArray);
+            $selectedIds        = join(',', $selectedIdsArray); // Not Coding Standard
             $this->setGetArray(
                             array(
                                 'selectedIds'               => $selectedIds,
@@ -119,7 +128,7 @@
 
             // Mass Subscribe, multiple pages subscribe, first page
             $selectedIdsArray   = array();
-            foreach($members as $member)
+            foreach ($members as $member)
             {
                 if ($member->unsubscribed == 1)
                 {
@@ -131,7 +140,7 @@
                 }
             }
             $this->assertNotEmpty($selectedIdsArray);
-            $selectedIds        = join(',', $selectedIdsArray);
+            $selectedIds        = join(',', $selectedIdsArray); // Not Coding Standard
             $pageSize           = Yii::app()->pagination->getForCurrentUserByType('massEditProgressPageSize');
             $this->assertEquals(5, $pageSize);
             // MassSubscribe for selected ids for page 1
@@ -141,7 +150,7 @@
                                 'selectedIds'                               => $selectedIds,
                                 'selectAll'                                 => '',
                                 'massSubscribe'                             => '',
-                                'MarketingListMembersForPortletView_page'   => 1
+                                'MarketingListMembersPortletView_page'   => 1
                             )
                         );
             $this->setPostArray(
@@ -153,7 +162,6 @@
             $expectedSubscribedCountAfterFirstRequest   = $subscribedCount + $pageSize;
             $actualSubscribedCountAfterFirstRequest     = MarketingListMember::getCountByMarketingListIdAndUnsubscribed($listId, 0);
             $this->assertEquals($expectedSubscribedCountAfterFirstRequest, $actualSubscribedCountAfterFirstRequest);
-
 
             // Mass Subscribe, multiple pages subscribe, second page
             $this->setGetArray(
@@ -181,8 +189,6 @@
          */
         public function testMassSubscribePagesProperlyAndSubscribesAllSelected()
         {
-            $super          = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
-
             // MassSubscribe for selected Record Count
             $listId         = self::getModelIdByModelNameAndName('MarketingList', 'MarketingList2');
             $this->assertNotEmpty($listId);
@@ -195,7 +201,7 @@
             $this->setGetArray(
                             array(
                                 'selectAll'                                 => '1',           // Not Coding Standard
-                                'MarketingListMembersForPortletView_page'   => 1,
+                                'MarketingListMembersPortletView_page'   => 1,
                                 'id'                                        => $listId
                             )
                         );
@@ -281,8 +287,6 @@
          */
         public function testMassUnsubscribeActionsForSelectedIds()
         {
-            $super              = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
-
             // MassUnsubscribe view for selected ids
             $listId             = self::getModelIdByModelNameAndName('MarketingList', 'MarketingList1');
             $this->assertNotEmpty($listId);
@@ -294,7 +298,7 @@
             $unsubscribedCount    = MarketingListMember::getCountByMarketingListIdAndUnsubscribed($listId, 1);
 
             $selectedIdsArray   = array();
-            foreach($members as $member)
+            foreach ($members as $member)
             {
                 if ($member->unsubscribed == 0)
                 {
@@ -306,7 +310,7 @@
                 }
             }
             $this->assertNotEmpty($selectedIdsArray);
-            $selectedIds        = join(',', $selectedIdsArray);
+            $selectedIds        = join(',', $selectedIdsArray); // Not Coding Standard
             $this->setGetArray(
                             array(
                                 'selectedIds'               => $selectedIds,
@@ -331,7 +335,7 @@
 
             // Mass Unsubscribe, multiple pages unsubscribe, first page
             $selectedIdsArray   = array();
-            foreach($members as $member)
+            foreach ($members as $member)
             {
                 if ($member->unsubscribed == 0)
                 {
@@ -343,7 +347,7 @@
                 }
             }
             $this->assertNotEmpty($selectedIdsArray);
-            $selectedIds        = join(',', $selectedIdsArray);
+            $selectedIds        = join(',', $selectedIdsArray); // Not Coding Standard
             $pageSize           = Yii::app()->pagination->getForCurrentUserByType('massEditProgressPageSize');
             $this->assertEquals(5, $pageSize);
             // MassUnsubscribe for selected ids for page 1
@@ -353,7 +357,7 @@
                                 'selectedIds'                               => $selectedIds,
                                 'selectAll'                                 => '',
                                 'massUnsubscribe'                           => '',
-                                'MarketingListMembersForPortletView_page'   => 1
+                                'MarketingListMembersPortletView_page'   => 1
                             )
                         );
             $this->setPostArray(
@@ -365,7 +369,6 @@
             $expectedUnsubscribedCountAfterFirstRequest   = $unsubscribedCount + $pageSize;
             $actualUnsubscribedCountAfterFirstRequest     = MarketingListMember::getCountByMarketingListIdAndUnsubscribed($listId, 1);
             $this->assertEquals($expectedUnsubscribedCountAfterFirstRequest, $actualUnsubscribedCountAfterFirstRequest);
-
 
             // Mass Unsubscribe, multiple pages unsubscribe, second page
             $this->setGetArray(
@@ -393,8 +396,6 @@
          */
         public function testMassUnsubscribePagesProperlyAndUnsubscribesAllSelected()
         {
-            $super          = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
-
             // MassUnsubscribe for selected Record Count
             $listId         = self::getModelIdByModelNameAndName('MarketingList', 'MarketingList2');
             $this->assertNotEmpty($listId);
@@ -407,7 +408,7 @@
             $this->setGetArray(
                             array(
                                 'selectAll'                                 => '1',           // Not Coding Standard
-                                'MarketingListMembersForPortletView_page'   => 1,
+                                'MarketingListMembersPortletView_page'   => 1,
                                 'id'                                        => $listId
                             )
                         );
@@ -491,8 +492,6 @@
 
         public function testMassDeleteActionsForSelectedIds()
         {
-            $super              = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
-
             // MassDelete view for selected ids
             $listId             = self::getModelIdByModelNameAndName('MarketingList', 'MarketingList1');
             $this->assertNotEmpty($listId);
@@ -503,7 +502,7 @@
             $this->assertCount(17, $members);
 
             $selectedIdsArray   = array();
-            foreach($members as $member)
+            foreach ($members as $member)
             {
                 $selectedIdsArray[]     = $member->id;
                 if (count($selectedIdsArray) === 4)
@@ -512,7 +511,7 @@
                 }
             }
             $this->assertNotEmpty($selectedIdsArray);
-            $selectedIds        = join(',', $selectedIdsArray);
+            $selectedIds        = join(',', $selectedIdsArray); // Not Coding Standard
             $this->setGetArray(
                             array(
                                 'selectedIds'           => $selectedIds,
@@ -542,7 +541,7 @@
             $this->assertNotEmpty($members);
             $this->assertEquals(17, count($members));
             $selectedIdsArray   = array();
-            foreach($members as $member)
+            foreach ($members as $member)
             {
                 $selectedIdsArray[]     = $member->id;
                 if (count($selectedIdsArray) === 7)
@@ -551,7 +550,7 @@
                 }
             }
             $this->assertNotEmpty($selectedIdsArray);
-            $selectedIds        = join(',', $selectedIdsArray);
+            $selectedIds        = join(',', $selectedIdsArray); // Not Coding Standard
             $pageSize           = Yii::app()->pagination->getForCurrentUserByType('massDeleteProgressPageSize');
             $this->assertEquals(5, $pageSize);
             // MassDelete for selected ids for page 1
@@ -561,7 +560,7 @@
                                 'selectedIds'                               => $selectedIds,
                                 'selectAll'                                 => '',
                                 'massDelete'                                => '',
-                                'MarketingListMembersForPortletView_page'   => 1
+                                'MarketingListMembersPortletView_page'   => 1
                             )
                         );
             $this->setPostArray(
@@ -576,7 +575,6 @@
             $members        = $list->marketingListMembers;
             $this->assertNotEmpty($members);
             $this->assertEquals(12, count($members));
-
 
             // Mass delete, multiple pages delete, second page
             $this->setGetArray(
@@ -608,8 +606,6 @@
          */
         public function testMassDeletePagesProperlyAndRemovesAllSelected()
         {
-            $super          = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
-
             // MassDelete for selected Record Count
             $listId         = self::getModelIdByModelNameAndName('MarketingList', 'MarketingList2');
             $this->assertNotEmpty($listId);
@@ -622,7 +618,7 @@
             $this->setGetArray(
                             array(
                                 'selectAll'                                 => '1',           // Not Coding Standard
-                                'MarketingListMembersForPortletView_page'   => 1,
+                                'MarketingListMembersPortletView_page'   => 1,
                                 'id'                                        => $listId
                             )
                         );

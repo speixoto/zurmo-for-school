@@ -56,7 +56,7 @@
             $this->assertEquals(0, count(EmailMessage::getAll()));
 
             $emailMessage = new EmailMessage();
-            $emailMessage->owner   = Yii::app()->emailHelper->getUserToSendNotificationsAs();
+            $emailMessage->owner   = BaseJobControlUserConfigUtil::getUserToRunAs();
             $emailMessage->subject = 'My First Email';
             //Set sender, and recipient, and content
             $emailContent              = new EmailMessageContent();

@@ -67,8 +67,8 @@
                                        false, $this->activeActionElementType);
             $mixedView               = new ActionBarAndZeroModelsYetView($actionBarView, $messageView);
             $view                    = new EmailTemplatesPageView(MarketingDefaultViewUtil::
-                makeViewWithBreadcrumbsForCurrentUser(
-                $this->controller, $mixedView, $this->breadcrumbLinks, 'MarketingBreadCrumbView'));
+                                            makeViewWithBreadcrumbsForCurrentUser(
+                                            $this->controller, $mixedView, $this->breadcrumbLinks, 'MarketingBreadCrumbView'));
             echo $view->render();
         }
     }

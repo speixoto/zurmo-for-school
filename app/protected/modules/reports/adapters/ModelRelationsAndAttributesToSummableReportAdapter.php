@@ -90,8 +90,13 @@
         protected static function getTranslatedDisplayCalculationShortLabel($type)
         {
             assert('is_string($type)');
-            $labels = static::translatedDisplayCalculationShortLabels();
-            return $labels[$type];
+            $labels = array_merge(static::translatedDisplayCalculationShortLabels(),
+                                  static::translatedGroupByCalculationShortLabels());
+            if (isset($labels[$type]))
+            {
+                return $labels[$type];
+            }
+            return $type;
         }
 
         /**
@@ -608,7 +613,19 @@
                 if ($addAttribute)
                 {
                     $resolvedAttribute = $groupBy->getResolvedAttribute();
-                    $attributes[$resolvedAttribute] = array('label' => $this->model->getAttributeLabel($resolvedAttribute));
+                    $calculationOrModifierType = $this->getCalculationOrModifierType($resolvedAttribute);
+                    if ($this->isAttributeACalculationOrModifier($resolvedAttribute) && $calculationOrModifierType !== $resolvedAttribute)
+                    {
+                        $realAttributeName = static::resolveRealAttributeName($resolvedAttribute);
+                        $label = $this->resolveDisplayCalculationLabel($realAttributeName,
+                            $this->getCalculationOrModifierType($calculationOrModifierType));
+                    }
+                    else
+                    {
+                        $realAttributeName = static::resolveRealAttributeName($resolvedAttribute);
+                        $label = $this->model->getAttributeLabel($realAttributeName);
+                    }
+                    $attributes[$resolvedAttribute] = array('label' => $label);
                 }
             }
         }

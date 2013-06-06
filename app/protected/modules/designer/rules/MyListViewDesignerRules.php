@@ -41,7 +41,7 @@
     {
         public function getDisplayName()
         {
-            return Zurmo::t('DesignerModule', 'My List View');
+            return Zurmo::t('DesignerModule', 'Portlet List View');
         }
 
         /**

@@ -245,7 +245,7 @@
             $this->runControllerWithNoExceptionsAndGetContent('accounts/default/details');
             $this->runControllerWithNoExceptionsAndGetContent('accounts/default/list');
             $this->setGetArray(array(
-                'modalTransferInformation' => array('sourceIdFieldId' => 'x', 'sourceNameFieldId' => 'y')
+                'modalTransferInformation' => array('sourceIdFieldId' => 'x', 'sourceNameFieldId' => 'y', 'modalId' => 'z')
             ));
             $this->resetPostArray();
             $this->runControllerWithNoExceptionsAndGetContent('accounts/default/modalList');
@@ -380,8 +380,10 @@
             $this->assertContains('gardening'                               , $account[0]->tagcloudCstm->values);
             $metadata            = CalculatedDerivedAttributeMetadata::
                                    getByNameAndModelClassName('calcnumber', 'Account');
-            $testCalculatedValue = CalculatedNumberUtil::calculateByFormulaAndModel($metadata->getFormula(), $account[0]);
-            $this->assertEquals(474000930                                   , $testCalculatedValue);
+            $formatType          = CalculatedNumberUtil::FORMAT_TYPE_INTEGER;
+            $currencyCode        = null;
+            $testCalculatedValue = CalculatedNumberUtil::calculateByFormulaAndModelAndResolveFormat($metadata->getFormula(), $account[0]);
+            $this->assertEquals('474,000,930'                               , $testCalculatedValue); // Not Coding Standard
         }
 
         /**
@@ -570,8 +572,10 @@
 
             $metadata            = CalculatedDerivedAttributeMetadata::
                                    getByNameAndModelClassName('calcnumber', 'Account');
-            $testCalculatedValue = CalculatedNumberUtil::calculateByFormulaAndModel($metadata->getFormula(), $account[0]);
-            $this->assertEquals(472000630                                   , $testCalculatedValue);
+            $formatType          = CalculatedNumberUtil::FORMAT_TYPE_INTEGER;
+            $currencyCode        = null;
+            $testCalculatedValue = CalculatedNumberUtil::calculateByFormulaAndModelAndResolveFormat($metadata->getFormula(), $account[0]);
+            $this->assertEquals('472,000,630'                               , $testCalculatedValue); // Not Coding Standard
         }
 
         /**
@@ -707,8 +711,8 @@
 
             $metadata            = CalculatedDerivedAttributeMetadata::
                                    getByNameAndModelClassName('calcnumber', 'Account');
-            $testCalculatedValue = CalculatedNumberUtil::calculateByFormulaAndModel($metadata->getFormula(), $account[0]);
-            $this->assertEquals(472000630                                   , $testCalculatedValue);
+            $testCalculatedValue = CalculatedNumberUtil::calculateByFormulaAndModelAndResolveFormat($metadata->getFormula(), $account[0]);
+            $this->assertEquals('472,000,630'                               , $testCalculatedValue); // Not Coding Standard
         }
 
         /**

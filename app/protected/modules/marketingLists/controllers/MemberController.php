@@ -36,6 +36,13 @@
 
     class MarketingListsMemberController extends ZurmoModuleController
     {
+        public function filters()
+        {
+            $filters = parent::filters();
+            unset($filters['RIGHT_BULK_DELETE']);
+            return $filters;
+        }
+
         public function actionMassDelete()
         {
             $this->triggerMarketingListMemberMassAction();
@@ -133,7 +140,7 @@
             }
             else
             {
-                return intval(Yii::app()->request->getQuery('MarketingListMembersForPortletView_page'));
+                return intval(Yii::app()->request->getQuery('MarketingListMembersPortletView_page'));
             }
         }
 
@@ -141,7 +148,11 @@
         {
             if (strpos($actionId, 'massSubscribe') === 0 || strpos($actionId, 'massUnsubscribe') === 0)
             {
-                $viewNameSuffix    = (!$returnProgressViewName)? 'View': 'ProgressView';
+                $viewNameSuffix    = 'View';
+                if ($returnProgressViewName)
+                {
+                    $viewNameSuffix    = 'ProgressView';
+                }
                 $viewNamePrefix    = static::resolveMassActionId($actionId, true);
                 $viewNamePrefix    = 'MarketingListMembers' . $viewNamePrefix;
                 return $viewNamePrefix . $viewNameSuffix;
@@ -157,9 +168,10 @@
             $metadata = array(
                             'clauses'   => array(
                                         1   => array(
-                                                'attributeName' => 'marketingList',
-                                                'operatorType'  => 'equals',
-                                                'value'         => Yii::app()->request->getQuery('id')
+                                                'attributeName'         => 'marketingList',
+                                                'relatedAttributeName'  => 'id',
+                                                'operatorType'          => 'equals',
+                                                'value'                 => Yii::app()->request->getQuery('id')
                                             ),
                                         ),
                             'structure' => 1

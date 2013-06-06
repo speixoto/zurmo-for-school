@@ -106,6 +106,7 @@ a.z-button,
   -o-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
   -ms-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
   box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
+  white-space: nowrap;
 }
 .modal-view-toolbar a,
 .modal-view-toolbar input[type="submit"],
@@ -141,7 +142,6 @@ a.z-button,
   overflow: hidden;
   position: relative;
   cursor: pointer;
-  margin: 0 10px;
   text-indent: 0;
   display: inline-block;
   zoom: 1;
@@ -237,7 +237,6 @@ a.z-button:not(.attachLoading) .z-label,
   overflow: hidden;
   position: relative;
   cursor: pointer;
-  margin: 0 10px;
   text-indent: 0;
   display: inline-block;
   zoom: 1;
@@ -918,8 +917,17 @@ body > div {
 .juiportlet-widget {
   margin-right: 0 !important;
 }
+.juiportlet-widget-head .view-toolbar-container {
+  right: 0 !important;
+}
+.juiportlet-widget-head .portlet-toolbar .z-label {
+  padding: 0 5px;
+}
 .latest-activity-toolbar {
   padding: 10px 5px !important;
+}
+.latest-activity-toolbar > div:first-child {
+  margin-bottom: 10px;
 }
 #filter-latest-activities-link {
   margin-left: 5px !important;
@@ -933,6 +941,9 @@ body > div {
   line-height: 1;
   float: left;
   margin: 10px 0 0 2px;
+}
+.filter-portlet-model-bar > .ui-buttonset {
+  padding-top: 0;
 }
 #more-search-link,
 #select-list-attributes-link,
@@ -959,20 +970,22 @@ body > div {
   position: relative;
   top: 6px;
 }
-.right-side-edit-view-panel {
-  float: none;
-  width: 100%;
-  position: relative;
-  right: 0;
-  top: 0;
-}
-.right-side-edit-view-panel .buffer {
-  padding-left: 0;
-}
-.right-side-edit-view-panel .buffer > div {
-  padding: 0;
-  background: none;
-}
+/*
+	.right-side-edit-view-panel{
+		float:none;
+		width:100%;
+		position:relative;
+		right:0;
+		top:0;
+		.buffer{
+			padding-left:0;
+			> div{
+				padding:0;
+				background: none;
+			}
+		}
+	}
+	*/
 .hasParallelFields > div {
   width: 100% !important;
   display: block;
@@ -986,8 +999,11 @@ body > div {
   float: none;
   padding: 0 10px;
 }
-#ConversationDetailsView .right-side-edit-view-panel {
-  display: none;
+#ConversationDetailsView {
+  /*.right-side-edit-view-panel{
+			display:none;
+		}*/
+
 }
 .model-details-summary {
   padding-left: 65px;
@@ -1022,7 +1038,7 @@ div:not(#MashableInboxActionBarForViews) .toolbar-mbmenu .options-menu > li > a 
 }
 div:not(#LeaderboardView) .toolbar-mbmenu .options-menu > li > a:after,
 div:not(#MashableInboxActionBarForViews) .toolbar-mbmenu .options-menu > li > a:after {
-  content: "n";
+  content: "{";
   font-weight: normal;
   font-size: 24px;
   font-family: "ZurmoGamificationSymblyReguRg";

@@ -92,5 +92,15 @@
         {
             return self::RIGHT_ACCESS_IMPORT;
         }
+
+        protected static function getSingularModuleLabel($language)
+        {
+            return Zurmo::t('ImportModule', 'Import', array(), null, $language);
+        }
+
+        protected static function getPluralModuleLabel($language)
+        {
+            return Zurmo::t('ImportModule', 'Imports', array(), null, $language);
+        }
     }
 ?>

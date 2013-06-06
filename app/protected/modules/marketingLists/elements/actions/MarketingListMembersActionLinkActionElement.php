@@ -38,7 +38,7 @@
     {
         protected function resolveAdditionalQueryStringData()
         {
-            return '&redirectUrl=' . Yii::app()->request->getUrl();
+            return '&redirectUrl=' . $this->getRedirectUrl();
         }
     }
 ?>

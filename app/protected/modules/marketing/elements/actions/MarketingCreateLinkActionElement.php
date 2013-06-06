@@ -61,6 +61,12 @@
                                  'url'     => Yii::app()->createUrl('emailTemplates/default/create',
                                               array('type' => EmailTemplate::TYPE_CONTACT)));
             }
+            if (RightsUtil::doesUserHaveAllowByRightName('CampaignsModule', CampaignsModule::getCreateRight(),
+                Yii::app()->user->userModel))
+            {
+                $items[] = array('label'   => Zurmo::t('CampaignsModule', 'Create Campaign'),
+                                 'url'     => Yii::app()->createUrl('campaigns/default/create'));
+            }
             if (!empty($items))
             {
                 $menuItems = array( 'label' => $this->getLabel(),
@@ -69,7 +75,7 @@
                 $cClipWidget = new CClipWidget();
                 $cClipWidget->beginClip("ActionMenu");
                 $cClipWidget->widget('application.core.widgets.MbMenu', array(
-                    'htmlOptions' => array('id' => 'MashableInboxCreateDropdown'),
+                    'htmlOptions' => array('id' => get_class($this)),
                     'items'       => array($menuItems),
                 ));
                 $cClipWidget->endClip();

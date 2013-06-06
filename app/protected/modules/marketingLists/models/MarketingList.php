@@ -62,13 +62,18 @@
             }
         }
 
+        protected static function getLabel($language = null)
+        {
+            return Zurmo::t('MarketingListsModule', 'Marketing List', array(), null, $language);
+        }
+
         /**
          * Returns the display name for plural of the model class.
          * @return dynamic label name based on module.
          */
         protected static function getPluralLabel($language = null)
         {
-            return 'MarketingListsModulePluralLabel';
+            return Zurmo::t('MarketingListsModule', 'Marketing Lists', array(), null, $language);
         }
 
         public static function canSaveMetadata()
@@ -90,25 +95,30 @@
                     'description',
                     'fromName',
                     'fromAddress',
+                    'anyoneCanSubscribe',
                 ),
                 'relations' => array(
-                    'marketingListMembers'         => array(RedBeanModel::HAS_MANY,   'MarketingListMember'),
-                    'autoresponders'               => array(RedBeanModel::HAS_MANY,   'Autoresponder'),
+                    'marketingListMembers'  => array(RedBeanModel::HAS_MANY,   'MarketingListMember', RedBeanModel::OWNED),
+                    'autoresponders'        => array(RedBeanModel::HAS_MANY,   'Autoresponder', RedBeanModel::OWNED),
                 ),
                 'rules' => array(
-                    array('name',          'required'),
-                    array('name',          'type',    'type' => 'string'),
-                    array('name',          'length',  'min'  => 3, 'max' => 64),
-                    array('description',   'type',    'type' => 'string'),
-                    array('fromName',      'type', 'type' => 'string'),
-                    array('fromName',      'length',  'min'  => 3, 'max' => 64),
-                    array('fromAddress',   'type', 'type' => 'string'),
-                    array('fromAddress',   'length',  'min'  => 6, 'max' => 64),
-                    array('fromAddress',   'email', 'except' => 'autoBuildDatabase'),
+                    array('name',               'required'),
+                    array('name',               'type',    'type' => 'string'),
+                    array('name',               'length',  'min'  => 3, 'max' => 64),
+                    array('description',        'type',    'type' => 'string'),
+                    array('fromName',           'type', 'type' => 'string'),
+                    array('fromName',           'length',  'min'  => 3, 'max' => 64),
+                    array('fromAddress',        'type', 'type' => 'string'),
+                    array('fromAddress',        'length',  'min'  => 6, 'max' => 64),
+                    array('fromAddress',        'email', 'except' => 'autoBuildDatabase'),
+                    array('anyoneCanSubscribe', 'boolean'),
+                    array('anyoneCanSubscribe', 'default', 'value' => false),
                 ),
                 'elements' => array(
-                    'description'                  => 'TextArea',
+                    'anyoneCanSubscribe' => 'CheckBox',
+                    'description'        => 'TextArea',
                 ),
+                'defaultSortAttribute' => 'name',
             );
             return $metadata;
         }
@@ -120,12 +130,157 @@
 
         public static function getGamificationRulesType()
         {
+            // TODO: @Shoaibi: Critical: Add Tests to cover:
             return 'MarketingListGamification';
         }
 
         public static function hasPermissions()
         {
+            // TODO: @Shoaibi: Critical: Add Tests to cover:
             return true;
+        }
+
+        public function addNewMember($contactId, $unsubscribed = false, $contact = null)
+        {
+            $member                     = new MarketingListMember();
+            if (empty($contact))
+            {
+                $contact = Contact::getById($contactId);
+            }
+            $member->contact            = $contact;
+            $member->unsubscribed       = $unsubscribed;
+            $member->marketingList      = $this;
+            if ($this->memberAlreadyExists($contact->id))
+            {
+                return false;
+            }
+            else
+            {
+                $saved = $member->unrestrictedSave();
+                if ($saved)
+                {
+                    return true;
+                }
+                else
+                {
+                    throw new FailedToSaveModelException();
+                }
+            }
+        }
+
+        public function memberAlreadyExists($contactId)
+        {
+            $searchAttributeData = array();
+            $searchAttributeData['clauses'] = array(
+                1 => array(
+                    'attributeName'             => 'id',
+                    'operatorType'              => 'equals',
+                    'value'                     => $this->id,
+                ),
+                2 => array(
+                    'attributeName'             => 'marketingListMembers',
+                    'relatedModelData'          => array(
+                        'attributeName'             => 'contact',
+                        'relatedAttributeName'      => 'id',
+                        'operatorType'              => 'equals',
+                        'value'                     => $contactId
+                    ),
+                ),
+            );
+            $searchAttributeData['structure'] = '(1 and 2)';
+            $joinTablesAdapter = new RedBeanModelJoinTablesQueryAdapter(get_class($this));
+            $where             = RedBeanModelDataProvider::makeWhere(get_class($this), $searchAttributeData, $joinTablesAdapter);
+            return self::getCount($joinTablesAdapter, $where, get_class($this), true);
+        }
+
+        public static function getByAnyoneCanSubscribe($anyoneCanSubscribe, $pageSize = null)
+        {
+            assert('is_int($anyoneCanSubscribe) || is_string($anyoneCanSubscribe)');
+            assert('intval($anyoneCanSubscribe) == 0 || intval($anyoneCanSubscribe) == 1');
+            $searchAttributeData = array();
+            $searchAttributeData['clauses'] = array(
+                1 => array(
+                    'attributeName'             => 'anyoneCanSubscribe',
+                    'operatorType'              => 'equals',
+                    'value'                     => intval($anyoneCanSubscribe)
+                ),
+            );
+            $searchAttributeData['structure'] = '1';
+            $joinTablesAdapter                = new RedBeanModelJoinTablesQueryAdapter(get_called_class());
+            $where = RedBeanModelDataProvider::makeWhere(get_called_class(), $searchAttributeData, $joinTablesAdapter);
+            return self::getSubset($joinTablesAdapter, null, $pageSize, $where, null);
+        }
+
+        protected static function getIdsByAnyOneCanSubscribe($anyoneCanSubscribe, $pageSize = null)
+        {
+            assert('is_int($anyoneCanSubscribe) || is_string($anyoneCanSubscribe)');
+            assert('$anyoneCanSubscribe == 0 || $anyoneCanSubscribe == 1');
+            $searchAttributeData = array();
+            $searchAttributeData['clauses'] = array(
+                1 => array(
+                    'attributeName'             => 'anyoneCanSubscribe',
+                    'operatorType'              => 'equals',
+                    'value'                     => intval($anyoneCanSubscribe)
+                ),
+            );
+            $searchAttributeData['structure'] = '1';
+            $joinTablesAdapter                = new RedBeanModelJoinTablesQueryAdapter(get_called_class());
+            $where = RedBeanModelDataProvider::makeWhere(get_called_class(), $searchAttributeData, $joinTablesAdapter);
+            return self::getSubsetIds($joinTablesAdapter, null, $pageSize, $where, null);
+        }
+
+        protected static function getIdsByUnsubscribed($contactId, $unsubscribed = 0, $pageSize = null)
+        {
+            assert('is_int($unsubscribed) || is_string($unsubscribed)');
+            assert('intval($unsubscribed) == 0 || intval($unsubscribed) == 1');
+            $searchAttributeData = array();
+            $searchAttributeData['clauses'] = array(
+                1 => array(
+                    'attributeName'             => 'marketingListMembers',
+                    'relatedModelData'          => array(
+                        'attributeName'             => 'contact',
+                        'relatedAttributeName'      => 'id',
+                        'operatorType'              => 'equals',
+                        'value'                     => intval($contactId)
+                    ),
+                ),
+                2 => array(
+                    'attributeName'             => 'marketingListMembers',
+                    'relatedModelData'          => array(
+                        'attributeName'             => 'unsubscribed',
+                        'operatorType'              => 'equals',
+                        'value'                     => intval($unsubscribed)
+                    ),
+                ),
+            );
+            $searchAttributeData['structure'] = '1 and 2';
+            $joinTablesAdapter                = new RedBeanModelJoinTablesQueryAdapter(get_called_class());
+            $where = RedBeanModelDataProvider::makeWhere(get_called_class(), $searchAttributeData, $joinTablesAdapter);
+            return self::getSubsetIds($joinTablesAdapter, null, $pageSize, $where, null);
+        }
+
+        public static function getByUnsubscribedAndAnyoneCanSubscribe($contactId, $unsubscribed = 0,
+                                                                      $anyoneCanSubscribe = 1, $pageSize = null)
+        {
+            // TODO: @Shoaibi: Critical: Add Tests to cover:
+            $marketingListModels                = array();
+            $subscribedMarketingListIds         = static::getIdsByUnsubscribed($contactId, $unsubscribed, $pageSize);
+            $anyoneCanSubscribeMarketingListIds = static::getIdsByAnyOneCanSubscribe($anyoneCanSubscribe, $pageSize);
+            $marketingListIds                   = CMap::mergeArray($subscribedMarketingListIds,
+                                                                                $anyoneCanSubscribeMarketingListIds);
+            $marketingListIds                   = array_unique($marketingListIds);
+            foreach ($marketingListIds as $marketingListId)
+            {
+                $marketingListModelArray                = array();
+                $marketingListModelArray['model']       = static::getById(intval($marketingListId));
+                $marketingListModelArray['subscribed']  = false;
+                if (in_array($marketingListId, $subscribedMarketingListIds))
+                {
+                    $marketingListModelArray['subscribed']  = true;
+                }
+                $marketingListModels[]                  = $marketingListModelArray;
+            }
+            return $marketingListModels;
         }
     }
 ?>

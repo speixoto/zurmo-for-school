@@ -236,8 +236,10 @@
                 'timeZone'             => 'America/Chicago',
             ),
             'request' => array(
+                'class' => 'application.core.components.ZurmoHttpRequest',
                 'enableCsrfValidation' => true,
                 'enableCookieValidation' => false, //keep off until we can fix it on linux/windows servers.
+                'tokenEnabledRoutes' => array('contacts/external/'),
             ),
             'statePersister' => array(
                 'class'     => 'application.modules.zurmo.components.ZurmoDbStatePersister',
@@ -327,13 +329,15 @@
             'application.modules.install.utils.InstallUtil',
             'application.modules.api.components.ApiRequest',
             'application.extensions.wideImage.WideImage',
+            'application.extensions.phaActiveColumn.*',
         ),
 
         'modules' => array(
             'accounts',
             'activities',
             'api',
-           // 'campaigns',
+            'autoresponders',
+            'campaigns',
             'comments',
             'configuration',
             'contacts',
@@ -357,10 +361,13 @@
             'notifications',
             'opportunities',
             'reports',
+            'products',
+            'productTemplates',
             'rssReader',
             'workflows',
             'socialItems',
             'tasks',
+            'tracking',
             'zurmo' => array(
                 'modules' => array(
                     'groups' => array('class' => 'zurmo.modules.GroupsModule'),
@@ -369,12 +376,13 @@
             ),
             'users',
             'maps',
+            'contactWebForms',
         ),
 
         'params' => array(
-            'redBeanVersion'    => '3.2',
-            'yiiVersion'        => '1.1.13',
-            'memcacheServers'   => $memcacheServers,
+            'redBeanVersion'     => '3.2',
+            'yiiVersion'         => '1.1.13',
+            'memcacheServers'    => $memcacheServers,
             'supportedLanguages' => array(
                 'en' => 'English',
                 'es' => 'Spanish',

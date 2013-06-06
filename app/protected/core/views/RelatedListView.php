@@ -37,11 +37,17 @@
     /**
      * The base View for a module's related list view.
      */
-    abstract class RelatedListView extends ListView implements PortletViewInterface
+    abstract class RelatedListView extends ListView implements PortletViewInterface, RelatedPortletViewInterface
     {
         protected $params;
         protected $viewData;
         protected $uniqueLayoutId;
+
+        /**
+         * Override so viewToolbar renders during renderPortletHeadContent instead of renderContent
+         * @var bool
+         */
+        protected $renderViewToolBarDuringRenderContent = false;
 
         /**
          * Signal to use ExtendedGridView
@@ -72,6 +78,11 @@
             $this->gridId            = 'list-view';
             $this->controllerId      = $this->resolveControllerId();
             $this->moduleId          = $this->resolveModuleId();
+        }
+
+        public function getPortletParams()
+        {
+            return array();
         }
 
         protected function getShowTableOnEmpty()
@@ -129,6 +140,11 @@
                                                                         'pageSize' => $pageSize,
                                                                     )
                                                                 ));
+        }
+
+        public function renderPortletHeadContent()
+        {
+            return $this->renderViewToolBar();
         }
 
         public function isUniqueToAPage()
@@ -236,7 +252,7 @@
         /**
          * Controller Id for the link to models from rows in the grid view.
          */
-        private function resolveControllerId()
+        protected function resolveControllerId()
         {
             return 'default';
         }
@@ -269,5 +285,15 @@
         }
 
         abstract protected function getRelationAttributeName();
+
+        public static function getAllowedOnPortletViewClassNames()
+        {
+            return array();
+        }
+
+        public static function allowMultiplePlacement()
+        {
+            return false;
+        }
     }
 ?>

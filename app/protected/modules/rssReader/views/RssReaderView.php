@@ -55,6 +55,11 @@
             $this->uniqueLayoutId = $uniqueLayoutId;
         }
 
+        public function getPortletParams()
+        {
+            return array();
+        }
+
         public function renderContent()
         {
             $cClipWidget = new CClipWidget();
@@ -66,6 +71,11 @@
             ));
             $cClipWidget->endClip();
             return $cClipWidget->getController()->clips['RssReader'];
+        }
+
+        public function renderPortletHeadContent()
+        {
+            return null;
         }
 
         public static function getDefaultMetadata()

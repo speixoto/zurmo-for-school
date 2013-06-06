@@ -75,7 +75,7 @@
                                                 self::$testMessageSource,
                                                 self::$testMessageNewTranslation
             );
-
+            ZurmoMessageSource::clearCache(self::$testCategory, self::$testLanguageCode);
             $messageSource = new ZurmoMessageSource();
 
             $translation = $messageSource->translate(
@@ -98,7 +98,7 @@
                                             self::$testMessageSource,
                                             self::$testMessageUpdatedTranslation
             );
-
+            ZurmoMessageSource::clearCache(self::$testCategory, self::$testLanguageCode);
             $messageSource = new ZurmoMessageSource();
 
             $translation = $messageSource->translate(

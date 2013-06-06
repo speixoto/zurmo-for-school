@@ -51,11 +51,29 @@
             return null;
         }
 
+        /**
+         * Returns value of $array[$element] if $element is defined, otherwise if not defined will return 0
+         */
+        public static function getArrayValueAndResolveNullAsZero($array, $element)
+        {
+            if (isset($array[$element]))
+            {
+                return $array[$element];
+            }
+            return 0;
+        }
+
+        /**
+         * @param $array
+         * @param $element
+         * @return null
+         * @throws NotFoundException
+         */
         public static function getArrayValueWithExceptionIfNotFound($array, $element)
         {
             if (!array_key_exists($element, $array))
             {
-                throw new NotSupportedException($element . " does not exist.");
+                throw new NotFoundException($element . " does not exist.");
             }
             else
             {

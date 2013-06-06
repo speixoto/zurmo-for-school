@@ -39,7 +39,8 @@
      */
     abstract class LatestActivitiesForPortletView extends ConfigurableMetadataView
                                                                   implements PortletViewInterface,
-                                                                        UserPersistentSettingsCleanupForPortletInterface
+                                                                        UserPersistentSettingsCleanupForPortletInterface,
+                                                                        RelatedPortletViewInterface
     {
         /**
          * Portlet parameters passed in from the portlet.
@@ -81,6 +82,11 @@
             $this->uniqueLayoutId = $uniqueLayoutId;
         }
 
+        public function getPortletParams()
+        {
+            return array();
+        }
+
         public static function getDefaultMetadata()
         {
             $metadata = array(
@@ -99,9 +105,7 @@
 
         public function renderContent()
         {
-            $content  = $this->renderActionContent();
-            $content .= $this->renderLatestActivitiesContent();
-            return $content;
+            return $this->renderLatestActivitiesContent();
         }
 
         protected function renderLatestActivitiesContent()
@@ -332,6 +336,21 @@
                                                                                                 null);
                 }
             }
+        }
+
+        public function renderPortletHeadContent()
+        {
+            return $this->renderActionContent();
+        }
+
+        public static function getAllowedOnPortletViewClassNames()
+        {
+            return array();
+        }
+
+        public static function allowMultiplePlacement()
+        {
+            return false;
         }
     }
 ?>

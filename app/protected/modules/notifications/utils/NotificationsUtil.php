@@ -39,16 +39,11 @@
      */
     class NotificationsUtil
     {
-        protected static function getEmailSubject()
-        {
-            return Zurmo::t('NotificationsModule', 'You have a new notification');
-        }
-
         /**
          * Given a NotificationMessage and a NotificationRule submit and process a notification
-         * to one or more users.
          * @param NotificationMessage $message
          * @param NotificationRules $rules
+         * @throws NotSupportedException
          */
         public static function submit(NotificationMessage $message, NotificationRules $rules)
         {
@@ -62,85 +57,6 @@
                                         $users,
                                         $rules->allowDuplicates(),
                                         $rules->isCritical());
-        }
-
-        protected static function processNotification(NotificationMessage $message, $type, $users,
-                                                      $allowDuplicates, $isCritical)
-        {
-            assert('is_string($type) && $type != ""');
-            assert('is_array($users) && count($users) > 0');
-            assert('is_bool($allowDuplicates)');
-            assert('is_bool($isCritical)');
-            $notifications = array();
-            foreach ($users as $user)
-            {
-                //todo: !!!process duplication check
-                if ($allowDuplicates || Notification::getCountByTypeAndUser($type, $user) == 0)
-                {
-                    $notification                      = new Notification();
-                    $notification->owner               = $user;
-                    $notification->type                = $type;
-                    $notification->notificationMessage = $message;
-                    $saved                             = $notification->save();
-                    if (!$saved)
-                    {
-                        throw new NotSupportedException();
-                    }
-                    $notifications[] = $notification;
-                }
-            }
-            if (static::resolveShouldSendEmailIfCritical() && $isCritical)
-            {
-                foreach ($notifications as $notification)
-                {
-                    static::sendEmail($notification);
-                }
-            }
-        }
-
-        protected static function resolveShouldSendEmailIfCritical()
-        {
-            return true;
-        }
-
-        protected static function sendEmail(Notification $notification)
-        {
-            if ($notification->owner->primaryEmail->emailAddress !== null &&
-                !UserConfigurationFormAdapter::resolveAndGetValue($notification->owner, 'turnOffEmailNotifications'))
-            {
-                $userToSendMessagesFrom     = Yii::app()->emailHelper->getUserToSendNotificationsAs();
-                $emailMessage               = new EmailMessage();
-                $emailMessage->owner        = Yii::app()->user->userModel;
-                $emailMessage->subject      = static::getEmailSubject();
-                $emailContent               = new EmailMessageContent();
-                $emailContent->textContent  = EmailNotificationUtil::
-                                                resolveNotificationTextTemplate(
-                                                $notification->notificationMessage->textContent);
-                $emailContent->htmlContent  = EmailNotificationUtil::
-                                                resolveNotificationHtmlTemplate(
-                                                $notification->notificationMessage->htmlContent);
-                $emailMessage->content      = $emailContent;
-                $sender                     = new EmailMessageSender();
-                $sender->fromAddress        = Yii::app()->emailHelper->resolveFromAddressByUser($userToSendMessagesFrom);
-                $sender->fromName           = strval($userToSendMessagesFrom);
-                $emailMessage->sender       = $sender;
-                $recipient                  = new EmailMessageRecipient();
-                $recipient->toAddress       = $notification->owner->primaryEmail->emailAddress;
-                $recipient->toName          = strval($notification->owner);
-                $recipient->type            = EmailMessageRecipient::TYPE_TO;
-                $recipient->personOrAccount = $notification->owner;
-                $emailMessage->recipients->add($recipient);
-                $box                        = EmailBox::resolveAndGetByName(EmailBox::NOTIFICATIONS_NAME);
-                $emailMessage->folder       = EmailFolder::getByBoxAndType($box, EmailFolder::TYPE_DRAFT);
-                try
-                {
-                    Yii::app()->emailHelper->sendImmediately($emailMessage);
-                }
-                catch (CException $e)
-                {
-                    //Not sure what to do yet when catching an exception here. Currently ignoring gracefully.
-                }
-            }
         }
 
         /**
@@ -234,7 +150,93 @@
                                                     "last-comment");
                 }
             }
+            $content .= ZurmoHtml::tag('span', array('class' => 'list-item-details'),
+                                       DateTimeUtil::getTimeSinceDisplayContent($notification->createdDateTime));
             return $content;
+        }
+
+        protected static function getEmailSubject()
+        {
+            return Zurmo::t('NotificationsModule', 'You have a new notification');
+        }
+
+        protected static function processNotification(NotificationMessage $message, $type, $users,
+                                                      $allowDuplicates, $isCritical)
+        {
+            assert('is_string($type) && $type != ""');
+            assert('is_array($users) && count($users) > 0');
+            assert('is_bool($allowDuplicates)');
+            assert('is_bool($isCritical)');
+            $notifications = array();
+            foreach ($users as $user)
+            {
+                //todo: !!!process duplication check
+                if ($allowDuplicates || Notification::getCountByTypeAndUser($type, $user) == 0)
+                {
+                    $notification                      = new Notification();
+                    $notification->owner               = $user;
+                    $notification->type                = $type;
+                    $notification->notificationMessage = $message;
+                    $saved                             = $notification->save();
+                    if (!$saved)
+                    {
+                        throw new NotSupportedException();
+                    }
+                    $notifications[] = $notification;
+                }
+            }
+            if (static::resolveShouldSendEmailIfCritical() && $isCritical)
+            {
+                foreach ($notifications as $notification)
+                {
+                    static::sendEmail($notification);
+                }
+            }
+        }
+
+        protected static function resolveShouldSendEmailIfCritical()
+        {
+            return true;
+        }
+
+        protected static function sendEmail(Notification $notification)
+        {
+            if ($notification->owner->primaryEmail->emailAddress !== null &&
+                !UserConfigurationFormAdapter::resolveAndGetValue($notification->owner, 'turnOffEmailNotifications'))
+            {
+                $userToSendMessagesFrom     = BaseJobControlUserConfigUtil::getUserToRunAs();
+                $emailMessage               = new EmailMessage();
+                $emailMessage->owner        = Yii::app()->user->userModel;
+                $emailMessage->subject      = strval($notification);
+                $emailContent               = new EmailMessageContent();
+                $emailContent->textContent  = EmailNotificationUtil::
+                                                resolveNotificationTextTemplate(
+                                                $notification->notificationMessage->textContent);
+                $emailContent->htmlContent  = EmailNotificationUtil::
+                                                resolveNotificationHtmlTemplate(
+                                                $notification->notificationMessage->htmlContent);
+                $emailMessage->content      = $emailContent;
+                $sender                     = new EmailMessageSender();
+                $sender->fromAddress        = Yii::app()->emailHelper->resolveFromAddressByUser($userToSendMessagesFrom);
+                $sender->fromName           = strval($userToSendMessagesFrom);
+                $emailMessage->sender       = $sender;
+                $recipient                  = new EmailMessageRecipient();
+                $recipient->toAddress       = $notification->owner->primaryEmail->emailAddress;
+                $recipient->toName          = strval($notification->owner);
+                $recipient->type            = EmailMessageRecipient::TYPE_TO;
+                $recipient->personOrAccount = $notification->owner;
+                $emailMessage->recipients->add($recipient);
+                $box                        = EmailBox::resolveAndGetByName(EmailBox::NOTIFICATIONS_NAME);
+                $emailMessage->folder       = EmailFolder::getByBoxAndType($box, EmailFolder::TYPE_DRAFT);
+                try
+                {
+                    Yii::app()->emailHelper->sendImmediately($emailMessage);
+                }
+                catch (CException $e)
+                {
+                    //Not sure what to do yet when catching an exception here. Currently ignoring gracefully.
+                }
+            }
         }
     }
 ?>

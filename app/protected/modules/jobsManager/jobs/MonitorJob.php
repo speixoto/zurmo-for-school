@@ -71,12 +71,19 @@
         public function run()
         {
             $jobsInProcess = static::getNonMonitorJobsInProcessModels();
+            $jobsAreStuck  = false;
+            $jobTitleLabels = array();
             foreach ($jobsInProcess as $jobInProcess)
             {
-                if (JobsManagerUtil::isJobInProcessOverThreashold($jobInProcess, $jobInProcess->type))
+                if (JobsManagerUtil::isJobInProcessOverThreshold($jobInProcess, $jobInProcess->type))
                 {
-                    self::makeJobStuckNotification();
+                    $jobTitleLabels[] = strval($jobInProcess);
+                    $jobsAreStuck     = true;
                 }
+            }
+            if ($jobsAreStuck)
+            {
+                self::makeJobStuckNotification($jobTitleLabels);
             }
             $jobLogs = static::getNonMonitorJobLogsUnprocessed();
             foreach ($jobLogs as $jobLog)
@@ -134,12 +141,33 @@
             return JobLog::getSubset($joinTablesAdapter, null, null, $where, null);
         }
 
-        public static function makeJobStuckNotification()
+        /**
+         * @param array $jobTitleLabels
+         */
+        public static function makeJobStuckNotification(array $jobTitleLabels)
         {
-            $message                    = new NotificationMessage();
-            $message->textContent       = Zurmo::t('JobsManagerModule', 'The system has detected there are jobs that are stuck.');
-            $message->htmlContent       = Zurmo::t('JobsManagerModule', 'The system has detected there are jobs that are stuck.');
-            $rules                      = new StuckJobsNotificationRules();
+            $message              = new NotificationMessage();
+            $prefixContent        = Zurmo::t('JobsManagerModule', 'Stuck Job| Stuck Jobs', array(count($jobTitleLabels)));
+            $message->textContent = $prefixContent;
+            $message->htmlContent = $prefixContent;
+            $textContent          = null;
+            $htmlContent          = null;
+            foreach ($jobTitleLabels as $label)
+            {
+                if ($textContent != null)
+                {
+                    $textContent .= ', ';
+                }
+                if ($htmlContent != null)
+                {
+                    $htmlContent .= ', ';
+                }
+                $textContent .= $label;
+                $htmlContent .= $label;
+            }
+            $message->textContent .= ': ' . $textContent;
+            $message->htmlContent .= ': ' . $htmlContent;
+            $rules = new StuckJobsNotificationRules();
             NotificationsUtil::submit($message, $rules);
         }
     }

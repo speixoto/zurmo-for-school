@@ -36,6 +36,8 @@
 
     class MarketingListDefaultControllerSuperUserWalkthroughTest extends ZurmoWalkthroughBaseTest
     {
+        protected $user;
+
         public static function setUpBeforeClass()
         {
             parent::setUpBeforeClass();
@@ -43,17 +45,26 @@
             $super = User::getByUsername('super');
             Yii::app()->user->userModel = $super;
 
-            MarketingListTestHelper::createMarketingListByName('MarketingListName', 'MarketingList Description');
-            MarketingListTestHelper::createMarketingListByName('MarketingListName2', 'MarketingList Description2');
+            MarketingListTestHelper::createMarketingListByName('MarketingListName', 'MarketingList Description',
+                                                                                            'first', 'first@zurmo.com');
+            MarketingListTestHelper::createMarketingListByName('MarketingListName2', 'MarketingList Description2',
+                                                                                        'second', 'second@zurmo.com');
+            ReadPermissionsOptimizationUtil::rebuild();
+        }
+
+        public function setUp()
+        {
+            parent::setUp();
+            $this->user = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
+            Yii::app()->user->userModel = $this->user;
         }
 
         public function testSuperUserAllDefaultControllerActions()
         {
-            $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
-
             // Test all default controller actions that do not require any POST/GET variables to be passed.
             $this->runControllerWithNoExceptionsAndGetContent('marketingLists/default');
             $this->runControllerWithNoExceptionsAndGetContent('marketingLists/default/index');
+            $this->runControllerWithNoExceptionsAndGetContent('marketingLists/default/list');
             $this->runControllerWithNoExceptionsAndGetContent('marketingLists/default/create');
         }
 
@@ -62,7 +73,6 @@
          */
         public function testSuperUserListAction()
         {
-            $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
             $content = $this->runControllerWithNoExceptionsAndGetContent('marketingLists/default/list');
             $this->assertTrue(strpos($content, 'anyMixedAttributes') !== false);
             $this->assertTrue(strpos($content, 'MarketingListName') !== false);
@@ -73,7 +83,100 @@
             $this->setGetArray(array('ajax' => 'list-view'));
             $content = $this->runControllerWithNoExceptionsAndGetContent('marketingLists/default/list');
             $this->assertTrue(strpos($content, 'anyMixedAttributes') === false);
-            $this->resetGetArray();
+        }
+
+        /**
+         * @depends testSuperUserAllDefaultControllerActions
+         */
+        public function testSuperUserListSearchAction()
+        {
+            StickyReportUtil::clearDataByKey('MarketingListsSearchForm');
+            $this->setGetArray(array(
+                'MarketingListsSearchForm' => array(
+                    'anyMixedAttributesScope'    => array('All'),
+                    'anyMixedAttributes'         => 'xyz',
+                ) ,
+            ));
+            $content    = $this->runControllerWithNoExceptionsAndGetContent('marketingLists/default/list');
+            $this->assertTrue(strpos($content, 'No results found.') !== false);
+
+            StickyReportUtil::clearDataByKey('MarketingListsSearchForm');
+            $this->setGetArray(array(
+                'MarketingListsSearchForm' => array(
+                    'anyMixedAttributesScope'    => array('All'),
+                    'anyMixedAttributes'         => 'Marketing',
+                ) ,
+            ));
+            $content    = $this->runControllerWithNoExceptionsAndGetContent('marketingLists/default/list');
+            $this->assertTrue(strpos($content, '2 result(s)') !== false);
+            $this->assertEquals(2, substr_count($content, 'MarketingListName'));
+            $this->assertTrue(strpos($content, 'Clark Kent') !== false);
+
+            StickyReportUtil::clearDataByKey('MarketingListsSearchForm');
+            $this->setGetArray(array(
+                'MarketingListsSearchForm' => array(
+                    'anyMixedAttributesScope'    => array('All'),
+                    'anyMixedAttributes'         => 'Marketing',
+                    'selectedListAttributes'     => array('name', 'createdByUser', 'fromAddress', 'fromName'),
+                ) ,
+            ));
+            $content    = $this->runControllerWithNoExceptionsAndGetContent('marketingLists/default/list');
+            $this->assertTrue(strpos($content, '2 result(s)') !== false);
+            $this->assertEquals(2, substr_count($content, 'MarketingListName'));
+            $this->assertTrue(strpos($content, 'Clark Kent') !== false);
+            $this->assertEquals(2, substr_count($content, 'Clark Kent'));
+            $this->assertTrue(strpos($content, '@zurmo.com') !== false);
+            $this->assertEquals(4, substr_count($content, '@zurmo.com'));
+            $this->assertEquals(2, substr_count($content, 'first@zurmo.com'));
+            $this->assertEquals(2, substr_count($content, 'second@zurmo.com'));
+
+            StickyReportUtil::clearDataByKey('MarketingListsSearchForm');
+            $this->setGetArray(array(
+                'clearingSearch'            =>  1,
+                'MarketingListsSearchForm'  => array(
+                    'anyMixedAttributesScope'    => array('All'),
+                    'anyMixedAttributes'         => '',
+                    'selectedListAttributes'     => array('name', 'createdByUser', 'fromAddress', 'fromName'),
+                    'dynamicClauses'             => array(array(
+                        'attributeIndexOrDerivedType'   => 'fromAddress',
+                        'structurePosition'             => 1,
+                        'fromAddress'                   => 'second@zurmo.com',
+                    )),
+                    'dynamicStructure'          => '1',
+                ) ,
+            ));
+            $content    = $this->runControllerWithNoExceptionsAndGetContent('marketingLists/default/list');
+            $this->assertTrue(strpos($content, '1 result(s)') !== false);
+            $this->assertEquals(1, substr_count($content, 'MarketingListName2'));
+            $this->assertTrue(strpos($content, 'Clark Kent') !== false);
+            $this->assertEquals(1, substr_count($content, 'Clark Kent'));
+            $this->assertTrue(strpos($content, '@zurmo.com') !== false);
+            $this->assertEquals(2, substr_count($content, '@zurmo.com'));
+            $this->assertEquals(2, substr_count($content, 'second@zurmo.com'));
+
+            StickyReportUtil::clearDataByKey('MarketingListsSearchForm');
+            $this->setGetArray(array(
+                'clearingSearch'            =>  1,
+                'MarketingListsSearchForm'  =>  array(
+                    'anyMixedAttributesScope'    => array('All'),
+                    'anyMixedAttributes'         => '',
+                    'selectedListAttributes'     => array('name', 'createdByUser', 'fromAddress', 'fromName'),
+                    'dynamicClauses'             => array(array(
+                        'attributeIndexOrDerivedType'   => 'fromName',
+                        'structurePosition'             => 1,
+                        'fromName'                   => 'first',
+                    )),
+                    'dynamicStructure'          => '1',
+                ) ,
+            ));
+            $content    = $this->runControllerWithNoExceptionsAndGetContent('marketingLists/default/list');
+            $this->assertTrue(strpos($content, '1 result(s)') !== false);
+            $this->assertEquals(1, substr_count($content, 'MarketingListName'));
+            $this->assertTrue(strpos($content, 'Clark Kent') !== false);
+            $this->assertEquals(1, substr_count($content, 'Clark Kent'));
+            $this->assertTrue(strpos($content, '@zurmo.com') !== false);
+            $this->assertEquals(2, substr_count($content, '@zurmo.com'));
+            $this->assertEquals(2, substr_count($content, 'first@zurmo.com'));
         }
 
         /**
@@ -82,8 +185,6 @@
         public function testSuperUserCreateAction()
         {
             // TODO: @Shoaibi: Low: Add test with different permissions
-            $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
-
             $content = $this->runControllerWithNoExceptionsAndGetContent('marketingLists/default/create');
             $this->assertTrue(strpos($content, 'Create Marketing List') !== false);
             $this->assertTrue(strpos($content, '<label for="MarketingList_name" class="required">Name ' .
@@ -121,7 +222,7 @@
             $this->assertEquals('sales@zurmo.com', $marketingList[0]->fromAddress);
             $this->assertEquals('Zurmo Sales', $marketingList[0]->fromName);
             $this->assertEquals('New MarketingList Description using Create', $marketingList[0]->description);
-            $this->assertTrue  ($marketingList[0]->owner == $super);
+            $this->assertTrue  ($marketingList[0]->owner == $this->user);
             $compareRedirectUrl = Yii::app()->createUrl('marketingLists/default/details', array('id' => $marketingList[0]->id));
             $this->assertEquals($compareRedirectUrl, $redirectUrl);
             $marketingList = MarketingList::getAll();
@@ -130,9 +231,8 @@
 
         public function testSuperUserDetailsAction()
         {
-            $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
-            $marketingListNameId = self::getModelIdByModelNameAndName ('MarketingList', 'MarketingListName2');
-            $this->setGetArray(array('id' => $marketingListNameId));
+            $marketingListId = self::getModelIdByModelNameAndName ('MarketingList', 'MarketingListName2');
+            $this->setGetArray(array('id' => $marketingListId));
             $content = $this->runControllerWithNoExceptionsAndGetContent('marketingLists/default/details');
             $this->assertTrue(strpos($content, 'MarketingListName2') !== false);
             $this->assertEquals(3, substr_count($content, 'MarketingListName2'));
@@ -145,10 +245,10 @@
             $this->assertTrue(strpos($content, '<span>Options</span></a>') !== false);
             $this->assertTrue(strpos($content, '<span>Edit</span></a></li>') !== false);
             $this->assertTrue(strpos($content, '<span>Delete</span></a></li>') !== false);
-            $this->assertTrue(strpos($content, '<h3>Members</h3></div>') !== false);
-            $this->assertTrue(strpos($content, '<span>Add Member</span></a>') !== false);
+            $this->assertTrue(strpos($content, '<h3>Contacts/Leads</h3>') !== false);
+            $this->assertTrue(strpos($content, '<span>Add Contact/Lead</span></a>') !== false);
             $this->assertTrue(strpos($content, 'From Contacts/Leads</label>') !== false);
-            $this->assertTrue(strpos($content, 'From a Report</label>') !== false);
+            $this->assertTrue(strpos($content, 'From Report</label>') !== false);
             $this->assertTrue(strpos($content, '<span>Subscribe</span></a>') !== false);
             $this->assertTrue(strpos($content, '<span>Unsubscribe</span></a>') !== false);
             $this->assertTrue(strpos($content, '<span>Delete</span></a>') !== false);
@@ -159,9 +259,8 @@
          */
         public function testSuperUserEditAction()
         {
-            $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
-            $marketingListNameId = self::getModelIdByModelNameAndName ('MarketingList', 'New MarketingListName using Create');
-            $this->setGetArray(array('id' => $marketingListNameId));
+            $marketingListId = self::getModelIdByModelNameAndName ('MarketingList', 'New MarketingListName using Create');
+            $this->setGetArray(array('id' => $marketingListId));
             $content = $this->runControllerWithNoExceptionsAndGetContent('marketingLists/default/edit');
             $this->assertTrue(strpos($content, 'New MarketingListName using Create') !== false);
             $this->assertEquals(2, substr_count($content, 'New MarketingListName using Create'));
@@ -194,11 +293,10 @@
          */
         public function testSuperUserDeleteAction()
         {
-            $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
-            $marketingListNameId = self::getModelIdByModelNameAndName ('MarketingList', 'New MarketingListName');
+            $marketingListId = self::getModelIdByModelNameAndName ('MarketingList', 'New MarketingListName');
 
             // Delete an marketingList.
-            $this->setGetArray(array('id' => $marketingListNameId));
+            $this->setGetArray(array('id' => $marketingListId));
             $this->resetPostArray();
             $redirectUrl = $this->runControllerWithRedirectExceptionAndGetUrl('marketingLists/default/delete');
             $compareRedirectUrl = Yii::app()->createUrl('marketingLists/default/index');

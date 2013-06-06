@@ -100,9 +100,18 @@
 
         protected function renderItemLabel()
         {
-            $type       = ($this->selectedRecordCount > 1)? 'Plural' : 'Singular';
-            $className  = ($this->useModuleClassNameForItemLabel) ? $this->moduleClassName : $this->modelClassName;
-            $method     = ($this->useModuleClassNameForItemLabel) ? 'getModuleLabelByTypeAndLanguage' : 'getModelLabelByTypeAndLanguage';
+            $type       = 'Singular';
+            $className  = $this->moduleClassName;
+            $method     = 'getModuleLabelByTypeAndLanguage';
+            if ($this->selectedRecordCount > 1)
+            {
+                $type       = 'Plural';
+            }
+            if (!$this->useModuleClassNameForItemLabel)
+            {
+                $className  = $this->modelClassName;
+                $method     = 'getModelLabelByTypeAndLanguage';
+            }
             $label      = $className::$method($type);
             return $label;
         }

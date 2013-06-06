@@ -36,13 +36,20 @@
 
     class FooterView extends View
     {
+        protected $showUserInterfaceTypeSelector;
+
+        public function __construct($showUserInterfaceTypeSelector = true)
+        {
+            $this->showUserInterfaceTypeSelector = $showUserInterfaceTypeSelector;
+        }
+
         protected function renderContent()
         {
             //Do not remove the Zurmo logo or Zurmo Copyright notice.
             //The interactive user interfaces in original and modified versions
             //of this program must display Appropriate Legal Notices, as required under
-            //Section 5 of the GNU General Public License version 3.
-            //In accordance with Section 7(b) of the GNU General Public License version 3,
+            //Section 5 of the GNU Affero General Public License version 3.
+            //In accordance with Section 7(b) of the GNU Affero General Public License version 3,
             //these Appropriate Legal Notices must retain the display of the Zurmo
             //logo and Zurmo copyright notice. If the display of the logo is not reasonably
             //feasible for technical reasons, the Appropriate Legal Notices must display the words
@@ -50,7 +57,12 @@
             $userInterfaceTypeSelectorHtml = $this->renderUserInterfaceTypeSelector();
             $copyrightHtml = '<a href="http://www.zurmo.com" id="credit-link" class="clearfix"><span>' .
                              'Copyright &#169; Zurmo Inc., 2013. All rights reserved.</span></a>';
-            return $copyrightHtml . $userInterfaceTypeSelectorHtml;
+            if ($this->showUserInterfaceTypeSelector)
+            {
+                $userInterfaceTypeSelectorHtml = $this->renderUserInterfaceTypeSelector();
+                return $copyrightHtml . $userInterfaceTypeSelectorHtml;
+            }
+            return $copyrightHtml;
         }
 
         /**

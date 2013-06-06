@@ -56,6 +56,7 @@
                                                                     'Test Name', 'Test HtmlContent', 'Test TextContent');
             EmailTemplateTestHelper::createEmailTemplateByName(EmailTemplate::TYPE_CONTACT, 'Test Subject1', 'Contact',
                                                                     'Test Name1', 'Test HtmlContent1', 'Test TextContent1');
+            ReadPermissionsOptimizationUtil::rebuild();
         }
 
         public function setUp()
@@ -246,13 +247,51 @@
                                     'type' => EmailTemplate::TYPE_CONTACT,
                                     'htmlContent' => 'New HTML Content 00',
                                     'textContent' => 'New Text Content 00')));
-            $redirectUrl = $this->runControllerWithRedirectExceptionAndGetUrl('emailTemplates/default/edit');
+            $this->runControllerWithRedirectExceptionAndGetUrl('emailTemplates/default/edit');
             $emailTemplate = EmailTemplate::getById($emailTemplateId);
             $this->assertEquals('New Subject 00', $emailTemplate->subject);
             $this->assertEquals('New Test Email Template 00', $emailTemplate->name);
             $this->assertEquals(EmailTemplate::TYPE_CONTACT, $emailTemplate->type);
             $this->assertEquals('New Text Content 00', $emailTemplate->textContent);
             $this->assertEquals('New HTML Content 00', $emailTemplate->htmlContent);
+
+            // Now test same with file attachment
+            $fileNames              = array('testImage.png', 'testZip.zip', 'testPDF.pdf');
+            $files                  = array();
+            $filesIds               = array();
+            foreach ($fileNames as $index => $fileName)
+            {
+                $file                       = ZurmoTestHelper::createFileModel($fileName);
+                $files[$index]['name']      = $fileName;
+                $files[$index]['type']      = $file->type;
+                $files[$index]['size']      = $file->size;
+                $files[$index]['contents']  = $file->fileContent->content;
+                $filesIds[]                 = $file->id;
+            }
+            $this->setPostArray(array('EmailTemplate' => array(
+                                            'name' => 'New Test Email Template 00',
+                                            'subject' => 'New Subject 00',
+                                            'type' => EmailTemplate::TYPE_CONTACT,
+                                            'htmlContent' => 'New HTML Content 00',
+                                            'textContent' => 'New Text Content 00'),
+                                    'filesIds'      => $filesIds,
+                                    ));
+            $this->runControllerWithRedirectExceptionAndGetUrl('emailTemplates/default/edit');
+            $emailTemplate = EmailTemplate::getById($emailTemplateId);
+            $this->assertEquals('New Subject 00', $emailTemplate->subject);
+            $this->assertEquals('New Test Email Template 00', $emailTemplate->name);
+            $this->assertEquals(EmailTemplate::TYPE_CONTACT, $emailTemplate->type);
+            $this->assertEquals('New Text Content 00', $emailTemplate->textContent);
+            $this->assertEquals('New HTML Content 00', $emailTemplate->htmlContent);
+            $this->assertNotEmpty($emailTemplate->files);
+            $this->assertCount(count($files), $emailTemplate->files);
+            foreach ($files as $index => $file)
+            {
+                $this->assertEquals($files[$index]['name'], $emailTemplate->files[$index]->name);
+                $this->assertEquals($files[$index]['type'], $emailTemplate->files[$index]->type);
+                $this->assertEquals($files[$index]['size'], $emailTemplate->files[$index]->size);
+                $this->assertEquals($files[$index]['contents'], $emailTemplate->files[$index]->fileContent->content);
+            }
         }
 
         /**
@@ -300,11 +339,44 @@
         /**
          * @depends testSuperUserEditActionForMarketing
          */
+        public function testSuperUserDetailsJsonActionForMarketing()
+        {
+            $emailTemplateId = self::getModelIdByModelNameAndName ('EmailTemplate', 'New Test Email Template 00');
+            $emailTemplate = EmailTemplate::getById($emailTemplateId);
+            $emailTemplateDataUtil = new ModelToArrayAdapter($emailTemplate);
+            $emailTemplateDetailsArray = $emailTemplateDataUtil->getData();
+            $this->assertNotEmpty($emailTemplateDetailsArray);
+            $this->setGetArray(array('id' => $emailTemplateId, 'renderJson' => true));
+            // @ to avoid headers already sent error.
+            $content = @$this->runControllerWithExitExceptionAndGetContent('emailTemplates/default/details');
+            $emailTemplateDetailsResolvedArray = CJSON::decode($content);
+            $this->assertNotEmpty($emailTemplateDetailsResolvedArray);
+            $this->assertEquals($emailTemplateDetailsArray, $emailTemplateDetailsResolvedArray);
+
+            $this->setGetArray(array('id' => $emailTemplateId, 'renderJson' => true, 'includeFilesInJson' => true));
+            // @ to avoid headers already sent error.
+            $content = @$this->runControllerWithExitExceptionAndGetContent('emailTemplates/default/details');
+            $emailTemplateDetailsResolvedArray = CJSON::decode($content);
+            $emailTemplateDetailsResolvedArrayWithoutFiles = $emailTemplateDetailsResolvedArray;
+            unset($emailTemplateDetailsResolvedArrayWithoutFiles['filesIds']);
+            $this->assertNotEmpty($emailTemplateDetailsResolvedArray);
+            $this->assertNotEquals($emailTemplateDetailsArray, $emailTemplateDetailsResolvedArray);
+            $this->assertEquals($emailTemplateDetailsArray, $emailTemplateDetailsResolvedArrayWithoutFiles);
+            $this->assertNotEmpty($emailTemplateDetailsResolvedArray['filesIds']);
+            $this->assertEquals($emailTemplate->files->count(), count($emailTemplateDetailsResolvedArray['filesIds']));
+            foreach ($emailTemplate->files as $index => $file)
+            {
+                $this->assertEquals($file->id, $emailTemplateDetailsResolvedArray['filesIds'][$index]);
+            }
+        }
+
+        /**
+         * @depends testSuperUserDetailsJsonActionForMarketing
+         */
         public function testSuperUserDetailsActionForMarketing()
         {
             $emailTemplateId = self::getModelIdByModelNameAndName ('EmailTemplate', 'New Test Email Template 00');
             $emailTemplate = EmailTemplate::getById($emailTemplateId);
-            $types = EmailTemplate::getTypeDropDownArray();
             $this->setGetArray(array('id' => $emailTemplateId));
             $content = $this->runControllerWithNoExceptionsAndGetContent('emailTemplates/default/details');
             $this->assertTrue(strpos($content, '<span class="ellipsis-content">' . $emailTemplate->name . '</span>') !== false);
@@ -320,11 +392,28 @@
         /**
          * @depends testSuperUserEditActionForWorkflow
          */
+        public function testSuperUserDetailsJsonActionForWorkflow()
+        {
+            $emailTemplateId = self::getModelIdByModelNameAndName ('EmailTemplate', 'New Test Workflow Email Template 00');
+            $emailTemplate = EmailTemplate::getById($emailTemplateId);
+            $emailTemplateDataUtil = new ModelToArrayAdapter($emailTemplate);
+            $emailTemplateDetailsArray = $emailTemplateDataUtil->getData();
+            $this->assertNotEmpty($emailTemplateDetailsArray);
+            $this->setGetArray(array('id' => $emailTemplateId, 'renderJson' => true));
+            // @ to avoid headers already sent error.
+            $content = @$this->runControllerWithExitExceptionAndGetContent('emailTemplates/default/details');
+            $emailTemplateDetailsResolvedArray = CJSON::decode($content);
+            $this->assertNotEmpty($emailTemplateDetailsResolvedArray);
+            $this->assertEquals($emailTemplateDetailsArray, $emailTemplateDetailsResolvedArray);
+        }
+
+        /**
+         * @depends testSuperUserDetailsJsonActionForWorkflow
+         */
         public function testSuperUserDetailsActionForWorkflow()
         {
             $emailTemplateId = self::getModelIdByModelNameAndName ('EmailTemplate', 'New Test Workflow Email Template 00');
             $emailTemplate = EmailTemplate::getById($emailTemplateId);
-            $types = EmailTemplate::getTypeDropDownArray();
             $this->setGetArray(array('id' => $emailTemplateId));
             $content = $this->runControllerWithNoExceptionsAndGetContent('emailTemplates/default/details');
             $this->assertTrue(strpos($content, '<span class="ellipsis-content">' . $emailTemplate->name . '</span>') !== false);
@@ -338,6 +427,57 @@
         }
 
         /**
+         * @depends testSuperUserListForMarketingAction
+         */
+        public function testStickySearchActions()
+        {
+            StickySearchUtil::clearDataByKey('EmailTemplatesSearchView');
+            $value = StickySearchUtil::getDataByKey('EmailTemplatesSearchView');
+            $this->assertNull($value);
+
+            $this->setGetArray(array(
+                        'EmailTemplatesSearchForm' => array(
+                            'anyMixedAttributes'    => 'xyz'
+                        )));
+            $content = $this->runControllerWithNoExceptionsAndGetContent('emailTemplates/default/listForMarketing');
+            $this->assertTrue(strpos($content, 'No results found.') !== false);
+            $data = StickySearchUtil::getDataByKey('EmailTemplatesSearchView');
+            $compareData = array('dynamicClauses'                     => array(),
+                'dynamicStructure'                      => null,
+                'anyMixedAttributes'                    => 'xyz',
+                'anyMixedAttributesScope'               => null,
+                'selectedListAttributes'                => null
+            );
+            $this->assertEquals($compareData, $data);
+
+            $this->setGetArray(array(
+                'EmailTemplatesSearchForm' => array(
+                    'anyMixedAttributes'    => 'Test'
+                )));
+            $content = $this->runControllerWithNoExceptionsAndGetContent('emailTemplates/default/listForMarketing');
+            $this->assertTrue(strpos($content, '1 result(s)') !== false);
+            $data = StickySearchUtil::getDataByKey('EmailTemplatesSearchView');
+            $compareData = array('dynamicClauses'                     => array(),
+                'dynamicStructure'                      => null,
+                'anyMixedAttributes'                    => 'Test',
+                'anyMixedAttributesScope'               => null,
+                'selectedListAttributes'                => null,
+                'savedSearchId'                         => null
+            );
+            $this->assertEquals($compareData, $data);
+
+            $this->setGetArray(array('clearingSearch' => true));
+            $this->runControllerWithNoExceptionsAndGetContent('emailTemplates/default/listForMarketing');
+            $data = StickySearchUtil::getDataByKey('EmailTemplatesSearchView');
+            $compareData = array('dynamicClauses'                     => array(),
+                'dynamicStructure'                      => null,
+                'anyMixedAttributesScope'               => null,
+                'selectedListAttributes'                => null
+            );
+            $this->assertEquals($compareData, $data);
+        }
+
+        /**
          * @depends testSuperUserDetailsActionForMarketing
          */
         public function testSuperUserDeleteAction()
@@ -346,13 +486,17 @@
             // Delete an emailTemplate.
             $this->setGetArray(array('id' => $emailTemplateId));
             $this->resetPostArray();
-            $content = $this->runControllerWithRedirectExceptionAndGetContent('emailTemplates/default/delete');
+            $redirectUrl = $this->runControllerWithRedirectExceptionAndGetUrl('emailTemplates/default/delete');
+            $compareRedirectUrl = Yii::app()->createUrl('emailTemplates/default/listForMarketing');
+            $this->assertEquals($compareRedirectUrl, $redirectUrl);
             $emailTemplates = EmailTemplate::getAll();
             $this->assertEquals(3, count($emailTemplates));
             $emailTemplateId = self::getModelIdByModelNameAndName ('EmailTemplate', 'New Test Workflow Email Template 00');
             $this->setGetArray(array('id' => $emailTemplateId));
             $this->resetPostArray();
-            $content = $this->runControllerWithRedirectExceptionAndGetContent('emailTemplates/default/delete');
+            $redirectUrl = $this->runControllerWithRedirectExceptionAndGetUrl('emailTemplates/default/delete');
+            $compareRedirectUrl = Yii::app()->createUrl('emailTemplates/default/listForWorkflow');
+            $this->assertEquals($compareRedirectUrl, $redirectUrl);
             $emailTemplates = EmailTemplate::getAll();
             $this->assertEquals(2, count($emailTemplates));
         }

@@ -69,6 +69,27 @@
             assert($group1->save()); // Not Coding Standard
         }
 
+        /**
+         * The createdByUser should be able to create an account and set the owner to a different owner. At the same
+         * time the user should also be able to add permissions for the EVERYONE group.
+         */
+        public function testCreateAccountWithDifferentOwnerThanCreatedByUser()
+        {
+            $super                      = User::getByUsername('super');
+            Yii::app()->user->userModel = User::getByUsername('nobody');
+            $postData = array('Account' =>
+                                array('name' => 'Switcheroo Inc.',
+                                      'owner' => array('id' => $super->id),
+                                      'explicitReadWriteModelPermissions' =>
+                                            array('type' => ExplicitReadWriteModelPermissionsUtil::MIXED_TYPE_EVERYONE_GROUP)));
+            $this->setPostArray($postData);
+            //Make sure the redirect is to the details view and not the list view.
+            $this->runControllerWithRedirectExceptionAndGetContent('accounts/default/create');
+        }
+
+        /**
+         * @depends testCreateAccountWithDifferentOwnerThanCreatedByUser
+         */
         public function testRegularUserCanViewOrNotViewDerivedExplicitReadWriteModelPermissionsElement()
         {
             //Set the current user as the nobody user.

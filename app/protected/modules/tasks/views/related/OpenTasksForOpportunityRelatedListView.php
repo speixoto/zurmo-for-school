@@ -46,5 +46,10 @@
             return Zurmo::t('TasksModule', 'TasksModulePluralLabel For OpportunitiesModuleSingularLabel',
                         LabelUtil::getTranslationParamsForAllModules());
         }
+
+        public static function getAllowedOnPortletViewClassNames()
+        {
+            return array('OpportunityDetailsAndRelationsView');
+        }
     }
 ?>

@@ -119,11 +119,11 @@
                 $searchAttributesData
                     = $mashableActivityRules->getSearchAttributeData($searchTerm);
                 $metadataForMashableInboxAndSearch
-                    = static::mergeMetada($metadataForMashableInbox, $searchAttributesData);
+                    = static::mergeMetadata($metadataForMashableInbox, $searchAttributesData);
                 $metadataFilteredBy
                     = $mashableActivityRules->getMetadataFilteredByFilteredBy($filteredBy);
                 $searchAttributesDataAndByFiltered
-                    = static::mergeMetada($metadataForMashableInboxAndSearch, $metadataFilteredBy);
+                    = static::mergeMetadata($metadataForMashableInboxAndSearch, $metadataFilteredBy);
                 $modelClassNamesAndSearchAttributeData[]
                     = array($modelClassName => $searchAttributesDataAndByFiltered);
             }
@@ -182,38 +182,7 @@
             return strtr($template, $preparedContent);
         }
 
-        public static function getTimeSinceLatestUpdate($latestDateTime)
-        {
-            $nowTimestamp           = time();
-            $lastUpdatedTimestamp   = DateTimeUtil::convertDbFormatDateTimeToTimestamp($latestDateTime);
-            $timeSinceLatestUpdate  = $nowTimestamp - $lastUpdatedTimestamp;
-            $timeForString = array(
-                    'days'  => floor($timeSinceLatestUpdate / 86400),
-                    'hours' => floor($timeSinceLatestUpdate / 3600),
-                );
-            if ($timeForString['days'] == 0)
-            {
-                if ($timeForString['hours'] == 1)
-                {
-                    $string = Zurmo::t('MashableInboxModule', '{hours} hour ago', array('{hours}' => $timeForString['hours']));
-                }
-                else
-                {
-                    $string = Zurmo::t('MashableInboxModule', '{hours} hours ago', array('{hours}' => $timeForString['hours']));
-                }
-            }
-            elseif (($timeForString['days'] == 1))
-            {
-                $string = Zurmo::t('MashableInboxModule', '{days} day ago', array('{days}' => $timeForString['days']));
-            }
-            else
-            {
-                $string = Zurmo::t('MashableInboxModule', '{days} days ago', array('{days}' => $timeForString['days']));
-            }
-            return $string;
-        }
-
-        public static function mergeMetada($firstMetadata, $secondMetadata, $isAnd = true)
+        public static function mergeMetadata($firstMetadata, $secondMetadata, $isAnd = true)
         {
             if ($firstMetadata == null && $secondMetadata == null)
             {

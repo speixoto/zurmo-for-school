@@ -129,7 +129,23 @@
         {
             foreach ($this->settingsToLoad as $keyName)
             {
-                if (null !== $keyValue = ZurmoConfigurationUtil::getByModuleName('EmailMessagesModule', $keyName))
+                if ($keyName == 'outboundPassword')
+                {
+                    $encryptedKeyValue = ZurmoConfigurationUtil::getByModuleName('EmailMessagesModule', $keyName);
+                    if ($encryptedKeyValue !== '' && $encryptedKeyValue !== null)
+                    {
+                        $keyValue = ZurmoPasswordSecurityUtil::decrypt($encryptedKeyValue);
+                    }
+                    else
+                    {
+                        $keyValue = null;
+                    }
+                }
+                else
+                {
+                    $keyValue = ZurmoConfigurationUtil::getByModuleName('EmailMessagesModule', $keyName);
+                }
+                if (null !== $keyValue)
                 {
                     $this->$keyName = $keyValue;
                 }
@@ -149,7 +165,15 @@
                 $settingsToLoad = array_merge($this->settingsToLoad, array('fromName', 'fromAddress'));
                 foreach ($settingsToLoad as $keyName)
                 {
-                    $this->$keyName = $userEmailAccount->$keyName;
+                    if ($keyName == 'outboundPassword')
+                    {
+                        $keyValue = ZurmoPasswordSecurityUtil::decrypt($userEmailAccount->$keyName);
+                        $this->$keyName = $keyValue;
+                    }
+                    else
+                    {
+                        $this->$keyName = $userEmailAccount->$keyName;
+                    }
                 }
             }
             else
@@ -167,20 +191,31 @@
         {
             foreach ($this->settingsToLoad as $keyName)
             {
-                ZurmoConfigurationUtil::setByModuleName('EmailMessagesModule', $keyName, $this->$keyName);
+                if ($keyName == 'outboundPassword')
+                {
+                    $password = ZurmoPasswordSecurityUtil::encrypt($this->$keyName);
+                    ZurmoConfigurationUtil::setByModuleName('EmailMessagesModule', $keyName, $password);
+                }
+                else
+                {
+                    ZurmoConfigurationUtil::setByModuleName('EmailMessagesModule', $keyName, $this->$keyName);
+                }
             }
         }
 
         /**
          * Send an email message. This will queue up the email to be sent by the queue sending process. If you want to
          * send immediately, consider using @sendImmediately
-         * @param EmailMessage $email
+         * @param EmailMessage $emailMessage
+         * @throws NotSupportedException
+         * @return boolean
          */
         public function send(EmailMessage $emailMessage)
         {
             if ($emailMessage->folder->type == EmailFolder::TYPE_OUTBOX ||
-               $emailMessage->folder->type == EmailFolder::TYPE_SENT ||
-               $emailMessage->folder->type == EmailFolder::TYPE_OUTBOX_ERROR)
+                $emailMessage->folder->type == EmailFolder::TYPE_SENT ||
+                $emailMessage->folder->type == EmailFolder::TYPE_OUTBOX_ERROR ||
+                $emailMessage->folder->type == EmailFolder::TYPE_OUTBOX_FAILURE)
             {
                 throw new NotSupportedException();
             }
@@ -218,7 +253,8 @@
 
         /**
          * Call this method to process all email Messages in the queue. This is typically called by a scheduled job
-         * or cron.  This will process all emails in a TYPE_OUTBOX folder or TYPE_OUTBOX_ERROR folder.
+         * or cron.  This will process all emails in a TYPE_OUTBOX folder or TYPE_OUTBOX_ERROR folder. If the message
+         * has already been sent 3 times then it will be moved to a failure folder.
          */
         public function sendQueued()
         {
@@ -234,8 +270,23 @@
                 {
                     $this->sendImmediately($emailMessage);
                 }
+                else
+                {
+                    $this->processMessageAsFailure($emailMessage);
+                }
             }
             return true;
+        }
+
+        protected function processMessageAsFailure(EmailMessage $emailMessage)
+        {
+            $emailMessage->folder = EmailFolder::getByBoxAndType($emailMessage->folder->emailBox,
+                                    EmailFolder::TYPE_OUTBOX_FAILURE);
+            $saved = $emailMessage->save();
+            if (!$saved)
+            {
+                throw new NotSupportedException();
+            }
         }
 
         protected function populateMailer(Mailer $mailer, EmailMessage $emailMessage)
@@ -326,52 +377,6 @@
             $mailer = new ZurmoSwiftMailer();
             $mailer->init();
             return $mailer;
-        }
-
-        /**
-         * When sending system notifications, it is necessary to use a 'user' who is a super administrator to send
-         * the notifications from.  This will resolve that information and retrieve the best user to use.
-         */
-        public function getUserToSendNotificationsAs()
-        {
-            $keyName      = 'UserIdToSendNotificationsAs';
-            $superGroup   = Group::getByName(Group::SUPER_ADMINISTRATORS_GROUP_NAME);
-            if (null != $userId = ZurmoConfigurationUtil::getByModuleName('EmailMessagesModule', $keyName))
-            {
-                try
-                {
-                    $user  = User::getById($userId);
-
-                    if ($user->groups->contains($superGroup))
-                    {
-                        return $user;
-                    }
-                }
-                catch (NotFoundException $e)
-                {
-                }
-            }
-            if ($superGroup->users->count() == 0)
-            {
-                throw new NotSupportedException();
-            }
-            return $superGroup->users->offsetGet(0);
-        }
-
-        /**
-         * @see getUserToSendNotificationsAs
-         * @param User $user
-         */
-        public function setUserToSendNotificationsAs(User $user)
-        {
-            assert('$user->id > 0');
-            $superGroup   = Group::getByName(Group::SUPER_ADMINISTRATORS_GROUP_NAME);
-            if (!$user->groups->contains($superGroup))
-            {
-                throw new NotSupportedException();
-            }
-            $keyName      = 'UserIdToSendNotificationsAs';
-            ZurmoConfigurationUtil::setByModuleName('EmailMessagesModule', $keyName, $user->id);
         }
 
         /**

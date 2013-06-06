@@ -78,13 +78,10 @@
             $emailTemplate->name            = 'Another Test Email Template';
             $this->assertFalse($emailTemplate->save());
             $errorMessages = $emailTemplate->getErrors();
-            $this->assertEquals(2, count($errorMessages));
+            $this->assertEquals(1, count($errorMessages));
             $this->assertTrue(array_key_exists('textContent', $errorMessages));
-            $this->assertTrue(array_key_exists('htmlContent', $errorMessages));
             $this->assertEquals(1, count($errorMessages['textContent']));
-            $this->assertEquals(1, count($errorMessages['htmlContent']));
             $this->assertEquals('Please provide at least one of the contents field.', $errorMessages['textContent'][0]);
-            $this->assertEquals('Please provide at least one of the contents field.', $errorMessages['htmlContent'][0]);
         }
 
         public function testModelClassNameExists()

@@ -88,8 +88,8 @@
                     'clientOptions' => array(
                         'validateOnSubmit'  => true,
                         'validateOnChange'  => false,
-                        'beforeValidate'    => 'js:beforeValidateAction',
-                        'afterValidate'     => 'js:afterValidateAjaxAction',
+                        'beforeValidate'    => 'js:$(this).beforeValidateAction',
+                        'afterValidate'     => 'js:$(this).afterValidateAjaxAction',
                         'afterValidateAjax' => $afterValidateAjax,
                     ),
                 )
@@ -103,8 +103,8 @@
                 CClientScript::POS_END
             );
             $content .= $formStart;
-            $content .= $this->renderFormLayout($form);
-            $content .= $this->renderAfterFormLayout($form);
+            $content .= ZurmoHtml::tag('div', array('class' => 'left-column full-width'), $this->renderFormLayout($form) .
+                                                                               $this->renderAfterFormLayout($form));
             $actionElementContent = $this->renderActionElementBar(true);
             if ($actionElementContent != null)
             {
@@ -114,13 +114,26 @@
             }
             $formEnd = $clipWidget->renderEndWidget();
             $content .= $formEnd;
+            $content .= $this->renderModalContainer();
             $content .= '</div>';
             return $content;
         }
 
         public function getFormName()
         {
+            return self::getFormId();
+        }
+
+        protected static function getFormId()
+        {
             return "inline-edit-form";
+        }
+
+        protected function renderModalContainer()
+        {
+            return ZurmoHtml::tag('div', array(
+                        'id' => ModelElement::MODAL_CONTAINER_PREFIX . '-' . $this->getFormName()
+                   ), '');
         }
 
         protected function renderConfigSaveAjax($formName)

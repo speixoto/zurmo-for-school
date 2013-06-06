@@ -116,18 +116,21 @@
             $this->assertNotNull($marketingList);
             $contact                            = RandomDataUtil::getRandomValueFromArray(Contact::getAll());
             $this->assertNotNull($contact);
-            $added                              = MarketingListMember::addNewMember($marketingList, $contact->id, false, $contact);
+            $added                              = $marketingList->addNewMember($contact->id, false, $contact);
             $this->assertTrue($added);
-            $added                              = MarketingListMember::addNewMember($marketingList, $contact->id, false, $contact);
+            $added                              = $marketingList->addNewMember($contact->id, false, $contact);
             $this->assertFalse($added);
-            $memberCount                        = MarketingListMember::memberAlreadyExists($marketingList->id, $contact->id);
+            $memberCount                        = $marketingList->memberAlreadyExists($contact->id);
             $this->assertEquals(1, $memberCount);
             $marketingList                     = MarketingListTestHelper::createMarketingListByName('test marketing List 04');
             $this->assertNotNull($marketingList);
-            $added                              = MarketingListMember::addNewMember($marketingList, $contact->id, false, $contact);
+            $added                              = $marketingList->addNewMember($contact->id, false, $contact);
             $this->assertTrue($added);
         }
 
+        /**
+         * @depends testCreateAndGetMarketingListMemberById
+         */
         public function testGetCountByMarketingListIdAndUnsubscribed()
         {
             $marketingList                      = MarketingListTestHelper::createMarketingListByName('test marketing List 05');
@@ -139,7 +142,7 @@
             foreach ($contacts as $index => $contact)
             {
                 $unsubcribed = ($index % 2);
-                $member = MarketingListMemberTestHelper::fillMarketingListMember($unsubcribed, $marketingList, $contacts[0]);
+                $member = MarketingListMemberTestHelper::populateMarketingListMember($unsubcribed, $marketingList, $contacts[0]);
                 $this->assertTrue($member->unrestrictedSave());
                 if ($unsubcribed)
                 {
@@ -154,6 +157,60 @@
             $calculatedUnsubscribedCount    = MarketingListMember::getCountByMarketingListIdAndUnsubscribed($marketingList->id, 1);
             $this->assertEquals($subscribedCount, $calculatedSubscribedCount);
             $this->assertEquals($unsubscribedCount, $calculatedUnsubscribedCount);
+        }
+
+        /**
+         * @depends testCreateAndGetMarketingListMemberById
+         */
+        public function testBeforeSaveAutoresponderRegister()
+        {
+            $marketingList                  = MarketingListTestHelper::createMarketingListByName('test marketing List 06');
+            $this->assertNotNull($marketingList);
+            $autoresponderSubscribe         = AutoresponderTestHelper::createAutoresponder(
+                                                                                'test autoresponder Subscribe',
+                                                                                'This is text content Subscribe',
+                                                                                'This is <b>html</b> content Subscribe',
+                                                                                10,
+                                                                                Autoresponder::OPERATION_SUBSCRIBE,
+                                                                                false,
+                                                                                $marketingList
+                                                                                    );
+            $this->assertNotNull($autoresponderSubscribe);
+            $autoresponderUnsubscribe       = AutoresponderTestHelper::createAutoresponder(
+                                                                            'test autoresponder Unsubscribe',
+                                                                            'This is text content Unsubscribe',
+                                                                            'This is <b>html</b> content Unsubscribe',
+                                                                            20,
+                                                                            Autoresponder::OPERATION_UNSUBSCRIBE,
+                                                                            true,
+                                                                            $marketingList
+                                                                                    );
+            $this->assertNotNull($autoresponderUnsubscribe);
+            $member                         = MarketingListMemberTestHelper::createMarketingListMember(0, $marketingList);
+            $autoresponderItemsSubscribe    = AutoresponderItem::getByProcessedAndAutoresponderId(
+                                                                                        0,
+                                                                                        $autoresponderSubscribe->id);
+            $this->assertNotEmpty($autoresponderItemsSubscribe);
+            $this->assertCount(1, $autoresponderItemsSubscribe);
+            $autoresponderItemsUnsubscribe    = AutoresponderItem::getByProcessedAndAutoresponderId(
+                                                                                        0,
+                                                                                        $autoresponderUnsubscribe->id);
+            $this->assertEmpty($autoresponderItemsUnsubscribe);
+
+            $member->unsubscribed               = 1;
+            $saved = $member->unrestrictedSave();
+            $this->assertTrue($saved);
+
+            $autoresponderItemsSubscribe    = AutoresponderItem::getByProcessedAndAutoresponderId(
+                                                                                        0,
+                                                                                        $autoresponderSubscribe->id);
+            $this->assertNotEmpty($autoresponderItemsSubscribe);
+            $this->assertCount(1, $autoresponderItemsSubscribe);
+            $autoresponderItemsUnsubscribe    = AutoresponderItem::getByProcessedAndAutoresponderId(
+                                                                                        0,
+                                                                                        $autoresponderUnsubscribe->id);
+            $this->assertNotEmpty($autoresponderItemsUnsubscribe);
+            $this->assertCount(1, $autoresponderItemsUnsubscribe);
         }
     }
 ?>

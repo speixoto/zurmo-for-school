@@ -53,16 +53,24 @@
             $copyToModel->setIsCopied();
             foreach ($model->attributeNames() as $attributeName)
             {
+                if ($attributeName == 'owner')
+                {
+                        continue;
+                }
                 $isReadOnly = $model->isAttributeReadOnly($attributeName);
                 if (!$model->isRelation($attributeName) && !$isReadOnly)
                 {
                     static::copyNonRelation($model, $attributeName, $copyToModel);
                 }
-                elseif($model->isRelation($attributeName) && !$isReadOnly &&
+                elseif ($model->isRelation($attributeName) && !$isReadOnly &&
                        $model->isRelationTypeAHasOneVariant($attributeName))
                 {
                     static::copyRelation($model, $attributeName, $copyToModel);
                 }
+            }
+            if ($model instanceof OwnedSecurableItem)
+            {
+                static::copyRelation($model, 'owner', $copyToModel);
             }
             static::resolveExplicitPermissions($model, $copyToModel);
         }
@@ -74,7 +82,7 @@
 
         protected static function copyRelation(RedBeanModel $model, $attributeName, RedBeanModel $copyToModel)
         {
-            if($model->{$attributeName} instanceof CurrencyValue)
+            if ($model->{$attributeName} instanceof CurrencyValue)
             {
                 $currencyValue                 = new CurrencyValue();
                 $currencyValue->value          = $model->{$attributeName}->value;
@@ -82,19 +90,19 @@
                 $currencyValue->currency       = $model->{$attributeName}->currency;
                 $copyToModel->{$attributeName} = $currencyValue;
             }
-            elseif($model->{$attributeName} instanceof OwnedModel)
+            elseif ($model->{$attributeName} instanceof OwnedModel)
             {
                 static::copyOwnedModelRelation($model, $attributeName, $copyToModel);
             }
-            elseif($model->{$attributeName} instanceof CustomField)
+            elseif ($model->{$attributeName} instanceof CustomField)
             {
                 static::copyNonRelation($model->{$attributeName}, 'value', $copyToModel->{$attributeName});
             }
-            elseif($model->{$attributeName} instanceof MultipleValuesCustomField)
+            elseif ($model->{$attributeName} instanceof MultipleValuesCustomField)
             {
                 static::copyMultipleValuesCustomFieldRelation($model, $attributeName, $copyToModel);
             }
-            elseif(!$model->isOwnedRelation($attributeName))
+            elseif (!$model->isOwnedRelation($attributeName))
             {
                 static::copyNonRelation($model, $attributeName, $copyToModel);
             }
@@ -108,9 +116,9 @@
         {
             $relatedModelClassName         = get_class($model->{$attributeName});
             $relatedModel                  = new $relatedModelClassName();
-            foreach($relatedModel->getAttributeNames() as $relatedAttributeName)
+            foreach ($relatedModel->getAttributeNames() as $relatedAttributeName)
             {
-                if(!$relatedModel->isRelation($relatedAttributeName) && !$relatedModel->isAttributeReadOnly($relatedAttributeName))
+                if (!$relatedModel->isRelation($relatedAttributeName) && !$relatedModel->isAttributeReadOnly($relatedAttributeName))
                 {
                     static::copyNonRelation($model->{$attributeName}, $relatedAttributeName, $relatedModel);
                 }
@@ -120,7 +128,7 @@
 
         protected static function copyMultipleValuesCustomFieldRelation(RedBeanModel $model, $attributeName, RedBeanModel $copyToModel)
         {
-            foreach($model->{$attributeName}->values as $customFieldValue)
+            foreach ($model->{$attributeName}->values as $customFieldValue)
             {
                 $newCustomFieldValue = new CustomFieldValue();
                 $newCustomFieldValue->value = $customFieldValue->value;
@@ -130,7 +138,7 @@
 
         protected static function resolveExplicitPermissions(RedBeanModel $model, RedBeanModel $copyToModel)
         {
-            if($model instanceof SecurableItem)
+            if ($model instanceof SecurableItem)
             {
                 $explicitReadWriteModelPermissions = ExplicitReadWriteModelPermissionsUtil::makeBySecurableItem($model);
                 ExplicitReadWriteModelPermissionsUtil::

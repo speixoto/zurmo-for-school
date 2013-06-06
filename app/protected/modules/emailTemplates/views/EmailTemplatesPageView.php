@@ -38,7 +38,7 @@
     {
         protected function getSubtitle()
         {
-            return Zurmo::t('Default', 'EmailTemplatesModulePluralLabel', LabelUtil::getTranslationParamsForAllModules());
+            return Zurmo::t('EmailTemplatesModule', 'Email Templates');
         }
     }
 ?>

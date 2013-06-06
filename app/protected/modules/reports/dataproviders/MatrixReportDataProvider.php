@@ -112,14 +112,7 @@
          */
         public function calculateTotalGroupingsCount()
         {
-            $selectQueryAdapter     = new RedBeanModelSelectQueryAdapter();
-            $sql                    = $this->makeSqlQueryForFetchingTotalItemCount($selectQueryAdapter);
-            $rows                   = R::getAll($sql);
-            if (count($rows) > 0)
-            {
-                return count($rows) * count($rows[0]);
-            }
-            return 0;
+            return $this->dataProvider->getXAxisGroupByDataValuesCount() * $this->dataProvider->getYAxisGroupByDataValuesCount();
         }
 
         /**
@@ -465,7 +458,8 @@
             //Sort for group bys correctly.
             foreach ($this->getDisplayAttributesThatAreXAxisGroupBys() as $displayAttribute)
             {
-                if ($displayAttribute->getHeaderSortableType() == DisplayAttributeForReportForm::HEADER_SORTABLE_TYPE_ASORT)
+                if ($displayAttribute->getHeaderSortableType() == DisplayAttributeForReportForm::HEADER_SORTABLE_TYPE_ASORT &&
+                    isset($this->xAxisGroupByDataValues[$displayAttribute->attributeIndexOrDerivedType]))
                 {
                     asort($this->xAxisGroupByDataValues[$displayAttribute->attributeIndexOrDerivedType]);
                 }

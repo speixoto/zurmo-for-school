@@ -42,6 +42,9 @@
                 DateTimeCalculatorUtil::YESTERDAY => Zurmo::t('Core', 'Yesterday'),
                 DateTimeCalculatorUtil::TODAY     => Zurmo::t('Core', 'Today'),
                 DateTimeCalculatorUtil::TOMORROW  => Zurmo::t('Core', 'Tomorrow'),
+                DateTimeCalculatorUtil::WEEK      => Zurmo::t('Core', 'Week'),
+                DateTimeCalculatorUtil::MONTH     => Zurmo::t('Core', 'Month'),
+                DateTimeCalculatorUtil::YEAR      => Zurmo::t('Core', 'Year'),
             );
         }
     }

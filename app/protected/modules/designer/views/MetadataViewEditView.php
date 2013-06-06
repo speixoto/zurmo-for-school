@@ -87,6 +87,7 @@
             $content  = '<div class="wrapper">';
             $content .= $this->renderTitleContent();
             $content .= '<div class="wide form">';
+            $content .= '<div class="left-column full-width">';
             $clipWidget = new ClipWidget();
             list($form, $formStart) = $clipWidget->renderBeginWidget(
                                                                 'ZurmoActiveForm',
@@ -110,7 +111,7 @@
 
             $formEnd  = $clipWidget->renderEndWidget();
             $content .= $formEnd;
-            $content .= '</div></div>';
+            $content .= '</div></div></div>';
             return $content;
         }
 
@@ -131,8 +132,8 @@
                     'data' => 'js:designer.prepareSaveLayout("edit-form")',
                     'dataType' => 'json',
                     'type' => 'POST',
-                    'beforeSend' => 'js:function(){attachLoadingOnSubmit("edit-form");}',
-                    'complete'   => 'js:function(){detachLoadingOnSubmit("edit-form");}',
+                    'beforeSend' => 'js:function(){$(this).attachLoadingOnSubmit("edit-form");}',
+                    'complete'   => 'js:function(){$(this).detachLoadingOnSubmit("edit-form");}',
                     'success' => 'function(data){designer.updateFlashBarAfterSaveLayout(data, "' . $notificationBarId . '")}', // Not Coding Standard
                     'error' => 'function(data){ ' . // Not Coding Standard
                         'var data = {' . // Not Coding Standard

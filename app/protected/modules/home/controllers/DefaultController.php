@@ -84,7 +84,7 @@
             {
                 $hasDashboardAccess = false;
             }
-            if (UserConfigurationFormAdapter::resolveAndGetValue(Yii::app()->user->userModel, 'hideWelcomeView'))
+            if ($this->hideWelcomeViewGlobally() || UserConfigurationFormAdapter::resolveAndGetValue(Yii::app()->user->userModel, 'hideWelcomeView'))
             {
                 //If you can see dashboards, then go there, otherwise stay here since the user has limited access.
                 if ($hasDashboardAccess)
@@ -92,15 +92,18 @@
                     $this->redirect(array($this->getId() . '/index'));
                 }
             }
-            $tipContent                = ZurmoTipsUtil::getRandomTipResolvedForCurrentUser();
-
-            if (Yii::app()->userInterface->isMobile())
-            {
-                $welcomeView               = new MobileWelcomeView($tipContent, $hasDashboardAccess);
-            }
             else
             {
-                $welcomeView               = new WelcomeView($tipContent, $hasDashboardAccess);
+                $tipContent                = ZurmoTipsUtil::getRandomTipResolvedForCurrentUser();
+
+                if (Yii::app()->userInterface->isMobile())
+                {
+                    $welcomeView               = new MobileWelcomeView($tipContent, $hasDashboardAccess);
+                }
+                else
+                {
+                    $welcomeView               = new WelcomeView($tipContent, $hasDashboardAccess);
+                }
             }
             $view                      = new HomePageView(ZurmoDefaultViewUtil::
                                              makeStandardViewForCurrentUser($this, $welcomeView));
@@ -229,6 +232,18 @@
         {
             $tipContent = ZurmoTipsUtil::getRandomTipResolvedForCurrentUser();
             echo CJSON::encode($tipContent);
+        }
+
+        protected function hideWelcomeViewGlobally()
+        {
+            if (null != $hideWelcomeViewGlobally = ZurmoConfigurationUtil::getByModuleName('ZurmoModule', 'hideWelcomeViewGlobally'))
+            {
+                return $hideWelcomeViewGlobally;
+            }
+            else
+            {
+                return (bool)$hideWelcomeViewGlobally;
+            }
         }
     }
 ?>

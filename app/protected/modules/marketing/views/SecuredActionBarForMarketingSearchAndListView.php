@@ -41,6 +41,12 @@
     class SecuredActionBarForMarketingSearchAndListView extends SecuredActionBarForSearchAndListView
     {
         /**
+         * Identifies whether the intro view should be hidden or show on the marketing dashboard
+         * @var null|string
+         */
+        protected $introCookieValue;
+
+        /**
          * @return array
          */
         public static function getDefaultMetadata()
@@ -53,18 +59,41 @@
                                 'htmlOptions' => array('class' => 'icon-create'),
                             ),
                             array(
+                                'type'            => 'MarketingDashboardLink',
+                                'htmlOptions'     => array( 'class' => 'icon-marketing-dashboard' )
+                            ),
+                            array(
                                 'type'            => 'MarketingListsLink',
                                 'htmlOptions'     => array( 'class' => 'icon-marketing-lists' )
                             ),
                             array(
                                 'type'            => EmailTemplatesForMarketingLinkActionElement::getType(),
-                                'htmlOptions'     => array( 'class' => 'icon-email-templates' )
+                                'htmlOptions'     => array( 'class' => 'icon-email-templates', )
+                            ),
+                            array(
+                                'type'            => 'CampaignsLink',
+                                'htmlOptions'     => array( 'class' => 'icon-marketing-campaigns' )
                             ),
                         ),
                     ),
+                    'secondToolbar' => array(
+                        'elements' => array(
+                            array('type'  => 'MarketingIntroLink',
+                                'cookieValue' => 'eval:$this->introCookieValue',
+                                'htmlOptions' => array('class' => 'icon-intro-change-this'), //todo: need new class name
+                            ),
+                        ),
+                    ),
+
                 ),
             );
             return $metadata;
+        }
+
+        public function setIntroCookieValue($introCookieValue)
+        {
+            assert('$introCookieValue == null || is_string($introCookieValue)');
+            $this->introCookieValue = $introCookieValue;
         }
     }
 ?>

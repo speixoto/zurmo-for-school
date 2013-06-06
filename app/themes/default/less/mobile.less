@@ -585,8 +585,22 @@
 		margin-right:0 !important;
 	}
 
+	.juiportlet-widget-head{
+		.view-toolbar-container{
+			right: 0 !important;
+		}
+		.portlet-toolbar{
+			.z-label{
+				padding: 0 5px;
+			}
+		}
+	}
+
 	.latest-activity-toolbar{
 		padding: 10px 5px !important;
+		> div:first-child{
+			margin-bottom: 10px;
+		}
 	}
 
 	#filter-latest-activities-link{
@@ -602,6 +616,9 @@
 			line-height: 1;
 			float: left;
 			margin: 10px 0 0 2px;
+		}
+		> .ui-buttonset{
+			padding-top: 0;
 		}
 	}
 
@@ -634,6 +651,7 @@
 		}
 	}
 
+	/*
 	.right-side-edit-view-panel{
 		float:none;
 		width:100%;
@@ -648,6 +666,7 @@
 			}
 		}
 	}
+	*/
 
     .hasParallelFields > div{
 	    width: 100% !important;
@@ -666,9 +685,9 @@
 	}
 
 	#ConversationDetailsView{
-		.right-side-edit-view-panel{
+		/*.right-side-edit-view-panel{
 			display:none;
-		}
+		}*/
 	}
 
 	.model-details-summary {
@@ -690,8 +709,8 @@
 	}
 
 
-div:not(#LeaderboardView),
-div:not(#MashableInboxActionBarForViews){
+	div:not(#LeaderboardView),
+	div:not(#MashableInboxActionBarForViews){
 	.toolbar-mbmenu{
 		right:10px;
 		.view-toolbar{
@@ -704,7 +723,7 @@ div:not(#MashableInboxActionBarForViews){
 				width:auto;
 				padding:0;
 				&:after{
-					content: "n";
+					content: "{";//""n";
 					.symbly(24px);
 					left: -5px;
 					top: -1px;

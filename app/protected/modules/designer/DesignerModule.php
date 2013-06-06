@@ -54,7 +54,7 @@
         {
             $tabMenuItems = array(
                 array(
-                    'label' => 'Designer',
+                    'label' => "eval:Zurmo::t('DesignerModule', 'Designer')",
                     'url'   => array('/designer/default'),
                     'right'            => self::RIGHT_ACCESS_DESIGNER,
                 ),
@@ -104,6 +104,16 @@
         public static function getAccessRight()
         {
             return self::RIGHT_ACCESS_DESIGNER;
+        }
+
+        protected static function getSingularModuleLabel($language)
+        {
+            return Zurmo::t('DesignerModule', 'Designer', array(), null, $language);
+        }
+
+        protected static function getPluralModuleLabel($language)
+        {
+            return static::getSingularModuleLabel($language);
         }
     }
 ?>

@@ -54,7 +54,7 @@
                 try
                 {
                     $helper = new WorkflowActionProcessingHelper($action, $model, $triggeredByUser);
-                    $helper->processUpdateSelectAction();
+                    $helper->processUpdateSelfAction();
                 }
                 catch (Exception $e)
                 {
@@ -107,7 +107,7 @@
                 try
                 {
                     $helper = new WorkflowActionProcessingHelper($action, $model, $triggeredByUser, false);
-                    $helper->processUpdateSelectAction();
+                    $helper->processUpdateSelfAction();
                     $helper->processNonUpdateSelfAction();
                 }
                 catch (Exception $e)

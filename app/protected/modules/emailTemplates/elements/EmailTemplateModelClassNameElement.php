@@ -72,16 +72,10 @@
                         {
                             $availableModels[$modelClassName] = $modelClassName::getModelLabelByTypeAndLanguage('Plural');
                         }
-                        else
-                        {
-                        }
                     }
                     catch (NotSupportedException $e)
                     {
                     }
-                }
-                else
-                {
                 }
             }
             asort($availableModels);

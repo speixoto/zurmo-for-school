@@ -61,8 +61,13 @@
                 $emailTemplate->type        = $types[$this->index % 2];
                 $emailTemplate->owner       = $demoDataHelper->getRandomByModelName('User');;
                 $this->populateModel($emailTemplate);
+                $emailTemplate->addPermissions(Group::getByName(Group::EVERYONE_GROUP_NAME), Permission::READ_WRITE_CHANGE_PERMISSIONS_CHANGE_OWNER);
                 $saved                      = $emailTemplate->save();
                 assert('$saved');
+                $emailTemplate = EmailTemplate::getById($emailTemplate->id);
+                ReadPermissionsOptimizationUtil::
+                    securableItemGivenPermissionsForGroup($emailTemplate, Group::getByName(Group::EVERYONE_GROUP_NAME));
+                $emailTemplate->save();
                 $emailTemplates[]           = $emailTemplate->id;
             }
             $demoDataHelper->setRangeByModelName('EmailTemplate', $emailTemplates[0], $emailTemplates[count($emailTemplates)-1]);
@@ -85,9 +90,11 @@
             $model->modelClassName      = $modelClassName;
             $model->name                = $this->seedData['name'][$this->index];
             $model->subject             = $this->seedData['subject'][$this->index];
-            $model->language            = (isset($this->seedData['language'][$this->index]))?
-                                                $this->seedData['language'][$this->index] :
-                                                $this->seedData['language'][0];
+            $model->language            = $this->seedData['language'][0];
+            if (isset($this->seedData['language'][$this->index]))
+            {
+                $model->language            = $this->seedData['language'][$this->index];
+            }
             $model->textContent         = $this->seedData['textContent'][0];
             $model->htmlContent         = $this->seedData['htmlContent'][0];
         }

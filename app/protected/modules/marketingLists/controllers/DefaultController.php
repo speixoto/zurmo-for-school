@@ -39,6 +39,9 @@
         const ZERO_MODELS_CHECK_FILTER_PATH =
             'application.modules.marketingLists.controllers.filters.MarketingListsZeroModelsCheckControllerFilter';
 
+        const USER_CONTACT_OR_LEAD_ACCESS_FILTER_PATH =
+            'application.modules.marketingLists.controllers.filters.UserCanAccessContactsOrLeadsForMarketingListControllerFilter';
+
         public static function getListBreadcrumbLinks()
         {
             $title = Zurmo::t('MarketingListsModule', 'Lists');
@@ -54,6 +57,10 @@
         {
             return array_merge(parent::filters(),
                 array(
+                    array(
+                        static::USER_CONTACT_OR_LEAD_ACCESS_FILTER_PATH . ' + create, details',
+                        'controller' => $this,
+                    ),
                     array(
                         static::ZERO_MODELS_CHECK_FILTER_PATH . ' + list',
                         'controller'                    => $this,
@@ -162,15 +169,25 @@
         {
             $modalListLinkProvider = new SelectFromRelatedEditModalListLinkProvider(
                                             $_GET['modalTransferInformation']['sourceIdFieldId'],
-                                            $_GET['modalTransferInformation']['sourceNameFieldId']
+                                            $_GET['modalTransferInformation']['sourceNameFieldId'],
+                                            $_GET['modalTransferInformation']['modalId']
             );
-            echo ModalSearchListControllerUtil::setAjaxModeAndRenderModalSearchList($this, $modalListLinkProvider,
-                                                'ContactsStateMetadataAdapter');
+            echo ModalSearchListControllerUtil::setAjaxModeAndRenderModalSearchList($this, $modalListLinkProvider);
+        }
+
+        public function actionGetInfoToCopyToCampaign($id)
+        {
+            $marketingList = static::getModelAndCatchNotFoundAndDisplayError('MarketingList', intval($id));
+            ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($marketingList);
+            $data = array();
+            $data['fromName']    = $marketingList->fromName;
+            $data['fromAddress'] = $marketingList->fromAddress;
+            echo CJSON::encode($data);
         }
 
         protected static function getSearchFormClassName()
         {
             return 'MarketingListsSearchForm';
         }
-  }
+    }
 ?>

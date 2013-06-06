@@ -71,6 +71,16 @@
         }
 
         /**
+         * Override to support userId being an attribute even though it is not a public property since it can
+         * still be set since we have @see setUserId
+         * @return array
+         */
+        public function attributeNames()
+        {
+            return array_merge(parent::attributeNames(), array('userId'));
+        }
+
+        /**
          * @return string
          */
         public function getStringifiedModelForValue()

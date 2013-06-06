@@ -137,27 +137,22 @@
             $data                      = array();
             $data[static::TYPE_STATIC] = Zurmo::t('WorkflowsModule', 'As');
             $modelClassName            = $this->modelClassName;
-            $modelLabel = $modelClassName::getModelLabelByTypeAndLanguage('SingularLowerCase');
             if ($isCreatingNewModel)
             {
                 if (is_subclass_of($modelClassName, 'OwnedSecurableItem'))
                 {
                     $data[self::TYPE_DYNAMIC_OWNER_OF_TRIGGERED_MODEL] =
-                        Zurmo::t('WorkflowsModule', 'As user who owns triggered {modelLabel}',
-                                                   array('{modelLabel}' => $modelLabel));
+                        Zurmo::t('WorkflowsModule', 'As user who owns triggered record');
                 }
             }
             else
             {
                 $data[self::TYPE_DYNAMIC_CREATED_BY_USER]   =
-                    Zurmo::t('WorkflowsModule', 'As user who created triggered {modelLabel}',
-                                               array('{modelLabel}' => $modelLabel));
+                    Zurmo::t('WorkflowsModule', 'As user who created triggered record');
                 $data[self::TYPE_DYNAMIC_MODIFIED_BY_USER]  =
-                    Zurmo::t('WorkflowsModule', 'As user who last modified triggered {modelLabel}',
-                                               array('{modelLabel}' => $modelLabel));
+                    Zurmo::t('WorkflowsModule', 'As user who last modified triggered record');
                 $data[self::TYPE_DYNAMIC_TRIGGERED_BY_USER] =
-                    Zurmo::t('WorkflowsModule', 'As user who triggered action',
-                                               array('{modelLabel}' => $modelLabel));
+                    Zurmo::t('WorkflowsModule', 'As user who triggered action');
             }
             return $data;
         }

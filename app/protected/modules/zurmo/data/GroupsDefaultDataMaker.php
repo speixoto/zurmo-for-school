@@ -48,6 +48,9 @@
             $everyone->setRight('AccountsModule',      AccountsModule::RIGHT_ACCESS_ACCOUNTS, Right::ALLOW);
             $everyone->setRight('AccountsModule',      AccountsModule::RIGHT_CREATE_ACCOUNTS, Right::ALLOW);
             $everyone->setRight('AccountsModule',      AccountsModule::RIGHT_DELETE_ACCOUNTS, Right::ALLOW);
+            $everyone->setRight('CampaignsModule',     CampaignsModule::RIGHT_ACCESS_CAMPAIGNS, Right::ALLOW);
+            $everyone->setRight('CampaignsModule',     CampaignsModule::RIGHT_CREATE_CAMPAIGNS, Right::ALLOW);
+            $everyone->setRight('CampaignsModule',     CampaignsModule::RIGHT_DELETE_CAMPAIGNS, Right::ALLOW);
             $everyone->setRight('ContactsModule',      ContactsModule::RIGHT_ACCESS_CONTACTS, Right::ALLOW);
             $everyone->setRight('ContactsModule',      ContactsModule::RIGHT_CREATE_CONTACTS, Right::ALLOW);
             $everyone->setRight('ContactsModule',      ContactsModule::RIGHT_DELETE_CONTACTS, Right::ALLOW);
@@ -91,6 +94,12 @@
             $everyone->setRight('HomeModule',          HomeModule::RIGHT_DELETE_DASHBOARDS, Right::ALLOW);
             $everyone->setRight('ExportModule',        ExportModule::RIGHT_ACCESS_EXPORT, Right::ALLOW);
             $everyone->setRight('SocialItemsModule',   SocialItemsModule::RIGHT_ACCESS_SOCIAL_ITEMS, Right::ALLOW);
+            $everyone->setRight('ProductsModule',      ProductsModule::RIGHT_ACCESS_PRODUCTS, Right::ALLOW);
+            $everyone->setRight('ProductsModule',      ProductsModule::RIGHT_CREATE_PRODUCTS, Right::ALLOW);
+            $everyone->setRight('ProductsModule',      ProductsModule::RIGHT_DELETE_PRODUCTS, Right::ALLOW);
+            $everyone->setRight('ProductTemplatesModule',      ProductTemplatesModule::RIGHT_ACCESS_PRODUCT_TEMPLATES, Right::ALLOW);
+            $everyone->setRight('ProductTemplatesModule',      ProductTemplatesModule::RIGHT_CREATE_PRODUCT_TEMPLATES, Right::ALLOW);
+            $everyone->setRight('ProductTemplatesModule',      ProductTemplatesModule::RIGHT_DELETE_PRODUCT_TEMPLATES, Right::ALLOW);
             $saved = $everyone->save();
             assert('$saved');
         }

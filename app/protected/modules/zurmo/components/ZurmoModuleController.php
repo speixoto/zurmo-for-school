@@ -48,6 +48,31 @@
             $this->actionList();
         }
 
+        /**
+         * Currently supports an attribute that is a CustomField
+         * @param string $id
+         * @param string $attribute
+         * @param string $value
+         * @throws NotSupportedException
+         * @throws FailedToSaveModelException
+         */
+        public function actionUpdateAttributeValue($id, $attribute, $value)
+        {
+            $modelClassName = $this->getModule()->getPrimaryModelName();
+            $model          = $modelClassName::getById(intval($id));
+            ControllerSecurityUtil::resolveAccessCanCurrentUserWriteModel($model);
+            if (!$model->isAttribute($attribute) || !$model->{$attribute} instanceof CustomField)
+            {
+                throw new NotSupportedException();
+            }
+            $model->{$attribute}->value = $value;
+            $saved                      = $model->save();
+            if (!$saved)
+            {
+                throw new FailedToSaveModelException();
+            }
+        }
+
         public function actionLoadSavedSearch($id, $redirectAction = 'list')
         {
             $savedSearch = SavedSearch::getById((int)$id);
@@ -98,9 +123,15 @@
 
         protected function renderAutoCompleteResults($modelClassName, $term)
         {
-            $pageSize = Yii::app()->pagination->resolveActiveForCurrentUserByType(
-                            'autoCompleteListPageSize', get_class($this->getModule()));
+            $pageSize            = Yii::app()->pagination->resolveActiveForCurrentUserByType(
+                                   'autoCompleteListPageSize', get_class($this->getModule()));
             $autoCompleteResults = ModelAutoCompleteUtil::getByPartialName($modelClassName, $term, $pageSize);
+            if (empty($autoCompleteResults))
+            {
+                $autoCompleteResults = array(array('id'    => null,
+                                                   'value' => null,
+                                                   'label' => Zurmo::t('Core', 'No results found')));
+            }
             return CJSON::encode($autoCompleteResults);
         }
 
@@ -174,12 +205,19 @@
             return null;
         }
 
-        protected function export($stickySearchKey = null)
+        protected function export($stickySearchKey = null, $modelClassName = null, $exportFileName = null)
         {
             assert('$stickySearchKey == null || is_string($stickySearchKey)');
-            $modelClassName        = $this->getModelName();
+            assert('$modelClassName == null || is_string($modelClassName)');
+            assert('$exportFileName == null || is_string($exportFileName)');
+            if ($modelClassName == null)
+            {
+                $modelClassName        = $this->getModelName();
+            }
             $searchFormClassName   = static::getSearchFormClassName();
+            $pageSize              = null;
             $model                 = new $modelClassName(false);
+
             if ($searchFormClassName != null)
             {
                 $searchForm = new $searchFormClassName($model);
@@ -189,16 +227,22 @@
                 throw new NotSupportedException();
             }
             $stateMetadataAdapterClassName = $this->getModule()->getStateMetadataAdapterClassName();
-            $dataProvider                  = $this->getDataProviderByResolvingSelectAllFromGet(
-                                             $searchForm, null, Yii::app()->user->userModel->id,
-                                             $stateMetadataAdapterClassName, $stickySearchKey);
+
+            $dataProvider = $this->getDataProviderByResolvingSelectAllFromGet(
+                $searchForm,
+                $pageSize,
+                Yii::app()->user->userModel->id,
+                null,
+                $stickySearchKey
+            );
+
             if (!$dataProvider)
             {
                 $idsToExport = array_filter(explode(",", trim($_GET['selectedIds'], " ,"))); // Not Coding Standard
             }
             $totalItems = static::getSelectedRecordCountByResolvingSelectAllFromGet($dataProvider, false);
-            $headerData = array();
-            $data       = array();
+
+            $data = array();
             if ($totalItems > 0)
             {
                 if ($totalItems <= ExportModule::$asynchronusThreshold)
@@ -206,8 +250,7 @@
                     // Output csv file directly to user browser
                     if ($dataProvider)
                     {
-                        $dataProvider->getPagination()->setPageSize($totalItems);
-                        $modelsToExport = $dataProvider->getData();
+                        $modelsToExport = ExportUtil::getDataForExport($dataProvider);
                         if (count($modelsToExport) > 0)
                         {
                             $modelToExportAdapter  = new ModelToExportAdapter($modelsToExport[0]);
@@ -242,8 +285,16 @@
                     // Output data
                     if (count($data))
                     {
-                        $fileName = $this->getModule()->getName() . ".csv";
-                        ExportItemToCsvFileUtil::export($data, $headerData, $fileName, true);
+                        if ($exportFileName == null)
+                        {
+                            $fileName = $this->getModule()->getName() . ".csv";
+                        }
+                        else
+                        {
+                            $fileName = $exportFileName . ".csv";
+                        }
+                        // TODO Clarify with Jason, header data is missing here
+                        $output = ExportItemToCsvFileUtil::export($data, array(), $fileName, true);
                     }
                     else
                     {
@@ -256,8 +307,7 @@
                 {
                     if ($dataProvider)
                     {
-                        $dataProvider->getPagination()->setPageSize($totalItems);
-                        $serializedData = serialize($dataProvider);
+                        $serializedData = ExportUtil::getSerializedDataForExport($dataProvider);
                     }
                     else
                     {
@@ -269,7 +319,7 @@
                     $exportItem->isCompleted     = 0;
                     $exportItem->exportFileType  = 'csv';
                     $exportItem->exportFileName  = $this->getModule()->getName();
-                    $exportItem->modelClassName  = $modelClassName;
+                    $exportItem->modelClassName = $modelClassName;
                     $exportItem->serializedData  = $serializedData;
                     $exportItem->save();
                     $exportItem->forget();

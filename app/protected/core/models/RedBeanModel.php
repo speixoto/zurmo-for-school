@@ -145,6 +145,7 @@
             'defaultCalculatedDate'  => 'RedBeanModelDefaultCalculatedDateValidator',
             'readOnly'               => 'RedBeanModelReadOnlyValidator',
             'dateTimeDefault'        => 'RedBeanModelDateTimeDefaultValueValidator',
+            'probability'            => 'RedBeanModelProbabilityValidator',
         );
 
         /**
@@ -229,6 +230,41 @@
             assert('$where   === null || is_string ($where)   && $where   != ""');
             assert('$orderBy === null || is_string ($orderBy) && $orderBy != ""');
             assert('$modelClassName === null || is_string($modelClassName) && $modelClassName != ""');
+
+            if ($modelClassName === null)
+            {
+                $modelClassName = get_called_class();
+            }
+            $ids = self::getSubsetIds($joinTablesAdapter, $offset, $count, $where,
+                $orderBy, $modelClassName, $selectDistinct);
+            $tableName = self::getTableName($modelClassName);
+            $beans = R::batch ($tableName, $ids);
+            return self::makeModels($beans, $modelClassName);
+        }
+
+        /**
+         * Gets a range of model ids from the database of the named model type.
+         * @param $modelClassName
+         * @param $joinTablesAdapter null or instance of joinTablesAdapter.
+         * @param $offset The zero based index of the first model to be returned.
+         * @param $count The number of models to be returned.
+         * @param $where
+         * @param $orderBy - sql string. Example 'a desc' or 'a.b desc'.  Currently only supports non-related attributes
+         * @param $modelClassName Pass only when getting it at runtime gets the wrong name.
+         * @return An array of models ids
+         */
+        public static function getSubsetIds(RedBeanModelJoinTablesQueryAdapter $joinTablesAdapter = null,
+                                            $offset = null, $count = null,
+                                            $where = null, $orderBy = null,
+                                            $modelClassName = null,
+                                            $selectDistinct = false)
+        {
+            assert('$offset  === null || is_integer($offset)  && $offset  >= 0');
+            assert('$count   === null || is_integer($count)   && $count   >= 1');
+            assert('$where   === null || is_string ($where)   && $where   != ""');
+            assert('$orderBy === null || is_string ($orderBy) && $orderBy != ""');
+            assert('$modelClassName === null || is_string($modelClassName) && $modelClassName != ""');
+
             if ($modelClassName === null)
             {
                 $modelClassName = get_called_class();
@@ -239,11 +275,9 @@
             }
             $tableName = self::getTableName($modelClassName);
             $sql       = static::makeSubsetOrCountSqlQuery($tableName, $joinTablesAdapter, $offset, $count, $where,
-                                                           $orderBy, false, $selectDistinct);
+                $orderBy, false, $selectDistinct);
             $ids       = R::getCol($sql);
-            $tableName = self::getTableName($modelClassName);
-            $beans = R::batch ($tableName, $ids);
-            return self::makeModels($beans, $modelClassName);
+            return $ids;
         }
 
         /**
@@ -598,6 +632,11 @@
          */
         protected function onCreated()
         {
+            if ($this->hasEventHandler('onCreated'))
+            {
+                $event = new CModelEvent($this);
+                $this->onCreated($event);
+            }
         }
 
         /**
@@ -605,6 +644,11 @@
          */
         protected function onLoaded()
         {
+            if ($this->hasEventHandler('onLoaded'))
+            {
+                $event = new CModelEvent($this);
+                $this->onLoaded($event);
+            }
         }
 
         /**
@@ -1477,6 +1521,25 @@
         }
 
         /**
+         * Returns true if the attribute is formattted as probability
+         */
+        public function isAttributeFormattedAsProbability($attributeName)
+        {
+            assert("\$this->isAttribute(\"$attributeName\")");
+            foreach ($this->validators as $validator)
+            {
+                if ($validator instanceof RedBeanModelProbabilityValidator)
+                {
+                    if (in_array($attributeName, $validator->attributes, true))
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+
+        /**
          * @param boolean $attributeName
          * @return true/false whether the attributeName specified, it is allowed to be set externally even though it is
          * a read-only attribute.
@@ -2185,7 +2248,7 @@
             assert('is_string($relatedModelClassName)');
             assert('$relatedModelClassName != ""');
             assert('is_int($id)');
-            assert('$id > 0');
+            //assert('$id > 0');
             assert('$modelClassName === null || is_string($modelClassName) && $modelClassName != ""');
             if ($modelClassName === null)
             {

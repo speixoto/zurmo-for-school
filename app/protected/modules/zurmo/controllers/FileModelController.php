@@ -78,5 +78,27 @@
             $fileModel->delete();
             //todo: add error handling.
         }
+
+        public function actionCloneExistingFiles($commaSeparatedExistingModelIds)
+        {
+            assert('is_string($commaSeparatedExistingModelIds)');
+            $existingFileModelIds   = explode(',', $commaSeparatedExistingModelIds); // Not Coding Standard
+            $newFileModelsData      = array(); //needs id, name, size at least, preferably type too.
+            foreach ($existingFileModelIds as $existingFileModelId)
+            {
+                $newFileModel           = FileModelUtil::makeByExistingFileModelId($existingFileModelId);
+                if ($newFileModel === false)
+                {
+                    throw new FailedFileUploadException();
+                }
+                $newFileModelsData[]    = array('name' => $newFileModel->name,
+                                                'type' => $newFileModel->type,
+                                                'size' =>
+                                                FileModelDisplayUtil::convertSizeToHumanReadableAndGet($newFileModel->size),
+                                                'id' => $newFileModel->id);
+            }
+            $newFileModelsJson = CJSON::encode($newFileModelsData);
+            echo $newFileModelsJson;
+        }
     }
 ?>

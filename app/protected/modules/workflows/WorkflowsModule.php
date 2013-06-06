@@ -84,7 +84,7 @@
                 ),
                 'adminTabMenuItems' => array(
                         array(
-                            'label' => 'Workflows',
+                            'label' => "eval:Zurmo::t('WorkflowsModule', 'Workflows')",
                             'url'   => array('/workflows/default'),
                             'right' => self::RIGHT_ACCESS_WORKFLOWS,
                         ),
@@ -92,8 +92,8 @@
                 'configureMenuItems' => array(
                     array(
                         'category'         => ZurmoModule::ADMINISTRATION_CATEGORY_GENERAL,
-                        'titleLabel'       => "eval:Zurmo::t('UsersModule', 'Workflows')",
-                        'descriptionLabel' => "eval:Zurmo::t('UsersModule', 'Manage Workflows')",
+                        'titleLabel'       => "eval:Zurmo::t('WorkflowsModule', 'Workflows')",
+                        'descriptionLabel' => "eval:Zurmo::t('WorkflowsModule', 'Manage Workflows')",
                         'route'            => '/workflows/default',
                         'right'            => self::RIGHT_CREATE_WORKFLOWS,
                     ),
@@ -158,6 +158,16 @@
         public static function hasPermissions()
         {
             return false;
+        }
+
+        protected static function getSingularModuleLabel($language)
+        {
+            return Zurmo::t('WorkflowsModule', 'Workflow', array(), null, $language);
+        }
+
+        protected static function getPluralModuleLabel($language)
+        {
+            return Zurmo::t('WorkflowsModule', 'Workflows', array(), null, $language);
         }
     }
 ?>
