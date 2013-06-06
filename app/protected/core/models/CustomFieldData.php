@@ -83,6 +83,34 @@
             }
         }
 
+        public static function existsByName($name)
+        {
+            if (isset(self::$cachedModelsByName[$name]))
+            {
+                return true;
+            }
+            try
+            {
+                GeneralCache::getEntry('CustomFieldData' . $name);
+                return true;
+            }
+            catch (NotFoundException $e)
+            {
+                assert('is_string($name)');
+                assert('$name != ""');
+                $bean = R::findOne('customfielddata', "name = :name ", array(':name' => $name));
+                assert('$bean === false || $bean instanceof RedBean_OODBBean');
+                if ($bean === false)
+                {
+                    return false;
+                }
+                else
+                {
+                    return true;
+                }
+            }
+        }
+
         public function __toString()
         {
             return $this->name;
