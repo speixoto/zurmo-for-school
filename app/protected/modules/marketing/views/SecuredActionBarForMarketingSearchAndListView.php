@@ -92,7 +92,7 @@
 
         public function setIntroCookieValue($introCookieValue)
         {
-            assert('$cookieValue == null || is_string($cookieValue)');
+            assert('$introCookieValue == null || is_string($introCookieValue)');
             $this->introCookieValue = $introCookieValue;
         }
     }
