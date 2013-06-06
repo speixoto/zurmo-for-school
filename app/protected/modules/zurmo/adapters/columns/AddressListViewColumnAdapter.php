@@ -42,6 +42,7 @@
                 'name'  => $this->attribute,
                 'value' => 'Yii::app()->format->text(strval($data->' . $this->attribute . '))',
                 'type'  => 'raw',
+                'sortable' => false,
             );
         }
     }
