@@ -40,18 +40,19 @@
     class ProductsConfigurationForm extends CFormModel
     {
         /**
-         * Value to be used to signal that the filtering is for all stages and not a specific one.
-         * @see ProductsMashableFilterRadioElement
-         * @var string
+         * Constants used for the stages
          */
         const  FILTERED_BY_ALL_STAGES = 'All';
-        const  OPEN_STAGE = 'Open';
-        const  LOST_STAGE = 'Lost';
-        const  WON_STAGE  = 'Won';
+
+        const  OPEN_STAGE             = 'Open';
+
+        const  LOST_STAGE             = 'Lost';
+
+        const  WON_STAGE              = 'Won';
 
         /**
-         * What model to filter by if any for the latest activity feed.  Defaults to not filtering on anything, thus
-         * showing all available models that implement the MashableActivityInterface.
+         * All option when filtering by stage which includes all the products
+         * irrespective of the stage
          * @var string
          */
         public $filteredByStage = self::FILTERED_BY_ALL_STAGES;
