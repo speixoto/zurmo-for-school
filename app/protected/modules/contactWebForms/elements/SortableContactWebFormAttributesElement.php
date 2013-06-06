@@ -60,7 +60,6 @@
             {
                 $contactWebFormAttributes = unserialize($this->model->serializedData);
             }
-
             $clip = $this->form->checkBoxList($this->model,
                 $this->attribute,
                 ContactWebFormsUtil::getAllNonPlacedAttributes($attributes,
@@ -90,7 +89,7 @@
         protected function registerScript()
         {
             // Begin Not Coding Standard
-            $script = "$('label.hasCheckBox > input[type=checkbox]').live('change', function()
+            $script = "$(\"[id^='ContactWebForm_serializedData_']\").live('change', function()
                        {
                            if ($(this).is(':checked'))
                            {
@@ -99,26 +98,10 @@
                                 var attributeLabel   = $('label[for=' + elementId + ']').html();
                                 $(this).closest('div').remove();
                                 var attributeElement = '<li><div class=\"dynamic-row\"><div>';
-                                //attributeElement    += '<label class=\"hasCheckBox c_on\"><input type=\'checkbox\' id=\'ContactWebFormAttribute_' + attributeId + '\' name=\'ContactWebFormAttributes[]\'';
-                                //attributeElement    += ' value=\'' + attributeId + '\' checked=\'checked\' /></label>';
-                                attributeElement    += '<label for=\'ContactWebFormAttribute_' + attributeId + '\'>' + attributeLabel + '</label>';
+                                attributeElement    += '<label for=\'' + elementId + '\'>' + attributeLabel + '</label>';
                                 attributeElement    += '<input type=\'hidden\' name=\'attributeIndexOrDerivedType[]\' value=\'' + attributeId + '\' />';
-                                attributeElement    += '</div><a class=\"remove-dynamic-row-link\" id=\'ContactWebFormAttribute_' + attributeId + '\' data-value=\'' + attributeId + '\' href=\"#\">—</a></div></li>';
+                                attributeElement    += '</div><a class=\"remove-dynamic-row-link\" id=\'' + elementId + '\' data-value=\'' + attributeId + '\' href=\"#\">—</a></div></li>';
                                 $('ul#yw1').append(attributeElement);
-                           }
-                       });
-                       $('ul#yw1 li > input[type=checkbox]').live('change', function()
-                       {
-                           if (!$(this).is(':checked'))
-                           {
-                                var attributeId      = $(this).val();
-                                var elementId        = $(this).attr('id');
-                                var attributeLabel   = $('label[for=' + elementId + ']').html();
-                                $(this).closest('li').remove();
-                                var attributeElement = '<div class=\'multi-select-checkbox-input\'><label class=\'hasCheckBox\'><label class=\'hasCheckBox\'>';
-                                attributeElement    += '<input id=\'ContactWebFormAttribute_' + attributeId + '\' value=\'' + attributeId + '\' type=\'checkbox\'';
-                                attributeElement    += ' name=\'ContactWebFormAttributes[]\'></label></label><label for=\'ContactWebFormAttribute_' + attributeId + '\'>' + attributeLabel + '</label></div>';
-                                $('span#ContactWebForm_serializedData').append(attributeElement);
                            }
                        });
                        $('.remove-dynamic-row-link').live('click', function(){
@@ -127,8 +110,8 @@
                                 var attributeLabel   = $('label[for=' + elementId + ']').html();
                                 $(this).closest('li').remove();
                                 var attributeElement = '<div class=\'multi-select-checkbox-input\'><label class=\'hasCheckBox\'><label class=\'hasCheckBox\'>';
-                                attributeElement    += '<input id=\'ContactWebFormAttribute_' + attributeId + '\' value=\'' + attributeId + '\' type=\'checkbox\'';
-                                attributeElement    += ' name=\'ContactWebFormAttributes[]\'></label></label><label for=\'ContactWebFormAttribute_' + attributeId + '\'>' + attributeLabel + '</label></div>';
+                                attributeElement    += '<input id=\'' + elementId + '\' value=\'' + attributeId + '\' type=\'checkbox\'';
+                                attributeElement    += ' name=\'ContactWebForm[serializedData][]\'></label></label><label for=\'' + elementId + '\'>' + attributeLabel + '</label></div>';
                                 $('span#ContactWebForm_serializedData').append(attributeElement);
                             return false;
                        })";
@@ -147,11 +130,9 @@
         protected function renderItemTemplate()
         {
             return '<li><div class="dynamic-row"><div>
-                        <!--<label class="hasCheckBox"><input type="checkbox" id="ContactWebFormAttribute_{id}" name="ContactWebFormAttributes[]" value="{id}"
-                        {checkedAndReadOnly} /></label>-->
-                        <label for="ContactWebFormAttribute_{id}">{content}</label>' .
+                        <label for="ContactWebForm_serializedData_{id}">{content}</label>' .
                         '<input type="hidden" name="attributeIndexOrDerivedType[]" value="{id}" />' .
-                    '</div><a class="remove-dynamic-row-link" id="ContactWebFormAttribute_{id}" data-value="{id}" href="#">—</a></div></li>';
+                    '</div>{checkedAndReadOnly}</div></li>';
         }
 
         protected function renderError()

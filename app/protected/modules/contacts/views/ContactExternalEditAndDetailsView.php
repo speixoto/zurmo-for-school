@@ -28,13 +28,15 @@
     {
         public $externalViewMetadata;
 
-        protected $hiddenField;
+        protected $hashIndexHiddenField;
+
+        const GOOGLE_WEB_TRACKING_ID_FIELD = 'googleWebTrackingId';
 
         public function __construct($renderType, $controllerId, $moduleId, $model, $metadata)
         {
             parent::__construct($renderType, $controllerId, $moduleId, $model);
             $this->externalViewMetadata     = $metadata;
-            $this->hiddenField              = ContactWebFormEntry::HIDDEN_FIELD;
+            $this->hashIndexHiddenField     = ContactWebFormEntry::HASH_INDEX_HIDDEN_FIELD;
         }
 
         public static function getDefaultMetadata()
@@ -138,18 +140,29 @@
         protected function renderAfterFormLayout($form)
         {
             $hashIndexHtmlOptions = array(
-                'name'     => $this->hiddenField,
-                'id'       => $this->hiddenField,
+                'name'     => $this->hashIndexHiddenField,
+                'id'       => $this->hashIndexHiddenField,
                 'value'    => md5('ContactWebFormEntry'.time()),
             );
-            $content = $form->hiddenField($this->model, $this->hiddenField, $hashIndexHtmlOptions);
+            $content = $form->hiddenField($this->model, $this->hashIndexHiddenField, $hashIndexHtmlOptions);
             $externalRequestTokenHtmlOptions = array(
                 'name'     => ZurmoHttpRequest::EXTERNAL_REQUEST_TOKEN,
                 'id'       => ZurmoHttpRequest::EXTERNAL_REQUEST_TOKEN,
                 'value'    => ZURMO_TOKEN,
             );
             $content .= $form->hiddenField($this->model, ZurmoHttpRequest::EXTERNAL_REQUEST_TOKEN, $externalRequestTokenHtmlOptions);
+            $googleWebTrackingIdHtmlOptions = array(
+                'name'     => self::GOOGLE_WEB_TRACKING_ID_FIELD,
+                'id'       => self::GOOGLE_WEB_TRACKING_ID_FIELD,
+                'value'    => '',
+            );
+            $content .= $form->hiddenField($this->model, self::GOOGLE_WEB_TRACKING_ID_FIELD, $googleWebTrackingIdHtmlOptions);
             return $content;
+        }
+
+        protected function renderTitleContent()
+        {
+            return null;
         }
     }
 ?>

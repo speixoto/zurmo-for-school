@@ -62,13 +62,13 @@
                 {
                     if ($attributeData['isRequired'])
                     {
-                        $checkedAndReadOnly    = ' checked="checked" disabled="disabled" ';
                         $items[$attributeName] = array('{content}'            => $attributeData['attributeLabel'],
-                                                       '{checkedAndReadOnly}' => $checkedAndReadOnly);
+                                                       '{checkedAndReadOnly}' => '');
                     }
                     elseif ($contactWebFormAttributes !== null)
                     {
-                        $checkedAndReadOnly    = ' checked="checked" ';
+                        $checkedAndReadOnly    = '<a class="remove-dynamic-row-link" id="ContactWebForm_serializedData_' .
+                                                  $attributeName . '" data-value="' . $attributeName . '" href="#">—</a>';
                         $items[$attributeName] = array('{content}'            => $attributeData['attributeLabel'],
                                                        '{checkedAndReadOnly}' => $checkedAndReadOnly);
                     }
@@ -82,7 +82,8 @@
             $items = array();
             foreach ($attributes as $attributeName => $attributeData)
             {
-                if (!$attributeData['isReadOnly'])
+                //TODO: Figure out, how to hide attributes like googleWebTrackingId
+                if (!$attributeData['isReadOnly'] && $attributeName != 'googleWebTrackingId')
                 {
                     if (!$attributeData['isRequired'])
                     {
@@ -101,6 +102,15 @@
                 }
             }
             return $items;
+        }
+
+        public static function getEmbedScript($id)
+        {
+            $embedScript = '<div id="zurmoExternalWebForm">' .
+                           '<script type="text/javascript" ' .
+                           'src="' . Yii::app()->createAbsoluteUrl('contacts/external/sourceFiles/', array('id' => $id)) . '">' .
+                           '</script></div>';
+            return $embedScript;
         }
     }
 ?>
