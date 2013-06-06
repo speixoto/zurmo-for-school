@@ -32,7 +32,7 @@
                     'name'  => $this->attribute,
                     'value' => array('ProductTemplateElementUtil', 'getProductTemplateStatusDisplayedGridValue'),
                     'type'  => 'raw',
-                );
+            );
         }
     }
 ?>

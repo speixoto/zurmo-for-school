@@ -53,7 +53,6 @@
                     $value = str_replace('{discount}', $discountOrMarkupPercentage/100, $value);
                 }
             }
-
             $data[$this->model->getAttributeLabel($this->attribute)] = $value;
         }
     }
