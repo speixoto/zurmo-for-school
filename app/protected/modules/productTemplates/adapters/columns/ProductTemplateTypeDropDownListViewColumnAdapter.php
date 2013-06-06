@@ -28,11 +28,11 @@
     {
         public function renderGridViewData()
         {
-                return array(
-                    'name'  => $this->attribute,
-                    'value' => array('ProductTemplateElementUtil', 'getProductTemplateTypeDisplayedGridValue'),
-                    'type'  => 'raw',
-                );
+            return array(
+                'name'  => $this->attribute,
+                'value' => array('ProductTemplateElementUtil', 'getProductTemplateTypeDisplayedGridValue'),
+                'type'  => 'raw',
+            );
         }
     }
 ?>
