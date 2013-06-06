@@ -115,5 +115,10 @@
         {
             return true;
         }
+
+        public static function getDemoDataMakerClassNames()
+        {
+            return array('ContactWebFormDemoDataMaker', 'ContactWebFormEntryDemoDataMaker');
+        }
     }
 ?>
