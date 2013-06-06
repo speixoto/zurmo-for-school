@@ -2194,6 +2194,20 @@ td.empty{
 		background: #ffffff;
 		#gradient > .vertical(#ffffff, #F5F5F5);
 	}
+	.row-description{
+		display: inline-block;
+		font-style: italic;
+		.smaller();
+		padding: 0 0 5px 0;
+		&:before{
+			content:"T";
+			.symbly(24px);
+			margin-right: 6px;
+			font-style: normal;
+			position: relative;
+			top: 2px;
+		}
+	}
 }
 
 .AppContent label{

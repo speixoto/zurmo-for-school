@@ -154,10 +154,10 @@
             $content = null;
             if ($actionElementBar != null)
             {
-                $content .= ZurmoHtml::tag('div', array('class' => $this->getWrapperDivClass()), $actionElementBar);
+                $content .= $actionElementBar;
             }
             $content .= $this->renderSearchFormAndListContent();
-            return $content;
+            return ZurmoHtml::tag('div', array('class' => $this->getWrapperDivClass()), $content);
         }
 
         protected function shouldRenderViewToolBar()

@@ -84,6 +84,7 @@
     $config = CMap::mergeArray(
         require(COMMON_ROOT . '/protected/config/common.php'),
         array(
+            'edition'         => 'Community',
             'language'        => $language,
             'theme'           => $theme,
             'installed'       => $installed,
@@ -101,6 +102,10 @@
             ),
         )
     );
+    if (file_exists(INSTANCE_ROOT . '/protected/config/commercial.php'))
+    {
+        $config = CMap::mergeArray($config, require(COMMON_ROOT . '/protected/config/commercial.php'));
+    }
     if (isset($instanceConfig))
     {
         return CMap::mergeArray($config, $instanceConfig);

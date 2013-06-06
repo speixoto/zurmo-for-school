@@ -34,26 +34,36 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class SellPriceFormulaInformationRedBeanModelAttributeValueToExportValueAdapter extends RedBeanModelAttributeValueToExportValueAdapter
+    class PluginsConfigurationMenuView extends ConfigureModulesMenuView
     {
-        public function resolveData(& $data)
+        public function getTitle()
         {
-            assert('$this->model->{$this->attribute} instanceof SellPriceFormula');
-            $sellPriceFormulaModel = $this->model->{$this->attribute};
-            $type = $sellPriceFormulaModel->type;
-            $discountOrMarkupPercentage = $sellPriceFormulaModel->discountOrMarkupPercentage;
-            $displayedSellPriceFormulaList = SellPriceFormula::getDisplayedSellPriceFormulaArray();
-            $value = '';
-            if ($type != null)
-            {
-                $value = $displayedSellPriceFormulaList[$type];
+            return Zurmo::t('ZurmoModule', 'Plugins');
+        }
 
-                if ($type != SellPriceFormula::TYPE_EDITABLE)
+        protected function getCategoryData()
+        {
+            $categories = array();
+            $modules = Module::getModuleObjects();
+            foreach ($modules as $module)
+            {
+                $moduleSubMenuItems = MenuUtil::getAccessibleConfigureSubMenuByCurrentUser(get_class($module));
+                if ($module->isEnabled() && count($moduleSubMenuItems) > 0)
                 {
-                    $value = str_replace('{discount}', $discountOrMarkupPercentage/100, $value);
+                    foreach ($moduleSubMenuItems as $subMenuItem)
+                    {
+                        if (!empty($subMenuItem['category']) &&
+                            $subMenuItem['category'] == ZurmoModule::ADMINISTRATION_CATEGORY_PLUGINS)
+                        {
+                            assert('isset($subMenuItem["titleLabel"])');
+                            assert('isset($subMenuItem["descriptionLabel"])');
+                            assert('isset($subMenuItem["route"])');
+                            $categories[$subMenuItem['category']][] = $subMenuItem;
+                        }
+                    }
                 }
             }
-            $data[$this->model->getAttributeLabel($this->attribute)] = $value;
+            return $categories;
         }
     }
 ?>

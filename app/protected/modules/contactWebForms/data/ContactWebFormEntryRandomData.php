@@ -34,26 +34,57 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class SellPriceFormulaInformationRedBeanModelAttributeValueToExportValueAdapter extends RedBeanModelAttributeValueToExportValueAdapter
-    {
-        public function resolveData(& $data)
-        {
-            assert('$this->model->{$this->attribute} instanceof SellPriceFormula');
-            $sellPriceFormulaModel = $this->model->{$this->attribute};
-            $type = $sellPriceFormulaModel->type;
-            $discountOrMarkupPercentage = $sellPriceFormulaModel->discountOrMarkupPercentage;
-            $displayedSellPriceFormulaList = SellPriceFormula::getDisplayedSellPriceFormulaArray();
-            $value = '';
-            if ($type != null)
-            {
-                $value = $displayedSellPriceFormulaList[$type];
-
-                if ($type != SellPriceFormula::TYPE_EDITABLE)
-                {
-                    $value = str_replace('{discount}', $discountOrMarkupPercentage/100, $value);
-                }
-            }
-            $data[$this->model->getAttributeLabel($this->attribute)] = $value;
-        }
-    }
+    /**
+     * Web Forms entry related array of random seed data parts.
+     */
+    return array(
+        'firstName'                      => array(
+            'Alice',
+            'Jim',
+            'Michael',
+            'Keith',
+            'Sarah',
+            'Alice',
+            'Jim',
+            'Michael',
+            'Keith',
+            'Sarah',
+        ),
+        'lastName'                       => array(
+            'Brown',
+            'Smith',
+            '',
+            'Cooper',
+            'Lee',
+            'Brown',
+            'Smith',
+            '',
+            'Cooper',
+            'Lee',
+        ),
+        'jobTitle'                       => array(
+            'Sales Manager',
+            'Sales Director',
+            'IT Director',
+            'IT Manager',
+            'Vice President',
+            'Sales Manager',
+            'Sales Director',
+            'IT Director',
+            'IT Manager',
+            'Vice President',
+        ),
+        'companyName'                    => array(
+            'Acme Corp',
+            'Allied Biscuit',
+            'Charles Townsend Agency',
+            'BLAND Corporation',
+            'Central Perk',
+            'Acme Corp',
+            'Allied Biscuit',
+            'Charles Townsend Agency',
+            'BLAND Corporation',
+            'Central Perk',
+        ),
+    );
 ?>

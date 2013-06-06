@@ -34,26 +34,19 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class SellPriceFormulaInformationRedBeanModelAttributeValueToExportValueAdapter extends RedBeanModelAttributeValueToExportValueAdapter
+    class PluginsConfigurationListView extends GridView
     {
-        public function resolveData(& $data)
-        {
-            assert('$this->model->{$this->attribute} instanceof SellPriceFormula');
-            $sellPriceFormulaModel = $this->model->{$this->attribute};
-            $type = $sellPriceFormulaModel->type;
-            $discountOrMarkupPercentage = $sellPriceFormulaModel->discountOrMarkupPercentage;
-            $displayedSellPriceFormulaList = SellPriceFormula::getDisplayedSellPriceFormulaArray();
-            $value = '';
-            if ($type != null)
-            {
-                $value = $displayedSellPriceFormulaList[$type];
+        protected $cssClasses =  array( 'AdministrativeArea' , 'TableOfContentsView' );
 
-                if ($type != SellPriceFormula::TYPE_EDITABLE)
-                {
-                    $value = str_replace('{discount}', $discountOrMarkupPercentage/100, $value);
-                }
-            }
-            $data[$this->model->getAttributeLabel($this->attribute)] = $value;
+        public function __construct()
+        {
+            parent::__construct(1, 1);
+            $this->setView(new PluginsConfigurationMenuView(), 0, 0);
+        }
+
+        public function isUniqueToAPage()
+        {
+            return true;
         }
     }
 ?>

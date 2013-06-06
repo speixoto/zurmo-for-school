@@ -56,6 +56,11 @@
         protected $installed;
 
         /**
+         * @var string
+         */
+        protected $edition;
+
+        /**
          * Is application in maintenance mode or not.
          * @var boolean
          */
@@ -69,6 +74,11 @@
         public function isApplicationInMaintenanceMode()
         {
             return $this->maintenanceMode;
+        }
+
+        public function getEdition()
+        {
+            return $this->edition;
         }
 
         protected function registerCoreComponents()

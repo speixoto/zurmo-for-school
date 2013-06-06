@@ -34,26 +34,45 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class SellPriceFormulaInformationRedBeanModelAttributeValueToExportValueAdapter extends RedBeanModelAttributeValueToExportValueAdapter
-    {
-        public function resolveData(& $data)
-        {
-            assert('$this->model->{$this->attribute} instanceof SellPriceFormula');
-            $sellPriceFormulaModel = $this->model->{$this->attribute};
-            $type = $sellPriceFormulaModel->type;
-            $discountOrMarkupPercentage = $sellPriceFormulaModel->discountOrMarkupPercentage;
-            $displayedSellPriceFormulaList = SellPriceFormula::getDisplayedSellPriceFormulaArray();
-            $value = '';
-            if ($type != null)
-            {
-                $value = $displayedSellPriceFormulaList[$type];
-
-                if ($type != SellPriceFormula::TYPE_EDITABLE)
-                {
-                    $value = str_replace('{discount}', $discountOrMarkupPercentage/100, $value);
-                }
-            }
-            $data[$this->model->getAttributeLabel($this->attribute)] = $value;
-        }
-    }
+    /**
+     * Web Forms related array of random seed data parts.
+     */
+    return array(
+        'name'                      => array(
+            'Corporate Web Form',
+            'Sales Portal Web Form',
+            'Clients Portal Web Form',
+            'Customer Support Portal Web Form',
+            'Sales Team Web Form',
+            'Corporate Web Form',
+            'Sales Portal Web Form',
+            'Clients Portal Web Form',
+            'Customer Support Portal Web Form',
+            'HR Portal Web Form',
+        ),
+        'redirectUrl'                => array(
+            'http://zurmo.org',
+            'http://zurmo.com',
+            'http://demo.zurmo.com',
+            'http://zurmo.org',
+            'http://zurmo.com',
+            'http://demo.zurmo.com',
+            'http://zurmo.org',
+            'http://zurmo.com',
+            'http://demo.zurmo.com',
+            'http://zurmo.org',
+        ),
+        'submitButtonLabel'          => array(
+            'Submit',
+            'Save',
+            'Save & Redirect',
+            'Submit Now',
+            'Save Now',
+            'Submit',
+            'Save',
+            'Save & Redirect',
+            'Submit Now',
+            'Save Now',
+        ),
+    );
 ?>
