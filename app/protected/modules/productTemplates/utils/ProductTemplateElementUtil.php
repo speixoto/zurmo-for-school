@@ -272,5 +272,56 @@
 
             return $content;
         }
+
+        /**
+         * Get the attribute value for the report grid view based on the input
+         * dropdown attribute
+         * @param object $data
+         * @param int $row
+         * @param string $inputAttribute
+         * @param array $dataArray
+         * @return string or null value
+         */
+        public static function renderProductTemplateListViewAttributeForReports($model, $attribute)
+        {
+            assert('$model instanceof ReportResultsRowData');
+            if (null === $displayAttributeKey = $model::resolveKeyByAttributeName($attribute))
+            {
+                return $model->{$attribute};
+            }
+            $displayAttributes = $model->getDisplayAttributes();
+            $displayAttribute  = $displayAttributes[$displayAttributeKey];
+            $realAttributeName = $displayAttribute->getResolvedAttribute();
+            switch($realAttributeName)
+            {
+                case 'priceFrequency':
+                                        $dataArray = self::getProductTemplatePriceFrequencyDropdownArray();
+                                        break;
+                case 'status'        :
+                                        $dataArray = self::getProductTemplateStatusDropdownArray();
+                                        break;
+                case 'type'          :
+                                        if ($displayAttribute->getResolvedAttributeModelClassName() == 'SellPriceFormula')
+                                        {
+                                            $dataArray = SellPriceFormula::getTypeDropDownArray();
+                                        }
+                                        else
+                                        {
+                                            $dataArray = self::getProductTemplateTypeDropdownArray();
+                                        }
+                                        break;
+                default             :   break;
+            }
+
+            $value = $model->resolveRawValueByDisplayAttributeKey(intval($displayAttributeKey));
+            if (isset($dataArray[$value]))
+            {
+                return $dataArray[$value];
+            }
+            else
+            {
+                return null;
+            }
+        }
     }
 ?>

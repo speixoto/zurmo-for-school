@@ -320,6 +320,16 @@
          */
         protected function resolveColumnClassNameForListViewColumnAdapter(DisplayAttributeForReportForm $displayAttribute)
         {
+            $attributeModelClassName = $displayAttribute->getResolvedAttributeModelClassName();
+            $attribute = $displayAttribute->getResolvedAttribute();
+            if(method_exists($attributeModelClassName, 'getAttributeToReportListViewColumnAdapterClassName'))
+            {
+                $adapterClassName = $attributeModelClassName::getAttributeToReportListViewColumnAdapterClassName($attribute);
+                if($adapterClassName !== null)
+                {
+                    return $adapterClassName;
+                }
+            }
             $displayElementType = $displayAttribute->getDisplayElementType();
             if (@class_exists($displayElementType . 'ForReportListViewColumnAdapter'))
             {

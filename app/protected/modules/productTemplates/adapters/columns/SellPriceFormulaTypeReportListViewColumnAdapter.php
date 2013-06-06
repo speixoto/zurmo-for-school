@@ -24,21 +24,15 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class SellPriceFormulaTypeDropDownElement extends StaticDropDownFormElement
+    class SellPriceFormulaTypeReportListViewColumnAdapter extends TextListViewColumnAdapter
     {
-        protected function getDropDownArray()
+        public function renderGridViewData()
         {
-            return SellPriceFormula::getTypeDropDownArray();
-        }
-
-        protected function getFormattedAttributeLabel()
-        {
-            return Yii::app()->format->text(Zurmo::t('ProductTemplatesModule', 'Sell Price Formula'));
-        }
-
-        protected function renderLabel()
-        {
-            return $this->resolveNonActiveFormFormattedLabel($this->getFormattedAttributeLabel());
+                return array(
+                    'name'  => $this->attribute,
+                    'value' => 'ProductTemplateElementUtil::renderProductTemplateListViewAttributeForReports($data, "' . $this->attribute . '")',
+                    'type'  => 'raw',
+                );
         }
     }
 ?>

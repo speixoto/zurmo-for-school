@@ -26,10 +26,17 @@
 
     class SellPriceFormula extends OwnedModel
     {
+        /*
+         * Constants for sell price formula type
+         */
         const TYPE_EDITABLE           = 1;
+
         const TYPE_PROFIT_MARGIN      = 2;
+
         const TYPE_MARKUP_OVER_COST   = 3;
+
         const TYPE_DISCOUNT_FROM_LIST = 4;
+
         const TYPE_SAME_AS_LIST       = 5;
 
         public function __toString()
@@ -102,6 +109,24 @@
         public static function getModuleClassName()
         {
             return 'ProductTemplatesModule';
+        }
+
+        /**
+         * Gets the report list view column adapater class name
+         * @param string $attribute
+         * @return string or null value
+         */
+        public static function getAttributeToReportListViewColumnAdapterClassName($attribute)
+        {
+            switch ($attribute)
+            {
+                case 'type':
+                    return 'SellPriceFormulaTypeReportListViewColumnAdapter';
+                default:
+                    break;
+            }
+
+            return null;
         }
     }
 ?>
