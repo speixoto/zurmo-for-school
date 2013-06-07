@@ -3,7 +3,7 @@
  * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
  *
  * Zurmo is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License version 3 as published by the
+ * the terms of the GNU Affero General Public License version 3 as published by the
  * Free Software Foundation with the addition of the following permission added
  * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
  * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
@@ -11,10 +11,10 @@
  *
  * Zurmo is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+ * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
  * details.
  *
- * You should have received a copy of the GNU General Public License along with
+ * You should have received a copy of the GNU Affero General Public License along with
  * this program; if not, see http://www.gnu.org/licenses or write to the Free
  * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
  * 02110-1301 USA.
@@ -24,22 +24,24 @@
  *
  * The interactive user interfaces in original and modified versions
  * of this program must display Appropriate Legal Notices, as required under
- * Section 5 of the GNU General Public License version 3.
+ * Section 5 of the GNU Affero General Public License version 3.
  *
- * In accordance with Section 7(b) of the GNU General Public License version 3,
+ * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the Zurmo
  * logo and Zurmo copyright notice. If the display of the logo is not reasonably
  * feasible for technical reasons, the Appropriate Legal Notices must display the words
  * Copyright Zurmo Inc. 2013. All rights reserved.
  ********************************************************************************/
 
-*{
+.zurmo *{
 	margin:0;
 	padding:0;
 }
 
 @import 'color-scheme.less';
 
+//@unicode : ~`unicode-range: U+00-FF;`;
+/*
 @font-face {
 	font-family: 'ZurmoGamificationSymblyReguRg';
 	src: url('../fonts/zurmogamificationsymblyregular-regular-webfont.eot');
@@ -50,7 +52,7 @@
 	font-weight: normal;
 	font-style: normal;
 }
-
+*/
 .symbly( @size : 32px ) {
 	font-weight:normal;
 	font-size:@size;
@@ -91,12 +93,13 @@
 	float: left;
 }
 
-html, body{
-	background:#DDDEDE;
-	min-height:100%;
+html.zurmo,
+html.zurmo body{
+		background:#DDDEDE;
+		min-height:100%;
 }
 
-body{
+.zurmo body{
 	font-family:"Helvetica Neue", Helvetica, Arial, sans-serif;
 	font-size:12px;
 	color: #545454;
@@ -105,19 +108,20 @@ body{
 	-moz-font-smoothing: antialiased;
 	-o-font-smoothing: antialiased;
 	font-smoothing: antialiased;
-}
 
-a:link, a:hover, a:active, a:visited{
-	text-decoration:none;
-	outline: none;
-	img{
-		border:none;
+	a:link, a:hover, a:active, a:visited{
+		text-decoration:none;
+		outline: none;
+		img{
+			border:none;
+		}
+	}
+	a:focus{
+		outline:none;
 	}
 }
 
-a:focus{
-	outline:none;
-}
+
 
 /*=HTML5*/
 article, aside, details, figcaption, figure,
@@ -1607,7 +1611,7 @@ form,
 
 #MassDeleteLinkActionElement .parent > a:before,
 #ListViewDeleteMassActionMenu .parent > a:before{
-	content: "—"; //underscore!
+	content: '\2014'; //emdash!
 	.view-toolbar-icons(22px);
 	top:-2px;
 }
@@ -4321,6 +4325,37 @@ div.hasHalfs{
 	margin-right: 15px;
 	ul{
 		top: 20px;
+	}
+}
+
+.edit-row-menu{
+	> li{
+		position: relative;
+	}
+	> li > a{
+		position: relative;
+		z-index: 10;
+	}
+	ul{
+		white-space: nowrap;
+		left: auto;
+		right: -8px;
+		margin-left:-80px;
+		top:-3px;
+		z-index: 1;
+		padding-right: 28px;
+		> li{
+			float: left;
+			border-left: 1px solid #d8d8d8;
+			&:first-child{
+				border-left: none;
+			}
+		}
+	}
+	> li.over > a{
+		pointer-event:none;
+		opacity:0.5;
+		//z-index: 20;
 	}
 }
 

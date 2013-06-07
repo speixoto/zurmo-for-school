@@ -3,7 +3,7 @@
  * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
  *
  * Zurmo is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License version 3 as published by the
+ * the terms of the GNU Affero General Public License version 3 as published by the
  * Free Software Foundation with the addition of the following permission added
  * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
  * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
@@ -11,10 +11,10 @@
  *
  * Zurmo is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+ * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
  * details.
  *
- * You should have received a copy of the GNU General Public License along with
+ * You should have received a copy of the GNU Affero General Public License along with
  * this program; if not, see http://www.gnu.org/licenses or write to the Free
  * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
  * 02110-1301 USA.
@@ -24,15 +24,15 @@
  *
  * The interactive user interfaces in original and modified versions
  * of this program must display Appropriate Legal Notices, as required under
- * Section 5 of the GNU General Public License version 3.
+ * Section 5 of the GNU Affero General Public License version 3.
  *
- * In accordance with Section 7(b) of the GNU General Public License version 3,
+ * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the Zurmo
  * logo and Zurmo copyright notice. If the display of the logo is not reasonably
  * feasible for technical reasons, the Appropriate Legal Notices must display the words
  * Copyright Zurmo Inc. 2013. All rights reserved.
  ********************************************************************************/
-* {
+.zurmo * {
   margin: 0;
   padding: 0;
 }
@@ -343,6 +343,10 @@ a.ModalGameNotification a,
 #delete-form,
 .right-side-edit-view-panel,
 .pager ul,
+#MarketingListsExternalActionsPageView > .GridView,
+#MarketingListsManageSubscriptionsPageView > .GridView,
+#MarketingListsExternalActionsPageView .Warning,
+#MarketingListsManageSubscriptionsPageView .Warning,
 #kanban-board,
 #ContactWebFormEditAndDetailsView .ui-sortable {
   zoom: 1;
@@ -353,6 +357,10 @@ a.ModalGameNotification a,
 #delete-form:before,
 .right-side-edit-view-panel:before,
 .pager ul:before,
+#MarketingListsExternalActionsPageView > .GridView:before,
+#MarketingListsManageSubscriptionsPageView > .GridView:before,
+#MarketingListsExternalActionsPageView .Warning:before,
+#MarketingListsManageSubscriptionsPageView .Warning:before,
 #kanban-board:before,
 #ContactWebFormEditAndDetailsView .ui-sortable:before {
   content: "";
@@ -364,6 +372,10 @@ a.ModalGameNotification a,
 #delete-form:after,
 .right-side-edit-view-panel:after,
 .pager ul:after,
+#MarketingListsExternalActionsPageView > .GridView:after,
+#MarketingListsManageSubscriptionsPageView > .GridView:after,
+#MarketingListsExternalActionsPageView .Warning:after,
+#MarketingListsManageSubscriptionsPageView .Warning:after,
 #kanban-board:after,
 #ContactWebFormEditAndDetailsView .ui-sortable:after {
   content: "";
@@ -4884,13 +4896,18 @@ body.light-toast,
 .texture-swatch.light-toast .background-texture-1 {
   background: url(../patterns/light-toast/light-toast.png) left top repeat;
 }
-/*END COLOR SCHEME/THEME*/@font-face {
-  font-family: 'ZurmoGamificationSymblyReguRg';
-  src: url('../fonts/zurmogamificationsymblyregular-regular-webfont.eot');
-  src: url('../fonts/zurmogamificationsymblyregular-regular-webfont.eot?#iefix') format('embedded-opentype'), url('../fonts/zurmogamificationsymblyregular-regular-webfont.woff') format('woff'), url('../fonts/zurmogamificationsymblyregular-regular-webfont.ttf') format('truetype'), url('../fonts/zurmogamificationsymblyregular-regular-webfont.svg#ZurmoGamificationSymblyReguRg') format('svg');
-  font-weight: normal;
-  font-style: normal;
+/*END COLOR SCHEME/THEME*//*
+@font-face {
+	font-family: 'ZurmoGamificationSymblyReguRg';
+	src: url('../fonts/zurmogamificationsymblyregular-regular-webfont.eot');
+	src: url('../fonts/zurmogamificationsymblyregular-regular-webfont.eot?#iefix') format('embedded-opentype'),
+	url('../fonts/zurmogamificationsymblyregular-regular-webfont.woff') format('woff'),
+	url('../fonts/zurmogamificationsymblyregular-regular-webfont.ttf') format('truetype'),
+	url('../fonts/zurmogamificationsymblyregular-regular-webfont.svg#ZurmoGamificationSymblyReguRg') format('svg');
+	font-weight: normal;
+	font-style: normal;
 }
+*/
 /*=Variables*/
 .strong {
   font-weight: bold;
@@ -4919,12 +4936,12 @@ body.light-toast,
 .left {
   float: left;
 }
-html,
-body {
+html.zurmo,
+html.zurmo body {
   background: #DDDEDE;
   min-height: 100%;
 }
-body {
+.zurmo body {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 12px;
   color: #545454;
@@ -4933,20 +4950,20 @@ body {
   -o-font-smoothing: antialiased;
   font-smoothing: antialiased;
 }
-a:link,
-a:hover,
-a:active,
-a:visited {
+.zurmo body a:link,
+.zurmo body a:hover,
+.zurmo body a:active,
+.zurmo body a:visited {
   text-decoration: none;
   outline: none;
 }
-a:link img,
-a:hover img,
-a:active img,
-a:visited img {
+.zurmo body a:link img,
+.zurmo body a:hover img,
+.zurmo body a:active img,
+.zurmo body a:visited img {
   border: none;
 }
-a:focus {
+.zurmo body a:focus {
   outline: none;
 }
 /*=HTML5*/
@@ -6691,7 +6708,7 @@ form .view-toolbar-container,
 }
 #MassDeleteLinkActionElement .parent > a:before,
 #ListViewDeleteMassActionMenu .parent > a:before {
-  content: "—";
+  content: '\2014';
   font-weight: normal;
   font-size: 22px;
   font-family: "ZurmoGamificationSymblyReguRg";
@@ -10170,6 +10187,33 @@ div.hasHalfs > div input {
 .edit-portlet-menu ul {
   top: 20px;
 }
+.edit-row-menu > li {
+  position: relative;
+}
+.edit-row-menu > li > a {
+  position: relative;
+  z-index: 10;
+}
+.edit-row-menu ul {
+  white-space: nowrap;
+  left: auto;
+  right: -8px;
+  margin-left: -80px;
+  top: -3px;
+  z-index: 1;
+  padding-right: 28px;
+}
+.edit-row-menu ul > li {
+  float: left;
+  border-left: 1px solid #d8d8d8;
+}
+.edit-row-menu ul > li:first-child {
+  border-left: none;
+}
+.edit-row-menu > li.over > a {
+  pointer-event: none;
+  opacity: 0.5;
+}
 /*Upcoming Meeting Pager*/
 .pager {
   width: 100%;
@@ -12294,6 +12338,12 @@ table.configuration-list td:last-child a .z-label:before {
   top: -2px;
 }
 /*=User Security*/
+.UserGroupMembershipView,
+#PoliciesEditAndDetailsView,
+#ModulePermissionsEditAndDetailsView,
+#RightsEditAndDetailsView {
+  margin-top: 15px;
+}
 .UserGroupMembershipView .details-table,
 #PoliciesEditAndDetailsView .details-table,
 #ModulePermissionsEditAndDetailsView .details-table,
@@ -12306,6 +12356,9 @@ table.configuration-list td:last-child a .z-label:before {
 #RightsEditAndDetailsView th {
   text-align: left;
   min-width: 200px;
+}
+.UserGroupMembershipView {
+  margin-top: 0;
 }
 .UserGroupMembershipView th {
   text-align: left !important;
@@ -18588,6 +18641,134 @@ a + .autoresponder-stats {
   padding: 5px;
   text-align: right;
 }
+/*Manage Subscriptions*/
+#MarketingListsExternalActionsPageView,
+#MarketingListsManageSubscriptionsPageView {
+  max-width: 900px;
+  margin: 30px auto;
+}
+#MarketingListsExternalActionsPageView #HeaderLinksView,
+#MarketingListsManageSubscriptionsPageView #HeaderLinksView {
+  margin: 0 0 20px 0;
+}
+#MarketingListsExternalActionsPageView #HeaderLinksView > div,
+#MarketingListsManageSubscriptionsPageView #HeaderLinksView > div {
+  margin: 0;
+}
+#MarketingListsExternalActionsPageView #HeaderLinksView + div,
+#MarketingListsManageSubscriptionsPageView #HeaderLinksView + div {
+  border: none;
+  background: none;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  -o-box-shadow: none;
+  -ms-box-shadow: none;
+  box-shadow: none;
+  padding: 0;
+  margin: 0;
+  filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
+}
+#MarketingListsExternalActionsPageView #corp-logo span,
+#MarketingListsManageSubscriptionsPageView #corp-logo span {
+  color: #545454;
+}
+#MarketingListsExternalActionsPageView .Warning,
+#MarketingListsManageSubscriptionsPageView .Warning,
+#MarketingListsExternalActionsPageView .wrapper,
+#MarketingListsManageSubscriptionsPageView .wrapper {
+  border: none;
+  background: none;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  -o-box-shadow: none;
+  -ms-box-shadow: none;
+  box-shadow: none;
+  padding: 0;
+  margin: 0;
+  filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
+  float: none;
+}
+#MarketingListsExternalActionsPageView .Warning,
+#MarketingListsManageSubscriptionsPageView .Warning,
+#MarketingListsExternalActionsPageView .wrapper,
+#MarketingListsManageSubscriptionsPageView .wrapper {
+  background: #fff;
+  -webkit-box-shadow: 0 0 12px 5px rgba(153, 153, 153, 0.3);
+  -moz-box-shadow: 0 0 12px 5px rgba(153, 153, 153, 0.3);
+  -o-box-shadow: 0 0 12px 5px rgba(153, 153, 153, 0.3);
+  -ms-box-shadow: 0 0 12px 5px rgba(153, 153, 153, 0.3);
+  box-shadow: 0 0 12px 5px rgba(153, 153, 153, 0.3);
+  /*999*/
+
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
+  border-radius: 5px;
+}
+#MarketingListsExternalActionsPageView .Warning,
+#MarketingListsManageSubscriptionsPageView .Warning {
+  padding: 15px 0 30px 0;
+}
+#MarketingListsExternalActionsPageView .Warning h2,
+#MarketingListsManageSubscriptionsPageView .Warning h2,
+#MarketingListsExternalActionsPageView .Warning div,
+#MarketingListsManageSubscriptionsPageView .Warning div,
+#MarketingListsExternalActionsPageView .Warning p,
+#MarketingListsManageSubscriptionsPageView .Warning p {
+  float: none;
+  margin: 0;
+  width: 100%;
+  text-align: center;
+}
+#MarketingListsExternalActionsPageView .Warning h2,
+#MarketingListsManageSubscriptionsPageView .Warning h2 {
+  padding: 0;
+}
+#MarketingListsExternalActionsPageView .Warning div,
+#MarketingListsManageSubscriptionsPageView .Warning div {
+  margin: 15px 0 20px 0;
+  border: 0;
+}
+#MarketingListsExternalActionsPageView #FooterView,
+#MarketingListsManageSubscriptionsPageView #FooterView {
+  margin: 20px 0;
+  padding-bottom: 20px;
+  clear: both;
+}
+#MarketingListsExternalActionsPageView h1,
+#MarketingListsManageSubscriptionsPageView h1 {
+  border: none;
+  background: none;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  -o-box-shadow: none;
+  -ms-box-shadow: none;
+  box-shadow: none;
+  padding: 0;
+  margin: 0;
+  filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
+}
+#MarketingListsExternalActionsPageView #marketingLists-manageSubscriptionsList table,
+#MarketingListsManageSubscriptionsPageView #marketingLists-manageSubscriptionsList table {
+  width: 100%;
+}
+#MarketingListsExternalActionsPageView #marketingLists-manageSubscriptionsList table th,
+#MarketingListsManageSubscriptionsPageView #marketingLists-manageSubscriptionsList table th {
+  font-weight: bold !important;
+  height: 35px;
+  line-height: 35px;
+  padding: 0 5px;
+  white-space: nowrap;
+}
+#MarketingListsExternalActionsPageView #marketingLists-manageSubscriptionsList table td,
+#MarketingListsManageSubscriptionsPageView #marketingLists-manageSubscriptionsList table td {
+  padding-bottom: 15px;
+}
+#MarketingListsExternalActionsPageView .switch,
+#MarketingListsManageSubscriptionsPageView .switch {
+  margin-right: 15px;
+}
 #kanban-holder {
   background: #fff;
   margin: 0;
@@ -18875,12 +19056,21 @@ a + .autoresponder-stats {
   margin: 0;
   filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
 }
+#zurmoExternalWebForm .left-column {
+  padding-bottom: 0;
+}
+#zurmoExternalWebForm .attributesContainer {
+  margin: 0;
+  padding: 0;
+}
 #zurmoExternalWebForm .form-toolbar,
 #zurmoExternalWebForm .view-toolbar-container {
   border: none;
-  text-align: left;
+  text-align: right;
+  padding: 0;
+  margin: 0;
 }
-#zurmoExternalWebForm .attributesContainer {
+#zurmoExternalWebForm .float-bar {
   margin: 0;
 }
 #zurmoExternalWebForm .z-button {
@@ -18932,7 +19122,7 @@ a + .autoresponder-stats {
  * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
  *
  * Zurmo is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License version 3 as published by the
+ * the terms of the GNU Affero General Public License version 3 as published by the
  * Free Software Foundation with the addition of the following permission added
  * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
  * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
@@ -18940,10 +19130,10 @@ a + .autoresponder-stats {
  *
  * Zurmo is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+ * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
  * details.
  *
- * You should have received a copy of the GNU General Public License along with
+ * You should have received a copy of the GNU Affero General Public License along with
  * this program; if not, see http://www.gnu.org/licenses or write to the Free
  * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
  * 02110-1301 USA.
@@ -18953,9 +19143,9 @@ a + .autoresponder-stats {
  *
  * The interactive user interfaces in original and modified versions
  * of this program must display Appropriate Legal Notices, as required under
- * Section 5 of the GNU General Public License version 3.
+ * Section 5 of the GNU Affero General Public License version 3.
  *
- * In accordance with Section 7(b) of the GNU General Public License version 3,
+ * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the Zurmo
  * logo and Zurmo copyright notice. If the display of the logo is not reasonably
  * feasible for technical reasons, the Appropriate Legal Notices must display the words

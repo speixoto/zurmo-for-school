@@ -4,7 +4,7 @@
      * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
-     * the terms of the GNU General Public License version 3 as published by the
+     * the terms of the GNU Affero General Public License version 3 as published by the
      * Free Software Foundation with the addition of the following permission added
      * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
      * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
@@ -12,10 +12,10 @@
      *
      * Zurmo is distributed in the hope that it will be useful, but WITHOUT
      * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-     * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+     * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
      * details.
      *
-     * You should have received a copy of the GNU General Public License along with
+     * You should have received a copy of the GNU Affero General Public License along with
      * this program; if not, see http://www.gnu.org/licenses or write to the Free
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
@@ -25,9 +25,9 @@
      *
      * The interactive user interfaces in original and modified versions
      * of this program must display Appropriate Legal Notices, as required under
-     * Section 5 of the GNU General Public License version 3.
+     * Section 5 of the GNU Affero General Public License version 3.
      *
-     * In accordance with Section 7(b) of the GNU General Public License version 3,
+     * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
@@ -61,7 +61,7 @@
         public static function resolveQueryStringArrayForHash($hash, $validateQueryStringArray = true,
                                                                                             $validateForTracking = true)
         {
-            $hash = urldecode(trim($hash));
+            $hash = base64_decode($hash);
             if (static::isValidHash($hash))
             {
                 $queryStringArray   = array();
@@ -133,7 +133,8 @@
             }
         }
 
-        protected static function createOrUpdateActivity($queryStringArray)
+        // this should be protected but we use it in EmailBounceJob so it has to be public.
+        public static function createOrUpdateActivity($queryStringArray)
         {
             $activity = static::resolveExistingActivity($queryStringArray);
             if ($activity)
@@ -281,7 +282,7 @@
             {
                 throw new NotSupportedException();
             }
-            $encryptedString        = urlencode($encryptedString);
+            $encryptedString        = base64_encode($encryptedString);
             return $encryptedString;
         }
 
@@ -324,7 +325,11 @@ PTN;
 
         protected static function resolveTrackingTypeByQueryStringArray($queryStringArray)
         {
-            if (!empty($queryStringArray['url']))
+            if (!empty($queryStringArray['type']))
+            {
+                return $queryStringArray['type'];
+            }
+            elseif (!empty($queryStringArray['url']))
             {
                 return EmailMessageActivity::TYPE_CLICK;
             }
@@ -343,12 +348,12 @@ PTN;
         }
 
         public static function resolveFooterPlaceholders(& $content, $placeholderContent, $personId,
-                                                                $marketingListId, $modelId, $modelType, $isHtmlContent)
+                                                $marketingListId, $modelId, $modelType, $isHtmlContent, $preview = null)
         {
             $hash                           = static::resolveHashForFooter($personId, $marketingListId, $modelId,
                                                                                                     $modelType, true);
-            $unsubscribeUrl                 = static::resolveUnsubscribeUrl($hash);
-            $manageSubscriptionsUrl         = static::resolveManageSubscriptionsUrl($hash);
+            $unsubscribeUrl                 = static::resolveUnsubscribeUrl($hash, $preview);
+            $manageSubscriptionsUrl         = static::resolveManageSubscriptionsUrl($hash, $preview);
             static::resolvePlaceholderUrlsForHtmlContent($unsubscribeUrl, $manageSubscriptionsUrl, $isHtmlContent);
             static::resolveFooterTagsWithUrls($placeholderContent, $unsubscribeUrl, $manageSubscriptionsUrl);
             static::addNewLine($placeholderContent, $isHtmlContent);
@@ -401,16 +406,32 @@ PTN;
             return static::resolveHashForQueryStringArray($queryStringArray);
         }
 
-        protected static function resolveUnsubscribeUrl($hash)
+        protected static function resolveUnsubscribeUrl($hash, $preview)
         {
             $baseUrl = static::resolveUnsubscribeBaseUrl();
-            return Yii::app()->createAbsoluteUrl($baseUrl, array('hash' => $hash));
+            return static::resolveAbsoluteUrlWithHashAndPreviewForFooter($baseUrl, $hash, $preview);
         }
 
-        protected static function resolveManageSubscriptionsUrl($hash)
+        protected static function resolveManageSubscriptionsUrl($hash, $preview)
         {
             $baseUrl = static::resolveManageSubscriptionsBaseUrl();
-            return Yii::app()->createAbsoluteUrl($baseUrl, array('hash' => $hash));
+            return static::resolveAbsoluteUrlWithHashAndPreviewForFooter($baseUrl, $hash, $preview);
+        }
+
+        protected static function resolveAbsoluteUrlWithHashAndPreviewForFooter($baseUrl, $hash, $preview)
+        {
+            $routeParams   = static::resolveFooterUrlParams($hash, $preview);
+            return Yii::app()->createAbsoluteUrl($baseUrl, $routeParams);
+        }
+
+        protected static function resolveFooterUrlParams($hash, $preview)
+        {
+            $routeParams    = array('hash'  => $hash);
+            if ($preview)
+            {
+                $routeParams['preview'] = $preview;
+            }
+            return $routeParams;
         }
 
         protected static function resolveUnsubscribeBaseUrl()
@@ -436,6 +457,9 @@ PTN;
                             'required'      => true,
                         ),
                         'url'           => array(
+                            'defaultValue'  => null,
+                        ),
+                        'type'           => array(
                             'defaultValue'  => null,
                         ),
                     );

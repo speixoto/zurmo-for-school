@@ -4,7 +4,7 @@
      * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
-     * the terms of the GNU General Public License version 3 as published by the
+     * the terms of the GNU Affero General Public License version 3 as published by the
      * Free Software Foundation with the addition of the following permission added
      * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
      * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
@@ -12,10 +12,10 @@
      *
      * Zurmo is distributed in the hope that it will be useful, but WITHOUT
      * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-     * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+     * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
      * details.
      *
-     * You should have received a copy of the GNU General Public License along with
+     * You should have received a copy of the GNU Affero General Public License along with
      * this program; if not, see http://www.gnu.org/licenses or write to the Free
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
@@ -25,9 +25,9 @@
      *
      * The interactive user interfaces in original and modified versions
      * of this program must display Appropriate Legal Notices, as required under
-     * Section 5 of the GNU General Public License version 3.
+     * Section 5 of the GNU Affero General Public License version 3.
      *
-     * In accordance with Section 7(b) of the GNU General Public License version 3,
+     * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
@@ -165,6 +165,11 @@
             $this->assertEquals($email->emailAddress, $recipients[0]->toAddress);
             $this->assertEquals(EmailMessageRecipient::TYPE_TO, $recipients[0]->type);
             $this->assertEquals($contact, $recipients[0]->personOrAccount);
+            $headersArray               = array('zurmoItemId' => $autoresponderItem->id,
+                                                'zurmoItemClass' => get_class($autoresponderItem),
+                                                'zurmoPersonId' => $contact->getClassId('Person'));
+            $expectedHeaders            = serialize($headersArray);
+            $this->assertEquals($expectedHeaders, $emailMessage->headers);
         }
 
         /**
@@ -213,6 +218,11 @@
             $this->assertEquals($email->emailAddress, $recipients[0]->toAddress);
             $this->assertEquals(EmailMessageRecipient::TYPE_TO, $recipients[0]->type);
             $this->assertEquals($contact, $recipients[0]->personOrAccount);
+            $headersArray               = array('zurmoItemId' => $autoresponderItem->id,
+                                                'zurmoItemClass' => get_class($autoresponderItem),
+                                                'zurmoPersonId' => $contact->getClassId('Person'));
+            $expectedHeaders            = serialize($headersArray);
+            $this->assertEquals($expectedHeaders, $emailMessage->headers);
         }
 
         /**
@@ -263,6 +273,11 @@
             $this->assertEquals($email->emailAddress, $recipients[0]->toAddress);
             $this->assertEquals(EmailMessageRecipient::TYPE_TO, $recipients[0]->type);
             $this->assertEquals($contact, $recipients[0]->personOrAccount);
+            $headersArray               = array('zurmoItemId' => $autoresponderItem->id,
+                                                    'zurmoItemClass' => get_class($autoresponderItem),
+                                                    'zurmoPersonId' => $contact->getClassId('Person'));
+            $expectedHeaders            = serialize($headersArray);
+            $this->assertEquals($expectedHeaders, $emailMessage->headers);
         }
 
         /**
@@ -334,6 +349,11 @@
                 $this->assertEquals($files[$index]['size'], $emailMessage->files[$index]->size);
                 $this->assertEquals($files[$index]['contents'], $emailMessage->files[$index]->fileContent->content);
             }
+            $headersArray               = array('zurmoItemId' => $autoresponderItem->id,
+                                                'zurmoItemClass' => get_class($autoresponderItem),
+                                                'zurmoPersonId' => $contact->getClassId('Person'));
+            $expectedHeaders            = serialize($headersArray);
+            $this->assertEquals($expectedHeaders, $emailMessage->headers);
         }
 
         /**
@@ -344,7 +364,7 @@
             $email                      = new Email();
             $email->emailAddress        = 'demo@zurmo.com';
             $email->optOut              = true;
-            $contact                    = ContactTestHelper::createContactByNameForOwner('contact 06', $this->user);
+            $contact                    = ContactTestHelper::createContactByNameForOwner('contact 07', $this->user);
             $contact->primaryEmail      = $email;
             $this->assertTrue($contact->save());
             $marketingList              = MarketingListTestHelper::createMarketingListByName('marketingList 07',
@@ -373,6 +393,63 @@
                                                                                 $personId);
             $this->assertNotEmpty($activities);
             $this->assertCount(1, $activities);
+        }
+
+        /**
+         * @depends testProcessDueAutoresponderItemWithOptout
+         */
+        public function testProcessDueAutoresponderItemWithReturnPath()
+        {
+            ZurmoConfigurationUtil::setByModuleName('EmailMessagesModule', 'bounceReturnPath', 'bounce@zurmo.com');
+            $email                      = new Email();
+            $email->emailAddress        = 'demo@zurmo.com';
+            $contact                    = ContactTestHelper::createContactByNameForOwner('contact 08', $this->user);
+            $contact->primaryEmail      = $email;
+            $this->assertTrue($contact->save());
+            $marketingList              = MarketingListTestHelper::createMarketingListByName('marketingList 08',
+                                                                                                'description',
+                                                                                                'CustomFromName',
+                                                                                                'custom@from.com');
+            $autoresponder              = AutoresponderTestHelper::createAutoresponder('subject 08',
+                                                                                'Dr. [[FIRST^NAME]] [[LAST^NAME]]',
+                                                                                '<b>[[LAST^NAME]]</b>, [[FIRST^NAME]]',
+                                                                                1,
+                                                                                Autoresponder::OPERATION_SUBSCRIBE,
+                                                                                true,
+                                                                                $marketingList);
+            $processed                  = 0;
+            $processDateTime            = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
+            $autoresponderItem          = AutoresponderItemTestHelper::createAutoresponderItem($processed,
+                                                                                                $processDateTime,
+                                                                                                $autoresponder,
+                                                                                                $contact);
+            AutoresponderItemsUtil::processDueItem($autoresponderItem);
+            $this->assertEquals(1, $autoresponderItem->processed);
+            $emailMessage               = $autoresponderItem->emailMessage;
+            $this->assertEquals($marketingList->owner, $emailMessage->owner);
+            $this->assertEquals($autoresponder->subject, $emailMessage->subject);
+            $this->assertNotEquals($autoresponder->textContent, $emailMessage->content->textContent);
+            $this->assertNotEquals($autoresponder->htmlContent, $emailMessage->content->htmlContent);
+            $this->assertTrue(strpos($emailMessage->content->textContent, 'Dr. contact 08 contact 08son') !== false);
+            $this->assertTrue(strpos($emailMessage->content->textContent, '/marketingLists/external/') !== false);
+            $this->assertEquals(2, substr_count($emailMessage->content->textContent, '/marketingLists/external/'));
+            $this->assertTrue(strpos($emailMessage->content->htmlContent, '<b>contact 08son</b>, contact 08') === 0);
+            $this->assertTrue(strpos($emailMessage->content->htmlContent, '/marketingLists/external/') !== false);
+            $this->assertEquals(2, substr_count($emailMessage->content->htmlContent, '/marketingLists/external/'));
+            $this->assertEquals($marketingList->fromAddress, $emailMessage->sender->fromAddress);
+            $this->assertEquals($marketingList->fromName, $emailMessage->sender->fromName);
+            $this->assertEquals(1, $emailMessage->recipients->count());
+            $recipients                 = $emailMessage->recipients;
+            $this->assertEquals(strval($contact), $recipients[0]->toName);
+            $this->assertEquals($email->emailAddress, $recipients[0]->toAddress);
+            $this->assertEquals(EmailMessageRecipient::TYPE_TO, $recipients[0]->type);
+            $this->assertEquals($contact, $recipients[0]->personOrAccount);
+            $headersArray               = array('zurmoItemId' => $autoresponderItem->id,
+                                                    'zurmoItemClass' => get_class($autoresponderItem),
+                                                    'zurmoPersonId' => $contact->getClassId('Person'),
+                                                    'Return-Path'   => 'bounce@zurmo.com');
+            $expectedHeaders            = serialize($headersArray);
+            $this->assertEquals($expectedHeaders, $emailMessage->headers);
         }
     }
 ?>

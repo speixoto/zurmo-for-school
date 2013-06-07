@@ -4,7 +4,7 @@
      * Zurmo, Inc. Copyright (C) 2012 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
-     * the terms of the GNU General Public License version 3 as published by the
+     * the terms of the GNU Affero General Public License version 3 as published by the
      * Free Software Foundation with the addition of the following permission added
      * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
      * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
@@ -12,10 +12,10 @@
      *
      * Zurmo is distributed in the hope that it will be useful, but WITHOUT
      * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-     * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+     * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
      * details.
      *
-     * You should have received a copy of the GNU General Public License along with
+     * You should have received a copy of the GNU Affero General Public License along with
      * this program; if not, see http://www.gnu.org/licenses or write to the Free
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
@@ -26,6 +26,9 @@
 
     class SellPriceFormulaInformationElement extends Element
     {
+        /**
+         * @return string
+         */
         protected function renderControlNonEditable()
         {
             assert('$this->model->{$this->attribute} instanceof SellPriceFormula');
@@ -64,6 +67,14 @@
             return $content;
         }
 
+        /**
+         * Renders the Sell Price Formula Dropdown
+         * @param Redbean $model
+         * @param Object $form
+         * @param string $inputNameIdPrefix
+         * @param string $attribute
+         * @return string
+         */
         protected function renderNameDropDown($model, $form, $inputNameIdPrefix, $attribute)
         {
             $id                    = $this->getEditableInputId($inputNameIdPrefix, $attribute);
@@ -81,6 +92,14 @@
             return $dropDownField . $error;
         }
 
+        /**
+         * Renders discount text field
+         * @param RedBeanModel $model
+         * @param Object $form
+         * @param string $inputNameIdPrefix
+         * @param string $attribute
+         * @return string
+         */
         protected function renderDiscountOrMarkupPercentageTextField($model, $form, $inputNameIdPrefix, $attribute)
         {
             $id          = $this->getEditableInputId($inputNameIdPrefix, $attribute);
@@ -100,6 +119,9 @@
         {
         }
 
+        /**
+         * Registers the script required on usage of sell price formula
+         */
         protected function registerScripts()
         {
             Yii::app()->clientScript->registerScript(
@@ -124,6 +146,11 @@
             );
         }
 
+        /**
+         * Resolves input display style
+         * @param RedBean $model
+         * @return string
+         */
         protected function resolveInputDisplayStyle($model)
         {
             if ($model->type == SellPriceFormula::TYPE_PROFIT_MARGIN || $model->type == SellPriceFormula::TYPE_MARKUP_OVER_COST || $model->type == SellPriceFormula::TYPE_DISCOUNT_FROM_LIST)
