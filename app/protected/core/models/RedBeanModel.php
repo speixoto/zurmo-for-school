@@ -470,7 +470,11 @@
             else
             {
                 $this->onLoaded();
-                RedBeanModelsCache::cacheModel($this);
+                $modelClassName = get_called_class();
+                if ($modelClassName::isCacheable())
+                {
+                    RedBeanModelsCache::cacheModel($this);
+                }
             }
             $this->modified = false;
         }
@@ -1927,7 +1931,11 @@
                         }
                         $this->modified = false;
                         $this->afterSave();
-                        RedBeanModelsCache::cacheModel($this);
+                        $calledModelClassName = get_called_class();
+                        if ($calledModelClassName::isCacheable())
+                        {
+                            RedBeanModelsCache::cacheModel($this);
+                        }
                         $this->isSaving = false;
                         return true;
                     }
@@ -3080,6 +3088,14 @@
         public function isCopied()
         {
             return $this->isCopied;
+        }
+
+        /**
+         * @return bool
+         */
+        public static function isCacheable()
+        {
+            return true;
         }
     }
 ?>

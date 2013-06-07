@@ -227,6 +227,7 @@
             unset($response['data']['source']['id']);
             unset($response['data']['title']['id']);
             unset($response['data']['id']);
+            unset($response['data']['googleWebTrackingId']);
 
             ksort($data);
             ksort($response['data']);

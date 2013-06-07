@@ -491,6 +491,7 @@ a + .autoresponder-stats{
 }
 
 /*Manage Subscriptions*/
+#MarketingListsExternalActionsPageView,
 #MarketingListsManageSubscriptionsPageView{
 	max-width: 900px;
 	margin: 30px auto;
@@ -507,12 +508,36 @@ a + .autoresponder-stats{
 			.unstyle-panel();
 		}
 	}
+	#corp-logo span{
+		color: #545454;
+	}
+	.Warning,
 	.wrapper{
 		.unstyle-panel();
+		float: none;
+	}
+	.Warning,
+	.wrapper{
 		background: #fff;
 		.b-shadow(0 0 12px 5px rgba(153, 153, 153, 0.3)); /*999*/
 		.radius(5px);
-		float: none;
+	}
+	.Warning{
+		++.clearfix;
+		padding: 15px 0 30px 0;
+		h2, div, p{
+			float: none;
+			margin: 0;
+			width: 100%;
+			text-align: center;
+		}
+		h2{
+			padding: 0;
+		}
+		div{
+			margin:15px 0 20px 0;
+			border: 0;
+		}
 	}
 	#FooterView {
 		margin: 20px 0;
@@ -542,5 +567,8 @@ a + .autoresponder-stats{
 				padding-bottom: 15px;
 			}
 		}
+	}
+	.switch{
+		margin-right: 15px;
 	}
 }
