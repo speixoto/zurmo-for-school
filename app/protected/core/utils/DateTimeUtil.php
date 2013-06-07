@@ -160,12 +160,12 @@
             {
                 return null;
             }
-            if($displayFormat == self::DISPLAY_FORMAT_ABBREVIATED_MONTH_ONLY_WIDTH)
+            if ($displayFormat == self::DISPLAY_FORMAT_ABBREVIATED_MONTH_ONLY_WIDTH)
             {
                 $month = Yii::app()->dateFormatter->format('M', $parsedTimeStamp);
                 return Yii::app()->locale->getMonthName($month, 'abbreviated', true);
             }
-            elseif($displayFormat == self::DISPLAY_FORMAT_ABBREVIATED_MONTH_AND_DAY_WIDTH)
+            elseif ($displayFormat == self::DISPLAY_FORMAT_ABBREVIATED_MONTH_AND_DAY_WIDTH)
             {
                 $month    = Yii::app()->dateFormatter->format('M', $parsedTimeStamp);
                 $content  = Yii::app()->locale->getMonthName($month, 'abbreviated', true);
@@ -433,28 +433,28 @@
                 $date->modify('this week last monday');
                 $beginDateOfWeek = $date->format('Y-m-d');
                 $date->modify('this week next sunday');
-                $endDateOfWeek =$date->format('Y-m-d');
+                $endDateOfWeek = $date->format('Y-m-d');
                 $weeksData[$beginDateOfWeek] = $endDateOfWeek;
-                $weekTimeStamp = strtotime("+1 week", $weekTimeStamp);
+                $weekTimeStamp = strtotime("+1 week", $weekTimeStamp); // Not Coding Standard
             }
             //Capture dates in last week if needed
             $date = new DateTime(date('Y-m-d', $weekTimeStamp));
             $date->modify('this week last monday');
             $beginDateOfWeek = $date->format('Y-m-d');
-            if($beginDateOfWeek < $endDate)
+            if ($beginDateOfWeek < $endDate)
             {
                 $date->modify('this week next sunday');
-                $endDateOfWeek =$date->format('Y-m-d');
+                $endDateOfWeek = $date->format('Y-m-d');
                 $weeksData[$beginDateOfWeek] = $endDateOfWeek;
-                $weekTimeStamp               = strtotime("+1 week", $weekTimeStamp);
+                $weekTimeStamp               = strtotime("+1 week", $weekTimeStamp); // Not Coding Standard
             }
-            if($endDateOfWeek < $endDate)
+            if ($endDateOfWeek < $endDate)
             {
                 $date = new DateTime(date('Y-m-d', $weekTimeStamp));
                 $date->modify('this week last monday');
                 $beginDateOfWeek = $date->format('Y-m-d');
                 $date->modify('this week next sunday');
-                $endDateOfWeek =$date->format('Y-m-d');
+                $endDateOfWeek = $date->format('Y-m-d');
                 $weeksData[$beginDateOfWeek] = $endDateOfWeek;
             }
             return $weeksData;
@@ -480,28 +480,28 @@
                 $date->modify('first day of this month');
                 $beginDateOfMonth = $date->format('Y-m-d');
                 $date->modify('last day of this month');
-                $endDateOfMonth =$date->format('Y-m-d');
+                $endDateOfMonth = $date->format('Y-m-d');
                 $monthsData[$beginDateOfMonth] = $endDateOfMonth;
-                $monthTimeStamp = strtotime("+1 month", $monthTimeStamp);
+                $monthTimeStamp = strtotime("+1 month", $monthTimeStamp); // Not Coding Standard
             }
             //Capture dates in last month if needed
             $date = new DateTime(date('Y-m-d', $monthTimeStamp));
             $date->modify('first day of this month');
             $beginDateOfMonth = $date->format('Y-m-d');
-            if($beginDateOfMonth < $endDate)
+            if ($beginDateOfMonth < $endDate)
             {
                 $date->modify('last day of this month');
-                $endDateOfMonth =$date->format('Y-m-d');
+                $endDateOfMonth = $date->format('Y-m-d');
                 $monthsData[$beginDateOfMonth] = $endDateOfMonth;
-                $monthTimeStamp = strtotime("+1 month", $monthTimeStamp);
+                $monthTimeStamp = strtotime("+1 month", $monthTimeStamp); // Not Coding Standard
             }
-            if($endDateOfMonth < $endDate)
+            if ($endDateOfMonth < $endDate)
             {
                 $date = new DateTime(date('Y-m-d', $monthTimeStamp));
                 $date->modify('first day of this month');
                 $beginDateOfMonth = $date->format('Y-m-d');
                 $date->modify('last day of this month');
-                $endDateOfMonth =$date->format('Y-m-d');
+                $endDateOfMonth = $date->format('Y-m-d');
                 $monthsData[$beginDateOfMonth] = $endDateOfMonth;
             }
             return $monthsData;

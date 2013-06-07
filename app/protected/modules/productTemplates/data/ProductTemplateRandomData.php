@@ -27,13 +27,34 @@
     /**
      * Product Template related array of random seed data parts.
      */
-    return array(
-        'names' => array(
-            'Amazing Kid',
-            'You Can Do Anything',
-            'A Bend in the River',
-            'A Gift of Monotheists',
-            'Once in a Lifetime'
-        )
-    );
+    function getProductTemplatesRandomData()
+    {
+        $templateNames = array(
+                                'names' => array(
+                                    'Amazing Kid',
+                                    'You Can Do Anything',
+                                    'A Bend in the River',
+                                    'A Gift of Monotheists',
+                                    'Once in a Lifetime'
+                                )
+                               );
+        for($i = 1; $i < 10; $i++)
+        {
+           $randomString = substr(str_shuffle("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0, 6);
+           $templateNames['names'][] = 'Laptop Inc - Model ' . $randomString;
+        }
+
+        for($i = 1; $i < 10; $i++)
+        {
+           $randomString = substr(str_shuffle("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0, 6);
+           $templateNames['names'][] = 'Camera Inc 2 MegaPixel - Model ' . $randomString;
+        }
+
+        for($i = 1; $i < 10; $i++)
+        {
+           $randomString = substr(str_shuffle("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0, 6);
+           $templateNames['names'][] = 'Handycam Inc - Model ' . $randomString;
+        }
+        return $templateNames;
+    }
 ?>

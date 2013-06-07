@@ -13,6 +13,11 @@
 </thead>
 <tbody>
 <tr>
+	<td>setSpeed</td>
+	<td>3000</td>
+	<td></td>
+</tr>
+<tr>
 	<td>setTimeout</td>
 	<td>45000</td>
 	<td></td>
@@ -49,7 +54,7 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>//div[@id='ProductCategoriesTreeListView']/div/table/tbody/tr[2]/td[1]/a</td>
+	<td>link=CategoryTest ${randomSuffix}</td>
 	<td></td>
 </tr>
 <tr>
@@ -63,23 +68,13 @@
 	<td>30000</td>
 </tr>
 <tr>
-	<td>waitForTextPresent</td>
+	<td>assertText</td>
+    <td>//div[@id='ProductCategoryDetailsView']/div/div[2]/div/table/tbody/tr[1]/td</td>
 	<td>CategoryTest ${randomSuffix}</td>
-	<td></td>
-</tr>
-<tr>
-	<td>setSpeed</td>
-	<td>3000</td>
-	<td></td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
 	<td>link=Edit</td>
-	<td></td>
-</tr>
-<tr>
-	<td>setSpeed</td>
-	<td>0</td>
 	<td></td>
 </tr>
 <tr>
@@ -88,9 +83,10 @@
 	<td>30000</td>
 </tr>
 <tr>
-	<td>waitForTextPresent</td>
+	<td>assertText</td>
+    <td>//div[@id='ProductCategoryEditAndDetailsView']/div/h1/span/span</td>
 	<td>CategoryTest ${randomSuffix}</td>
-	<td></td>
+	
 </tr>
 <tr>
 	<td>waitForCondition</td>

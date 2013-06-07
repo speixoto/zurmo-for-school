@@ -32,7 +32,7 @@
  * feasible for technical reasons, the Appropriate Legal Notices must display the words
  * Copyright Zurmo Inc. 2013. All rights reserved.
  ********************************************************************************/
-* {
+.zurmo * {
   margin: 0;
   padding: 0;
 }
@@ -343,6 +343,7 @@ a.ModalGameNotification a,
 #delete-form,
 .right-side-edit-view-panel,
 .pager ul,
+#MarketingListsManageSubscriptionsPageView > .GridView,
 #kanban-board,
 #ContactWebFormEditAndDetailsView .ui-sortable {
   zoom: 1;
@@ -353,6 +354,7 @@ a.ModalGameNotification a,
 #delete-form:before,
 .right-side-edit-view-panel:before,
 .pager ul:before,
+#MarketingListsManageSubscriptionsPageView > .GridView:before,
 #kanban-board:before,
 #ContactWebFormEditAndDetailsView .ui-sortable:before {
   content: "";
@@ -364,6 +366,7 @@ a.ModalGameNotification a,
 #delete-form:after,
 .right-side-edit-view-panel:after,
 .pager ul:after,
+#MarketingListsManageSubscriptionsPageView > .GridView:after,
 #kanban-board:after,
 #ContactWebFormEditAndDetailsView .ui-sortable:after {
   content: "";
@@ -4884,13 +4887,18 @@ body.light-toast,
 .texture-swatch.light-toast .background-texture-1 {
   background: url(../patterns/light-toast/light-toast.png) left top repeat;
 }
-/*END COLOR SCHEME/THEME*/@font-face {
-  font-family: 'ZurmoGamificationSymblyReguRg';
-  src: url('../fonts/zurmogamificationsymblyregular-regular-webfont.eot');
-  src: url('../fonts/zurmogamificationsymblyregular-regular-webfont.eot?#iefix') format('embedded-opentype'), url('../fonts/zurmogamificationsymblyregular-regular-webfont.woff') format('woff'), url('../fonts/zurmogamificationsymblyregular-regular-webfont.ttf') format('truetype'), url('../fonts/zurmogamificationsymblyregular-regular-webfont.svg#ZurmoGamificationSymblyReguRg') format('svg');
-  font-weight: normal;
-  font-style: normal;
+/*END COLOR SCHEME/THEME*//*
+@font-face {
+	font-family: 'ZurmoGamificationSymblyReguRg';
+	src: url('../fonts/zurmogamificationsymblyregular-regular-webfont.eot');
+	src: url('../fonts/zurmogamificationsymblyregular-regular-webfont.eot?#iefix') format('embedded-opentype'),
+	url('../fonts/zurmogamificationsymblyregular-regular-webfont.woff') format('woff'),
+	url('../fonts/zurmogamificationsymblyregular-regular-webfont.ttf') format('truetype'),
+	url('../fonts/zurmogamificationsymblyregular-regular-webfont.svg#ZurmoGamificationSymblyReguRg') format('svg');
+	font-weight: normal;
+	font-style: normal;
 }
+*/
 /*=Variables*/
 .strong {
   font-weight: bold;
@@ -4919,12 +4927,12 @@ body.light-toast,
 .left {
   float: left;
 }
-html,
-body {
+html.zurmo,
+html.zurmo body {
   background: #DDDEDE;
   min-height: 100%;
 }
-body {
+.zurmo body {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 12px;
   color: #545454;
@@ -4933,20 +4941,20 @@ body {
   -o-font-smoothing: antialiased;
   font-smoothing: antialiased;
 }
-a:link,
-a:hover,
-a:active,
-a:visited {
+.zurmo body a:link,
+.zurmo body a:hover,
+.zurmo body a:active,
+.zurmo body a:visited {
   text-decoration: none;
   outline: none;
 }
-a:link img,
-a:hover img,
-a:active img,
-a:visited img {
+.zurmo body a:link img,
+.zurmo body a:hover img,
+.zurmo body a:active img,
+.zurmo body a:visited img {
   border: none;
 }
-a:focus {
+.zurmo body a:focus {
   outline: none;
 }
 /*=HTML5*/
@@ -6691,7 +6699,7 @@ form .view-toolbar-container,
 }
 #MassDeleteLinkActionElement .parent > a:before,
 #ListViewDeleteMassActionMenu .parent > a:before {
-  content: "—";
+  content: '\2014';
   font-weight: normal;
   font-size: 22px;
   font-family: "ZurmoGamificationSymblyReguRg";
@@ -7638,6 +7646,22 @@ td.empty {
   background-image: -o-linear-gradient(top, #ffffff, #f5f5f5);
   background-image: linear-gradient(top, #ffffff, #f5f5f5);
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#f5f5f5', GradientType=0);
+}
+.form .row-description {
+  display: inline-block;
+  font-style: italic;
+  font-size: 11px;
+  padding: 0 0 5px 0;
+}
+.form .row-description:before {
+  content: "T";
+  font-weight: normal;
+  font-size: 24px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  margin-right: 6px;
+  font-style: normal;
+  position: relative;
+  top: 2px;
 }
 .AppContent label {
   font-size: 12px;
@@ -10153,6 +10177,33 @@ div.hasHalfs > div input {
 }
 .edit-portlet-menu ul {
   top: 20px;
+}
+.edit-row-menu > li {
+  position: relative;
+}
+.edit-row-menu > li > a {
+  position: relative;
+  z-index: 10;
+}
+.edit-row-menu ul {
+  white-space: nowrap;
+  left: auto;
+  right: -8px;
+  margin-left: -80px;
+  top: -3px;
+  z-index: 1;
+  padding-right: 28px;
+}
+.edit-row-menu ul > li {
+  float: left;
+  border-left: 1px solid #d8d8d8;
+}
+.edit-row-menu ul > li:first-child {
+  border-left: none;
+}
+.edit-row-menu > li.over > a {
+  pointer-event: none;
+  opacity: 0.5;
 }
 /*Upcoming Meeting Pager*/
 .pager {
@@ -18568,6 +18619,89 @@ a + .autoresponder-stats {
   margin-left: 2px;
   top: 0;
 }
+.screen-options {
+  padding: 5px;
+  text-align: right;
+}
+/*Manage Subscriptions*/
+#MarketingListsManageSubscriptionsPageView {
+  max-width: 900px;
+  margin: 30px auto;
+}
+#MarketingListsManageSubscriptionsPageView #HeaderLinksView {
+  margin: 0 0 20px 0;
+}
+#MarketingListsManageSubscriptionsPageView #HeaderLinksView > div {
+  margin: 0;
+}
+#MarketingListsManageSubscriptionsPageView #HeaderLinksView + div {
+  border: none;
+  background: none;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  -o-box-shadow: none;
+  -ms-box-shadow: none;
+  box-shadow: none;
+  padding: 0;
+  margin: 0;
+  filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
+}
+#MarketingListsManageSubscriptionsPageView .wrapper {
+  border: none;
+  background: none;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  -o-box-shadow: none;
+  -ms-box-shadow: none;
+  box-shadow: none;
+  padding: 0;
+  margin: 0;
+  filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
+  background: #fff;
+  -webkit-box-shadow: 0 0 12px 5px rgba(153, 153, 153, 0.3);
+  -moz-box-shadow: 0 0 12px 5px rgba(153, 153, 153, 0.3);
+  -o-box-shadow: 0 0 12px 5px rgba(153, 153, 153, 0.3);
+  -ms-box-shadow: 0 0 12px 5px rgba(153, 153, 153, 0.3);
+  box-shadow: 0 0 12px 5px rgba(153, 153, 153, 0.3);
+  /*999*/
+
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
+  border-radius: 5px;
+  float: none;
+}
+#MarketingListsManageSubscriptionsPageView #FooterView {
+  margin: 20px 0;
+  padding-bottom: 20px;
+  clear: both;
+}
+#MarketingListsManageSubscriptionsPageView h1 {
+  border: none;
+  background: none;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  -o-box-shadow: none;
+  -ms-box-shadow: none;
+  box-shadow: none;
+  padding: 0;
+  margin: 0;
+  filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
+}
+#MarketingListsManageSubscriptionsPageView #marketingLists-manageSubscriptionsList table {
+  width: 100%;
+}
+#MarketingListsManageSubscriptionsPageView #marketingLists-manageSubscriptionsList table th {
+  font-weight: bold !important;
+  height: 35px;
+  line-height: 35px;
+  padding: 0 5px;
+  white-space: nowrap;
+}
+#MarketingListsManageSubscriptionsPageView #marketingLists-manageSubscriptionsList table td {
+  padding-bottom: 15px;
+}
 #kanban-holder {
   background: #fff;
   margin: 0;
@@ -18806,8 +18940,6 @@ a + .autoresponder-stats {
   font-family: "Courier New", Courier, monospace;
 }
 #ContactWebFormEditAndDetailsView .ui-sortable {
-  width: 50%;
-  float: right;
   list-style: none;
 }
 #ContactWebFormEditAndDetailsView .ui-sortable .hasCheckBox + label {
@@ -18816,11 +18948,107 @@ a + .autoresponder-stats {
 }
 #ContactWebFormEditAndDetailsView #ContactWebForm_serializedData {
   display: block;
-  width: 50%;
-  float: left;
+  margin-top: -5px;
 }
 #ContactWebFormEditAndDetailsView label + label {
   margin-left: 0;
+}
+#ContactWebFormEditAndDetailsView .third,
+#ContactWebFormEditAndDetailsView .twoThirds {
+  float: left;
+}
+#ContactWebFormEditAndDetailsView .twoThirds {
+  margin-left: 2%;
+}
+#ContactWebFormEditAndDetailsView .dynamic-row .remove-dynamic-row-link {
+  top: 5px;
+}
+#ContactWebFormEditAndDetailsView .row-description {
+  margin-bottom: 5px;
+}
+#zurmoExternalWebForm {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 12px;
+  color: #545454;
+}
+#zurmoExternalWebForm .AppContent,
+#zurmoExternalWebForm .wrapper {
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  -ms-border-radius: 0;
+  -o-border-radius: 0;
+  border-radius: 0;
+  border: none;
+  background: none;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  -o-box-shadow: none;
+  -ms-box-shadow: none;
+  box-shadow: none;
+  padding: 0;
+  margin: 0;
+  filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
+}
+#zurmoExternalWebForm .left-column {
+  padding-bottom: 0;
+}
+#zurmoExternalWebForm .attributesContainer {
+  margin: 0;
+  padding: 0;
+}
+#zurmoExternalWebForm .form-toolbar,
+#zurmoExternalWebForm .view-toolbar-container {
+  border: none;
+  text-align: right;
+  padding: 0;
+  margin: 0;
+}
+#zurmoExternalWebForm .float-bar {
+  margin: 0;
+}
+#zurmoExternalWebForm .z-button {
+  margin: 0;
+}
+#zurmoExternalWebForm .z-label {
+  color: #fff;
+  background-color: #799e30;
+  background-repeat: repeat-x;
+  background-image: -moz-linear-gradient(top, #97c43d, #799e30);
+  background-image: -ms-linear-gradient(top, #97c43d, #799e30);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #97c43d), color-stop(100%, #799e30));
+  background-image: -webkit-linear-gradient(top, #97c43d, #799e30);
+  background-image: -o-linear-gradient(top, #97c43d, #799e30);
+  background-image: linear-gradient(top, #97c43d, #799e30);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#97c43d', endColorstr='#799e30', GradientType=0);
+  -webkit-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  -moz-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  -o-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  -ms-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
+}
+#zurmoExternalWebForm .z-label:active {
+  color: #1f290c !important;
+  background-color: #5b7724;
+  background-repeat: repeat-x;
+  background-image: -moz-linear-gradient(top, #97c43d, #5b7724);
+  background-image: -ms-linear-gradient(top, #97c43d, #5b7724);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #97c43d), color-stop(100%, #5b7724));
+  background-image: -webkit-linear-gradient(top, #97c43d, #5b7724);
+  background-image: -o-linear-gradient(top, #97c43d, #5b7724);
+  background-image: linear-gradient(top, #97c43d, #5b7724);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#97c43d', endColorstr='#5b7724', GradientType=0);
+  -webkit-text-shadow: 0px 1px 0 #b6d678 !important;
+  -moz-text-shadow: 0px 1px 0 #b6d678 !important;
+  -o-text-shadow: 0px 1px 0 #b6d678 !important;
+  -ms-text-shadow: 0px 1px 0 #b6d678 !important;
+  text-shadow: 0px 1px 0 #b6d678 !important;
+}
+#zurmoExternalWebForm .z-label:hover {
+  -webkit-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
+  -moz-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
+  -o-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
+  -ms-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
+  box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
 }
 /*********************************************************************************
  * Zurmo is a customer relationship management program developed by

@@ -54,6 +54,7 @@
             $placedViewTypes = $this->getPlacedViewTypes();
             $content = '<ul class="available-portlets">';
             $modules = Module::getModuleObjects();
+            $sortablePortlets = array();
             foreach ($modules as $module)
             {
                 if ($module->isEnabled())
@@ -79,18 +80,25 @@
                                         'portletType'    => $portletRules->getType(),
                                         )
                                     );
-                                    $onClick = 'window.location.href = "' . $url . '"';
-                                    $content .= '<li>';
                                     $title    = $metadata['perUser']['title'];
                                     MetadataUtil::resolveEvaluateSubString($title);
-                                    $label    = '<span>\</span>' . $title;
-                                    $content .= ZurmoHtml::link(Zurmo::t('HomeModule', $label ), null, array('onclick' => $onClick));
-                                    $content .= '</li>';
+                                    $sortablePortlets[$title] = $url;
                                 }
                             }
                         }
                     }
                 }
+            }
+            //Sort by title
+            ksort($sortablePortlets);
+            foreach ($sortablePortlets as $title => $url)
+            {
+                $onClick = 'window.location.href = "' . $url . '"';
+                $content .= '<li>';
+
+                $label    = '<span>\</span>' . $title;
+                $content .= ZurmoHtml::link(Zurmo::t('HomeModule', $label ), null, array('onclick' => $onClick));
+                $content .= '</li>';
             }
             $content .= '</ul>';
             return $content;

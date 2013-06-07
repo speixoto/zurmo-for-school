@@ -72,7 +72,7 @@
             $this->registerScripts();
             if ($this->cookieValue == self::HIDDEN_COOKIE_VALUE)
             {
-                $style = "style=display:none;";
+                $style = "style=display:none;"; // Not Coding Standard
             }
             else
             {
@@ -122,7 +122,7 @@
             {
                         $('#" . self::PANEL_ID . "').slideToggle();
                         document.cookie = '" . self::resolveCookieId() . "=" . static::HIDDEN_COOKIE_VALUE . "';
-                        $('#" . self::PANEL_ID . "-checkbox-id').attr('checked', false);
+                        $('#" . self::PANEL_ID . "-checkbox-id').attr('checked', false).parent().removeClass('c_on');
                         return false;
             })";
             Yii::app()->clientScript->registerScript(self::LINK_ID, $script);

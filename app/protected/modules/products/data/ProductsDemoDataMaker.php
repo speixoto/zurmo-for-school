@@ -44,14 +44,18 @@
             assert('$demoDataHelper->isSetRange("Opportunity")');
             assert('$demoDataHelper->isSetRange("User")');
             $products = array();
-            for ($i = 0; $i < 5; $i++)
+            $filePath                  = Yii::getPathOfAlias('application.modules.products.data.ProductRandomData') . '.php';
+            require($filePath);
+            $productRandomData = getProductsRandomData();
+            for ($i = 0; $i < count($productRandomData['names']); $i++)
             {
                 $product = new Product();
                 $product->contact          = $demoDataHelper->getRandomByModelName('Contact');
                 $product->account          = $demoDataHelper->getRandomByModelName('Account');
                 $product->opportunity      = $demoDataHelper->getRandomByModelName('Opportunity');
                 $product->owner            = $demoDataHelper->getRandomByModelName('User');
-                $this->populateModelData($product, $i);
+                $name                      = $productRandomData['names'][$i];
+                $this->populateModelData($product, $i, $name);
                 $saved                     = $product->save();
                 assert('$saved');
                 $products[]                = $product->id;
@@ -59,13 +63,10 @@
             $demoDataHelper->setRangeByModelName('Product', $products[0], $products[count($products)-1]);
         }
 
-        public function populateModelData(& $model, $counter)
+        public function populateModelData(& $model, $counter, $name)
         {
             assert('$model instanceof Product');
             parent::populateModel($model);
-            $stage                  = RandomDataUtil::getRandomValueFromArray(static::getCustomFieldDataByName('ProductStages'));
-            $productRandomData      = ZurmoRandomDataUtil::getRandomDataByModuleAndModelClassNames('ProductsModule', 'Product');
-            $name                   = $productRandomData['names'][$counter];
             $productTemplateName    = self::getProductTemplateForProduct($name);
             $allTemplates = ProductTemplate::getAll();
 
@@ -80,7 +81,7 @@
             $model->name            = $name;
             $model->quantity        = mt_rand(1, 95);
             $model->productTemplate = $productTemplate;
-            $model->stage->value    = $stage;
+            $model->stage->value    = 'Open';
             $model->priceFrequency  = $productTemplate->priceFrequency;
             $model->sellPrice->value= $productTemplate->sellPrice->value;
             $model->type            = $productTemplate->type;
@@ -88,15 +89,24 @@
 
         public static function getProductTemplateForProduct($product)
         {
-            $templateCategoryMapping = array(
+            $productTemplateMapping = array(
                                                 'Amazing Kid Sample'                        => 'Amazing Kid',
                                                 'You Can Do Anything Sample'                => 'You Can Do Anything',
                                                 'A Bend in the River November Issue'        => 'A Bend in the River',
                                                 'A Gift of Monotheists October Issue'       => 'A Gift of Monotheists',
                                                 'Enjoy Once in a Lifetime Music'            => 'Once in a Lifetime'
                                             );
-
-            return $templateCategoryMapping[$product];
+            if (!array_key_exists($product, $productTemplateMapping))
+            {
+                $productNameSubstr = explode('-P', $product);
+                if ((strpos($product, 'Laptop') !== false) ||
+                    (strpos($product, 'Camera') !== false) ||
+                    (strpos($product, 'Handycam') !== false))
+                {
+                    return $productNameSubstr[0];
+                }
+            }
+            return $productTemplateMapping[$product];
         }
     }
 ?>

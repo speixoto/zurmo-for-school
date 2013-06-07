@@ -27,13 +27,34 @@
     /**
      * Product related array of random seed data parts.
      */
-    return array(
-        'names' => array(
-            'Amazing Kid Sample',
-            'You Can Do Anything Sample',
-            'A Bend in the River November Issue',
-            'A Gift of Monotheists October Issue',
-            'Enjoy Once in a Lifetime Music'
-        )
-    );
+    function getProductsRandomData()
+    {
+        $productNames = array(
+                                'names' => array(
+                                    'Amazing Kid Sample',
+                                    'You Can Do Anything Sample',
+                                    'A Bend in the River November Issue',
+                                    'A Gift of Monotheists October Issue',
+                                    'Enjoy Once in a Lifetime Music'
+                                )
+                            );
+
+        $productTemplates = ProductTemplate::getAll();
+
+        foreach ($productTemplates as $template)
+        {
+            if ((strpos($template->name, 'Laptop')   !== false) ||
+                (strpos($template->name, 'Camera')   !== false) ||
+                (strpos($template->name, 'Handycam') !== false))
+            {
+                for ($i = 1; $i < 3; $i++)
+                {
+                   $randomString = substr(str_shuffle("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0, 2);
+                   $productNames['names'][] = $template->name . '-P' . $randomString;
+                }
+            }
+        }
+
+        return $productNames;
+    }
 ?>

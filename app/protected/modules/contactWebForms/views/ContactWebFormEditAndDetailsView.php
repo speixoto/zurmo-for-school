@@ -105,6 +105,15 @@
                                     array(
                                         array(
                                             'elements' => array(
+                                                array('attributeName' => 'excludeStyles', 'type' => 'CheckBox'),
+                                            ),
+                                        ),
+                                    )
+                                ),
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
                                                 array('attributeName' => 'serializedData', 'type' => 'SortableContactWebFormAttributes'),
                                             ),
                                         ),
@@ -136,7 +145,7 @@
                             'src="' . Yii::app()->createAbsoluteUrl('contacts/external/sourceFiles/', array('id' => $this->model->id)) . '">' .
                             '</script></div>';
             $title = ZurmoHtml::tag('h3', array(), Zurmo::t('ContactWebFormsModule', 'Copy/Paste this code to your web page..'));
-            return '<div class="webform-embed-code">' . $title . '<textarea readonly>' . htmlspecialchars($embedScript) . '</textarea></div>';
+            return '<div class="webform-embed-code">' . $title . '<textarea onclick="this.focus();this.select()" readonly="readonly">' . htmlspecialchars($embedScript) . '</textarea></div>';
         }
     }
 ?>

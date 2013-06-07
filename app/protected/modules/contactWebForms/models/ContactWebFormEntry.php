@@ -34,7 +34,7 @@
 
         const STATUS_ERROR_MESSAGE    = 'Error';
 
-        const HIDDEN_FIELD            = 'hashIndex';
+        const HASH_INDEX_HIDDEN_FIELD = 'hashIndex';
 
         public static function getByName($name)
         {

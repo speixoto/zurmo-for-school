@@ -1426,7 +1426,8 @@
             $model              = new ReportModelTestItem();
             $rules              = new ReportsTestReportRules();
             $adapter            = new ModelRelationsAndAttributesToReportAdapter($model, $rules, Report::TYPE_ROWS_AND_COLUMNS);
-            $this->assertNull($adapter->getAvailableOperatorsType('boolean'));
+            $this->assertEquals(ModelAttributeToReportOperatorTypeUtil::AVAILABLE_OPERATORS_TYPE_BOOLEAN,
+                                $adapter->getAvailableOperatorsType('boolean'));
             $this->assertEquals(ModelAttributeToReportOperatorTypeUtil::AVAILABLE_OPERATORS_TYPE_NUMBER,
                                 $adapter->getAvailableOperatorsType('currencyValue'));
             $this->assertNull($adapter->getAvailableOperatorsType('date'));

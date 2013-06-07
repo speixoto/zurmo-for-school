@@ -388,7 +388,7 @@
             $this->assertEquals(1, $autoresponderItem->processed);
             $personId                   = $contact->getClassId('Person');
             $activities                = AutoresponderItemActivity::getByTypeAndModelIdAndPersonIdAndUrl(
-                                                                                AutoresponderItemActivity::TYPE_SKIPPED,
+                                                                                AutoresponderItemActivity::TYPE_SKIP,
                                                                                 $autoresponderItem->id,
                                                                                 $personId);
             $this->assertNotEmpty($activities);

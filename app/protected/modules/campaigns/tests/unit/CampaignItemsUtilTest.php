@@ -522,7 +522,7 @@
             $this->assertEquals(1, $campaignItem->processed);
             $personId                   = $contact->getClassId('Person');
             $activities                 = CampaignItemActivity::getByTypeAndModelIdAndPersonIdAndUrl(
-                                                                                CampaignItemActivity::TYPE_SKIPPED,
+                                                                                CampaignItemActivity::TYPE_SKIP,
                                                                                 $campaignItem->id,
                                                                                 $personId);
             $this->assertNotEmpty($activities);

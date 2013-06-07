@@ -57,7 +57,8 @@
 
         public function actionForm($id)
         {
-            Yii::app()->getClientScript()->setIsolationMode();
+            $cs = Yii::app()->getClientScript();
+            $cs->setIsolationMode();
             $contactWebForm = static::getModelAndCatchNotFoundAndDisplayError('ContactWebForm', intval($id));
             $metadata       = static::getMetadataByWebForm($contactWebForm);
             if (is_string($contactWebForm->submitButtonLabel) && !empty($contactWebForm->submitButtonLabel))
@@ -68,6 +69,8 @@
             $contact                                 = new Contact();
             $contact->state                          = $contactWebForm->defaultState;
             $contact->owner                          = $contactWebForm->defaultOwner;
+            $contact->googleWebTrackingId            = Yii::app()->getRequest()->getPost(
+                                                       ContactExternalEditAndDetailsView::GOOGLE_WEB_TRACKING_ID_FIELD);
             $postVariableName                        = get_class($contact);
             $containedView                           = new ContactExternalEditAndDetailsView('Edit',
                                                             $this->getId(),
@@ -83,10 +86,17 @@
                 $responseData['redirectUrl']         = $contactWebForm->redirectUrl;
                 $this->renderResponse(CJSON::encode($responseData));
             }
+            $cs->registerScript('catchGoogleWebTrackingId', "
+                                $(document).ready(function()
+                                {
+                                    var googleWebTrackingId = $(this).readCookie('__utma');
+                                    $('#" . ContactExternalEditAndDetailsView::GOOGLE_WEB_TRACKING_ID_FIELD . "').val(googleWebTrackingId);
+                                });");
+            $excludeStyles                           = $contactWebForm->excludeStyles;
             $rawXHtml                                = $view->render();
             $rawXHtml                                = ZurmoExternalViewUtil::resolveAndCombineScripts($rawXHtml);
             $combinedHtml                            = array();
-            $combinedHtml['head']                    = ZurmoExternalViewUtil::resolveHeadTag($rawXHtml);
+            $combinedHtml['head']                    = ZurmoExternalViewUtil::resolveHeadTag($rawXHtml, $excludeStyles);
             $combinedHtml['body']                    = ZurmoExternalViewUtil::resolveHtmlAndScriptInBody($rawXHtml);
             $response = 'renderFormCallback('. CJSON::encode($combinedHtml) . ');';
             $this->renderResponse($response);
@@ -137,7 +147,7 @@
             {
                 $contactWebFormEntryContact      = null;
             }
-            $hashIndex                           = Yii::app()->getRequest()->getPost(ContactWebFormEntry::HIDDEN_FIELD);
+            $hashIndex                           = Yii::app()->getRequest()->getPost(ContactWebFormEntry::HASH_INDEX_HIDDEN_FIELD);
             $contactWebFormEntry                 = ContactWebFormEntry::getByHashIndex($hashIndex);
             if ($contactWebFormEntry === null)
             {
@@ -187,6 +197,13 @@
                                             $attributesLayoutAdapter->getRequiredDerivedLayoutAttributeTypes());
             $metadata                 = $layoutMetadataAdapter->resolveMetadataFromSelectedListAttributes($viewClassName,
                                         $contactWebFormAttributes);
+            foreach ($metadata['global']['panels'][0]['rows'] as $index => $data)
+            {
+                if ($data['cells'][0]['elements'][0]['type'] == 'EmailAddressInformation')
+                {
+                    $metadata['global']['panels'][0]['rows'][$index]['cells'][0]['elements'][0]['hideOptOut'] = true;
+                }
+            }
             return $metadata;
         }
     }

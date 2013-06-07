@@ -58,7 +58,7 @@
             {
                 $activityClass  = $itemClass . 'Activity';
                 $personId       = $contact->getClassId('Person');
-                $type           = $activityClass::TYPE_SKIPPED;
+                $type           = $activityClass::TYPE_SKIP;
                 $activityClass::createNewActivity($type, $itemId, $personId);
             }
             else

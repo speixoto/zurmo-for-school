@@ -68,5 +68,10 @@
         {
             return true;
         }
+
+        public static function getAllowedOnPortletViewClassNames()
+        {
+            return array('OpportunityDetailsAndRelationsView');
+        }
     }
 ?>

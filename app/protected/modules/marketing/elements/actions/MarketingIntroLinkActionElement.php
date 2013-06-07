@@ -94,7 +94,7 @@
             $name        = MarketingDashboardIntroView::PANEL_ID . '-checkbox-id';
             $htmlOptions = array('id' => MarketingDashboardIntroView::PANEL_ID . '-checkbox-id');
             $checkBox    = ZurmoHtml::checkBox($name, $this->resolveChecked(), $htmlOptions);
-            return $checkBox . Zurmo::t('MarketingModule', 'Show intro message');
+            return '<div class="screen-options"><h4>Screen Options</h4>' . $checkBox . Zurmo::t('MarketingModule', 'Show intro message') . '</div>';
         }
 
         protected function resolveChecked()

@@ -61,13 +61,13 @@
             $this->setView($userGroupMembershipView, 1, 0);
             $this->setView(new RightsEditAndDetailsView('Details', $controllerId, $moduleId, $rightsForm,
                                                         $user->id, $rightsViewMetadata,
-                                                        Zurmo::t('UsersModule', 'Group Rights')), 2, 0);
+                                                        Zurmo::t('UsersModule', 'Group Module Rights')), 2, 0);
             $this->setView(new PoliciesEditAndDetailsView('Details', $controllerId, $moduleId,
                                                           $policiesForm, $user->id, $policiesViewMetadata,
                                                           Zurmo::t('UsersModule', 'Group Policies')), 3, 0);
             $this->setView(new ModulePermissionsEditAndDetailsView('Details', $controllerId, $moduleId, $modulePermissionsForm,
                                                                    $user->id, $modulePermissionsViewMetadata,
-                                                                   Zurmo::t('UsersModule', 'Group Module Permissions')), 4, 0);
+                                                                   Zurmo::t('UsersModule', 'Group Record Permissions')), 4, 0);
         }
     }
 ?>

@@ -61,8 +61,8 @@
             $this->assertEquals($compareData, $groupedDateTimeData);
             $groupedDateTimeData = MarketingChartDataProvider::makeGroupedDateTimeData(
                                    $beginDate, $endDate, MarketingOverallMetricsForm::GROUPING_TYPE_WEEK);
-            $compareData = array(array('beginDate' => '2013-05-27', 'endDate' => '2013-06-02', 'displayLabel' => 'May 27'),
-                                 array('beginDate' => '2013-06-03', 'endDate' => '2013-06-09', 'displayLabel' => 'Jun 3'));
+            $compareData = array(array('beginDate' => '2013-06-01', 'endDate' => '2013-06-02', 'displayLabel' => 'May 27'),
+                                 array('beginDate' => '2013-06-03', 'endDate' => '2013-06-04', 'displayLabel' => 'Jun 3'));
             $this->assertEquals($compareData, $groupedDateTimeData);
 
             $groupedDateTimeData = MarketingChartDataProvider::makeGroupedDateTimeData(

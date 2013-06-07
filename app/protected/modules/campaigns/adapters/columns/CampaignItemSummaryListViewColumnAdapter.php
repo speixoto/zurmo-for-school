@@ -73,8 +73,9 @@
             $content    .= ZurmoHtml::tag('span', array('id'    => 'restricted-access-contact-tooltip' . $contact->id,
                                                         'class' => 'tooltip',
                                                         'title' => $title), '?');
-            $qtip = new ZurmoTip(array('options' => array('position' => array('my' => 'bottom right', 'at' => 'top left'))));
-            $qtip->addQTip('restricted-access-contact-tooltip' . $contact->id);
+            $qtip = new ZurmoTip(array('options' => array('position' => array('my' => 'bottom left', 'at' => 'top left',
+                                                          'adjust' => array('x' => 6, 'y' => -1)))));
+            $qtip->addQTip('#restricted-access-contact-tooltip' . $contact->id);
             return $content;
         }
 
@@ -92,10 +93,15 @@
 
         protected static function renderMetricsContent(CampaignItem $campaignItem)
         {
-            $isQueued     = $campaignItem->isQueued();
-            if ($isQueued)
+            $isQueuedOrSkipped     = $campaignItem->isQueuedOrSkipped();
+            $isSkipped             = $campaignItem->isSkipped();
+            if ($isQueuedOrSkipped && !$isSkipped)
             {
                 $content = static::getQueuedContent();
+            }
+            elseif ($isQueuedOrSkipped && $isSkipped)
+            {
+                $content = static::getSkippedContent();
             }
             elseif ($campaignItem->hasFailedToSend())
             {
@@ -129,6 +135,12 @@
         {
             $content = '<i>&#9679;</i><span>' . Zurmo::t('MarketingModule', 'Queued') . '</span>';
             return ZurmoHtml::tag('div', array('class' => 'email-recipient-stage-status queued'), $content);
+        }
+
+        protected static function getSkippedContent()
+        {
+            $content = '<i>&#9679;</i><span>' . Zurmo::t('MarketingModule', 'Skipped') . '</span>';
+            return ZurmoHtml::tag('div', array('class' => 'email-recipient-stage-status stage-false'), $content);
         }
 
         protected static function getSentContent()

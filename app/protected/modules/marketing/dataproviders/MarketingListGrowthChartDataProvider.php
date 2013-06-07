@@ -42,7 +42,7 @@
         public function getChartData()
         {
             $chartData = array();
-            $groupedDateTimeData = static::makeGroupedDateTimeData($this->beginDate, $this->endDate, $this->groupBy);
+            $groupedDateTimeData = static::makeGroupedDateTimeData($this->beginDate, $this->endDate, $this->groupBy, false);
             foreach ($groupedDateTimeData as $groupData)
             {
                 $beginDateTime       = DateTimeUtil::convertDateIntoTimeZoneAdjustedDateTimeBeginningOfDay($groupData['beginDate']);
@@ -91,7 +91,7 @@
             $existingSubscriberSelectPart = "sum(CASE WHEN {$quote}{$marketingListMemberTableName}{$quote}.{$quote}{$createdDateTimeColumnName}" .
                                             $quote . " < '$beginDateTime' AND " .
                                             "{$quote}{$marketingListMemberTableName}{$quote}.{$quote}" .
-                                            "{$unsubscribedColumnName}{$quote}=0 THEN 1 ELSE 0 END)";
+                                            "{$unsubscribedColumnName}{$quote}=0 THEN 1 ELSE 0 END)"; // Not Coding Standard
             $selectQueryAdapter->addClauseByQueryString($newSubscriberSelectPart,      static::NEW_SUBSCRIBERS_COUNT);
             $selectQueryAdapter->addClauseByQueryString($existingSubscriberSelectPart, static::EXISTING_SUBSCRIBERS_COUNT);
             $joinTablesAdapter->addLeftTableAndGetAliasName($marketingListMemberTableName, 'id', $marketingListTableName, 'marketinglist_id');

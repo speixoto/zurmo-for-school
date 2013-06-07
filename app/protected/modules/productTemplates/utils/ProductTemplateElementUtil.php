@@ -80,6 +80,7 @@
 
         public static function getCalculatedSellPriceBySellPriceFormulaScript()
         {
+            // Begin Not Coding Standard
             return "
                 var typeEditable = " . SellPriceFormula::TYPE_EDITABLE . ";
                 var typeProfitMargin = " . SellPriceFormula::TYPE_PROFIT_MARGIN . ";
@@ -111,6 +112,10 @@
                         priceCurrency = $('#ProductTemplate_cost_currency_id').val();
                         $('#ProductTemplate_sellPrice_currency_id').val(priceCurrency);
                         $('#ProductTemplate_listPrice_currency_id').val(priceCurrency);
+                        $('#ProductTemplate_listPrice_currency_id').attr('readonly','readonly');
+                        $('#ProductTemplate_listPrice_currency_id').addClass('disabled');
+                        $('#ProductTemplate_cost_currency_id').removeAttr('readonly');
+                        $('#ProductTemplate_cost_currency_id').removeClass('disabled');
                     }
 
                     if (helperValue == typeMarkOverCost)
@@ -121,6 +126,10 @@
                         priceCurrency = $('#ProductTemplate_cost_currency_id').val();
                         $('#ProductTemplate_sellPrice_currency_id').val(priceCurrency);
                         $('#ProductTemplate_listPrice_currency_id').val(priceCurrency);
+                        $('#ProductTemplate_listPrice_currency_id').attr('readonly','readonly');
+                        $('#ProductTemplate_listPrice_currency_id').addClass('disabled');
+                        $('#ProductTemplate_cost_currency_id').removeAttr('readonly');
+                        $('#ProductTemplate_cost_currency_id').removeClass('disabled');
                     }
 
                     if (helperValue == typeDiscountFromList)
@@ -131,6 +140,10 @@
                         priceCurrency = $('#ProductTemplate_listPrice_currency_id').val();
                         $('#ProductTemplate_sellPrice_currency_id').val(priceCurrency);
                         $('#ProductTemplate_cost_currency_id').val(priceCurrency);
+                        $('#ProductTemplate_cost_currency_id').attr('readonly','readonly');
+                        $('#ProductTemplate_cost_currency_id').addClass('disabled');
+                        $('#ProductTemplate_listPrice_currency_id').removeAttr('readonly');
+                        $('#ProductTemplate_listPrice_currency_id').removeClass('disabled');
                     }
 
                     if (helperValue == typeSameAsList)
@@ -140,9 +153,22 @@
                         priceCurrency = $('#ProductTemplate_listPrice_currency_id').val();
                         $('#ProductTemplate_sellPrice_currency_id').val(priceCurrency);
                         $('#ProductTemplate_cost_currency_id').val(priceCurrency);
+                        $('#ProductTemplate_cost_currency_id').attr('readonly','readonly');
+                        $('#ProductTemplate_cost_currency_id').addClass('disabled');
+                        $('#ProductTemplate_listPrice_currency_id').removeAttr('readonly');
+                        $('#ProductTemplate_listPrice_currency_id').removeClass('disabled');
+                    }
+
+                    if (helperValue == typeEditable)
+                    {
+                        $('#ProductTemplate_cost_currency_id').removeAttr('readonly');
+                        $('#ProductTemplate_listPrice_currency_id').removeAttr('readonly');
+                        $('#ProductTemplate_listPrice_currency_id').removeClass('disabled');
+                        $('#ProductTemplate_cost_currency_id').removeClass('disabled');
                     }
                 }
             ";
+            // End Not Coding Standard
         }
 
         public static function bindActionsWithFormFieldsForSellPrice()
@@ -247,6 +273,49 @@
             }
 
             return $content;
+        }
+
+        /**
+         * Get the attribute value for the report grid view based on the input
+         * dropdown attribute
+         * @param object $data
+         * @param int $row
+         * @param string $inputAttribute
+         * @param array $dataArray
+         * @return string or null value
+         */
+        public static function renderProductTemplateListViewAttributeForReports($model, $attribute)
+        {
+            assert('$model instanceof ReportResultsRowData');
+            if (null === $displayAttributeKey = $model::resolveKeyByAttributeName($attribute))
+            {
+                return $model->{$attribute};
+            }
+            $displayAttributes = $model->getDisplayAttributes();
+            $displayAttribute  = $displayAttributes[$displayAttributeKey];
+            $realAttributeName = $displayAttribute->getResolvedAttribute();
+            switch($realAttributeName)
+            {
+                case 'priceFrequency':
+                    $dataArray = self::getProductTemplatePriceFrequencyDropdownArray();
+                    break;
+                case 'status'        :
+                    $dataArray = self::getProductTemplateStatusDropdownArray();
+                    break;
+                case 'type'          :
+                    $dataArray = self::getProductTemplateTypeDropdownArray();
+                    break;
+                default              :   break;
+            }
+            $value = $model->{$attribute};
+            if (isset($dataArray[$value]))
+            {
+                return $dataArray[$value];
+            }
+            else
+            {
+                return null;
+            }
         }
     }
 ?>

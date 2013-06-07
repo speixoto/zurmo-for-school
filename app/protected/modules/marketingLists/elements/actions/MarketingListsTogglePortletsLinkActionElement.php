@@ -56,20 +56,21 @@
             $metricsClass           = $this->getMetricsPortletClass();
             $membersClass           = $this->getMembersPortletClass();
             $autorespondersClass    = $this->getAutorespondersPortletClass();
-            if ($metricsClass)
-            {
-                $membersTranslatedLabel = Zurmo::t('HomeModule', 'Dashboard');
-                $content                .= $this->getCheckboxContent($membersTranslatedLabel, $metricsClass);
-            }
             if ($membersClass)
             {
-                $membersTranslatedLabel = Zurmo::t('MarketingListsModule', 'Members');
-                $content                .= $this->getCheckboxContent($membersTranslatedLabel, $membersClass);
+                    $membersTranslatedLabel = Zurmo::t('LeadsModule', 'ContactsModulePluralLabel/LeadsModulePluralLabel',
+                                              LabelUtil::getTranslationParamsForAllModules());
+                $content .= $this->getCheckboxContent($membersTranslatedLabel, $membersClass);
             }
             if ($autorespondersClass)
             {
                 $autorespondersTranslatedLabel = Zurmo::t('MarketingListsModule', 'Autoresponders');
                 $content                .= $this->getCheckboxContent($autorespondersTranslatedLabel, $autorespondersClass);
+            }
+            if ($metricsClass)
+            {
+                $membersTranslatedLabel = Zurmo::t('HomeModule', 'Dashboard');
+                $content               .= $this->getCheckboxContent($membersTranslatedLabel, $metricsClass);
             }
             return ZurmoHtml::tag('div', $this->getHtmlOptions(), $content );
         }

@@ -136,7 +136,7 @@
             $selectQueryAdapter        = new RedBeanModelSelectQueryAdapter($selectDistinct);
             $queuedEmailsSelectPart    = "sum(CASE WHEN {$quote}{$emailMessageTableName}{$quote}.{$quote}{$sentDateTimeColumnName}" .
                                          $quote . " = '0000-00-00 00:00:00' OR {$quote}{$emailMessageTableName}{$quote}" .
-                                         ".{$quote}{$sentDateTimeColumnName}{$quote} IS NULL THEN 1 ELSE 0 END)";
+                                         ".{$quote}{$sentDateTimeColumnName}{$quote} IS NULL THEN 1 ELSE 0 END)"; // Not Coding Standard
             $sentEmailsSelectPart      = "sum(CASE WHEN {$quote}{$emailMessageTableName}{$quote}.{$quote}{$sentDateTimeColumnName}" .
                                          $quote . " > '0000-00-00 00:00:00' THEN 1 ELSE 0 END)";
             $uniqueOpensSelectPart     = static::resolveCampaignTypeSubQuery(EmailMessageActivity::TYPE_OPEN);
@@ -183,7 +183,7 @@
             $selectQueryAdapter     = new RedBeanModelSelectQueryAdapter($selectDistinct);
             $queuedEmailsSelectPart = "count(CASE WHEN {$quote}{$emailMessageTableName}{$quote}.{$quote}{$sentDateTimeColumnName}" .
                                       $quote . " = '0000-00-00 00:00:00' OR {$quote}{$emailMessageTableName}{$quote}" .
-                                      ".{$quote}{$sentDateTimeColumnName}{$quote} IS NULL THEN 1 ELSE 0 END)";
+                                      ".{$quote}{$sentDateTimeColumnName}{$quote} IS NULL THEN 1 ELSE 0 END)"; // Not Coding Standard
             $sentEmailsSelectPart   = "count(CASE WHEN {$quote}{$emailMessageTableName}{$quote}.{$quote}{$sentDateTimeColumnName}" .
                                       $quote . " > '0000-00-00 00:00:00' THEN 1 ELSE 0 END)";
             $uniqueOpensSelectPart  = static::resolveAutoresponderTypeSubQuery(EmailMessageActivity::TYPE_OPEN);

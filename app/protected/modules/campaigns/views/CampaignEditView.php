@@ -43,7 +43,7 @@
                     'toolbar' => array(
                         'elements' => array(
                             array('type'    => 'CancelLink'),
-                            array('type'    => 'SaveButton'),
+                            array('type'    => 'SaveButton', 'label' => 'eval:Zurmo::t("CampaignsModule", "Save and Schedule")'),
                             array('type'    => 'CampaignDeleteLink'),
                         ),
                     ),
