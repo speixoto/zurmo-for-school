@@ -31,11 +31,17 @@
     {
         protected $ratioToLoad = 1;
 
+        /**
+         * @return array
+         */
         public static function getDependencies()
         {
             return array();
         }
 
+        /**
+         * @param Object $demoDataHelper
+         */
         public function makeAll(& $demoDataHelper)
         {
             assert('$demoDataHelper instanceof DemoDataHelper');
@@ -65,6 +71,11 @@
             $demoDataHelper->setRangeByModelName('ProductTemplate', $productTemplates[0], $productTemplates[count($productTemplates)-1]);
         }
 
+        /**
+         * Populate Product Template Model with data
+         * @param Product Template object $model
+         * @param int $counter
+         */
         public function populateModelData(& $model, $counter)
         {
             assert('$model instanceof ProductTemplate');
@@ -95,6 +106,11 @@
             $model->sellPriceFormula   = $sellPriceFormula;
         }
 
+        /**
+         * Get product category based on template
+         * @param string $template
+         * @return string
+         */
         private static function getProductCategoryForTemplate($template)
         {
             $templateCategoryMapping = array(

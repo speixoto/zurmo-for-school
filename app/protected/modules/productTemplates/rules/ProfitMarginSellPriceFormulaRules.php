@@ -26,21 +26,33 @@
 
     class ProfitMarginSellPriceFormulaRules extends SellPriceFormulaRules
     {
+        /**
+         * @return bool
+         */
         public static function isSellPriceEditable()
         {
             return false;
         }
 
+        /**
+         * @return string
+         */
         public static function getDisplayLabel()
         {
             return Zurmo::t('ProductTemplatesModule', 'Profit Margin Percent');
         }
 
+        /**
+         * @return int
+         */
         public static function getType()
         {
             return SellPriceFormula::TYPE_PROFIT_MARGIN;
         }
 
+        /**
+         * @return string
+         */
         public static function getDisplaySellPriceFormula()
         {
             $costLabel = Zurmo::t('ProductTemplatesModule', 'Cost');

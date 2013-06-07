@@ -26,21 +26,33 @@
 
     class MarkupOverCostSellPriceFormulaRules extends SellPriceFormulaRules
     {
+        /**
+         * @return bool
+         */
         public static function isSellPriceEditable()
         {
             return false;
         }
 
+        /**
+         * @return string
+         */
         public static function getDisplayLabel()
         {
             return Zurmo::t('ProductTemplatesModule', 'Markup Over Cost Percent');
         }
 
+        /**
+         * @return int
+         */
         public static function getType()
         {
             return SellPriceFormula::TYPE_MARKUP_OVER_COST;
         }
 
+        /**
+         * @return string
+         */
         public static function getDisplaySellPriceFormula()
         {
             $costLabel = Zurmo::t('ProductTemplatesModule', 'Cost');

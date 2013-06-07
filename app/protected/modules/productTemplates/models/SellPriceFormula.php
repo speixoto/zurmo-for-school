@@ -39,6 +39,9 @@
 
         const TYPE_SAME_AS_LIST       = 5;
 
+        /**
+         * @return string
+         */
         public function __toString()
         {
             if (trim($this->name) == '')
@@ -48,6 +51,9 @@
             return $this->name;
         }
 
+        /**
+         * @return array
+         */
         public static function getDefaultMetadata()
         {
             $metadata = parent::getDefaultMetadata();
@@ -74,11 +80,17 @@
             return $metadata;
         }
 
+        /**
+         * @return bool
+         */
         public static function isTypeDeletable()
         {
             return true;
         }
 
+        /**
+         * @return bool
+         */
         public static function canSaveMetadata()
         {
             return true;
@@ -98,6 +110,9 @@
             );
         }
 
+        /**
+         * @return array of sellprice formula displayable labels and values
+         */
         public static function getDisplayedSellPriceFormulaArray()
         {
             return array(
@@ -109,6 +124,9 @@
             );
         }
 
+        /**
+         * @return string
+         */
         public static function getModuleClassName()
         {
             return 'ProductTemplatesModule';

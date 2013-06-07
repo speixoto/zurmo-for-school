@@ -36,16 +36,25 @@
 
     class ProductTemplateAttributeForm extends HasOneModelAttributeForm
     {
+        /**
+         * @return string
+         */
         public static function getAttributeTypeDisplayName()
         {
             return Zurmo::t('ProductTemplatesModule', 'CatalogItem');
         }
 
+        /**
+         * @return string
+         */
         public static function getAttributeTypeDisplayDescription()
         {
             return Zurmo::t('ProductTemplatesModule', 'A catalog item field');
         }
 
+        /**
+         * @return string
+         */
         public function getAttributeTypeName()
         {
             return 'ProductTemplate';

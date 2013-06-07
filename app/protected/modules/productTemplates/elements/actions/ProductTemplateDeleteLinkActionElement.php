@@ -33,9 +33,16 @@
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
-
+    /**
+     * Link element to delete product template
+     */
     class ProductTemplateDeleteLinkActionElement extends DeleteLinkActionElement
     {
+        /**
+         * Resolve the alert display in html options
+         * @param array $htmlOptions
+         * @return array
+         */
         protected function resolveConfirmAlertInHtmlOptions($htmlOptions)
         {
             $htmlOptions['confirm'] = Zurmo::t('ProductTemplatesModule', 'Are you sure you want to delete this {modelLabel}?',

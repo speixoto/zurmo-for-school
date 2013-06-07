@@ -39,11 +39,17 @@
      */
     class ProductTemplateGamificationRules extends GamificationRules
     {
+        /**
+         * @return array
+         */
         public static function getPointTypesAndValuesForCreateModel()
         {
             return array(GamePoint::TYPE_USER_ADOPTION => 10);
         }
 
+        /**
+         * @return array
+         */
         public static function getPointTypesAndValuesForUpdateModel()
         {
             return array(GamePoint::TYPE_USER_ADOPTION => 10);

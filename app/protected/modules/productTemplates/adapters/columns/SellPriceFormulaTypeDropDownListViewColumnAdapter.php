@@ -23,7 +23,9 @@
      * You can contact Zurmo, Inc. with a mailing address at 113 McHenry Road Suite 207,
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
-
+    /**
+     * Column adapter for sell price formula type value for product template list view
+     */
     class SellPriceFormulaTypeDropDownListViewColumnAdapter extends TextListViewColumnAdapter
     {
         public function renderGridViewData()
@@ -35,6 +37,12 @@
                 );
         }
 
+        /**
+         * Get sell price formula type displayed value
+         * @param RedBeanModel $data
+         * @param string $attribute
+         * @return string
+         */
         public static function getSellPriceFormulaType($data, $attribute)
         {
             $dataArray = SellPriceFormula::getTypeDropDownArray();

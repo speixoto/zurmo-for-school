@@ -59,6 +59,9 @@
             return parent::renderControlEditable();
         }
 
+        /**
+         * @return string
+         */
         protected function getModalTitleForSelectingModel()
         {
             return Zurmo::t('ZurmoModule', 'Select a Category');

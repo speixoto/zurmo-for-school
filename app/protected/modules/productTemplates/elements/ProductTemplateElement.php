@@ -57,6 +57,9 @@
             return parent::renderControlEditable();
         }
 
+        /**
+         * @return string
+         */
         protected function getModalTitleForSelectingModel()
         {
             return Zurmo::t('ProductTemplatesModule', 'Catalog Item Search');

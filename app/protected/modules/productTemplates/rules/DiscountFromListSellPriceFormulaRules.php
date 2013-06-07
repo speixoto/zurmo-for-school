@@ -26,21 +26,33 @@
 
     class DiscountFromListSellPriceFormulaRules extends SellPriceFormulaRules
     {
+        /**
+         * @return bool
+         */
         public static function isSellPriceEditable()
         {
             return false;
         }
 
+        /**
+         * @return string
+         */
         public static function getDisplayLabel()
         {
             return Zurmo::t('ProductTemplatesModule', 'Discount From List Percent');
         }
 
+        /**
+         * @return int
+         */
         public static function getType()
         {
             return SellPriceFormula::TYPE_DISCOUNT_FROM_LIST;
         }
 
+        /**
+         * @return string
+         */
         public static function getDisplaySellPriceFormula()
         {
             $listPriceLabel = Zurmo::t('ProductTemplatesModule', 'List Price');

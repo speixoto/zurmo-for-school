@@ -29,6 +29,12 @@
      */
     class ProductTemplateProductCategoriesUtil
     {
+        /**
+         * Resolve the product categories from prost
+         * @param ProductTemplate $productTemplate
+         * @param array $postData
+         * @return array
+         */
         public static function resolveProductTemplateHasManyProductCategoriesFromPost(
                                     ProductTemplate $productTemplate, $postData)
         {

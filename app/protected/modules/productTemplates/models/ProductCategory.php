@@ -27,14 +27,23 @@
     class ProductCategory extends Item
     {
         const EVERYONE_CATEGORY_NAME            = 'Everyone';
+
         const ERROR_EXIST_TEMPLATE              = 1;
+
         const ERROR_EXIST_CHILD_CATEGORIES      = 2;
 
+        /**
+         * @param string $name
+         * @return string
+         */
         public static function getByName($name)
         {
             return self::getByNameOrEquivalent('name', $name);
         }
 
+        /**
+         * @return array
+         */
         protected function untranslatedAttributeLabels()
         {
             return array_merge(parent::untranslatedAttributeLabels(),
@@ -43,6 +52,9 @@
             );
         }
 
+        /**
+         * @return string
+         */
         public function __toString()
         {
             try
@@ -59,6 +71,9 @@
             }
         }
 
+        /**
+         * @return string
+         */
         public static function getModuleClassName()
         {
             return 'ProductTemplatesModule';
@@ -82,11 +97,17 @@
             return 'Product Categories';
         }
 
+        /**
+         * @return bool
+         */
         public static function canSaveMetadata()
         {
             return true;
         }
 
+        /**
+         * @return array
+         */
         public static function getDefaultMetadata()
         {
             $metadata = parent::getDefaultMetadata();
@@ -117,11 +138,17 @@
             return $metadata;
         }
 
+        /**
+         * @return bool
+         */
         public static function isTypeDeletable()
         {
             return true;
         }
 
+        /**
+         * @return string
+         */
         public static function getRollUpRulesType()
         {
             return 'ProductCategory';
@@ -132,6 +159,9 @@
             //return 'ProductCategoryGamification';
         }
 
+        /**
+         * @return string
+         */
         protected function beforeDelete()
         {
             if ($this->getScenario() != 'autoBuildDatabase')
@@ -153,6 +183,9 @@
             }
         }
 
+        /**
+         * @return array
+         */
         protected static function translatedAttributeLabels($language)
         {
             return array_merge(parent::translatedAttributeLabels($language), array(
