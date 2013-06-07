@@ -61,7 +61,7 @@
         public static function resolveQueryStringArrayForHash($hash, $validateQueryStringArray = true,
                                                                                             $validateForTracking = true)
         {
-            $hash = urldecode($hash);
+            $hash = base64_decode($hash);
             if (static::isValidHash($hash))
             {
                 $queryStringArray   = array();
@@ -282,7 +282,7 @@
             {
                 throw new NotSupportedException();
             }
-            $encryptedString        = urlencode($encryptedString);
+            $encryptedString        = base64_encode($encryptedString);
             return $encryptedString;
         }
 
