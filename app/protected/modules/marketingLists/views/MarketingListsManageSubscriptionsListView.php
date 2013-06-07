@@ -111,8 +111,8 @@
                 $columnsContent     .= ZurmoHtml::tag('td', array(), strval($marketingListModel));
                 $rowsContentArray[]    = ZurmoHtml::tag('tr', array(), $columnsContent);
             }
-            $linkColumnsContent     = ZurmoHtml::tag('td');
-            $linkColumnsContent     .= ZurmoHtml::tag('td', array(), $this->renderUnsubscribeAllLink());
+            $linkColumnsContent     = ZurmoHtml::tag('td', array(), $this->renderUnsubscribeAllLink());
+            $linkColumnsContent     .= ZurmoHtml::tag('td');
             $rowsContentArray[]     = ZurmoHtml::tag('tr', array(), $linkColumnsContent);
             $rowsContent            = implode("\n", $rowsContentArray);
             $content                = $colGroupContent . $rowsContent;
