@@ -55,6 +55,9 @@
             return Yii::app()->createUrl('productTemplates/category/list/');
         }
 
+        /**
+         * @return string
+         */
         public function render()
         {
             if (RightsUtil::canUserAccessModule(

@@ -36,16 +36,25 @@
 
     class ProductTemplateTypeDropDownAttributeForm extends AttributeForm
     {
+        /**
+         * @return string
+         */
         public static function getAttributeTypeDisplayName()
         {
             return Zurmo::t('DesignerModule', 'Catalog Item Type Dropdown');
         }
 
+        /**
+         * @return string
+         */
         public static function getAttributeTypeDisplayDescription()
         {
             return Zurmo::t('DesignerModule', 'Catalog Item Type Dropdown Values');
         }
 
+        /**
+         * @return string
+         */
         public function getAttributeTypeName()
         {
             return 'ProductTemplateTypeDropDown';

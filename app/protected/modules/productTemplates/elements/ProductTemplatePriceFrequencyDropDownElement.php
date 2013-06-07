@@ -23,9 +23,14 @@
      * You can contact Zurmo, Inc. with a mailing address at 113 McHenry Road Suite 207,
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
-
+    /**
+     * Price frequency dropdown element for product template
+     */
     class ProductTemplatePriceFrequencyDropDownElement extends StaticDropDownFormElement
     {
+        /**
+         * @return array
+         */
         protected function getDropDownArray()
         {
             return ProductTemplateElementUtil::getProductTemplatePriceFrequencyDropdownArray();

@@ -26,6 +26,9 @@
 
     class SellPriceFormulaInformationElement extends Element
     {
+        /**
+         * @return string
+         */
         protected function renderControlNonEditable()
         {
             assert('$this->model->{$this->attribute} instanceof SellPriceFormula');
@@ -64,6 +67,14 @@
             return $content;
         }
 
+        /**
+         * Renders the Sell Price Formula Dropdown
+         * @param Redbean $model
+         * @param Object $form
+         * @param string $inputNameIdPrefix
+         * @param string $attribute
+         * @return string
+         */
         protected function renderNameDropDown($model, $form, $inputNameIdPrefix, $attribute)
         {
             $id                    = $this->getEditableInputId($inputNameIdPrefix, $attribute);
@@ -81,6 +92,14 @@
             return $dropDownField . $error;
         }
 
+        /**
+         * Renders discount text field
+         * @param RedBeanModel $model
+         * @param Object $form
+         * @param string $inputNameIdPrefix
+         * @param string $attribute
+         * @return string
+         */
         protected function renderDiscountOrMarkupPercentageTextField($model, $form, $inputNameIdPrefix, $attribute)
         {
             $id          = $this->getEditableInputId($inputNameIdPrefix, $attribute);
@@ -100,6 +119,9 @@
         {
         }
 
+        /**
+         * Registers the script required on usage of sell price formula
+         */
         protected function registerScripts()
         {
             Yii::app()->clientScript->registerScript(
@@ -124,6 +146,11 @@
             );
         }
 
+        /**
+         * Resolves input display style
+         * @param RedBean $model
+         * @return string
+         */
         protected function resolveInputDisplayStyle($model)
         {
             if ($model->type == SellPriceFormula::TYPE_PROFIT_MARGIN || $model->type == SellPriceFormula::TYPE_MARKUP_OVER_COST || $model->type == SellPriceFormula::TYPE_DISCOUNT_FROM_LIST)

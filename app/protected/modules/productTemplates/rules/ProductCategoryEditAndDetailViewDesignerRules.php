@@ -26,6 +26,9 @@
 
     class ProductCategoryEditAndDetailViewDesignerRules extends DesignerRules
     {
+        /**
+         * @return bool
+         */
         public function allowEditInLayoutTool()
         {
             return false;

@@ -26,21 +26,33 @@
 
     class SameAsListSellPriceFormulaRules extends SellPriceFormulaRules
     {
+        /**
+         * @return bool
+         */
         public static function isSellPriceEditable()
         {
             return false;
         }
 
+        /**
+         * @return string
+         */
         public static function getDisplayLabel()
         {
             return Zurmo::t('ProductTemplatesModule', 'Same As List');
         }
 
+        /**
+         * @return int
+         */
         public static function getType()
         {
             return SellPriceFormula::TYPE_SAME_AS_LIST;
         }
 
+        /**
+         * @return string
+         */
         public static function getDisplaySellPriceFormula()
         {
             return Zurmo::t('ProductTemplatesModule', 'Same As List');

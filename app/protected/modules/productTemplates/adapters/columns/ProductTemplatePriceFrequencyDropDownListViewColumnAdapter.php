@@ -23,7 +23,9 @@
      * You can contact Zurmo, Inc. with a mailing address at 113 McHenry Road Suite 207,
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
-
+    /**
+     * Column adapter for price frequency value for product template list view
+     */
     class ProductTemplatePriceFrequencyDropDownListViewColumnAdapter extends TextListViewColumnAdapter
     {
         public function renderGridViewData()

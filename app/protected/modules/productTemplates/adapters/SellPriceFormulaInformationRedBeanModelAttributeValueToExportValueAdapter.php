@@ -34,8 +34,15 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
+    /**
+     * Column adapter for sell price formula value for export
+     */
     class SellPriceFormulaInformationRedBeanModelAttributeValueToExportValueAdapter extends RedBeanModelAttributeValueToExportValueAdapter
     {
+        /**
+         * Resolve sell price formula data to be exported
+         * @param array $data
+         */
         public function resolveData(& $data)
         {
             assert('$this->model->{$this->attribute} instanceof SellPriceFormula');

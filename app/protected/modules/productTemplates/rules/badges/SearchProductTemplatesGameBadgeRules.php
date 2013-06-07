@@ -39,12 +39,21 @@
      */
     class SearchProductTemplatesGameBadgeRules extends SearchModelsGameBadgeRules
     {
+        /**
+         * @param string $value
+         * @return array
+         */
         public static function getPassiveDisplayLabel($value)
         {
             return Zurmo::t('ProductTemplatesModule', '{n} ProductTemplatesModuleSingularLabel search completed|{n} ProductTemplatesModuleSingularLabel searches completed',
                           array_merge(array($value), LabelUtil::getTranslationParamsForAllModules()));
         }
 
+        /**
+         * @param array $userPointsByType
+         * @param array $userScoresByType
+         * @return int
+         */
         public static function badgeGradeUserShouldHaveByPointsAndScores($userPointsByType, $userScoresByType)
         {
             return static::badgeGradeUserShouldHaveByPointsAndScoresByModelClassName($userPointsByType, $userScoresByType, 'ProductTemplate');
