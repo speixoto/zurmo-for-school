@@ -89,6 +89,7 @@
             $cs->registerScript('catchGoogleWebTrackingId', "
                                 $(document).ready(function()
                                 {
+                                    $('html').addClass('zurmo-embedded-form-active');
                                     var googleWebTrackingId = $(this).readCookie('__utma');
                                     $('#" . ContactExternalEditAndDetailsView::GOOGLE_WEB_TRACKING_ID_FIELD . "').val(googleWebTrackingId);
                                 });");
