@@ -34,7 +34,7 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class ImapConfigurationEditAndDetailsView extends EditAndDetailsView
+    abstract class ImapConfigurationEditAndDetailsView extends EditAndDetailsView
     {
         public function getTitle()
         {
