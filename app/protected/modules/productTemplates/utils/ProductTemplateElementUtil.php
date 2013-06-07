@@ -37,11 +37,11 @@
         public static function getShowHideDiscountOrMarkupPercentageTextFieldScript()
         {
             return "
-                var typeProfitMargin = " . SellPriceFormula::TYPE_PROFIT_MARGIN . ";
-                var typeMarkOverCost = " . SellPriceFormula::TYPE_MARKUP_OVER_COST . ";
-                var typeDiscountFromList = " . SellPriceFormula::TYPE_DISCOUNT_FROM_LIST . ";
                 function showHideDiscountOrMarkupPercentageTextField(helperValue, textFieldId)
                 {
+                    var typeProfitMargin = " . SellPriceFormula::TYPE_PROFIT_MARGIN . ";
+                    var typeMarkOverCost = " . SellPriceFormula::TYPE_MARKUP_OVER_COST . ";
+                    var typeDiscountFromList = " . SellPriceFormula::TYPE_DISCOUNT_FROM_LIST . ";
                     if (helperValue == typeProfitMargin || helperValue == typeMarkOverCost || helperValue == typeDiscountFromList)
                     {
                         $('#' + textFieldId).show();
@@ -60,9 +60,9 @@
         public static function getEnableDisableSellPriceElementBySellPriceFormulaScript()
         {
             return "
-                var typeEditable = " . SellPriceFormula::TYPE_EDITABLE . ";
                 function enableDisableSellPriceElementBySellPriceFormula(helperValue, elementId, attribute)
                 {
+                    var typeEditable = " . SellPriceFormula::TYPE_EDITABLE . ";
                     if (helperValue != typeEditable)
                     {
                         $('#' + elementId).attr('readonly', true);
@@ -88,16 +88,16 @@
         {
             // Begin Not Coding Standard
             return "
-                var typeEditable = " . SellPriceFormula::TYPE_EDITABLE . ";
-                var typeProfitMargin = " . SellPriceFormula::TYPE_PROFIT_MARGIN . ";
-                var typeMarkOverCost = " . SellPriceFormula::TYPE_MARKUP_OVER_COST . ";
-                var typeDiscountFromList = " . SellPriceFormula::TYPE_DISCOUNT_FROM_LIST . ";
-                var typeSameAsList = " . SellPriceFormula::TYPE_SAME_AS_LIST . ";
                 $('#ProductTemplate_cost_currency_id').change(function(){calculateSellPriceBySellPriceFormula()});
                 $('#ProductTemplate_listPrice_currency_id').change(function(){calculateSellPriceBySellPriceFormula()});
-                var priceCurrency = '';
                 function calculateSellPriceBySellPriceFormula()
                 {
+                    var priceCurrency = '';
+                    var typeEditable = " . SellPriceFormula::TYPE_EDITABLE . ";
+                    var typeProfitMargin = " . SellPriceFormula::TYPE_PROFIT_MARGIN . ";
+                    var typeMarkOverCost = " . SellPriceFormula::TYPE_MARKUP_OVER_COST . ";
+                    var typeDiscountFromList = " . SellPriceFormula::TYPE_DISCOUNT_FROM_LIST . ";
+                    var typeSameAsList = " . SellPriceFormula::TYPE_SAME_AS_LIST . ";
                     var helperValue = $('#ProductTemplate_sellPriceFormula_type').val();
                     var calculatedSellPrice = 0;
                     var discountOrMarkupPercentage = $('#ProductTemplate_sellPriceFormula_discountOrMarkupPercentage').val();

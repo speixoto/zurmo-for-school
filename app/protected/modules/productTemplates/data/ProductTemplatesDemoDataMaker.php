@@ -47,9 +47,7 @@
             assert('$demoDataHelper instanceof DemoDataHelper');
             $currencies = Currency::getAll('id');
             $productTemplates = array();
-            $filePath                  = Yii::getPathOfAlias('application.modules.productTemplates.data.ProductTemplateRandomData') . '.php';
-            require($filePath);
-            $productTemplateRandomData = getProductTemplatesRandomData();
+            $productTemplateRandomData = self::getProductTemplatesRandomData();
             for ($i = 0; $i < count($productTemplateRandomData['names']); $i++)
             {
                 $productTemplate = new ProductTemplate();
@@ -80,7 +78,7 @@
         {
             assert('$model instanceof ProductTemplate');
             parent::populateModel($model);
-            $productTemplateRandomData = getProductTemplatesRandomData();
+            $productTemplateRandomData = self::getProductTemplatesRandomData();
             $name                      = $productTemplateRandomData['names'][$counter];
             $productCategoryName       = self::getProductCategoryForTemplate($name);
             $allCats = ProductCategory::getAll();
@@ -136,6 +134,41 @@
                 }
             }
             return $templateCategoryMapping[$template];
+        }
+
+        /**
+         * Gets the product templates random data
+         * @return array
+         */
+        public static function getProductTemplatesRandomData()
+        {
+            $templateNames = array(
+                                    'names' => array(
+                                        'Amazing Kid',
+                                        'You Can Do Anything',
+                                        'A Bend in the River',
+                                        'A Gift of Monotheists',
+                                        'Once in a Lifetime'
+                                    )
+                                   );
+            for($i=1; $i<10; $i++)
+            {
+               $randomString = substr(str_shuffle("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0, 6);
+               $templateNames['names'][] = 'Laptop Inc - Model ' . $randomString;
+            }
+
+            for($i=1; $i<10; $i++)
+            {
+               $randomString = substr(str_shuffle("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0, 6);
+               $templateNames['names'][] = 'Camera Inc 2 MegaPixel - Model ' . $randomString;
+            }
+
+            for($i=1; $i<10; $i++)
+            {
+               $randomString = substr(str_shuffle("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0, 6);
+               $templateNames['names'][] = 'Handycam Inc - Model ' . $randomString;
+            }
+            return $templateNames;
         }
     }
 ?>
