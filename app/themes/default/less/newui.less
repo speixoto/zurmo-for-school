@@ -40,6 +40,8 @@
 
 @import 'color-scheme.less';
 
+//@unicode : ~`unicode-range: U+00-FF;`;
+/*
 @font-face {
 	font-family: 'ZurmoGamificationSymblyReguRg';
 	src: url('../fonts/zurmogamificationsymblyregular-regular-webfont.eot');
@@ -50,7 +52,7 @@
 	font-weight: normal;
 	font-style: normal;
 }
-
+*/
 .symbly( @size : 32px ) {
 	font-weight:normal;
 	font-size:@size;
@@ -1609,7 +1611,7 @@ form,
 
 #MassDeleteLinkActionElement .parent > a:before,
 #ListViewDeleteMassActionMenu .parent > a:before{
-	content: "—"; //underscore!
+	content: '\2014'; //emdash!
 	.view-toolbar-icons(22px);
 	top:-2px;
 }
