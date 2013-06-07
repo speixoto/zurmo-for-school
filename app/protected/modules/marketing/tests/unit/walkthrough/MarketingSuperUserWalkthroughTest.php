@@ -69,8 +69,10 @@
 
         public function testDashboardGroupByActions()
         {
+            $portets = Portlet::getAll();
+            $this->assertCount(1, $portets);
             $this->setGetArray(array(
-                        'portletId'         => '1',
+                        'portletId'         => $portets[0]->id,
                         'uniqueLayoutId'    => 'MarketingDashboard',
                     ));
             $this->setPostArray(array(
