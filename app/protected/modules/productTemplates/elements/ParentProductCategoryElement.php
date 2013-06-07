@@ -42,6 +42,9 @@
     {
         protected static $modalActionId = 'modalParentList';
 
+        /**
+         * @return string
+         */
         protected function renderControlEditable()
         {
             assert('$this->model instanceof ProductCategory');
@@ -64,11 +67,17 @@
             return $this->form->textField($this->model, $this->attribute, $htmlOptions);
         }
 
+        /**
+         * @return string
+         */
         protected function getModalTitleForSelectingModel()
         {
             return Zurmo::t('ProductTemplates', 'Select a Parent Category');
         }
 
+        /**
+         * @return string
+         */
         protected function renderLabel()
         {
             return Zurmo::t('ProductTemplates', 'Parent Category');

@@ -27,9 +27,14 @@
     class ProductTemplatesModule extends SecurableModule
     {
         const RIGHT_CREATE_PRODUCT_TEMPLATES = 'Create Catalog Items';
+
         const RIGHT_DELETE_PRODUCT_TEMPLATES = 'Delete Catalog Items';
+
         const RIGHT_ACCESS_PRODUCT_TEMPLATES = 'Access Catalog Items Tab';
 
+        /**
+         * @return array
+         */
         public function getDependencies()
         {
             return array(
@@ -38,11 +43,17 @@
             );
         }
 
+        /**
+         * @return array
+         */
         public function getRootModelNames()
         {
             return array('ProductTemplate', 'ProductCategory', 'ProductCatalog');
         }
 
+        /**
+         * @return array
+         */
         public static function getTranslatedRightsLabels()
         {
             $params                   = LabelUtil::getTranslationParamsForAllModules();
@@ -56,6 +67,9 @@
             return $labels;
         }
 
+        /**
+         * @return array
+         */
         public static function getDefaultMetadata()
         {
             $metadata = array();
@@ -73,56 +87,89 @@
             return $metadata;
         }
 
+        /**
+         * @return string
+         */
         public static function getPrimaryModelName()
         {
             return 'ProductTemplate';
         }
 
+        /**
+         * @return string
+         */
         public static function getSingularCamelCasedName()
         {
             return 'ProductTemplate';
         }
 
+        /**
+         * @return string
+         */
         protected static function getSingularModuleLabel($language)
         {
             return Zurmo::t('ProductTemplatesModule', 'Catalog Item', array(), null, $language);
         }
 
+        /**
+         * @return string
+         */
         protected static function getPluralModuleLabel($language)
         {
             return Zurmo::t('ProductTemplatesModule', 'Catalog Items', array(), null, $language);
         }
 
+        /**
+         * @return string
+         */
         public static function getAccessRight()
         {
             return self::RIGHT_ACCESS_PRODUCT_TEMPLATES;
         }
 
+        /**
+         * @return string
+         */
         public static function getCreateRight()
         {
             return self::RIGHT_CREATE_PRODUCT_TEMPLATES;
         }
 
+        /**
+         * @return string
+         */
         public static function getDeleteRight()
         {
             return self::RIGHT_DELETE_PRODUCT_TEMPLATES;
         }
 
+        /**
+         * @return string
+         */
         public static function getDemoDataMakerClassNames()
         {
             return array('ProductCategoriesDemoDataMaker', 'ProductTemplatesDemoDataMaker');
         }
 
+        /**
+         * @return string
+         */
         public static function getGlobalSearchFormClassName()
         {
             return 'ProductTemplatesSearchForm';
         }
 
+        /**
+         * @return bool
+         */
         public static function isReportable()
         {
             return true;
         }
 
+        /**
+         * @return bool
+         */
         public static function modelsAreNeverGloballySearched()
         {
             return true;

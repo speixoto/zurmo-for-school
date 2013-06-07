@@ -55,12 +55,21 @@
             13 => 100
         );
 
+        /**
+         * @param string $value
+         * @return array
+         */
         public static function getPassiveDisplayLabel($value)
         {
             return Zurmo::t('ProductTemplatesModule', '{n} ProductTemplatesModuleSingularLabel created|{n} ProductTemplatesModulePluralLabel created',
                           array_merge(array($value), LabelUtil::getTranslationParamsForAllModules()));
         }
 
+        /**
+         * @param array $userPointsByType
+         * @param array $userScoresByType
+         * @return int
+         */
         public static function badgeGradeUserShouldHaveByPointsAndScores($userPointsByType, $userScoresByType)
         {
             assert('is_array($userPointsByType)');

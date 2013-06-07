@@ -36,16 +36,25 @@
 
     class SellPriceFormulaInformationAttributeForm extends AttributeForm
     {
+        /**
+         * @return string
+         */
         public static function getAttributeTypeDisplayName()
         {
             return Zurmo::t('DesignerModule', 'Sell Price Formula Information');
         }
 
+        /**
+         * @return string
+         */
         public static function getAttributeTypeDisplayDescription()
         {
             return Zurmo::t('DesignerModule', 'Sell Price Formula fields');
         }
 
+        /**
+         * @return string
+         */
         public function getAttributeTypeName()
         {
             return 'SellPriceFormulaInformation';

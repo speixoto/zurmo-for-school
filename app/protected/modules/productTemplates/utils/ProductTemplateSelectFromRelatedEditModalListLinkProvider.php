@@ -70,6 +70,10 @@
             $this->modalId           = $modalId;
         }
 
+        /**
+         * @param string $attributeString
+         * @return string
+         */
         public function getLinkString($attributeString)
         {
             if ($this->modalId == null)

@@ -30,9 +30,9 @@
     class ProductTemplateElementUtil
     {
         /**
-         * Script used by some policy elements to control the helper
+         * Script used by slle price formula elements to control the helper
          * dropdown and toggling disable and enable on the text field
-         * @see PolicyIntegerAndStaticDropDownElement
+         * @see SellPriceFormulaInformationElement
          */
         public static function getShowHideDiscountOrMarkupPercentageTextFieldScript()
         {
@@ -54,6 +54,9 @@
             ";
         }
 
+        /**
+         * @return string
+         */
         public static function getEnableDisableSellPriceElementBySellPriceFormulaScript()
         {
             return "
@@ -78,6 +81,9 @@
             ";
         }
 
+        /**
+         * @return string
+         */
         public static function getCalculatedSellPriceBySellPriceFormulaScript()
         {
             // Begin Not Coding Standard
@@ -171,6 +177,9 @@
             // End Not Coding Standard
         }
 
+        /**
+         * @return string
+         */
         public static function bindActionsWithFormFieldsForSellPrice()
         {
             return "
@@ -190,6 +199,9 @@
             ";
         }
 
+        /**
+         * @return array
+         */
         public static function getProductTemplateStatusDropdownArray()
         {
             return array(
@@ -198,6 +210,9 @@
             );
         }
 
+        /**
+         * @return array
+         */
         public static function getProductTemplateTypeDropdownArray()
         {
             return array(
@@ -207,6 +222,9 @@
             );
         }
 
+        /**
+         * @return array
+         */
         public static function getProductTemplatePriceFrequencyDropdownArray()
         {
             return array(
@@ -216,6 +234,12 @@
             );
         }
 
+        /**
+         * Get the value of type displayed in grid view for product template
+         * @param RedBeanModel $data
+         * @param int $row
+         * @return null or string
+         */
         public static function getProductTemplateTypeDisplayedGridValue($data, $row)
         {
             $typeDropdownData = self::getProductTemplateTypeDropdownArray();
@@ -229,6 +253,12 @@
             }
         }
 
+        /**
+         * Get the value of status displayed in grid view for product template
+         * @param RedBeanModel $data
+         * @param int $row
+         * @return null or string
+         */
         public static function getProductTemplateStatusDisplayedGridValue($data, $row)
         {
             $statusDropdownData = self::getProductTemplateStatusDropdownArray();
@@ -242,6 +272,12 @@
             }
         }
 
+        /**
+         * Get the value of price frequency displayed in grid view for product template
+         * @param RedBeanModel $data
+         * @param int $row
+         * @return null or string
+         */
         public static function getProductTemplatePriceFrequencyDisplayedGridValue($data, $row)
         {
             $frequencyDropdownData = self::getProductTemplatePriceFrequencyDropdownArray();
@@ -255,6 +291,12 @@
             }
         }
 
+        /**
+         * Get the value of sell price formula displayed in grid view for product template
+         * @param RedBeanModel $data
+         * @param int $row
+         * @return string
+         */
         public static function getSellPriceFormulaDisplayedGridValue($data, $row)
         {
             $sellPriceFormulaModel = $data->sellPriceFormula;

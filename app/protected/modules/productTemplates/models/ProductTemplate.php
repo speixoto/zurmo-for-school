@@ -42,11 +42,18 @@
 
         const PRICE_FREQUENCY_ANNUALLY  = 3;
 
+        /**
+         * @param string $name
+         * @return string
+         */
         public static function getByName($name)
         {
             return self::getByNameOrEquivalent('name', $name);
         }
 
+        /**
+         * @return string
+         */
         public function __toString()
         {
             try
@@ -63,16 +70,25 @@
             }
         }
 
+        /**
+         * @return string
+         */
         public static function getModuleClassName()
         {
             return 'ProductTemplatesModule';
         }
 
+        /**
+         * @return bool
+         */
         public static function canSaveMetadata()
         {
             return true;
         }
 
+        /**
+         * @return array
+         */
         public static function getDefaultMetadata()
         {
             $metadata = parent::getDefaultMetadata();
@@ -136,21 +152,33 @@
             return $metadata;
         }
 
+        /**
+         * @return bool
+         */
         public static function isTypeDeletable()
         {
             return true;
         }
 
+        /**
+         * @return string
+         */
         public static function getRollUpRulesType()
         {
             return 'ProductTemplate';
         }
 
+        /**
+         * @return string
+         */
         public static function getGamificationRulesType()
         {
             return 'ProductTemplateGamification';
         }
 
+        /**
+         * @return bool
+         */
         protected function beforeDelete()
         {
             if ($this->getScenario() != 'autoBuildDatabase')
@@ -171,6 +199,9 @@
             }
         }
 
+        /**
+         * @return array
+         */
         protected static function translatedAttributeLabels($language)
         {
             $params = LabelUtil::getTranslationParamsForAllModules();

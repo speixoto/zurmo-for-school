@@ -36,16 +36,25 @@
 
     class ProductTemplatePriceFrequencyDropDownAttributeForm extends AttributeForm
     {
+        /**
+         * @return string
+         */
         public static function getAttributeTypeDisplayName()
         {
             return Zurmo::t('DesignerModule', 'Catalog Item Price Frequency Dropdown');
         }
 
+        /**
+         * @return string
+         */
         public static function getAttributeTypeDisplayDescription()
         {
             return Zurmo::t('DesignerModule', 'Catalog Item Price Frequency Dropdown Values');
         }
 
+        /**
+         * @return string
+         */
         public function getAttributeTypeName()
         {
             return 'ProductTemplatePriceFrequencyDropDown';

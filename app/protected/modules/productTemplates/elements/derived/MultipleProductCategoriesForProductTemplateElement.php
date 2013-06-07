@@ -31,6 +31,9 @@
      */
     class MultipleProductCategoriesForProductTemplateElement extends Element implements DerivedElementInterface
     {
+        /**
+         * @return string
+         */
         protected function renderControlNonEditable()
         {
             $content  = null;
@@ -46,6 +49,9 @@
             return $content;
         }
 
+        /**
+         * @return string
+         */
         protected function renderControlEditable()
         {
             assert('$this->model instanceof ProductTemplate || $this->model instanceof Product');
@@ -71,16 +77,25 @@
         {
         }
 
+        /**
+         * @return string
+         */
         protected function renderLabel()
         {
             return $this->resolveNonActiveFormFormattedLabel($this->getFormattedAttributeLabel());
         }
 
+        /**
+         * @return string
+         */
         protected function getFormattedAttributeLabel()
         {
             return Yii::app()->format->text(Zurmo::t('ProductTemplatesModule', 'Categories'));
         }
 
+        /**
+         * @return string
+         */
         public static function getDisplayName()
         {
             return Zurmo::t('ProductTemplatesModule', 'Related ProductTemplatesModulePluralLabel',
@@ -97,16 +112,25 @@
             return array();
         }
 
+        /**
+         * @return string
+         */
         protected function getNameForIdField()
         {
             return 'ProductTemplateCategoriesForm[categoryIds]';
         }
 
+        /**
+         * @return string
+         */
         protected function getIdForIdField()
         {
             return 'ProductTemplateCategoriesForm_ProductCategory_ids';
         }
 
+        /**
+         * @return array
+         */
         protected function getExistingProductCategoriesRelationsIdsAndLabels()
         {
             $existingProductCategories = array();
@@ -118,6 +142,11 @@
             return $existingProductCategories;
         }
 
+        /**
+         * @param object $productCategory
+         * @param string $keyword
+         * @return string
+         */
         public static function renderHtmlContentLabelFromProductCategoryAndKeyword($productCategory, $keyword)
         {
             assert('$productCategory instanceof ProductCategory && $productCategory->id > 0');

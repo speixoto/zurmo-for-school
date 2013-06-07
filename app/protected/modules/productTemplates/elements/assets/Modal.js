@@ -1,3 +1,6 @@
+/**
+ * Copy the product template data for creation of product
+ */
 function copyProductTemplateDataForProduct(templateId, url)
 {
     url = url + "?id=" + templateId;
@@ -22,6 +25,9 @@ function copyProductTemplateDataForProduct(templateId, url)
     );
 }
 
+/**
+ * Adds the product row to the product portlet on details view
+ */
 function addProductRowToPortletGridView(productTemplateId, url, relationAttributeName, relationModelId, uniquePortletPageId, errorInProcess)
 {
     url = url + "&id=" + productTemplateId + "&relationModelId=" + relationModelId + "&relationAttributeName=" + relationAttributeName;

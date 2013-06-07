@@ -26,16 +26,25 @@
 
     class SellPriceFormulaTypeDropDownElement extends StaticDropDownFormElement
     {
+        /**
+         * @return array
+         */
         protected function getDropDownArray()
         {
             return SellPriceFormula::getTypeDropDownArray();
         }
 
+        /**
+         * @return string
+         */
         protected function getFormattedAttributeLabel()
         {
             return Yii::app()->format->text(Zurmo::t('ProductTemplatesModule', 'Sell Price Formula'));
         }
 
+        /**
+         * @return string
+         */
         protected function renderLabel()
         {
             return $this->resolveNonActiveFormFormattedLabel($this->getFormattedAttributeLabel());

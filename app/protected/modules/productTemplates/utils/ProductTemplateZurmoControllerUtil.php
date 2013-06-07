@@ -33,6 +33,11 @@
 
         protected $peopleAddedAsProductTemplateProductCategories;
 
+        /**
+         * @param string $relatedItemsRelationName
+         * @param string $relatedItemsFormName
+         * @param string $productTemplateProductCategoryFormName
+         */
         public function __construct($relatedItemsRelationName, $relatedItemsFormName, $productTemplateProductCategoryFormName)
         {
             assert('is_string($relatedItemsRelationName)');
@@ -41,6 +46,10 @@
             $this->productTemplateProductCategoryFormName = $productTemplateProductCategoryFormName;
         }
 
+        /**
+         * @param RedBeanModel $model
+         * @param array $explicitReadWriteModelPermissions
+         */
         protected function afterSetAttributesDuringSave($model, $explicitReadWriteModelPermissions)
         {
             assert('$model instanceof ProductTemplate');

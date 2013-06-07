@@ -26,21 +26,33 @@
 
     class EditableSellPriceFormulaRules extends SellPriceFormulaRules
     {
+        /**
+         * @return bool
+         */
         public static function isSellPriceEditable()
         {
             return true;
         }
 
+        /**
+         * @return string
+         */
         public static function getDisplayLabel()
         {
             return Zurmo::t('ProductTemplatesModule', 'Editable');
         }
 
+        /**
+         * @return int
+         */
         public static function getType()
         {
             return SellPriceFormula::TYPE_EDITABLE;
         }
 
+        /**
+         * @return string
+         */
         public static function getDisplaySellPriceFormula()
         {
             return Zurmo::t('ProductTemplatesModule', 'NA');

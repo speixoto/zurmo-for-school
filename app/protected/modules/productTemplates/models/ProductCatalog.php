@@ -28,6 +28,10 @@
     {
         const DEFAULT_NAME = 'Default';
 
+        /**
+         * @param string $name
+         * @return string
+         */
         public static function getByName($name)
         {
             assert('is_string($name)');
@@ -45,6 +49,10 @@
             return $catalog;
         }
 
+        /**
+         * @param string $name
+         * @return string
+         */
         public static function resolveAndGetByName($name)
         {
             assert('is_string($name)');
@@ -71,6 +79,9 @@
             return $catalog;
         }
 
+        /**
+         * @return array
+         */
         protected function untranslatedAttributeLabels()
         {
             return array_merge(parent::untranslatedAttributeLabels(),
@@ -79,6 +90,9 @@
             );
         }
 
+        /**
+         * @return string
+         */
         public function __toString()
         {
             try
@@ -95,6 +109,9 @@
             }
         }
 
+        /**
+         * @return string
+         */
         public static function getModuleClassName()
         {
             return 'ProductTemplatesModule';
@@ -118,11 +135,17 @@
             return 'Product Catalogs';
         }
 
+        /**
+         * @return bool
+         */
         public static function canSaveMetadata()
         {
             return true;
         }
 
+        /**
+         * @return array
+         */
         public static function getDefaultMetadata()
         {
             $metadata = parent::getDefaultMetadata();
@@ -149,11 +172,17 @@
             return $metadata;
         }
 
+        /**
+         * @return bool
+         */
         public static function isTypeDeletable()
         {
             return true;
         }
 
+        /**
+         * @return string
+         */
         public static function getRollUpRulesType()
         {
             return 'ProductCatalog';
@@ -164,6 +193,9 @@
             //return 'ProductCatalogGamification';
         }
 
+        /**
+         * @return bool
+         */
         protected function beforeDelete()
         {
             parent::beforeDelete();

@@ -39,6 +39,10 @@
      */
     class ProductTemplateSelectFromRelatedListModalListLinkProvider extends SelectFromRelatedListModalListLinkProvider
     {
+        /**
+         * @param string $attributeString
+         * @return string
+         */
         public function getLinkString($attributeString)
         {
             $url = Yii::app()->createUrl("products/default/createProductFromProductTemplate", array('relationModuleId' => $this->relationModuleId,
