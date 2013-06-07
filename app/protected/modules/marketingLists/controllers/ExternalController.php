@@ -49,23 +49,27 @@
             return parent::beforeAction($action);
         }
 
-        public function actionUnsubscribe($hash)
+        public function actionUnsubscribe($hash, $preview = 0)
         {
+            $this->renderPreviewMessage($preview);
             $this->toggleUnsubscribed($hash, 0);
         }
 
-        public function actionSubscribe($hash)
+        public function actionSubscribe($hash, $preview = 0)
         {
+            $this->renderPreviewMessage($preview);
             $this->toggleUnsubscribed($hash, 1);
         }
 
-        public function actionOptOut($hash)
+        public function actionOptOut($hash, $preview = 0)
         {
+            $this->renderPreviewMessage($preview);
             $this->toggleUnsubscribed($hash, 0, true);
         }
 
-        public function actionManageSubscriptions($hash)
+        public function actionManageSubscriptions($hash, $preview = 0)
         {
+            $this->renderPreviewMessage($preview);
             $contact                = null;
             $personId               = null;
             $marketingListId        = null;
@@ -82,6 +86,18 @@
                                                                                         $modelType);
             $view                   = new MarketingListsManageSubscriptionsPageView($this, $listView);
             echo $view->render();
+        }
+
+        protected function renderPreviewMessage($preview)
+        {
+            if (!$preview)
+            {
+                return;
+            }
+            $splashView         = new MarketingListsExternalActionsPreviewView();
+            $view               = new MarketingListsExternalActionsPageView($this, $splashView);
+            echo $view->render();
+            Yii::app()->end(0, false);
         }
 
         protected function resolveAndValidateQueryStringHash($hash)
@@ -189,19 +205,15 @@
 
         protected function createActivityIfRequired($createNewActivity, $newUnsubcribedValue, $modelId, $modelType, $personId)
         {
-            if (!$createNewActivity)
+            if (!$createNewActivity || $newUnsubcribedValue != 1)
             {
                 return;
             }
-            // TODO: @Shoaibi: Critical: Tests to cover $newUnsubscribedValue to 0 or createNewActivity =0
-            if ($newUnsubcribedValue == 1)
-            {
-                $activityClassName  = EmailMessageActivityUtil::resolveModelClassNameByModelType($modelType);
-                $type               = $activityClassName::TYPE_UNSUBSCRIBE;
-                $url                = null;
-                $sourceIP           = Yii::app()->request->userHostAddress;
-                $activityClassName::createNewActivity($type, $modelId, $personId, $url, $sourceIP);
-            }
+            $activityClassName  = EmailMessageActivityUtil::resolveModelClassNameByModelType($modelType);
+            $type               = $activityClassName::TYPE_UNSUBSCRIBE;
+            $url                = null;
+            $sourceIP           = Yii::app()->request->userHostAddress;
+            $activityClassName::createNewActivity($type, $modelId, $personId, $url, $sourceIP);
         }
 
         protected function setToggleUnsubscribedCookie($message)

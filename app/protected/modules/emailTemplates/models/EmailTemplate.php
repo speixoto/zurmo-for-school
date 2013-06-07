@@ -125,8 +125,7 @@
                 'rules' => array(
                     array('type',                       'required'),
                     array('type',                       'type',    'type' => 'integer'),
-                    array('type',                       'numerical', 'min' => self::TYPE_WORKFLOW,
-                                                                                        'max' => self::TYPE_CONTACT),
+                    array('type',                       'numerical'),
                     array('modelClassName',             'required'),
                     array('modelClassName',             'type',   'type' => 'string'),
                     array('modelClassName',             'length', 'max' => 64),

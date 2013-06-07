@@ -70,7 +70,7 @@
         protected function renderContent()
         {
             $this->registerScripts();
-            if($this->cookieValue == self::HIDDEN_COOKIE_VALUE)
+            if ($this->cookieValue == self::HIDDEN_COOKIE_VALUE)
             {
                 $style = "style=display:none;";
             }
@@ -118,7 +118,8 @@
 
         protected function registerScripts()
         {
-            $script = "$('." . self::LINK_ID . "').click(function(){
+            $script = "$('." . self::LINK_ID . "').click(function()
+            {
                         $('#" . self::PANEL_ID . "').slideToggle();
                         document.cookie = '" . self::resolveCookieId() . "=" . static::HIDDEN_COOKIE_VALUE . "';
                         $('#" . self::PANEL_ID . "-checkbox-id').attr('checked', false);

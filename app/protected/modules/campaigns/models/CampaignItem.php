@@ -38,7 +38,6 @@
     {
         public static function getModuleClassName()
         {
-            // TODO: @Shoaibi: Critical: Add Tests to cover:
             return 'CampaignsModule';
         }
 
@@ -230,7 +229,7 @@
          */
         public function isQueued()
         {
-            if($this->emailMessage->id < 0 || $this->emailMessage->folder->type ==  EmailFolder::TYPE_OUTBOX)
+            if ($this->emailMessage->id < 0 || $this->emailMessage->folder->type ==  EmailFolder::TYPE_OUTBOX)
             {
                 return true;
             }
@@ -243,7 +242,7 @@
          */
         public function isSent()
         {
-            if($this->emailMessage->id > 0 && $this->emailMessage->folder->type ==  EmailFolder::TYPE_SENT)
+            if ($this->emailMessage->id > 0 && $this->emailMessage->folder->type ==  EmailFolder::TYPE_SENT)
             {
                 return true;
             }
@@ -255,7 +254,7 @@
          */
         public function hasFailedToSend()
         {
-            if($this->emailMessage->id > 0 && $this->emailMessage->folder->type ==  EmailFolder::TYPE_OUTBOX_FAILURE)
+            if ($this->emailMessage->id > 0 && $this->emailMessage->folder->type ==  EmailFolder::TYPE_OUTBOX_FAILURE)
             {
                 return true;
             }
@@ -270,7 +269,7 @@
             $count = CampaignItemActivity::getChildActivityByTypeAndModelIdAndModelRelationNameAndPersonIdAndUrl(
                                            CampaignItemActivity::TYPE_OPEN, $this->id, 'campaignItem',
                                            $this->contact->getClassId('Person'), null, 'latestDateTime', null, true);
-            if($count > 0)
+            if ($count > 0)
             {
                 return true;
             }
@@ -285,7 +284,7 @@
             $count = CampaignItemActivity::getChildActivityByTypeAndModelIdAndModelRelationNameAndPersonIdAndUrl(
                                            CampaignItemActivity::TYPE_CLICK, $this->id, 'campaignItem',
                                            $this->contact->getClassId('Person'), null, 'latestDateTime', null, true);
-            if($count > 0)
+            if ($count > 0)
             {
                 return true;
             }
@@ -300,7 +299,7 @@
              $count = CampaignItemActivity::getChildActivityByTypeAndModelIdAndModelRelationNameAndPersonIdAndUrl(
                                            CampaignItemActivity::TYPE_UNSUBSCRIBE, $this->id, 'campaignItem',
                                            $this->contact->getClassId('Person'), null, 'latestDateTime', null, true);
-            if($count > 0)
+            if ($count > 0)
             {
                 return true;
             }
@@ -315,7 +314,7 @@
             $count = CampaignItemActivity::getChildActivityByTypeAndModelIdAndModelRelationNameAndPersonIdAndUrl(
                                            CampaignItemActivity::TYPE_BOUNCE, $this->id, 'campaignItem',
                                            $this->contact->getClassId('Person'), null, 'latestDateTime', null, true);
-            if($count > 0)
+            if ($count > 0)
             {
                 return true;
             }

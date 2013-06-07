@@ -62,7 +62,6 @@
 
         public function actionDashboardDetails()
         {
-
             $params = array(
                 'controllerId' => $this->getId(),
                 'moduleId'     => $this->getModule()->getId(),

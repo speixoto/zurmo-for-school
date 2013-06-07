@@ -38,7 +38,7 @@
     {
         protected function populateMarketingItems($marketingItemClassName)
         {
-            foreach($marketingItemClassName::getAll() as $marketingItem)
+            foreach ($marketingItemClassName::getAll() as $marketingItem)
             {
                 $marketingItem->emailMessage = $this->makeEmailMessage($marketingItem->contact);
                 $saved = $marketingItem->unrestrictedSave();

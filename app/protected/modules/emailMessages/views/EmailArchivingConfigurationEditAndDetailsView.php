@@ -37,99 +37,11 @@
     /**
      * Edit and details view for the email global configuration view.
      */
-    class EmailArchivingConfigurationEditAndDetailsView extends EditAndDetailsView
+    class EmailArchivingConfigurationEditAndDetailsView extends ImapConfigurationEditAndDetailsView
     {
-        public function getTitle()
+        protected static function getPanelTitle()
         {
-            return Zurmo::t('EmailMessagesModule', 'Email Configuration');
-        }
-
-        public static function getDefaultMetadata()
-        {
-            $metadata = array(
-                'global' => array(
-                    'toolbar' => array(
-                        'elements' => array(
-                            array('type' => 'ConfigurationLink'),
-                            array('type' => 'SaveButton',    'renderType' => 'Edit'),
-                            array('type' => 'EditLink',      'renderType' => 'Details'),
-                        ),
-                    ),
-                    'panelsDisplayType' => FormLayout::PANELS_DISPLAY_TYPE_ALL,
-                    'panels' => array(
-                        array(
-                            'title' => Zurmo::t('EmailMessagesModule', 'Email Archiving Configuration (IMAP)'),
-                            'rows' => array(
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'imapHost', 'type' => 'Text'),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'imapPort', 'type' => 'Integer'),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'imapUsername', 'type' => 'Text'),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'imapPassword', 'type' => 'Password'),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'imapSSL', 'type' => 'CheckBox'),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'imapFolder', 'type' => 'Text'),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'testImapConnection',
-                                                    'type' => 'TestImapConnection'),
-                                                ),
-                                        ),
-                                    )
-                                ),
-                            ),
-                        ),
-                    ),
-                ),
-            );
-            return $metadata;
+            return Zurmo::t('EmailMessagesModule', 'Email Archiving Configuration (IMAP)');
         }
     }
 ?>

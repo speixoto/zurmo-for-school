@@ -34,7 +34,7 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    // TODO: @Shoaibi/@Jason: Critical: No longer used.
+    // TODO: @Shoaibi/@Jason: High: No longer used.
     /**
      * When sending notifications from the system, the from 'user' must be a super administrator
      */

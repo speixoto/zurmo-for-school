@@ -54,9 +54,9 @@
             assert('$demoDataHelper->isSetRange("MarketingList")');
 
             $autoresponders = array();
-            if($this->loadMagnitude >= 100)
+            if ($this->loadMagnitude >= 100)
             {
-                foreach(MarketingList::getAll() as $marketingList)
+                foreach (MarketingList::getAll() as $marketingList)
                 {
                     for ($this->index = 0; $this->index < 2; $this->index++)
                     {

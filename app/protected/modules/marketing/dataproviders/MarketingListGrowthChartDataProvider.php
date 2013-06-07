@@ -43,7 +43,7 @@
         {
             $chartData = array();
             $groupedDateTimeData = static::makeGroupedDateTimeData($this->beginDate, $this->endDate, $this->groupBy);
-            foreach($groupedDateTimeData as $groupData)
+            foreach ($groupedDateTimeData as $groupData)
             {
                 $beginDateTime       = DateTimeUtil::convertDateIntoTimeZoneAdjustedDateTimeBeginningOfDay($groupData['beginDate']);
                 $endDateTime         = DateTimeUtil::convertDateIntoTimeZoneAdjustedDateTimeEndOfDay($groupData['endDate']);
@@ -117,7 +117,7 @@
                     'value'                => $endDateTime,
                 ),
             );
-            if($marketingList instanceof MarketingList && $marketingList->id > 0)
+            if ($marketingList instanceof MarketingList && $marketingList->id > 0)
             {
                 $searchAttributeData['clauses'][2] = array(
                     'attributeName'        => 'id',

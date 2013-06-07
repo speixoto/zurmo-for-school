@@ -83,7 +83,6 @@
          */
         protected $campaign;
 
-
         /**
          * Given a begin date, end date and grouping type, return array of data that includes information on how the
          * grouping breaks up by the date range including the start/end dateTime for each range and a display label
@@ -99,26 +98,26 @@
             assert('is_string($endDate)');
             assert('is_string($groupBy)');
             $data = array();
-            if($groupBy == MarketingOverallMetricsForm::GROUPING_TYPE_DAY)
+            if ($groupBy == MarketingOverallMetricsForm::GROUPING_TYPE_DAY)
             {
-                foreach(DateTimeUtil::getDatesBetweenTwoDatesInARange($beginDate, $endDate) as $date)
+                foreach (DateTimeUtil::getDatesBetweenTwoDatesInARange($beginDate, $endDate) as $date)
                 {
                     $data[] = array('beginDate' => $date, 'endDate' => $date,
                                     'displayLabel' => static::resolveAbbreviatedDayMonthDisplayLabel($date));
                 }
             }
-            elseif($groupBy == MarketingOverallMetricsForm::GROUPING_TYPE_WEEK)
+            elseif ($groupBy == MarketingOverallMetricsForm::GROUPING_TYPE_WEEK)
             {
-                foreach(DateTimeUtil::
+                foreach (DateTimeUtil::
                         getWeekStartAndEndDatesBetweenTwoDatesInARange($beginDate, $endDate) as $beginWeekDate => $endWeekDate)
                 {
                     $data[] = array('beginDate'    => $beginWeekDate, 'endDate' => $endWeekDate,
                                     'displayLabel' => static::resolveAbbreviatedDayMonthDisplayLabel($beginWeekDate));
                 }
             }
-            elseif($groupBy == MarketingOverallMetricsForm::GROUPING_TYPE_MONTH)
+            elseif ($groupBy == MarketingOverallMetricsForm::GROUPING_TYPE_MONTH)
             {
-                foreach(DateTimeUtil::
+                foreach (DateTimeUtil::
                         getMonthStartAndEndDatesBetweenTwoDatesInARange($beginDate, $endDate) as $beginMonthDate => $endMonthDate)
                 {
                     $data[] = array('beginDate'    => $beginMonthDate, 'endDate' => $endMonthDate,
@@ -224,7 +223,7 @@
         protected function resolveDateBalloonLabel($displayLabel)
         {
             assert('is_string($displayLabel)');
-            if($this->groupBy == MarketingOverallMetricsForm::GROUPING_TYPE_WEEK)
+            if ($this->groupBy == MarketingOverallMetricsForm::GROUPING_TYPE_WEEK)
             {
                 return Zurmo::t('Core', 'Week of {dateLabel}', array('{dateLabel}' => $displayLabel));
             }
@@ -240,15 +239,15 @@
          */
         protected function resolveIndexGroupByToUse()
         {
-            if($this->groupBy == MarketingOverallMetricsForm::GROUPING_TYPE_DAY)
+            if ($this->groupBy == MarketingOverallMetricsForm::GROUPING_TYPE_DAY)
             {
                 return self::DAY_DATE;
             }
-            elseif($this->groupBy == MarketingOverallMetricsForm::GROUPING_TYPE_WEEK)
+            elseif ($this->groupBy == MarketingOverallMetricsForm::GROUPING_TYPE_WEEK)
             {
                 return self::FIRST_DAY_OF_WEEK_DATE;
             }
-            elseif($this->groupBy == MarketingOverallMetricsForm::GROUPING_TYPE_MONTH)
+            elseif ($this->groupBy == MarketingOverallMetricsForm::GROUPING_TYPE_MONTH)
             {
                 return self::FIRST_DAY_OF_MONTH_DATE;
             }
@@ -272,15 +271,15 @@
             $tableName                 = $modelClassName::getTableName($modelClassName);
             $columnName                = $modelClassName::getColumnNameByAttribute($attributeName);
             $groupByColumnString       = "{$quote}{$tableName}{$quote}.{$quote}{$columnName}{$quote}";
-            if($this->groupBy == MarketingOverallMetricsForm::GROUPING_TYPE_DAY)
+            if ($this->groupBy == MarketingOverallMetricsForm::GROUPING_TYPE_DAY)
             {
                 return $groupByColumnString;
             }
-            elseif($this->groupBy == MarketingOverallMetricsForm::GROUPING_TYPE_WEEK)
+            elseif ($this->groupBy == MarketingOverallMetricsForm::GROUPING_TYPE_WEEK)
             {
                 return "YEARWEEK(" . $groupByColumnString . ")";
             }
-            elseif($this->groupBy == MarketingOverallMetricsForm::GROUPING_TYPE_MONTH)
+            elseif ($this->groupBy == MarketingOverallMetricsForm::GROUPING_TYPE_MONTH)
             {
                 return "extract(YEAR_MONTH from " . $groupByColumnString . ")";
             }
@@ -297,7 +296,7 @@
         {
             $chartData           = array();
             $groupedDateTimeData = static::makeGroupedDateTimeData($this->beginDate, $this->endDate, $this->groupBy);
-            foreach($groupedDateTimeData as $groupData)
+            foreach ($groupedDateTimeData as $groupData)
             {
                 $chartData[$groupData['beginDate']] = array_merge(static::resolveChartDataBaseGroupElements(),
                                                         array('displayLabel'     => $groupData['displayLabel'],

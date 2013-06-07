@@ -56,7 +56,6 @@
 
         public static function getStatusDropDownArray()
         {
-            // TODO: @Shoaibi: Critical: Add Tests to cover:
             return array(
                 static::STATUS_PAUSED       => Zurmo::t('CampaignsModule', 'Paused'),
                 static::STATUS_ACTIVE       => Zurmo::t('CampaignsModule', 'Active'),

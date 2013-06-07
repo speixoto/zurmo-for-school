@@ -53,11 +53,11 @@
             assert('$demoDataHelper->isSetRange("Campaign")');
 
             $items = array();
-            if($this->loadMagnitude >= 100)
+            if ($this->loadMagnitude >= 100)
             {
-                foreach(Campaign::getAll() as $campaign)
+                foreach (Campaign::getAll() as $campaign)
                 {
-                    foreach($campaign->marketingList->marketingListMembers as $marketingListMember)
+                    foreach ($campaign->marketingList->marketingListMembers as $marketingListMember)
                     {
                         $item                   = new CampaignItem();
                         $item->campaign         = $campaign;

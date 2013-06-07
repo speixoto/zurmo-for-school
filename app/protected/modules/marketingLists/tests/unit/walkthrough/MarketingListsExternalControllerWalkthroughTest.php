@@ -348,8 +348,6 @@
             $this->assertTrue(strpos($content, '/home/default"><img src="') !== false);
             $this->assertTrue(strpos($content, '/themes/default/images/Zurmo_logo.png" alt="Zurmo Logo"  ' .
                                                     'height="32" width="107" /></a>') !== false);
-            $this->assertTrue(strpos($content, '<div id="FlashMessageView">') !== false);
-            $this->assertTrue(strpos($content, '<div id = "FlashMessageBar">') !== false);
             $this->assertTrue(strpos($content, '<div id="MarketingListsManageSubscriptionsListView" ' .
                                                     'class="MetadataView">') !== false);
             $this->assertTrue(strpos($content, '<div class="wrapper">') !== false);
@@ -492,8 +490,6 @@
             $this->assertTrue(strpos($content, '/home/default"><img src="') !== false);
             $this->assertTrue(strpos($content, '/themes/default/images/Zurmo_logo.png" alt="Zurmo Logo"  ' .
                                                     'height="32" width="107" /></a>') !== false);
-            $this->assertTrue(strpos($content, '<div id="FlashMessageView">') !== false);
-            $this->assertTrue(strpos($content, '<div id = "FlashMessageBar">') !== false);
             $this->assertTrue(strpos($content, '<div id="MarketingListsManageSubscriptionsListView" ' .
                                                     'class="MetadataView">') !== false);
             $this->assertTrue(strpos($content, '<div class="wrapper">') !== false);
@@ -588,8 +584,9 @@
             $member[0]->delete();
             $personId       = $contact->getClassId('Person');
             Yii::app()->user->userModel = null;
-            $hash           = EmailMessageActivityUtil::resolveHashForFooter($personId, $marketingListId, 1,
-                                                                                            'AutoresponderItem', false);
+            // we set modelId to 0 and createNewActivity to true, so if it tries to create activity it will throw NotFoundException
+            $hash           = EmailMessageActivityUtil::resolveHashForFooter($personId, $marketingListId, 0,
+                                                                                            'AutoresponderItem', true);
             $this->setGetArray(array(
                 'hash'    => $hash,
             ));
@@ -744,6 +741,23 @@
             $this->assertNotEmpty($member);
             $this->assertEquals(0, $member[0]->unsubscribed);
             $personId       = $contact->getClassId('Person');
+            $autoresponder      = AutoresponderTestHelper::createAutoresponder('Autoresponder 02',
+                                                                                'textContent',
+                                                                                'htmlContent',
+                                                                                10,
+                                                                                Autoresponder::OPERATION_UNSUBSCRIBE,
+                                                                                true,
+                                                                                $marketingList);
+            $this->assertNotEmpty($autoresponder);
+            $processDateTime    = DateTimeUtil::convertTimestampToDbFormatDateTime(strtotime('-1 week'));
+            $autoresponderItem  = AutoresponderItemTestHelper::createAutoresponderItem(1, $processDateTime,
+                                                                                            $autoresponder, $contact);
+            $this->assertNotEmpty($autoresponderItem);
+            $autoresponderItemActivities    = AutoresponderItemActivity::getByTypeAndModelIdAndPersonIdAndUrl(
+                                                                            AutoresponderItemActivity::TYPE_UNSUBSCRIBE,
+                                                                            $autoresponderItem->id,
+                                                                            $personId);
+            $this->assertEmpty($autoresponderItemActivities);
             Yii::app()->user->userModel = null;
             $hash           = EmailMessageActivityUtil::resolveHashForFooter($personId, $marketingListId, 1,
                                                                                             'AutoresponderItem', false);
@@ -767,6 +781,12 @@
                                 $marketingListId . '_1" checked="checked" type="radio" name="marketingListsManage' .
                                 'SubscriptionListView-toggleUnsubscribed_' . $marketingListId) === false);
             $this->assertTrue(strpos($content, '<tr><td>marketingList 04</td>') === false);
+            $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
+            $autoresponderItemActivities    = AutoresponderItemActivity::getByTypeAndModelIdAndPersonIdAndUrl(
+                                                                        AutoresponderItemActivity::TYPE_UNSUBSCRIBE,
+                                                                        $autoresponderItem->id,
+                                                                        $personId);
+            $this->assertEmpty($autoresponderItemActivities);
         }
 
         /**
@@ -1047,6 +1067,102 @@
             $this->assertNotEmpty($contact);
             $contact            = $contact[0];
             $this->assertEquals(0, $contact->primaryEmail->optOut);
+        }
+
+        /**
+         * @depends testSubscribeActionAfterOptOutActionDisableOptOut
+         */
+        public function testUnsubscribeActionThrowsExitExceptionAfterRenderingPreviewView()
+        {
+            $this->setGetArray(array(
+                'hash'  => 'HashDoesNotMatterHere',
+                'preview'   => 1,
+            ));
+            $content = $this->runControllerWithExitExceptionAndGetContent($this->unsubscribeUrl);
+            $this->assertTrue(strpos($content, '<div id="MarketingListsExternalActionsPageView" ' .
+                                                'class="ZurmoPageView PageView">') !== false);
+            $this->assertTrue(strpos($content, '<div class="GridView">') !== false);
+            $this->assertTrue(strpos($content, '<div id="HeaderLinksView">') !== false);
+            $this->assertTrue(strpos($content, '<div id="corp-logo">') !== false);
+            $this->assertTrue(strpos($content, '<div id="MarketingListsExternalActionsPreviewView" ' .
+                                                'class="splash-view SplashView">') !== false);
+            $this->assertTrue(strpos($content, '<div class="Warning">') !== false);
+            $this->assertTrue(strpos($content, '<h2>Not so fast!</h2>') !== false);
+            $this->assertTrue(strpos($content, '<div class="large-icon">') !== false);
+            $this->assertTrue(strpos($content, '<p>Access denied due to preview mode being active.</p>') !== false);
+            $this->assertTrue(strpos($content, '<div id="FooterView">') !== false);
+        }
+
+        /**
+         * @depends testUnsubscribeActionThrowsExitExceptionAfterRenderingPreviewView
+         */
+        public function testSubscribeActionThrowsExitExceptionAfterRenderingPreviewView()
+        {
+            $this->setGetArray(array(
+                'hash'  => 'HashDoesNotMatterHere',
+                'preview'   => 1,
+            ));
+            $content = $this->runControllerWithExitExceptionAndGetContent($this->subscribeUrl);
+            $this->assertTrue(strpos($content, '<div id="MarketingListsExternalActionsPageView" ' .
+                                                'class="ZurmoPageView PageView">') !== false);
+            $this->assertTrue(strpos($content, '<div class="GridView">') !== false);
+            $this->assertTrue(strpos($content, '<div id="HeaderLinksView">') !== false);
+            $this->assertTrue(strpos($content, '<div id="corp-logo">') !== false);
+            $this->assertTrue(strpos($content, '<div id="MarketingListsExternalActionsPreviewView" ' .
+                                                'class="splash-view SplashView">') !== false);
+            $this->assertTrue(strpos($content, '<div class="Warning">') !== false);
+            $this->assertTrue(strpos($content, '<h2>Not so fast!</h2>') !== false);
+            $this->assertTrue(strpos($content, '<div class="large-icon">') !== false);
+            $this->assertTrue(strpos($content, '<p>Access denied due to preview mode being active.</p>') !== false);
+            $this->assertTrue(strpos($content, '<div id="FooterView">') !== false);
+        }
+
+        /**
+         * @depends testSubscribeActionThrowsExitExceptionAfterRenderingPreviewView
+         */
+        public function testOptOutActionThrowsExitExceptionAfterRenderingPreviewView()
+        {
+            $this->setGetArray(array(
+                'hash'  => 'HashDoesNotMatterHere',
+                'preview'   => 1,
+            ));
+            $content = $this->runControllerWithExitExceptionAndGetContent($this->optOutUrl);
+            $this->assertTrue(strpos($content, '<div id="MarketingListsExternalActionsPageView" ' .
+                                                'class="ZurmoPageView PageView">') !== false);
+            $this->assertTrue(strpos($content, '<div class="GridView">') !== false);
+            $this->assertTrue(strpos($content, '<div id="HeaderLinksView">') !== false);
+            $this->assertTrue(strpos($content, '<div id="corp-logo">') !== false);
+            $this->assertTrue(strpos($content, '<div id="MarketingListsExternalActionsPreviewView" ' .
+                                                'class="splash-view SplashView">') !== false);
+            $this->assertTrue(strpos($content, '<div class="Warning">') !== false);
+            $this->assertTrue(strpos($content, '<h2>Not so fast!</h2>') !== false);
+            $this->assertTrue(strpos($content, '<div class="large-icon">') !== false);
+            $this->assertTrue(strpos($content, '<p>Access denied due to preview mode being active.</p>') !== false);
+            $this->assertTrue(strpos($content, '<div id="FooterView">') !== false);
+        }
+
+        /**
+         * @depends testOptOutActionThrowsExitExceptionAfterRenderingPreviewView
+         */
+        public function testManageSubscriptionsActionThrowsExitExceptionAfterRenderingPreviewView()
+        {
+            $this->setGetArray(array(
+                'hash'  => 'HashDoesNotMatterHere',
+                'preview'   => 1,
+            ));
+            $content = $this->runControllerWithExitExceptionAndGetContent($this->manageSubscriptionsUrl);
+            $this->assertTrue(strpos($content, '<div id="MarketingListsExternalActionsPageView" ' .
+                                                'class="ZurmoPageView PageView">') !== false);
+            $this->assertTrue(strpos($content, '<div class="GridView">') !== false);
+            $this->assertTrue(strpos($content, '<div id="HeaderLinksView">') !== false);
+            $this->assertTrue(strpos($content, '<div id="corp-logo">') !== false);
+            $this->assertTrue(strpos($content, '<div id="MarketingListsExternalActionsPreviewView" ' .
+                                                'class="splash-view SplashView">') !== false);
+            $this->assertTrue(strpos($content, '<div class="Warning">') !== false);
+            $this->assertTrue(strpos($content, '<h2>Not so fast!</h2>') !== false);
+            $this->assertTrue(strpos($content, '<div class="large-icon">') !== false);
+            $this->assertTrue(strpos($content, '<p>Access denied due to preview mode being active.</p>') !== false);
+            $this->assertTrue(strpos($content, '<div id="FooterView">') !== false);
         }
     }
 ?>

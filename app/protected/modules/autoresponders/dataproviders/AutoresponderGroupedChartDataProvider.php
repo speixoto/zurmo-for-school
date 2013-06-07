@@ -49,9 +49,9 @@
             $sql = static::makeSqlQuery(static::makeSearchAttributeData($this->autoresponder));
             $row = R::getRow($sql);
             $data = static::resolveChartDataBaseGroupElements();
-            foreach($data as $index => $notUsed)
+            foreach ($data as $index => $notUsed)
             {
-                if($row[$index] != null)
+                if ($row[$index] != null)
                 {
                     $data[$index] = $row[$index];
                 }

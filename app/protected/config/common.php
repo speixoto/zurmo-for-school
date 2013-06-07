@@ -105,6 +105,9 @@
             'imap' => array(
                 'class'       => 'application.modules.emailMessages.components.ZurmoImap',
             ),
+            'bounce' => array(
+                'class'       => 'application.modules.emailMessages.components.ZurmoImap',
+            ),
             'gameHelper' => array(
                 'class' => 'application.modules.gamification.components.GameHelper',
             ),

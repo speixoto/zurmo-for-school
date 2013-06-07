@@ -35,14 +35,12 @@
      ********************************************************************************/
 
     /**
-     * Class to adapt email archving configuration values into a configuration form.
+     * Class to adapt email archiving configuration values into a configuration form.
      * Saves global values from a configuration form.
      */
     class EmailArchivingConfigurationFormAdapter
     {
-        /**
-         * @return EmailArchivingConfigurationForm
-         */
+        // TODO: @Ivica: Critical: Test
         public static function makeFormFromGlobalConfiguration()
         {
             $form                                    = new EmailArchivingConfigurationForm();
@@ -56,7 +54,7 @@
         }
 
         /**
-         * Given a EmailArchivingConfigurationForm, save the configuration global values.
+         * Given a ImapConfigurationForm, save the configuration global values.
          */
         public static function setConfigurationFromForm(EmailArchivingConfigurationForm $form)
         {
@@ -67,6 +65,6 @@
             Yii::app()->imap->imapSSL                  = $form->imapSSL;
             Yii::app()->imap->imapFolder               = $form->imapFolder;
             Yii::app()->imap->setInboundSettings();
-       }
+        }
     }
 ?>

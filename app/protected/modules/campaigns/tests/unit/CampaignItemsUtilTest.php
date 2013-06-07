@@ -166,6 +166,11 @@
             $this->assertEquals($email->emailAddress, $recipients[0]->toAddress);
             $this->assertEquals(EmailMessageRecipient::TYPE_TO, $recipients[0]->type);
             $this->assertEquals($contact, $recipients[0]->personOrAccount);
+            $headersArray               = array('zurmoItemId' => $campaignItem->id,
+                                                'zurmoItemClass' => get_class($campaignItem),
+                                                'zurmoPersonId' => $contact->getClassId('Person'));
+            $expectedHeaders            = serialize($headersArray);
+            $this->assertEquals($expectedHeaders, $emailMessage->headers);
         }
 
         /**
@@ -214,6 +219,11 @@
             $this->assertEquals($email->emailAddress, $recipients[0]->toAddress);
             $this->assertEquals(EmailMessageRecipient::TYPE_TO, $recipients[0]->type);
             $this->assertEquals($contact, $recipients[0]->personOrAccount);
+            $headersArray               = array('zurmoItemId' => $campaignItem->id,
+                                                'zurmoItemClass' => get_class($campaignItem),
+                                                'zurmoPersonId' => $contact->getClassId('Person'));
+            $expectedHeaders            = serialize($headersArray);
+            $this->assertEquals($expectedHeaders, $emailMessage->headers);
         }
 
         /**
@@ -264,6 +274,11 @@
             $this->assertEquals($email->emailAddress, $recipients[0]->toAddress);
             $this->assertEquals(EmailMessageRecipient::TYPE_TO, $recipients[0]->type);
             $this->assertEquals($contact, $recipients[0]->personOrAccount);
+            $headersArray               = array('zurmoItemId' => $campaignItem->id,
+                                                'zurmoItemClass' => get_class($campaignItem),
+                                                'zurmoPersonId' => $contact->getClassId('Person'));
+            $expectedHeaders            = serialize($headersArray);
+            $this->assertEquals($expectedHeaders, $emailMessage->headers);
         }
 
         /**
@@ -335,6 +350,11 @@
                 $this->assertEquals($files[$index]['size'], $emailMessage->files[$index]->size);
                 $this->assertEquals($files[$index]['contents'], $emailMessage->files[$index]->fileContent->content);
             }
+            $headersArray               = array('zurmoItemId' => $campaignItem->id,
+                                                'zurmoItemClass' => get_class($campaignItem),
+                                                'zurmoPersonId' => $contact->getClassId('Person'));
+            $expectedHeaders            = serialize($headersArray);
+            $this->assertEquals($expectedHeaders, $emailMessage->headers);
         }
 
         /**
@@ -507,6 +527,63 @@
                                                                                 $personId);
             $this->assertNotEmpty($activities);
             $this->assertCount(1, $activities);
+        }
+
+        /**
+         * @depends testProcessDueCampaignItemWithOptout
+         */
+        public function testProcessDueCampaignItemWithReturnPathHeaders()
+        {
+            ZurmoConfigurationUtil::setByModuleName('EmailMessagesModule', 'bounceReturnPath', 'bounce@zurmo.com');
+            $email                      = new Email();
+            $email->emailAddress        = 'demo@zurmo.com';
+            $contact                    = ContactTestHelper::createContactByNameForOwner('contact 09', $this->user);
+            $contact->primaryEmail      = $email;
+            $this->assertTrue($contact->save());
+            $marketingList              = MarketingListTestHelper::createMarketingListByName('marketingList 09',
+                                                                                                'description',
+                                                                                                'CustomFromName',
+                                                                                                'custom@from.com');
+            $campaign                   = CampaignTestHelper::createCampaign('campaign 09',
+                                                                                'subject 09',
+                                                                                'Dr. [[FIRST^NAME]] [[LAST^NAME]]',
+                                                                                '<b>[[LAST^NAME]]</b>, [[FIRST^NAME]]',
+                                                                                null,
+                                                                                null,
+                                                                                null,
+                                                                                null,
+                                                                                null,
+                                                                                null,
+                                                                                $marketingList);
+            $processed                  = 0;
+            $campaignItem               = CampaignItemTestHelper::createCampaignItem($processed, $campaign, $contact);
+            CampaignItemsUtil::processDueItem($campaignItem);
+            $this->assertEquals(1, $campaignItem->processed);
+            $emailMessage               = $campaignItem->emailMessage;
+            $this->assertEquals($marketingList->owner, $emailMessage->owner);
+            $this->assertEquals($campaign->subject, $emailMessage->subject);
+            $this->assertNotEquals($campaign->textContent, $emailMessage->content->textContent);
+            $this->assertNotEquals($campaign->htmlContent, $emailMessage->content->htmlContent);
+            $this->assertTrue(strpos($emailMessage->content->textContent, 'Dr. contact 09 contact 09son') !== false);
+            $this->assertTrue(strpos($emailMessage->content->textContent, '/marketingLists/external/') !== false);
+            $this->assertEquals(2, substr_count($emailMessage->content->textContent, '/marketingLists/external/'));
+            $this->assertTrue(strpos($emailMessage->content->htmlContent, '<b>contact 09son</b>, contact 09') !== false);
+            $this->assertTrue(strpos($emailMessage->content->htmlContent, '/marketingLists/external/') !== false);
+            $this->assertEquals(2, substr_count($emailMessage->content->htmlContent, '/marketingLists/external/'));
+            $this->assertEquals($marketingList->fromAddress, $emailMessage->sender->fromAddress);
+            $this->assertEquals($marketingList->fromName, $emailMessage->sender->fromName);
+            $this->assertEquals(1, $emailMessage->recipients->count());
+            $recipients                 = $emailMessage->recipients;
+            $this->assertEquals(strval($contact), $recipients[0]->toName);
+            $this->assertEquals($email->emailAddress, $recipients[0]->toAddress);
+            $this->assertEquals(EmailMessageRecipient::TYPE_TO, $recipients[0]->type);
+            $this->assertEquals($contact, $recipients[0]->personOrAccount);
+            $headersArray               = array('zurmoItemId' => $campaignItem->id,
+                                                'zurmoItemClass' => get_class($campaignItem),
+                                                'zurmoPersonId' => $contact->getClassId('Person'),
+                                                'Return-Path' => 'bounce@zurmo.com');
+            $expectedHeaders            = serialize($headersArray);
+            $this->assertEquals($expectedHeaders, $emailMessage->headers);
         }
 
         protected function purgeAllCampaigns()

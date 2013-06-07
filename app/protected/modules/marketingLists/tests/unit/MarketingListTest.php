@@ -48,6 +48,16 @@
             Yii::app()->user->userModel = User::getByUsername('super');
         }
 
+        public function testGetGamificationRulesType()
+        {
+            $this->assertEquals('MarketingListGamification', MarketingList::getGamificationRulesType());
+        }
+
+        public function testHasPermissions()
+        {
+            $this->assertTrue(MarketingList::hasPermissions());
+        }
+
         public function testCreateAndGetMarketingListById()
         {
             $marketingList = new MarketingList();

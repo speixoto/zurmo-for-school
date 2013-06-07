@@ -42,6 +42,12 @@
     class ZurmoSwiftMailer extends SwiftMailer
     {
         /**
+         * Stores additional headers for email messages
+         * @var array
+         */
+        public $headers                  = array();
+
+        /**
          * Stores send response log from server as email is sending.
          * @var array
          */
@@ -114,6 +120,21 @@
                     {
                         throw new OutboundEmailSendException($e->getMessage(), $e->getCode(), $e);
                     }
+                }
+            }
+
+            if (!empty($this->headers))
+            {
+                $headersObject  = $message->getHeaders();
+                foreach ($this->headers as $headerKey => $headerValue)
+                {
+                    $method = "addTextHeader";
+                    if ($headerKey == "Return-Path")
+                    {
+                        // this is a special header type unlike text headers.
+                        $method = "addPathHeader";
+                    }
+                    $headersObject->$method($headerKey, $headerValue);
                 }
             }
 

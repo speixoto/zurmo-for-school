@@ -61,7 +61,7 @@
         public static function resolveQueryStringArrayForHash($hash, $validateQueryStringArray = true,
                                                                                             $validateForTracking = true)
         {
-            $hash = urldecode(trim($hash));
+            $hash = urldecode($hash);
             if (static::isValidHash($hash))
             {
                 $queryStringArray   = array();
@@ -133,7 +133,8 @@
             }
         }
 
-        protected static function createOrUpdateActivity($queryStringArray)
+        // this should be protected but we use it in EmailBounceJob so it has to be public.
+        public static function createOrUpdateActivity($queryStringArray)
         {
             $activity = static::resolveExistingActivity($queryStringArray);
             if ($activity)
@@ -324,7 +325,11 @@ PTN;
 
         protected static function resolveTrackingTypeByQueryStringArray($queryStringArray)
         {
-            if (!empty($queryStringArray['url']))
+            if (!empty($queryStringArray['type']))
+            {
+                return $queryStringArray['type'];
+            }
+            elseif (!empty($queryStringArray['url']))
             {
                 return EmailMessageActivity::TYPE_CLICK;
             }
@@ -343,12 +348,12 @@ PTN;
         }
 
         public static function resolveFooterPlaceholders(& $content, $placeholderContent, $personId,
-                                                                $marketingListId, $modelId, $modelType, $isHtmlContent)
+                                                $marketingListId, $modelId, $modelType, $isHtmlContent, $preview = null)
         {
             $hash                           = static::resolveHashForFooter($personId, $marketingListId, $modelId,
                                                                                                     $modelType, true);
-            $unsubscribeUrl                 = static::resolveUnsubscribeUrl($hash);
-            $manageSubscriptionsUrl         = static::resolveManageSubscriptionsUrl($hash);
+            $unsubscribeUrl                 = static::resolveUnsubscribeUrl($hash, $preview);
+            $manageSubscriptionsUrl         = static::resolveManageSubscriptionsUrl($hash, $preview);
             static::resolvePlaceholderUrlsForHtmlContent($unsubscribeUrl, $manageSubscriptionsUrl, $isHtmlContent);
             static::resolveFooterTagsWithUrls($placeholderContent, $unsubscribeUrl, $manageSubscriptionsUrl);
             static::addNewLine($placeholderContent, $isHtmlContent);
@@ -401,16 +406,32 @@ PTN;
             return static::resolveHashForQueryStringArray($queryStringArray);
         }
 
-        protected static function resolveUnsubscribeUrl($hash)
+        protected static function resolveUnsubscribeUrl($hash, $preview)
         {
             $baseUrl = static::resolveUnsubscribeBaseUrl();
-            return Yii::app()->createAbsoluteUrl($baseUrl, array('hash' => $hash));
+            return static::resolveAbsoluteUrlWithHashAndPreviewForFooter($baseUrl, $hash, $preview);
         }
 
-        protected static function resolveManageSubscriptionsUrl($hash)
+        protected static function resolveManageSubscriptionsUrl($hash, $preview)
         {
             $baseUrl = static::resolveManageSubscriptionsBaseUrl();
-            return Yii::app()->createAbsoluteUrl($baseUrl, array('hash' => $hash));
+            return static::resolveAbsoluteUrlWithHashAndPreviewForFooter($baseUrl, $hash, $preview);
+        }
+
+        protected static function resolveAbsoluteUrlWithHashAndPreviewForFooter($baseUrl, $hash, $preview)
+        {
+            $routeParams   = static::resolveFooterUrlParams($hash, $preview);
+            return Yii::app()->createAbsoluteUrl($baseUrl, $routeParams);
+        }
+
+        protected static function resolveFooterUrlParams($hash, $preview)
+        {
+            $routeParams    = array('hash'  => $hash);
+            if ($preview)
+            {
+                $routeParams['preview'] = $preview;
+            }
+            return $routeParams;
         }
 
         protected static function resolveUnsubscribeBaseUrl()
@@ -436,6 +457,9 @@ PTN;
                             'required'      => true,
                         ),
                         'url'           => array(
+                            'defaultValue'  => null,
+                        ),
+                        'type'           => array(
                             'defaultValue'  => null,
                         ),
                     );

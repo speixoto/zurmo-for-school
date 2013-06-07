@@ -298,6 +298,7 @@
             $mailer->password = $this->outboundPassword;
             $mailer->security = $this->outboundSecurity;
             $mailer->Subject  = $emailMessage->subject;
+            $mailer->headers  = unserialize($emailMessage->headers);
             if ($emailMessage->content->htmlContent == null && $emailMessage->content->textContent != null)
             {
                 $mailer->body     = $emailMessage->content->textContent;

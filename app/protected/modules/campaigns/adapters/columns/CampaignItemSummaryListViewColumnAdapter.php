@@ -59,7 +59,7 @@
             $linkRoute       = '/' . $moduleClassName::getDirectoryName() . '/default/details';
             $linkContent     = ActionSecurityUtil::resolveLinkToModelForCurrentUser(strval($contact), $contact,
                                $moduleClassName, $linkRoute);
-            if($linkContent == null)
+            if ($linkContent == null)
             {
                 $linkContent = static::renderRestrictedContactAccessLink($contact);
             }
@@ -93,30 +93,30 @@
         protected static function renderMetricsContent(CampaignItem $campaignItem)
         {
             $isQueued     = $campaignItem->isQueued();
-            if($isQueued)
+            if ($isQueued)
             {
                 $content = static::getQueuedContent();
             }
-            elseif($campaignItem->hasFailedToSend())
+            elseif ($campaignItem->hasFailedToSend())
             {
                 $content = static::getSendFailedContent();
             }
             else //sent
             {
                 $content = static::getSentContent();
-                if($campaignItem->hasAtLeastOneOpenActivity())
+                if ($campaignItem->hasAtLeastOneOpenActivity())
                 {
                     $content .= static::getOpenedContent();
                 }
-                if($campaignItem->hasAtLeastOneClickActivity())
+                if ($campaignItem->hasAtLeastOneClickActivity())
                 {
                     $content .= static::getClickedContent();
                 }
-                if($campaignItem->hasAtLeastOneUnsubscribeActivity())
+                if ($campaignItem->hasAtLeastOneUnsubscribeActivity())
                 {
                     $content .= static::getUnsubscribedContent();
                 }
-                if($campaignItem->hasAtLeastOneBounceActivity())
+                if ($campaignItem->hasAtLeastOneBounceActivity())
                 {
                     $content .= static::getBouncedContent();
                 }

@@ -93,11 +93,16 @@
             $content = '<ul class="configuration-list">';
             foreach ($items as $item)
             {
+                $routeParams = array();
+                if (isset($item['routeParams']))
+                {
+                    $routeParams    = $item['routeParams'];
+                }
                 $content .= '<li>';
                 $content .= '<h4>' . $item['titleLabel'] . '</h4>';
                 $content .= ' - ' . $item['descriptionLabel'];
                 $content .= ZurmoHtml::link(ZurmoHtml::wrapLabel($this->getLinkText()),
-                                        Yii::app()->createUrl($item['route']));
+                                        Yii::app()->createUrl($item['route'], $routeParams));
                 $content .= '</li>';
             }
             $content .= '</ul>';
