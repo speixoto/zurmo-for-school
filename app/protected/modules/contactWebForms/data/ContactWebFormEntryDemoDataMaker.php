@@ -76,6 +76,8 @@
             }
             $contactFormAttributes  = array();
             $contact                = new Contact();
+            $contact->owner         = $model->contactWebForm->defaultOwner;
+            $contact->state         = $model->contactWebForm->defaultState;
             $contact->firstName     = $contactFormAttributes['firstName']   = $this->seedData['firstName'][$this->index];
             $contact->lastName      = $contactFormAttributes['lastName']    = $this->seedData['lastName'][$this->index];
             $contact->companyName   = $contactFormAttributes['companyName'] = $this->seedData['companyName'][$this->index];

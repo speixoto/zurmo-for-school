@@ -41,10 +41,12 @@
             return $verticalGridView;
         }
 
-        public static function resolveHeadTag($rawXHtml)
+        public static function resolveHeadTag($rawXHtml, $excludeStyles = false)
         {
             $dom        = new DOMDocument();
-            $headBody   = array();
+            $headBody   = array('js'    => array(),
+                                'css'   => array(),
+                                'style' => array());
             libxml_use_internal_errors(true);
             $dom->loadHTML($rawXHtml);
             $head       = $dom->getElementsByTagName('head')->item(0);
@@ -54,7 +56,7 @@
                 {
                     $headBody['js'][] = $child->getAttribute('src');
                 }
-                elseif ($child->nodeName == 'link' && $child->hasAttribute('rel'))
+                elseif (!$excludeStyles && $child->nodeName == 'link' && $child->hasAttribute('rel'))
                 {
                     if ($child->getAttribute('rel') == 'stylesheet')
                     {
@@ -63,7 +65,7 @@
                                                    'href' => $child->getAttribute('href'));
                     }
                 }
-                elseif ($child->nodeName == 'style')
+                elseif (!$excludeStyles && $child->nodeName == 'style')
                 {
                     $headBody['style'][] = $child->nodeValue;
                 }
@@ -85,7 +87,8 @@
             $scriptTagsInBody                   = static::resolveScriptTagsInBody($bodyContent);
             $htmlAndScriptTagsInBody            = array();
             $htmlAndScriptTagsInBody['js']      = $scriptTagsInBody;
-            $htmlAndScriptTagsInBody['html']    = $bodyContent->saveHTML();
+            $htmlAndScriptTagsInBody['html']    = ZurmoHtml::tag('div', array('class' => 'zurmo-embedded-form-active'),
+                                                  $bodyContent->saveHTML());
             return $htmlAndScriptTagsInBody;
         }
 
@@ -149,7 +152,9 @@
             $scriptFileContents = file_get_contents($path);
             if (strpos($path, 'jquery.min.js') === false && strpos($path, 'jquery.ui.min.js') === false)
             {
-                $scriptFileContents = "jQQ.isolate (function(jQuery, $) { " . $scriptFileContents . " });";
+                $scriptFileContents = "jQQ.isolate (function(jQuery, $) {
+                                                        $('html').addClass('zurmo-embedded-form-active');"
+                                                        . $scriptFileContents . " });";
             }
             return $scriptFileContents;
         }

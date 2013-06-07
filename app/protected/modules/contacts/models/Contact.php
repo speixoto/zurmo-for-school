@@ -82,6 +82,7 @@
                     'companyName',
                     'description',
                     'website',
+                    'googleWebTrackingId',
                 ),
                 'relations' => array(
                     'account'          => array(RedBeanModel::HAS_ONE,   'Account'),
@@ -104,11 +105,12 @@
                     'tasks'    => array(RedBeanModel::MANY_MANY, 'Task',    'activityItems'),
                 ),
                 'rules' => array(
-                    array('companyName',      'type',    'type' => 'string'),
-                    array('companyName',      'length',  'min'  => 3, 'max' => 64),
-                    array('description',      'type',    'type' => 'string'),
-                    array('state',            'required'),
-                    array('website',          'url'),
+                    array('companyName',            'type',    'type' => 'string'),
+                    array('companyName',            'length',  'min'  => 3, 'max' => 64),
+                    array('description',            'type',    'type' => 'string'),
+                    array('state',                  'required'),
+                    array('website',                'url'),
+                    array('googleWebTrackingId',    'type',    'type' => 'string'),
                 ),
                 'elements' => array(
                     'account'          => 'Account',

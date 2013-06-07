@@ -33,7 +33,7 @@
  * Copyright Zurmo Inc. 2013. All rights reserved.
  ********************************************************************************/
 
-*{
+.zurmo *{
 	margin:0;
 	padding:0;
 }
@@ -91,12 +91,13 @@
 	float: left;
 }
 
-html, body{
-	background:#DDDEDE;
-	min-height:100%;
+html.zurmo,
+html.zurmo body{
+		background:#DDDEDE;
+		min-height:100%;
 }
 
-body{
+.zurmo body{
 	font-family:"Helvetica Neue", Helvetica, Arial, sans-serif;
 	font-size:12px;
 	color: #545454;
@@ -105,19 +106,20 @@ body{
 	-moz-font-smoothing: antialiased;
 	-o-font-smoothing: antialiased;
 	font-smoothing: antialiased;
-}
 
-a:link, a:hover, a:active, a:visited{
-	text-decoration:none;
-	outline: none;
-	img{
-		border:none;
+	a:link, a:hover, a:active, a:visited{
+		text-decoration:none;
+		outline: none;
+		img{
+			border:none;
+		}
+	}
+	a:focus{
+		outline:none;
 	}
 }
 
-a:focus{
-	outline:none;
-}
+
 
 /*=HTML5*/
 article, aside, details, figcaption, figure,
@@ -4321,6 +4323,37 @@ div.hasHalfs{
 	margin-right: 15px;
 	ul{
 		top: 20px;
+	}
+}
+
+.edit-row-menu{
+	> li{
+		position: relative;
+	}
+	> li > a{
+		position: relative;
+		z-index: 10;
+	}
+	ul{
+		white-space: nowrap;
+		left: auto;
+		right: -8px;
+		margin-left:-80px;
+		top:-3px;
+		z-index: 1;
+		padding-right: 28px;
+		> li{
+			float: left;
+			border-left: 1px solid #d8d8d8;
+			&:first-child{
+				border-left: none;
+			}
+		}
+	}
+	> li.over > a{
+		pointer-event:none;
+		opacity:0.5;
+		//z-index: 20;
 	}
 }
 

@@ -57,7 +57,7 @@
         Zurmo::t('ZurmoModule', 'Got questions{spaceAndFirstName}? Find answers in the Zurmo Wiki.'),
         Zurmo::t('ZurmoModule', 'Tag Cloud fields allow you to tag records with values so that you can easily find them later.'),
         Zurmo::t('ZurmoModule', 'Need help{spaceAndFirstName}, why not ask a question in the forum?'),
-        Zurmo::t('ZurmoModule', 'Decide who can view and edit a record, set Group rights and permissions.'),
+        Zurmo::t('ZurmoModule', 'Decide who can view and edit a record, set Group module rights and permissions.'),
         Zurmo::t('ZurmoModule', 'The Notifications speech bubble keeps you up to date on important events.'),
         Zurmo::t('ZurmoModule', 'Set your preferences, password, and contact details in your My Profile area.'),
         Zurmo::t('ZurmoModule', 'Edit charts on the dashboard by clicking the config icon in the top right of each portlet.'),

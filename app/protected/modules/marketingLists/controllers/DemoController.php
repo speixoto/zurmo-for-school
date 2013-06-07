@@ -34,18 +34,27 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class GroupModulePermissionsEditLinkActionElement extends EditLinkActionElement
+    Yii::import('application.modules.marketingLists.controllers.DefaultController', true);
+    class MarketingListsDemoController extends MarketingListsDefaultController
     {
-        protected function getDefaultLabel()
+        /**
+         * Method for testing creating a simple notification for the current user.
+         */
+        public function actionGenerateManageSubscriptionHash()
         {
-            return Zurmo::t('ZurmoModule', 'Record Permissions');
-        }
-
-        protected function getDefaultRoute()
-        {
-            return Yii::app()->createUrl(
-                $this->moduleId . '/' . $this->controllerId . '/editModulePermissions/',
-                array('id' => $this->modelId));
+            if (Yii::app()->user->userModel->username != 'super')
+            {
+                throw new NotSupportedException();
+            }
+            $contact            = RandomDataUtil::getRandomValueFromArray(Contact::getAll());
+            $personId           = $contact->getClassId('Person');
+            $marketingList      = RandomDataUtil::getRandomValueFromArray(MarketingList::getAll());
+            $marketingListId    = $marketingList->id;
+            $model              = RandomDataUtil::getRandomValueFromArray(CampaignItem::getAll());
+            $modelId            = $model->id;
+            $modelType          = get_class($model);
+            $hash               = EmailMessageActivityUtil::resolveHashForFooter($personId, $marketingListId, $modelId, $modelType, false);
+            echo 'index.php/marketingLists/external/manageSubscriptions?hash=' . $hash;
         }
     }
 ?>

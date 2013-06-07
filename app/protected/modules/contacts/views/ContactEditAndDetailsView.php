@@ -60,6 +60,7 @@
                         'lastName',
                         'owner',
                         'state',
+                        'googleWebTrackingId',
                     ),
                     'panelsDisplayType' => FormLayout::PANELS_DISPLAY_TYPE_ALL,
                     'panels' => array(

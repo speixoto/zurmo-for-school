@@ -55,13 +55,13 @@
                             array(
                                 'rows' => array(
                                     array(
-                                        'type' => 'MarketingListOverallMetrics'
-                                    ),
-                                    array(
                                         'type' => 'MarketingListMembersPortlet'
                                     ),
                                     array(
                                         'type' => 'AutorespondersPortlet'
+                                    ),
+                                    array(
+                                        'type' => 'MarketingListOverallMetrics'
                                     ),
                                 )
                             )

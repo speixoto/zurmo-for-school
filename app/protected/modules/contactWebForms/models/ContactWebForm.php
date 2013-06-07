@@ -55,6 +55,7 @@
                     'redirectUrl'       => Zurmo::t('ContactWebFormsModule', 'Redirect Url',  array(), null, $language),
                     'submitButtonLabel' => Zurmo::t('ContactWebFormsModule', 'Submit Button Label',  array(), null, $language),
                     'defaultState'      => Zurmo::t('ContactWebFormsModule', 'Default Status',  array(), null, $language),
+                    'excludeStyles'     => Zurmo::t('ContactWebFormsModule', 'Exclude Styles',  array(), null, $language),
                 )
             );
         }
@@ -108,7 +109,8 @@
                     'redirectUrl',
                     'submitButtonLabel',
                     'serializedData',
-                    'defaultOwner'
+                    'defaultOwner',
+                    'excludeStyles'
                 ),
                 'relations' => array(
                     'defaultState'     => array(RedBeanModel::HAS_ONE,   'ContactState', RedBeanModel::NOT_OWNED,
@@ -129,6 +131,8 @@
                     array('serializedData',    'required'),
                     array('serializedData',    'type', 'type' => 'string'),
                     array('defaultOwner',      'required'),
+                    array('excludeStyles',     'type', 'type' => 'boolean'),
+                    array('excludeStyles',     'default', 'value' => 0),
                 ),
                 'elements' => array(
                     'name'              => 'Text',

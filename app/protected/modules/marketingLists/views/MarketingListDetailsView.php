@@ -52,11 +52,6 @@
                                 'htmlOptions'                   => array('class' => 'icon-details')),
                             array('type'        => 'MarketingListsOptionsLink',
                                 'htmlOptions'                   => array('class' => 'icon-edit')),
-                            array('type'        => 'MarketingListsTogglePortletsLink',
-                                'htmlOptions'                   => array('class' => 'hasCheckboxes'),
-                                'metricsPortletClass'           => MarketingListDetailsAndRelationsView::METRICS_PORTLET_CLASS,
-                                'membersPortletClass'           => MarketingListDetailsAndRelationsView::MEMBERS_PORTLET_CLASS,
-                                'autorespondersPortletClass'    => MarketingListDetailsAndRelationsView::AUTORESPONDERS_PORTLET_CLASS),
                         ),
                     ),
                 ),
@@ -66,7 +61,7 @@
 
         public function getTitle()
         {
-            return strval($this->model);
+            return strval($this->model) . ' - ' . Zurmo::t('MarketingListsModule', 'List');
         }
 
         protected function renderContent()
