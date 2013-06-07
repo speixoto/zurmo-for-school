@@ -94,7 +94,6 @@
             $headers        = EmailBounceUtil::resolveCustomHeadersFromTextBody($headerTags, $message->textBody);
             if ($headers === false)
             {
-                // TODO: @Shoaibi/@Jason: Critical: We have an email in bounce without headers, what to do? delete?
                 $this->deleteMessage($message);
                 return false;
             }
@@ -111,17 +110,16 @@
                                                 'url'       => null,
                                                 'type'      => $type);
             $activityCreatedOrUpdated   = $activityUtilClassName::createOrUpdateActivity($activityData);
+            $this->deleteMessage($message);
             try
             {
                 if (!$activityCreatedOrUpdated)
                 {
                     throw new NotSupportedException();
                 }
-                $this->deleteMessage($message);
             }
             catch (NotSupportedException $e)
             {
-                // TODO: @Shoaibi/@Jason: Critical: What to do here?
                 return false;
             }
             return true;

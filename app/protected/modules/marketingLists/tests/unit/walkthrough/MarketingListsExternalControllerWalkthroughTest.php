@@ -346,7 +346,7 @@
             $this->assertTrue(strpos($content, '<div id="HeaderLinksView">') !== false);
             $this->assertTrue(strpos($content, '<div id="corp-logo">') !== false);
             $this->assertTrue(strpos($content, '/home/default"><img src="') !== false);
-            $this->assertTrue(strpos($content, '/themes/default/images/Zurmo_logo.png" alt="Zurmo Logo"  ' .
+            $this->assertTrue(strpos($content, '/themes/default/images/Zurmo_logo.png" alt="Zurmo Logo" ' .
                                                     'height="32" width="107" /></a>') !== false);
             $this->assertTrue(strpos($content, '<div id="MarketingListsManageSubscriptionsListView" ' .
                                                     'class="MetadataView">') !== false);
@@ -355,9 +355,8 @@
                                                     'My Subscriptions</span></span></h1>') !== false);
             $this->assertTrue(strpos($content, '<div class="wide" ' .
                                                     'id="marketingLists-manageSubscriptionsList">') !== false);
-            $this->assertTrue(strpos($content, '<colgroup><col style="width:80%" />' .
-                                                    '<col style="width:20%" /></colgroup>') !== false);
-            $this->assertTrue(strpos($content, '<tr><th>Name</th><th>Toggle Subscription</th></tr>') !== false);
+            $this->assertTrue(strpos($content, '<colgroup><col style="width:20%" />' .
+                                                    '<col style="width:80%" /></colgroup>') !== false);
             $this->assertTrue(strpos($content, '<td><a class="simple-link marketingListsManage' .
                                                     'SubscriptionListView-toggleUnsubscribed"') !== false);
             $this->assertTrue(strpos($content, '/marketingLists/external/optOut?hash=') !== false);
@@ -488,7 +487,7 @@
             $this->assertTrue(strpos($content, '<div id="HeaderLinksView">') !== false);
             $this->assertTrue(strpos($content, '<div id="corp-logo">') !== false);
             $this->assertTrue(strpos($content, '/home/default"><img src="') !== false);
-            $this->assertTrue(strpos($content, '/themes/default/images/Zurmo_logo.png" alt="Zurmo Logo"  ' .
+            $this->assertTrue(strpos($content, '/themes/default/images/Zurmo_logo.png" alt="Zurmo Logo" ' .
                                                     'height="32" width="107" /></a>') !== false);
             $this->assertTrue(strpos($content, '<div id="MarketingListsManageSubscriptionsListView" ' .
                                                     'class="MetadataView">') !== false);
@@ -497,19 +496,18 @@
                                                     'My Subscriptions</span></span></h1>') !== false);
             $this->assertTrue(strpos($content, '<div class="wide" ' .
                                                     'id="marketingLists-manageSubscriptionsList">') !== false);
-            $this->assertTrue(strpos($content, '<colgroup><col style="width:80%" />' .
-                                                    '<col style="width:20%" /></colgroup>') !== false);
-            $this->assertTrue(strpos($content, '<tr><th>Name</th><th>Toggle Subscription</th></tr>') !== false);
+            $this->assertTrue(strpos($content, '<colgroup><col style="width:20%" />' .
+                                                    '<col style="width:80%" /></colgroup>') !== false);
             $this->assertTrue(strpos($content, '<td><a class="simple-link marketingListsManage' .
                                                     'SubscriptionListView-toggleUnsubscribed"') !== false);
             $this->assertTrue(strpos($content, '/marketingLists/external/optOut?hash=') !== false);
-            $this->assertTrue(strpos($content, '>Unsubscribe All/OptOut</a></td></tr></table>') !== false);
+            $this->assertTrue(strpos($content, '>Unsubscribe All/OptOut</a></td>') !== false);
             $this->assertTrue(strpos($content, '<div id="FooterView">') !== false);
             $this->assertTrue(strpos($content, '<a href="http://www.zurmo.com" id="credit-link" ' .
                                                     'class="clearfix">') !== false);
             $this->assertTrue(strpos($content, '<span>Copyright &#169; Zurmo Inc., 2013. ' .
                                                     'All rights reserved.</span></a>') !== false);
-            $this->assertTrue(strpos($content, '<tr><td>marketingList 02</td>') !== false);
+            $this->assertTrue(strpos($content, '<td>marketingList 02</td>') !== false);
             $this->assertTrue(strpos($content, '<td><div class="switch">') !== false);
             $this->assertTrue(strpos($content, '<div class="switch-state clearfix">') !== false);
             $this->assertTrue(strpos($content, '/marketingLists/external/subscribe?hash=') !== false);
@@ -521,12 +519,12 @@
                                                     'SubscriptionListView-toggleUnsubscribed_') !== false);
             $this->assertTrue(strpos($content, '_0">Subscribe</label></div>') !== false);
             $this->assertTrue(strpos($content, '/marketingLists/external/unsubscribe?hash=') !== false);
-            $this->assertTrue(strpos($content, '_1">Unsubcribe</label></div></div></td></tr>') !== false);
-            $this->assertTrue(strpos($content, '<tr><td>marketingList 01</td>') !== false);
-            $this->assertTrue(strpos($content, '<tr><td>marketingList 03</td>') !== false);
-            $this->assertTrue(strpos($content, '<tr><td>marketingList 04</td>') !== false);
+            $this->assertTrue(strpos($content, '_1">Unsubcribe</label></div></div></td>') !== false);
+            $this->assertTrue(strpos($content, '<td>marketingList 01</td>') !== false);
+            $this->assertTrue(strpos($content, '<td>marketingList 03</td>') !== false);
+            $this->assertTrue(strpos($content, '<td>marketingList 04</td>') !== false);
             $this->assertEquals(4, substr_count($content, '_0">Subscribe</label></div>'));
-            $this->assertEquals(4, substr_count($content, '_1">Unsubcribe</label></div></div></td></tr>'));
+            $this->assertEquals(4, substr_count($content, '_1">Unsubcribe</label></div></div></td>'));
             foreach ($subscribedIds as $subscribedId)
             {
                 $this->assertTrue(strpos($content, 'checked="checked" type="radio" name="marketingListsManage' .
@@ -561,7 +559,7 @@
             $this->runControllerWithRedirectExceptionAndGetUrl($this->subscribeUrl);
             $content = $this->runControllerWithNoExceptionsAndGetContent($this->manageSubscriptionsUrl);
             $this->assertNotEmpty($content);
-            $this->assertTrue(strpos($content, '<tr><td>marketingList 04</td>') === false);
+            $this->assertTrue(strpos($content, '<td>marketingList 04</td>') === false);
         }
 
         /**
@@ -780,7 +778,7 @@
             $this->assertTrue(strpos($content, 'id="marketingListsManageSubscriptionListView-toggleUnsubscribed_' .
                                 $marketingListId . '_1" checked="checked" type="radio" name="marketingListsManage' .
                                 'SubscriptionListView-toggleUnsubscribed_' . $marketingListId) === false);
-            $this->assertTrue(strpos($content, '<tr><td>marketingList 04</td>') === false);
+            $this->assertTrue(strpos($content, '<td>marketingList 04</td>') === false);
             $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
             $autoresponderItemActivities    = AutoresponderItemActivity::getByTypeAndModelIdAndPersonIdAndUrl(
                                                                         AutoresponderItemActivity::TYPE_UNSUBSCRIBE,
@@ -859,11 +857,11 @@
                 'hash'    => $hash,
             ));
             $content    = $this->runControllerWithNoExceptionsAndGetContent($this->manageSubscriptionsUrl);
-            $this->assertTrue(strpos($content, '<tr><td>marketingList 04</td>') === false);
+            $this->assertTrue(strpos($content, '<td>marketingList 04</td>') === false);
             $this->runControllerWithRedirectExceptionAndGetUrl($this->unsubscribeUrl);
             $content = $this->runControllerWithNoExceptionsAndGetContent($this->manageSubscriptionsUrl);
             $this->assertNotEmpty($content);
-            $this->assertTrue(strpos($content, '<tr><td>marketingList 04</td>') === false);
+            $this->assertTrue(strpos($content, '<td>marketingList 04</td>') === false);
         }
 
         /**
@@ -892,7 +890,7 @@
                 'hash'    => $hash,
             ));
             $content    = $this->runControllerWithNoExceptionsAndGetContent($this->manageSubscriptionsUrl);
-            $this->assertTrue(strpos($content, '<tr><td>marketingList 03</td>') !== false);
+            $this->assertTrue(strpos($content, '<td>marketingList 03</td>') !== false);
             $this->assertTrue(strpos($content, 'id="marketingListsManageSubscriptionListView-toggleUnsubscribed_' .
                                 $marketingListId . '_0" type="radio" name="marketingListsManage' .
                                 'SubscriptionListView-toggleUnsubscribed_' . $marketingListId) !== false);
@@ -908,7 +906,7 @@
             $this->assertTrue(strpos($content, 'id="marketingListsManageSubscriptionListView-toggleUnsubscribed_' .
                                 $marketingListId . '_1" checked="checked" type="radio" name="marketingListsManage' .
                                 'SubscriptionListView-toggleUnsubscribed_' . $marketingListId) !== false);
-            $this->assertTrue(strpos($content, '<tr><td>marketingList 03</td>') !== false);
+            $this->assertTrue(strpos($content, '<td>marketingList 03</td>') !== false);
         }
 
         /**
@@ -937,11 +935,11 @@
                 'hash'    => $hash,
             ));
             $content    = $this->runControllerWithNoExceptionsAndGetContent($this->manageSubscriptionsUrl);
-            $this->assertTrue(strpos($content, '<tr><td>marketingList 04</td>') === false);
+            $this->assertTrue(strpos($content, '<td>marketingList 04</td>') === false);
             $this->runControllerWithRedirectExceptionAndGetUrl($this->unsubscribeUrl);
             $content = $this->runControllerWithNoExceptionsAndGetContent($this->manageSubscriptionsUrl);
             $this->assertNotEmpty($content);
-            $this->assertTrue(strpos($content, '<tr><td>marketingList 04</td>') === false);
+            $this->assertTrue(strpos($content, '<td>marketingList 04</td>') === false);
         }
 
         /**
@@ -974,10 +972,10 @@
                 'hash'    => $hash,
             ));
             $content    = $this->runControllerWithNoExceptionsAndGetContent($this->manageSubscriptionsUrl);
-            $this->assertTrue(strpos($content, '<tr><td>marketingList 01</td>') !== false);
-            $this->assertTrue(strpos($content, '<tr><td>marketingList 02</td>') !== false);
-            $this->assertTrue(strpos($content, '<tr><td>marketingList 03</td>') !== false);
-            $this->assertTrue(strpos($content, '<tr><td>marketingList 04</td>') !== false);
+            $this->assertTrue(strpos($content, '<td>marketingList 01</td>') !== false);
+            $this->assertTrue(strpos($content, '<td>marketingList 02</td>') !== false);
+            $this->assertTrue(strpos($content, '<td>marketingList 03</td>') !== false);
+            $this->assertTrue(strpos($content, '<td>marketingList 04</td>') !== false);
             $this->assertTrue(strpos($content, 'marketingLists/external/subscribe?hash=') !== false);
             $this->assertTrue(strpos($content, 'id="marketingListsManage' .
                                         'SubscriptionListView-toggleUnsubscribed_') !== false);
@@ -999,10 +997,10 @@
                                 'SubscriptionListView-toggleUnsubscribed_' . $marketingListIds[3]) !== false);
             @$this->runControllerWithRedirectExceptionAndGetUrl($this->optOutUrl);
             $content    = $this->runControllerWithNoExceptionsAndGetContent($this->manageSubscriptionsUrl);
-            $this->assertTrue(strpos($content, '<tr><td>marketingList 01</td>') !== false);
-            $this->assertTrue(strpos($content, '<tr><td>marketingList 03</td>') !== false);
-            $this->assertTrue(strpos($content, '<tr><td>marketingList 02</td>') === false);
-            $this->assertTrue(strpos($content, '<tr><td>marketingList 04</td>') === false);
+            $this->assertTrue(strpos($content, '<td>marketingList 01</td>') !== false);
+            $this->assertTrue(strpos($content, '<td>marketingList 03</td>') !== false);
+            $this->assertTrue(strpos($content, '<td>marketingList 02</td>') === false);
+            $this->assertTrue(strpos($content, '<td>marketingList 04</td>') === false);
             $this->assertTrue(strpos($content, 'marketingLists/external/subscribe?hash=') !== false);
             $this->assertTrue(strpos($content, 'id="marketingListsManage' .
                                         'SubscriptionListView-toggleUnsubscribed_') !== false);
@@ -1050,8 +1048,8 @@
             ));
             @$this->runControllerWithRedirectExceptionAndGetUrl($this->subscribeUrl);
             $content    = $this->runControllerWithNoExceptionsAndGetContent($this->manageSubscriptionsUrl);
-            $this->assertTrue(strpos($content, '<tr><td>marketingList 01</td>') !== false);
-            $this->assertTrue(strpos($content, '<tr><td>marketingList 03</td>') !== false);
+            $this->assertTrue(strpos($content, '<td>marketingList 01</td>') !== false);
+            $this->assertTrue(strpos($content, '<td>marketingList 03</td>') !== false);
             $this->assertTrue(strpos($content, 'marketingLists/external/subscribe?hash=') !== false);
             $this->assertTrue(strpos($content, 'id="marketingListsManage' .
                                 'SubscriptionListView-toggleUnsubscribed_') !== false);

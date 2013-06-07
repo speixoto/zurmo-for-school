@@ -89,6 +89,7 @@
             $content            = $titleContent . ZurmoHtml::tag('div', array('class' => 'wide',
                                                                       'id' => 'marketingLists-manageSubscriptionsList'),
                                                                 $bodyContent);
+            $content            = ZurmoHtml::tag('div', array('class' => 'left-column full-width'), $content);
             $content            = ZurmoHtml::tag('div', array('class' => 'wrapper'), $content);
             return $content;
         }
@@ -96,28 +97,25 @@
         protected function renderMarketingListsList()
         {
             $colGroupContent    = ZurmoHtml::openTag('colgroup');
-            $colGroupContent    .= ZurmoHtml::tag('col', array('style' => 'width:80%'));
             $colGroupContent    .= ZurmoHtml::tag('col', array('style' => 'width:20%'));
+            $colGroupContent    .= ZurmoHtml::tag('col', array('style' => 'width:80%'));
             $colGroupContent    .= ZurmoHtml::closeTag('colgroup');
-            $headerRowContent   = ZurmoHtml::tag('th', array(), Zurmo::t('MarketingListsModule', 'Name'));
-            $headerRowContent   .= ZurmoHtml::tag('th', array(), Zurmo::t('MarketingListsModule', 'Toggle Subscription'));
-            $headerContent      = ZurmoHtml::tag('tr', array(), $headerRowContent);
             $rowsContentArray = array();
             foreach ($this->marketingLists as $marketingList)
             {
                 $marketingListModel = $marketingList['model'];
                 $subscribed         = $marketingList['subscribed'];
-                $columnsContent     = ZurmoHtml::tag('td', array(), strval($marketingListModel));
-                $columnsContent     .= ZurmoHtml::tag('td', array(), $this->renderToggleSubscriptionSwitch(
+                $columnsContent     = ZurmoHtml::tag('td', array(), $this->renderToggleSubscriptionSwitch(
                                                                                                 $marketingListModel->id,
                                                                                                 $subscribed));
+                $columnsContent     .= ZurmoHtml::tag('td', array(), strval($marketingListModel));
                 $rowsContentArray[]    = ZurmoHtml::tag('tr', array(), $columnsContent);
             }
             $linkColumnsContent     = ZurmoHtml::tag('td');
             $linkColumnsContent     .= ZurmoHtml::tag('td', array(), $this->renderUnsubscribeAllLink());
             $rowsContentArray[]     = ZurmoHtml::tag('tr', array(), $linkColumnsContent);
             $rowsContent            = implode("\n", $rowsContentArray);
-            $content                = $colGroupContent . $headerContent . $rowsContent;
+            $content                = $colGroupContent . $rowsContent;
             $tableContent           = ZurmoHtml::tag('table', array(), $content);
             return $tableContent;
         }

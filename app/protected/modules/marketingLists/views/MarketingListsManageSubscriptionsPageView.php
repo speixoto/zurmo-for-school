@@ -43,8 +43,8 @@
             $flashMessageView   = new FlashMessageView($controller);
             $gridView           = new GridView(4, 1);
             $gridView->setView($header, 0, 0);
-            $gridView->setView($flashMessageView, 1, 0);
-            $gridView->setView($listView, 2, 0);
+            $gridView->setView($listView, 1, 0);
+            $gridView->setView($flashMessageView, 2, 0);
             $gridView->setView(new FooterView(false), 3, 0);
             $this->registerScripts();
             parent::__construct($gridView);
