@@ -47,8 +47,6 @@
             assert('$demoDataHelper instanceof DemoDataHelper');
             $currencies = Currency::getAll('id');
             $productTemplates = array();
-            //$filePath                  = Yii::getPathOfAlias('application.modules.productTemplates.data.ProductTemplateRandomData') . '.php';
-            //require($filePath);
             $productTemplateRandomData = self::getProductTemplatesRandomData();
             for ($i = 0; $i < count($productTemplateRandomData['names']); $i++)
             {
