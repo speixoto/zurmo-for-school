@@ -87,8 +87,7 @@
             $scriptTagsInBody                   = static::resolveScriptTagsInBody($bodyContent);
             $htmlAndScriptTagsInBody            = array();
             $htmlAndScriptTagsInBody['js']      = $scriptTagsInBody;
-            $htmlAndScriptTagsInBody['html']    = ZurmoHtml::tag('div', array('class' => 'zurmo-embedded-form-active'),
-                                                  $bodyContent->saveHTML());
+            $htmlAndScriptTagsInBody['html']    = $bodyContent->saveHTML();
             return $htmlAndScriptTagsInBody;
         }
 
@@ -152,9 +151,7 @@
             $scriptFileContents = file_get_contents($path);
             if (strpos($path, 'jquery.min.js') === false && strpos($path, 'jquery.ui.min.js') === false)
             {
-                $scriptFileContents = "jQQ.isolate (function(jQuery, $) {
-                                                        $('html').addClass('zurmo-embedded-form-active');"
-                                                        . $scriptFileContents . " });";
+                $scriptFileContents = "jQQ.isolate (function(jQuery, $) { " . $scriptFileContents . " });";
             }
             return $scriptFileContents;
         }
