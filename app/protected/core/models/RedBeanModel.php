@@ -471,7 +471,7 @@
             {
                 $this->onLoaded();
                 $modelClassName = get_called_class();
-                if ($modelClassName::isModelCacheable())
+                if ($modelClassName::isCacheable())
                 {
                     RedBeanModelsCache::cacheModel($this);
                 }
@@ -1932,7 +1932,7 @@
                         $this->modified = false;
                         $this->afterSave();
                         $calledModelClassName = get_called_class();
-                        if ($calledModelClassName::isModelCacheable())
+                        if ($calledModelClassName::isCacheable())
                         {
                             RedBeanModelsCache::cacheModel($this);
                         }
@@ -3093,7 +3093,7 @@
         /**
          * @return bool
          */
-        public static function isModelCacheable()
+        public static function isCacheable()
         {
             return true;
         }

@@ -59,7 +59,7 @@
             return true;
         }
 
-        public static function isModelCacheable()
+        public static function isCacheable()
         {
             return true;
         }
