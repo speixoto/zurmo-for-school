@@ -35,6 +35,7 @@
      ********************************************************************************/
 
     Yii::import('application.core.components.ZurmoHttpRequest');
+
     /**
      * Override class is used specifically by the
      * testing framework to provide an exception

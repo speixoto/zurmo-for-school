@@ -61,7 +61,7 @@
             assert('!empty($_GET["uniqueLayoutId"])');
             assert('!empty($_GET["portletType"])');
             $isPortletAlreadyAdded = Portlet::doesPortletExistByViewTypeLayoutIdAndUser($_GET['portletType'], $_GET['uniqueLayoutId'], Yii::app()->user->userModel->id);
-            if($isPortletAlreadyAdded === false)
+            if ($isPortletAlreadyAdded === false)
             {
                 $portletCollection = Portlet::getByLayoutIdAndUserSortedByColumnIdAndPosition($_GET['uniqueLayoutId'], Yii::app()->user->userModel->id, array());
                 if (!empty($portletCollection))

@@ -59,7 +59,7 @@
             $linkRoute       = '/' . $moduleClassName::getDirectoryName() . '/default/details';
             $linkContent     = ActionSecurityUtil::resolveLinkToModelForCurrentUser(strval($contact), $contact,
                                $moduleClassName, $linkRoute);
-            if($linkContent == null)
+            if ($linkContent == null)
             {
                 $linkContent = static::renderRestrictedContactAccessLink($contact);
             }
@@ -95,34 +95,34 @@
         {
             $isQueuedOrSkipped     = $campaignItem->isQueuedOrSkipped();
             $isSkipped             = $campaignItem->isSkipped();
-            if($isQueuedOrSkipped && !$isSkipped)
+            if ($isQueuedOrSkipped && !$isSkipped)
             {
                 $content = static::getQueuedContent();
             }
-            elseif($isQueuedOrSkipped && $isSkipped)
+            elseif ($isQueuedOrSkipped && $isSkipped)
             {
                 $content = static::getSkippedContent();
             }
-            elseif($campaignItem->hasFailedToSend())
+            elseif ($campaignItem->hasFailedToSend())
             {
                 $content = static::getSendFailedContent();
             }
             else //sent
             {
                 $content = static::getSentContent();
-                if($campaignItem->hasAtLeastOneOpenActivity())
+                if ($campaignItem->hasAtLeastOneOpenActivity())
                 {
                     $content .= static::getOpenedContent();
                 }
-                if($campaignItem->hasAtLeastOneClickActivity())
+                if ($campaignItem->hasAtLeastOneClickActivity())
                 {
                     $content .= static::getClickedContent();
                 }
-                if($campaignItem->hasAtLeastOneUnsubscribeActivity())
+                if ($campaignItem->hasAtLeastOneUnsubscribeActivity())
                 {
                     $content .= static::getUnsubscribedContent();
                 }
-                if($campaignItem->hasAtLeastOneBounceActivity())
+                if ($campaignItem->hasAtLeastOneBounceActivity())
                 {
                     $content .= static::getBouncedContent();
                 }

@@ -53,11 +53,11 @@
             assert('$demoDataHelper->isSetRange("Autoresponder")');
 
             $items = array();
-            if($this->loadMagnitude >= 100)
+            if ($this->loadMagnitude >= 100)
             {
-                foreach(Autoresponder::getAll() as $autoresponder)
+                foreach (Autoresponder::getAll() as $autoresponder)
                 {
-                    foreach($autoresponder->marketingList->marketingListMembers as $marketingListMember)
+                    foreach ($autoresponder->marketingList->marketingListMembers as $marketingListMember)
                     {
                         $item                   = new AutoresponderItem();
                         $item->autoresponder    = $autoresponder;

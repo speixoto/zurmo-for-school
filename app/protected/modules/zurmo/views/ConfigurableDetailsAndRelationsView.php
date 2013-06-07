@@ -151,10 +151,10 @@
             assert('is_bool($portletsAreMovable)');
             assert('is_bool($portletsAreRemovable)');
             $getData = GetUtil::getData();
-            if(isset($getData['lockPortlets']))
+            if (isset($getData['lockPortlets']))
             {
                 $lockPortlets = (bool)$getData['lockPortlets'];
-                if($lockPortlets)
+                if ($lockPortlets)
                 {
                     ZurmoDefaultViewUtil::setLockKeyForDetailsAndRelationsView('lockPortletsForDetailsAndRelationsView', true);
                 }
@@ -165,7 +165,7 @@
             }
             $isViewLocked = ZurmoDefaultViewUtil::getLockKeyForDetailsAndRelationsView('lockPortletsForDetailsAndRelationsView');
             //Default case for the first time
-            if($isViewLocked === null)
+            if ($isViewLocked === null)
             {
                 ZurmoDefaultViewUtil::setLockKeyForDetailsAndRelationsView('lockPortletsForDetailsAndRelationsView', true);
                 $isViewLocked = true;

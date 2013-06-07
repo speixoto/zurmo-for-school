@@ -36,6 +36,7 @@
                                 $gridIdSuffix, $gridViewPagerParams, $listAttributesSelector, $kanbanBoard);
             $this->setRowsAreSelectable(false);
         }
+
         public static function getDefaultMetadata()
         {
             $metadata = array(

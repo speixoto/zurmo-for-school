@@ -107,7 +107,7 @@
             assert('is_string($moduleClassName)');
             assert('is_string($linkRoute)');
             assert('$offset === null || is_int($offset)');
-            if($model->id <= 0)
+            if ($model->id <= 0)
             {
                 return null;
             }

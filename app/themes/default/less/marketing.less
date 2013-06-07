@@ -489,3 +489,58 @@ a + .autoresponder-stats{
 	padding: 5px;
 	text-align: right;
 }
+
+/*Manage Subscriptions*/
+#MarketingListsManageSubscriptionsPageView{
+	max-width: 900px;
+	margin: 30px auto;
+	> .GridView{
+		++.clearfix;
+	}
+	#HeaderLinksView{
+		margin:0 0 20px 0;
+		> div{
+			margin:0;
+		}
+		+ div{
+			background:none;
+			.unstyle-panel();
+		}
+	}
+	.wrapper{
+		.unstyle-panel();
+		background: #fff;
+		.b-shadow(0 0 12px 5px rgba(153, 153, 153, 0.3)); /*999*/
+		.radius(5px);
+		float: none;
+	}
+	#FooterView {
+		margin: 20px 0;
+		padding-bottom: 20px;
+		clear: both;
+	}
+	h1{
+		background: none;
+		border: none;
+		.unstyle-panel();
+	}
+	#MarketingListsManageSubscriptionsListView{
+
+	}
+	#marketingLists-manageSubscriptionsList{
+		table{
+			width: 100%;
+			th{
+				font-weight: bold !important;
+				height: 35px;
+				line-height: 35px;
+				//background: url(../images/table-items-header.png) left top repeat-x;
+				padding: 0 5px;
+				white-space: nowrap;
+			}
+			td{
+				padding-bottom: 15px;
+			}
+		}
+	}
+}

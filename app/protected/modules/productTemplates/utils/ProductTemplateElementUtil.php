@@ -80,6 +80,7 @@
 
         public static function getCalculatedSellPriceBySellPriceFormulaScript()
         {
+            // Begin Not Coding Standard
             return "
                 var typeEditable = " . SellPriceFormula::TYPE_EDITABLE . ";
                 var typeProfitMargin = " . SellPriceFormula::TYPE_PROFIT_MARGIN . ";
@@ -167,6 +168,7 @@
                     }
                 }
             ";
+            // End Not Coding Standard
         }
 
         public static function bindActionsWithFormFieldsForSellPrice()

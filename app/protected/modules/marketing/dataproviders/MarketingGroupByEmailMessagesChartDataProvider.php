@@ -167,7 +167,7 @@
                     ),
                 ),
             );
-            if($campaign instanceof Campaign && $campaign->id > 0)
+            if ($campaign instanceof Campaign && $campaign->id > 0)
             {
                 $searchAttributeData['clauses'][3] = array(
                     'attributeName'        => 'id',
@@ -220,7 +220,7 @@
                     ),
                 ),
             );
-            if($marketingList instanceof MarketingList && $marketingList->id > 0)
+            if ($marketingList instanceof MarketingList && $marketingList->id > 0)
             {
                 $searchAttributeData['clauses'][3] = array(
                     'attributeName'        => 'marketingList',

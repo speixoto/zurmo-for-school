@@ -334,7 +334,7 @@
 
         protected function resolveBooleanAttributeClauseAndStructure()
         {
-            if((bool)$this->resolveValueForOperator() === false)
+            if ((bool)$this->resolveValueForOperator() === false)
             {
                 $resolvedOperatorType = OperatorRules::TYPE_DOES_NOT_EQUAL;
             }

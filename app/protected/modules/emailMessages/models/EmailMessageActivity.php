@@ -307,7 +307,7 @@
             if ($type)
             {
                 $types  = static::getTypesArray();
-                if(isset($types[intval($this->type)]))
+                if (isset($types[intval($this->type)]))
                 {
                     $type   = $types[intval($this->type)];
                 }

@@ -281,7 +281,7 @@
                    'from portlet '                                       .
                    "where layoutid = '$uniqueLayoutId' and viewtype = '$viewType' and _user_id = $userId";
             $row = R::getRow($sql);
-            if($row['count'] > 0)
+            if ($row['count'] > 0)
             {
                 return true;
             }

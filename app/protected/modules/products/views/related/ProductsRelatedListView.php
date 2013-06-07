@@ -426,7 +426,7 @@
                                                'uniqueLayoutId'  => $this->uniqueLayoutId,
                                                'redirectUrl'    => $redirectUrl,
                                                'portletParams'   => array('relationModuleId' => $this->relationModuleId,
-                                                                         'relationModelId'=> $this->params['relationModel']->id)
+                                                                         'relationModelId' => $this->params['relationModel']->id)
                                                )
                                   );
             return Yii::app()->createUrl('/' . $this->relationModuleId . '/defaultPortlet/modalRefresh', $params);

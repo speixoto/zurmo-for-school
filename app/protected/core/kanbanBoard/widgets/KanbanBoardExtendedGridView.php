@@ -109,7 +109,7 @@
                 echo "<div id=\"kanban-board\" class=\"clearfix\">";
                 foreach ($columnsData as $attributeValue => $attributeValueAndData)
                 {
-                    echo '<div class="kanban-column" style="width:'.$width.'%;">';
+                    echo '<div class="kanban-column" style="width:'.$width.'%;">'; // Not Coding Standard
                     echo "<div data-value='" . $attributeValue . "' class='droppable-dynamic-rows-container'>";
                     echo ZurmoHtml::tag('div', array('class' => 'column-header'), $this->resolveGroupByColumnHeaderLabel($attributeValue));
                     $listItems = '';
