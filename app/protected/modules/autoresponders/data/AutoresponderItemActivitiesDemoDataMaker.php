@@ -87,7 +87,7 @@
             {
                 $model->type        = AutoresponderItemActivity::TYPE_CLICK;
             }
-            elseif(mt_rand(1, 10) < 8)
+            elseif (mt_rand(1, 10) < 8)
             {
                 $model->type        = AutoresponderItemActivity::TYPE_OPEN;
             }

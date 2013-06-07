@@ -36,7 +36,6 @@
 
     class CampaignItemsRelatedListView extends RelatedListView
     {
-
         protected function renderContent()
         {
             $content = parent::renderContent();

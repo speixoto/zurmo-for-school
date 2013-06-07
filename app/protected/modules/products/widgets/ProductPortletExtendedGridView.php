@@ -108,7 +108,7 @@
             $price = 0;
             $currentUserCurrency    = Yii::app()->currencyHelper->getActiveCurrencyForCurrentUser();
             $currency = $model->sellPrice->currency;
-            if($currency->rateToBase == $currentUserCurrency->rateToBase )
+            if ($currency->rateToBase == $currentUserCurrency->rateToBase )
             {
                 $price = $model->sellPrice->value * $model->quantity;
             }

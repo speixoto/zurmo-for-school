@@ -96,12 +96,12 @@
                                                 'A Gift of Monotheists October Issue'       => 'A Gift of Monotheists',
                                                 'Enjoy Once in a Lifetime Music'            => 'Once in a Lifetime'
                                             );
-            if(!array_key_exists($product, $productTemplateMapping))
+            if (!array_key_exists($product, $productTemplateMapping))
             {
                 $productNameSubstr = explode('-P', $product);
-                if((strpos($product, 'Laptop') !== false)
-                                            || (strpos($product, 'Camera') !== false)
-                                                                 || (strpos($product, 'Handycam') !== false))
+                if ((strpos($product, 'Laptop') !== false) ||
+                    (strpos($product, 'Camera') !== false) ||
+                    (strpos($product, 'Handycam') !== false))
                 {
                     return $productNameSubstr[0];
                 }

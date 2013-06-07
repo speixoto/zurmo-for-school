@@ -49,7 +49,7 @@
             $previewElementParams    = array('isHtmlContent' => 0,
                                                 'inputId' => $this->getEditableInputId(),
                                                 'selector' => $selector);
-            $previewElementParams    = CMap::mergeArray($this->params,$previewElementParams);
+            $previewElementParams    = CMap::mergeArray($this->params, $previewElementParams);
             $controllerId            = Yii::app()->controller->id;
             $moduleId                = Yii::app()->controller->module->id;
             $previewElement          = new AutoresponderOrCampaignFooterTextPreviewElement($controllerId, $moduleId,

@@ -30,7 +30,7 @@
         {
                 return array(
                     'name'  => $this->attribute,
-                    'value' => 'SellPriceFormulaTypeDropDownListViewColumnAdapter::getSellPriceFormulaType($data,"'. $this->attribute . '")',
+                    'value' => 'SellPriceFormulaTypeDropDownListViewColumnAdapter::getSellPriceFormulaType($data,"' . $this->attribute . '")',
                     'type'  => 'raw',
                 );
         }

@@ -91,7 +91,7 @@
             }
             //Sort by title
             ksort($sortablePortlets);
-            foreach($sortablePortlets as $title => $url)
+            foreach ($sortablePortlets as $title => $url)
             {
                 $onClick = 'window.location.href = "' . $url . '"';
                 $content .= '<li>';

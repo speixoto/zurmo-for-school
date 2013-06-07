@@ -214,7 +214,8 @@
         /**
          * Override to handle the case when the attributeName was already created used in another module
          */
-        public function validateAttributeNameDoesNotExists() {
+        public function validateAttributeNameDoesNotExists()
+        {
             parent::validateAttributeNameDoesNotExists();
             if (CustomFieldData::getByName($this->attributeName, false)->id > 0)
             {

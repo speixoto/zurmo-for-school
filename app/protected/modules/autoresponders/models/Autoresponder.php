@@ -218,7 +218,5 @@
         {
             return strval($this->subject);
         }
-
-
     }
 ?>

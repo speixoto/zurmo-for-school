@@ -104,17 +104,17 @@
                                                 'A Gift of Monotheists' => 'Books',
                                                 'Once in a Lifetime'    => 'Music'
                                             );
-            if(!array_key_exists($template, $templateCategoryMapping))
+            if (!array_key_exists($template, $templateCategoryMapping))
             {
-                if(strpos($template, 'Laptop Inc - Model') !== false)
+                if (strpos($template, 'Laptop Inc - Model') !== false)
                 {
                     return 'Laptops';
                 }
-                if(strpos($template, 'Camera Inc') !== false)
+                if (strpos($template, 'Camera Inc') !== false)
                 {
                     return 'Camera';
                 }
-                if(strpos($template, 'Handycam Inc - Model') !== false)
+                if (strpos($template, 'Handycam Inc - Model') !== false)
                 {
                     return 'Handycam';
                 }
