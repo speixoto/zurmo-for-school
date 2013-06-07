@@ -37,10 +37,8 @@
     /**
      * A job for processing campaign messages that are not sent immediately when triggered
      */
-    class CampaignQueueMessagesInOutboxJob extends BaseJob
+    class CampaignQueueMessagesInOutboxJob extends AutoresponderOrCampaignBaseJob
     {
-        const BATCH_SIZE_CONFIG_KEY = 'CampaignBatchSize';
-
         /**
          * @returns Translated label that describes this job type.
          */
@@ -50,25 +48,12 @@
         }
 
         /**
-         * @return The type of the NotificationRules
-         */
-        public static function getType()
-        {
-            return 'CampaignQueueMessagesInOutbox';
-        }
-
-        public static function getRecommendedRunFrequencyContent()
-        {
-            return Zurmo::t('JobsManagerModule', 'Every hour');
-        }
-
-        /**
          * @see BaseJob::run()
          */
         public function run()
         {
             $batchSize = $this->resolveBatchSize();
-            $campaignItemsToProcess    = CampaignItem::getByProcessedAndStatusAndSendingDateTime(
+            $campaignItemsToProcess    = CampaignItem::getByProcessedAndStatusAndSendOnDateTime(
                                                                                         0,
                                                                                         Campaign::STATUS_ACTIVE,
                                                                                         time(),
@@ -95,17 +80,6 @@
         protected function processCampaignItemInQueue(CampaignItem $campaignItem)
         {
             CampaignItemsUtil::processDueItem($campaignItem);
-        }
-
-        protected function resolveBatchSize()
-        {
-            $batchSize = ZurmoConfigurationUtil::getByModuleName('CampaignsModule', static::BATCH_SIZE_CONFIG_KEY);
-            if (!$batchSize)
-            {
-                $batchSize = 200;
-                ZurmoConfigurationUtil::getByModuleName('CampaignsModule', static::BATCH_SIZE_CONFIG_KEY, $batchSize);
-            }
-            return $batchSize;
         }
     }
 ?>

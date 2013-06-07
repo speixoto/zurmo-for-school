@@ -54,15 +54,34 @@
             assert('$demoDataHelper->isSetRange("MarketingList")');
 
             $autoresponders = array();
-            for ($this->index = 0; $this->index < 4; $this->index++)
+            if ($this->loadMagnitude >= 100)
             {
-                $autoresponder                  = new Autoresponder();
-                $autoresponder->marketingList   = $demoDataHelper->getRandomByModelName('MarketingList');
-                $this->populateModel($autoresponder);
-                $saved                          = $autoresponder->save();
-                assert('$saved');
-                $autoresponders[]               = $autoresponder->id;
+                foreach (MarketingList::getAll() as $marketingList)
+                {
+                    for ($this->index = 0; $this->index < 2; $this->index++)
+                    {
+                        $autoresponder                  = new Autoresponder();
+                        $autoresponder->marketingList   = $marketingList;
+                        $this->populateModel($autoresponder);
+                        $saved                          = $autoresponder->save();
+                        assert('$saved');
+                        $autoresponders[]               = $autoresponder->id;
+                    }
+                }
             }
+            else
+            {
+                for ($this->index = 0; $this->index < 4; $this->index++)
+                {
+                    $autoresponder                  = new Autoresponder();
+                    $autoresponder->marketingList   = $demoDataHelper->getRandomByModelName('MarketingList');
+                    $this->populateModel($autoresponder);
+                    $saved                          = $autoresponder->save();
+                    assert('$saved');
+                    $autoresponders[]               = $autoresponder->id;
+                }
+            }
+
             $demoDataHelper->setRangeByModelName('Autoresponder', $autoresponders[0], $autoresponders[count($autoresponders)-1]);
         }
 

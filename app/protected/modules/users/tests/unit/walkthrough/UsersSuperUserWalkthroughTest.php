@@ -452,8 +452,7 @@
                                     'port'                              => '565',
                                     'username'                          => 'myuser',
                                     'password'                          => 'apassword',
-                                    'security'                          => 'ssl',
-                                    'userIdOfUserToSendNotificationsAs' => $super->id)));
+                                    'security'                          => 'ssl')));
             $this->runControllerWithRedirectExceptionAndGetContent('emailMessages/default/configurationEditOutbound');
             $this->assertEquals('Email configuration saved successfully.',
                                 Yii::app()->user->getFlash('notification'));

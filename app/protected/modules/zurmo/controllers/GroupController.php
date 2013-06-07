@@ -125,7 +125,8 @@
                 $_GET['modalTransferInformation']['sourceModelId'],
                 static::getGroupsOrderedByNonDeletablesFirst(false),
                 $_GET['modalTransferInformation']['sourceIdFieldId'],
-                $_GET['modalTransferInformation']['sourceNameFieldId']
+                $_GET['modalTransferInformation']['sourceNameFieldId'],
+                $_GET['modalTransferInformation']['modalId']
             );
             Yii::app()->getClientScript()->setToAjaxMode();
             $pageTitle           = Zurmo::t('ZurmoModule', 'Select a Parent Group');
@@ -179,7 +180,7 @@
         public function actionEditModulePermissions($id)
         {
             $group            = Group::getById(intval($id));
-            $title           = Zurmo::t('ZurmoModule', 'Module Permissions');
+            $title           = Zurmo::t('ZurmoModule', 'Record Permissions');
             $breadcrumbLinks = array(strval($group) => array('group/' . static::resolveBreadCrumbActionByGroup($group),  'id' => $id), $title);
             $data             =  PermissionsUtil::getAllModulePermissionsDataByPermitable($group);
             $permissionsForm  = ModulePermissionsFormUtil::makeFormFromPermissionsData($data);
@@ -194,7 +195,7 @@
                 if (ModulePermissionsFormUtil::setPermissionsFromCastedPost($readyToSetPostData, $group))
                 {
                     Yii::app()->user->setFlash('notification',
-                        Zurmo::t('ZurmoModule', 'Module Permissions Saved Successfully.')
+                        Zurmo::t('ZurmoModule', 'Record Permissions Saved Successfully.')
                     );
                     $this->redirect(array($this->getId() . '/details', 'id' => $group->id));
                     Yii::app()->end(0, false);

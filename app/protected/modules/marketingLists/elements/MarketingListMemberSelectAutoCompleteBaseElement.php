@@ -82,14 +82,14 @@
             return array(
                 'autoFill'  => false,
                 'select'    => $this->getWidgetSelectActionJS(),
-                'search'    => 'js:function(event, ui) { makeOrRemoveTogglableSpinner(true,  $(this).parent()) }',
-                'open'      => 'js:function(event, ui) { makeOrRemoveTogglableSpinner(false, $(this).parent()) }',
-                'close'     => 'js:function(event, ui) { makeOrRemoveTogglableSpinner(false, $(this).parent()) }',
+                'search'    => 'js:function(event, ui) { $(this).makeOrRemoveTogglableSpinner(true,  $(this).parent()) }',
+                'open'      => 'js:function(event, ui) { $(this).makeOrRemoveTogglableSpinner(false, $(this).parent()) }',
+                'close'     => 'js:function(event, ui) { $(this).makeOrRemoveTogglableSpinner(false, $(this).parent()) }',
                 'response'  => 'js:function(event, ui)
                     {
                         if (ui.content.length < 1)
                         {
-                            makeOrRemoveTogglableSpinner(false, $(this).parent());
+                            $(this).makeOrRemoveTogglableSpinner(false, $(this).parent());
                         }
                     }'
             );
@@ -119,7 +119,7 @@
                                                 },
                                     beforeSend: function(request, settings)
                                                 {
-                                                    makeSmallLoadingSpinner(listGridViewId);
+                                                    $(this).makeSmallLoadingSpinner(listGridViewId);
                                                     $("#" + listGridViewId).addClass("loading");
                                                     if (disableTextBox == true)
                                                     {
@@ -160,18 +160,26 @@
 
         protected function registerScripts()
         {
-            Yii::app()->clientScript->registerScript($this->getListViewGridId() . '-updateFlashBar', '
-                function updateFlashBar(data, flashBarId)
-                {
-                    $("#" + flashBarId).jnotifyAddMessage(
+            $scriptName = $this->getListViewGridId() . '-updateFlashBar';
+            if (Yii::app()->clientScript->isScriptRegistered($scriptName))
+            {
+                return;
+            }
+            else
+            {
+                Yii::app()->clientScript->registerScript($scriptName, '
+                    function updateFlashBar(data, flashBarId)
                     {
-                        text: data.message,
-                        permanent: false,
-                        showIcon: true,
-                        type: data.type
-                    });
-                }
-            ');
+                        $("#" + flashBarId).jnotifyAddMessage(
+                        {
+                            text: data.message,
+                            permanent: false,
+                            showIcon: true,
+                            type: data.type
+                        });
+                    }
+                ');
+            }
         }
 
         protected function getModelId()

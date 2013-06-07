@@ -1999,7 +1999,7 @@
             $metadata              = CalculatedDerivedAttributeMetadata::
                                      getByNameAndModelClassName('testCalculatedValue', 'Account');
             $testCalculatedValue   = CalculatedNumberUtil::calculateByFormulaAndModelAndResolveFormat($metadata->getFormula(), $account);
-            $this->assertEquals(774.56,                      (double)$testCalculatedValue);
+            $this->assertEquals('$774.56',                   $testCalculatedValue);
 
             unset($testCalculatedValue);
             $account->forget();
@@ -2128,6 +2128,57 @@
             $this->assertFalse($saved);
             $errors = $account->getErrors();
             $this->assertEquals('Test Text 2 en is too long (maximum is 50 characters).', $errors['testTextSpecialCstm'][0]);
+        }
+
+        public function testSetSameAttributeNameOnSameModelClassName()
+        {
+            $compareAttributeLabels = array(
+                'de' => 'sameattribute de',
+                'en' => 'sameattribute en',
+                'es' => 'sameattribute es',
+                'fr' => 'sameattribute fr',
+                'it' => 'sameattribute it',
+            );
+            $attributeForm = new TextAreaAttributeForm();
+            $attributeForm->attributeName       = 'same';
+            $attributeForm->attributeLabels     = $compareAttributeLabels;
+
+            $modelAttributesAdapterClassName    = $attributeForm::getModelAttributeAdapterNameForSavingAttributeFormData();
+            $adapter = new $modelAttributesAdapterClassName(new Account());
+            $adapter->setAttributeMetadataFromForm($attributeForm);
+
+            $attributeForm = new TextAreaAttributeForm();
+            $attributeForm->attributeName       = 'same';
+            $attributeForm->attributeLabels     = $compareAttributeLabels;
+            $attributeForm->modelClassName      = 'Account';
+            $attributeForm->setScenario('createAttribute');
+            $attributeForm->validate();
+            $this->assertContains('A field with this name is already used', $attributeForm->getError('attributeName'));
+        }
+
+        public function testSetSameAttributeNameOnDifferenteModelClassNames()
+        {
+            $compareAttributeLabels = array(
+                'de' => 'sameattribute de',
+                'en' => 'sameattribute en',
+                'es' => 'sameattribute es',
+                'fr' => 'sameattribute fr',
+                'it' => 'sameattribute it',
+            );
+            $attributeForm = new TextAreaAttributeForm();
+            $attributeForm->attributeName       = 'same';
+            $attributeForm->attributeLabels     = $compareAttributeLabels;
+
+            $modelAttributesAdapterClassName    = $attributeForm::getModelAttributeAdapterNameForSavingAttributeFormData();
+            $adapter = new $modelAttributesAdapterClassName(new Account());
+            $adapter->setAttributeMetadataFromForm($attributeForm);
+
+            $attributeForm = new TextAreaAttributeForm();
+            $attributeForm->attributeName       = 'same';
+            $attributeForm->attributeLabels     = $compareAttributeLabels;
+            $attributeForm->modelClassName      = 'Contact';
+            $attributeForm->setScenario('createAttribute');
+            $this->assertTrue($attributeForm->validate());
         }
     }
 ?>

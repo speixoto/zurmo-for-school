@@ -37,7 +37,7 @@
     /**
      * Class that builds demo campaignItemActivities.
      */
-    class CampaignItemActivitiesDemoDataMaker extends DemoDataMaker
+    class CampaignItemActivitiesDemoDataMaker extends EmailMessageActivitiesDemoDataMaker
     {
         protected $ratioToLoad = 3;
 
@@ -59,9 +59,7 @@
                 $activity                       = new CampaignItemActivity();
                 $campaignItem                   = $demoDataHelper->getRandomByModelName('CampaignItem');
                 $activity->campaignItem         = $campaignItem;
-                $contact                        = $demoDataHelper->getRandomByModelName('Contact');
-                $personId                       = $contact->getClassId('Person');
-                $activity->person               = Person::getById($personId);
+                $activity->person               = $campaignItem->contact;
                 if (rand() % 4)
                 {
                     $emailMessageUrl                = $demoDataHelper->getRandomByModelName('EmailMessageUrl');
@@ -74,6 +72,7 @@
                 $activities[]                   = $activity->id;
             }
             $demoDataHelper->setRangeByModelName('CampaignItemActivity', $activities[0], $activities[count($activities)-1]);
+            $this->populateMarketingItems('CampaignItem');
         }
 
         public function populateModel(& $model)
@@ -83,13 +82,18 @@
             $model->quantity        = rand(10, 100);
             $timestamp              = time() - rand(100, 1000);
             $model->latestDateTime  = DateTimeUtil::convertTimestampToDbFormatDateTime($timestamp);
+            $model->latestSourceIP  = '10.11.12.13';
             if ($model->emailMessageUrl->id > 0)
             {
                 $model->type        = CampaignItemActivity::TYPE_CLICK;
             }
-            else
+            elseif (mt_rand(1, 10) < 8)
             {
                 $model->type        = CampaignItemActivity::TYPE_OPEN;
+            }
+            else
+            {
+                $model->type        = CampaignItemActivity::TYPE_BOUNCE;
             }
         }
     }

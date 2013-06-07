@@ -36,7 +36,6 @@
 
     class SearchUtilTest extends BaseTest
     {
-
         public function testResolveSortFromStickyData()
         {
             list($sortAttribute, $sortDescending) = SearchUtil::

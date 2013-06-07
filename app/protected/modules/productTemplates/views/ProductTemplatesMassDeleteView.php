@@ -34,28 +34,22 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class EmailTemplateControllerUtil extends ZurmoControllerUtil
+    class ProductTemplatesMassDeleteView extends MassDeleteView
     {
-        protected function afterSuccessfulSave($model)
+        protected function renderOperationDescriptionContent()
         {
-            $filesIds = Yii::app()->request->getPost('filesIds');
-            if (is_array($filesIds) && !empty($filesIds))
-            {
-                foreach ($filesIds as $filesId)
-                {
-                    $file   = FileModel::getById($filesId);
-                    $model->files->add($file);
-                }
-                if ($model->save())
-                {
-                    return $model;
-                }
-                else
-                {
-                    throw new FailedToSaveModelException();
-                }
-            }
-            return $model;
+            $highlight = ZurmoHtml::tag('em', array(), Zurmo::t('Core', 'Mass Delete is not reversable.'));
+            $message  = ZurmoHtml::tag('strong', array(), $highlight) .
+                        '<br />' . '<strong>' . $this->selectedRecordCount . '</strong>&#160;' .
+                        Zurmo::t('ProductTemplatesModule', 'Catalog Item|Catalog Items',
+                        array_merge(array($this->selectedRecordCount), LabelUtil::getTranslationParamsForAllModules())) .
+                        ' ' . Zurmo::t('Core', 'selected for removal.');
+            return ZurmoHtml::wrapLabel($message, 'operation-description');
+        }
+
+        public static function getDesignerRulesType()
+        {
+            return null;
         }
     }
 ?>

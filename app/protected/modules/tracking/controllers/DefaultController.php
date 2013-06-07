@@ -43,58 +43,39 @@
 
         public function actionTrack()
         {
-            Yii::app()->user->userModel = static::getUserToRunTrackActionAs();
-            $response                   = EmailMessageActivityUtil::resolveQueryStringFromUrlAndCreateOrUpdateActivity();
-            if ($response['redirect'])
+            try
             {
-                $this->redirect($response['url']);
-            }
-            elseif (isset($response['imagePath']))
-            {
-                $mime               = ZurmoFileHelper::getMimeType($response['imagePath']);
-                $size               = filesize($response['imagePath']);
-                $name               = pathinfo($response['imagePath'], PATHINFO_FILENAME);
-                header('Content-Type: '     .   $mime);
-                header('Content-Length: '   .   $size);
-                header('Content-Name: '     .   $name);
-                readfile($response['imagePath']);
-                Yii::app()->end(0, false);
-            }
-            else
-            {
-                throw new NotSupportedException();
-            }
-        }
-
-        protected static function getUserToRunTrackActionAs()
-        {
-            $keyName      = 'UserIdOfUserToRunTrackingAs';
-            $superGroup   = Group::getByName(Group::SUPER_ADMINISTRATORS_GROUP_NAME);
-            if (null != $userId = ZurmoConfigurationUtil::getByModuleName('TrackingModule', $keyName))
-            {
-                try
+                Yii::app()->user->userModel = BaseActionControlUserConfigUtil::getUserToRunAs();
+                $response                   = EmailMessageActivityUtil::resolveQueryStringFromUrlAndCreateOrUpdateActivity();
+                if ($response['redirect'])
                 {
-                    $user  = User::getById($userId);
-
-                    if ($user->groups->contains($superGroup))
-                    {
-                        return $user;
-                    }
+                    $this->redirect($response['url']);
                 }
-                catch (NotFoundException $e)
+                elseif (isset($response['imagePath']))
                 {
+                    $mime               = ZurmoFileHelper::getMimeType($response['imagePath']);
+                    $size               = filesize($response['imagePath']);
+                    $name               = pathinfo($response['imagePath'], PATHINFO_FILENAME);
+                    header('Content-Type: '     .   $mime);
+                    header('Content-Length: '   .   $size);
+                    header('Content-Name: '     .   $name);
+                    readfile($response['imagePath']);
+                    Yii::app()->end(0, false);
                 }
             }
-            if ($superGroup->users->count() == 0)
+            catch (NotFoundException $e)
             {
-                throw new MissingASuperAdministratorException();
             }
-            else
+            catch (NotSupportedException $e)
             {
-                $user = $superGroup->users->offsetGet(0);
-                ZurmoConfigurationUtil::setByModuleName('TrackingModule', $keyName, $user->id);
-                return $userId;
             }
+            catch (FailedToSaveModelException $e)
+            {
+            }
+            catch (MissingASuperAdministratorException $e)
+            {
+            }
+            // we do not catch all exceptions because we need Exit and Redirect Exception for unit tests
         }
     }
 ?>

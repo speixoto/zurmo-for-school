@@ -53,15 +53,17 @@
 
         public function testCreateAndGetCampaignItemActivityById()
         {
-            $campaignItemActivity              = new CampaignItemActivity();
-            $campaignItemActivity->type        = CampaignItemActivity::TYPE_OPEN;
-            $campaignItemActivity->quantity    = 10;
+            $campaignItemActivity                   = new CampaignItemActivity();
+            $campaignItemActivity->type             = CampaignItemActivity::TYPE_OPEN;
+            $campaignItemActivity->quantity         = 10;
+            $campaignItemActivity->latestSourceIP   = '111.222.112.122';
             $this->assertTrue($campaignItemActivity->save());
             $id = $campaignItemActivity->id;
             unset($campaignItemActivity);
             $campaignItemActivity              = CampaignItemActivity::getById($id);
             $this->assertEquals(CampaignItemActivity::TYPE_OPEN         ,   $campaignItemActivity->type);
             $this->assertEquals(10                                      ,   $campaignItemActivity->quantity);
+            $this->assertEquals('111.222.112.122'                       ,   $campaignItemActivity->latestSourceIP);
         }
 
         public function testCreateAndGetCampaignItemActivityWithCampaignItemById()
@@ -75,8 +77,6 @@
                                                                         'fromName 01',
                                                                         'fromAddress01@zurmo.com',
                                                                         null,
-                                                                        Campaign::TYPE_MARKETING_LIST,
-                                                                        null,
                                                                         null,
                                                                         null,
                                                                         null,
@@ -87,6 +87,7 @@
             $campaignItemActivity->type                     = CampaignItemActivity::TYPE_CLICK;
             $campaignItemActivity->quantity                 = 1;
             $campaignItemActivity->campaignItem             = $campaignItem;
+            $campaignItemActivity->latestSourceIP           = '121.212.122.112';
             $this->assertTrue($campaignItemActivity->save());
             $id = $campaignItemActivity->id;
             unset($campaignItemActivity);
@@ -94,6 +95,7 @@
             $this->assertEquals(CampaignItemActivity::TYPE_CLICK,   $campaignItemActivity->type);
             $this->assertEquals(1                               ,   $campaignItemActivity->quantity);
             $this->assertEquals($campaignItem                   ,   $campaignItemActivity->campaignItem);
+            $this->assertEquals('121.212.122.112'               ,   $campaignItemActivity->latestSourceIP);
         }
 
         /**
@@ -116,6 +118,7 @@
             $emailMessageUrl                                        = new EmailMessageUrl();
             $emailMessageUrl->url                                   = 'http://www.example.com';
             $campaignItemActivity->emailMessageUrl                  = $emailMessageUrl;
+            $campaignItemActivity->latestSourceIP                   = '131.113.112.121';
             $this->assertTrue($campaignItemActivity->save());
             $id                                                     = $campaignItemActivity->id;
             unset($campaignItemActivity);
@@ -123,6 +126,7 @@
             $this->assertEquals(CampaignItemActivity::TYPE_CLICK,   $campaignItemActivity->type);
             $this->assertEquals(5                               ,   $campaignItemActivity->quantity);
             $this->assertEquals('http://www.example.com'        ,   $campaignItemActivity->emailMessageUrl->url);
+            $this->assertEquals('131.113.112.121'               ,   $campaignItemActivity->latestSourceIP);
         }
 
         /**
@@ -179,6 +183,7 @@
         public function testCreateNewActivity()
         {
             $url                = null;
+            $sourceIP           = '58.10.38.112';
             $type               = CampaignItemActivity::TYPE_OPEN;
             $campaignItems      = CampaignItem::getAll();
             $this->assertNotEmpty($campaignItems);
@@ -186,14 +191,32 @@
             $persons            = Person::getAll();
             $this->assertNotEmpty($persons);
             $person             = $persons[0];
-            $saved              = CampaignItemActivity::createNewActivity($type, $campaignItem->id, $person->id, $url);
+            $saved              = CampaignItemActivity::createNewActivity($type,
+                                                                            $campaignItem->id,
+                                                                            $person->id,
+                                                                            $url,
+                                                                            $sourceIP);
             $this->assertTrue($saved);
 
+            $contact            = ContactTestHelper::createContactByNameForOwner('contact 02', $this->user);
+            $personId           = $contact->getClassId('Person');
             // now try same thing but with a url this time.
             $type               = CampaignItemActivity::TYPE_CLICK;
             $url                = 'http://www.zurmo.com';
-            $saved              = CampaignItemActivity::createNewActivity($type, $campaignItem->id, $person->id, $url);
+            $saved              = CampaignItemActivity::createNewActivity($type,
+                                                                            $campaignItem->id,
+                                                                            $personId,
+                                                                            $url,
+                                                                            $sourceIP);
             $this->assertTrue($saved);
+
+            // test that creating the one with url created one with open too:
+            $activity           = CampaignItemActivity::getByTypeAndModelIdAndPersonIdAndUrl(
+                                                                                        CampaignItemActivity::TYPE_OPEN,
+                                                                                        $campaignItem->id,
+                                                                                        $personId);
+            $this->assertNotEmpty($activity);
+            $this->assertCount(1, $activity);
         }
 
         /**
@@ -222,11 +245,14 @@
             $this->assertEquals($campaignItem,      $activity->campaignItem);
 
             // now try same thing but with a url this time.
+            $contact                                = Contact::getByName('contact 02 contact 02son');
+            $personId                               = $contact[0]->getClassId('Person');
+            $person                                 = Person::getById($personId);
             $type                                   = CampaignItemActivity::TYPE_CLICK;
             $url                                    = 'http://www.zurmo.com';
             $activities                             = CampaignItemActivity::getByTypeAndModelIdAndPersonIdAndUrl($type,
                                                                                                     $campaignItem->id,
-                                                                                                    $person->id,
+                                                                                                    $personId,
                                                                                                     $url);
             $this->assertNotEmpty($activities);
             $this->assertCount(1,                  $activities);

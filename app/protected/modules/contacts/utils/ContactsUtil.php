@@ -308,18 +308,18 @@
          */
         public static function resolveAddressesFromRelatedAccount(Contact & $contact)
         {
-            if($contact->account->id > 0)
+            if ($contact->account->id > 0)
             {
-                if($contact->account->billingAddress->id > 0)
+                if ($contact->account->billingAddress->id > 0)
                 {
-                    foreach($contact->account->billingAddress->getAttributeNames() as $attribute)
+                    foreach ($contact->account->billingAddress->getAttributeNames() as $attribute)
                     {
                         $contact->primaryAddress->{$attribute} = $contact->account->billingAddress->{$attribute};
                     }
                 }
-                if($contact->account->shippingAddress->id > 0)
+                if ($contact->account->shippingAddress->id > 0)
                 {
-                    foreach($contact->account->billingAddress->getAttributeNames() as $attribute)
+                    foreach ($contact->account->billingAddress->getAttributeNames() as $attribute)
                     {
                         $contact->secondaryAddress->{$attribute} = $contact->account->shippingAddress->{$attribute};
                     }

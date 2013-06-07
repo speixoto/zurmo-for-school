@@ -46,7 +46,7 @@
         public static function copy(RedBeanModel $model, RedBeanModel $copyToModel)
         {
             parent::copy($model, $copyToModel);
-            foreach($model->activityItems as $activityItem)
+            foreach ($model->activityItems as $activityItem)
             {
                 $copyToModel->activityItems->add($activityItem);
             }

@@ -279,6 +279,7 @@
             $ids       = R::getCol($sql);
             return $ids;
         }
+
         /**
          * @param boolean $selectCount If true then make this a count query. If false, select ids from rows.
          * @param array $quotedExtraSelectColumnNameAndAliases - extra columns to select.
@@ -469,7 +470,11 @@
             else
             {
                 $this->onLoaded();
-                RedBeanModelsCache::cacheModel($this);
+                $modelClassName = get_called_class();
+                if ($modelClassName::isCacheable())
+                {
+                    RedBeanModelsCache::cacheModel($this);
+                }
             }
             $this->modified = false;
         }
@@ -1926,7 +1931,11 @@
                         }
                         $this->modified = false;
                         $this->afterSave();
-                        RedBeanModelsCache::cacheModel($this);
+                        $calledModelClassName = get_called_class();
+                        if ($calledModelClassName::isCacheable())
+                        {
+                            RedBeanModelsCache::cacheModel($this);
+                        }
                         $this->isSaving = false;
                         return true;
                     }
@@ -2247,7 +2256,7 @@
             assert('is_string($relatedModelClassName)');
             assert('$relatedModelClassName != ""');
             assert('is_int($id)');
-            assert('$id > 0');
+            //assert('$id > 0');
             assert('$modelClassName === null || is_string($modelClassName) && $modelClassName != ""');
             if ($modelClassName === null)
             {
@@ -3079,6 +3088,14 @@
         public function isCopied()
         {
             return $this->isCopied;
+        }
+
+        /**
+         * @return bool
+         */
+        public static function isCacheable()
+        {
+            return true;
         }
     }
 ?>

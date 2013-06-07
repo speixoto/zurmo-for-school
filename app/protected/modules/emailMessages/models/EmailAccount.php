@@ -155,7 +155,7 @@
                                   array('outboundType',              'length',    'max' => 4),
                                   array('outboundHost',              'length',    'max' => 64),
                                   array('outboundUsername',          'length',    'max' => 64),
-                                  array('outboundPassword',          'length',    'max' => 64),
+                                  array('outboundPassword',          'length',    'max' => 128),
                                   array('outboundSecurity',          'length',    'max' => 3),
                                   array('fromAddress',               'email'),
                                   array('replyToAddress',            'email'),
@@ -235,6 +235,18 @@
                     }
                 }
             }
+        }
+
+        /**
+         * Encrypt password after validate
+         */
+        public function afterValidate()
+        {
+            parent::afterValidate();
+            if ($this->outboundPassword !== null && $this->outboundPassword !== '')
+            {
+                $this->outboundPassword = ZurmoPasswordSecurityUtil::encrypt($this->outboundPassword);
+             }
         }
     }
 ?>

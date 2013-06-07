@@ -190,8 +190,9 @@
 
         public function getView()
         {
-            $className = $this->viewType . 'View';
+            $className                 = $this->viewType . 'View';
             $this->params['portletId'] = $this->id;
+            $this->params['layoutId']  = $this->layoutId;
             $this->view = new $className(unserialize($this->serializedViewData), $this->params, $this->getUniquePortletPageId());
             return $this->view;
         }
@@ -221,11 +222,34 @@
             return $this->getView()->render();
         }
 
+        public function renderHeadContent()
+        {
+            return $this->getView()->renderPortletHeadContent();
+        }
+
+        public function getPortletParams()
+        {
+            return $this->getView()->getPortletParams();
+        }
+
         public function isEditable()
         {
             $className = get_class($this->getView());
             return $className::canUserConfigure();
         }
+
+//        public function isRemovable()
+//        {
+//            $className = get_class($this->getView());
+//            if (method_exists($className, 'canUserRemove'))
+//            {
+//                return $className::canUserRemove();
+//            }
+//            else
+//            {
+//                return null;
+//            }
+//        }
 
         public function beforeDelete()
         {
@@ -239,6 +263,32 @@
                 }
             }
             return parent::beforeDelete();
+        }
+
+        /**
+         * Check if the portlet is already added to the detail view. This would
+         * take care of the case where user click on the link in select portlet
+         * list more than one time
+         * @param string $viewType
+         * @param string $uniqueLayoutId
+         * @param int $userId
+         * @return boolean
+         */
+        public static function doesPortletExistByViewTypeLayoutIdAndUser($viewType, $uniqueLayoutId, $userId)
+        {
+            assert('is_integer($userId) && $userId >= 1');
+            $sql = "select count(*) as count "          .
+                   'from portlet '                                       .
+                   "where layoutid = '$uniqueLayoutId' and viewtype = '$viewType' and _user_id = $userId";
+            $row = R::getRow($sql);
+            if ($row['count'] > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 ?>

@@ -54,16 +54,21 @@
             assert('$demoDataHelper->isSetRange("MarketingList")');
 
             $campaigns = array();
-            for ($this->index = 0; $this->index < 5; $this->index++)
+            for ($this->index = 0; $this->index < 10; $this->index++)
             {
                 $campaign                       = new Campaign();
                 $this->populateModel($campaign);
-                if ($campaign->type === Campaign::TYPE_MARKETING_LIST)
-                {
-                    $campaign->marketingList        = $demoDataHelper->getRandomByModelName('MarketingList');
-                }
+                $campaign->marketingList        = $demoDataHelper->getRandomByModelName('MarketingList');
+                $campaign->addPermissions(Group::getByName(Group::EVERYONE_GROUP_NAME), Permission::READ_WRITE_CHANGE_PERMISSIONS_CHANGE_OWNER);
                 $saved                          = $campaign->save();
-                assert('$saved');
+                if (!$saved)
+                {
+                    throw new FailedToSaveModelException();
+                }
+                $campaign = Campaign::getById($campaign->id);
+                ReadPermissionsOptimizationUtil::
+                    securableItemGivenPermissionsForGroup($campaign, Group::getByName(Group::EVERYONE_GROUP_NAME));
+                $campaign->save();
                 $campaigns[]                    = $campaign->id;
             }
             $demoDataHelper->setRangeByModelName('Campaign', $campaigns[0], $campaigns[count($campaigns)-1]);
@@ -80,16 +85,14 @@
             }
             $statusKeys                     = array_keys(Campaign::getStatusDropDownArray());
             $timestamp                      = time();
-            $model->type                    = (rand() % 2) + 1;
             $model->name                    = $this->seedData['name'][$this->index];
             $model->subject                 = $this->seedData['subject'][$this->index];
             $model->status                  = RandomDataUtil::getRandomValueFromArray($statusKeys);
-            $model->sendNow                 = (rand() % 2);
-            if (!$model->sendNow)
+            if (!(rand() % 2))
             {
-                $timestamp              += rand(500, 5000);
+                $timestamp                 += rand(500, 5000);
             }
-            $model->sendingDateTime         = DateTimeUtil::convertTimestampToDbFormatDateTime($timestamp);
+            $model->sendOnDateTime          = DateTimeUtil::convertTimestampToDbFormatDateTime($timestamp);
             $model->supportsRichText        = (rand() % 2);
             $model->htmlContent             = $this->seedData['htmlContent'][$this->index];
             $model->textContent             = $this->seedData['textContent'][$this->index];

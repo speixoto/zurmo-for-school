@@ -95,7 +95,7 @@
             $this->assertEquals(CalculatedNumberUtil::FORMAT_TYPE_INTEGER, $formatType);
             $this->assertNull($currencyCode);
             $result = CalculatedNumberUtil::calculateByFormulaAndModelAndResolveFormat('(integerStandard + 5)', $model);
-            $this->assertEquals('3,005', $result);
+            $this->assertEquals('3,005', $result); // Not Coding Standard
 
             $formatType   = CalculatedNumberUtil::FORMAT_TYPE_INTEGER;
             $currencyCode = null;
@@ -105,7 +105,7 @@
             $this->assertEquals(CalculatedNumberUtil::FORMAT_TYPE_DECIMAL, $formatType);
             $this->assertNull($currencyCode);
             $result = CalculatedNumberUtil::calculateByFormulaAndModelAndResolveFormat('(integerStandard + floatStandard)', $model);
-            $this->assertEquals('9,000.39', $result);
+            $this->assertEquals('9,000.39', $result); // Not Coding Standard
         }
 
         public function testCurrencyValuesInFormula()
@@ -133,7 +133,7 @@
             $this->assertEquals(CalculatedNumberUtil::FORMAT_TYPE_CURRENCY_VALUE, $formatType);
             $this->assertEquals('USD', $currencyCode);
             $result = CalculatedNumberUtil::calculateByFormulaAndModelAndResolveFormat('(amount * 5)', $item);
-            $this->assertEquals('$50,002.25', $result);
+            $this->assertEquals('$50,002.25', $result); // Not Coding Standard
         }
 
         public function testIsFormulaValid()

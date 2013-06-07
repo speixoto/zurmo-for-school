@@ -34,13 +34,15 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class ContactEmailTemplateNamesDropDownElement extends StaticDropDownFormElement
+    abstract class ContactEmailTemplateNamesDropDownElement extends StaticDropDownFormElement
     {
         const DISABLE_DROPDOWN_WHEN_AJAX_IN_PROGRESS    = true;
 
         const DISABLE_TEXTBOX_WHEN_AJAX_IN_PROGRESS    = true;
 
         const NOTIFICATION_BAR_ID                      = 'FlashMessageBar';
+
+        abstract protected function getModuleId();
 
         protected function renderControlNonEditable()
         {
@@ -73,12 +75,60 @@
             }
             else
             {
-                // TODO: @Shoaibi/@Amit: Critical: Loading spinner
+                // Begin Not Coding Standard
                 Yii::app()->clientScript->registerScript($scriptName, '
+                        function updateContentAreaWithDataFromAjax(textContentElement, htmlContentElement,
+                                                                                                redActorElement, data)
+                        {
+                            $(textContentElement).html(data.textContent);
+                            $(htmlContentElement).html(data.htmlContent);
+                            $(redActorElement).html(data.htmlContent);
+                        }
+
+                        function deleteExistingAttachments()
+                        {
+                            $("table.files tr.template-download td.name span.upload-actions.delete button.icon-delete")
+                                .click();
+                        }
+
+                        function updateAddFilesWithDataFromAjax(filesIds, notificationBarId)
+                        {
+                            if (filesIds != "")
+                            {
+                                var url             = "' . $this->getCloneExitingFilesUrl() . '";
+                                var templateId      = "#' . FileUpload::DOWNLOAD_TEMPLATE_ID .'";
+                                var targetClass     = ".files";
+                                var filesIdsString  = filesIds.join();
+                                $.ajax(
+                                    {
+                                        url:        url,
+                                        dataType:   "json",
+                                        data:       {
+                                                        commaSeparatedExistingModelIds: filesIdsString
+                                                    },
+                                        success:    function(data, status, request)
+                                                    {
+                                                        $(templateId).tmpl(data).appendTo(targetClass);
+                                                    },
+                                        error:      function(request, status, error)
+                                                    {
+                                                        var data = {' . // Not Coding Standard
+                                                                    '   "message" : "' . Zurmo::t('Core',
+                                                                            'There was an error processing your request') .
+                                                                    '",
+                                                                    "type"    : "error"
+                                                                    };
+                                                        updateFlashBar(data, notificationBarId);
+                                                    },
+                                    }
+                                );
+                            }
+                        }
+
                         $("#' . $dropDownId . '").unbind("change.action").bind("change.action", function(event, ui)
                         {
-                            selectedOption      = $(this).find(":selected");
-                            selectedOptionValue    = selectedOption.val();
+                            selectedOption          = $(this).find(":selected");
+                            selectedOptionValue     = selectedOption.val();
                             if (selectedOptionValue)
                             {
                                 var dropDown            = $(this);
@@ -97,11 +147,12 @@
                                         dataType:   "json",
                                         data:       {
                                                         id: selectedOptionValue,
-                                                         renderJson: true
+                                                        renderJson: true,
+                                                        includeFilesInJson: true
                                                     },
                                         beforeSend: function(request, settings)
                                                     {
-                                                        makeSmallLoadingSpinner(true);
+                                                        $(this).makeLargeLoadingSpinner(true, ".email-template-content");
                                                         if (disableDropDown == true)
                                                         {
                                                             $(dropDown).attr("disabled", "disabled");
@@ -112,17 +163,22 @@
                                                             $(htmlContentElement).attr("disabled", "disabled");
                                                             $(redActorElement).hide();
                                                         }
+                                                        deleteExistingAttachments();
                                                     },
                                         success:    function(data, status, request)
                                                     {
-                                                        $(textContentElement).html(data.textContent);
-                                                        $(htmlContentElement).html(data.htmlContent);
-                                                        $(redActorElement).html(data.htmlContent);
+                                                        $(this).makeLargeLoadingSpinner(false, ".email-template-content");
+                                                        $(".email-template-content .big-spinner").remove();
+                                                        updateContentAreaWithDataFromAjax(textContentElement,
+                                                                                            htmlContentElement,
+                                                                                            redActorElement,
+                                                                                            data);
+                                                        updateAddFilesWithDataFromAjax(data.filesIds, notificationBarId);
                                                     },
                                         error:      function(request, status, error)
                                                     {
                                                         var data = {' . // Not Coding Standard
-                                                                    '   "message" : "' . Zurmo::t('AutorespondersModule',
+                                                                    '   "message" : "' . Zurmo::t('Core',
                                                                             'There was an error processing your request') .
                                                                         '",
                                                                         "type"    : "error"
@@ -145,6 +201,7 @@
                         }
                     );
                 ');
+                // End Not Coding Standard
             }
         }
 
@@ -200,7 +257,8 @@
 
         protected function getEditableHtmlOptions()
         {
-            $prompt             = array('prompt' => Zurmo::t('AutorespondersModule', 'Select a template'));
+            $moduleName         = $this->getModuleId() . 'sModule';
+            $prompt             = array('prompt' => Zurmo::t($moduleName, 'Select a template'));
             $parentHtmlOptions  = parent::getEditableHtmlOptions();
             $htmlOptions        = CMap::mergeArray($parentHtmlOptions, $prompt);
             return $htmlOptions;
@@ -227,9 +285,9 @@
             return $htmlContentId;
         }
 
-        protected function getModuleId()
+        protected function getCloneExitingFilesUrl()
         {
-            return 'Autoresponder';
+            return Yii::app()->createUrl('/zurmo/fileModel/cloneExistingFiles');
         }
     }
 ?>

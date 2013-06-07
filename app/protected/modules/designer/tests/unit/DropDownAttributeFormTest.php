@@ -70,5 +70,36 @@
             $compareData = array(0 => 'Value cannot be blank.');
             $this->assertEquals($compareData, $errors['customFieldDataData']);
         }
+
+        public function testValidateAttributeNameDoesNotExists()
+        {
+            Yii::app()->user->userModel             = User::getByUsername('super');
+            $compareAttributeLabels                 = array(
+                                                            'de' => 'sameattribute de',
+                                                            'en' => 'sameattribute en',
+                                                        );
+            $customFieldDataData                    = array('a', 'b', 'c');
+            $customFieldDataLabels                  = array('fr' => array('Afr', 'Bfr', 'Cfr'), 'de' => array('Ade', 'Bde', 'Cde'));
+            $attributeForm                          = new DropDownAttributeForm();
+            $attributeForm->attributeName           = 'same';
+            $attributeForm->attributeLabels         = $compareAttributeLabels;
+            $attributeForm->customFieldDataData     = $customFieldDataData;
+            $attributeForm->customFieldDataLabels   = $customFieldDataLabels;
+
+            $modelAttributesAdapterClassName        = $attributeForm::getModelAttributeAdapterNameForSavingAttributeFormData();
+            $adapter                                = new $modelAttributesAdapterClassName(new Account());
+            $adapter->setAttributeMetadataFromForm($attributeForm);
+
+            $attributeForm                          = new DropDownAttributeForm();
+            $attributeForm->attributeName           = 'same';
+            $attributeForm->attributeLabels         = $compareAttributeLabels;
+            $attributeForm->customFieldDataData     = $customFieldDataData;
+            $attributeForm->customFieldDataLabels   = $customFieldDataLabels;
+            $attributeForm->modelClassName          = 'Contact';
+            $attributeForm->setScenario('createAttribute');
+            $attributeForm->validate();
+            $this->assertContains('A field with this name and data is already used in another module',
+                                  $attributeForm->getError('attributeName'));
+        }
     }
 ?>

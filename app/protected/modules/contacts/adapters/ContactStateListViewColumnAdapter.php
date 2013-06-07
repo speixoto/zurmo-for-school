@@ -36,5 +36,13 @@
 
     class ContactStateListViewColumnAdapter extends TextListViewColumnAdapter
     {
+        public function renderGridViewData()
+        {
+            return array(
+                'name'   => $this->attribute,
+                'value'  => '$data->' . $this->attribute . '->resolveTranslatedNameByLanguage(Yii::app()->language)',
+                'type'   => 'raw',
+            );
+        }
     }
 ?>

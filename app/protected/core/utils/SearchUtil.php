@@ -128,7 +128,7 @@
             $key            = $uniqueLayoutId;
             $sortAttribute  = static::resolveSortAttributeFromGetArray($getArrayPrefixName);
             $sortDescending = static::resolveSortDescendingFromGetArray($getArrayPrefixName);
-            if(!$sortAttribute)
+            if (!$sortAttribute)
             {
                 $stickyData     = StickyUtil::getDataByKey($key);
                 $sortAttribute  = $stickyData[0];

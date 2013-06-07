@@ -39,8 +39,7 @@
         public function renderGridViewData()
         {
             $className  = get_class($this);
-            $value      = $className . '::resolveSubjectWithRedirectURl($data->subject, $data->id, "' .
-                                                                                        $this->view->redirectUrl . '")';
+            $value      = $className . '::resolveSubjectAndMetricsSummary($data, "' . $this->view->redirectUrl . '")';
             return array(
                 'name'  => 'Name',
                 'value' => $value,
@@ -48,11 +47,77 @@
             );
         }
 
+        public static function resolveSubjectAndMetricsSummary(Autoresponder $autoresponder, $redirectUrl)
+        {
+            $content  = static::resolveSubjectWithRedirectURl($autoresponder->subject, $autoresponder->id, $redirectUrl);
+            $content .= static::renderExtraInfoContent($autoresponder);
+            $content = ZurmoHtml::tag('div', array('class' => 'autoresponder-extra-info'), $content);
+            $content .= static::renderMetricsContent($autoresponder);
+            return $content;
+        }
+
         public static function resolveSubjectWithRedirectURl($subject, $id, $redirectUrl)
         {
             $url = Yii::app()->createUrl('/autoresponders/default/edit',
                                                                 array('id' => $id, 'redirectUrl' => $redirectUrl));
-            return ZurmoHtml::link($subject, $url);
+            return ZurmoHtml::link($subject, $url, array('class' => 'edit-autoresponder-link'));
+        }
+
+        protected static function renderExtraInfoContent(Autoresponder $autoresponder)
+        {
+            $operationValuesAndLabels = Autoresponder::getOperationTypeDropDownArray();
+            if (!isset($operationValuesAndLabels[$autoresponder->operationType]))
+            {
+                return;
+            }
+            $intervalValuesAndLabels = Autoresponder::getIntervalDropDownArray();
+            if (!isset($intervalValuesAndLabels[$autoresponder->secondsFromOperation]))
+            {
+                return;
+            }
+            $content = null;
+            $content .= Zurmo::t('AutorespondersModule',
+                                 'Send {timeFrame} after {operation}',
+                                 array('{timeFrame}' => $intervalValuesAndLabels[$autoresponder->secondsFromOperation],
+                                       '{operation}' => $operationValuesAndLabels[$autoresponder->operationType]));
+            return $content;
+        }
+
+        protected static function renderMetricsContent(Autoresponder $autoresponder)
+        {
+            $dataProvider = new AutoresponderGroupedChartDataProvider($autoresponder);
+            $data = $dataProvider->getChartData();
+            $sentQuantity         = Yii::app()->format->formatNumber((int)$data[MarketingChartDataProvider::SENT]);
+            $openQuantity         = Yii::app()->format->formatNumber((int)$data[MarketingChartDataProvider::UNIQUE_OPENS]);
+            $openRate             = round(NumberUtil::divisionForZero($openQuantity, $sentQuantity) * 100, 2);
+            $clickQuantity        = Yii::app()->format->formatNumber((int)$data[MarketingChartDataProvider::UNIQUE_CLICKS]);
+            $clickRate            = round(NumberUtil::divisionForZero($clickQuantity, $sentQuantity) * 100, 2);
+            $unsubscribedQuantity = Yii::app()->format->formatNumber((int)$data[MarketingChartDataProvider::UNSUBSCRIBED]);
+            $unsubscribedRate     = round(NumberUtil::divisionForZero($unsubscribedQuantity, $sentQuantity) * 100, 2);
+            $bouncedQuantity      = Yii::app()->format->formatNumber((int)$data[MarketingChartDataProvider::BOUNCED]);
+            $bouncedRate          = round(NumberUtil::divisionForZero($bouncedQuantity, $sentQuantity) * 100, 2);
+
+            $content = null;
+            $content .= ZurmoHtml::tag('div', array('class' => 'autoresponder-stats'),
+                                        Zurmo::t('MarketingModule', '{quantity} sent',
+                                        array('{quantity}' => ZurmoHtml::tag('strong', array(), $sentQuantity))));
+            $content .= ZurmoHtml::tag('div', array('class' => 'autoresponder-stats'),
+                                        Zurmo::t('MarketingModule', '{quantity} opens ({openRate}%)',
+                                        array('{quantity}' => ZurmoHtml::tag('strong', array(), $openQuantity),
+                                              '{openRate}' => ZurmoHtml::tag('span', array(), $openRate))));
+            $content .= ZurmoHtml::tag('div', array('class' => 'autoresponder-stats'),
+                                        Zurmo::t('MarketingModule', '{quantity} unique clicks ({clickRate}%)',
+                                        array('{quantity}' => ZurmoHtml::tag('strong', array(), $clickQuantity),
+                                              '{clickRate}' => ZurmoHtml::tag('span', array(), $clickRate))));
+            $content .= ZurmoHtml::tag('div', array('class' => 'autoresponder-stats'),
+                                        Zurmo::t('MarketingModule', '{quantity} Unsubscribed ({unsubscribedRate}%)',
+                                        array('{quantity}' => ZurmoHtml::tag('strong', array(), $unsubscribedQuantity),
+                                              '{unsubscribedRate}' => ZurmoHtml::tag('span', array(), $unsubscribedRate))));
+            $content .= ZurmoHtml::tag('div', array('class' => 'autoresponder-stats'),
+                                        Zurmo::t('MarketingModule', '{quantity} Bounces ({bouncedRate}%)',
+                                        array('{quantity}' => ZurmoHtml::tag('strong', array(), $bouncedQuantity),
+                                              '{bouncedRate}' => ZurmoHtml::tag('span', array(), $bouncedRate))));
+            return $content;
         }
     }
 ?>

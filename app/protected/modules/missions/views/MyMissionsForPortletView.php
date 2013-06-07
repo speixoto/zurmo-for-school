@@ -69,6 +69,16 @@
             $this->uniqueLayoutId = $uniqueLayoutId;
         }
 
+        public function getPortletParams()
+        {
+            return array();
+        }
+
+        public function renderPortletHeadContent()
+        {
+            return null;
+        }
+
         public static function getDefaultMetadata()
         {
             $metadata = array(

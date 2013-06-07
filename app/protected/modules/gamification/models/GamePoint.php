@@ -67,7 +67,7 @@
         /**
          * @var String
          */
-        const TYPE_TIME_MANAGEMENT      = 'TimeManagement';
+        const TYPE_TIME_MANAGEMENT    = 'TimeManagement';
 
         public function __toString()
         {

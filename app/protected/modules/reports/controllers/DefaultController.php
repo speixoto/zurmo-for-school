@@ -155,7 +155,7 @@
         {
             $savedReport      = SavedReport::getById((int)$id);
             ControllerSecurityUtil::resolveCanCurrentUserAccessModule($savedReport->moduleClassName);
-            if(!$isBeingCopied)
+            if (!$isBeingCopied)
             {
                 ControllerSecurityUtil::resolveAccessCanCurrentUserWriteModel($savedReport);
             }
@@ -247,6 +247,7 @@
             $moduleClassName                    = $report->getModuleClassName();
             $modelClassName                     = $moduleClassName::getPrimaryModelName();
             $form                               = new WizardActiveForm();
+            $form->id                           = 'edit-form';
             $form->enableAjaxValidation         = true; //ensures error validation populates correctly
 
             $wizardFormClassName                = ReportToWizardFormAdapter::getFormClassNameByType($report->getType());
@@ -495,7 +496,7 @@
                 $report                    = new Report();
                 $report->setType($type);
             }
-            elseif($isBeingCopied)
+            elseif ($isBeingCopied)
             {
                 $savedReport              = new SavedReport();
                 $oldReport                = SavedReport::getById(intval($id));

@@ -118,7 +118,7 @@
                             $('#{$searchFormId}').bind('submit', function(event)
                             {
                                 //Makes spinner on button search
-                                beforeValidateAction($('#{$searchFormId}'));
+                                $(this).beforeValidateAction($('#{$searchFormId}'));
                                 var listData = $(this).serialize();
                                 var list = '';
                                 $('div.cgrid-view').each(function(index)

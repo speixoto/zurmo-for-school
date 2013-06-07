@@ -81,6 +81,13 @@
         public function testResolveLinkToModelForCurrentUser()
         {
             Yii::app()->user->userModel = User::getByUsername('super');
+            $notSavedAccount = new Account();
+            $link = ActionSecurityUtil::resolveLinkToModelForCurrentUser(
+                                    'bpoboo',
+                                    $notSavedAccount,
+                                    'AccountsModule',
+                                    'accounts/default/details');
+            $this->assertNull($link);
             $accounts                   = Account::getByName('Supermart');
             $betty = User::getByUsername('betty');
             Yii::app()->user->userModel = $betty;

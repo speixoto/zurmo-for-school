@@ -47,20 +47,20 @@
          */
         protected function renderHeaderCellContent()
         {
-            if($this->grid->enableSorting && $this->sortable && $this->name !== null)
+            if ($this->grid->enableSorting && $this->sortable && $this->name !== null)
             {
                 echo $this->grid->dataProvider->getSort()->link($this->name, $this->header, array('class' => 'sort-link'));
             }
-            elseif($this->name!==null && $this->header===null)
+            elseif ($this->name !== null && $this->header === null)
             {
-                if($this->grid->dataProvider instanceof CActiveDataProvider)
+                if ($this->grid->dataProvider instanceof CActiveDataProvider)
                 {
                     echo CHtml::encode($this->grid->dataProvider->model->getAttributeLabel($this->name));
                 }
-                elseif($this->grid->dataProvider instanceof RedBeanModelDataProvider)
+                elseif ($this->grid->dataProvider instanceof RedBeanModelDataProvider)
                 {
                     $modelClassName = $this->grid->dataProvider->getModelClassName();
-                    if($modelClassName::isAnAttribute($this->name))
+                    if ($modelClassName::isAnAttribute($this->name))
                     {
                         echo CHtml::encode($modelClassName::getAnAttributeLabel($this->name));
                     }

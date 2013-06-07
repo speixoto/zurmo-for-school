@@ -38,29 +38,14 @@
      * A job for processing autoresponder messages that are not sent immediately when triggered
      */
 
-    class AutoresponderQueueMessagesInOutboxJob extends BaseJob
+    class AutoresponderQueueMessagesInOutboxJob extends AutoresponderOrCampaignBaseJob
     {
-        const BATCH_SIZE_CONFIG_KEY = 'AutoresponderBatchSize';
-
         /**
          * @returns Translated label that describes this job type.
          */
         public static function getDisplayName()
         {
            return Zurmo::t('AutorespondersModule', 'Process autoresponder messages');
-        }
-
-        /**
-         * @return The type of the NotificationRules
-         */
-        public static function getType()
-        {
-            return 'AutoresponderQueueMessagesInOutbox';
-        }
-
-        public static function getRecommendedRunFrequencyContent()
-        {
-            return Zurmo::t('JobsManagerModule', 'Every hour');
         }
 
         /**
@@ -95,17 +80,6 @@
         protected function processAutoresponderItemInQueue(AutoresponderItem $autoresponderItem)
         {
             AutoresponderItemsUtil::processDueItem($autoresponderItem);
-        }
-
-        protected function resolveBatchSize()
-        {
-            $batchSize = ZurmoConfigurationUtil::getByModuleName('AutorespondersModule', static::BATCH_SIZE_CONFIG_KEY);
-            if (!$batchSize)
-            {
-                $batchSize = 200;
-                ZurmoConfigurationUtil::setByModuleName('AutorespondersModule', static::BATCH_SIZE_CONFIG_KEY, $batchSize);
-            }
-            return $batchSize;
         }
     }
 ?>

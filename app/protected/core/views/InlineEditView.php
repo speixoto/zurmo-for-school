@@ -88,8 +88,8 @@
                     'clientOptions' => array(
                         'validateOnSubmit'  => true,
                         'validateOnChange'  => false,
-                        'beforeValidate'    => 'js:beforeValidateAction',
-                        'afterValidate'     => 'js:afterValidateAjaxAction',
+                        'beforeValidate'    => 'js:$(this).beforeValidateAction',
+                        'afterValidate'     => 'js:$(this).afterValidateAjaxAction',
                         'afterValidateAjax' => $afterValidateAjax,
                     ),
                 )
@@ -114,8 +114,8 @@
             }
             $formEnd = $clipWidget->renderEndWidget();
             $content .= $formEnd;
-            $content .= '</div>';
             $content .= $this->renderModalContainer();
+            $content .= '</div>';
             return $content;
         }
 
@@ -133,7 +133,7 @@
         {
             return ZurmoHtml::tag('div', array(
                         'id' => ModelElement::MODAL_CONTAINER_PREFIX . '-' . $this->getFormName()
-                   ),'');
+                   ), '');
         }
 
         protected function renderConfigSaveAjax($formName)

@@ -101,8 +101,8 @@
                                                           array('name'   => 'AccountSelect', 'id' => 'AccountSelect'),
                                                                 'label'  => Zurmo::t('AccountsModule', 'Complete Conversion')));
             $content .= $element->render();
-            $content .= '</div></div>';
             $content .= $this->renderModalContainer();
+            $content .= '</div></div>';
             return $content;
         }
 
@@ -113,7 +113,7 @@
 
         protected function resolveFormHtmlOptions()
         {
-            $data = array('onSubmit' => 'js:return attachLoadingOnSubmit("' . static::getFormId() . '")');
+            $data = array('onSubmit' => 'js:return $(this).attachLoadingOnSubmit("' . static::getFormId() . '")');
             return $data;
         }
 
@@ -121,7 +121,7 @@
         {
             return ZurmoHtml::tag('div', array(
                         'id' => ModelElement::MODAL_CONTAINER_PREFIX . '-' . static::getFormId()
-                   ),'');
+                   ), '');
         }
     }
 ?>

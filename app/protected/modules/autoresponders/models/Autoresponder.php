@@ -128,16 +128,15 @@
                     array('secondsFromOperation',   'type',    'type' => 'integer'),
                     array('operationType',          'required'),
                     array('operationType',          'type',    'type' => 'integer'),
-                    array('operationType',          'numerical', 'min' => static::OPERATION_SUBSCRIBE,
-                                                                                    'max' => static::OPERATION_UNSUBSCRIBE),
-                    array('enableTracking',          'type',    'type' => 'integer'),
-                    array('enableTracking',          'numerical', 'min' => 0, 'max' => 1), // boolean gives error during schema build
-                    array('enableTracking',          'default', 'value' => 0),
+                    array('operationType',          'numerical'),
+                    array('enableTracking',          'boolean'),
+                    array('enableTracking',          'default', 'value' => false),
 
                 ),
                 'relations' => array(
                     'autoresponderItems'    => array(RedBeanModel::HAS_MANY, 'AutoresponderItem'),
                     'marketingList'         => array(RedBeanModel::HAS_ONE, 'MarketingList', RedBeanModel::NOT_OWNED),
+                    'files'                 => array(RedBeanModel::HAS_MANY,  'FileModel', RedBeanModel::OWNED)
                 ),
                 'elements' => array(
                     'htmlContent'                   => 'TextArea',
@@ -200,11 +199,6 @@
             return self::getSubset($joinTablesAdapter, null, $pageSize, $where, 'secondsFromOperation');
         }
 
-        public function __toString()
-        {
-            return strval($this->subject);
-        }
-
         protected static function translatedAttributeLabels($language)
         {
             return array_merge(parent::translatedAttributeLabels($language),
@@ -217,6 +211,11 @@
                     'enableTracking'        => Zurmo::t('AutorespondersModule', 'Enable Tracking', null,  null, $language),
                 )
             );
+        }
+
+        public function __toString()
+        {
+            return strval($this->subject);
         }
     }
 ?>

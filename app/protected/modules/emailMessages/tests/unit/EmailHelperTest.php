@@ -52,48 +52,6 @@
             $box = EmailBox::resolveAndGetByName(EmailBox::NOTIFICATIONS_NAME);
         }
 
-        public function testSetAndGetUserToSendNotificationAs()
-        {
-            $super                      = User::getByUsername('super');
-            Yii::app()->user->userModel = $super;
-
-            //It should default to the first super user available.
-            $user = Yii::app()->emailHelper->getUserToSendNotificationsAs();
-            $this->assertEquals($user, $super);
-
-            //Set a differnt super admin user, then make sure it correctly retrieves it.
-            $anotherSuper = User::getByUsername('someoneSuper');
-            Yii::app()->emailHelper->setUserToSendNotificationsAs($anotherSuper);
-            $user = Yii::app()->emailHelper->getUserToSendNotificationsAs();
-            $this->assertEquals($user, $anotherSuper);
-        }
-
-        /**
-         * @depends testSetAndGetUserToSendNotificationAs
-         */
-        public function testSetAndGetUserToSendNotificationAsLoggedInAsNonSuper()
-        {
-            $billy                      = User::getByUsername('billy');
-            Yii::app()->user->userModel = $billy;
-            $anotherSuper               = User::getByUsername('someoneSuper');
-            $user                       = Yii::app()->emailHelper->getUserToSendNotificationsAs();
-            $this->assertEquals($user, $anotherSuper);
-        }
-
-        /**
-         * @depends testSetAndGetUserToSendNotificationAsLoggedInAsNonSuper
-         * @expectedException NotSupportedException
-         */
-        public function testSetUserToSendNotificationsAsWhoIsNotASuperAdmin()
-        {
-            $billy                      = User::getByUsername('billy');
-            Yii::app()->user->userModel = $billy;
-            Yii::app()->emailHelper->setUserToSendNotificationsAs($billy);
-        }
-
-        /**
-         * @depends testSetUserToSendNotificationsAsWhoIsNotASuperAdmin
-         */
         public function testSend()
         {
             $super                      = User::getByUsername('super');

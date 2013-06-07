@@ -89,6 +89,7 @@
 
             $email = new Email();
             $email->emailAddress = $model->firstName . '.' . $model->lastName . '@' . static::resolveDomainName($model);
+            $email->optOut       = false;
             return $email;
         }
 

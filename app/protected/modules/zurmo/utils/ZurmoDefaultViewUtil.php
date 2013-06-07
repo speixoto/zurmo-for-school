@@ -371,5 +371,16 @@
                 }
             }
         }
+
+        public static function setLockKeyForDetailsAndRelationsView($key, $value)
+        {
+            assert('is_bool($value)');
+            Yii::app()->user->setState($key, $value);
+        }
+
+        public static function getLockKeyForDetailsAndRelationsView($key)
+        {
+            return Yii::app()->user->getState($key);
+        }
     }
 ?>

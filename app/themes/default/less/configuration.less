@@ -240,6 +240,9 @@ table.configuration-list{
     .view-toolbar{
         margin-top:0;
     }
+	.panel{
+		//width:100% !important;
+	}
 }
 
 #ModulePermissionsEditAndDetailsView{
@@ -607,7 +610,7 @@ table.configuration-list{
         .t-shadow( rgba(255, 255, 255, 0.8) 0px 1px);
         .smaller();
         .radius(1px 0 0 1px);
-	    padding: 0 10px;
+	    padding: 0 10px 0 17px;
 	    ++.border-box;
     }
     .errorMessage{
@@ -628,6 +631,7 @@ table.configuration-list{
         //padding-right:0;
     }
     .panel{
+        //width:100% !important;
         .box-sizing();
         table{
             margin-right:15px;
@@ -681,13 +685,13 @@ table.configuration-list{
     }
 }
 
-
 /*=User Security*/
 .UserGroupMembershipView,
 #PoliciesEditAndDetailsView,
 #ModulePermissionsEditAndDetailsView,
 #RightsEditAndDetailsView{
-    .details-table{
+    margin-top: 15px;
+	.details-table{
         margin-right:0;
     }
     th{
@@ -697,6 +701,7 @@ table.configuration-list{
 }
 
 .UserGroupMembershipView{
+	margin-top: 0;
     th{
         text-align:left !important;
     }
@@ -1064,7 +1069,7 @@ table.configuration-list{
 .texture-swatch{
     span{
         width: 90px;
-        background:#DDDEDE;
+        background:#FFF;
         border: 3px solid #DDDEDE;
         margin-top: -3px;
     }
@@ -1105,4 +1110,11 @@ table.configuration-list{
 	~ .file-size{
 		vertical-align:top;
 	}
+}
+
+/*footer preview*/
+.footer-preview-modal{
+	padding: 15px;
+	white-space: normal;
+	word-break: break-all;
 }

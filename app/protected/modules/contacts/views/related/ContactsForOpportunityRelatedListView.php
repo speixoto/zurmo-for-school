@@ -100,6 +100,11 @@
             return $metadata;
         }
 
+        public function renderPortletHeadContent()
+        {
+            return $this->renderWrapperAndActionElementMenu(Zurmo::t('Core', 'Options'));
+        }
+
         protected function getRelationAttributeName()
         {
             return 'opportunities';
@@ -116,6 +121,11 @@
             $title = Zurmo::t('ContactsModule', 'ContactsModuleSingularLabel Search',
                             LabelUtil::getTranslationParamsForAllModules());
             return ModalView::getAjaxOptionsForModalLink($title);
+        }
+
+        public static function getAllowedOnPortletViewClassNames()
+        {
+            return array('OpportunityDetailsAndRelationsView');
         }
     }
 ?>

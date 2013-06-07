@@ -43,7 +43,7 @@
 
         public static function getDependencies()
         {
-            return array('contacts');
+            return array('contacts', 'marketingLists');
         }
 
         public function makeAll(& $demoDataHelper)
@@ -53,15 +53,34 @@
             assert('$demoDataHelper->isSetRange("Campaign")');
 
             $items = array();
-            for ($i = 0; $i < $this->resolveQuantityToLoad(); $i++)
+            if ($this->loadMagnitude >= 100)
             {
-                $item                   = new CampaignItem();
-                $item->campaign         = $demoDataHelper->getRandomByModelName('Campaign');
-                $item->contact          = $demoDataHelper->getRandomByModelName('Contact');
-                $this->populateModel($item);
-                $saved                  = $item->unrestrictedSave();
-                assert('$saved');
-                $items[]                = $item->id;
+                foreach (Campaign::getAll() as $campaign)
+                {
+                    foreach ($campaign->marketingList->marketingListMembers as $marketingListMember)
+                    {
+                        $item                   = new CampaignItem();
+                        $item->campaign         = $campaign;
+                        $item->contact          = $marketingListMember->contact;
+                        $this->populateModel($item);
+                        $saved                  = $item->unrestrictedSave();
+                        assert('$saved');
+                        $items[]                = $item->id;
+                    }
+                }
+            }
+            else
+            {
+                for ($i = 0; $i < $this->resolveQuantityToLoad(); $i++)
+                {
+                    $item                   = new CampaignItem();
+                    $item->campaign         = $demoDataHelper->getRandomByModelName('Campaign');
+                    $item->contact          = $demoDataHelper->getRandomByModelName('Contact');
+                    $this->populateModel($item);
+                    $saved                  = $item->unrestrictedSave();
+                    assert('$saved');
+                    $items[]                = $item->id;
+                }
             }
             $demoDataHelper->setRangeByModelName('CampaignItem', $items[0], $items[count($items)-1]);
         }

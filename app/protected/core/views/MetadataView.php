@@ -109,19 +109,45 @@
         /**
          * Render a toolbar above the form layout. This includes buttons and/or
          * links to go to different views or process actions such as save or delete
+         * @param boolean $renderedInForm
          * @return A string containing the element's content.
-          */
+         *
+         */
         protected function renderActionElementBar($renderedInForm)
         {
+            return $this->renderElementBar($renderedInForm, 'toolbar');
+        }
+
+        /**
+         * Render a second toolbar to the right of the first toolbar.
+         * @see $this->renderActionElementBar
+         * @param boolean $renderedInForm
+         * @return A string containing the element's content.
+         *
+         */
+        protected function renderSecondActionElementBar($renderedInForm)
+        {
+            return $this->renderElementBar($renderedInForm, 'secondToolbar');
+        }
+
+        /**
+         * @param boolean $renderedInForm
+         * @param string $barType
+         * @return A string containing the element's content.
+         * @throws NotSupportedException
+         */
+        protected function renderElementBar($renderedInForm, $barType)
+        {
+            assert('$barType == "toolbar" || $barType == "secondToolbar"');
             $metadata = $this::getMetadata();
             $content = null;
             $first = true;
             $dropDownId = null;
             $dropDownItems = array();
             $dropDownItemHtmlOptions = array('prompt' => ''); // we need this so we have a default one to select at the end of operation.
-            if (isset($metadata['global']['toolbar']) && is_array($metadata['global']['toolbar']['elements']))
+            if (isset($metadata['global'][$barType]) && is_array($metadata['global'][$barType]['elements']))
             {
-                foreach ($metadata['global']['toolbar']['elements'] as $elementInformation)
+                foreach ($metadata['global'][$barType]['elements'] as $elementInformation)
                 {
                     $renderedContent = null;
                     $this->resolveActionElementInformationDuringRender($elementInformation);
@@ -138,10 +164,10 @@
                         throw new NotSupportedException();
                     }
                     $continueRendering = $this->resolveMassActionLinkActionElementDuringRender($elementClassName,
-                                                                                            $element,
-                                                                                            $dropDownItems,
-                                                                                            $dropDownItemHtmlOptions
-                                                                                            );
+                        $element,
+                        $dropDownItems,
+                        $dropDownItemHtmlOptions
+                    );
                     if ($continueRendering)
                     {
                         $renderedContent = $element->render();
@@ -155,7 +181,7 @@
                     }
                     if (!$first && !empty($renderedContent))
                     {
-                       // $content .= '&#160;|&#160;';
+                        // $content .= '&#160;|&#160;';
                     }
                     $first = false;
                     $content .= $renderedContent;
@@ -165,13 +191,13 @@
             {
                 $content .= ZurmoHtml::link('', '#', array('class' => 'mobile-actions'));
                 $content .= ZurmoHtml::tag('div', array( 'class' => 'mobile-view-toolbar-container'),
-                                ZurmoHtml::dropDownList(
-                                        $dropDownId,
-                                        '',
-                                        $dropDownItems,
-                                        $dropDownItemHtmlOptions
-                                    )
-                                );
+                    ZurmoHtml::dropDownList(
+                        $dropDownId,
+                        '',
+                        $dropDownItems,
+                        $dropDownItemHtmlOptions
+                    )
+                );
             }
             return $content;
         }
@@ -293,11 +319,27 @@
             return true;
         }
 
+        protected function renderWrapperAndActionElementMenu($title = null)
+        {
+            assert('is_string($title) || $title === null');
+            $content              = null;
+            $actionElementContent = $this->renderActionElementMenu($title);
+            if ($actionElementContent != null)
+            {
+                $content .= '<div class="view-toolbar-container toolbar-mbmenu clearfix"><div class="view-toolbar">';
+                $content .= $actionElementContent;
+                $content .= '</div></div>';
+            }
+            return $content;
+        }
+
         /**
          * Render a menu above the form layout. This includes buttons and/or
          * links to go to different views or process actions such as save or delete
-         * @return A string containing the element's content.
-          */
+         * @param null $title
+         * @return mixed  A string containing the element's content.
+         * @throws NotSupportedException
+         */
         protected function renderActionElementMenu($title = null)
         {
             if ($title == null)

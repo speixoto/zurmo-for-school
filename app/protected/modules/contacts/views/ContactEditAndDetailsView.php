@@ -60,6 +60,7 @@
                         'lastName',
                         'owner',
                         'state',
+                        'googleWebTrackingId',
                     ),
                     'panelsDisplayType' => FormLayout::PANELS_DISPLAY_TYPE_ALL,
                     'panels' => array(
@@ -215,15 +216,16 @@
         {
             $url           = Yii::app()->createUrl('contacts/default/getAccountAddressesToCopy');
             $successScript = null;
-            foreach($this->model->primaryAddress->getAttributeNames() as $attribute)
+            foreach ($this->model->primaryAddress->getAttributeNames() as $attribute)
             {
                 $successScript .= "$('#Contact_primaryAddress_" . $attribute . "').val(data.billingAddress_" . $attribute . ").trigger('change'); \n";
                 $successScript .= "$('#Contact_secondaryAddress_" . $attribute . "').val(data.shippingAddress_" . $attribute . ").trigger('change'); \n";
             }
+            // Begin Not Coding Standard
             Yii::app()->clientScript->registerScript('copyAddressFromAccountToContactScript', "
                 $('#Contact_account_id').live('change', function()
                     {
-                       if($('#Contact_account_id').val() &&
+                       if ($('#Contact_account_id').val() &&
                           !$('#Contact_primaryAddress_street1').val() &&
                           !$('#Contact_primaryAddress_street2').val() &&
                           !$('#Contact_primaryAddress_city').val() &&
@@ -237,7 +239,8 @@
                           !$('#Contact_secondaryAddress_postalCode').val() &&
                           !$('#Contact_secondaryAddress_country').val())
                           {
-                            $.ajax({
+                            $.ajax(
+                            {
                                 url : '" . $url . "?id=' + $('#Contact_account_id').val(),
                                 type : 'GET',
                                 dataType: 'json',
@@ -249,11 +252,13 @@
                                 {
                                     //todo: error call
                                 }
-                            });
+                            }
+                            );
                           }
                     }
                 );
             ");
+            // End Not Coding Standard
         }
     }
 ?>

@@ -36,14 +36,11 @@
 
     class CreateFromRelatedListLinkActionElement extends RelatedListLinkActionElement
     {
-        public function __construct($controllerId, $moduleId, $modelId, $params = array())
+        protected function resolveHtmlOptionsForRendering()
         {
-            if (!isset($params['htmlOptions']))
-            {
-                $params['htmlOptions'] = array();
-            }
-            $params['htmlOptions'] = array_merge(array('class' => 'icon-create'), $params['htmlOptions']);
-            parent::__construct($controllerId, $moduleId, $modelId, $params);
+            $htmlOptions          = parent::resolveHtmlOptionsForRendering();
+            $htmlOptions['class'] = 'icon-create';
+            return $htmlOptions;
         }
 
         protected function getDefaultLabel()

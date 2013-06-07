@@ -41,7 +41,6 @@
     {
         public static function generateCampaignItemsForDueCampaigns($pageSize = null)
         {
-            // TODO: @Shoaibi/@Jason: Critical: We could have a throttle here too.
             $dueCampaigns   = Campaign::getByStatusAndSendingTime(Campaign::STATUS_ACTIVE, time(), $pageSize);
             foreach ($dueCampaigns as $dueCampaign)
             {
@@ -60,16 +59,9 @@
         protected static function generateCampaignItems($campaign)
         {
             $contacts = array();
-            if ($campaign->type == Campaign::TYPE_MARKETING_LIST)
+            foreach ($campaign->marketingList->marketingListMembers as $member)
             {
-                foreach ($campaign->marketingList->marketingListMembers as $member)
-                {
-                    $contacts[] = $member->contact;
-                }
-            }
-            else
-            {
-                // TODO: @Shoaibi: Medium: Figure out a way to find contacts for second type
+                $contacts[] = $member->contact;
             }
             if (!empty($contacts))
             {

@@ -48,6 +48,11 @@
             Yii::app()->user->userModel = User::getByUsername('super');
         }
 
+        public function testGetModuleClassName()
+        {
+            $this->assertEquals('EmailMessagesModule', EmailMessageUrl::getModuleClassName());
+        }
+
         public function testCreateAndGetEmailMessageUrlById()
         {
             $emailMessageUrl                          = new EmailMessageUrl();

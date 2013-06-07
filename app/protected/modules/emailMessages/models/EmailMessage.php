@@ -91,6 +91,7 @@
                     'sendAttempts',
                     'sentDateTime',
                     'sendOnDateTime',
+                    'headers',
                 ),
                 'relations' => array(
                     'folder'        => array(RedBeanModel::HAS_ONE,  'EmailFolder', RedBeanModel::NOT_OWNED,
@@ -115,6 +116,7 @@
                     array('sendAttempts',    'numerical', 'min' => 0),
                     array('sentDateTime',    'type', 'type' => 'datetime'),
                     array('sendOnDateTime',  'type', 'type' => 'datetime'),
+                    array('headers',         'type', 'type' => 'string'),
                 ),
                 'elements' => array(
                     'sentDateTime'  => 'DateTime',

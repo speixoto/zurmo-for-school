@@ -114,7 +114,6 @@
 
         public static function getSummaryCloneQueryPath()
         {
-            // TODO: @Shoaibi/@Amit: Critical: Style and position this summary clone
             return "function() { return $(this).parent().find('.list-view-items-summary-clone');}";
         }
 
@@ -263,7 +262,7 @@
                 'data'       => 'js:$("#' . $form->getId() . '").serialize()',
                 'url'        =>  $urlScript,
                 'update'     => '#' . $this->uniquePageId,
-                'beforeSend' => 'js:function(){makeSmallLoadingSpinner("' . $this->getGridViewId() . '"); $("#' . $form->getId() . '").parent().children(".cgrid-view").addClass("loading");}',
+                'beforeSend' => 'js:function(){$(this).makeSmallLoadingSpinner("' . $this->getGridViewId() . '"); $("#' . $form->getId() . '").parent().children(".cgrid-view").addClass("loading");}',
                 'complete'   => 'js:function()
                         {
                                             $("#' . $form->getId() . '").parent().children(".cgrid-view").removeClass("loading");
@@ -273,7 +272,7 @@
             if ($this->showFilteredBySubscriptionType)
             {
                 Yii::app()->clientScript->registerScript($this->uniquePageId . '_filteredBySubscriptionType', "
-                    createButtonSetIfNotAlreadyExist('#MarketingListMembersConfigurationForm_filteredBySubscriptionType_area');
+                    $(this).createButtonSetIfNotAlreadyExist('#MarketingListMembersConfigurationForm_filteredBySubscriptionType_area');
                     $('#MarketingListMembersConfigurationForm_filteredBySubscriptionType_area').unbind('change.action').bind('change.action', function(event)
                         {
                             " . $ajaxSubmitScript . "
@@ -305,38 +304,46 @@
         protected function registerScriptsForDynamicMemberCountUpdate()
         {
             // Begin Not Coding Standard
-            Yii::app()->clientScript->registerScript($this->uniquePageId.'_dynamicMemberCountUpdate', '
-                function updateMemberStats(newCount, oldContent, elementClass)
-                {
-                    countStrippedOldContent = oldContent.substr(oldContent.indexOf(" "));
-                    $(elementClass).html(newCount + countStrippedOldContent);
-                }
+            $scriptName = $this->uniquePageId.'_dynamicMemberCountUpdate';
+            if (Yii::app()->clientScript->isScriptRegistered($scriptName))
+            {
+                return;
+            }
+            else
+            {
+                Yii::app()->clientScript->registerScript($scriptName, '
+                    function updateMemberStats(newCount, oldContent, elementClass)
+                    {
+                        countStrippedOldContent = oldContent.substr(oldContent.indexOf(" "));
+                        $(elementClass).html(newCount + countStrippedOldContent);
+                    }
 
-                $("#' . $this->getGridViewId() . ' .pager .refresh a").unbind("click.dynamicMemberCountUpdate").bind("click.dynamicMemberCountUpdate", function (event)
-                {
-                    var modelId                 = "' . $this->getModelId() . '";
-                    var subscriberCountClass    = ".' . MarketingListDetailsOverlayView::SUBSCRIBERS_STATS_CLASS . '";
-                    var unsubscriberCountClass  = ".' . MarketingListDetailsOverlayView::UNSUBSCRIBERS_STATS_CLASS . '";
-                    var subscriberHtml          = $(subscriberCountClass).html();
-                    var unsubscriberHtml        = $(unsubscriberCountClass).html();
-                    var url                     = "' . MarketingListDetailsOverlayView::getMemberCountUpdateUrl() . '";
-                    $.ajax(
-                            {
-                                url:        url,
-                                dataType:   "json",
-                                data:       { marketingListId: modelId },
-                                success:    function(data, status, request) {
-                                                updateMemberStats(data.subscriberCount, subscriberHtml, subscriberCountClass);
-                                                updateMemberStats(data.unsubscriberCount, unsubscriberHtml, unsubscriberCountClass);
-                                            },
-                                error:      function(request, status, error) {
-                                                // TODO: @Shoaibi/@Jason: Medium: What should we do here?
-                                            },
-                            }
-                        );
-                    });
-                ');
-            // End Not Coding Standard
+                    $("#' . $this->getGridViewId() . ' .pager .refresh a").unbind("click.dynamicMemberCountUpdate").bind("click.dynamicMemberCountUpdate", function (event)
+                    {
+                        var modelId                 = "' . $this->getModelId() . '";
+                        var subscriberCountClass    = ".' . MarketingListDetailsOverlayView::SUBSCRIBERS_STATS_CLASS . '";
+                        var unsubscriberCountClass  = ".' . MarketingListDetailsOverlayView::UNSUBSCRIBERS_STATS_CLASS . '";
+                        var subscriberHtml          = $(subscriberCountClass).html();
+                        var unsubscriberHtml        = $(unsubscriberCountClass).html();
+                        var url                     = "' . MarketingListDetailsOverlayView::getMemberCountUpdateUrl() . '";
+                        $.ajax(
+                                {
+                                    url:        url,
+                                    dataType:   "json",
+                                    data:       { marketingListId: modelId },
+                                    success:    function(data, status, request) {
+                                                    updateMemberStats(data.subscriberCount, subscriberHtml, subscriberCountClass);
+                                                    updateMemberStats(data.unsubscriberCount, unsubscriberHtml, unsubscriberCountClass);
+                                                },
+                                    error:      function(request, status, error) {
+                                                    // TODO: @Shoaibi/@Jason: Medium: What should we do here?
+                                                },
+                                }
+                            );
+                        });
+                    ');
+                // End Not Coding Standard
+            }
         }
 
         protected function getModelId()

@@ -51,6 +51,10 @@
             {
                 return;
             }
+            if ($language == 'nb')
+            {
+                return 'no';
+            }
             return $language;
         }
 
@@ -87,6 +91,8 @@
                         return 'dd-mm-y';
                 case 'd/MM/yy':     //en_au format
                         return 'd/mm/y';
+                case 'dd.MM.yyyy':  //tr format
+                        return 'dd.mm.yy';
                 default :
                     throw new NotImplementedException();
             }
@@ -109,6 +115,8 @@
                     return 'h:mm';
                 case 'ah:mm':       //zh_cn format
                     return 'tth:mm';
+                case 'HH.mm':       //da format
+                    return 'hh.mm';
                 default :
                     throw new NotImplementedException();
             }

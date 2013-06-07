@@ -212,7 +212,6 @@
                                             'htmlContent'       => 'This is Html content [[INVALIDTAG]]',
                                         )));
             $content = $this->runControllerWithNoExceptionsAndGetContent('emailTemplates/default/create');
-            //static::printContentAndDie($content);
             $this->assertTrue(strpos($content, 'Create Email Template') !== false);
             $this->assertFalse(strpos($content, '<select name="EmailTemplate[type]" id="EmailTemplate_type">') !== false);
             $this->assertTrue(strpos($content, '<select name="EmailTemplate[modelClassName]" id="EmailTemplate_modelClassName_value">') !== false);

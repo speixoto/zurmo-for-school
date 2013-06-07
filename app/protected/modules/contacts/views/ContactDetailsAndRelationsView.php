@@ -34,7 +34,7 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class ContactDetailsAndRelationsView extends DetailsAndRelationsView
+    class ContactDetailsAndRelationsView extends ConfigurableDetailsAndRelationsView
     {
         public function isUniqueToAPage()
         {
@@ -45,38 +45,42 @@
         {
             $metadata = array(
                 'global' => array(
-                    'leftTopView' => array(
-                        'viewClassName' => 'ContactEditAndDetailsView',
-                    ),
-                    'leftBottomView' => array(
-                        'showAsTabbed' => false,
-                        'columns' => array(
-                            array(
-                                'rows' => array(
-                                    array(
-                                        'type' => 'NoteInlineEditForPortlet'
-                                    ),
-                                    array(
-                                        'type' => 'ContactLatestActivitiesForPortlet'
-                                    ),
+                    'toolbar' => array(
+                        'elements' => array(
+                            array(  'type'           => 'AddPortletAjaxLinkOnDetailView',
+                                    'uniqueLayoutId' => 'eval:$this->uniqueLayoutId',
+                                    'ajaxOptions'    => 'eval:static::resolveAjaxOptionsForAddPortlet()',
+                                    'htmlOptions'    => array('id' => 'AddPortletLink',
+                                    'class'          => 'icon-add'
                                 )
+                            ),
+                        ),
+                    ),
+                    'columns' => array(
+                        array(
+                            'rows' => array(
+                               array(
+                                    'type' => 'ContactDetailsPortlet',
+                                ),
+                               array(
+                                    'type' => 'NoteInlineEditForPortlet',
+                                ),
+                                array(
+                                    'type' => 'ContactLatestActivitiesForPortlet',
+                                ),
                             )
-                        )
-                    ),
-                    'rightTopView' => array(
-                        'columns' => array(
-                            array(
-                                'rows' => array(
-                                    array(
-                                        'type' => 'UpcomingMeetingsForContactCalendar',
-                                    ),
-                                    array(
-                                        'type' => 'OpenTasksForContactRelatedList',
-                                    ),
-                                    array(
-                                        'type' => 'OpportunitiesForContactRelatedList',
-                                    )
-                                )
+                        ),
+                        array(
+                            'rows' => array(
+                                array(
+                                    'type' => 'UpcomingMeetingsForContactCalendar',
+                                ),
+                                array(
+                                    'type' => 'OpenTasksForContactRelatedList',
+                                ),
+                                array(
+                                    'type' => 'OpportunitiesForContactRelatedList',
+                                ),
                             )
                         )
                     )

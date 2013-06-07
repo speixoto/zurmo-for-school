@@ -39,6 +39,8 @@
      */
     class ModelAttributeToOperatorTypeUtil
     {
+        const AVAILABLE_OPERATORS_TYPE_BOOLEAN  = 'Boolean';
+
         const AVAILABLE_OPERATORS_TYPE_STRING   = 'String';
 
         const AVAILABLE_OPERATORS_TYPE_NUMBER   = 'Number';

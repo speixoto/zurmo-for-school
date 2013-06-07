@@ -715,7 +715,7 @@
             assert('$methodToCall == "getNonRequiredAttributesForActions" ||
                     $methodToCall == "getRequiredAttributesForActions" ||
                     $methodToCall == "getAllAttributesForActions"');
-            if(($this->type == self::TYPE_CREATE || $this->type == self::TYPE_CREATE_RELATED) &&
+            if (($this->type == self::TYPE_CREATE || $this->type == self::TYPE_CREATE_RELATED) &&
                 is_subclass_of($modelClassName, 'OwnedSecurableItem') &&
                 ($methodToCall == 'getRequiredAttributesForActions' || $methodToCall == 'getAllAttributesForActions'))
             {
@@ -727,7 +727,7 @@
                 {
                     $attributeFormsIndexedByAttribute['permissions'] =
                         WorkflowActionAttributeFormFactory::make($modelClassName, 'permissions');
-                    if($methodToCall == 'getRequiredAttributesForActions')
+                    if ($methodToCall == 'getRequiredAttributesForActions')
                     {
                         $attributeFormsIndexedByAttribute['permissions']->shouldSetValue = true;
                     }

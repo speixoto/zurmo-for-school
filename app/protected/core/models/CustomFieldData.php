@@ -49,7 +49,7 @@
          * @return CustomFieldData model
          * @throws NotFoundException
          */
-        public static function getByName($name)
+        public static function getByName($name, $shouldCache = true)
         {
             if (isset(self::$cachedModelsByName[$name]))
             {
@@ -77,8 +77,11 @@
                 {
                     $customFieldData = self::makeModel($bean);
                 }
-                self::$cachedModelsByName[$name] = $customFieldData;
-                GeneralCache::cacheEntry('CustomFieldData' . $name, $customFieldData);
+                if ($shouldCache)
+                {
+                    self::$cachedModelsByName[$name] = $customFieldData;
+                    GeneralCache::cacheEntry('CustomFieldData' . $name, $customFieldData);
+                }
                 return $customFieldData;
             }
         }

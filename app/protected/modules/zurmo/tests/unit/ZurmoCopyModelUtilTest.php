@@ -136,7 +136,6 @@
             $testItem->primaryEmail->emailAddress = 'bob.bobson@something.com';
             $testItem->primaryAddress->street1    = 'some street';
 
-
             $testItem->owner         = Yii::app()->user->userModel;
             $testItem->currencyValue = $currencyValue;
 
@@ -178,7 +177,6 @@
             $testItem->hasMany->add($testItem3_1);
             $testItem->hasMany->add($testItem3_2);
             $testItem->hasOneAlso    = $testItem4;
-
 
             $this->assertTrue($testItem->save());
             $testItem->addPermissions(self::$groupA, Permission::READ_WRITE_CHANGE_PERMISSIONS_CHANGE_OWNER);

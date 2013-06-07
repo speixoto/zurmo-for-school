@@ -74,18 +74,16 @@
             static::$personId               = $contact->getClassId('Person');
             static::$autoresponderItemId    = $autoresponderItem->id;
             $campaign                       = CampaignTestHelper::createCampaign('campaign 01',
-                                                                                    'subject 01',
-                                                                                    'text Content 01',
-                                                                                    'html Content 01',
-                                                                                    'fromName 01',
-                                                                                    'fromAddress01@zurmo.com',
-                                                                                    null,
-                                                                                    Campaign::TYPE_MARKETING_LIST,
-                                                                                    null,
-                                                                                    null,
-                                                                                    null,
-                                                                                    null,
-                                                                                    $marketingList);
+                                                                                 'subject 01',
+                                                                                 'text Content 01',
+                                                                                 'html Content 01',
+                                                                                 'fromName 01',
+                                                                                 'fromAddress01@zurmo.com',
+                                                                                 null,
+                                                                                 Campaign::STATUS_ACTIVE,
+                                                                                 null,
+                                                                                 null,
+                                                                                 $marketingList);
             $processed                      = 0;
             $campaignItem                   = CampaignItemTestHelper::createCampaignItem($processed, $campaign, $contact);
             static::$campaignItemId         = $campaignItem->id;
@@ -93,39 +91,39 @@
             ReadPermissionsOptimizationUtil::rebuild();
         }
 
-        public function testGuestUserCanAccessTrackActionAndThrowsNotSupportedExceptionWithoutHash()
+        public function testGuestUserCanAccessTrackActionAndReturnsNothingWithoutHash()
         {
-            $this->runControllerWithNotSupportedExceptionAndGetContent(static::TRACK_ROUTE);
+            $this->runControllerWithNoExceptionsAndGetContent(static::TRACK_ROUTE, true);
         }
 
         /**
-         * @depends testGuestUserCanAccessTrackActionAndThrowsNotSupportedExceptionWithoutHash
+         * @depends testGuestUserCanAccessTrackActionAndReturnsNothingWithoutHash
          */
-        public function testTrackActionThrowsNotSupportedExceptionForNonHexadecimalHash()
+        public function testTrackActionReturnsNothingForNonHexadecimalHash()
         {
             $hash       = 'Bo9iemeigh6muath8chu2leThohn8Abimoh5rebaihei4aiM1uFoThaith9eng1sei8aisuHu1ugoophiewoe1ieloo';
             $this->setGetArray(array(
                 'id'    => $hash,
             ));
-            $this->runControllerWithNotSupportedExceptionAndGetContent(static::TRACK_ROUTE);
+            $this->runControllerWithNoExceptionsAndGetContent(static::TRACK_ROUTE, true);
         }
 
         /**
-         * @depends testTrackActionThrowsNotSupportedExceptionForNonHexadecimalHash
+         * @depends testTrackActionReturnsNothingForNonHexadecimalHash
          */
-        public function testTrackActionThrowsNotSupportedExceptionForIndecipherableHexadecimalHash()
+        public function testTrackActionReturnsNothingForIndecipherableHexadecimalHash()
         {
             $hash       = 'DEDF8F6C80D20528130EBBFBD293E49C9E2F0CBFDE8995FFE4EEAD8EC8F00B70';
             $this->setGetArray(array(
                 'id'    => $hash,
             ));
-            $this->runControllerWithNotSupportedExceptionAndGetContent(static::TRACK_ROUTE);
+            $this->runControllerWithNoExceptionsAndGetContent(static::TRACK_ROUTE, true);
         }
 
         /**
-         * @depends testTrackActionThrowsNotSupportedExceptionForIndecipherableHexadecimalHash
+         * @depends testTrackActionReturnsNothingForIndecipherableHexadecimalHash
          */
-        public function testTrackActionThrowsNotSupportedExceptionForDecipherableHexadecimalHashWithMissingParameters()
+        public function testTrackActionReturnsNothingForDecipherableHexadecimalHashWithMissingParameters()
         {
             $queryStringArray = array(
                 'keyOne'    => 'valueOne',
@@ -138,13 +136,13 @@
             $this->setGetArray(array(
                 'id'    => $hash,
             ));
-            $this->runControllerWithNotSupportedExceptionAndGetContent(static::TRACK_ROUTE);
+            $this->runControllerWithNoExceptionsAndGetContent(static::TRACK_ROUTE, true);
         }
 
         /**
-         * @depends testTrackActionThrowsNotSupportedExceptionForDecipherableHexadecimalHashWithMissingParameters
+         * @depends testTrackActionReturnsNothingForDecipherableHexadecimalHashWithMissingParameters
          */
-        public function testTrackActionThrowsNotFoundExceptionForInvalidModelId()
+        public function testTrackActionReturnsNothingForInvalidModelId()
         {
             $queryStringArray = array(
                 'modelId'   => 100,
@@ -157,13 +155,13 @@
             $this->setGetArray(array(
                 'id'    => $hash,
             ));
-            $this->runControllerWithNotFoundExceptionAndGetContent(static::TRACK_ROUTE);
+            $this->runControllerWithNoExceptionsAndGetContent(static::TRACK_ROUTE, true);
         }
 
         /**
-         * @depends testTrackActionThrowsNotFoundExceptionForInvalidModelId
+         * @depends testTrackActionReturnsNothingForInvalidModelId
          */
-        public function testTrackActionThrowsNotFoundExceptionForInvalidPersonlId()
+        public function testTrackActionReturnsNothingForInvalidPersonlId()
         {
             $queryStringArray = array(
                 'modelId'   => static::$autoresponderItemId,
@@ -176,13 +174,13 @@
             $this->setGetArray(array(
                 'id'    => $hash,
             ));
-            $this->runControllerWithNotFoundExceptionAndGetContent(static::TRACK_ROUTE);
+            $this->runControllerWithNoExceptionsAndGetContent(static::TRACK_ROUTE, true);
         }
 
         /**
-         * @depends testTrackActionThrowsNotFoundExceptionForInvalidPersonlId
+         * @depends testTrackActionReturnsNothingForInvalidPersonlId
          */
-        public function testTrackActionDoesNotThrowsExceptionForMissingUrlParameterForAutoresponderItem()
+        public function testTrackActionDoesNotComplainForMissingUrlParameterForAutoresponderItem()
         {
             $queryStringArray = array(
                 'modelId'   => static::$autoresponderItemId,
@@ -212,7 +210,7 @@
         }
 
         /**
-         * @depends testTrackActionDoesNotThrowsExceptionForMissingUrlParameterForAutoresponderItem
+         * @depends testTrackActionDoesNotComplainForMissingUrlParameterForAutoresponderItem
          */
         public function testTrackActionThrowsRedirectExceptionForUrlParameterForAutoresponderItem()
         {
@@ -241,9 +239,9 @@
         }
 
         /**
-         * @depends testTrackActionThrowsNotFoundExceptionForInvalidPersonlId
+         * @depends testTrackActionReturnsNothingForInvalidPersonlId
          */
-        public function testTrackActionDoesNotThrowsExceptionForMissingUrlParameterForCampaignItem()
+        public function testTrackActionDoesNotComplainForMissingUrlParameterForCampaignItem()
         {
             $queryStringArray = array(
                 'modelId'   => static::$campaignItemId,
@@ -273,7 +271,7 @@
         }
 
         /**
-         * @depends testTrackActionDoesNotThrowsExceptionForMissingUrlParameterForCampaignItem
+         * @depends testTrackActionDoesNotComplainForMissingUrlParameterForCampaignItem
          */
         public function testTrackActionThrowsRedirectExceptionForUrlParameterForCampaignItem()
         {

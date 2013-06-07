@@ -45,7 +45,7 @@
             form: 'form',
             bind: 'click',
             clear: "input[type!='submit'][type!='button'][type!='hidden'][type!='reset'][type!=checkbox], textarea, select",
-            clearCheckbox: "input[type=checkbox][class!='ignoreclearform']",
+            clearCheckbox: "input[type=checkbox][class!='ignore-clearform']",
             css: {},
             complete: function () {}
         };
@@ -64,7 +64,7 @@
     }
 })(jQuery);
 
-function attachLoadingOnSubmit(formId)
+$.fn.attachLoadingOnSubmit = function(formId)
 {
     if($('#' + formId).find(".attachLoading:first").hasClass("loading-ajax-submit"))
     {
@@ -75,18 +75,18 @@ function attachLoadingOnSubmit(formId)
         return false;
     }
     $('#' + formId).find(".attachLoading:first").addClass("loading");
-    makeOrRemoveLoadingSpinner(true, $('#' + formId).find(".attachLoading:first"));
+    $(this).makeOrRemoveLoadingSpinner(true, $('#' + formId).find(".attachLoading:first"));
 
     return true;
-}
+};
 
-function detachLoadingOnSubmit(formId)
+$.fn.detachLoadingOnSubmit = function(formId)
 {
     $('#' + formId).find(".attachLoading:first").removeClass("loading");
     $('#' + formId).find(".attachLoading:first").removeClass("loading-ajax-submit");
-}
+};
 
-function beforeValidateAction(form)
+$.fn.beforeValidateAction = function(form)
 {
     var context;
     if(form.find(".attachLoadingTarget").hasClass("loading") || form.find(".attachLoading:first").hasClass("loading"))
@@ -105,11 +105,11 @@ function beforeValidateAction(form)
         context.addClass("loading");
         context.addClass("loading-ajax-submit");
     }
-    makeOrRemoveLoadingSpinner(true, context);
+    $(this).makeOrRemoveLoadingSpinner(true, context);
     return true;
-}
+};
 
-function afterValidateAction(form, data, hasError)
+$.fn.afterValidateAction = function(form, data, hasError)
 {
     if(hasError)
     {
@@ -130,11 +130,11 @@ function afterValidateAction(form, data, hasError)
     {
         return true;
     }
-}
+};
 
-function afterValidateAjaxAction(form, data, hasError)
+$.fn.afterValidateAjaxAction = function(form, data, hasError)
 {
-    if(!afterValidateAction(form, data, hasError))
+    if(!$(this).afterValidateAction(form, data, hasError))
     {
         return false;
     }
@@ -142,12 +142,12 @@ function afterValidateAjaxAction(form, data, hasError)
         eval($(form).data('settings').afterValidateAjax);
     }
     return false;
-}
+};
 
-function searchByQueuedSearch(inputId)
+$.fn.searchByQueuedSearch = function(inputId)
 {
     if(basicSearchQueued == 0)
     {
         $('#' + inputId).closest('form').submit();
     }
-}
+};

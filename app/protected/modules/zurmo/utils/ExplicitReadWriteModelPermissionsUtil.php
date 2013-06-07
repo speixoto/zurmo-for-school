@@ -329,13 +329,13 @@
             if ($saveSecurableItem)
             {
                 $setBackToProcess     = false;
-                if($securableItem->shouldProcessWorkflowOnSave())
+                if ($securableItem->shouldProcessWorkflowOnSave())
                 {
                     $securableItem->setDoNotProcessWorkflowOnSave();
                     $setBackToProcess = true;
                 }
                 $saved = $securableItem->save();
-                if($setBackToProcess)
+                if ($setBackToProcess)
                 {
                     $securableItem->setProcessWorkflowOnSave();
                 }

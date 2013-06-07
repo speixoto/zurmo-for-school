@@ -34,65 +34,15 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * Base class used for wrapping model detail views into a portlet ready view.
-     *
-     */
-    abstract class DetailsForPortletView extends ConfigurableMetadataView implements PortletViewInterface
+    class ProductNameRelatedListViewColumnAdapter extends TextListViewColumnAdapter
     {
-        protected $params;
-
-        protected $controllerId;
-
-        protected $moduleId;
-
-        protected $model;
-
-        protected $uniqueLayoutId;
-
-        protected $viewData;
-
-        public function __construct($viewData, $params, $uniqueLayoutId)
+        public function renderGridViewData()
         {
-            assert('isset($params["controllerId"])');
-            assert('isset($params["relationModuleId"])');
-            assert('isset($params["relationModel"])');
-            $this->viewData       = $viewData;
-            $this->params         = $params;
-            $this->controllerId   = $params["controllerId"];
-            $this->moduleId       = $params["relationModuleId"];
-            $this->model          = $params["relationModel"];
-            $this->uniqueLayoutId = $uniqueLayoutId;
-        }
-
-        public static function getDefaultMetadata()
-        {
-            return array(
-                'perUser' => array(
-                    'title' => null,
-                ),
-            );
-        }
-
-        public function renderContent()
-        {
-            $viewClassName = $this->getDetailsViewClassName();
-            $view = new $viewClassName('Details', $this->controllerId, $this->moduleId, $this->model);
-            return $view->render();
-        }
-
-        public static function canUserConfigure()
-        {
-            return false;
-        }
-
-        /**
-         * What kind of PortletRules this view follows
-         * @return PortletRulesType as string.
-         */
-        public static function getPortletRulesType()
-        {
-            return 'ModelDetails';
+                return array(
+                    'name'  => $this->attribute,
+                    'value' => array('ProductElementUtil', 'getProductNameLinkString'),
+                    'type'  => 'raw',
+                );
         }
     }
 ?>

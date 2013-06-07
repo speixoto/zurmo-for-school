@@ -190,6 +190,13 @@
             );
         }
 
+        protected function getCGridViewParams()
+        {
+            return array_merge(parent::getCGridViewParams(),
+                        array('hideHeader'     => true,
+                              'itemsCssClass'  => 'items stacked-list'));
+        }
+
         protected function getPortletId()
         {
             return ArrayUtil::getArrayValueWithExceptionIfNotFound($this->params, 'portletId');

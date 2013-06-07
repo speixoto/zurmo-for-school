@@ -48,6 +48,16 @@
             Yii::app()->user->userModel = User::getByUsername('super');
         }
 
+        public function testGetGamificationRulesType()
+        {
+            $this->assertEquals('MarketingListGamification', MarketingList::getGamificationRulesType());
+        }
+
+        public function testHasPermissions()
+        {
+            $this->assertTrue(MarketingList::hasPermissions());
+        }
+
         public function testCreateAndGetMarketingListById()
         {
             $marketingList = new MarketingList();
@@ -96,12 +106,23 @@
             $this->assertEquals('Marketing Lists', $marketingLists[0]::getModelLabelByTypeAndLanguage('Plural'));
         }
 
+        public function testGetByOpenSubscription()
+        {
+            MarketingListTestHelper::createMarketingListByName('anyoneCanSubscribe', 'Some description',
+                                                                                        'Zurmo', 'from@zurmo.com', 1);
+            $anyoneCanSubscribeMarketingLists = MarketingList::getByAnyoneCanSubscribe(1);
+            $this->assertNotEmpty($anyoneCanSubscribeMarketingLists);
+            $this->assertCount(1, $anyoneCanSubscribeMarketingLists);
+            $closeSubscriptionMarketingLists = MarketingList::getByAnyoneCanSubscribe(0);
+            $this->assertNotEmpty($closeSubscriptionMarketingLists);
+            $this->assertCount(1, $closeSubscriptionMarketingLists);
+        }
+
         /**
          * @depends testCreateAndGetMarketingListById
          */
         public function testDeleteMarketingList()
         {
-            MarketingListTestHelper::createMarketingListByName('Test Marketing List2', 'Description');
             $marketingLists = MarketingList::getAll();
             $this->assertEquals(2, count($marketingLists));
             $marketingLists[0]->delete();

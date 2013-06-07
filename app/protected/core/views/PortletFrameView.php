@@ -72,25 +72,38 @@
             return $portlets;
         }
 
-        protected function renderPortlets($uniqueLayoutId, $portletsAreCollapsible = true, $portletsAreMovable = true)
+        protected function renderPortlets($uniqueLayoutId, $portletsAreCollapsible = true, $portletsAreMovable = true, $portletsAreRemovable = true)
         {
             assert('is_string($uniqueLayoutId)');
             assert('is_bool($portletsAreCollapsible)');
             assert('is_bool($portletsAreMovable)');
+            assert('is_bool($portletsAreRemovable)');
             $juiPortletsWidgetItems = array();
             foreach ($this->portlets as $column => $columnPortlets)
             {
                 foreach ($columnPortlets as $position => $portlet)
                 {
+                    $className = get_class($portlet->getView());
+                    //TODO @Mayank, If i am calling the following if else as a function it doesn't work
+                    if (method_exists($className, 'canUserRemove'))
+                    {
+                        $removable      = $className::canUserRemove();
+                    }
+                    else
+                    {
+                        $removable      = $portletsAreRemovable;
+                    }
                     $juiPortletsWidgetItems[$column][$position] = array(
-                        'id'          => $portlet->id,
-                        'uniqueId'    => $portlet->getUniquePortletPageId(),
-                        'title'       => $portlet->getTitle(),
-                        'content'     => $portlet->renderContent(),
-                        'editable'    => $portlet->isEditable(),
-                        'collapsed'   => $portlet->collapsed,
-                        'removable'   => $this->arePortletsRemovable(),
-                        'uniqueClass' => $this->resolveUniqueClass($portlet)
+                        'id'            => $portlet->id,
+                        'uniqueId'      => $portlet->getUniquePortletPageId(),
+                        'title'         => $portlet->getTitle(),
+                        'content'       => $portlet->renderContent(),
+                        'headContent'   => $portlet->renderHeadContent(),
+                        'editable'      => $portlet->isEditable(),
+                        'collapsed'     => $portlet->collapsed,
+                        'removable'     => $removable,
+                        'uniqueClass'   => $this->resolveUniqueClass($portlet),
+                        'portletParams' => $portlet->getPortletParams(),
                     );
                 }
             }

@@ -137,8 +137,8 @@
 
             $filter = new FilterForReportForm('ContactsModule', 'Contact', $report->getType());
             $filter->attributeIndexOrDerivedType = 'primaryEmail___optOut';
-            $filter->value                       = true;
-            $filter->operator                    = OperatorRules::TYPE_DOES_NOT_EQUAL;
+            $filter->value                       = false;
+            $filter->operator                    = OperatorRules::TYPE_EQUALS;
             $report->addFilter($filter);
 
             $displayAttribute = new DisplayAttributeForReportForm('ContactsModule', 'Contact', $report->getType());

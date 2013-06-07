@@ -141,11 +141,11 @@
                     $processedAttributes[] = $attribute;
                 }
             }
-            if($create)
+            if ($create)
             {
-                foreach($action->resolveAllActionAttributeFormsAndLabelsAndSort() as $attribute => $actionAttribute)
+                foreach ($action->resolveAllActionAttributeFormsAndLabelsAndSort() as $attribute => $actionAttribute)
                 {
-                    if(!in_array($attribute, $processedAttributes) && $actionAttribute->resolveValueBeforeSave() &&
+                    if (!in_array($attribute, $processedAttributes) && $actionAttribute->resolveValueBeforeSave() &&
                        $actionAttribute->shouldSetNullAlternativeValue())
                     {
                         if (null === $relation = ActionForWorkflowForm::resolveFirstRelationName($attribute))

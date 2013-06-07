@@ -73,9 +73,8 @@
                     'campaign'                      => array(RedBeanModel::HAS_ONE, 'Campaign', RedBeanModel::NOT_OWNED),
                 ),
                 'rules' => array(
-                    array('processed',              'type', 'type' => 'integer'),
-                    array('processed',              'default', 'value' => 0),
-                    array('processed',              'numerical', 'min' => 0, 'max' => 1),
+                    array('processed',              'boolean'),
+                    array('processed',              'default', 'value' => false),
                 ),
                 'elements' => array(
                 ),
@@ -110,7 +109,7 @@
             return self::getSubset($joinTablesAdapter, null, $pageSize, $where, null);
         }
 
-        public static function getByProcessedAndSendingDateTime($processed, $timestamp = null, $pageSize = null)
+        public static function getByProcessedAndSendOnDateTime($processed, $timestamp = null, $pageSize = null)
         {
             if (empty($timestamp))
             {
@@ -127,7 +126,7 @@
                 ),
                 2 => array(
                     'attributeName'             => 'campaign',
-                    'relatedAttributeName'      => 'sendingDateTime',
+                    'relatedAttributeName'      => 'sendOnDateTime',
                     'operatorType'              => 'lessThan',
                     'value'                     => $dateTime,
                 ),
@@ -138,7 +137,7 @@
             return self::getSubset($joinTablesAdapter, null, $pageSize, $where, null);
         }
 
-        public static function getByProcessedAndStatusAndSendingDateTime($processed, $status, $timestamp = null, $pageSize = null)
+        public static function getByProcessedAndStatusAndSendOnDateTime($processed, $status, $timestamp = null, $pageSize = null)
         {
             if (empty($timestamp))
             {
@@ -162,7 +161,7 @@
                 ),
                 3 => array(
                     'attributeName'             => 'campaign',
-                    'relatedAttributeName'      => 'sendingDateTime',
+                    'relatedAttributeName'      => 'sendOnDateTime',
                     'operatorType'              => 'lessThan',
                     'value'                     => $dateTime,
                 ),
@@ -222,6 +221,119 @@
                 throw new FailedToSaveModelException();
             }
             return $saved;
+        }
+
+        /**
+         * Return true if the related email message is id < 0 or it is created, but the
+         * @return bool
+         */
+        public function isQueuedOrSkipped()
+        {
+            if ($this->emailMessage->id < 0 || $this->emailMessage->folder->type ==  EmailFolder::TYPE_OUTBOX)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        /**
+         * @return bool
+         */
+        public function isSkipped()
+        {
+            $count = CampaignItemActivity::getChildActivityByTypeAndModelIdAndModelRelationNameAndPersonIdAndUrl(
+                                           CampaignItemActivity::TYPE_SKIP, $this->id, 'campaignItem',
+                                           $this->contact->getClassId('Person'), null, 'latestDateTime', null, true);
+            if ($count > 0)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        /**
+         * Return true if the email message has been sent
+         * @return bool
+         */
+        public function isSent()
+        {
+            if ($this->emailMessage->id > 0 && $this->emailMessage->folder->type ==  EmailFolder::TYPE_SENT)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        /**
+         * @return bool
+         */
+        public function hasFailedToSend()
+        {
+            if ($this->emailMessage->id > 0 && $this->emailMessage->folder->type ==  EmailFolder::TYPE_OUTBOX_FAILURE)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        /**
+         * @return bool;
+         */
+        public function hasAtLeastOneOpenActivity()
+        {
+            $count = CampaignItemActivity::getChildActivityByTypeAndModelIdAndModelRelationNameAndPersonIdAndUrl(
+                                           CampaignItemActivity::TYPE_OPEN, $this->id, 'campaignItem',
+                                           $this->contact->getClassId('Person'), null, 'latestDateTime', null, true);
+            if ($count > 0)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        /**
+         * @return bool;
+         */
+        public function hasAtLeastOneClickActivity()
+        {
+            $count = CampaignItemActivity::getChildActivityByTypeAndModelIdAndModelRelationNameAndPersonIdAndUrl(
+                                           CampaignItemActivity::TYPE_CLICK, $this->id, 'campaignItem',
+                                           $this->contact->getClassId('Person'), null, 'latestDateTime', null, true);
+            if ($count > 0)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        /**
+         * @return bool;
+         */
+        public function hasAtLeastOneUnsubscribeActivity()
+        {
+             $count = CampaignItemActivity::getChildActivityByTypeAndModelIdAndModelRelationNameAndPersonIdAndUrl(
+                                           CampaignItemActivity::TYPE_UNSUBSCRIBE, $this->id, 'campaignItem',
+                                           $this->contact->getClassId('Person'), null, 'latestDateTime', null, true);
+            if ($count > 0)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        /**
+         * @return bool;
+         */
+        public function hasAtLeastOneBounceActivity()
+        {
+            $count = CampaignItemActivity::getChildActivityByTypeAndModelIdAndModelRelationNameAndPersonIdAndUrl(
+                                           CampaignItemActivity::TYPE_BOUNCE, $this->id, 'campaignItem',
+                                           $this->contact->getClassId('Person'), null, 'latestDateTime', null, true);
+            if ($count > 0)
+            {
+                return true;
+            }
+            return false;
         }
     }
 ?>

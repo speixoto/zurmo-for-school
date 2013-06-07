@@ -44,7 +44,6 @@
         public $username;
         public $password;
         public $security;
-        public $userIdOfUserToSendNotificationsAs;
         public $aTestToAddress;
 
         public function rules()
@@ -62,8 +61,6 @@
                 array('password',                          'length',    'min'  => 1, 'max' => 64),
                 array('security',                          'type',      'type' => 'string'),
                 array('security',                          'length',    'min'  => 0, 'max' => 3),
-                array('userIdOfUserToSendNotificationsAs', 'type',      'type' => 'integer'),
-                array('userIdOfUserToSendNotificationsAs', 'numerical', 'min'  => 1),
                 array('aTestToAddress',                    'email'),
             );
         }
@@ -76,7 +73,6 @@
                 'username'                             => Zurmo::t('EmailMessagesModule', 'Username'),
                 'password'                             => Zurmo::t('EmailMessagesModule', 'Password'),
                 'security'                             => Zurmo::t('EmailMessagesModule', 'Extra Mail Settings'),
-                'userIdOfUserToSendNotificationsAs'    => Zurmo::t('EmailMessagesModule', 'Send system notifications from'),
                 'aTestToAddress'                       => Zurmo::t('EmailMessagesModule', 'Send a test email to')
             );
         }

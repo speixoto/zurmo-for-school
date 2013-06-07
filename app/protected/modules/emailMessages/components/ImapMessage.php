@@ -66,5 +66,7 @@
         public $msgNumber;
 
         public $msgId;
+
+        public $headers     = array();
     }
 ?>

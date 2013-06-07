@@ -110,7 +110,7 @@
             $content    = $this->runControllerWithNoExceptionsAndGetContent('marketingLists/default/list');
             $this->assertTrue(strpos($content, '2 result(s)') !== false);
             $this->assertEquals(2, substr_count($content, 'MarketingListName'));
-            $this->assertTrue(strpos($content, 'Clark Kent') === false);
+            $this->assertTrue(strpos($content, 'Clark Kent') !== false);
 
             StickyReportUtil::clearDataByKey('MarketingListsSearchForm');
             $this->setGetArray(array(
@@ -245,7 +245,7 @@
             $this->assertTrue(strpos($content, '<span>Options</span></a>') !== false);
             $this->assertTrue(strpos($content, '<span>Edit</span></a></li>') !== false);
             $this->assertTrue(strpos($content, '<span>Delete</span></a></li>') !== false);
-            $this->assertTrue(strpos($content, '<h3>Contacts/Leads</h3></div>') !== false);
+            $this->assertTrue(strpos($content, '<h3>Contacts/Leads</h3>') !== false);
             $this->assertTrue(strpos($content, '<span>Add Contact/Lead</span></a>') !== false);
             $this->assertTrue(strpos($content, 'From Contacts/Leads</label>') !== false);
             $this->assertTrue(strpos($content, 'From Report</label>') !== false);

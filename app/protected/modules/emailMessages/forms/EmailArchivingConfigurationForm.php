@@ -37,49 +37,7 @@
     /**
      * Form to all editing and viewing of email archiving configuration values in the user interface.
      */
-    class EmailArchivingConfigurationForm extends ConfigurationForm
+    class EmailArchivingConfigurationForm extends ImapConfigurationForm
     {
-        public $imapHost;
-        public $imapUsername;
-        public $imapPassword;
-        public $imapPort;
-        public $imapSSL;
-        public $imapFolder;
-        public $testImapConnection;
-
-        public function rules()
-        {
-            return array(
-                array('imapHost',                          'required'),
-                array('imapHost',                          'type',      'type' => 'string'),
-                array('imapHost',                          'length',    'min'  => 1, 'max' => 64),
-                array('imapUsername',                      'required'),
-                array('imapUsername',                      'type',      'type' => 'string'),
-                array('imapUsername',                      'length',    'min'  => 1, 'max' => 64),
-                array('imapPassword',                      'required'),
-                array('imapPassword',                      'type',      'type' => 'string'),
-                array('imapPassword',                      'length',    'min'  => 1, 'max' => 64),
-                array('imapPort',                          'required'),
-                array('imapPort',                          'type',      'type' => 'integer'),
-                array('imapPort',                          'numerical', 'min'  => 1),
-                array('imapSSL',                           'boolean'),
-                array('imapFolder',                        'required'),
-                array('imapFolder',                        'type',      'type' => 'string'),
-                array('imapFolder',                        'length',    'min'  => 1, 'max' => 64),
-            );
-        }
-
-        public function attributeLabels()
-        {
-            return array(
-                'imapHost'                             => Zurmo::t('ZurmoModule', 'Host'),
-                'imapUsername'                         => Zurmo::t('EmailMessagesModule', 'Username'),
-                'imapPassword'                         => Zurmo::t('EmailMessagesModule', 'Password'),
-                'imapPort'                             => Zurmo::t('ZurmoModule', 'Port'),
-                'imapSSL'                              => Zurmo::t('EmailMessagesModule', 'SSL connection'),
-                'imapFolder'                           => Zurmo::t('EmailMessagesModule', 'Folder'),
-                'testImapConnection'                   => Zurmo::t('EmailMessagesModule', 'Test IMAP connection'),
-            );
-        }
     }
 ?>

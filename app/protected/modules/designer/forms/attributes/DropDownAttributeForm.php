@@ -210,5 +210,17 @@
         {
             return CustomFieldDataModelUtil::getModelPluralNameAndAttributeLabelsByName($this->customFieldDataName);
         }
+
+        /**
+         * Override to handle the case when the attributeName was already created used in another module
+         */
+        public function validateAttributeNameDoesNotExists()
+        {
+            parent::validateAttributeNameDoesNotExists();
+            if (CustomFieldData::getByName($this->attributeName, false)->id > 0)
+            {
+                $this->addError('attributeName', Zurmo::t('DesignerModule', 'A field with this name and data is already used in another module.'));
+            }
+        }
     }
 ?>

@@ -148,7 +148,7 @@
             {
                 //nothing to render
             }
-            elseif($formType == WorkflowEmailMessageRecipientForm::TYPE_DYNAMIC_TRIGGERED_MODEL_RELATION)
+            elseif ($formType == WorkflowEmailMessageRecipientForm::TYPE_DYNAMIC_TRIGGERED_MODEL_RELATION)
             {
                 $relationElement        = new ModelRelationForEmailMessageRecipientStaticDropDownElement(
                                           $this->model, 'relation', $this->form, $params);

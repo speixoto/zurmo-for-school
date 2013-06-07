@@ -600,7 +600,7 @@
                 {
                     foreach ($inferredRelationModelClassNames as $modelClassName)
                     {
-                        if($onlyIncludeThisModelClassName === null || $onlyIncludeThisModelClassName == $modelClassName)
+                        if ($onlyIncludeThisModelClassName === null || $onlyIncludeThisModelClassName == $modelClassName)
                         {
                             if (!$this->inferredRelationLinksToPrecedingRelation($modelClassName,
                                 $attribute, $precedingModel, $precedingRelation))
@@ -1041,7 +1041,7 @@
                     foreach ($metadata[$modelClassName]["derivedRelationsViaCastedUpModel"] as $relation => $derivedRelationData)
                     {
                         $relationModelClassName = $this->model->getDerivedRelationModelClassName($relation);
-                        if($onlyIncludeThisModelClassName === null || $relationModelClassName == $onlyIncludeThisModelClassName)
+                        if ($onlyIncludeThisModelClassName === null || $relationModelClassName == $onlyIncludeThisModelClassName)
                         {
                             if (!$this->derivedRelationLinksToPrecedingRelation(
                                 $relationModelClassName,
