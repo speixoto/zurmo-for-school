@@ -50,10 +50,10 @@
             $moduleClassName = get_class($this->getModule());
             return array(
                 array(
-                    ZurmoBaseController::ADMIN_VIEW_MOBILE_CHECK_FILTER_PATH . ' + configurationEdit, configurationEditOutbound, configurationEditArchiving',
+                    ZurmoBaseController::ADMIN_VIEW_MOBILE_CHECK_FILTER_PATH . ' + configurationEdit, configurationEditOutbound, actionConfigurationEditImap',
                 ),
                 array(
-                    ZurmoBaseController::RIGHTS_FILTER_PATH . ' + configurationEdit, configurationEditOutbound, configurationEditArchiving',
+                    ZurmoBaseController::RIGHTS_FILTER_PATH . ' + configurationEdit, configurationEditOutbound, actionConfigurationEditImap',
                     'moduleClassName' => $moduleClassName,
                     'rightName'       => EmailMessagesModule::RIGHT_ACCESS_CONFIGURATION,
                ),
@@ -115,23 +115,35 @@
             echo $view->render();
         }
 
-        public function actionConfigurationEditArchiving()
+        public function actionConfigurationEditImap($type = 1)
         {
-            $configurationForm = EmailArchivingConfigurationFormAdapter::makeFormFromGlobalConfiguration();
+            $type   = intval($type);
+            if ($type < 1 || $type > 2 )
+            {
+                throw new CHttpException(400);
+            }
+            $adapterClassName   = 'EmailArchivingConfigurationFormAdapter';
+            $editViewClassName  = 'EmailArchivingConfigurationEditAndDetailsView';
+            $successMessage     = Zurmo::t('EmailMessagesModule', 'Email archiving configuration saved successfully.');
+            if ($type == 2)
+            {
+                $adapterClassName   = 'BounceConfigurationFormAdapter';
+                $editViewClassName  = 'BounceConfigurationEditAndDetailsView';
+                $successMessage     = Zurmo::t('EmailMessagesModule', 'Bounce configuration saved successfully.');
+            }
+            $configurationForm = $adapterClassName::makeFormFromGlobalConfiguration();
             $postVariableName   = get_class($configurationForm);
             if (isset($_POST[$postVariableName]))
             {
                 $configurationForm->setAttributes($_POST[$postVariableName]);
                 if ($configurationForm->validate())
                 {
-                    EmailArchivingConfigurationFormAdapter::setConfigurationFromForm($configurationForm);
-                    Yii::app()->user->setFlash('notification',
-                        Zurmo::t('EmailMessagesModule', 'Email configuration saved successfully.')
-                    );
+                    $adapterClassName::setConfigurationFromForm($configurationForm);
+                    Yii::app()->user->setFlash('notification', $successMessage);
                     $this->redirect(Yii::app()->createUrl('configuration/default/index'));
                 }
             }
-            $editView = new EmailArchivingConfigurationEditAndDetailsView(
+            $editView = new $editViewClassName(
                                     'Edit',
                                     $this->getId(),
                                     $this->getModule()->getId(),

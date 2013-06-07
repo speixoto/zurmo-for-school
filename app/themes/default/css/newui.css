@@ -343,6 +343,10 @@ a.ModalGameNotification a,
 #delete-form,
 .right-side-edit-view-panel,
 .pager ul,
+#MarketingListsExternalActionsPageView > .GridView,
+#MarketingListsManageSubscriptionsPageView > .GridView,
+#MarketingListsExternalActionsPageView .Warning,
+#MarketingListsManageSubscriptionsPageView .Warning,
 #kanban-board,
 #ContactWebFormEditAndDetailsView .ui-sortable {
   zoom: 1;
@@ -353,6 +357,10 @@ a.ModalGameNotification a,
 #delete-form:before,
 .right-side-edit-view-panel:before,
 .pager ul:before,
+#MarketingListsExternalActionsPageView > .GridView:before,
+#MarketingListsManageSubscriptionsPageView > .GridView:before,
+#MarketingListsExternalActionsPageView .Warning:before,
+#MarketingListsManageSubscriptionsPageView .Warning:before,
 #kanban-board:before,
 #ContactWebFormEditAndDetailsView .ui-sortable:before {
   content: "";
@@ -364,6 +372,10 @@ a.ModalGameNotification a,
 #delete-form:after,
 .right-side-edit-view-panel:after,
 .pager ul:after,
+#MarketingListsExternalActionsPageView > .GridView:after,
+#MarketingListsManageSubscriptionsPageView > .GridView:after,
+#MarketingListsExternalActionsPageView .Warning:after,
+#MarketingListsManageSubscriptionsPageView .Warning:after,
 #kanban-board:after,
 #ContactWebFormEditAndDetailsView .ui-sortable:after {
   content: "";
@@ -4884,13 +4896,18 @@ body.light-toast,
 .texture-swatch.light-toast .background-texture-1 {
   background: url(../patterns/light-toast/light-toast.png) left top repeat;
 }
-/*END COLOR SCHEME/THEME*/@font-face {
-  font-family: 'ZurmoGamificationSymblyReguRg';
-  src: url('../fonts/zurmogamificationsymblyregular-regular-webfont.eot');
-  src: url('../fonts/zurmogamificationsymblyregular-regular-webfont.eot?#iefix') format('embedded-opentype'), url('../fonts/zurmogamificationsymblyregular-regular-webfont.woff') format('woff'), url('../fonts/zurmogamificationsymblyregular-regular-webfont.ttf') format('truetype'), url('../fonts/zurmogamificationsymblyregular-regular-webfont.svg#ZurmoGamificationSymblyReguRg') format('svg');
-  font-weight: normal;
-  font-style: normal;
+/*END COLOR SCHEME/THEME*//*
+@font-face {
+	font-family: 'ZurmoGamificationSymblyReguRg';
+	src: url('../fonts/zurmogamificationsymblyregular-regular-webfont.eot');
+	src: url('../fonts/zurmogamificationsymblyregular-regular-webfont.eot?#iefix') format('embedded-opentype'),
+	url('../fonts/zurmogamificationsymblyregular-regular-webfont.woff') format('woff'),
+	url('../fonts/zurmogamificationsymblyregular-regular-webfont.ttf') format('truetype'),
+	url('../fonts/zurmogamificationsymblyregular-regular-webfont.svg#ZurmoGamificationSymblyReguRg') format('svg');
+	font-weight: normal;
+	font-style: normal;
 }
+*/
 /*=Variables*/
 .strong {
   font-weight: bold;
@@ -6691,7 +6708,7 @@ form .view-toolbar-container,
 }
 #MassDeleteLinkActionElement .parent > a:before,
 #ListViewDeleteMassActionMenu .parent > a:before {
-  content: "—";
+  content: '\2014';
   font-weight: normal;
   font-size: 22px;
   font-family: "ZurmoGamificationSymblyReguRg";
@@ -12321,6 +12338,12 @@ table.configuration-list td:last-child a .z-label:before {
   top: -2px;
 }
 /*=User Security*/
+.UserGroupMembershipView,
+#PoliciesEditAndDetailsView,
+#ModulePermissionsEditAndDetailsView,
+#RightsEditAndDetailsView {
+  margin-top: 15px;
+}
 .UserGroupMembershipView .details-table,
 #PoliciesEditAndDetailsView .details-table,
 #ModulePermissionsEditAndDetailsView .details-table,
@@ -12333,6 +12356,9 @@ table.configuration-list td:last-child a .z-label:before {
 #RightsEditAndDetailsView th {
   text-align: left;
   min-width: 200px;
+}
+.UserGroupMembershipView {
+  margin-top: 0;
 }
 .UserGroupMembershipView th {
   text-align: left !important;
@@ -18614,6 +18640,134 @@ a + .autoresponder-stats {
 .screen-options {
   padding: 5px;
   text-align: right;
+}
+/*Manage Subscriptions*/
+#MarketingListsExternalActionsPageView,
+#MarketingListsManageSubscriptionsPageView {
+  max-width: 900px;
+  margin: 30px auto;
+}
+#MarketingListsExternalActionsPageView #HeaderLinksView,
+#MarketingListsManageSubscriptionsPageView #HeaderLinksView {
+  margin: 0 0 20px 0;
+}
+#MarketingListsExternalActionsPageView #HeaderLinksView > div,
+#MarketingListsManageSubscriptionsPageView #HeaderLinksView > div {
+  margin: 0;
+}
+#MarketingListsExternalActionsPageView #HeaderLinksView + div,
+#MarketingListsManageSubscriptionsPageView #HeaderLinksView + div {
+  border: none;
+  background: none;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  -o-box-shadow: none;
+  -ms-box-shadow: none;
+  box-shadow: none;
+  padding: 0;
+  margin: 0;
+  filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
+}
+#MarketingListsExternalActionsPageView #corp-logo span,
+#MarketingListsManageSubscriptionsPageView #corp-logo span {
+  color: #545454;
+}
+#MarketingListsExternalActionsPageView .Warning,
+#MarketingListsManageSubscriptionsPageView .Warning,
+#MarketingListsExternalActionsPageView .wrapper,
+#MarketingListsManageSubscriptionsPageView .wrapper {
+  border: none;
+  background: none;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  -o-box-shadow: none;
+  -ms-box-shadow: none;
+  box-shadow: none;
+  padding: 0;
+  margin: 0;
+  filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
+  float: none;
+}
+#MarketingListsExternalActionsPageView .Warning,
+#MarketingListsManageSubscriptionsPageView .Warning,
+#MarketingListsExternalActionsPageView .wrapper,
+#MarketingListsManageSubscriptionsPageView .wrapper {
+  background: #fff;
+  -webkit-box-shadow: 0 0 12px 5px rgba(153, 153, 153, 0.3);
+  -moz-box-shadow: 0 0 12px 5px rgba(153, 153, 153, 0.3);
+  -o-box-shadow: 0 0 12px 5px rgba(153, 153, 153, 0.3);
+  -ms-box-shadow: 0 0 12px 5px rgba(153, 153, 153, 0.3);
+  box-shadow: 0 0 12px 5px rgba(153, 153, 153, 0.3);
+  /*999*/
+
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
+  border-radius: 5px;
+}
+#MarketingListsExternalActionsPageView .Warning,
+#MarketingListsManageSubscriptionsPageView .Warning {
+  padding: 15px 0 30px 0;
+}
+#MarketingListsExternalActionsPageView .Warning h2,
+#MarketingListsManageSubscriptionsPageView .Warning h2,
+#MarketingListsExternalActionsPageView .Warning div,
+#MarketingListsManageSubscriptionsPageView .Warning div,
+#MarketingListsExternalActionsPageView .Warning p,
+#MarketingListsManageSubscriptionsPageView .Warning p {
+  float: none;
+  margin: 0;
+  width: 100%;
+  text-align: center;
+}
+#MarketingListsExternalActionsPageView .Warning h2,
+#MarketingListsManageSubscriptionsPageView .Warning h2 {
+  padding: 0;
+}
+#MarketingListsExternalActionsPageView .Warning div,
+#MarketingListsManageSubscriptionsPageView .Warning div {
+  margin: 15px 0 20px 0;
+  border: 0;
+}
+#MarketingListsExternalActionsPageView #FooterView,
+#MarketingListsManageSubscriptionsPageView #FooterView {
+  margin: 20px 0;
+  padding-bottom: 20px;
+  clear: both;
+}
+#MarketingListsExternalActionsPageView h1,
+#MarketingListsManageSubscriptionsPageView h1 {
+  border: none;
+  background: none;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  -o-box-shadow: none;
+  -ms-box-shadow: none;
+  box-shadow: none;
+  padding: 0;
+  margin: 0;
+  filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
+}
+#MarketingListsExternalActionsPageView #marketingLists-manageSubscriptionsList table,
+#MarketingListsManageSubscriptionsPageView #marketingLists-manageSubscriptionsList table {
+  width: 100%;
+}
+#MarketingListsExternalActionsPageView #marketingLists-manageSubscriptionsList table th,
+#MarketingListsManageSubscriptionsPageView #marketingLists-manageSubscriptionsList table th {
+  font-weight: bold !important;
+  height: 35px;
+  line-height: 35px;
+  padding: 0 5px;
+  white-space: nowrap;
+}
+#MarketingListsExternalActionsPageView #marketingLists-manageSubscriptionsList table td,
+#MarketingListsManageSubscriptionsPageView #marketingLists-manageSubscriptionsList table td {
+  padding-bottom: 15px;
+}
+#MarketingListsExternalActionsPageView .switch,
+#MarketingListsManageSubscriptionsPageView .switch {
+  margin-right: 15px;
 }
 #kanban-holder {
   background: #fff;

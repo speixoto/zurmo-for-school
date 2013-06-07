@@ -106,7 +106,7 @@
         {
             foreach ($this->settingsToLoad as $keyName)
             {
-                if ($keyName == 'imapPassword')
+                if ($keyName == $this->resolvePasswordKeyName())
                 {
                     $encryptedKeyValue = ZurmoConfigurationUtil::getByModuleName('EmailMessagesModule', $keyName);
                     if ($encryptedKeyValue !== '' && $encryptedKeyValue !== null)
@@ -124,7 +124,8 @@
                 }
                 if (null !== $keyValue)
                 {
-                    $this->$keyName = $keyValue;
+                    $attributeName  = $this->resolveAttributeNameFromSettingsKey($keyName);
+                    $this->$attributeName = $keyValue;
                 }
             }
         }
@@ -136,14 +137,15 @@
         {
             foreach ($this->settingsToLoad as $keyName)
             {
-                if ($keyName == 'imapPassword')
+                $attributeName  = $this->resolveAttributeNameFromSettingsKey($keyName);
+                if ($keyName == $this->resolvePasswordKeyName())
                 {
-                    $password = ZurmoPasswordSecurityUtil::encrypt($this->$keyName);
+                    $password = ZurmoPasswordSecurityUtil::encrypt($this->$attributeName);
                     ZurmoConfigurationUtil::setByModuleName('EmailMessagesModule', $keyName, $password);
                 }
                 else
                 {
-                    ZurmoConfigurationUtil::setByModuleName('EmailMessagesModule', $keyName, $this->$keyName);
+                    ZurmoConfigurationUtil::setByModuleName('EmailMessagesModule', $keyName, $this->$attributeName );
                 }
             }
         }
@@ -275,14 +277,15 @@
                 $imapMessage->senderEmail = $imapMessage->fromName;
             }
 
-            $imapMessage->subject = $mailHeaderInfo->subject;
-            $imapMessage->textBody = $this->getPart($messageNumber, 'TEXT/PLAIN', $structure);
-            $imapMessage->htmlBody = $this->getPart($messageNumber, 'TEXT/HTML', $structure);
-            $imapMessage->attachments = $this->getAttachments($structure, $messageNumber);
-            $imapMessage->createdDate = $mailHeaderInfo->date;
-            $imapMessage->uid = $this->getMessageUId($mailHeaderInfo->Msgno);
-            $imapMessage->msgNumber = $mailHeaderInfo->Msgno;
-            $imapMessage->msgId = $mailHeaderInfo->message_id;
+            $imapMessage->subject       = $mailHeaderInfo->subject;
+            $imapMessage->textBody      = $this->getPart($messageNumber, 'TEXT/PLAIN', $structure);
+            $imapMessage->htmlBody      = $this->getPart($messageNumber, 'TEXT/HTML', $structure);
+            $imapMessage->attachments   = $this->getAttachments($structure, $messageNumber);
+            $imapMessage->createdDate   = $mailHeaderInfo->date;
+            $imapMessage->uid           = $this->getMessageUId($mailHeaderInfo->Msgno);
+            $imapMessage->msgNumber     = $mailHeaderInfo->Msgno;
+            $imapMessage->msgId         = $mailHeaderInfo->message_id;
+            $imapMessage->headers       = $this->resolveAndParseMessageHeaders($messageNumber);
 
             return $imapMessage;
         }
@@ -494,6 +497,25 @@
                     }
                 }
             }
+        }
+
+        protected function resolvePasswordKeyName()
+        {
+            return 'imapPassword';
+        }
+
+        protected function resolveAttributeNameFromSettingsKey($key)
+        {
+            return $key;
+        }
+
+        protected function resolveAndParseMessageHeaders($messageNumber)
+        {
+            $headers = imap_fetchheader($this->imapStream, $messageNumber);
+            preg_match_all('/([^: ]+): (.+?(?:\r\n\s(?:.+?))*)\r\n/m', $headers, $matches);
+            preg_replace('/\r\n\s+/m', '', $matches[2]);
+            $headersArray   = array_combine($matches[1], $matches[2]);
+            return $headersArray;
         }
     }
 ?>

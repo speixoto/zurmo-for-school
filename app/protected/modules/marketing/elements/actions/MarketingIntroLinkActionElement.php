@@ -44,7 +44,7 @@
         public function render()
         {
             $this->registerScripts();
-            if($this->moduleId == 'marketing' && $this->controllerId == 'default' &&
+            if ($this->moduleId == 'marketing' && $this->controllerId == 'default' &&
                (Yii::app()->controller->action->id == 'dashboardDetails' ||
                 Yii::app()->controller->action->id == null ||
                 Yii::app()->controller->action->id == 'index'))
@@ -99,7 +99,7 @@
 
         protected function resolveChecked()
         {
-            if($this->params['cookieValue'] == MarketingDashboardIntroView::HIDDEN_COOKIE_VALUE)
+            if ($this->params['cookieValue'] == MarketingDashboardIntroView::HIDDEN_COOKIE_VALUE)
             {
                 return false;
             }
@@ -111,8 +111,9 @@
 
         protected function registerScripts()
         {
-            $script = "$('#" . MarketingDashboardIntroView::PANEL_ID . "-checkbox-id').click(function(){
-                            if(!$(this).attr('checked'))
+            $script = "$('#" . MarketingDashboardIntroView::PANEL_ID . "-checkbox-id').click(function()
+                        {
+                            if (!$(this).attr('checked'))
                             {
                                 document.cookie = '" . MarketingDashboardIntroView::resolveCookieId() . "=" .
                                                        MarketingDashboardIntroView::HIDDEN_COOKIE_VALUE . "';

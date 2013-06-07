@@ -44,7 +44,7 @@
             parent::setUpBeforeClass();
             $billy = User::getByUsername('billy');
             $billy->setRight('MarketingModule', MarketingModule::RIGHT_ACCESS_MARKETING);
-            assert($billy->save());
+            assert($billy->save()); // Not Coding Standard
         }
 
         public function testAllDefaultControllerActionsForBilly()

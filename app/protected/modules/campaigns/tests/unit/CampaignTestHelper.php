@@ -46,7 +46,7 @@
                                                     $fromAddress, $supportsRichText, $status,
                                                     $sendOnDateTime, $enableTracking, $marketingList);
             $saved          = $campaign->save($runValidation);
-            if(!$saved)
+            if (!$saved)
             {
                 throw new FailedToSaveModelException();
             }
@@ -73,7 +73,7 @@
             {
                 $supportsRichText   = 1;
             }
-            if($sendOnDateTime == null)
+            if ($sendOnDateTime == null)
             {
                 $sendOnDateTime = '0000-00-00 00:00:00';
             }

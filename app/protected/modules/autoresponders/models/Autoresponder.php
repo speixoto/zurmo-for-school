@@ -128,8 +128,7 @@
                     array('secondsFromOperation',   'type',    'type' => 'integer'),
                     array('operationType',          'required'),
                     array('operationType',          'type',    'type' => 'integer'),
-                    array('operationType',          'numerical', 'min' => static::OPERATION_SUBSCRIBE,
-                                                                                    'max' => static::OPERATION_UNSUBSCRIBE),
+                    array('operationType',          'numerical'),
                     array('enableTracking',          'boolean'),
                     array('enableTracking',          'default', 'value' => false),
 
@@ -218,7 +217,5 @@
         {
             return strval($this->subject);
         }
-
-
     }
 ?>

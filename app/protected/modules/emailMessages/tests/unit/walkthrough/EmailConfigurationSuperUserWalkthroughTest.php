@@ -93,6 +93,308 @@
             $this->assertEquals('apassword',    Yii::app()->emailHelper->outboundPassword);
         }
 
+        public function testActionConfigurationEditImapDefaultTypeIsArchiving()
+        {
+            $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
+            $content = $this->runControllerWithNoExceptionsAndGetContent('emailMessages/default/configurationEditImap');
+            $this->assertTrue(strpos($content, '<div id="EmailArchivingConfigurationEditAndDetailsView" '.
+                                                'class="AdministrativeArea AppContent ImapConfigurationEditAndDetails' .
+                                                'View EditAndDetailsView DetailsView ModelView '.
+                                                'ConfigurableMetadataView MetadataView">') !== false);
+            $this->assertTrue(strpos($content, '<h1><span class="truncated-title">') !== false);
+            $this->assertTrue(strpos($content, '<span class="ellipsis-content">Email Configuration</span>') !== false);
+            $this->assertTrue(strpos($content, '<div class="wide form">') !== false);
+            $this->assertTrue(strpos($content, '<div class="attributesContainer">') !== false);
+            $this->assertTrue(strpos($content, '<div class="left-column full-width">') !== false);
+            $this->assertTrue(strpos($content, '<div class="panel">') !== false);
+            $this->assertTrue(strpos($content, '<div class="panelTitle">Email Archiving '.
+                                                'Configuration (IMAP)</div>') !== false);
+            $this->assertTrue(strpos($content, '<label for="EmailArchivingConfigurationForm_imapHost" class="required"' .
+                                                '>Host <span class="required">*</span></label>') !== false);
+            $this->assertTrue(strpos($content, '<input id="EmailArchivingConfigurationForm_imapHost" ' .
+                                                'name="EmailArchivingConfigurationForm[imapHost]" ' .
+                                                'type="text" maxlength="64"') !== false);
+            $this->assertTrue(strpos($content, '<th><label for="EmailArchivingConfigurationForm_imapPort" ' .
+                                                'class="required">Port <span class="required">*' .
+                                                '</span></label></th>') !== false);
+            $this->assertTrue(strpos($content, '<td colspan="1"><input id="EmailArchivingConfigurationForm_imapPort" ' .
+                                                'name="EmailArchivingConfigurationForm[imapPort]" ' .
+                                                'type="text" value="143"') !== false);
+            $this->assertTrue(strpos($content, '<th><label for="EmailArchivingConfigurationForm_imapUsername" ' .
+                                                'class="required">Username <span class="required">*' .
+                                                '</span></label>') !== false);
+            $this->assertTrue(strpos($content, '<td colspan="1"><input id="EmailArchivingConfigurationForm_' .
+                                                'imapUsername" name="EmailArchivingConfigurationForm[imapUsername]" ' .
+                                                'type="text" maxlength="64"') !== false);
+            $this->assertTrue(strpos($content, '<th><label for="EmailArchivingConfigurationForm_imapPassword" ' .
+                                                'class="required">Password <span class="required">*' .
+                                                '</span></label></th>') !== false);
+            $this->assertTrue(strpos($content, '<td colspan="1"><input name="EmailArchivingConfigurationForm' .
+                                                '[imapPassword]" id="EmailArchivingConfigurationForm_imapPassword" ' .
+                                                'type="password" maxlength="64"') !== false);
+            $this->assertTrue(strpos($content, '<th><label for="EmailArchivingConfigurationForm_imapSSL">SSL ' .
+                                                'connection</label></th>') !== false);
+            $this->assertTrue(strpos($content, '<td colspan="1"><input id="ytEmailArchivingConfigurationForm_imapSSL" ' .
+                                                'type="hidden" value="0" name="EmailArchivingConfigurationForm' .
+                                                '[imapSSL]"') !== false);
+            $this->assertTrue(strpos($content, '<label class="hasCheckBox">') !== false);
+            $this->assertTrue(strpos($content, '<input id="EmailArchivingConfigurationForm_imapSSL" ' .
+                                                'name="EmailArchivingConfigurationForm[imapSSL]" ' .
+                                                'value="1" type="checkbox"') !== false);
+            $this->assertTrue(strpos($content, '<th><label for="EmailArchivingConfigurationForm_imapFolder" ' .
+                                                'class="required">Folder <span class="required">*' .
+                                                '</span></label></th>') !== false);
+            $this->assertTrue(strpos($content, '<td colspan="1"><input id="EmailArchivingConfigurationForm_imapFolder" ' .
+                                                'name="EmailArchivingConfigurationForm[imapFolder]" ' .
+                                                'type="text" maxlength="64" value="INBOX"') !== false);
+            $this->assertTrue(strpos($content, '<th><label for="EmailArchivingConfigurationForm_testImapConnection"' .
+                                                '>Test IMAP connection</label></th>') !== false);
+            $this->assertTrue(strpos($content, '<td colspan="1"><span><a id="testImapConnection" ' .
+                                                'class="EmailTestingButton z-button" href="#"><span class="z-label">' .
+                                                'Test Connection</span></a></span></td>') !== false);
+            $this->assertTrue(strpos($content, '<div class="float-bar">') !== false);
+            $this->assertTrue(strpos($content, '<div class="view-toolbar-container clearfix dock">') !== false);
+            $this->assertTrue(strpos($content, '<div class="form-toolbar">') !== false);
+            $this->assertTrue(strpos($content, '<span class="z-label">Return to Admin Menu</span></a>') !== false);
+            $this->assertTrue(strpos($content, '<span class="z-label">Save</span>') !== false);
+            $this->assertTrue(strpos($content, '<div id="modalContainer-edit-form">') !== false);
+            $this->assertTrue(strpos($content, '<div id="FlashMessageView">') !== false);
+            $this->assertTrue(strpos($content, '<div id = "FlashMessageBar">') !== false);
+            $this->assertTrue(strpos($content, '<div id="ModalContainerView">') !== false);
+            $this->assertTrue(strpos($content, '<div id="modalContainer">') !== false);
+            $this->assertTrue(strpos($content, '<div id="ModalGameNotificationContainerView">') !== false);
+            $this->assertTrue(strpos($content, '<div id="FooterView">') !== false);
+            $this->assertTrue(strpos($content, '<div class="ui-chooser">') !== false);
+        }
+
+        /**
+         * @expectedException CHttpException
+         */
+        public function testActionConfigurationEditImapThrowsExceptionOnTypeLessThanZero()
+        {
+            $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
+            $this->setGetArray(array('type' => 0));
+            $this->runControllerWithNoExceptionsAndGetContent('emailMessages/default/configurationEditImap');
+        }
+
+        /**
+         * @expectedException CHttpException
+         */
+        public function testActionConfigurationEditImapThrowsExceptionOnTypeGreaterThanTwo()
+        {
+            $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
+            $this->setGetArray(array('type' => 3));
+            $this->runControllerWithNoExceptionsAndGetContent('emailMessages/default/configurationEditImap');
+        }
+
+        public function testActionConfigurationEditImapTypeOneIsArchiving()
+        {
+            $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
+            $this->setGetArray(array('type' => 1));
+            $content = $this->runControllerWithNoExceptionsAndGetContent('emailMessages/default/configurationEditImap');
+            $this->assertTrue(strpos($content, '<div id="EmailArchivingConfigurationEditAndDetailsView" '.
+                                                'class="AdministrativeArea AppContent ImapConfigurationEditAndDetails' .
+                                                'View EditAndDetailsView DetailsView ModelView '.
+                                                'ConfigurableMetadataView MetadataView">') !== false);
+            $this->assertTrue(strpos($content, '<h1><span class="truncated-title">') !== false);
+            $this->assertTrue(strpos($content, '<span class="ellipsis-content">Email Configuration</span>') !== false);
+            $this->assertTrue(strpos($content, '<div class="wide form">') !== false);
+            $this->assertTrue(strpos($content, '<div class="attributesContainer">') !== false);
+            $this->assertTrue(strpos($content, '<div class="left-column full-width">') !== false);
+            $this->assertTrue(strpos($content, '<div class="panel">') !== false);
+            $this->assertTrue(strpos($content, '<div class="panelTitle">Email Archiving '.
+                                                'Configuration (IMAP)</div>') !== false);
+            $this->assertTrue(strpos($content, '<label for="EmailArchivingConfigurationForm_imapHost" class="required"' .
+                                                '>Host <span class="required">*</span></label>') !== false);
+            $this->assertTrue(strpos($content, '<input id="EmailArchivingConfigurationForm_imapHost" ' .
+                                                'name="EmailArchivingConfigurationForm[imapHost]" ' .
+                                                'type="text" maxlength="64"') !== false);
+            $this->assertTrue(strpos($content, '<th><label for="EmailArchivingConfigurationForm_imapPort" ' .
+                                                'class="required">Port <span class="required">*' .
+                                                '</span></label></th>') !== false);
+            $this->assertTrue(strpos($content, '<td colspan="1"><input id="EmailArchivingConfigurationForm_imapPort" ' .
+                                                'name="EmailArchivingConfigurationForm[imapPort]" ' .
+                                                'type="text" value="143"') !== false);
+            $this->assertTrue(strpos($content, '<th><label for="EmailArchivingConfigurationForm_imapUsername" ' .
+                                                'class="required">Username <span class="required">*' .
+                                                '</span></label>') !== false);
+            $this->assertTrue(strpos($content, '<td colspan="1"><input id="EmailArchivingConfigurationForm_' .
+                                                'imapUsername" name="EmailArchivingConfigurationForm[imapUsername]" ' .
+                                                'type="text" maxlength="64"') !== false);
+            $this->assertTrue(strpos($content, '<th><label for="EmailArchivingConfigurationForm_imapPassword" ' .
+                                                'class="required">Password <span class="required">*' .
+                                                '</span></label></th>') !== false);
+            $this->assertTrue(strpos($content, '<td colspan="1"><input name="EmailArchivingConfigurationForm' .
+                                                '[imapPassword]" id="EmailArchivingConfigurationForm_imapPassword" ' .
+                                                'type="password" maxlength="64"') !== false);
+            $this->assertTrue(strpos($content, '<th><label for="EmailArchivingConfigurationForm_imapSSL">SSL ' .
+                                                'connection</label></th>') !== false);
+            $this->assertTrue(strpos($content, '<td colspan="1"><input id="ytEmailArchivingConfigurationForm_imapSSL" ' .
+                                                'type="hidden" value="0" name="EmailArchivingConfigurationForm' .
+                                                '[imapSSL]"') !== false);
+            $this->assertTrue(strpos($content, '<label class="hasCheckBox">') !== false);
+            $this->assertTrue(strpos($content, '<input id="EmailArchivingConfigurationForm_imapSSL" ' .
+                                                'name="EmailArchivingConfigurationForm[imapSSL]" ' .
+                                                'value="1" type="checkbox"') !== false);
+            $this->assertTrue(strpos($content, '<th><label for="EmailArchivingConfigurationForm_imapFolder" ' .
+                                                'class="required">Folder <span class="required">*' .
+                                                '</span></label></th>') !== false);
+            $this->assertTrue(strpos($content, '<td colspan="1"><input id="EmailArchivingConfigurationForm_imapFolder" ' .
+                                                'name="EmailArchivingConfigurationForm[imapFolder]" ' .
+                                                'type="text" maxlength="64" value="INBOX"') !== false);
+            $this->assertTrue(strpos($content, '<th><label for="EmailArchivingConfigurationForm_testImapConnection"' .
+                                                '>Test IMAP connection</label></th>') !== false);
+            $this->assertTrue(strpos($content, '<td colspan="1"><span><a id="testImapConnection" ' .
+                                                'class="EmailTestingButton z-button" href="#"><span class="z-label">' .
+                                                'Test Connection</span></a></span></td>') !== false);
+            $this->assertTrue(strpos($content, '<div class="float-bar">') !== false);
+            $this->assertTrue(strpos($content, '<div class="view-toolbar-container clearfix dock">') !== false);
+            $this->assertTrue(strpos($content, '<div class="form-toolbar">') !== false);
+            $this->assertTrue(strpos($content, '<span class="z-label">Return to Admin Menu</span></a>') !== false);
+            $this->assertTrue(strpos($content, '<span class="z-label">Save</span>') !== false);
+            $this->assertTrue(strpos($content, '<div id="modalContainer-edit-form">') !== false);
+            $this->assertTrue(strpos($content, '<div id="FlashMessageView">') !== false);
+            $this->assertTrue(strpos($content, '<div id = "FlashMessageBar">') !== false);
+            $this->assertTrue(strpos($content, '<div id="ModalContainerView">') !== false);
+            $this->assertTrue(strpos($content, '<div id="modalContainer">') !== false);
+            $this->assertTrue(strpos($content, '<div id="ModalGameNotificationContainerView">') !== false);
+            $this->assertTrue(strpos($content, '<div id="FooterView">') !== false);
+            $this->assertTrue(strpos($content, '<div class="ui-chooser">') !== false);
+        }
+
+        public function testActionConfigurationEditImapTypeTwoIsBounce()
+        {
+            $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
+            $this->setGetArray(array('type' => 2));
+            $content = $this->runControllerWithNoExceptionsAndGetContent('emailMessages/default/configurationEditImap');
+            $this->assertTrue(strpos($content, '<div id="BounceConfigurationEditAndDetailsView" ' .
+                                                'class="AdministrativeArea AppContent ImapConfigurationEditAndDetails' .
+                                                'View EditAndDetailsView DetailsView ModelView ' .
+                                                'ConfigurableMetadataView MetadataView">') !== false);
+            $this->assertTrue(strpos($content, '<div class="wrapper">') !== false);
+            $this->assertTrue(strpos($content, '<h1><span class="truncated-title">') !== false);
+            $this->assertTrue(strpos($content, '<span class="ellipsis-content">Email Configuration</span>') !== false);
+            $this->assertTrue(strpos($content, '<div class="wide form">') !== false);
+            $this->assertTrue(strpos($content, '<div class="attributesContainer">') !== false);
+            $this->assertTrue(strpos($content, '<div class="left-column full-width">') !== false);
+            $this->assertTrue(strpos($content, '<div class="panel">') !== false);
+            $this->assertTrue(strpos($content, '<div class="panelTitle">Bounce Configuration (IMAP)</div>') !== false);
+            $this->assertTrue(strpos($content, '<th><label for="BounceConfigurationForm_imapHost" class="required">' .
+                                                'Host <span class="required">*</span></label></th>') !== false);
+            $this->assertTrue(strpos($content, '<td colspan="1"><input id="BounceConfigurationForm_imapHost" ' .
+                                                'name="BounceConfigurationForm[imapHost]" ' .
+                                                'type="text" maxlength="64"') !== false);
+            $this->assertTrue(strpos($content, '<th><label for="BounceConfigurationForm_imapPort" ' .
+                                                'class="required">Port <span class="required">*' .
+                                                '</span></label></th>') !== false);
+            $this->assertTrue(strpos($content, '<td colspan="1"><input id="BounceConfigurationForm_imapPort" ' .
+                                                'name="BounceConfigurationForm[imapPort]" type="text"') !== false);
+            $this->assertTrue(strpos($content, '<th><label for="BounceConfigurationForm_imapUsername" ' .
+                                                'class="required">Username <span class="required">*' .
+                                                '</span></label></th>') !== false);
+            $this->assertTrue(strpos($content, '<td colspan="1"><input id="BounceConfigurationForm_imapUsername" ' .
+                                                'name="BounceConfigurationForm[imapUsername]" ' .
+                                                'type="text" maxlength="64"') !== false);
+            $this->assertTrue(strpos($content, '<th><label for="BounceConfigurationForm_imapPassword" ' .
+                                                'class="required">Password <span class="required">*' .
+                                                '</span></label></th>') !== false);
+            $this->assertTrue(strpos($content, '<td colspan="1"><input name="BounceConfigurationForm[imapPassword]" ' .
+                                                'id="BounceConfigurationForm_imapPassword" ' .
+                                                'type="password" maxlength="64"') !== false);
+            $this->assertTrue(strpos($content, '<th><label for="BounceConfigurationForm_imapSSL">SSL connection' .
+                                                '</label></th>') !== false);
+            $this->assertTrue(strpos($content, '<td colspan="1"><input id="ytBounceConfigurationForm_imapSSL" ' .
+                                                'type="hidden" value="0" ' .
+                                                'name="BounceConfigurationForm[imapSSL]"') !== false);
+            $this->assertTrue(strpos($content, '<label class="hasCheckBox">') !== false);
+            $this->assertTrue(strpos($content, '<input id="BounceConfigurationForm_imapSSL" ' .
+                                                'name="BounceConfigurationForm[imapSSL]" value="1" ' .
+                                                'type="checkbox"') !== false);
+            $this->assertTrue(strpos($content, '<th><label for="BounceConfigurationForm_imapFolder" ' .
+                                                'class="required">Folder <span class="required">*' .
+                                                '</span></label></th>') !== false);
+            $this->assertTrue(strpos($content, '<td colspan="1"><input id="BounceConfigurationForm_imapFolder" ' .
+                                                'name="BounceConfigurationForm[imapFolder]" ' .
+                                                'type="text" maxlength="64"') !== false);
+            $this->assertTrue(strpos($content, '<th><label for="BounceConfigurationForm_testImapConnection">' .
+                                                'Test IMAP connection</label></th>') !== false);
+            $this->assertTrue(strpos($content, '<td colspan="1"><span><a id="testImapConnection" ' .
+                                                'class="EmailTestingButton z-button" href="#">') !== false);
+            $this->assertTrue(strpos($content, '<span class="z-label">Test Connection</span>') !== false);
+            $this->assertTrue(strpos($content, '<label for="BounceConfigurationForm_returnPath" ' .
+                                                'class="required">Return Path <span class="required">*' .
+                                                '</span></label></th>') !== false);
+            $this->assertTrue(strpos($content, '<td colspan="1"><input id="BounceConfigurationForm_returnPath" ' .
+                                                'name="BounceConfigurationForm[returnPath]" ' .
+                                                'type="text" maxlength="64"') !== false);
+            $this->assertTrue(strpos($content, '<div class="float-bar">') !== false);
+            $this->assertTrue(strpos($content, '<div class="view-toolbar-container clearfix dock">') !== false);
+            $this->assertTrue(strpos($content, '<div class="form-toolbar">') !== false);
+            $this->assertTrue(strpos($content, '<span class="z-label">Return to Admin Menu</span></a>') !== false);
+            $this->assertTrue(strpos($content, '<span class="z-label">Save</span>') !== false);
+            $this->assertTrue(strpos($content, '<div id="modalContainer-edit-form">') !== false);
+            $this->assertTrue(strpos($content, '<div id="FlashMessageView">') !== false);
+            $this->assertTrue(strpos($content, '<div id = "FlashMessageBar">') !== false);
+            $this->assertTrue(strpos($content, '<div id="ModalContainerView">') !== false);
+            $this->assertTrue(strpos($content, '<div id="modalContainer">') !== false);
+            $this->assertTrue(strpos($content, '<div id="ModalGameNotificationContainerView">') !== false);
+            $this->assertTrue(strpos($content, '<div id="FooterView">') !== false);
+            $this->assertTrue(strpos($content, '<div class="ui-chooser">') !== false);
+        }
+
+        public function testActionConfigurationEditImapModifyBounce()
+        {
+            $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
+            $this->setGetArray(array('type' => 2));
+            $this->setPostArray(array('BounceConfigurationForm' => array(
+                'imapHost'                          => 'mail.example.com',
+                'imapUsername'                      => 'test@example.com',
+                'imapPassword'                      => 'abcd',
+                'imapPort'                          => '143',
+                'imapSSL'                           => '0',
+                'imapFolder'                        => 'INBOX',
+                'returnPath'                        => 'bounce@zurmo.com')));
+            $this->runControllerWithRedirectExceptionAndGetContent('emailMessages/default/configurationEditImap');
+            $this->assertEquals('Bounce configuration saved successfully.', Yii::app()->user->getFlash('notification'));
+            $this->assertEquals('mail.example.com',
+                                    ZurmoConfigurationUtil::getByModuleName('EmailMessagesModule', 'bounceImapHost'));
+            $this->assertEquals('test@example.com',
+                                    ZurmoConfigurationUtil::getByModuleName('EmailMessagesModule', 'bounceImapUsername'));
+            $this->assertEquals('abcd',
+                                    ZurmoPasswordSecurityUtil::decrypt(
+                                ZurmoConfigurationUtil::getByModuleName('EmailMessagesModule', 'bounceImapPassword')));
+            $this->assertEquals('143',
+                                    ZurmoConfigurationUtil::getByModuleName('EmailMessagesModule', 'bounceImapPort'));
+            $this->assertEquals('0', ZurmoConfigurationUtil::getByModuleName('EmailMessagesModule', 'bounceImapSSL'));
+            $this->assertEquals('INBOX',
+                                    ZurmoConfigurationUtil::getByModuleName('EmailMessagesModule', 'bounceImapFolder'));
+            $this->assertEquals('bounce@zurmo.com',
+                                    ZurmoConfigurationUtil::getByModuleName('EmailMessagesModule', 'bounceReturnPath'));
+        }
+
+        public function testActionConfigurationEditImapModifyBounceWithValidation()
+        {
+            $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
+            //checking with blank values for required fields
+            $this->resetGetArray();
+            $this->setGetArray(array('type' => 2));
+            $this->setPostArray(array('BounceConfigurationForm' => array(
+                'imapHost'                          => '',
+                'imapUsername'                      => '',
+                'imapPassword'                      => '',
+                'imapPort'                          => '',
+                'imapSSL'                           => '0',
+                'imapFolder'                        => '',
+                'returnPath'                        => '')));
+            $content = $this->runControllerWithNoExceptionsAndGetContent('emailMessages/default/configurationEditImap');
+            $this->assertFalse(strpos($content, 'Host cannot be blank.') === false);
+            $this->assertFalse(strpos($content, 'Username cannot be blank.') === false);
+            $this->assertFalse(strpos($content, 'Password cannot be blank.') === false);
+            $this->assertFalse(strpos($content, 'Port cannot be blank.') === false);
+            $this->assertFalse(strpos($content, 'Folder cannot be blank.') === false);
+            $this->assertFalse(strpos($content, 'Return Path cannot be blank.') === false);
+        }
+
         public function testSuperUserModifyEmailArchivingConfiguration()
         {
             $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
@@ -101,6 +403,7 @@
             //Change email settings
             $this->resetGetArray();
             $this->resetPostArray();
+            $this->setGetArray(array('type' => 1));
             $this->setPostArray(array('EmailArchivingConfigurationForm' => array(
                                     'imapHost'                          => 'mail.example.com',
                                     'imapUsername'                      => 'test@example.com',
@@ -108,8 +411,8 @@
                                     'imapPort'                          => '143',
                                     'imapSSL'                           => '0',
                                     'imapFolder'                        => 'INBOX')));
-            $this->runControllerWithRedirectExceptionAndGetContent('emailMessages/default/configurationEditArchiving');
-            $this->assertEquals('Email configuration saved successfully.', Yii::app()->user->getFlash('notification'));
+            $this->runControllerWithRedirectExceptionAndGetContent('emailMessages/default/configurationEditImap');
+            $this->assertEquals('Email archiving configuration saved successfully.', Yii::app()->user->getFlash('notification'));
 
             $this->assertEquals('mail.example.com',     Yii::app()->imap->imapHost);
             $this->assertEquals('test@example.com',     Yii::app()->imap->imapUsername);
@@ -124,6 +427,7 @@
             $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
             //checking with blank values for required fields
             $this->resetGetArray();
+            $this->setGetArray(array('type' => 1));
             $this->setPostArray(array('EmailArchivingConfigurationForm' => array(
                                     'imapHost'                          => '',
                                     'imapUsername'                      => '',
@@ -131,7 +435,7 @@
                                     'imapPort'                          => '',
                                     'imapSSL'                           => '0',
                                     'imapFolder'                        => '')));
-            $content = $this->runControllerWithNoExceptionsAndGetContent('emailMessages/default/configurationEditArchiving');
+            $content = $this->runControllerWithNoExceptionsAndGetContent('emailMessages/default/configurationEditImap');
             $this->assertFalse(strpos($content, 'Host cannot be blank.') === false);
             $this->assertFalse(strpos($content, 'Username cannot be blank.') === false);
             $this->assertFalse(strpos($content, 'Password cannot be blank.') === false);

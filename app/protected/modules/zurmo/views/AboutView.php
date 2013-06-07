@@ -68,7 +68,7 @@
             $content .= '<br/>';
             $content .= '</p>';
             $content .= '<p>';
-            $content .= Zurmo::t('ZurmoModule', '<strong>Zurmo</strong> is licensed under the GPLv3.  You can read the license <a href="http://www.zurmo.org/license">here</a>.');
+            $content .= Zurmo::t('ZurmoModule', '<strong>Zurmo</strong> is licensed under the AGPLv3.  You can read the license <a href="http://www.zurmo.org/license">here</a>.');
             $content .= '</p></div>
                             <div>
                                 <h3>Core Team</h3>

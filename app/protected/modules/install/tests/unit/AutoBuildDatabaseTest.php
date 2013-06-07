@@ -313,7 +313,7 @@
                 'datetime'  => array('DATETIME'),
                 'blob'      => array('BLOB'),
                 'longblob'  => array('LONG_BLOB'),
-                'boolean'   => array('TINY_INT'),
+                'boolean'   => array('TINYINT'),
             );
 
             $databaseTypes = array();

@@ -42,7 +42,6 @@
      */
     class MarketingSuperUserWalkthroughTest extends ZurmoWalkthroughBaseTest
     {
-
         private $user;
 
         public static function setUpBeforeClass()

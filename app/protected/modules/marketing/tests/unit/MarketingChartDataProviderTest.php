@@ -47,7 +47,6 @@
             Yii::app()->user->userModel = User::getByUsername('super');
         }
 
-
         public function testMakeGroupedDateTimeData()
         {
             $beginDate = '2013-06-01';

@@ -48,6 +48,11 @@
             Yii::app()->user->userModel = User::getByUsername('super');
         }
 
+        public function testGetModuleClassName()
+        {
+            $this->assertEquals('CampaignsModule', CampaignItem::getModuleClassName());
+        }
+
         public function testCreateAndGetCampaignItemById()
         {
             $campaignItem                          = new CampaignItem();

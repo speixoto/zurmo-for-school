@@ -59,7 +59,6 @@
 
         public static function setContentByType($content, $isHtmlContent)
         {
-            // TODO: @Shoaibi: Critical: Tests
             $key        = static::resolveConfigKeyByContentType($isHtmlContent);
             ZurmoConfigurationUtil::setByModuleName(static::CONFIG_MODULE_NAME, $key, $content);
         }

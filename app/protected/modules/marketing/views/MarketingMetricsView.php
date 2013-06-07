@@ -164,7 +164,7 @@
 
         public function getPortletParams()
         {
-            if(isset($this->params['relationModel']) && $this->params['relationModel']->id > 0)
+            if (isset($this->params['relationModel']) && $this->params['relationModel']->id > 0)
             {
                 return array('relationModuleId' => $this->params['relationModuleId'],
                              'relationModelId'  => $this->params['relationModel']->id);
@@ -270,7 +270,7 @@
         {
             $getData = GetUtil::getData();
             $getData['portletId'] = $this->params['portletId'];
-            if(!isset($getData['uniqueLayoutId']))
+            if (!isset($getData['uniqueLayoutId']))
             {
                 $getData['uniqueLayoutId'] = $this->params['layoutId'];
             }

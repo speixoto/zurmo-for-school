@@ -130,13 +130,11 @@
 
         public static function getGamificationRulesType()
         {
-            // TODO: @Shoaibi: Critical: Add Tests to cover:
             return 'MarketingListGamification';
         }
 
         public static function hasPermissions()
         {
-            // TODO: @Shoaibi: Critical: Add Tests to cover:
             return true;
         }
 

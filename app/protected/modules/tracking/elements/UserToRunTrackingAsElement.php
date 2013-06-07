@@ -34,7 +34,7 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    // TODO: @Shoaibi/@Jason: Critical: Not Used.
+    // TODO: @Shoaibi/@Jason: High: Not Used.
     /**
      * When processing tracking, the user that processes them must be a super administrator to ensure the
      * tracking requests can be properly processed.

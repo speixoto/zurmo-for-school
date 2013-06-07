@@ -78,7 +78,7 @@
          * @param array $attachments
          * @param array $settings
          */
-        public function sendRawEmail($subject, $from, $to, $textContent = '', $htmlContent = '', $cc = null, $bcc = null, $attachments = null, $settings = null)
+        public function sendRawEmail($subject, $from, $to, $textContent = '', $htmlContent = '', $cc = null, $bcc = null, $attachments = null, $settings = null, $headers = array())
         {
             assert('is_string($subject) && $subject != ""');
             assert('is_string($from)    && $from != ""');
@@ -164,6 +164,7 @@
                 }
             }
 
+            $mailer->headers    = $headers;
             $acceptedRecipients = $mailer->send();
             if ($acceptedRecipients > 0)
             {

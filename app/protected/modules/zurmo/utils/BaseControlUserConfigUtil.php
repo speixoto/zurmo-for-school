@@ -51,7 +51,7 @@
         const CONFIG_KEY                = null;
 
         /**
-         * When running tracking actions an elevated user must be used in order to ensure the tracking activities can
+         * When running a special action or a job an elevated user must be used in order to ensure the activities can
          * be processed properly.  if there is not a user specified, then a fall back of the first user that is a super
          * administrator will be returned
          * @param boolean $setOnMissing whether function set the fallback user inside config for future requests or not

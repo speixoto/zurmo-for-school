@@ -43,7 +43,7 @@
         {
             $chartData = array();
             $groupedDateTimeData = static::makeGroupedDateTimeData($this->beginDate, $this->endDate, $this->groupBy, false);
-            foreach($groupedDateTimeData as $groupData)
+            foreach ($groupedDateTimeData as $groupData)
             {
                 $beginDateTime       = DateTimeUtil::convertDateIntoTimeZoneAdjustedDateTimeBeginningOfDay($groupData['beginDate']);
                 $endDateTime         = DateTimeUtil::convertDateIntoTimeZoneAdjustedDateTimeEndOfDay($groupData['endDate']);
@@ -91,7 +91,7 @@
             $existingSubscriberSelectPart = "sum(CASE WHEN {$quote}{$marketingListMemberTableName}{$quote}.{$quote}{$createdDateTimeColumnName}" .
                                             $quote . " < '$beginDateTime' AND " .
                                             "{$quote}{$marketingListMemberTableName}{$quote}.{$quote}" .
-                                            "{$unsubscribedColumnName}{$quote}=0 THEN 1 ELSE 0 END)";
+                                            "{$unsubscribedColumnName}{$quote}=0 THEN 1 ELSE 0 END)"; // Not Coding Standard
             $selectQueryAdapter->addClauseByQueryString($newSubscriberSelectPart,      static::NEW_SUBSCRIBERS_COUNT);
             $selectQueryAdapter->addClauseByQueryString($existingSubscriberSelectPart, static::EXISTING_SUBSCRIBERS_COUNT);
             $joinTablesAdapter->addLeftTableAndGetAliasName($marketingListMemberTableName, 'id', $marketingListTableName, 'marketinglist_id');
@@ -117,7 +117,7 @@
                     'value'                => $endDateTime,
                 ),
             );
-            if($marketingList instanceof MarketingList && $marketingList->id > 0)
+            if ($marketingList instanceof MarketingList && $marketingList->id > 0)
             {
                 $searchAttributeData['clauses'][2] = array(
                     'attributeName'        => 'id',

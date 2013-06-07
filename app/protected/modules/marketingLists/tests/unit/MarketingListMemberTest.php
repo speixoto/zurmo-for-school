@@ -60,6 +60,11 @@
             Yii::app()->user->userModel = User::getByUsername('super');
         }
 
+        public function testGetModuleClassName()
+        {
+            $this->assertEquals('MarketingListsModule', MarketingListMember::getModuleClassName());
+        }
+
         public function testCreateAndGetMarketingListMemberById()
         {
             $marketingList                      = RandomDataUtil::getRandomValueFromArray(MarketingList::getAll());

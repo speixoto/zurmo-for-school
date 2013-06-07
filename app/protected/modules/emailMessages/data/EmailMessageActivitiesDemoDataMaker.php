@@ -36,17 +36,17 @@
 
     abstract class EmailMessageActivitiesDemoDataMaker extends DemoDataMaker
     {
-
         protected $emailBox;
 
-        public function __construct() {
+        public function __construct()
+        {
             $user           = User::getByUsername('super');
             $this->emailBox = EmailBoxUtil::getDefaultEmailBoxByUser($user);
         }
 
         protected function populateMarketingItems($marketingItemClassName)
         {
-            foreach($marketingItemClassName::getAll() as $marketingItem)
+            foreach ($marketingItemClassName::getAll() as $marketingItem)
             {
                 $marketingItem->emailMessage = $this->makeEmailMessage($marketingItem->contact);
                 $saved = $marketingItem->unrestrictedSave();

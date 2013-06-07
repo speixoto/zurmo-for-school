@@ -61,7 +61,7 @@
                 $campaign->marketingList        = $demoDataHelper->getRandomByModelName('MarketingList');
                 $campaign->addPermissions(Group::getByName(Group::EVERYONE_GROUP_NAME), Permission::READ_WRITE_CHANGE_PERMISSIONS_CHANGE_OWNER);
                 $saved                          = $campaign->save();
-                if(!$saved)
+                if (!$saved)
                 {
                     throw new FailedToSaveModelException();
                 }

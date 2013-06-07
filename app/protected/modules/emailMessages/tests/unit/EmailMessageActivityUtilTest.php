@@ -100,15 +100,17 @@
             $hash       = $resolveHashForQueryStringArrayFunction->invokeArgs(null, array($queryStringArray));
             $result     = EmailMessageActivityUtil::resolveQueryStringArrayForHash($hash);
             $this->assertTrue(is_array($result));
-            $this->assertCount(4, $result);
+            $this->assertCount(5, $result);
             $this->assertArrayHasKey('modelId', $result);
             $this->assertArrayHasKey('modelType', $result);
             $this->assertArrayHasKey('personId', $result);
             $this->assertArrayHasKey('url', $result);
+            $this->assertArrayHasKey('type', $result);
             $this->assertEquals($queryStringArray['modelId'], $result['modelId']);
             $this->assertEquals($queryStringArray['modelType'], $result['modelType']);
             $this->assertEquals($queryStringArray['personId'], $result['personId']);
             $this->assertNull($result['url']);
+            $this->assertNull($result['type']);
         }
 
         public function testReturnTrueWithNoTracking()
@@ -426,18 +428,22 @@ HTML;
                                                                                     array($withoutUrlQueryStringArray));
             $withoutUrlQueryStringArrayDecoded = $className::resolveQueryStringArrayForHash($withoutUrlQueryStringArrayHash);
             $this->assertTrue(is_array($withoutUrlQueryStringArrayDecoded));
-            $this->assertCount(4, $withoutUrlQueryStringArrayDecoded);
+            $this->assertCount(5, $withoutUrlQueryStringArrayDecoded);
             $this->assertArrayHasKey('modelId', $withoutUrlQueryStringArrayDecoded);
             $this->assertArrayHasKey('modelType', $withoutUrlQueryStringArrayDecoded);
             $this->assertArrayHasKey('personId', $withoutUrlQueryStringArrayDecoded);
             $this->assertArrayHasKey('url', $withoutUrlQueryStringArrayDecoded);
+            $this->assertArrayHasKey('type', $withoutUrlQueryStringArrayDecoded);
             $this->assertEquals($withoutUrlQueryStringArray['modelId'], $withoutUrlQueryStringArrayDecoded['modelId']);
             $this->assertEquals($withoutUrlQueryStringArray['modelType'], $withoutUrlQueryStringArrayDecoded['modelType']);
             $this->assertEquals($withoutUrlQueryStringArray['personId'], $withoutUrlQueryStringArrayDecoded['personId']);
             $this->assertNull($withoutUrlQueryStringArrayDecoded['url']);
+            $this->assertNull($withoutUrlQueryStringArrayDecoded['type']);
 
             // try same thing with url in the query string array.
-            $withUrlQueryStringArray = CMap::mergeArray($withoutUrlQueryStringArray, array('url' => 'http://www.zurmo.com'));
+            $withUrlQueryStringArray = CMap::mergeArray($withoutUrlQueryStringArray,
+                                                                    array('url'     => 'http://www.zurmo.com',
+                                                                            'type'  => null));
             $withUrlQueryStringArrayHash = $resolveHashForQueryStringArrayFunction->invokeArgs(null,
                                                                                     array($withUrlQueryStringArray));
             $withUrlQueryStringArrayDecoded = $className::resolveQueryStringArrayForHash($withUrlQueryStringArrayHash);

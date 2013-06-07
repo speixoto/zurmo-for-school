@@ -46,12 +46,13 @@
         {
             assert('is_int($status)');
             $data = Campaign::getStatusDropDownArray();
-            if(isset($data[$status]))
+            if (isset($data[$status]))
             {
                 return $data[$status];
             }
             return $status;
         }
+
         /**
          * @return A|void
          * @throws NotSupportedException

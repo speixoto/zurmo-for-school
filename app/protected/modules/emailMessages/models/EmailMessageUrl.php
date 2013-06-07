@@ -41,7 +41,6 @@
     {
         public static function getModuleClassName()
         {
-            // TODO: @Shoaibi: Critical: Add Tests to cover:
             return 'EmailMessagesModule';
         }
 

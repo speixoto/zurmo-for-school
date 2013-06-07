@@ -383,5 +383,64 @@
             $this->assertEquals('text.txt', $messages[0]->attachments[2]['filename']);
             $this->assertTrue(strlen($messages[0]->attachments[2]['attachment']) > 0);
         }
+
+        public function testGetMessagesWithCustomHeaders()
+        {
+            if (!EmailMessageTestHelper::isSetEmailAccountsTestConfiguration())
+            {
+                $this->markTestSkipped(Zurmo::t('EmailMessagesModule', 'Test email settings are not configured in perInstanceTest.php file.'));
+            }
+            $imap = new ZurmoImap();
+            $imap->imapHost        = Yii::app()->params['emailTestAccounts']['dropboxImapSettings']['imapHost'];
+            $imap->imapUsername    = Yii::app()->params['emailTestAccounts']['dropboxImapSettings']['imapUsername'];
+            $imap->imapPassword    = Yii::app()->params['emailTestAccounts']['dropboxImapSettings']['imapPassword'];
+            $imap->imapPort        = Yii::app()->params['emailTestAccounts']['dropboxImapSettings']['imapPort'];
+            $imap->imapSSL         = Yii::app()->params['emailTestAccounts']['dropboxImapSettings']['imapSSL'];
+            $imap->imapFolder      = Yii::app()->params['emailTestAccounts']['dropboxImapSettings']['imapFolder'];
+            $returnPath            = Yii::app()->params['emailTestAccounts']['bounceImapSettings']['imapUsername'];
+
+            $imap->setInboundSettings();
+            $imap->init();
+            $this->assertTrue($imap->connect());
+
+            $imap->deleteMessages(true);
+
+            $headers    = array('zurmoItemId' => 10,
+                'zurmoItemClass' => 'AutoresponderItem',
+                'zurmoPersonId'  => 20,
+                'Return-Path'   => $returnPath,
+            );
+            Yii::app()->emailHelper->sendRawEmail("Test Email",
+                Yii::app()->emailHelper->outboundUsername,
+                $imap->imapUsername,
+                'Test email body',
+                '<strong>Test</strong> email html body',
+                null,
+                null,
+                null,
+                null,
+                $headers
+            );
+            sleep(20);
+            $messages = $imap->getMessages();
+            $this->assertEquals(1, count($messages));
+            $this->assertEquals("Test Email", $messages[0]->subject);
+            $this->assertEquals("Test email body", trim($messages[0]->textBody));
+            $this->assertEquals("<strong>Test</strong> email html body", trim($messages[0]->htmlBody));
+            $this->assertEquals($imap->imapUsername, $messages[0]->to[0]['email']);
+            $this->assertEquals(Yii::app()->emailHelper->outboundUsername, $messages[0]->fromEmail);
+            $this->assertNotEmpty($messages[0]->headers);
+            $this->assertEquals(10, $messages[0]->headers['zurmoItemId']);
+            $this->assertEquals(20, $messages[0]->headers['zurmoPersonId']);
+            $this->assertEquals('AutoresponderItem', $messages[0]->headers['zurmoItemClass']);
+            if (isset($messages[0]->headers['Return-Path']))
+            {
+                $this->assertEquals('<' . $returnPath . '>', $messages[0]->headers['Return-Path']);
+            }
+            else
+            {
+                $this->assertEquals('<' . $returnPath . '>', $messages[0]->headers['Return-path']);
+            }
+        }
     }
 ?>

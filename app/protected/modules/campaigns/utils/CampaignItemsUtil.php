@@ -42,11 +42,6 @@
         public static function generateCampaignItemsForDueCampaigns($pageSize = null)
         {
             $dueCampaigns   = Campaign::getByStatusAndSendingTime(Campaign::STATUS_ACTIVE, time(), $pageSize);
-            if (!is_array($dueCampaigns))
-            {
-                // TODO: @Shoaibi: Critical: add tests to cover:
-                $dueCampaigns   = array($dueCampaigns);
-            }
             foreach ($dueCampaigns as $dueCampaign)
             {
                 if (static::generateCampaignItems($dueCampaign))

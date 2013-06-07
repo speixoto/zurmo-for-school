@@ -38,7 +38,6 @@
     {
         public static function getModuleClassName()
         {
-            // TODO: @Shoaibi: Critical: Add Tests to cover:
             return 'MarketingListsModule';
         }
 
@@ -148,7 +147,6 @@
             $member             = self::getSubset($joinTablesAdapter, null, null, $where, null);
             if (count($member) > 1)
             {
-                CVarDumper::dump($member);
                 throw new NotSupportedException();
             }
             elseif (count($member) === 0)

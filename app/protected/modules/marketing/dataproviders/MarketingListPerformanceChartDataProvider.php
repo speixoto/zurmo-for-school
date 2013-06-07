@@ -46,7 +46,7 @@
             foreach ($rows as $row)
             {
                 $chartIndexToCompare = $row[$this->resolveIndexGroupByToUse()];
-                if(isset($chartData[$chartIndexToCompare]))
+                if (isset($chartData[$chartIndexToCompare]))
                 {
                     $uniqueOpenRate         = NumberUtil::divisionForZero($row[self::UNIQUE_OPENS], $row[self::COUNT]);
                     $uniqueClickThroughRate = NumberUtil::divisionForZero($row[self::UNIQUE_CLICKS], $row[self::COUNT]);
@@ -55,7 +55,7 @@
                 }
             }
             $newChartData = array();
-            foreach($chartData as $data)
+            foreach ($chartData as $data)
             {
                 $newChartData[] = $data;
             }
@@ -71,7 +71,7 @@
             $groupBy             = $this->resolveGroupBy('EmailMessage', 'sentDateTime');
             $beginDateTime       = DateTimeUtil::convertDateIntoTimeZoneAdjustedDateTimeBeginningOfDay($this->beginDate);
             $endDateTime         = DateTimeUtil::convertDateIntoTimeZoneAdjustedDateTimeEndOfDay($this->endDate);
-            if($this->marketingList == null)
+            if ($this->marketingList == null)
             {
                 $searchAttributeData = static::makeCampaignsSearchAttributeData('sentDateTime', $beginDateTime,
                                        $endDateTime, $this->campaign);
@@ -83,7 +83,7 @@
                     $combinedRows[$chartIndexToCompare] = $row;
                 }
             }
-            if($this->campaign == null)
+            if ($this->campaign == null)
             {
                 $searchAttributeData = static::makeAutorespondersSearchAttributeData('sentDateTime', $beginDateTime,
                                        $endDateTime, $this->marketingList);
@@ -92,7 +92,7 @@
                 foreach ($rows as $row)
                 {
                     $chartIndexToCompare = $row[$this->resolveIndexGroupByToUse()];
-                    if(!isset($combinedRows[$chartIndexToCompare]))
+                    if (!isset($combinedRows[$chartIndexToCompare]))
                     {
                         $combinedRows[$chartIndexToCompare] = $row;
                     }

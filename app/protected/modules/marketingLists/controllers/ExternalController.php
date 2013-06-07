@@ -49,29 +49,45 @@
             return parent::beforeAction($action);
         }
 
-        public function actionUnsubscribe($hash)
+        public function actionUnsubscribe($hash, $preview = 0)
         {
+            $this->renderPreviewMessage($preview);
             $this->toggleUnsubscribed($hash, 0);
         }
 
-        public function actionSubscribe($hash)
+        public function actionSubscribe($hash, $preview = 0)
         {
+            $this->renderPreviewMessage($preview);
             $this->toggleUnsubscribed($hash, 1);
         }
 
-        public function actionOptOut($hash)
+        public function actionOptOut($hash, $preview = 0)
         {
+            $this->renderPreviewMessage($preview);
             $this->toggleUnsubscribed($hash, 0, true);
         }
 
-        public function actionManageSubscriptions($hash)
+        public function actionManageSubscriptions($hash, $preview = 0)
         {
+            /*
+            $contact            = RandomDataUtil::getRandomValueFromArray(Contact::getAll());
+            $personId           = $contact->getClassId('Person');
+            $marketingList      = RandomDataUtil::getRandomValueFromArray(MarketingList::getAll());
+            $marketingListId    = $marketingList->id;
+            $model              = RandomDataUtil::getRandomValueFromArray(CampaignItem::getAll());
+            $modelId            = $model->id;
+            $modelType          = get_class($model);
+            $hash               = EmailMessageActivityUtil::resolveHashForFooter($personId, $marketingListId, $modelId, $modelType, false);
+            CVarDumper::dump($hash, 10, 1);
+            exit;
+            /**/
+            $this->renderPreviewMessage($preview);
             $contact                = null;
             $personId               = null;
             $marketingListId        = null;
             $modelId                = null;
             $modelType              = null;
-            extract($this->resolveHashForMarketingListIdAndPersonIdandContact($hash));
+            extract($this->resolveHashForMarketingListIdAndPersonIdAndContact($hash));
             $marketingLists         = MarketingList::getByUnsubscribedAndAnyoneCanSubscribe($contact->id);
             $listView               = new MarketingListsManageSubscriptionsListView($this->getId(),
                                                                                         $this->getModule()->getId(),
@@ -82,6 +98,18 @@
                                                                                         $modelType);
             $view                   = new MarketingListsManageSubscriptionsPageView($this, $listView);
             echo $view->render();
+        }
+
+        protected function renderPreviewMessage($preview)
+        {
+            if (!$preview)
+            {
+                return;
+            }
+            $splashView         = new MarketingListsExternalActionsPreviewView();
+            $view               = new MarketingListsExternalActionsPageView($this, $splashView);
+            echo $view->render();
+            Yii::app()->end(0, false);
         }
 
         protected function resolveAndValidateQueryStringHash($hash)
@@ -99,7 +127,7 @@
             $modelType              = null;
             $createNewActivity      = false;
             $newUnsubcribedValue   = (!$currentUnsubscribedValue);
-            extract($this->resolveHashForMarketingListIdAndPersonIdandContact($hash));
+            extract($this->resolveHashForMarketingListIdAndPersonIdAndContact($hash));
             $members                = $this->resolveMembers($currentUnsubscribedValue, $contact, $marketingListId, $optOut);
             if ($members)
             {
@@ -189,19 +217,21 @@
 
         protected function createActivityIfRequired($createNewActivity, $newUnsubcribedValue, $modelId, $modelType, $personId)
         {
-            if (!$createNewActivity)
+            if (!$createNewActivity || $newUnsubcribedValue != 1)
             {
                 return;
             }
-            // TODO: @Shoaibi: Critical: Tests to cover $newUnsubscribedValue to 0 or createNewActivity =0
-            if ($newUnsubcribedValue == 1)
-            {
-                $activityClassName  = EmailMessageActivityUtil::resolveModelClassNameByModelType($modelType);
-                $type               = $activityClassName::TYPE_UNSUBSCRIBE;
-                $url                = null;
-                $sourceIP           = Yii::app()->request->userHostAddress;
-                $activityClassName::createNewActivity($type, $modelId, $personId, $url, $sourceIP);
-            }
+            $activityClassName      = EmailMessageActivityUtil::resolveModelClassNameByModelType($modelType);
+            $activityUtilClassName  = $activityClassName . 'Util';
+            $type                   = $activityClassName::TYPE_UNSUBSCRIBE;
+            $url                    = null;
+            $sourceIP               = Yii::app()->request->userHostAddress;
+            $activityData           = array('modelId'   => $modelId,
+                                                'modelType' => $modelType,
+                                                'personId'  => $personId,
+                                                'url'       => null,
+                                                'type'      => $type);
+            return $activityUtilClassName::createOrUpdateActivity($activityData);
         }
 
         protected function setToggleUnsubscribedCookie($message)
@@ -220,7 +250,7 @@
             return $contact;
         }
 
-        protected function resolveHashForMarketingListIdAndPersonIdandContact($hash)
+        protected function resolveHashForMarketingListIdAndPersonIdAndContact($hash)
         {
             $queryStringArray               = $this->resolveAndValidateQueryStringHash($hash);
             $queryStringArray['contact']    = $this->getContactByPersonId($queryStringArray['personId']);

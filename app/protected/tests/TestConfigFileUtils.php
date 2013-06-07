@@ -142,6 +142,15 @@ EOD;
             'imapSSL'          => '',
             'imapFolder'       => '',
         ),
+        'bounceImapSettings' => array(
+            'imapHost'          => '',
+            'imapUsername'      => '',
+            'imapPassword'      => '',
+            'imapPort'          => '',
+            'imapSSL'           => '',
+            'imapFolder'        => '',
+            'returnPath'        => ''
+        ),
         'userSmtpSettings' => array(
             'outboundHost'     => '',
             'outboundPort'     => '',
@@ -158,6 +167,7 @@ EOD;
             'imapFolder'       => '',
         ),
         'testEmailAddress'     => '',
+        'bounceTestEmailAddress' => '',
     );
 EOD;
                 $contents = preg_replace('/\?\>/',

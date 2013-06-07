@@ -118,15 +118,17 @@
                                                                                             array($queryStringArray));
             $queryStringArrayDecoded                = $className::resolveQueryStringArrayForHash($queryStringArrayHash);
             $this->assertNotEmpty($queryStringArrayDecoded);
-            $this->assertCount(4,                               $queryStringArrayDecoded);
+            $this->assertCount(5,                               $queryStringArrayDecoded);
             $this->assertArrayHasKey('modelId',                 $queryStringArrayDecoded);
             $this->assertArrayHasKey('modelType',               $queryStringArrayDecoded);
             $this->assertArrayHasKey('personId',                $queryStringArrayDecoded);
             $this->assertArrayHasKey('url',                     $queryStringArrayDecoded);
+            $this->assertArrayHasKey('type',                    $queryStringArrayDecoded);
             $this->assertEquals($queryStringArray['modelId'],   $queryStringArrayDecoded['modelId']);
             $this->assertEquals($queryStringArray['modelType'], $queryStringArrayDecoded['modelType']);
             $this->assertEquals($queryStringArray['personId'],  $queryStringArrayDecoded['personId']);
             $this->assertNull($queryStringArrayDecoded['url']);
+            $this->assertNull($queryStringArrayDecoded['type']);
 
             // do the magic, confirm magic worked by checking return value.
             $_GET['id']                         = $queryStringArrayHash;
@@ -232,15 +234,17 @@
                                                                                             array($queryStringArray));
             $queryStringArrayDecoded                = $className::resolveQueryStringArrayForHash($queryStringArrayHash);
             $this->assertNotEmpty($queryStringArrayDecoded);
-            $this->assertCount(4,                               $queryStringArrayDecoded);
+            $this->assertCount(5,                               $queryStringArrayDecoded);
             $this->assertArrayHasKey('modelId',                 $queryStringArrayDecoded);
             $this->assertArrayHasKey('modelType',               $queryStringArrayDecoded);
             $this->assertArrayHasKey('personId',                $queryStringArrayDecoded);
             $this->assertArrayHasKey('url',                     $queryStringArrayDecoded);
+            $this->assertArrayHasKey('type',                    $queryStringArrayDecoded);
             $this->assertEquals($queryStringArray['modelId'],   $queryStringArrayDecoded['modelId']);
             $this->assertEquals($queryStringArray['modelType'], $queryStringArrayDecoded['modelType']);
             $this->assertEquals($queryStringArray['personId'],  $queryStringArrayDecoded['personId']);
             $this->assertNull($queryStringArrayDecoded['url']);
+            $this->assertNull($queryStringArrayDecoded['type']);
 
             // do the magic, confirm magic worked by checking return value.
             $_GET['id']                         = $queryStringArrayHash;
@@ -308,15 +312,17 @@
                                                                                             array($queryStringArray));
             $queryStringArrayDecoded                = $className::resolveQueryStringArrayForHash($queryStringArrayHash);
             $this->assertNotEmpty($queryStringArrayDecoded);
-            $this->assertCount(4,                               $queryStringArrayDecoded);
+            $this->assertCount(5,                               $queryStringArrayDecoded);
             $this->assertArrayHasKey('modelId',                 $queryStringArrayDecoded);
             $this->assertArrayHasKey('modelType',               $queryStringArrayDecoded);
             $this->assertArrayHasKey('personId',                $queryStringArrayDecoded);
             $this->assertArrayHasKey('url',                     $queryStringArrayDecoded);
+            $this->assertArrayHasKey('type',                    $queryStringArrayDecoded);
             $this->assertEquals($queryStringArray['modelId'],   $queryStringArrayDecoded['modelId']);
             $this->assertEquals($queryStringArray['modelType'], $queryStringArrayDecoded['modelType']);
             $this->assertEquals($queryStringArray['personId'],  $queryStringArrayDecoded['personId']);
             $this->assertNull($queryStringArrayDecoded['url']);
+            $this->assertNull($queryStringArrayDecoded['type']);
 
             // do the magic, confirm magic worked by checking return value.
             $_GET['id']                             = $queryStringArrayHash;
@@ -374,15 +380,17 @@
                                                                                             array($queryStringArray));
             $queryStringArrayDecoded                = $className::resolveQueryStringArrayForHash($queryStringArrayHash);
             $this->assertNotEmpty($queryStringArrayDecoded);
-            $this->assertCount(4,                               $queryStringArrayDecoded);
+            $this->assertCount(5,                               $queryStringArrayDecoded);
             $this->assertArrayHasKey('modelId',                 $queryStringArrayDecoded);
             $this->assertArrayHasKey('modelType',               $queryStringArrayDecoded);
             $this->assertArrayHasKey('personId',                $queryStringArrayDecoded);
             $this->assertArrayHasKey('url',                     $queryStringArrayDecoded);
+            $this->assertArrayHasKey('type',                    $queryStringArrayDecoded);
             $this->assertEquals($queryStringArray['modelId'],   $queryStringArrayDecoded['modelId']);
             $this->assertEquals($queryStringArray['modelType'], $queryStringArrayDecoded['modelType']);
             $this->assertEquals($queryStringArray['personId'],  $queryStringArrayDecoded['personId']);
             $this->assertNull($queryStringArrayDecoded['url']);
+            $this->assertNull($queryStringArrayDecoded['type']);
 
             // do the magic, confirm magic worked by checking return value.
             $_GET['id']                             = $queryStringArrayHash;
@@ -449,15 +457,17 @@
                                                                                             array($queryStringArray));
             $queryStringArrayDecoded                = $className::resolveQueryStringArrayForHash($queryStringArrayHash);
             $this->assertNotEmpty($queryStringArrayDecoded);
-            $this->assertCount(4,                               $queryStringArrayDecoded);
+            $this->assertCount(5,                               $queryStringArrayDecoded);
             $this->assertArrayHasKey('modelId',                 $queryStringArrayDecoded);
             $this->assertArrayHasKey('modelType',               $queryStringArrayDecoded);
             $this->assertArrayHasKey('personId',                $queryStringArrayDecoded);
             $this->assertArrayHasKey('url',                     $queryStringArrayDecoded);
+            $this->assertArrayHasKey('type',                     $queryStringArrayDecoded);
             $this->assertEquals($queryStringArray['modelId'],   $queryStringArrayDecoded['modelId']);
             $this->assertEquals($queryStringArray['modelType'], $queryStringArrayDecoded['modelType']);
             $this->assertEquals($queryStringArray['personId'],  $queryStringArrayDecoded['personId']);
             $this->assertEquals($queryStringArray['url'],       $queryStringArrayDecoded['url']);
+            $this->assertNull($queryStringArrayDecoded['type']);
 
             // do the magic, confirm magic worked by checking return value.
             $_GET['id']                         = $queryStringArrayHash;
@@ -565,15 +575,17 @@
                                                                                             array($queryStringArray));
             $queryStringArrayDecoded                = $className::resolveQueryStringArrayForHash($queryStringArrayHash);
             $this->assertNotEmpty($queryStringArrayDecoded);
-            $this->assertCount(4,                               $queryStringArrayDecoded);
+            $this->assertCount(5,                               $queryStringArrayDecoded);
             $this->assertArrayHasKey('modelId',                 $queryStringArrayDecoded);
             $this->assertArrayHasKey('modelType',               $queryStringArrayDecoded);
             $this->assertArrayHasKey('personId',                $queryStringArrayDecoded);
             $this->assertArrayHasKey('url',                     $queryStringArrayDecoded);
+            $this->assertArrayHasKey('type',                    $queryStringArrayDecoded);
             $this->assertEquals($queryStringArray['modelId'],   $queryStringArrayDecoded['modelId']);
             $this->assertEquals($queryStringArray['modelType'], $queryStringArrayDecoded['modelType']);
             $this->assertEquals($queryStringArray['personId'],  $queryStringArrayDecoded['personId']);
             $this->assertEquals($queryStringArray['url'],       $queryStringArrayDecoded['url']);
+            $this->assertNull($queryStringArrayDecoded['type']);
 
             // do the magic, confirm magic worked by checking return value.
             $_GET['id']                         = $queryStringArrayHash;
@@ -642,15 +654,17 @@
                                                                                             array($queryStringArray));
             $queryStringArrayDecoded                = $className::resolveQueryStringArrayForHash($queryStringArrayHash);
             $this->assertNotEmpty($queryStringArrayDecoded);
-            $this->assertCount(4,                               $queryStringArrayDecoded);
+            $this->assertCount(5,                               $queryStringArrayDecoded);
             $this->assertArrayHasKey('modelId',                 $queryStringArrayDecoded);
             $this->assertArrayHasKey('modelType',               $queryStringArrayDecoded);
             $this->assertArrayHasKey('personId',                $queryStringArrayDecoded);
             $this->assertArrayHasKey('url',                     $queryStringArrayDecoded);
+            $this->assertArrayHasKey('type',                    $queryStringArrayDecoded);
             $this->assertEquals($queryStringArray['modelId'],   $queryStringArrayDecoded['modelId']);
             $this->assertEquals($queryStringArray['modelType'], $queryStringArrayDecoded['modelType']);
             $this->assertEquals($queryStringArray['personId'],  $queryStringArrayDecoded['personId']);
             $this->assertEquals($queryStringArray['url'],       $queryStringArrayDecoded['url']);
+            $this->assertNull($queryStringArrayDecoded['type']);
 
             // do the magic, confirm magic worked by checking return value.
             $_GET['id']             = $queryStringArrayHash;
@@ -709,15 +723,17 @@
                                                                                                 array($queryStringArray));
             $queryStringArrayDecoded                = $className::resolveQueryStringArrayForHash($queryStringArrayHash);
             $this->assertNotEmpty($queryStringArrayDecoded);
-            $this->assertCount(4,                               $queryStringArrayDecoded);
+            $this->assertCount(5,                               $queryStringArrayDecoded);
             $this->assertArrayHasKey('modelId',                 $queryStringArrayDecoded);
             $this->assertArrayHasKey('modelType',               $queryStringArrayDecoded);
             $this->assertArrayHasKey('personId',                $queryStringArrayDecoded);
             $this->assertArrayHasKey('url',                     $queryStringArrayDecoded);
+            $this->assertArrayHasKey('type',                    $queryStringArrayDecoded);
             $this->assertEquals($queryStringArray['modelId'],   $queryStringArrayDecoded['modelId']);
             $this->assertEquals($queryStringArray['modelType'], $queryStringArrayDecoded['modelType']);
             $this->assertEquals($queryStringArray['personId'],  $queryStringArrayDecoded['personId']);
             $this->assertEquals($queryStringArray['url'],       $queryStringArrayDecoded['url']);
+            $this->assertNull($queryStringArrayDecoded['type']);
 
             // do the magic, confirm magic worked by checking return value.
             $_GET['id']                         = $queryStringArrayHash;

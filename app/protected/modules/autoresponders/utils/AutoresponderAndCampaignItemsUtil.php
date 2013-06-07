@@ -42,6 +42,7 @@
         public static function processDueItem(OwnedModel $item)
         {
             assert('is_object($item)');
+            $itemId                     = $item->id;
             $itemClass                  = get_class($item);
             assert('$itemClass === "AutoresponderItem" || $itemClass === "CampaignItem"');
             $contact                                = $item->contact;
@@ -55,12 +56,10 @@
             assert('get_class($itemOwnerModel) === "Autoresponder" || get_class($itemOwnerModel) === "Campaign"');
             if ($contact->primaryEmail->optOut)
             {
-                // TODO: @Shoaibi: Critical: Test, ensure activity is created for optout one, no items created.
                 $activityClass  = $itemClass . 'Activity';
                 $personId       = $contact->getClassId('Person');
                 $type           = $activityClass::TYPE_SKIP;
-                $modelId        = $item->id;
-                $activityClass::createNewActivity($type, $modelId, $personId);
+                $activityClass::createNewActivity($type, $itemId, $personId);
             }
             else
             {
@@ -70,11 +69,11 @@
                 $textContent                = $itemOwnerModel->textContent;
                 $htmlContent                = $itemOwnerModel->htmlContent;
                 static::resolveContent($textContent, $htmlContent, $contact, $itemOwnerModel->enableTracking,
-                                                                    $item->id, $itemClass, $contact, $marketingList->id);
+                                                                    $itemId, $itemClass, $contact, $marketingList->id);
                 try
                 {
                     $item->emailMessage = static::resolveEmailMessage($textContent, $htmlContent, $itemOwnerModel,
-                                                                                                $contact, $marketingList);
+                                                                        $contact, $marketingList, $itemId, $itemClass);
                 }
                 catch (MissingRecipientsForEmailMessageException $e)
                 {
@@ -134,7 +133,7 @@
         }
 
         protected static function resolveEmailMessage($textContent, $htmlContent, Item $itemOwnerModel,
-                                                                        Contact $contact, MarketingList $marketingList)
+                                                    Contact $contact, MarketingList $marketingList, $itemId, $itemClass)
         {
             $emailMessage                   = new EmailMessage();
             $emailMessage->owner            = $marketingList->owner;
@@ -146,6 +145,7 @@
             $emailMessage->sender           = static::resolveSender($marketingList);
             static::resolveRecipient($emailMessage, $contact);
             static::resolveAttachments($emailMessage, $itemOwnerModel);
+            static::resolveHeaders($emailMessage, $itemId, $itemClass, $contact->getClassId('Person'));
             if ($emailMessage->recipients->count() == 0)
             {
                 throw new MissingRecipientsForEmailMessageException();
@@ -196,6 +196,22 @@
                     $emailMessage->files->add($file);
                 }
             }
+        }
+
+        protected static function resolveHeaders(EmailMessage $emailMessage, $zurmoItemId, $zurmoItemClass, $zurmoPersonId)
+        {
+            $headers            = compact('zurmoItemId', 'zurmoItemClass', 'zurmoPersonId');
+            $returnPathHeader   = static::resolveReturnPathHeaderValue();
+            if ($returnPathHeader)
+            {
+                $headers['Return-Path'] = $returnPathHeader;
+            }
+            $emailMessage->headers  = serialize($headers);
+        }
+
+        protected static function resolveReturnPathHeaderValue()
+        {
+            return ZurmoConfigurationUtil::getByModuleName('EmailMessagesModule', 'bounceReturnPath');
         }
 
         protected static function markItemAsProcessed($item)

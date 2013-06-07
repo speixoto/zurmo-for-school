@@ -50,7 +50,7 @@
         {
             $content        = null;
             EmailMessageActivityUtil::resolveFooterPlaceholders($content, $this->placeholderContent, 0,
-                                                                    0, 0, 'AutoresponderItem', $this->isHtmlContent);
+                                                                    0, 0, 'AutoresponderItem', $this->isHtmlContent, 1);
             $content        = ZurmoHtml::tag('div', array('id' => 'footer-preview-modal-content',
                                                             'class' => 'footer-preview-modal'),
                                                     $content);

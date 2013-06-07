@@ -74,7 +74,7 @@
                 $isHtmlContent  = $this->params['isHtmlContent'];
                 $this->params['ajaxOptions'] = array('data' => array(
                                                     'isHtmlContent' => $isHtmlContent,
-                                                    'content'	=> new CJavaScriptExpression('
+                                                    'content'       => new CJavaScriptExpression('
                                                                     function()
                                                                      {
                                                                         return ' . $selector . ';
@@ -102,7 +102,6 @@
             }
             else
             {
-
                 Yii::app()->clientScript->registerScript($eventHandlerName, '
                     function ' . $eventHandlerName . '()
                     {

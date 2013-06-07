@@ -86,6 +86,7 @@
          */
         public static function getCalculatedSellPriceBySellPriceFormulaScript()
         {
+            // Begin Not Coding Standard
             return "
                 $('#ProductTemplate_cost_currency_id').change(function(){calculateSellPriceBySellPriceFormula()});
                 $('#ProductTemplate_listPrice_currency_id').change(function(){calculateSellPriceBySellPriceFormula()});
@@ -173,6 +174,7 @@
                     }
                 }
             ";
+            // End Not Coding Standard
         }
 
         /**
