@@ -44,9 +44,7 @@
             assert('$demoDataHelper->isSetRange("Opportunity")');
             assert('$demoDataHelper->isSetRange("User")');
             $products = array();
-            $filePath                  = Yii::getPathOfAlias('application.modules.products.data.ProductRandomData') . '.php';
-            require($filePath);
-            $productRandomData = getProductsRandomData();
+            $productRandomData = self::getProductsRandomData();
             for ($i = 0; $i < count($productRandomData['names']); $i++)
             {
                 $product = new Product();
@@ -107,6 +105,41 @@
                 }
             }
             return $productTemplateMapping[$product];
+        }
+
+        /**
+         * Gets the products random data
+         * @return array
+         */
+        public static function getProductsRandomData()
+        {
+            $productNames = array(
+                                    'names' => array(
+                                        'Amazing Kid Sample',
+                                        'You Can Do Anything Sample',
+                                        'A Bend in the River November Issue',
+                                        'A Gift of Monotheists October Issue',
+                                        'Enjoy Once in a Lifetime Music'
+                                    )
+                                );
+
+            $productTemplates = ProductTemplate::getAll();
+
+            foreach ($productTemplates as $template)
+            {
+                if((strpos($template->name, 'Laptop') !== false)
+                                                || (strpos($template->name, 'Camera') !== false)
+                                                                     || (strpos($template->name, 'Handycam') !== false))
+                {
+                    for($i=1; $i<3; $i++)
+                    {
+                       $randomString = substr(str_shuffle("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0, 2);
+                       $productNames['names'][] = $template->name . '-P' . $randomString;
+                    }
+                }
+            }
+
+            return $productNames;
         }
     }
 ?>
