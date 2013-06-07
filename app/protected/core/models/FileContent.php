@@ -58,5 +58,10 @@
         {
             return true;
         }
+
+        public static function isModelCacheable()
+        {
+            return true;
+        }
     }
 ?>
