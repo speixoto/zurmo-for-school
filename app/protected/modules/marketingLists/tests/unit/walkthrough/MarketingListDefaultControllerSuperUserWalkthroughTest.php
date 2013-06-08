@@ -304,5 +304,38 @@
             $marketingLists = MarketingList::getAll();
             $this->assertEquals(2, count($marketingLists));
         }
+
+        public function testListDashboardGroupByActions()
+        {
+            $portlets = Portlet::getAll();
+            foreach ($portlets as $portlet)
+            {
+                if($portlet->viewType = 'MarketingListOverallMetrics')
+                {
+                    $marketingListPortlet = $portlet;
+                }
+            }
+            $marketingLists = MarketingList::getAll();
+
+            $this->setGetArray(array(
+                        'portletId'         => $portlet->id,
+                        'uniqueLayoutId'    => 'MarketingListDetailsAndRelationsViewLeftBottomView',
+                        'portletParams'     => array('relationModelId'  => $marketingLists[0]->id,
+                                                     'relationModuleId' => 'marketingLists',
+                            ),
+                    ));
+            $this->setPostArray(array(
+                        'MarketingOverallMetricsForm' => array('groupBy' => MarketingOverallMetricsForm::GROUPING_TYPE_DAY)
+                    ));
+            $this->runControllerWithNoExceptionsAndGetContent('home/defaultPortlet/modalConfigSave');
+            $this->setPostArray(array(
+                        'MarketingOverallMetricsForm' => array('groupBy' => MarketingOverallMetricsForm::GROUPING_TYPE_MONTH)
+                    ));
+            $this->runControllerWithNoExceptionsAndGetContent('home/defaultPortlet/modalConfigSave');
+            $this->setPostArray(array(
+                        'MarketingOverallMetricsForm' => array('groupBy' => MarketingOverallMetricsForm::GROUPING_TYPE_WEEK)
+                    ));
+            $this->runControllerWithNoExceptionsAndGetContent('home/defaultPortlet/modalConfigSave');
+        }
     }
 ?>
