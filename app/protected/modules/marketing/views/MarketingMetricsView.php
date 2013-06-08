@@ -4,7 +4,7 @@
      * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
-     * the terms of the GNU General Public License version 3 as published by the
+     * the terms of the GNU Affero General Public License version 3 as published by the
      * Free Software Foundation with the addition of the following permission added
      * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
      * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
@@ -12,10 +12,10 @@
      *
      * Zurmo is distributed in the hope that it will be useful, but WITHOUT
      * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-     * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+     * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
      * details.
      *
-     * You should have received a copy of the GNU General Public License along with
+     * You should have received a copy of the GNU Affero General Public License along with
      * this program; if not, see http://www.gnu.org/licenses or write to the Free
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
@@ -25,9 +25,9 @@
      *
      * The interactive user interfaces in original and modified versions
      * of this program must display Appropriate Legal Notices, as required under
-     * Section 5 of the GNU General Public License version 3.
+     * Section 5 of the GNU Affero General Public License version 3.
      *
-     * In accordance with Section 7(b) of the GNU General Public License version 3,
+     * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
@@ -45,18 +45,34 @@
          */
         protected $params;
 
+        /**
+         * @var string
+         */
         protected $controllerId;
 
+        /**
+         * @var string
+         */
         protected $moduleId;
 
-        protected $model;
-
+        /**
+         * @var string
+         */
         protected $uniqueLayoutId;
 
+        /**
+         * @var array
+         */
         protected $viewData;
 
+        /**
+         * @var CFormModel
+         */
         protected $formModel;
 
+        /**
+         * @var string
+         */
         protected $formModelClassName;
 
         abstract public function getConfigurationView();
@@ -70,11 +86,17 @@
             throw new NotImplementedException();
         }
 
+        /**
+         * @return bool
+         */
         public static function canUserConfigure()
         {
             return true;
         }
 
+        /**
+         * @return bool
+         */
         public static function canUserRemove()
         {
             return false;
@@ -89,11 +111,17 @@
             return 'ModelDetails';
         }
 
+        /**
+         * @return null
+         */
         public function renderPortletHeadContent()
         {
             return null;
         }
 
+        /**
+         * @return array
+         */
         public static function getDefaultMetadata()
         {
             $metadata = array(
@@ -115,6 +143,7 @@
         {
             assert('is_array($viewData) || $viewData == null');
             assert('isset($params["portletId"])');
+            assert('isset($params["layoutId"])');
             assert('is_string($uniqueLayoutId)');
             $this->moduleId       = 'home';
             $this->viewData       = $viewData;
@@ -122,6 +151,9 @@
             $this->uniqueLayoutId = $uniqueLayoutId;
         }
 
+        /**
+         * @return string
+         */
         public function renderContent()
         {
             $content  = ZurmoHtml::tag('h3', array(), Zurmo::t('MarketingModule', 'What is going on with Marketing?'));
@@ -130,6 +162,19 @@
             return $content;
         }
 
+        public function getPortletParams()
+        {
+            if (isset($this->params['relationModel']) && $this->params['relationModel']->id > 0)
+            {
+                return array('relationModuleId' => $this->params['relationModuleId'],
+                             'relationModelId'  => $this->params['relationModel']->id);
+            }
+            return array();
+        }
+
+        /**
+         * @return string
+         */
         protected function renderConfigureElementsContent()
         {
             $dateRangeContent  = DateTimeUtil::resolveValueForDateLocaleFormattedDisplay($this->resolveForm()->beginDate)
@@ -140,6 +185,9 @@
             return $content;
         }
 
+        /**
+         * @return string
+         */
         protected function renderMetricsWrapperContent()
         {
             $cssClass = 'third marketing-graph';
@@ -149,24 +197,49 @@
             return ZurmoHtml::tag('div', array('class' => 'graph-container clearfix'), $content);
         }
 
+        /**
+         * @return string
+         */
         protected function renderOverallListPerformanceContent()
         {
             $chartDataProvider  = $this->resolveChartDataProvider('MarketingListPerformance');
-            $content  = ZurmoHtml::tag('h3', array(), Zurmo::t('MarketingModule', 'Overall List Performance'));
+            $content  = ZurmoHtml::tag('h3', array(), $this->getOverallListPerformanceTitle());
             $content .= MarketingMetricsUtil::renderOverallListPerformanceChartContent(
                         $chartDataProvider, $this->uniqueLayoutId . 'OverallListPerformance');
             return $content;
         }
 
+        /**
+         * @return string
+         */
+        protected function getOverallListPerformanceTitle()
+        {
+            return Zurmo::t('MarketingModule', 'Overall Performance');
+        }
+
+        /**
+         * @return string
+         */
         protected function renderEmailsInThisListContent()
         {
             $chartDataProvider  = $this->resolveChartDataProvider('MarketingEmailsInThisList');
-            $content  = ZurmoHtml::tag('h3', array(), Zurmo::t('MarketingModule', 'Emails in this list'));
+            $content  = ZurmoHtml::tag('h3', array(), $this->getEmailsInThisListTitle());
             $content .= MarketingMetricsUtil::renderEmailsInThisListChartContent(
                         $chartDataProvider, $this->uniqueLayoutId . 'EmailsInThisList');
             return $content;
         }
 
+        /**
+         * @return string
+         */
+        protected function getEmailsInThisListTitle()
+        {
+            return Zurmo::t('MarketingModule', 'Overall Email Performance');
+        }
+
+        /**
+         * @return string
+         */
         protected function renderListGrowthContent()
         {
             $chartDataProvider  = $this->resolveChartDataProvider('MarketingListGrowth');
@@ -176,26 +249,18 @@
             return $content;
         }
 
+        /**
+         * @param $type
+         * @return ChartDataProvider
+         */
         protected function resolveChartDataProvider($type)
         {
             assert('is_string($type)');
             $chartDataProvider  = ChartDataProviderFactory::createByType($type);
             $chartDataProvider->setBeginDate($this->resolveForm()->beginDate);
-            $chartDataProvider->setEndDate($this->resolveForm()->beginDate);
+            $chartDataProvider->setEndDate($this->resolveForm()->endDate);
             $chartDataProvider->setGroupBy($this->resolveForm()->groupBy);
             return $chartDataProvider;
-        }
-
-        /**
-         * After a portlet action is completed, the portlet must be refreshed. This is the url to correctly
-         * refresh the portlet content.
-         */
-        protected function getPortletDetailsUrl()
-        {
-            return Yii::app()->createUrl('/' . $this->moduleId . '/defaultPortlet/details',
-                array_merge($_GET, array( 'portletId' =>
-                $this->params['portletId'],
-                    'uniqueLayoutId' => $this->uniqueLayoutId)));
         }
 
         /**
@@ -203,21 +268,19 @@
          */
         protected function getPortletSaveConfigurationUrl()
         {
-            return Yii::app()->createUrl('/' . $this->moduleId . '/defaultPortlet/modalConfigSave',
-                array_merge($_GET, array( 'portletId' => $this->params['portletId'],
-                            'uniqueLayoutId' => $this->uniqueLayoutId)));
+            $getData = GetUtil::getData();
+            $getData['portletId'] = $this->params['portletId'];
+            if (!isset($getData['uniqueLayoutId']))
+            {
+                $getData['uniqueLayoutId'] = $this->params['layoutId'];
+            }
+            $getData['portletParams'] = $this->getPortletParams();
+            return Yii::app()->createUrl('/' . $this->moduleId . '/defaultPortlet/modalConfigSave', $getData);
         }
 
         /**
-         * Url to go to after an action is completed. Typically returns user to either a model's detail view or
-         * the home page dashboard.
+         * @return string
          */
-        protected function getNonAjaxRedirectUrl()
-        {
-            return Yii::app()->createUrl('/' . $this->moduleId . '/default/details',
-                array( 'id' => $this->params['relationModel']->id));
-        }
-
         protected function renderGroupByConfigurationForm()
         {
             $clipWidget = new ClipWidget();
@@ -235,18 +298,28 @@
             return $content;
         }
 
+        /**
+         * @return string
+         */
         protected function getFormId()
         {
             return 'marketing-metrics-group-by-configuration-form-' . $this->uniqueLayoutId;
         }
 
+        /**
+         * @param $form
+         * @return string
+         */
         protected function renderGroupByConfigurationFormLayout($form)
         {
             assert('$form instanceof ZurmoActiveForm');
             $groupByElement = new MarketingMetricsGroupByRadioElement($this->resolveForm(), 'groupBy', $form);
-            return ZurmoHtml::tag('div', array('id' => $this->getFormId() . '_groupBy_area'), $groupByElement->render());
+            return ZurmoHtml::tag('div', array('id' => $this->getFormId() . '_groupBy_area', 'class' => 'mini-pillbox'), $groupByElement->render());
         }
 
+        /**
+         * @param $form
+         */
         protected function registerGroupByConfigurationFormLayoutScripts($form)
         {
             assert('$form instanceof ZurmoActiveForm');
@@ -255,8 +328,8 @@
                 'data'     => 'js:$("#' . $form->getId() . '").serialize() + \'&' . get_class($this->resolveForm()) .
                               '[groupBy]=\' + $(this).data("value")',
                 'url'      =>  $this->getPortletSaveConfigurationUrl(),
-                //'beforeSend' => 'js:function(){makeSmallLoadingSpinner(true, "#MarketingDashboardView");
-                //                $("#MarketingDashboardView").addClass("loading");}',
+                'beforeSend' => 'js:function(){$(this).makeSmallLoadingSpinner(true, ".graph-container");
+                                $("#MarketingDashboardView").addClass("loading");}',
                 'complete' => 'function(XMLHttpRequest, textStatus){juiPortlets.refresh();}',
                 'update' => '#' . $this->uniqueLayoutId,
 
@@ -270,13 +343,17 @@
             ");
         }
 
+        /**
+         * @return CFormModel
+         * @throws NotSupportedException
+         */
         protected function resolveForm()
         {
-            if($this->formModel !== null)
+            if ($this->formModel !== null)
             {
                 return $this->formModel;
             }
-            if($this->formModelClassName == null)
+            if ($this->formModelClassName == null)
             {
                 throw new NotSupportedException();
             }

@@ -4,7 +4,7 @@
      * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
-     * the terms of the GNU General Public License version 3 as published by the
+     * the terms of the GNU Affero General Public License version 3 as published by the
      * Free Software Foundation with the addition of the following permission added
      * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
      * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
@@ -12,10 +12,10 @@
      *
      * Zurmo is distributed in the hope that it will be useful, but WITHOUT
      * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-     * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+     * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
      * details.
      *
-     * You should have received a copy of the GNU General Public License along with
+     * You should have received a copy of the GNU Affero General Public License along with
      * this program; if not, see http://www.gnu.org/licenses or write to the Free
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
@@ -25,9 +25,9 @@
      *
      * The interactive user interfaces in original and modified versions
      * of this program must display Appropriate Legal Notices, as required under
-     * Section 5 of the GNU General Public License version 3.
+     * Section 5 of the GNU Affero General Public License version 3.
      *
-     * In accordance with Section 7(b) of the GNU General Public License version 3,
+     * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
@@ -100,33 +100,41 @@
             $hash       = $resolveHashForQueryStringArrayFunction->invokeArgs(null, array($queryStringArray));
             $result     = EmailMessageActivityUtil::resolveQueryStringArrayForHash($hash);
             $this->assertTrue(is_array($result));
-            $this->assertCount(4, $result);
+            $this->assertCount(5, $result);
             $this->assertArrayHasKey('modelId', $result);
             $this->assertArrayHasKey('modelType', $result);
             $this->assertArrayHasKey('personId', $result);
             $this->assertArrayHasKey('url', $result);
+            $this->assertArrayHasKey('type', $result);
             $this->assertEquals($queryStringArray['modelId'], $result['modelId']);
             $this->assertEquals($queryStringArray['modelType'], $result['modelType']);
             $this->assertEquals($queryStringArray['personId'], $result['personId']);
             $this->assertNull($result['url']);
+            $this->assertNull($result['type']);
         }
 
-        public function testReturnFalseWithNoTracking()
+        public function testReturnTrueWithNoTracking()
         {
             $content    = 'Sample Content with no links';
             $result     = static::resolveContent($content, false, false);
-            $this->assertFalse($result);
+            $this->assertTrue($result);
+            $this->assertNotEquals('Sample Content with no links', $content);
+            $this->assertTrue(strpos($content, 'Sample Content with no links') !== false);
+            $this->assertTrue(strpos($content, '/marketingLists/external/') !== false);
+            $this->assertEquals(2, substr_count($content, '/marketingLists/external/'));
         }
 
         /**
-         * @depends testReturnFalseWithNoTracking
+         * @depends testReturnTrueWithNoTracking
          */
         public function testTextContentDoesNotChangeWhenNoLinksArePresent()
         {
             $content    = 'Sample Content with no links';
             $result     = static::resolveContent($content, true, false);
-            $this->assertEquals('Sample Content with no links', $content);
             $this->assertTrue($result);
+            $this->assertTrue(strpos($content, 'Sample Content with no links') !== false);
+            $this->assertTrue(strpos($content, '/marketingLists/external/') !== false);
+            $this->assertEquals(2, substr_count($content, '/marketingLists/external/'));
         }
 
         /**
@@ -156,6 +164,8 @@ LNK;
             $this->assertFalse(strpos($content, 'www.yahoo.com'));
             $this->assertTrue(strpos($content, '/tracking/default/track?id=') !== false);
             $this->assertEquals(3, substr_count($content, '/tracking/default/track?id='));
+            $this->assertTrue(strpos($content, '/marketingLists/external/') !== false);
+            $this->assertEquals(2, substr_count($content, '/marketingLists/external/'));
         }
 
         /**
@@ -170,6 +180,8 @@ LNK;
             $this->assertTrue(strpos($content, '<a href="http://www.zurmo.org">') !== false);
             $this->assertTrue(strpos($content, '/tracking/default/track?id=') !== false);
             $this->assertEquals(1, substr_count($content, '/tracking/default/track?id='));
+            $this->assertTrue(strpos($content, '/marketingLists/external/') !== false);
+            $this->assertEquals(2, substr_count($content, '/marketingLists/external/'));
         }
 
         /**
@@ -185,6 +197,8 @@ LNK;
             $this->assertTrue(strpos($content, '<img width="1" height="1" src="') !== false);
             $this->assertTrue(strpos($content, '/tracking/default/track?id=') !== false);
             $this->assertEquals(1, substr_count($content, '/tracking/default/track?id='));
+            $this->assertTrue(strpos($content, '/marketingLists/external/') !== false);
+            $this->assertEquals(2, substr_count($content, '/marketingLists/external/'));
         }
 
         /**
@@ -202,6 +216,8 @@ LNK;
             $this->assertEquals(1, substr_count($content, '<img width="1" height="1" src="'));
             $this->assertTrue(strpos($content, '/tracking/default/track?id=') !== false);
             $this->assertEquals(1, substr_count($content, '/tracking/default/track?id='));
+            $this->assertTrue(strpos($content, '/marketingLists/external/') !== false);
+            $this->assertEquals(2, substr_count($content, '/marketingLists/external/'));
         }
 
         /**
@@ -215,9 +231,11 @@ LNK;
             $this->assertTrue($result);
             $this->assertNotEquals($originalContent, $content);
             $this->assertTrue(strpos($content, '<p>Sample Content</p>') !== false);
-            $this->assertTrue(strpos($content, '<p>Sample Content</p><img width="1" height="1" src="') !== false);
+            $this->assertTrue(strpos($content, '<p>Sample Content</p><br /><img width="1" height="1" src="') !== false);
             $this->assertTrue(strpos($content, '/tracking/default/track?id=') !== false);
             $this->assertEquals(1, substr_count($content, '/tracking/default/track?id='));
+            $this->assertTrue(strpos($content, '/marketingLists/external/') !== false);
+            $this->assertEquals(2, substr_count($content, '/marketingLists/external/'));
         }
 
         /**
@@ -247,6 +265,8 @@ HTML;
             $this->assertTrue(strpos($content, '<img width="1" height="1" src="') !== false);
             $this->assertTrue(strpos($content, '/tracking/default/track?id=') !== false);
             $this->assertEquals(2, substr_count($content, '/tracking/default/track?id='));
+            $this->assertTrue(strpos($content, '/marketingLists/external/') !== false);
+            $this->assertEquals(2, substr_count($content, '/marketingLists/external/'));
         }
 
         /**
@@ -381,6 +401,8 @@ HTML;
                     substr_count($content, 'http://www.zurmo.com/zurmo/app/index.php/min/serve/g/js/lm/1366697751.js'));
             $this->assertTrue(strpos($content, '<img width="1" height="1" src=') !== false);
             $this->assertEquals(1, substr_count($content, '<img width="1" height="1" src='));
+            $this->assertTrue(strpos($content, '/marketingLists/external/') !== false);
+            $this->assertEquals(2, substr_count($content, '/marketingLists/external/'));
         }
 
         public function testResolveQueryStringArrayForHashWithAndWithoutUrlInQueryString()
@@ -406,28 +428,57 @@ HTML;
                                                                                     array($withoutUrlQueryStringArray));
             $withoutUrlQueryStringArrayDecoded = $className::resolveQueryStringArrayForHash($withoutUrlQueryStringArrayHash);
             $this->assertTrue(is_array($withoutUrlQueryStringArrayDecoded));
-            $this->assertCount(4, $withoutUrlQueryStringArrayDecoded);
+            $this->assertCount(5, $withoutUrlQueryStringArrayDecoded);
             $this->assertArrayHasKey('modelId', $withoutUrlQueryStringArrayDecoded);
             $this->assertArrayHasKey('modelType', $withoutUrlQueryStringArrayDecoded);
             $this->assertArrayHasKey('personId', $withoutUrlQueryStringArrayDecoded);
             $this->assertArrayHasKey('url', $withoutUrlQueryStringArrayDecoded);
+            $this->assertArrayHasKey('type', $withoutUrlQueryStringArrayDecoded);
             $this->assertEquals($withoutUrlQueryStringArray['modelId'], $withoutUrlQueryStringArrayDecoded['modelId']);
             $this->assertEquals($withoutUrlQueryStringArray['modelType'], $withoutUrlQueryStringArrayDecoded['modelType']);
             $this->assertEquals($withoutUrlQueryStringArray['personId'], $withoutUrlQueryStringArrayDecoded['personId']);
             $this->assertNull($withoutUrlQueryStringArrayDecoded['url']);
+            $this->assertNull($withoutUrlQueryStringArrayDecoded['type']);
 
             // try same thing with url in the query string array.
-            $withUrlQueryStringArray = CMap::mergeArray($withoutUrlQueryStringArray, array('url' => 'http://www.zurmo.com'));
+            $withUrlQueryStringArray = CMap::mergeArray($withoutUrlQueryStringArray,
+                                                                    array('url'     => 'http://www.zurmo.com',
+                                                                            'type'  => null));
             $withUrlQueryStringArrayHash = $resolveHashForQueryStringArrayFunction->invokeArgs(null,
                                                                                     array($withUrlQueryStringArray));
             $withUrlQueryStringArrayDecoded = $className::resolveQueryStringArrayForHash($withUrlQueryStringArrayHash);
             $this->assertEquals($withUrlQueryStringArray, $withUrlQueryStringArrayDecoded);
         }
 
+        public function testTextContentGetsCustomFooterAppended()
+        {
+            AutoresponderOrCampaignMailFooterContentUtil::setContentByType('PlainTextFooter', false);
+            $content    = 'This is some text content';
+            $result     = static::resolveContent($content, true, false);
+            $this->assertTrue($result);
+            $this->assertTrue(strpos($content, 'This is some text content') !== false);
+            $this->assertTrue(strpos($content, 'PlainTextFooter') !== false);
+            $this->assertTrue(strpos($content, '/marketingLists/external/') === false);
+        }
+
+        /**
+         * @depends testTextContentGetsCustomFooterAppended
+         */
+        public function testHtmlContentGetsCustomFooterAppended()
+        {
+            AutoresponderOrCampaignMailFooterContentUtil::setContentByType('RichTextFooter', true);
+            $content    = 'This is some html content';
+            $result     = static::resolveContent($content, true, true);
+            $this->assertTrue($result);
+            $this->assertTrue(strpos($content, 'This is some html content') !== false);
+            $this->assertTrue(strpos($content, 'RichTextFooter') !== false);
+            $this->assertTrue(strpos($content, '/marketingLists/external/') === false);
+        }
+
         protected static function resolveContent(& $content, $tracking = true, $isHtmlContent = true)
         {
-            return EmailMessageActivityUtil::resolveContentForTracking($tracking, $content, 1, 'AutoresponderItem',
-                                                                                                    1, $isHtmlContent);
+            return EmailMessageActivityUtil::resolveContentForTrackingAndFooter($tracking, $content, 1, 'AutoresponderItem',
+                                                                                                    1, 1, $isHtmlContent);
         }
     }
 ?>

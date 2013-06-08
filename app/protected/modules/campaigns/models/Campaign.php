@@ -4,7 +4,7 @@
      * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
-     * the terms of the GNU General Public License version 3 as published by the
+     * the terms of the GNU Affero General Public License version 3 as published by the
      * Free Software Foundation with the addition of the following permission added
      * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
      * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
@@ -12,10 +12,10 @@
      *
      * Zurmo is distributed in the hope that it will be useful, but WITHOUT
      * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-     * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+     * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
      * details.
      *
-     * You should have received a copy of the GNU General Public License along with
+     * You should have received a copy of the GNU Affero General Public License along with
      * this program; if not, see http://www.gnu.org/licenses or write to the Free
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
@@ -25,9 +25,9 @@
      *
      * The interactive user interfaces in original and modified versions
      * of this program must display Appropriate Legal Notices, as required under
-     * Section 5 of the GNU General Public License version 3.
+     * Section 5 of the GNU Affero General Public License version 3.
      *
-     * In accordance with Section 7(b) of the GNU General Public License version 3,
+     * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
@@ -36,19 +36,13 @@
 
     class Campaign extends OwnedSecurableItem
     {
-        const TYPE_MARKETING_LIST               = 1;
+        const STATUS_PAUSED                     = 1;
 
-        const TYPE_DYNAMIC                      = 2;
+        const STATUS_ACTIVE                     = 2;
 
-        const STATUS_INCOMPLETE                 = 1;
+        const STATUS_PROCESSING                 = 3;
 
-        const STATUS_PAUSED                     = 2;
-
-        const STATUS_ACTIVE                     = 3;
-
-        const STATUS_PROCESSING                 = 4;
-
-        const STATUS_COMPLETED                  = 5;
+        const STATUS_COMPLETED                  = 4;
 
         public static function getByName($name)
         {
@@ -63,7 +57,6 @@
         public static function getStatusDropDownArray()
         {
             return array(
-                static::STATUS_INCOMPLETE   => Zurmo::t('CampaignsModule', 'Incomplete'),
                 static::STATUS_PAUSED       => Zurmo::t('CampaignsModule', 'Paused'),
                 static::STATUS_ACTIVE       => Zurmo::t('CampaignsModule', 'Active'),
                 static::STATUS_PROCESSING   => Zurmo::t('CampaignsModule', 'Processing'),
@@ -89,6 +82,7 @@
 
         /**
          * Returns the display name for the model class.
+         * @param null $language
          * @return dynamic label name based on module.
          */
         protected static function getLabel($language = null)
@@ -98,6 +92,7 @@
 
         /**
          * Returns the display name for plural of the model class.
+         * @param null $language
          * @return dynamic label name based on module.
          */
         protected static function getPluralLabel($language = null)
@@ -138,7 +133,7 @@
             {
                 $sendingTimestamp = time();
             }
-            $sendingDateTime = DateTimeUtil::convertTimestampToDbFormatDateTime($sendingTimestamp);
+            $sendOnDateTime = DateTimeUtil::convertTimestampToDbFormatDateTime($sendingTimestamp);
             assert('is_int($status)');
             $searchAttributeData = array();
             $searchAttributeData['clauses'] = array(
@@ -148,9 +143,9 @@
                     'value'                     => intval($status),
                 ),
                 2 => array(
-                    'attributeName'             => 'sendingDateTime',
+                    'attributeName'             => 'sendOnDateTime',
                     'operatorType'              => 'lessThan',
-                    'value'                     => $sendingDateTime,
+                    'value'                     => $sendOnDateTime,
                 ),
             );
             $searchAttributeData['structure'] = '(1 and 2)';
@@ -164,12 +159,10 @@
             $metadata = parent::getDefaultMetadata();
             $metadata[__CLASS__] = array(
                 'members' => array(
-                    'type',
                     'name',
                     'subject',
                     'status',
-                    'sendNow',
-                    'sendingDateTime',
+                    'sendOnDateTime',
                     'supportsRichText',
                     'enableTracking',
                     'htmlContent',
@@ -181,21 +174,14 @@
                     array('name',                   'required'),
                     array('name',                   'type',    'type' => 'string'),
                     array('name',                   'length',  'min'  => 3, 'max' => 64),
-                    //array('type',                 'required'), // TODO: @Shoaibi: Medium: We don't need type for now.
-                    array('type',                   'type',    'type' => 'integer'),
-                    array('type',                   'numerical',  'min'  => static::TYPE_MARKETING_LIST,
-                                                                                        'max' => static::TYPE_DYNAMIC),
-                    array('type',                   'default', 'value' => static::TYPE_MARKETING_LIST),
                     array('status',                 'required'),
                     array('status',                 'type',    'type' => 'integer'),
-                    array('status',                 'numerical',  'min'  => static::STATUS_INCOMPLETE,
-                                                                                    'max' => static::STATUS_COMPLETED),
+                    array('status',                 'default', 'value' => static::STATUS_ACTIVE),
                     array('supportsRichText',       'required'),
                     array('supportsRichText',       'boolean'),
-                    array('sendNow',                'required'),
-                    array('sendNow',                'boolean'),
-                    array('sendingDateTime',        'type', 'type' => 'datetime'),
-                    array('sendingDateTime',        'validateSendDateTimeAgainstSendNow'),
+                    array('sendOnDateTime',         'required'),
+                    array('sendOnDateTime',         'type', 'type' => 'datetime'),
+                    array('sendOnDateTime',         'dateTimeDefault', 'value' => DateTimeCalculatorUtil::NOW),
                     array('fromName',                'required'),
                     array('fromName',               'type',    'type' => 'string'),
                     array('fromName',               'length',  'min'  => 3, 'max' => 64),
@@ -214,6 +200,7 @@
                     array('textContent',            'CampaignMergeTagsValidator', 'except' => 'autoBuildDatabase'),
                     array('enableTracking',         'boolean'),
                     array('enableTracking',         'default', 'value' => false),
+                    array('marketingList',          'required'),
                 ),
                 'relations' => array(
                     'campaignItems'     => array(RedBeanModel::HAS_MANY, 'CampaignItem'),
@@ -221,40 +208,17 @@
                     'files'             => array(RedBeanModel::HAS_MANY,  'FileModel', RedBeanModel::OWNED)
                 ),
                 'elements' => array(
-                    'htmlContent'                   => 'TextArea',
-                    'textContent'                   => 'TextArea',
-                    'supportsRichText'              => 'CheckBox',
-                    'enableTracking'                => 'CheckBox',
-                    'sendNow'                       => 'CheckBox',
-                    'sendDateTime'                  => 'DateTime',
+                    'marketingList'    => 'MarketingList',
+                    'htmlContent'      => 'TextArea',
+                    'textContent'      => 'TextArea',
+                    'supportsRichText' => 'CheckBox',
+                    'enableTracking'   => 'CheckBox',
+                    'sendDateTime'     => 'DateTime',
+                    'status'           => 'CampaignStatus',
                 ),
                 'defaultSortAttribute' => 'name',
             );
             return $metadata;
-        }
-
-        public function validateSendDateTimeAgainstSendNow($attribute, $params)
-        {
-            if (!$this->hasErrors('sendNow') && $this->sendNow == 0 && empty($this->$attribute))
-            {
-                $this->addError($attribute, Zurmo::t('CampaignsModule', 'Send On cannot be blank.'));
-                return false;
-            }
-            return true;
-        }
-
-        public function beforeSave()
-        {
-            if (!parent::beforeSave())
-            {
-                return false;
-            }
-            if ($this->sendNow == 1 && empty($this->sendingDateTime))
-            {
-                // set sendingDateTime to a past date so its sending immediately in next job execution.
-                $this->sendingDateTime = DateTimeUtil::convertTimestampToDbFormatDateTime(time() - 180);
-            }
-            return true;
         }
 
         protected static function translatedAttributeLabels($language)
@@ -262,11 +226,9 @@
             return array_merge(parent::translatedAttributeLabels($language),
                 array(
                     'name'                  => Zurmo::t('ZurmoModule', 'Name', null,  null, $language),
-                    'type'                  => Zurmo::t('Core', 'Type', null,  null, $language),
                     'status'                => Zurmo::t('CampaignsModule', 'Status', null,  null, $language),
-                    'sendNow'               => Zurmo::t('CampaignsModule', 'Send Now?', null,  null, $language),
-                    'sendingDateTime'       => Zurmo::t('CampaignsModule', 'Send On', null,  null, $language),
-                    'supportsRichText'      => Zurmo::t('CampaignsModule', 'Supports Rich Text(HTML) outgoing emails',
+                    'sendOnDateTime'       => Zurmo::t('CampaignsModule', 'Send On', null,  null, $language),
+                    'supportsRichText'      => Zurmo::t('CampaignsModule', 'Supports HTML',
                                                                                                 null,  null, $language),
                     'fromName'              => Zurmo::t('CampaignsModule', 'From Name', null,  null, $language),
                     'fromAddress'           => Zurmo::t('CampaignsModule', 'From Address', null,  null, $language),
@@ -275,6 +237,16 @@
                     'textContent'           => Zurmo::t('EmailMessagesModule', 'Text Content', null,  null, $language),
                 )
             );
+        }
+
+        public static function hasReadPermissionsOptimization()
+        {
+            return true;
+        }
+
+        public static function getGamificationRulesType()
+        {
+            return 'CampaignGamification';
         }
     }
 ?>

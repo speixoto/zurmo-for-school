@@ -4,7 +4,7 @@
      * Zurmo, Inc. Copyright (C) 2012 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
-     * the terms of the GNU General Public License version 3 as published by the
+     * the terms of the GNU Affero General Public License version 3 as published by the
      * Free Software Foundation with the addition of the following permission added
      * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
      * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
@@ -12,10 +12,10 @@
      *
      * Zurmo is distributed in the hope that it will be useful, but WITHOUT
      * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-     * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+     * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
      * details.
      *
-     * You should have received a copy of the GNU General Public License along with
+     * You should have received a copy of the GNU Affero General Public License along with
      * this program; if not, see http://www.gnu.org/licenses or write to the Free
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
@@ -52,6 +52,8 @@
             'filteredByStage'
         );
 
+        protected $relationModuleId;
+
         function __construct($viewData, $params, $uniqueLayoutId)
         {
             parent::__construct($viewData, $params, $uniqueLayoutId);
@@ -59,7 +61,7 @@
             $productsConfigurationForm = $this->getConfigurationForm();
             $this->resolveProductsConfigFormFromRequest($productsConfigurationForm);
             $this->configurationForm   = $productsConfigurationForm;
-            $this->moduleId            = $this->params['relationModuleId'];
+            $this->relationModuleId    = $this->params['relationModuleId'];
         }
 
         public static function getDefaultMetadata()
@@ -135,7 +137,7 @@
         protected static function getGridTemplate()
         {
             $preloader = '<div class="list-preloader"><span class="z-spinner"></span></div>';
-            return "\n{items}\n{pager}\n<span class='empty'><strong>{totalBarDetails}</strong></span>" . $preloader;
+            return "\n{items}\n{pager}\n<span class='products-portlet-totals'>{totalBarDetails}</span>" . $preloader;
         }
 
         /**
@@ -326,7 +328,7 @@
             }
             if ($innerContent != null)
             {
-                $content .= '<div class="horizontal-line latest-activity-toolbar">';
+                $content .= '<div class="filter-portlet-model-bar">';
                 $content .= $innerContent;
                 $content .= '</div>' . "\n";
             }
@@ -419,14 +421,15 @@
          */
         protected function getPortletDetailsUrl()
         {
-            $params = array_merge($_GET, array('portletId'      => $this->params['portletId'],
-                                               'uniqueLayoutId' => $this->uniqueLayoutId,
-                                               'redirectUrl'    => null,
-                                               'portletParams'  => array('relationModuleId' => $this->moduleId,
-                                               'relationModelId'=> $this->params['relationModel']->id)
+            $redirectUrl = $this->params['redirectUrl'];
+            $params = array_merge($_GET, array('portletId'       => $this->params['portletId'],
+                                               'uniqueLayoutId'  => $this->uniqueLayoutId,
+                                               'redirectUrl'    => $redirectUrl,
+                                               'portletParams'   => array('relationModuleId' => $this->relationModuleId,
+                                                                         'relationModelId' => $this->params['relationModel']->id)
                                                )
                                   );
-            return Yii::app()->createUrl('/' . $this->moduleId . '/defaultPortlet/modalRefresh',$params);
+            return Yii::app()->createUrl('/' . $this->relationModuleId . '/defaultPortlet/modalRefresh', $params);
         }
 
         protected function makeProductSearchAttributeData($form)
@@ -438,7 +441,7 @@
                                                         'operatorType'         => 'equals',
                                                         'value'                => (int)$this->params['relationModel']->id,
                                                     );
-            if($form->filteredByStage != ProductsConfigurationForm::FILTERED_BY_ALL_STAGES)
+            if ($form->filteredByStage != ProductsConfigurationForm::FILTERED_BY_ALL_STAGES)
             {
                 $searchAttributeData['clauses'][2] = array(
                                                             'attributeName'        => 'stage',

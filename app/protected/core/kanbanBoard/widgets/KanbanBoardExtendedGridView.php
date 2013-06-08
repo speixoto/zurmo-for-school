@@ -4,7 +4,7 @@
      * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
-     * the terms of the GNU General Public License version 3 as published by the
+     * the terms of the GNU Affero General Public License version 3 as published by the
      * Free Software Foundation with the addition of the following permission added
      * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
      * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
@@ -12,10 +12,10 @@
      *
      * Zurmo is distributed in the hope that it will be useful, but WITHOUT
      * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-     * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+     * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
      * details.
      *
-     * You should have received a copy of the GNU General Public License along with
+     * You should have received a copy of the GNU Affero General Public License along with
      * this program; if not, see http://www.gnu.org/licenses or write to the Free
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
@@ -25,9 +25,9 @@
      *
      * The interactive user interfaces in original and modified versions
      * of this program must display Appropriate Legal Notices, as required under
-     * Section 5 of the GNU General Public License version 3.
+     * Section 5 of the GNU Affero General Public License version 3.
      *
-     * In accordance with Section 7(b) of the GNU General Public License version 3,
+     * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
@@ -63,8 +63,14 @@
          */
         public $groupByDataAndTranslatedLabels = array();
 
+        /**
+         * @var array
+         */
         public $cardColumns = array();
 
+        /**
+         * @var string
+         */
         public $selectedTheme;
 
         /**
@@ -88,26 +94,26 @@
         public function renderTableBody()
         {
             $data        = $this->dataProvider->getData();
-            $n           = count($data);
+            $modelsCount = count($data);
             $columnsData = $this->resolveDataIntoKanbanColumns();
-            $width       = ' style="width:' . 100 / count($columnsData) . '%;"';
-            echo "<tbody>\n";
-            echo "<tr><td id=\"kanban-holder\" class='". $this->selectedTheme . "'>\n";
-            if ($n > static::$maxCount)
+            $width       = 100 / count($columnsData);
+            echo "<tbody>";
+            echo "<tr><td id=\"kanban-holder\" class='". $this->selectedTheme . "'>";
+            if ($modelsCount > static::$maxCount)
             {
                 $this->renderOverMaxCountText();
             }
-
-            elseif($n > 0)
+            elseif ($modelsCount > 0)
             {
-                echo "<div id=\"kanban-board\">\n";
-                foreach($columnsData as $attributeValue => $attributeValueAndData)
+                $counter = 0;
+                echo "<div id=\"kanban-board\" class=\"clearfix\">";
+                foreach ($columnsData as $attributeValue => $attributeValueAndData)
                 {
-                    echo "<div class=\"kanban-column\" $width>\n";
-                    echo "<div data-value='" . $attributeValue . "' class='droppable-dynamic-rows-container'>\n";
+                    echo '<div class="kanban-column" style="width:'.$width.'%;">'; // Not Coding Standard
+                    echo "<div data-value='" . $attributeValue . "' class='droppable-dynamic-rows-container'>";
                     echo ZurmoHtml::tag('div', array('class' => 'column-header'), $this->resolveGroupByColumnHeaderLabel($attributeValue));
                     $listItems = '';
-                    foreach($attributeValueAndData as $row)
+                    foreach ($attributeValueAndData as $row)
                     {
                         $listItems .= ZurmoHtml::tag('li',
                                                       array('class' => 'kanban-card item-to-place',
@@ -117,18 +123,18 @@
                     echo ZurmoHtml::tag('ul', array(), $listItems);
                     $dropZone =  ZurmoHtml::tag('div', array('class' => 'drop-zone'), '');
                     echo ZurmoHtml::tag('div', array('class' => 'drop-zone-container'), $dropZone);
-                    echo "</div>\n";
-                    echo "</div>\n";
+                    echo "</div>";
+                    echo "</div>";
+                    $counter++;
                 }
-                echo "</div>\n";
+                echo "</div>";
             }
             else
             {
                 $this->renderEmptyText();
-
             }
-            echo "</td></tr>\n";
-            echo "</tbody>\n";
+            echo "</td></tr>";
+            echo "</tbody>";
         }
 
         /**
@@ -137,9 +143,16 @@
         public function renderOverMaxCountText()
         {
             $label = Zurmo::t('Core', 'There are too many results to display. Try filtering your search or switching to the grid view.');
-            echo CHtml::tag('span', array('class'=>'empty'), $label);
+            //echo CHtml::tag('span', array('class' => 'empty'), $label);
+            $content  = '<div class="general-issue-notice"><span class="icon-notice"></span><p>';
+            $content .= $label;
+            $content .= '</p></div>';
+            echo $content;
         }
 
+        /**
+         * @return int
+         */
         protected function getOffset()
         {
             $pagination = $this->dataProvider->getPagination();
@@ -154,22 +167,28 @@
             return $offset;
         }
 
-
+        /**
+         * @param $value
+         * @return string
+         */
         protected function resolveGroupByColumnHeaderLabel($value)
         {
-            if(isset($this->groupByDataAndTranslatedLabels[$value]))
+            if (isset($this->groupByDataAndTranslatedLabels[$value]))
             {
                 return $this->groupByDataAndTranslatedLabels[$value];
             }
             return $value;
         }
 
+        /**
+         * @return array
+         */
         protected function resolveDataIntoKanbanColumns()
         {
             $columnsData = $this->makeColumnsDataAndStructure();
-            foreach($this->dataProvider->data as $row => $data)
+            foreach ($this->dataProvider->data as $row => $data)
             {
-                if(isset($columnsData[$data->{$this->groupByAttribute}->value]))
+                if (isset($columnsData[$data->{$this->groupByAttribute}->value]))
                 {
                     $columnsData[$data->{$this->groupByAttribute}->value][] = $row;
                 }
@@ -177,10 +196,13 @@
             return $columnsData;
         }
 
+        /**
+         * @return array
+         */
         protected function makeColumnsDataAndStructure()
         {
             $columnsData = array();
-            foreach($this->groupByAttributeVisibleValues as $value)
+            foreach ($this->groupByAttributeVisibleValues as $value)
             {
                 $columnsData[$value] = array();
             }
@@ -193,7 +215,8 @@
                 Yii::app()->getAssetManager()->publish(
                     Yii::getPathOfAlias('application.core.kanbanBoard.widgets.assets')) . '/KanbanUtils.js');
             $script = '
-                $(".droppable-dynamic-rows-container").live("drop", function(event, ui){
+                $(".droppable-dynamic-rows-container").live("drop", function(event, ui)
+                {
                    ' . $this->getAjaxForDroppedAttribute() . '
                    $("ul", this).append(ui.draggable);
                 });
@@ -235,15 +258,18 @@
             return  Yii::app()->createUrl($moduleId . '/default/updateAttributeValue', array('attribute' => $this->groupByAttribute));
         }
 
+        /**
+         * @param array $row
+         * @return string
+         */
         protected function renderCardDetailsContent($row)
         {
             $cardDetails = null;
-            foreach($this->cardColumns as $cardData)
+            foreach ($this->cardColumns as $cardData)
             {
                 $content      = $this->evaluateExpression($cardData['value'], array('data' => $this->dataProvider->data[$row],
                                                                                     'offset' => ($this->getOffset() + $row)));
                 $cardDetails .= ZurmoHtml::tag('span', array('class' => $cardData['class']), $content);
-
             }
             $userUrl      = Yii::app()->createUrl('/users/default/details', array('id' => $this->dataProvider->data[$row]->owner->id));
             $cardDetails .= ZurmoHtml::link($this->dataProvider->data[$row]->owner->getAvatarImage(20), $userUrl,

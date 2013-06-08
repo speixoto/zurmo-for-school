@@ -4,7 +4,7 @@
      * Zurmo, Inc. Copyright (C) 2012 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
-     * the terms of the GNU General Public License version 3 as published by the
+     * the terms of the GNU Affero General Public License version 3 as published by the
      * Free Software Foundation with the addition of the following permission added
      * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
      * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
@@ -12,10 +12,10 @@
      *
      * Zurmo is distributed in the hope that it will be useful, but WITHOUT
      * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-     * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+     * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
      * details.
      *
-     * You should have received a copy of the GNU General Public License along with
+     * You should have received a copy of the GNU Affero General Public License along with
      * this program; if not, see http://www.gnu.org/licenses or write to the Free
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
@@ -60,6 +60,15 @@
             {
                 $contactWebFormAttributes = unserialize($this->model->serializedData);
             }
+            $clip = $this->form->checkBoxList($this->model,
+                $this->attribute,
+                ContactWebFormsUtil::getAllNonPlacedAttributes($attributes,
+                    $contactWebFormAttributes),
+                $this->getEditableHtmlOptions());
+            $title   = ZurmoHtml::tag('h3', array(), Zurmo::t('ContactWebFormModule', 'Available Fields'));
+            $content = ZurmoHtml::tag('span', array('class' => 'row-description'),
+                       Zurmo::t('ContactWebFormModule', 'Check the fields that you like to add to your form, you can then change their order or remove them'));
+            $content .=  ZurmoHtml::tag('div', array('class' => 'third'), $title . $clip );
 
             $cClipWidget = new CClipWidget();
             $cClipWidget->beginClip("attributesList");
@@ -68,45 +77,46 @@
                 'items'        => ContactWebFormsUtil::getAllPlacedAttributes($attributes, $contactWebFormAttributes),
             ));
             $cClipWidget->endClip();
-            $content = $cClipWidget->getController()->clips['attributesList'];
+            $clip = $cClipWidget->getController()->clips['attributesList'];
+            $title = ZurmoHtml::tag('h3', array(), Zurmo::t('ContactWebFormModule', 'Chosen Fields'));
+            $content .= ZurmoHtml::tag('div', array('class' => 'twoThirds'), $title . $clip );
 
-            $script = "$('label.hasCheckBox > input[type=checkbox]').live('change', function()
+            $this->registerScript();
+
+            return $content;
+        }
+
+        protected function registerScript()
+        {
+            // Begin Not Coding Standard
+            $script = "$(\"[id^='ContactWebForm_serializedData_']\").live('change', function()
                        {
-                           if($(this).is(':checked'))
+                           if ($(this).is(':checked'))
                            {
                                 var attributeId      = $(this).val();
                                 var elementId        = $(this).attr('id');
                                 var attributeLabel   = $('label[for=' + elementId + ']').html();
                                 $(this).closest('div').remove();
-                                var attributeElement = '<li style=\'list-style: none; display: block; float: left; width: 100%;\'>';
-                                attributeElement    += '<input type=\'checkbox\' id=\'ContactWebFormAttribute_' + attributeId + '\' name=\'ContactWebFormAttributes[]\'';
-                                attributeElement    += ' value=\'' + attributeId + '\' checked=\'checked\' style=\'float: left; margin-right: 5px !important;\' />';
+                                var attributeElement = '<li><div class=\"dynamic-row\"><div>';
+                                attributeElement    += '<label for=\'' + elementId + '\'>' + attributeLabel + '</label>';
                                 attributeElement    += '<input type=\'hidden\' name=\'attributeIndexOrDerivedType[]\' value=\'' + attributeId + '\' />';
-                                attributeElement    += '<label style=\'width: 150px;\' for=\'ContactWebFormAttribute_' + attributeId + '\'>' + attributeLabel + '</label>';
+                                attributeElement    += '</div><a class=\"remove-dynamic-row-link\" id=\'' + elementId + '\' data-value=\'' + attributeId + '\' href=\"#\">—</a></div></li>';
                                 $('ul#yw1').append(attributeElement);
                            }
                        });
-                       $('ul#yw1 li > input[type=checkbox]').live('change', function()
-                       {
-                           if(!$(this).is(':checked'))
-                           {
-                                var attributeId      = $(this).val();
+                       $('.remove-dynamic-row-link').live('click', function(){
+                                var attributeId      = $(this).attr('data-value');
                                 var elementId        = $(this).attr('id');
                                 var attributeLabel   = $('label[for=' + elementId + ']').html();
                                 $(this).closest('li').remove();
                                 var attributeElement = '<div class=\'multi-select-checkbox-input\'><label class=\'hasCheckBox\'><label class=\'hasCheckBox\'>';
-                                attributeElement    += '<input id=\'ContactWebFormAttribute_' + attributeId + '\' value=\'' + attributeId + '\' type=\'checkbox\'';
-                                attributeElement    += ' name=\'ContactWebFormAttributes[]\'></label></label><label for=\'ContactWebFormAttribute_' + attributeId + '\'>' + attributeLabel + '</label></div>';
+                                attributeElement    += '<input id=\'' + elementId + '\' value=\'' + attributeId + '\' type=\'checkbox\'';
+                                attributeElement    += ' name=\'ContactWebForm[serializedData][]\'></label></label><label for=\'' + elementId + '\'>' + attributeLabel + '</label></div>';
                                 $('span#ContactWebForm_serializedData').append(attributeElement);
-                           }
-                       });";
+                            return false;
+                       })";
+            // End Not Coding Standard
             Yii::app()->clientScript->registerScript('addOrRemoveFormAttributes', $script);
-            $content .= $this->form->checkBoxList($this->model,
-                                                  $this->attribute,
-                                                  ContactWebFormsUtil::getAllNonPlacedAttributes($attributes,
-                                                                                                 $contactWebFormAttributes),
-                                                  $this->getEditableHtmlOptions());
-            return $content;
         }
 
         protected function getEditableHtmlOptions()
@@ -119,13 +129,10 @@
 
         protected function renderItemTemplate()
         {
-            return '<li style="list-style: none; display: block; float: left; width: 100%;">
-                        <input type="checkbox" id="ContactWebFormAttribute_{id}" name="ContactWebFormAttributes[]" value="{id}"
-                        {checkedAndReadOnly}
-                        style="float: left; margin-right: 5px !important;" />
-                        <input type="hidden" name="attributeIndexOrDerivedType[]" value="{id}" />
-                        <label style="width: 150px;" for="ContactWebFormAttribute_{id}">{content}</label>' .
-                    '</li>';
+            return '<li><div class="dynamic-row"><div>
+                        <label for="ContactWebForm_serializedData_{id}">{content}</label>' .
+                        '<input type="hidden" name="attributeIndexOrDerivedType[]" value="{id}" />' .
+                    '</div>{checkedAndReadOnly}</div></li>';
         }
 
         protected function renderError()

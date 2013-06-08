@@ -4,7 +4,7 @@
      * Zurmo, Inc. Copyright (C) 2012 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
-     * the terms of the GNU General Public License version 3 as published by the
+     * the terms of the GNU Affero General Public License version 3 as published by the
      * Free Software Foundation with the addition of the following permission added
      * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
      * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
@@ -12,10 +12,10 @@
      *
      * Zurmo is distributed in the hope that it will be useful, but WITHOUT
      * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-     * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+     * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
      * details.
      *
-     * You should have received a copy of the GNU General Public License along with
+     * You should have received a copy of the GNU Affero General Public License along with
      * this program; if not, see http://www.gnu.org/licenses or write to the Free
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
@@ -27,7 +27,7 @@
     class ProductsDefaultController extends ZurmoModuleController
     {
         const ZERO_MODELS_CHECK_FILTER_PATH =
-            'application.modules.products.controllers.filters.ProductListsZeroModelsCheckControllerFilter';
+            'application.modules.products.controllers.filters.ProductCatalogRelatedModelsZeroModelsCheckControllerFilter';
 
         public static function getListBreadcrumbLinks()
         {
@@ -104,7 +104,7 @@
             ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($product);
             $breadcrumbLinks = array(StringUtil::getChoppedStringContent(strval($product), 25));
             AuditEvent::logAuditEvent('ZurmoModule', ZurmoModule::AUDIT_EVENT_ITEM_VIEWED, array(strval($product), 'ProductsModule'), $product);
-            $detailsView        = new ProductDetailsView($this->getId(), $this->getModule()->getId(), $product);
+            $detailsView        = new ProductEditAndDetailsView('Details', $this->getId(), $this->getModule()->getId(), $product);
             $view               = new ProductsPageView(ProductDefaultViewUtil::
                                                          makeViewWithBreadcrumbsForCurrentUser(
                                                             $this, $detailsView, $breadcrumbLinks, 'ProductBreadCrumbView'));
@@ -364,16 +364,17 @@
             $product->stage->value      = Product::OPEN_STAGE;
             $product->productTemplate   = $productTemplate;
             $product->priceFrequency    = $productTemplate->priceFrequency;
-            $product->sellPrice->value  = $productTemplate->sellPrice->value;
+            $product->sellPrice         = $productTemplate->sellPrice;
             $product->type              = $productTemplate->type;
 
             $relationModel              = $relationModelClassName::getById((int)$relationModelId);
             $product->$relationAttributeName = $relationModel;
             $product->save();
+            $redirectUrl = Yii::app()->createUrl('/' . $relationModuleId . '/default/details', array('id' => $relationModelId));
             $this->redirect(array('/' . $relationModuleId . '/defaultPortlet/modalRefresh',
                                     'portletId'            => $portletId,
                                     'uniqueLayoutId'       => $uniqueLayoutId,
-                                    'redirectUrl'          => null,
+                                    'redirectUrl'          => $redirectUrl,
                                     'portletParams'        => array(  'relationModuleId' => $relationModuleId,
                                                                       'relationModelId'  => $relationModelId),
                             ));

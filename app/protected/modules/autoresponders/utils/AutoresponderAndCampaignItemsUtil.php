@@ -4,7 +4,7 @@
      * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
-     * the terms of the GNU General Public License version 3 as published by the
+     * the terms of the GNU Affero General Public License version 3 as published by the
      * Free Software Foundation with the addition of the following permission added
      * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
      * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
@@ -12,10 +12,10 @@
      *
      * Zurmo is distributed in the hope that it will be useful, but WITHOUT
      * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-     * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+     * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
      * details.
      *
-     * You should have received a copy of the GNU General Public License along with
+     * You should have received a copy of the GNU Affero General Public License along with
      * this program; if not, see http://www.gnu.org/licenses or write to the Free
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
@@ -25,9 +25,9 @@
      *
      * The interactive user interfaces in original and modified versions
      * of this program must display Appropriate Legal Notices, as required under
-     * Section 5 of the GNU General Public License version 3.
+     * Section 5 of the GNU Affero General Public License version 3.
      *
-     * In accordance with Section 7(b) of the GNU General Public License version 3,
+     * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
@@ -42,6 +42,7 @@
         public static function processDueItem(OwnedModel $item)
         {
             assert('is_object($item)');
+            $itemId                     = $item->id;
             $itemClass                  = get_class($item);
             assert('$itemClass === "AutoresponderItem" || $itemClass === "CampaignItem"');
             $contact                                = $item->contact;
@@ -53,23 +54,44 @@
             $itemOwnerModel             = $item->$ownerModelRelationName;
             assert('is_object($itemOwnerModel)');
             assert('get_class($itemOwnerModel) === "Autoresponder" || get_class($itemOwnerModel) === "Campaign"');
-            $textContent                = $itemOwnerModel->textContent;
-            $htmlContent                = $itemOwnerModel->htmlContent;
-            static::resolveContent($textContent, $htmlContent, $contact);
-            static::resolveContentForTracking($textContent, $htmlContent, $itemOwnerModel->enableTracking,
-                                                                                $item->id, $itemClass, $contact);
-            try
+            if ($contact->primaryEmail->optOut)
             {
-                $item->emailMessage = static::resolveEmailMessage($textContent, $htmlContent, $itemOwnerModel, $contact);
+                $activityClass  = $itemClass . 'Activity';
+                $personId       = $contact->getClassId('Person');
+                $type           = $activityClass::TYPE_SKIP;
+                $activityClass::createNewActivity($type, $itemId, $personId);
             }
-            catch (MissingRecipientsForEmailMessageException $e)
+            else
             {
-                // TODO: @Shoaibi/@Jason: Medium: Do something about it.
+                $marketingList              = $itemOwnerModel->marketingList;
+                assert('is_object($marketingList)');
+                assert('get_class($marketingList) === "MarketingList"');
+                $textContent                = $itemOwnerModel->textContent;
+                $htmlContent                = $itemOwnerModel->htmlContent;
+                static::resolveContent($textContent, $htmlContent, $contact, $itemOwnerModel->enableTracking,
+                                                                    $itemId, $itemClass, $contact, $marketingList->id);
+                try
+                {
+                    $item->emailMessage = static::resolveEmailMessage($textContent, $htmlContent, $itemOwnerModel,
+                                                                        $contact, $marketingList, $itemId, $itemClass);
+                }
+                catch (MissingRecipientsForEmailMessageException $e)
+                {
+                    // TODO: @Shoaibi/@Jason: Medium: Do something about it.
+                }
             }
             static::markItemAsProcessed($item);
         }
 
-        protected static function resolveContent(& $textContent, & $htmlContent, Contact $contact)
+        protected static function resolveContent(& $textContent, & $htmlContent, Contact $contact,
+                                                            $enableTracking, $modelId, $modelType, $marketingListId)
+        {
+            static::resolveContentForMergeTags($textContent, $htmlContent, $contact);
+            static::resolveContentForTrackingAndFooter($textContent, $htmlContent, $enableTracking, $modelId,
+                                                                                $modelType, $contact, $marketingListId);
+        }
+
+        protected static function resolveContentForMergeTags(& $textContent, & $htmlContent, Contact $contact)
         {
             // TODO: @Shoaibi/@Jason: High: we might add support for language
             $language               = null;
@@ -99,18 +121,20 @@
             }
         }
 
-        protected static function resolveContentForTracking(& $textContent, & $htmlContent, $enableTracking, $modelId,
-                                                                                                    $modelType, $contact)
+        protected static function resolveContentForTrackingAndFooter(& $textContent, & $htmlContent, $enableTracking, $modelId,
+                                                                        $modelType, Contact $contact, $marketingListId)
         {
             $personId                 = $contact->getClassId('Person');
             $activityUtil             = $modelType . 'ActivityUtil';
-            $activityUtil::resolveContentForTracking($enableTracking, $textContent, $modelId, $modelType, $personId, false);
-            $activityUtil::resolveContentForTracking($enableTracking, $htmlContent, $modelId, $modelType, $personId, true);
+            $activityUtil::resolveContentForTrackingAndFooter($enableTracking, $textContent, $modelId, $modelType,
+                                                                                    $personId, $marketingListId, false);
+            $activityUtil::resolveContentForTrackingAndFooter($enableTracking, $htmlContent, $modelId, $modelType,
+                                                                                    $personId, $marketingListId, true);
         }
 
-        protected static function resolveEmailMessage($textContent, $htmlContent, Item $itemOwnerModel, Contact $contact)
+        protected static function resolveEmailMessage($textContent, $htmlContent, Item $itemOwnerModel,
+                                                    Contact $contact, MarketingList $marketingList, $itemId, $itemClass)
         {
-            $marketingList                  = $itemOwnerModel->marketingList;
             $emailMessage                   = new EmailMessage();
             $emailMessage->owner            = $marketingList->owner;
             $emailMessage->subject          = $itemOwnerModel->subject;
@@ -121,6 +145,7 @@
             $emailMessage->sender           = static::resolveSender($marketingList);
             static::resolveRecipient($emailMessage, $contact);
             static::resolveAttachments($emailMessage, $itemOwnerModel);
+            static::resolveHeaders($emailMessage, $itemId, $itemClass, $contact->getClassId('Person'));
             if ($emailMessage->recipients->count() == 0)
             {
                 throw new MissingRecipientsForEmailMessageException();
@@ -142,7 +167,7 @@
             }
             else
             {
-                $userToSendMessagesFrom     = Yii::app()->emailHelper->getUserToSendNotificationsAs();
+                $userToSendMessagesFrom     = BaseJobControlUserConfigUtil::getUserToRunAs();
                 $sender->fromAddress        = Yii::app()->emailHelper->resolveFromAddressByUser($userToSendMessagesFrom);
                 $sender->fromName           = strval($userToSendMessagesFrom);
             }
@@ -171,6 +196,22 @@
                     $emailMessage->files->add($file);
                 }
             }
+        }
+
+        protected static function resolveHeaders(EmailMessage $emailMessage, $zurmoItemId, $zurmoItemClass, $zurmoPersonId)
+        {
+            $headers            = compact('zurmoItemId', 'zurmoItemClass', 'zurmoPersonId');
+            $returnPathHeader   = static::resolveReturnPathHeaderValue();
+            if ($returnPathHeader)
+            {
+                $headers['Return-Path'] = $returnPathHeader;
+            }
+            $emailMessage->headers  = serialize($headers);
+        }
+
+        protected static function resolveReturnPathHeaderValue()
+        {
+            return ZurmoConfigurationUtil::getByModuleName('EmailMessagesModule', 'bounceReturnPath');
         }
 
         protected static function markItemAsProcessed($item)

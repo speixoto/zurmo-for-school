@@ -4,7 +4,7 @@
      * Zurmo, Inc. Copyright (C) 2012 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
-     * the terms of the GNU General Public License version 3 as published by the
+     * the terms of the GNU Affero General Public License version 3 as published by the
      * Free Software Foundation with the addition of the following permission added
      * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
      * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
@@ -12,10 +12,10 @@
      *
      * Zurmo is distributed in the hope that it will be useful, but WITHOUT
      * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-     * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+     * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
      * details.
      *
-     * You should have received a copy of the GNU General Public License along with
+     * You should have received a copy of the GNU Affero General Public License along with
      * this program; if not, see http://www.gnu.org/licenses or write to the Free
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
@@ -26,22 +26,25 @@
 
     class SellPriceFormulaTypeDropDownElement extends StaticDropDownFormElement
     {
+        /**
+         * @return array
+         */
         protected function getDropDownArray()
         {
-            return array(
-                SellPriceFormula::TYPE_EDITABLE            => Yii::t('Default', 'Editable'),
-                SellPriceFormula::TYPE_DISCOUNT_FROM_LIST  => Yii::t('Default', 'Discount From List'),
-                SellPriceFormula::TYPE_MARKUP_OVER_COST    => Yii::t('Default', 'Markup Over Cost'),
-                SellPriceFormula::TYPE_PROFIT_MARGIN       => Yii::t('Default', 'Profit Margin'),
-                SellPriceFormula::TYPE_SAME_AS_LIST        => Yii::t('Default', 'Same As List'),
-            );
+            return SellPriceFormula::getTypeDropDownArray();
         }
 
+        /**
+         * @return string
+         */
         protected function getFormattedAttributeLabel()
         {
             return Yii::app()->format->text(Zurmo::t('ProductTemplatesModule', 'Sell Price Formula'));
         }
 
+        /**
+         * @return string
+         */
         protected function renderLabel()
         {
             return $this->resolveNonActiveFormFormattedLabel($this->getFormattedAttributeLabel());

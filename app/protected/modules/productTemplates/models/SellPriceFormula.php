@@ -4,7 +4,7 @@
      * Zurmo, Inc. Copyright (C) 2012 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
-     * the terms of the GNU General Public License version 3 as published by the
+     * the terms of the GNU Affero General Public License version 3 as published by the
      * Free Software Foundation with the addition of the following permission added
      * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
      * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
@@ -12,10 +12,10 @@
      *
      * Zurmo is distributed in the hope that it will be useful, but WITHOUT
      * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-     * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+     * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
      * details.
      *
-     * You should have received a copy of the GNU General Public License along with
+     * You should have received a copy of the GNU Affero General Public License along with
      * this program; if not, see http://www.gnu.org/licenses or write to the Free
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
@@ -26,12 +26,22 @@
 
     class SellPriceFormula extends OwnedModel
     {
+        /*
+         * Constants for sell price formula type
+         */
         const TYPE_EDITABLE           = 1;
+
         const TYPE_PROFIT_MARGIN      = 2;
+
         const TYPE_MARKUP_OVER_COST   = 3;
+
         const TYPE_DISCOUNT_FROM_LIST = 4;
+
         const TYPE_SAME_AS_LIST       = 5;
 
+        /**
+         * @return string
+         */
         public function __toString()
         {
             if (trim($this->name) == '')
@@ -41,6 +51,9 @@
             return $this->name;
         }
 
+        /**
+         * @return array
+         */
         public static function getDefaultMetadata()
         {
             $metadata = parent::getDefaultMetadata();
@@ -57,6 +70,9 @@
                     array('type',                        'type',    'type' => 'integer'),
                     array('discountOrMarkupPercentage',  'type',    'type' => 'float'),
                 ),
+                'elements' => array(
+                    'type'  => 'SellPriceFormulaTypeDropDown'
+                ),
                 'defaultSortAttribute' => 'type',
                 'customFields' => array(
                 ),
@@ -64,11 +80,17 @@
             return $metadata;
         }
 
+        /**
+         * @return bool
+         */
         public static function isTypeDeletable()
         {
             return true;
         }
 
+        /**
+         * @return bool
+         */
         public static function canSaveMetadata()
         {
             return true;
@@ -88,6 +110,9 @@
             );
         }
 
+        /**
+         * @return array of sellprice formula displayable labels and values
+         */
         public static function getDisplayedSellPriceFormulaArray()
         {
             return array(
@@ -99,9 +124,30 @@
             );
         }
 
+        /**
+         * @return string
+         */
         public static function getModuleClassName()
         {
             return 'ProductTemplatesModule';
+        }
+
+        /**
+         * Gets the report list view column adapater class name
+         * @param string $attribute
+         * @return string or null value
+         */
+        public static function getAttributeToReportListViewColumnAdapterClassName($attribute)
+        {
+            switch ($attribute)
+            {
+                case 'type':
+                    return 'SellPriceFormulaTypeReportListViewColumnAdapter';
+                default:
+                    break;
+            }
+
+            return null;
         }
     }
 ?>

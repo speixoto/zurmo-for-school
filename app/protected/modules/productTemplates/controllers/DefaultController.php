@@ -4,7 +4,7 @@
      * Zurmo, Inc. Copyright (C) 2012 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
-     * the terms of the GNU General Public License version 3 as published by the
+     * the terms of the GNU Affero General Public License version 3 as published by the
      * Free Software Foundation with the addition of the following permission added
      * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
      * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
@@ -12,10 +12,10 @@
      *
      * Zurmo is distributed in the hope that it will be useful, but WITHOUT
      * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-     * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+     * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
      * details.
      *
-     * You should have received a copy of the GNU General Public License along with
+     * You should have received a copy of the GNU Affero General Public License along with
      * this program; if not, see http://www.gnu.org/licenses or write to the Free
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
@@ -27,7 +27,7 @@
     class ProductTemplatesDefaultController extends ZurmoModuleController
     {
         const ZERO_MODELS_CHECK_FILTER_PATH =
-            'application.modules.products.controllers.filters.ProductListsZeroModelsCheckControllerFilter';
+            'application.modules.products.controllers.filters.ProductCatalogRelatedModelsZeroModelsCheckControllerFilter';
 
         public static function getListBreadcrumbLinks()
         {
@@ -46,52 +46,32 @@
             $viewClassName              = $modelClassName . 'EditAndDetailsView';
             $zeroModelsYetViewClassName = 'ProductTemplatesZeroModelsYetView';
             $pageViewClassName          = 'ProductTemplatesPageView';
-
-            $filters = array();
-            $filters[] = array(
-                    ZurmoBaseController::RIGHTS_FILTER_PATH .
-                    ' - modalList,details,autoCompleteAllProductCategoriesForMultiSelectAutoComplete',
-                    'moduleClassName' => 'ProductTemplatesModule',
-                    'rightName' => ProductTemplatesModule::getAccessRight(),
+            //Need to remove the general access rights filter
+            $filters = array_slice(parent::filters(), 1);
+            $filters = array_merge(array(
+                                        array(
+                                            ZurmoBaseController::RIGHTS_FILTER_PATH .
+                                            ' - modalList,details,autoCompleteAllProductCategoriesForMultiSelectAutoComplete', // Not Coding Standard
+                                            'moduleClassName' => get_class($this->getModule()),
+                                            'rightName' => ProductTemplatesModule::getAccessRight(),
+                                        ),
+                                        array(
+                                            ZurmoBaseController::REQUIRED_ATTRIBUTES_FILTER_PATH . ' + create, createFromRelation, edit',
+                                            'moduleClassName' => get_class($this->getModule()),
+                                            'viewClassName'   => $viewClassName,
+                                        ),
+                                        array(
+                                            static::ZERO_MODELS_CHECK_FILTER_PATH . ' + list, index',
+                                            'controller'                 => $this,
+                                            'zeroModelsYetViewClassName' => $zeroModelsYetViewClassName,
+                                            'modelClassName'             => $modelClassName,
+                                            'pageViewClassName'          => $pageViewClassName,
+                                            'defaultViewUtilClassName'   => 'ProductDefaultViewUtil',
+                                            'activeActionElementType'    => 'ProductTemplatesLink',
+                                            'breadcrumbLinks'            => static::getListBreadcrumbLinks()
+                                       ),
+                                   ), $filters
             );
-            $filters[] = array(
-                    ZurmoBaseController::RIGHTS_FILTER_PATH . ' + create',
-                    'moduleClassName' => 'ProductTemplatesModule',
-                    'rightName' => ProductTemplatesModule::getCreateRight(),
-            );
-            $filters[] = array(
-                    ZurmoBaseController::RIGHTS_FILTER_PATH . ' + delete',
-                    'moduleClassName' => 'ProductTemplatesModule',
-                    'rightName' => ProductTemplatesModule::getDeleteRight(),
-            );
-            $filters[] = array(
-                    ZurmoBaseController::RIGHTS_FILTER_PATH . ' + massEdit, massEditProgressSave',
-                    'moduleClassName' => 'ZurmoModule',
-                    'rightName' => ZurmoModule::RIGHT_BULK_WRITE,
-            );
-
-            $filters[] = array(
-                    ZurmoBaseController::RIGHTS_FILTER_PATH . ' + massDelete',
-                    'moduleClassName' => 'ZurmoModule',
-                    'rightName' => ZurmoModule::RIGHT_BULK_DELETE,
-            );
-
-            $filters[] = array(
-                        ZurmoBaseController::REQUIRED_ATTRIBUTES_FILTER_PATH . ' + create, createFromRelation, edit',
-                        'moduleClassName' => get_class($this->getModule()),
-                        'viewClassName'   => $viewClassName,
-            );
-
-            $filters[] = array(
-                        static::ZERO_MODELS_CHECK_FILTER_PATH . ' + list, index',
-                        'controller'                 => $this,
-                        'zeroModelsYetViewClassName' => $zeroModelsYetViewClassName,
-                        'modelClassName'             => $modelClassName,
-                        'pageViewClassName'          => $pageViewClassName,
-                        'defaultViewUtilClassName'   => 'ProductDefaultViewUtil',
-                        'activeActionElementType'    => 'ProductTemplatesLink',
-                        'breadcrumbLinks'            => static::getListBreadcrumbLinks()
-                   );
 
             return $filters;
         }
@@ -173,9 +153,9 @@
             $breadcrumbLinks[]  = Zurmo::t('ProductTemplatesModule', 'Create');
             $editAndDetailsView = $this->makeEditAndDetailsView(
                                             $this->attemptToSaveModelFromPost(new ProductTemplate()), 'Edit');
-            $view       = new ProductTemplatesPageView(ProductDefaultViewUtil::
-                                    makeViewWithBreadcrumbsForCurrentUser(
-                                        $this, $editAndDetailsView, $breadcrumbLinks, 'ProductBreadCrumbView'));
+            $view               = new ProductTemplatesPageView(ProductDefaultViewUtil::
+                                                                makeViewWithBreadcrumbsForCurrentUser(
+                                                                    $this, $editAndDetailsView, $breadcrumbLinks, 'ProductBreadCrumbView'));
             echo $view->render();
         }
 
@@ -184,7 +164,7 @@
             $productTemplate   = ProductTemplate::getById(intval($id));
             $breadcrumbLinks   = static::getDetailsAndEditBreadcrumbLinks();
             $breadcrumbLinks[] = StringUtil::getChoppedStringContent(strval($productTemplate), 25);
-            $view            = new ProductTemplatesPageView(ProductDefaultViewUtil::
+            $view              = new ProductTemplatesPageView(ProductDefaultViewUtil::
                                                                  makeViewWithBreadcrumbsForCurrentUser($this,
                                                                  $this->makeEditAndDetailsView(
                                                                      $this->attemptToSaveModelFromPost(

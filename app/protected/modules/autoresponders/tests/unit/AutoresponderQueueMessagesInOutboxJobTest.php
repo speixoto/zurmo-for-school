@@ -4,7 +4,7 @@
      * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
-     * the terms of the GNU General Public License version 3 as published by the
+     * the terms of the GNU Affero General Public License version 3 as published by the
      * Free Software Foundation with the addition of the following permission added
      * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
      * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
@@ -12,10 +12,10 @@
      *
      * Zurmo is distributed in the hope that it will be useful, but WITHOUT
      * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-     * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+     * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
      * details.
      *
-     * You should have received a copy of the GNU General Public License along with
+     * You should have received a copy of the GNU Affero General Public License along with
      * this program; if not, see http://www.gnu.org/licenses or write to the Free
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
@@ -25,9 +25,9 @@
      *
      * The interactive user interfaces in original and modified versions
      * of this program must display Appropriate Legal Notices, as required under
-     * Section 5 of the GNU General Public License version 3.
+     * Section 5 of the GNU Affero General Public License version 3.
      *
-     * In accordance with Section 7(b) of the GNU General Public License version 3,
+     * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
@@ -310,6 +310,61 @@
                                                                                         0,
                                                                                         $autoresponder->id);
             $this->assertCount(2, $unprocessedItems);
+            AutoresponderOrCampaignBatchSizeConfigUtil::setBatchSize(10);
+            $this->assertTrue($job->run());
+            $unprocessedItems               = AutoresponderItem::getByProcessedAndAutoresponderId(
+                                                                                        0,
+                                                                                        $autoresponder->id);
+            $this->assertCount(0, $unprocessedItems);
+        }
+
+        /**
+         * @depends testRunWithCustomBatchSize
+         */
+        public function testRunWithContactContainingPrimaryEmailOptedOut()
+        {
+            $unprocessedItems           = AutoresponderItem::getByProcessed(0);
+            $this->assertEmpty($unprocessedItems);
+            $job                        = new AutoresponderQueueMessagesInOutboxJob();
+            $email                      = new Email();
+            $email->emailAddress        = 'demo@zurmo.com';
+            $email->optOut              = true;
+            $contact                    = ContactTestHelper::createContactByNameForOwner('contact 07', $this->user);
+            $contact->primaryEmail      = $email;
+            $this->assertTrue($contact->save());
+            $marketingList              = MarketingListTestHelper::createMarketingListByName('marketingList 08',
+                                                                                                'description goes here',
+                                                                                                'fromName',
+                                                                                                'from@domain.com');
+            $autoresponder              = AutoresponderTestHelper::createAutoresponder('subject 08',
+                                                                                    '[[FIRST^NAME]]',
+                                                                                    '[[LAST^NAME]]',
+                                                                                    1,
+                                                                                    Autoresponder::OPERATION_SUBSCRIBE,
+                                                                                    true,
+                                                                                    $marketingList);
+            $processed                  = 0;
+            $processDateTime            = DateTimeUtil::convertTimestampToDbFormatDateTime(time() - rand(10, 500));
+            $autoresponderItem          = AutoresponderItemTestHelper::createAutoresponderItem($processed,
+                                                                                                    $processDateTime,
+                                                                                                    $autoresponder,
+                                                                                                    $contact);
+            $unprocessedItems           = AutoresponderItem::getByProcessedAndAutoresponderId(
+                                                                                                    0,
+                                                                                                    $autoresponder->id);
+            $this->assertCount(1, $unprocessedItems);
+            $this->assertTrue($job->run());
+            $unprocessedItems               = AutoresponderItem::getByProcessedAndAutoresponderId(
+                                                                                                    0,
+                                                                                                    $autoresponder->id);
+            $this->assertCount(0, $unprocessedItems);
+            $personId                   = $contact->getClassId('Person');
+            $activities                = AutoresponderItemActivity::getByTypeAndModelIdAndPersonIdAndUrl(
+                                                                                AutoresponderItemActivity::TYPE_SKIP,
+                                                                                $autoresponderItem->id,
+                                                                                $personId);
+            $this->assertNotEmpty($activities);
+            $this->assertCount(1, $activities);
         }
     }
 ?>

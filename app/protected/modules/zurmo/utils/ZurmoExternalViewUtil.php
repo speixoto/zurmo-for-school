@@ -4,7 +4,7 @@
      * Zurmo, Inc. Copyright (C) 2012 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
-     * the terms of the GNU General Public License version 3 as published by the
+     * the terms of the GNU Affero General Public License version 3 as published by the
      * Free Software Foundation with the addition of the following permission added
      * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
      * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
@@ -12,10 +12,10 @@
      *
      * Zurmo is distributed in the hope that it will be useful, but WITHOUT
      * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-     * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+     * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
      * details.
      *
-     * You should have received a copy of the GNU General Public License along with
+     * You should have received a copy of the GNU Affero General Public License along with
      * this program; if not, see http://www.gnu.org/licenses or write to the Free
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
@@ -41,10 +41,12 @@
             return $verticalGridView;
         }
 
-        public static function resolveHeadTag($rawXHtml)
+        public static function resolveHeadTag($rawXHtml, $excludeStyles = false)
         {
             $dom        = new DOMDocument();
-            $headBody   = array();
+            $headBody   = array('js'    => array(),
+                                'css'   => array(),
+                                'style' => array());
             libxml_use_internal_errors(true);
             $dom->loadHTML($rawXHtml);
             $head       = $dom->getElementsByTagName('head')->item(0);
@@ -54,7 +56,7 @@
                 {
                     $headBody['js'][] = $child->getAttribute('src');
                 }
-                else if ($child->nodeName == 'link' && $child->hasAttribute('rel'))
+                elseif (!$excludeStyles && $child->nodeName == 'link' && $child->hasAttribute('rel'))
                 {
                     if ($child->getAttribute('rel') == 'stylesheet')
                     {
@@ -63,7 +65,7 @@
                                                    'href' => $child->getAttribute('href'));
                     }
                 }
-                else if ($child->nodeName == 'style')
+                elseif (!$excludeStyles && $child->nodeName == 'style')
                 {
                     $headBody['style'][] = $child->nodeValue;
                 }
@@ -93,7 +95,7 @@
         {
             $scriptTagNodes = $bodyContent->getElementsByTagName('script');
             $scriptTags     = array();
-            foreach($scriptTagNodes as $scriptTagNode)
+            foreach ($scriptTagNodes as $scriptTagNode)
             {
                 $bodyContent->removeChild($scriptTagNode);
                 $scriptTagDetail = array();
@@ -144,12 +146,12 @@
             return $rawXHtml;
         }
 
-        public static function getContentsFromSource($url)
+        public static function getContentsFromSource($path)
         {
-            $scriptFileContents = file_get_contents($url);
-            if (strpos($url, 'jquery.min.js') === false && strpos($url, 'jquery.ui.min.js') === false)
+            $scriptFileContents = file_get_contents($path);
+            if (strpos($path, 'jquery.min.js') === false && strpos($path, 'jquery.ui.min.js') === false)
             {
-                $scriptFileContents = "jQQ.isolate (function(jQuery,$) { " . $scriptFileContents . " });";
+                $scriptFileContents = "jQQ.isolate (function(jQuery, $) { " . $scriptFileContents . " });";
             }
             return $scriptFileContents;
         }
@@ -178,7 +180,7 @@
             }
         }
 
-        public static function publishExternalScripts($dom)
+        protected static function publishExternalScripts($dom)
         {
             $scriptTags   = $dom->getElementsByTagName('script');
             $fileContents = '';
@@ -186,7 +188,9 @@
             {
                 if ($scriptTagNode->hasAttribute('src'))
                 {
-                    $fileContents .= self::getContentsFromSource(realpath(INSTANCE_ROOT . '/../../') . $scriptTagNode->getAttribute('src'));
+                    $scriptSrcPath              = $scriptTagNode->getAttribute('src');
+                    $scriptFullPath             = self::getScriptAbsolutePath($scriptSrcPath);
+                    $fileContents              .= self::getContentsFromSource($scriptFullPath);
                 }
             }
             $scriptFileName = self::EXTERNAL_SCRIPT_FILE_NAME;
@@ -200,6 +204,14 @@
             fclose($fp);
             $publishedUrl   = Yii::app()->getAssetManager()->publish($scriptFilePath);
             return $publishedUrl;
+        }
+
+        protected static function getScriptAbsolutePath($scriptSrcPath)
+        {
+            $assetsBasePath             = Yii::app()->assetManager->basePath;
+            $scriptPathRelativeToAssets = substr($scriptSrcPath, strpos($scriptSrcPath, 'assets') + 6);
+            $scriptFullPath             = $assetsBasePath . $scriptPathRelativeToAssets;
+            return $scriptFullPath;
         }
     }
 ?>

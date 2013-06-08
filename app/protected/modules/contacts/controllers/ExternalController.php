@@ -4,7 +4,7 @@
      * Zurmo, Inc. Copyright (C) 2012 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
-     * the terms of the GNU General Public License version 3 as published by the
+     * the terms of the GNU Affero General Public License version 3 as published by the
      * Free Software Foundation with the addition of the following permission added
      * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
      * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
@@ -12,10 +12,10 @@
      *
      * Zurmo is distributed in the hope that it will be useful, but WITHOUT
      * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-     * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+     * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
      * details.
      *
-     * You should have received a copy of the GNU General Public License along with
+     * You should have received a copy of the GNU Affero General Public License along with
      * this program; if not, see http://www.gnu.org/licenses or write to the Free
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
@@ -31,10 +31,34 @@
             return array();
         }
 
+        public function beforeAction($action)
+        {
+            Yii::app()->user->userModel = BaseActionControlUserConfigUtil::getUserToRunAs();
+            return parent::beforeAction($action);
+        }
+
+        public function actionSourceFiles($id)
+        {
+            $formContentUrl          = Yii::app()->createAbsoluteUrl('contacts/external/form/', array('id' => $id));
+            $renderFormFileUrl       = Yii::app()->getAssetManager()->getPublishedUrl(Yii::getPathOfAlias('application.core.views.assets') .
+                                       DIRECTORY_SEPARATOR . 'renderExternalForm.js');
+            if ($renderFormFileUrl === false || file_exists($renderFormFileUrl) === false)
+            {
+                $renderFormFileUrl   = Yii::app()->getAssetManager()->publish(Yii::getPathOfAlias('application.core.views.assets') .
+                                       DIRECTORY_SEPARATOR . 'renderExternalForm.js');
+            }
+            $renderFormFileUrl      = Yii::app()->getRequest()->getHostInfo() . $renderFormFileUrl;
+            $jsOutput               = "var formContentUrl = '" . $formContentUrl . "';";
+            $jsOutput              .= "var externalFormScriptElement = document.createElement('script');
+                                       externalFormScriptElement.src = '" . $renderFormFileUrl . "';
+                                       document.getElementsByTagName('head')[0].appendChild(externalFormScriptElement);";
+            $this->renderResponse($jsOutput);
+        }
+
         public function actionForm($id)
         {
-            Yii::app()->user->userModel = ContactWebFormsUserConfigUtil::getUserToRunAs();
-            Yii::app()->getClientScript()->setIsolationMode();
+            $cs = Yii::app()->getClientScript();
+            $cs->setIsolationMode();
             $contactWebForm = static::getModelAndCatchNotFoundAndDisplayError('ContactWebForm', intval($id));
             $metadata       = static::getMetadataByWebForm($contactWebForm);
             if (is_string($contactWebForm->submitButtonLabel) && !empty($contactWebForm->submitButtonLabel))
@@ -45,6 +69,8 @@
             $contact                                 = new Contact();
             $contact->state                          = $contactWebForm->defaultState;
             $contact->owner                          = $contactWebForm->defaultOwner;
+            $contact->googleWebTrackingId            = Yii::app()->getRequest()->getPost(
+                                                       ContactExternalEditAndDetailsView::GOOGLE_WEB_TRACKING_ID_FIELD);
             $postVariableName                        = get_class($contact);
             $containedView                           = new ContactExternalEditAndDetailsView('Edit',
                                                             $this->getId(),
@@ -55,20 +81,26 @@
                                                         makeExternalViewForCurrentUser($containedView));
             if (isset($_POST[$postVariableName]) && isset($contact->id) && intval($contact->id) > 0)
             {
-                static::resolveContactWebFormEntry($contactWebForm, $contact);
+                $this->resolveContactWebFormEntry($contactWebForm, $contact);
                 $responseData                        = array();
                 $responseData['redirectUrl']         = $contactWebForm->redirectUrl;
-                echo CJSON::encode($responseData);
-                Yii::app()->end(0, false);
+                $this->renderResponse(CJSON::encode($responseData));
             }
+            $cs->registerScript('catchGoogleWebTrackingId', "
+                                $(document).ready(function()
+                                {
+                                    $('html').addClass('zurmo-embedded-form-active');
+                                    var googleWebTrackingId = $(this).readCookie('__utma');
+                                    $('#" . ContactExternalEditAndDetailsView::GOOGLE_WEB_TRACKING_ID_FIELD . "').val(googleWebTrackingId);
+                                });");
+            $excludeStyles                           = $contactWebForm->excludeStyles;
             $rawXHtml                                = $view->render();
             $rawXHtml                                = ZurmoExternalViewUtil::resolveAndCombineScripts($rawXHtml);
             $combinedHtml                            = array();
-            $combinedHtml['head']                    = ZurmoExternalViewUtil::resolveHeadTag($rawXHtml);
+            $combinedHtml['head']                    = ZurmoExternalViewUtil::resolveHeadTag($rawXHtml, $excludeStyles);
             $combinedHtml['body']                    = ZurmoExternalViewUtil::resolveHtmlAndScriptInBody($rawXHtml);
-            header("content-type: application/json");
-            echo 'renderFormCallback('. CJSON::encode($combinedHtml) . ');';
-            Yii::app()->end(0, false);
+            $response = 'renderFormCallback('. CJSON::encode($combinedHtml) . ');';
+            $this->renderResponse($response);
         }
 
         protected function attemptToValidate($contactWebForm)
@@ -79,21 +111,21 @@
                 $contact->setAttributes($_POST['Contact']);
                 $contact->state = $contactWebForm->defaultState;
                 $contact->owner = $contactWebForm->defaultOwner;
-                static::resolveContactWebFormEntry($contactWebForm, $contact);
+                $this->resolveContactWebFormEntry($contactWebForm, $contact);
                 if ($contact->validate())
                 {
-                    echo CJSON::encode(array());
+                    $response = CJSON::encode(array());
                 }
                 else
                 {
                     $errorData = ZurmoActiveForm::makeErrorsDataAndResolveForOwnedModelAttributes($contact);
-                    echo CJSON::encode($errorData);
+                    $response = CJSON::encode($errorData);
                 }
-                Yii::app()->end(0, false);
+                $this->renderResponse($response);
             }
         }
 
-        public static function resolveContactWebFormEntry($contactWebForm, $contact)
+        protected function resolveContactWebFormEntry($contactWebForm, $contact)
         {
             $contactFormAttributes               = $_POST['Contact'];
             $contactFormAttributes['owner']      = $contactWebForm->defaultOwner->id;
@@ -116,7 +148,7 @@
             {
                 $contactWebFormEntryContact      = null;
             }
-            $hashIndex                           = Yii::app()->getRequest()->getPost(ContactWebFormEntry::HIDDEN_FIELD);
+            $hashIndex                           = Yii::app()->getRequest()->getPost(ContactWebFormEntry::HASH_INDEX_HIDDEN_FIELD);
             $contactWebFormEntry                 = ContactWebFormEntry::getByHashIndex($hashIndex);
             if ($contactWebFormEntry === null)
             {
@@ -131,25 +163,11 @@
             $contactWebFormEntry->save();
         }
 
-        public function actionSourceFiles($webFormId)
+        protected function renderResponse($responseContent)
         {
-            Yii::app()->user->userModel = ContactWebFormsUserConfigUtil::getUserToRunAs();
-            $formContentUrl          = Yii::app()->createAbsoluteUrl('contacts/external/form/', array('id' => $webFormId));
-            $renderFormFileUrl       = Yii::app()->getAssetManager()->getPublishedUrl(Yii::getPathOfAlias('application.core.views.assets') .
-                                       DIRECTORY_SEPARATOR . 'renderExternalForm.js');
-            if ($renderFormFileUrl === false || file_exists($renderFormFileUrl) === false)
-            {
-                $renderFormFileUrl   = Yii::app()->getAssetManager()->publish(Yii::getPathOfAlias('application.core.views.assets') .
-                                       DIRECTORY_SEPARATOR . 'renderExternalForm.js');
-            }
-            $renderFormFileUrl      = Yii::app()->getRequest()->getHostInfo() . $renderFormFileUrl;
-
-            $jsOutput               = "var formContentUrl = '" . $formContentUrl . "';";
-            $jsOutput              .= "var externalFormScriptElement = document.createElement('script');
-                                       externalFormScriptElement.src  = '" . $renderFormFileUrl . "';
-                                       document.getElementsByTagName('head')[0].appendChild(externalFormScriptElement);";
-            header("content-type: application/javascript");
-            echo $jsOutput;
+            header('Access-Control-Allow-Origin: *');
+            header("content-type: application/json");
+            echo $responseContent;
             Yii::app()->end(0, false);
         }
 
@@ -180,6 +198,13 @@
                                             $attributesLayoutAdapter->getRequiredDerivedLayoutAttributeTypes());
             $metadata                 = $layoutMetadataAdapter->resolveMetadataFromSelectedListAttributes($viewClassName,
                                         $contactWebFormAttributes);
+            foreach ($metadata['global']['panels'][0]['rows'] as $index => $data)
+            {
+                if ($data['cells'][0]['elements'][0]['type'] == 'EmailAddressInformation')
+                {
+                    $metadata['global']['panels'][0]['rows'][$index]['cells'][0]['elements'][0]['hideOptOut'] = true;
+                }
+            }
             return $metadata;
         }
     }
