@@ -305,7 +305,7 @@
             $this->assertEquals(2, count($marketingLists));
         }
 
-        public function testListDashboardGroupByActions()
+        public function testMarketingListDashboardGroupByActions()
         {
             $portlets = Portlet::getAll();
             foreach ($portlets as $portlet)
