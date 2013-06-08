@@ -43,6 +43,7 @@
             parent::setUpBeforeClass();
             SecurityTestHelper::createSuperAdmin();
             SecurityTestHelper::createUsers();
+            // Begin Not Coding Standard
             static::$textBody    = <<<TXT
 Delivered-To: shoaibi@bitesource.com
 Received: by 10.49.61.161 with SMTP id q1csp63838qer;
@@ -153,6 +154,7 @@ Content-Type: text/html; charset=UTF-8
 --0015175cf92af15c9c04de7f7a48--
 --9B095B5ADSN=_01CE585A42E11DFD00CA0E30BAY0?MC1?F47.Bay--
 TXT;
+            // End Not Coding Standard
         }
 
         public function setUp()

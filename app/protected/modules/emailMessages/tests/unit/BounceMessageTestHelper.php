@@ -34,35 +34,52 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * Helper class for working with Email Bounce Messages.
-     */
-    class EmailBounceUtil
+    class BounceMessageTestHelper
     {
-        public static function resolveCustomHeadersFromTextBody($headerTags, $textBody)
+        public static function resolveBounceObject()
         {
-            $headers    = array();
-            foreach ($headerTags as $headerTag)
+            if (static::isSetBounceImapSettings())
             {
-                $value = static::resolveHeaderTagValueFromTextBody($headerTag, $textBody);
-                if ($value === false)
-                {
-                    return false;
-                }
-                $headers[$headerTag]    = $value;
-            }
-            return $headers;
-        }
-
-        protected static function resolveHeaderTagValueFromTextBody($headerTag, $textBody)
-        {
-            $regex = '/' . $headerTag . ': ([\w\d]+)/is'; // Not Coding Standard
-            preg_match($regex , $textBody, $match);
-            if (isset($match[1]))
-            {
-                return $match[1];
+                $bounce = new ZurmoBounce();
+                $bounceSettings          = Yii::app()->params['emailTestAccounts']['bounceImapSettings'];
+                $bounce->imapHost        = $bounceSettings['imapHost'];
+                $bounce->imapUsername    = $bounceSettings['imapUsername'];
+                $bounce->imapPassword    = $bounceSettings['imapPassword'];
+                $bounce->imapPort        = $bounceSettings['imapPort'];
+                $bounce->imapSSL         = $bounceSettings['imapSSL'];
+                $bounce->imapFolder      = $bounceSettings['imapFolder'];
+                $bounce->returnPath      = $bounceSettings['returnPath'];
+                $bounce->setInboundSettings();
+                $bounce->init();
+                return $bounce;
             }
             return false;
+        }
+
+        public static function isSetBounceImapSettings()
+        {
+            if (isset(Yii::app()->params['emailTestAccounts']['bounceImapSettings']))
+            {
+                $bounceSettings          = Yii::app()->params['emailTestAccounts']['bounceImapSettings'];
+                if (isset($bounceSettings['imapHost']) && isset($bounceSettings['imapUsername']) &&
+                    isset($bounceSettings['imapPassword']) && isset($bounceSettings['imapPort']) &&
+                    isset($bounceSettings['imapSSL']) && isset($bounceSettings['imapFolder']) &&
+                    isset($bounceSettings['returnPath']))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public static function purgeAllMessages()
+        {
+            if (static::isSetBounceImapSettings())
+            {
+                $bounce = static::resolveBounceObject();
+                $bounce->connect();
+                $bounce->deleteMessages(true);
+            }
         }
     }
 ?>

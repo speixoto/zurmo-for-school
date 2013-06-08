@@ -61,14 +61,14 @@
 
         public static function tearDownAfterClass()
         {
-            static::purgeAllMessages();
+            BounceMessageTestHelper::purgeAllMessages();
             Yii::app()->emailHelper->sendEmailThroughTransport = self::$emailHelperSendEmailThroughTransport;
             parent::tearDownAfterClass();
         }
 
         public function setUp()
         {
-            static::purgeAllMessages();
+            BounceMessageTestHelper::purgeAllMessages();
             parent::setUp();
             $this->user                 = User::getByUsername('super');
             Yii::app()->user->userModel = $this->user;
@@ -76,10 +76,7 @@
 
         public function testRunWithNoMessages()
         {
-            if (!EmailMessageTestHelper::isSetEmailAccountsTestConfiguration())
-            {
-                $this->markTestSkipped(Zurmo::t('EmailMessagesModule', 'Test email settings are not configured in perInstanceTest.php file.'));
-            }
+            $this->skipTestIfMissingSettings();
             $job    = new EmailBounceJob();
             $this->assertTrue($job->run());
             $activities    = AutoresponderItemActivity::getAll();
@@ -91,13 +88,10 @@
          */
         public function testRunWithOneNonBounceMessageWithNoCustomHeaders()
         {
-            if (!EmailMessageTestHelper::isSetEmailAccountsTestConfiguration())
-            {
-                $this->markTestSkipped(Zurmo::t('EmailMessagesModule', 'Test email settings are not configured in perInstanceTest.php file.'));
-            }
-            $bounce = static::resolveBounceObject();
+            $this->skipTestIfMissingSettings();
+            $bounce = BounceMessageTestHelper::resolveBounceObject();
             $this->assertTrue($bounce->connect());
-            Yii::app()->emailHelper->sendRawEmail("Test Email",
+            Yii::app()->emailHelper->sendRawEmail("Non-Bounce No Headers",
                 Yii::app()->emailHelper->outboundUsername,
                 $bounce->imapUsername,
                 'Test email body',
@@ -108,10 +102,10 @@
                 null,
                 array()
             );
-            sleep(20);
+            sleep(45);
             $messages = $bounce->getMessages();
             $this->assertEquals(1, count($messages));
-            $this->assertEquals("Test Email", $messages[0]->subject);
+            $this->assertEquals("Non-Bounce No Headers", $messages[0]->subject);
             $this->assertEquals("Test email body", trim($messages[0]->textBody));
             $this->assertEquals("<strong>Test</strong> email html body", trim($messages[0]->htmlBody));
             $this->assertEquals($bounce->imapUsername, $messages[0]->to[0]['email']);
@@ -129,15 +123,12 @@
          */
         public function testRunWithOneBounceMessageWithNoCustomHeaders()
         {
-            if (!EmailMessageTestHelper::isSetEmailAccountsTestConfiguration())
-            {
-                $this->markTestSkipped(Zurmo::t('EmailMessagesModule', 'Test email settings are not configured in perInstanceTest.php file.'));
-            }
-            $bounce = static::resolveBounceObject();
+            $this->skipTestIfMissingSettings();
+            $bounce = BounceMessageTestHelper::resolveBounceObject();
             $this->assertTrue($bounce->connect());
             $bounceTestEmailAddress =   Yii::app()->params['emailTestAccounts']['bounceTestEmailAddress'];
             $headers                = array('Return-Path' => $bounce->returnPath);
-            Yii::app()->emailHelper->sendRawEmail("Test Email"  . date(DATE_RFC822),
+            Yii::app()->emailHelper->sendRawEmail("Bounce - No Headers "  . date(DATE_RFC822),
                 Yii::app()->emailHelper->outboundUsername,
                 $bounceTestEmailAddress,
                 'Test email body',
@@ -148,7 +139,7 @@
                 null,
                 $headers
             );
-            sleep(30);
+            sleep(45);
             $messages = $bounce->getMessages();
             $this->assertEquals(1, count($messages));
             $this->assertEquals("Mail delivery failed: returning message to sender", $messages[0]->subject);
@@ -166,18 +157,15 @@
          */
         public function testRunWithOneBounceMessageWithCustomHeadersWeDoNotCareAbout()
         {
-            if (!EmailMessageTestHelper::isSetEmailAccountsTestConfiguration())
-            {
-                $this->markTestSkipped(Zurmo::t('EmailMessagesModule', 'Test email settings are not configured in perInstanceTest.php file.'));
-            }
-            $bounce = static::resolveBounceObject();
+            $this->skipTestIfMissingSettings();
+            $bounce = BounceMessageTestHelper::resolveBounceObject();
             $this->assertTrue($bounce->connect());
             $headers                = array('Return-Path'   => $bounce->returnPath,
                 'headerOne'     => '1',
                 'headerTwo'     => '2'
                 );
             $bounceTestEmailAddress =   Yii::app()->params['emailTestAccounts']['bounceTestEmailAddress'];
-            Yii::app()->emailHelper->sendRawEmail("Test Email"  . date(DATE_RFC822),
+            Yii::app()->emailHelper->sendRawEmail("Bounce - Undesired Headers "  . date(DATE_RFC822),
                 Yii::app()->emailHelper->outboundUsername,
                 $bounceTestEmailAddress,
                 'Test email body',
@@ -188,7 +176,7 @@
                 null,
                 $headers
             );
-            sleep(30);
+            sleep(45);
             $messages = $bounce->getMessages();
             $this->assertEquals(1, count($messages));
             $this->assertEquals("Mail delivery failed: returning message to sender", $messages[0]->subject);
@@ -208,10 +196,7 @@
          */
         public function testRunWithOneBounceMessageWithDesiredCustomHeaders()
         {
-            if (!EmailMessageTestHelper::isSetEmailAccountsTestConfiguration())
-            {
-                $this->markTestSkipped(Zurmo::t('EmailMessagesModule', 'Test email settings are not configured in perInstanceTest.php file.'));
-            }
+            $this->skipTestIfMissingSettings();
             $contact    = ContactTestHelper::createContactByNameForOwner('contact 01', $this->user);
             $personId                   = $contact->getClassId('Person');
             $this->assertTrue($contact->save());
@@ -229,7 +214,7 @@
                                                                                                 $processDateTime,
                                                                                                 $autoresponder,
                                                                                                 $contact);
-            $bounce = static::resolveBounceObject();
+            $bounce = BounceMessageTestHelper::resolveBounceObject();
             $this->assertTrue($bounce->connect());
             $headers                = array('Return-Path'   => $bounce->returnPath,
                 'zurmoItemId'           => $autoresponderItem->id,
@@ -237,7 +222,7 @@
                 'zurmoPersonId'         => $personId,
             );
             $bounceTestEmailAddress =   Yii::app()->params['emailTestAccounts']['bounceTestEmailAddress'];
-            Yii::app()->emailHelper->sendRawEmail("Test Email"  . date(DATE_RFC822),
+            Yii::app()->emailHelper->sendRawEmail("Bounce - Desired Headers "  . date(DATE_RFC822),
                 Yii::app()->emailHelper->outboundUsername,
                 $bounceTestEmailAddress,
                 'Test email body',
@@ -276,10 +261,7 @@
          */
         public function testRunWithTwoBounceMessagesWithDesiredCustomHeaders()
         {
-            if (!EmailMessageTestHelper::isSetEmailAccountsTestConfiguration())
-            {
-                $this->markTestSkipped(Zurmo::t('EmailMessagesModule', 'Test email settings are not configured in perInstanceTest.php file.'));
-            }
+            $this->skipTestIfMissingSettings();
             $contact    = ContactTestHelper::createContactByNameForOwner('contact 02', $this->user);
             $personId                   = $contact->getClassId('Person');
             $this->assertTrue($contact->save());
@@ -297,7 +279,7 @@
                                                                                                 $processDateTime,
                                                                                                 $autoresponder,
                                                                                                 $contact);
-            $bounce = static::resolveBounceObject();
+            $bounce = BounceMessageTestHelper::resolveBounceObject();
             $this->assertTrue($bounce->connect());
             $headers                = array('Return-Path'   => $bounce->returnPath,
                 'zurmoItemId'           => $autoresponderItem->id,
@@ -305,7 +287,7 @@
                 'zurmoPersonId'         => $personId,
             );
             $bounceTestEmailAddress =   Yii::app()->params['emailTestAccounts']['bounceTestEmailAddress'];
-            Yii::app()->emailHelper->sendRawEmail("Test Email"  . date(DATE_RFC822),
+            Yii::app()->emailHelper->sendRawEmail("1/2 Bounce - Desired Headers "  . date(DATE_RFC822),
                 Yii::app()->emailHelper->outboundUsername,
                 $bounceTestEmailAddress,
                 'Test email body',
@@ -316,7 +298,7 @@
                 null,
                 $headers
             );
-            Yii::app()->emailHelper->sendRawEmail("Test Email"  . date(DATE_RFC822),
+            Yii::app()->emailHelper->sendRawEmail("2/2 Bounce - Desired Headers "  . date(DATE_RFC822),
                 Yii::app()->emailHelper->outboundUsername,
                 $bounceTestEmailAddress,
                 'Test email body',
@@ -327,7 +309,7 @@
                 null,
                 $headers
             );
-            sleep(30);
+            sleep(45);
             $messages = $bounce->getMessages();
             $this->assertEquals(2, count($messages));
             for ($i = 0; $i < 2; $i++)
@@ -355,27 +337,16 @@
             $this->assertEquals(0, count($messages));
         }
 
-        protected static function purgeAllMessages()
+        protected function skipTestIfMissingSettings()
         {
-            $bounce = static::resolveBounceObject();
-            //static::assertNotNull($bounce);
-            //static::assertTrue($bounce->connect());
-            //static::assertTrue($bounce->deleteMessages(true));
-        }
-
-        protected static function resolveBounceObject()
-        {
-            $bounce = new ZurmoBounce();
-            $bounce->imapHost        = Yii::app()->params['emailTestAccounts']['bounceImapSettings']['imapHost'];
-            $bounce->imapUsername    = Yii::app()->params['emailTestAccounts']['bounceImapSettings']['imapUsername'];
-            $bounce->imapPassword    = Yii::app()->params['emailTestAccounts']['bounceImapSettings']['imapPassword'];
-            $bounce->imapPort        = Yii::app()->params['emailTestAccounts']['bounceImapSettings']['imapPort'];
-            $bounce->imapSSL         = Yii::app()->params['emailTestAccounts']['bounceImapSettings']['imapSSL'];
-            $bounce->imapFolder      = Yii::app()->params['emailTestAccounts']['bounceImapSettings']['imapFolder'];
-            $bounce->returnPath      = Yii::app()->params['emailTestAccounts']['bounceImapSettings']['returnPath'];
-            $bounce->setInboundSettings();
-            $bounce->init();
-            return $bounce;
+            if (!EmailMessageTestHelper::isSetEmailAccountsTestConfiguration())
+            {
+                $this->markTestSkipped(Zurmo::t('EmailMessagesModule', 'Test email settings are not configured in perInstanceTest.php file.'));
+            }
+            elseif (!BounceMessageTestHelper::isSetBounceImapSettings())
+            {
+                $this->markTestSkipped(Zurmo::t('EmailMessagesModule', 'Test bounce settings are not configured in perInstanceTest.php file.'));
+            }
         }
     }
 ?>
