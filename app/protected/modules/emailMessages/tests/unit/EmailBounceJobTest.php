@@ -61,14 +61,14 @@
 
         public static function tearDownAfterClass()
         {
-            static::purgeAllMessages();
+            BounceMessageTestHelper::purgeAllMessages();
             Yii::app()->emailHelper->sendEmailThroughTransport = self::$emailHelperSendEmailThroughTransport;
             parent::tearDownAfterClass();
         }
 
         public function setUp()
         {
-            static::purgeAllMessages();
+            BounceMessageTestHelper::purgeAllMessages();
             parent::setUp();
             $this->user                 = User::getByUsername('super');
             Yii::app()->user->userModel = $this->user;
@@ -89,7 +89,7 @@
         public function testRunWithOneNonBounceMessageWithNoCustomHeaders()
         {
             $this->skipTestIfMissingSettings();
-            $bounce = static::resolveBounceObject();
+            $bounce = BounceMessageTestHelper::resolveBounceObject();
             $this->assertTrue($bounce->connect());
             Yii::app()->emailHelper->sendRawEmail("Non-Bounce No Headers",
                 Yii::app()->emailHelper->outboundUsername,
@@ -124,7 +124,7 @@
         public function testRunWithOneBounceMessageWithNoCustomHeaders()
         {
             $this->skipTestIfMissingSettings();
-            $bounce = static::resolveBounceObject();
+            $bounce = BounceMessageTestHelper::resolveBounceObject();
             $this->assertTrue($bounce->connect());
             $bounceTestEmailAddress =   Yii::app()->params['emailTestAccounts']['bounceTestEmailAddress'];
             $headers                = array('Return-Path' => $bounce->returnPath);
@@ -158,7 +158,7 @@
         public function testRunWithOneBounceMessageWithCustomHeadersWeDoNotCareAbout()
         {
             $this->skipTestIfMissingSettings();
-            $bounce = static::resolveBounceObject();
+            $bounce = BounceMessageTestHelper::resolveBounceObject();
             $this->assertTrue($bounce->connect());
             $headers                = array('Return-Path'   => $bounce->returnPath,
                 'headerOne'     => '1',
@@ -214,7 +214,7 @@
                                                                                                 $processDateTime,
                                                                                                 $autoresponder,
                                                                                                 $contact);
-            $bounce = static::resolveBounceObject();
+            $bounce = BounceMessageTestHelper::resolveBounceObject();
             $this->assertTrue($bounce->connect());
             $headers                = array('Return-Path'   => $bounce->returnPath,
                 'zurmoItemId'           => $autoresponderItem->id,
@@ -279,7 +279,7 @@
                                                                                                 $processDateTime,
                                                                                                 $autoresponder,
                                                                                                 $contact);
-            $bounce = static::resolveBounceObject();
+            $bounce = BounceMessageTestHelper::resolveBounceObject();
             $this->assertTrue($bounce->connect());
             $headers                = array('Return-Path'   => $bounce->returnPath,
                 'zurmoItemId'           => $autoresponderItem->id,
@@ -337,62 +337,13 @@
             $this->assertEquals(0, count($messages));
         }
 
-        protected static function purgeAllMessages()
-        {
-            if (static::isSetBounceImapSettings())
-            {
-                $bounce = static::resolveBounceObject();
-                $bounce->connect();
-                $bounce->deleteMessages(true);
-                //static::assertNotNull($bounce);
-                //static::assertTrue($bounce->connect());
-                //static::assertTrue($bounce->deleteMessages(true));
-            }
-        }
-
-        protected static function resolveBounceObject()
-        {
-            if (static::isSetBounceImapSettings())
-            {
-                $bounce = new ZurmoBounce();
-                $bounceSettings          = Yii::app()->params['emailTestAccounts']['bounceImapSettings'];
-                $bounce->imapHost        = $bounceSettings['imapHost'];
-                $bounce->imapUsername    = $bounceSettings['imapUsername'];
-                $bounce->imapPassword    = $bounceSettings['imapPassword'];
-                $bounce->imapPort        = $bounceSettings['imapPort'];
-                $bounce->imapSSL         = $bounceSettings['imapSSL'];
-                $bounce->imapFolder      = $bounceSettings['imapFolder'];
-                $bounce->returnPath      = $bounceSettings['returnPath'];
-                $bounce->setInboundSettings();
-                $bounce->init();
-                return $bounce;
-            }
-            return false;
-        }
-
-        protected static function isSetBounceImapSettings()
-        {
-            if (isset(Yii::app()->params['emailTestAccounts']['bounceImapSettings']))
-            {
-                $bounceSettings          = Yii::app()->params['emailTestAccounts']['bounceImapSettings'];
-                if (isset($bounceSettings['imapHost']) && isset($bounceSettings['imapUsername']) &&
-                    isset($bounceSettings['imapPassword']) && isset($bounceSettings['imapPort']) &&
-                    isset($bounceSettings['imapSSL']) && isset($bounceSettings['imapFolder']) &&
-                    isset($bounceSettings['returnPath']))
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
-
         protected function skipTestIfMissingSettings()
         {
             if (!EmailMessageTestHelper::isSetEmailAccountsTestConfiguration())
             {
                 $this->markTestSkipped(Zurmo::t('EmailMessagesModule', 'Test email settings are not configured in perInstanceTest.php file.'));
             }
-            elseif (!static::isSetBounceImapSettings())
+            elseif (!BounceMessageTestHelper::isSetBounceImapSettings())
             {
                 $this->markTestSkipped(Zurmo::t('EmailMessagesModule', 'Test bounce settings are not configured in perInstanceTest.php file.'));
             }
