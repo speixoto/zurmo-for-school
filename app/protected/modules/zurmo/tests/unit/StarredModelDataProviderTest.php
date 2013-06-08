@@ -47,21 +47,18 @@
             SecurityTestHelper::createSuperAdmin();
             $super = User::getByUsername('super');
             Yii::app()->user->userModel = $super;
-            if (!RedBeanDatabase::isFrozen())
-            {
-                StarredUtil::createStarredTables();
-                $account              = new Account();
-                $account->owner       = $super;
-                $account->name        = 'Test Account0';
-                $account->officePhone = '1234567890';
-                $account->save();
-                StarredUtil::markModelAsStarred($account);
-                $account              = new Account();
-                $account->owner       = $super;
-                $account->name        = 'Test Account1';
-                $account->officePhone = '1234567891';
-                $account->save();
-            }
+            StarredUtil::createStarredTables();
+            $account              = new Account();
+            $account->owner       = $super;
+            $account->name        = 'Test Account0';
+            $account->officePhone = '1234567890';
+            $account->save();
+            StarredUtil::markModelAsStarred($account);
+            $account              = new Account();
+            $account->owner       = $super;
+            $account->name        = 'Test Account1';
+            $account->officePhone = '1234567891';
+            $account->save();
         }
 
         public function setUp() {
@@ -71,47 +68,41 @@
 
         public function testOnlyGetStarredModels()
         {
-            if (!RedBeanDatabase::isFrozen())
-            {
-                $dataProvider         = new RedBeanModelDataProvider('Account');
-                $this->assertCount(2, $dataProvider->getData());
-                $dataProvider         = new StarredModelDataProvider('Account');
-                $this->assertCount(1, $dataProvider->getData());
-            }
+            $dataProvider         = new RedBeanModelDataProvider('Account');
+            $this->assertCount(2, $dataProvider->getData());
+            $dataProvider         = new StarredModelDataProvider('Account');
+            $this->assertCount(1, $dataProvider->getData());
         }
 
         public function testGetStarredModelsWithSearchAttributeData()
         {
-            if (!RedBeanDatabase::isFrozen())
-            {
-                $searchAttributeData = array();
-                $searchAttributeData['clauses'] = array(
-                    1 => array(
-                        'attributeName'        => 'name',
-                        'operatorType'         => 'contains',
-                        'value'                => 'Test',
-                    )
-                );
-                $searchAttributeData['structure'] = '1';
-                $dataProvider         = new RedBeanModelDataProvider('Account', null, false, $searchAttributeData);
-                $this->assertCount(2, $dataProvider->getData());
-                $dataProvider         = new StarredModelDataProvider('Account', null, false, $searchAttributeData);
-                $this->assertCount(1, $dataProvider->getData());
+            $searchAttributeData = array();
+            $searchAttributeData['clauses'] = array(
+                1 => array(
+                    'attributeName'        => 'name',
+                    'operatorType'         => 'contains',
+                    'value'                => 'Test',
+                )
+            );
+            $searchAttributeData['structure'] = '1';
+            $dataProvider         = new RedBeanModelDataProvider('Account', null, false, $searchAttributeData);
+            $this->assertCount(2, $dataProvider->getData());
+            $dataProvider         = new StarredModelDataProvider('Account', null, false, $searchAttributeData);
+            $this->assertCount(1, $dataProvider->getData());
 
-                $searchAttributeData = array();
-                $searchAttributeData['clauses'] = array(
-                    1 => array(
-                        'attributeName'        => 'name',
-                        'operatorType'         => 'equals',
-                        'value'                => 'Test',
-                    )
-                );
-                $searchAttributeData['structure'] = '1';
-                $dataProvider         = new RedBeanModelDataProvider('Account', null, false, $searchAttributeData);
-                $this->assertCount(0, $dataProvider->getData());
-                $dataProvider         = new StarredModelDataProvider('Account', null, false, $searchAttributeData);
-                $this->assertCount(0, $dataProvider->getData());
-            }
+            $searchAttributeData = array();
+            $searchAttributeData['clauses'] = array(
+                1 => array(
+                    'attributeName'        => 'name',
+                    'operatorType'         => 'equals',
+                    'value'                => 'Test',
+                )
+            );
+            $searchAttributeData['structure'] = '1';
+            $dataProvider         = new RedBeanModelDataProvider('Account', null, false, $searchAttributeData);
+            $this->assertCount(0, $dataProvider->getData());
+            $dataProvider         = new StarredModelDataProvider('Account', null, false, $searchAttributeData);
+            $this->assertCount(0, $dataProvider->getData());
         }
     }
 ?>

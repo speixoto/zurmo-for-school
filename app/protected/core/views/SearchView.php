@@ -335,11 +335,7 @@
                 else
                 {
                     $content .= $this->renderStaticSearchRows($panel, $maxCellsPerRow, $form);
-                    if(in_array('StarredInterface', class_implements($this->model->getModel())))
-                    {
-                        $checkBox = $form->checkBox($this->model, 'filterByStarred', array('onchange' => "js:jQuery.yii.submitForm(this, '', {}); return false;"));
-                        $content .= $checkBox;
-                    }
+                    $content .= $this->renderStarredFilter($form);
                 }
                 if ($key == 1)
                 {
@@ -632,6 +628,22 @@
             return ZurmoHtml::tag('div', array(
                         'id' => ModelElement::MODAL_CONTAINER_PREFIX . '-' . $this->getSearchFormId()
                    ), '');
+        }
+
+        /**
+         * Render a checkBox to filter models by starred only
+         * @param  ZurmoActiveForm $form
+         * @return string
+         */
+        protected function renderStarredFilter($form)
+        {
+            $content = null;
+            if(in_array('StarredInterface', class_implements($this->model->getModel())))
+            {
+                $checkBox = $form->checkBox($this->model, 'filterByStarred', array('onchange' => "js:jQuery.yii.submitForm(this, '', {}); return false;"));
+                $content .= $checkBox;
+            }
+            return $content;
         }
     }
 ?>

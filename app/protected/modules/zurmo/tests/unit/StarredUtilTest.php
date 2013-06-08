@@ -65,7 +65,7 @@
             StarredUtil::createStarredTables();
             $sql = "SHOW TABLES LIKE '%_starred'";
             $allStarredTableRows = R::getAll($sql);
-            $this->assertCount(1, $allStarredTableRows);
+            $this->assertCount(4, $allStarredTableRows);
         }
 
         /**
