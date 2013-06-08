@@ -92,9 +92,9 @@
             $zurmoPersonId  = null;
             $headerTags     = array('zurmoItemId', 'zurmoItemClass', 'zurmoPersonId');
             $headers        = EmailBounceUtil::resolveCustomHeadersFromTextBody($headerTags, $message->textBody);
+            $this->deleteMessage($message);
             if ($headers === false)
             {
-                $this->deleteMessage($message);
                 return false;
             }
             extract($headers);
@@ -110,7 +110,6 @@
                                                 'url'       => null,
                                                 'type'      => $type);
             $activityCreatedOrUpdated   = $activityUtilClassName::createOrUpdateActivity($activityData);
-            $this->deleteMessage($message);
             try
             {
                 if (!$activityCreatedOrUpdated)

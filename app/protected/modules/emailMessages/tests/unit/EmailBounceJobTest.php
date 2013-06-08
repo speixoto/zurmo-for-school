@@ -97,7 +97,7 @@
             }
             $bounce = static::resolveBounceObject();
             $this->assertTrue($bounce->connect());
-            Yii::app()->emailHelper->sendRawEmail("Test Email",
+            Yii::app()->emailHelper->sendRawEmail("Non-Bounce No Headers",
                 Yii::app()->emailHelper->outboundUsername,
                 $bounce->imapUsername,
                 'Test email body',
@@ -108,10 +108,10 @@
                 null,
                 array()
             );
-            sleep(20);
+            sleep(45);
             $messages = $bounce->getMessages();
             $this->assertEquals(1, count($messages));
-            $this->assertEquals("Test Email", $messages[0]->subject);
+            $this->assertEquals("Non-Bounce No Headers", $messages[0]->subject);
             $this->assertEquals("Test email body", trim($messages[0]->textBody));
             $this->assertEquals("<strong>Test</strong> email html body", trim($messages[0]->htmlBody));
             $this->assertEquals($bounce->imapUsername, $messages[0]->to[0]['email']);
@@ -137,7 +137,7 @@
             $this->assertTrue($bounce->connect());
             $bounceTestEmailAddress =   Yii::app()->params['emailTestAccounts']['bounceTestEmailAddress'];
             $headers                = array('Return-Path' => $bounce->returnPath);
-            Yii::app()->emailHelper->sendRawEmail("Test Email"  . date(DATE_RFC822),
+            Yii::app()->emailHelper->sendRawEmail("Bounce - No Headers "  . date(DATE_RFC822),
                 Yii::app()->emailHelper->outboundUsername,
                 $bounceTestEmailAddress,
                 'Test email body',
@@ -148,7 +148,7 @@
                 null,
                 $headers
             );
-            sleep(30);
+            sleep(45);
             $messages = $bounce->getMessages();
             $this->assertEquals(1, count($messages));
             $this->assertEquals("Mail delivery failed: returning message to sender", $messages[0]->subject);
@@ -177,7 +177,7 @@
                 'headerTwo'     => '2'
                 );
             $bounceTestEmailAddress =   Yii::app()->params['emailTestAccounts']['bounceTestEmailAddress'];
-            Yii::app()->emailHelper->sendRawEmail("Test Email"  . date(DATE_RFC822),
+            Yii::app()->emailHelper->sendRawEmail("Bounce - Undesired Headers "  . date(DATE_RFC822),
                 Yii::app()->emailHelper->outboundUsername,
                 $bounceTestEmailAddress,
                 'Test email body',
@@ -188,7 +188,7 @@
                 null,
                 $headers
             );
-            sleep(30);
+            sleep(45);
             $messages = $bounce->getMessages();
             $this->assertEquals(1, count($messages));
             $this->assertEquals("Mail delivery failed: returning message to sender", $messages[0]->subject);
@@ -237,7 +237,7 @@
                 'zurmoPersonId'         => $personId,
             );
             $bounceTestEmailAddress =   Yii::app()->params['emailTestAccounts']['bounceTestEmailAddress'];
-            Yii::app()->emailHelper->sendRawEmail("Test Email"  . date(DATE_RFC822),
+            Yii::app()->emailHelper->sendRawEmail("Bounce - Desired Headers "  . date(DATE_RFC822),
                 Yii::app()->emailHelper->outboundUsername,
                 $bounceTestEmailAddress,
                 'Test email body',
@@ -305,7 +305,7 @@
                 'zurmoPersonId'         => $personId,
             );
             $bounceTestEmailAddress =   Yii::app()->params['emailTestAccounts']['bounceTestEmailAddress'];
-            Yii::app()->emailHelper->sendRawEmail("Test Email"  . date(DATE_RFC822),
+            Yii::app()->emailHelper->sendRawEmail("1/2 Bounce - Desired Headers "  . date(DATE_RFC822),
                 Yii::app()->emailHelper->outboundUsername,
                 $bounceTestEmailAddress,
                 'Test email body',
@@ -316,7 +316,7 @@
                 null,
                 $headers
             );
-            Yii::app()->emailHelper->sendRawEmail("Test Email"  . date(DATE_RFC822),
+            Yii::app()->emailHelper->sendRawEmail("2/2 Bounce - Desired Headers "  . date(DATE_RFC822),
                 Yii::app()->emailHelper->outboundUsername,
                 $bounceTestEmailAddress,
                 'Test email body',
@@ -327,7 +327,7 @@
                 null,
                 $headers
             );
-            sleep(30);
+            sleep(45);
             $messages = $bounce->getMessages();
             $this->assertEquals(2, count($messages));
             for ($i = 0; $i < 2; $i++)
@@ -358,6 +358,8 @@
         protected static function purgeAllMessages()
         {
             $bounce = static::resolveBounceObject();
+            $bounce->connect();
+            $bounce->deleteMessages(true);
             //static::assertNotNull($bounce);
             //static::assertTrue($bounce->connect());
             //static::assertTrue($bounce->deleteMessages(true));
