@@ -310,7 +310,7 @@
             $portlets = Portlet::getAll();
             foreach ($portlets as $portlet)
             {
-                if($portlet->viewType = 'MarketingListOverallMetrics')
+                if ($portlet->viewType = 'MarketingListOverallMetrics')
                 {
                     $marketingListPortlet = $portlet;
                 }

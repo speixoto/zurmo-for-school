@@ -47,12 +47,12 @@
         /*
          * Fallback for the Default category
          */
-        public function translate($category,$message,$language=null)
+        public function translate($category, $message, $language = null)
         {
-            $translation = parent::translate($category,$message,$language);
+            $translation = parent::translate($category, $message, $language);
             if ($translation == $message)
             {
-                $translation = parent::translate('Default',$message,$language);
+                $translation = parent::translate('Default', $message, $language);
             }
 
             return $translation;

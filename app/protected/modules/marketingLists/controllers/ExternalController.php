@@ -79,8 +79,8 @@
             $modelType          = get_class($model);
             $hash               = EmailMessageActivityUtil::resolveHashForFooter($personId, $marketingListId, $modelId, $modelType, false);
             CVarDumper::dump($hash, 10, 1);
-            exit;
-            /**/
+            exit; // Not Coding Standard
+            */
             $this->renderPreviewMessage($preview);
             $contact                = null;
             $personId               = null;
