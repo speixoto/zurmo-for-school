@@ -97,7 +97,8 @@
             {
                 return Permission::ALL;
             }
-            elseif ($this->treatCreatedByUserAsOwnerForPermissions &&
+            //If the record has not been created yet, then the created user should have full access
+            elseif (($this->id < 0 || $this->treatCreatedByUserAsOwnerForPermissions) &&
                    $createdByUser->id > 0 &&
                    $createdByUser->isSame($permitable))
             {
