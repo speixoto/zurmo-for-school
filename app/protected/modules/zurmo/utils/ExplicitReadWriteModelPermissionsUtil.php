@@ -356,6 +356,7 @@
                                ExplicitReadWriteModelPermissions $explicitReadWriteModelPermissions)
         {
             assert('$securableItem->id < 0');
+            $securableItem->setTreatCreatedByUserAsOwnerForPermissions(true);
             if ($explicitReadWriteModelPermissions->getReadOnlyPermitablesCount() > 0)
             {
                 foreach ($explicitReadWriteModelPermissions->getReadOnlyPermitables() as $permitable)
@@ -370,6 +371,7 @@
                     $securableItem->addPermissions($permitable, Permission::READ_WRITE_CHANGE_PERMISSIONS_CHANGE_OWNER);
                 }
             }
+            $securableItem->setTreatCreatedByUserAsOwnerForPermissions(false);
             return true;
         }
 
