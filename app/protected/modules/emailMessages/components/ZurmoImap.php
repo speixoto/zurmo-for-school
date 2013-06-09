@@ -512,8 +512,8 @@
         protected function resolveAndParseMessageHeaders($messageNumber)
         {
             $headers = imap_fetchheader($this->imapStream, $messageNumber);
-            preg_match_all('/([^: ]+): (.+?(?:\r\n\s(?:.+?))*)\r\n/m', $headers, $matches);
-            preg_replace('/\r\n\s+/m', '', $matches[2]);
+            preg_match_all('/([^: ]+): (.+?(?:\r\n\s(?:.+?))*)\r\n/m', $headers, $matches); // Not Coding Standard
+            preg_replace('/\r\n\s+/m', '', $matches[2]); // Not Coding Standard
             $headersArray   = array_combine($matches[1], $matches[2]);
             return $headersArray;
         }

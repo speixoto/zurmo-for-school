@@ -427,7 +427,7 @@
             $weekTimeStamp      = strtotime($beginDate);
             $endTimeStamp        = strtotime($endDate);
             $weeksData          = array();
-            while($weekTimeStamp < $endTimeStamp)
+            while ($weekTimeStamp < $endTimeStamp)
             {
                 $date = new DateTime(date('Y-m-d', $weekTimeStamp));
                 $date->modify('this week last monday');
@@ -474,7 +474,7 @@
             $monthTimeStamp      = strtotime($beginDate);
             $endTimeStamp        = strtotime($endDate);
             $monthsData          = array();
-            while($monthTimeStamp < $endTimeStamp)
+            while ($monthTimeStamp < $endTimeStamp)
             {
                 $date = new DateTime(date('Y-m-d', $monthTimeStamp));
                 $date->modify('first day of this month');

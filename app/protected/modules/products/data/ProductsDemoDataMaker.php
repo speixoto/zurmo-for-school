@@ -127,11 +127,11 @@
 
             foreach ($productTemplates as $template)
             {
-                if((strpos($template->name, 'Laptop') !== false)
-                                                || (strpos($template->name, 'Camera') !== false)
-                                                                     || (strpos($template->name, 'Handycam') !== false))
+                if ((strpos($template->name, 'Laptop') !== false) ||
+                    (strpos($template->name, 'Camera') !== false) ||
+                    (strpos($template->name, 'Handycam') !== false))
                 {
-                    for($i=1; $i<3; $i++)
+                    for ($i = 1; $i < 3; $i++)
                     {
                        $randomString = substr(str_shuffle("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0, 2);
                        $productNames['names'][] = $template->name . '-P' . $randomString;
