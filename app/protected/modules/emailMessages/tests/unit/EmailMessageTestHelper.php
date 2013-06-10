@@ -223,4 +223,32 @@
             $emailAccount->outboundType      = 'smtp';
             $emailAccount->save();
         }
+
+        public static function resolveImapObject()
+        {
+            if (static::isSetEmailAccountsTestConfiguration())
+            {
+                $imap = new ZurmoImap();
+                $imap->imapHost        = Yii::app()->params['emailTestAccounts']['userImapSettings']['imapHost'];
+                $imap->imapUsername    = Yii::app()->params['emailTestAccounts']['userImapSettings']['imapUsername'];
+                $imap->imapPassword    = Yii::app()->params['emailTestAccounts']['userImapSettings']['imapPassword'];
+                $imap->imapPort        = Yii::app()->params['emailTestAccounts']['userImapSettings']['imapPort'];
+                $imap->imapSSL         = Yii::app()->params['emailTestAccounts']['userImapSettings']['imapSSL'];
+                $imap->imapFolder      = Yii::app()->params['emailTestAccounts']['userImapSettings']['imapFolder'];
+                $imap->init();
+                return $imap;
+            }
+            return false;
+        }
+
+        public static function purgeAllMessages()
+        {
+            if (static::isSetEmailAccountsTestConfiguration())
+            {
+                $imap = static::resolveImapObject();
+                $imap->connect();
+                $imap->deleteMessages(true);
+            }
+        }
     }
+?>

@@ -56,7 +56,7 @@
 
         protected static function resolveHeaderTagValueFromTextBody($headerTag, $textBody)
         {
-            $regex = '/' . $headerTag . ': ([\w\d]+)/is';
+            $regex = '/' . $headerTag . ': ([\w\d]+)/is'; // Not Coding Standard
             preg_match($regex , $textBody, $match);
             if (isset($match[1]))
             {

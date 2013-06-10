@@ -34,12 +34,52 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    define('MAJOR_VERSION', 2);                           // Update for marketing purposes.
-    define('MINOR_VERSION', 0);                           // Update when functionality changes.
-    define('PATCH_VERSION', 00);                          // Update when fixes are made that does not change functionality.
-    define('REPO_ID',       '$Revision$'); // Updated by Mercurial. Numbers like 3650 have no meaning across
-                                                          // clones. This tells us the actual changeset that is universally
-                                                          // meaningful.
+    class BounceMessageTestHelper
+    {
+        public static function resolveBounceObject()
+        {
+            if (static::isSetBounceImapSettings())
+            {
+                $bounce = new ZurmoBounce();
+                $bounceSettings          = Yii::app()->params['emailTestAccounts']['bounceImapSettings'];
+                $bounce->imapHost        = $bounceSettings['imapHost'];
+                $bounce->imapUsername    = $bounceSettings['imapUsername'];
+                $bounce->imapPassword    = $bounceSettings['imapPassword'];
+                $bounce->imapPort        = $bounceSettings['imapPort'];
+                $bounce->imapSSL         = $bounceSettings['imapSSL'];
+                $bounce->imapFolder      = $bounceSettings['imapFolder'];
+                $bounce->returnPath      = $bounceSettings['returnPath'];
+                $bounce->setInboundSettings();
+                $bounce->init();
+                return $bounce;
+            }
+            return false;
+        }
 
-    define('VERSION', join('.', array(MAJOR_VERSION, MINOR_VERSION, PATCH_VERSION)) . ' (' . substr(REPO_ID, strlen('$Revision: '), -2) . ')');
+        public static function isSetBounceImapSettings()
+        {
+            if (isset(Yii::app()->params['emailTestAccounts']['bounceImapSettings']))
+            {
+                $bounceSettings          = Yii::app()->params['emailTestAccounts']['bounceImapSettings'];
+                if (isset($bounceSettings['imapHost']) && isset($bounceSettings['imapUsername']) &&
+                    isset($bounceSettings['imapPassword']) && isset($bounceSettings['imapPort']) &&
+                    isset($bounceSettings['imapSSL']) && isset($bounceSettings['imapFolder']) &&
+                    isset($bounceSettings['returnPath']))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public static function purgeAllMessages()
+        {
+            if (static::isSetBounceImapSettings())
+            {
+                $bounce = static::resolveBounceObject();
+                $bounce->connect();
+                $bounce->deleteMessages(true);
+            }
+        }
+    }
 ?>
