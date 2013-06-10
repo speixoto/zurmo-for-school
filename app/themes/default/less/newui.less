@@ -4329,21 +4329,25 @@ div.hasHalfs{
 }
 
 .edit-row-menu{
+	white-space: nowrap;
 	> li{
 		position: relative;
+		white-space: nowrap;
 	}
 	> li > a{
 		position: relative;
 		z-index: 10;
+		white-space: nowrap;
 	}
 	ul{
 		white-space: nowrap;
 		left: auto;
-		right: -8px;
-		margin-left:-80px;
+		right: -10px;
+		margin-left:0;
 		top:-3px;
 		z-index: 1;
-		padding-right: 28px;
+		padding-right: 30px;
+		.radius(0 15px 15px 0);
 		> li{
 			float: left;
 			border-left: 1px solid #d8d8d8;
@@ -5291,4 +5295,5 @@ div.hasHalfs{
 @import 'marketing.less';
 @import 'kanban.less';
 @import 'webforms.less';
+@import 'lab.less';
 @import 'media-queries.less';
