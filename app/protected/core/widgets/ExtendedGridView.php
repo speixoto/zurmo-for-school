@@ -42,6 +42,8 @@
      */
     class ExtendedGridView extends CGridView
     {
+        const CLONE_SUMMARY_CLASS = 'list-view-items-summary-clone';
+
         public $template = "{selectRowsSelectors}{summary}\n{items}\n{pager}";
 
         /**
@@ -55,6 +57,8 @@
         public $blankDisplay = '&#160;';
 
         public $cssFile = false;
+
+        public $summaryCloneId;
 
         public function init()
         {
@@ -170,22 +174,8 @@
         public function renderSummary()
         {
             parent::renderSummary();
-            $summaryClonePath = null;
-            foreach ($this->columns as $column)
-            {
-                if (get_class($column) === 'RowMenuColumn' && isset($column->listView))
-                {
-                    $listClassName      = $column->listView;
-                    $reflectionClass    = new ReflectionClass($listClassName);
-                    if ($reflectionClass->implementsInterface('RendersMultipleSummaryPlaceholdersInterface'))
-                    {
-                        $summaryClonePath = ', ' . $listClassName::getSummaryCloneQueryPath();
-                        break;
-                    }
-                }
-            }
             Yii::app()->clientScript->registerScript($this->id . '_listViewSummaryChangeScript', '
-            processListViewSummaryClone("' . $this->id . '", "' . $this->summaryCssClass . '"' . $summaryClonePath . ');
+                processListViewSummaryClone("' . $this->id . '", "' . $this->summaryCssClass . '", "' . $this->summaryCloneId . '");
             ');
         }
     }
