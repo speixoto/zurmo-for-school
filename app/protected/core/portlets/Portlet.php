@@ -145,10 +145,10 @@
         /**
          * Make a portlet with default values.
          */
-        public static function makePortletUsingViewType($viewType, $uniqueLayoutId, $user)
+        public static function makePortletUsingViewType($viewType, $uniqueLayoutId, $user, $maxColumns)
         {
             $portlet = new Portlet();
-            $portlet->column    = 2;
+            $portlet->column    = $maxColumns;
             $portlet->position  = 1;
             $portlet->layoutId = $uniqueLayoutId;
             $portlet->collapsed = false;
@@ -237,19 +237,6 @@
             $className = get_class($this->getView());
             return $className::canUserConfigure();
         }
-
-//        public function isRemovable()
-//        {
-//            $className = get_class($this->getView());
-//            if (method_exists($className, 'canUserRemove'))
-//            {
-//                return $className::canUserRemove();
-//            }
-//            else
-//            {
-//                return null;
-//            }
-//        }
 
         public function beforeDelete()
         {

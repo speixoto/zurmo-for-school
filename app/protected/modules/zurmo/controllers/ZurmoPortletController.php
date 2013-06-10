@@ -246,7 +246,7 @@
                             $portlet->save();
                     }
                 }
-                Portlet::makePortletUsingViewType($_GET['portletType'], $_GET['uniqueLayoutId'], Yii::app()->user->userModel);
+                Portlet::makePortletUsingViewType($_GET['portletType'], $_GET['uniqueLayoutId'], Yii::app()->user->userModel, 2);
             }
             if (!empty($_GET['modelId']))
             {

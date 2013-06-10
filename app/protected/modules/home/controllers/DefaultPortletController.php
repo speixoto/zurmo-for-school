@@ -64,9 +64,10 @@
             if ($isPortletAlreadyAdded === false)
             {
                 $portletCollection = Portlet::getByLayoutIdAndUserSortedByColumnIdAndPosition($_GET['uniqueLayoutId'], Yii::app()->user->userModel->id, array());
+                $maxColumns = $this->resolveMaximumColumnsByDashboardId();
                 if (!empty($portletCollection))
                 {
-                    foreach ($portletCollection[1] as $position => $portlet)
+                    foreach ($portletCollection[$maxColumns] as $position => $portlet)
                     {
                         $portlet->position = $portlet->position + 1;
                         $portlet->save();
@@ -81,8 +82,21 @@
             {
                 $dashboardId = '';
             }
-            Portlet::makePortletUsingViewType($_GET['portletType'], $_GET['uniqueLayoutId'], Yii::app()->user->userModel);
+            Portlet::makePortletUsingViewType($_GET['portletType'], $_GET['uniqueLayoutId'], Yii::app()->user->userModel, $maxColumns);
             $this->redirect(array('default/dashboardDetails', 'id' => $dashboardId));
+        }
+
+        /**
+         * Resolve maximum columns by dashboard id
+         * @return int
+         */
+        private function resolveMaximumColumnsByDashboardId()
+        {
+            $dashBoard      = Dashboard::getById(intval($_GET['dashboardId']));
+            $layoutTypes    = Dashboard::getLayoutTypesData();
+            $dashBoardType  = $layoutTypes[$dashBoard->layoutType];
+            $maxColumns     = substr($dashBoardType, 0, 1);
+            return $maxColumns;
         }
     }
 ?>
