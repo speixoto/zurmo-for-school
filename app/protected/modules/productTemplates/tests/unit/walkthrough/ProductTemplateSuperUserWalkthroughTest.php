@@ -317,5 +317,18 @@
             $productTemplates = ProductTemplate::getAll();
             $this->assertEquals(0, count($productTemplates));
         }
+
+        public function testCloningWithAnotherProductTemplate()
+        {
+            $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
+            Yii::app()->user->userModel = $super;
+
+            $productTemplate = ProductTemplateTestHelper::createProductTemplateByName("My Copy Catalog Item");
+            $id = $productTemplate->id;
+            $this->setGetArray(array('id' => $id));
+            $content = $this->runControllerWithNoExceptionsAndGetContent('productTemplates/default/copy');
+            $productTemplates = ProductTemplate::getAll();
+            $this->assertEquals(1, count($productTemplates));
+        }
     }
 ?>
