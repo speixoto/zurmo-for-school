@@ -327,6 +327,7 @@
             $id = $productTemplate->id;
             $this->setGetArray(array('id' => $id));
             $content = $this->runControllerWithNoExceptionsAndGetContent('productTemplates/default/copy');
+            $this->assertTrue(strpos($content, 'My Copy Catalog Item') > 0);
             $productTemplates = ProductTemplate::getAll();
             $this->assertEquals(1, count($productTemplates));
         }

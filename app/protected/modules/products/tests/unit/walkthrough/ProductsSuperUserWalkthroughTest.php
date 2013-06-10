@@ -294,6 +294,7 @@
             $id = $product->id;
             $this->setGetArray(array('id' => $id));
             $content = $this->runControllerWithNoExceptionsAndGetContent('products/default/copy');
+            $this->assertTrue(strpos($content, 'My Product 1') > 0);
             $products = Product::getAll();
             $this->assertEquals(1, count($products));
         }
