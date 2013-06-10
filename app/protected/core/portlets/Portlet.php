@@ -143,17 +143,22 @@
         }
 
         /**
-         * Make a portlet with default values.
+         * Make a portlet with default values and maximum number of columns
+         * in a layout
+         * @param string $viewType
+         * @param string $uniqueLayoutId
+         * @param User $user
+         * @param int $numberOfColumns
          */
-        public static function makePortletUsingViewType($viewType, $uniqueLayoutId, $user, $maxColumns)
+        public static function makePortletUsingViewType($viewType, $uniqueLayoutId, $user, $numberOfColumns)
         {
             $portlet = new Portlet();
-            $portlet->column    = $maxColumns;
+            $portlet->column    = $numberOfColumns;
             $portlet->position  = 1;
-            $portlet->layoutId = $uniqueLayoutId;
+            $portlet->layoutId  = $uniqueLayoutId;
             $portlet->collapsed = false;
-            $portlet->viewType = $viewType;
-            $portlet->user = $user;
+            $portlet->viewType  = $viewType;
+            $portlet->user      = $user;
             $portlet->save();
         }
 
