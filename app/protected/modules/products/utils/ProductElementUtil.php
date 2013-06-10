@@ -29,6 +29,12 @@
      */
     class ProductElementUtil
     {
+        /**
+         * Gets sell price for product in portlet view
+         * @param object $data
+         * @param int $row
+         * @return string
+         */
         public static function getProductPortletSellPrice($data, $row)
         {
             assert('$data->sellPrice instanceof CurrencyValue');
@@ -37,6 +43,12 @@
                                                                 $currencyValueModel->currency->code);
         }
 
+        /**
+         * Gets total price for product in portlet view
+         * @param object $data
+         * @param int $row
+         * @return string
+         */
         public static function getProductPortletTotalPrice($data, $row)
         {
             assert('$data->sellPrice instanceof CurrencyValue');
@@ -45,11 +57,16 @@
                                                                 $currencyValueModel->currency->code);
         }
 
+        /**
+         * Gets name for product in portlet view
+         * @param object $data
+         * @param int $row
+         * @return string
+         */
         public static function getProductNameLinkString($data, $row)
         {
             $productName = $data->name;
             $url         = Yii::app()->createUrl('products/default/details', array('id' => $data->id));
-
             return ZurmoHtml::link($productName, $url);
         }
     }
