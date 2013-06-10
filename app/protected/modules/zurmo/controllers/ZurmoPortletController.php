@@ -240,7 +240,7 @@
                 $portletCollection = Portlet::getByLayoutIdAndUserSortedByColumnIdAndPosition($_GET['uniqueLayoutId'], Yii::app()->user->userModel->id, array());
                 if (!empty($portletCollection))
                 {
-                    foreach ($portletCollection[1] as $position => $portlet)
+                    foreach ($portletCollection[2] as $position => $portlet)
                     {
                             $portlet->position = $portlet->position + 1;
                             $portlet->save();

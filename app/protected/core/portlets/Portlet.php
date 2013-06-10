@@ -148,7 +148,7 @@
         public static function makePortletUsingViewType($viewType, $uniqueLayoutId, $user)
         {
             $portlet = new Portlet();
-            $portlet->column    = 1;
+            $portlet->column    = 2;
             $portlet->position  = 1;
             $portlet->layoutId = $uniqueLayoutId;
             $portlet->collapsed = false;

@@ -30,6 +30,11 @@
     class ProductElementUtil
     {
         /**
+         * Product name length in portlet view
+         */
+        const PRODUCT_NAME_LENGTH_IN_PORTLET_VIEW = 19;
+
+        /**
          * Gets sell price for product in portlet view
          * @param object $data
          * @param int $row
@@ -66,6 +71,11 @@
         public static function getProductNameLinkString($data, $row)
         {
             $productName = $data->name;
+            if(strlen($productName) > (self::PRODUCT_NAME_LENGTH_IN_PORTLET_VIEW + 2))
+            {
+                $productName = substr($productName, 0, self::PRODUCT_NAME_LENGTH_IN_PORTLET_VIEW);
+                $productName .= '..';
+            }
             $url         = Yii::app()->createUrl('products/default/details', array('id' => $data->id));
             return ZurmoHtml::link($productName, $url);
         }
