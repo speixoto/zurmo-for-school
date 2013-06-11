@@ -1,10 +1,10 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2012 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
-     * the terms of the GNU General Public License version 3 as published by the
+     * the terms of the GNU Affero General Public License version 3 as published by the
      * Free Software Foundation with the addition of the following permission added
      * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
      * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
@@ -12,16 +12,26 @@
      *
      * Zurmo is distributed in the hope that it will be useful, but WITHOUT
      * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-     * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+     * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
      * details.
      *
-     * You should have received a copy of the GNU General Public License along with
+     * You should have received a copy of the GNU Affero General Public License along with
      * this program; if not, see http://www.gnu.org/licenses or write to the Free
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
      *
-     * You can contact Zurmo, Inc. with a mailing address at 113 McHenry Road Suite 207,
-     * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
+     * You can contact Zurmo, Inc. with a mailing address at 27 North Wacker Drive
+     * Suite 370 Chicago, IL 60606. or at email address contact@zurmo.com.
+     *
+     * The interactive user interfaces in original and modified versions
+     * of this program must display Appropriate Legal Notices, as required under
+     * Section 5 of the GNU Affero General Public License version 3.
+     *
+     * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
+     * these Appropriate Legal Notices must retain the display of the Zurmo
+     * logo and Zurmo copyright notice. If the display of the logo is not reasonably
+     * feasible for technical reasons, the Appropriate Legal Notices must display the words
+     * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -29,6 +39,23 @@
       */
     class WorkflowsDefaultController extends ZurmoBaseController
     {
+        const USER_EMAIL_TEMPLATE_ACCESS_FILTER_PATH =
+            'application.modules.workflows.controllers.filters.UserCanAccessEmailTemplatesForWorkflowCheckControllerFilter';
+
+        const ZERO_MODELS_CHECK_FILTER_PATH = 'application.modules.workflows.controllers.filters.WorkflowZeroModelsCheckControllerFilter';
+
+        public static function getListBreadcrumbLinks()
+        {
+            $title = Zurmo::t('WorkflowsModule', 'Workflows');
+            return array($title);
+        }
+
+        public static function getManageOrderBreadcrumbLinks()
+        {
+            $title = Zurmo::t('WorkflowsModule', 'Ordering');
+            return array($title);
+        }
+
         public function filters()
         {
             return array_merge(parent::filters(),
@@ -39,9 +66,22 @@
                         'rightName' => WorkflowsModule::RIGHT_CREATE_WORKFLOWS,
                    ),
                    array(
-                       ZurmoModuleController::ZERO_MODELS_CHECK_FILTER_PATH . ' + list, index',
-                       'controller' => $this,
+                        static::USER_EMAIL_TEMPLATE_ACCESS_FILTER_PATH,
+                        'controller' => $this,
                    ),
+                   array(
+                       static::ZERO_MODELS_CHECK_FILTER_PATH . ' + list, index',
+                       'controller' => $this,
+                       'activeActionElementType' => 'WorkflowsLink',
+                       'breadcrumbLinks'         => static::getListBreadcrumbLinks(),
+                   ),
+                    array(
+                        static::ZERO_MODELS_CHECK_FILTER_PATH . ' + manageOrder',
+                        'controller' => $this,
+                        'activeActionElementType' => 'WorkflowManageOrderLink',
+                        'breadcrumbLinks'         => static::getManageOrderBreadcrumbLinks(),
+                    ),
+
                 )
             );
         }
@@ -49,12 +89,6 @@
         public function actionIndex()
         {
             $this->actionList();
-        }
-
-        protected function resolveMetadataBeforeMakingDataProvider(& $metadata)
-        {
-            $metadata = SavedWorkflowsUtil::resolveSearchAttributeDataByModuleClassNames($metadata,
-                        Workflow::getWorkflowSupportedModulesClassNamesCurrentUserHasAccessTo());
         }
 
         public function actionList()
@@ -66,10 +100,7 @@
             $searchForm                     = new WorkflowsSearchForm($savedWorkflow);
             $dataProvider                   = $this->resolveSearchDataProvider($searchForm, $pageSize, null,
                                               'WorkflowsSearchView');
-            $title           = Zurmo::t('WorkflowsModule', 'Workflows');
-            $breadcrumbLinks = array(
-                 $title,
-            );
+            $breadcrumbLinks                = static::getListBreadcrumbLinks();
             if (isset($_GET['ajax']) && $_GET['ajax'] == 'list-view')
             {
                 $mixedView = $this->makeListView(
@@ -124,7 +155,7 @@
 
         public function actionCreate($type = null)
         {
-            if($type == null)
+            if ($type == null)
             {
                 $this->actionSelectType();
                 Yii::app()->end(0, false);
@@ -134,39 +165,41 @@
             $workflow         = new Workflow();
             $workflow->setType($type);
             $workflow->setIsActive(true);
+            $progressBarAndStepsView = WorkflowWizardViewFactory::makeStepsAndProgressBarViewFromReport($workflow);
             $wizardWizardView = WorkflowWizardViewFactory::makeViewFromWorkflow($workflow);
             $view             = new WorkflowsPageView(  ZurmoDefaultAdminViewUtil::
-                                                        makeViewWithBreadcrumbsForCurrentUser(
-                                                        $this,
+                                                        makeTwoViewsWithBreadcrumbsForCurrentUser(
+                                                        $this, $progressBarAndStepsView,
                                                         $wizardWizardView,
                                                         $breadcrumbLinks,
                                                         'WorkflowBreadCrumbView'));
             echo $view->render();
         }
 
-        public function actionEdit($id)
+        public function actionEdit($id, $isBeingCopied = false)
         {
             $savedWorkflow      = SavedWorkflow::getById((int)$id);
             ControllerSecurityUtil::resolveCanCurrentUserAccessModule($savedWorkflow->moduleClassName);
             $breadcrumbLinks    = array(strval($savedWorkflow));
             $workflow           = SavedWorkflowToWorkflowAdapter::makeWorkflowBySavedWorkflow($savedWorkflow);
-            $wizardWizardView = WorkflowWizardViewFactory::makeViewFromWorkflow($workflow);
+            $progressBarAndStepsView = WorkflowWizardViewFactory::makeStepsAndProgressBarViewFromReport($workflow);
+            $wizardWizardView = WorkflowWizardViewFactory::makeViewFromWorkflow($workflow, (bool)$isBeingCopied);
             $view             = new WorkflowsPageView(  ZurmoDefaultAdminViewUtil::
-                                                        makeViewWithBreadcrumbsForCurrentUser(
-                                                        $this,
+                                                        makeTwoViewsWithBreadcrumbsForCurrentUser(
+                                                        $this, $progressBarAndStepsView,
                                                         $wizardWizardView,
                                                         $breadcrumbLinks,
                                                         'WorkflowBreadCrumbView'));
             echo $view->render();
         }
 
-        public function actionSave($type, $id = null)
+        public function actionSave($type, $id = null, $isBeingCopied = false)
         {
             $postData                  = PostUtil::getData();
             $savedWorkflow             = null;
             $workflow                  = null;
-            $this->resolveSavedWorkflowAndWorkflowByPostData($postData, $savedWorkflow, $workflow, $type, $id);
-
+            $this->resolveSavedWorkflowAndWorkflowByPostData($postData, $savedWorkflow, $workflow, $type, $id,
+                                                             (bool)$isBeingCopied);
 
             $workflowToWizardFormAdapter = new WorkflowToWizardFormAdapter($workflow);
             $model                     =  $workflowToWizardFormAdapter->makeFormByType();
@@ -175,15 +208,14 @@
                 $this->actionValidate($postData, $model);
             }
             SavedWorkflowToWorkflowAdapter::resolveWorkflowToSavedWorkflow($workflow, $savedWorkflow);
-            SavedWorkflowsUtil::resolveOrder($savedWorkflow);
-            if($savedWorkflow->id > 0)
+            SavedWorkflowsUtil::resolveOrder($savedWorkflow, (bool)$isBeingCopied);
+            if ($savedWorkflow->id > 0)
             {
                 ControllerSecurityUtil::resolveCanCurrentUserAccessModule($savedWorkflow->moduleClassName);
             }
-            if($savedWorkflow->save())
+            if ($savedWorkflow->save())
             {
-                echo CJSON::encode(array('id'             => $savedWorkflow->id,
-                                         'redirectToList' => false));
+                echo CJSON::encode(array('id' => $savedWorkflow->id, 'redirectToList' => false));
                 Yii::app()->end(0, false);
             }
             else
@@ -192,13 +224,14 @@
             }
         }
 
-        public function actionRelationsAndAttributesTree($type, $treeType, $id = null, $nodeId = null)
+        public function actionRelationsAndAttributesTree($type, $treeType, $id = null, $nodeId = null, $isBeingCopied = false)
         {
             $postData      = PostUtil::getData();
             $savedWorkflow = null;
             $workflow        = null;
-            $this->resolveSavedWorkflowAndWorkflowByPostData($postData, $savedWorkflow, $workflow, $type, $id);
-            if($nodeId != null)
+            $this->resolveSavedWorkflowAndWorkflowByPostData($postData, $savedWorkflow, $workflow, $type, $id,
+                                                             (bool)$isBeingCopied);
+            if ($nodeId != null)
             {
                 $wizardToTreeAdapter = new WorkflowRelationsAndAttributesToTreeAdapter($workflow, $treeType);
                 echo ZurmoTreeView::saveDataAsJson($wizardToTreeAdapter->getData($nodeId));
@@ -212,17 +245,19 @@
         }
 
         public function actionAddAttributeFromTree($type, $treeType, $nodeId, $rowNumber,
-                                                   $trackableStructurePosition = false, $id = null)
+                                                   $trackableStructurePosition = false, $id = null, $isBeingCopied = false)
         {
             $postData                           = PostUtil::getData();
             $savedWorkflow                      = null;
             $workflow                           = null;
-            $this->resolveSavedWorkflowAndWorkflowByPostData($postData, $savedWorkflow, $workflow, $type, $id);
+            $this->resolveSavedWorkflowAndWorkflowByPostData($postData, $savedWorkflow, $workflow, $type, $id,
+                                                             (bool)$isBeingCopied);
             $nodeIdWithoutTreeType              = WorkflowRelationsAndAttributesToTreeAdapter::
                                                      removeTreeTypeFromNodeId($nodeId, $treeType);
             $moduleClassName                    = $workflow->getModuleClassName();
             $modelClassName                     = $moduleClassName::getPrimaryModelName();
             $form                               = new WizardActiveForm();
+            $form->id                           = WorkflowWizardView::getFormId();
             $form->enableAjaxValidation         = true; //ensures error validation populates correctly
 
             $wizardFormClassName                = WorkflowToWizardFormAdapter::getFormClassNameByType($workflow->getType());
@@ -257,12 +292,13 @@
             $this->redirect(array($this->getId() . '/index'));
         }
 
-        public function actionGetAvailableAttributesForTimeTrigger($type, $id = null)
+        public function actionGetAvailableAttributesForTimeTrigger($type, $id = null, $isBeingCopied = false)
         {
             $postData                           = PostUtil::getData();
             $savedWorkflow                      = null;
             $workflow                           = null;
-            $this->resolveSavedWorkflowAndWorkflowByPostData($postData, $savedWorkflow, $workflow, $type, $id);
+            $this->resolveSavedWorkflowAndWorkflowByPostData($postData, $savedWorkflow, $workflow, $type, $id,
+                                                             (bool)$isBeingCopied);
             $moduleClassName                    = $workflow->getModuleClassName();
             $modelClassName                     = $moduleClassName::getPrimaryModelName();
             $dataAndLabels                      = WorkflowUtil::resolveDataAndLabelsForTimeTriggerAvailableAttributes(
@@ -271,7 +307,7 @@
         }
 
         public function actionAddOrChangeTimeTriggerAttribute($type, $attributeIndexOrDerivedType, $moduleClassName,
-                                                              $id = null)
+                                                              $id = null, $isBeingCopied = false)
         {
             $componentType                      = TimeTriggerForWorkflowForm::getType();
             $postData                           = PostUtil::getData();
@@ -279,11 +315,13 @@
             $postData['ByTimeWorkflowWizardForm']['moduleClassName'] = $moduleClassName;
             $savedWorkflow                      = null;
             $workflow                           = null;
-            $this->resolveSavedWorkflowAndWorkflowByPostData($postData, $savedWorkflow, $workflow, $type, $id);
+            $this->resolveSavedWorkflowAndWorkflowByPostData($postData, $savedWorkflow, $workflow, $type, $id,
+                                                  (bool)$isBeingCopied);
             $moduleClassName                    = $workflow->getModuleClassName();
             $modelClassName                     = $moduleClassName::getPrimaryModelName();
             $form                               = new WizardActiveForm();
             $form->enableAjaxValidation         = true; //ensures error validation populates correctly
+            $form->id                           = WorkflowWizardView::getFormId();
             $wizardFormClassName                = WorkflowToWizardFormAdapter::getFormClassNameByType($workflow->getType());
             $model                              = ComponentForWorkflowFormFactory::makeByComponentType($moduleClassName,
                                                   $modelClassName, $workflow->getType(), $componentType);
@@ -305,8 +343,8 @@
         public function actionChangeActionType($moduleClassName, $type)
         {
             $content = ZurmoHtml::dropDownList(ActionsForWorkflowWizardView::ACTION_TYPE_RELATION_NAME,
-                null, ActionsForWorkflowWizardView::resolveTypeRelationDataAndLabels(
-                    $moduleClassName, $moduleClassName::getPrimaryModelName(), $type));
+                        null, ActionsForWorkflowWizardView::resolveTypeRelationDataAndLabels(
+                            $moduleClassName, $moduleClassName::getPrimaryModelName(), $type));
             echo $content;
         }
 
@@ -324,6 +362,7 @@
         {
             $form                        = new WizardActiveForm();
             $form->enableAjaxValidation  = true; //ensures error validation populates correctly
+            $form->id                    = WorkflowWizardView::getFormId();
             $wizardFormClassName         = WorkflowToWizardFormAdapter::getFormClassNameByType($type);
             $model                       = ComponentForWorkflowFormFactory::makeByComponentType($moduleClassName,
                                            $moduleClassName::getPrimaryModelName(), $type,
@@ -345,6 +384,7 @@
         public function actionAddEmailMessage($moduleClassName, $type, $rowNumber)
         {
             $form                        = new WizardActiveForm();
+            $form->id                    = WorkflowWizardView::getFormId();
             $form->enableAjaxValidation  = true; //ensures error validation populates correctly
             $rowCounterInputId           = ComponentForWorkflowWizardView::
                                            resolveRowCounterInputId(ComponentForWorkflowForm::TYPE_EMAIL_MESSAGES);
@@ -354,6 +394,7 @@
                                            ComponentForWorkflowForm::TYPE_EMAIL_MESSAGES);
             $inputPrefixData             = array($wizardFormClassName, ComponentForWorkflowForm::TYPE_EMAIL_MESSAGES,
                                            (int)$rowNumber);
+            $form->setInputPrefixData($inputPrefixData);
             $view                        = new EmailMessageRowForWorkflowComponentView($model, (int)$rowNumber,
                                            $inputPrefixData, $form,
                                            WorkflowToWizardFormAdapter::getFormClassNameByType($type),
@@ -369,6 +410,7 @@
                                                        $recipientRowNumber)
         {
             $form                        = new WizardActiveForm();
+            $form->id                    = WorkflowWizardView::getFormId();
             $form->enableAjaxValidation  = true; //ensures error validation populates correctly
             $wizardFormClassName         = WorkflowToWizardFormAdapter::getFormClassNameByType($type);
             $model                       = WorkflowEmailMessageRecipientFormFactory::make($recipientType,
@@ -400,7 +442,7 @@
             $gridView                = new GridView(2, 1);
             $gridView->setView($actionBarView, 0, 0);
             $gridView->setView(new WorkflowManageOrderView(), 1, 0);
-            $breadcrumbLinks         = array(Zurmo::t('WorkflowsModule', 'Ordering'));
+            $breadcrumbLinks         = static::getManageOrderBreadcrumbLinks();
             $view                    = new WorkflowsPageView(  ZurmoDefaultAdminViewUtil::
                                             makeViewWithBreadcrumbsForCurrentUser(
                                             $this,
@@ -413,7 +455,7 @@
         public function actionLoadOrderByModule($moduleClassName)
         {
             $savedWorkflows = SavedWorkflow::getAllByModuleClassName($moduleClassName);
-            if(count($savedWorkflows) == 0)
+            if (count($savedWorkflows) == 0)
             {
                 echo CJSON::encode(array('dataToOrder' => 'false'));
                 Yii::app()->end(0, false);
@@ -428,20 +470,20 @@
         public function actionSaveOrder()
         {
             $savedWorkflowData = ArrayUtil::getArrayValue(PostUtil::getData(), 'SavedWorkflow');
-            if($savedWorkflowData != null && isset($savedWorkflowData['savedWorkflowIds']) &&
+            if ($savedWorkflowData != null && isset($savedWorkflowData['savedWorkflowIds']) &&
                count($savedWorkflowData['savedWorkflowIds']) > 0)
             {
                 $order = 1;
-                foreach($savedWorkflowData['savedWorkflowIds'] as $savedWorkflowId)
+                foreach ($savedWorkflowData['savedWorkflowIds'] as $savedWorkflowId)
                 {
                     $savedWorkflow        = SavedWorkflow::getById((int)$savedWorkflowId);
                     $savedWorkflow->order = $order;
                     $saved = $savedWorkflow->save();
-                    if(!$saved)
+                    if (!$saved)
                     {
                         throw new FailedToSaveModelException();
                     }
-                    $order ++;
+                    $order++;
                 }
                 $message = Zurmo::t('WorkflowsModule', 'Order saved successfully.');
                 echo CJSON::encode(array('message' => $message, 'type' => 'message'));
@@ -456,7 +498,7 @@
 
         protected function resolveCanCurrentUserAccessWorkflows()
         {
-            if(!RightsUtil::doesUserHaveAllowByRightName('WorkflowsModule',
+            if (!RightsUtil::doesUserHaveAllowByRightName('WorkflowsModule',
                                                             WorkflowsModule::RIGHT_CREATE_WORKFLOWS,
                                                             Yii::app()->user->userModel))
             {
@@ -468,15 +510,29 @@
             return true;
         }
 
-        protected function resolveSavedWorkflowAndWorkflowByPostData(Array $postData, & $savedWorkflow, & $workflow,
-                                                                     $type, $id = null)
+        protected function resolveMetadataBeforeMakingDataProvider(& $metadata)
         {
-            if($id == null)
+            $metadata = SavedWorkflowsUtil::resolveSearchAttributeDataByModuleClassNames($metadata,
+                Workflow::getWorkflowSupportedModulesClassNamesCurrentUserHasAccessTo());
+        }
+
+        protected function resolveSavedWorkflowAndWorkflowByPostData(Array $postData, & $savedWorkflow, & $workflow,
+                                                                     $type, $id = null, $isBeingCopied = false)
+        {
+            if ($id == null)
             {
                 $this->resolveCanCurrentUserAccessWorkflows();
                 $savedWorkflow               = new SavedWorkflow();
                 $workflow                    = new Workflow();
                 $workflow->setType($type);
+            }
+            elseif ($isBeingCopied)
+            {
+                $savedWorkflow               = new SavedWorkflow();
+                $oldWorkflow                 = SavedWorkflow::getById(intval($id));
+                ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($oldWorkflow);
+                ZurmoCopyModelUtil::copy($oldWorkflow, $savedWorkflow);
+                $workflow                    = SavedWorkflowToWorkflowAdapter::makeWorkflowBySavedWorkflow($savedWorkflow);
             }
             else
             {
@@ -490,7 +546,7 @@
 
         protected function actionValidate($postData, WorkflowWizardForm $model)
         {
-            if(isset($postData['validationScenario']) && $postData['validationScenario'] != null)
+            if (isset($postData['validationScenario']) && $postData['validationScenario'] != null)
             {
                 $model->setScenario($postData['validationScenario']);
             }

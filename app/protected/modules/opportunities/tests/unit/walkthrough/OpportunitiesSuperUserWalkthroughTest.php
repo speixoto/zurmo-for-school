@@ -1,10 +1,10 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2012 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
-     * the terms of the GNU General Public License version 3 as published by the
+     * the terms of the GNU Affero General Public License version 3 as published by the
      * Free Software Foundation with the addition of the following permission added
      * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
      * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
@@ -12,16 +12,26 @@
      *
      * Zurmo is distributed in the hope that it will be useful, but WITHOUT
      * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-     * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+     * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
      * details.
      *
-     * You should have received a copy of the GNU General Public License along with
+     * You should have received a copy of the GNU Affero General Public License along with
      * this program; if not, see http://www.gnu.org/licenses or write to the Free
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
      *
-     * You can contact Zurmo, Inc. with a mailing address at 113 McHenry Road Suite 207,
-     * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
+     * You can contact Zurmo, Inc. with a mailing address at 27 North Wacker Drive
+     * Suite 370 Chicago, IL 60606. or at email address contact@zurmo.com.
+     *
+     * The interactive user interfaces in original and modified versions
+     * of this program must display Appropriate Legal Notices, as required under
+     * Section 5 of the GNU Affero General Public License version 3.
+     *
+     * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
+     * these Appropriate Legal Notices must retain the display of the Zurmo
+     * logo and Zurmo copyright notice. If the display of the logo is not reasonably
+     * feasible for technical reasons, the Appropriate Legal Notices must display the words
+     * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -275,7 +285,7 @@
 
             //actionModalList
             $this->setGetArray(array(
-                'modalTransferInformation' => array('sourceIdFieldId' => 'x', 'sourceNameFieldId' => 'y')
+                'modalTransferInformation' => array('sourceIdFieldId' => 'x', 'sourceNameFieldId' => 'y', 'modalId' => 'z')
             ));
             $this->runControllerWithNoExceptionsAndGetContent('opportunities/default/modalList');
 
@@ -289,9 +299,9 @@
             $opportunity1->forget();
             $opportunity = Opportunity::getById($superOpportunityId);
             $portlets = Portlet::getByLayoutIdAndUserSortedByColumnIdAndPosition(
-                                    'OpportunityDetailsAndRelationsViewLeftBottomView', $super->id, array());
-            $this->assertEquals(1, count($portlets));
-            $this->assertEquals(2, count($portlets[1]));
+                                    'OpportunityDetailsAndRelationsView', $super->id, array());
+            $this->assertEquals(2, count($portlets));
+            $this->assertEquals(3, count($portlets[1]));
             $contact = Contact::getById($superContactId);
             $this->assertEquals(0, $contact->opportunities->count());
             $this->assertEquals(0, $opportunity->contacts->count());
@@ -299,7 +309,7 @@
                                      'relationAttributeName' => 'opportunities',
                                      'relationModuleId'      => 'opportunities',
                                      'relationModelId'       => $superOpportunityId,
-                                     'uniqueLayoutId'        => 'OpportunityDetailsAndRelationsViewLeftBottomView_' .
+                                     'uniqueLayoutId'        => 'OpportunityDetailsAndRelationsView_' .
                                                                 $portlets[1][1]->id)
             );
 
@@ -311,7 +321,7 @@
                                         'relationAttributeName' => 'opportunities',
                                         'relationModuleId'      => 'opportunities',
                                         'relationModelId'       => $superOpportunityId,
-                                        'uniqueLayoutId'        => 'OpportunityDetailsAndRelationsViewLeftBottomView_' .
+                                        'uniqueLayoutId'        => 'OpportunityDetailsAndRelationsView_' .
                                                                    $portlets[1][1]->id)
             );
             $this->resetPostArray();
@@ -338,9 +348,9 @@
             //At this point portlets for this view should be created because we have
             //already loaded the 'details' page in a request above.
             $portlets = Portlet::getByLayoutIdAndUserSortedByColumnIdAndPosition(
-                                    'OpportunityDetailsAndRelationsViewLeftBottomView', $super->id, array());
-            $this->assertEquals (2, count($portlets[1])         );
-            $this->assertFalse  (array_key_exists(2, $portlets) );
+                                    'OpportunityDetailsAndRelationsView', $super->id, array());
+            $this->assertEquals(3, count($portlets[1]));
+            $this->assertFalse(array_key_exists(3, $portlets) );
             $portletPostData = array();
             $portletCount = 0;
             foreach ($portlets as $column => $columnPortlets)
@@ -348,29 +358,29 @@
                 foreach ($columnPortlets as $position => $portlet)
                 {
                     $this->assertEquals('0', $portlet->collapsed);
-                    $portletPostData['OpportunityDetailsAndRelationsViewLeftBottomView_' . $portlet->id] = array(
+                    $portletPostData['OpportunityDetailsAndRelationsView_' . $portlet->id] = array(
                         'collapsed' => 'true',
                         'column'    => 0,
-                        'id'        => 'OpportunityDetailsAndRelationsViewLeftBottomView_' . $portlet->id,
+                        'id'        => 'OpportunityDetailsAndRelationsView_' . $portlet->id,
                         'position'  => $portletCount,
                     );
                     $portletCount++;
                 }
             }
             //There should have been a total of 3 portlets.
-            $this->assertEquals(2, $portletCount);
+            $this->assertEquals(6, $portletCount);
             $this->resetGetArray();
             $this->setPostArray(array(
                 'portletLayoutConfiguration' => array(
                     'portlets' => $portletPostData,
-                    'uniqueLayoutId' => 'OpportunityDetailsAndRelationsViewLeftBottomView',
+                    'uniqueLayoutId' => 'OpportunityDetailsAndRelationsView',
                 )
             ));
             $this->runControllerWithNoExceptionsAndGetContent('home/defaultPortlet/saveLayout', true);
             //Now test that all the portlets are collapsed and moved to the first column.
             $portlets = Portlet::getByLayoutIdAndUserSortedByColumnIdAndPosition(
-                            'OpportunityDetailsAndRelationsViewLeftBottomView', $super->id, array());
-            $this->assertEquals (2, count($portlets[1])         );
+                            'OpportunityDetailsAndRelationsView', $super->id, array());
+            $this->assertEquals (6, count($portlets[1]));
             $this->assertFalse  (array_key_exists(2, $portlets) );
             foreach ($portlets as $column => $columns)
             {
@@ -505,6 +515,70 @@
             $this->assertEquals(14, count($opportunities));
 
             //todo: test save with account.
+        }
+
+        /**
+         * @depends testSuperUserCreateFromRelationAction
+         */
+        public function testSuperUserCopyAction()
+        {
+            $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
+            $currencies = Currency::getAll();
+
+            $opportunities = Opportunity::getByName('myNewOpportunity');
+            $this->assertCount(1, $opportunities);
+
+            $postArray = array(
+                'Opportunity' => array(
+                    'name' => 'myNewOpportunity',
+                    'amount' => array(
+                        'value' => '1000',
+                        'currency' => array(
+                            'id' => $currencies[0]->id,
+                        ),
+                    ),
+                    'account' => array(
+                        'name' => 'Linked account',
+                    ),
+                    'closeDate' => '2012-11-01',
+                    'probability' => 50,
+                    'stage' => array(
+                        'value' => 'Negotiating',
+                    ),
+                   'description' => 'some description',
+                )
+            );
+
+            $this->updateModelValuesFromPostArray($opportunities[0], $postArray);
+            $this->assertModelHasValuesFromPostArray($opportunities[0], $postArray);
+
+            $this->assertTrue($opportunities[0]->save());
+
+            unset($postArray['Opportunity']['closeDate']);
+            $this->assertTrue(
+                $this->checkCopyActionResponseAttributeValuesFromPostArray($opportunities[0], $postArray, 'Opportunities')
+            );
+
+            $postArray['Opportunity']['name']       = 'myNewClonedOpportunity';
+            $postArray['Opportunity']['closeDate']  = '11/1/12';
+
+            $this->setGetArray(array('id' => $opportunities[0]->id));
+            $this->setPostArray($postArray);
+            $this->runControllerWithRedirectExceptionAndGetUrl('opportunities/default/copy');
+
+            $opportunities = Opportunity::getByName('myNewClonedOpportunity');
+            $this->assertCount(1, $opportunities);
+            $this->assertTrue($opportunities[0]->owner->isSame($super));
+
+            $postArray['Opportunity']['closeDate'] = '2012-11-01';
+            $this->assertModelHasValuesFromPostArray($opportunities[0], $postArray);
+
+            $opportunities = Opportunity::getAll();
+            $this->assertCount(15, $opportunities);
+
+            $opportunities = Opportunity::getByName('myNewClonedOpportunity');
+            $this->assertCount(1, $opportunities);
+            $this->assertTrue($opportunities[0]->delete());
         }
 
         /**

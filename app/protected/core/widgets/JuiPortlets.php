@@ -1,10 +1,10 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2012 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
-     * the terms of the GNU General Public License version 3 as published by the
+     * the terms of the GNU Affero General Public License version 3 as published by the
      * Free Software Foundation with the addition of the following permission added
      * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
      * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
@@ -12,16 +12,26 @@
      *
      * Zurmo is distributed in the hope that it will be useful, but WITHOUT
      * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-     * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+     * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
      * details.
      *
-     * You should have received a copy of the GNU General Public License along with
+     * You should have received a copy of the GNU Affero General Public License along with
      * this program; if not, see http://www.gnu.org/licenses or write to the Free
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
      *
-     * You can contact Zurmo, Inc. with a mailing address at 113 McHenry Road Suite 207,
-     * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
+     * You can contact Zurmo, Inc. with a mailing address at 27 North Wacker Drive
+     * Suite 370 Chicago, IL 60606. or at email address contact@zurmo.com.
+     *
+     * The interactive user interfaces in original and modified versions
+     * of this program must display Appropriate Legal Notices, as required under
+     * Section 5 of the GNU Affero General Public License version 3.
+     *
+     * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
+     * these Appropriate Legal Notices must retain the display of the Zurmo
+     * logo and Zurmo copyright notice. If the display of the logo is not reasonably
+     * feasible for technical reasons, the Appropriate Legal Notices must display the words
+     * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
     Yii::import('zii.widgets.jui.CJuiWidget');
@@ -126,24 +136,21 @@
         }
 
         /**
-         * @param $renderOnClickEvent boolean
          * In the event of a portlet refresh, you do not want to render the onClick event
          * since this will already be rendered in the page.  Doing so would add an extra unneeded
          * modal dialog.
+         * @param $item
+         * @param $uniqueLayoutId
+         * @param $moduleId
+         * @param bool $renderOnClickEvent
+         * @return string
          */
         public static function renderPortlet($item, $uniqueLayoutId, $moduleId, $renderOnClickEvent = true)
         {
-            $content = "<div class=\"juiportlet-widget-head\">\n";
-            if (isset($item['removable']) && $item['removable'] == true)
-            {
-                $content .= "<a href=\"#\" class=\"remove\">CLOSE<span class=\"icon\"></span></a>"; //must be CLOSE - do not translate
-            }
+            $content  = "<div class=\"juiportlet-widget-head\">\n";
             $content .= "<h3>" . $item['title'] . "</h3>";
-            if (isset($item['editable']) && $item['editable'] == true)
-            {
-                $content .= JuiPortlets::renderEditLink(
-                    $item['id'], $uniqueLayoutId, $moduleId, $renderOnClickEvent) . "\n";
-            }
+            $content .= static::renderOptionsMenu($item, $uniqueLayoutId, $moduleId, $renderOnClickEvent, $item['portletParams']);
+            $content .= $item['headContent'] . "\n";
             if (isset($item['collapsed']) && $item['collapsed'])
             {
                 $widgetContentStyle = "style=\"display:none;\"";
@@ -159,7 +166,41 @@
             return $content;
         }
 
-        protected static function renderEditLink($portletId, $uniqueLayoutId, $moduleId, $renderOnClickEvent = true)
+        /**
+         * @param array $item
+         * @param $uniqueLayoutId
+         * @param $moduleId
+         * @param bool $renderOnClickEvent
+         * @param array $portletParams - extra params that can be passed to the Get string on page requests
+         * @return mixed
+         */
+        protected static function renderOptionsMenu(array $item, $uniqueLayoutId, $moduleId, $renderOnClickEvent = true, $portletParams = array())
+        {
+            $menuItems = array('label' => null, 'items' => array());
+
+            if (isset($item['editable']) && $item['editable'] == true)
+            {
+                $menuItems['items'][] = static::makeEditMenuItem($item['id'], $uniqueLayoutId, $moduleId, $renderOnClickEvent, $portletParams);
+            }
+            if (isset($item['removable']) && $item['removable'] == true)
+            {
+                $menuItems['items'][] = array('label' => Zurmo::t('Core', 'Remove Portlet'), 'url' => '#',
+                    'linkOptions' => array('class' => 'remove-portlet'));
+            }
+            if (count($menuItems['items']) > 0)
+            {
+                $cClipWidget = new CClipWidget();
+                $cClipWidget->beginClip("PortletOptionMenu" . $uniqueLayoutId);
+                $cClipWidget->widget('application.core.widgets.MbMenu', array(
+                    'htmlOptions' => array('class' => 'options-menu edit-portlet-menu'),
+                    'items'       => array($menuItems),
+                ));
+                $cClipWidget->endClip();
+                return $cClipWidget->getController()->clips['PortletOptionMenu' . $uniqueLayoutId];
+            }
+        }
+
+        protected static function makeEditMenuItem($portletId, $uniqueLayoutId, $moduleId, $renderOnClickEvent = true, $portletParams = array())
         {
             $htmlOptions = array(
                         'class' => 'edit',
@@ -167,21 +208,20 @@
             );
             if (!$renderOnClickEvent)
             {
-                return ZurmoHtml::link(Zurmo::t('Core', 'Edit') . '<span class="icon"></span>', '#', $htmlOptions);
+                return array('label'       => Zurmo::t('Core', 'Configure Portlet'), 'url' => '#',
+                             'linkOptions' => $htmlOptions);
             }
             else
             {
                 $url = null;
-                $ajaxOptions = array();
             }
             $url = Yii::app()->createUrl($moduleId .'/defaultPortlet/ModalConfigEdit/', array(
                 'uniqueLayoutId' => $uniqueLayoutId,
                 'portletId'      => $portletId,
+                'portletParams'  => $portletParams,
             ));
-            return ZurmoHtml::ajaxLink(Zurmo::t('Core', 'Edit') . '<span class="icon"></span>', $url,
-                static::resolveAjaxOptionsForEditLink(),
-                $htmlOptions
-            );
+            return array('label' => Zurmo::t('Core', 'Configure Portlet'), 'url' => $url,
+                         'linkOptions' => $htmlOptions, 'ajaxLinkOptions' => static::resolveAjaxOptionsForEditLink());
         }
 
         protected static function resolveAjaxOptionsForEditLink()

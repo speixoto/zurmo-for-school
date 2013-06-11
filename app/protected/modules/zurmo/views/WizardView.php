@@ -1,10 +1,10 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2012 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
-     * the terms of the GNU General Public License version 3 as published by the
+     * the terms of the GNU Affero General Public License version 3 as published by the
      * Free Software Foundation with the addition of the following permission added
      * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
      * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
@@ -12,16 +12,26 @@
      *
      * Zurmo is distributed in the hope that it will be useful, but WITHOUT
      * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-     * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+     * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
      * details.
      *
-     * You should have received a copy of the GNU General Public License along with
+     * You should have received a copy of the GNU Affero General Public License along with
      * this program; if not, see http://www.gnu.org/licenses or write to the Free
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
      *
-     * You can contact Zurmo, Inc. with a mailing address at 113 McHenry Road Suite 207,
-     * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
+     * You can contact Zurmo, Inc. with a mailing address at 27 North Wacker Drive
+     * Suite 370 Chicago, IL 60606. or at email address contact@zurmo.com.
+     *
+     * The interactive user interfaces in original and modified versions
+     * of this program must display Appropriate Legal Notices, as required under
+     * Section 5 of the GNU Affero General Public License version 3.
+     *
+     * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
+     * these Appropriate Legal Notices must retain the display of the Zurmo
+     * logo and Zurmo copyright notice. If the display of the logo is not reasonably
+     * feasible for technical reasons, the Appropriate Legal Notices must display the words
+     * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -33,6 +43,12 @@
          * @var WizardForm
          */
         protected $model;
+
+        /**
+         * whether the model is being copied to 'Save As' or not.
+         * @var bool $isBeingCopied
+         */
+        protected $isBeingCopied;
 
         /**
          * @return mixed
@@ -70,10 +86,13 @@
 
         /**
          * @param WizardForm $model
+         * @param bool $isBeingCopied
          */
-        public function __construct(WizardForm $model)
+        public function __construct(WizardForm $model, $isBeingCopied = false)
         {
-            $this->model = $model;
+            assert('is_bool($isBeingCopied)');
+            $this->model              = $model;
+            $this->isBeingCopied = $isBeingCopied;
         }
 
         /**
@@ -96,6 +115,7 @@
 
         /**
          * Override in children classes. Should @return string
+         * @throws NotImplementedException
          */
         protected static function getStartingValidationScenario()
         {
@@ -145,9 +165,10 @@
             $content .= $formEnd;
             $content .= $this->renderUIOverLayBlock();
             $content .= '</div></div>';
+            $content .= $this->renderModalContainer();
             return $content;
         }
-        
+
         protected function renderUIOverLayBlock()
         {
             $spinner = ZurmoHtml::tag('span', array('class' => 'z-spinner'), '');
@@ -162,8 +183,8 @@
             return array(
                         'validateOnSubmit'  => true,
                         'validateOnChange'  => false,
-                        'beforeValidate'    => 'js:beforeValidateAction',
-                        'afterValidate'     => 'js:afterValidateAjaxAction',
+                        'beforeValidate'    => 'js:$(this).beforeValidateAction',
+                        'afterValidate'     => 'js:$(this).afterValidateAjaxAction',
                         'afterValidateAjax' => $this->renderConfigSaveAjax(static::getFormId()),
                     );
         }
@@ -187,7 +208,7 @@
         protected function getFormActionUrl()
         {
             return Yii::app()->createUrl(static::getControllerId() . '/default/save',
-                array('type' => $this->model->type, 'id' => $this->model->id));
+                array('type' => $this->model->type, 'id' => $this->model->id, 'isBeingCopied' => $this->isBeingCopied));
         }
 
         /**
@@ -204,8 +225,9 @@
                                             'data'     => 'js:$("#' . $formName . '").serialize()',
                                             'url'      =>  $this->getFormActionUrl(),
                                             'dataType' => 'json',
-                                            'success'  => 'js:function(data){
-                                                if(data.redirectToList)
+                                            'success'  => 'js:function(data)
+                                            {
+                                                if (data.redirectToList)
                                                 {
                                                     url = "' . $saveRedirectToListUrl . '";
                                                 }
@@ -230,9 +252,10 @@
             $url    =  Yii::app()->createUrl(static::getControllerId() . '/default/relationsAndAttributesTree',
                        array_merge($_GET, array('type' => $this->model->type,
                                                 'treeType' => $componentViewClassName::getTreeType())));
+            // Begin Not Coding Standard
             $script = "
                 $('#" . $componentViewClassName::getTreeDivId() . "').addClass('loading');
-                makeLargeLoadingSpinner('" . $componentViewClassName::getTreeDivId() . "');
+                $(this).makeLargeLoadingSpinner('" . $componentViewClassName::getTreeDivId() . "');
                 $.ajax({
                     url : '" . $url . "',
                     type : 'POST',
@@ -247,12 +270,20 @@
                     }
                 });
             ";
+            // End Not Coding Standard
             return $script;
         }
 
         protected function registerOperatorOnLoadAndOnChangeScript()
         {
             OperatorStaticDropDownElement::registerOnLoadAndOnChangeScript();
+        }
+
+        protected function renderModalContainer()
+        {
+            return ZurmoHtml::tag('div', array(
+                        'id' => ModelElement::MODAL_CONTAINER_PREFIX . '-' . $this->getFormId()
+                   ), '');
         }
     }
 ?>

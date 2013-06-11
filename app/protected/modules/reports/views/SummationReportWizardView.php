@@ -1,10 +1,10 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2012 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
-     * the terms of the GNU General Public License version 3 as published by the
+     * the terms of the GNU Affero General Public License version 3 as published by the
      * Free Software Foundation with the addition of the following permission added
      * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
      * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
@@ -12,16 +12,26 @@
      *
      * Zurmo is distributed in the hope that it will be useful, but WITHOUT
      * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-     * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+     * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
      * details.
      *
-     * You should have received a copy of the GNU General Public License along with
+     * You should have received a copy of the GNU Affero General Public License along with
      * this program; if not, see http://www.gnu.org/licenses or write to the Free
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
      *
-     * You can contact Zurmo, Inc. with a mailing address at 113 McHenry Road Suite 207,
-     * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
+     * You can contact Zurmo, Inc. with a mailing address at 27 North Wacker Drive
+     * Suite 370 Chicago, IL 60606. or at email address contact@zurmo.com.
+     *
+     * The interactive user interfaces in original and modified versions
+     * of this program must display Appropriate Legal Notices, as required under
+     * Section 5 of the GNU Affero General Public License version 3.
+     *
+     * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
+     * these Appropriate Legal Notices must retain the display of the Zurmo
+     * logo and Zurmo copyright notice. If the display of the logo is not reasonably
+     * feasible for technical reasons, the Appropriate Legal Notices must display the words
+     * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -29,6 +39,14 @@
      */
     class SummationReportWizardView extends ReportWizardView
     {
+        /**
+         * @return string
+         */
+        public function getTitle()
+        {
+            return parent::getTitle() . ' - ' . Zurmo::t('ReportsModule', 'Summation');
+        }
+
         /**
          * @param WizardActiveForm $form
          * @return string
@@ -39,13 +57,12 @@
             $filtersForReportWizardView           = new FiltersForReportWizardView($this->model, $form, true);
             $groupBysForReportWizardView          = new GroupBysForReportWizardView($this->model, $form, true);
             $displayAttributesForReportWizardView = new DisplayAttributesForReportWizardView($this->model, $form, true);
-            $drillDownDisplayAttributesForReportWizardView =
-                                           new DrillDownDisplayAttributesForReportWizardView($this->model, $form, true);
+            $drillDownDisplayAttributesForReportWizardView = new DrillDownDisplayAttributesForReportWizardView($this->model, $form, true);
             $orderBysForReportWizardView          = new OrderBysForReportWizardView($this->model, $form, true);
             $chartForReportWizardView             = new ChartForReportWizardView($this->model, $form, true);
             $generalDataForReportWizardView       = new GeneralDataForReportWizardView($this->model, $form, true);
 
-            $gridView = new GridView(8,1);
+            $gridView = new GridView(8, 1);
             $gridView->setView($moduleForReportWizardView, 0, 0);
             $gridView->setView($filtersForReportWizardView, 1, 0);
             $gridView->setView($groupBysForReportWizardView, 2, 0);
@@ -65,64 +82,76 @@
         {
             assert('is_string($formName)');
             return     "linkId = $('#" . $formName . "').find('.attachLoadingTarget').attr('id');
-                        if(linkId == '" . ModuleForReportWizardView::getNextPageLinkId() . "')
+                        if (linkId == '" . ModuleForReportWizardView::getNextPageLinkId() . "')
                         {
                             $('#" . static::getValidationScenarioInputId() . "').val('" .
                                 ReportWizardForm::FILTERS_VALIDATION_SCENARIO . "');
                             $('#ModuleForReportWizardView').hide();
                             " . $this->renderTreeViewAjaxScriptContent($formName, 'FiltersForReportWizardView') . "
                             $('#FiltersForReportWizardView').show();
-
+                            $('.StepsAndProgressBarForWizardView').find('.progress-bar').width('25%');
+                            $('.StepsAndProgressBarForWizardView').find('.current-step').removeClass('current-step').next().addClass('current-step');
                         }
-                        if(linkId == '" . FiltersForReportWizardView::getNextPageLinkId() . "')
+                        if (linkId == '" . FiltersForReportWizardView::getNextPageLinkId() . "')
                         {
                             $('#" . static::getValidationScenarioInputId() . "').val('" .
                                 ReportWizardForm::GROUP_BYS_VALIDATION_SCENARIO . "');
                             $('#FiltersForReportWizardView').hide();
                             " . $this->renderTreeViewAjaxScriptContent($formName, 'GroupBysForReportWizardView') . "
                             $('#GroupBysForReportWizardView').show();
-
+                            $('.StepsAndProgressBarForWizardView').find('.progress-bar').width('37.5%');
+                            $('.StepsAndProgressBarForWizardView').find('.current-step').removeClass('current-step').next().addClass('current-step');
                         }
-                        if(linkId == '" . GroupBysForReportWizardView::getNextPageLinkId() . "')
+                        if (linkId == '" . GroupBysForReportWizardView::getNextPageLinkId() . "')
                         {
                             $('#" . static::getValidationScenarioInputId() . "').val('" .
                                 ReportWizardForm::DISPLAY_ATTRIBUTES_VALIDATION_SCENARIO . "');
                             $('#GroupBysForReportWizardView').hide();
                             " . $this->renderTreeViewAjaxScriptContent($formName, 'DisplayAttributesForReportWizardView') . "
                             $('#DisplayAttributesForReportWizardView').show();
+                            $('.StepsAndProgressBarForWizardView').find('.progress-bar').width('50%');
+                            $('.StepsAndProgressBarForWizardView').find('.current-step').removeClass('current-step').next().addClass('current-step');
                         }
-                        if(linkId == '" . DisplayAttributesForReportWizardView::getNextPageLinkId() . "')
+                        if (linkId == '" . DisplayAttributesForReportWizardView::getNextPageLinkId() . "')
                         {
                             $('#" . static::getValidationScenarioInputId() . "').val('" .
                                 ReportWizardForm::DRILL_DOWN_DISPLAY_ATTRIBUTES_VALIDATION_SCENARIO . "');
                             $('#DisplayAttributesForReportWizardView').hide();
                             " . $this->renderTreeViewAjaxScriptContent($formName, 'DrillDownDisplayAttributesForReportWizardView') . "
                             $('#DrillDownDisplayAttributesForReportWizardView').show();
+                            $('.StepsAndProgressBarForWizardView').find('.progress-bar').width('62.5%');
+                            $('.StepsAndProgressBarForWizardView').find('.current-step').removeClass('current-step').next().addClass('current-step');
                         }
-                        if(linkId == '" . DrillDownDisplayAttributesForReportWizardView::getNextPageLinkId() . "')
+                        if (linkId == '" . DrillDownDisplayAttributesForReportWizardView::getNextPageLinkId() . "')
                         {
                             $('#" . static::getValidationScenarioInputId() . "').val('" .
                                 ReportWizardForm::ORDER_BYS_VALIDATION_SCENARIO . "');
                             $('#DrillDownDisplayAttributesForReportWizardView').hide();
                             " . $this->renderTreeViewAjaxScriptContent($formName, 'OrderBysForReportWizardView') . "
                             $('#OrderBysForReportWizardView').show();
+                            $('.StepsAndProgressBarForWizardView').find('.progress-bar').width('75%');
+                            $('.StepsAndProgressBarForWizardView').find('.current-step').removeClass('current-step').next().addClass('current-step');
                         }
-                        if(linkId == '" . OrderBysForReportWizardView::getNextPageLinkId() . "')
+                        if (linkId == '" . OrderBysForReportWizardView::getNextPageLinkId() . "')
                         {
                             $('#" . static::getValidationScenarioInputId() . "').val('" .
                                 ReportWizardForm::CHART_VALIDATION_SCENARIO . "');
                             $('#OrderBysForReportWizardView').hide();
                             " . $this->renderLoadChartSeriesAndRangesScriptContent($formName) . "
                             $('#ChartForReportWizardView').show();
+                            $('.StepsAndProgressBarForWizardView').find('.progress-bar').width('87.5%');
+                            $('.StepsAndProgressBarForWizardView').find('.current-step').removeClass('current-step').next().addClass('current-step');
                         }
-                        if(linkId == '" . ChartForReportWizardView::getNextPageLinkId() . "')
+                        if (linkId == '" . ChartForReportWizardView::getNextPageLinkId() . "')
                         {
                             $('#" . static::getValidationScenarioInputId() . "').val('" .
                                 ReportWizardForm::GENERAL_DATA_VALIDATION_SCENARIO . "');
                             $('#ChartForReportWizardView').hide();
                             $('#GeneralDataForReportWizardView').show();
+                            $('.StepsAndProgressBarForWizardView').find('.progress-bar').width('100%');
+                            $('.StepsAndProgressBarForWizardView').find('.current-step').removeClass('current-step').next().addClass('current-step');
                         }
-                        if(linkId == '" . GeneralDataForReportWizardView::getNextPageLinkId() . "')
+                        if (linkId == '" . GeneralDataForReportWizardView::getNextPageLinkId() . "')
                         {
                             " . $this->getSaveAjaxString($formName) . "
                         }
@@ -154,6 +183,8 @@
                         $('#" . WizardActiveForm::makeErrorsSummaryId(static::getFormId()) . "').hide();
                         $('#ModuleForReportWizardView').show();
                         $('#FiltersForReportWizardView').hide();
+                        $('.StepsAndProgressBarForWizardView').find('.progress-bar').width('12.5%');
+                        $('.StepsAndProgressBarForWizardView').find('.current-step').removeClass('current-step').prev().addClass('current-step');
                         return false;
                     }
                 );
@@ -164,6 +195,8 @@
                         ReportWizardForm::FILTERS_VALIDATION_SCENARIO . "');
                         $('#FiltersForReportWizardView').show();
                         $('#GroupBysForReportWizardView').hide();
+                        $('.StepsAndProgressBarForWizardView').find('.progress-bar').width('25%');
+                        $('.StepsAndProgressBarForWizardView').find('.current-step').removeClass('current-step').prev().addClass('current-step');
                         return false;
                     }
                 );
@@ -174,6 +207,8 @@
                         ReportWizardForm::GROUP_BYS_VALIDATION_SCENARIO . "');
                         $('#GroupBysForReportWizardView').show();
                         $('#DisplayAttributesForReportWizardView').hide();
+                        $('.StepsAndProgressBarForWizardView').find('.progress-bar').width('37.5%');
+                        $('.StepsAndProgressBarForWizardView').find('.current-step').removeClass('current-step').prev().addClass('current-step');
                         return false;
                     }
                 );
@@ -184,6 +219,8 @@
                         ReportWizardForm::DISPLAY_ATTRIBUTES_VALIDATION_SCENARIO . "');
                         $('#DisplayAttributesForReportWizardView').show();
                         $('#DrillDownDisplayAttributesForReportWizardView').hide();
+                        $('.StepsAndProgressBarForWizardView').find('.progress-bar').width('50%');
+                        $('.StepsAndProgressBarForWizardView').find('.current-step').removeClass('current-step').prev().addClass('current-step');
                         return false;
                     }
                 );
@@ -194,6 +231,8 @@
                         ReportWizardForm::DRILL_DOWN_DISPLAY_ATTRIBUTES_VALIDATION_SCENARIO . "');
                         $('#DrillDownDisplayAttributesForReportWizardView').show();
                         $('#OrderBysForReportWizardView').hide();
+                        $('.StepsAndProgressBarForWizardView').find('.progress-bar').width('62.5%');
+                        $('.StepsAndProgressBarForWizardView').find('.current-step').removeClass('current-step').prev().addClass('current-step');
                         return false;
                     }
                 );
@@ -204,6 +243,8 @@
                         ReportWizardForm::ORDER_BYS_VALIDATION_SCENARIO . "');
                         $('#OrderBysForReportWizardView').show();
                         $('#ChartForReportWizardView').hide();
+                        $('.StepsAndProgressBarForWizardView').find('.progress-bar').width('75%');
+                        $('.StepsAndProgressBarForWizardView').find('.current-step').removeClass('current-step').prev().addClass('current-step');
                         return false;
                     }
                 );
@@ -214,6 +255,8 @@
                         ReportWizardForm::CHART_VALIDATION_SCENARIO . "');
                         $('#ChartForReportWizardView').show();
                         $('#GeneralDataForReportWizardView').hide();
+                        $('.StepsAndProgressBarForWizardView').find('.progress-bar').width('87.5%');
+                        $('.StepsAndProgressBarForWizardView').find('.current-step').removeClass('current-step').prev().addClass('current-step');
                         return false;
                     }
                 );
@@ -229,6 +272,7 @@
             assert('is_string($formName)');
             $url    =  Yii::app()->createUrl('reports/default/getAvailableSeriesAndRangesForChart',
                        array_merge($_GET, array('type' => $this->model->type)));
+            // Begin Not Coding Standard
             $script = "
                 $.ajax({
                     url : '" . $url . "',
@@ -252,6 +296,7 @@
                     }
                 });
             ";
+            // End Not Coding Standard
             return $script;
         }
 
@@ -274,7 +319,7 @@
                         var inputIdBeingRemoved = $(this).prev().find('input').first().val();
                         $('#DisplayAttributesForReportWizardView').find('.dynamic-row').each(function()
                             {
-                                if(inputIdBeingRemoved == $(this).find('input').first().val())
+                                if (inputIdBeingRemoved == $(this).find('input').first().val())
                                 {
                                     $(this).parent().remove();
                                 }
@@ -282,7 +327,7 @@
                         );
                         $('#OrderBysForReportWizardView').find('.dynamic-row').each(function()
                             {
-                                if(inputIdBeingRemoved == $(this).find('input').first().val())
+                                if (inputIdBeingRemoved == $(this).find('input').first().val())
                                 {
                                     $(this).parent().remove();
                                 }

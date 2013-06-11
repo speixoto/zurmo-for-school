@@ -1,28 +1,38 @@
 <?php
-/*********************************************************************************
- * Zurmo is a customer relationship management program developed by
- * Zurmo, Inc. Copyright (C) 2012 Zurmo Inc.
- *
- * Zurmo is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License version 3 as published by the
- * Free Software Foundation with the addition of the following permission added
- * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
- * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
- * OF NON INFRINGEMENT OF THIRD PARTY RIGHTS.
- *
- * Zurmo is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program; if not, see http://www.gnu.org/licenses or write to the Free
- * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
- * 02110-1301 USA.
- *
- * You can contact Zurmo, Inc. with a mailing address at 113 McHenry Road Suite 207,
- * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
- ********************************************************************************/
+    /*********************************************************************************
+     * Zurmo is a customer relationship management program developed by
+     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     *
+     * Zurmo is free software; you can redistribute it and/or modify it under
+     * the terms of the GNU Affero General Public License version 3 as published by the
+     * Free Software Foundation with the addition of the following permission added
+     * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
+     * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
+     * OF NON INFRINGEMENT OF THIRD PARTY RIGHTS.
+     *
+     * Zurmo is distributed in the hope that it will be useful, but WITHOUT
+     * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+     * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
+     * details.
+     *
+     * You should have received a copy of the GNU Affero General Public License along with
+     * this program; if not, see http://www.gnu.org/licenses or write to the Free
+     * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+     * 02110-1301 USA.
+     *
+     * You can contact Zurmo, Inc. with a mailing address at 27 North Wacker Drive
+     * Suite 370 Chicago, IL 60606. or at email address contact@zurmo.com.
+     *
+     * The interactive user interfaces in original and modified versions
+     * of this program must display Appropriate Legal Notices, as required under
+     * Section 5 of the GNU Affero General Public License version 3.
+     *
+     * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
+     * these Appropriate Legal Notices must retain the display of the Zurmo
+     * logo and Zurmo copyright notice. If the display of the logo is not reasonably
+     * feasible for technical reasons, the Appropriate Legal Notices must display the words
+     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     ********************************************************************************/
 
     /**
      * Base class for working with action attributes.
@@ -82,6 +92,13 @@
         protected $displayLabel;
 
         /**
+         * Text and TextArea attributes for example since you can have merge tags as these attribute values
+         * that need to get overridden
+         * @var bool
+         */
+        protected $shouldResolveValueForMergeTags = false;
+
+        /**
          * @return string - If the class name is BooleanWorkflowActionAttributeForm,
          * then 'Boolean' will be returned.
          */
@@ -90,6 +107,15 @@
             $type = get_called_class();
             $type = substr($type, 0, strlen($type) - strlen('WorkflowActionAttributeForm'));
             return $type;
+        }
+
+        /**
+         * Return true if the actionAttribute should resolve value before save.  If false, it will resolve value afterSave
+         * @return bool
+         */
+        public static function resolveValueBeforeSave()
+        {
+            return true;
         }
 
         /**
@@ -140,6 +166,22 @@
         }
 
         /**
+         * @return string
+         */
+        public function getModelClassName()
+        {
+            return $this->modelClassName;
+        }
+
+        /**
+         * @return string
+         */
+        public function getModelAttributeName()
+        {
+            return $this->modelAttributeName;
+        }
+
+        /**
          * Override to properly handle retrieving rule information from the model for the attribute name.
          */
         public function rules()
@@ -173,7 +215,7 @@
          */
         public function validateValue()
         {
-            if($this->type == self::TYPE_STATIC && empty($this->value) && $this->shouldSetValue)
+            if ($this->type == self::TYPE_STATIC && empty($this->value) && $this->shouldSetValue)
             {
                 $this->addError('value', Zurmo::t('WorkflowsModule', 'Value cannot be blank.'));
                 return false;
@@ -203,11 +245,16 @@
         public function resolveValueAndSetToModel(WorkflowActionProcessingModelAdapter $adapter, $attribute)
         {
             assert('is_string($attribute)');
-            if($this->type == WorkflowActionAttributeForm::TYPE_STATIC)
+            if ($this->type == WorkflowActionAttributeForm::TYPE_STATIC)
             {
-                $adapter->getModel()->{$attribute} = $this->value;
+                $value = $this->value;
+                if ($this->shouldResolveValueForMergeTags)
+                {
+                    $value = $this->resolveValueForMergeTags($value, $adapter);
+                }
+                $adapter->getModel()->{$attribute} = $value;
             }
-            elseif($this->type == WorkflowActionAttributeForm::TYPE_STATIC_NULL)
+            elseif ($this->type == WorkflowActionAttributeForm::TYPE_STATIC_NULL)
             {
                 $adapter->getModel()->{$attribute} = null;
             }
@@ -215,6 +262,40 @@
             {
                 throw new NotSupportedException();
             }
+        }
+
+        public function shouldSetNullAlternativeValue()
+        {
+            return false;
+        }
+
+        /**
+         * In the event that the value is not being set, sometimes an attribute still requires an alternative to null.
+         * An example is boolean where the default value should be 0 not NULL. Same is true with dateTime, and date
+         * where the default values should be 0000-00-00 00:00:00 and 0000-00-00 respectively.
+         * @param WorkflowActionProcessingModelAdapter $adapter
+         * @param $attribute
+         * @throws NotSupportedException
+         */
+        public function resolveNullAlternativeValueAndSetToModel(WorkflowActionProcessingModelAdapter $adapter, $attribute)
+        {
+            assert('is_string($attribute)');
+            if ($this->shouldSetValue || !$this->shouldSetNullAlternativeValue())
+            {
+                throw new NotSupportedException();
+            }
+        }
+
+        protected function resolveValueForMergeTags($value, WorkflowActionProcessingModelAdapter $adapter)
+        {
+            $mergeTagsUtil = MergeTagsUtilFactory::make(EmailTemplate::TYPE_WORKFLOW,
+                             Yii::app()->languageHelper->getByUser($adapter->getTriggeredByUser()),
+                             $value);
+            if (false === $resolvedValue  = $mergeTagsUtil->resolveMergeTags($adapter->getTriggeredModel()))
+            {
+                return $value;
+            }
+            return $resolvedValue;
         }
     }
 ?>

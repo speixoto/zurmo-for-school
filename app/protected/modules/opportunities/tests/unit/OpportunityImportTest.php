@@ -1,10 +1,10 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2012 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
-     * the terms of the GNU General Public License version 3 as published by the
+     * the terms of the GNU Affero General Public License version 3 as published by the
      * Free Software Foundation with the addition of the following permission added
      * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
      * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
@@ -12,16 +12,26 @@
      *
      * Zurmo is distributed in the hope that it will be useful, but WITHOUT
      * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-     * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+     * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
      * details.
      *
-     * You should have received a copy of the GNU General Public License along with
+     * You should have received a copy of the GNU Affero General Public License along with
      * this program; if not, see http://www.gnu.org/licenses or write to the Free
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
      *
-     * You can contact Zurmo, Inc. with a mailing address at 113 McHenry Road Suite 207,
-     * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
+     * You can contact Zurmo, Inc. with a mailing address at 27 North Wacker Drive
+     * Suite 370 Chicago, IL 60606. or at email address contact@zurmo.com.
+     *
+     * The interactive user interfaces in original and modified versions
+     * of this program must display Appropriate Legal Notices, as required under
+     * Section 5 of the GNU Affero General Public License version 3.
+     *
+     * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
+     * these Appropriate Legal Notices must retain the display of the Zurmo
+     * logo and Zurmo copyright notice. If the display of the logo is not reasonably
+     * feasible for technical reasons, the Appropriate Legal Notices must display the words
+     * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
     class OpportunityImportTest extends ImportBaseTest
@@ -42,12 +52,12 @@
             $currency = new Currency();
             $currency->code       = 'EUR';
             $currency->rateToBase = 2;
-            assert($currency->save());
+            assert($currency->save()); // Not Coding Standard
 
             $currency = new Currency();
             $currency->code       = 'GBP';
             $currency->rateToBase = 2;
-            assert($currency->save());
+            assert($currency->save()); // Not Coding Standard
         }
 
         public function testSimpleUserImportWhereAllRowsSucceed()
@@ -70,7 +80,7 @@
                                                   Yii::getPathOfAlias('application.modules.opportunities.tests.unit.files'));
 
             //update the ids of the account column to match the parent account.
-            R::exec("update " . $import->getTempTableName() . " set column_4 = " .
+            R::exec("update " . $import->getTempTableName() . " set column_3 = " .
                     $account->id . " where id != 1 limit 4");
 
             $this->assertEquals(4, ImportDatabaseUtil::getCount($import->getTempTableName())); // includes header rows.
@@ -80,12 +90,11 @@
             $mappingData = array(
                 'column_0' => ImportMappingUtil::makeStringColumnMappingData    ('name'),
                 'column_1' => ImportMappingUtil::makeDateColumnMappingData      ('closeDate'),
-                'column_2' => ImportMappingUtil::makeIntegerColumnMappingData   ('probability'),
-                'column_3' => ImportMappingUtil::makeIntegerColumnMappingData   ('description'),
-                'column_4' => ImportMappingUtil::makeHasOneColumnMappingData    ('account'),
-                'column_5' => ImportMappingUtil::makeDropDownColumnMappingData  ('stage'),
-                'column_6' => ImportMappingUtil::makeDropDownColumnMappingData  ('source'),
-                'column_7' => ImportMappingUtil::makeCurrencyColumnMappingData  ('amount', $currency),
+                'column_2' => ImportMappingUtil::makeIntegerColumnMappingData   ('description'),
+                'column_3' => ImportMappingUtil::makeHasOneColumnMappingData    ('account'),
+                'column_4' => ImportMappingUtil::makeDropDownColumnMappingData  ('stage'),
+                'column_5' => ImportMappingUtil::makeDropDownColumnMappingData  ('source'),
+                'column_6' => ImportMappingUtil::makeCurrencyColumnMappingData  ('amount', $currency),
             );
 
             $importRules  = ImportRulesUtil::makeImportRulesByType('Opportunities');
@@ -122,7 +131,7 @@
             $this->assertEquals(1,                         count($opportunities[0]));
             $this->assertEquals('opp2',                    $opportunities[0]->name);
             $this->assertEquals('1980-06-04',              $opportunities[0]->closeDate);
-            $this->assertEquals(20,                        $opportunities[0]->probability);
+            $this->assertEquals(25,                        $opportunities[0]->probability);
             $this->assertEquals('desc2',                   $opportunities[0]->description);
             $this->assertTrue($opportunities[0]->account->isSame($account));
             $this->assertEquals('Qualification',           $opportunities[0]->stage->value);
@@ -133,7 +142,7 @@
             $this->assertEquals(1,                         count($opportunities[0]));
             $this->assertEquals('opp3',                    $opportunities[0]->name);
             $this->assertEquals('1980-06-05',              $opportunities[0]->closeDate);
-            $this->assertEquals(30,                        $opportunities[0]->probability);
+            $this->assertEquals(50,                        $opportunities[0]->probability);
             $this->assertEquals('desc3',                   $opportunities[0]->description);
             $this->assertTrue($opportunities[0]->account->isSame($account));
             $this->assertEquals('Negotiating',             $opportunities[0]->stage->value);
@@ -193,7 +202,7 @@
                 Yii::getPathOfAlias('application.modules.opportunities.tests.unit.files'));
 
             //update the ids of the account column to match the parent account.
-            R::exec("update " . $import->getTempTableName() . " set column_4 = " .
+            R::exec("update " . $import->getTempTableName() . " set column_3 = " .
                 $account->id . " where id != 1 limit 4");
 
             $this->assertEquals(4, ImportDatabaseUtil::getCount($import->getTempTableName())); // includes header rows.
@@ -203,12 +212,11 @@
             $mappingData = array(
                 'column_0' => ImportMappingUtil::makeStringColumnMappingData    ('name'),
                 'column_1' => ImportMappingUtil::makeDateColumnMappingData      ('closeDate'),
-                'column_2' => ImportMappingUtil::makeIntegerColumnMappingData   ('probability'),
-                'column_3' => ImportMappingUtil::makeIntegerColumnMappingData   ('description'),
-                'column_4' => ImportMappingUtil::makeHasOneColumnMappingData    ('account'),
-                'column_5' => ImportMappingUtil::makeDropDownColumnMappingData  ('stage'),
-                'column_6' => ImportMappingUtil::makeDropDownColumnMappingData  ('source'),
-                'column_7' => ImportMappingUtil::makeCurrencyColumnMappingData  ('amount', $currency),
+                'column_2' => ImportMappingUtil::makeIntegerColumnMappingData   ('description'),
+                'column_3' => ImportMappingUtil::makeHasOneColumnMappingData    ('account'),
+                'column_4' => ImportMappingUtil::makeDropDownColumnMappingData  ('stage'),
+                'column_5' => ImportMappingUtil::makeDropDownColumnMappingData  ('source'),
+                'column_6' => ImportMappingUtil::makeCurrencyColumnMappingData  ('amount', $currency),
             );
 
             $importRules  = ImportRulesUtil::makeImportRulesByType('Opportunities');
@@ -226,7 +234,7 @@
                 $messageLogger);
             $importResultsUtil->processStatusAndMessagesForEachRow();
 
-            //Confirm that 6 models where created.
+            //Confirm that 3 models where created.
             $opportunities = Opportunity::getAll();
             $this->assertEquals(3, count($opportunities));
 
@@ -247,7 +255,7 @@
             $this->assertEquals(1,                         count($opportunities[0]));
             $this->assertEquals('opp2',                    $opportunities[0]->name);
             $this->assertEquals('1980-06-04',              $opportunities[0]->closeDate);
-            $this->assertEquals(20,                        $opportunities[0]->probability);
+            $this->assertEquals(25,                        $opportunities[0]->probability);
             $this->assertEquals('desc2',                   $opportunities[0]->description);
             $this->assertTrue($opportunities[0]->account->isSame($account));
             $this->assertEquals('Qualification',           $opportunities[0]->stage->value);
@@ -260,7 +268,7 @@
             $this->assertEquals(1,                         count($opportunities[0]));
             $this->assertEquals('opp3',                    $opportunities[0]->name);
             $this->assertEquals('1980-06-05',              $opportunities[0]->closeDate);
-            $this->assertEquals(30,                        $opportunities[0]->probability);
+            $this->assertEquals(50,                        $opportunities[0]->probability);
             $this->assertEquals('desc3',                   $opportunities[0]->description);
             $this->assertTrue($opportunities[0]->account->isSame($account));
             $this->assertEquals('Negotiating',             $opportunities[0]->stage->value);

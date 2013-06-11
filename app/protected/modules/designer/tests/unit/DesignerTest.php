@@ -1,10 +1,10 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2012 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
-     * the terms of the GNU General Public License version 3 as published by the
+     * the terms of the GNU Affero General Public License version 3 as published by the
      * Free Software Foundation with the addition of the following permission added
      * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
      * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
@@ -12,16 +12,26 @@
      *
      * Zurmo is distributed in the hope that it will be useful, but WITHOUT
      * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-     * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+     * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
      * details.
      *
-     * You should have received a copy of the GNU General Public License along with
+     * You should have received a copy of the GNU Affero General Public License along with
      * this program; if not, see http://www.gnu.org/licenses or write to the Free
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
      *
-     * You can contact Zurmo, Inc. with a mailing address at 113 McHenry Road Suite 207,
-     * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
+     * You can contact Zurmo, Inc. with a mailing address at 27 North Wacker Drive
+     * Suite 370 Chicago, IL 60606. or at email address contact@zurmo.com.
+     *
+     * The interactive user interfaces in original and modified versions
+     * of this program must display Appropriate Legal Notices, as required under
+     * Section 5 of the GNU Affero General Public License version 3.
+     *
+     * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
+     * these Appropriate Legal Notices must retain the display of the Zurmo
+     * logo and Zurmo copyright notice. If the display of the logo is not reasonably
+     * feasible for technical reasons, the Appropriate Legal Notices must display the words
+     * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
     class DesignerTest extends ZurmoBaseTest
@@ -34,8 +44,28 @@
             SecurityTestHelper::createSuperAdmin();
         }
 
+        /**
+         * completedDateTime is too large if you created this as a new attribute. There was a bug that would not allow
+         * a user to complete a 'save' of the attribute in designer. This is an existing attribute so it should always
+         * be savable.
+         */
+        public function testExistingAttributeWillAlwaysSaveAsValidLength()
+        {
+            $attributeForm = AttributesFormFactory::createAttributeFormByAttributeName(new Task(), 'completedDateTime');
+            $attributeForm->setScenario('createAttribute');
+            $validated     = $attributeForm->validate();
+            $this->assertFalse($validated);
+            $attributeForm->setScenario('updateAttribute');
+            $validated     = $attributeForm->validate();
+            $this->assertTrue($validated);
+        }
+
+        /**
+         * @depends testExistingAttributeWillAlwaysSaveAsValidLength
+         */
         public function testResolveMetadataFromSelectedListAttributes()
         {
+            Yii::app()->user->userModel = User::getByUsername('super');
             $model = new Account();
             $modelAttributesAdapter = new ModelAttributesAdapter($model);
             $editableMetadata = AccountsListView::getMetadata();
@@ -80,6 +110,9 @@
             $this->assertEquals($compareMetadata, $data['global']);
         }
 
+        /**
+         * @depends testResolveMetadataFromSelectedListAttributes
+         */
         public function testSetMetadataFromLayout()
         {
             Yii::app()->user->userModel = User::getByUsername('super');
@@ -149,6 +182,9 @@
             $this->assertNotEmpty($adapter->getMessage());
         }
 
+        /**
+         * @depends testSetMetadataFromLayout
+         */
         public function testGetModelAttributesAdapter()
         {
             Yii::app()->user->userModel = User::getByUsername('super');
@@ -699,6 +735,9 @@
             unset($account);
         }
 
+        /**
+         * @depends testRemoveAttributeByName
+         */
         public function testModelAttributesAdapterIsStandardAttribute()
         {
             Yii::app()->user->userModel = User::getByUsername('super');
@@ -733,6 +772,9 @@
             $this->assertTrue($adapter->isStandardAttribute('name'));
         }
 
+        /**
+         * @depends testModelAttributesAdapterIsStandardAttribute
+         */
         public function testAttributePropertyFormAdapterCanUpdateProperty()
         {
             $adapter = new AttributePropertyToDesignerFormAdapter();
@@ -744,6 +786,9 @@
             $this->assertTrue($adapter->canUpdateProperty('isAudited'));
         }
 
+        /**
+         * @depends testAttributePropertyFormAdapterCanUpdateProperty
+         */
         public function testGetRequiredDerivedLayoutAttributeTypes()
         {
             $adapter = new ModelAttributesAdapter(new User());
@@ -769,6 +814,7 @@
          * There was a bug if you had an existing model, then created a custom drop down, it would not show
          * any values.  This was resolved by making sure cached models constructDerived.  This test should pass now
          * that the fix is implemented.
+         * @depends testGetRequiredDerivedLayoutAttributeTypes
          */
         public function testExistingModelsShowCustomFieldDataCorrectlyWhenAttributeIsAddedAsDatabaseColumn()
         {
@@ -817,6 +863,9 @@
             $this->assertEquals(array('thing 1', 'thing 2'), unserialize($account->newRelationCstm->data->serializedData));
         }
 
+        /**
+         * @depends testExistingModelsShowCustomFieldDataCorrectlyWhenAttributeIsAddedAsDatabaseColumn
+         */
         public function testStandardAttributeThatBecomesRequiredCanStillBeChangedToBeUnrequired()
         {
             Yii::app()->user->userModel = User::getByUsername('super');
@@ -858,6 +907,9 @@
             $this->assertTrue($attributeForm->canUpdateAttributeProperty('isRequired'));
         }
 
+        /**
+         * @depends testStandardAttributeThatBecomesRequiredCanStillBeChangedToBeUnrequired
+         */
         public function testIsStandardAttributeRequiredByDefault()
         {
             Yii::app()->user->userModel = User::getByUsername('super');
@@ -867,6 +919,9 @@
             $this->assertTrue($adapter->isStandardAttributeRequiredByDefault('lastName'));
         }
 
+        /**
+         * @depends testIsStandardAttributeRequiredByDefault
+         */
         public function testSetMetadataFormLayoutWithAndWithOutRequiredCustomFieldForDropDownDependencyAttribute()
         {
             Yii::app()->user->userModel = User::getByUsername('super');

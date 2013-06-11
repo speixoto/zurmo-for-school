@@ -1,10 +1,10 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2012 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
-     * the terms of the GNU General Public License version 3 as published by the
+     * the terms of the GNU Affero General Public License version 3 as published by the
      * Free Software Foundation with the addition of the following permission added
      * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
      * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
@@ -12,16 +12,26 @@
      *
      * Zurmo is distributed in the hope that it will be useful, but WITHOUT
      * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-     * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+     * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
      * details.
      *
-     * You should have received a copy of the GNU General Public License along with
+     * You should have received a copy of the GNU Affero General Public License along with
      * this program; if not, see http://www.gnu.org/licenses or write to the Free
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
      *
-     * You can contact Zurmo, Inc. with a mailing address at 113 McHenry Road Suite 207,
-     * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
+     * You can contact Zurmo, Inc. with a mailing address at 27 North Wacker Drive
+     * Suite 370 Chicago, IL 60606. or at email address contact@zurmo.com.
+     *
+     * The interactive user interfaces in original and modified versions
+     * of this program must display Appropriate Legal Notices, as required under
+     * Section 5 of the GNU Affero General Public License version 3.
+     *
+     * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
+     * these Appropriate Legal Notices must retain the display of the Zurmo
+     * logo and Zurmo copyright notice. If the display of the logo is not reasonably
+     * feasible for technical reasons, the Appropriate Legal Notices must display the words
+     * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
     class ZurmoDefaultController extends ZurmoBaseController
@@ -258,7 +268,6 @@
             {
                 $model                     = new $modelClassName(false);
                 $searchForm                = new $formModelClassName($model);
-                //$rawPostFormData           = $_POST[$formModelClassName];
                 if (isset($_POST[$formModelClassName][SearchForm::ANY_MIXED_ATTRIBUTES_SCOPE_NAME]))
                 {
                     $searchForm->setAnyMixedAttributesScope($_POST[$formModelClassName][SearchForm::ANY_MIXED_ATTRIBUTES_SCOPE_NAME]);
@@ -266,7 +275,18 @@
                 }
                 if (isset($_POST[$formModelClassName][SearchForm::SELECTED_LIST_ATTRIBUTES]))
                 {
+                    $listAttributesSelector         = new ListAttributesSelector($viewClassName, $model->getModuleClassName());
+                    $listAttributesSelector->setSelected($_POST[$formModelClassName][SearchForm::SELECTED_LIST_ATTRIBUTES]);
+                    $searchForm->setListAttributesSelector($listAttributesSelector);
                     unset($_POST[$formModelClassName][SearchForm::SELECTED_LIST_ATTRIBUTES]);
+                }
+                if (isset($_POST[$formModelClassName][KanbanBoard::GROUP_BY_ATTRIBUTE_VISIBLE_VALUES]))
+                {
+                    unset($_POST[$formModelClassName][KanbanBoard::GROUP_BY_ATTRIBUTE_VISIBLE_VALUES]);
+                }
+                if (isset($_POST[$formModelClassName][KanbanBoard::SELECTED_THEME]))
+                {
+                    unset($_POST[$formModelClassName][KanbanBoard::SELECTED_THEME]);
                 }
                 $sanitizedSearchData = $this->resolveAndSanitizeDynamicSearchAttributesByPostData(
                                                                 $_POST[$formModelClassName], $searchForm);
@@ -277,7 +297,7 @@
                     if ($searchForm->validate())
                     {
                         $savedSearch = $this->processSaveSearch($searchForm, $viewClassName);
-                        echo CJSON::encode(array('id' => $savedSearch->id, 'name' => $savedSearch->name));
+                        echo CJSON::encode(array('id' => $savedSearch->id, 'name' => $savedSearch->name, 'sortAttribute' => $this->getSortAttributeFromSavedSearchData($savedSearch), 'sortDescending' => $this->getSortDescendingFromSavedSearchData($savedSearch) ));
                         Yii::app()->end(0, false);
                     }
                 }
@@ -300,7 +320,12 @@
 
         protected function processSaveSearch($searchForm, $viewClassName)
         {
-            $savedSearch = SavedSearchUtil::makeSavedSearchBySearchForm($searchForm, $viewClassName);
+            $modelClassName     = get_class($searchForm->model);
+            $moduleClassName    = $modelClassName::getModuleClassName();
+            //Get sticky data here
+            $stickySearchKey    = $moduleClassName::getModuleLabelByTypeAndLanguage('Plural') . 'SearchView';
+            $stickySearchData   = StickySearchUtil::getDataByKey($stickySearchKey);
+            $savedSearch        = SavedSearchUtil::makeSavedSearchBySearchForm($searchForm, $viewClassName, $stickySearchData);
             if (!$savedSearch->save())
             {
                 throw new FailedToSaveModelException();
@@ -333,15 +358,31 @@
             StickySearchUtil::clearDataByKey($key);
         }
 
-        public function actionGetUpdatesForRefresh($unreadConversations)
+        /**
+         * Change user interface. Available options: desktop, mobile and tablet.
+         */
+        public function actionUserInterface()
         {
-            $newUnreadConversations = ConversationsUtil::getUnreadCountTabMenuContentForCurrentUser();
-            if ($newUnreadConversations > $unreadConversations)
+            Yii::import('application.extensions.userinterface.UserInterface');
+            if (isset($_GET['userInterface']))
             {
-                $data['unreadConversations'] = $newUnreadConversations;
+                if (in_array($_GET['userInterface'], array(UserInterface::DESKTOP, UserInterface::MOBILE, UserInterface::TABLET)))
+                {
+                    Yii::app()->userInterface->resolveSelectedUserInterfaceType($_GET['userInterface']);
+                }
+                $this->redirect(Yii::app()->createUrl('home/default/'));
+            }
+        }
+
+        public function actionGetUpdatesForRefresh($unreadMashableInbox)
+        {
+            $newUnreadMashableInbox = MashableUtil::getUnreadCountMashableInboxForCurrentUser();
+            if ($newUnreadMashableInbox > $unreadMashableInbox)
+            {
+                $data['unreadMashableInbox'] = $newUnreadMashableInbox;
                 $data['imgUrl']              = Yii::app()->request->hostinfo . Yii::app()->theme->baseUrl . '/images/z-logo-60x60.png';
-                $data['title']               = Zurmo::t('ZurmoModule', 'ZurmoCRM (New comment)');
-                $data['message']             = Zurmo::t('ZurmoModule', 'There is an unread conversation.');
+                $data['title']               = Zurmo::t('ZurmoModule', 'ZurmoCRM - Item update');
+                $data['message']             = Zurmo::t('ZurmoModule', 'There is an item with unread changes.');
                 echo CJSON::encode($data);
             }
             else
@@ -370,7 +411,7 @@
                                       'type'            => $uploadedFile->getType(),
                                       'size'            => $uploadedFile->getSize(),
                                       'thumbnail_url'   => Yii::app()->createUrl('zurmo/default/thumbnail/',
-                                                                                 array('filePath'=>$thumbFilePath)));
+                                                                                 array('filePath' => $thumbFilePath)));
             }
             catch (FailedFileUploadException $e)
             {
@@ -400,6 +441,36 @@
         {
             header("Content-Type:   ZurmoFileHelper::getMimeType($filePath)");
             echo file_get_contents($filePath);
+        }
+
+        public function actionPreviewFooter($isHtmlContent, $content)
+        {
+            Yii::app()->getClientScript()->setToAjaxMode();
+            $view   = new AutoresponderOrCampaignFooterTextPreviewView((bool)$isHtmlContent, $content);
+            $modalView = new ModalView($this, $view);
+            echo $modalView->render();
+        }
+
+        protected function getSortAttributeFromSavedSearchData($savedSearch)
+        {
+            $unserializedData = unserialize($savedSearch->serializedData);
+            if (isset($unserializedData['sortAttribute']))
+            {
+                return $unserializedData['sortAttribute'];
+            }
+
+            return '';
+        }
+
+        protected function getSortDescendingFromSavedSearchData($savedSearch)
+        {
+            $unserializedData = unserialize($savedSearch->serializedData);
+            if (isset($unserializedData['sortDescending']))
+            {
+                return $unserializedData['sortDescending'];
+            }
+
+            return '';
         }
     }
 ?>

@@ -1,10 +1,10 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2012 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
-     * the terms of the GNU General Public License version 3 as published by the
+     * the terms of the GNU Affero General Public License version 3 as published by the
      * Free Software Foundation with the addition of the following permission added
      * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
      * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
@@ -12,16 +12,26 @@
      *
      * Zurmo is distributed in the hope that it will be useful, but WITHOUT
      * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-     * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+     * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
      * details.
      *
-     * You should have received a copy of the GNU General Public License along with
+     * You should have received a copy of the GNU Affero General Public License along with
      * this program; if not, see http://www.gnu.org/licenses or write to the Free
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
      *
-     * You can contact Zurmo, Inc. with a mailing address at 113 McHenry Road Suite 207,
-     * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
+     * You can contact Zurmo, Inc. with a mailing address at 27 North Wacker Drive
+     * Suite 370 Chicago, IL 60606. or at email address contact@zurmo.com.
+     *
+     * The interactive user interfaces in original and modified versions
+     * of this program must display Appropriate Legal Notices, as required under
+     * Section 5 of the GNU Affero General Public License version 3.
+     *
+     * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
+     * these Appropriate Legal Notices must retain the display of the Zurmo
+     * logo and Zurmo copyright notice. If the display of the logo is not reasonably
+     * feasible for technical reasons, the Appropriate Legal Notices must display the words
+     * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -99,22 +109,52 @@
         /**
          * Render a toolbar above the form layout. This includes buttons and/or
          * links to go to different views or process actions such as save or delete
+         * @param boolean $renderedInForm
          * @return A string containing the element's content.
-          */
+         *
+         */
         protected function renderActionElementBar($renderedInForm)
         {
+            return $this->renderElementBar($renderedInForm, 'toolbar');
+        }
+
+        /**
+         * Render a second toolbar to the right of the first toolbar.
+         * @see $this->renderActionElementBar
+         * @param boolean $renderedInForm
+         * @return A string containing the element's content.
+         *
+         */
+        protected function renderSecondActionElementBar($renderedInForm)
+        {
+            return $this->renderElementBar($renderedInForm, 'secondToolbar');
+        }
+
+        /**
+         * @param boolean $renderedInForm
+         * @param string $barType
+         * @return A string containing the element's content.
+         * @throws NotSupportedException
+         */
+        protected function renderElementBar($renderedInForm, $barType)
+        {
+            assert('$barType == "toolbar" || $barType == "secondToolbar"');
             $metadata = $this::getMetadata();
             $content = null;
             $first = true;
-            if (isset($metadata['global']['toolbar']) && is_array($metadata['global']['toolbar']['elements']))
+            $dropDownId = null;
+            $dropDownItems = array();
+            $dropDownItemHtmlOptions = array('prompt' => ''); // we need this so we have a default one to select at the end of operation.
+            if (isset($metadata['global'][$barType]) && is_array($metadata['global'][$barType]['elements']))
             {
-                foreach ($metadata['global']['toolbar']['elements'] as $elementInformation)
+                foreach ($metadata['global'][$barType]['elements'] as $elementInformation)
                 {
+                    $renderedContent = null;
                     $this->resolveActionElementInformationDuringRender($elementInformation);
-                    $elementclassname = $elementInformation['type'] . 'ActionElement';
+                    array_walk($elementInformation, array($this, 'resolveEvaluateSubString'));
                     $params = array_slice($elementInformation, 1);
-                    array_walk($params, array($this, 'resolveEvaluateSubString'));
-                    $element  = new $elementclassname($this->controllerId, $this->moduleId, $this->modelId, $params);
+                    $elementClassName = $elementInformation['type'] . 'ActionElement';
+                    $element  = new $elementClassName($this->controllerId, $this->moduleId, $this->modelId, $params);
                     if (!$this->shouldRenderToolBarElement($element, $elementInformation))
                     {
                         continue;
@@ -123,16 +163,102 @@
                     {
                         throw new NotSupportedException();
                     }
-                    $renderedContent = $element->render();
+                    $continueRendering = $this->resolveMassActionLinkActionElementDuringRender($elementClassName,
+                        $element,
+                        $dropDownItems,
+                        $dropDownItemHtmlOptions
+                    );
+                    if ($continueRendering)
+                    {
+                        $renderedContent = $element->render();
+                    }
+                    else
+                    {
+                        if (! $dropDownId)
+                        {
+                            $dropDownId = $elementClassName::getDropdownId();
+                        }
+                    }
                     if (!$first && !empty($renderedContent))
                     {
-                       // $content .= '&#160;|&#160;';
+                        // $content .= '&#160;|&#160;';
                     }
                     $first = false;
                     $content .= $renderedContent;
                 }
             }
+            if (!empty($dropDownItems))
+            {
+                $content .= ZurmoHtml::link('', '#', array('class' => 'mobile-actions'));
+                $content .= ZurmoHtml::tag('div', array( 'class' => 'mobile-view-toolbar-container'),
+                    ZurmoHtml::dropDownList(
+                        $dropDownId,
+                        '',
+                        $dropDownItems,
+                        $dropDownItemHtmlOptions
+                    )
+                );
+            }
             return $content;
+        }
+
+        /**
+         * Resolves how MassActionLinkElements should be rendered on Mobile Devices
+         * @param $elementClassName
+         * @param $element
+         * @param $dropDownItems
+         * @param $dropDownItemHtmlOptions
+         * @return bool whether or not to continue rendering this element
+         */
+        protected function resolveMassActionLinkActionElementDuringRender($elementClassName, & $element, & $dropDownItems, & $dropDownItemHtmlOptions)
+        {
+            $class = new ReflectionClass($elementClassName);
+            if ($class->implementsInterface('SupportsRenderingDropDownInterface') &&
+                $elementClassName::shouldRenderAsDropDownWhenRequired() &&
+                Yii::app()->userInterface->isMobile())
+            {
+                if (empty($dropDownItems))
+                {
+                    $element->registerDropDownScripts();
+                }
+                $items = $element->getOptions();
+                if (array_key_exists('label', $items))
+                {
+                    $items = array($items);
+                }
+                foreach ($items as $item)
+                {
+                    if ($element::useItemUrlAsElementValue())
+                    {
+                        $value      = $item['url'];
+                    }
+                    else
+                    {
+                        $value      = $element->getElementValue();
+                    }
+
+                    if (!$value)
+                    {
+                        $value      = $element->getActionNameForCurrentElement() . '_' . $item['label'];
+                    }
+                    $optGroup   = $element->getOptGroup();
+                    if ($optGroup)
+                    {
+                        $dropDownItems[$optGroup][$value]   = $item['label'];
+                    }
+                    else
+                    {
+                        $dropDownItems[$value]              = $item['label'];
+                    }
+                    $dropDownItemHtmlOptions['options'][$value] = array();
+                    if (isset($item['itemOptions']))
+                    {
+                        $dropDownItemHtmlOptions['options'][$value] = $item['itemOptions'];
+                    }
+                }
+                return false;
+            }
+            return true;
         }
 
         /**
@@ -193,11 +319,27 @@
             return true;
         }
 
+        protected function renderWrapperAndActionElementMenu($title = null)
+        {
+            assert('is_string($title) || $title === null');
+            $content              = null;
+            $actionElementContent = $this->renderActionElementMenu($title);
+            if ($actionElementContent != null)
+            {
+                $content .= '<div class="view-toolbar-container toolbar-mbmenu clearfix"><div class="view-toolbar">';
+                $content .= $actionElementContent;
+                $content .= '</div></div>';
+            }
+            return $content;
+        }
+
         /**
          * Render a menu above the form layout. This includes buttons and/or
          * links to go to different views or process actions such as save or delete
-         * @return A string containing the element's content.
-          */
+         * @param null $title
+         * @return mixed  A string containing the element's content.
+         * @throws NotSupportedException
+         */
         protected function renderActionElementMenu($title = null)
         {
             if ($title == null)
@@ -210,10 +352,10 @@
             {
                 foreach ($metadata['global']['toolbar']['elements'] as $elementInformation)
                 {
-                    $elementclassname  = $elementInformation['type'] . 'ActionElement';
+                    $elementClassName  = $elementInformation['type'] . 'ActionElement';
                     $params            = array_slice($elementInformation, 1);
                     array_walk($params, array($this, 'resolveEvaluateSubString'));
-                    $element  = new $elementclassname($this->controllerId, $this->moduleId, $this->modelId, $params);
+                    $element  = new $elementClassName($this->controllerId, $this->moduleId, $this->modelId, $params);
                     if (!$this->shouldRenderToolBarElement($element, $elementInformation))
                     {
                         continue;

@@ -1,10 +1,10 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2012 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
-     * the terms of the GNU General Public License version 3 as published by the
+     * the terms of the GNU Affero General Public License version 3 as published by the
      * Free Software Foundation with the addition of the following permission added
      * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
      * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
@@ -12,16 +12,26 @@
      *
      * Zurmo is distributed in the hope that it will be useful, but WITHOUT
      * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-     * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+     * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
      * details.
      *
-     * You should have received a copy of the GNU General Public License along with
+     * You should have received a copy of the GNU Affero General Public License along with
      * this program; if not, see http://www.gnu.org/licenses or write to the Free
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
      *
-     * You can contact Zurmo, Inc. with a mailing address at 113 McHenry Road Suite 207,
-     * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
+     * You can contact Zurmo, Inc. with a mailing address at 27 North Wacker Drive
+     * Suite 370 Chicago, IL 60606. or at email address contact@zurmo.com.
+     *
+     * The interactive user interfaces in original and modified versions
+     * of this program must display Appropriate Legal Notices, as required under
+     * Section 5 of the GNU Affero General Public License version 3.
+     *
+     * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
+     * these Appropriate Legal Notices must retain the display of the Zurmo
+     * logo and Zurmo copyright notice. If the display of the logo is not reasonably
+     * feasible for technical reasons, the Appropriate Legal Notices must display the words
+     * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -80,10 +90,11 @@
         /**
          * @return array
          */
-        protected static function resolveRecipientTypeDataAndLabels()
+        protected function resolveRecipientTypeDataAndLabels()
         {
             $data = array('' => Zurmo::t('WorkflowsModule', 'Add Recipient'));
-            return array_merge($data, WorkflowEmailMessageRecipientForm::getTypeValuesAndLabels());
+            return array_merge($data, WorkflowEmailMessageRecipientForm::
+                        getTypeValuesAndLabels($this->model->getModelClassName(), $this->model->getWorkflowType()));
         }
 
         /**
@@ -125,7 +136,7 @@
         {
             $content  = '<div>';
             $content .= $this->renderEmailMessageRowNumberLabel();
-            $content .= ZurmoHtml::tag('div', array('class' => 'dynamic-row-label'), '');
+            $content .= ZurmoHtml::tag('div', array('class' => 'dynamic-row-label'), '&nbsp;');
             $content .= '</div>';
             $content .= ZurmoHtml::link('—', '#', array('class' => 'remove-dynamic-row-link'));
             $content .= '<div>';
@@ -151,7 +162,6 @@
         {
             $params            = array('inputPrefix' => $this->inputPrefixData);
             $content           = '<div class="attributesContainer">';
-            //todo: move EmailTemplatesForWorkflowStaticDropDownElement to emailTemplates module when ready.
             $element           = new EmailTemplatesForWorkflowStaticDropDownElement($this->model, 'emailTemplateId',
                                  $this->form, $params);
             $innerContent      = '<table><colgroup><col class="col-0"><col class="col-1">' .
@@ -213,7 +223,7 @@
             $content     = ZurmoHtml::tag('h2', array(), Zurmo::t('WorkflowsModule', 'Recipients'));
             $htmlOptions = array('id' => $this->resolveAddRecipientId(), 'class' => self::ADD_RECIPIENT_CLASS_NAME);
             $content     = ZurmoHtml::dropDownList(self::ADD_RECIPIENT_TYPE_NAME, null,
-                           self::resolveRecipientTypeDataAndLabels(), $htmlOptions);
+                           $this->resolveRecipientTypeDataAndLabels(), $htmlOptions);
             return         ZurmoHtml::tag('div', array('class' => 'email-message-recipient-type-selector-container'), $content);
         }
 
@@ -270,7 +280,7 @@
             assert('is_int($rowCount)');
             assert('is_array($recipients)');
             $items = array();
-            foreach($recipients as $recipient)
+            foreach ($recipients as $recipient)
             {
                 $inputPrefixData  = array_merge($this->inputPrefixData, array(
                                     EmailMessageForWorkflowForm::TYPE_EMAIL_MESSAGE_RECIPIENTS, (int)$rowCount));
@@ -279,7 +289,7 @@
                 $view             = new EmailMessageRecipientRowForWorkflowComponentView($adapter, $rowCount, $inputPrefixData);
                 $view->addWrapper = false;
                 $items[]          = array('content' => $view->render());
-                $rowCount ++;
+                $rowCount++;
             }
             return $items;
         }
@@ -291,7 +301,7 @@
         protected function getNonSortableListContent(Array $items)
         {
             $content = null;
-            foreach($items as $item)
+            foreach ($items as $item)
             {
                 $content .= ZurmoHtml::tag('li', array('class' => 'dynamic-sub-row'), $item['content']);
             }
@@ -324,14 +334,14 @@
             $sendFromAddressId        = TextElement::resolveInputIdPrefixIntoString(
                                         array_merge($inputPrefixData, array('sendFromAddress')));
             Yii::app()->clientScript->registerScript('emailMessageSendFromTypeHelper' . $sendFromTypeSelectId, "
-                if($('#" . $sendFromTypeSelectId . "').val() == '" . EmailMessageForWorkflowForm::SEND_FROM_TYPE_DEFAULT . "')
+                if ($('#" . $sendFromTypeSelectId . "').val() == '" . EmailMessageForWorkflowForm::SEND_FROM_TYPE_DEFAULT . "')
                 {
                     $('#" . $sendFromNameId . "').parentsUntil('tr').parent().hide();
                     $('#" . $sendFromAddressId . "').parentsUntil('tr').parent().hide();
                 }
                 $('#" . $sendFromTypeSelectId . "').change( function()
                     {
-                        if($(this).val() == '" . EmailMessageForWorkflowForm::SEND_FROM_TYPE_CUSTOM . "')
+                        if ($(this).val() == '" . EmailMessageForWorkflowForm::SEND_FROM_TYPE_CUSTOM . "')
                         {
                     $('#" . $sendFromNameId . "').parentsUntil('tr').parent().show();
                     $('#" . $sendFromAddressId . "').parentsUntil('tr').parent().show();

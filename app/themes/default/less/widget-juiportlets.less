@@ -1,8 +1,48 @@
-.juiportlet-columns .juiportlet-column {
-	float: left;
-	min-height: 400px;
-	height: auto !important;
-	height: 400px;
+// Zurmo is a customer relationship management program developed by
+// Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+//
+// Zurmo is free software; you can redistribute it and/or modify it under
+// the terms of the GNU Affero General Public License version 3 as published by the
+// Free Software Foundation with the addition of the following permission added
+// to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
+// IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
+// OF NON INFRINGEMENT OF THIRD PARTY RIGHTS.
+//
+// Zurmo is distributed in the hope that it will be useful, but WITHOUT
+// ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+// FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
+// details.
+//
+// You should have received a copy of the GNU Affero General Public License along with
+// this program; if not, see http://www.gnu.org/licenses or write to the Free
+// Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+// 02110-1301 USA.
+//
+// You can contact Zurmo, Inc. with a mailing address at 27 North Wacker Drive
+// Suite 370 Chicago, IL 60606. or at email address contact@zurmo.com.
+//
+// The interactive user interfaces in original and modified versions
+// of this program must display Appropriate Legal Notices, as required under
+// Section 5 of the GNU Affero General Public License version 3.
+//
+// In accordance with Section 7(b) of the GNU Affero General Public License version 3,
+// these Appropriate Legal Notices must retain the display of the Zurmo
+// logo and Zurmo copyright notice. If the display of the logo is not reasonably
+// feasible for technical reasons, the Appropriate Legal Notices must display the words
+// "Copyright Zurmo Inc. 2013. All rights reserved".
+
+.juiportlet-columns{
+	.juiportlet-column {
+		float: left;
+		min-height: 400px;
+		height: auto !important;
+		height: 400px;
+		+ .juiportlet-column{
+			.juiportlet-widget {
+				margin-right: 0;
+			}
+		}
+	}
 }
 
 .juiportlet-widget-column1 {
@@ -45,13 +85,14 @@
 }
 
 .juiportlet-columns .juiportlet-widget .juiportlet-widget-head {
-	overflow: hidden;
 	width: 100%;
 	height: 40px;
 	line-height: 40px;
 	#gradient > .vertical(#f6f6f6, #ededed);
 	.b-shadow(inset 0 1px 0 0 #ffffff);
 	position:relative;
+	border-bottom:1px solid #CCC;
+	z-index: 999;
 }
 
 .juiportlet-columns .juiportlet-widget .juiportlet-widget-head h3 {
@@ -59,71 +100,9 @@
 	position: relative;
 	margin-left:15px;
 }
+
 .collapse ~ h3{
 	margin-left:0;
-}
-
-.juiportlet-widget-head{
-	border-bottom:1px solid #CCC;
-	background:#fff;
-	cursor: move;
-}
-
-/*.juiportlet-widget-head */
-a.remove {
-	float: right;
-	display: inline;
-	width: 13px;
-	height: 40px;
-	margin-right:8px;
-	text-indent: -9999em;
-	outline: none;
-	position:relative;
-	z-index:9999;
-	.icon{
-	    line-height:1;
-	    position:relative;
-	    float:right;
-	}
-	.icon:after{
-		position:absolute;
-		top:6px;
-		right:0;
-		content:"—";
-		.symbly(24px);
-		text-indent:0;
-		display:block;
-		float:right;
-		color:#A7A7A7;
-		.t-shadow( rgba( 255, 255, 255, 0.8 ) 0 1px 0  );
-	}
-}
-
-.juiportlet-widget-head a.edit {
-	float: right;
-	display: inline;
-	width: 14px;
-	height: 40px;
-	text-indent: -9999em;
-	margin-right:8px;
-	outline: none;
-	position:relative;
-	.icon{
-	    line-height:1;
-	    position:relative;
-	    float:right;
-	}
-	.icon:after{
-		position:absolute;
-		top:6px;
-		right:0;
-		content:"n";
-		.symbly(24px);
-		text-indent:0;
-		display:block;
-		float:right;
-		color:#A7A7A7;
-	}
 }
 
 .juiportlet-widget-head a.collapse {
@@ -144,6 +123,8 @@ a.remove {
 
 .juiportlet-widget-content{
 	padding:0 0 0 0;
+	position: relative;
+	z-index: 1;
 }
 
 .juiportlet-widget-content > li{
@@ -171,19 +152,14 @@ a.remove {
     }
 }
 
-.juiportlet-widget-content table.items tbody tr:last-child td{
+.juiportlet-widget-content table.items tbody tr:last-child > td{
 	border-bottom:none;
+}
+.juiportlet-widget-content table.items tbody tr:first-child > td{
+	//border-top:none;
 }
 
 /*ICONS..*/
-.juiportlet-header-icon{
-	.symbly(32px);
-	color:#7A7A7A;
-	text-indent:-30px;
-	line-height: 100%;
-	position:absolute;
-	top:6px;
-}
 
 .juiportlet-widget.OpportunitiesForContactRelatedListView,
 .juiportlet-widget.OpportunitiesForAccountRelatedListView{
@@ -203,20 +179,15 @@ a.remove {
 .juiportlet-widget.ContactsForOpportunityRelatedListView,
 .juiportlet-widget.ContactsForAccountRelatedListView{
     h3{
-		text-indent:30px;
+	    padding-left: 30px;
+	    position: relative;
 		&:before{
-			.juiportlet-header-icon();			
+			.symbly(32px);
+			color:#7A7A7A;
+			line-height: 100%;
+			position: absolute;
+			top: 6px;
+			left: 0;
 		}
 	}
-    td:first-child{
-        div{
-            .smaller();
-            margin-top:3px;
-            &:first-child{
-                font-size: 12px;
-                font-weight: bold;
-                margin-top: 0;
-            }
-        }    
-    }
 }

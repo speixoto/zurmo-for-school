@@ -1,10 +1,10 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2012 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
-     * the terms of the GNU General Public License version 3 as published by the
+     * the terms of the GNU Affero General Public License version 3 as published by the
      * Free Software Foundation with the addition of the following permission added
      * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
      * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
@@ -12,16 +12,26 @@
      *
      * Zurmo is distributed in the hope that it will be useful, but WITHOUT
      * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-     * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+     * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
      * details.
      *
-     * You should have received a copy of the GNU General Public License along with
+     * You should have received a copy of the GNU Affero General Public License along with
      * this program; if not, see http://www.gnu.org/licenses or write to the Free
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
      *
-     * You can contact Zurmo, Inc. with a mailing address at 113 McHenry Road Suite 207,
-     * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
+     * You can contact Zurmo, Inc. with a mailing address at 27 North Wacker Drive
+     * Suite 370 Chicago, IL 60606. or at email address contact@zurmo.com.
+     *
+     * The interactive user interfaces in original and modified versions
+     * of this program must display Appropriate Legal Notices, as required under
+     * Section 5 of the GNU Affero General Public License version 3.
+     *
+     * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
+     * these Appropriate Legal Notices must retain the display of the Zurmo
+     * logo and Zurmo copyright notice. If the display of the logo is not reasonably
+     * feasible for technical reasons, the Appropriate Legal Notices must display the words
+     * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -30,6 +40,8 @@
     class DisplayAttributeForReportForm extends ComponentForReportForm
     {
         const COLUMN_ALIAS_PREFIX = 'col';
+
+        const HEADER_SORTABLE_TYPE_ASORT = 'asort';
 
         /**
          * @var string
@@ -97,6 +109,7 @@
             parent::__construct($moduleClassName, $modelClassName, $reportType, $rowKey);
             $this->columnAliasName = self::COLUMN_ALIAS_PREFIX . static::$count++;
         }
+
         /**
          * Makes sure the attributeIndexOrDerivedType always populates first before label otherwise any
          * custom label gets wiped out.
@@ -106,7 +119,7 @@
         public function attributeNames()
         {
             $attributeNames = parent::attributeNames();
-            if(count($attributeNames) != 6)
+            if (count($attributeNames) != 6)
             {
                 throw new NotSupportedException();
             }
@@ -171,7 +184,7 @@
         {
             assert('is_int($key)');
             $modelToReportAdapter = $this->makeResolvedAttributeModelRelationsAndAttributesToReportAdapter();
-            if($modelToReportAdapter->isDisplayAttributeMadeViaSelect($this->getResolvedAttribute()))
+            if ($modelToReportAdapter->isDisplayAttributeMadeViaSelect($this->getResolvedAttribute()))
             {
                 return $this->columnAliasName;
             }
@@ -186,7 +199,7 @@
         public function isALinkableAttribute()
         {
             $resolvedAttribute = $this->getResolvedAttribute();
-            if($resolvedAttribute == 'name' || $resolvedAttribute == 'FullName')
+            if ($resolvedAttribute == 'name' || $resolvedAttribute == 'FullName')
             {
                 return true;
             }
@@ -217,49 +230,76 @@
             $resolvedAttribute    = $this->getResolvedAttribute();
             $displayElementType   = $this->getDisplayElementType();
             $modelToReportAdapter = $this->makeResolvedAttributeModelRelationsAndAttributesToReportAdapter();
-            if($modelToReportAdapter->getModel()->isAttribute($resolvedAttribute) &&
+            if ($modelToReportAdapter->getModel()->isAttribute($resolvedAttribute) &&
                $modelToReportAdapter->getModel()->isRelation($resolvedAttribute) &&
                !$modelToReportAdapter->getModel()->isOwnedRelation($resolvedAttribute))
             {
                 $relationModelClassName = $modelToReportAdapter->getModel()->getRelationModelClassName($resolvedAttribute);
                 $relatedModel = $relationModelClassName::getById((int)$value);
-                if($relatedModel->isAttribute('serializedLabels'))
+                if ($relatedModel->isAttribute('serializedLabels'))
                 {
                     $translatedValue     = $relatedModel->resolveTranslatedNameByLanguage(Yii::app()->language);
                 }
             }
-            elseif($displayElementType == 'User')
+            elseif ($displayElementType == 'User')
             {
                 $user            = User::getById((int)$value);
                 $translatedValue = strval($user);
             }
-            elseif($displayElementType == 'DropDown')
+            elseif ($displayElementType == 'DropDown')
             {
                 $customFieldData = CustomFieldDataModelUtil::getDataByModelClassNameAndAttributeName(
                                    $this->getResolvedAttributeModelClassName(), $this->getResolvedAttribute());
                 $dataAndLabels   = CustomFieldDataUtil::getDataIndexedByDataAndTranslatedLabelsByLanguage(
                                    $customFieldData, Yii::app()->language);
-                if(isset($dataAndLabels[$value]))
+                if (isset($dataAndLabels[$value]))
                 {
                     $translatedValue = $dataAndLabels[$value];
                 }
             }
-            elseif($displayElementType == 'CheckBox')
+            elseif ($displayElementType == 'CheckBox')
             {
-                if($value)
+                if ($value)
                 {
                     $translatedValue = Zurmo::t('ReportsModule', 'Yes');
                 }
-                elseif($value == false && $value != '')
+                elseif ($value == false && $value != '')
                 {
                     $translatedValue = Zurmo::t('ReportsModule', 'No');
                 }
             }
-            if($translatedValue === null)
+            elseif ($displayElementType == 'GroupByModifierMonth')
+            {
+                $translatedValue = DateTimeUtil::getMonthName($value);
+            }
+            if ($translatedValue === null)
             {
                 $translatedValue = '';
             }
             return $translatedValue;
+        }
+
+        /**
+         * For matrix reports, months for example need to be sorted using asort so the columns or rows are sorted
+         * correctly. Eventually expand to support sorting by users and custom fields.
+         * @return string | null
+         * @throws NotSupportedException
+         */
+        public function getHeaderSortableType()
+        {
+            if ($this->attributeIndexOrDerivedType == null)
+            {
+                throw new NotSupportedException();
+            }
+            $modelToReportAdapter = $this->makeResolvedAttributeModelRelationsAndAttributesToReportAdapter();
+            if ($modelToReportAdapter->isAttributeACalculatedGroupByModifier($this->getResolvedAttribute()))
+            {
+                return self::HEADER_SORTABLE_TYPE_ASORT;
+            }
+            else
+            {
+                return null;
+            }
         }
     }
 ?>

@@ -1,10 +1,10 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2012 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
-     * the terms of the GNU General Public License version 3 as published by the
+     * the terms of the GNU Affero General Public License version 3 as published by the
      * Free Software Foundation with the addition of the following permission added
      * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
      * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
@@ -12,16 +12,26 @@
      *
      * Zurmo is distributed in the hope that it will be useful, but WITHOUT
      * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-     * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+     * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
      * details.
      *
-     * You should have received a copy of the GNU General Public License along with
+     * You should have received a copy of the GNU Affero General Public License along with
      * this program; if not, see http://www.gnu.org/licenses or write to the Free
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
      *
-     * You can contact Zurmo, Inc. with a mailing address at 113 McHenry Road Suite 207,
-     * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
+     * You can contact Zurmo, Inc. with a mailing address at 27 North Wacker Drive
+     * Suite 370 Chicago, IL 60606. or at email address contact@zurmo.com.
+     *
+     * The interactive user interfaces in original and modified versions
+     * of this program must display Appropriate Legal Notices, as required under
+     * Section 5 of the GNU Affero General Public License version 3.
+     *
+     * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
+     * these Appropriate Legal Notices must retain the display of the Zurmo
+     * logo and Zurmo copyright notice. If the display of the logo is not reasonably
+     * feasible for technical reasons, the Appropriate Legal Notices must display the words
+     * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -120,6 +130,11 @@
         public static function isMbStringInstalled()
         {
             return function_exists('mb_strlen');
+        }
+
+        public static function isMcryptInstalled()
+        {
+            return extension_loaded('mcrypt');
         }
 
         /**
@@ -607,8 +622,8 @@
                 $moduleAndDependenciesRootModelNames = $module->getRootModelNamesIncludingDependencies();
                 $rootModels = array_merge($rootModels, array_diff($moduleAndDependenciesRootModelNames, $rootModels));
             }
-            RedBeanDatabaseBuilderUtil::autoBuildModels($rootModels, $messageLogger);
             ZurmoDatabaseCompatibilityUtil::createStoredFunctionsAndProcedures();
+            RedBeanDatabaseBuilderUtil::autoBuildModels($rootModels, $messageLogger);
             ZurmoDatabaseCompatibilityUtil::createIndexes();
         }
 
@@ -906,7 +921,19 @@
             $messageLogger = new MessageLogger($messageStreamer);
             Yii::app()->custom->runBeforeInstallationAutoBuildDatabase($messageLogger);
             $messageStreamer->add(Zurmo::t('InstallModule', 'Starting database schema creation.'));
+            $startTime = microtime(true);
+            $messageStreamer->add('debugOn:' . BooleanUtil::boolToString(YII_DEBUG));
+            $messageStreamer->add('phpLevelCaching:' . BooleanUtil::boolToString(PHP_CACHING_ON));
+            $messageStreamer->add('memcacheLevelCaching:' . BooleanUtil::boolToString(MEMCACHE_ON));
             InstallUtil::autoBuildDatabase($messageLogger);
+            $endTime = microtime(true);
+            $messageStreamer->add(Zurmo::t('InstallModule', 'Total autobuild time: {formattedTime} seconds.',
+                                  array('{formattedTime}' => number_format(($endTime - $startTime), 3))));
+            if (SHOW_QUERY_DATA)
+            {
+                $messageStreamer->add(PageView::getTotalAndDuplicateQueryCountContent());
+                $messageStreamer->add(PageView::makeNonHtmlDuplicateCountAndQueryContent());
+            }
             $messageStreamer->add(Zurmo::t('InstallModule', 'Database schema creation complete.'));
             $messageStreamer->add(Zurmo::t('InstallModule', 'Rebuilding Permissions.'));
             ReadPermissionsOptimizationUtil::rebuild();
@@ -952,6 +979,7 @@
             }
 
             InstallUtil::setZurmoTokenAndWriteToPerInstanceFile(INSTANCE_ROOT);
+            ZurmoPasswordSecurityUtil::setPasswordSaltAndWriteToPerInstanceFile(INSTANCE_ROOT);
             $messageStreamer->add(Zurmo::t('InstallModule', 'Installation Complete.'));
         }
 
@@ -1026,7 +1054,7 @@
                 {
                     $messageStreamer->add(Zurmo::t('InstallModule', 'Starting to load demo data.'));
                     $messageLogger = new MessageLogger($messageStreamer);
-
+                    $startTime = microtime(true);
                     if (isset($args[9]))
                     {
                         DemoDataUtil::load($messageLogger, intval($args[9]));
@@ -1034,6 +1062,14 @@
                     else
                     {
                         DemoDataUtil::load($messageLogger, 6);
+                    }
+                    $endTime = microtime(true);
+                    $messageStreamer->add(Zurmo::t('InstallModule', 'Total demodata build time: {formattedTime} seconds.',
+                                          array('{formattedTime}' => number_format(($endTime - $startTime), 3))));
+                    if (SHOW_QUERY_DATA)
+                    {
+                        $messageStreamer->add(PageView::getTotalAndDuplicateQueryCountContent());
+                        $messageStreamer->add(PageView::makeNonHtmlDuplicateCountAndQueryContent());
                     }
                     $messageStreamer->add(Zurmo::t('InstallModule', 'Finished loading demo data.'));
                 }
