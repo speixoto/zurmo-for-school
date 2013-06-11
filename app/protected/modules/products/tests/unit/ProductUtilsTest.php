@@ -92,5 +92,22 @@
             $this->assertEquals(strip_tags($name), "I am testing products");
             $this->assertEquals(strlen(strip_tags($name)), 21);
         }
+
+        public function testResolveProductHasManyProductCategoriesFromPost()
+        {
+            $super = User::getByUsername('super');
+            Yii::app()->user->userModel = $super;
+            $category1 = ProductCategoryTestHelper::createProductCategoryByName('Test Product Category');
+            $category2 = ProductCategoryTestHelper::createProductCategoryByName('Test Product Category2');
+            $product = ProductTestHelper::createProductByNameForOwner('I am testing products', $super);
+            $postData = array('categoryIds' => $category1->id . ',' . $category2->id);
+            $id                       = $product->id;
+            $product->forget();
+            unset($product);
+            $product                  = Product::getById($id);
+            $categories = ProductCategoriesUtil::resolveProductHasManyProductCategoriesFromPost($product, $postData);
+            $this->assertEquals(count($categories), 2);
+            $this->assertEquals($categories[$category1->id]->id, $category1->id);
+        }
     }
 ?>

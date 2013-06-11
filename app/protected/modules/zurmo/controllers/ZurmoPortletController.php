@@ -235,10 +235,11 @@
             assert('!empty($_GET["uniqueLayoutId"])');
             assert('!empty($_GET["portletType"])');
             $isPortletAlreadyAdded = Portlet::doesPortletExistByViewTypeLayoutIdAndUser($_GET['portletType'], $_GET['uniqueLayoutId'], Yii::app()->user->userModel->id);
+            $maximumColumns = $this->resolveMaximumColumnsByLayoutId();
+
             if ($isPortletAlreadyAdded === false)
             {
                 $portletCollection = Portlet::getByLayoutIdAndUserSortedByColumnIdAndPosition($_GET['uniqueLayoutId'], Yii::app()->user->userModel->id, array());
-                $maximumColumns = $this->resolveMaximumColumnsByLayoutId();
                 if (!empty($portletCollection))
                 {
                     foreach ($portletCollection[$maximumColumns] as $position => $portlet)
