@@ -77,7 +77,7 @@
                                                     false,
                                                     $portletsAreMovable,
                                                     false,
-                                                    self::getDefaultLayoutType(), // This could be driven by a db value based on layout type id
+                                                    static::getDefaultLayoutType(), // This could be driven by a db value based on layout type id
                                                     $portletsAreRemovable);
             $content          .=  $configurableView->render();
             $content          .= $this->renderScripts();
