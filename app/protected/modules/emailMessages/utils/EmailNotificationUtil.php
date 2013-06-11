@@ -59,7 +59,7 @@
             $name               = 'NotificationEmailTemplate';                     
             $templateName       = "themes/$theme/templates/$name.html";
             $customTemplateName = "themes/$theme/templates/Custom$name.html";            
-            if(!file_exists($customTemplateName))
+            if (!file_exists($customTemplateName))
             {                
                 $customTemplateName = "themes/default/templates/Custom$name.html";
             }
@@ -70,7 +70,7 @@
                     $templateName = "themes/default/templates/$name.html";
                 }
             }
-            if(file_exists($customTemplateName))
+            if (file_exists($customTemplateName))
             {
                 return file_get_contents($customTemplateName);
             }
@@ -106,7 +106,7 @@
             $name               = 'NotificationEmailTemplate';
             $templateName       = "themes/$theme/templates/$name.txt";
             $customTemplateName = "themes/$theme/templates/Custom$name.txt"; 
-            if(!file_exists($customTemplateName))
+            if (!file_exists($customTemplateName))
             {                
                 $customTemplateName = "themes/default/templates/Custom$name.txt";
             }
@@ -117,7 +117,7 @@
                     $templateName = "themes/default/templates/$name.txt";
                 }
             }
-            if(file_exists($customTemplateName))
+            if (file_exists($customTemplateName))
             {
                 return file_get_contents($customTemplateName);
             }
