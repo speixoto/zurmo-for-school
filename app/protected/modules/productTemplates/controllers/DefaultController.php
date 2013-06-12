@@ -475,7 +475,7 @@
             {
                 $productTemplate = ProductTemplate::getById((int)$id);
                 ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($productTemplate);
-                ZurmoCopyModelUtil::copy($productTemplate, $copyToProductTemplate);
+                ProductZurmoCopyModelUtil::copy($productTemplate, $copyToProductTemplate);
             }
             $this->processEdit($copyToProductTemplate);
         }
