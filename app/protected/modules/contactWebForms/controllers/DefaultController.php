@@ -84,7 +84,8 @@
             $breadcrumbLinks = array($breadCrumbTitle);
             if (isset($_POST[$modelClassName]))
             {
-                $_POST[$modelClassName]['serializedData'] = serialize($_POST['attributeIndexOrDerivedType']);
+                unset($_POST[$modelClassName]['serializedData']);
+                $contactWebForm->serializedData = serialize($_POST['attributeIndexOrDerivedType']);
             }
             else
             {
@@ -107,7 +108,8 @@
             $breadcrumbLinks = array($breadCrumbTitle);
             if (isset($_POST[$modelClassName]))
             {
-                $_POST[$modelClassName]['serializedData'] = serialize($_POST['attributeIndexOrDerivedType']);
+                unset($_POST[$modelClassName]['serializedData']);
+                $contactWebForm->serializedData = serialize($_POST['attributeIndexOrDerivedType']);
             }
             $titleBarAndEditView = $this->makeEditAndDetailsView(
                                           $this->attemptToSaveModelFromPost($contactWebForm), 'Edit');
