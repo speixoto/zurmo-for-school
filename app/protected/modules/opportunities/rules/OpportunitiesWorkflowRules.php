@@ -45,7 +45,7 @@
         public static function getDefaultMetadata()
         {
             $metadata = array(
-                'Account' => array(
+                'Opportunity' => array(
                     'cannotTrigger' =>
                         array('products')
                     ),
