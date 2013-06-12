@@ -33,19 +33,25 @@
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
+
     /**
-     * Column adapter for quantity for product list in portlet
+     * Utility for copying the attributes from one product or product template model to another. Utilized by 'duplicate' functionality accessed
+     * from a detail view for a model.
      */
-    class ProductQuantityRelatedListViewColumnAdapter extends TextListViewColumnAdapter
+    class ProductZurmoCopyModelUtil extends ZurmoCopyModelUtil
     {
-        public function renderGridViewData()
+        /**
+         * Use copy of parent class in addition to copy categories
+         * @param RedBeanModel $model
+         * @param RedBeanModel $copyToModel - model to copy attribute values from $model to
+         */
+        public static function copy(RedBeanModel $model, RedBeanModel $copyToModel)
         {
-            return array(
-                    'class' => 'phaEditColumn',
-                    'name'  => $this->attribute,
-                    'value' => 'strval($data->' . $this->attribute . ')',
-                    'actionUrl' => Yii::app()->createUrl('products/default/update', array('attribute' => 'quantity')),
-                );
+            parent::copy($model, $copyToModel);
+            foreach($model->productCategories as $productCategory)
+            {
+                $copyToModel->productCategories->add($productCategory);
+            }
         }
     }
 ?>

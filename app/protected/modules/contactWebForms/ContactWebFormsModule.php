@@ -63,7 +63,7 @@
                                                             'Delete ContactsModuleSingularLabel Web Forms',     $params);
             $labels[self::RIGHT_ACCESS_CONTACT_WEB_FORMS] = Zurmo::t('ContactWebFormsModule',
                                                             'Access ContactsModuleSingularLabel Web Forms Tab', $params);
-            return ContactsModule::getTranslatedRightsLabels();
+            return $labels;
         }
 
         /**
