@@ -26,6 +26,9 @@
 
     class ContactWebFormEditAndDetailsView extends SecuredEditAndDetailsView
     {
+        /**
+         * @return array
+         */
         public static function getDefaultMetadata()
         {
             $metadata = array(
@@ -127,17 +130,27 @@
             return $metadata;
         }
 
+        /**
+         * @return string|void
+         */
         protected function getNewModelTitleLabel()
         {
             return Zurmo::t('ContactWebFormsModule', 'Create ContactWebFormsModuleSingularLabel',
                              LabelUtil::getTranslationParamsForAllModules());
         }
 
+        /**
+         * @param $form
+         * @return null|string|void
+         */
         protected function renderRightSideFormLayoutForEdit($form)
         {
             return null;
         }
 
+        /**
+         * @return string|void
+         */
         protected function renderBeforeFormLayoutForDetailsContent()
         {
             $embedScript = '<div id="zurmoExternalWebForm">' .
