@@ -36,6 +36,7 @@
                             array('type'  => 'SaveButton',        'renderType' => 'Edit'),
                             array('type'  => 'EditLink',          'renderType' => 'Details'),
                             array('type'  => 'ProductDeleteLink', 'renderType' => 'Details'),
+                            array('type'  => 'CopyLink',          'renderType' => 'Details'),
                         ),
                     ),
                     'nonPlaceableAttributeNames' => array(

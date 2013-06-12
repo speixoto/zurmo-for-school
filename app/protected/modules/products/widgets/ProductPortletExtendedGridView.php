@@ -42,6 +42,9 @@
     {
         public $params;
 
+        /**
+         * Render totals in a product portlet view
+         */
         protected function renderTotalBarDetails()
         {
             $persistantProductConfigItemValue = ProductsPortletPersistentConfigUtil::getForCurrentUserByPortletIdAndKey(
@@ -90,7 +93,6 @@
                                                                 Yii::app()->currencyHelper->getCodeForCurrentUserForDisplay());
             $annualTotal  = Yii::app()->numberFormatter->formatCurrency($annualTotal,
                                                                 Yii::app()->currencyHelper->getCodeForCurrentUserForDisplay());
-            //$currencySymbol     = Yii::app()->locale->getCurrencySymbol(Yii::app()->currencyHelper->getCodeForCurrentUserForDisplay());
             echo Zurmo::t("Core", "Total: ") .
                 $oneTimeTotal . Zurmo::t("Core", " One Time") .
                 ", " . $monthlyTotal . Zurmo::t("Core", " Monthly") .
