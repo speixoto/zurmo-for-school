@@ -60,6 +60,12 @@
                                 'type'            => 'ContactWebFormEntriesListLink',
                                 'htmlOptions'     => array( 'class' => 'icon-webforms-entries' )
                             ),
+                            array(
+                                'type'            => 'MassDeleteLink',
+                                'htmlOptions'     => array('class' => 'icon-delete'),
+                                'listViewGridId'  => 'eval:$this->listViewGridId',
+                                'pageVarName'     => 'eval:$this->pageVarName'
+                            ),
                         ),
                     ),
                 ),
