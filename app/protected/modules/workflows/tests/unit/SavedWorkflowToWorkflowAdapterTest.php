@@ -79,7 +79,7 @@
 
             $trigger = new TimeTriggerForWorkflowForm('WorkflowsTestModule', 'WorkflowModelTestItem', $workflow->getType());
             $trigger->attributeIndexOrDerivedType = 'date';
-            $trigger->durationSeconds             = 500;
+            $trigger->durationInterval             = 500;
             $trigger->valueType                   = 'Is Time For';
             $workflow->setTimeTrigger($trigger);
 
@@ -179,7 +179,9 @@
                                                                 'type' => 'DynamicTriggeredModelUser',
                                                                 'audienceType' => 1,
                                                             ))));
-            $compareData['TimeTrigger'] = array('durationSeconds' => 500,
+            $compareData['TimeTrigger'] = array('durationInterval' => 500,
+                                                'durationSign'     => TimeTriggerForWorkflowForm::DURATION_SIGN_POSITIVE,
+                                                'durationType'     => TimeTriggerForWorkflowForm::DURATION_TYPE_DAY,
                                                 'currencyIdForValue' => null,
                                                 'value'              => null,
                                                 'secondValue'        => null,

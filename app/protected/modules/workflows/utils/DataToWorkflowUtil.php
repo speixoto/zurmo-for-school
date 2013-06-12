@@ -236,7 +236,6 @@
                                                               $workflow->getType());
             if (null != $timeTriggerData = ArrayUtil::getArrayValue($data, ComponentForWorkflowForm::TYPE_TIME_TRIGGER))
             {
-                TimeTriggerForWorkflowForm::resolveTimeTriggerPostDataForDurationSeconds($timeTriggerData);
                 $timeTrigger->setAttributes($timeTriggerData);
             }
             $workflow->setTimeTrigger($timeTrigger);

@@ -43,20 +43,28 @@
 
         const DURATION_SIGN_NEGATIVE = 'Negative';
 
-        /**
-         * @var integer.  Example: Account name is xyz for 1 hour.  The duration seconds would be set to 3600
-         */
-        public $durationSeconds = 86400;
+        const DURATION_TYPE_DAY      = 'Day';
+
+        const DURATION_TYPE_WEEK     = 'Week';
+
+        const DURATION_TYPE_MONTH    = 'Month';
+
+        const DURATION_TYPE_YEAR     = 'Year';
 
         /**
-         * @var string used by user interface to ascertain the durationSeconds. Only derived from form
+         * @var integer.
+         */
+        public $durationInterval;
+
+        /**
+         * @var string
          */
         public $durationSign = self::DURATION_SIGN_POSITIVE;
 
         /**
-         * @var string used by user interface to ascertain the durationSeconds. Only derived from form
+         * @var string
          */
-        public $durationType = DateTimeCalculatorUtil::DAY;
+        public $durationType = self::DURATION_TYPE_DAY;
 
         /**
          * @return string component type
@@ -67,110 +75,25 @@
         }
 
         /**
-         * @param array $timeTriggerData
+         * @param integer $initialTimeStamp
+         * @return integer of duration seconds based on durationInterval, durationSign, and durationType
          */
-        public static function resolveTimeTriggerPostDataForDurationSeconds(& $timeTriggerData)
+        public function resolveNewTimeStampForDuration($initialTimeStamp)
         {
-            if(isset($timeTriggerData['durationSign']))
+            if($this->durationInterval == 0)
             {
-                $durationSign = $timeTriggerData['durationSign'];
-                unset($timeTriggerData['durationSign']);
+                return 0;
+            }
+            $dateTime = DateTime::createFromFormat('U', (int)$initialTimeStamp, new DateTimeZone(Yii::app()->timeZoneHelper->getForCurrentUser()));
+            if($this->durationSign == self::DURATION_SIGN_NEGATIVE)
+            {
+                $dateTime->modify('-' . $this->durationInterval . ' ' . $this->durationType); // Not Coding Standard
             }
             else
             {
-                $durationSign = self::DURATION_SIGN_POSITIVE;
+                $dateTime->modify('+' . $this->durationInterval . ' ' . $this->durationType); // Not Coding Standard
             }
-            if(isset($timeTriggerData['durationType']))
-            {
-                $durationType = $timeTriggerData['durationType'];
-                unset($timeTriggerData['durationType']);
-            }
-            else
-            {
-                $durationType = DateTimeCalculatorUtil::DAY;
-            }
-            if (null != $durationSeconds = ArrayUtil::getArrayValue($timeTriggerData, 'durationSeconds'))
-            {
-                if($durationSign == self::DURATION_SIGN_NEGATIVE)
-                {
-                    $durationSeconds = $durationSeconds * -1;
-                }
-                $durationSeconds = $durationSeconds * DateTimeCalculatorUtil::getSecondsByType((int)$durationType);
-                $timeTriggerData['durationSeconds'] = $durationSeconds;
-            }
-        }
-
-        /**
-         * @return array
-         */
-        public function attributeLabels()
-        {
-            return array_merge(parent::attributeLabels(), array('durationSeconds' => Zurmo::t('WorkflowsModule', 'Duration')));
-        }
-
-        /**
-         * @return string
-         */
-        public function resolveDurationSign()
-        {
-           if($this->durationSeconds > 0)
-           {
-                return self::DURATION_SIGN_POSITIVE;
-           }
-           else
-           {
-                return self::DURATION_SIGN_NEGATIVE;
-           }
-        }
-
-        /**
-         * @return int
-         */
-        public function resolveDurationSecondsForType()
-        {
-            if($this->durationSeconds > 0 or $this->durationSeconds < 0)
-            {
-                if(is_int($this->durationSeconds / DateTimeCalculatorUtil::getSecondsByType(DateTimeCalculatorUtil::YEAR)))
-                {
-                    return $this->durationSeconds / DateTimeCalculatorUtil::getSecondsByType(DateTimeCalculatorUtil::YEAR);
-                }
-                elseif(is_int($this->durationSeconds / DateTimeCalculatorUtil::getSecondsByType(DateTimeCalculatorUtil::WEEK)))
-                {
-                    return $this->durationSeconds / DateTimeCalculatorUtil::getSecondsByType(DateTimeCalculatorUtil::WEEK);
-                }
-                elseif(is_int($this->durationSeconds / DateTimeCalculatorUtil::getSecondsByType(DateTimeCalculatorUtil::DAY)))
-                {
-                    return $this->durationSeconds / DateTimeCalculatorUtil::getSecondsByType(DateTimeCalculatorUtil::DAY);
-                }
-                else
-                {
-                    //todo: something went wrong, handle better than just returning durationSeconds
-                }
-            }
-            return $this->durationSeconds;
-        }
-
-        /**
-         * @return int
-         */
-        public function resolveDurationType()
-        {
-            if($this->durationSeconds > 0 or $this->durationSeconds < 0)
-            {
-                if(is_int($this->durationSeconds / DateTimeCalculatorUtil::getSecondsByType(DateTimeCalculatorUtil::YEAR)))
-                {
-                    return DateTimeCalculatorUtil::YEAR;
-                }
-                elseif(is_int($this->durationSeconds / DateTimeCalculatorUtil::getSecondsByType(DateTimeCalculatorUtil::WEEK)))
-                {
-                    return DateTimeCalculatorUtil::WEEK;
-                }
-                elseif(is_int($this->durationSeconds / DateTimeCalculatorUtil::getSecondsByType(DateTimeCalculatorUtil::DAY)))
-                {
-                    return DateTimeCalculatorUtil::DAY;
-                }
-            }
-            return $this->durationType;
+            return $dateTime->getTimestamp();
         }
 
         /**
@@ -179,8 +102,13 @@
         public function rules()
         {
             return array_merge(parent::rules(), array(
-                array('durationSeconds', 'type', 'type' => 'integer'),
-                array('durationSeconds', 'required'),
+                array('durationInterval', 'type', 'type' => 'integer'),
+                array('durationInterval', 'numerical', 'min' => 0),
+                array('durationInterval', 'required'),
+                array('durationSign',    'type', 'type' => 'string'),
+                array('durationSign',    'required'),
+                array('durationType',    'type', 'type' => 'string'),
+                array('durationType',    'required'),
             ));
         }
 
@@ -233,7 +161,6 @@
             {
                 return $this->makeDurationValuesAndLabels(true, false, false, true);
             }
-
             return $data;
             ModelAttributeToWorkflowOperatorTypeUtil::resolveOperatorsToIncludeByType($data, $type);
             $data[OperatorRules::TYPE_DOES_NOT_CHANGE] = OperatorRules::getTranslatedTypeLabel(OperatorRules::TYPE_DOES_NOT_CHANGE);

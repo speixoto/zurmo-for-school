@@ -41,22 +41,21 @@
     {
         protected function renderControlEditable()
         {
-            $content  = $this->renderEditableDurationSecondsTextField() . "\n";
+            $content  = $this->renderEditableDurationIntervalTextField() . "\n";
             $content .= $this->renderEditableDurationTypeDropDownField() . "\n";
             $content .= $this->renderEditableDurationSignDropDownField() . "\n";
             return $content;
         }
 
-        protected function renderEditableDurationSecondsTextField()
+        protected function renderEditableDurationIntervalTextField()
         {
-            $id = $this->getEditableInputId('durationSeconds');
+            $id = $this->getEditableInputId('durationInterval');
             $htmlOptions = array(
-                'name' => $this->getEditableInputName('durationSeconds'),
+                'name' => $this->getEditableInputName('durationInterval'),
                 'id'   => $id,
-                'value' => $this->model->resolveDurationSecondsForType(),
             );
-            $textField = $this->form->textField($this->model, 'durationSeconds', $htmlOptions);
-            $error     = $this->form->error    ($this->model, 'durationSeconds', array('inputID' => $id), true, true);
+            $textField = $this->form->textField($this->model, 'durationInterval', $htmlOptions);
+            $error     = $this->form->error    ($this->model, 'durationInterval', array('inputID' => $id), true, true);
             return $textField . $error;
         }
 
@@ -67,7 +66,6 @@
             $htmlOptions = array(
                 'name'  => $this->getEditableInputName('durationSign'),
                 'id'    => $id,
-                'value' => $this->model->resolveDurationSign(),
             );
             return $this->form->dropDownList($this->model, 'durationSign', $dropDownArray, $htmlOptions);
         }
@@ -79,7 +77,6 @@
             $htmlOptions = array(
                 'name'  => $this->getEditableInputName('durationType'),
                 'id'    => $id,
-                'value' => $this->model->resolveDurationType(),
             );
             return $this->form->dropDownList($this->model, 'durationType', $dropDownArray, $htmlOptions);
         }
@@ -92,9 +89,10 @@
 
         protected function getDurationTypeDropDownArray()
         {
-            return array(DateTimeCalculatorUtil::DAY  => Zurmo::t('Core', 'Day(s)'),
-                         DateTimeCalculatorUtil::WEEK => Zurmo::t('Core', 'Week(s)'),
-                         DateTimeCalculatorUtil::YEAR => Zurmo::t('Core', 'Year(s)'));
+            return array(TimeTriggerForWorkflowForm::DURATION_TYPE_DAY  => Zurmo::t('Core', 'Day(s)'),
+                         TimeTriggerForWorkflowForm::DURATION_TYPE_WEEK => Zurmo::t('Core', 'Week(s)'),
+                         TimeTriggerForWorkflowForm::DURATION_TYPE_MONTH => Zurmo::t('Core', 'Month(s)'),
+                         TimeTriggerForWorkflowForm::DURATION_TYPE_YEAR => Zurmo::t('Core', 'Year(s)'));
         }
 
         protected function renderControlNonEditable()

@@ -130,11 +130,15 @@
             $data[ComponentForWorkflowForm::TYPE_TIME_TRIGGER] = array('attributeIndexOrDerivedType' => 'string',
                 'operator'                    => OperatorRules::TYPE_EQUALS,
                 'value'                       => '514',
-                'durationSeconds'             => '333');
+                'durationInterval'            => '10',
+                'durationSign'                => TimeTriggerForWorkflowForm::DURATION_SIGN_NEGATIVE,
+                'durationType'                => TimeTriggerForWorkflowForm::DURATION_TYPE_WEEK);
             DataToWorkflowUtil::resolveTimeTrigger($data, $workflow);
             $trigger = $workflow->getTimeTrigger();
             $this->assertEquals('514',                      $trigger->value);
-            $this->assertEquals('333',                      $trigger->durationSeconds);
+            $this->assertEquals('10',                      $trigger->durationInterval);
+            $this->assertEquals(TimeTriggerForWorkflowForm::DURATION_SIGN_NEGATIVE, $trigger->durationSign);
+            $this->assertEquals(TimeTriggerForWorkflowForm::DURATION_TYPE_WEEK,     $trigger->durationType);
             $this->assertEquals(OperatorRules::TYPE_EQUALS, $trigger->operator);
         }
 
