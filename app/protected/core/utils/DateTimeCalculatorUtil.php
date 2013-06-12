@@ -76,6 +76,11 @@
         const YEAR = 7;
 
         /**
+         * The calculation will be done for Day. This is a dateTime calculation.
+         */
+        const DAY  = 8;
+
+        /**
          * Calculate a date/time stamp given a calculation value and DateTime object
          * @param $calculation corresponds to a calculation value from this class.
          * @see http://www.php.net/manual/en/class.datetime.php
@@ -136,6 +141,27 @@
             $dateTime->modify($daysFromNow . ' day');
             return Yii::app()->dateFormatter->format(DatabaseCompatibilityUtil::getDateFormat(),
                         $dateTime->getTimestamp());
+        }
+
+        public static function getSecondsByType($type)
+        {
+            assert('is_int($type)');
+            if($type == self::DAY)
+            {
+                return 86400;
+            }
+            elseif($type == self::WEEK)
+            {
+                return 86400 * 7;
+            }
+            elseif($type == self::YEAR)
+            {
+                return 86400 * 365; //todo: what about leapyear?
+            }
+            else
+            {
+                throw new NotSupportedException();
+            }
         }
     }
 ?>
