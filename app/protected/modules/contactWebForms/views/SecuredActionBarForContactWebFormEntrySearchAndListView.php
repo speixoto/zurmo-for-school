@@ -35,35 +35,23 @@
      ********************************************************************************/
 
     /**
-     * Action bar view for the contact web forms search and list view
+     * Action bar view for the contact web form entry search and list view
      */
-    class SecuredActionBarForContactWebFormsSearchAndListView extends SecuredActionBarForSearchAndListView
+    class SecuredActionBarForContactWebFormEntrySearchAndListView extends SecuredActionBarForContactWebFormsSearchAndListView
     {
         /**
          * @return array
          */
         public static function getDefaultMetadata()
         {
-            $metadata = array(
-                'global' => array(
-                    'toolbar' => array(
-                        'elements' => array(
-                            array(
-                                'type'            => 'ContactWebFormsCreateLink',
-                                'htmlOptions'     => array('class' => 'icon-create'),
-                            ),
-                            array(
-                                'type'            => 'ContactWebFormsListLink',
-                                'htmlOptions'     => array( 'class' => 'icon-webforms' )
-                            ),
-                            array(
-                                'type'            => 'ContactWebFormEntriesListLink',
-                                'htmlOptions'     => array( 'class' => 'icon-webforms-entries' )
-                            ),
-                        ),
-                    ),
-                ),
-            );
+            $metadata      = parent::getDefaultMetadata();
+            $deleteElement = array(
+                                    'type'            => 'MassDeleteLink',
+                                    'htmlOptions'     => array('class' => 'icon-delete'),
+                                    'listViewGridId'  => 'eval:$this->listViewGridId',
+                                    'pageVarName'     => 'eval:$this->pageVarName'
+                                );
+            array_push($metadata['global']['toolbar']['elements'], $deleteElement);
             return $metadata;
         }
     }

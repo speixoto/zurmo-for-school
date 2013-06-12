@@ -91,7 +91,8 @@
             else
             {
                 $mixedView = $this->makeActionBarSearchAndListView($searchForm, $dataProvider,
-                             'SecuredActionBarForContactWebFormsSearchAndListView', 'ContactWebFormEntry', $activeActionElementType);
+                             'SecuredActionBarForContactWebFormEntrySearchAndListView', 'ContactWebFormEntry',
+                             $activeActionElementType);
                 $view = new ContactWebFormsPageView(ZurmoDefaultAdminViewUtil::
                                               makeViewWithBreadcrumbsForCurrentUser(
                                               $this, $mixedView, $breadcrumbLinks, 'ContactWebFormsBreadCrumbView'));
@@ -105,12 +106,12 @@
             $contactWebFormEntry = new ContactWebFormEntry(false);
             $activeAttributes    = $this->resolveActiveAttributesFromMassDeletePost();
             $dataProvider        = $this->getDataProviderByResolvingSelectAllFromGet(
-                                   new ContactWebFormEntrySearchForm($contactWebFormEntry), $pageSize, null,
-                                   'ContactWebFormEntrySearchView');
+                                   new ContactWebFormEntrySearchForm($contactWebFormEntry), $pageSize, null, null);
             $selectedRecordCount = static::getSelectedRecordCountByResolvingSelectAllFromGet($dataProvider);
             $contactWebFormEntry = $this->processMassDelete($pageSize, $activeAttributes, $selectedRecordCount,
                                    'ContactWebFormsPageView', $contactWebFormEntry,
-                                   ContactWebFormEntry::getModelLabelByTypeAndLanguage('Plural'), $dataProvider);
+                                   ContactWebFormEntry::getModelLabelByTypeAndLanguage('Plural'), $dataProvider,
+                                   array($this->getId() . '/list'));
             $massDeleteView      = $this->makeMassDeleteView($contactWebFormEntry, $activeAttributes, $selectedRecordCount,
                                    ContactWebFormEntry::getModelLabelByTypeAndLanguage('Plural'));
             $view                = new ContactWebFormsPageView(ZurmoDefaultAdminViewUtil::
@@ -123,8 +124,7 @@
             $pageSize            = Yii::app()->pagination->resolveActiveForCurrentUserByType('massDeleteProgressPageSize');
             $contactWebFormEntry = new ContactWebFormEntry(false);
             $dataProvider        = $this->getDataProviderByResolvingSelectAllFromGet(
-                                   new ContactWebFormsSearchForm($contactWebFormEntry), $pageSize, null,
-                                   'ContactWebFormEntrySearchView');
+                                   new ContactWebFormsSearchForm($contactWebFormEntry), $pageSize, null, null);
             $this->processMassDeleteProgress('ContactWebFormEntry', $pageSize,
                                               ContactWebFormEntry::getModelLabelByTypeAndLanguage('Plural'),
                                               $dataProvider);
