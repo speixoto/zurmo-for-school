@@ -283,7 +283,8 @@ a.ModalGameNotification a,
 .kanban-card > div,
 .webform-embed-code textarea,
 #business-card-buttons > div,
-#business-card-buttons a {
+#business-card-buttons a,
+.mini-button {
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
@@ -10206,10 +10207,11 @@ div.hasHalfs > div input {
   white-space: nowrap;
 }
 .edit-row-menu ul {
+  line-height: 1;
   white-space: nowrap;
   left: auto;
   right: -10px;
-  margin-left: 0;
+  margin: 0;
   top: -3px;
   z-index: 1;
   padding-right: 30px;
@@ -10220,8 +10222,14 @@ div.hasHalfs > div input {
   border-radius: 0 15px 15px 0;
 }
 .edit-row-menu ul > li {
-  float: left;
+  display: inline;
   border-left: 1px solid #d8d8d8;
+}
+.edit-row-menu ul > li + li {
+  margin-left: -3px;
+}
+.edit-row-menu ul > li a {
+  display: inline-block;
 }
 .edit-row-menu ul > li:first-child {
   border-left: none;
@@ -11302,8 +11310,6 @@ div.hasHalfs > div input {
   border-bottom: 1px dotted #ccc;
   width: auto;
   display: inline-block;
-  padding-bottom: 2px;
-  margin-top: 3px;
 }
 .editable-cell:after {
   content: "!";
@@ -11313,6 +11319,7 @@ div.hasHalfs > div input {
   position: relative;
   right: -10px;
   top: 1px;
+  line-height: 1;
 }
 .juiportlet-columns .juiportlet-column {
   float: left;
@@ -14323,6 +14330,9 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
   input::-moz-focus-inner {
     border: 0;
   }
+  .edit-row-menu ul {
+    top: 0px !important;
+  }
 }
 .tooltip {
   width: 10px;
@@ -15672,6 +15682,7 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
   width: 310px !important;
 }
 a.close-ModalGameNotification.simple-link {
+  text-decoration: underline !important;
   background: none !important;
   margin-right: 10px;
   margin-left: -35px;
@@ -19133,19 +19144,31 @@ a + .autoresponder-stats {
   -ms-box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
   box-shadow: inset 0 5px 15px 2px rgba(0, 0, 0, 0.4), 0 1px 0 0 #FFF;
 }
+.sliding-panel {
+  display: none;
+  width: 100%;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  position: relative;
+}
 .business-card {
-  padding-right: 50px;
+  display: block;
+}
+.business-card .gravatar {
+  margin-right: 12px;
 }
 .business-card h2 {
   line-height: 100%;
   padding-bottom: 15px;
+  display: inline-block;
 }
 .business-card h2 .salutation {
   font-weight: normal;
   font-size: 80%;
   margin-right: 5px;
 }
-.business-card h3 {
+.business-card h3.position {
   line-height: 140%;
   font-weight: normal;
   color: #545454 !important;
@@ -19153,16 +19176,19 @@ a + .autoresponder-stats {
 .business-card h4 {
   color: #545454 !important;
   line-height: 150%;
-  margin-bottom: 25px;
+  margin-bottom: 15px;
   font-size: 14px;
 }
 .business-card .contact-details {
+  clear: left;
   color: #111;
   font-size: 14px;
   color: #666;
   margin-bottom: 7px;
+  margin-top: 10px;
 }
 .business-card .contact-details > a {
+  margin-top: 5px;
   margin-right: 20px;
   color: #333;
 }
@@ -19201,6 +19227,31 @@ a + .autoresponder-stats {
   padding-right: 3px;
   color: #111;
 }
+.business-card .demographic-details {
+  position: absolute;
+  top: 0;
+  right: 0;
+  text-align: right;
+}
+.business-card .demographic-details .sex {
+  width: 30px;
+  height: 62px;
+  display: block;
+  text-indent: -9999px;
+  text-align: left;
+  margin-top: 0;
+  line-height: 1;
+}
+.business-card .demographic-details .male {
+  background: url(../images/people.png) right top no-repeat;
+}
+.business-card .demographic-details span {
+  margin-top: 13px;
+  font-weight: bold;
+  display: block;
+  float: right;
+  line-height: 150%;
+}
 #_business-card-buttons {
   position: absolute;
   right: 5px;
@@ -19227,6 +19278,7 @@ a + .autoresponder-stats {
   display: none;
 }
 #business-card-buttons {
+  display: none !important;
   display: inline-block;
   font-size: 11px;
 }
@@ -19324,6 +19376,128 @@ a + .autoresponder-stats {
 }
 #business-card-buttons .active i {
   color: #97c43d;
+}
+.social-icon {
+  width: 22px;
+  height: 22px;
+  display: inline-block;
+  text-indent: -9999px;
+  margin-right: 4px;
+}
+.social-icon:hover {
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  -ms-border-radius: 3px;
+  -o-border-radius: 3px;
+  border-radius: 3px;
+  -webkit-box-shadow: 0 0 7px 0 #999999;
+  -moz-box-shadow: 0 0 7px 0 #999999;
+  -o-box-shadow: 0 0 7px 0 #999999;
+  -ms-box-shadow: 0 0 7px 0 #999999;
+  box-shadow: 0 0 7px 0 #999999;
+}
+.icon-twitter {
+  background: url(../images/social-icons/twitter.png) center center no-repeat;
+}
+.icon-facebook {
+  background: url(../images/social-icons/facebook.png) left top no-repeat;
+}
+.icon-linkedin {
+  background: url(../images/social-icons/linkedin.png) left top no-repeat;
+}
+.rapleaf-data {
+  display: none;
+}
+.rapleaf-data h3 {
+  margin-bottom: 10px;
+  margin-top: 30px;
+}
+.rapleaf-data ul {
+  list-style: none;
+}
+.rapleaf-data li {
+  font-weight: bold;
+  margin-bottom: 3px;
+  color: #666;
+}
+.rapleaf-data li span {
+  font-weight: normal;
+  margin-left: 5px;
+  border: 1px solid #ccc;
+  background: #eaeaea;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  -ms-border-radius: 3px;
+  -o-border-radius: 3px;
+  border-radius: 3px;
+  padding: 2px 4px;
+  font-size: 11px;
+  color: #323232;
+}
+.rapleaf-data .complex-data li {
+  line-height: 200%;
+  width: 33.3%;
+  float: left;
+}
+.rapleaf-data .simple-data li {
+  float: left;
+  width: auto;
+  margin-bottom: 7px;
+}
+.rapleaf-data .simple-data span {
+  margin: 0 5px 0 0;
+}
+.rapleaf-data .half {
+  float: left;
+  width: 49%;
+}
+.rapleaf-data .half + .half {
+  margin-left: 2%;
+}
+div.special-pager {
+  margin-bottom: 0 !important;
+  border-left: none !important;
+  border-right: none !important;
+  border-bottom: none !important;
+}
+div.special-pager .next span {
+  text-indent: 0 !important;
+  font-size: 11px;
+  padding: 5px 0 5px 0 !important;
+}
+div.special-pager .next a:after,
+div.special-pager .hidden.next:after {
+  display: none !important;
+}
+.mini-button {
+  display: inline-block;
+  border: 1px solid #b7b7b7;
+  border-top-color: #e7e7e7;
+  border-left-color: #d7d7d7;
+  border-right-color: #d7d7d7;
+  border-radius: 4px;
+  background: url(../images/view-toolbar-gradient-darker.png) left bottom repeat-x;
+  -webkit-box-shadow: inset 0 0 1px 1px #efefef;
+  -moz-box-shadow: inset 0 0 1px 1px #efefef;
+  -o-box-shadow: inset 0 0 1px 1px #efefef;
+  -ms-box-shadow: inset 0 0 1px 1px #efefef;
+  box-shadow: inset 0 0 1px 1px #efefef;
+  color: #545454;
+  text-shadow: #fff 0 1px 0;
+  position: relative;
+  margin-left: 10px;
+  top: -2px;
+}
+.mini-button span {
+  color: #545454;
+  display: block;
+  line-height: 22px;
+  padding: 0 6px 0 28px;
+  background: url(../images/rapleaf.png) 4px center no-repeat;
+}
+.mini-button span + span {
+  display: none;
+  line-height: 22px;
 }
 /*********************************************************************************
  * Zurmo is a customer relationship management program developed by
