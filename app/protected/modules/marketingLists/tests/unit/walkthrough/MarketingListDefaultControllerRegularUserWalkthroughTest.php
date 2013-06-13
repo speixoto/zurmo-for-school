@@ -71,6 +71,17 @@
             $this->setGetArray(array('id' => $marketingList->id));
             $this->runControllerShouldResultInAccessFailureAndGetContent('marketingLists/default/edit');
             $this->runControllerShouldResultInAccessFailureAndGetContent('marketingLists/default/details');
+            $this->runControllerShouldResultInAccessFailureAndGetContent('marketingLists/default/getInfoToCopyToCampaign');
+            $this->setGetArray(array('term' => 'inexistant'));
+            $this->runControllerShouldResultInAccessFailureAndGetContent('marketingLists/default/autoComplete');
+            $this->setGetArray(array(
+                'modalTransferInformation'   => array(
+                    'sourceIdFieldId'    =>  'Campaign_marketingList_id',
+                    'sourceNameFieldId'  =>  'Campaign_marketingList_name',
+                    'modalId'            =>  'modalContainer-edit-form',
+                )
+            ));
+            $this->runControllerShouldResultInAccessFailureAndGetContent('marketingLists/default/modalList');
             $this->resetGetArray();
 
             $this->user->setRight('MarketingListsModule', MarketingListsModule::getAccessRight());
@@ -78,6 +89,18 @@
             $this->runControllerWithNoExceptionsAndGetContent('marketingLists/default');
             $this->runControllerWithNoExceptionsAndGetContent('marketingLists/default/index');
             $this->runControllerWithNoExceptionsAndGetContent('marketingLists/default/list');
+            $this->setGetArray(array('term' => 'inexistant'));
+            $this->runControllerWithNoExceptionsAndGetContent('marketingLists/default/autoComplete');
+            $this->setGetArray(array('id' => $marketingList->id));
+            $this->runControllerWithNoExceptionsAndGetContent('marketingLists/default/getInfoToCopyToCampaign');
+            $this->setGetArray(array(
+                'modalTransferInformation'   => array(
+                    'sourceIdFieldId'    =>  'Campaign_marketingList_id',
+                    'sourceNameFieldId'  =>  'Campaign_marketingList_name',
+                    'modalId'            =>  'modalContainer-edit-form',
+                )
+            ));
+            $this->runControllerWithNoExceptionsAndGetContent('marketingLists/default/modalList');
 
             $this->setGetArray(array('id' => $marketingList->id));
             $content = $this->runControllerWithNoExceptionsAndGetContent('marketingLists/default/details');
