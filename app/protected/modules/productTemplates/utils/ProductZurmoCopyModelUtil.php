@@ -34,29 +34,23 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class ContactWebFormListViewColumnAdapter extends TextListViewColumnAdapter
+    /**
+     * Utility for copying the attributes from one product or product template model to another. Utilized by 'duplicate' functionality accessed
+     * from a detail view for a model.
+     */
+    class ProductZurmoCopyModelUtil extends ZurmoCopyModelUtil
     {
         /**
-         * @return array
+         * Use copy of parent class in addition to copy categories
+         * @param RedBeanModel $model
+         * @param RedBeanModel $copyToModel - model to copy attribute values from $model to
          */
-        public function renderGridViewData()
+        public static function copy(RedBeanModel $model, RedBeanModel $copyToModel)
         {
-            if ($this->getIsLink())
+            parent::copy($model, $copyToModel);
+            foreach($model->productCategories as $productCategory)
             {
-                return array(
-                    'name' => $this->attribute,
-                    'type' => 'raw',
-                    'value' => $this->view->getRelatedLinkString(
-                               '$data->' . $this->attribute, $this->attribute, 'contactWebForm'),
-                );
-            }
-            else
-            {
-                return array(
-                    'name'  => $this->attribute,
-                    'value' => 'strval($data->' . $this->attribute . ')',
-                    'type'  => 'raw',
-                );
+                $copyToModel->productCategories->add($productCategory);
             }
         }
     }
