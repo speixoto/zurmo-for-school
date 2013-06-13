@@ -183,9 +183,7 @@
             $moduleClassName          = 'ContactsModule';
             $modelClassName           = $moduleClassName::getPrimaryModelName();
             $editableMetadata         = $viewClassName::getMetadata();
-            $designerRulesType        = $viewClassName::getDesignerRulesType();
-            $designerRulesClassName   = $designerRulesType . 'DesignerRules';
-            $designerRules            = new $designerRulesClassName();
+            $designerRules            = new EditAndDetailsViewDesignerRules();
             $modelAttributesAdapter   = DesignerModelToViewUtil::getModelAttributesAdapter($viewClassName, $modelClassName);
             $derivedAttributesAdapter = new DerivedAttributesAdapter($modelClassName);
             $attributeCollection      = array_merge($modelAttributesAdapter->getAttributes(),
