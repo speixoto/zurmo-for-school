@@ -89,10 +89,10 @@
 
         protected function getDurationTypeDropDownArray()
         {
-            return array(TimeTriggerForWorkflowForm::DURATION_TYPE_DAY  => Zurmo::t('Core', 'Day(s)'),
-                         TimeTriggerForWorkflowForm::DURATION_TYPE_WEEK => Zurmo::t('Core', 'Week(s)'),
+            return array(TimeTriggerForWorkflowForm::DURATION_TYPE_DAY   => Zurmo::t('Core', 'Day(s)'),
+                         TimeTriggerForWorkflowForm::DURATION_TYPE_WEEK  => Zurmo::t('Core', 'Week(s)'),
                          TimeTriggerForWorkflowForm::DURATION_TYPE_MONTH => Zurmo::t('Core', 'Month(s)'),
-                         TimeTriggerForWorkflowForm::DURATION_TYPE_YEAR => Zurmo::t('Core', 'Year(s)'));
+                         TimeTriggerForWorkflowForm::DURATION_TYPE_YEAR  => Zurmo::t('Core', 'Year(s)'));
         }
 
         protected function renderControlNonEditable()
@@ -110,7 +110,7 @@
             {
                 return $this->getFormattedAttributeLabel();
             }
-            $id = $this->getEditableInputId($this->attribute, 'emailAddress');
+            $id = $this->getEditableInputId($this->attribute, 'durationInterval');
             return $this->form->labelEx($this->model, $this->attribute, array('for' => $id));
         }
     }
