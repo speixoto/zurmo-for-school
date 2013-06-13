@@ -93,7 +93,9 @@
             $workflow->addAction($action);
 
             $message       = new EmailMessageForWorkflowForm('WorkflowModelTestItem', Workflow::TYPE_ON_SAVE);
-            $message->sendAfterDurationSeconds = 86400;
+            $message->sendAfterDurationInterval = 86400;
+            $message->sendAfterDurationSign     = TimeDurationUtil::DURATION_SIGN_NEGATIVE;
+            $message->sendAfterDurationType     = TimeDurationUtil::DURATION_TYPE_WEEK;
             $message->emailTemplateId          = 5;
             $message->sendFromType             = EmailMessageForWorkflowForm::SEND_FROM_TYPE_DEFAULT;
             $recipients = array(array('type' => WorkflowEmailMessageRecipientForm::TYPE_DYNAMIC_TRIGGERED_MODEL_USER,
@@ -169,7 +171,9 @@
                                                        ),
                                                   )));
             $compareData['EmailMessages'] = array(array('emailTemplateId' => 5,
-                                                         'sendAfterDurationSeconds' => 86400,
+                                                         'sendAfterDurationInterval' => 86400,
+                                                         'sendAfterDurationSign'     => TimeDurationUtil::DURATION_SIGN_NEGATIVE,
+                                                         'sendAfterDurationType'     => TimeDurationUtil::DURATION_TYPE_WEEK,
                                                          'sendFromType' => 'Default',
                                                          'sendFromName' => null,
                                                          'sendFromAddress' => null,
@@ -180,8 +184,8 @@
                                                                 'audienceType' => 1,
                                                             ))));
             $compareData['TimeTrigger'] = array('durationInterval' => 500,
-                                                'durationSign'     => TimeTriggerForWorkflowForm::DURATION_SIGN_POSITIVE,
-                                                'durationType'     => TimeTriggerForWorkflowForm::DURATION_TYPE_DAY,
+                                                'durationSign'     => TimeDurationUtil::DURATION_SIGN_POSITIVE,
+                                                'durationType'     => TimeDurationUtil::DURATION_TYPE_DAY,
                                                 'currencyIdForValue' => null,
                                                 'value'              => null,
                                                 'secondValue'        => null,

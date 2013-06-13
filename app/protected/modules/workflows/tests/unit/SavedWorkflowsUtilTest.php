@@ -74,7 +74,7 @@
             $model->date = '2007-02-02';
             $workflow = WorkflowTriggersUtilBaseTest::
                         makeOnSaveWorkflowAndTimeTriggerForDateOrDateTime('date', 'Is Time For', null, 1, 'WorkflowsTestModule',
-                        'WorkflowModelTestItem', null, TimeTriggerForWorkflowForm::DURATION_SIGN_NEGATIVE);
+                        'WorkflowModelTestItem', null, TimeDurationUtil::DURATION_SIGN_NEGATIVE);
             $processDateTime = SavedWorkflowsUtil::resolveProcessDateTimeByWorkflowAndModel($workflow, $model);
             $this->assertEquals('2007-02-01 00:00:00', $processDateTime);
 
@@ -91,7 +91,7 @@
             $model->dateTime = '2007-05-02 04:00:02';
             $workflow = WorkflowTriggersUtilBaseTest::
                         makeOnSaveWorkflowAndTimeTriggerForDateOrDateTime('dateTime', 'Is Time For', null, 1, 'WorkflowsTestModule',
-                        'WorkflowModelTestItem', null, TimeTriggerForWorkflowForm::DURATION_SIGN_NEGATIVE);
+                        'WorkflowModelTestItem', null, TimeDurationUtil::DURATION_SIGN_NEGATIVE);
             $processDateTime = SavedWorkflowsUtil::resolveProcessDateTimeByWorkflowAndModel($workflow, $model);
             $this->assertEquals('2007-05-01 04:00:02', $processDateTime);
         }
@@ -313,8 +313,8 @@
             $trigger = new TimeTriggerForWorkflowForm('WorkflowsTestModule', 'WorkflowModelTestItem', $workflow->getType());
             $trigger->attributeIndexOrDerivedType = 'date';
             $trigger->durationInterval            = '500';
-            $trigger->durationSign                = TimeTriggerForWorkflowForm::DURATION_SIGN_NEGATIVE;
-            $trigger->durationType                = TimeTriggerForWorkflowForm::DURATION_TYPE_WEEK;
+            $trigger->durationSign                = TimeDurationUtil::DURATION_SIGN_NEGATIVE;
+            $trigger->durationType                = TimeDurationUtil::DURATION_TYPE_WEEK;
             $trigger->valueType                   = 'Is Time For';
             $workflow->setTimeTrigger($trigger);
             //Create the saved Workflow
@@ -401,8 +401,8 @@
             $trigger = new TimeTriggerForWorkflowForm('WorkflowsTestModule', 'WorkflowModelTestItem', $workflow->getType());
             $trigger->attributeIndexOrDerivedType = 'date';
             $trigger->durationInterval            = '500';
-            $trigger->durationSign            = TimeTriggerForWorkflowForm::DURATION_SIGN_NEGATIVE;
-            $trigger->durationType            = TimeTriggerForWorkflowForm::DURATION_TYPE_WEEK;
+            $trigger->durationSign            = TimeDurationUtil::DURATION_SIGN_NEGATIVE;
+            $trigger->durationType            = TimeDurationUtil::DURATION_TYPE_WEEK;
             $trigger->valueType                   = 'Is Time For';
             $workflow->setTimeTrigger($trigger);
             //Create the saved Workflow

@@ -45,7 +45,9 @@
             $compareErrors = array('recipientsValidation'  => array('At least one recipient must be added'));
             $this->assertEquals($compareErrors, $errors);
             //Ensure validation will pass
-            $message->sendAfterDurationSeconds = 86400;
+            $message->sendAfterDurationInterval = 86400;
+            $message->sendAfterDurationSign     = TimeDurationUtil::DURATION_SIGN_NEGATIVE;
+            $message->sendAfterDurationType     = TimeDurationUtil::DURATION_TYPE_WEEK;
             $message->emailTemplateId          = 5;
             $message->sendFromType             = EmailMessageForWorkflowForm::SEND_FROM_TYPE_DEFAULT;
             $recipients = array(array('type' => WorkflowEmailMessageRecipientForm::TYPE_DYNAMIC_TRIGGERED_MODEL_USER,
@@ -69,10 +71,14 @@
             $this->assertFalse($validated);
             $errors        = $message->getErrors();
             $compareErrors = array('sendFromName'  => array('From Name cannot be blank.'),
-                                   'sendFromAddress' => array('From Email Address cannot be blank.'));
+                                   'sendFromAddress' => array('From Email Address cannot be blank.'),
+                                   'sendAfterDurationInterval' => array('Send cannot be blank.'));
             $this->assertEquals($compareErrors, $errors);
             $message->sendFromAddress = 'someone@zurmo.com';
             $message->sendFromName    = 'Jason';
+            $message->sendAfterDurationInterval = 86400;
+            $message->sendAfterDurationSign     = TimeDurationUtil::DURATION_SIGN_NEGATIVE;
+            $message->sendAfterDurationType     = TimeDurationUtil::DURATION_TYPE_WEEK;
             $validated     = $message->validate();
             $errors        = $message->getErrors();
             $this->assertTrue($validated);
@@ -84,7 +90,9 @@
         public function testMissingEmailTemplateWillNotValidate()
         {
             $message = new EmailMessageForWorkflowForm('WorkflowModelTestItem', Workflow::TYPE_ON_SAVE);
-            $message->sendAfterDurationSeconds = 86400;
+            $message->sendAfterDurationInterval = 86400;
+            $message->sendAfterDurationSign     = TimeDurationUtil::DURATION_SIGN_NEGATIVE;
+            $message->sendAfterDurationType     = TimeDurationUtil::DURATION_TYPE_WEEK;
             $message->sendFromType             = EmailMessageForWorkflowForm::SEND_FROM_TYPE_DEFAULT;
             $recipients = array(array('type' => WorkflowEmailMessageRecipientForm::TYPE_DYNAMIC_TRIGGERED_MODEL_USER,
                                       'audienceType'     => EmailMessageRecipient::TYPE_TO,

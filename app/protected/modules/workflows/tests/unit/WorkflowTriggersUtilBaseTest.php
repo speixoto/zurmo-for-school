@@ -134,8 +134,8 @@
                                                                                  $moduleClassName = 'WorkflowsTestModule',
                                                                                  $modelClassName  = 'WorkflowModelTestItem',
                                                                                  $secondValue     = null,
-                                                                                 $durationSign    = TimeTriggerForWorkflowForm::DURATION_SIGN_POSITIVE,
-                                                                                 $durationType    = TimeTriggerForWorkflowForm::DURATION_TYPE_DAY)
+                                                                                 $durationSign    = TimeDurationUtil::DURATION_SIGN_POSITIVE,
+                                                                                 $durationType    = TimeDurationUtil::DURATION_TYPE_DAY)
         {
             assert('is_string($attributeIndexOrDerivedType)'); // Not Coding Standard
             assert('is_string($valueType)');                   // Not Coding Standard

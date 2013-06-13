@@ -35,9 +35,15 @@
      ********************************************************************************/
 
     /**
-     * Display the duration derived attributes including the sign, type, and duration in seconds
+     * Class used by an email message in workflow to show the duration data. For example send the email message
+     * 4 hours after the workflow runs
      */
-    class TimeTriggerDurationElement extends DurationElement
+    class EmailMessageSendAfterDurationElement extends DurationElement
     {
+        protected $intervalAttributeName = 'sendAfterDurationInterval';
+
+        protected $signAttributeName     = 'sendAfterDurationSign';
+
+        protected $typeAttributeName     = 'sendAfterDurationType';
     }
 ?>

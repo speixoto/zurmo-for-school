@@ -131,14 +131,14 @@
                 'operator'                    => OperatorRules::TYPE_EQUALS,
                 'value'                       => '514',
                 'durationInterval'            => '10',
-                'durationSign'                => TimeTriggerForWorkflowForm::DURATION_SIGN_NEGATIVE,
-                'durationType'                => TimeTriggerForWorkflowForm::DURATION_TYPE_WEEK);
+                'durationSign'                => TimeDurationUtil::DURATION_SIGN_NEGATIVE,
+                'durationType'                => TimeDurationUtil::DURATION_TYPE_WEEK);
             DataToWorkflowUtil::resolveTimeTrigger($data, $workflow);
             $trigger = $workflow->getTimeTrigger();
             $this->assertEquals('514',                      $trigger->value);
             $this->assertEquals('10',                      $trigger->durationInterval);
-            $this->assertEquals(TimeTriggerForWorkflowForm::DURATION_SIGN_NEGATIVE, $trigger->durationSign);
-            $this->assertEquals(TimeTriggerForWorkflowForm::DURATION_TYPE_WEEK,     $trigger->durationType);
+            $this->assertEquals(TimeDurationUtil::DURATION_SIGN_NEGATIVE, $trigger->durationSign);
+            $this->assertEquals(TimeDurationUtil::DURATION_TYPE_WEEK,     $trigger->durationType);
             $this->assertEquals(OperatorRules::TYPE_EQUALS, $trigger->operator);
         }
 
@@ -879,7 +879,9 @@
             $data[ComponentForWorkflowForm::TYPE_EMAIL_MESSAGES][0]['emailTemplateId']          = '5';
             $data[ComponentForWorkflowForm::TYPE_EMAIL_MESSAGES][0]['sendFromType']             =
                                                                     EmailMessageForWorkflowForm::SEND_FROM_TYPE_DEFAULT;
-            $data[ComponentForWorkflowForm::TYPE_EMAIL_MESSAGES][0]['sendAfterDurationSeconds'] = '0';
+            $data[ComponentForWorkflowForm::TYPE_EMAIL_MESSAGES][0]['sendAfterDurationInterval'] = '0';
+            $data[ComponentForWorkflowForm::TYPE_EMAIL_MESSAGES][0]['sendAfterDurationSign']     = TimeDurationUtil::DURATION_SIGN_NEGATIVE;
+            $data[ComponentForWorkflowForm::TYPE_EMAIL_MESSAGES][0]['sendAfterDurationType']     = TimeDurationUtil::DURATION_TYPE_WEEK;
             $data[ComponentForWorkflowForm::TYPE_EMAIL_MESSAGES][0][EmailMessageForWorkflowForm::EMAIL_MESSAGE_RECIPIENTS] =
             array(
                 array('type'              => WorkflowEmailMessageRecipientForm::TYPE_DYNAMIC_TRIGGERED_MODEL_USER,
@@ -925,7 +927,9 @@
             $this->assertCount(1,   $emailMessages);
             $this->assertEquals('5', $emailMessages[0]->emailTemplateId);
             $this->assertEquals(EmailMessageForWorkflowForm::SEND_FROM_TYPE_DEFAULT, $emailMessages[0]->sendFromType);
-            $this->assertEquals(0,   $emailMessages[0]->sendAfterDurationSeconds);
+            $this->assertEquals(0,   $emailMessages[0]->sendAfterDurationInterval);
+            $this->assertEquals(TimeDurationUtil::DURATION_SIGN_NEGATIVE,   $emailMessages[0]->sendAfterDurationSign);
+            $this->assertEquals(TimeDurationUtil::DURATION_TYPE_WEEK,       $emailMessages[0]->sendAfterDurationType);
             $this->assertEquals(12,  $emailMessages[0]->getEmailMessageRecipientFormsCount());
 
             $emailMessageRecipients = $emailMessages[0]->getEmailMessageRecipients();
