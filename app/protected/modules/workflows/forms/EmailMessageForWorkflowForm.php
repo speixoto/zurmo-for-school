@@ -127,7 +127,7 @@
 
         /**
          * @param integer $initialTimeStamp
-         * @return integer of duration seconds based on durationInterval, durationSign, and durationType
+         * @return integer timestamp based on durationInterval, durationSign, and durationType
          */
         public function resolveNewTimeStampForDuration($initialTimeStamp)
         {

@@ -57,8 +57,9 @@
         {
             $id = $this->getEditableInputId($this->intervalAttributeName);
             $htmlOptions = array(
-                'name' => $this->getEditableInputName($this->intervalAttributeName),
-                'id'   => $id,
+                'name'     => $this->getEditableInputName($this->intervalAttributeName),
+                'id'       => $id,
+                'disabled' => $this->getDisabledValue(),
             );
             $textField = $this->form->textField($this->model, $this->intervalAttributeName, $htmlOptions);
             $error     = $this->form->error    ($this->model, $this->intervalAttributeName, array('inputID' => $id), true, true);
@@ -70,8 +71,9 @@
             $dropDownArray = $this->getDurationSignDropDownArray();
             $id = $this->getEditableInputId($this->signAttributeName);
             $htmlOptions = array(
-                'name'  => $this->getEditableInputName($this->signAttributeName),
-                'id'    => $id,
+                'name'     => $this->getEditableInputName($this->signAttributeName),
+                'id'       => $id,
+                'disabled' => $this->getDisabledValue(),
             );
             return $this->form->dropDownList($this->model, $this->signAttributeName, $dropDownArray, $htmlOptions);
         }
@@ -81,8 +83,9 @@
             $dropDownArray = $this->getDurationTypeDropDownArray();
             $id = $this->getEditableInputId($this->typeAttributeName);
             $htmlOptions = array(
-                'name'  => $this->getEditableInputName($this->typeAttributeName),
-                'id'    => $id,
+                'name'     => $this->getEditableInputName($this->typeAttributeName),
+                'id'       => $id,
+                'disabled' => $this->getDisabledValue(),
             );
             return $this->form->dropDownList($this->model, $this->typeAttributeName, $dropDownArray, $htmlOptions);
         }
@@ -117,7 +120,7 @@
                 return $this->getFormattedAttributeLabel();
             }
             $id = $this->getEditableInputId($this->attribute, $this->intervalAttributeName);
-            return $this->form->labelEx($this->model, $this->attribute, array('for' => $id));
+            return $this->form->labelEx($this->model, $this->intervalAttributeName, array('for' => $id));
         }
     }
 ?>

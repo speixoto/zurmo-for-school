@@ -35,9 +35,9 @@
      ********************************************************************************/
 
     /**
-     * Component form for a time trigger definition
+     * Form to work with duration enabled attributes
      */
-    class TimeTriggerForWorkflowForm extends TriggerForWorkflowForm
+    abstract class DurationEnabledWorkflowActionAttributeForm extends WorkflowActionAttributeForm
     {
         /**
          * @var integer.
@@ -55,11 +55,24 @@
         public $durationType = TimeDurationUtil::DURATION_TYPE_DAY;
 
         /**
-         * @return string component type
+         * @return array
          */
-        public static function getType()
+        public function rules()
         {
-            return static::TYPE_TIME_TRIGGER;
+            return array_merge(parent::rules(), array(
+                array('durationInterval', 'type', 'type' => 'integer'),
+                array('durationInterval', 'numerical', 'min' => 0),
+                array('durationSign',     'type', 'type' => 'string'),
+                array('durationType',     'type', 'type' => 'string'),
+            ));
+        }
+
+        /**
+         * @return array
+         */
+        public function attributeLabels()
+        {
+            return array_merge(parent::attributeLabels(), array('durationInterval' => Zurmo::t('Core', 'Interval')));
         }
 
         /**
@@ -70,46 +83,7 @@
         {
             assert('is_int($initialTimeStamp)');
             return TimeDurationUtil::resolveNewTimeStampForDuration($initialTimeStamp, (int)$this->durationInterval,
-                                                                    $this->durationSign, $this->durationType);
-        }
-
-        /**
-         * @return array
-         */
-        public function rules()
-        {
-            return array_merge(parent::rules(), array(
-                array('durationInterval', 'type', 'type' => 'integer'),
-                array('durationInterval', 'numerical', 'min' => 0),
-                array('durationInterval', 'required'),
-                array('durationSign',    'type', 'type' => 'string'),
-                array('durationSign',    'required'),
-                array('durationType',    'type', 'type' => 'string'),
-                array('durationType',    'required'),
-            ));
-        }
-
-        /**
-         * @return array
-         * @throws NotSupportedException if the attributeIndexOrDerivedType has not been populated yet
-         */
-        public function getOperatorValuesAndLabels()
-        {
-            if ($this->attributeIndexOrDerivedType == null)
-            {
-                throw new NotSupportedException();
-            }
-            $type = $this->getAvailableOperatorsType();
-            $data = array();
-            ModelAttributeToWorkflowOperatorTypeUtil::resolveOperatorsToIncludeByType($data, $type);
-            $data[OperatorRules::TYPE_DOES_NOT_CHANGE] = OperatorRules::getTranslatedTypeLabel(OperatorRules::TYPE_DOES_NOT_CHANGE);
-            if ($type != ModelAttributeToWorkflowOperatorTypeUtil::AVAILABLE_OPERATORS_TYPE_BOOLEAN &&
-               $type != ModelAttributeToWorkflowOperatorTypeUtil::AVAILABLE_OPERATORS_TYPE_HAS_ONE)
-            {
-                $data[OperatorRules::TYPE_IS_EMPTY]      = OperatorRules::getTranslatedTypeLabel(OperatorRules::TYPE_IS_EMPTY);
-                $data[OperatorRules::TYPE_IS_NOT_EMPTY]  = OperatorRules::getTranslatedTypeLabel(OperatorRules::TYPE_IS_NOT_EMPTY);
-            }
-            return $data;
+                $this->durationSign, $this->durationType);
         }
     }
 ?>

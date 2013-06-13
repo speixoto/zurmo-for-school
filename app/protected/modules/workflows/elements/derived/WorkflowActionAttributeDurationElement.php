@@ -35,50 +35,9 @@
      ********************************************************************************/
 
     /**
-     * Helper functionality for working with time duration and calculating durations
+     * Display the duration derived attributes including the sign, type, and duration in seconds
      */
-    class TimeDurationUtil
+    class WorkflowActionAttributeDurationElement extends DurationElement
     {
-        const DURATION_SIGN_POSITIVE = 'Positive';
-
-        const DURATION_SIGN_NEGATIVE = 'Negative';
-
-        const DURATION_TYPE_DAY      = 'Day';
-
-        const DURATION_TYPE_WEEK     = 'Week';
-
-        const DURATION_TYPE_MONTH    = 'Month';
-
-        const DURATION_TYPE_YEAR     = 'Year';
-
-        /**
-         * @param integer $initialTimeStamp
-         * @param integer $durationInterval
-         * @param string $durationSign
-         * @param string $durationType
-         * @return integer timestamp based on durationInterval, durationSign, and durationType
-         */
-        public static function resolveNewTimeStampForDuration($initialTimeStamp, $durationInterval, $durationSign, $durationType)
-        {
-            assert('is_int($initialTimeStamp)');
-            assert('is_int($durationInterval)');
-            assert('is_string($durationSign)');
-            assert('is_string($durationType)');
-            if($durationInterval == 0)
-            {
-                return 0;
-            }
-            $dateTime = DateTime::createFromFormat('U', (int)$initialTimeStamp,
-                new DateTimeZone(Yii::app()->timeZoneHelper->getForCurrentUser()));
-            if($durationSign == self::DURATION_SIGN_NEGATIVE)
-            {
-                $dateTime->modify('-' . $durationInterval . ' ' . $durationType); // Not Coding Standard
-            }
-            else
-            {
-                $dateTime->modify('+' . $durationInterval . ' ' . $durationType); // Not Coding Standard
-            }
-            return $dateTime->getTimestamp();
-        }
     }
 ?>
