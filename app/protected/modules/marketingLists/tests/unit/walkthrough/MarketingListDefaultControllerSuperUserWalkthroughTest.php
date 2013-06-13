@@ -295,7 +295,7 @@
         {
             $marketingListId = self::getModelIdByModelNameAndName ('MarketingList', 'New MarketingListName');
 
-            // Delete an marketingList.
+            // Delete a marketingList.
             $this->setGetArray(array('id' => $marketingListId));
             $this->resetPostArray();
             $redirectUrl = $this->runControllerWithRedirectExceptionAndGetUrl('marketingLists/default/delete');
