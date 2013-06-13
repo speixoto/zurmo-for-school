@@ -34,30 +34,25 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class ContactWebFormListViewColumnAdapter extends TextListViewColumnAdapter
+    /**
+     * Action bar view for the contact web form entry search and list view
+     */
+    class SecuredActionBarForContactWebFormEntrySearchAndListView extends SecuredActionBarForContactWebFormsSearchAndListView
     {
         /**
          * @return array
          */
-        public function renderGridViewData()
+        public static function getDefaultMetadata()
         {
-            if ($this->getIsLink())
-            {
-                return array(
-                    'name' => $this->attribute,
-                    'type' => 'raw',
-                    'value' => $this->view->getRelatedLinkString(
-                               '$data->' . $this->attribute, $this->attribute, 'contactWebForm'),
-                );
-            }
-            else
-            {
-                return array(
-                    'name'  => $this->attribute,
-                    'value' => 'strval($data->' . $this->attribute . ')',
-                    'type'  => 'raw',
-                );
-            }
+            $metadata      = parent::getDefaultMetadata();
+            $deleteElement = array(
+                                    'type'            => 'MassDeleteLink',
+                                    'htmlOptions'     => array('class' => 'icon-delete'),
+                                    'listViewGridId'  => 'eval:$this->listViewGridId',
+                                    'pageVarName'     => 'eval:$this->pageVarName'
+                                );
+            array_push($metadata['global']['toolbar']['elements'], $deleteElement);
+            return $metadata;
         }
     }
 ?>
