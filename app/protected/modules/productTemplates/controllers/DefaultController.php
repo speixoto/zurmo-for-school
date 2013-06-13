@@ -132,7 +132,8 @@
                         'productType' => $productType,
                         'productPriceFrequency' => $productPriceFrequency,
                         'productSellPriceCurrency' => $productSellPriceCurrency,
-                        'productSellPriceValue' => $productSellPriceValue
+                        'productSellPriceValue' => $productSellPriceValue,
+                        'productName'           => $productTemplate->name
                         );
 
                 echo json_encode($output);
@@ -474,7 +475,7 @@
             {
                 $productTemplate = ProductTemplate::getById((int)$id);
                 ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($productTemplate);
-                ZurmoCopyModelUtil::copy($productTemplate, $copyToProductTemplate);
+                ProductZurmoCopyModelUtil::copy($productTemplate, $copyToProductTemplate);
             }
             $this->processEdit($copyToProductTemplate);
         }

@@ -80,6 +80,15 @@
                                     array(
                                         array(
                                             'elements' => array(
+                                                array('attributeName' => 'language', 'type' => 'LanguageStaticDropDown'),
+                                            ),
+                                        ),
+                                    )
+                                ),
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
                                                 array('attributeName' => 'null', 'type' => 'AllContactStatesDropDownForContactWebForm'),
                                             ),
                                         ),

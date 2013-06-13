@@ -403,7 +403,7 @@
             {
                 $product        = Product::getById((int)$id);
                 ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($product);
-                ZurmoCopyModelUtil::copy($product, $copyToProduct);
+                ProductZurmoCopyModelUtil::copy($product, $copyToProduct);
             }
             $this->processEdit($copyToProduct);
         }

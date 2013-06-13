@@ -53,6 +53,15 @@
                                     array(
                                         array(
                                             'elements' => array(
+                                                array('attributeName' => 'productTemplate', 'type' => 'ProductTemplate'),
+                                            ),
+                                        ),
+                                    )
+                                ),
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
                                                 array('attributeName' => 'name', 'type' => 'Text'),
                                             ),
                                         ),
@@ -156,16 +165,7 @@
         protected function renderRightSideFormLayoutForEdit($form)
         {
             assert('$form instanceof ZurmoActiveForm');
-            $content = '';
-            if ($this->getModel() instanceof OwnedSecurableItem)
-            {
-                $content .= "<h3>".Zurmo::t('ProductTemplatesModule', 'Select Catalog Item') . '</h3><div id="product-template-box">';
-                $element  = new ProductTemplateElement($this->getModel(), 'productTemplate', $form);
-                $element->editableTemplate = '{content}{error}';
-                $content .= $element->render().'</div>';
-            }
-
-            $content = $content . "<br/>" . parent::renderRightSideFormLayoutForEdit($form);
+            $content = parent::renderRightSideFormLayoutForEdit($form);
 
             return $content;
         }
