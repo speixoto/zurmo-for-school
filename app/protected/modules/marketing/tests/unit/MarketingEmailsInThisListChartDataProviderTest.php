@@ -134,7 +134,7 @@
         }
 
         /**
-         * @dataProvider dataProvider
+         * @dataProvider dataForTestGetChartDataForCampaigns
          */
         public function testGetChartDataForCampaigns($campaingItemActivityCreationArray, $emailMessageSentDateTime)
         {
@@ -202,7 +202,7 @@
             $this->assertCount (3,          $chartData);
 
             $date = new DateTime($beginDate);
-            $date->modify('this week last monday');
+            $date->modify(('Sunday' == $date->format('l')) ? 'Monday last week' : 'Monday this week');
             $beginDateOfWeek = $date->format('Y-m-d');
             $displayLabel = DateTimeUtil
                     ::resolveValueForDateLocaleFormattedDisplay(
@@ -221,7 +221,7 @@
             $this->assertChartDataColumnAsExpected($expectedArray, $chartData[0]);
 
             $date = new DateTime($emailMessageSentDateTime);
-            $date->modify('this week last monday');
+            $date->modify(('Sunday' == $date->format('l')) ? 'Monday last week' : 'Monday this week');
             $beginDateOfWeek = $date->format('Y-m-d');
             $displayLabel = DateTimeUtil
                     ::resolveValueForDateLocaleFormattedDisplay(
@@ -437,7 +437,7 @@
             }
         }
 
-        public function dataProvider()
+        public function dataForTestGetChartDataForCampaigns()
         {
 
             $data = array(
@@ -458,7 +458,7 @@
                             CampaignItemActivity::TYPE_OPEN        => 3,
                             CampaignItemActivity::TYPE_SKIP        => 4,
                             CampaignItemActivity::TYPE_UNSUBSCRIBE => 5),
-                      '2013-06-12'),
+                      '2013-04-01'),
                 array(array(CampaignItemActivity::TYPE_CLICK       => 5,
                             CampaignItemActivity::TYPE_BOUNCE      => 4,
                             CampaignItemActivity::TYPE_OPEN        => 3,
