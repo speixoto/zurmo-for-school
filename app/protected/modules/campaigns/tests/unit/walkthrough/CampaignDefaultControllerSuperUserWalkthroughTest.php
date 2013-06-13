@@ -454,15 +454,15 @@
             $this->assertTrue(strpos($content, '<ul class="juiportlet-columns-CampaignDetailsAndRelationsViewLeft' .
                                                 'BottomView juiportlet-widget-column1 ">') !== false);
             $this->assertTrue(strpos($content, '<li class="juiportlet-widget CampaignOverallMetricsView" id="Campaign' .
-                                                'DetailsAndRelationsViewLeftBottomView_2">') !== false);
+                                                'DetailsAndRelationsViewLeftBottomView') !== false);
             $this->assertTrue(strpos($content, '<div class="juiportlet-widget-head">') !== false);
             $this->assertTrue(strpos($content, '<h3>Campaign Dashboard</h3><ul class="options-menu '.
                                                 'edit-portlet-menu nav">') !== false);
             $this->assertTrue(strpos($content, '<li class="parent last"><a href="javascript:void(0);">' .
                                                 '<span></span></a>') !== false);
             $this->assertTrue(strpos($content, '<li class="last"><a class="edit" id="CampaignDetailsAndRelations' .
-                                                'ViewLeftBottomView_2_EditLink" href="#"><span>Configure ' .
-                                                'Portlet</span></a></li>') !== false);
+                                                'ViewLeftBottomView') !== false);
+            $this->assertTrue(strpos($content, '" href="#"><span>Configure Portlet</span></a></li>') !== false);
             $this->assertTrue(strpos($content, '<div class="juiportlet-widget-content"  >') !== false);
             $this->assertTrue(strpos($content, '<div id="CampaignOverallMetricsView" class="MarketingMetricsView ' .
                                                 'ConfigurableMetadataView MetadataView">') !== false);
@@ -470,36 +470,38 @@
                                                 'campaign-metrics-container">') !== false);
             $this->assertTrue(strpos($content, '<h3>What is going on with this campaign?</h3>') !== false);
             $this->assertTrue(strpos($content, '<form id="marketing-metrics-group-by-configuration-form-CampaignDetails' .
-                                                'AndRelationsViewLeftBottomView_2" action="/app/test/index.php' .
-                                                '/somewhereForTheTest" method="post">') !== false);
+                                                'AndRelationsViewLeftBottomView') !== false);
+            $this->assertTrue(strpos($content, 'action="/app/test/index.php/somewhereForTheTest" ' .
+                                                'method="post">') !== false);
             $this->assertTrue(strpos($content, '<div id="marketing-metrics-group-by-configuration-form-CampaignDetails' .
-                                                'AndRelationsViewLeftBottomView_2_groupBy_area" ' .
-                                                'class="mini-pillbox">') !== false);
+                                                'AndRelationsViewLeftBottomView') !== false);
             $this->assertTrue(strpos($content, '<th><label for="ytMarketingOverallMetricsForm_groupBy">Group By' .
                                                 '</label></th>') !== false);
             $this->assertTrue(strpos($content, '<td colspan="1"><input type="hidden" value="" name="marketingMetrics' .
                                                 'GroupByNotUsedName" id="marketingMetricsGroupByNotUsedName"') !== false);
             $this->assertTrue(strpos($content, '<div class="pills"><a data-value="Day" class="marketing-metrics-group-' .
-                                                'by-configuration-form-CampaignDetailsAndRelationsViewLeftBottomView' .
-                                                '_2marketingMetricsGroupByLink" href="#">Day</a>') !== false);
+                                                'by-configuration-form-CampaignDetailsAnd' .
+                                                'RelationsViewLeftBottomView') !== false);
             $this->assertTrue(strpos($content, '<a data-value="Week" class="marketing-metrics-group-by-configuration-'.
-                                                'form-CampaignDetailsAndRelationsViewLeftBottomView_2marketingMetrics' .
-                                                'GroupByLink active" href="#">Week</a>') !== false);
+                                                'form-CampaignDetailsAndRelationsViewLeftBottomView') !== false);
+            $this->assertTrue(strpos($content, 'marketingMetricsGroupByLink active" href="#">Week</a>') !== false);
             $this->assertTrue(strpos($content, '<a data-value="Month" class="marketing-metrics-group-by-configuration' .
-                                                '-form-CampaignDetailsAndRelationsViewLeftBottomView_2marketingMetrics' .
-                                                'GroupByLink" href="#">Month</a></div>') !== false);
+                                                '-form-CampaignDetailsAndRelationsViewLeftBottomView') !== false);
+            $this->assertTrue(strpos($content, 'marketingMetricsGroupByLink" href="#">Month</a></div>') !== false);
             $this->assertTrue(strpos($content, '<div class="graph-container clearfix">') !== false);
             $this->assertTrue(strpos($content, '<div class="half marketing-graph">') !== false);
             $this->assertTrue(strpos($content, '<h3>Overall Campaign Performance</h3>') !== false);
-            $this->assertTrue(strpos($content, "<div id='chartContainerCampaignDetailsAndRelationsViewLeftBottomView" .
-                                                "_2OverallListPerformance' style='width: 100%; " .
+            $this->assertTrue(strpos($content, "<div id='chartContainerCampaignDetailsAndRelationsView" .
+                                                "LeftBottomView") !== false);
+            $this->assertTrue(strpos($content, "OverallListPerformance' style='width: 100%; " .
                                                 "height: 400px;'></div>") !== false);
             $this->assertTrue(strpos($content, '<h3>Emails in this Campaign</h3>') !== false);
-            $this->assertTrue(strpos($content, '<div id=\'chartContainerCampaignDetailsAndRelationsViewLeftBottomView' .
-                                                '_2EmailsInThisList\' style=\'width: 100%; ' .
-                                                'height: 400px;\'></div>') !== false);
+            $this->assertTrue(strpos($content, "<div id='chartContainerCampaignDetailsAndRelationsView" .
+                                                "LeftBottomView") !== false);
+            $this->assertTrue(strpos($content, "EmailsInThisList' style='width: 100%; " .
+                                                "height: 400px;'></div>") !== false);
             $this->assertTrue(strpos($content, '<li class="juiportlet-widget CampaignItemsRelatedListView" ' .
-                                                'id="CampaignDetailsAndRelationsViewLeftBottomView_3">') !== false);
+                                                'id="CampaignDetailsAndRelationsViewLeftBottomView') !== false);
             $this->assertTrue(strpos($content, '<div class="juiportlet-widget-head">') !== false);
             $this->assertTrue(strpos($content, '<h3>Email Recipients</h3>') !== false);
             $this->assertTrue(strpos($content, '<div class="juiportlet-widget-content" ') !== false);
@@ -507,7 +509,7 @@
                                                 'ModelView ConfigurableMetadataView MetadataView">') !== false);
             $this->assertTrue(strpos($content, '<div class="campaign-items-container">') !== false);
             $this->assertTrue(strpos($content, '<div class="cgrid-view" id="list-viewCampaignDetailsAndRelations' .
-                                                'ViewLeftBottomView_3">') !== false);
+                                                'ViewLeftBottomView') !== false);
             $this->assertTrue(strpos($content, '<div class="general-issue-notice no-email-recipients-found">' .
                                                 '<span class="icon-notice"></span>') !== false);
             $this->assertTrue(strpos($content, '<p>Email recipients will appear here once the campaign begins ' .
@@ -521,6 +523,7 @@
         {
             $campaigns = Campaign::getAll();
             $this->assertEquals(3, count($campaigns));
+            $marketingListId = self::getModelIdByModelNameAndName('MarketingList', 'MarketingListName');
             $campaignId = self::getModelIdByModelNameAndName ('Campaign', 'New Campaign using Create');
             $this->setGetArray(array('id' => $campaignId));
             $content = $this->runControllerWithNoExceptionsAndGetContent('campaigns/default/edit');
@@ -546,7 +549,8 @@
             $this->assertTrue(strpos($content, '<th><label for="Campaign_marketingList_id" class="required">Marketing ' .
                                                 'List <span class="required">*</span></label></th>') !== false);
             $this->assertTrue(strpos($content, '<td colspan="1"><input name="Campaign[marketingList][id]" ' .
-                                                'id="Campaign_marketingList_id" value="2" type="hidden"') !== false);
+                                                'id="Campaign_marketingList_id" value="' . $marketingListId .
+                                                '" type="hidden"') !== false);
             $this->assertTrue(strpos($content, '<a id="Campaign_marketingList_SelectLink" href="#"><span ' .
                                                 'class="model-select-icon"></span>') !== false);
             $this->assertTrue(strpos($content, '<th><label for="Campaign_fromName" class="required">From Name ' .
