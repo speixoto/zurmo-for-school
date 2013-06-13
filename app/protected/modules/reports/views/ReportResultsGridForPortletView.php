@@ -48,8 +48,12 @@
         public function getTitle()
         {
             $content  = Zurmo::t('ReportsModule', 'Results');
-            $content .= $this->renderSummaryCloneContent();
             return $content;
+        }
+
+        public function renderPortletHeadContent()
+        {
+            return $this->renderSummaryCloneContent();;
         }
 
         /**
