@@ -156,7 +156,7 @@
                 {
                     $autoresponder  = $autoresponderTenDaysFromNow;
                 }
-                $timestamp          = time() + $autoresponder->secondsFromOperation;
+                $timestamp          = $autoresponder->resolveNewTimeStampForDuration(time());
                 $processDateTime    = DateTimeUtil::convertTimestampToDbFormatDateTime($timestamp);
                 $autoresponderItem = AutoresponderItemTestHelper::createAutoresponderItem($processed,
                                                                                         $processDateTime,

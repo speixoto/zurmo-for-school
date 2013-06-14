@@ -80,5 +80,13 @@
             }
             return $dateTime->getTimestamp();
         }
+
+        public static function getValueAndLabels()
+        {
+            return array(TimeDurationUtil::DURATION_TYPE_DAY   => Zurmo::t('Core', 'Day(s)'),
+                         TimeDurationUtil::DURATION_TYPE_WEEK  => Zurmo::t('Core', 'Week(s)'),
+                         TimeDurationUtil::DURATION_TYPE_MONTH => Zurmo::t('Core', 'Month(s)'),
+                         TimeDurationUtil::DURATION_TYPE_YEAR  => Zurmo::t('Core', 'Year(s)'));
+        }
     }
 ?>

@@ -49,7 +49,10 @@
         {
             $content  = $this->renderEditableDurationIntervalTextField() . "\n";
             $content .= $this->renderEditableDurationTypeDropDownField() . "\n";
-            $content .= $this->renderEditableDurationSignDropDownField() . "\n";
+            if($this->signAttributeName != null)
+            {
+                $content .= $this->renderEditableDurationSignDropDownField() . "\n";
+            }
             return $content;
         }
 
@@ -98,10 +101,7 @@
 
         protected function getDurationTypeDropDownArray()
         {
-            return array(TimeDurationUtil::DURATION_TYPE_DAY   => Zurmo::t('Core', 'Day(s)'),
-                         TimeDurationUtil::DURATION_TYPE_WEEK  => Zurmo::t('Core', 'Week(s)'),
-                         TimeDurationUtil::DURATION_TYPE_MONTH => Zurmo::t('Core', 'Month(s)'),
-                         TimeDurationUtil::DURATION_TYPE_YEAR  => Zurmo::t('Core', 'Year(s)'));
+            return TimeDurationUtil::getValueAndLabels();
         }
 
         protected function renderControlNonEditable()

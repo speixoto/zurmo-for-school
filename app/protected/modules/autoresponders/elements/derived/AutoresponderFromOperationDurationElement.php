@@ -35,13 +35,15 @@
      ********************************************************************************/
 
     /**
-     * Element for displaying the autoresponder seconds from operation options.
+     * Class used by an autoresponder to show the duration data. For example send the first autoresponder 4 hours after
+     * someone subscribves
      */
-    class AutoresponderSecondsFromOperationElement extends StaticDropDownFormElement
+    class AutoresponderFromOperationDurationElement extends DurationElement
     {
-        protected function getDropDownArray()
-        {
-            return Autoresponder::getIntervalDropDownArray();
-        }
+        protected $intervalAttributeName = 'fromOperationDurationInterval';
+
+        protected $signAttributeName     = null;
+
+        protected $typeAttributeName     = 'fromOperationDurationType';
     }
 ?>
