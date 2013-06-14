@@ -44,8 +44,7 @@
             parent::setUpBeforeClass();
             SecurityTestHelper::createSuperAdmin();
 
-            $emailBox =
-                    EmailBoxUtil::getDefaultEmailBoxByUser(User::getByUsername('super'));
+            $emailBox = EmailBoxUtil::getDefaultEmailBoxByUser(User::getByUsername('super'));
             ContactTestHelper
                     ::createContactByNameForOwner('contact01', Yii::app()->user->userModel);
             ContactTestHelper
@@ -64,7 +63,6 @@
                     MarketingListTestHelper::createMarketingListByName('Test Marketing List');
             $this->campaign         =
                     CampaignTestHelper::createCampaign('Test Campaing 01', 'text', 'text exemple');
-
         }
 
         public function teardown()
@@ -87,15 +85,16 @@
             $chartData          = $chartDataProvider->getChartData();
             $count              = 15;
             $this->assertCount($count, $chartData);
-            for ($i = 0; $i < $count; $i++) {
-                $this->assertEquals(0,                  $chartData[$i][MarketingChartDataProvider::QUEUED]);
-                $this->assertEquals(0,                  $chartData[$i][MarketingChartDataProvider::SENT]);
-                $this->assertEquals(0,                  $chartData[$i][MarketingChartDataProvider::UNIQUE_CLICKS]);
-                $this->assertEquals(0,                  $chartData[$i][MarketingChartDataProvider::UNIQUE_OPENS]);
-                $this->assertEquals(0,                  $chartData[$i][MarketingChartDataProvider::BOUNCED]);
-                $this->assertEquals(0,                  $chartData[$i][MarketingChartDataProvider::UNSUBSCRIBED]);
-                $this->assertEquals('Jan ' . ($i+1),    $chartData[$i]['displayLabel']);
-                $this->assertEquals('Jan ' . ($i+1),    $chartData[$i]['dateBalloonLabel']);
+            for ($i = 0; $i < $count; $i++)
+            {
+                $this->assertEquals(0,                    $chartData[$i][MarketingChartDataProvider::QUEUED]);
+                $this->assertEquals(0,                    $chartData[$i][MarketingChartDataProvider::SENT]);
+                $this->assertEquals(0,                    $chartData[$i][MarketingChartDataProvider::UNIQUE_CLICKS]);
+                $this->assertEquals(0,                    $chartData[$i][MarketingChartDataProvider::UNIQUE_OPENS]);
+                $this->assertEquals(0,                    $chartData[$i][MarketingChartDataProvider::BOUNCED]);
+                $this->assertEquals(0,                    $chartData[$i][MarketingChartDataProvider::UNSUBSCRIBED]);
+                $this->assertEquals('Jan ' . ($i + 1),    $chartData[$i]['displayLabel']);
+                $this->assertEquals('Jan ' . ($i + 1),    $chartData[$i]['dateBalloonLabel']);
             }
 
             $chartDataProvider->setGroupBy(MarketingOverallMetricsForm::GROUPING_TYPE_WEEK);
@@ -134,7 +133,7 @@
         }
 
         /**
-         * @dataProvider dataProvider
+         * @dataProvider dataForTestGetChartDataForCampaigns
          */
         public function testGetChartDataForCampaigns($campaingItemActivityCreationArray, $emailMessageSentDateTime)
         {
@@ -142,7 +141,7 @@
             $this->addCampaingItem($contacts[0], $emailMessageSentDateTime, $campaingItemActivityCreationArray);
 
             $sent = true;
-            if(!isset($emailMessageSentDateTime))
+            if (!isset($emailMessageSentDateTime))
             {
                 $emailMessageSentDateTime = date('Y-m-d');
                 $sent = false;
@@ -202,7 +201,7 @@
             $this->assertCount (3,          $chartData);
 
             $date = new DateTime($beginDate);
-            $date->modify('this week last monday');
+            $date->modify(('Sunday' == $date->format('l')) ? 'Monday last week' : 'Monday this week');
             $beginDateOfWeek = $date->format('Y-m-d');
             $displayLabel = DateTimeUtil
                     ::resolveValueForDateLocaleFormattedDisplay(
@@ -221,7 +220,7 @@
             $this->assertChartDataColumnAsExpected($expectedArray, $chartData[0]);
 
             $date = new DateTime($emailMessageSentDateTime);
-            $date->modify('this week last monday');
+            $date->modify(('Sunday' == $date->format('l')) ? 'Monday last week' : 'Monday this week');
             $beginDateOfWeek = $date->format('Y-m-d');
             $displayLabel = DateTimeUtil
                     ::resolveValueForDateLocaleFormattedDisplay(
@@ -307,7 +306,6 @@
             $expectedArray['displayLabel']      = $displayLabel;
             $expectedArray['dateBalloonLabel']  = $displayLabel;
             $this->assertChartDataColumnAsExpected($expectedArray, $chartData[1]);
-
 
             //Test when sentDate = beginDate = endDate for day grouping
             $beginDate = $emailMessageSentDateTime;
@@ -403,7 +401,7 @@
             $emailMessage->subject                   = 'A test archived sent email';
             $emailMessage->content                   = $emailContent;
             $emailMessage->sender                    = $sender;
-            if(isset($emailMessageSentDateTime))
+            if (isset($emailMessageSentDateTime))
             {
                 $emailMessage->sentDateTime              = DateTimeUtil
                         ::convertTimestampToDbFormatDateTime(strtotime($emailMessageSentDateTime));
@@ -437,9 +435,8 @@
             }
         }
 
-        public function dataProvider()
+        public function dataForTestGetChartDataForCampaigns()
         {
-
             $data = array(
                 array(array(CampaignItemActivity::TYPE_CLICK       => 1,
                             CampaignItemActivity::TYPE_BOUNCE      => 1,
@@ -458,7 +455,7 @@
                             CampaignItemActivity::TYPE_OPEN        => 3,
                             CampaignItemActivity::TYPE_SKIP        => 4,
                             CampaignItemActivity::TYPE_UNSUBSCRIBE => 5),
-                      '2013-06-12'),
+                      '2013-04-01'),
                 array(array(CampaignItemActivity::TYPE_CLICK       => 5,
                             CampaignItemActivity::TYPE_BOUNCE      => 4,
                             CampaignItemActivity::TYPE_OPEN        => 3,
