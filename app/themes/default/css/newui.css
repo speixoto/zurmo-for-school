@@ -18095,7 +18095,7 @@ a.user-link {
 }
 .autoresponder-combined-content .spinner,
 .email-template-combined-content .spinner {
-  margin: 15% 0 0 50%;
+  margin: 100px 0 0 50%;
   left: 0 !important;
   top: 0 !important;
 }
