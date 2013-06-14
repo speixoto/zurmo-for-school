@@ -243,7 +243,8 @@
                         );
                             " . $this->renderScriptCallToRebuildSelectInputFromInputs() . "
                         $('.has-lang-label', newLi).each(
-                            function(){
+                            function()
+                            {
                                 $(this).resolvePaddingForHasLangLabel( $(this) );
                             }
                         );

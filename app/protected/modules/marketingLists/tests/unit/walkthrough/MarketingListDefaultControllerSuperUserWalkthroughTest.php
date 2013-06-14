@@ -439,21 +439,21 @@
             $this->assertTrue(strpos($content, '<table class="items">') !== false);
             $this->assertTrue(strpos($content, '<th id="list-viewmodal_c0">') !== false);
             $this->assertTrue(strpos($content, '<a class="sort-link" href="') !== false);
-            $this->assertTrue(strpos($content, 'marketingLists/default/modalList?modalTransferInformation%5BsourceId' .
-                                                'FieldId%5D=Campaign_marketingList_id&amp;modalTransferInformation%5B' .
-                                                'sourceNameFieldId%5D=Campaign_marketingList_name&amp;modalTransfer' .
-                                                'Information%5BmodalId%5D=modalContainer-edit-form&amp;MarketingList' .
-                                                '_sort=name">Name</a></th></tr>') !== false);
+            $this->assertTrue(strpos($content, 'marketingLists/default/modalList?modalTransferInformation%5BsourceId' . // Not Coding Standard
+                                                'FieldId%5D=Campaign_marketingList_id&amp;modalTransferInformation%5B' . // Not Coding Standard
+                                                'sourceNameFieldId%5D=Campaign_marketingList_name&amp;modalTransfer' .  // Not Coding Standard
+                                                'Information%5BmodalId%5D=modalContainer-edit-form&amp;MarketingList' . // Not Coding Standard
+                                                '_sort=name">Name</a></th></tr>') !== false);                           // Not Coding Standard
             $this->assertTrue(strpos($content, '<tr class="odd">') !== false);
             $this->assertTrue(strpos($content, 'MarketingListName</a></td></tr>') !== false);
             $this->assertTrue(strpos($content, '<tr class="even">') !== false);
             $this->assertTrue(strpos($content, 'MarketingListName2</a></td></tr>') !== false);
             $this->assertTrue(strpos($content, '<div class="pager horizontal">') !== false);
             $this->assertTrue(strpos($content, '<li class="refresh hidden">') !== false);
-            $this->assertTrue(strpos($content, 'marketingLists/default/modalList?modalTransferInformation%5Bsource'.
-                                                'IdFieldId%5D=Campaign_marketingList_id&amp;modalTransferInformation'.
-                                                '%5BsourceNameFieldId%5D=Campaign_marketingList_name&amp;modal' .
-                                                'TransferInformation%5BmodalId%5D=modalContainer-edit-form">' .
+            $this->assertTrue(strpos($content, 'marketingLists/default/modalList?modalTransferInformation%5Bsource'.    // Not Coding Standard
+                                                'IdFieldId%5D=Campaign_marketingList_id&amp;modalTransferInformation'.  // Not Coding Standard
+                                                '%5BsourceNameFieldId%5D=Campaign_marketingList_name&amp;modal' .       // Not Coding Standard
+                                                'TransferInformation%5BmodalId%5D=modalContainer-edit-form">' .         // Not Coding Standard
                                                 'refresh</a></li></ul>') !== false);
             $this->assertTrue(strpos($content, '</div><div class="list-preloader">') !== false);
             $this->assertTrue(strpos($content, '<span class="z-spinner"></span></div>') !== false);

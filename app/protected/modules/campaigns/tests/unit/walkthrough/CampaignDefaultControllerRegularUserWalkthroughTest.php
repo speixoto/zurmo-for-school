@@ -95,7 +95,7 @@
             $this->assertTrue(strpos($content, '<p>To manage campaigns you must have access to email templates and ' .
                                     'marketing lists. Contact the CRM administrator about this issue.</p>') !== false);
             $this->user->setRight('MarketingListsModule', MarketingListsModule::getAccessRight());
-            $this->user->setRight('EmailTemplatesModule',EmailTemplatesModule::getAccessRight());
+            $this->user->setRight('EmailTemplatesModule', EmailTemplatesModule::getAccessRight());
             $this->assertTrue($this->user->save());
             $content = $this->runControllerWithNoExceptionsAndGetContent('campaigns/default');
             $this->assertTrue(strpos($content, '<p>To manage campaigns you must have access to email templates and ' .
@@ -106,7 +106,6 @@
             $content = $this->runControllerWithNoExceptionsAndGetContent('campaigns/default/list');
             $this->assertTrue(strpos($content, '<p>To manage campaigns you must have access to email templates and ' .
                                     'marketing lists. Contact the CRM administrator about this issue.</p>') === false);
-
 
             $this->setGetArray(array('id' => $campaign->id));
             $content = $this->runControllerWithNoExceptionsAndGetContent('campaigns/default/details');

@@ -44,8 +44,7 @@
             parent::setUpBeforeClass();
             SecurityTestHelper::createSuperAdmin();
 
-            $emailBox =
-                    EmailBoxUtil::getDefaultEmailBoxByUser(User::getByUsername('super'));
+            $emailBox = EmailBoxUtil::getDefaultEmailBoxByUser(User::getByUsername('super'));
             ContactTestHelper
                     ::createContactByNameForOwner('contact01', Yii::app()->user->userModel);
             ContactTestHelper
@@ -64,7 +63,6 @@
                     MarketingListTestHelper::createMarketingListByName('Test Marketing List');
             $this->campaign         =
                     CampaignTestHelper::createCampaign('Test Campaing 01', 'text', 'text exemple');
-
         }
 
         public function teardown()
@@ -87,15 +85,16 @@
             $chartData          = $chartDataProvider->getChartData();
             $count              = 15;
             $this->assertCount($count, $chartData);
-            for ($i = 0; $i < $count; $i++) {
-                $this->assertEquals(0,                  $chartData[$i][MarketingChartDataProvider::QUEUED]);
-                $this->assertEquals(0,                  $chartData[$i][MarketingChartDataProvider::SENT]);
-                $this->assertEquals(0,                  $chartData[$i][MarketingChartDataProvider::UNIQUE_CLICKS]);
-                $this->assertEquals(0,                  $chartData[$i][MarketingChartDataProvider::UNIQUE_OPENS]);
-                $this->assertEquals(0,                  $chartData[$i][MarketingChartDataProvider::BOUNCED]);
-                $this->assertEquals(0,                  $chartData[$i][MarketingChartDataProvider::UNSUBSCRIBED]);
-                $this->assertEquals('Jan ' . ($i+1),    $chartData[$i]['displayLabel']);
-                $this->assertEquals('Jan ' . ($i+1),    $chartData[$i]['dateBalloonLabel']);
+            for ($i = 0; $i < $count; $i++)
+            {
+                $this->assertEquals(0,                    $chartData[$i][MarketingChartDataProvider::QUEUED]);
+                $this->assertEquals(0,                    $chartData[$i][MarketingChartDataProvider::SENT]);
+                $this->assertEquals(0,                    $chartData[$i][MarketingChartDataProvider::UNIQUE_CLICKS]);
+                $this->assertEquals(0,                    $chartData[$i][MarketingChartDataProvider::UNIQUE_OPENS]);
+                $this->assertEquals(0,                    $chartData[$i][MarketingChartDataProvider::BOUNCED]);
+                $this->assertEquals(0,                    $chartData[$i][MarketingChartDataProvider::UNSUBSCRIBED]);
+                $this->assertEquals('Jan ' . ($i + 1),    $chartData[$i]['displayLabel']);
+                $this->assertEquals('Jan ' . ($i + 1),    $chartData[$i]['dateBalloonLabel']);
             }
 
             $chartDataProvider->setGroupBy(MarketingOverallMetricsForm::GROUPING_TYPE_WEEK);
@@ -142,7 +141,7 @@
             $this->addCampaingItem($contacts[0], $emailMessageSentDateTime, $campaingItemActivityCreationArray);
 
             $sent = true;
-            if(!isset($emailMessageSentDateTime))
+            if (!isset($emailMessageSentDateTime))
             {
                 $emailMessageSentDateTime = date('Y-m-d');
                 $sent = false;
@@ -308,7 +307,6 @@
             $expectedArray['dateBalloonLabel']  = $displayLabel;
             $this->assertChartDataColumnAsExpected($expectedArray, $chartData[1]);
 
-
             //Test when sentDate = beginDate = endDate for day grouping
             $beginDate = $emailMessageSentDateTime;
             $endDate   = $emailMessageSentDateTime;
@@ -403,7 +401,7 @@
             $emailMessage->subject                   = 'A test archived sent email';
             $emailMessage->content                   = $emailContent;
             $emailMessage->sender                    = $sender;
-            if(isset($emailMessageSentDateTime))
+            if (isset($emailMessageSentDateTime))
             {
                 $emailMessage->sentDateTime              = DateTimeUtil
                         ::convertTimestampToDbFormatDateTime(strtotime($emailMessageSentDateTime));
@@ -439,7 +437,6 @@
 
         public function dataForTestGetChartDataForCampaigns()
         {
-
             $data = array(
                 array(array(CampaignItemActivity::TYPE_CLICK       => 1,
                             CampaignItemActivity::TYPE_BOUNCE      => 1,

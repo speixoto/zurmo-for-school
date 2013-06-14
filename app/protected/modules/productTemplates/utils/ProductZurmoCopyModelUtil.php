@@ -48,7 +48,7 @@
         public static function copy(RedBeanModel $model, RedBeanModel $copyToModel)
         {
             parent::copy($model, $copyToModel);
-            foreach($model->productCategories as $productCategory)
+            foreach ($model->productCategories as $productCategory)
             {
                 $copyToModel->productCategories->add($productCategory);
             }

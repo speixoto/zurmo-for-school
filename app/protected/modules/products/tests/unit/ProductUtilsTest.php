@@ -62,7 +62,7 @@
             unset($product);
             $product                  = Product::getById($id);
             $totalPrice = ProductElementUtil::getProductPortletTotalPrice($product, 0);
-            $this->assertEquals($totalPrice, "$1,001.08");
+            $this->assertEquals($totalPrice, "$1,001.08"); // Not Coding Standard
         }
 
         public function testGetProductNameLinkStringWithExceededLength()
@@ -100,7 +100,7 @@
             $category1 = ProductCategoryTestHelper::createProductCategoryByName('Test Product Category');
             $category2 = ProductCategoryTestHelper::createProductCategoryByName('Test Product Category2');
             $product = ProductTestHelper::createProductByNameForOwner('I am testing products', $super);
-            $postData = array('categoryIds' => $category1->id . ',' . $category2->id);
+            $postData = array('categoryIds' => $category1->id . ',' . $category2->id); // Not Coding Standard
             $id                       = $product->id;
             $product->forget();
             unset($product);
