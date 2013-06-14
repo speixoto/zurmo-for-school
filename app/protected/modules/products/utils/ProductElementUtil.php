@@ -71,7 +71,7 @@
         public static function getProductNameLinkString($data, $row)
         {
             $productName = $data->name;
-            if(strlen($productName) > (self::PRODUCT_NAME_LENGTH_IN_PORTLET_VIEW + 2))
+            if (strlen($productName) > (self::PRODUCT_NAME_LENGTH_IN_PORTLET_VIEW + 2))
             {
                 $productName = substr($productName, 0, self::PRODUCT_NAME_LENGTH_IN_PORTLET_VIEW);
                 $productName .= '..';

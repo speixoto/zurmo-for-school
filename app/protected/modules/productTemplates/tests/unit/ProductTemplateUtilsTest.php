@@ -81,7 +81,7 @@
             $category1 = ProductCategoryTestHelper::createProductCategoryByName('Test Product Category');
             $category2 = ProductCategoryTestHelper::createProductCategoryByName('Test Product Category2');
             $productTemplate   = ProductTemplateTestHelper::createProductTemplateByName('PT1');
-            $postData  = array('categoryIds' => $category1->id . ',' . $category2->id);
+            $postData  = array('categoryIds' => $category1->id . ',' . $category2->id); // Not Coding Standard
             $id                       = $productTemplate->id;
             $productTemplate->forget();
             unset($productTemplate);

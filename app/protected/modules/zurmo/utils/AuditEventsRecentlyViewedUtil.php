@@ -170,12 +170,11 @@
             $inRecentlyKey = null;
             foreach ($recentlyViewed as $key => $item)
             {
-                if($item[1] == $newItem[1] && $item[0] == $newItem[0])
+                if ($item[1] == $newItem[1] && $item[0] == $newItem[0])
                 {
                     $inRecentlyKey = $key;
                 }
-
-            }                            
+            }
             if (isset($inRecentlyKey))
             {
                 unset($recentlyViewed[$inRecentlyKey]);

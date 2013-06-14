@@ -69,7 +69,7 @@
         protected static function resolveForCustomRules($portletRulesType)
         {
             $customPortletRulesClassName = self::CUSTOM_RULES_PREFIX . $portletRulesType . 'PortletRules';
-            if(@class_exists($customPortletRulesClassName))
+            if (@class_exists($customPortletRulesClassName))
             {
                 return $customPortletRulesClassName;
             }

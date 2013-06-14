@@ -196,7 +196,7 @@
          */
         public static function getDefaultLayoutType()
         {
-            return '75,25';
+            return '75,25'; // Not Coding Standard
         }
     }
 ?>
