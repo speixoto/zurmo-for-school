@@ -620,7 +620,6 @@
             $this->assertTrue(strpos($content, '<textarea id=\'Campaign_htmlContent\' name=\'Campaign[htmlContent]\'>' .
                                                 'Html</textarea></div>') !== false);
 
-
             $marketingList      = MarketingListTestHelper::createMarketingListByName('MarketingListName2',
                                                                                         'MarketingList Description',
                                                                                         'second',

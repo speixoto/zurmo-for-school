@@ -90,26 +90,26 @@
             $content            = Zurmo::t("Core", "Total: ");
             $contentArray        = array();
 
-            if($oneTimeTotal > 0)
+            if ($oneTimeTotal > 0)
             {
                 $contentArray[] = Yii::app()->numberFormatter->formatCurrency($oneTimeTotal,
                                                                     Yii::app()->currencyHelper->getCodeForCurrentUserForDisplay())
                                                                      . Zurmo::t("Core", " One Time");
             }
-            if($monthlyTotal > 0)
+            if ($monthlyTotal > 0)
             {
                 $contentArray[] = Yii::app()->numberFormatter->formatCurrency($monthlyTotal,
                                                                     Yii::app()->currencyHelper->getCodeForCurrentUserForDisplay())
                                                                      . Zurmo::t("Core", " Monthly");
             }
-            if($annualTotal > 0)
+            if ($annualTotal > 0)
             {
                 $contentArray[] = Yii::app()->numberFormatter->formatCurrency($annualTotal,
                                                                     Yii::app()->currencyHelper->getCodeForCurrentUserForDisplay())
                                                                      . Zurmo::t("Core", " Annually");
             }
 
-            if(empty ($contentArray))
+            if (empty ($contentArray))
             {
                 $content = '';
             }
