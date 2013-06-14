@@ -43,6 +43,10 @@
 
         const DURATION_SIGN_NEGATIVE = 'Negative';
 
+        const DURATION_TYPE_MINUTE   = 'Minute';
+
+        const DURATION_TYPE_HOUR     = 'Hour';
+
         const DURATION_TYPE_DAY      = 'Day';
 
         const DURATION_TYPE_WEEK     = 'Week';
@@ -83,10 +87,20 @@
 
         public static function getValueAndLabels()
         {
-            return array(TimeDurationUtil::DURATION_TYPE_DAY   => Zurmo::t('Core', 'Day(s)'),
-                         TimeDurationUtil::DURATION_TYPE_WEEK  => Zurmo::t('Core', 'Week(s)'),
-                         TimeDurationUtil::DURATION_TYPE_MONTH => Zurmo::t('Core', 'Month(s)'),
-                         TimeDurationUtil::DURATION_TYPE_YEAR  => Zurmo::t('Core', 'Year(s)'));
+            return array(TimeDurationUtil::DURATION_TYPE_MINUTE => Zurmo::t('Core', 'Minute(s)'),
+                         TimeDurationUtil::DURATION_TYPE_HOUR   => Zurmo::t('Core', 'Hour(s)'),
+                         TimeDurationUtil::DURATION_TYPE_DAY    => Zurmo::t('Core', 'Day(s)'),
+                         TimeDurationUtil::DURATION_TYPE_WEEK   => Zurmo::t('Core', 'Week(s)'),
+                         TimeDurationUtil::DURATION_TYPE_MONTH  => Zurmo::t('Core', 'Month(s)'),
+                         TimeDurationUtil::DURATION_TYPE_YEAR   => Zurmo::t('Core', 'Year(s)'));
+        }
+
+        public static function getDateOnlyValueAndLabels()
+        {
+            return array(TimeDurationUtil::DURATION_TYPE_DAY    => Zurmo::t('Core', 'Day(s)'),
+                         TimeDurationUtil::DURATION_TYPE_WEEK   => Zurmo::t('Core', 'Week(s)'),
+                         TimeDurationUtil::DURATION_TYPE_MONTH  => Zurmo::t('Core', 'Month(s)'),
+                         TimeDurationUtil::DURATION_TYPE_YEAR   => Zurmo::t('Core', 'Year(s)'));
         }
     }
 ?>

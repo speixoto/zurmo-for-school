@@ -39,5 +39,20 @@
      */
     class WorkflowActionAttributeDurationElement extends DurationElement
     {
+        protected function getDurationTypeDropDownArray()
+        {
+            if($this->model->getFormType() == 'Date')
+            {
+                return TimeDurationUtil::getDateOnlyValueAndLabels();
+            }
+            elseif($this->model->getFormType() == 'DateTime')
+            {
+                return TimeDurationUtil::getValueAndLabels();
+            }
+            else
+            {
+                throw new NotSupportedException();
+            }
+        }
     }
 ?>

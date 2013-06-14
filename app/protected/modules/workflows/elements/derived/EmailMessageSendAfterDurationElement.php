@@ -42,7 +42,7 @@
     {
         protected $intervalAttributeName = 'sendAfterDurationInterval';
 
-        protected $signAttributeName     = 'sendAfterDurationSign';
+        protected $signAttributeName     = null;
 
         protected $typeAttributeName     = 'sendAfterDurationType';
     }

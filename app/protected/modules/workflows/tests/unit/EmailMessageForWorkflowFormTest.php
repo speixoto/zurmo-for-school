@@ -46,7 +46,6 @@
             $this->assertEquals($compareErrors, $errors);
             //Ensure validation will pass
             $message->sendAfterDurationInterval = 86400;
-            $message->sendAfterDurationSign     = TimeDurationUtil::DURATION_SIGN_NEGATIVE;
             $message->sendAfterDurationType     = TimeDurationUtil::DURATION_TYPE_WEEK;
             $message->emailTemplateId          = 5;
             $message->sendFromType             = EmailMessageForWorkflowForm::SEND_FROM_TYPE_DEFAULT;
@@ -77,7 +76,6 @@
             $message->sendFromAddress = 'someone@zurmo.com';
             $message->sendFromName    = 'Jason';
             $message->sendAfterDurationInterval = 86400;
-            $message->sendAfterDurationSign     = TimeDurationUtil::DURATION_SIGN_NEGATIVE;
             $message->sendAfterDurationType     = TimeDurationUtil::DURATION_TYPE_WEEK;
             $validated     = $message->validate();
             $errors        = $message->getErrors();
@@ -91,7 +89,6 @@
         {
             $message = new EmailMessageForWorkflowForm('WorkflowModelTestItem', Workflow::TYPE_ON_SAVE);
             $message->sendAfterDurationInterval = 86400;
-            $message->sendAfterDurationSign     = TimeDurationUtil::DURATION_SIGN_NEGATIVE;
             $message->sendAfterDurationType     = TimeDurationUtil::DURATION_TYPE_WEEK;
             $message->sendFromType             = EmailMessageForWorkflowForm::SEND_FROM_TYPE_DEFAULT;
             $recipients = array(array('type' => WorkflowEmailMessageRecipientForm::TYPE_DYNAMIC_TRIGGERED_MODEL_USER,

@@ -880,7 +880,6 @@
             $data[ComponentForWorkflowForm::TYPE_EMAIL_MESSAGES][0]['sendFromType']             =
                                                                     EmailMessageForWorkflowForm::SEND_FROM_TYPE_DEFAULT;
             $data[ComponentForWorkflowForm::TYPE_EMAIL_MESSAGES][0]['sendAfterDurationInterval'] = '0';
-            $data[ComponentForWorkflowForm::TYPE_EMAIL_MESSAGES][0]['sendAfterDurationSign']     = TimeDurationUtil::DURATION_SIGN_NEGATIVE;
             $data[ComponentForWorkflowForm::TYPE_EMAIL_MESSAGES][0]['sendAfterDurationType']     = TimeDurationUtil::DURATION_TYPE_WEEK;
             $data[ComponentForWorkflowForm::TYPE_EMAIL_MESSAGES][0][EmailMessageForWorkflowForm::EMAIL_MESSAGE_RECIPIENTS] =
             array(
@@ -928,7 +927,6 @@
             $this->assertEquals('5', $emailMessages[0]->emailTemplateId);
             $this->assertEquals(EmailMessageForWorkflowForm::SEND_FROM_TYPE_DEFAULT, $emailMessages[0]->sendFromType);
             $this->assertEquals(0,   $emailMessages[0]->sendAfterDurationInterval);
-            $this->assertEquals(TimeDurationUtil::DURATION_SIGN_NEGATIVE,   $emailMessages[0]->sendAfterDurationSign);
             $this->assertEquals(TimeDurationUtil::DURATION_TYPE_WEEK,       $emailMessages[0]->sendAfterDurationType);
             $this->assertEquals(12,  $emailMessages[0]->getEmailMessageRecipientFormsCount());
 

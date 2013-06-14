@@ -94,7 +94,6 @@
 
             $message       = new EmailMessageForWorkflowForm('WorkflowModelTestItem', Workflow::TYPE_ON_SAVE);
             $message->sendAfterDurationInterval = 86400;
-            $message->sendAfterDurationSign     = TimeDurationUtil::DURATION_SIGN_NEGATIVE;
             $message->sendAfterDurationType     = TimeDurationUtil::DURATION_TYPE_WEEK;
             $message->emailTemplateId          = 5;
             $message->sendFromType             = EmailMessageForWorkflowForm::SEND_FROM_TYPE_DEFAULT;
@@ -172,7 +171,6 @@
                                                   )));
             $compareData['EmailMessages'] = array(array('emailTemplateId' => 5,
                                                          'sendAfterDurationInterval' => 86400,
-                                                         'sendAfterDurationSign'     => TimeDurationUtil::DURATION_SIGN_NEGATIVE,
                                                          'sendAfterDurationType'     => TimeDurationUtil::DURATION_TYPE_WEEK,
                                                          'sendFromType' => 'Default',
                                                          'sendFromName' => null,

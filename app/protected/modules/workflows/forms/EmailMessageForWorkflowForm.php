@@ -66,11 +66,6 @@
         /**
          * @var string
          */
-        public $sendAfterDurationSign = TimeDurationUtil::DURATION_SIGN_POSITIVE;
-
-        /**
-         * @var string
-         */
         public $sendAfterDurationType = TimeDurationUtil::DURATION_TYPE_DAY;
 
         /**
@@ -133,7 +128,7 @@
         {
             assert('is_int($initialTimeStamp)');
             return TimeDurationUtil::resolveNewTimeStampForDuration($initialTimeStamp, (int)$this->sendAfterDurationInterval,
-                    $this->sendAfterDurationSign, $this->sendAfterDurationType);
+                   TimeDurationUtil::DURATION_SIGN_POSITIVE, $this->sendAfterDurationType);
         }
 
         /**
@@ -201,8 +196,6 @@
                 array('sendAfterDurationInterval', 'type', 'type' => 'integer'),
                 array('sendAfterDurationInterval', 'numerical', 'min' => 0),
                 array('sendAfterDurationInterval', 'required'),
-                array('sendAfterDurationSign',     'type', 'type' => 'string'),
-                array('sendAfterDurationSign',     'required'),
                 array('sendAfterDurationType',     'type', 'type' => 'string'),
                 array('sendAfterDurationType',     'required'),
                 array('sendFromType',              'type',  'type' => 'string'),
@@ -218,7 +211,7 @@
         public function attributeLabels()
         {
             return array('emailTemplateId'          => Zurmo::t('WorkflowsModule', 'Template'),
-                         'sendAfterDurationInterval'=> Zurmo::t('WorkflowsModule', 'Send'),
+                         'sendAfterDurationInterval'=> Zurmo::t('WorkflowsModule', 'Send After'),
                          'sendFromType'             => Zurmo::t('WorkflowsModule', 'Send From'),
                          'sendFromName'             => Zurmo::t('WorkflowsModule', 'From Name'),
                          'sendFromAddress'          => Zurmo::t('WorkflowsModule', 'From Address'),

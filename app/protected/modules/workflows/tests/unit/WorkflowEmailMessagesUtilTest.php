@@ -89,7 +89,6 @@
             $workflow->type   = Workflow::TYPE_ON_SAVE;
             $emailMessageForm = new EmailMessageForWorkflowForm('WorkflowModelTestItem', Workflow::TYPE_ON_SAVE);
             $emailMessageForm->sendAfterDurationInterval = 1;
-            $emailMessageForm->sendAfterDurationSign     = TimeDurationUtil::DURATION_SIGN_POSITIVE;
             $emailMessageForm->sendAfterDurationType     = TimeDurationUtil::DURATION_TYPE_DAY;
             $recipients = array(array('type'              => WorkflowEmailMessageRecipientForm::
                                                              TYPE_DYNAMIC_TRIGGERED_MODEL_USER,
@@ -138,7 +137,6 @@
             $workflow->type   = Workflow::TYPE_ON_SAVE;
             $emailMessageForm = new EmailMessageForWorkflowForm('WorkflowModelTestItem', Workflow::TYPE_ON_SAVE);
             $emailMessageForm->sendAfterDurationInterval = 0;
-            $emailMessageForm->sendAfterDurationSign     = TimeDurationUtil::DURATION_SIGN_NEGATIVE;
             $emailMessageForm->sendAfterDurationType     = TimeDurationUtil::DURATION_TYPE_WEEK;
             $emailMessageForm->emailTemplateId = $emailTemplate->id;
             $emailMessageForm->sendFromType    = EmailMessageForWorkflowForm::SEND_FROM_TYPE_DEFAULT;
@@ -178,7 +176,6 @@
             $workflow->type   = Workflow::TYPE_ON_SAVE;
             $emailMessageForm = new EmailMessageForWorkflowForm('Contact', Workflow::TYPE_ON_SAVE);
             $emailMessageForm->sendAfterDurationInterval = 0;
-            $emailMessageForm->sendAfterDurationSign     = TimeDurationUtil::DURATION_SIGN_NEGATIVE;
             $emailMessageForm->sendAfterDurationType     = TimeDurationUtil::DURATION_TYPE_WEEK;
             $emailMessageForm->emailTemplateId = $emailTemplate->id;
             $emailMessageForm->sendFromType    = EmailMessageForWorkflowForm::SEND_FROM_TYPE_DEFAULT;
@@ -227,7 +224,6 @@
             $workflow->type   = Workflow::TYPE_ON_SAVE;
             $emailMessageForm = new EmailMessageForWorkflowForm('Account', Workflow::TYPE_ON_SAVE);
             $emailMessageForm->sendAfterDurationInterval = 0;
-            $emailMessageForm->sendAfterDurationSign     = TimeDurationUtil::DURATION_SIGN_NEGATIVE;
             $emailMessageForm->sendAfterDurationType     = TimeDurationUtil::DURATION_TYPE_WEEK;
             $emailMessageForm->emailTemplateId = $emailTemplate->id;
             $emailMessageForm->sendFromType    = EmailMessageForWorkflowForm::SEND_FROM_TYPE_DEFAULT;
