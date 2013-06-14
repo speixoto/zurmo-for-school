@@ -47,7 +47,8 @@
         public static function getLanguage()
         {
             $language = Yii::app()->getLanguage();
-            if ($language == 'en' || $language == 'en_us')
+            if ($language == 'en' || $language == 'en_us' || $language == 'en_ca' ||
+                $language == 'en_au' || $language == 'en_gb')
             {
                 return;
             }

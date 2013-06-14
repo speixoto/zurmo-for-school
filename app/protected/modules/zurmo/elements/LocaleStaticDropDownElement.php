@@ -34,52 +34,16 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class UsersSearchView extends SavedDynamicSearchView
+    class LocaleStaticDropDownElement extends StaticDropDownFormElement
     {
-        public static function getDefaultMetadata()
+        protected function getDropDownArray()
         {
-            $metadata = array(
-                'global' => array(
-                    'nonPlaceableAttributeNames' => array(
-                        'hash',
-                        'currency',
-                        'timeZone',
-                        'language',
-                        'locale',
-                        'newPassword',
-                        'newPassword_repeat',
-                        'serializedAvatarData',
-                    ),
-                    'panels' => array(
-                        array(
-                            'locked' => true,
-                            'title'  => 'Basic Search',
-                            'rows' => array(
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'anyMixedAttributes',
-                                                      'type' => 'AnyMixedAttributesSearch', 'wide' => true),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                            ),
-                        ),
-                        array(
-                            'advancedSearchType' => static::ADVANCED_SEARCH_TYPE_DYNAMIC,
-                            'rows'   => array(),
-                        ),
-                    ),
-                ),
-            );
-            return $metadata;
-        }
-
-        public static function getModelForMetadataClassName()
-        {
-            return 'UsersSearchForm';
+            $dropDownArray = array('' => Zurmo::t('ZurmoModule', 'Same as language'));
+            foreach (ZurmoLocale::getSelectableLocaleIds() as $locale)
+            {
+                $dropDownArray[$locale] = Yii::app()->locale->getLocaleDisplayName($locale) . '(' . $locale . ') ';
+            }
+            return $dropDownArray;
         }
     }
 ?>
