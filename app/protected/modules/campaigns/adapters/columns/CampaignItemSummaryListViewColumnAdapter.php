@@ -48,7 +48,7 @@
 
         public static function resolveContactAndMetricsSummary(CampaignItem $campaignItem)
         {
-            if(ActionSecurityUtil::canCurrentUserPerformAction('Details', $campaignItem->contact))
+            if (ActionSecurityUtil::canCurrentUserPerformAction('Details', $campaignItem->contact))
             {
                 $content  = static::resolveContactWithLink($campaignItem->contact);
                 $content .= static::renderMetricsContent($campaignItem);
@@ -113,7 +113,7 @@
 
         protected static function renderMetricsContent(CampaignItem $campaignItem)
         {
-            if(!ActionSecurityUtil::canCurrentUserPerformAction('Details', $campaignItem->emailMessage))
+            if (!ActionSecurityUtil::canCurrentUserPerformAction('Details', $campaignItem->emailMessage))
             {
                 return static::renderRestrictedEmailMessageAccessLink($campaignItem->emailMessage);
             }
