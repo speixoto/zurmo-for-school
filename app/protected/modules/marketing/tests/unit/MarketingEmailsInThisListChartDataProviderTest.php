@@ -35,8 +35,9 @@
      ********************************************************************************/
     class MarketingEmailsInThisListChartDataProviderTest extends ZurmoBaseTest
     {
-        private $campaign;
         private $marketingList;
+        private $campaign;
+        private $autoresponder;
         private $emailBox;
 
         public static function setUpBeforeClass()
@@ -57,12 +58,20 @@
         {
             parent::setUp();
             Yii::app()->user->userModel = User::getByUsername('super');
-            $emailBoxes     = EmailBox::getAll();
-            $this->emailBox = $emailBoxes[0];
-            $this->marketingList    =
+            $emailBoxes                 = EmailBox::getAll();
+            $this->emailBox             = $emailBoxes[0];
+            $this->marketingList        =
                     MarketingListTestHelper::createMarketingListByName('Test Marketing List');
-            $this->campaign         =
+            $this->campaign             =
                     CampaignTestHelper::createCampaign('Test Campaing 01', 'text', 'text exemple');
+            $this->autoresponder        =
+                    AutoresponderTestHelper::createAutoresponder(
+                            'Test Autoresponder 01',
+                            'text',
+                            'html',
+                            60,
+                            Autoresponder::OPERATION_SUBSCRIBE,
+                            true);
         }
 
         public function teardown()
@@ -133,15 +142,17 @@
         }
 
         /**
-         * @dataProvider dataForTestGetChartDataForCampaigns
+         * @dataProvider dataForTestGetChartData
          */
-        public function testGetChartDataForCampaigns($campaingItemActivityCreationArray, $emailMessageSentDateTime, $isMultiplierOn)
+        public function testGetChartData($activityCreationArray, $emailMessageSentDateTime, $isMultiplierOn)
         {
             $contacts = Contact::getAll();
-            $this->addCampaignItem($contacts[0], $emailMessageSentDateTime, $campaingItemActivityCreationArray);
+            $this->addCampaignItem     ($contacts[0], $emailMessageSentDateTime, $activityCreationArray);
+            $this->addAutoresponderItem($contacts[0], $emailMessageSentDateTime, $activityCreationArray);
             if($isMultiplierOn)
             {
-                $this->addCampaignItem($contacts[1], $emailMessageSentDateTime, $campaingItemActivityCreationArray);
+                $this->addCampaignItem     ($contacts[1], $emailMessageSentDateTime, $activityCreationArray);
+                $this->addAutoresponderItem($contacts[1], $emailMessageSentDateTime, $activityCreationArray);
             }
 
             $isSent = true;
@@ -153,7 +164,7 @@
             //Test when beginDate < sentDate < endDate
             //Grouping by day
             $this->assertChartDataAsExpectedBySentTimeAndConditionAndGroupingBy(
-                                    $campaingItemActivityCreationArray,
+                                    $activityCreationArray,
                                     $emailMessageSentDateTime,
                                     'between',
                                     MarketingOverallMetricsForm::GROUPING_TYPE_DAY,
@@ -161,7 +172,7 @@
                                     $isMultiplierOn);
             //Grouping by week
             $this->assertChartDataAsExpectedBySentTimeAndConditionAndGroupingBy(
-                                    $campaingItemActivityCreationArray,
+                                    $activityCreationArray,
                                     $emailMessageSentDateTime,
                                     'between',
                                     MarketingOverallMetricsForm::GROUPING_TYPE_WEEK,
@@ -169,7 +180,7 @@
                                     $isMultiplierOn);
             //Grouping by month
             $this->assertChartDataAsExpectedBySentTimeAndConditionAndGroupingBy(
-                                    $campaingItemActivityCreationArray,
+                                    $activityCreationArray,
                                     $emailMessageSentDateTime,
                                     'between',
                                     MarketingOverallMetricsForm::GROUPING_TYPE_MONTH,
@@ -179,7 +190,7 @@
             //Test when beginDate < endDate < sentDate
             //Grouping by day
             $this->assertChartDataAsExpectedBySentTimeAndConditionAndGroupingBy(
-                                    $campaingItemActivityCreationArray,
+                                    $activityCreationArray,
                                     $emailMessageSentDateTime,
                                     'after',
                                     MarketingOverallMetricsForm::GROUPING_TYPE_DAY,
@@ -187,7 +198,7 @@
                                     $isMultiplierOn);
             //Grouping by week
             $this->assertChartDataAsExpectedBySentTimeAndConditionAndGroupingBy(
-                                    $campaingItemActivityCreationArray,
+                                    $activityCreationArray,
                                     $emailMessageSentDateTime,
                                     'after',
                                     MarketingOverallMetricsForm::GROUPING_TYPE_WEEK,
@@ -195,7 +206,7 @@
                                     $isMultiplierOn);
             //Grouping by month
             $this->assertChartDataAsExpectedBySentTimeAndConditionAndGroupingBy(
-                                    $campaingItemActivityCreationArray,
+                                    $activityCreationArray,
                                     $emailMessageSentDateTime,
                                     'after',
                                     MarketingOverallMetricsForm::GROUPING_TYPE_MONTH,
@@ -205,7 +216,7 @@
             //Test when sentDate < beginDate < endDate
             //Grouping by day
             $this->assertChartDataAsExpectedBySentTimeAndConditionAndGroupingBy(
-                                    $campaingItemActivityCreationArray,
+                                    $activityCreationArray,
                                     $emailMessageSentDateTime,
                                     'before',
                                     MarketingOverallMetricsForm::GROUPING_TYPE_DAY,
@@ -213,7 +224,7 @@
                                     $isMultiplierOn);
             //Grouping by week
             $this->assertChartDataAsExpectedBySentTimeAndConditionAndGroupingBy(
-                                    $campaingItemActivityCreationArray,
+                                    $activityCreationArray,
                                     $emailMessageSentDateTime,
                                     'before',
                                     MarketingOverallMetricsForm::GROUPING_TYPE_WEEK,
@@ -221,7 +232,7 @@
                                     $isMultiplierOn);
             //Grouping by month
             $this->assertChartDataAsExpectedBySentTimeAndConditionAndGroupingBy(
-                                    $campaingItemActivityCreationArray,
+                                    $activityCreationArray,
                                     $emailMessageSentDateTime,
                                     'before',
                                     MarketingOverallMetricsForm::GROUPING_TYPE_MONTH,
@@ -230,7 +241,7 @@
 
             //Test when sentDate = beginDate = endDate
             $this->assertChartDataAsExpectedBySentTimeAndConditionAndGroupingBy(
-                                    $campaingItemActivityCreationArray,
+                                    $activityCreationArray,
                                     $emailMessageSentDateTime,
                                     'equals',
                                     MarketingOverallMetricsForm::GROUPING_TYPE_DAY,
@@ -238,7 +249,7 @@
                                     $isMultiplierOn);
             //Grouping by week
             $this->assertChartDataAsExpectedBySentTimeAndConditionAndGroupingBy(
-                                    $campaingItemActivityCreationArray,
+                                    $activityCreationArray,
                                     $emailMessageSentDateTime,
                                     'equals',
                                     MarketingOverallMetricsForm::GROUPING_TYPE_WEEK,
@@ -246,7 +257,7 @@
                                     $isMultiplierOn);
             //Grouping by month
             $this->assertChartDataAsExpectedBySentTimeAndConditionAndGroupingBy(
-                                    $campaingItemActivityCreationArray,
+                                    $activityCreationArray,
                                     $emailMessageSentDateTime,
                                     'equals',
                                     MarketingOverallMetricsForm::GROUPING_TYPE_MONTH,
@@ -274,22 +285,32 @@
                     $count = 2;
                     break;
             }
-            $beginDate = $this->getBeginDateByConditionAndGroupingBy(
+            $beginDate                  = $this->getBeginDateByConditionAndGroupingBy(
                     $emailMessageSentDateTime,
                     $condition,
                     $groupingBy);
-            $endDate   = $this->getEndDateByConditionAndGroupingBy(
+            $endDate                    = $this->getEndDateByConditionAndGroupingBy(
                     $emailMessageSentDateTime,
                     $condition,
                     $groupingBy);
-            $chartDataProvider  = new MarketingEmailsInThisListChartDataProvider();
+            $chartDataProvider          = new MarketingEmailsInThisListChartDataProvider();
             $chartDataProvider->setBeginDate($beginDate);
             $chartDataProvider->setEndDate  ($endDate);
-            $chartDataProvider->setGroupBy($groupingBy);
-            $chartDataProvider->setCampaign($this->campaign);
-            $chartData          = $chartDataProvider->getChartData();
+            $chartDataProvider->setGroupBy  ($groupingBy);
 
-            $this->assertCount ($count,          $chartData);
+            $chartDateProviderForMarketingList = clone $chartDataProvider;
+
+            $combinedChartData          = $chartDataProvider->getChartData();
+
+            $chartDataProvider->setCampaign($this->campaign);
+            $campaignChartData          = $chartDataProvider->getChartData();
+
+            $chartDateProviderForMarketingList->setMarketingList($this->marketingList);
+            $marketingListChartData     = $chartDateProviderForMarketingList->getChartData();
+
+            $this->assertCount ($count,          $combinedChartData);
+            $this->assertCount ($count,          $campaignChartData);
+            $this->assertCount ($count,          $marketingListChartData);
 
             if($condition != 'equals')
             {
@@ -310,18 +331,21 @@
                 {
                     $expectedArray['dateBalloonLabel']  = $displayLabel;
                 }
-                $this->assertChartDataColumnAsExpected($expectedArray, $chartData[0]);
+                $this->assertChartDataColumnAsExpected($expectedArray, $campaignChartData[0]);
+                $this->assertChartDataColumnAsExpected($expectedArray, $marketingListChartData[0]);
             }
 
             if($condition == 'equals')
             {
-                $column = $chartData[0];
+                $campaignColumn      = $campaignChartData[0];
+                $marketingListColumn = $marketingListChartData[0];
             }
             elseif ($condition == 'between')
             {
-                $column = $chartData[1];
+                $campaignColumn      = $campaignChartData[1];
+                $marketingListColumn = $marketingListChartData[1];
             }
-            if(isset($column))
+            if(isset($campaignColumn))
             {
                 $displayLabel = $this->getDisplayLabel($emailMessageSentDateTime, $groupingBy);
                 $expectedArray                      = array();
@@ -342,7 +366,8 @@
                         $campaingItemActivityCreationArray,
                         $expectedArray,
                         $isMultiplierOn ? 2 : 1);
-                $this->assertChartDataColumnAsExpected($expectedArray, $column);
+                $this->assertChartDataColumnAsExpected($expectedArray, $campaignColumn);
+                $this->assertChartDataColumnAsExpected($expectedArray, $marketingListColumn);
             }
             else
             {
@@ -363,8 +388,10 @@
                 {
                     $expectedArray['dateBalloonLabel']  = $displayLabel;
                 }
-                $this->assertChartDataColumnAsExpected($expectedArray, $chartData[1]);
+                $this->assertChartDataColumnAsExpected($expectedArray, $campaignChartData[1]);
+                $this->assertChartDataColumnAsExpected($expectedArray, $marketingListChartData[1]);
             }
+            $this->assertCombinedChartDataAsExpected($combinedChartData, $campaignChartData, $marketingListChartData);
         }
 
         private function getBeginDateByConditionAndGroupingBy($emailMessageSentDateTime, $condition, $groupingBy)
@@ -440,6 +467,24 @@
             }
         }
 
+        private function assertCombinedChartDataAsExpected($combinedChartData, $campaignChartData, $marketingListChartData)
+        {
+            foreach ($combinedChartData as $key => $chartColumn)
+            {
+                $this->assertEquals($combinedChartData[$key]['queued'],
+                                    $campaignChartData[$key]['queued'] + $marketingListChartData[$key]['queued']);
+                $this->assertEquals($combinedChartData[$key]['sent'],
+                                    $campaignChartData[$key]['sent'] + $marketingListChartData[$key]['sent']);
+                $this->assertEquals($combinedChartData[$key]['uniqueClicks'],
+                                    $campaignChartData[$key]['uniqueClicks'] + $marketingListChartData[$key]['uniqueClicks']);
+                $this->assertEquals($combinedChartData[$key]['bounced'],
+                                    $campaignChartData[$key]['bounced'] + $marketingListChartData[$key]['bounced']);
+                $this->assertEquals($combinedChartData[$key]['optedOut'],
+                                    $campaignChartData[$key]['optedOut'] + $marketingListChartData[$key]['optedOut']);
+            }
+
+        }
+
         private function assertChartDataColumnAsExpected(Array $expectedArray, $chartDataColumn)
         {
             $queued             = $expectedArray['queued'];
@@ -470,6 +515,33 @@
         }
 
         private function addCampaignItem($contact, $emailMessageSentDateTime, $creationArray)
+        {
+            $emailMessage                            = $this->createEmailMessage($contact, $emailMessageSentDateTime);
+            $campaignItem                            = new CampaignItem();
+            $campaignItem->contact                   = $contact;
+            $campaignItem->processed                 = true;
+            $campaignItem->emailMessage              = $emailMessage;
+            $this->resolveCampaignItemActivities($contact, $creationArray, $campaignItem);
+            $this->campaign->campaignItems->add($campaignItem);
+            $this->assertTrue($this->campaign->save());
+        }
+
+        private function addAutoresponderItem($contact, $emailMessageSentDateTime, $creationArray)
+        {
+            $emailMessage                            = $this->createEmailMessage($contact, $emailMessageSentDateTime);
+            $autoresponderItem                       = new AutoresponderItem();
+            $autoresponderItem->contact              = $contact;
+            $autoresponderItem->processed            = true;
+            $autoresponderItem->emailMessage         = $emailMessage;
+            $autoresponderItem->processDateTime      = DateTimeUtil
+                        ::convertTimestampToDbFormatDateTime(time());;
+            $this->resolveAutoresponderItemActivities($contact, $creationArray, $autoresponderItem);
+            $this->autoresponder->autoresponderItems->add($autoresponderItem);
+            $this->autoresponder->validate();
+            $this->assertTrue($this->autoresponder->save());
+        }
+
+        private function createEmailMessage($contact, $emailMessageSentDateTime)
         {
             $emailBox                                = $this->emailBox;
 
@@ -503,14 +575,7 @@
             $emailMessage->folder                    =
                     EmailFolder::getByBoxAndType($emailBox, EmailFolder::TYPE_ARCHIVED);
             $emailMessage->recipients->add($recipient);
-
-            $campaignItem                            = new CampaignItem();
-            $campaignItem->contact                   = $contact;
-            $campaignItem->processed                 = true;
-            $campaignItem->emailMessage              = $emailMessage;
-            $this->resolveCampaignItemActivities($contact, $creationArray, $campaignItem);
-            $this->campaign->campaignItems->add($campaignItem);
-            $this->assertTrue($this->campaign->save());
+            return $emailMessage;
         }
 
         private function resolveCampaignItemActivities($contact, $creationArray, CampaignItem  & $campaignItem)
@@ -524,6 +589,21 @@
                     $activity->type       = $type;
                     $activity->quantity   = 1;
                     $campaignItem->campaignItemActivities->add($activity);
+                }
+            }
+        }
+
+        private function resolveAutoresponderItemActivities($contact, $creationArray, AutoresponderItem  & $autoresponderItem)
+        {
+            foreach ($creationArray as $type => $numberOfType)
+            {
+                for ($i = 1; $i <= $numberOfType; $i++)
+                {
+                    $activity             = new AutoresponderItemActivity();
+                    $activity->person     = $contact;
+                    $activity->type       = $type;
+                    $activity->quantity   = 1;
+                    $autoresponderItem->autoresponderItemActivities->add($activity);
                 }
             }
         }
@@ -550,7 +630,7 @@
             return $displayLabel;
         }
 
-        public function dataForTestGetChartDataForCampaigns()
+        public function dataForTestGetChartData()
         {
             $data = array(
                 array(array(CampaignItemActivity::TYPE_CLICK       => 1,
