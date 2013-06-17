@@ -208,8 +208,11 @@
             $product->forget();
             unset($product);
             $product                  = Product::getById($id);
-            $success = ExplicitReadWriteModelPermissionsUtil::
-                        resolveExplicitReadWriteModelPermissions($product, $explicitReadWriteModelPermissions);
+            if($explicitReadWriteModelPermissions != null)
+            {
+                $success = ExplicitReadWriteModelPermissionsUtil::
+                            resolveExplicitReadWriteModelPermissions($product, $explicitReadWriteModelPermissions);
+            }
             $this->assertEquals('Product 2', $product->name);
         }
     }
