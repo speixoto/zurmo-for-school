@@ -179,6 +179,7 @@
             }
 
             $metadata = $this->getResolvedMetadata();
+            $adapterPathAlias = Yii::getPathOfAlias('application.modules.products.adapters');
             foreach ($metadata['global']['panels'] as $panel)
             {
                 foreach ($panel['rows'] as $row)
@@ -188,8 +189,15 @@
                         foreach ($cell['elements'] as $columnInformation)
                         {
                             $columnClassName    = 'Product' . ucfirst($columnInformation['attributeName']) . 'RelatedListViewColumnAdapter';
-                            $columnAdapter      = new $columnClassName($columnInformation['attributeName'], $this, array_slice($columnInformation, 1));
-                            $column = $columnAdapter->renderGridViewData();
+                            if(class_exists($adapterPathAlias . '/' . $columnClassName))
+                            {
+                                $columnAdapter      = new $columnClassName($columnInformation['attributeName'], $this, array_slice($columnInformation, 1));
+                                $column = $columnAdapter->renderGridViewData();
+                            }
+                            else
+                            {
+                                $column = array('name' => $columnInformation['attributeName']);
+                            }
                             if (!isset($column['class']))
                             {
                                 $column['class'] = 'DataColumn';

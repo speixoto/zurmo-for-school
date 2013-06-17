@@ -67,13 +67,13 @@
                                     )
                         ),
                         array('cells' =>
-                            array(
-                                array(
-                                    'elements' => array(
-                                        array('attributeName' => 'sellPrice', 'type' => 'CurrencyValue'),
-                                    ),
-                                ),
-                            )
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'sellPrice', 'type' => 'CurrencyValue'),
+                                            ),
+                                        ),
+                                    )
                         ),
                     ),
                 ),
