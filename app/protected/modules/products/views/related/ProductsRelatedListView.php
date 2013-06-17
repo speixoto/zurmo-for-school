@@ -80,7 +80,9 @@
                         ),
                         'rowMenu' => array(
                             'elements' => array(
-                                                    array('type'                      => 'EditLink'),
+                                                    array('type'                      => 'ProductEditLink',
+                                                          'relationModuleId'          => 'eval:$this->relationModuleId',
+                                                          'relationModelId'           => 'eval:$this->params["relationModel"]->id'),
                                                     array('type'                      => 'RelatedDeleteLink'),
                                                     array('type'                      => 'RelatedUnlink',
                                                           'relationModelClassName'    => 'eval:get_class($this->params["relationModel"])',
