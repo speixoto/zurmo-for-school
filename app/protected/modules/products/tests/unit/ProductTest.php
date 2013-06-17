@@ -37,6 +37,9 @@
             $opportunity            = OpportunityTestHelper::createOpportunityByNameForOwner('superOpportunity', $super);
             $productTemplate        = ProductTemplateTestHelper::createProductTemplateByName('superProductTemplate');
             $contactWithNoAccount   = ContactTestHelper::createContactByNameForOwner('noAccountContact', $super);
+            $a = new Group();
+            $a->name = 'AAA';
+            $a->save();
         }
 
         public function testDemoDataMaker()
@@ -168,6 +171,49 @@
             Yii::app()->user->userModel = User::getByUsername('super');
             $products                   = Product::getAll();
             $this->assertEquals(1, count($products));
+        }
+
+        public function testProductSaveWithPermissions()
+        {
+            Yii::app()->user->userModel = User::getByUsername('super');
+            $contacts         = Contact::getAll();
+            $accounts         = Account::getByName('superAccount');
+            $opportunities    = Opportunity::getByName('superOpportunity');
+            $productTemplates = ProductTemplate::getByName('superProductTemplate');
+            $account          = $accounts[0];
+            $user             = $account->owner;
+
+            $product                  = new Product();
+            $product->name            = 'Product 2';
+            $product->owner           = $user;
+            $product->description     = 'Description';
+            $product->quantity        = 2;
+            $product->stage->value    = 'Open';
+            $product->account         = $accounts[0];
+            $product->contact         = $contacts[0];
+            $product->productTemplate = $productTemplates[0];
+            $product->priceFrequency  = ProductTemplate::PRICE_FREQUENCY_ONE_TIME;
+            $product->sellPrice->value= 200;
+            $product->type            = ProductTemplate::TYPE_PRODUCT;
+
+            $group = Group::getByName('AAA');
+            $postData = array('explicitReadWriteModelPermissions' =>
+                            array('type' => ExplicitReadWriteModelPermissionsUtil::MIXED_TYPE_NONEVERYONE_GROUP,
+                                    'nonEveryoneGroup' => $group->id));
+            $explicitReadWriteModelPermissions = ExplicitReadWriteModelPermissionsUtil::
+                                                 resolveByPostDataAndModelThenMake($postData, $product);
+
+            $this->assertTrue($product->save(false));
+            $id                       = $product->id;
+            $product->forget();
+            unset($product);
+            $product                  = Product::getById($id);
+            if($explicitReadWriteModelPermissions != null)
+            {
+                $success = ExplicitReadWriteModelPermissionsUtil::
+                            resolveExplicitReadWriteModelPermissions($product, $explicitReadWriteModelPermissions);
+            }
+            $this->assertEquals('Product 2', $product->name);
         }
     }
 ?>
