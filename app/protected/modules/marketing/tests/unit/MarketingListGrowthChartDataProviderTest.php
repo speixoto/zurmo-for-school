@@ -72,49 +72,68 @@
             $chartDataProvider->setEndDate      ('2013-04-02');
             $chartDataProvider->setGroupBy      (MarketingOverallMetricsForm::GROUPING_TYPE_DAY);
             $chartDataProvider->setMarketingList($this->marketingList);
+            $combinedDataProvider   = new MarketingListGrowthChartDataProvider();
+            $combinedDataProvider->setBeginDate ('2013-04-01');
+            $combinedDataProvider->setEndDate   ('2013-04-02');
+            $combinedDataProvider->setGroupBy   (MarketingOverallMetricsForm::GROUPING_TYPE_DAY);
             $chartData              = $chartDataProvider->getChartData();
+            $combinedChartData      = $combinedDataProvider->getChartData();
             $this->assertEquals(1, $chartData[0]['newSubscribersCount']);
             $this->assertEquals(0, $chartData[0]['existingSubscribersCount']);
             $this->assertEquals(0, $chartData[1]['newSubscribersCount']);
             $this->assertEquals(1, $chartData[1]['existingSubscribersCount']);
+            $this->assertEquals($chartData, $combinedChartData);
             $marketingListMember->unsubscribed = true;
             $this->assertTrue($marketingListMember->unrestrictedSave());
             $chartData              = $chartDataProvider->getChartData();
+            $combinedChartData      = $combinedDataProvider->getChartData();
             $this->assertEquals(1, $chartData[0]['newSubscribersCount']);
             $this->assertEquals(0, $chartData[0]['existingSubscribersCount']);
             $this->assertEquals(0, $chartData[1]['newSubscribersCount']);
             $this->assertEquals(0, $chartData[1]['existingSubscribersCount']);
+            $this->assertEquals($chartData, $combinedChartData);
 
             $contact                = ContactTestHelper
                     ::createContactByNameForOwner('contact02', Yii::app()->user->userModel);
             $this->createMarketingListMember($contact, '2013-04-02');
             $chartData              = $chartDataProvider->getChartData();
+            $combinedChartData      = $combinedDataProvider->getChartData();
             $this->assertEquals(1, $chartData[0]['newSubscribersCount']);
             $this->assertEquals(0, $chartData[0]['existingSubscribersCount']);
             $this->assertEquals(1, $chartData[1]['newSubscribersCount']);
             $this->assertEquals(0, $chartData[1]['existingSubscribersCount']);
+            $this->assertEquals($chartData, $combinedChartData);
             $chartDataProvider->setGroupBy      (MarketingOverallMetricsForm::GROUPING_TYPE_WEEK);
+            $combinedDataProvider->setGroupBy   (MarketingOverallMetricsForm::GROUPING_TYPE_WEEK);
             $chartData              = $chartDataProvider->getChartData();
+            $combinedChartData      = $combinedDataProvider->getChartData();
             $this->assertEquals(2, $chartData[0]['newSubscribersCount']);
             $this->assertEquals(0, $chartData[0]['existingSubscribersCount']);
+            $this->assertEquals($chartData, $combinedChartData);
 
             $contact                = ContactTestHelper
                     ::createContactByNameForOwner('contact03', Yii::app()->user->userModel);
             $this->createMarketingListMember($contact, '2013-05-15');
-            $chartDataProvider->setBeginDate    ('2013-04-01');
             $chartDataProvider->setEndDate      ('2013-05-17');
+            $combinedDataProvider->setEndDate   ('2013-05-17');
             $chartDataProvider->setGroupBy      (MarketingOverallMetricsForm::GROUPING_TYPE_MONTH);
+            $combinedDataProvider->setGroupBy   (MarketingOverallMetricsForm::GROUPING_TYPE_MONTH);
             $chartData              = $chartDataProvider->getChartData();
+            $combinedChartData      = $combinedDataProvider->getChartData();
             $this->assertEquals(2, $chartData[0]['newSubscribersCount']);
             $this->assertEquals(0, $chartData[0]['existingSubscribersCount']);
             $this->assertEquals(1, $chartData[1]['newSubscribersCount']);
             $this->assertEquals(1, $chartData[1]['existingSubscribersCount']);
+            $this->assertEquals($chartData, $combinedChartData);
             $chartDataProvider->setEndDate      ('2013-05-01');
+            $combinedDataProvider->setEndDate   ('2013-05-01');
             $chartData              = $chartDataProvider->getChartData();
+            $combinedChartData      = $combinedDataProvider->getChartData();
             $this->assertEquals(2, $chartData[0]['newSubscribersCount']);
             $this->assertEquals(0, $chartData[0]['existingSubscribersCount']);
             $this->assertEquals(1, $chartData[1]['newSubscribersCount']);
             $this->assertEquals(1, $chartData[1]['existingSubscribersCount']);
+            $this->assertEquals($chartData, $combinedChartData);
         }
 
         private function createMarketingListMember($contact, $createdDateTime)
