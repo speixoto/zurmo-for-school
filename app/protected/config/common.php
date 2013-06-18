@@ -338,7 +338,6 @@
             'application.extensions.wideImage.WideImage',
             'application.extensions.phaActiveColumn.*',
         ),
-
         'modules' => array(
             'accounts',
             'activities',
