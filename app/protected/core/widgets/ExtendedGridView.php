@@ -56,6 +56,8 @@
 
         public $cssFile = false;
 
+        public $renderSpanOnEmptyText = true;
+
         public function init()
         {
             $this->baseScriptUrl = Yii::app()->getAssetManager()->publish(
@@ -188,5 +190,23 @@
             processListViewSummaryClone("' . $this->id . '", "' . $this->summaryCssClass . '"' . $summaryClonePath . ');
             ');
         }
+
+        /**
+         * Renders the empty message when there is no data.
+         */
+        public function renderEmptyText()
+        {
+            $emptyText=$this->emptyText===null ? Yii::t('zii','No results found.') : $this->emptyText;
+            if($this->renderSpanOnEmptyText)
+            {
+                echo CHtml::tag('span', array('class'=>'empty-'), $emptyText);
+            }
+            else
+            {
+                echo $emptyText;
+            }
+        }
+
+
     }
 ?>

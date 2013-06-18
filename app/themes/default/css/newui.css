@@ -64,6 +64,8 @@ a.z-button,
 .float-bar,
 .hasDetailsFlyout ul,
 .stacked-list td div.checkbox-column ~ div,
+.zero-components-view p,
+.splash-view p,
 .filters-bar #MashableInboxForm_filteredBy_area,
 .filters-bar #MashableInboxForm_optionForModel_area,
 .filters-bar .latest-activity-toolbar,
@@ -271,6 +273,7 @@ a.ModalGameNotification a,
 .autoresponder-combined-content .big-spinner,
 .email-template-combined-content .big-spinner,
 .email-template-content .big-spinner,
+.autoresponder-stats,
 #marketing-intro-steps > div,
 #marketing-intro-steps h3,
 #marketing-intro-steps p,
@@ -7465,6 +7468,9 @@ td {
 .items > tbody tr th:first-child:not(.checkbox-column) {
   padding-left: 10px;
 }
+.stacked-list td + td {
+  width: 25px;
+}
 .stacked-list td {
   padding-left: 0;
 }
@@ -8176,7 +8182,7 @@ div.wide.form label.hasCheckBox {
   color: #555;
   font-weight: bold;
   float: left;
-  width: 70%;
+  width: 65%;
   margin: 45px 0 0 30px;
 }
 .zero-components-view a,
@@ -17932,7 +17938,7 @@ a.user-link {
 .general-issue-notice {
   text-align: center;
   width: 75%;
-  margin: 10px auto 15px auto;
+  margin: 10px auto 15px auto !important;
   position: relative;
 }
 .general-issue-notice .icon-notice {
@@ -18420,9 +18426,9 @@ a.user-link {
   font-style: italic;
 }
 .autoresponder-stats {
-  width: 19%;
+  padding-right: 5px;
+  width: 20%;
   float: left;
-  margin-left: 2%;
   text-align: left;
   font-size: 12px;
 }
@@ -18472,11 +18478,6 @@ a + .autoresponder-stats {
   float: left;
   width: 100%;
   margin: 30px 0 15px 0;
-}
-#marketing-intro-steps > div {
-  float: left;
-  margin-left: 2%;
-  min-height: 150px;
   background-color: rgba(51, 51, 51, 0.75);
   background-repeat: repeat-x;
   background-image: -moz-linear-gradient(top, rgba(34, 34, 34, 0.85), rgba(51, 51, 51, 0.75));
@@ -18486,6 +18487,11 @@ a + .autoresponder-stats {
   background-image: -o-linear-gradient(top, rgba(34, 34, 34, 0.85), rgba(51, 51, 51, 0.75));
   background-image: linear-gradient(top, rgba(34, 34, 34, 0.85), rgba(51, 51, 51, 0.75));
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='rgba(34, 34, 34, 0.85)', endColorstr='rgba(51, 51, 51, 0.75)', GradientType=0);
+}
+#marketing-intro-steps > div {
+  float: left;
+  margin-left: 2%;
+  min-height: 150px;
   color: #EFEFEF;
   border: 1px solid #333;
   -webkit-border-radius: 4px;
@@ -18660,8 +18666,12 @@ a + .autoresponder-stats {
   -ms-text-shadow: 0 0 5px #ffd900;
   text-shadow: 0 0 5px #ffd900;
 }
+.no-subscribers-found .icon-notice:before,
 .no-email-recipients-found .icon-notice:before {
   content: "f";
+}
+.no-autoresponders-found .icon-notice:before {
+  content: "g7";
 }
 #MarketingIntroLinkActionElement ul {
   right: 0;

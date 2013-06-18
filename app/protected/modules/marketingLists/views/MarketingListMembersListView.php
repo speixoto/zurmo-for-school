@@ -196,6 +196,11 @@
             );
         }
 
+        protected function getCGridViewParams()
+        {
+            return array_merge(parent::getCGridViewParams(), array('renderSpanOnEmptyText' => false));
+        }
+
         protected function getPortletId()
         {
             return ArrayUtil::getArrayValueWithExceptionIfNotFound($this->params, 'portletId');
@@ -355,6 +360,14 @@
         protected function renderSummaryCloneContent()
         {
             return ZurmoHtml::tag('div', array('class' => 'list-view-items-summary-clone'), '');
+        }
+
+        protected function getEmptyText()
+        {
+            $content  = '<div class="general-issue-notice no-subscribers-found"><span class="icon-notice"></span><p>';
+            $content .= Zurmo::t('CampaignsModule', 'No Subscribers found text...');
+            $content .= '</p></div>';
+            return $content;
         }
     }
 ?>
