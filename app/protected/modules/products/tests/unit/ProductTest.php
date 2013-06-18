@@ -182,38 +182,92 @@
             $productTemplates = ProductTemplate::getByName('superProductTemplate');
             $account          = $accounts[0];
             $user             = $account->owner;
+            $group            = Group::getByName('AAA');
+            $explicitReadWriteModelPermissions = new ExplicitReadWriteModelPermissions();
+            //$explicitReadWriteModelPermissions->addReadWritePermitable($group);
+            $currencyHelper = Yii::app()->currencyHelper;
+            $currencyCode = $currencyHelper->getBaseCode();
+            $currency = Currency::getByCode($currencyCode);
+            $postData         = array(
+                                        'productTemplate' => array('id' => $productTemplates[0]->id),
+                                        'name' => 'ProductPermissionTest',
+                                        'quantity' => 6,
+                                        'account' => array('id' => $accounts[0]->id),
+                                        'contact' => array('id' => $contacts[0]->id),
+                                        'opportunity' => array('id' => ''),
+                                        'type' => ProductTemplate::TYPE_PRODUCT,
+                                        'priceFrequency' => ProductTemplate::PRICE_FREQUENCY_ONE_TIME,
+                                        'sellPrice' => array('currency' => array('id' => $currency->id),'value' => 210                                           ),
+                                        'stage' => array('value' => 'Open'),
+                                        'owner' => array('id' => $user->id),
+                                        'explicitReadWriteModelPermissions' => array(
+                                                'type' => ExplicitReadWriteModelPermissionsUtil::MIXED_TYPE_EVERYONE_GROUP,
+                                                'nonEveryoneGroup' => $group->id
+                                            )
 
-            $product                  = new Product();
-            $product->name            = 'Product 2';
-            $product->owner           = $user;
-            $product->description     = 'Description';
-            $product->quantity        = 2;
-            $product->stage->value    = 'Open';
-            $product->account         = $accounts[0];
-            $product->contact         = $contacts[0];
-            $product->productTemplate = $productTemplates[0];
-            $product->priceFrequency  = ProductTemplate::PRICE_FREQUENCY_ONE_TIME;
-            $product->sellPrice->value= 200;
-            $product->type            = ProductTemplate::TYPE_PRODUCT;
-
-            $group = Group::getByName('AAA');
-            $postData = array('explicitReadWriteModelPermissions' =>
-                            array('type' => ExplicitReadWriteModelPermissionsUtil::MIXED_TYPE_NONEVERYONE_GROUP,
-                                    'nonEveryoneGroup' => $group->id));
-            $explicitReadWriteModelPermissions = ExplicitReadWriteModelPermissionsUtil::
-                                                 resolveByPostDataAndModelThenMake($postData, $product);
-
-            $this->assertTrue($product->save(false));
-            $id                       = $product->id;
-            $product->forget();
-            unset($product);
-            $product                  = Product::getById($id);
-            if($explicitReadWriteModelPermissions != null)
+                                    );
+            $model                  = new Product();
+            $sanitizedPostData      = PostUtil::sanitizePostByDesignerTypeForSavingModel($model, $postData);
+            if ($model instanceof SecurableItem)
             {
-                $success = ExplicitReadWriteModelPermissionsUtil::
-                            resolveExplicitReadWriteModelPermissions($product, $explicitReadWriteModelPermissions);
+                //$explicitReadWriteModelPermissions = ExplicitReadWriteModelPermissionsUtil::resolveByPostDataAndModelThenMake($sanitizedPostData, $model);
+                $explicitReadWriteModelPermissions->addReadWritePermitable($group);
+                ExplicitReadWriteModelPermissionsUtil::resolveForDifferencesBySecurableItem($explicitReadWriteModelPermissions, $model);
             }
-            $this->assertEquals('Product 2', $product->name);
+            else
+            {
+                $explicitReadWriteModelPermissions = null;
+            }
+
+            $readyToUseData                = ExplicitReadWriteModelPermissionsUtil::
+                                                 removeIfExistsFromPostData($sanitizedPostData);
+
+            $sanitizedOwnerData            = PostUtil::sanitizePostDataToJustHavingElementForSavingModel(
+                                                 $readyToUseData, 'owner');
+            $sanitizedDataWithoutOwner     = PostUtil::
+                                                 removeElementFromPostDataForSavingModel($readyToUseData, 'owner');
+            $model->setAttributes($sanitizedDataWithoutOwner);
+            //$this->afterSetAttributesDuringSave($model, $explicitReadWriteModelPermissions);
+            if ($model->validate())
+            {
+                $modelToStringValue = strval($model);
+                if ($sanitizedOwnerData != null)
+                {
+                    $model->setAttributes($sanitizedOwnerData);
+                }
+                if ($model instanceof OwnedSecurableItem)
+                {
+                    $passedOwnerValidation = $model->validate(array('owner'));
+                }
+                else
+                {
+                    $passedOwnerValidation = true;
+                }
+                if ($passedOwnerValidation && $model->save(false))
+                {
+//                    $modelId = $model->id;
+//                    $modelClassName = get_class($model);
+//                    $model->forget();
+                    //$model = $modelClassName::getById($modelId);
+                    if ($explicitReadWriteModelPermissions != null)
+                    {
+                        print "<pre>";
+                        print_r($explicitReadWriteModelPermissions);
+                        print "</pre>";
+
+                        exit;
+                        $success = ExplicitReadWriteModelPermissionsUtil::
+                        resolveExplicitReadWriteModelPermissions($model, $explicitReadWriteModelPermissions);
+                        //todo: handle if success is false, means adding/removing permissions save failed.
+                    }
+                    $savedSuccessfully = true;
+                    //$this->afterSuccessfulSave($model);
+                }
+            }
+            else
+            {
+            }
+            $this->assertEquals('ProductPermissionTest', $model->name);
         }
     }
 ?>
