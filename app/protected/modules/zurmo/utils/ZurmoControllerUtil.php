@@ -78,10 +78,6 @@
                 }
                 if ($passedOwnerValidation && $model->save(false))
                 {
-                    $modelId = $model->id;
-                    $modelClassName = get_class($model);
-                    $model->forget();
-                    $model = $modelClassName::getById($modelId);
                     if ($explicitReadWriteModelPermissions != null)
                     {
                         $success = ExplicitReadWriteModelPermissionsUtil::
