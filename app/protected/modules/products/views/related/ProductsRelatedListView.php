@@ -173,41 +173,22 @@
          */
          protected function getCGridViewColumns()
          {
-            $columns         = array();
-            if ($this->rowsAreSelectable)
+            $columns = parent::getCGridViewColumns();
+            $counter = 0;
+            foreach ($columns as $columnInformation)
             {
-                $firstColumn = $this->getCGridViewFirstColumn();
-                array_push($columns, $firstColumn);
-            }
-
-            $metadata = $this->getResolvedMetadata();
-            $adapterPathAlias = Yii::getPathOfAlias('application.modules.products.adapters');
-            foreach ($metadata['global']['panels'] as $panel)
-            {
-                foreach ($panel['rows'] as $row)
+                $keys = array_keys($columnInformation);
+                //Its weird but $columnInformation['name'] not working here, giving undefined index error
+                $columnName = $keys[0];
+                $columnClassName    = 'Product' . ucfirst($columnInformation[$columnName]) . 'RelatedListViewColumnAdapter';
+                if(@class_exists($columnClassName))
                 {
-                    foreach ($row['cells'] as $cell)
-                    {
-                        foreach ($cell['elements'] as $columnInformation)
-                        {
-                            $columnClassName    = 'Product' . ucfirst($columnInformation['attributeName']) . 'RelatedListViewColumnAdapter';
-                            if(class_exists($adapterPathAlias . '/' . $columnClassName))
-                            {
-                                $columnAdapter      = new $columnClassName($columnInformation['attributeName'], $this, array_slice($columnInformation, 1));
-                                $column = $columnAdapter->renderGridViewData();
-                            }
-                            else
-                            {
-                                $column = array('name' => $columnInformation['attributeName']);
-                            }
-                            if (!isset($column['class']))
-                            {
-                                $column['class'] = 'DataColumn';
-                            }
-                            array_push($columns, $column);
-                        }
-                    }
+                    $columnAdapter = new $columnClassName($columnInformation['name'], $this, array_slice($columnInformation, 1));
+                    $columnData    = $columnAdapter->renderGridViewData();
+                    $columnInformation['value'] = $columnData['value'];
                 }
+                $columns[$counter] = $columnInformation;
+                $counter++;
             }
 
             //Add total to the grid view
@@ -215,19 +196,6 @@
             $columnAdapter      = new ProductTotalRelatedListViewColumnAdapter('total', $this, array());
             $column             = $columnAdapter->renderGridViewData();
             array_push($columns, $column);
-            $menuColumn = $this->getGridViewMenuColumn();
-            if ($menuColumn == null)
-            {
-                $lastColumn = $this->getCGridViewLastColumn();
-                if (!empty($lastColumn))
-                {
-                    array_push($columns, $lastColumn);
-                }
-            }
-            else
-            {
-                array_push($columns, $menuColumn);
-            }
             return $columns;
         }
 
@@ -261,7 +229,6 @@
         {
             $columns = $this->getCGridViewColumns();
             assert('is_array($columns)');
-
             return array(
                 'id' => $this->getGridViewId(),
                 'htmlOptions' => array(
