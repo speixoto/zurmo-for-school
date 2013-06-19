@@ -34,65 +34,16 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * Some localization in Jquery UI does not match the
-     * Yii localization.
-     *
-     */
-    class YiiToJqueryUIDatePickerLocalization
+    class LocaleStaticDropDownElement extends StaticDropDownFormElement
     {
-        /**
-         * Use this function when mapping to JQuery UI DatePickers
-         */
-        public static function getLanguage()
+        protected function getDropDownArray()
         {
-            $language = Yii::app()->getLanguage();
-            if ($language == 'en' || $language == 'en_us' || $language == 'en_ca' ||
-                $language == 'en_au' || $language == 'en_gb')
+            $dropDownArray = array('' => Zurmo::t('ZurmoModule', 'Same as language'));
+            foreach (ZurmoLocale::getSelectableLocaleIds() as $locale)
             {
-                return;
+                $dropDownArray[$locale] = Yii::app()->locale->getLocaleDisplayName($locale) . '(' . $locale . ') ';
             }
-            if ($language == 'nb')
-            {
-                return 'no';
-            }
-            return $language;
-        }
-
-        /**
-         * Use this function when mapping the localized date format to
-         * the JQuery UI DatePicker date format
-         * @return string Jquery UI DatePicker date format
-         */
-        public static function resolveDateFormat($dateFormat)
-        {
-            $patterns = array(
-                '/[M]{1}/',
-                '/[y]{2}/',
-            );
-            $replacements = array(
-                'm',
-                'y',
-            );
-            return preg_replace($patterns, $replacements, $dateFormat);
-        }
-
-        /**
-         * Use this function when mapping the localized time format to
-         * the JQuery UI DatePicker time format
-         * @return string Jquery UI DatePicker time format
-         */
-        public static function resolveTimeFormat($timeFormat)
-        {
-            $patterns = array(
-                '/[H]/',
-                '/[a]{1}/',
-            );
-            $replacements = array(
-                'h',
-                'tt',
-            );
-            return preg_replace($patterns, $replacements, $timeFormat);
+            return $dropDownArray;
         }
     }
 ?>
