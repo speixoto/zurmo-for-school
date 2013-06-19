@@ -189,9 +189,9 @@
             $counter = 0;
             foreach ($columns as $columnInformation)
             {
-                $keys = array_keys($columnInformation);
-                $columnName = $keys[0];
-                $columnClassName    = 'Product' . ucfirst($columnInformation[$columnName]) . 'RelatedListViewColumnAdapter';
+                $keys              = array_keys($columnInformation);
+                $columnName        = $keys[0];
+                $columnClassName   = 'Product' . ucfirst($columnInformation[$columnName]) . 'RelatedListViewColumnAdapter';
                 if(@class_exists($columnClassName))
                 {
                     $columnAdapter = new $columnClassName($columnInformation['name'], $this, array_slice($columnInformation, 1));
