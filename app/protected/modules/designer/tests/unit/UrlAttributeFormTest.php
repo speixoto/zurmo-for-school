@@ -34,34 +34,30 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class UrlAttributeForm extends MaxLengthAttributeForm
+    class UrlAttributeFormTest extends ZurmoBaseTest
     {
-        public static function getAttributeTypeDisplayName()
+        public static function setUpBeforeClass()
         {
-            return Zurmo::t('DesignerModule', 'URL');
+            parent::setUpBeforeClass();
+            SecurityTestHelper::createSuperAdmin();
         }
 
-        public function getAttributeTypeName()
+        public function testValidateDefaultValue()
         {
-            return 'Url';
-        }
+            //First test a valid form
+            $form = new UrlAttributeForm();
+            $form->attributeName = 'customUrl';
+            $form->attributeLabels = array('en' => 'customUrl');
+            $form->defaultValue = 'www.zurmo.org';
+            $this->assertTrue($form->validate());
 
-        public static function getAttributeTypeDisplayDescription()
-        {
-            return Zurmo::t('DesignerModule', 'A field that contains a URL');
-        }
-
-        public function getModelAttributePartialRule()
-        {
-            return array('url', 'defaultScheme' => 'http');
-        }
-
-        public function rules()
-        {
-            $newRules = array(
-                array_merge(array('defaultValue'), $this->getModelAttributePartialRule()),
-            );
-            return array_merge(parent::rules(), $newRules);
+            //Now test a form with url error
+            $form = new UrlAttributeForm();
+            $form->attributeName = 'customUrl';
+            $form->attributeLabels = array('en' => 'customUrl');
+            $form->defaultValue = 'wwwzurmoorg';
+            $this->assertFalse($form->validate());
+            $this->assertEquals('Default Value is not a valid URL.', $form->getError('defaultValue'));
         }
     }
 ?>
