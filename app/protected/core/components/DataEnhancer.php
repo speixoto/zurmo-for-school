@@ -60,27 +60,30 @@
 
         /**
          * Override and return back of card content for person
+         * @param User|Person $person
          * @return null | string
          */
-        public function getPersonBackOfCardViewContent()
+        public function getPersonBackOfCardViewContent($person)
         {
             return null;
         }
 
         /**
          * Override and return social networks content for person
+         * @param User|Person $person
          * @return null | string
          */
-        public function getPersonSocialNetworksViewContent()
+        public function getPersonSocialNetworksViewContent($person)
         {
             return null;
         }
 
         /**
          * Override and return demographic content for person including age and gender
+         * @param User|Person $person
          * @return null | string
          */
-        public function getPersonDemographicViewContent()
+        public function getPersonDemographicViewContent($person)
         {
             return null;
         }
