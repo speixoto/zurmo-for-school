@@ -68,7 +68,6 @@
             $content .= $this->resolveSocialConnectorsContent();
             $content .= $this->resolvePhoneAndEmailContent();
             $content .= $this->resolveAddressContent();
-            $content .= $this->renderBackOfCardContent();
             return $content;
         }
 
@@ -135,7 +134,7 @@
 
         protected function resolveGenderAndAgeContent()
         {
-            $demographicContent =Yii::app()->dataEnhancer->getPersonDemographicViewContent();
+            $demographicContent =Yii::app()->dataEnhancer->getPersonDemographicViewContent($this->model);
             if($demographicContent != null)
             {
                 return ZurmoHtml::tag('div', array('class' => 'demographic-details'), $demographicContent);
@@ -144,7 +143,7 @@
 
         protected function resolveSocialConnectorsContent()
         {
-            $socialContent =Yii::app()->dataEnhancer->getPersonSocialNetworksViewContent();
+            $socialContent =Yii::app()->dataEnhancer->getPersonSocialNetworksViewContent($this->model);
             if($socialContent != null)
             {
                 return ZurmoHtml::tag('div', array('class' => 'social-details'), $socialContent);
@@ -185,7 +184,7 @@
 
         protected function renderBackOfCardContent()
         {
-            $backOfCardContent = Yii::app()->dataEnhancer->getPersonBackOfCardViewContent();
+            $backOfCardContent = Yii::app()->dataEnhancer->getPersonBackOfCardViewContent($this->model);
             if($backOfCardContent != null)
             {
                 return ZurmoHtml::tag('div', array('class' => 'back-of-card clearfix'), $backOfCardContent);
