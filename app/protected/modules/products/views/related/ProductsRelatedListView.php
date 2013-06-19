@@ -507,5 +507,20 @@
             }
             return $column;
         }
+
+        /**
+         * @param string $attributeString
+         * @param string $attribute
+         * @return string
+         */
+        public function getLinkString($attributeString, $attribute)
+        {
+            $string  = 'ZurmoHtml::link(';
+            $string .=  StringUtil::getChoppedStringContent($attributeString, ProductElementUtil::PRODUCT_NAME_LENGTH_IN_PORTLET_VIEW) . ', ';
+            $string .= 'Yii::app()->createUrl("' .
+                        $this->getGridViewActionRoute('details') . '", array("id" => $data->id))';
+            $string .= ')';
+            return $string;
+        }
     }
 ?>
