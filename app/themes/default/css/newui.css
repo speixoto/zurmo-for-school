@@ -8106,6 +8106,10 @@ div.wide.form label.hasCheckBox {
   -ms-text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
   text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
 }
+.juiportlet-widget-head .list-view-items-summary-clone {
+  position: relative;
+  margin: 0;
+}
 .list-preloader {
   display: none;
   background: rgba(0, 0, 0, 0.5);
