@@ -540,22 +540,12 @@
         }
 
         /**
-         * Resolve list view column adapter
-         * @param array $columnInformation
-         * @return string
-         */
-        protected function resolveListViewColumnAdapterClassName($columnInformation)
-        {
-            return $columnInformation['type'] . 'ListViewColumnAdapter';
-        }
-
-        /**
          * Process input column information to fetch column data
          */
         protected function processColumnInfoToFetchColumnData($columnInformation)
         {
-            $columnClassName = $this->resolveListViewColumnAdapterClassName($columnInformation);
-            $columnAdapter  = new $columnClassName($columnInformation['attributeName'], $this, array_slice($columnInformation, 1));
+            $columnClassName = $columnInformation['type'] . 'ListViewColumnAdapter';
+            $columnAdapter   = new $columnClassName($columnInformation['attributeName'], $this, array_slice($columnInformation, 1));
             $column = $columnAdapter->renderGridViewData();
             if (!isset($column['class']))
             {
