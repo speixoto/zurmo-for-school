@@ -186,9 +186,11 @@
          protected function getCGridViewColumns()
          {
              $columns            = parent::getCGridViewColumns();
+             $lastColumn         = $columns[count($columns)-1];
+             $columns            = array_slice($columns, 0, count($columns)-1);
              $columnAdapter      = new ProductTotalRelatedListViewColumnAdapter('total', $this, array());
              $column             = $columnAdapter->renderGridViewData();
-             return array_merge($columns, array($column));
+             return array_merge($columns, array($column,$lastColumn));
         }
 
         /**
