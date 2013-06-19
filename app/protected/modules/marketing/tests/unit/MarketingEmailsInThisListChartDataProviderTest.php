@@ -710,23 +710,20 @@
                             CampaignItemActivity::TYPE_UNSUBSCRIBE => 0),
                       '2013-06-12',
                       false),
-                //TODO: @sergio Check MarketingEmailsInThisListChartDataProvider::addEmailMessageDayDateClause for example
-                //we should not use sentDateTimeColumnName but createdDateTimeColumnName since when message is queued
-                //there is no sentDateTime set or is 0000-00-00
-//                array(array(CampaignItemActivity::TYPE_CLICK       => 1,
-//                            CampaignItemActivity::TYPE_BOUNCE      => 1,
-//                            CampaignItemActivity::TYPE_OPEN        => 1,
-//                            CampaignItemActivity::TYPE_SKIP        => 1,
-//                            CampaignItemActivity::TYPE_UNSUBSCRIBE => 1),
-//                      null,
-//                      false),
-//                array(array(CampaignItemActivity::TYPE_CLICK       => 1,
-//                            CampaignItemActivity::TYPE_BOUNCE      => 1,
-//                            CampaignItemActivity::TYPE_OPEN        => 1,
-//                            CampaignItemActivity::TYPE_SKIP        => 1,
-//                            CampaignItemActivity::TYPE_UNSUBSCRIBE => 1),
-//                      null,
-//                      true),
+                array(array(CampaignItemActivity::TYPE_CLICK       => 1,
+                            CampaignItemActivity::TYPE_BOUNCE      => 1,
+                            CampaignItemActivity::TYPE_OPEN        => 1,
+                            CampaignItemActivity::TYPE_SKIP        => 1,
+                            CampaignItemActivity::TYPE_UNSUBSCRIBE => 1),
+                      null,
+                      false),
+                array(array(CampaignItemActivity::TYPE_CLICK       => 1,
+                            CampaignItemActivity::TYPE_BOUNCE      => 1,
+                            CampaignItemActivity::TYPE_OPEN        => 1,
+                            CampaignItemActivity::TYPE_SKIP        => 1,
+                            CampaignItemActivity::TYPE_UNSUBSCRIBE => 1),
+                      null,
+                      true),
             );
             return $data;
         }

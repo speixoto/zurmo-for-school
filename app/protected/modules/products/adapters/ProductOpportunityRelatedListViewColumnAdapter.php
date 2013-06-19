@@ -33,13 +33,17 @@
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
-
-    define('MAJOR_VERSION', 2);                           // Update for marketing purposes.
-    define('MINOR_VERSION', 0);                           // Update when functionality changes.
-    define('PATCH_VERSION', 05);                          // Update when fixes are made that does not change functionality.
-    define('REPO_ID',       '$Revision$'); // Updated by Mercurial. Numbers like 3650 have no meaning across
-                                                          // clones. This tells us the actual changeset that is universally
-                                                          // meaningful.
-
-    define('VERSION', join('.', array(MAJOR_VERSION, MINOR_VERSION, PATCH_VERSION)) . ' (' . substr(REPO_ID, strlen('$Revision: '), -2) . ')');
+    /**
+     * Column adapter for opportunity for product list in portlet
+     */
+    class ProductOpportunityRelatedListViewColumnAdapter extends TextListViewColumnAdapter
+    {
+        public function renderGridViewData()
+        {
+            return array(
+                    'name'  => $this->attribute,
+                    'value' => 'strval($data->' . $this->attribute . '->name)'
+                );
+        }
+    }
 ?>
