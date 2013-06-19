@@ -64,6 +64,8 @@ a.z-button,
 .float-bar,
 .hasDetailsFlyout ul,
 .stacked-list td div.checkbox-column ~ div,
+.zero-components-view p,
+.splash-view p,
 .filters-bar #MashableInboxForm_filteredBy_area,
 .filters-bar #MashableInboxForm_optionForModel_area,
 .filters-bar .latest-activity-toolbar,
@@ -271,6 +273,7 @@ a.ModalGameNotification a,
 .autoresponder-combined-content .big-spinner,
 .email-template-combined-content .big-spinner,
 .email-template-content .big-spinner,
+.autoresponder-stats,
 #marketing-intro-steps > div,
 #marketing-intro-steps h3,
 #marketing-intro-steps p,
@@ -1020,7 +1023,8 @@ body.blue .portlet-toolbar .icon-create:hover,
 body.blue .portlet-toolbar a:hover,
 body.blue .portlet-toolbar .icon-create:before,
 body.blue #filter-latest-activities-link:hover,
-body.blue .badge-message h3 {
+body.blue .badge-message h3,
+body.blue #marketing-list-member-select-contact-or-report-form a.close-flyout:hover {
   color: #7cb830 !important;
 }
 body.blue #InstallAccessFailurePageView a,
@@ -1594,7 +1598,8 @@ body.brown .portlet-toolbar .icon-create:hover,
 body.brown .portlet-toolbar a:hover,
 body.brown .portlet-toolbar .icon-create:before,
 body.brown #filter-latest-activities-link:hover,
-body.brown .badge-message h3 {
+body.brown .badge-message h3,
+body.brown #marketing-list-member-select-contact-or-report-form a.close-flyout:hover {
   color: #b88f30 !important;
 }
 body.brown #InstallAccessFailurePageView a,
@@ -2168,7 +2173,8 @@ body.lime .portlet-toolbar .icon-create:hover,
 body.lime .portlet-toolbar a:hover,
 body.lime .portlet-toolbar .icon-create:before,
 body.lime #filter-latest-activities-link:hover,
-body.lime .badge-message h3 {
+body.lime .badge-message h3,
+body.lime #marketing-list-member-select-contact-or-report-form a.close-flyout:hover {
   color: #bcc98e !important;
 }
 body.lime #InstallAccessFailurePageView a,
@@ -2742,7 +2748,8 @@ body.cherry .portlet-toolbar .icon-create:hover,
 body.cherry .portlet-toolbar a:hover,
 body.cherry .portlet-toolbar .icon-create:before,
 body.cherry #filter-latest-activities-link:hover,
-body.cherry .badge-message h3 {
+body.cherry .badge-message h3,
+body.cherry #marketing-list-member-select-contact-or-report-form a.close-flyout:hover {
   color: #933140 !important;
 }
 body.cherry #InstallAccessFailurePageView a,
@@ -3316,7 +3323,8 @@ body.turquoise .portlet-toolbar .icon-create:hover,
 body.turquoise .portlet-toolbar a:hover,
 body.turquoise .portlet-toolbar .icon-create:before,
 body.turquoise #filter-latest-activities-link:hover,
-body.turquoise .badge-message h3 {
+body.turquoise .badge-message h3,
+body.turquoise #marketing-list-member-select-contact-or-report-form a.close-flyout:hover {
   color: #44bbcc !important;
 }
 body.turquoise #InstallAccessFailurePageView a,
@@ -3890,7 +3898,8 @@ body.violet .portlet-toolbar .icon-create:hover,
 body.violet .portlet-toolbar a:hover,
 body.violet .portlet-toolbar .icon-create:before,
 body.violet #filter-latest-activities-link:hover,
-body.violet .badge-message h3 {
+body.violet .badge-message h3,
+body.violet #marketing-list-member-select-contact-or-report-form a.close-flyout:hover {
   color: #91a1dc !important;
 }
 body.violet #InstallAccessFailurePageView a,
@@ -4464,7 +4473,8 @@ body.honey .portlet-toolbar .icon-create:hover,
 body.honey .portlet-toolbar a:hover,
 body.honey .portlet-toolbar .icon-create:before,
 body.honey #filter-latest-activities-link:hover,
-body.honey .badge-message h3 {
+body.honey .badge-message h3,
+body.honey #marketing-list-member-select-contact-or-report-form a.close-flyout:hover {
   color: #abbc42 !important;
 }
 body.honey #InstallAccessFailurePageView a,
@@ -7458,6 +7468,9 @@ td {
 .items > tbody tr th:first-child:not(.checkbox-column) {
   padding-left: 10px;
 }
+.stacked-list td + td {
+  width: 25px;
+}
 .stacked-list td {
   padding-left: 0;
 }
@@ -8173,7 +8186,7 @@ div.wide.form label.hasCheckBox {
   color: #555;
   font-weight: bold;
   float: left;
-  width: 70%;
+  width: 65%;
   margin: 45px 0 0 30px;
 }
 .zero-components-view a,
@@ -14234,7 +14247,7 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
 .AttributeEditView .sortable .remove-sortable-item-link {
   position: absolute;
   left: 3px;
-  top: 3px;
+  line-height: 1;
   z-index: 100;
 }
 .AttributeEditView .sortable .remove-sortable-item-link span {
@@ -14253,6 +14266,9 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
   -o-text-shadow: 0 1px 0 #ffffff;
   -ms-text-shadow: 0 1px 0 #ffffff;
   text-shadow: 0 1px 0 #ffffff;
+  line-height: 1;
+  position: relative;
+  top: 1px;
 }
 .AttributeEditView form div table td {
   padding-left: 0 !important;
@@ -17926,7 +17942,7 @@ a.user-link {
 .general-issue-notice {
   text-align: center;
   width: 75%;
-  margin: 10px auto 15px auto;
+  margin: 10px auto 15px auto !important;
   position: relative;
 }
 .general-issue-notice .icon-notice {
@@ -18096,8 +18112,18 @@ a.user-link {
 }
 .autoresponder-combined-content .spinner,
 .email-template-combined-content .spinner {
-  left: 50% !important;
-  top: 50% !important;
+  margin: 100px 0 0 50%;
+  left: 0 !important;
+  top: 0 !important;
+}
+.email-template-content {
+  /*
+	.spinner{
+		margin: 15% 0 0 50%;
+		left: 0 !important;
+		top: 0 !important;
+	}*/
+
 }
 .email-template-content .big-spinner {
   position: absolute;
@@ -18108,10 +18134,6 @@ a.user-link {
   height: 100%;
   background: rgba(255, 255, 255, 0.8);
   margin: 0;
-}
-.email-template-content .spinner {
-  left: 50% !important;
-  top: 50% !important;
 }
 .tabs-nav {
   border-bottom: 1px solid #dfdfdf;
@@ -18228,6 +18250,19 @@ a.user-link {
 }
 #marketing-list-member-select-contact-or-report-form {
   padding: 15px;
+  position: relative;
+}
+#marketing-list-member-select-contact-or-report-form .close-flyout {
+  position: absolute;
+  right: 5px;
+  top: 2px;
+  font-weight: normal;
+  font-size: 18px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  cursor: pointer;
+}
+#marketing-list-member-select-contact-or-report-form .close-flyout:hover {
+  background: none !important;
 }
 #marketing-list-member-select-contact-or-report-form .search-without-scope {
   margin-top: 10px;
@@ -18395,9 +18430,9 @@ a.user-link {
   font-style: italic;
 }
 .autoresponder-stats {
-  width: 19%;
+  padding-right: 5px;
+  width: 20%;
   float: left;
-  margin-left: 2%;
   text-align: left;
   font-size: 12px;
 }
@@ -18447,11 +18482,6 @@ a + .autoresponder-stats {
   float: left;
   width: 100%;
   margin: 30px 0 15px 0;
-}
-#marketing-intro-steps > div {
-  float: left;
-  margin-left: 2%;
-  min-height: 150px;
   background-color: rgba(51, 51, 51, 0.75);
   background-repeat: repeat-x;
   background-image: -moz-linear-gradient(top, rgba(34, 34, 34, 0.85), rgba(51, 51, 51, 0.75));
@@ -18461,6 +18491,11 @@ a + .autoresponder-stats {
   background-image: -o-linear-gradient(top, rgba(34, 34, 34, 0.85), rgba(51, 51, 51, 0.75));
   background-image: linear-gradient(top, rgba(34, 34, 34, 0.85), rgba(51, 51, 51, 0.75));
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='rgba(34, 34, 34, 0.85)', endColorstr='rgba(51, 51, 51, 0.75)', GradientType=0);
+}
+#marketing-intro-steps > div {
+  float: left;
+  margin-left: 2%;
+  min-height: 150px;
   color: #EFEFEF;
   border: 1px solid #333;
   -webkit-border-radius: 4px;
@@ -18635,8 +18670,12 @@ a + .autoresponder-stats {
   -ms-text-shadow: 0 0 5px #ffd900;
   text-shadow: 0 0 5px #ffd900;
 }
+.no-subscribers-found .icon-notice:before,
 .no-email-recipients-found .icon-notice:before {
   content: "f";
+}
+.no-autoresponders-found .icon-notice:before {
+  content: "g7";
 }
 #MarketingIntroLinkActionElement ul {
   right: 0;
@@ -19405,21 +19444,26 @@ a + .autoresponder-stats {
 .icon-linkedin {
   background: url(../images/social-icons/linkedin.png) left top no-repeat;
 }
+.back-of-card,
 .rapleaf-data {
   display: none;
 }
+.back-of-card h3,
 .rapleaf-data h3 {
   margin-bottom: 10px;
   margin-top: 30px;
 }
+.back-of-card ul,
 .rapleaf-data ul {
   list-style: none;
 }
+.back-of-card li,
 .rapleaf-data li {
   font-weight: bold;
   margin-bottom: 3px;
   color: #666;
 }
+.back-of-card li span,
 .rapleaf-data li span {
   font-weight: normal;
   margin-left: 5px;
@@ -19434,23 +19478,28 @@ a + .autoresponder-stats {
   font-size: 11px;
   color: #323232;
 }
+.back-of-card .complex-data li,
 .rapleaf-data .complex-data li {
   line-height: 200%;
   width: 33.3%;
   float: left;
 }
+.back-of-card .simple-data li,
 .rapleaf-data .simple-data li {
   float: left;
   width: auto;
   margin-bottom: 7px;
 }
+.back-of-card .simple-data span,
 .rapleaf-data .simple-data span {
   margin: 0 5px 0 0;
 }
+.back-of-card .half,
 .rapleaf-data .half {
   float: left;
   width: 49%;
 }
+.back-of-card .half + .half,
 .rapleaf-data .half + .half {
   margin-left: 2%;
 }

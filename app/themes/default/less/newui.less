@@ -2012,6 +2012,9 @@ caption, th, td {
 }
 
 .stacked-list{
+	td + td{
+		width:25px
+	}
 	td{
 		padding-left:0;// !important;
 		div.button-column{
@@ -2647,8 +2650,9 @@ div.wide.form{
 		color:#555;
 		font-weight:bold;
 		float:left;
-		width:70%;
+		width:65%;
 		margin:45px 0 0 30px;
+		++.border-box;
 	}
 	a{
 		margin-left:30px;
