@@ -33,18 +33,17 @@
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
-    /**
-     * Column adapter for name value for product list
-     */
-    class ProductNameRelatedListViewColumnAdapter extends TextListViewColumnAdapter
+
+    class LocaleStaticDropDownElement extends StaticDropDownFormElement
     {
-        public function renderGridViewData()
+        protected function getDropDownArray()
         {
-                return array(
-                    'name'  => $this->attribute,
-                    'value' => array('ProductElementUtil', 'getProductNameLinkString'),
-                    'type'  => 'raw',
-                );
+            $dropDownArray = array('' => Zurmo::t('ZurmoModule', 'Same as language'));
+            foreach (ZurmoLocale::getSelectableLocaleIds() as $locale)
+            {
+                $dropDownArray[$locale] = Yii::app()->locale->getLocaleDisplayName($locale) . '(' . $locale . ') ';
+            }
+            return $dropDownArray;
         }
     }
 ?>

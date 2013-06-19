@@ -87,6 +87,9 @@
             'custom' => array(
                 'class' => 'application.core.components.CustomManagement',
             ),
+            'dataEnhancer' => array(
+                'class' => 'application.core.components.DataEnhancer',
+            ),
             'db' => array(
                 'emulatePrepare' => true,
                 'charset'        => 'utf8',
@@ -332,7 +335,6 @@
             'application.extensions.wideImage.WideImage',
             'application.extensions.phaActiveColumn.*',
         ),
-
         'modules' => array(
             'accounts',
             'activities',

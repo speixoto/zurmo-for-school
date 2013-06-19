@@ -34,7 +34,7 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class MarketingListMembersListView extends SecuredListView implements RendersMultipleSummaryPlaceholdersInterface
+    class MarketingListMembersListView extends SecuredListView
     {
         /**
          * Form that has the information for how to display the marketing list member view.
@@ -112,9 +112,9 @@
             return $metadata;
         }
 
-        public static function getSummaryCloneQueryPath()
+        public function getSummaryCloneClass()
         {
-            return "function() { return $(this).parent().find('.list-view-items-summary-clone');}";
+            return $this->getGridViewId() . "-items-summary-clone";
         }
 
         public function __construct(RedBeanModelsDataProvider $dataProvider,
@@ -359,7 +359,11 @@
 
         protected function renderSummaryCloneContent()
         {
-            return ZurmoHtml::tag('div', array('class' => 'list-view-items-summary-clone'), '');
+            return ZurmoHtml::tag('div',
+                                  array(
+                                    'id'    => $this->getGridViewId() . '-summary-clone',
+                                    'class' => ExtendedGridView::CLONE_SUMMARY_CLASS),
+                                  '');
         }
 
         protected function getEmptyText()

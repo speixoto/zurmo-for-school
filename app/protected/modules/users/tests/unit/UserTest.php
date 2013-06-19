@@ -1076,9 +1076,9 @@
             $this->fail();
         }
 
-        /*
-        * test for checking isActive attribute
-        */
+        /**
+         * test for checking isActive attribute
+         */
         public function testIsActiveOnUserSave()
         {
             $user = new User();
@@ -1107,6 +1107,31 @@
             $this->assertTrue($user->save());
             $this->assertEquals(1, $user->isActive);
             unset($user);
+        }
+
+        public function testUserLocaleSettings()
+        {
+            $user = new User();
+            $user->username             = 'userforlocaletest';
+            $user->title->value         = 'Mr.';
+            $user->firstName            = 'Locale';
+            $user->lastName             = 'User';
+            $user->setPassword('localeuser');
+            $this->assertTrue($user->save());
+
+            $user = User::getByUsername('userForLocaleTest');
+            $this->assertNull($user->locale);
+            Yii::app()->user->userModel = $user;
+            $this->assertEquals('12/1/13 12:00:00 AM',
+                                Yii::app()->dateFormatter->formatDateTime('2013-12-01', 'short'));
+            $user->locale               = 'en_gb';
+            $this->assertTrue($user->save());
+
+            $user = User::getByUsername('userForLocaleTest');
+            $this->assertContains($user->locale, ZurmoLocale::getSelectableLocaleIds());
+            Yii::app()->user->userModel = $user;
+            $this->assertEquals('01/12/2013 00:00:00',
+                                Yii::app()->dateFormatter->formatDateTime('2013-12-01', 'short'));
         }
     }
 ?>
