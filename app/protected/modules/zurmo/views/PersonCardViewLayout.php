@@ -40,12 +40,12 @@
      */
     class PersonCardViewLayout
     {
-        protected $person;
+        protected $model;
 
-        public function __construct($person)
+        public function __construct($model)
         {
-            assert('$person instanceof User || $person instanceof Person');
-            $this->person = $person;
+            assert('$model instanceof User || $model instanceof Person');
+            $this->model = $model;
         }
 
         public function renderContent()
@@ -68,26 +68,26 @@
             $content .= $this->resolveSocialConnectorsContent();
             $content .= $this->resolvePhoneAndEmailContent();
             $content .= $this->resolveAddressContent();
+            $content .= $this->renderBackOfCardContent();
             return $content;
         }
 
         protected function resolveAvatarContent()
         {
-            //todo: override for user layout to do the gravatar avatar
-            return Yii::app()->dataEnhancer->getPersonAvatar($this->person);
+            return Yii::app()->dataEnhancer->getPersonAvatar($this->model);
         }
 
         protected function resolveNameContent()
         {
-            $element                       = new DropDownElement($this->person, 'title', null);
+            $element                       = new DropDownElement($this->model, 'title', null);
             $element->nonEditableTemplate  = '{content}';
             $spanContent                   = ZurmoHtml::tag('span', array('class' => 'salutation'), $element->render());
-            return ZurmoHtml::tag('h2', array(), $spanContent . strval($this->person));
+            return ZurmoHtml::tag('h2', array(), $spanContent . strval($this->model));
         }
 
         protected function resolveBackOfCardLinkContent()
         {
-            if(Yii::app()->dataEnhancer->personHasBackOfCard($this->person))
+            if(Yii::app()->dataEnhancer->personHasBackOfCard($this->model))
             {
                 static::registerBackOfCardScript();
                 $spanContent = ZurmoHtml::tag('span', array(), Yii::app()->dataEnhancer->getPersonBackOfCardLabel());
@@ -98,29 +98,34 @@
 
         protected function resolveJobTitleContent()
         {
-            if($this->person->jobTitle != null)
+            if($this->model->jobTitle != null)
             {
-                $content  = ZurmoHtml::tag('h3', array('class' => 'position'), $this->person->jobTitle);
+                $content  = ZurmoHtml::tag('h3', array('class' => 'position'), $this->model->jobTitle);
                 return $content;
             }
         }
 
-
-        //todo: only check acount if contact, not user or person , which means we need to refactor to properly deal with this decoupling
         protected function resolveDepartmentAndAccountContent()
         {
             $departmentAndAccountContent = null;
-            if($this->person->department != null)
+            if($this->model->department != null)
             {
-                $departmentAndAccountContent = $this->person->department;
+                $departmentAndAccountContent = $this->model->department;
             }
-            if($this->person->account->id > 0) //todo: security on account.
+            if($this->model instanceof Contact && $this->model->account->id > 0)
             {
                 if($departmentAndAccountContent != null)
                 {
                     $departmentAndAccountContent .=  ' / ';
                 }
-                $departmentAndAccountContent .= strval($this->person->account);//todo: account should be linkable?
+                $departmentAndAccountContent .= static:: resolveAccountContentByUser($this->model->account, Yii::app()->user->userModel);
+            }
+            elseif($this->model instanceof Contact)
+            {
+                if($departmentAndAccountContent != null && $this->model->companyName != null)
+                {
+                    $departmentAndAccountContent .=  ' / ' . $this->model->companyName;
+                }
             }
             if($departmentAndAccountContent != null)
             {
@@ -130,54 +135,48 @@
 
         protected function resolveGenderAndAgeContent()
         {
-            return '                                <div class="demographic-details">
-                                                    <span class="sex male">male</span>
-                                                    <span>Age: 33<br />Range: 25-35</span>
-                                                </div>';
+            $demographicContent =Yii::app()->dataEnhancer->getPersonDemographicViewContent();
+            if($demographicContent != null)
+            {
+                return ZurmoHtml::tag('div', array('class' => 'demographic-details'), $demographicContent);
+            }
         }
 
         protected function resolveSocialConnectorsContent()
         {
-            //todo: facebook, linkedin twitter need to go somewhere. move to enrichment
-            //todo: basic link utility for these 3 probably should be in open source...
-            return '<div class="social-details">
-                                                    <a href="" class="social-icon icon-facebook" title="Facebook">Facebook</a>
-                                                    <a href="" class="social-icon icon-twitter" title="Twitter">Twitter</a>
-                                                    <a href="" class="social-icon icon-linkedin" title="Linkedin">Linkedin</a> (qtip with user name on hover)
-                                                </div>';
+            $socialContent =Yii::app()->dataEnhancer->getPersonSocialNetworksViewContent();
+            if($socialContent != null)
+            {
+                return ZurmoHtml::tag('div', array('class' => 'social-details'), $socialContent);
+            }
         }
 
         protected function resolvePhoneAndEmailContent()
         {
             $content = null;
-            if($this->person->officePhone != null)
+            if($this->model->officePhone != null)
             {
-                //todo: resolve linkable using tel:
-                $content .= ZurmoHtml::link($this->person->officePhone, '#',
-                                array('class' => 'icon-office-phone', 'title' => '')); //todo: Click to call Office Phone (resolve for getAttributeLabel
+                $content .= ZurmoHtml::tag('span', array('class' => 'icon-office-phone'), $this->model->officePhone);
             }
-            if($this->person->officePhone != null)
+            if($this->model->mobilePhone != null)
             {
-                //todo: resolve linkable using tel:
-                $content .= ZurmoHtml::link($this->person->mobilePhone, '#',
-                                array('class' => 'icon-mobile-phone', 'title' => '')); //todo: title Click to call Mobile Phone (resolve for getAttributeLabel
+                $content .= ZurmoHtml::tag('span', array('class' => 'icon-mobile-phone'), $this->model->mobilePhone);
             }
-            if($this->person->officePhone != null)
+            if($this->model->primaryEmail->emailAddress != null)
             {
-                //todo: resolve linkable, based on how we do it in DV
-                $content .= ZurmoHtml::link($this->person->primaryEmail->emailAddress, '#',
-                                array('class' => 'icon-email', 'title' => '')); //todo: title Click to Email (resolve for getAttributeLabel
+                $emailContent = EmailMessageUtil::renderEmailAddressAsMailToOrModalLinkStringContent(
+                                    $this->model->primaryEmail->emailAddress, $this->model);
+                $content .=ZurmoHtml::tag('span', array('class' => 'icon-email'), $emailContent);
             }
             if($content != null)
             {
                 return ZurmoHtml::tag('div', array('class' => 'contact-details'), $content);
             }
-
         }
 
         protected function resolveAddressContent()
         {
-            $element                       = new AddressElement($this->person, 'primaryAddress', null);
+            $element                       = new AddressElement($this->model, 'primaryAddress', null);
             $element->breakLines           = false;
             $element->nonEditableTemplate  = '{content}';
             $spanContent                   = ZurmoHtml::tag('span', array('class' => 'salutation'), $element->render());
@@ -186,42 +185,11 @@
 
         protected function renderBackOfCardContent()
         {
-            //todo: remember don't specify rapleaf here, but rely on dataEnricher, just call it sub area or something like that...
-
-            return '<div class="back-of-card clearfix">
-                                                    <h3>Demographic Data</h3>
-                                                    <ul class="complex-data clearfix">
-                                                        <li>Household Income:<span>100K</span></li>
-                                                        <li>Marital Status:<span>Married</span></li>
-                                                        <li>Home Market Value:<span>50K-75K</span></li>
-                                                        <li>Occupation:<span>Blue Collar Worker</span></li>
-                                                        <li>Education:<span>Completed High Scgool</span></li>
-                                                    </ul>
-                                                    <div class="half">
-                                                        <h3>Interests</h3>
-                                                        <ul class="simple-data clearfix">
-                                                            <li><span>Blogging</span></li>
-                                                            <li><span>Books</span></li>
-                                                            <li><span>Business</span></li>
-                                                            <li><span>CRM</span></li>
-                                                            <li><span>PHP</span></li>
-                                                            <li><span>Yii & TDD</span></li>
-                                                        </ul>
-                                                    </div>
-                                                    <div class="half">
-                                                        <h3>Purchases</h3>
-                                                        <ul class="simple-data clearfix">
-                                                            <li><span>Cars</span></li>
-                                                            <li><span>Beuty</span></li>
-                                                            <li><span>Cooking</span></li>
-                                                            <li><span>Pets</span></li>
-                                                            <li><span>Sports</span></li>
-                                                            <li><span>Technology</span></li>
-                                                            <li><span>Outdoor and Adventure</span></li>
-                                                            <li><span>Luxury and Jewels</span></li>
-                                                        </ul>
-                                                    </div>
-                                                </div>';
+            $backOfCardContent = Yii::app()->dataEnhancer->getPersonBackOfCardViewContent();
+            if($backOfCardContent != null)
+            {
+                return ZurmoHtml::tag('div', array('class' => 'back-of-card clearfix'), $backOfCardContent);
+            }
         }
 
         protected static function registerBackOfCardScript()
@@ -233,6 +201,25 @@
                 return false;
             });";
             Yii::app()->getClientScript()->registerScript('backOfCardScript', $script);
+        }
+
+        protected static function resolveAccountContentByUser(Account $account, User $user)
+        {
+            $userCanAccess   = RightsUtil::canUserAccessModule('AccountsModule', $user);
+            $userCanReadItem = ActionSecurityUtil::canUserPerformAction('Details', $account, $user);
+            if ($userCanAccess && $userCanReadItem)
+            {
+                return ZurmoHtml::link(Yii::app()->format->text($account), Yii::app()->createUrl('accounts/default/details/',
+                                                                           array('id' => $account->id)));
+            }
+            elseif (!$userCanAccess && $userCanReadItem)
+            {
+                return strval($account);
+            }
+            else
+            {
+                return;
+            }
         }
     }
 ?>

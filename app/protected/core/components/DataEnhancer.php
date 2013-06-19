@@ -59,6 +59,33 @@
         }
 
         /**
+         * Override and return back of card content for person
+         * @return null | string
+         */
+        public function getPersonBackOfCardViewContent()
+        {
+            return null;
+        }
+
+        /**
+         * Override and return social networks content for person
+         * @return null | string
+         */
+        public function getPersonSocialNetworksViewContent()
+        {
+            return null;
+        }
+
+        /**
+         * Override and return demographic content for person including age and gender
+         * @return null | string
+         */
+        public function getPersonDemographicViewContent()
+        {
+            return null;
+        }
+
+        /**
          * @param User|Person $person
          * @return null
          */
