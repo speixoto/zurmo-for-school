@@ -44,14 +44,7 @@
          */
         public static function getDefaultMetadata()
         {
-            $metadata = array(
-                'Product' => array(
-                    'cannotTrigger' =>
-                        array('account', 'contact', 'opportunity', 'productTemplate', 'productCategories',
-                            'name', 'description', 'createdByUser', 'owner', 'modifiedByUser', 'createdDateTime',
-                            'modifiedDateTime')
-                    ),
-            );
+            $metadata = array();
             return array_merge(parent::getDefaultMetadata(), $metadata);
         }
     }
