@@ -33,18 +33,65 @@
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
+
     /**
-     * Column adapter for name value for product list
+     * Helper class for managing data enhancement to models. An example would be adding gender and age information
+     * for a person.  Override as needed.
      */
-    class ProductNameRelatedListViewColumnAdapter extends TextListViewColumnAdapter
+    class DataEnhancer extends CApplicationComponent
     {
-        public function renderGridViewData()
+        /**
+         * @param User|Person $person
+         * @return bool
+         */
+        public function personHasBackOfCard($person)
         {
-                return array(
-                    'name'  => $this->attribute,
-                    'value' => array('ProductElementUtil', 'getProductNameLinkString'),
-                    'type'  => 'raw',
-                );
+            return false;
+        }
+
+        /**
+         * Override and return back of card label for person
+         * @return null | string
+         */
+        public function getPersonBackOfCardLabel()
+        {
+            return null;
+        }
+
+        /**
+         * Override and return back of card content for person
+         * @return null | string
+         */
+        public function getPersonBackOfCardViewContent()
+        {
+            return null;
+        }
+
+        /**
+         * Override and return social networks content for person
+         * @return null | string
+         */
+        public function getPersonSocialNetworksViewContent()
+        {
+            return null;
+        }
+
+        /**
+         * Override and return demographic content for person including age and gender
+         * @return null | string
+         */
+        public function getPersonDemographicViewContent()
+        {
+            return null;
+        }
+
+        /**
+         * @param User|Person $person
+         * @return null
+         */
+        public function getPersonAvatar($person)
+        {
+            return null;
         }
     }
 ?>
