@@ -178,7 +178,6 @@
             foreach ($columns as $columnInformation)
             {
                 $keys = array_keys($columnInformation);
-                //Its weird but $columnInformation['name'] not working here, giving undefined index error
                 $columnName = $keys[0];
                 $columnClassName    = 'Product' . ucfirst($columnInformation[$columnName]) . 'RelatedListViewColumnAdapter';
                 if(@class_exists($columnClassName))
