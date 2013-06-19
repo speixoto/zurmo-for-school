@@ -185,16 +185,10 @@
          */
          protected function getCGridViewColumns()
          {
-            $columns    = parent::getCGridViewColumns();
-            $lastColumn = $columns[count($columns)-1];
-            $columns    = array_slice($columns, 0, count($columns)-2);
-            //Add total to the grid view
-            $columnClassName    = 'ProductTotalRelatedListViewColumnAdapter';
-            $columnAdapter      = new ProductTotalRelatedListViewColumnAdapter('total', $this, array());
-            $column             = $columnAdapter->renderGridViewData();
-            array_push($columns, $column);
-            array_push($columns, $lastColumn);
-            return $columns;
+             $columns            = parent::getCGridViewColumns();
+             $columnAdapter      = new ProductTotalRelatedListViewColumnAdapter('total', $this, array());
+             $column             = $columnAdapter->renderGridViewData();
+             return array_merge($columns, array($column));
         }
 
         /**
@@ -477,33 +471,23 @@
         }
 
         /**
-         * Resolve list view column adapter
-         * @param array $columnInformation
-         * @return string
-         */
-        protected function resolveListViewColumnAdapterClassName($columnInformation)
-        {
-            return 'Product' . ucfirst($columnInformation['attributeName']) . 'RelatedListViewColumnAdapter';
-        }
-
-        /**
          * Process input column information to fetch column data
          */
         protected function processColumnInfoToFetchColumnData($columnInformation)
         {
-            $columnClassName = $this->resolveListViewColumnAdapterClassName($columnInformation);
+            $columnClassName = 'Product' . ucfirst($columnInformation['attributeName']) . 'RelatedListViewColumnAdapter';
             if(@class_exists($columnClassName))
             {
                 $columnAdapter      = new $columnClassName($columnInformation['attributeName'], $this, array_slice($columnInformation, 1));
                 $column = $columnAdapter->renderGridViewData();
+                if (!isset($column['class']))
+                {
+                    $column['class'] = 'DataColumn';
+                }
             }
             else
             {
-                $column = array('name' => $columnInformation['attributeName']);
-            }
-            if (!isset($column['class']))
-            {
-                $column['class'] = 'DataColumn';
+                $column =  parent::processColumnInfoToFetchColumnData($columnInformation);
             }
             return $column;
         }
