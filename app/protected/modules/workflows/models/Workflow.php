@@ -151,18 +151,21 @@
             $modules = Module::getModuleObjects();
             foreach (self::getWorkflowSupportedModulesClassNamesCurrentUserHasAccessTo() as $moduleClassName)
             {
-                if ($moduleClassName::getStateMetadataAdapterClassName() != null)
+                if($moduleClassName::canHaveTimeBasedWorkflow() === true)
                 {
-                    $workflowRules = WorkflowRules::makeByModuleClassName($moduleClassName);
-                    $label         = $workflowRules->getVariableStateModuleLabel(Yii::app()->user->userModel);
-                }
-                else
-                {
-                    $label = $moduleClassName::getModuleLabelByTypeAndLanguage('Plural');
-                }
-                if ($label != null)
-                {
-                    $moduleClassNamesAndLabels[$moduleClassName] = $label;
+                    if ($moduleClassName::getStateMetadataAdapterClassName() != null)
+                    {
+                        $workflowRules = WorkflowRules::makeByModuleClassName($moduleClassName);
+                        $label         = $workflowRules->getVariableStateModuleLabel(Yii::app()->user->userModel);
+                    }
+                    else
+                    {
+                        $label = $moduleClassName::getModuleLabelByTypeAndLanguage('Plural');
+                    }
+                    if ($label != null)
+                    {
+                        $moduleClassNamesAndLabels[$moduleClassName] = $label;
+                    }
                 }
             }
             return $moduleClassNamesAndLabels;
