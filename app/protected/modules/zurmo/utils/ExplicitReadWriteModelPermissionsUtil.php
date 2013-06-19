@@ -335,13 +335,6 @@
                     $setBackToProcess = true;
                 }
                 $saved = $securableItem->save();
-                if(count($securableItem->getErrors()) > 0 )
-                {
-                    print "<pre>";
-                    print_r($securableItem->getErrors());
-                    print "</pre>";
-                    exit;
-                }
                 if ($setBackToProcess)
                 {
                     $securableItem->setProcessWorkflowOnSave();

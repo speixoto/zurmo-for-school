@@ -309,13 +309,7 @@
                     {
                         foreach ($cell['elements'] as $columnInformation)
                         {
-                            $columnClassName = $columnInformation['type'] . 'ListViewColumnAdapter';
-                            $columnAdapter  = new $columnClassName($columnInformation['attributeName'], $this, array_slice($columnInformation, 1));
-                            $column = $columnAdapter->renderGridViewData();
-                            if (!isset($column['class']))
-                            {
-                                $column['class'] = 'DataColumn';
-                            }
+                            $column = $this->processColumnInfoToFetchColumnData($columnInformation);
                             array_push($columns, $column);
                         }
                     }
@@ -543,6 +537,31 @@
             }
             $params = array_merge($params, $this->kanbanBoard->getGridViewParams());
             return array_merge($params, $this->resolveExtraParamsForKanbanBoard());
+        }
+
+        /**
+         * Resolve list view column adapter
+         * @param array $columnInformation
+         * @return string
+         */
+        protected function resolveListViewColumnAdapterClassName($columnInformation)
+        {
+            return $columnInformation['type'] . 'ListViewColumnAdapter';
+        }
+
+        /**
+         * Process input column information to fetch column data
+         */
+        protected function processColumnInfoToFetchColumnData($columnInformation)
+        {
+            $columnClassName = $this->resolveListViewColumnAdapterClassName($columnInformation);
+            $columnAdapter  = new $columnClassName($columnInformation['attributeName'], $this, array_slice($columnInformation, 1));
+            $column = $columnAdapter->renderGridViewData();
+            if (!isset($column['class']))
+            {
+                $column['class'] = 'DataColumn';
+            }
+            return $column;
         }
     }
 ?>

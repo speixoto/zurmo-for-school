@@ -73,8 +73,7 @@
             $productName = $data->name;
             if (strlen($productName) > (self::PRODUCT_NAME_LENGTH_IN_PORTLET_VIEW + 2))
             {
-                $productName = substr($productName, 0, self::PRODUCT_NAME_LENGTH_IN_PORTLET_VIEW);
-                $productName .= '..';
+                $productName = StringUtil::getChoppedStringContent($productName, self::PRODUCT_NAME_LENGTH_IN_PORTLET_VIEW);
             }
             $url         = Yii::app()->createUrl('products/default/details', array('id' => $data->id));
             return ZurmoHtml::link($productName, $url);
