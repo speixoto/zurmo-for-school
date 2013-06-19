@@ -64,6 +64,9 @@
             $this->relationModuleId    = $this->params['relationModuleId'];
         }
 
+        /**
+         * @return array
+         */
         public static function getDefaultMetadata()
         {
             $metadata = array(
@@ -131,11 +134,17 @@
              return $metadata;
         }
 
+        /**
+         * @return string
+         */
         public static function getModuleClassName()
         {
             return 'ProductsModule';
         }
 
+        /**
+         * @return string
+         */
         protected static function getGridTemplate()
         {
             $preloader = '<div class="list-preloader"><span class="z-spinner"></span></div>';
@@ -160,6 +169,9 @@
             return null;
         }
 
+        /**
+         * @return array
+         */
         protected static function resolveAjaxOptionsForSelectList()
         {
             $title = Zurmo::t('ProductsModule', 'ProductsModuleSingularLabel Search',
@@ -198,6 +210,9 @@
             return $columns;
         }
 
+        /**
+         * @return string
+         */
         protected function renderContent()
         {
             $content         = $this->renderConfigurationForm();
@@ -214,62 +229,62 @@
             return $content;
         }
 
+        /**
+         * @return string
+         */
         public function getGridViewId()
         {
             return 'product-portlet-grid-view';
         }
 
+        /**
+         * @return string
+         */
         protected function getGridViewWidgetPath()
         {
             return 'application.modules.products.widgets.ProductPortletExtendedGridView';
         }
 
+        /**
+         * @return array
+         */
         protected function getCGridViewParams()
         {
             $columns = $this->getCGridViewColumns();
             assert('is_array($columns)');
-            return array(
-                'id' => $this->getGridViewId(),
-                'htmlOptions' => array(
-                    'class' => 'cgrid-view'
-                ),
-                'loadingCssClass'      => 'loading',
-                'dataProvider'         => $this->getProductsDataProvider($this->configurationForm),
-                'selectableRows'       => $this->getCGridViewSelectableRowsCount(),
-                'pager'                => $this->getCGridViewPagerParams(),
-                'beforeAjaxUpdate'     => $this->getCGridViewBeforeAjaxUpdate(),
-                'afterAjaxUpdate'      => $this->getCGridViewAfterAjaxUpdate(),
-                'columns'              => $columns,
-                'nullDisplay'          => '&#160;',
-                'pagerCssClass'        => static::getPagerCssClass(),
-                'showTableOnEmpty'     => $this->getShowTableOnEmpty(),
-                'emptyText'            => $this->getEmptyText(),
-                'template'             => static::getGridTemplate(),
-                'summaryText'          => static::getSummaryText(),
-                'summaryCssClass'      => static::getSummaryCssClass(),
-                'params'               => $this->params
-            );
+            $gridViewParams = parent::getCGridViewParams();
+            $gridViewParams['id']              = $this->getGridViewId();
+            $gridViewParams['dataProvider']    = $this->getProductsDataProvider($this->configurationForm);
+            $gridViewParams['pager']           = $this->getCGridViewPagerParams();
+            $gridViewParams['afterAjaxUpdate'] = $this->getCGridViewAfterAjaxUpdate();
+            $gridViewParams['columns']         = $columns;
+            $gridViewParams['template']        = static::getGridTemplate();
+            $gridViewParams['params']          = $this->params;
+            return $gridViewParams;
         }
 
+        /**
+         * @return array
+         */
         protected function getCGridViewPagerParams()
         {
+            $gridViewPagerParams = parent::getCGridViewPagerParams();
             $defaultData = array('id' => $this->params["relationModel"]->id, 'stickyOffset' => 0);
-            return array(
-                    'firstPageLabel' => '<span>first</span>',
-                    'prevPageLabel'  => '<span>previous</span>',
-                    'nextPageLabel'  => '<span>next</span>',
-                    'lastPageLabel'  => '<span>last</span>',
-                    'class'          => 'SimpleListLinkPager',
-                    'paginationParams' => array_merge($defaultData, array('portletId' => $this->params['portletId'])),
-                    'route'         => 'defaultPortlet/details',
-                );
+            $gridViewPagerParams['paginationParams'] = array_merge($defaultData, array('portletId' => $this->params['portletId']));
+            return $gridViewPagerParams;
         }
 
+        /**
+         * @return string
+         */
         public function renderPortletHeadContent()
         {
             return $this->renderWrapperAndActionElementMenu(Zurmo::t('Core', 'Options'));
         }
 
+        /**
+         * @return string
+         */
         protected function renderConfigurationForm()
         {
             $formName   = 'product-configuration-form';
@@ -288,6 +303,10 @@
             return $content;
         }
 
+        /**
+         * @param ProductsConfigurationForm $form
+         * @return string
+         */
         protected function renderConfigurationFormLayout($form)
         {
             assert('$form instanceof ZurmoActiveForm');
@@ -311,6 +330,9 @@
             return $content;
         }
 
+        /**
+         * @param ProductsConfigurationForm $form
+         */
         protected function registerConfigurationFormLayoutScripts($form)
         {
             assert('$form instanceof ZurmoActiveForm');
@@ -337,11 +359,17 @@
             ");
         }
 
+        /**
+         * @return ProductsConfigurationForm
+         */
         protected function getConfigurationForm()
         {
             return new ProductsConfigurationForm();
         }
 
+        /**
+         * @param ProductsConfigurationForm $productsConfigurationForm
+         */
         protected function resolveProductsConfigFormFromRequest(&$productsConfigurationForm)
         {
             $excludeFromRestore = array();
@@ -353,6 +381,10 @@
             $this->restoreUserSettingsToConfigFrom($productsConfigurationForm, $excludeFromRestore);
         }
 
+        /**
+         * @param ProductsConfigurationForm $productsConfigurationForm
+         * @return array
+         */
         protected function saveUserSettingsFromConfigForm(&$productsConfigurationForm)
         {
             $savedConfigs = array();
@@ -372,6 +404,11 @@
             return $savedConfigs;
         }
 
+        /**
+         * @param ProductsConfigurationForm $productsConfigurationForm
+         * @param string $excludeFromRestore
+         * @return ProductsConfigurationForm
+         */
         protected function restoreUserSettingsToConfigFrom(&$productsConfigurationForm, $excludeFromRestore)
         {
             foreach (static::$persistantProductPortletConfigs as $persistantProductConfigItem)
@@ -408,6 +445,11 @@
             return Yii::app()->createUrl('/' . $this->relationModuleId . '/defaultPortlet/modalRefresh', $params);
         }
 
+        /**
+         * Makes product search attributes data
+         * @param ProductsConfigurationForm $form
+         * @return string
+         */
         protected function makeProductSearchAttributeData($form)
         {
             $searchAttributeData = array();
@@ -434,6 +476,10 @@
             return $searchAttributeData;
         }
 
+        /**
+         * @param ProductsConfigurationForm $form
+         * @return DataProvider
+         */
         protected function getProductsDataProvider($form)
         {
             if ($this->dataProvider == null)
