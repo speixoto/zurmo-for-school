@@ -80,10 +80,22 @@
             $content .= $this->resolveAndRenderActionElementMenu();
             $leftContent  = $this->renderBeforeFormLayoutForDetailsContent();
             $leftContent .= $this->renderFormLayout();
+            $leftContent .= $this->renderAfterFormLayoutForDetailsContent();
+            $leftContent  = $this->resolveLeftContentForSlidingPanels($leftContent);
             $content .= ZurmoHtml::tag('div', array('class' => 'left-column full-width'), $leftContent);
             $content .= $this->renderRightSideContent();
-            $content .= $this->renderAfterFormLayoutForDetailsContent();
             $content .= '</div>';
+            $content .= $this->renderAfterDetailsTable();
+            return $content;
+        }
+
+        /**
+         * Override to adding sliding panel support. @see ContactDetailsPortletView for an example.
+         * @param $content
+         * @return mixed
+         */
+        protected function resolveLeftContentForSlidingPanels($content)
+        {
             return $content;
         }
 
@@ -101,6 +113,10 @@
         }
 
         protected function renderAfterFormLayoutForDetailsContent()
+        {
+        }
+
+        protected function renderAfterDetailsTable()
         {
         }
 
