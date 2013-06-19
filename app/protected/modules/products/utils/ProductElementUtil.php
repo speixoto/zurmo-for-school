@@ -61,22 +61,5 @@
             return Yii::app()->numberFormatter->formatCurrency( $currencyValueModel->value * $data->quantity,
                                                                 $currencyValueModel->currency->code);
         }
-
-        /**
-         * Gets name for product in portlet view
-         * @param object $data
-         * @param int $row
-         * @return string
-         */
-        public static function getProductNameLinkString($data, $row)
-        {
-            $productName = $data->name;
-            if (strlen($productName) > (self::PRODUCT_NAME_LENGTH_IN_PORTLET_VIEW + 2))
-            {
-                $productName = StringUtil::getChoppedStringContent($productName, self::PRODUCT_NAME_LENGTH_IN_PORTLET_VIEW);
-            }
-            $url         = Yii::app()->createUrl('products/default/details', array('id' => $data->id));
-            return ZurmoHtml::link($productName, $url);
-        }
     }
 ?>
