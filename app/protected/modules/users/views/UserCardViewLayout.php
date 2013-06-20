@@ -45,7 +45,7 @@
             $element                       = new DropDownElement($this->model, 'title', null);
             $element->nonEditableTemplate  = '{content}';
             $spanContent                   = ZurmoHtml::tag('span', array('class' => 'salutation'), $element->render());
-            $usernameContent               = ZurmoHtml::tag('span', array(), $this->model->username);
+            $usernameContent               = ZurmoHtml::tag('span', array('class' => 'user-name'), $this->model->username);
             return ZurmoHtml::tag('h2', array(), $spanContent . strval($this->model) . $usernameContent);
         }
 

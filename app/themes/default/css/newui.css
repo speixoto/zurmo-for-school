@@ -15737,10 +15737,6 @@ a.close-ModalGameNotification.simple-link {
   display: table;
   clear: both;
 }
-.gravatar-container {
-  float: right;
-  margin: 15px 15px 15px 0;
-}
 .gravatar-container a {
   display: block;
   float: left;
@@ -19197,6 +19193,7 @@ a + .autoresponder-stats {
 }
 .business-card .gravatar {
   margin-right: 12px;
+  margin-bottom: 6px;
 }
 .business-card h2 {
   line-height: 100%;
@@ -19207,6 +19204,11 @@ a + .autoresponder-stats {
   font-weight: normal;
   font-size: 80%;
   margin-right: 5px;
+}
+.business-card h2 .user-name {
+  font-weight: normal;
+  font-size: 80%;
+  margin-left: 5px;
 }
 .business-card h3.position {
   line-height: 140%;
