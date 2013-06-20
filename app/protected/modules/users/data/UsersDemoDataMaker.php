@@ -53,7 +53,7 @@
 
             $super               = User::getByUsername('super');
             $email               = new Email();
-            $email->emailAddress = 'Super.User@test.zurmo.com';
+            $email->emailAddress = static::resolveDemoEmailAddress('Super.test');
             $super->primaryEmail = $email;
             $saved               = $super->save();
             assert('$saved');
@@ -71,7 +71,7 @@
             $user->firstName          = 'Jason';
             $user->lastName           = 'Blue';
             $email                    = new Email();
-            $email->emailAddress      = 'Jason.Blue@test.zurmo.com';
+            $email->emailAddress      = static::resolveDemoEmailAddress('Jason.Blue');
             $user->primaryEmail       = $email;
             $user->setPassword($user->username);
             $saved                    = $user->save();
