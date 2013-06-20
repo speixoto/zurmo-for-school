@@ -34,32 +34,24 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * Defines the import rules for importing into the contacts module.
-     */
-    class ContactsImportRules extends ImportRules
+    class ContactImportRulesTest extends ImportBaseTest
     {
-        public static function getModelClassName()
+        public static function setUpBeforeClass()
         {
-            return 'Contact';
+            parent::setUpBeforeClass();
+            SecurityTestHelper::createSuperAdmin();
         }
 
-        /**
-         * Get the array of available derived attribute types that can be mapped when using these import rules.
-         * @return array
-         */
-        public static function getDerivedAttributeTypes()
+        public function testImportSwitchingOwnerButShouldStillCreate()
         {
-            return array_merge(parent::getDerivedAttributeTypes(), array('ContactState', 'FullName'));
-        }
+            $super = User::getByUsername('super');
+            Yii::app()->user->userModel = $super;
 
-        /**
-         * Get the array of attributes that cannot be mapped when using these import rules.
-         * @return array
-         */
-        public static function getNonImportableAttributeNames()
-        {
-            return array_merge(parent::getNonImportableAttributeNames(), array('state', 'companyName'));
+            $requiredAttributesCollection = ContactsImportRules::getRequiredAttributesCollectionNotIncludingReadOnly();
+            $this->assertCount(3, $requiredAttributesCollection);
+            $this->assertContains('owner',      array_keys($requiredAttributesCollection));
+            $this->assertContains('lastName',   array_keys($requiredAttributesCollection));
+            $this->assertContains('state',      array_keys($requiredAttributesCollection));
         }
     }
 ?>
