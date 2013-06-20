@@ -96,7 +96,7 @@
             }
             if (!$invalid && $addressModel->makeAddress() != '')
             {
-                $content .= $this->renderMapLink($addressModel);
+                $content = $this->renderMapLink($addressModel, $content);
             }
             return $content;
         }
@@ -158,7 +158,7 @@
          * popup.
          * @return The element's content as a string.
          */
-        protected function renderMapLink($addressModel)
+        protected function renderMapLink($addressModel, $addressLine)
         {
             assert('$addressModel instanceof Address');
             Yii::app()->getClientScript()->registerScriptFile(
@@ -172,9 +172,9 @@
                                                                          'latitude'      => $addressModel->latitude,
                                                                          'longitude'     => $addressModel->longitude));
             $id           = $this->getEditableInputId($this->attribute, 'MapLink');
-            $content      = ZurmoHtml::ajaxLink(Zurmo::t('ZurmoModule', 'map'), $mapRenderUrl,
+            $content      = ZurmoHtml::ajaxLink($addressLine, $mapRenderUrl,
                                 $this->resolveAjaxOptionsForMapLink(),
-                                array('id' => $id, 'class' => 'map-link')
+                                array('id' => $id, 'class' => 'icon-map')
             );
             return $content;
         }

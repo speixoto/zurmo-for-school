@@ -287,6 +287,7 @@ a.ModalGameNotification a,
 .webform-embed-code textarea,
 #business-card-buttons > div,
 #business-card-buttons a,
+#sliding-panel-toggle,
 .mini-button {
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
@@ -19226,7 +19227,7 @@ a + .autoresponder-stats {
   margin-bottom: 7px;
   margin-top: 10px;
 }
-.business-card .contact-details > a {
+.business-card .contact-details > span {
   margin-top: 5px;
   margin-right: 20px;
   color: #333;
@@ -19283,6 +19284,9 @@ a + .autoresponder-stats {
 }
 .business-card .demographic-details .male {
   background: url(../images/people.png) right top no-repeat;
+}
+.business-card .demographic-details .female {
+  background: url(../images/people.png) right bottom no-repeat;
 }
 .business-card .demographic-details span {
   margin-top: 13px;
@@ -19507,6 +19511,21 @@ div.special-pager .next span {
 div.special-pager .next a:after,
 div.special-pager .hidden.next:after {
   display: none !important;
+}
+#sliding-panel-toggle {
+  width: 100%;
+  background: #ffffff url(../images/view-toolbar-gradient.png) left bottom repeat-x;
+  -webkit-box-shadow: inset 0 1px 0 #dfdfdf;
+  -moz-box-shadow: inset 0 1px 0 #dfdfdf;
+  -o-box-shadow: inset 0 1px 0 #dfdfdf;
+  -ms-box-shadow: inset 0 1px 0 #dfdfdf;
+  box-shadow: inset 0 1px 0 #dfdfdf;
+  overflow: hidden;
+  display: block;
+  text-align: center;
+  font-weight: bold;
+  padding: 5px 0;
+  font-size: 11px;
 }
 .mini-button {
   display: inline-block;
