@@ -134,7 +134,7 @@
 
         protected function resolveGenderAndAgeContent()
         {
-            $demographicContent =Yii::app()->dataEnhancer->getPersonDemographicViewContent($this->model);
+            $demographicContent = Yii::app()->dataEnhancer->getPersonDemographicViewContent($this->model);
             if($demographicContent != null)
             {
                 return ZurmoHtml::tag('div', array('class' => 'demographic-details'), $demographicContent);
