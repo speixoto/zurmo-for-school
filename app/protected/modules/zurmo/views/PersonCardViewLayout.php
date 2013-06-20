@@ -73,7 +73,14 @@
 
         protected function resolveAvatarContent()
         {
-            return Yii::app()->dataEnhancer->getPersonAvatar($this->model);
+            $content = Yii::app()->dataEnhancer->getPersonAvatar($this->model);
+            if($content == null)
+            {
+                $htmlOptions = array('class' => 'gravatar', 'width' => '110', 'height' => '110');
+                $url         = Yii::app()->theme->baseUrl . '/images/offline_user.png';
+                $content     = ZurmoHtml::image($url, strval($this->model), $htmlOptions);
+            }
+            return $content;
         }
 
         protected function resolveNameContent()

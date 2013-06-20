@@ -42,8 +42,11 @@
     {
         protected function resolveNameContent()
         {
-            $content = parent::resolveNameContent();
-            return $content. ZurmoHtml::tag('h3', array(), $this->model->username);
+            $element                       = new DropDownElement($this->model, 'title', null);
+            $element->nonEditableTemplate  = '{content}';
+            $spanContent                   = ZurmoHtml::tag('span', array('class' => 'salutation'), $element->render());
+            $usernameContent               = ZurmoHtml::tag('span', array(), $this->model->username);
+            return ZurmoHtml::tag('h2', array(), $spanContent . strval($this->model) . $usernameContent);
         }
 
         protected function resolveAvatarContent()
