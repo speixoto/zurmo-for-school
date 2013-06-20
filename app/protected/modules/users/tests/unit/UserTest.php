@@ -1133,5 +1133,26 @@
             $this->assertEquals('01/12/2013 00:00:00',
                                 Yii::app()->dateFormatter->formatDateTime('2013-12-01', 'short'));
         }
+
+        public function testLastLoginDateTimeAttribute()
+        {
+            $user = new User();
+            $user->username           = 'lastloginuser';
+            $user->title->value       = 'Mr.';
+            $user->firstName          = 'myFirstName';
+            $user->lastName           = 'myLastName';
+            $user->setPassword('lastlogin');
+            $user->setRight('UsersModule', UsersModule::RIGHT_LOGIN_VIA_WEB);
+            $this->assertTrue($user->save());
+
+            $user = User::getByUsername('lastloginuser');
+            $this->assertNull($user->lastLoginDateTime);
+            unset($user);
+
+            $now = time();
+            User::authenticate('lastloginuser', 'lastlogin');
+            $user = User::getByUsername('lastloginuser');
+            $this->assertLessThanOrEqual(5, $user->lastLoginDateTime - $now);
+        }
     }
 ?>
