@@ -59,7 +59,7 @@
             $annualTotal            = 0;
             foreach ($models as $model)
             {
-                if(ControllerSecurityUtil::doesCurrentUserHavePermissionOnSecurableItem($model, Permission::READ))
+                if (ControllerSecurityUtil::doesCurrentUserHavePermissionOnSecurableItem($model, Permission::READ))
                 {
                     if ($persistantProductConfigItemValue === null)
                     {
