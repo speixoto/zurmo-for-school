@@ -178,8 +178,7 @@
             $element                       = new AddressElement($this->model, 'primaryAddress', null);
             $element->breakLines           = false;
             $element->nonEditableTemplate  = '{content}';
-            $spanContent                   = ZurmoHtml::tag('span', array('class' => 'salutation'), $element->render());
-            return ZurmoHtml::tag('div', array('class' => 'address'), $spanContent);
+            return ZurmoHtml::tag('div', array('class' => 'address'), $element->render());
         }
 
         protected function renderBackOfCardContent()
