@@ -84,6 +84,7 @@
             $leftContent  = $this->resolveLeftContentForSlidingPanels($leftContent);
             $content .= ZurmoHtml::tag('div', array('class' => 'left-column full-width'), $leftContent);
             $content .= $this->renderRightSideContent();
+            $content .= $this->renderAfterRightSideContent();
             $content .= '</div>';
             $content .= $this->renderAfterDetailsTable();
             return $content;
@@ -113,6 +114,10 @@
         }
 
         protected function renderAfterFormLayoutForDetailsContent()
+        {
+        }
+
+        protected function renderAfterRightSideContent()
         {
         }
 

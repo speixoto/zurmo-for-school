@@ -223,7 +223,7 @@
                                                'id'    => 'businessCardView'), $content);
         }
 
-        protected function renderAfterDetailsTable()
+        protected function renderAfterRightSideContent()
         {
             return PersonSlidingPanelsUtil::renderToggleLinkContent();
         }
