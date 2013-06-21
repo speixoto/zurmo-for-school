@@ -44,7 +44,7 @@
 <tr>
 	<td>type</td>
 	<td>ReportsSearchForm_anyMixedAttributes</td>
-	<td>SummationReport ${randomSuffix}</td>
+	<td>MatrixReport ${randomSuffix}</td>
 </tr>
 <tr>
 	<td>keyUp</td>
@@ -59,17 +59,17 @@
 <tr>
 	<td>waitForText</td>
 	<td>//div[@id='ReportsListView']/div/table/tbody/tr/td[2]/a</td>
-	<td>SummationReport ${randomSuffix}</td>
+	<td>MatrixReport ${randomSuffix}</td>
 </tr>
 <tr>
 	<td>verifyTextPresent</td>
-	<td>SummationReport ${randomSuffix}</td>
+	<td>MatrixReport ${randomSuffix}</td>
 	<td></td>
 </tr>
 <tr>
 	<td>verifyValue</td>
 	<td>ReportsSearchForm_anyMixedAttributes</td>
-	<td>SummationReport ${randomSuffix}</td>
+	<td>MatrixReport ${randomSuffix}</td>
 </tr>
 <tr>
 	<td>click</td>
@@ -97,6 +97,11 @@
 	<td></td>
 </tr>
 <tr>
+	<td>waitForPageToLoad</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
 	<td>waitForCondition</td>
 	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
 	<td>30000</td>
@@ -107,9 +112,9 @@
 	<td></td>
 </tr>
 <tr>
-	<td>waitForText</td>
-	<td>//ul[@id='FiltersTreeView']/li/span</td>
-	<td>Opportunity</td>
+	<td>waitForTextPresent</td>
+	<td>Stage</td>
+	<td></td>
 </tr>
 <tr>
 	<td>click</td>
@@ -122,10 +127,50 @@
 	<td>30000</td>
 </tr>
 <tr>
-	<td>waitForText</td>
-	<td>//ul[@id='GroupBysTreeView']/li/span</td>
-	<td>Opportunity</td>
+	<td>waitForTextPresent</td>
+	<td>Stage</td>
+	<td></td>
 </tr>
+<!--tr>
+	<td>doubleClick</td>
+	<td>//li[@id='GroupBys_stage']/span</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForCondition</td>
+	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+	<td>30000</td>
+</tr>
+<tr>
+	<td>waitForText</td>
+	<td>//ul[@id='GroupBysattributeRowsUl']/li[1]/div/div/div[1]</td>
+	<td>Stage</td>
+</tr>
+<tr>
+	<td>doubleClick</td>
+	<td>//li[@id='GroupBys_owner__User']/span</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForCondition</td>
+	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+	<td>30000</td>
+</tr>
+<tr>
+	<td>waitForText</td>
+	<td>//ul[@id='GroupBysattributeRowsUl']/li[2]/div/div/div[1]</td>
+	<td>Owner</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>id=MatrixReportWizardForm_GroupBys_1_axis</td>
+	<td>label=Y-Axis</td>
+</tr>
+<tr>
+	<td>waitForCondition</td>
+	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+	<td>30000</td>
+</tr-->
 <tr>
 	<td>click</td>
 	<td>//a[@id='groupBysNextLink']/span[3]</td>
@@ -137,10 +182,40 @@
 	<td>30000</td>
 </tr>
 <tr>
-	<td>waitForText</td>
-	<td>//ul[@id='DisplayAttributesTreeView']/li/span</td>
-	<td>Opportunity</td>
+	<td>waitForTextPresent</td>
+	<td>Count</td>
+	<td></td>
 </tr>
+<!--tr>
+	<td>doubleClick</td>
+	<td>//li[@id='DisplayAttributes_amount__Summation']/span</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForCondition</td>
+	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+	<td>30000</td>
+</tr>
+<tr>
+	<td>waitForText</td>
+	<td>//ul[@id='DisplayAttributesattributeRowsUl']/li[1]/div/div/div[1]</td>
+	<td>Amount -(Sum)</td>
+</tr>
+<tr>
+	<td>doubleClick</td>
+	<td>//li[@id='DisplayAttributes_Count']/span</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForCondition</td>
+	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+	<td>30000</td>
+</tr>
+<tr>
+	<td>waitForText</td>
+	<td>//ul[@id='DisplayAttributesattributeRowsUl']/li[2]/div/div/div[1]</td>
+	<td>Count</td>
+</tr-->
 <tr>
 	<td>click</td>
 	<td>//a[@id='displayAttributesNextLink']/span[3]</td>
@@ -152,59 +227,14 @@
 	<td>30000</td>
 </tr>
 <tr>
-	<td>waitForText</td>
-	<td>//ul[@id='DrillDownDisplayAttributesTreeView']/li/span</td>
-	<td>Opportunity</td>
-</tr>
-<tr>
-	<td>click</td>
-	<td>//a[@id='drillDownDisplayAttributesNextLink']/span[3]</td>
-	<td></td>
-</tr>
-<tr>
-	<td>waitForCondition</td>
-	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
-	<td>30000</td>
-</tr>
-<tr>
-	<td>waitForText</td>
-	<td>//ul[@id='OrderBysTreeView']/li/span</td>
-	<td>Opportunity</td>
-</tr>
-<tr>
-	<td>click</td>
-	<td>//a[@id='orderBysDataNextLink']/span[3]</td>
-	<td></td>
-</tr>
-<tr>
-	<td>waitForText</td>
-	<td>//div[@id='ChartForReportWizardView']/div[1]/h3</td>
-	<td>Select a Chart</td>
-</tr>
-<tr>
-	<td>click</td>
-	<td>//a[@id='chartNextLink']/span[3]</td>
-	<td></td>
-</tr>
-<tr>
-	<td>waitForCondition</td>
-	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
-	<td>30000</td>
-</tr>
-<tr>
-	<td>waitForText</td>
-	<td>//div[@id='GeneralDataForReportWizardView']/div[1]/h3</td>
+	<td>waitForTextPresent</td>
 	<td>Save Report</td>
+	<td></td>
 </tr>
 <tr>
 	<td>type</td>
-	<td>id=SummationReportWizardForm_description</td>
-	<td>SummationReport description</td>
-</tr>
-<tr>
-	<td>waitForCondition</td>
-	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
-	<td>30000</td>
+	<td>id=MatrixReportWizardForm_description</td>
+	<td>MatrixReport ${randomSuffix} description</td>
 </tr>
 <tr>
 	<td>click</td>
@@ -212,43 +242,8 @@
 	<td></td>
 </tr>
 <tr>
-	<td>waitForPageToLoad</td>
-	<td></td>
-	<td></td>
-</tr>
-<tr>
-	<td>waitForCondition</td>
-	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
-	<td>30000</td>
-</tr>
-<tr>
 	<td>waitForTextPresent</td>
-	<td>Stage</td>
-	<td></td>
-</tr>
-<tr>
-	<td>assertTextPresent</td>
-	<td>Stage</td>
-	<td></td>
-</tr>
-<tr>
-	<td>waitForTextPresent</td>
-	<td>Count</td>
-	<td></td>
-</tr>
-<tr>
-	<td>assertTextPresent</td>
-	<td>Count</td>
-	<td></td>
-</tr>
-<tr>
-	<td>waitForTextPresent</td>
-	<td>Amount -(Sum)</td>
-	<td></td>
-</tr>
-<tr>
-	<td>assertTextPresent</td>
-	<td>Amount -(Sum)</td>
+	<td>Results</td>
 	<td></td>
 </tr>
 <tr>
@@ -259,6 +254,26 @@
 <tr>
 	<td>assertTextPresent</td>
 	<td>Closed Won</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForTextPresent</td>
+	<td>Negotiating</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertTextPresent</td>
+	<td>Negotiating</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForTextPresent</td>
+	<td>Verbal</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertTextPresent</td>
+	<td>Verbal</td>
 	<td></td>
 </tr>
 <tr>
@@ -284,7 +299,7 @@
 <tr>
 	<td>type</td>
 	<td>id=ReportsSearchForm_anyMixedAttributes</td>
-	<td>SummationReport ${randomSuffix}</td>
+	<td>MatrixReport ${randomSuffix}</td>
 </tr>
 <tr>
 	<td>keyUp</td>
@@ -294,12 +309,12 @@
 <tr>
 	<td>waitForText</td>
 	<td>//div[@id='list-view']/table/tbody/tr[1]/td[2]/a</td>
-	<td>SummationReport ${randomSuffix}</td>
+	<td>MatrixReport ${randomSuffix}</td>
 </tr>
 <tr>
 	<td>assertText</td>
 	<td>//div[@id='list-view']/table/tbody/tr[1]/td[2]/a</td>
-	<td>SummationReport ${randomSuffix}</td>
+	<td>MatrixReport ${randomSuffix}</td>
 </tr>
 </tbody></table>
 </body>
