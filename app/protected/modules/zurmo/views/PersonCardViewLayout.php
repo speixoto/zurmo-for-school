@@ -88,7 +88,8 @@
             $element                       = new DropDownElement($this->model, 'title', null);
             $element->nonEditableTemplate  = '{content}';
             $spanContent                   = ZurmoHtml::tag('span', array('class' => 'salutation'), $element->render());
-            return ZurmoHtml::tag('h2', array(), $spanContent . strval($this->model));
+            $starLink = StarredUtil::getToggleStarStatusLink($this->model, null);
+            return ZurmoHtml::tag('h2', array(), $spanContent . strval($this->model) . $starLink);
         }
 
         protected function resolveBackOfCardLinkContent()
