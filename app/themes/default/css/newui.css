@@ -7499,6 +7499,10 @@ td {
 .stacked-list td div.checkbox-column ~ div {
   padding-left: 25px;
 }
+.stacked-list td .star-column {
+  margin: -6px 15px 0 0 !important;
+  float: right;
+}
 .stacked-list td > div {
   margin: 0 0 2px 0;
 }
@@ -7551,6 +7555,12 @@ tr.even {
 }
 .checkbox-column .hasCheckBox {
   margin: -4px auto 0 auto;
+}
+.star-column {
+  width: 20px;
+  text-align: center;
+  padding-right: 0 !important;
+  padding-left: 0 !important;
 }
 .button-column {
   width: 35px;
