@@ -211,7 +211,7 @@
         public static function getToggleStarStatusLink($data, $row)
         {
             $starredClass   = 'unstarred';
-            $text           = ' star';
+            $text           = 'star';
             if(StarredUtil::isModelStarred($data))
             {
                 $starredClass = 'starred';
