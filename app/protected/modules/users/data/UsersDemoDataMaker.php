@@ -108,7 +108,7 @@
                 $user->firstName          = ucfirst($username);
                 $user->lastName           = 'Smith';
                 $email                    = new Email();
-                $email->emailAddress      = $user->firstName . '@test.zurmo.com';
+                $email->emailAddress      = static::resolveDemoEmailAddress($user->firstName);
                 $user->primaryEmail       = $email;
                 $user->lastLoginDateTime  = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
                 $saved                    = $user->save();

@@ -7559,7 +7559,7 @@ tr.even {
   visibility: hidden;
 }
 .juiportlet-widget .empty {
-  padding: 10px 0 10px 15px;
+  padding: 5px 0 10px 0;
   display: block;
 }
 .juiportlet-widget td.empty > .empty {
@@ -7570,9 +7570,67 @@ tr.even {
   font-size: 11px;
   font-weight: bold;
   background: rgba(255, 255, 255, 0.5);
+  text-align: center;
+}
+.empty .icon-empty {
+  display: block;
+  line-height: 1;
+  margin: 0;
+}
+.empty .icon-empty:before {
+  margin: 0;
+  font-size: 40px;
+  line-height: 1;
 }
 td.empty {
   display: table-cell !important;
+}
+.icon-notice:before {
+  content: "j";
+  font-weight: normal;
+  font-size: 24px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  padding: 0 0 0 0;
+  margin: 0 6px 0 -30px;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  vertical-align: middle;
+  position: relative;
+}
+.icon-empty:before {
+  content: "z";
+  font-weight: normal;
+  font-size: 24px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  padding: 0 0 0 0;
+  margin: 0 6px 0 -30px;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  vertical-align: middle;
+  position: relative;
+  margin: 0 !important;
+}
+.general-issue-notice {
+  text-align: center;
+  width: 75%;
+  margin: 10px auto 15px auto !important;
+  position: relative;
+}
+.general-issue-notice .icon-notice {
+  display: block;
+  line-height: 1;
+  margin-bottom: 10px;
+}
+.general-issue-notice .icon-notice:before {
+  margin: 0;
+  font-size: 100px;
+  line-height: 60px !important;
+}
+.general-issue-notice p {
+  font-size: 14px;
+  line-height: 21px;
 }
 /*forms*/
 .form input[type="checkbox"] {
@@ -11471,9 +11529,50 @@ div.hasHalfs > div input {
 .juiportlet-widget.OpportunitiesForAccountRelatedListView h3:before {
   content: "9";
 }
+.juiportlet-widget.OpportunitiesForContactRelatedListView .icon-empty:before,
+.juiportlet-widget.OpportunitiesForAccountRelatedListView .icon-empty:before {
+  content: "9";
+  font-weight: normal;
+  font-size: 45px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  padding: 0 0 0 0;
+  margin: 0 6px 0 -30px;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  vertical-align: middle;
+  position: relative;
+}
 .juiportlet-widget.ContactsForOpportunityRelatedListView h3:before,
 .juiportlet-widget.ContactsForAccountRelatedListView h3:before {
   content: "e";
+}
+.juiportlet-widget.ContactsForOpportunityRelatedListView .icon-empty:before,
+.juiportlet-widget.ContactsForAccountRelatedListView .icon-empty:before {
+  content: "e";
+  font-weight: normal;
+  font-size: 45px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  padding: 0 0 0 0;
+  margin: 0 6px 0 -30px;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  vertical-align: middle;
+  position: relative;
+}
+.juiportlet-widget.OpenTasksForAccountRelatedListView .icon-empty:before {
+  content: "4";
+  font-weight: normal;
+  font-size: 45px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  padding: 0 0 0 0;
+  margin: 0 6px 0 -30px;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  vertical-align: middle;
+  position: relative;
 }
 .juiportlet-widget.OpportunitiesForContactRelatedListView h3,
 .juiportlet-widget.OpportunitiesForAccountRelatedListView h3,
@@ -17923,39 +18022,6 @@ a.user-link {
 .margetags-guide-link .simple-link {
   margin-left: 0;
 }
-.icon-notice:before {
-  content: "j";
-  font-weight: normal;
-  font-size: 24px;
-  font-family: "ZurmoGamificationSymblyReguRg";
-  padding: 0 0 0 0;
-  margin: 0 6px 0 -30px;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-  vertical-align: middle;
-  position: relative;
-}
-.general-issue-notice {
-  text-align: center;
-  width: 75%;
-  margin: 10px auto 15px auto !important;
-  position: relative;
-}
-.general-issue-notice .icon-notice {
-  display: block;
-  line-height: 1;
-  margin-bottom: 10px;
-}
-.general-issue-notice .icon-notice:before {
-  margin: 0;
-  font-size: 100px;
-  line-height: 60px !important;
-}
-.general-issue-notice p {
-  font-size: 14px;
-  line-height: 21px;
-}
 #MashableInboxActionBarForViews .view-toolbar ul:first-child > li > a {
   border-left: none;
 }
@@ -19230,11 +19296,13 @@ a + .autoresponder-stats {
   margin-top: 10px;
 }
 .business-card .contact-details > span {
-  margin-top: 5px;
-  margin-right: 20px;
+  margin: 5px 20px 5px 0;
   color: #333;
+  white-space: nowrap;
+  float: left;
 }
 .business-card .address {
+  clear: left;
   margin-bottom: 15px;
 }
 .business-card .icon-office-phone:before {
@@ -19276,7 +19344,7 @@ a + .autoresponder-stats {
   text-align: right;
 }
 .business-card .demographic-details .sex {
-  width: 30px;
+  width: 35px;
   height: 62px;
   display: block;
   text-indent: -9999px;
@@ -19296,31 +19364,6 @@ a + .autoresponder-stats {
   display: block;
   float: right;
   line-height: 150%;
-}
-#_business-card-buttons {
-  position: absolute;
-  right: 5px;
-  top: 5px;
-  text-align: center;
-}
-#_business-card-buttons a {
-  display: block;
-  width: 50px;
-  height: 50px;
-  font-size: 10px;
-  font-weight: bold;
-}
-#_business-card-buttons a i {
-  display: block;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 45px;
-  font-family: "ZurmoGamificationSymblyReguRg";
-  line-height: 1;
-  color: #ccc;
-}
-#_business-card-buttons a span {
-  display: none;
 }
 #business-card-buttons {
   display: none !important;
@@ -19441,14 +19484,119 @@ a + .autoresponder-stats {
   -ms-box-shadow: 0 0 7px 0 #999999;
   box-shadow: 0 0 7px 0 #999999;
 }
+.icon-bebo {
+  background: url(../images/social-icons/bebo.png) center center no-repeat;
+}
+.icon-instagram {
+  background: url(../images/social-icons/instagram.png) center center no-repeat;
+}
+.icon-picasa {
+  background: url(../images/social-icons/picasa.png) center center no-repeat;
+}
+.icon-stumbleupon {
+  background: url(../images/social-icons/stumbleupon.png) center center no-repeat;
+}
+.icon-behance {
+  background: url(../images/social-icons/behance.png) center center no-repeat;
+}
+.icon-evernote {
+  background: url(../images/social-icons/evernote.png) center center no-repeat;
+}
+.icon-lastfm {
+  background: url(../images/social-icons/lastfm.png) center center no-repeat;
+}
+.icon-pinterest {
+  background: url(../images/social-icons/pinterest.png) center center no-repeat;
+}
+.icon-tumblr {
+  background: url(../images/social-icons/tumblr.png) center center no-repeat;
+}
+.icon-blogger {
+  background: url(../images/social-icons/blogger.png) center center no-repeat;
+}
+.icon-facebook {
+  background: url(../images/social-icons/facebook.png) center center no-repeat;
+}
+.icon-posterous {
+  background: url(../images/social-icons/posterous.png) center center no-repeat;
+}
 .icon-twitter {
   background: url(../images/social-icons/twitter.png) center center no-repeat;
 }
-.icon-facebook {
-  background: url(../images/social-icons/facebook.png) left top no-repeat;
+.icon-delicious {
+  background: url(../images/social-icons/delicious.png) center center no-repeat;
+}
+.icon-flickr {
+  background: url(../images/social-icons/flickr.png) center center no-repeat;
 }
 .icon-linkedin {
-  background: url(../images/social-icons/linkedin.png) left top no-repeat;
+  background: url(../images/social-icons/linkedin.png) center center no-repeat;
+}
+.icon-reddit {
+  background: url(../images/social-icons/reddit.png) center center no-repeat;
+}
+.icon-typepad {
+  background: url(../images/social-icons/typepad.png) center center no-repeat;
+}
+.icon-designfloat {
+  background: url(../images/social-icons/designfloat.png) center center no-repeat;
+}
+.icon-forrst {
+  background: url(../images/social-icons/forrst.png) center center no-repeat;
+}
+.icon-myspace {
+  background: url(../images/social-icons/myspace.png) center center no-repeat;
+}
+.icon-rss {
+  background: url(../images/social-icons/rss.png) center center no-repeat;
+}
+.icon-vimeo {
+  background: url(../images/social-icons/vimeo.png) center center no-repeat;
+}
+.icon-deviantart {
+  background: url(../images/social-icons/deviantart.png) center center no-repeat;
+}
+.icon-friendfeed {
+  background: url(../images/social-icons/friendfeed.png) center center no-repeat;
+}
+.icon-netvibes {
+  background: url(../images/social-icons/netvibes.png) center center no-repeat;
+}
+.icon-skype {
+  background: url(../images/social-icons/skype.png) center center no-repeat;
+}
+.icon-wordpress {
+  background: url(../images/social-icons/wordpress.png) center center no-repeat;
+}
+.icon-digg {
+  background: url(../images/social-icons/digg.png) center center no-repeat;
+}
+.icon-googleplus {
+  background: url(../images/social-icons/googleplus.png) center center no-repeat;
+}
+.icon-orkut {
+  background: url(../images/social-icons/orkut.png) center center no-repeat;
+}
+.icon-soundcloud {
+  background: url(../images/social-icons/soundcloud.png) center center no-repeat;
+}
+.icon-yahoo {
+  background: url(../images/social-icons/yahoo.png) center center no-repeat;
+}
+.icon-dribbble {
+  background: url(../images/social-icons/dribbble.png) center center no-repeat;
+}
+.icon-grooveshark {
+  background: url(../images/social-icons/grooveshark.png) center center no-repeat;
+}
+.icon-path {
+  background: url(../images/social-icons/path.png) center center no-repeat;
+}
+.icon-spotify {
+  background: url(../images/social-icons/spotify.png) center center no-repeat;
+}
+.icon-youtube {
+  background: url(../images/social-icons/youtube.png) center center no-repeat;
 }
 .back-of-card {
   display: none;
@@ -19549,15 +19697,24 @@ div.special-pager .hidden.next:after {
   top: -2px;
 }
 .mini-button span {
+  font-size: 11px;
+  font-weight: bold;
+  -webkit-text-shadow: 0 1px 0 #ffffff;
+  -moz-text-shadow: 0 1px 0 #ffffff;
+  -o-text-shadow: 0 1px 0 #ffffff;
+  -ms-text-shadow: 0 1px 0 #ffffff;
+  text-shadow: 0 1px 0 #ffffff;
   color: #545454;
-  display: block;
+  display: none;
   line-height: 22px;
   padding: 0 6px 0 28px;
   background: url(../images/rapleaf.png) 4px center no-repeat;
 }
 .mini-button span + span {
-  display: none;
   line-height: 22px;
+}
+.mini-button .show {
+  display: block;
 }
 /*********************************************************************************
  * Zurmo is a customer relationship management program developed by

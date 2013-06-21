@@ -166,13 +166,29 @@
 	h3:before{
 		content: "9";
 	}
+	.icon-empty:before{
+		content: "9";
+		.view-toolbar-icons(45px);
+	}
 }
 .juiportlet-widget.ContactsForOpportunityRelatedListView,
 .juiportlet-widget.ContactsForAccountRelatedListView{
 	h3:before{
 		content: "e";
 	}
+	.icon-empty:before{
+		content: "e";
+		.view-toolbar-icons(45px);
+	}
 }
+
+.juiportlet-widget.OpenTasksForAccountRelatedListView{
+	.icon-empty:before{
+		content: "4";
+		.view-toolbar-icons(45px);
+	}
+}
+
 
 .juiportlet-widget.OpportunitiesForContactRelatedListView,
 .juiportlet-widget.OpportunitiesForAccountRelatedListView,
