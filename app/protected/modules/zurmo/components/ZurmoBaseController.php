@@ -490,7 +490,8 @@
             $pageViewClassName,
             $listModel,
             $title,
-            $dataProvider = null
+            $dataProvider = null,
+            $redirectUrl  = null
             )
         {
             // TODO: @Shoaibi/@Jason: Low: Deprecated
@@ -542,7 +543,14 @@
                                         $skipCount, $modelClassName);
                             }
                             Yii::app()->user->setFlash('notification', $notificationContent);
-                            $this->redirect(array('default/'));
+                            if ($redirectUrl === null)
+                            {
+                                $this->redirect(array('default/'));
+                            }
+                            else
+                            {
+                                $this->redirect($redirectUrl);
+                            }
                             Yii::app()->end(0, false);
                         }
                     }

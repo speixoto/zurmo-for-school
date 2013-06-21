@@ -37,6 +37,7 @@
     $common_config = array(
         'basePath'          => COMMON_ROOT . DIRECTORY_SEPARATOR . 'protected',
         'name'              => 'ZurmoCRM',
+        'label'             => 'Zurmo',
         'defaultController' => 'home/default/welcome',
         'sourceLanguage'    => 'en',
 
@@ -86,6 +87,9 @@
             'custom' => array(
                 'class' => 'application.core.components.CustomManagement',
             ),
+            'dataEnhancer' => array(
+                'class' => 'application.core.components.DataEnhancer',
+            ),
             'db' => array(
                 'emulatePrepare' => true,
                 'charset'        => 'utf8',
@@ -103,9 +107,6 @@
                 'class' => 'application.core.components.Formatter',
             ),
             'imap' => array(
-                'class'       => 'application.modules.emailMessages.components.ZurmoImap',
-            ),
-            'bounce' => array(
                 'class'       => 'application.modules.emailMessages.components.ZurmoImap',
             ),
             'gameHelper' => array(
@@ -334,7 +335,6 @@
             'application.extensions.wideImage.WideImage',
             'application.extensions.phaActiveColumn.*',
         ),
-
         'modules' => array(
             'accounts',
             'activities',

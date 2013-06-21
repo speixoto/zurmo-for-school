@@ -228,8 +228,7 @@
                     'name'                  => Zurmo::t('ZurmoModule', 'Name', null,  null, $language),
                     'status'                => Zurmo::t('CampaignsModule', 'Status', null,  null, $language),
                     'sendOnDateTime'       => Zurmo::t('CampaignsModule', 'Send On', null,  null, $language),
-                    'supportsRichText'      => Zurmo::t('CampaignsModule', 'Supports HTML',
-                                                                                                null,  null, $language),
+                    'supportsRichText'      => Zurmo::t('CampaignsModule', 'Supports HTML', null,  null, $language),
                     'fromName'              => Zurmo::t('CampaignsModule', 'From Name', null,  null, $language),
                     'fromAddress'           => Zurmo::t('CampaignsModule', 'From Address', null,  null, $language),
                     'subject'               => Zurmo::t('EmailMessagesModule', 'Subject', null,  null, $language),
@@ -247,6 +246,12 @@
         public static function getGamificationRulesType()
         {
             return 'CampaignGamification';
+        }
+
+        public function getErrors($attributeNameOrNames = null)
+        {
+            // TODO: @Shoaibi/@Jason: Medium: We should have overriden getErrors' original code but this was easier.
+            return $this->attributeNameToErrors;
         }
     }
 ?>

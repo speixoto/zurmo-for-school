@@ -43,6 +43,12 @@
     class ConsoleApplication extends CConsoleApplication
     {
         /**
+         * Label describing application
+         * @var string
+         */
+        public $label;
+
+        /**
          * Some console applications can use the theme engine.  An example is sending an email notification using
          * an html email template.
          * @var string
@@ -79,6 +85,26 @@
         public function getEdition()
         {
             return $this->edition;
+        }
+
+        /**
+         * Returns the locale instance.
+         * This overrides the default CApplication->getLocale() function.
+         * @param string $localeID the locale ID (e.g. en_US). If null, the {@link getLanguage application language ID} will be used.
+         * @return CLocale the locale instance
+         */
+        public function getLocale($localeID = null)
+        {
+            if($localeID == null && $this->user->userModel != null && $this->user->userModel->id > 0 &&
+               $this->user->userModel->locale != null)
+            {
+                $localeID = $this->user->userModel->locale;
+            }
+            elseif($localeID == null)
+            {
+                $localeID = $this->getLanguage();
+            }
+            return ZurmoLocale::getInstance($localeID);
         }
 
         protected function registerCoreComponents()

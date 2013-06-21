@@ -37,6 +37,12 @@
     class WebApplication extends CWebApplication
     {
         /**
+         * Label describing application
+         * @var string
+         */
+        public $label;
+
+        /**
          * If the application has been installed or not.
          * @var boolean
          */
@@ -82,7 +88,16 @@
          */
         public function getLocale($localeID = null)
         {
-            return ZurmoLocale::getInstance($localeID === null ? $this->getLanguage() : $localeID);
+            if($localeID == null && $this->user->userModel != null && $this->user->userModel->id > 0 &&
+               $this->user->userModel->locale != null)
+            {
+                $localeID = $this->user->userModel->locale;
+            }
+            elseif($localeID == null)
+            {
+                $localeID = $this->getLanguage();
+            }
+            return ZurmoLocale::getInstance($localeID);
         }
 
         /**
