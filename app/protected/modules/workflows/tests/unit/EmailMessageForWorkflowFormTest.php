@@ -71,7 +71,7 @@
             $errors        = $message->getErrors();
             $compareErrors = array('sendFromName'  => array('From Name cannot be blank.'),
                                    'sendFromAddress' => array('From Email Address cannot be blank.'),
-                                   'sendAfterDurationInterval' => array('Send cannot be blank.'));
+                                   'sendAfterDurationInterval' => array('Send After cannot be blank.'));
             $this->assertEquals($compareErrors, $errors);
             $message->sendFromAddress = 'someone@zurmo.com';
             $message->sendFromName    = 'Jason';
@@ -90,7 +90,7 @@
             $message = new EmailMessageForWorkflowForm('WorkflowModelTestItem', Workflow::TYPE_ON_SAVE);
             $message->sendAfterDurationInterval = 86400;
             $message->sendAfterDurationType     = TimeDurationUtil::DURATION_TYPE_WEEK;
-            $message->sendFromType             = EmailMessageForWorkflowForm::SEND_FROM_TYPE_DEFAULT;
+            $message->sendFromType              = EmailMessageForWorkflowForm::SEND_FROM_TYPE_DEFAULT;
             $recipients = array(array('type' => WorkflowEmailMessageRecipientForm::TYPE_DYNAMIC_TRIGGERED_MODEL_USER,
                                       'audienceType'     => EmailMessageRecipient::TYPE_TO,
                                       'dynamicUserType'  => DynamicTriggeredModelUserWorkflowEmailMessageRecipientForm::
@@ -113,6 +113,20 @@
             $this->assertNull($form->userId);
             $form->setAttributes(array('userId' => 5));
             $this->assertEquals(5, $form->userId);
+        }
+
+        public function testResolveNewTimeStampForDuration()
+        {
+            $message = new EmailMessageForWorkflowForm('WorkflowModelTestItem', Workflow::TYPE_ON_SAVE);
+            $message->sendAfterDurationInterval = 5;
+            $message->sendAfterDurationType     = TimeDurationUtil::DURATION_TYPE_DAY;
+            $this->assertEquals(5 * 24 * 60 * 60, $message->resolveNewTimeStampForDuration(0));
+            $message->sendAfterDurationType = TimeDurationUtil::DURATION_TYPE_MINUTE;
+            $this->assertEquals(5 * 60, $message->resolveNewTimeStampForDuration(0));
+            $message->sendAfterDurationInterval = 10;
+            $this->assertEquals(10 * 60, $message->resolveNewTimeStampForDuration(0));
+            $message->sendAfterDurationType = TimeDurationUtil::DURATION_TYPE_HOUR;
+            $this->assertEquals(10 * 60 * 60, $message->resolveNewTimeStampForDuration(0));
         }
     }
 ?>

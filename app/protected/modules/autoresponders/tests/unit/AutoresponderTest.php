@@ -174,5 +174,22 @@
             $autoresponders = Autoresponder::getAll();
             $this->assertEquals(4, count($autoresponders));
         }
+
+        public function testResolveNewTimeStampForDuration()
+        {
+            $autoresponder = AutoresponderTestHelper::createAutoresponder(
+                    'test autoresponder for resolve time stamp',
+                    'sample text content',
+                    'sample html content',
+                    5,
+                    Autoresponder::OPERATION_UNSUBSCRIBE);
+            $this->assertEquals(5 * 24 * 60 * 60, $autoresponder->resolveNewTimeStampForDuration(0));
+            $autoresponder->fromOperationDurationType = TimeDurationUtil::DURATION_TYPE_MINUTE;
+            $this->assertEquals(5 * 60, $autoresponder->resolveNewTimeStampForDuration(0));
+            $autoresponder->fromOperationDurationInterval = 10;
+            $this->assertEquals(10 * 60, $autoresponder->resolveNewTimeStampForDuration(0));
+            $autoresponder->fromOperationDurationType = TimeDurationUtil::DURATION_TYPE_HOUR;
+            $this->assertEquals(10 * 60 * 60, $autoresponder->resolveNewTimeStampForDuration(0));
+        }
     }
 ?>
