@@ -1096,12 +1096,9 @@
             $databaseColumnType = '';
             if (RedBeanDatabase::getDatabaseType() == 'mysql')
             {
-                if (isset($length) && $length > 0 && $length < 255)
+                if (in_array($hintType, array('tinyint', 'smallint', 'mediumint', 'bigint')))
                 {
-                    if ($hintType == 'string')
-                    {
-                        $databaseColumnType = "VARCHAR({$length})";
-                    }
+                    $databaseColumnType = strtoupper($hintType) . '(11)';
                 }
                 else
                 {
@@ -1114,7 +1111,7 @@
                             $databaseColumnType = "LONGBLOB";
                             break;
                         case 'boolean':
-                            $databaseColumnType = "TINYINT(1)";
+                            $databaseColumnType = "TINYINT(1) UNSIGNED";
                             break;
                         case 'date':
                             $databaseColumnType = "DATE";
@@ -1123,7 +1120,17 @@
                             $databaseColumnType = "DATETIME";
                             break;
                         case 'string':
-                            $databaseColumnType = "VARCHAR(255)";
+                        case 'url':
+                        case 'email':
+                            if (!isset($length))
+                            {
+                                $length = 255;
+                            }
+                            if ($length < 0 || $length > 255)
+                            {
+                                break;
+                            }
+                            $databaseColumnType = "VARCHAR($length)";
                             break;
                         case 'text':
                             $databaseColumnType = "TEXT";
@@ -1133,6 +1140,15 @@
                             break;
                         case 'id':
                             $databaseColumnType = "INT(11) UNSIGNED";
+                            break;
+                        case 'integer':
+                            $databaseColumnType = "INT(11)";
+                            break;
+                        case 'float':
+                            $databaseColumnType = "DOUBLE";
+                            break;
+                        case 'time':
+                            $databaseColumnType = "TIME";
                             break;
                     }
                 }
@@ -1170,6 +1186,55 @@
                 return;
             }
             return $content . 'INTERVAL ' . abs($offsetInSeconds) . ' SECOND';
+        }
+
+        public static function resolveIntegerMaxAllowedValuesByType($signed = false)
+        {
+            if (RedBeanDatabase::getDatabaseType() == 'mysql')
+            {
+                $intMaxValuesAllows = array('tinyint'   => pow(2, 8),
+                                            'smallint'  => pow(2, 16),
+                                            'mediumint' => pow(2, 24),
+                                            'integer'   => pow(2, 32),
+                                            'bigint'    => pow(2, 64));
+                if ($signed)
+                {
+                    $intMaxValuesAllows = array('tinyint'   => pow(2, 7),
+                                                'smallint'  => pow(2, 15),
+                                                'mediumint' => pow(2, 23),
+                                                'integer'   => pow(2, 31),
+                                                'bigint'    => pow(2, 63));
+                }
+                return $intMaxValuesAllows;
+            }
+            throw new NotSupportedException();
+        }
+
+        public static function resolveCollationByHintType($hint)
+        {
+            if (RedBeanDatabase::getDatabaseType() == 'mysql')
+            {
+                if (in_array($hint, array('string', 'text', 'longtext', 'email', 'url')))
+                {
+                    return 'COLLATE utf8_unicode_ci';
+                }
+                return null;
+            }
+            throw new NotSupportedException();
+        }
+
+        public static function resolveUnsignedByHintType($hint, $assumeSigned = false)
+        {
+            if (RedBeanDatabase::getDatabaseType() == 'mysql')
+            {
+                $integerHintTypes = array_keys(static::resolveIntegerMaxAllowedValuesByType());
+                if (in_array($hint, $integerHintTypes) && !$assumeSigned)
+                {
+                    return "UNSIGNED";
+                }
+                return null;
+            }
+            throw new NotSupportedException();
         }
     }
 ?>

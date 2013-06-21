@@ -87,7 +87,7 @@
             $metadata[__CLASS__] = array(
                 'members' => array(
                     'subject',
-                    'type',
+                    //'type',
                     'sendAttempts',
                     'sentDateTime',
                     'sendOnDateTime',
@@ -155,7 +155,7 @@
                     'sendAttempts' => Zurmo::t('EmailMessagesModule', 'Send Attempts',  array(), null, $language),
                     'sentDateTime' => Zurmo::t('EmailMessagesModule', 'Sent Date Time',  array(), null, $language),
                     'subject'      => Zurmo::t('EmailMessagesModule', 'Subject',  array(), null, $language),
-                    'type'         => Zurmo::t('Core',                'Type',  array(), null, $language),
+                    //'type'         => Zurmo::t('Core',                'Type',  array(), null, $language),
                 )
             );
         }

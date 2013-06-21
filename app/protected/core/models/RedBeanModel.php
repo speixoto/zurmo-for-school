@@ -3097,5 +3097,10 @@
         {
             return true;
         }
+
+        public static function getYiiValidatorsToRedBeanValidators()
+        {
+            return static::$yiiValidatorsToRedBeanValidators;
+        }
     }
 ?>

@@ -175,5 +175,9 @@
             }
             return $result;
         }
+
+        public static function isValidArrayIndex($index, $array) {
+            return (isset($array[$index]) || array_key_exists($index, $array));
+        }
     }
 ?>

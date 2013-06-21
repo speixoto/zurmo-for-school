@@ -50,7 +50,14 @@
                     array('category',           'length',  'min'  => 1, 'max' => 30),
                     array('source',             'required'),
                     array('source',             'type', 'type' => 'blob')
-                )
+                ),
+                // TODO: @Shoaibi: Critical: this might make metadata invalid. Fix the validation of metadata to incorporate this
+                'indexes' => array(
+                    'sourceCategory' => array(
+                        'members'   => array('category', 'source(767)'),
+                        'unique'    => true,
+                    ),
+                ),
             );
             return $metadata;
         }

@@ -890,6 +890,8 @@
          */
         public static function runInstallation($form, & $messageStreamer)
         {
+            // TODO: @Shoaibi: Critical: Swap this
+            AutoBuildOptimizedInstallUtil::runInstallation($form, $messageStreamer);
             assert('$form instanceof InstallSettingsForm');
             assert('$messageStreamer instanceof MessageStreamer');
 
@@ -906,7 +908,7 @@
             }
 
             $messageStreamer->add(Zurmo::t('InstallModule', 'Connecting to Database.'));
-            InstallUtil::connectToDatabase( $form->databaseType,
+            static::connectToDatabase( $form->databaseType,
                                             $form->databaseHostname,
                                             $form->databaseName,
                                             $form->databaseUsername,
@@ -914,9 +916,9 @@
                                             $form->databasePort);
             ForgetAllCacheUtil::forgetAllCaches();
             $messageStreamer->add(Zurmo::t('InstallModule', 'Dropping existing tables.'));
-            InstallUtil::dropAllTables();
+            static::dropAllTables();
             $messageStreamer->add(Zurmo::t('InstallModule', 'Creating super user.'));
-            InstallUtil::createSuperUser(   'super',
+            static::createSuperUser(   'super',
                                             $form->superUserPassword);
             $messageLogger = new MessageLogger($messageStreamer);
             Yii::app()->custom->runBeforeInstallationAutoBuildDatabase($messageLogger);
@@ -925,7 +927,7 @@
             $messageStreamer->add('debugOn:' . BooleanUtil::boolToString(YII_DEBUG));
             $messageStreamer->add('phpLevelCaching:' . BooleanUtil::boolToString(PHP_CACHING_ON));
             $messageStreamer->add('memcacheLevelCaching:' . BooleanUtil::boolToString(MEMCACHE_ON));
-            InstallUtil::autoBuildDatabase($messageLogger);
+            static::autoBuildDatabase($messageLogger);
             $endTime = microtime(true);
             $messageStreamer->add(Zurmo::t('InstallModule', 'Total autobuild time: {formattedTime} seconds.',
                                   array('{formattedTime}' => number_format(($endTime - $startTime), 3))));
@@ -938,10 +940,10 @@
             $messageStreamer->add(Zurmo::t('InstallModule', 'Rebuilding Permissions.'));
             ReadPermissionsOptimizationUtil::rebuild();
             $messageStreamer->add(Zurmo::t('InstallModule', 'Freezing database.'));
-            InstallUtil::freezeDatabase();
+            static::freezeDatabase();
             $messageStreamer->add(Zurmo::t('InstallModule', 'Writing Configuration File.'));
 
-            InstallUtil::writeConfiguration(INSTANCE_ROOT,
+            static::writeConfiguration(INSTANCE_ROOT,
                                             $form->databaseType,
                                             $form->databaseHostname,
                                             $form->databaseName,
@@ -978,7 +980,7 @@
                 NotificationsUtil::submit($message, $rules);
             }
 
-            InstallUtil::setZurmoTokenAndWriteToPerInstanceFile(INSTANCE_ROOT);
+            static::setZurmoTokenAndWriteToPerInstanceFile(INSTANCE_ROOT);
             ZurmoPasswordSecurityUtil::setPasswordSaltAndWriteToPerInstanceFile(INSTANCE_ROOT);
             $messageStreamer->add(Zurmo::t('InstallModule', 'Installation Complete.'));
         }
@@ -991,9 +993,9 @@
         {
             //todo: cache this information.
             $actualPostLimitBytes   = null;
-            InstallUtil::checkPhpPostSizeSetting(1, $actualPostLimitBytes);
+            static::checkPhpPostSizeSetting(1, $actualPostLimitBytes);
             $actualUploadLimitBytes = null;
-            InstallUtil::checkPhpUploadSizeSetting(1, $actualUploadLimitBytes);
+            static::checkPhpUploadSizeSetting(1, $actualUploadLimitBytes);
             $actualMaxAllowedBytes = DatabaseCompatibilityUtil::getDatabaseMaxAllowedPacketsSizeRb();
             return min($actualPostLimitBytes, $actualUploadLimitBytes, $actualMaxAllowedBytes);
         }
@@ -1049,7 +1051,7 @@
 
             if (!$formHasErrors)
             {
-                InstallUtil::runInstallation($form, $messageStreamer);
+                static::runInstallation($form, $messageStreamer);
                 if (isset($args[8]))
                 {
                     $messageStreamer->add(Zurmo::t('InstallModule', 'Starting to load demo data.'));
@@ -1086,7 +1088,7 @@
                 }
 
                 $messageStreamer->add(Zurmo::t('InstallModule', 'Locking Installation.'));
-                InstallUtil::writeInstallComplete(INSTANCE_ROOT);
+                static::writeInstallComplete(INSTANCE_ROOT);
                 $messageStreamer->add(Zurmo::t('InstallModule', 'Installation Complete.'));
             }
         }

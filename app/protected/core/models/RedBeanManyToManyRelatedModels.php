@@ -134,11 +134,24 @@
                 $bean = R::dispense(RedBeanModel::getTableName($this->modelClassName));
             }
             $types = array($this->bean->getMeta("type"), $bean->getMeta("type"));
-            sort($types);
-            $tableName = implode("_", $types);
-            if ($this->linkName != null)
+            return static::resolveTableNamesWithLinkName($types, $this->linkName);
+        }
+
+        public static function getTableNameByModelClassNames($modelClassName, $anotherModelClassName, $linkName = null)
+        {
+            $modelTableName         = RedBeanModel::getTableName($modelClassName);
+            $anotherModelTableName  = RedBeanModel::getTableName($anotherModelClassName);
+            $tableNames = array($modelTableName, $anotherModelTableName);
+            return static::resolveTableNamesWithLinkName($tableNames, $linkName);
+        }
+
+        protected static function resolveTableNamesWithLinkName(array $tableNames, $linkName = null)
+        {
+            sort($tableNames);
+            $tableName = implode("_", $tableNames);
+            if ($linkName != null)
             {
-                $tableName = strtolower($this->linkName) . '_' . $tableName;
+                $tableName = strtolower($linkName) . '_' . $tableName;
             }
             return $tableName;
         }

@@ -50,6 +50,7 @@
          */
         public static function getModuleObjects()
         {
+            // TODO: @Shoaibi/@Jason: Critical: Results of this should be cached
             $moduleConfig = Yii::app()->getModules();
             $modules = array();
             foreach ($moduleConfig as $moduleName => $info)
@@ -545,21 +546,8 @@
             assert('is_string($folder)');
             $classNames = array();
             $className = get_called_class();
-            $pathOfAlias = Yii::getPathOfAlias(
-                    'application.modules.' . $className::getDirectoryName() . '.' .  $folder . '.*');
-            if (is_dir($pathOfAlias))
-            {
-                $directoryFiles = ZurmoFileHelper::findFiles($pathOfAlias);
-                $classNames = array();
-                foreach ($directoryFiles as $filePath)
-                {
-                    $filePathInfo = pathinfo($filePath);
-                    if ($filePathInfo['extension'] == 'php')
-                    {
-                        $classNames[] = $filePathInfo['filename'];
-                    }
-                }
-            }
+            $alias      = 'application.modules.' . $className::getDirectoryName() . '.' .  $folder;
+            $classNames = PathUtil::getAllClassNamesByPathAlias($alias);
             return $classNames;
         }
 

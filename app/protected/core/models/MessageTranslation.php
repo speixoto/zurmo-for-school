@@ -60,7 +60,13 @@
                 ),
                 'elements' => array(
                     'messagesource' => 'MessageSource',
-                )
+                ),
+                'indexes' => array(
+                    'sourceLanguageTranslation' => array(
+                        'members'   => array('messagesource_id', 'language','translation(767)'),
+                        'unique'    => true,
+                    )
+                ),
             );
             return $metadata;
         }
