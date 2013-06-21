@@ -97,7 +97,6 @@
                     'name',
                     'description',
                     'priceFrequency',
-                    'listPrice',
                     'status',
                     'type'
                 ),
