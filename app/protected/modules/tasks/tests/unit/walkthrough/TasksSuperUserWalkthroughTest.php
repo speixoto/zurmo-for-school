@@ -4,7 +4,7 @@
      * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
-     * the terms of the GNU General Public License version 3 as published by the
+     * the terms of the GNU Affero General Public License version 3 as published by the
      * Free Software Foundation with the addition of the following permission added
      * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
      * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
@@ -12,10 +12,10 @@
      *
      * Zurmo is distributed in the hope that it will be useful, but WITHOUT
      * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-     * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+     * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
      * details.
      *
-     * You should have received a copy of the GNU General Public License along with
+     * You should have received a copy of the GNU Affero General Public License along with
      * this program; if not, see http://www.gnu.org/licenses or write to the Free
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
@@ -25,9 +25,9 @@
      *
      * The interactive user interfaces in original and modified versions
      * of this program must display Appropriate Legal Notices, as required under
-     * Section 5 of the GNU General Public License version 3.
+     * Section 5 of the GNU Affero General Public License version 3.
      *
-     * In accordance with Section 7(b) of the GNU General Public License version 3,
+     * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
@@ -37,7 +37,7 @@
     /**
      * Task module walkthrough tests.
      */
-    class TaskSuperUserWalkthroughTest extends ZurmoWalkthroughBaseTest
+    class TasksSuperUserWalkthroughTest extends ZurmoWalkthroughBaseTest
     {
         public static function setUpBeforeClass()
         {
@@ -134,5 +134,66 @@
             $tasks = Task::getAll();
             $this->assertEquals(0, count($tasks));
         }
-    }
+
+        public function testSuperUserCopyAction()
+        {
+            $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
+
+            $superAccountId  = self::getModelIdByModelNameAndName ('Account', 'superAccount');
+            $superContactId  = self::getModelIdByModelNameAndName ('Contact', 'superContact superContactson');
+            $account         = Account::getById($superAccountId);
+            $contact         = Contact::getById($superContactId);
+
+            $activityItemPostData = array('Account' => array('id' => $superAccountId),
+                                          'Contact' => array('id' => $superContactId));
+            $this->setGetArray(array('relationAttributeName' => 'Account',  'relationModelId' => $superAccountId,
+                                     'relationModuleId'      => 'accounts', 'redirectUrl' => 'someRedirect'));
+            $this->setPostArray(array('ActivityItemForm' => $activityItemPostData,
+                                      'Task' => array(
+                                          'name'        => 'myTask',
+                                          'description' => 'Some task description',
+                                      )));
+            $this->runControllerWithRedirectExceptionAndGetContent('tasks/default/createFromRelation');
+
+            $tasks = Task::getByName('myTask');
+            $this->assertCount(1, $tasks);
+
+            $this->setGetArray(array('id' => $tasks[0]->id));
+            $this->resetPostArray();
+            $content = $this->runControllerWithNoExceptionsAndGetContent('tasks/default/copy');
+            $this->assertContains($tasks[0]->name,          $content);
+            $this->assertContains($tasks[0]->description,   $content);
+            $this->assertContains($account->name,           $content);
+            $this->assertContains($contact->getFullName(),  $content);
+
+            $taskCopy = new Task();
+            ActivityCopyModelUtil::copy($tasks[0], $taskCopy);
+
+            $activityItemPostData = array();
+            foreach ($taskCopy->activityItems as $relatedModel)
+            {
+                $activityItemPostData[get_class($relatedModel)] = array('id' => $relatedModel->id);
+            }
+            $postArray = array(
+                'Task' => array(
+                    'name'          => $taskCopy->name,
+                    'description'   => $taskCopy->description,
+                ),
+                'ActivityItemForm' => $activityItemPostData,
+            );
+            $this->setPostArray($postArray);
+            $this->setGetArray(array('id' => $tasks[0]->id));
+            $content = $this->runControllerWithRedirectExceptionAndGetContent('tasks/default/copy');
+
+            $tasks = Task::getByName('myTask');
+            $this->assertCount(2, $tasks);
+            $this->assertEquals($tasks[0]->name,             $tasks[1]->name);
+            $this->assertEquals($tasks[0]->description,      $tasks[1]->description);
+            $this->assertEquals($tasks[0]->activityItems[0], $tasks[1]->activityItems[0]);
+            $this->assertEquals($tasks[0]->activityItems[1], $tasks[1]->activityItems[1]);
+
+            $tasks[0]->delete();
+            $tasks[1]->delete();
+        }
+   }
 ?>

@@ -4,7 +4,7 @@
      * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
-     * the terms of the GNU General Public License version 3 as published by the
+     * the terms of the GNU Affero General Public License version 3 as published by the
      * Free Software Foundation with the addition of the following permission added
      * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
      * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
@@ -12,10 +12,10 @@
      *
      * Zurmo is distributed in the hope that it will be useful, but WITHOUT
      * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-     * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+     * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
      * details.
      *
-     * You should have received a copy of the GNU General Public License along with
+     * You should have received a copy of the GNU Affero General Public License along with
      * this program; if not, see http://www.gnu.org/licenses or write to the Free
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
@@ -25,9 +25,9 @@
      *
      * The interactive user interfaces in original and modified versions
      * of this program must display Appropriate Legal Notices, as required under
-     * Section 5 of the GNU General Public License version 3.
+     * Section 5 of the GNU Affero General Public License version 3.
      *
-     * In accordance with Section 7(b) of the GNU General Public License version 3,
+     * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
@@ -36,7 +36,6 @@
 
     class MarketingListMembersListView extends SecuredListView
     {
-        // TODO: @Shoaibi/@Amit: Low: There is an extra spacing in div of portlet, check whats that all about.
         /**
          * Form that has the information for how to display the marketing list member view.
          * @var object MarketingListMembersConfigurationForm
@@ -88,9 +87,9 @@
                 'global' => array(
                     'rowMenu' => array(
                         'elements' => array(
-                            array('type'                            => 'MarketingListMemberSubscribeLink'),
-                            array('type'                            => 'MarketingListMemberUnsubscribeLink'),
-                            array('type'                            => 'MarketingListMemberDeleteLink'),
+                            array('type'                            => 'MarketingListMemberSubscribeListRow'),
+                            array('type'                            => 'MarketingListMemberUnsubscribeListRow'),
+                            array('type'                            => 'MarketingListMemberDeleteListRow'),
                         ),
                     ),
                      'panels' => array(
@@ -111,6 +110,11 @@
                 ),
             );
             return $metadata;
+        }
+
+        public function getSummaryCloneClass()
+        {
+            return $this->getGridViewId() . "-items-summary-clone";
         }
 
         public function __construct(RedBeanModelsDataProvider $dataProvider,
@@ -158,16 +162,15 @@
 
         protected function renderContent()
         {
-            $this->registerScriptsForDynamicMemberCountUpdate();
-            return $this->renderConfigurationForm() . parent::renderContent();
+            $content = $this->renderConfigurationForm();
+            $content .= parent::renderContent();
+            return $content;
         }
 
-        protected static function getGridTemplate()
+        protected function renderScripts()
         {
-            $preloader = ZurmoHtml::tag('div', array('class' => 'list-preloader'),
-                                ZurmoHtml::tag('span', array('class' => 'z-spinner'), '')
-                            );
-            return "\n{items}\n{pager}" . $preloader;
+            parent::renderScripts();
+            $this->registerScriptsForDynamicMemberCountUpdate();
         }
 
         protected function getCGridViewLastColumn()
@@ -193,6 +196,11 @@
             );
         }
 
+        protected function getCGridViewParams()
+        {
+            return array_merge(parent::getCGridViewParams(), array('renderSpanOnEmptyText' => false));
+        }
+
         protected function getPortletId()
         {
             return ArrayUtil::getArrayValueWithExceptionIfNotFound($this->params, 'portletId');
@@ -208,10 +216,10 @@
                     'id' => $formName,
                 )
             );
-            $content  = $formStart;
-            $content .= $this->renderConfigurationFormLayout($form);
-            $formEnd  = $clipWidget->renderEndWidget();
-            $content .= $formEnd;
+            $content    = $formStart;
+            $content   .= $this->renderSummaryCloneContent();
+            $content   .= $this->renderConfigurationFormLayout($form);
+            $content   .= $clipWidget->renderEndWidget();
             $this->registerConfigurationFormLayoutScripts($form);
             return $content;
         }
@@ -259,7 +267,7 @@
                 'data'       => 'js:$("#' . $form->getId() . '").serialize()',
                 'url'        =>  $urlScript,
                 'update'     => '#' . $this->uniquePageId,
-                'beforeSend' => 'js:function(){makeSmallLoadingSpinner("' . $this->getGridViewId() . '"); $("#' . $form->getId() . '").parent().children(".cgrid-view").addClass("loading");}',
+                'beforeSend' => 'js:function(){$(this).makeSmallLoadingSpinner("' . $this->getGridViewId() . '"); $("#' . $form->getId() . '").parent().children(".cgrid-view").addClass("loading");}',
                 'complete'   => 'js:function()
                         {
                                             $("#' . $form->getId() . '").parent().children(".cgrid-view").removeClass("loading");
@@ -269,7 +277,7 @@
             if ($this->showFilteredBySubscriptionType)
             {
                 Yii::app()->clientScript->registerScript($this->uniquePageId . '_filteredBySubscriptionType', "
-                    createButtonSetIfNotAlreadyExist('#MarketingListMembersConfigurationForm_filteredBySubscriptionType_area');
+                    $(this).createButtonSetIfNotAlreadyExist('#MarketingListMembersConfigurationForm_filteredBySubscriptionType_area');
                     $('#MarketingListMembersConfigurationForm_filteredBySubscriptionType_area').unbind('change.action').bind('change.action', function(event)
                         {
                             " . $ajaxSubmitScript . "
@@ -301,44 +309,69 @@
         protected function registerScriptsForDynamicMemberCountUpdate()
         {
             // Begin Not Coding Standard
-            Yii::app()->clientScript->registerScript($this->uniquePageId.'_dynamicMemberCountUpdate', '
-                function updateMemberStats(newCount, oldContent, elementClass)
-                {
-                    countStrippedOldContent = oldContent.substr(oldContent.indexOf(" "));
-                    $(elementClass).html(newCount + countStrippedOldContent);
-                }
+            $scriptName = $this->uniquePageId.'_dynamicMemberCountUpdate';
+            if (Yii::app()->clientScript->isScriptRegistered($scriptName))
+            {
+                return;
+            }
+            else
+            {
+                Yii::app()->clientScript->registerScript($scriptName, '
+                    function updateMemberStats(newCount, oldContent, elementClass)
+                    {
+                        countStrippedOldContent = oldContent.substr(oldContent.indexOf(" "));
+                        $(elementClass).html(newCount + countStrippedOldContent);
+                    }
 
-                $("#' . $this->getGridViewId() . ' .pager .refresh a").unbind("click.dynamicMemberCountUpdate").bind("click.dynamicMemberCountUpdate", function (event)
-                {
-                    var modelId                 = "' . $this->getModelId() . '";
-                    var subscriberCountClass    = ".' . MarketingListDetailsOverlayView::SUBSCRIBERS_STATS_CLASS . '";
-                    var unsubscriberCountClass  = ".' . MarketingListDetailsOverlayView::UNSUBSCRIBERS_STATS_CLASS . '";
-                    var subscriberHtml          = $(subscriberCountClass).html();
-                    var unsubscriberHtml        = $(unsubscriberCountClass).html();
-                    var url                     = "' . MarketingListDetailsOverlayView::getMemberCountUpdateUrl() . '";
-                    $.ajax(
-                            {
-                                url:        url,
-                                dataType:   "json",
-                                data:       { marketingListId: modelId },
-                                success:    function(data, status, request) {
-                                                updateMemberStats(data.subscriberCount, subscriberHtml, subscriberCountClass);
-                                                updateMemberStats(data.unsubscriberCount, unsubscriberHtml, unsubscriberCountClass);
-                                            },
-                                error:      function(request, status, error) {
-                                                // TODO: @Shoaibi/@Jason: Medium: What should we do here?
-                                            },
-                            }
-                        );
-                    });
-                ');
-            // End Not Coding Standard
+                    $("#' . $this->getGridViewId() . ' .pager .refresh a").unbind("click.dynamicMemberCountUpdate").bind("click.dynamicMemberCountUpdate", function (event)
+                    {
+                        var modelId                 = "' . $this->getModelId() . '";
+                        var subscriberCountClass    = ".' . MarketingListDetailsOverlayView::SUBSCRIBERS_STATS_CLASS . '";
+                        var unsubscriberCountClass  = ".' . MarketingListDetailsOverlayView::UNSUBSCRIBERS_STATS_CLASS . '";
+                        var subscriberHtml          = $(subscriberCountClass).html();
+                        var unsubscriberHtml        = $(unsubscriberCountClass).html();
+                        var url                     = "' . MarketingListDetailsOverlayView::getMemberCountUpdateUrl() . '";
+                        $.ajax(
+                                {
+                                    url:        url,
+                                    dataType:   "json",
+                                    data:       { marketingListId: modelId },
+                                    success:    function(data, status, request) {
+                                                    updateMemberStats(data.subscriberCount, subscriberHtml, subscriberCountClass);
+                                                    updateMemberStats(data.unsubscriberCount, unsubscriberHtml, unsubscriberCountClass);
+                                                },
+                                    error:      function(request, status, error) {
+                                                    // TODO: @Shoaibi/@Jason: Medium: What should we do here?
+                                                },
+                                }
+                            );
+                        });
+                    ');
+                // End Not Coding Standard
+            }
         }
 
         protected function getModelId()
         {
             $model = ArrayUtil::getArrayValueWithExceptionIfNotFound($this->params, 'relationModel');
             return $model->id;
+        }
+
+        protected function renderSummaryCloneContent()
+        {
+            return ZurmoHtml::tag('div',
+                                  array(
+                                    'id'    => $this->getGridViewId() . '-summary-clone',
+                                    'class' => ExtendedGridView::CLONE_SUMMARY_CLASS),
+                                  '');
+        }
+
+        protected function getEmptyText()
+        {
+            $content  = '<div class="general-issue-notice no-subscribers-found"><span class="icon-notice"></span><p>';
+            $content .= Zurmo::t('CampaignsModule', 'No Subscribers found text...');
+            $content .= '</p></div>';
+            return $content;
         }
     }
 ?>
