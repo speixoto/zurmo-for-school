@@ -1025,7 +1025,8 @@ body.blue .portlet-toolbar a:hover,
 body.blue .portlet-toolbar .icon-create:before,
 body.blue #filter-latest-activities-link:hover,
 body.blue .badge-message h3,
-body.blue #marketing-list-member-select-contact-or-report-form a.close-flyout:hover {
+body.blue .icon-star:hover,
+body.blue .icon-star.starred {
   color: #7cb830 !important;
 }
 body.blue #InstallAccessFailurePageView a,
@@ -1600,7 +1601,8 @@ body.brown .portlet-toolbar a:hover,
 body.brown .portlet-toolbar .icon-create:before,
 body.brown #filter-latest-activities-link:hover,
 body.brown .badge-message h3,
-body.brown #marketing-list-member-select-contact-or-report-form a.close-flyout:hover {
+body.brown .icon-star:hover,
+body.brown .icon-star.starred {
   color: #b88f30 !important;
 }
 body.brown #InstallAccessFailurePageView a,
@@ -2175,7 +2177,8 @@ body.lime .portlet-toolbar a:hover,
 body.lime .portlet-toolbar .icon-create:before,
 body.lime #filter-latest-activities-link:hover,
 body.lime .badge-message h3,
-body.lime #marketing-list-member-select-contact-or-report-form a.close-flyout:hover {
+body.lime .icon-star:hover,
+body.lime .icon-star.starred {
   color: #bcc98e !important;
 }
 body.lime #InstallAccessFailurePageView a,
@@ -2750,7 +2753,8 @@ body.cherry .portlet-toolbar a:hover,
 body.cherry .portlet-toolbar .icon-create:before,
 body.cherry #filter-latest-activities-link:hover,
 body.cherry .badge-message h3,
-body.cherry #marketing-list-member-select-contact-or-report-form a.close-flyout:hover {
+body.cherry .icon-star:hover,
+body.cherry .icon-star.starred {
   color: #933140 !important;
 }
 body.cherry #InstallAccessFailurePageView a,
@@ -3325,7 +3329,8 @@ body.turquoise .portlet-toolbar a:hover,
 body.turquoise .portlet-toolbar .icon-create:before,
 body.turquoise #filter-latest-activities-link:hover,
 body.turquoise .badge-message h3,
-body.turquoise #marketing-list-member-select-contact-or-report-form a.close-flyout:hover {
+body.turquoise .icon-star:hover,
+body.turquoise .icon-star.starred {
   color: #44bbcc !important;
 }
 body.turquoise #InstallAccessFailurePageView a,
@@ -3900,7 +3905,8 @@ body.violet .portlet-toolbar a:hover,
 body.violet .portlet-toolbar .icon-create:before,
 body.violet #filter-latest-activities-link:hover,
 body.violet .badge-message h3,
-body.violet #marketing-list-member-select-contact-or-report-form a.close-flyout:hover {
+body.violet .icon-star:hover,
+body.violet .icon-star.starred {
   color: #91a1dc !important;
 }
 body.violet #InstallAccessFailurePageView a,
@@ -4475,7 +4481,8 @@ body.honey .portlet-toolbar a:hover,
 body.honey .portlet-toolbar .icon-create:before,
 body.honey #filter-latest-activities-link:hover,
 body.honey .badge-message h3,
-body.honey #marketing-list-member-select-contact-or-report-form a.close-flyout:hover {
+body.honey .icon-star:hover,
+body.honey .icon-star.starred {
   color: #abbc42 !important;
 }
 body.honey #InstallAccessFailurePageView a,
@@ -7557,6 +7564,19 @@ tr.even {
   font-size: 24px;
   font-family: "ZurmoGamificationSymblyReguRg";
   visibility: hidden;
+}
+.icon-star {
+  font-weight: normal;
+  font-size: 26px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  color: #ccc !important;
+  top: -1px;
+  position: relative;
+  line-height: 1;
+}
+.juiportlet-widget-head .icon-star {
+  top: 1px;
+  margin-left: 5px;
 }
 .juiportlet-widget .empty {
   padding: 5px 0 10px 0;

@@ -39,6 +39,7 @@
      */
     class StarredUtil
     {
+
         public static function modelHasStarredInterface($modelClassName)
         {
             $refelectionClass = new ReflectionClass($modelClassName);
@@ -203,18 +204,18 @@
             }
             if ($isModelStarred)
             {
-                return 'unstarred';
+                return 'icon-star unstarred';
             }
-            return 'starred';
+            return 'icon-star starred';
         }
 
         public static function getToggleStarStatusLink($data, $row)
         {
-            $starredClass   = 'unstarred';
-            $text           = 'star';
+            $starredClass   = 'icon-star unstarred';
+            $text           = 'w'; //w=Star in Icon-Font
             if(StarredUtil::isModelStarred($data))
             {
-                $starredClass = 'starred';
+                $starredClass = 'icon-star starred';
             }
             $starId = 'star-' . get_class($data) . '-' . $data->id;
             $link = ZurmoHtml::ajaxLink(
