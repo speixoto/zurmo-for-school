@@ -200,6 +200,8 @@
             ksort($response['data']);
             //Add isActive
             $data['isActive'] = '1';
+            //Add lastLoginDateTime
+            $data['lastLoginDateTime'] = null;
             $this->assertEquals($data, $response['data']);
             // Check if new user can log in
             $newUser = User::getByUsername('diggy011');
@@ -253,6 +255,8 @@
             // We need to unset some empty values from response and dates.
             unset($response['data']['modifiedDateTime']);
             unset($compareData['modifiedDateTime']);
+            unset($response['data']['lastLoginDateTime']);
+            unset($compareData['lastLoginDateTime']);
             $compareData['firstName'] = "John";
             ksort($compareData);
             ksort($response['data']);
@@ -267,6 +271,7 @@
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
             unset($response['data']['modifiedDateTime']);
+            unset($response['data']['lastLoginDateTime']);
             ksort($response['data']);
             $this->assertEquals($compareData, $response['data']);
         }
