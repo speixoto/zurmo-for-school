@@ -200,8 +200,6 @@
             ksort($response['data']);
             //Add isActive
             $data['isActive'] = '1';
-            //Add lastLoginDateTime
-            $data['lastLoginDateTime'] = null;
             $this->assertEquals($data, $response['data']);
             // Check if new user can log in
             $newUser = User::getByUsername('diggy011');
