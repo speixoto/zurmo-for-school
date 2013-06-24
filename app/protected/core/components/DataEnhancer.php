@@ -35,11 +35,66 @@
      ********************************************************************************/
 
     /**
-     * A listview class should implement this interface if
-     * it needs to manually specify the path to summary clone div
+     * Helper class for managing data enhancement to models. An example would be adding gender and age information
+     * for a person.  Override as needed.
      */
-    interface RendersMultipleSummaryPlaceholdersInterface
+    class DataEnhancer extends CApplicationComponent
     {
-        public static function getSummaryCloneQueryPath();
+        /**
+         * @param User|Person $person
+         * @return bool
+         */
+        public function personHasBackOfCard($person)
+        {
+            return false;
+        }
+
+        /**
+         * Override and return back of card label for person
+         * @return null | string
+         */
+        public function getPersonBackOfCardLabel()
+        {
+            return null;
+        }
+
+        /**
+         * Override and return back of card content for person
+         * @param User|Person $person
+         * @return null | string
+         */
+        public function getPersonBackOfCardViewContent($person)
+        {
+            return null;
+        }
+
+        /**
+         * Override and return social networks content for person
+         * @param User|Person $person
+         * @return null | string
+         */
+        public function getPersonSocialNetworksViewContent($person)
+        {
+            return null;
+        }
+
+        /**
+         * Override and return demographic content for person including age and gender
+         * @param User|Person $person
+         * @return null | string
+         */
+        public function getPersonDemographicViewContent($person)
+        {
+            return null;
+        }
+
+        /**
+         * @param User|Person $person
+         * @return null
+         */
+        public function getPersonAvatar($person)
+        {
+            return null;
+        }
     }
 ?>
