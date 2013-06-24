@@ -45,12 +45,9 @@
 
             //Default Controller actions requiring some sort of parameter via POST or GET
             //Load Model Edit Views
-            $contacts           = Contact::getByName('superContact');
-            print "<pre>";
-            print_r($contacts);
-            print "</pre>";
-            exit;
+            $contacts           = Contact::getByName('superContact superContactson');
             $products           = Product::getAll();
+            $this->assertEquals(1, count($contacts));
             $this->assertEquals(1, count($products));
             $superProductId     = self::getModelIdByModelNameAndName('Product', 'My Product 1');
             $this->setGetArray(array('id' => $superProductId));
@@ -73,7 +70,7 @@
 
             //Test having a failed validation on the product during save.
             $this->setGetArray (array('id'      => $superProductId));
-            $content = $this->runControllerWithNoExceptionsAndGetContent('products/default/edit');
+            $content = $this->runControllerWithRedirectExceptionAndGetContent('products/default/edit');
         }
     }
 ?>

@@ -34,47 +34,12 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class CurrencyValueForReportToExportValueAdapter extends ForReportToExportValueAdapter
+    class GroupByModifierMonthForReportToExportValueAdapter extends ForReportToExportValueAdapter
     {
         public function resolveData(& $data)
         {
-            assert('$this->model->{$this->attribute} instanceof CurrencyValue');
-
-            $currencyValue = $this->model->{$this->attribute};
-            if ($currencyValue->id > 0)
-            {
-                if ($this->getCurrencyValueConversionType() == Report::CURRENCY_CONVERSION_TYPE_ACTUAL)
-                {
-                    $data[] = $currencyValue->value;
-                    $data[] = $currencyValue->currency->code;
-                }
-                elseif ($this->getCurrencyValueConversionType() == Report::CURRENCY_CONVERSION_TYPE_BASE)
-                {
-                    $data[] = $currencyValue->value * $currencyValue->rateToBase;
-                    $data[] = Yii::app()->currencyHelper->getBaseCode();
-                }
-                elseif ($this->getCurrencyValueConversionType() == Report::CURRENCY_CONVERSION_TYPE_SPOT)
-                {
-                    //Assumes base conversion is done using sql math
-                    $data[] = $currencyValue->value * $currencyValue->rateToBase * $this->getFromBaseToSpotRate();
-                    $data[] = $this->getSpotConversionCurrencyCode();
-                }
-            }
-            else
-            {
-                $data[] = null;
-                $data[] = null;
-            }
-        }
-
-        /**
-         * Resolve the header data for the attribute.
-         * @param array $headerData
-         */
-        public function resolveHeaderData(& $headerData)
-        {
-            $headerData[] = $this->model->getAttributeLabel($this->attribute);
-            $headerData[] = $this->model->getAttributeLabel($this->attribute) . ' ' . Zurmo::t('ZurmoModule', 'Currency');
+            $dateTime   = $this->model->{$this->attribute};
+            $data[]     = DateTimeUtil::getMonthName($dateTime);
         }
     }
 ?>

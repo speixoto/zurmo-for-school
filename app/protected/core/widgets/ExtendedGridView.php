@@ -189,7 +189,8 @@
             $emptyText=$this->emptyText===null ? Yii::t('zii','No results found.') : $this->emptyText;
             if($this->renderSpanOnEmptyText)
             {
-                echo CHtml::tag('span', array('class'=>'empty-'), $emptyText);
+                $icon = ZurmoHtml::tag('span', array('class' => 'icon-empty'), '');
+                echo CHtml::tag('span', array('class'=>'empty'), $icon . $emptyText);
             }
             else
             {

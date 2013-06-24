@@ -45,7 +45,7 @@
          */
         public static function getSlideToSecondPanelLabel()
         {
-            return Zurmo::t('Core', 'Change to Zurmo View');
+            return Zurmo::t('Core', 'Switch to Full View');
         }
 
         /**
@@ -53,7 +53,7 @@
          */
         public static function getSlideToFirstPanelLabel()
         {
-            return Zurmo::t('Core', 'Change to Business Card');
+            return Zurmo::t('Core', 'Switch to Business Card View');
         }
     }
 ?>

@@ -2111,7 +2111,7 @@ tr.even{
 
 .juiportlet-widget{
 	.empty{
-		padding:10px 0 10px 15px;
+		padding:5px 0 10px 0;
 		display:block;
 	}
 	td.empty > .empty{
@@ -2123,11 +2123,54 @@ tr.even{
 	display:block;
 	.smaller();
 	font-weight: bold;
-	background: rgba(255, 255, 255, 0.5);
+	//background: rgba(255, 255, 255, 0.5);
+	text-align:center;
+	.icon-empty{
+		display: block;
+		line-height: 1;
+		margin: 0;
+	}
+	.icon-empty:before{
+		margin: 0;
+		font-size:40px;
+		line-height:1;
+	}
 }
 
 td.empty{
 	display:table-cell !important;
+}
+
+.icon-notice:before{
+	content: "j";
+	.view-toolbar-icons();
+}
+
+.icon-empty:before{
+	content: "z";
+	.view-toolbar-icons();
+	margin:0 !important;
+}
+
+.general-issue-notice{
+	text-align: center;
+	width:75%;
+	margin:10px auto 15px auto !important;
+	position: relative;
+	.icon-notice{
+		display: block;
+		line-height: 1;
+		margin-bottom: 10px;
+	}
+	.icon-notice:before{
+		margin: 0;
+		font-size:100px;
+		line-height: 60px !important;
+	}
+	p{
+		font-size: 14px;
+		line-height: 21px;
+	}
 }
 
 /*forms*/
@@ -5273,6 +5316,10 @@ div.hasHalfs{
 	background:#111 url(../images/dark-texture-table-footer.png) left top repeat-x !important;
 	color:#FFF;
 	font-weight: bold;
+}
+
+.empty + .pager + .products-portlet-totals{
+	display:none;
 }
 
 .editable-cell{

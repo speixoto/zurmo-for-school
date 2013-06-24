@@ -73,7 +73,7 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'lastLoginDateTime', 'type' => 'DateTime'),
+                                                array('attributeName' => 'isActive', 'type' => 'CheckBox'),
                                             ),
                                         ),
                                     ),
