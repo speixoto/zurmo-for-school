@@ -7580,6 +7580,11 @@ tr.even {
   font-size: 26px;
   font-family: "ZurmoGamificationSymblyReguRg";
   color: #ccc !important;
+  -webkit-text-shadow: 0 0 1px #333333;
+  -moz-text-shadow: 0 0 1px #333333;
+  -o-text-shadow: 0 0 1px #333333;
+  -ms-text-shadow: 0 0 1px #333333;
+  text-shadow: 0 0 1px #333333;
   top: -1px;
   position: relative;
   line-height: 1;
