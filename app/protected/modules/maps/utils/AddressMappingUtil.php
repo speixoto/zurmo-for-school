@@ -84,7 +84,7 @@
         public static function sanitizeLatitudeOrLongitude($value)
         {
             assert('is_numeric($value)');
-            return substr($value, 0,12);
+            return substr($value, 0, 12);
         }
 
         /**
