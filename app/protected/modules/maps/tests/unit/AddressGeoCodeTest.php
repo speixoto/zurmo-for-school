@@ -50,6 +50,14 @@
             AddressGeoCodeTestHelper::createAndRemoveAccountWithAddress($super);
         }
 
+        public function testStringLength()
+        {
+            $this->assertEquals(-112.8327778, AddressMappingUtil::sanitizeLatitudeOrLongitude(-112.83277785));
+            $this->assertEquals(-112.8327778, AddressMappingUtil::sanitizeLatitudeOrLongitude(-112.8327778));
+            $this->assertEquals(112.83277785, AddressMappingUtil::sanitizeLatitudeOrLongitude(112.83277785));
+            $this->assertEquals(112.8327778, AddressMappingUtil::sanitizeLatitudeOrLongitude(112.8327778));
+        }
+
         public function testAddressFetchLatitudeAndLongitude()
         {
             $super = User::getByUsername('super');
