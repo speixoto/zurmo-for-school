@@ -428,15 +428,15 @@
 	<td>123</td>
 </tr>
 <tr>
-	<td>assertText</td>
+	<td>assertTextNotPresent</td>
 	<td>link=123 Main Street Suite 500 Chicago IL, 60614 USA</td>
 	<td>123 Main Street Suite 500 Chicago IL, 60614 USA</td>
 </tr>
-<tr>
+<!--tr>
 	<td>assertText</td>
 	<td>link=456 Bee Street Suite 400 Gary Indiana, 67898 USA</td>
 	<td>456 Bee Street Suite 400 Gary Indiana, 67898 USA</td>
-</tr>
+</tr-->
 <!--Full View-->
 <tr>
 	<td>click</td>
@@ -524,13 +524,13 @@
 	<td>123</td>
 </tr>
 <tr>
-	<td>assertText</td>
-	<td>link=123 Main Street Suite 500 Chicago IL, 60614 USA</td>
-	<td>123 Main Street Suite 500 Chicago IL, 60614 USA</td>
+	<td>compareText</td>
+	<td>//div[@id='zurmoView']/div/table/tbody/tr[12]/td</td>
+	<td>123 Main Street<br /> Suite 500<br /> Chicago IL, 60614<br /> USA</td>
 </tr>
 <tr>
-	<td>assertText</td>
-	<td>link=456 Bee Street<br /> Suite 400<br /> Gary Indiana, 67898<br /> USA</td>
+	<td>compareText</td>
+	<td>//div[@id='zurmoView']/div/table/tbody/tr[13]/td</td>
 	<td>456 Bee Street<br /> Suite 400<br /> Gary Indiana, 67898<br /> USA</td>
 </tr>
 </tbody></table>

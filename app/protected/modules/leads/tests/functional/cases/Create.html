@@ -414,8 +414,13 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>css=#sliding-panel-toggle &gt; span</td>
+	<td>//div[@id='LeadDetailsPortletView']/a</td>
 	<td></td>
+</tr>
+<tr>
+	<td>waitForCondition</td>
+	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+	<td>30000</td>
 </tr>
 <!--Full View-->
 <tr>
