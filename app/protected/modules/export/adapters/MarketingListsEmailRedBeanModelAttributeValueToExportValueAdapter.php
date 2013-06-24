@@ -36,8 +36,5 @@
 
     class MarketingListsEmailRedBeanModelAttributeValueToExportValueAdapter extends TextRedBeanModelAttributeValueToExportValueAdapter
     {
-		
-		
-		
     }
 ?>

@@ -117,6 +117,19 @@
                 true,
             );
             $this->assertEquals($compareData, $data);
+
+            $data         = array();
+            $model        = new ExportTestModelItem5();
+            $model->fromAddress = 'a@a.com';
+
+            $adapter     = new MarketingListsEmailRedBeanModelAttributeValueToExportValueAdapter($model, 'fromAddress');
+            $adapter->resolveData($data);
+            $compareData = array('a@a.com');
+            $this->assertEquals($compareData, $data);
+            $data        = array();
+            $adapter->resolveHeaderData($data);
+            $compareData = array($model->getAttributeLabel('fromAddress'));
+            $this->assertEquals($compareData, $data);
         }
     }
 ?>

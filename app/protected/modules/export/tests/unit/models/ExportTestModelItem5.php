@@ -47,9 +47,9 @@
                     'fromAddress',
                 ),
                 'rules' => array(
-                     array('fromAddress',   'type', 'type' => 'string'),
-                    array('fromAddress',   'length',  'min'  => 6, 'max' => 64),
-                    array('fromAddress',   'email', 'except' => 'autoBuildDatabase'),
+                    array('emailAddress',   'type', 'type' => 'string'),
+                    array('emailAddress',   'length',  'min'  => 6, 'max' => 64),
+                    array('emailAddress',   'email', 'except' => 'autoBuildDatabase'),
                 ),
             );
             return $metadata;
