@@ -180,6 +180,8 @@
             );
 
             // We need to unset some empty values from response.
+            unset($response['data']['lastLoginDateTime']);
+            unset($response['data']['locale']);
             unset($response['data']['createdDateTime']);
             unset($response['data']['modifiedDateTime']);
             unset($response['data']['primaryEmail']['id'] );
