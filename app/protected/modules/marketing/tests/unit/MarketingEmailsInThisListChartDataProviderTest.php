@@ -149,7 +149,7 @@
             $contacts = Contact::getAll();
             $this->addCampaignItem     ($contacts[0], $emailMessageSentDateTime, $activityCreationArray);
             $this->addAutoresponderItem($contacts[0], $emailMessageSentDateTime, $activityCreationArray);
-            if($isMultiplierOn)
+            if ($isMultiplierOn)
             {
                 $this->addCampaignItem     ($contacts[1], $emailMessageSentDateTime, $activityCreationArray);
                 $this->addAutoresponderItem($contacts[1], $emailMessageSentDateTime, $activityCreationArray);
@@ -274,7 +274,8 @@
                 $isMultiplierOn)
         {
             $count = null;
-            switch ($condition) {
+            switch ($condition)
+            {
                 case 'equals':
                     $count = 1;
                     break;
@@ -312,7 +313,7 @@
             $this->assertCount ($count,          $campaignChartData);
             $this->assertCount ($count,          $marketingListChartData);
 
-            if($condition != 'equals')
+            if ($condition != 'equals')
             {
                 $displayLabel = $this->getDisplayLabel($beginDate, $groupingBy);
                 $expectedArray                      = array();
@@ -323,7 +324,7 @@
                 $expectedArray['bounced']           = 0;
                 $expectedArray['optedOut']          = 0;
                 $expectedArray['displayLabel']      = $displayLabel;
-                if($groupingBy == 'Week')
+                if ($groupingBy == 'Week')
                 {
                     $expectedArray['dateBalloonLabel']  = 'Week of ' . $displayLabel;
                 }
@@ -335,7 +336,7 @@
                 $this->assertChartDataColumnAsExpected($expectedArray, $marketingListChartData[0]);
             }
 
-            if($condition == 'equals')
+            if ($condition == 'equals')
             {
                 $campaignColumn      = $campaignChartData[0];
                 $marketingListColumn = $marketingListChartData[0];
@@ -345,12 +346,12 @@
                 $campaignColumn      = $campaignChartData[1];
                 $marketingListColumn = $marketingListChartData[1];
             }
-            if(isset($campaignColumn))
+            if (isset($campaignColumn))
             {
                 $displayLabel = $this->getDisplayLabel($emailMessageSentDateTime, $groupingBy);
                 $expectedArray                      = array();
                 $expectedArray['displayLabel']      = $displayLabel;
-                if($groupingBy == 'Week')
+                if ($groupingBy == 'Week')
                 {
                     $expectedArray['dateBalloonLabel']  = 'Week of ' . $displayLabel;
                 }
@@ -380,7 +381,7 @@
                 $expectedArray['bounced']           = 0;
                 $expectedArray['optedOut']          = 0;
                 $expectedArray['displayLabel']      = $displayLabel;
-                if($groupingBy == 'Week')
+                if ($groupingBy == 'Week')
                 {
                     $expectedArray['dateBalloonLabel']  = 'Week of ' . $displayLabel;
                 }
@@ -397,18 +398,19 @@
         private function getBeginDateByConditionAndGroupingBy($emailMessageSentDateTime, $condition, $groupingBy)
         {
             $add = null;
-            switch ($condition) {
+            switch ($condition)
+            {
                 case 'after':
                     $add = '-2';
                     break;
                 case 'before':
-                    $add = '+1';
+                    $add = '+1'; // Not Coding Standard
                     break;
                 case 'between':
                     $add = '-1';
                     break;
                 default:
-                    $add = '+0';
+                    $add = '+0'; // Not Coding Standard
                     break;
             }
             $date       = new DateTime($emailMessageSentDateTime);
@@ -420,18 +422,19 @@
         private function getEndDateByConditionAndGroupingBy($emailMessageSentDateTime, $condition, $groupingBy)
         {
             $add = null;
-            switch ($condition) {
+            switch ($condition)
+            {
                 case 'after':
                     $add = '-1';
                     break;
                 case 'before':
-                    $add = '+2';
+                    $add = '+2'; // Not Coding Standard
                     break;
                 case 'between':
-                    $add = '+1';
+                    $add = '+1'; // Not Coding Standard
                     break;
                 default:
-                    $add = '+0';
+                    $add = '+0'; // Not Coding Standard
                     break;
             }
             $date       = new DateTime($emailMessageSentDateTime);
@@ -482,7 +485,6 @@
                 $this->assertEquals($combinedChartData[$key]['optedOut'],
                                     $campaignChartData[$key]['optedOut'] + $marketingListChartData[$key]['optedOut']);
             }
-
         }
 
         private function assertChartDataColumnAsExpected(Array $expectedArray, $chartDataColumn)
@@ -612,13 +614,13 @@
         {
             $dateForLabel = $date;
             $format       = DateTimeUtil::DISPLAY_FORMAT_ABBREVIATED_MONTH_AND_DAY_WIDTH;
-            if($groupingBy == MarketingOverallMetricsForm::GROUPING_TYPE_WEEK)
+            if ($groupingBy == MarketingOverallMetricsForm::GROUPING_TYPE_WEEK)
             {
                 $date = new DateTime($date);
                 $date->modify(('Sunday' == $date->format('l')) ? 'Monday last week' : 'Monday this week');
                 $dateForLabel = $date->format('Y-m-d');
             }
-            else if($groupingBy == MarketingOverallMetricsForm::GROUPING_TYPE_MONTH)
+            elseif ($groupingBy == MarketingOverallMetricsForm::GROUPING_TYPE_MONTH)
             {
                 $format = DateTimeUtil::DISPLAY_FORMAT_ABBREVIATED_MONTH_ONLY_WIDTH;
             }

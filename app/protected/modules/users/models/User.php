@@ -852,7 +852,7 @@
 
         protected function login()
         {
-            if(!ApiRequest::isApiRequest())
+            if (!ApiRequest::isApiRequest())
             {
                 $this->unrestrictedSet('lastLoginDateTime',  DateTimeUtil::convertTimestampToDbFormatDateTime(time()));
                 $this->save();
