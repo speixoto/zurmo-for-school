@@ -46,6 +46,9 @@
                 'members' => array(
                     'fromAddress',
                 ),
+                'relations' => array(
+                    'fromAddress'   => array(RedBeanModel::HAS_ONE,   'Email', RedBeanModel::OWNED),
+                ),
                 'rules' => array(
                     array('emailAddress',   'type', 'type' => 'string'),
                     array('emailAddress',   'length',  'min'  => 6, 'max' => 64),

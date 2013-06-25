@@ -118,18 +118,46 @@
             );
             $this->assertEquals($compareData, $data);
 
-            $data         = array();
+
+            $model                               = new ExportTestModelItem5();
+            $model->fromAddress->emailAddress = 'c@c.com';
+            $model->fromAddress->isInvalid    = false;
+            $model->fromAddress->optOut       = true;
+
+            $this->assertTrue($model->save());
+
+            $data        = array();
+            $adapter     = new EmailAddressInformationRedBeanModelAttributeValueToExportValueAdapter($model, 'fromAddress');
+            $adapter->resolveHeaderData($data);
+            $compareData = array(
+                $model->getAttributeLabel('fromAddress') . ' - ' . Zurmo::t('ZurmoModule', 'Email Address'),
+                $model->getAttributeLabel('fromAddress') . ' - ' . Zurmo::t('ZurmoModule', 'Is Invalid'),
+                $model->getAttributeLabel('fromAddress') . ' - ' . Zurmo::t('ZurmoModule', 'Opt Out'),
+            );
+
+            $this->assertEquals($compareData, $data);
+
+            $data        = array();
+            $adapter->resolveData($data);
+            $compareData = array(
+                'c@c.com',
+                false,
+                true,
+            );
+            $this->assertEquals($compareData, $data);
+
+            /*$data         = array();
             $model        = new ExportTestModelItem5();
             $model->fromAddress = 'a@a.com';
 
-            $adapter     = new MarketingListsEmailRedBeanModelAttributeValueToExportValueAdapter($model, 'fromAddress');
+            $adapter     = new EmailRedBeanModelAttributeValueToExportValueAdapter($model, 'fromAddress');
             $adapter->resolveData($data);
             $compareData = array('a@a.com');
             $this->assertEquals($compareData, $data);
             $data        = array();
             $adapter->resolveHeaderData($data);
             $compareData = array($model->getAttributeLabel('fromAddress'));
-            $this->assertEquals($compareData, $data);
+            $this->assertEquals($compareData, $data);*/
         }
     }
 ?>
