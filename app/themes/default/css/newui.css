@@ -288,7 +288,8 @@ a.ModalGameNotification a,
 #business-card-buttons > div,
 #business-card-buttons a,
 #sliding-panel-toggle,
-.mini-button {
+.mini-button,
+#apps {
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
@@ -1004,7 +1005,7 @@ body.blue .configuration-list li a:hover span:before,
 body.blue .configuration-list td:last-child a:hover,
 body.blue .configuration-list td:last-child a:hover span:before,
 body.blue .addfileinput-button:hover span,
-body.blue .available-portlets span,
+body.blue .mini-button:hover span,
 body.blue .hide-welcome span,
 body.blue .hide-marketing-intro span,
 body.blue #kanban-board-options-link:hover,
@@ -1579,7 +1580,7 @@ body.brown .configuration-list li a:hover span:before,
 body.brown .configuration-list td:last-child a:hover,
 body.brown .configuration-list td:last-child a:hover span:before,
 body.brown .addfileinput-button:hover span,
-body.brown .available-portlets span,
+body.brown .mini-button:hover span,
 body.brown .hide-welcome span,
 body.brown .hide-marketing-intro span,
 body.brown #kanban-board-options-link:hover,
@@ -2154,7 +2155,7 @@ body.lime .configuration-list li a:hover span:before,
 body.lime .configuration-list td:last-child a:hover,
 body.lime .configuration-list td:last-child a:hover span:before,
 body.lime .addfileinput-button:hover span,
-body.lime .available-portlets span,
+body.lime .mini-button:hover span,
 body.lime .hide-welcome span,
 body.lime .hide-marketing-intro span,
 body.lime #kanban-board-options-link:hover,
@@ -2729,7 +2730,7 @@ body.cherry .configuration-list li a:hover span:before,
 body.cherry .configuration-list td:last-child a:hover,
 body.cherry .configuration-list td:last-child a:hover span:before,
 body.cherry .addfileinput-button:hover span,
-body.cherry .available-portlets span,
+body.cherry .mini-button:hover span,
 body.cherry .hide-welcome span,
 body.cherry .hide-marketing-intro span,
 body.cherry #kanban-board-options-link:hover,
@@ -3304,7 +3305,7 @@ body.turquoise .configuration-list li a:hover span:before,
 body.turquoise .configuration-list td:last-child a:hover,
 body.turquoise .configuration-list td:last-child a:hover span:before,
 body.turquoise .addfileinput-button:hover span,
-body.turquoise .available-portlets span,
+body.turquoise .mini-button:hover span,
 body.turquoise .hide-welcome span,
 body.turquoise .hide-marketing-intro span,
 body.turquoise #kanban-board-options-link:hover,
@@ -3879,7 +3880,7 @@ body.violet .configuration-list li a:hover span:before,
 body.violet .configuration-list td:last-child a:hover,
 body.violet .configuration-list td:last-child a:hover span:before,
 body.violet .addfileinput-button:hover span,
-body.violet .available-portlets span,
+body.violet .mini-button:hover span,
 body.violet .hide-welcome span,
 body.violet .hide-marketing-intro span,
 body.violet #kanban-board-options-link:hover,
@@ -4454,7 +4455,7 @@ body.honey .configuration-list li a:hover span:before,
 body.honey .configuration-list td:last-child a:hover,
 body.honey .configuration-list td:last-child a:hover span:before,
 body.honey .addfileinput-button:hover span,
-body.honey .available-portlets span,
+body.honey .mini-button:hover span,
 body.honey .hide-welcome span,
 body.honey .hide-marketing-intro span,
 body.honey #kanban-board-options-link:hover,
@@ -13021,7 +13022,7 @@ table.configuration-list td:last-child a .z-label:before {
   word-break: break-all;
 }
 .available-portlets {
-  padding: 20px;
+  padding: 15px 15px 0 15px;
   list-style: none;
   zoom: 1;
 }
@@ -13035,21 +13036,28 @@ table.configuration-list td:last-child a .z-label:before {
   clear: both;
 }
 .available-portlets li {
-  width: 50%;
-  float: left;
   margin-bottom: 15px;
   color: #666;
   vertical-align: middle;
 }
-.available-portlets span {
+.available-portlets h3 {
+  position: relative;
+}
+.available-portlets h3 a {
+  padding-left: 40px;
+}
+.available-portlets h3 span:before {
+  content: "z";
   font-weight: normal;
-  font-size: 24px;
+  font-size: 60px;
   font-family: "ZurmoGamificationSymblyReguRg";
-  line-height: 11px;
+  line-height: 1;
+  position: absolute;
+  top: -15px;
   border: none;
-  margin-right: 6px;
   outline: none !important;
   display: inline-block;
+  color: #666;
 }
 .available-portlets a {
   outline: none !important;
@@ -13057,6 +13065,20 @@ table.configuration-list td:last-child a .z-label:before {
 }
 .available-portlets a:foucs {
   outline: none;
+}
+.available-portlets div {
+  padding-left: 40px;
+}
+.available-portlets .mini-button {
+  float: right;
+  position: relative;
+  margin-left: 0;
+  top: -10px;
+}
+.available-portlets .mini-button span {
+  display: block;
+  padding: 0 6px 0 6px;
+  background: none;
 }
 /*Edit Portlet*/
 #modal-edit-form th {
@@ -19827,6 +19849,32 @@ div.special-pager .hidden.next:after {
 }
 .mini-button .show {
   display: block;
+}
+#apps {
+  margin: 10px 0 15px 0;
+  padding: 15px;
+  -webkit-box-shadow: inset 0 0 5px 0 #cccccc;
+  -moz-box-shadow: inset 0 0 5px 0 #cccccc;
+  -o-box-shadow: inset 0 0 5px 0 #cccccc;
+  -ms-box-shadow: inset 0 0 5px 0 #cccccc;
+  box-shadow: inset 0 0 5px 0 #cccccc;
+  background: #222;
+}
+#available-apps {
+  width: 225px;
+}
+#available-apps li {
+  float: left;
+  display: block;
+  margin-right: 10px;
+  margin-bottom: 10px;
+}
+#available-apps a {
+  width: 64px;
+  height: 64px;
+  background: url(../images/zurmo-zapier.png) left top no-repeat;
+  display: block;
+  text-indent: -9999px;
 }
 /*********************************************************************************
  * Zurmo is a customer relationship management program developed by

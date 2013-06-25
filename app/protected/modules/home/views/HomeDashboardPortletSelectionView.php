@@ -81,12 +81,17 @@
                                         'portletType'    => $portletRules->getType(),
                                         )
                                     );
-                                    $onClick = 'window.location.href = "' . $url . '"';
+                                    $onClick = 'window.location.href="' . $url;
                                     $content .= '<li>';
-                                    $title    = $metadata['perUser']['title'];
-                                    MetadataUtil::resolveEvaluateSubString($title);
-                                    $label    = '<span>\</span>' . $title;
-                                    $content .= ZurmoHtml::link(Zurmo::t('HomeModule', $label ), null, array('onclick' => $onClick));
+                                    $portletName    = $metadata['perUser']['title'];
+                                    MetadataUtil::resolveEvaluateSubString($portletName);
+                                    $link     = ZurmoHtml::link(Zurmo::t('HomeModule', $portletName) , null, array('onclick' => $onClick));
+                                    $icon     = '<span class="icon-"></span>'; //@TODO: add the type of icon/module, i.e. reports/contacts/leads/etc.
+                                    $content .= ZurmoHtml::tag('h3', array(), $icon . $link );
+                                    $button   = ZurmoHtml::link(ZurmoHtml::tag('span', array(), Zurmo::t('HomeModule', 'Add Portlet')),
+                                                null, array('onclick' => $onClick, 'class' => 'mini-button'));
+                                    $content .= ZurmoHtml::tag('div', array('class' => 'clearfix'),
+                                                Zurmo::t('HomeModule', 'Missing Description') . $button );
                                     $content .= '</li>';
                                 }
                             }
