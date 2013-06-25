@@ -288,6 +288,13 @@
         font-weight: bold;
         .t-shadow(0 1px 0 rgba(255, 255, 255, 0.8));
     }
+  .errorMessage{
+    margin-bottom: 5px;
+  }
+    .errorMessage + .hasDropDown{
+      margin-top: 15px;
+      clear: left;
+    }
     .hasDropDown{
         width: auto !important;
     }
@@ -447,7 +454,7 @@
 }
 
 .first-date-area{
-	margin-top: 10px;
+	//margin-top: 10px;
 	display: block;
 }
 
@@ -1001,6 +1008,9 @@
 	margin-top: 10px;
 	++.border-box;
 	padding-left: 15px;
+    > div{
+      margin-top: 10px !important;
+    }
 }
 
 /*for actions in WORKFLOWS hide/show sequence*/

@@ -13027,7 +13027,7 @@ div.wide.form .row {
 div.wide.form .buttons,
 div.wide.form .hint,
 div.wide.form .errorMessage {
-  clear: left;
+  clear: both;
   padding-left: 2px;
 }
 .field-description {
@@ -17175,6 +17175,13 @@ a.user-link {
   -ms-text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
   text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
 }
+.dynamic-row .errorMessage {
+  margin-bottom: 5px;
+}
+.dynamic-row .errorMessage + .hasDropDown {
+  margin-top: 15px;
+  clear: left;
+}
 .dynamic-row .hasDropDown {
   width: auto !important;
 }
@@ -17305,7 +17312,6 @@ a.user-link {
   width: 80%;
 }
 .first-date-area {
-  margin-top: 10px;
   display: block;
 }
 .dynamic-and-for-mixed {
@@ -17798,6 +17804,9 @@ a.user-link {
   margin-left: 25%;
   margin-top: 10px;
   padding-left: 15px;
+}
+.dynamic-row-duration > div {
+  margin-top: 10px !important;
 }
 /*for actions in WORKFLOWS hide/show sequence*/
 .ComponentForWorkflowWizardView .add-email-message-button-container,
