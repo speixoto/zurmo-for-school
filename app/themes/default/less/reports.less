@@ -292,8 +292,8 @@
     margin-bottom: 5px;
   }
     .errorMessage + .hasDropDown{
-      margin-top: 15px;
-      clear: left;
+      //margin-top: 15px;
+      //clear: left;
     }
     .hasDropDown{
         width: auto !important;
@@ -938,9 +938,7 @@
     ++.border-box;
     float: left;
     width: 80%;
-    //padding-left: 15px;
-
-
+    padding-left: 10px;
     .value-data{
         width: 42.5%;
 	    float:left;
@@ -1009,7 +1007,15 @@
 	++.border-box;
 	padding-left: 15px;
     > div{
-      margin-top: 10px !important;
+      margin-top: 0 !important;
+    }
+    > div.hasDropDown, > input[type="text"]{
+      width:32% !important;
+      float: left;
+      margin-left:2%;
+    }
+    > input[type="text"]{
+      margin-left: 0;
     }
 }
 

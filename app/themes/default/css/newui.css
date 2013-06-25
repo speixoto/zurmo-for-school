@@ -17178,10 +17178,6 @@ a.user-link {
 .dynamic-row .errorMessage {
   margin-bottom: 5px;
 }
-.dynamic-row .errorMessage + .hasDropDown {
-  margin-top: 15px;
-  clear: left;
-}
 .dynamic-row .hasDropDown {
   width: auto !important;
 }
@@ -17745,6 +17741,7 @@ a.user-link {
 .all-related-field {
   float: left;
   width: 80%;
+  padding-left: 10px;
 }
 .all-related-field .value-data {
   width: 42.5%;
@@ -17806,7 +17803,16 @@ a.user-link {
   padding-left: 15px;
 }
 .dynamic-row-duration > div {
-  margin-top: 10px !important;
+  margin-top: 0 !important;
+}
+.dynamic-row-duration > div.hasDropDown,
+.dynamic-row-duration > input[type="text"] {
+  width: 32% !important;
+  float: left;
+  margin-left: 2%;
+}
+.dynamic-row-duration > input[type="text"] {
+  margin-left: 0;
 }
 /*for actions in WORKFLOWS hide/show sequence*/
 .ComponentForWorkflowWizardView .add-email-message-button-container,
