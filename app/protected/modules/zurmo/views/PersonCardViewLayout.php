@@ -94,7 +94,7 @@
             if (Yii::app()->dataEnhancer->personHasBackOfCard($this->model))
             {
                 static::registerBackOfCardScript();
-                $spanContent = ZurmoHtml::tag('span', array(), Yii::app()->dataEnhancer->getPersonBackOfCardLabel());
+                $spanContent = ZurmoHtml::tag('span', array('class' => 'show'), Yii::app()->dataEnhancer->getPersonBackOfCardLabel());
                 $content = ZurmoHtml::link($spanContent, '#', array('class' => 'toggle-back-of-card-link mini-button clearfix'));
                 return $content;
             }
