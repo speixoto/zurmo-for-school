@@ -96,7 +96,7 @@
          */
         public static function resolveFilters($data, Report $report, $shouldRemoveOnlyRuntimeFilters = false)
         {
-            if($shouldRemoveOnlyRuntimeFilters)
+            if ($shouldRemoveOnlyRuntimeFilters)
             {
                 $report->removeRuntimeFilters();
             }

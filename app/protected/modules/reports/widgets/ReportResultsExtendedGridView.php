@@ -43,7 +43,7 @@
     class ReportResultsExtendedGridView extends ExtendedGridView
     {
         public $expandableRows = false;
-        
+
         /**
          * Used by matrix reporting or when there are headers that are for columns with values but for columns that
          * also have header labels in them.

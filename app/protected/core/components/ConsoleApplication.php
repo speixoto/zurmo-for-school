@@ -95,12 +95,12 @@
          */
         public function getLocale($localeID = null)
         {
-            if($localeID == null && $this->user->userModel != null && $this->user->userModel->id > 0 &&
+            if ($localeID == null && $this->user->userModel != null && $this->user->userModel->id > 0 &&
                $this->user->userModel->locale != null)
             {
                 $localeID = $this->user->userModel->locale;
             }
-            elseif($localeID == null)
+            elseif ($localeID == null)
             {
                 $localeID = $this->getLanguage();
             }

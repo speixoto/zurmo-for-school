@@ -198,7 +198,7 @@
                                         'opportunity' => array('id' => ''),
                                         'type' => ProductTemplate::TYPE_PRODUCT,
                                         'priceFrequency' => ProductTemplate::PRICE_FREQUENCY_ONE_TIME,
-                                        'sellPrice' => array('currency' => array('id' => $currency->id),'value' => 210                                           ),
+                                        'sellPrice' => array('currency' => array('id' => $currency->id), 'value' => 210                                           ),
                                         'stage' => array('value' => 'Open'),
                                         'owner' => array('id' => $user->id),
                                         'explicitReadWriteModelPermissions' => array(
@@ -250,7 +250,6 @@
                         //todo: handle if success is false, means adding/removing permissions save failed.
                     }
                     $savedSuccessfully = true;
-
                 }
             }
             else

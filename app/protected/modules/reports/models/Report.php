@@ -491,7 +491,7 @@
             $filters = array();
             foreach ($this->filters as $filter)
             {
-                if(!$filter->availableAtRunTime)
+                if (!$filter->availableAtRunTime)
                 {
                     $filters[] = $filter;
                 }

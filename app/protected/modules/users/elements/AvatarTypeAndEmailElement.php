@@ -43,7 +43,6 @@
 
         protected function renderControlEditable()
         {
-
             $content  = $this->renderAvatarTypeRadio              ($this->model, $this->form, 'avatarType');
             $content .= $this->renderCustomAvatarEmailAddressInput($this->model, $this->form, 'customAvatarEmailAddress');
             $this->renderScripts();
