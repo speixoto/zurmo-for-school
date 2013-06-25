@@ -97,7 +97,7 @@
             try
             {
                 $emailAccount = static::getByUserAndName($user, $name);
-                $emailAccount->outboundPassword = ZurmoPasswordSecurityUtil::decrypt($emailAccount->outboundPassword);
+                //$emailAccount->outboundPassword = ZurmoPasswordSecurityUtil::decrypt($emailAccount->outboundPassword);
             }
             catch (NotFoundException $e)
             {
@@ -241,9 +241,9 @@
         /**
          * Encrypt password beforeSave
          */
-        public function beforeSave()
+        public function afterValidate()
         {
-            parent::beforeSave();
+            parent::afterValidate();
             if ($this->outboundPassword !== null && $this->outboundPassword !== '')
             {
                 $this->outboundPassword = ZurmoPasswordSecurityUtil::encrypt($this->outboundPassword);
