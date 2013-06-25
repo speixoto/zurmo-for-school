@@ -190,7 +190,7 @@
              $columns            = array_slice($columns, 0, count($columns)-1);
              $columnAdapter      = new ProductTotalRelatedListViewColumnAdapter('total', $this, array());
              $column             = $columnAdapter->renderGridViewData();
-             return array_merge($columns, array($column,$lastColumn));
+             return array_merge($columns, array($column, $lastColumn));
         }
 
         /**
@@ -478,7 +478,7 @@
         protected function processColumnInfoToFetchColumnData($columnInformation)
         {
             $columnClassName = 'Product' . ucfirst($columnInformation['attributeName']) . 'RelatedListViewColumnAdapter';
-            if(@class_exists($columnClassName))
+            if (@class_exists($columnClassName))
             {
                 $columnAdapter      = new $columnClassName($columnInformation['attributeName'], $this, array_slice($columnInformation, 1));
                 $column = $columnAdapter->renderGridViewData();

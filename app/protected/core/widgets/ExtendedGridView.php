@@ -186,18 +186,24 @@
          */
         public function renderEmptyText()
         {
-            $emptyText=$this->emptyText===null ? Yii::t('zii','No results found.') : $this->emptyText;
-            if($this->renderSpanOnEmptyText)
+            if ($this->emptyText === null)
+            {
+                $emptyText = Yii::t('zii', 'No results found.');
+            }
+            else
+            {
+                $emptyText = $this->emptyText;
+            }
+
+            if ($this->renderSpanOnEmptyText)
             {
                 $icon = ZurmoHtml::tag('span', array('class' => 'icon-empty'), '');
-                echo CHtml::tag('span', array('class'=>'empty'), $icon . $emptyText);
+                echo CHtml::tag('span', array('class' => 'empty'), $icon . $emptyText);
             }
             else
             {
                 echo $emptyText;
             }
         }
-
-
     }
 ?>
