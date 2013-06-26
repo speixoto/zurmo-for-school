@@ -4254,6 +4254,34 @@ div.hasHalfs{
 	width:64%;
 }
 
+.operation-duration-fields{
+	++.cf;
+	&.twoFields{
+		input[type="text"]{
+			width: 49%;
+			float: left;
+		}
+		> div{
+			width: 49% !important;
+			float: right;
+		}
+	}
+
+
+	&.threeFields{
+		> div.hasDropDown,
+		> input[type="text"]{
+			width:32% !important;
+			float: left;
+			margin-left:2%;
+		}
+		> input[type="text"]{
+			margin-left: 0;
+		}
+	}
+
+}
+
 .juiportlet-widget.OpportunitiesForAccountRelatedListView,
 .juiportlet-widget.ContactsForAccountRelatedListView{
 	div.button-column{

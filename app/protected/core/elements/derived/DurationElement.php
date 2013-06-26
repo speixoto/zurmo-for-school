@@ -49,10 +49,13 @@
         {
             $content  = $this->renderEditableDurationIntervalTextField() . "\n";
             $content .= $this->renderEditableDurationTypeDropDownField() . "\n";
+            $cssClass = 'twoFields';
             if($this->signAttributeName != null)
             {
                 $content .= $this->renderEditableDurationSignDropDownField() . "\n";
+                $cssClass = 'threeFields';
             }
+            $content = ZurmoHtml::tag('div', array('class' => 'operation-duration-fields ' . $cssClass), $content);
             return $content;
         }
 
