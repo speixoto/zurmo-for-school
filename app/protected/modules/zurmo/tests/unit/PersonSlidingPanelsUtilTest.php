@@ -34,67 +34,27 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * Base class used for wrapping a view of a report results grid
-     */
-    class ReportResultsGridForPortletView extends ReportResultsComponentForPortletView
+    class PersonSlidingPanelsUtilTest extends ZurmoBaseTest
     {
-        private $gridViewId;
-
-        /**
-         * @return string
-         */
-        public function getTitle()
+        public function testGetSlideToSecondPanelLabel()
         {
-            $content  = Zurmo::t('ReportsModule', 'Results');
-            return $content;
+            $this->assertEquals(
+                    'Switch to Full View',
+                    PersonSlidingPanelsUtil::getSlideToSecondPanelLabel());
         }
 
-        public function renderPortletHeadContent()
+        public function testGetSlideToFirstPanelLabel()
         {
-            return $this->renderSummaryCloneContent();;
+            $this->assertEquals(
+                    'Switch to Business Card View',
+                    PersonSlidingPanelsUtil::getSlideToFirstPanelLabel());
         }
 
-        /**
-         * @return string
-         */
-        public function renderContent()
+        public function testRenderToggleLinkContent()
         {
-            $content   = $this->renderRefreshLink();
-            $content  .= $this->makeViewAndRender();
-            return $content;
-        }
-
-        /**
-         * @return null|string
-         */
-        protected function makeViewAndRender()
-        {
-            $dataProvider = null;
-            if (isset($this->params['dataProvider']))
-            {
-                $dataProvider = $this->params['dataProvider'];
-
-                if ($dataProvider->getReport()->canCurrentUserProperlyRenderResults())
-                {
-                    $view      = ReportResultsGridViewFactory::makeByReportAndDataProvider(
-                                 'default', 'reports', $this->params['relationModel'], $dataProvider);
-                }
-                else
-                {
-                    $view      = new UserCannotRenderReportProperlySplashView();
-                }
-                return $view->render();
-            }
-        }
-
-        protected function renderSummaryCloneContent()
-        {
-            return ZurmoHtml::tag('div',
-                                  array('id'    => 'report-results-grid-view-summary-clone',
-                                        'class' => ExtendedGridView::CLONE_SUMMARY_CLASS,
-                                  ),
-                                  '');
+            $this->assertContains(
+                    '<a id="sliding-panel-toggle" class="vertical-forward-pager slide-to-second-panel"',
+                    PersonSlidingPanelsUtil::renderToggleLinkContent());
         }
     }
 ?>

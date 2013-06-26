@@ -316,7 +316,7 @@
                 $realAttributes                = $attributeImportRules->getRealModelAttributeNames();
                 foreach ($realAttributes as $realAttribute)
                 {
-                    if(!in_array($realAttribute, array_keys($attributesCollection)) &&
+                    if (!in_array($realAttribute, array_keys($attributesCollection)) &&
                        $model->isAttributeRequired($realAttribute))
                     {
                         ModelAttributeImportMappingCollectionUtil::populateCollection(

@@ -195,7 +195,7 @@
 
         protected function resolveHtmlAndTextBreakLine()
         {
-            if($this->breakLines)
+            if ($this->breakLines)
             {
                 return "<br/>\n";
             }
@@ -204,7 +204,7 @@
 
         protected function resolveTextBreakLine()
         {
-            if($this->breakLines)
+            if ($this->breakLines)
             {
                 return "\n";
             }
