@@ -55,7 +55,9 @@
                 $content .= $this->renderEditableDurationSignDropDownField() . "\n";
                 $cssClass = 'threeFields';
             }
-            $content = ZurmoHtml::tag('div', array('class' => 'operation-duration-fields ' . $cssClass), $content);
+            $errorId  = $this->getEditableInputId($this->intervalAttributeName);
+            $content .= $this->form->error($this->model, $this->intervalAttributeName, array('inputID' => $errorId), true, true);
+            $content  = ZurmoHtml::tag('div', array('class' => 'operation-duration-fields ' . $cssClass), $content);
             return $content;
         }
 
@@ -67,9 +69,7 @@
                 'id'       => $id,
                 'disabled' => $this->getDisabledValue(),
             );
-            $textField = $this->form->textField($this->model, $this->intervalAttributeName, $htmlOptions);
-            $error     = $this->form->error    ($this->model, $this->intervalAttributeName, array('inputID' => $id), true, true);
-            return $textField . $error;
+            return $this->form->textField($this->model, $this->intervalAttributeName, $htmlOptions);
         }
 
         protected function renderEditableDurationSignDropDownField()
