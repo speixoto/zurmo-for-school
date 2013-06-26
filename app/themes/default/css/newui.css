@@ -295,6 +295,8 @@ a.ModalGameNotification a,
 }
 .cf:before,
 .cf:after,
+.operation-duration-fields:before,
+.operation-duration-fields:after,
 .recipient:before,
 .recipient:after,
 #NoUserEmailConfigurationYetView:before,
@@ -319,6 +321,7 @@ a.ModalGameNotification a,
   display: table;
 }
 .cf:after,
+.operation-duration-fields:after,
 .recipient:after,
 #NoUserEmailConfigurationYetView:after,
 .dynamic-row:after,
@@ -332,6 +335,7 @@ a.ModalGameNotification a,
   clear: both;
 }
 .cf,
+.operation-duration-fields,
 .recipient,
 #NoUserEmailConfigurationYetView,
 .dynamic-row,
@@ -10164,6 +10168,23 @@ div.hasHalfs > div input {
 .twoThirds {
   width: 64%;
 }
+.operation-duration-fields.twoFields input[type="text"] {
+  width: 49%;
+  float: left;
+}
+.operation-duration-fields.twoFields > div {
+  width: 49% !important;
+  float: right;
+}
+.operation-duration-fields.threeFields > div.hasDropDown,
+.operation-duration-fields.threeFields > input[type="text"] {
+  width: 32% !important;
+  float: left;
+  margin-left: 2%;
+}
+.operation-duration-fields.threeFields > input[type="text"] {
+  margin-left: 0;
+}
 .juiportlet-widget.OpportunitiesForAccountRelatedListView div.button-column,
 .juiportlet-widget.ContactsForAccountRelatedListView div.button-column {
   padding-top: 4px;
@@ -18018,15 +18039,6 @@ a.user-link {
 }
 .dynamic-row-duration > div {
   margin-top: 0 !important;
-}
-.dynamic-row-duration > div.hasDropDown,
-.dynamic-row-duration > input[type="text"] {
-  width: 32% !important;
-  float: left;
-  margin-left: 2%;
-}
-.dynamic-row-duration > input[type="text"] {
-  margin-left: 0;
 }
 /*for actions in WORKFLOWS hide/show sequence*/
 .ComponentForWorkflowWizardView .add-email-message-button-container,
