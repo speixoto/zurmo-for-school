@@ -95,6 +95,13 @@
             return true;
         }
 
+        /**
+         * Override to add a description for the view to be shown when adding a portlet
+         */
+        public static function getPortletDescription()
+        {
+        }
+
         public function isUniqueToAPage()
         {
             return false;

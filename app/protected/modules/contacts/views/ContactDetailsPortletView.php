@@ -123,6 +123,13 @@
         }
 
         /**
+         * Override to add a description for the view to be shown when adding a portlet
+         */
+        public static function getPortletDescription()
+        {
+        }
+
+        /**
          * Override and return null so we can render the actionElementMenu in the portletHeaderContent
          * @return null
          */

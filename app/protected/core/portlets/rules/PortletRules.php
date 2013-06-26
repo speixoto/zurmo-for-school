@@ -82,5 +82,23 @@
         {
             return false;
         }
+
+        public function resolveIconTypeName()
+        {
+            return 'type-'. $this->getIconType();
+        }
+
+        public function getDescription()
+        {
+            $viewClassName   = $this->viewClassName;
+            return $viewClassName::getPortletDescription();
+        }
+
+        protected function getIconType()
+        {
+            $viewClassName   = $this->viewClassName;
+            $moduleClassName = $viewClassName::getModuleClassName();
+            return $moduleClassName::getDirectoryName();
+        }
     }
 ?>

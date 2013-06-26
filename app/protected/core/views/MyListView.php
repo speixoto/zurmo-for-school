@@ -244,6 +244,13 @@
         }
 
         /**
+         * Override to add a description for the view to be shown when adding a portlet
+         */
+        public static function getPortletDescription()
+        {
+        }
+
+        /**
          * Override to add a display description.  An example would be 'My Contacts'.  This display description
          * can then be used by external classes interfacing with the view in order to display information to the user in
          * the user interface.

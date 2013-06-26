@@ -92,6 +92,13 @@
             return $metadata;
         }
 
+        /**
+         * Override to add a description for the view to be shown when adding a portlet
+         */
+        public static function getPortletDescription()
+        {
+        }
+
         public function renderContent()
         {
             return $this->renderStatisticsContent();

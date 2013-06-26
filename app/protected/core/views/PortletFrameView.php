@@ -130,6 +130,8 @@
             {
                 $content .= ' ' . $cssClass;
             }
+            $portletRules = PortletRulesFactory::createPortletRulesByView($portlet->getView());
+            $content .= ' ' . $portletRules->resolveIconTypeName();
             return $content;
         }
 
