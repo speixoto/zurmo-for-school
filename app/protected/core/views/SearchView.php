@@ -335,7 +335,7 @@
                 else
                 {
                     $content .= $this->renderStaticSearchRows($panel, $maxCellsPerRow, $form);
-                    $content .= $this->renderStarredFilter($form);
+                    $content .= $this->renderStarredFilterHidenField($form);
                 }
                 if ($key == 1)
                 {
@@ -636,17 +636,19 @@
         }
 
         /**
-         * Render a checkBox to filter models by starred only
+         * Render a hidden field to filter models by starred only
          * @param  ZurmoActiveForm $form
          * @return string
          */
-        protected function renderStarredFilter($form)
+        protected function renderStarredFilterHidenField($form)
         {
             $content = null;
             if(in_array('StarredInterface', class_implements($this->model->getModel())))
             {
-                $checkBox = $form->checkBox($this->model, 'filterByStarred', array('onchange' => "js:jQuery.yii.submitForm(this, '', {}); return false;"));
-                $content .= $checkBox;
+                $content .= $form->hiddenField(
+                        $this->model,
+                        'filterByStarred',
+                        array('class' => $form->id . '_filterByStarred'));
             }
             return $content;
         }

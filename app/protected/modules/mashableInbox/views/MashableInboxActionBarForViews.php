@@ -121,7 +121,7 @@
             $content      = null;
             $model        = $this->mashableInboxForm;
             $content      = $this->renderSearchView($model, $form);
-            $content     .= $this->renderStarredFilter($model, $form);
+            $content     .= $this->renderStarredFilterHidenField($model, $form);
             $element      = new MashableInboxOptionsByModelRadioElement($model, 'optionForModel', $form, array(), $this->getArrayForByModelRadioElement());
             $element->editableTemplate =  '<div id="MashableInboxForm_optionForModel_area">{content}</div>';
             $content     .= '<div class="filters-bar">';
@@ -249,7 +249,7 @@
          * @param  ZurmoActiveForm $form
          * @return string
          */
-        protected function renderStarredFilter($model, $form)
+        protected function renderStarredFilterHidenField($model, $form)
         {
             $content = null;
             $modelsImplementsStarredInterface = false;
@@ -259,8 +259,10 @@
             }
             if($modelsImplementsStarredInterface)
             {
-                $checkBox = $form->checkBox($model, 'filterByStarred', array('onchange' => "js:{$this->getAjaxSubmitScript($form)}"));
-                $content .= $checkBox;
+                $content .= $form->hiddenField(
+                        $model,
+                        'filterByStarred',
+                        array('class' => $form->id . '_filterByStarred'));
             }
             return $content;
         }

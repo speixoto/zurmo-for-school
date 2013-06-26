@@ -60,7 +60,7 @@
             $starred = 'StarredUtil::isModelStarred($data)';
             $checkBoxHtmlOptions = array();
             $firstColumn = array(
-                    'class'       => 'DataColumn',
+                    'class'       => 'StarDataColumn',
                     'htmlOptions' => array('class' => 'star-column'),
                     'value'       => array('StarredUtil','renderToggleStarStatusLink'),
                     'id'          => $this->gridId . $this->gridIdSuffix . '_columnStar',
