@@ -1950,6 +1950,10 @@ caption, th, td {
 		local,
 		scroll,
 		scroll;
+	.icon-empty:before{
+		content: 'C';
+		.view-toolbar-icons(45px);
+	}
 }
 
 .items{
@@ -2126,6 +2130,22 @@ tr.even{
 	top:-1px;
 	position:relative;
 	line-height:1;
+	&:hover,
+	&.starred{
+		color: #ffef42 !important;
+	}
+}
+
+#list-view_columnStar{
+	line-height:1;
+	width: 20px;
+	text-align: center;
+	padding-right: 0 !important;
+	padding-left: 0 !important;
+	.icon-star{
+		top:0;
+		left:-2px;
+	}
 }
 
 .juiportlet-widget-head{

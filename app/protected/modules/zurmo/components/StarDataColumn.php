@@ -53,7 +53,7 @@
             $class = $isFilteredByStarred ? 'starred' : 'unstarred';
             $url   = Yii::app()->controller->createUrl('');
             $link  = ZurmoHtml::ajaxLink(
-                        'star',
+                        'w',
                         '',
                         array(),
                         array('class'       => 'icon-star ' . $class,
