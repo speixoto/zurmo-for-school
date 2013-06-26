@@ -4,7 +4,7 @@
      * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
-     * the terms of the GNU General Public License version 3 as published by the
+     * the terms of the GNU Affero General Public License version 3 as published by the
      * Free Software Foundation with the addition of the following permission added
      * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
      * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
@@ -12,10 +12,10 @@
      *
      * Zurmo is distributed in the hope that it will be useful, but WITHOUT
      * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-     * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+     * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
      * details.
      *
-     * You should have received a copy of the GNU General Public License along with
+     * You should have received a copy of the GNU Affero General Public License along with
      * this program; if not, see http://www.gnu.org/licenses or write to the Free
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
@@ -25,9 +25,9 @@
      *
      * The interactive user interfaces in original and modified versions
      * of this program must display Appropriate Legal Notices, as required under
-     * Section 5 of the GNU General Public License version 3.
+     * Section 5 of the GNU Affero General Public License version 3.
      *
-     * In accordance with Section 7(b) of the GNU General Public License version 3,
+     * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
@@ -51,9 +51,27 @@
             return $metadata;
         }
 
+        protected function renderContent()
+        {
+            $content  = '<div class="details-table">';
+            $content .= $this->renderTitleContent();
+            $content .= $this->resolveAndRenderActionElementMenu();
+            $leftContent  = $this->renderBeforeFormLayoutForDetailsContent();
+            $leftContent .= $this->renderFormLayout();
+            $content .= ZurmoHtml::tag('div', array('class' => 'left-column'), $leftContent);
+            $content .= $this->renderRightSideContent();
+            $content .= $this->renderAfterFormLayoutForDetailsContent();
+            $content .= '</div>';
+            return $content;
+        }
+
         protected function renderFormLayout($form = null)
         {
-            //override since the details are done @see renderConversationContent
+            $content  = $this->renderConversationContent();
+            $content .= $this->renderConversationCommentsContent();
+            $content .= $this->renderConversationCreateCommentContent();
+            $content  = ZurmoHtml::tag('div', array('class' => 'left-column'), $content);
+            return $content;
         }
 
         public function getTitle()
@@ -64,13 +82,13 @@
         protected function renderRightSideContent($form = null)
         {
             assert('$form == null');
-            $content  = '<div class="right-side-edit-view-panel" class="thred-info"><div class="buffer">';
+            $content  = null;
             $content .= $this->renderConversationOpenCloseElement();
-            $content .= '<div>';
             $content .= $this->renderConversationRelatedToAndAttachmentsContent();
             $content .= "<h3>".Zurmo::t('ConversationsModule', 'Participants') . '</h3>';
             $content .= $this->renderConversationParticipantsContent();
-            $content .= '</div></div></div>';
+            $content  = ZurmoHtml::tag('div', array('class' => 'right-side-edit-view-panel thread-info'), $content);
+            $content  = ZurmoHtml::tag('div', array('class' => 'right-column'), $content);
             return $content;
         }
 
@@ -78,14 +96,6 @@
         {
             $element = new ConversationOpenCloseElement($this->model, 'isClosed');
             $content = $element->render();
-            return $content;
-        }
-
-        protected function renderAfterFormLayoutForDetailsContent()
-        {
-            $content  = $this->renderConversationContent();
-            $content .= $this->renderConversationCommentsContent();
-            $content .= $this->renderConversationCreateCommentContent();
             return $content;
         }
 
@@ -119,7 +129,7 @@
                 $element->nonEditableTemplate = '<td colspan="{colspan}" class="conversation-related-Attachments">{content}</td>';
                 $contentForTable .= $element->render();
             }
-            $content = ZurmoHtml::tag('table', array('class' => 'thred-details'), $contentForTable);
+            $content = ZurmoHtml::tag('table', array('class' => 'thread-details'), $contentForTable);
             return $content;
         }
 
@@ -190,6 +200,14 @@
         protected function getPortletDetailsUrl()
         {
             return Yii::app()->createUrl('/conversations/default/inlineCreateComment');
+        }
+
+        /**
+         * Override to not display anything since conversations detail does not need this.
+         * @return string|void
+         */
+        protected function renderAfterFormLayoutForDetailsContent()
+        {
         }
     }
 ?>

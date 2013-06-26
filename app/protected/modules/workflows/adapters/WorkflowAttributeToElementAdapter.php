@@ -4,7 +4,7 @@
      * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
-     * the terms of the GNU General Public License version 3 as published by the
+     * the terms of the GNU Affero General Public License version 3 as published by the
      * Free Software Foundation with the addition of the following permission added
      * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
      * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
@@ -12,10 +12,10 @@
      *
      * Zurmo is distributed in the hope that it will be useful, but WITHOUT
      * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-     * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+     * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
      * details.
      *
-     * You should have received a copy of the GNU General Public License along with
+     * You should have received a copy of the GNU Affero General Public License along with
      * this program; if not, see http://www.gnu.org/licenses or write to the Free
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
@@ -25,9 +25,9 @@
      *
      * The interactive user interfaces in original and modified versions
      * of this program must display Appropriate Legal Notices, as required under
-     * Section 5 of the GNU General Public License version 3.
+     * Section 5 of the GNU Affero General Public License version 3.
      *
-     * In accordance with Section 7(b) of the GNU General Public License version 3,
+     * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
@@ -46,15 +46,15 @@
         public function getContent()
         {
             $this->form->setInputPrefixData($this->inputPrefixData);
-            if($this->treeType == ComponentForWorkflowForm::TYPE_TIME_TRIGGER)
+            if ($this->treeType == ComponentForWorkflowForm::TYPE_TIME_TRIGGER)
             {
                 $content = $this->getContentForTimeTrigger();
             }
-            elseif($this->treeType == ComponentForWorkflowForm::TYPE_TRIGGERS)
+            elseif ($this->treeType == ComponentForWorkflowForm::TYPE_TRIGGERS)
             {
                 $content = $this->getContentForTrigger();
             }
-            elseif($this->treeType == ComponentForWorkflowForm::TYPE_ACTIONS)
+            elseif ($this->treeType == ComponentForWorkflowForm::TYPE_ACTIONS)
             {
                 $content = $this->getContentForAction();
             }
@@ -73,7 +73,7 @@
          */
         protected function getContentForTimeTrigger()
         {
-            if($this->model->getWorkflowType() == Workflow::TYPE_ON_SAVE)
+            if ($this->model->getWorkflowType() == Workflow::TYPE_ON_SAVE)
             {
                 throw new NotSupportedException();
             }
@@ -103,7 +103,7 @@
         {
             $params                                 = array('inputPrefix' => $this->inputPrefixData);
             $valueElementType                       = $this->model->getValueElementType();
-            if($this->model->hasAvailableOperatorsType())
+            if ($this->model->hasAvailableOperatorsType())
             {
                 $operatorElement = $this->resolveOperatorElementForMultiSelectDropDown($valueElementType, $params);
                 $operatorElement->editableTemplate  = '{content}{error}';
@@ -113,20 +113,20 @@
             {
                 $operatorContent                    = null;
             }
-            if($valueElementType != null)
+            if ($valueElementType != null)
             {
                 $valueElementClassName              = $valueElementType . 'Element';
                 $valueElement                       = new $valueElementClassName($this->model, 'value', $this->form, $params);
-                if($valueElement instanceof NameIdElement)
+                if ($valueElement instanceof NameIdElement)
                 {
                     $valueElement->setIdAttributeId('value');
                     $valueElement->setNameAttributeName('stringifiedModelForValue');
                 }
-                if($valueElement instanceof MixedNumberTypesElement)
+                if ($valueElement instanceof MixedNumberTypesElement)
                 {
                     $valueElement->editableTemplate = '<div class="value-data">{content}{error}</div>';
                 }
-                elseif($valueElement instanceof MixedDateTypesElement)
+                elseif ($valueElement instanceof MixedDateTypesElement)
                 {
                     $valueElement->editableTemplate = '<div class="dynamic-row-operator">{valueType}</div>' .
                                                       '<div class="value-data has-date-inputs">' .
@@ -164,7 +164,7 @@
         protected function resolveOperatorElementForMultiSelectDropDown($valueElementType, Array $params)
         {
             assert('is_string($valueElementType)');
-            if($valueElementType == 'StaticMultiSelectDropDownForWorkflow')
+            if ($valueElementType == 'StaticMultiSelectDropDownForWorkflow')
             {
                 return new OperatorStaticMultiSelectDropDownForWorkflowElement($this->model, 'operator', $this->form, $params);
             }

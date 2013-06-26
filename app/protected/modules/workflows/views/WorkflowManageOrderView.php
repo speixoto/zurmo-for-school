@@ -4,7 +4,7 @@
      * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
-     * the terms of the GNU General Public License version 3 as published by the
+     * the terms of the GNU Affero General Public License version 3 as published by the
      * Free Software Foundation with the addition of the following permission added
      * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
      * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
@@ -12,10 +12,10 @@
      *
      * Zurmo is distributed in the hope that it will be useful, but WITHOUT
      * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-     * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+     * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
      * details.
      *
-     * You should have received a copy of the GNU General Public License along with
+     * You should have received a copy of the GNU Affero General Public License along with
      * this program; if not, see http://www.gnu.org/licenses or write to the Free
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
@@ -25,9 +25,9 @@
      *
      * The interactive user interfaces in original and modified versions
      * of this program must display Appropriate Legal Notices, as required under
-     * Section 5 of the GNU General Public License version 3.
+     * Section 5 of the GNU Affero General Public License version 3.
      *
-     * In accordance with Section 7(b) of the GNU General Public License version 3,
+     * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
@@ -66,21 +66,11 @@
             $content .= ZurmoHtml::tag('h1', array(), $this->renderTitleContent() . 'Workflow Order');
             $content .= '<div class="wide form">';
             $clipWidget = new ClipWidget();
-            list($form, $formStart) = $clipWidget->renderBeginWidget(
-                'ZurmoActiveForm',
-                array(
-                    'id' => static::getFormId(),
-                    'action' => $this->getFormActionUrl(),
-                    'enableAjaxValidation' => true,
-                    'clientOptions' => array(
-                        'validateOnSubmit'  => true,
-                        'validateOnChange'  => false,
-                        'beforeValidate'    => 'js:beforeValidateAction',
-                        'afterValidate'     => 'js:afterValidateAjaxAction',
-                        'afterValidateAjax' => $this->renderConfigSaveAjax(static::getFormId()),
-                    ),
-                )
-            );
+            list($form, $formStart) = $clipWidget->renderBeginWidget('ZurmoActiveForm',
+                                                                        array(
+                                                                            'id' => static::getFormId(),
+                                                                            'action' => $this->getFormActionUrl(),
+                                                                        ));
             $content .= $formStart;
             $content .= $this->renderNoModuleSelectedContentAndWrapper();
             $content .= $this->renderNoWorkflowsToOrderContentAndWrapper();
@@ -154,12 +144,24 @@
          */
         protected function renderSaveLinkContent()
         {
-            $params                = array();
-            $params['label']       = Zurmo::t('Core', 'Save');
-            $params['htmlOptions'] = array('id'      => 'save-order',
-                                           'onclick' => 'js:$(this).addClass("attachLoadingTarget");');
-            $element               = new SaveButtonActionElement(null, null, null, $params);
-            return $element->render();
+            $aContent                = ZurmoHtml::wrapLink(Zurmo::t('Core', 'Save'));
+            return       ZurmoHtml::ajaxLink($aContent, $this->getFormActionUrl(),
+                array(  'type'       => 'POST',
+                        'dataType'   => 'json',
+                        'data'       => 'js:$("#' . static::getFormId() . '").serialize()',
+                        'complete'   => 'js:function(){$(this).detachLoadingOnSubmit("' . static::getFormId() . '");}',
+                        'success'    => 'function(data)
+                                        {
+                                            $("#FlashMessageBar").jnotifyAddMessage(
+                                            {
+                                                text: data.message, permanent: false, showIcon: true, type: data.type
+                                            });
+                                        }',
+                ),
+                array('id'       => 'save-order',
+                      'class'    => 'attachLoading z-button',
+                      'onclick'    => 'js:$(this).addClass("loading").addClass("loading-ajax-submit");
+                                                        $(this).makeOrRemoveLoadingSpinner(true, "#" + $(this).attr("id"));'));
         }
 
         /**
@@ -178,29 +180,10 @@
             return array(
                 'validateOnSubmit'  => true,
                 'validateOnChange'  => false,
-                'beforeValidate'    => 'js:beforeValidateAction',
-                'afterValidate'     => 'js:afterValidateAjaxAction',
+                'beforeValidate'    => 'js:$(this).beforeValidateAction',
+                'afterValidate'     => 'js:$(this).afterValidateAjaxAction',
                 'afterValidateAjax' => $this->renderConfigSaveAjax(static::getFormId()),
             );
-        }
-
-        /**
-         * @param string $formName
-         * @return string
-         */
-        protected function renderConfigSaveAjax($formName)
-        {
-            assert('is_string($formName)');
-            return ZurmoHtml::ajax(array(
-                'type'       => 'POST',
-                'dataType'   => 'json',
-                'data'       => 'js:$("#' . $formName . '").serialize()',
-                'url'        =>  $this->getFormActionUrl(),
-                'complete'   => 'js:function(){detachLoadingOnSubmit("' . static::getFormId() . '");}',
-                'success'    => 'function(data){$("#FlashMessageBar").jnotifyAddMessage({
-                                 text: data.message, permanent: false, showIcon: true, type: data.type
-                                 });}',
-            ));
         }
 
         protected function renderLoadModuleOrderScriptContent()
@@ -215,7 +198,7 @@
                 'data'     => 'js:\'moduleClassName=\' + $(this).val()',
                 'url'      =>  $url,
                 'success'  => 'js:function(data){
-                                if(data.dataToOrder == "true")
+                                if (data.dataToOrder == "true")
                                 {
                                     $(".no-workflows-to-order-view").hide();
                                     $(".select-module-view").hide();
@@ -233,7 +216,7 @@
             $script = "$('#" . $id . "').unbind('change'); $('#" . $id . "').bind('change', function()
             {
 
-                if($('#" . $id . "').val() == '')
+                if ($('#" . $id . "').val() == '')
                 {
                     $('.no-workflows-to-order-view').hide();
                     $('.select-module-view').show();

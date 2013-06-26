@@ -4,7 +4,7 @@
      * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
-     * the terms of the GNU General Public License version 3 as published by the
+     * the terms of the GNU Affero General Public License version 3 as published by the
      * Free Software Foundation with the addition of the following permission added
      * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
      * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
@@ -12,10 +12,10 @@
      *
      * Zurmo is distributed in the hope that it will be useful, but WITHOUT
      * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-     * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+     * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
      * details.
      *
-     * You should have received a copy of the GNU General Public License along with
+     * You should have received a copy of the GNU Affero General Public License along with
      * this program; if not, see http://www.gnu.org/licenses or write to the Free
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
@@ -25,9 +25,9 @@
      *
      * The interactive user interfaces in original and modified versions
      * of this program must display Appropriate Legal Notices, as required under
-     * Section 5 of the GNU General Public License version 3.
+     * Section 5 of the GNU Affero General Public License version 3.
      *
-     * In accordance with Section 7(b) of the GNU General Public License version 3,
+     * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
@@ -147,8 +147,7 @@
             $detailsAndRelationsView = new UserDetailsAndRelationsView($this->getId(),
                                                                        $this->getModule()->getId(),
                                                                        $params);
-            $view = new UsersPageView(ZurmoDefaultAdminViewUtil::
-                                         makeViewWithBreadcrumbsForCurrentUser($this, $detailsAndRelationsView, $breadcrumbLinks, 'UserBreadCrumbView'));
+            $view = new UsersPageView($this->resolveZurmoDefaultOrAdminView($detailsAndRelationsView, $breadcrumbLinks, 'UserBreadCrumbView'));
             echo $view->render();
         }
 
@@ -203,8 +202,7 @@
             {
                 $redirectUrlParams = null;
             }
-            $view = new UsersPageView(ZurmoDefaultAdminViewUtil::
-                                         makeViewWithBreadcrumbsForCurrentUser($this,
+            $view = new UsersPageView($this->resolveZurmoDefaultOrAdminView(
                                              $this->makeTitleBarAndEditView(
                                                 $this->attemptToSaveModelFromPost($user, $redirectUrlParams),
                                                     'UserActionBarAndEditView'), $breadcrumbLinks, 'UserBreadCrumbView'));
@@ -221,8 +219,7 @@
             $userPasswordForm = new UserPasswordForm($user);
             $userPasswordForm->setScenario('changePassword');
             $this->attemptToValidateAjaxFromPost($userPasswordForm, 'UserPasswordForm');
-            $view = new UsersPageView(ZurmoDefaultAdminViewUtil::
-                                         makeViewWithBreadcrumbsForCurrentUser($this,
+            $view = new UsersPageView($this->resolveZurmoDefaultOrAdminView(
                                              $this->makeTitleBarAndEditView(
                                                 $this->attemptToSaveModelFromPost($userPasswordForm),
                                                 'UserActionBarAndChangePasswordView'), $breadcrumbLinks, 'UserBreadCrumbView'));
@@ -393,7 +390,8 @@
         {
             $modalListLinkProvider = new SelectFromRelatedEditModalListLinkProvider(
                                             $_GET['modalTransferInformation']['sourceIdFieldId'],
-                                            $_GET['modalTransferInformation']['sourceNameFieldId']
+                                            $_GET['modalTransferInformation']['sourceNameFieldId'],
+                                            $_GET['modalTransferInformation']['modalId']
             );
             echo ModalSearchListControllerUtil::setAjaxModeAndRenderModalSearchList($this, $modalListLinkProvider);
         }
@@ -434,8 +432,7 @@
                 $policiesViewMetadata,
                 $groupMembershipViewData
             );
-            $view = new UsersPageView(ZurmoDefaultAdminViewUtil::
-                                         makeViewWithBreadcrumbsForCurrentUser($this, $securityDetailsView, $breadcrumbLinks, 'UserBreadCrumbView'));
+            $view = new UsersPageView($this->resolveZurmoDefaultOrAdminView($securityDetailsView, $breadcrumbLinks, 'UserBreadCrumbView'));
             echo $view->render();
         }
 
@@ -473,8 +470,7 @@
                                     $configurationForm
             );
             $titleBarAndEditView->setCssClasses(array('AdministrativeArea'));
-            $view = new UsersPageView(ZurmoDefaultAdminViewUtil::
-                                         makeViewWithBreadcrumbsForCurrentUser($this, $titleBarAndEditView, $breadcrumbLinks, 'UserBreadCrumbView'));
+            $view = new UsersPageView($this->resolveZurmoDefaultOrAdminView($titleBarAndEditView, $breadcrumbLinks, 'UserBreadCrumbView'));
             echo $view->render();
         }
 
@@ -508,8 +504,7 @@
                                     $userEmailConfigurationForm
             );
             $titleBarAndEditView->setCssClasses(array('AdministrativeArea'));
-            $view = new UsersPageView(ZurmoDefaultAdminViewUtil::
-                                         makeViewWithBreadcrumbsForCurrentUser($this, $titleBarAndEditView, $breadcrumbLinks, 'UserBreadCrumbView'));
+            $view = new UsersPageView($this->resolveZurmoDefaultOrAdminView($titleBarAndEditView, $breadcrumbLinks, 'UserBreadCrumbView'));
             echo $view->render();
         }
 
@@ -543,6 +538,29 @@
                 );
             }
             echo CJSON::encode($autoCompleteResults);
+        }
+
+        /**
+         * Depending on the user interface, the user views should utilize the admin or regular view.  This especially
+         * important for mobile, since for mobile there are no admin views available yet.
+         * @param $containedView
+         * @param $breadcrumbLinks
+         * @param $breadcrumbViewClassName
+         * @return GridView
+         */
+        protected function resolveZurmoDefaultOrAdminView(View $containedView, $breadcrumbLinks, $breadcrumbViewClassName)
+        {
+            assert('is_array($breadcrumbLinks)');
+            assert('is_string($breadcrumbViewClassName)');
+            if (Yii::app()->userInterface->isMobile())
+            {
+                return ZurmoDefaultViewUtil::makeStandardViewForCurrentUser($this, $containedView);
+            }
+            else
+            {
+                return ZurmoDefaultAdminViewUtil::
+                    makeViewWithBreadcrumbsForCurrentUser($this, $containedView, $breadcrumbLinks, $breadcrumbViewClassName);
+            }
         }
     }
 ?>

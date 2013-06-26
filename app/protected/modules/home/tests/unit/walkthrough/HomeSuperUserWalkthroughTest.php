@@ -4,7 +4,7 @@
      * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
-     * the terms of the GNU General Public License version 3 as published by the
+     * the terms of the GNU Affero General Public License version 3 as published by the
      * Free Software Foundation with the addition of the following permission added
      * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
      * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
@@ -12,10 +12,10 @@
      *
      * Zurmo is distributed in the hope that it will be useful, but WITHOUT
      * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-     * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+     * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
      * details.
      *
-     * You should have received a copy of the GNU General Public License along with
+     * You should have received a copy of the GNU Affero General Public License along with
      * this program; if not, see http://www.gnu.org/licenses or write to the Free
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
@@ -25,9 +25,9 @@
      *
      * The interactive user interfaces in original and modified versions
      * of this program must display Appropriate Legal Notices, as required under
-     * Section 5 of the GNU General Public License version 3.
+     * Section 5 of the GNU Affero General Public License version 3.
      *
-     * In accordance with Section 7(b) of the GNU General Public License version 3,
+     * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
@@ -161,8 +161,8 @@
             //Save a layout change. Collapse all portlets
             //At this point portlets for this view should be created because we have already loaded the 'details' page in a request above.
             $portlets = Portlet::getByLayoutIdAndUserSortedByColumnIdAndPosition($uniqueLayoutId, $super->id, array());
-            $this->assertEquals(5, count($portlets[1]));
-            $this->assertEquals(3, count($portlets[2]));
+            $this->assertEquals(4, count($portlets[1]));
+            $this->assertEquals(4, count($portlets[2]));
             $portletPostData = array();
             $portletCount = 0;
             foreach ($portlets as $column => $columnPortlets)
@@ -203,10 +203,10 @@
             }
 
             //Load up modal config edit view.
-            $this->assertTrue($portlets[1][1]->id > 0);
-            $this->assertEquals('AccountsMyList', $portlets[1][1]->viewType);
+            $this->assertTrue($portlets[1][5]->id > 0);
+            $this->assertEquals('AccountsMyList', $portlets[1][5]->viewType);
             $this->setGetArray(array(
-                'portletId'    => $portlets[1][1]->id,
+                'portletId'    => $portlets[1][5]->id,
                 'uniqueLayoutId' => $uniqueLayoutId,
             ));
             $this->resetPostArray();
@@ -214,7 +214,7 @@
 
             //Now validate the form.
             $this->setGetArray(array(
-                'portletId'    => $portlets[1][1]->id,
+                'portletId'    => $portlets[1][5]->id,
                 'uniqueLayoutId' => $uniqueLayoutId,
             ));
             $this->setPostArray(array(
@@ -224,7 +224,7 @@
 
             //save changes to the portlet title
             $this->setGetArray(array(
-                'portletId'      => $portlets[1][1]->id,
+                'portletId'      => $portlets[1][5]->id,
                 'uniqueLayoutId' => $uniqueLayoutId,
             ));
             $this->setPostArray(array(
@@ -232,12 +232,12 @@
                 'AccountsSearchForm' => array()));
             $this->runControllerWithNoExceptionsAndGetContent('home/defaultPortlet/modalConfigSave');
             //Now confirm the title change was successful.
-            $portlet = Portlet::getById($portlets[1][1]->id);
+            $portlet = Portlet::getById($portlets[1][5]->id);
             $this->assertEquals('something new', $portlet->getView()->getTitle());
 
             //Refresh a portlet modally.
             $this->setGetArray(array(
-                'portletId'    => $portlets[1][1]->id,
+                'portletId'    => $portlets[1][5]->id,
                 'uniqueLayoutId' => $uniqueLayoutId,
                 'redirectUrl' => 'home/default'));
             $this->resetPostArray();
@@ -249,13 +249,13 @@
 
             //task sorting issue
             //check whether tasks portlet render or not
-            $this->assertTrue($portlets[1][4]->id > 0);
-            $this->assertEquals('TasksMyList', $portlets[1][4]->viewType);
+            $this->assertTrue($portlets[1][3]->id > 0);
+            $this->assertEquals('TasksMyList', $portlets[1][3]->viewType);
 
             //to sort task list
             $this->setGetArray(array(
                 'Task_sort'      => 'name',
-                'portletId'      => $portlets[1][4]->id,
+                'portletId'      => $portlets[1][3]->id,
                 'uniqueLayoutId' => $uniqueLayoutId,
             ));
             $this->resetPostArray();
@@ -265,9 +265,9 @@
             $this->resetGetArray();
             $this->setGetArray(array(
                 'Task_sort'      => 'dueDateTime',
-                'portletId'      => $portlets[1][4]->id,
+                'portletId'      => $portlets[1][3]->id,
                 'uniqueLayoutId' => $uniqueLayoutId,
-                'ajax'           => 'list-view' . $uniqueLayoutId . '_' . $portlets[1][4]->id
+                'ajax'           => 'list-view' . $uniqueLayoutId . '_' . $portlets[1][3]->id
             ));
             $this->runControllerWithNoExceptionsAndGetContent('home/default');
         }

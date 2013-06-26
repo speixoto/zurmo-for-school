@@ -4,7 +4,7 @@
      * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
-     * the terms of the GNU General Public License version 3 as published by the
+     * the terms of the GNU Affero General Public License version 3 as published by the
      * Free Software Foundation with the addition of the following permission added
      * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
      * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
@@ -12,10 +12,10 @@
      *
      * Zurmo is distributed in the hope that it will be useful, but WITHOUT
      * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-     * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+     * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
      * details.
      *
-     * You should have received a copy of the GNU General Public License along with
+     * You should have received a copy of the GNU Affero General Public License along with
      * this program; if not, see http://www.gnu.org/licenses or write to the Free
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
@@ -25,9 +25,9 @@
      *
      * The interactive user interfaces in original and modified versions
      * of this program must display Appropriate Legal Notices, as required under
-     * Section 5 of the GNU General Public License version 3.
+     * Section 5 of the GNU Affero General Public License version 3.
      *
-     * In accordance with Section 7(b) of the GNU General Public License version 3,
+     * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
@@ -122,7 +122,7 @@
          */
         public function setOperator($value)
         {
-            if(!in_array($value, OperatorRules::availableTypes()) && $value != null)
+            if (!in_array($value, OperatorRules::availableTypes()) && $value != null)
             {
                 throw new NotSupportedException('Invalid operator type ' . $value);
             }
@@ -144,13 +144,13 @@
         {
             return array_merge(parent::rules(), array(
                 array('operator',                    'type', 'type' => 'string'),
-                array('operator',  	 				 'validateOperator'),
-                array('value',  	 				 'safe'),
-                array('value',  	 				 'validateValue'),
-                array('secondValue', 				 'safe'),
+                array('operator',                    'validateOperator'),
+                array('value',                       'safe'),
+                array('value',                       'validateValue'),
+                array('secondValue',                 'safe'),
                 array('secondValue',                 'validateSecondValue'),
-                array('currencyIdForValue',  	     'safe'),
-                array('stringifiedModelForValue',  	 'safe'),
+                array('currencyIdForValue',          'safe'),
+                array('stringifiedModelForValue',    'safe'),
                 array('availableAtRunTime',          'boolean'),
                 array('valueType',                   'type', 'type' => 'string'),
                 array('valueType',                   'validateValueType'),
@@ -162,7 +162,7 @@
          */
         public function validateOperator()
         {
-            if($this->getAvailableOperatorsType() != null && $this->operator == null)
+            if ($this->getAvailableOperatorsType() != null && $this->operator == null)
             {
                 $this->addError('operator', Zurmo::t('ReportsModule', 'Operator cannot be blank.'));
                 return  false;
@@ -174,27 +174,27 @@
          */
         public function validateValue()
         {
-            if((in_array($this->operator, self::getOperatorsWhereValueIsRequired()) ||
+            if ((in_array($this->operator, self::getOperatorsWhereValueIsRequired()) ||
                in_array($this->valueType, self::getValueTypesWhereValueIsRequired()) ||
                ($this->getValueElementType() == 'BooleanForWizardStaticDropDown' ||
                $this->getValueElementType()  == 'UserNameId' ||
-               ($this->getValueElementType()  == 'MixedDateTypesForReport' && $this->valueType == null))) &&
+               ($this->getValueElementType() == 'MixedDateTypesForReport' && $this->valueType == null))) &&
                $this->value == null)
             {
                 $this->addError('value', Zurmo::t('ReportsModule', 'Value cannot be blank.'));
             }
             $passedValidation = true;
             $rules            = array();
-            if(!is_array($this->value))
+            if (!is_array($this->value))
             {
                 $this->resolveAndValidateValueData($rules, $passedValidation, 'value');
             }
             else
             {
                 //Assume array has only string values
-                foreach($this->value as $subValue)
+                foreach ($this->value as $subValue)
                 {
-                    if(!is_string($subValue))
+                    if (!is_string($subValue))
                     {
                         $this->addError('value', Zurmo::t('ReportsModule', 'Value must be a string.'));
                         $passedValidation = false;
@@ -214,9 +214,9 @@
         {
             $passedValidation = true;
             $rules            = array();
-            if(!is_array($this->secondValue))
+            if (!is_array($this->secondValue))
             {
-                if(in_array($this->operator, self::getOperatorsWhereSecondValueIsRequired()) ||
+                if (in_array($this->operator, self::getOperatorsWhereSecondValueIsRequired()) ||
                    in_array($this->valueType, self::getValueTypesWhereSecondValueIsRequired()))
                 {
                     $rules[] = array('secondValue', 'required');
@@ -235,7 +235,7 @@
          */
         public function validateValueType()
         {
-            if($this->getValueElementType() == 'MixedDateTypesForReport' && $this->valueType == null)
+            if ($this->getValueElementType() == 'MixedDateTypesForReport' && $this->valueType == null)
             {
                 $this->addError('valueType', Zurmo::t('ReportsModule', 'Type cannot be blank.'));
                 return false;
@@ -247,7 +247,7 @@
          */
         public function hasAvailableOperatorsType()
         {
-            if($this->getAvailableOperatorsType() != null)
+            if ($this->getAvailableOperatorsType() != null)
             {
                 return true;
             }
@@ -260,7 +260,7 @@
          */
         public function getOperatorValuesAndLabels()
         {
-            if($this->attributeIndexOrDerivedType == null)
+            if ($this->attributeIndexOrDerivedType == null)
             {
                 throw new NotSupportedException();
             }
@@ -276,7 +276,7 @@
          */
         public function getValueElementType()
         {
-            if($this->attributeIndexOrDerivedType == null)
+            if ($this->attributeIndexOrDerivedType == null)
             {
                 throw new NotSupportedException();
             }
@@ -292,7 +292,7 @@
         {
             $modelClassName       = $this->getResolvedAttributeModelClassName();
             $attribute            = $this->getResolvedAttribute();
-            if($modelClassName::isAnAttribute($attribute))
+            if ($modelClassName::isAnAttribute($attribute))
             {
                 $model            = new $modelClassName(false);
                 $dataAndLabels    = CustomFieldDataUtil::
@@ -311,11 +311,11 @@
          */
         protected function getAvailableOperatorsType()
         {
-            if($this->attributeIndexOrDerivedType == null)
+            if ($this->attributeIndexOrDerivedType == null)
             {
                 throw new NotSupportedException();
             }
-            if($this->_availableOperatorsType != null)
+            if ($this->_availableOperatorsType != null)
             {
                 return $this->_availableOperatorsType;
             }
@@ -364,18 +364,18 @@
          */
         private function createValueValidatorsByRules(Array $rules)
         {
-            $validators=new CList;
-            foreach($rules as $rule)
+            $validators = new CList;
+            foreach ($rules as $rule)
             {
-                if(isset($rule[0],$rule[1]))
+                if (isset($rule[0], $rule[1]))
                 {
-                    $validators->add(CValidator::createValidator($rule[1],$this,$rule[0],array_slice($rule,2)));
+                    $validators->add(CValidator::createValidator($rule[1], $this, $rule[0], array_slice($rule, 2)));
                 }
                 else
                 {
-                    throw new CException(Zurmo::t('ReportsModule','{class} has an invalid validation rule. The rule must specify ' .
+                    throw new CException(Zurmo::t('ReportsModule', '{class} has an invalid validation rule. The rule must specify ' .
                         'attributes to be validated and the validator name.' ,
-                        array('{class}'=>get_class($this))));
+                        array('{class}' => get_class($this))));
                 }
             }
             return $validators;
@@ -393,10 +393,10 @@
                 $modelToReportAdapter->getFilterRulesByAttribute(
                     $this->getResolvedAttribute(), $ruleAttributeName));
             $validators           = $this->createValueValidatorsByRules($rules);
-            foreach($validators as $validator)
+            foreach ($validators as $validator)
             {
                 $validated = $validator->validate($this);
-                if(!$validated)
+                if (!$validated)
                 {
                     $passedValidation = false;
                 }

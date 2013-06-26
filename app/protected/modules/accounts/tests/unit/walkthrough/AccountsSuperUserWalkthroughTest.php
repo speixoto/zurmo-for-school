@@ -4,7 +4,7 @@
      * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
-     * the terms of the GNU General Public License version 3 as published by the
+     * the terms of the GNU Affero General Public License version 3 as published by the
      * Free Software Foundation with the addition of the following permission added
      * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
      * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
@@ -12,10 +12,10 @@
      *
      * Zurmo is distributed in the hope that it will be useful, but WITHOUT
      * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-     * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+     * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
      * details.
      *
-     * You should have received a copy of the GNU General Public License along with
+     * You should have received a copy of the GNU Affero General Public License along with
      * this program; if not, see http://www.gnu.org/licenses or write to the Free
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
@@ -25,9 +25,9 @@
      *
      * The interactive user interfaces in original and modified versions
      * of this program must display Appropriate Legal Notices, as required under
-     * Section 5 of the GNU General Public License version 3.
+     * Section 5 of the GNU Affero General Public License version 3.
      *
-     * In accordance with Section 7(b) of the GNU General Public License version 3,
+     * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
@@ -127,7 +127,7 @@
             $this->assertFalse(strpos($content, 'Name cannot be blank') === false);
 
             //Load Model Detail Views
-            $this->setGetArray(array('id' => $superAccountId));
+            $this->setGetArray(array('id' => $superAccountId, 'lockPortlets' => '1'));
             $this->resetPostArray();
             $this->runControllerWithNoExceptionsAndGetContent('accounts/default/details');
 
@@ -253,7 +253,7 @@
 
             //actionModalList
             $this->setGetArray(array(
-                'modalTransferInformation' => array('sourceIdFieldId' => 'x', 'sourceNameFieldId' => 'y')
+                'modalTransferInformation' => array('sourceIdFieldId' => 'x', 'sourceNameFieldId' => 'y', 'modalId' => 'z')
             ));
             $this->runControllerWithNoExceptionsAndGetContent('accounts/default/modalList');
 
@@ -274,9 +274,9 @@
             //Save a layout change. Collapse all portlets in the Account Details View.
             //At this point portlets for this view should be created because we have already loaded the 'details' page in a request above.
             $portlets = Portlet::getByLayoutIdAndUserSortedByColumnIdAndPosition(
-                                    'AccountDetailsAndRelationsViewLeftBottomView', $super->id, array());
-            $this->assertEquals (2, count($portlets[1])         );
-            $this->assertFalse  (array_key_exists(2, $portlets) );
+                                    'AccountDetailsAndRelationsView', $super->id, array());
+            $this->assertEquals (3, count($portlets[1]));
+            $this->assertFalse  (array_key_exists(3, $portlets) );
             $portletPostData = array();
             $portletCount = 0;
             foreach ($portlets as $column => $columnPortlets)
@@ -284,30 +284,30 @@
                 foreach ($columnPortlets as $position => $portlet)
                 {
                     $this->assertEquals('0', $portlet->collapsed);
-                    $portletPostData['AccountDetailsAndRelationsViewLeftBottomView_' . $portlet->id] = array(
+                    $portletPostData['AccountDetailsAndRelationsView_' . $portlet->id] = array(
                         'collapsed' => 'true',
                         'column'    => 0,
-                        'id'        => 'AccountDetailsAndRelationsViewLeftBottomView_' . $portlet->id,
+                        'id'        => 'AccountDetailsAndRelationsView_' . $portlet->id,
                         'position'  => $portletCount,
                     );
                     $portletCount++;
                 }
             }
-            //There should have been a total of 2 portlets.
-            $this->assertEquals(2, $portletCount);
+            //There should have been a total of 7 portlets.
+            $this->assertEquals(7, $portletCount);
             $this->resetGetArray();
             $this->setPostArray(array(
                 'portletLayoutConfiguration' => array(
                     'portlets' => $portletPostData,
-                    'uniqueLayoutId' => 'AccountDetailsAndRelationsViewLeftBottomView',
+                    'uniqueLayoutId' => 'AccountDetailsAndRelationsView',
                 )
             ));
             $this->runControllerWithNoExceptionsAndGetContent('home/defaultPortlet/saveLayout', true);
             //Now test that all the portlets are collapsed and moved to the first column.
             $portlets = Portlet::getByLayoutIdAndUserSortedByColumnIdAndPosition(
-                            'AccountDetailsAndRelationsViewLeftBottomView', $super->id, array());
-            $this->assertEquals (2, count($portlets[1])         );
-            $this->assertFalse  (array_key_exists(2, $portlets) );
+                            'AccountDetailsAndRelationsView', $super->id, array());
+            $this->assertEquals (7, count($portlets[1]));
+            $this->assertFalse  (array_key_exists(3, $portlets) );
             foreach ($portlets as $column => $columns)
             {
                 foreach ($columns as $position => $positionPortlets)
@@ -372,6 +372,65 @@
         /**
          * @depends testSuperUserCreateAction
          */
+        public function testSuperUserCopyAction()
+        {
+            $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
+            $accounts = Account::getAll();
+            $this->assertEquals(20, count($accounts));
+            $accounts = Account::getByName('myNewAccount');
+
+            $postArray = array(
+               'Account' => array(
+                    'officeFax' => '456789123',
+                    'employees' => 156,
+                    'annualRevenue' => 951623,
+                    'website' => 'http://www.example.com',
+                    'description' => 'Some account description',
+                    'billingAddress' => array(
+                        'street1' => 'Street1',
+                        'street2' => 'Street2',
+                        'city' => 'City',
+                        'state' => 'State',
+                        'postalCode' => '12345',
+                        'country' => 'Country',
+                    ),
+                    'shippingAddress' => array(
+                        'street1' => 'saStreet1',
+                        'street2' => 'saStreet2',
+                        'city' => 'saCity',
+                        'state' => 'saState',
+                        'postalCode' => '92345',
+                        'country' => 'saCountry',
+                    ),
+                )
+            );
+
+            $this->updateModelValuesFromPostArray($accounts[0], $postArray);
+            $this->assertModelHasValuesFromPostArray($accounts[0], $postArray);
+
+            $this->assertTrue($accounts[0]->save());
+
+            $this->assertTrue(
+                $this->checkCopyActionResponseAttributeValuesFromPostArray($accounts[0], $postArray)
+            );
+
+            $postArray['Account']['name']        = 'myClonedAccount';
+            $postArray['Account']['description'] = 'Cloned description';
+            $this->setGetArray(array('id' => $accounts[0]->id));
+            $this->setPostArray($postArray);
+            $redirectUrl = $this->runControllerWithRedirectExceptionAndGetUrl('accounts/default/copy');
+
+            $accounts = Account::getByName('myClonedAccount');
+            $this->assertEquals(1, count($accounts));
+            $this->assertTrue  ($accounts[0]->owner->isSame($super));
+            $this->assertModelHasValuesFromPostArray($accounts[0], $postArray);
+            $accounts = Account::getAll();
+            $this->assertEquals(21, count($accounts));
+        }
+
+        /**
+         * @depends testSuperUserCreateAction
+         */
         public function testStickySearchActions()
         {
             $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
@@ -397,6 +456,7 @@
             $this->assertEquals($compareData, $data);
 
             //Sort order asc
+            StickySearchUtil::clearDataByKey('AccountsSearchView');
             $this->setGetArray(array('AccountsSearchForm' => array('anyMixedAttributes'                 => 'xyz',
                                                                    SearchForm::SELECTED_LIST_ATTRIBUTES => array('officePhone', 'name')),
                                      'Account_sort'       => 'officePhone'));
@@ -408,9 +468,8 @@
                                  'anyMixedAttributes'                 => 'xyz',
                                  'anyMixedAttributesScope'            => null,
                                  SearchForm::SELECTED_LIST_ATTRIBUTES => array('officePhone', 'name'),
-                                 'sortAttribute'                       => 'officePhone',
-                                 'sortDescending'                      => '',
-                                 'savedSearchId'                       => ''
+                                 'sortAttribute'                      => 'officePhone',
+                                 'sortDescending'                     => false
             );
             $this->assertEquals($compareData, $data);
 
@@ -434,7 +493,7 @@
 
             //MassDelete for selected Record Count
             $accounts = Account::getAll();
-            $this->assertEquals(20, count($accounts));
+            $this->assertEquals(21, count($accounts));
 
             $superAccountId2  = self::getModelIdByModelNameAndName('Account', 'superAccount2');
             $superAccountId3  = self::getModelIdByModelNameAndName('Account', 'superAccount3');
@@ -454,6 +513,7 @@
             $superAccountId18 = self::getModelIdByModelNameAndName('Account', 'superAccount18');
             $superAccountId19 = self::getModelIdByModelNameAndName('Account', 'superAccount19');
             $superAccountId20 = self::getModelIdByModelNameAndName('Account', 'superAccount20');
+            $superAccountId21 = self::getModelIdByModelNameAndName('Account', 'myClonedAccount');
 
             //Load Model MassDelete Views.
             //MassDelete view for single selected ids
@@ -466,15 +526,16 @@
             $this->setGetArray(array('selectAll' => '1'));
             $this->resetPostArray();
             $content = $this->runControllerWithNoExceptionsAndGetContent('accounts/default/massDelete');
-            $this->assertFalse(strpos($content, '<strong>20</strong>&#160;Accounts selected for removal') === false);
+            $this->assertFalse(strpos($content, '<strong>21</strong>&#160;Accounts selected for removal') === false);
             //MassDelete for selected ids
-            $account2 = Account::getById($superAccountId2);
-            $account3 = Account::getById($superAccountId3);
+            $account2  = Account::getById($superAccountId2);
+            $account3  = Account::getById($superAccountId3);
+            $account21 = Account::getById($superAccountId21);
             $this->setGetArray(array(
-                'selectedIds' => $superAccountId2 . ',' . $superAccountId3, // Not Coding Standard
+                'selectedIds' => implode(',', array($superAccountId2,$superAccountId3,$superAccountId21)), // Not Coding Standard
                 'selectAll' => '',
                 'Account_page' => 1));
-            $this->setPostArray(array('selectedRecordCount' => '5'));
+            $this->setPostArray(array('selectedRecordCount' => 3));
             $this->runControllerWithRedirectExceptionAndGetContent('accounts/default/massDelete');
 
             //MassDelete for selected Record Count
@@ -525,8 +586,9 @@
             $this->assertEquals(10, count($accounts));
         }
 
-         /**
-         *Test Bug with mass delete and multiple pages when using select all
+        /**
+         * Test Bug with mass delete and multiple pages when using select all
+         * @depends testMassDeleteActionsForSelectedIds
          */
         public function testMassDeletePagesProperlyAndRemovesAllSelected()
         {

@@ -4,7 +4,7 @@
      * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
-     * the terms of the GNU General Public License version 3 as published by the
+     * the terms of the GNU Affero General Public License version 3 as published by the
      * Free Software Foundation with the addition of the following permission added
      * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
      * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
@@ -12,10 +12,10 @@
      *
      * Zurmo is distributed in the hope that it will be useful, but WITHOUT
      * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-     * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+     * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
      * details.
      *
-     * You should have received a copy of the GNU General Public License along with
+     * You should have received a copy of the GNU Affero General Public License along with
      * this program; if not, see http://www.gnu.org/licenses or write to the Free
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
@@ -25,9 +25,9 @@
      *
      * The interactive user interfaces in original and modified versions
      * of this program must display Appropriate Legal Notices, as required under
-     * Section 5 of the GNU General Public License version 3.
+     * Section 5 of the GNU Affero General Public License version 3.
      *
-     * In accordance with Section 7(b) of the GNU General Public License version 3,
+     * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
@@ -252,13 +252,13 @@
 
             //actionModalList
             $this->setGetArray(array(
-                'modalTransferInformation' => array('sourceIdFieldId' => 'x', 'sourceNameFieldId' => 'y')
+                'modalTransferInformation' => array('sourceIdFieldId' => 'x', 'sourceNameFieldId' => 'y', 'modalId' => 'z')
             ));
             $this->runControllerWithNoExceptionsAndGetContent('contacts/default/modalList');
 
             //actionModalListAllContacts
             $this->setGetArray(array(
-                'modalTransferInformation' => array('sourceIdFieldId' => 'x', 'sourceNameFieldId' => 'y')
+                'modalTransferInformation' => array('sourceIdFieldId' => 'x', 'sourceNameFieldId' => 'y', 'modalId' => 'z')
             ));
             $this->runControllerWithNoExceptionsAndGetContent('contacts/variableContactState/modalListAllContacts');
 
@@ -271,9 +271,9 @@
             $contact1->forget();
             $contact1 = Contact::getById($superContactId);
             $portlets = Portlet::getByLayoutIdAndUserSortedByColumnIdAndPosition(
-                                    'ContactDetailsAndRelationsViewLeftBottomView', $super->id, array());
-            $this->assertEquals(1, count($portlets));
-            $this->assertEquals(2, count($portlets[1]));
+                                    'ContactDetailsAndRelationsView', $super->id, array());
+            $this->assertEquals(2, count($portlets));
+            $this->assertEquals(3, count($portlets[1]));
             $opportunity = Opportunity::getById($superOpportunityId);
             $this->assertEquals(0, $contact1->opportunities->count());
             $this->assertEquals(0, $opportunity->contacts->count());
@@ -281,7 +281,7 @@
                                         'relationAttributeName' => 'contacts',
                                         'relationModuleId'      => 'contacts',
                                         'relationModelId'       => $superContactId,
-                                        'uniqueLayoutId'        => 'ContactDetailsAndRelationsViewLeftBottomView_' .
+                                        'uniqueLayoutId'        => 'ContactDetailsAndRelationsView_' .
                                                                     $portlets[1][1]->id)
             );
 
@@ -293,7 +293,7 @@
                                         'relationAttributeName' => 'contacts',
                                         'relationModuleId'      => 'contacts',
                                         'relationModelId'       => $superContactId,
-                                        'uniqueLayoutId'        => 'ContactDetailsAndRelationsViewLeftBottomView_' .
+                                        'uniqueLayoutId'        => 'ContactDetailsAndRelationsView_' .
                                                                     $portlets[1][1]->id)
             );
             $this->resetPostArray();
@@ -320,9 +320,9 @@
             //Save a layout change. Collapse all portlets in the Contact Details View.
             //At this point portlets for this view should be created because we have already loaded the 'details' page in a request above.
             $portlets = Portlet::getByLayoutIdAndUserSortedByColumnIdAndPosition(
-                                    'ContactDetailsAndRelationsViewLeftBottomView', $super->id, array());
-            $this->assertEquals (2, count($portlets[1])         );
-            $this->assertFalse  (array_key_exists(2, $portlets) );
+                                    'ContactDetailsAndRelationsView', $super->id, array());
+            $this->assertEquals (3, count($portlets[1]));
+            $this->assertFalse  (array_key_exists(3, $portlets) );
             $portletPostData = array();
             $portletCount = 0;
             foreach ($portlets as $column => $columnPortlets)
@@ -330,29 +330,29 @@
                 foreach ($columnPortlets as $position => $portlet)
                 {
                     $this->assertEquals('0', $portlet->collapsed);
-                    $portletPostData['ContactDetailsAndRelationsViewLeftBottomView_' . $portlet->id] = array(
+                    $portletPostData['ContactDetailsAndRelationsView_' . $portlet->id] = array(
                         'collapsed' => 'true',
                         'column'    => 0,
-                        'id'        => 'ContactDetailsAndRelationsViewLeftBottomView_' . $portlet->id,
+                        'id'        => 'ContactDetailsAndRelationsView_' . $portlet->id,
                         'position'  => $portletCount,
                     );
                     $portletCount++;
                 }
             }
             //There should have been a total of 2 portlets.
-            $this->assertEquals(2, $portletCount);
+            $this->assertEquals(6, $portletCount);
             $this->resetGetArray();
             $this->setPostArray(array(
                 'portletLayoutConfiguration' => array(
                     'portlets' => $portletPostData,
-                    'uniqueLayoutId' => 'ContactDetailsAndRelationsViewLeftBottomView',
+                    'uniqueLayoutId' => 'ContactDetailsAndRelationsView',
                 )
             ));
             $this->runControllerWithNoExceptionsAndGetContent('home/defaultPortlet/saveLayout', true);
             //Now test that all the portlets are collapsed and moved to the first column.
             $portlets = Portlet::getByLayoutIdAndUserSortedByColumnIdAndPosition(
-                            'ContactDetailsAndRelationsViewLeftBottomView', $super->id, array());
-            $this->assertEquals (2, count($portlets[1])         );
+                            'ContactDetailsAndRelationsView', $super->id, array());
+            $this->assertEquals (6, count($portlets[1])         );
             $this->assertFalse  (array_key_exists(2, $portlets) );
             foreach ($portlets as $column => $columns)
             {
@@ -434,6 +434,10 @@
             $contacts      = Contact::getAll();
             $this->assertEquals(12, count($contacts));
             $account       = Account::getByName('superAccount2');
+            $account[0]->billingAddress->street1  = 'some street';
+            $account[0]->shippingAddress->street1 = 'some street 2';
+            $saved = $account[0]->save();
+            $this->assertTrue($saved);
             $opportunity   = OpportunityTestHelper::createOpportunityWithAccountByNameForOwner(
                                 'superOpp', $super, $account[0]);
 
@@ -454,6 +458,10 @@
             $this->assertTrue($contacts[0]->owner   == $super);
             $this->assertTrue($contacts[0]->account == $account[0]);
             $this->assertTrue($contacts[0]->state   == $startingState);
+            $this->assertEquals('some street',   $contacts[0]->primaryAddress->street1);
+            $this->assertEquals('some street 2', $contacts[0]->secondaryAddress->street1);
+            $this->assertEquals('some street',   $contacts[0]->account->billingAddress->street1);
+            $this->assertEquals('some street 2', $contacts[0]->account->shippingAddress->street1);
             $this->assertEquals('456765421', $contacts[0]->officePhone);
             $contacts = Contact::getAll();
             $this->assertEquals(13, count($contacts));
@@ -481,6 +489,84 @@
             $this->assertEquals(14, count($contacts));
 
             //todo: test save with account.
+        }
+
+        /**
+         * @depends testSuperUserCreateFromRelationAction
+         */
+        public function testSuperUserCopyAction()
+        {
+            $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
+
+            $contacts = Contact::getByName('myNewContact myNewContactson');
+            $this->assertCount(1, $contacts);
+
+            $postArray = array(
+                'Contact' => array(
+                    'firstName' => 'myNewContact',
+                    'lastName'  => 'myNewContactson',
+                    'jobTitle'  => 'job title',
+                    'account'   => array(
+                            'name'  => 'Linked account',
+                    ),
+                    'department'    => 'Some department',
+                    'officePhone'   => '456765421',
+                    'mobilePhone'   => '958462315',
+                    'officeFax'     => '123456789',
+                    'primaryEmail'  => array(
+                            'emailAddress' => 'a@a.com',
+                    ),
+                    'secondaryEmail' => array(
+                            'emailAddress' => 'b@b.com',
+                    ),
+                    'primaryAddress' => array(
+                            'street1'    => 'Street1',
+                            'street2'    => 'Street2',
+                            'city'       => 'City',
+                            'state'      => 'State',
+                            'postalCode' => '12345',
+                            'country'    => 'Country',
+                    ),
+                    'secondaryAddress' => array(
+                            'street1'    => 'Street1',
+                            'street2'    => 'Street2',
+                            'city'       => 'City',
+                            'state'      => 'State',
+                            'postalCode' => '12345',
+                            'country'    => 'Country',
+                    ),
+                    'description' => 'some description',
+                )
+            );
+
+            $this->updateModelValuesFromPostArray($contacts[0], $postArray);
+            $this->assertModelHasValuesFromPostArray($contacts[0], $postArray);
+
+            $this->assertTrue($contacts[0]->save());
+            $this->assertTrue(
+                $this->checkCopyActionResponseAttributeValuesFromPostArray($contacts[0], $postArray)
+            );
+
+            $postArray['Contact']['firstName']  = 'myClonedContact';
+            $postArray['Contact']['lastName']   = 'myClonedContactson';
+            $postArray['Contact']['state']      = array('id' => LeadsUtil::getStartingState()->id);
+            $this->setGetArray(array('id' => $contacts[0]->id));
+            $this->setPostArray($postArray);
+            $this->runControllerWithRedirectExceptionAndGetUrl('contacts/default/copy');
+
+            $contacts = Contact::getByName('myClonedContact myClonedContactson');
+            $this->assertCount(1, $contacts);
+            $this->assertTrue($contacts[0]->owner->isSame($super));
+
+            unset($postArray['Contact']['state']);
+            $this->assertModelHasValuesFromPostArray($contacts[0], $postArray);
+
+            $contacts = Contact::getAll();
+            $this->assertCount(15, $contacts);
+
+            $contacts = Contact::getByName('myClonedContact myClonedContactson');
+            $this->assertCount(1, $contacts);
+            $this->assertTrue($contacts[0]->delete());
         }
 
         /**
@@ -568,6 +654,7 @@
 
          /**
          *Test Bug with mass delete and multiple pages when using select all
+          * @depends testMassDeleteActionsForSelectedIds
          */
         public function testMassDeletePagesProperlyAndRemovesAllSelected()
         {
@@ -603,6 +690,28 @@
             //calculating contact's count
             $contacts = contact::getAll();
             $this->assertEquals(0, count($contacts));
+        }
+
+        /**
+         * @depends testMassDeletePagesProperlyAndRemovesAllSelected
+         */
+        public function testGetAccountAddressesToCopy()
+        {
+            $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
+
+            $account       = Account::getByName('superAccount2');
+            $this->setGetArray(array('id' => $account[0]->id));
+            //Run Mass Delete using progress save for page2.
+            $content = $this->runControllerWithNoExceptionsAndGetContent('contacts/default/getAccountAddressesToCopy');
+            // Begin Not Coding Standard
+            $compareContent = '{"billingAddress_city":null,"billingAddress_country":null,"billingAddress_invalid":"0","billingAddre'
+                            . 'ss_latitude":null,"billingAddress_longitude":null,"billingAddress_postalCode":null,"billingAddress_street1":'
+                            . '"some street","billingAddress_street2":null,"billingAddress_state":null,"shippingAddress_city":null,"shippin'
+                            . 'gAddress_country":null,"shippingAddress_invalid":"0","shippingAddress_latitude":null,"shippingAddress_longit'
+                            . 'ude":null,"shippingAddress_postalCode":null,"shippingAddress_street1":"some street 2","shippingAddress_stree'
+                            . 't2":null,"shippingAddress_state":null}';
+            // End Not Coding Standard
+            $this->assertEquals($compareContent, $content);
         }
     }
 ?>

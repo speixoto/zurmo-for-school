@@ -4,7 +4,7 @@
      * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
-     * the terms of the GNU General Public License version 3 as published by the
+     * the terms of the GNU Affero General Public License version 3 as published by the
      * Free Software Foundation with the addition of the following permission added
      * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
      * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
@@ -12,10 +12,10 @@
      *
      * Zurmo is distributed in the hope that it will be useful, but WITHOUT
      * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-     * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+     * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
      * details.
      *
-     * You should have received a copy of the GNU General Public License along with
+     * You should have received a copy of the GNU Affero General Public License along with
      * this program; if not, see http://www.gnu.org/licenses or write to the Free
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
@@ -25,9 +25,9 @@
      *
      * The interactive user interfaces in original and modified versions
      * of this program must display Appropriate Legal Notices, as required under
-     * Section 5 of the GNU General Public License version 3.
+     * Section 5 of the GNU Affero General Public License version 3.
      *
-     * In accordance with Section 7(b) of the GNU General Public License version 3,
+     * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
@@ -59,9 +59,9 @@
          */
         public function validateValue()
         {
-            if(parent::validateValue())
+            if (parent::validateValue())
             {
-                if($this->type == self::TYPE_STATIC)
+                if ($this->type == self::TYPE_STATIC)
                 {
                     $validator = CValidator::createValidator('type', $this, 'value', array('type' => 'string'));
                     $validator->validate($this);
@@ -89,19 +89,19 @@
         public function resolveValueAndSetToModel(WorkflowActionProcessingModelAdapter $adapter, $attribute)
         {
             assert('is_string($attribute)');
-            if($this->type == static::TYPE_STATIC)
+            if ($this->type == static::TYPE_STATIC)
             {
                 $adapter->getModel()->{$attribute}->value = $this->value;
             }
-            elseif($this->type == static::TYPE_DYNAMIC_STEP_FORWARD_OR_BACKWARDS)
+            elseif ($this->type == static::TYPE_DYNAMIC_STEP_FORWARD_OR_BACKWARDS)
             {
-                if($adapter->getModel()->{$attribute}->value != null)
+                if ($adapter->getModel()->{$attribute}->value != null)
                 {
                     $data = unserialize($adapter->getModel()->{$attribute}->data->serializedData);
-                    if(false !== $key = array_search($adapter->getModel()->{$attribute}->value, $data))
+                    if (false !== $key = array_search($adapter->getModel()->{$attribute}->value, $data))
                     {
                         $newKey = $key + $this->value;
-                        if(isset($data[$newKey]))
+                        if (isset($data[$newKey]))
                         {
                             $adapter->getModel()->{$attribute}->value = $data[$newKey];
                         }
@@ -125,7 +125,7 @@
             assert('is_bool($isRequired)');
             $data                           = array();
             $data[static::TYPE_STATIC]      = Zurmo::t('WorkflowsModule', 'As');
-            if(!$isCreatingNewModel)
+            if (!$isCreatingNewModel)
             {
                 $data[self::TYPE_DYNAMIC_STEP_FORWARD_OR_BACKWARDS] = Zurmo::t('WorkflowsModule', 'Step Forward or Backward');
             }

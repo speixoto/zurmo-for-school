@@ -4,7 +4,7 @@
      * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
-     * the terms of the GNU General Public License version 3 as published by the
+     * the terms of the GNU Affero General Public License version 3 as published by the
      * Free Software Foundation with the addition of the following permission added
      * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
      * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
@@ -12,10 +12,10 @@
      *
      * Zurmo is distributed in the hope that it will be useful, but WITHOUT
      * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-     * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+     * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
      * details.
      *
-     * You should have received a copy of the GNU General Public License along with
+     * You should have received a copy of the GNU Affero General Public License along with
      * this program; if not, see http://www.gnu.org/licenses or write to the Free
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
@@ -25,9 +25,9 @@
      *
      * The interactive user interfaces in original and modified versions
      * of this program must display Appropriate Legal Notices, as required under
-     * Section 5 of the GNU General Public License version 3.
+     * Section 5 of the GNU Affero General Public License version 3.
      *
-     * In accordance with Section 7(b) of the GNU General Public License version 3,
+     * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
@@ -71,19 +71,93 @@
             $groupBy->attributeIndexOrDerivedType = 'hasOne___name';
             $groupBy->axis                        = 'x';
             $report->addGroupBy($groupBy);
+            $groupBy            = new GroupByForReportForm('ReportsTestModule', 'ReportModelTestItem', $report->getType());
+            $groupBy->attributeIndexOrDerivedType = 'hasOne___createdDateTime__Day';
+            $groupBy->axis                        = 'x';
+            $report->addGroupBy($groupBy);
 
             $displayAttribute   = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem2', $report->getType());
             $displayAttribute->attributeIndexOrDerivedType = 'Count';
             $report->addDisplayAttribute($displayAttribute);
+            $displayAttribute   = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem2', $report->getType());
+            $displayAttribute->attributeIndexOrDerivedType = 'modifiedDateTime__Day';
+            $report->addDisplayAttribute($displayAttribute);
             $adapter            = new ModelRelationsAndAttributesToSummationReportAdapter($model2, $rules, $report->getType());
             $attributes         = $adapter->getAttributesForOrderBys($report->getGroupBys(), $report->getDisplayAttributes(), $model, 'hasOne');
-            $this->assertEquals(2, count($attributes));
+            $this->assertEquals(4, count($attributes));
             $this->assertTrue(isset($attributes['name']));
             $this->assertTrue(isset($attributes['Count']));
+            $this->assertEquals('Name', $attributes['name']['label']);
+            $this->assertEquals('Created Date Time -(Day)', $attributes['createdDateTime__Day']['label']);
+            $this->assertEquals('Modified Date Time -(Day)', $attributes['modifiedDateTime__Day']['label']);
         }
 
         /**
          * @depends testGetAttributesForOrderBys
+         */
+        public function testGetAttributesForDisplayAttributes()
+        {
+            $model              = new ReportModelTestItem();
+            $model2             = new ReportModelTestItem2();
+            $rules              = new ReportsTestReportRules();
+            $report             = new Report();
+            $report->setType(Report::TYPE_SUMMATION);
+            $report->setModuleClassName('ReportsTestModule');
+            $groupBy            = new GroupByForReportForm('ReportsTestModule', 'ReportModelTestItem', $report->getType());
+            $groupBy->attributeIndexOrDerivedType = 'hasOne___name';
+            $groupBy->axis                        = 'x';
+            $report->addGroupBy($groupBy);
+            $groupBy            = new GroupByForReportForm('ReportsTestModule', 'ReportModelTestItem', $report->getType());
+            $groupBy->attributeIndexOrDerivedType = 'hasOne___createdDateTime__Day';
+            $groupBy->axis                        = 'x';
+            $report->addGroupBy($groupBy);
+            $groupBy            = new GroupByForReportForm('ReportsTestModule', 'ReportModelTestItem', $report->getType());
+            $groupBy->attributeIndexOrDerivedType = 'hasOne___owner__User';
+            $groupBy->axis                        = 'x';
+            $report->addGroupBy($groupBy);
+            $adapter            = new ModelRelationsAndAttributesToSummationReportAdapter($model2, $rules, $report->getType());
+            $attributes         = $adapter->getAttributesForDisplayAttributes($report->getGroupBys(), $model, 'hasOne');
+            $this->assertEquals(8, count($attributes));
+            $this->assertTrue(isset($attributes['name']));
+            $this->assertTrue(isset($attributes['Count']));
+            $this->assertTrue(isset($attributes['createdDateTime__Maximum']));
+            $this->assertEquals('Name', $attributes['name']['label']);
+            $this->assertEquals('Created Date Time -(Day)', $attributes['createdDateTime__Day']['label']);
+            $this->assertEquals('Owner', $attributes['owner__User']['label']);
+        }
+
+        /**
+         * @depends testGetAttributesForDisplayAttributes
+         */
+        public function testGetAttributesForOrderBysOnUser()
+        {
+            $model              = new ReportModelTestItem();
+            $rules              = new ReportsTestReportRules();
+            $report             = new Report();
+            $report->setType(Report::TYPE_SUMMATION);
+            $report->setModuleClassName('ReportsTestModule');
+            $groupBy            = new GroupByForReportForm('ReportsTestModule', 'ReportModelTestItem', $report->getType());
+            $groupBy->attributeIndexOrDerivedType = 'owner__User';
+            $groupBy->axis                        = 'x';
+            $report->addGroupBy($groupBy);
+            $groupBy            = new GroupByForReportForm('ReportsTestModule', 'ReportModelTestItem', $report->getType());
+            $groupBy->attributeIndexOrDerivedType = 'createdDateTime__Day';
+            $groupBy->axis                        = 'x';
+            $report->addGroupBy($groupBy);
+
+            $displayAttribute   = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem', $report->getType());
+            $displayAttribute->attributeIndexOrDerivedType = 'owner__User';
+            $report->addDisplayAttribute($displayAttribute);
+            $adapter            = new ModelRelationsAndAttributesToSummationReportAdapter($model, $rules, $report->getType());
+            $attributes         = $adapter->getAttributesForOrderBys($report->getGroupBys(), $report->getDisplayAttributes());
+            $this->assertEquals(2, count($attributes));
+            $this->assertTrue(isset($attributes['owner__User']));
+            $this->assertEquals('Owner', $attributes['owner__User']['label']);
+            $this->assertEquals('Created Date Time -(Day)', $attributes['createdDateTime__Day']['label']);
+        }
+
+        /**
+         * @depends testGetAttributesForOrderBysOnUser
          */
         public function testGetAttributesForChartSeries()
         {

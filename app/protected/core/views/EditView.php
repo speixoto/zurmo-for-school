@@ -4,7 +4,7 @@
      * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
-     * the terms of the GNU General Public License version 3 as published by the
+     * the terms of the GNU Affero General Public License version 3 as published by the
      * Free Software Foundation with the addition of the following permission added
      * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
      * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
@@ -12,10 +12,10 @@
      *
      * Zurmo is distributed in the hope that it will be useful, but WITHOUT
      * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-     * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+     * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
      * details.
      *
-     * You should have received a copy of the GNU General Public License along with
+     * You should have received a copy of the GNU Affero General Public License along with
      * this program; if not, see http://www.gnu.org/licenses or write to the Free
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
@@ -25,9 +25,9 @@
      *
      * The interactive user interfaces in original and modified versions
      * of this program must display Appropriate Legal Notices, as required under
-     * Section 5 of the GNU General Public License version 3.
+     * Section 5 of the GNU Affero General Public License version 3.
      *
-     * In accordance with Section 7(b) of the GNU General Public License version 3,
+     * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
@@ -85,10 +85,20 @@
                                                             );
             $content .= $formStart;
             $content .= $this->renderOperationDescriptionContent();
+
             $content .= '<div class="attributesContainer">';
-            $content .= $this->renderFormLayout($form);
+            if ($form != null && $this->renderRightSideFormLayoutForEdit($form) == null)
+            {
+                $class = ' full-width';
+            }
+            else
+            {
+                $class = '';
+            }
+            $content .= ZurmoHtml::tag('div', array('class' => 'left-column' . $class), $this->renderFormLayout($form));
             $content .= $this->renderRightSideContent($form);
             $content .= '</div>';
+
             $content .= $this->renderAfterFormLayout($form);
             $actionElementContent = $this->renderActionElementBar(true);
             if ($actionElementContent != null)
@@ -97,6 +107,7 @@
             }
             $formEnd  = $clipWidget->renderEndWidget();
             $content .= $formEnd;
+            $content .= $this->renderModalContainer();
             $content .= '</div>';
             if ($this->wrapContentInWrapperDiv)
             {
@@ -113,9 +124,8 @@
                 $rightSideContent = $this->renderRightSideFormLayoutForEdit($form);
                 if ($rightSideContent != null)
                 {
-                    $content  = '<div class="right-side-edit-view-panel"><div class="buffer"><div>';
-                    $content .= $rightSideContent;
-                    $content .= '</div></div></div>';
+                    $content = ZurmoHtml::tag('div', array('class' => 'right-side-edit-view-panel'), $rightSideContent);
+                    $content = ZurmoHtml::tag('div', array('class' => 'right-column'), $content);
                     return $content;
                 }
             }
@@ -130,6 +140,13 @@
             Yii::app()->clientScript->registerScriptFile(
                 Yii::app()->getAssetManager()->publish(
                     Yii::getPathOfAlias('application.core.views.assets')) . '/dropDownInteractions.js');
+        }
+
+        protected function renderModalContainer()
+        {
+            return ZurmoHtml::tag('div', array(
+                        'id' => ModelElement::MODAL_CONTAINER_PREFIX . '-' . $this->getFormId()
+                   ), '');
         }
 
         protected function resolveActiveFormAjaxValidationOptions()
@@ -154,7 +171,7 @@
 
         protected function resolveFormHtmlOptions()
         {
-            $data = array('onSubmit' => 'js:return attachLoadingOnSubmit("' . static::getFormId() . '")');
+            $data = array('onSubmit' => 'js:return $(this).attachLoadingOnSubmit("' . static::getFormId() . '")');
             if ($this->viewContainsFileUploadElement)
             {
                 $data['enctype'] = 'multipart/form-data';

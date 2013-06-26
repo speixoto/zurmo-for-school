@@ -4,7 +4,7 @@
      * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
-     * the terms of the GNU General Public License version 3 as published by the
+     * the terms of the GNU Affero General Public License version 3 as published by the
      * Free Software Foundation with the addition of the following permission added
      * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
      * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
@@ -12,10 +12,10 @@
      *
      * Zurmo is distributed in the hope that it will be useful, but WITHOUT
      * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-     * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+     * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
      * details.
      *
-     * You should have received a copy of the GNU General Public License along with
+     * You should have received a copy of the GNU Affero General Public License along with
      * this program; if not, see http://www.gnu.org/licenses or write to the Free
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
@@ -25,9 +25,9 @@
      *
      * The interactive user interfaces in original and modified versions
      * of this program must display Appropriate Legal Notices, as required under
-     * Section 5 of the GNU General Public License version 3.
+     * Section 5 of the GNU Affero General Public License version 3.
      *
-     * In accordance with Section 7(b) of the GNU General Public License version 3,
+     * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
@@ -78,7 +78,6 @@
             parent::registerScripts();
             $this->registerRemoveEmailMessageScript();
             $this->registerRemoveEmailMessageRecipientScript();
-
         }
 
         /**
@@ -94,11 +93,9 @@
          */
         protected function renderFormContent()
         {
-            $content  = '<div>';
-            $content .= $this->renderAddEmailMessageLinkContentAndWrapper();
+            $content  = $this->renderAddEmailMessageLinkContentAndWrapper();
             $content .= $this->renderZeroComponentsContentAndWrapper();
             $content .= $this->renderEmailMessagesContentAndWrapper();
-            $content .= '</div>';
             $this->registerScripts();
             return $content;
         }
@@ -163,15 +160,16 @@
                         'type'    => 'GET',
                         'data'    => 'js:\'moduleClassName=\' + $("input:radio[name=\"' .
                             $moduleClassNameId . '\"]:checked").val() + ' .
-                            '\'&rowNumber=\' + $(\'#' . $rowCounterInputId. '\').val()',
+                            '\'&rowNumber=\' + $(\'#' . $rowCounterInputId . '\').val()',
                         'url'     =>  $url,
-                        'beforeSend' => 'js:function(){ makeOrRemoveLoadingSpinner(true, "#" + $(this).attr("id")); }',
-                        'success' => 'js:function(data){
-                        $(\'#' . $rowCounterInputId. '\').val(parseInt($(\'#' . $rowCounterInputId . '\').val()) + 1);
-                        $(".droppable-dynamic-rows-container.' . ComponentForWorkflowForm::TYPE_EMAIL_MESSAGES
-                            . '").find(".dynamic-rows").find("ul:first").first().append(data);
-                        rebuildWorkflowEmailMessageRowNumbers("' . get_class($this) . '");
-                        $(".' . static::getZeroComponentsClassName() . '").hide();
+                        'beforeSend' => 'js:function(){ $(this).makeOrRemoveLoadingSpinner(true, "#" + $(this).attr("id")); }',
+                        'success' => 'js:function(data)
+                        {
+                            $(\'#' . $rowCounterInputId . '\').val(parseInt($(\'#' . $rowCounterInputId . '\').val()) + 1);
+                            $(".droppable-dynamic-rows-container.' . ComponentForWorkflowForm::TYPE_EMAIL_MESSAGES
+                                . '").find(".dynamic-rows").find("ul:first").first().append(data);
+                            rebuildWorkflowEmailMessageRowNumbers("' . get_class($this) . '");
+                            $(".' . static::getZeroComponentsClassName() . '").hide();
                         }',
                     ),
                     array('id' => self::ADD_EMAIL_MESSAGE_LINK_ID,
@@ -206,7 +204,7 @@
             assert('is_int($rowCount)');
             assert('is_array($emailMessages)');
             $items                      = array();
-            foreach($emailMessages as $emailMessage)
+            foreach ($emailMessages as $emailMessage)
             {
                 $inputPrefixData   = array(get_class($this->model), ComponentForWorkflowForm::TYPE_EMAIL_MESSAGES, (int)$rowCount);
                 $rowCounterInputId = ComponentForWorkflowWizardView::
@@ -215,7 +213,7 @@
                                         $this->form, get_class($this->model), $rowCounterInputId);
                 $view->addWrapper  = false;
                 $items[]           = array('content' => $view->render());
-                $rowCount ++;
+                $rowCount++;
             }
             return $items;
         }
@@ -223,10 +221,11 @@
         protected function registerRemoveEmailMessageScript()
         {
             $script = '
-                $(".remove-dynamic-row-link").live("click", function(){
-                    size = $(this).parent().parent().parent().find("li").size();
-                    $(this).parent().parent().remove(); //removes the <li>
-                    if(size < 2)
+                $(".remove-dynamic-row-link").live("click", function()
+                {
+                    var size = $("#' . get_class($this) . ' .dynamic-rows > ul > li").length;
+                    $(this).parentsUntil("li").parent().remove(); //removes the <li>
+                    if (size < 1)
                     {
                         $(".' . static::getZeroComponentsClassName() . '").show();
                     }
@@ -241,7 +240,8 @@
         protected function registerRemoveEmailMessageRecipientScript()
         {
             $script = '
-                $(".' . EmailMessageRecipientRowForWorkflowComponentView::REMOVE_LINK_CLASS_NAME . '").live("click", function(){
+                $(".' . EmailMessageRecipientRowForWorkflowComponentView::REMOVE_LINK_CLASS_NAME . '").live("click", function()
+                {
                     div = $(this).parentsUntil(".' .
                             EmailMessageRowForWorkflowComponentView::RECIPIENTS_CONTAINER_CLASS_NAME . '").parent()
                             .find(".' . EmailMessageRowForWorkflowComponentView::EMAIL_MESSAGE_RECIPIENTS_ROW_CLASS_NAME .

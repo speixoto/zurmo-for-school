@@ -4,7 +4,7 @@
      * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
-     * the terms of the GNU General Public License version 3 as published by the
+     * the terms of the GNU Affero General Public License version 3 as published by the
      * Free Software Foundation with the addition of the following permission added
      * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
      * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
@@ -12,10 +12,10 @@
      *
      * Zurmo is distributed in the hope that it will be useful, but WITHOUT
      * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-     * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+     * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
      * details.
      *
-     * You should have received a copy of the GNU General Public License along with
+     * You should have received a copy of the GNU Affero General Public License along with
      * this program; if not, see http://www.gnu.org/licenses or write to the Free
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
@@ -25,9 +25,9 @@
      *
      * The interactive user interfaces in original and modified versions
      * of this program must display Appropriate Legal Notices, as required under
-     * Section 5 of the GNU General Public License version 3.
+     * Section 5 of the GNU Affero General Public License version 3.
      *
-     * In accordance with Section 7(b) of the GNU General Public License version 3,
+     * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
@@ -244,7 +244,7 @@
 
             //actionModalList
             $this->setGetArray(array(
-                'modalTransferInformation' => array('sourceIdFieldId' => 'x', 'sourceNameFieldId' => 'y')
+                'modalTransferInformation' => array('sourceIdFieldId' => 'x', 'sourceNameFieldId' => 'y', 'modalId' => 'z')
             ));
             $this->runControllerWithNoExceptionsAndGetContent('leads/default/modalList');
 
@@ -265,9 +265,9 @@
             //Save a layout change. Collapse all portlets in the Lead Details View.
             //At this point portlets for this view should be created because we have already loaded the 'details' page in a request above.
             $portlets = Portlet::getByLayoutIdAndUserSortedByColumnIdAndPosition(
-                                        'LeadDetailsAndRelationsViewLeftBottomView', $super->id, array());
-            $this->assertEquals (2, count($portlets[1])         );
-            $this->assertFalse  (array_key_exists(2, $portlets) );
+                                        'LeadDetailsAndRelationsView', $super->id, array());
+            $this->assertEquals(3, count($portlets[1]));
+            $this->assertFalse(array_key_exists(3, $portlets) );
             $portletPostData = array();
             $portletCount = 0;
             foreach ($portlets as $column => $columnPortlets)
@@ -275,29 +275,29 @@
                 foreach ($columnPortlets as $position => $portlet)
                 {
                     $this->assertEquals('0', $portlet->collapsed);
-                    $portletPostData['LeadDetailsAndRelationsViewLeftBottomView_' . $portlet->id] = array(
+                    $portletPostData['LeadDetailsAndRelationsView_' . $portlet->id] = array(
                         'collapsed' => 'true',
                         'column'    => 0,
-                        'id'        => 'LeadDetailsAndRelationsViewLeftBottomView_' . $portlet->id,
+                        'id'        => 'LeadDetailsAndRelationsView_' . $portlet->id,
                         'position'  => $portletCount,
                     );
                     $portletCount++;
                 }
             }
-            //There should have been a total of 2 portlets.
-            $this->assertEquals(2, $portletCount);
+            //There should have been a total of 5 portlets.
+            $this->assertEquals(5, $portletCount);
             $this->resetGetArray();
             $this->setPostArray(array(
                 'portletLayoutConfiguration' => array(
                     'portlets' => $portletPostData,
-                    'uniqueLayoutId' => 'LeadDetailsAndRelationsViewLeftBottomView',
+                    'uniqueLayoutId' => 'LeadDetailsAndRelationsView',
                 )
             ));
             $this->runControllerWithNoExceptionsAndGetContent('home/defaultPortlet/saveLayout', true);
             //Now test that all the portlets are collapsed and moved to the first column.
             $portlets = Portlet::getByLayoutIdAndUserSortedByColumnIdAndPosition(
-                            'LeadDetailsAndRelationsViewLeftBottomView', $super->id, array());
-            $this->assertEquals (2, count($portlets[1])         );
+                            'LeadDetailsAndRelationsView', $super->id, array());
+            $this->assertEquals (5, count($portlets[1]));
             $this->assertFalse  (array_key_exists(2, $portlets) );
             foreach ($portlets as $column => $columns)
             {
@@ -365,6 +365,79 @@
             $this->assertEquals('456765421', $leads[0]->officePhone);
             $leads = Contact::getAll();
             $this->assertEquals(12, count($leads));
+        }
+
+        /**
+         * @depends testSuperUserCreateAction
+         */
+        public function testSuperUserCopyAction()
+        {
+            $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
+
+            $leads = Contact::getByName('myNewLead myNewLeadson');
+            $this->assertCount(1, $leads);
+
+            $postArray = array(
+                'Contact' => array(
+                    'firstName'     => 'myNewLead',
+                    'lastName'      => 'myNewLeadson',
+                    'jobTitle'      => 'job title',
+                    'companyName'   => 'Some Company',
+                    'department'    => 'Some department',
+                    'officePhone'   => '456765421',
+                    'mobilePhone'   => '958462315',
+                    'officeFax'     => '123456789',
+                    'primaryEmail' => array(
+                            'emailAddress' => 'a@a.com',
+                    ),
+                    'secondaryEmail' => array(
+                        'emailAddress' => 'b@b.com',
+                    ),
+                    'primaryAddress' => array(
+                            'street1'    => 'Street1',
+                            'street2'    => 'Street2',
+                            'city'       => 'City',
+                            'state'      => 'State',
+                            'postalCode' => '12345',
+                            'country'    => 'Country',
+                    ),
+                    'secondaryAddress' => array(
+                            'street1'    => 'Street1',
+                            'street2'    => 'Street2',
+                            'city'       => 'City',
+                            'state'      => 'State',
+                            'postalCode' => '12345',
+                            'country'    => 'Country',
+                    ),
+                    'website' => 'http://example.com',
+                    'description' => 'some description',
+                )
+            );
+
+            $this->updateModelValuesFromPostArray($leads[0], $postArray);
+            $this->assertModelHasValuesFromPostArray($leads[0], $postArray);
+
+            $this->assertTrue($leads[0]->save());
+            $this->assertTrue(
+                $this->checkCopyActionResponseAttributeValuesFromPostArray($leads[0], $postArray, 'Lead')
+            );
+
+            $postArray['Contact']['firstName']  = 'myClonedLead';
+            $postArray['Contact']['lastName']   = 'myClonedLeadson';
+            $postArray['Contact']['state']      = array('id' => LeadsUtil::getStartingState()->id);
+            $this->setGetArray(array('id' => $leads[0]->id));
+            $this->setPostArray($postArray);
+            $this->runControllerWithRedirectExceptionAndGetUrl('leads/default/copy');
+
+            $leads = Contact::getByName('myClonedLead myClonedLeadson');
+            $this->assertCount(1, $leads);
+            $this->assertTrue($leads[0]->owner->isSame($super));
+
+            unset($postArray['Contact']['state']);
+            $this->assertModelHasValuesFromPostArray($leads[0], $postArray);
+
+            $leads = Contact::getAll();
+            $this->assertCount(13, $leads);
         }
 
         /**
@@ -447,7 +520,7 @@
         {
             $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
             $leads = Contact::getAll();
-            $this->assertEquals(15, count($leads));
+            $this->assertEquals(16, count($leads));
             $superLeadId   = self::getModelIdByModelNameAndName('Contact', 'superLead');
             $superLeadId2  = self::getModelIdByModelNameAndName('Contact', 'superLead2 superLead2son');
             $superLeadId3  = self::getModelIdByModelNameAndName('Contact', 'superLead3 superLead3son');
@@ -460,6 +533,7 @@
             $superLeadId10 = self::getModelIdByModelNameAndName('Contact', 'superLead10 superLead10son');
             $superLeadId11 = self::getModelIdByModelNameAndName('Contact', 'superLead11 superLead11son');
             $superLeadId12 = self::getModelIdByModelNameAndName('Contact', 'superLead12 superLead12son');
+            $superLeadId13 = self::getModelIdByModelNameAndName('Contact', 'myClonedLead myClonedLeadson');
             //Load Model MassDelete Views.
 
             //MassDelete view for single selected ids
@@ -472,10 +546,10 @@
             $this->setGetArray(array('selectAll' => '1'));
             $this->resetPostArray();
             $content = $this->runControllerWithNoExceptionsAndGetContent('leads/default/massDelete');
-            $this->assertFalse(strpos($content, '<strong>11</strong>&#160;Leads selected for removal') === false);
+            $this->assertFalse(strpos($content, '<strong>12</strong>&#160;Leads selected for removal') === false);
             //MassDelete for selected Record Count
             $leads = Contact::getAll();
-            $this->assertEquals(15, count($leads));
+            $this->assertEquals(16, count($leads));
 
             //MassDelete for selected ids for paged scenario
             $lead1 = Contact::getById($superLeadId);
@@ -500,17 +574,18 @@
 
             //MassDelete for selected Record Count
             $leads = Contact::getAll();
-            $this->assertEquals(10, count($leads));
+            $this->assertEquals(11, count($leads));
 
             //MassDelete for selected ids for page 2
             $this->setGetArray(array(
-                'selectedIds'  => $superLeadId . ',' . $superLeadId2 . ',' .  // Not Coding Standard
+                'selectedIds'  => $superLeadId  . ',' . $superLeadId2 . ',' . // Not Coding Standard
                                   $superLeadId3 . ',' . $superLeadId4 . ',' . // Not Coding Standard
-                                  $superLeadId5 . ',' . $superLeadId6,        // Not Coding Standard
+                                  $superLeadId5 . ',' . $superLeadId6 . ',' . // Not Coding Standard
+                                  $superLeadId13,                             // Not Coding Standard
                 'selectAll'    => '',
                 'massDelete'   => '',
                 'Contact_page' => 2));
-            $this->setPostArray(array('selectedRecordCount' => 6));
+            $this->setPostArray(array('selectedRecordCount' => 7));
             $this->runControllerWithNoExceptionsAndGetContent('leads/default/massDeleteProgress');
 
            //MassDelete for selected Record Count

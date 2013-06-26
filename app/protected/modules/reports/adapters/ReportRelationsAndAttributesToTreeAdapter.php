@@ -4,7 +4,7 @@
      * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
-     * the terms of the GNU General Public License version 3 as published by the
+     * the terms of the GNU Affero General Public License version 3 as published by the
      * Free Software Foundation with the addition of the following permission added
      * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
      * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
@@ -12,10 +12,10 @@
      *
      * Zurmo is distributed in the hope that it will be useful, but WITHOUT
      * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-     * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+     * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
      * details.
      *
-     * You should have received a copy of the GNU General Public License along with
+     * You should have received a copy of the GNU Affero General Public License along with
      * this program; if not, see http://www.gnu.org/licenses or write to the Free
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
@@ -25,9 +25,9 @@
      *
      * The interactive user interfaces in original and modified versions
      * of this program must display Appropriate Legal Notices, as required under
-     * Section 5 of the GNU General Public License version 3.
+     * Section 5 of the GNU Affero General Public License version 3.
      *
-     * In accordance with Section 7(b) of the GNU General Public License version 3,
+     * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
@@ -69,7 +69,7 @@
             $nodeIdPrefix             = self::resolveNodeIdPrefixByNodeId($nodeId);
             $precedingModel           = null;
             $precedingRelation        = null;
-            if($nodeId != 'source')
+            if ($nodeId != 'source')
             {
                 self::resolvePrecedingModelRelationAndAdapterByNodeId($nodeId, $modelToReportAdapter, $precedingModel,
                                                                       $precedingRelation);
@@ -78,7 +78,7 @@
             {
                 $nodeIdPrefix = null;
             }
-            if($nodeIdPrefix == null)
+            if ($nodeIdPrefix == null)
             {
                 $data                       = array();
                 $data[0]                    = array('expanded' => true,
@@ -86,7 +86,7 @@
             }
             $childrenNodeData               = $this->getChildrenNodeData($modelToReportAdapter, $precedingModel,
                                                                          $precedingRelation, $nodeIdPrefix);
-            if(!empty($childrenNodeData) && $nodeIdPrefix == null)
+            if (!empty($childrenNodeData) && $nodeIdPrefix == null)
             {
                 $data[0]['children'] = $childrenNodeData;
             }
@@ -112,9 +112,9 @@
         {
             $childrenNodeData        = array();
             $attributesData          = $this->getAttributesData($modelToReportAdapter, $precedingModel, $precedingRelation);
-            foreach($attributesData as $attribute => $attributeData)
+            foreach ($attributesData as $attribute => $attributeData)
             {
-                $attributeNode      = array('id'		   => self::makeNodeId($attribute, $nodeIdPrefix),
+                $attributeNode      = array('id'           => self::makeNodeId($attribute, $nodeIdPrefix),
                                             'text'         => $attributeData['label'],
                                             'wrapperClass' => 'item-to-place');
                 $childrenNodeData[] = $attributeNode;
@@ -125,11 +125,11 @@
                 getSelectableRelationsDataResolvedForUserAccess(
                 Yii::app()->user->userModel,
                 $selectableRelationsData);
-            foreach($resolvedSelectableRelationsData as $relation => $relationData)
+            foreach ($resolvedSelectableRelationsData as $relation => $relationData)
             {
                 $relationModelClassName       = $modelToReportAdapter->getRelationModelClassName($relation);
                 $relationModuleClassName      = $relationModelClassName::getModuleClassName();
-                if($relationModuleClassName == null)
+                if ($relationModuleClassName == null)
                 {
                     throw new NotSupportedException($relationModelClassName);
                 }
@@ -151,27 +151,26 @@
         protected function getAttributesData(ModelRelationsAndAttributesToReportAdapter $modelToReportAdapter,
                                              RedBeanModel $precedingModel = null, $precedingRelation = null)
         {
-            if($this->treeType == ComponentForReportForm::TYPE_FILTERS)
+            if ($this->treeType == ComponentForReportForm::TYPE_FILTERS)
             {
                 return $modelToReportAdapter->getAttributesForFilters($precedingModel, $precedingRelation);
             }
-            elseif($this->treeType == ComponentForReportForm::TYPE_DISPLAY_ATTRIBUTES)
+            elseif ($this->treeType == ComponentForReportForm::TYPE_DISPLAY_ATTRIBUTES)
             {
                 return $modelToReportAdapter->getAttributesForDisplayAttributes($this->report->getGroupBys(),
                                                                                 $precedingModel, $precedingRelation);
             }
-            elseif($this->treeType == ComponentForReportForm::TYPE_ORDER_BYS)
+            elseif ($this->treeType == ComponentForReportForm::TYPE_ORDER_BYS)
             {
-
                 return $modelToReportAdapter->getAttributesForOrderBys($this->report->getGroupBys(),
                                                                        $this->report->getDisplayAttributes(),
                                                                        $precedingModel, $precedingRelation);
             }
-            elseif($this->treeType == ComponentForReportForm::TYPE_GROUP_BYS)
+            elseif ($this->treeType == ComponentForReportForm::TYPE_GROUP_BYS)
             {
                 return $modelToReportAdapter->getAttributesForGroupBys($precedingModel, $precedingRelation);
             }
-            elseif($this->treeType == ComponentForReportForm::TYPE_DRILL_DOWN_DISPLAY_ATTRIBUTES)
+            elseif ($this->treeType == ComponentForReportForm::TYPE_DRILL_DOWN_DISPLAY_ATTRIBUTES)
             {
                 return $modelToReportAdapter->getForDrillDownAttributes($precedingModel, $precedingRelation);
             }
@@ -204,21 +203,21 @@
                                 $nodeId, & $modelToReportAdapter, & $precedingModel, & $precedingRelation)
         {
             assert('$modelToReportAdapter instanceof ModelRelationsAndAttributesToReportAdapter');
-            if($nodeId == 'source')
+            if ($nodeId == 'source')
             {
                 return;
             }
             $relations    = explode(FormModelUtil::RELATION_DELIMITER, $nodeId);
             $lastRelation = end($relations);
-            foreach($relations as $relation)
+            foreach ($relations as $relation)
             {
                 $relationModelClassName = $modelToReportAdapter->getRelationModelClassName($relation);
                 $precedingRelation      = $relation;
-                if($relation != $lastRelation)
+                if ($relation != $lastRelation)
                 {
                     $precedingModel    = new $relationModelClassName(false);
                 }
-                elseif(count($relations) == 1)
+                elseif (count($relations) == 1)
                 {
                     $precedingModel    = $modelToReportAdapter->getModel();
                 }

@@ -4,7 +4,7 @@
      * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
-     * the terms of the GNU General Public License version 3 as published by the
+     * the terms of the GNU Affero General Public License version 3 as published by the
      * Free Software Foundation with the addition of the following permission added
      * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
      * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
@@ -12,10 +12,10 @@
      *
      * Zurmo is distributed in the hope that it will be useful, but WITHOUT
      * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-     * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+     * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
      * details.
      *
-     * You should have received a copy of the GNU General Public License along with
+     * You should have received a copy of the GNU Affero General Public License along with
      * this program; if not, see http://www.gnu.org/licenses or write to the Free
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
@@ -25,9 +25,9 @@
      *
      * The interactive user interfaces in original and modified versions
      * of this program must display Appropriate Legal Notices, as required under
-     * Section 5 of the GNU General Public License version 3.
+     * Section 5 of the GNU Affero General Public License version 3.
      *
-     * In accordance with Section 7(b) of the GNU General Public License version 3,
+     * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
@@ -48,48 +48,41 @@
                             array('type'    => 'EmailTemplateDeleteLink'),
                         ),
                     ),
-                    'panelsDisplayType' => FormLayout::PANELS_DISPLAY_TYPE_FIRST,
                     'panels' => array(
-                        array(
-                            'rows' => array(
-                                array('cells' =>
-                                array(
-                                    array(
-                                        'elements' => array(
-                                            array('attributeName' => 'modelClassName', 'type' => 'EmailTemplateModelClassName'),
-                                        ),
-                                    ),
-                                )
-                                ),
-                                array('cells' =>
-                                array(
-                                    array(
-                                        'elements' => array(
-                                            array('attributeName' => 'name', 'type' => 'Text'),
-                                        ),
-                                    ),
-                                )
-                                ),
-                                array('cells' =>
-                                array(
-                                    array(
-                                        'elements' => array(
-                                            array('attributeName' => 'subject', 'type' => 'Text'),
-                                        ),
-                                    ),
-                                )
-                                ),
-
-                            ),
-                        ),
                         array(
                             'rows' => array(
                                 array('cells' =>
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'null',
-                                                    'type' => 'DerivedExplicitReadWriteModelPermissions'),
+                                                array('attributeName' => 'modelClassName', 'type' => 'EmailTemplateModelClassName'),
+                                            ),
+                                        ),
+                                    )
+                                ),
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'name', 'type' => 'Text'),
+                                            ),
+                                        ),
+                                    )
+                                ),
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'subject', 'type' => 'Text'),
+                                            ),
+                                        ),
+                                    )
+                                ),
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'null', 'type' => 'Files'),
                                             ),
                                         ),
                                     )
@@ -108,7 +101,7 @@
         protected function resolveElementInformationDuringFormLayoutRender(& $elementInformation)
         {
             parent::resolveElementInformationDuringFormLayoutRender($elementInformation);
-            if($elementInformation['attributeName'] == 'modelClassName' &&
+            if ($elementInformation['attributeName'] == 'modelClassName' &&
                $this->model->type == EmailTemplate::TYPE_CONTACT)
             {
                 $elementInformation['attributeName'] = null;
@@ -116,13 +109,9 @@
             }
         }
 
-        protected function renderRightSideFormLayoutForEdit($form)
-        {
-            return null;
-        }
-
         protected function renderAfterFormLayout($form)
         {
+            // Begin Not Coding Standard
             Yii::app()->clientScript->registerScript(__CLASS__.'_TypeChangeHandler', "
                         $('#EmailTemplate_type_value').unbind('change.action').bind('change.action', function()
                         {
@@ -147,6 +136,7 @@
                         }
                         );
                     ");
+            // End Not Coding Standard
             $content  = $this->resolveRenderHiddenModelClassNameElement($form);
             $content .= $this->renderHtmlAndTextContentElement($this->model, null, $form);
             return $content;
@@ -154,7 +144,7 @@
 
         protected function resolveRenderHiddenModelClassNameElement(ZurmoActiveForm $form)
         {
-            if($this->model->type == EmailTemplate::TYPE_CONTACT)
+            if ($this->model->type == EmailTemplate::TYPE_CONTACT)
             {
                 return $form->hiddenField($this->model, 'modelClassName', array());
             }
@@ -175,12 +165,9 @@
         protected function renderHtmlAndTextContentElement($model, $attribute, $form)
         {
             $element = new EmailTemplateHtmlAndTextContentElement($model, $attribute , $form);
-            if (!is_null($form))
+            if ($form !== null)
             {
                 $this->resolveElementDuringFormLayoutRender($element);
-            }
-            else
-            {
             }
             return ZurmoHtml::tag('div', array('class' => 'email-template-combined-content'), $element->render());
         }
@@ -190,9 +177,6 @@
             if ($this->alwaysShowErrorSummary())
             {
                 $element->editableTemplate = str_replace('{error}', '', $element->editableTemplate);
-            }
-            else
-            {
             }
         }
 

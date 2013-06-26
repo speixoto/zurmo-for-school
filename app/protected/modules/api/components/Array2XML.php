@@ -4,7 +4,7 @@
      * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
-     * the terms of the GNU General Public License version 3 as published by the
+     * the terms of the GNU Affero General Public License version 3 as published by the
      * Free Software Foundation with the addition of the following permission added
      * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
      * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
@@ -12,10 +12,10 @@
      *
      * Zurmo is distributed in the hope that it will be useful, but WITHOUT
      * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-     * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+     * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
      * details.
      *
-     * You should have received a copy of the GNU General Public License along with
+     * You should have received a copy of the GNU Affero General Public License along with
      * this program; if not, see http://www.gnu.org/licenses or write to the Free
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
@@ -25,9 +25,9 @@
      *
      * The interactive user interfaces in original and modified versions
      * of this program must display Appropriate Legal Notices, as required under
-     * Section 5 of the GNU General Public License version 3.
+     * Section 5 of the GNU Affero General Public License version 3.
      *
-     * In accordance with Section 7(b) of the GNU General Public License version 3,
+     * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
@@ -51,7 +51,6 @@
 
     class Array2XML
     {
-
         private static $xml = null;
         private static $encoding = 'UTF-8';
 
@@ -91,21 +90,19 @@
          */
         private static function &convert($node_name, $arr = array())
         {
-
-            //print_arr($node_name);
             $xml = self::getXMLRoot();
             $node = $xml->createElement($node_name);
 
-            if(is_array($arr))
+            if (is_array($arr))
             {
                 // get the attributes first.;
-                if(isset($arr['@attributes']))
+                if (isset($arr['@attributes']))
                 {
-                    foreach($arr['@attributes'] as $key => $value)
+                    foreach ($arr['@attributes'] as $key => $value)
                     {
-                        if(!self::isValidTagName($key))
+                        if (!self::isValidTagName($key))
                         {
-                            throw new Exception('[Array2XML] Illegal character in attribute name. attribute: '.$key.' in node: '.$node_name);
+                            throw new Exception('[Array2XML] Illegal character in attribute name. attribute: ' . $key . ' in node: ' . $node_name);
                         }
                         $node->setAttribute($key, self::bool2str($value));
                     }
@@ -114,14 +111,14 @@
 
                 // check if it has a value stored in @value, if yes store the value and return
                 // else check if its directly stored as string
-                if(isset($arr['@value']))
+                if (isset($arr['@value']))
                 {
                     $node->appendChild($xml->createTextNode(self::bool2str($arr['@value'])));
                     unset($arr['@value']);    //remove the key from the array once done.
                     //return from recursion, as a note with value cannot have child nodes.
                     return $node;
                 }
-                elseif(isset($arr['@cdata']))
+                elseif (isset($arr['@cdata']))
                 {
                     $node->appendChild($xml->createCDATASection(self::bool2str($arr['@cdata'])));
                     unset($arr['@cdata']);    //remove the key from the array once done.
@@ -131,21 +128,21 @@
             }
 
             //create subnodes using recursion
-            if(is_array($arr))
+            if (is_array($arr))
             {
                 // recurse to get the node for that key
-                foreach($arr as $key => $value)
+                foreach ($arr as $key => $value)
                 {
-                    if(!self::isValidTagName($key))
+                    if (!self::isValidTagName($key))
                     {
-                        throw new Exception('[Array2XML] Illegal character in tag name. tag: '.$key.' in node: '.$node_name);
+                        throw new Exception('[Array2XML] Illegal character in tag name. tag: ' . $key . ' in node: ' . $node_name);
                     }
-                    if(is_array($value) && is_numeric(key($value)))
+                    if (is_array($value) && is_numeric(key($value)))
                     {
                         // MORE THAN ONE NODE OF ITS KIND;
                         // if the new array is numeric index, means it is array of nodes of the same kind
                         // it should follow the parent key name
-                        foreach($value as $k=>$v)
+                        foreach ($value as $k => $v)
                         {
                             $node->appendChild(self::convert($key, $v));
                         }
@@ -161,7 +158,7 @@
 
             // after we are done with all the keys in the array (if it is one)
             // we check if it has any text value, if yes, append it.
-            if(!is_array($arr))
+            if (!is_array($arr))
             {
                 $node->appendChild($xml->createTextNode(self::bool2str($arr)));
             }
@@ -173,7 +170,7 @@
          */
         private static function getXMLRoot()
         {
-            if(empty(self::$xml))
+            if (empty(self::$xml))
             {
                 self::init();
             }
@@ -204,7 +201,7 @@
          */
         private static function isValidTagName($tag)
         {
-            $pattern = '/^[a-z_]+[a-z0-9\:\-\.\_]*[^:]*$/i';
+            $pattern = '/^[a-z_]+[a-z0-9\:\-\.\_]*[^:]*$/i'; // Not Coding Standard
             return preg_match($pattern, $tag, $matches) && $matches[0] == $tag;
         }
     }

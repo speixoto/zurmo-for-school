@@ -4,7 +4,7 @@
      * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
-     * the terms of the GNU General Public License version 3 as published by the
+     * the terms of the GNU Affero General Public License version 3 as published by the
      * Free Software Foundation with the addition of the following permission added
      * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
      * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
@@ -12,10 +12,10 @@
      *
      * Zurmo is distributed in the hope that it will be useful, but WITHOUT
      * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-     * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+     * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
      * details.
      *
-     * You should have received a copy of the GNU General Public License along with
+     * You should have received a copy of the GNU Affero General Public License along with
      * this program; if not, see http://www.gnu.org/licenses or write to the Free
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
@@ -25,9 +25,9 @@
      *
      * The interactive user interfaces in original and modified versions
      * of this program must display Appropriate Legal Notices, as required under
-     * Section 5 of the GNU General Public License version 3.
+     * Section 5 of the GNU Affero General Public License version 3.
      *
-     * In accordance with Section 7(b) of the GNU General Public License version 3,
+     * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
@@ -79,7 +79,16 @@
             $this->registerTabbedContentScripts();
             $textTabHyperLink   = ZurmoHtml::link($this->renderTextContentAreaLabel(), '#tab1', array('class' => 'active-tab'));
             $htmlTabHyperLink   = ZurmoHtml::link($this->renderHtmlContentAreaLabel(), '#tab2');
-            $tabContent         = ZurmoHtml::tag('div', array('class' => 'tabs-nav'), $textTabHyperLink . $htmlTabHyperLink);
+            $tagsGuideLink      = null;
+            if ($this->form)
+            {
+                $controllerId           = $this->getControllerId();
+                $moduleId               = $this->getModuleId();
+                $modelId                = $this->model->id;
+                $tagsGuideLinkElement   = new MergeTagGuideAjaxLinkActionElement($controllerId, $moduleId, $modelId);
+                $tagsGuideLink          = $tagsGuideLinkElement->render();
+            }
+            $tabContent         = ZurmoHtml::tag('div', array('class' => 'tabs-nav'), $textTabHyperLink . $htmlTabHyperLink . $tagsGuideLink);
 
             $plainTextDiv       = ZurmoHtml::tag('div',
                                                 array('id' => 'tab1',
@@ -94,23 +103,32 @@
 
         protected function registerTabbedContentScripts()
         {
-            Yii::app()->clientScript->registerScript('email-templates-tab-switch-handler', "
-                    $('.tabs-nav a').click( function(){
-                        //the menu items
-                        $('.active-tab', $(this).parent()).removeClass('active-tab');
-                        $(this).addClass('active-tab');
-                        //the sections
-                        var _old = $('.tab.active-tab'); //maybe add context here for tab-container
-                        _old.fadeToggle();
-                        var _new = $( $(this).attr('href') );
-                        _new.fadeToggle(300, 'linear', function(){
-                                _old.removeClass('active-tab');
-                                _new.addClass('active-tab');
+            $scriptName = 'email-templates-tab-switch-handler';
+            if (Yii::app()->clientScript->isScriptRegistered($scriptName))
+            {
+                return;
+            }
+            else
+            {
+                Yii::app()->clientScript->registerScript($scriptName, "
+                        $('.tabs-nav a:not(.simple-link)').click( function()
+                        {
+                            //the menu items
+                            $('.active-tab', $(this).parent()).removeClass('active-tab');
+                            $(this).addClass('active-tab');
+                            //the sections
+                            var _old = $('.tab.active-tab'); //maybe add context here for tab-container
+                            _old.fadeToggle();
+                            var _new = $( $(this).attr('href') );
+                            _new.fadeToggle(150, 'linear', function()
+                            {
+                                    _old.removeClass('active-tab');
+                                    _new.addClass('active-tab');
+                            });
+                            return false;
                         });
-                        return false;
-                    });
-                ");
-
+                    ");
+            }
         }
 
         protected function renderControlNonEditable()
@@ -172,5 +190,15 @@
         {
             return null;
         }
-     }
+
+        protected function getControllerId()
+        {
+            return Yii::app()->getController()->getId();
+        }
+
+        protected function getModuleId()
+        {
+            return 'emailTemplates';
+        }
+    }
 ?>

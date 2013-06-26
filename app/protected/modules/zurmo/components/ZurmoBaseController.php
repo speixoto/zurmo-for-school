@@ -4,7 +4,7 @@
      * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
-     * the terms of the GNU General Public License version 3 as published by the
+     * the terms of the GNU Affero General Public License version 3 as published by the
      * Free Software Foundation with the addition of the following permission added
      * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
      * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
@@ -12,10 +12,10 @@
      *
      * Zurmo is distributed in the hope that it will be useful, but WITHOUT
      * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-     * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+     * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
      * details.
      *
-     * You should have received a copy of the GNU General Public License along with
+     * You should have received a copy of the GNU Affero General Public License along with
      * this program; if not, see http://www.gnu.org/licenses or write to the Free
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
@@ -25,9 +25,9 @@
      *
      * The interactive user interfaces in original and modified versions
      * of this program must display Appropriate Legal Notices, as required under
-     * Section 5 of the GNU General Public License version 3.
+     * Section 5 of the GNU Affero General Public License version 3.
      *
-     * In accordance with Section 7(b) of the GNU General Public License version 3,
+     * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
@@ -40,9 +40,11 @@
 
         const REQUIRED_ATTRIBUTES_FILTER_PATH = 'application.modules.zurmo.controllers.filters.RequiredAttributesControllerFilter';
 
+        const ADMIN_VIEW_MOBILE_CHECK_FILTER_PATH = 'application.modules.zurmo.controllers.filters.AdminViewMobileCheckControllerFilter';
+
         public function filters()
         {
-            $moduleClassName = get_class($this->getModule());
+            $moduleClassName = $this->resolveModuleClassNameForFilters();
             $filters = array();
             if (is_subclass_of($moduleClassName, 'SecurableModule'))
             {
@@ -52,7 +54,7 @@
                         'rightName' => $moduleClassName::getAccessRight(),
                 );
                 $filters[] = array(
-                        self::getRightsFilterPath() . ' + create, createFromRelation, inlineCreateSave',
+                        self::getRightsFilterPath() . ' + create, createFromRelation, inlineCreateSave, copy',
                         'moduleClassName' => $moduleClassName,
                         'rightName' => $moduleClassName::getCreateRight(),
                 );
@@ -67,12 +69,17 @@
                 'moduleClassName' => 'ZurmoModule',
                 'rightName' => ZurmoModule::RIGHT_BULK_WRITE,
             );
-            $filters[] = array(
+            $filters['RIGHT_BULK_DELETE'] = array(
                 self::getRightsFilterPath() . ' + massDelete, massDeleteProgress',
                 'moduleClassName' => 'ZurmoModule',
                 'rightName' => ZurmoModule::RIGHT_BULK_DELETE,
             );
             return $filters;
+        }
+
+        public function resolveModuleClassNameForFilters()
+        {
+            return get_class($this->getModule());
         }
 
         public function __construct($id, $module = null)
@@ -100,7 +107,7 @@
             assert('is_string($actionBarViewClassName)');
             assert('is_string($viewPrefixName) || $viewPrefixName == null');
             assert('is_string($activeActionElementType) || $activeActionElementType == null');
-            if($viewPrefixName == null)
+            if ($viewPrefixName == null)
             {
                 $viewPrefixName = $this->getModule()->getPluralCamelCasedName();
             }
@@ -122,7 +129,7 @@
         {
             assert('is_string($listViewClassName) || $listViewClassName == null');
             $listModel           = $searchForm->getModel();
-            if($listViewClassName == null)
+            if ($listViewClassName == null)
             {
                 $listViewClassName   = $this->getModule()->getPluralCamelCasedName() . 'ListView';
             }
@@ -134,7 +141,8 @@
                                        GetUtil::resolveSelectedIdsFromGet(),
                                        null,
                                        array(),
-                                       $searchForm->getListAttributesSelector());
+                                       $searchForm->getListAttributesSelector(),
+                                       $searchForm->getKanbanBoard());
             return $listView;
         }
 
@@ -150,13 +158,54 @@
             assert('is_bool($setSticky)');
             $listModelClassName = get_class($searchModel->getModel());
             static::resolveToTriggerOnSearchEvents($listModelClassName);
+            $this->resolveKanbanBoardIsActiveByGet($searchModel);
             $dataCollection = $this->makeDataCollectionAndResolveSavedSearch($searchModel, $stickySearchKey, $setSticky);
-            $dataProvider   = $this->makeRedBeanDataProviderByDataCollection(
-                $searchModel,
-                $pageSize,
-                $stateMetadataAdapterClassName,
-                $dataCollection);
+            $pageSize       = $this->resolvePageSizeForKanbanBoard($searchModel, $pageSize);
+            $dataProvider   = $this->makeRedBeanDataProviderByDataCollection($searchModel, $pageSize,
+                                $stateMetadataAdapterClassName, $dataCollection);
             return $dataProvider;
+        }
+
+        /**
+         * @param $searchModel
+         */
+        private function resolveKanbanBoardIsActiveByGet($searchModel)
+        {
+            if (!$searchModel instanceof SearchForm || $searchModel->getKanbanBoard() == null)
+            {
+                return;
+            }
+            if (isset($_GET['kanbanBoard']) && $_GET['kanbanBoard'] && !Yii::app()->userInterface->isMobile())
+            {
+                $searchModel->getKanbanBoard()->setIsActive();
+            }
+            elseif (isset($_GET['kanbanBoard']) && !$_GET['kanbanBoard'])
+            {
+                $searchModel->getKanbanBoard()->setIsNotActive();
+                $searchModel->getKanbanBoard()->setClearSticky();
+            }
+            elseif (Yii::app()->userInterface->isMobile())
+            {
+                $searchModel->getKanbanBoard()->setIsNotActive();
+            }
+        }
+
+        /**
+         * @param $searchModel
+         * @param $pageSize
+         * @return int
+         */
+        private function resolvePageSizeForKanbanBoard($searchModel, $pageSize)
+        {
+            if (!$searchModel instanceof SearchForm)
+            {
+                return $pageSize;
+            }
+            if ($searchModel->getKanbanBoard() !== null && $searchModel->getKanbanBoard()->getIsActive())
+            {
+                $pageSize = KanbanBoardExtendedGridView::resolvePageSizeForMaxCount();
+            }
+            return $pageSize;
         }
 
         private function makeDataCollectionAndResolveSavedSearch($searchModel, $stickySearchKey = null, $setSticky = true)
@@ -172,19 +221,21 @@
                 if ($stickySearchKey != null && null != $stickySearchData = StickySearchUtil::getDataByKey($stickySearchKey))
                 {
                     SavedSearchUtil::resolveSearchFormByStickyDataAndModel($stickySearchData, $searchModel);
+                    SavedSearchUtil::resolveSearchFormByStickySortData($getData, $searchModel, $stickySearchData);
                     $dataCollection = new SavedSearchAttributesDataCollection($searchModel);
                 }
                 else
                 {
-                    SavedSearchUtil::resolveSearchFormByGetData(GetUtil::getData(), $searchModel);
+                    SavedSearchUtil::resolveSearchFormByGetData($getData, $searchModel);
                     if ($searchModel->savedSearchId != null)
                     {
                         $dataCollection = new SavedSearchAttributesDataCollection($searchModel);
                     }
                 }
-                if ($stickySearchKey != null && $setSticky)
+                if ($stickySearchKey != null && ($setSticky ||
+                    ($searchModel->getKanbanBoard() != null && $searchModel->getKanbanBoard()->getClearSticky())))
                 {
-                    if($stickySearchData == null)
+                    if ($stickySearchData == null)
                     {
                         $stickySearchData = array();
                     }
@@ -438,7 +489,8 @@
             $pageViewClassName,
             $listModel,
             $title,
-            $dataProvider = null
+            $dataProvider = null,
+            $redirectUrl  = null
             )
         {
             // TODO: @Shoaibi/@Jason: Low: Deprecated
@@ -490,7 +542,14 @@
                                         $skipCount, $modelClassName);
                             }
                             Yii::app()->user->setFlash('notification', $notificationContent);
-                            $this->redirect(array('default/'));
+                            if ($redirectUrl === null)
+                            {
+                                $this->redirect(array('default/'));
+                            }
+                            else
+                            {
+                                $this->redirect($redirectUrl);
+                            }
                             Yii::app()->end(0, false);
                         }
                     }
@@ -587,11 +646,10 @@
             return intval(Yii::app()->request->getQuery($modelClassName . '_page'));
         }
 
-        protected static function resolveReturnUrlForMassAction()
+        protected function resolveReturnUrlForMassAction()
         {
             // TODO: @Shoaibi/@Jason: Low: Candidate for MassActionController
-            return Yii::app()->createUrl('/' . Yii::app()->getController()->getModule()->getId() . '/' .
-                                                                            Yii::app()->getController()->getId() . '/');
+            return $this->createUrl('/' . $this->getModule()->getId() . '/' . $this->getId() . '/');
         }
 
         protected static function resolveViewIdByMassActionId($actionId, $returnProgressViewName, $moduleName = null)
@@ -612,7 +670,6 @@
             }
         }
 
-
         protected static function resolveTitleByMassActionId($actionId)
         {
             // TODO: @Shoaibi/@Jason: Low: Candidate for MassActionController
@@ -620,7 +677,7 @@
             {
                 return Zurmo::t('Core', 'Mass Delete');
             }
-            else if (strpos($actionId, 'massEdit') === 0)
+            elseif (strpos($actionId, 'massEdit') === 0)
             {
                 return Zurmo::t('Core', 'Mass Update');
             }
@@ -704,13 +761,14 @@
             }
         }
 
-        protected static function triggerMassAction($modelClassName, $searchForm, $pageView, $title, $searchView = null, $stateMetadataAdapterClassName = null)
+        protected function triggerMassAction($modelClassName, $searchForm, $pageView, $title, $searchView = null,
+                                                    $stateMetadataAdapterClassName = null, $useModuleClassNameForItemLabel = true)
         {
             // TODO: @Shoaibi/@Jason: Low: Candidate for MassActionController
-            $actionId               = Yii::app()->getController()->getAction()->getId();
+            $actionId               = $this->getAction()->getId();
             $pageSize               = static::resolvePageSizeByMassActionId($actionId);
             $model                  = new $modelClassName(false);
-            $dataProvider           = Yii::app()->getController()->getDataProviderByResolvingSelectAllFromGet(
+            $dataProvider           = $this->getDataProviderByResolvingSelectAllFromGet(
                                                                                         new $searchForm($model),
                                                                                         $pageSize,
                                                                                         Yii::app()->user->userModel->id,
@@ -719,32 +777,32 @@
                                                                                     );
             if (strpos($actionId, 'Progress') !== false)
             {
-                static::massActionProgress($model, $pageSize, $title, $actionId, $dataProvider);
+                $this->massActionProgress($model, $pageSize, $title, $actionId, $dataProvider);
             }
             else
             {
-                static::massAction($model, $pageSize, $title, $pageView, $actionId, $dataProvider);
+                $this->massAction($model, $pageSize, $title, $pageView, $actionId, $dataProvider, $useModuleClassNameForItemLabel);
             }
         }
 
-        protected static function massActionProgress($model, $pageSize, $title, $actionId, $dataProvider)
+        protected function massActionProgress($model, $pageSize, $title, $actionId, $dataProvider)
         {
             // TODO: @Shoaibi/@Jason: Low: Candidate for MassActionController
-            static::processMassActionProgress(
-                                                $model,
-                                                $pageSize,
-                                                $title,
-                                                $actionId,
-                                                $dataProvider
+            $this->processMassActionProgress(
+                                            $model,
+                                            $pageSize,
+                                            $title,
+                                            $actionId,
+                                            $dataProvider
                                             );
         }
 
-        protected static function massAction($model, $pageSize, $title, $pageView, $actionId, $dataProvider)
+        protected function massAction($model, $pageSize, $title, $pageView, $actionId, $dataProvider, $useModuleClassNameForItemLabel = true)
         {
             // TODO: @Shoaibi/@Jason: Low: Candidate for MassActionController
             $activeAttributes       = static::resolveActiveAttributesFromPostForMassAction($actionId);
             $selectedRecordCount    = static::resolveSelectedRecordCountByMassActionId($actionId, $dataProvider, array());
-            $model                  = static::processMassAction(
+            $model                  = $this->processMassAction(
                                                                 $pageSize,
                                                                 $selectedRecordCount,
                                                                 $pageView,
@@ -753,19 +811,20 @@
                                                                 $actionId,
                                                                 $dataProvider
                                                             );
-            $massActionView         = static::makeMassActionView(
+            $massActionView         = $this->makeMassActionView(
                                                                 $model,
                                                                 $activeAttributes,
                                                                 $selectedRecordCount,
                                                                 $title,
-                                                                $actionId
+                                                                $actionId,
+                                                                $useModuleClassNameForItemLabel
                                                             );
             $view                   = new $pageView(ZurmoDefaultViewUtil::makeStandardViewForCurrentUser(
-                                                                        Yii::app()->getController(), $massActionView));
+                                                                                                $this, $massActionView));
             echo $view->render();
         }
 
-        protected static function processMassAction($pageSize, $selectedRecordCount, $pageViewClassName, $listModel, $title,
+        protected function processMassAction($pageSize, $selectedRecordCount, $pageViewClassName, $listModel, $title,
                                                     $actionId, $dataProvider = null)
         {
             // TODO: @Shoaibi/@Jason: Low: Candidate for MassActionController
@@ -775,7 +834,6 @@
             $postModelClassName                         = Yii::app()->request->getPost($modelClassName);
             if (isset($postSelectedRecordCount) || isset($postModelClassName))
             {
-
                 $page                                   = static::resolvePageValueForMassAction($modelClassName);
                 $insufficientPermissionSkipSavingUtil   = static::resolveInsufficientPermissionSkipSavingUtilByMassActionId($actionId);
                 $start                                  = ($selectedRecordCount > $pageSize)? 1: $selectedRecordCount;
@@ -791,7 +849,7 @@
                                                                                     $actionId);
                 if ($massActionSuccessful)
                 {
-                    $progressView                           = static::makeMassActionProgressView(
+                    $progressView                           = $this->makeMassActionProgressView(
                                                                                                 $listModel,
                                                                                                 1,
                                                                                                 $selectedRecordCount,
@@ -804,14 +862,14 @@
                     {
                         $view                               = new $pageViewClassName(
                                                                     ZurmoDefaultViewUtil::makeStandardViewForCurrentUser(
-                                                                                Yii::app()->getController(),$progressView));
+                                                                                                $this, $progressView));
                         echo $view->render();
                     }
                     else
                     {
                         $refreshScript = $progressView->renderRefreshScript();
                         Yii::app()->user->setFlash('notification', $refreshScript['message']);
-                        Yii::app()->getController()->redirect(static::resolveReturnUrlForMassAction());
+                        $this->redirect($this->resolveReturnUrlForMassAction());
                     }
                     Yii::app()->end(0, false);
                 }
@@ -837,7 +895,6 @@
             {
                 $doMassActionFunctionName           = 'processModelsForMassEditAction';
                 array_unshift($doMassActionFunctionArguments, $postModelClassName, $model);
-
             }
             $doMassActionFunctionName               = 'static::' . $doMassActionFunctionName;
             return call_user_func_array($doMassActionFunctionName, $doMassActionFunctionArguments);
@@ -861,8 +918,8 @@
                 else
                 {
                     $insufficientPermissionSkipSavingUtil::setByModelIdAndName($modelClassName,
-                        $modelToProcess->id,
-                        $modelToProcess->name);
+                                                                                $modelToProcess->id,
+                                                                                $modelToProcess->name);
                 }
             }
             static::toggleMuteScoringModelValueByMassActionId($actionId, false);
@@ -900,57 +957,34 @@
             return false;
         }
 
-        protected static function makeMassActionView(
-                                                    $model,
-                                                    $activeAttributes,
-                                                    $selectedRecordCount,
-                                                    $title,
-                                                    $actionId)
+        protected function makeMassActionView(
+                                                $model,
+                                                $activeAttributes,
+                                                $selectedRecordCount,
+                                                $title,
+                                                $actionId,
+                                                $useModuleClassNameForItemLabel = true)
         {
             // TODO: @Shoaibi/@Jason: Low: Candidate for MassActionController
-            $moduleName                 = Yii::app()->getController()->getModule()->getPluralCamelCasedName();
+            $moduleName                 = $this->getModule()->getPluralCamelCasedName();
             $moduleClassName            = $moduleName . 'Module';
             $alertMessage               = static::resolveMassActionAlertMessage(get_class($model), $actionId);
             $title                      = static::resolveTitleByMassActionId($actionId) . ': ' . $title;
             $massActionViewClassName    = static::resolveViewIdByMassActionId($actionId, false, $moduleName);
-            $view                       = new $massActionViewClassName(Yii::app()->getController()->getId(),
-                                                            Yii::app()->getController()->getModule()->getId(),
-                                                            $model, $activeAttributes, $selectedRecordCount, $title,
-                                                            $alertMessage, $moduleClassName);
+            $view                       = new $massActionViewClassName(
+                                                                        $this->getId(),
+                                                                        $this->getModule()->getId(),
+                                                                        $model,
+                                                                        $activeAttributes,
+                                                                        $selectedRecordCount,
+                                                                        $title,
+                                                                        $alertMessage,
+                                                                        $moduleClassName,
+                                                                        $useModuleClassNameForItemLabel);
             return $view;
         }
 
-        protected static function makeMassActionProgressView(
-                                                            $model,
-                                                            $page,
-                                                            $selectedRecordCount,
-                                                            $start,
-                                                            $pageSize,
-                                                            $title,
-                                                            $skipCount,
-                                                            $actionId)
-        {
-            // TODO: @Shoaibi/@Jason: Low: Candidate for MassActionController
-            assert('$skipCount == null || is_int($skipCount)');
-            $massActionProgressActionName   = static::resolveProgressActionId($actionId);
-            $progressViewClassName          = static::resolveViewIdByMassActionId($actionId, true);
-            $params                         = static::resolveParamsForMassProgressView();
-            return new $progressViewClassName(
-                                                Yii::app()->getController()->getId(),
-                                                Yii::app()->getController()->getModule()->getId(),
-                                                $model,
-                                                $selectedRecordCount,
-                                                $start,
-                                                $pageSize,
-                                                $page,
-                                                $massActionProgressActionName,
-                                                $title,
-                                                $skipCount,
-                                                $params
-                                            );
-        }
-
-        protected static function processMassActionProgress(
+        protected function processMassActionProgress(
                                                             $listModel,
                                                             $pageSize,
                                                             $title,
@@ -975,7 +1009,7 @@
                                                 $insufficientPermissionSkipSavingUtil,
                                                 $postModelClassName,
                                                 $actionId);
-            $view                                   = static::makeMassActionProgressView(
+            $view                                   = $this->makeMassActionProgressView(
                                                         $listModel,
                                                         $startPage,
                                                         $selectedRecordCount,
@@ -985,6 +1019,36 @@
                                                         $insufficientPermissionSkipSavingUtil::getCount($modelClassName),
                                                         $actionId);
             echo $view->renderRefreshJSONScript();
+        }
+
+        protected function makeMassActionProgressView(
+                                                        $model,
+                                                        $page,
+                                                        $selectedRecordCount,
+                                                        $start,
+                                                        $pageSize,
+                                                        $title,
+                                                        $skipCount,
+                                                        $actionId)
+        {
+            // TODO: @Shoaibi/@Jason: Low: Candidate for MassActionController
+            assert('$skipCount == null || is_int($skipCount)');
+            $massActionProgressActionName   = static::resolveProgressActionId($actionId);
+            $progressViewClassName          = static::resolveViewIdByMassActionId($actionId, true);
+            $params                         = $this->resolveParamsForMassProgressView();
+            return new $progressViewClassName(
+                                                $this->getId(),
+                                                $this->getModule()->getId(),
+                                                $model,
+                                                $selectedRecordCount,
+                                                $start,
+                                                $pageSize,
+                                                $page,
+                                                $massActionProgressActionName,
+                                                $title,
+                                                $skipCount,
+                                                $params
+                                            );
         }
 
         protected static function resolvePostDataByMassActionId($actionId, $modelClassName = null)
@@ -1005,7 +1069,6 @@
                 $selectedRecordCount = ArrayUtil::getArrayValue($postData, 'selectedRecordCount');
             }
             return $selectedRecordCount;
-
         }
 
         protected static function resolveMassActionAlertMessage($postVariableName, $actionId)
@@ -1014,9 +1077,8 @@
             $actionId               = static::resolveMassActionId($actionId, true);
             $alertMessageHandler    = 'resolve' . $actionId . 'AlertMessage';
             return (method_exists(get_called_class(), $alertMessageHandler))?
-                static::$alertMessageHandler($postVariableName) : null;
+                                                        static::$alertMessageHandler($postVariableName) : null;
         }
-
 
         protected static function resolvePageSizeByMassActionId($actionId)
         {
@@ -1047,7 +1109,7 @@
         protected static function processModelForMassDelete(& $model)
         {
             // TODO: @Shoaibi/@Jason: Low: Candidate for MassActionController
-            if(!$model->delete(false))
+            if (!$model->delete(false))
             {
                 throw new FailedToDeleteModelException();
             }
@@ -1068,7 +1130,7 @@
             {
                 $model->setAttributes($sanitizedOwnerPostData);
             }
-            if(!$model->save(false))
+            if (!$model->save(false))
             {
                 throw new FailedToSaveModelException();
             }
@@ -1098,12 +1160,12 @@
             return $actionId;
         }
 
-        protected static function resolveParamsForMassProgressView()
+        protected function resolveParamsForMassProgressView()
         {
             // TODO: @Shoaibi/@Jason: Low: Candidate for MassActionController
             return array(
                 'insufficientPermissionSkipSavingUtil'  => null,
-                'returnUrl'                             => static::resolveReturnUrlForMassAction(),
+                'returnUrl'                             => $this->resolveReturnUrlForMassAction(),
                 'returnMessage'                         => null,
             );
         }
@@ -1113,6 +1175,18 @@
             // TODO: @Shoaibi/@Jason: Low: Candidate for MassActionController
             $actionId = str_replace(array('Progress', 'Save'), '', $actionId);
             return ($capitalizeFirst)? ucfirst($actionId) : $actionId;
+        }
+
+        protected function resolveActiveElementTypeForKanbanBoard(SearchForm $searchForm)
+        {
+            if ($searchForm->getKanbanBoard()->getIsActive())
+            {
+                return ListViewTypesToggleLinkActionElement::TYPE_KANBAN_BOARD;
+            }
+            else
+            {
+                return ListViewTypesToggleLinkActionElement::TYPE_GRID;
+            }
         }
     }
 ?>

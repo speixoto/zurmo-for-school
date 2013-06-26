@@ -4,7 +4,7 @@
      * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
-     * the terms of the GNU General Public License version 3 as published by the
+     * the terms of the GNU Affero General Public License version 3 as published by the
      * Free Software Foundation with the addition of the following permission added
      * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
      * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
@@ -12,10 +12,10 @@
      *
      * Zurmo is distributed in the hope that it will be useful, but WITHOUT
      * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-     * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+     * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
      * details.
      *
-     * You should have received a copy of the GNU General Public License along with
+     * You should have received a copy of the GNU Affero General Public License along with
      * this program; if not, see http://www.gnu.org/licenses or write to the Free
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
@@ -25,9 +25,9 @@
      *
      * The interactive user interfaces in original and modified versions
      * of this program must display Appropriate Legal Notices, as required under
-     * Section 5 of the GNU General Public License version 3.
+     * Section 5 of the GNU Affero General Public License version 3.
      *
-     * In accordance with Section 7(b) of the GNU General Public License version 3,
+     * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
@@ -38,6 +38,9 @@
     {
         const ZERO_MODELS_CHECK_FILTER_PATH =
             'application.modules.marketingLists.controllers.filters.MarketingListsZeroModelsCheckControllerFilter';
+
+        const USER_CONTACT_OR_LEAD_ACCESS_FILTER_PATH =
+            'application.modules.marketingLists.controllers.filters.UserCanAccessContactsOrLeadsForMarketingListControllerFilter';
 
         public static function getListBreadcrumbLinks()
         {
@@ -55,6 +58,10 @@
             return array_merge(parent::filters(),
                 array(
                     array(
+                        static::USER_CONTACT_OR_LEAD_ACCESS_FILTER_PATH . ' + create, details',
+                        'controller' => $this,
+                    ),
+                    array(
                         static::ZERO_MODELS_CHECK_FILTER_PATH . ' + list',
                         'controller'                    => $this,
                         'activeActionElementType'       => 'MarketingListsLink',
@@ -69,7 +76,6 @@
             $this->actionList();
         }
 
-        // TODO: @Shoaibi: Low: Rewrite unit tests for all models, controllers, utils, adapters, etc
         public function actionList()
         {
             $pageSize                       = Yii::app()->pagination->resolveActiveForCurrentUserByType(
@@ -136,7 +142,6 @@
             echo $view->render();
         }
 
-
         public function actionEdit($id)
         {
             $marketingList = MarketingList::getById(intval($id));
@@ -164,127 +169,25 @@
         {
             $modalListLinkProvider = new SelectFromRelatedEditModalListLinkProvider(
                                             $_GET['modalTransferInformation']['sourceIdFieldId'],
-                                            $_GET['modalTransferInformation']['sourceNameFieldId']
+                                            $_GET['modalTransferInformation']['sourceNameFieldId'],
+                                            $_GET['modalTransferInformation']['modalId']
             );
-            echo ModalSearchListControllerUtil::setAjaxModeAndRenderModalSearchList($this, $modalListLinkProvider,
-                                                'ContactsStateMetadataAdapter');
+            echo ModalSearchListControllerUtil::setAjaxModeAndRenderModalSearchList($this, $modalListLinkProvider);
         }
 
-        public function actionMassDelete()
+        public function actionGetInfoToCopyToCampaign($id)
         {
-            static::triggerMarketingListMemberMassAction();
-        }
-
-        public function actionMassDeleteProgress()
-        {
-            static::triggerMarketingListMemberMassAction();
-        }
-
-        public function actionMassSubscribe()
-        {
-            static::triggerMarketingListMemberMassAction();
-        }
-
-        public function actionMassSubscribeProgress()
-        {
-            static::triggerMarketingListMemberMassAction();
-        }
-
-        public function actionMassUnsubscribe()
-        {
-            static::triggerMarketingListMemberMassAction();
-        }
-
-        public function actionMassUnsubscribeProgress()
-        {
-            static::triggerMarketingListMemberMassAction();
+            $marketingList = static::getModelAndCatchNotFoundAndDisplayError('MarketingList', intval($id));
+            ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($marketingList);
+            $data = array();
+            $data['fromName']    = $marketingList->fromName;
+            $data['fromAddress'] = $marketingList->fromAddress;
+            echo CJSON::encode($data);
         }
 
         protected static function getSearchFormClassName()
         {
             return 'MarketingListsSearchForm';
-        }
-
-
-        protected static function triggerMarketingListMemberMassAction()
-        {
-            static::triggerMassAction(   'MarketingListMember',
-                                        'MarketingListMembersSearchForm',
-                                        'MarketingListMembersPageView',
-                                        MarketingListMember::getModelLabelByTypeAndLanguage('Plural'),
-                                        'MarketingListMembersSearchView',
-                                        null);
-        }
-
-        protected static function processModelForMassSubscribe(& $model)
-        {
-            return static::processModelForMassSubscribeOrUnsubscribe($model, false);
-        }
-
-        protected static function processModelForMassUnsubscribe(& $model)
-        {
-            return static::processModelForMassSubscribeOrUnsubscribe($model, true);
-        }
-
-        protected static function processModelForMassSubscribeOrUnsubscribe(& $model, $unsubscribed)
-        {
-            $model->unsubscribed = $unsubscribed;
-            if (!$model->unrestrictedSave())
-            {
-                throw new FailedToSaveModelException();
-            }
-            else
-            {
-                return true;
-            }
-        }
-
-        protected static function resolveTitleByMassActionId($actionId)
-        {
-            if (strpos($actionId, 'massSubscribe') === 0 || strpos($actionId, 'massUnsubscribe') === 0)
-            {
-                $term = 'Mass '. ucfirst(str_replace('mass', '', $actionId));
-                return Zurmo::t('MarketingListsModule', $term);
-            }
-            else
-            {
-                return parent::resolveTitleByMassActionId($actionId);
-            }
-        }
-
-        protected static function resolveReturnUrlForMassAction()
-        {
-            return Yii::app()->createUrl('/' . Yii::app()->getController()->getModule()->getId() . '/' .
-                                                            Yii::app()->getController()->getId() . '/details',
-                                                            array('id' => intval(Yii::app()->request->getQuery('id'))));
-        }
-
-        protected static function resolvePageValueForMassAction($modelClassName)
-        {
-            $pageValue = parent::resolvePageValueForMassAction($modelClassName);
-            if ($pageValue)
-            {
-                return $pageValue;
-            }
-            else
-            {
-                return intval(Yii::app()->request->getQuery('MarketingListMembersForPortletView_page'));
-            }
-        }
-
-        protected static function resolveViewIdByMassActionId($actionId, $returnProgressViewName, $moduleName = null)
-        {
-            if (strpos($actionId, 'massSubscribe') === 0 || strpos($actionId, 'massUnsubscribe') === 0)
-            {
-                $viewNameSuffix    = (!$returnProgressViewName)? 'View': 'ProgressView';
-                $viewNamePrefix    = static::resolveMassActionId($actionId, true);
-                $viewNamePrefix    = 'MarketingListMembers' . $viewNamePrefix;
-                return $viewNamePrefix . $viewNameSuffix;
-            }
-            else
-            {
-                return parent::resolveViewIdByMassActionId($actionId, $returnProgressViewName);
-            }
         }
     }
 ?>

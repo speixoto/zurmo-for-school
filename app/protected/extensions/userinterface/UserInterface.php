@@ -4,7 +4,7 @@
      * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
-     * the terms of the GNU General Public License version 3 as published by the
+     * the terms of the GNU Affero General Public License version 3 as published by the
      * Free Software Foundation with the addition of the following permission added
      * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
      * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
@@ -12,10 +12,10 @@
      *
      * Zurmo is distributed in the hope that it will be useful, but WITHOUT
      * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-     * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+     * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
      * details.
      *
-     * You should have received a copy of the GNU General Public License along with
+     * You should have received a copy of the GNU Affero General Public License along with
      * this program; if not, see http://www.gnu.org/licenses or write to the Free
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
@@ -25,31 +25,38 @@
      *
      * The interactive user interfaces in original and modified versions
      * of this program must display Appropriate Legal Notices, as required under
-     * Section 5 of the GNU General Public License version 3.
+     * Section 5 of the GNU Affero General Public License version 3.
      *
-     * In accordance with Section 7(b) of the GNU General Public License version 3,
+     * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    // Application component that helps to determine are visitors are using mobile, tablet or desktop computer.
+    /**
+     * Application component that helps to determine are visitors are using mobile, tablet or desktop computer.
+     */
     class UserInterface extends CApplicationComponent
     {
         const MOBILE                              = 'Mobile';
+
         const TABLET                              = 'Tablet';
+
         const DESKTOP                             = 'Desktop';
+
         const DEFAULT_USER_INTERFACE_COOKIE_NAME  = "DefaultUserInterfaceType";
+
         const SELECTED_USER_INTERFACE_COOKIE_NAME = "UserInterfaceType";
 
-        protected $defaultUserInterfaceType   = null;
-        protected $selectedUserInterfaceType  = null;
+        protected $defaultUserInterfaceType       = null;
+
+        protected $selectedUserInterfaceType      = null;
 
         public function init()
         {
-            $this->setDefaultUserInterfaceType();
-            $this->setSelectedUserInterfaceType();
+            $this->resolveDefaultUserInterfaceType();
+            $this->resolveSelectedUserInterfaceType();
         }
 
         /**
@@ -71,15 +78,14 @@
         /**
          * Set default interface type, based only on user device
          * User can't change this option.
-         * @param $userInterfaceType
          */
-        public function setDefaultUserInterfaceType()
+        public function resolveDefaultUserInterfaceType()
         {
             if (!isset(Yii::app()->request->cookies[self::DEFAULT_USER_INTERFACE_COOKIE_NAME]))
             {
-                $userInterfaceType = $this->detectUserInterfaceType();
+                $userInterfaceType              = $this->detectUserInterfaceType();
                 Yii::app()->request->cookies[self::DEFAULT_USER_INTERFACE_COOKIE_NAME] =
-                    new CHttpCookie(self::DEFAULT_USER_INTERFACE_COOKIE_NAME, $userInterfaceType);
+                                                  new CHttpCookie(self::DEFAULT_USER_INTERFACE_COOKIE_NAME, $userInterfaceType);
                 $this->defaultUserInterfaceType = $userInterfaceType;
             }
             else
@@ -96,17 +102,16 @@
          * Same ideas are implemented tor tablet devices.
          * @param $userInterfaceType
          */
-        public function setSelectedUserInterfaceType($userInterfaceType = null)
+        public function resolveSelectedUserInterfaceType($userInterfaceType = null)
         {
             if (!isset(Yii::app()->request->cookies[self::SELECTED_USER_INTERFACE_COOKIE_NAME]) || isset($userInterfaceType))
             {
                 if (!isset($userInterfaceType))
                 {
-                    $userInterfaceType = $this->detectUserInterfaceType();
+                    $userInterfaceType           = $this->detectUserInterfaceType();
                 }
-
                 Yii::app()->request->cookies[self::SELECTED_USER_INTERFACE_COOKIE_NAME] =
-                    new CHttpCookie(self::SELECTED_USER_INTERFACE_COOKIE_NAME, $userInterfaceType);
+                                            new CHttpCookie(self::SELECTED_USER_INTERFACE_COOKIE_NAME, $userInterfaceType);
                 $this->selectedUserInterfaceType = $userInterfaceType;
             }
             else
@@ -116,7 +121,8 @@
         }
 
         /**
-         * Does user use mobile
+         * Is user interface a mobile interface. If there is no specifically selected interface then it will default
+         * to the default detected interface.
          * @return bool
          */
         public function isMobile()
@@ -125,7 +131,8 @@
         }
 
         /**
-         * Does user using tablet
+         * Is user interface a tablet interface. If there is no specifically selected interface then it will default
+         * to the default detected interface.
          * @return bool
          */
         public function isTablet()
@@ -134,7 +141,8 @@
         }
 
         /**
-         * Does user use desktop computer
+         * Is user interface a desktop interface. If there is no specifically selected interface then it will default
+         * to the default detected interface.
          * @return bool
          */
         public function isDesktop()
@@ -143,28 +151,28 @@
         }
 
         /**
-         * Does user use mobile
+         * Regardless of selected interface, is the real interface of the user device mobile
          * @return bool
          */
-        public function isResolvedToMobile()
+        public function isRealInterfaceMobile()
         {
             return $this->defaultUserInterfaceType == self::MOBILE;
         }
 
         /**
-         * Does user using tablet
+         * Regardless of selected interface, is the real interface of the user device a tablet
          * @return bool
          */
-        public function isResolvedToTablet()
+        public function isRealInterfaceTablet()
         {
             return $this->defaultUserInterfaceType == self::TABLET;
         }
 
         /**
-         * Does user use desktop computer
+         * Regardless of selected interface, is the real interface of the user device a desktop
          * @return bool
          */
-        public function isResolvedToDesktop()
+        public function isRealInterfaceDesktop()
         {
             return ($this->defaultUserInterfaceType != self::MOBILE && $this->defaultUserInterfaceType != self::TABLET);
         }

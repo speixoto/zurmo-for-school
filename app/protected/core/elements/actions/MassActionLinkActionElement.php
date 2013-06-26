@@ -1,11 +1,10 @@
 <?php
-
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
      * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
-     * the terms of the GNU General Public License version 3 as published by the
+     * the terms of the GNU Affero General Public License version 3 as published by the
      * Free Software Foundation with the addition of the following permission added
      * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
      * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
@@ -13,10 +12,10 @@
      *
      * Zurmo is distributed in the hope that it will be useful, but WITHOUT
      * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-     * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+     * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
      * details.
      *
-     * You should have received a copy of the GNU General Public License along with
+     * You should have received a copy of the GNU Affero General Public License along with
      * this program; if not, see http://www.gnu.org/licenses or write to the Free
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
@@ -26,9 +25,9 @@
      *
      * The interactive user interfaces in original and modified versions
      * of this program must display Appropriate Legal Notices, as required under
-     * Section 5 of the GNU General Public License version 3.
+     * Section 5 of the GNU Affero General Public License version 3.
      *
-     * In accordance with Section 7(b) of the GNU General Public License version 3,
+     * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
@@ -52,7 +51,7 @@
 
         protected $allMenuItemName;
 
-        abstract protected function getActionName();
+        abstract protected function getActionId();
 
         abstract protected function getSelectedMenuNameSuffix();
 
@@ -69,10 +68,11 @@
 
         public function __construct($controllerId, $moduleId, $modelId, $params = array())
         {
-            parent::__construct($controllerId, $moduleId, $moduleId, $params);
+            parent::__construct($controllerId, $moduleId, $modelId, $params);
             $this->gridId = $this->getListViewGridId();
             $this->selectedMenuItemName = $this->gridId . $this->getSelectedMenuNameSuffix();
             $this->allMenuItemName = $this->gridId . $this->getAllMenuNameSuffix();
+            $this->params['redirectUrl'] = $this->resolveRedirectUrl();
             $this->registerUnifiedEventHandler();
         }
 
@@ -90,7 +90,7 @@
 
         public function getActionNameForCurrentElement()
         {
-            return $this->getActionName();
+            return $this->getActionId();
         }
 
         public function getActionType()
@@ -106,6 +106,7 @@
             }
             else
             {
+                // Begin Not Coding Standard
                 Yii::app()->clientScript->registerScript('massActionLinkActionElementEventHandler', "
                         function massActionLinkActionElementEventHandler(elementType, gridId, baseUrl, actionId, pageVarName)
                         {
@@ -147,6 +148,7 @@
                             return false;
                         }
                 ");
+                // End Not Coding Standard
             }
         }
 
@@ -167,14 +169,21 @@
 
         public function registerDropDownScripts($dropDownId = null, $scriptName = null)
         {
-            $dropDownId = ($dropDownId)? $dropDownId : static::getDropDownId();
-            $scriptName = ($scriptName)? $scriptName : $dropDownId;
+            if (!$dropDownId)
+            {
+                $dropDownId = static::getDropDownId();
+            }
+            if (!$scriptName)
+            {
+                $scriptName = $dropDownId;
+            }
             if (Yii::app()->clientScript->isScriptRegistered($scriptName))
             {
                 return;
             }
             else
             {
+                // Begin Not Coding Standard
                 Yii::app()->clientScript->registerScript($scriptName, "
                         $('#" . $dropDownId . "').unbind('change.action').bind('change.action', function()
                         {
@@ -195,10 +204,10 @@
                                     menuType = " . static::SELECTED_MENU_TYPE . ";
                                 }
                                 $('#" . $dropDownId . "').val('');
-                                massActionLinkActionElementEventHandler(".
+                                massActionLinkActionElementEventHandler(" .
                                         "menuType, ".
                                         " '" . $this->gridId. "',".
-                                        " '" . Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId) . "',".
+                                        " '" . Yii::app()->createUrl($this->moduleId . '/' . $this->getControllerId()) . "',".
                                         " actionName,".
                                         " '" . $this->getPageVarName() ."'".
                                         ");
@@ -206,6 +215,7 @@
                         }
                         );
                     ");
+                // End Not Coding Standard
             }
         }
 
@@ -252,13 +262,15 @@
 
         protected function getEventHandlerScriptContentForMenuType($menuType)
         {
-            return "massActionLinkActionElementEventHandler(".
+            // Begin Not Coding Standard
+            return "massActionLinkActionElementEventHandler(" .
                             $menuType . ",".
                             " '" . $this->gridId. "',".
-                            " '" . Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId) . "',".
-                            " '" . $this->getActionName(). "',".
+                            " '" . Yii::app()->createUrl($this->moduleId . '/' . $this->getControllerId()) . "',".
+                            " '" . $this->getActionId(). "',".
                             " '" . $this->getPageVarName() ."'".
                             ")";
+            // End Not Coding Standard
         }
 
         protected function getMenuItems()
@@ -308,12 +320,31 @@
 
         protected function getDefaultRoute()
         {
-            return $this->moduleId . '/' . $this->controllerId . '/' . $this->getActionName() . '/';
+            return $this->moduleId . '/' . $this->getControllerId() . '/' . $this->getActionId() . '/';
         }
 
         protected function getDefaultLabel()
         {
             throw new NotSupportedException;
+        }
+
+        protected function getControllerId()
+        {
+            $controllerId = ArrayUtil::getArrayValue($this->params, 'controllerId');
+            if ($controllerId)
+            {
+                return $controllerId;
+            }
+            else
+            {
+                return $this->controllerId;
+            }
+        }
+
+        protected function resolveRedirectUrl()
+        {
+            return Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/details',
+                                                                                        array('id' => $this->modelId));
         }
     }
 ?>

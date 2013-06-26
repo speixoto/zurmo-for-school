@@ -4,7 +4,7 @@
      * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
-     * the terms of the GNU General Public License version 3 as published by the
+     * the terms of the GNU Affero General Public License version 3 as published by the
      * Free Software Foundation with the addition of the following permission added
      * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
      * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
@@ -12,10 +12,10 @@
      *
      * Zurmo is distributed in the hope that it will be useful, but WITHOUT
      * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-     * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+     * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
      * details.
      *
-     * You should have received a copy of the GNU General Public License along with
+     * You should have received a copy of the GNU Affero General Public License along with
      * this program; if not, see http://www.gnu.org/licenses or write to the Free
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
@@ -25,9 +25,9 @@
      *
      * The interactive user interfaces in original and modified versions
      * of this program must display Appropriate Legal Notices, as required under
-     * Section 5 of the GNU General Public License version 3.
+     * Section 5 of the GNU Affero General Public License version 3.
      *
-     * In accordance with Section 7(b) of the GNU General Public License version 3,
+     * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
@@ -52,7 +52,7 @@
             $clausesCount = count($searchAttributeData['clauses']);
             $clauseStructure = null;
 
-            if(count($moduleClassNames) == 0)
+            if (count($moduleClassNames) == 0)
             {
                 $searchAttributeData['clauses'][$clausesCount + 1] = array(
                     'attributeName'        => 'moduleClassName',
@@ -75,7 +75,7 @@
                         $clauseStructure .= ' or ';
                     }
                     $clauseStructure .=  ($clausesCount + 1);
-                    $clausesCount ++;
+                    $clausesCount++;
                 }
             }
 
@@ -93,18 +93,21 @@
          * If the workflow is an existing workflow, then if moduleClassName has changed, the 'max' plus 1 should be
          * used.  Otherwise if it is new and the moduleClassName has not changed, then leave it alone
          * @param SavedWorkflow $savedWorkflow
+         * @param bool $isBeingCopied
          * @throws NotSupportedException if the moduleClassName has not been defined yet
          */
-        public static function resolveOrder(SavedWorkflow $savedWorkflow)
+        public static function resolveOrder(SavedWorkflow $savedWorkflow, $isBeingCopied = false)
         {
-            if($savedWorkflow->moduleClassName == null)
+            assert('is_bool($isBeingCopied)');
+            if ($savedWorkflow->moduleClassName == null)
             {
                 throw new NotSupportedException();
             }
             $q   = DatabaseCompatibilityUtil::getQuote();
             $sql = "select max({$q}order{$q}) maxorder from " . SavedWorkflow::getTableName('SavedWorkflow');
             $sql .= " where moduleclassname = '" . $savedWorkflow->moduleClassName . "'";
-            if($savedWorkflow->id < 0 || array_key_exists('moduleClassName', $savedWorkflow->originalAttributeValues))
+            if ($isBeingCopied || $savedWorkflow->id < 0 ||
+                array_key_exists('moduleClassName', $savedWorkflow->originalAttributeValues))
             {
                 $maxOrder             = R::getCell($sql);
                 $savedWorkflow->order = (int)$maxOrder +  1;
@@ -121,18 +124,17 @@
         public static function resolveBeforeSaveByModel(Item $model, User $triggeredByUser)
         {
             $savedWorkflows = SavedWorkflow::getActiveByModuleClassNameAndIsNewModel(
-                                             $model::getModuleClassName(), $model->isNewModel);
-            foreach($savedWorkflows as $savedWorkflow)
+                                             $model::getModuleClassName(), $model->getIsNewModel());
+            foreach ($savedWorkflows as $savedWorkflow)
             {
                 $workflow = SavedWorkflowToWorkflowAdapter::makeWorkflowBySavedWorkflow($savedWorkflow);
-                if(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model))
+                if (WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model))
                 {
-                    if($workflow->getType() == Workflow::TYPE_BY_TIME)
+                    if ($workflow->getType() == Workflow::TYPE_BY_TIME)
                     {
                         $model->addWorkflowToProcessAfterSave($workflow);
-
                     }
-                    elseif($workflow->getType() == Workflow::TYPE_ON_SAVE)
+                    elseif ($workflow->getType() == Workflow::TYPE_ON_SAVE)
                     {
                         WorkflowActionsUtil::processBeforeSave($workflow, $model, $triggeredByUser);
                         $model->addWorkflowToProcessAfterSave($workflow);
@@ -155,13 +157,13 @@
          */
         public static function resolveAfterSaveByModel(Item $model, User $triggeredByUser)
         {
-            foreach($model->getWorkflowsToProcessAfterSave() as $workflow)
+            foreach ($model->getWorkflowsToProcessAfterSave() as $workflow)
             {
-                if($workflow->getType() == Workflow::TYPE_BY_TIME)
+                if ($workflow->getType() == Workflow::TYPE_BY_TIME)
                 {
                     static::processToByTimeWorkflowInQueue($workflow, $model);
                 }
-                elseif($workflow->getType() == Workflow::TYPE_ON_SAVE)
+                elseif ($workflow->getType() == Workflow::TYPE_ON_SAVE)
                 {
                     WorkflowActionsUtil::processAfterSave($workflow, $model, $triggeredByUser);
                     WorkflowEmailMessagesUtil::processAfterSave($workflow, $model, $triggeredByUser);
@@ -182,11 +184,11 @@
         {
             $workflow->getTimeTrigger()->durationSeconds;
             $valueEvaluationType = $workflow->getTimeTrigger()->getValueEvaluationType();
-            if($valueEvaluationType == 'Date')
+            if ($valueEvaluationType == 'Date')
             {
                 $timeStamp = static::resolveTimeStampForDateAttributeForProcessDateTime($workflow->getTimeTrigger(), $model);
             }
-            elseif($valueEvaluationType == 'DateTime')
+            elseif ($valueEvaluationType == 'DateTime')
             {
                 $timeStamp = static::resolveTimeStampForDateTimeAttributeForProcessDateTime($workflow->getTimeTrigger(), $model);
             }
@@ -207,7 +209,7 @@
                                                                                      RedBeanModel $model)
         {
             $date = static::resolveModelValueByTimeTrigger($trigger, $model);
-            if(DateTimeUtil::isDateStringNull($date))
+            if (DateTimeUtil::isDateStringNull($date))
             {
                 throw new ValueForProcessDateTimeIsNullException();
             }
@@ -228,7 +230,7 @@
                                                                                          RedBeanModel $model)
         {
             $dateTime = static::resolveModelValueByTimeTrigger($trigger, $model);
-            if(DateTimeUtil::isDateTimeStringNull($dateTime))
+            if (DateTimeUtil::isDateTimeStringNull($dateTime))
             {
                 throw new ValueForProcessDateTimeIsNullException();
             }
@@ -246,14 +248,14 @@
          */
         protected static function resolveModelValueByTimeTrigger(TimeTriggerForWorkflowForm $trigger, RedBeanModel $model)
         {
-            if($trigger->getAttribute() == null)
+            if ($trigger->getAttribute() == null)
             {
                 $attributeAndRelationData = $trigger->getAttributeAndRelationData();
-                if(count($attributeAndRelationData) == 2)
+                if (count($attributeAndRelationData) == 2)
                 {
                     $penultimateRelation = $trigger->getPenultimateRelation();
                     $resolvedAttribute   = $trigger->getResolvedAttributeRealAttributeName();
-                    if($model->$penultimateRelation instanceof RedBeanMutableRelatedModels)
+                    if ($model->$penultimateRelation instanceof RedBeanMutableRelatedModels)
                     {
                         throw new NotSupportedException();
                     }
@@ -275,7 +277,6 @@
             }
         }
 
-
         /**
          * @param Workflow $workflow
          * @param RedBeanModel $model
@@ -290,12 +291,12 @@
                                          resolveByWorkflowIdAndModel(SavedWorkflow::getById((int)$workflow->getId()), $model);
                 $byTimeWorkflowInQueue->processDateTime = static::resolveProcessDateTimeByWorkflowAndModel($workflow, $model);
                 $saved                 = $byTimeWorkflowInQueue->save();
-                if(!$saved)
+                if (!$saved)
                 {
                     throw new FailedToSaveModelException();
                 }
             }
-            catch(ValueForProcessDateTimeIsNullException $e)
+            catch (ValueForProcessDateTimeIsNullException $e)
             {
                 //For now just log this exception. If this exception is thrown it means a date or dateTime
                 //somehow was set to empty, so we can't properly process this.

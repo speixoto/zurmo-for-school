@@ -4,7 +4,7 @@
      * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
-     * the terms of the GNU General Public License version 3 as published by the
+     * the terms of the GNU Affero General Public License version 3 as published by the
      * Free Software Foundation with the addition of the following permission added
      * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
      * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
@@ -12,10 +12,10 @@
      *
      * Zurmo is distributed in the hope that it will be useful, but WITHOUT
      * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-     * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+     * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
      * details.
      *
-     * You should have received a copy of the GNU General Public License along with
+     * You should have received a copy of the GNU Affero General Public License along with
      * this program; if not, see http://www.gnu.org/licenses or write to the Free
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
@@ -25,9 +25,9 @@
      *
      * The interactive user interfaces in original and modified versions
      * of this program must display Appropriate Legal Notices, as required under
-     * Section 5 of the GNU General Public License version 3.
+     * Section 5 of the GNU Affero General Public License version 3.
      *
-     * In accordance with Section 7(b) of the GNU General Public License version 3,
+     * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
@@ -186,7 +186,7 @@
         {
             return array(self::TYPE_ROWS_AND_COLUMNS  => Zurmo::t('ReportsModule', 'Rows and Columns'),
                          self::TYPE_SUMMATION         => Zurmo::t('ReportsModule', 'Summation'),
-                         self::TYPE_MATRIX            => Zurmo::t('ReportsModule', 'Matrix'),);
+                         self::TYPE_MATRIX            => Zurmo::t('ReportsModule', 'Matrix'));
         }
 
         /**
@@ -200,7 +200,7 @@
             $modules = Module::getModuleObjects();
             foreach (self::getReportableModulesClassNamesCurrentUserHasAccessTo() as $moduleClassName)
             {
-                if($moduleClassName::getStateMetadataAdapterClassName() != null)
+                if ($moduleClassName::getStateMetadataAdapterClassName() != null)
                 {
                     $reportRules = ReportRules::makeByModuleClassName($moduleClassName);
                     $label       = $reportRules->getVariableStateModuleLabel(Yii::app()->user->userModel);
@@ -209,7 +209,7 @@
                 {
                     $label = $moduleClassName::getModuleLabelByTypeAndLanguage('Plural');
                 }
-                if($label != null)
+                if ($label != null)
                 {
                     $moduleClassNamesAndLabels[$moduleClassName] = $label;
                 }
@@ -226,7 +226,7 @@
             $modules = Module::getModuleObjects();
             foreach ($modules as $module)
             {
-                if($module::isReportable())
+                if ($module::isReportable())
                 {
                     if (ReportSecurityUtil::canCurrentUserCanAccessModule(get_class($module)))
                     {
@@ -256,27 +256,27 @@
          */
         public function canCurrentUserProperlyRenderResults()
         {
-            if(!ReportSecurityUtil::canCurrentUserCanAccessModule($this->moduleClassName))
+            if (!ReportSecurityUtil::canCurrentUserCanAccessModule($this->moduleClassName))
             {
                 return false;
             }
-            if(!ReportSecurityUtil::canCurrentUserAccessAllComponents($this->displayAttributes))
+            if (!ReportSecurityUtil::canCurrentUserAccessAllComponents($this->displayAttributes))
             {
                 return false;
             }
-            if(!ReportSecurityUtil::canCurrentUserAccessAllComponents($this->filters))
+            if (!ReportSecurityUtil::canCurrentUserAccessAllComponents($this->filters))
             {
                 return false;
             }
-            if(!ReportSecurityUtil::canCurrentUserAccessAllComponents($this->orderBys))
+            if (!ReportSecurityUtil::canCurrentUserAccessAllComponents($this->orderBys))
             {
                 return false;
             }
-            if(!ReportSecurityUtil::canCurrentUserAccessAllComponents($this->groupBys))
+            if (!ReportSecurityUtil::canCurrentUserAccessAllComponents($this->groupBys))
             {
                 return false;
             }
-            if(!ReportSecurityUtil::canCurrentUserAccessAllComponents($this->drillDownDisplayAttributes))
+            if (!ReportSecurityUtil::canCurrentUserAccessAllComponents($this->drillDownDisplayAttributes))
             {
                 return false;
             }
@@ -432,7 +432,7 @@
          */
         public function isNew()
         {
-            if($this->id > 0)
+            if ($this->id > 0)
             {
                 return false;
             }
@@ -444,7 +444,7 @@
          */
         public function getOwner()
         {
-            if($this->owner == null)
+            if ($this->owner == null)
             {
                 $this->owner = Yii::app()->user->userModel;
             }
@@ -481,6 +481,22 @@
         public function removeAllFilters()
         {
             $this->filters   = array();
+        }
+
+        /**
+         * Removes all Runtime FilterForReportForm objects on this report
+         */
+        public function removeRuntimeFilters()
+        {
+            $filters = array();
+            foreach ($this->filters as $filter)
+            {
+                if (!$filter->availableAtRunTime)
+                {
+                    $filters[] = $filter;
+                }
+            }
+            $this->filters = $filters;
         }
 
         /**
@@ -584,7 +600,7 @@
          */
         public function getChart()
         {
-            if($this->chart == null)
+            if ($this->chart == null)
             {
                 $this->chart     = new ChartForReportForm();
             }
@@ -605,7 +621,7 @@
          */
         public function hasChart()
         {
-            if($this->getChart()->type == null)
+            if ($this->getChart()->type == null)
             {
                 return false;
             }
@@ -617,7 +633,7 @@
          */
         public function getExplicitReadWriteModelPermissions()
         {
-            if($this->explicitReadWriteModelPermissions == null)
+            if ($this->explicitReadWriteModelPermissions == null)
             {
                 $this->explicitReadWriteModelPermissions = new ExplicitReadWriteModelPermissions();
             }
@@ -639,9 +655,9 @@
          */
         public function hasRuntimeFilters()
         {
-            foreach($this->getFilters() as $filter)
+            foreach ($this->getFilters() as $filter)
             {
-                if($filter->availableAtRunTime)
+                if ($filter->availableAtRunTime)
                 {
                     return true;
                 }
@@ -657,9 +673,9 @@
          */
         public function getDisplayAttributeIndex($attribute)
         {
-            foreach($this->displayAttributes as $key => $displayAttribute)
+            foreach ($this->displayAttributes as $key => $displayAttribute)
             {
-                if($attribute == $displayAttribute->attributeIndexOrDerivedType)
+                if ($attribute == $displayAttribute->attributeIndexOrDerivedType)
                 {
                     return $key;
                 }
@@ -676,9 +692,9 @@
          */
         public function getDisplayAttributeByAttribute($attribute)
         {
-            foreach($this->getDisplayAttributes() as $displayAttribute)
+            foreach ($this->getDisplayAttributes() as $displayAttribute)
             {
-                if($attribute == $displayAttribute->attributeIndexOrDerivedType)
+                if ($attribute == $displayAttribute->attributeIndexOrDerivedType)
                 {
                     return $displayAttribute;
                 }
@@ -696,7 +712,7 @@
         {
             $newStartingStructurePosition = count($this->filters) + 1;
             $structure = null;
-            foreach($this->getGroupBys() as $groupBy)
+            foreach ($this->getGroupBys() as $groupBy)
             {
                 $index = ReportResultsRowData::resolveDataParamKeyForDrillDown($groupBy->attributeIndexOrDerivedType);
                 $value = $getData[$index];
@@ -707,15 +723,15 @@
                 self::resolveGroupByAsFilterValue($value, $filter);
 
                 $this->addFilter($filter);
-                if($structure != null)
+                if ($structure != null)
                 {
                     $structure .= ' AND ';
                 }
                 $structure .= $newStartingStructurePosition;
-                $newStartingStructurePosition ++;
+                $newStartingStructurePosition++;
             }
             $structure = '(' . $structure . ')';
-            if($this->filtersStructure != null)
+            if ($this->filtersStructure != null)
             {
                 $this->filtersStructure .= ' AND ';
             }
@@ -730,7 +746,7 @@
          */
         protected static function resolveGroupByAsFilterValue($value, FilterForReportForm $filter)
         {
-            if($value != null)
+            if ($value != null)
             {
                 $filter->operator                    = OperatorRules::TYPE_EQUALS;
                 $filter->value                       = $value;

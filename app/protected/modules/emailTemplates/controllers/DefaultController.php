@@ -4,7 +4,7 @@
      * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
-     * the terms of the GNU General Public License version 3 as published by the
+     * the terms of the GNU Affero General Public License version 3 as published by the
      * Free Software Foundation with the addition of the following permission added
      * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
      * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
@@ -12,10 +12,10 @@
      *
      * Zurmo is distributed in the hope that it will be useful, but WITHOUT
      * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-     * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+     * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
      * details.
      *
-     * You should have received a copy of the GNU General Public License along with
+     * You should have received a copy of the GNU Affero General Public License along with
      * this program; if not, see http://www.gnu.org/licenses or write to the Free
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
@@ -25,9 +25,9 @@
      *
      * The interactive user interfaces in original and modified versions
      * of this program must display Appropriate Legal Notices, as required under
-     * Section 5 of the GNU General Public License version 3.
+     * Section 5 of the GNU Affero General Public License version 3.
      *
-     * In accordance with Section 7(b) of the GNU General Public License version 3,
+     * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
@@ -50,14 +50,12 @@
 
         public static function getDetailsAndEditForWorkflowBreadcrumbLinks()
         {
-            return array(Zurmo::t('EmailTemplatesModule', 'Templates') =>
-                         array('default/listForWorkflow'));
+            return array(Zurmo::t('EmailTemplatesModule', 'Templates') => array('default/listForWorkflow'));
         }
 
         public static function getDetailsAndEditForMarketingBreadcrumbLinks()
         {
-            return array(Zurmo::t('EmailTemplatesModule', 'Templates') =>
-            array('default/listForMarketing'));
+            return array(Zurmo::t('EmailTemplatesModule', 'Templates') => array('default/listForMarketing'));
         }
 
         public function filters()
@@ -90,7 +88,7 @@
         public function actionListForMarketing()
         {
             $pageSize                       = Yii::app()->pagination->resolveActiveForCurrentUserByType(
-                'listPageSize', get_class($this->getModule()));
+                                                            'listPageSize', get_class($this->getModule()));
             $activeActionElementType        = EmailTemplatesForMarketingLinkActionElement::getType();
             $emailTemplate                  = new EmailTemplate(false);
             $searchForm                     = new EmailTemplatesSearchForm($emailTemplate);
@@ -145,7 +143,7 @@
             $emailTemplate       = new EmailTemplate();
             $emailTemplate->type = $type;
             $editAndDetailsView  = $this->makeEditAndDetailsView($this->attemptToSaveModelFromPost($emailTemplate), 'Edit');
-            if($emailTemplate->type == EmailTemplate::TYPE_WORKFLOW)
+            if ($emailTemplate->type == EmailTemplate::TYPE_WORKFLOW)
             {
                 $breadcrumbLinks    = static::getDetailsAndEditForWorkflowBreadcrumbLinks();
                 $breadcrumbLinks[]  = Zurmo::t('EmailTemplatesModule', 'Create');
@@ -153,7 +151,7 @@
                                       makeViewWithBreadcrumbsForCurrentUser($this, $editAndDetailsView,
                                       $breadcrumbLinks, 'WorkflowBreadCrumbView'));
             }
-            elseif($emailTemplate->type == EmailTemplate::TYPE_CONTACT)
+            elseif ($emailTemplate->type == EmailTemplate::TYPE_CONTACT)
             {
                 $emailTemplate->modelClassName = 'Contact';
                 $breadcrumbLinks    = static::getDetailsAndEditForMarketingBreadcrumbLinks();
@@ -175,7 +173,7 @@
             ControllerSecurityUtil::resolveAccessCanCurrentUserWriteModel($emailTemplate);
 
             $editAndDetailsView = $this->makeEditAndDetailsView($this->attemptToSaveModelFromPost($emailTemplate, $redirectUrl), 'Edit');
-            if($emailTemplate->type == EmailTemplate::TYPE_WORKFLOW)
+            if ($emailTemplate->type == EmailTemplate::TYPE_WORKFLOW)
             {
                 $breadcrumbLinks    = static::getDetailsAndEditForWorkflowBreadcrumbLinks();
                 $breadcrumbLinks[]  = StringUtil::getChoppedStringContent(strval($emailTemplate), 25);
@@ -183,7 +181,7 @@
                                       makeViewWithBreadcrumbsForCurrentUser($this, $editAndDetailsView,
                                       $breadcrumbLinks, 'WorkflowBreadCrumbView'));
             }
-            elseif($emailTemplate->type == EmailTemplate::TYPE_CONTACT)
+            elseif ($emailTemplate->type == EmailTemplate::TYPE_CONTACT)
             {
                 $breadcrumbLinks    = static::getDetailsAndEditForMarketingBreadcrumbLinks();
                 $breadcrumbLinks[]  = StringUtil::getChoppedStringContent(strval($emailTemplate), 25);
@@ -198,16 +196,22 @@
             echo $view->render();
         }
 
-        public function actionDetails($id)
+        public function actionDetails($id, $renderJson = false, $includeFilesInJson = false)
         {
             $emailTemplate = static::getModelAndCatchNotFoundAndDisplayError('EmailTemplate', intval($id));
             ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($emailTemplate);
+            if ($renderJson)
+            {
+                header('Content-type: application/json');
+                echo $this->resolveEmailTemplateAsJson($emailTemplate, $includeFilesInJson);
+                Yii::app()->end(0, false);
+            }
             AuditEvent::logAuditEvent('ZurmoModule', ZurmoModule::AUDIT_EVENT_ITEM_VIEWED, array(strval($emailTemplate),
                                         'EmailTemplatesModule'), $emailTemplate);
             $detailsView              = new EmailTemplateEditAndDetailsView('Details', $this->getId(),
                                                                             $this->getModule()->getId(), $emailTemplate);
 
-            if($emailTemplate->type == EmailTemplate::TYPE_WORKFLOW)
+            if ($emailTemplate->type == EmailTemplate::TYPE_WORKFLOW)
             {
                 $breadcrumbLinks          = static::getDetailsAndEditForWorkflowBreadcrumbLinks();
                 $breadcrumbLinks[]        = StringUtil::getChoppedStringContent(strval($emailTemplate), 25);
@@ -215,7 +219,7 @@
                                             makeViewWithBreadcrumbsForCurrentUser($this, $detailsView,
                                             $breadcrumbLinks, 'WorkflowBreadCrumbView'));
             }
-            elseif($emailTemplate->type == EmailTemplate::TYPE_CONTACT)
+            elseif ($emailTemplate->type == EmailTemplate::TYPE_CONTACT)
             {
                 $breadcrumbLinks          = static::getDetailsAndEditForMarketingBreadcrumbLinks();
                 $breadcrumbLinks[]        = StringUtil::getChoppedStringContent(strval($emailTemplate), 25);
@@ -230,6 +234,22 @@
             echo $view->render();
         }
 
+        protected function resolveEmailTemplateAsJson(EmailTemplate $emailTemplate, $includeFilesInJson)
+        {
+            $emailTemplateDataUtil          = new ModelToArrayAdapter($emailTemplate);
+            $emailTemplateData              = $emailTemplateDataUtil->getData();
+            if ($includeFilesInJson)
+            {
+                $emailTemplateData['filesIds']  = array();
+                foreach ($emailTemplate->files as $file)
+                {
+                    $emailTemplateData['filesIds'][] = $file->id;
+                }
+            }
+            $emailTemplateJson = CJSON::encode($emailTemplateData);
+            return $emailTemplateJson;
+        }
+
         protected static function getSearchFormClassName()
         {
             return 'EmailTemplatesSearchForm';
@@ -241,11 +261,11 @@
             ControllerSecurityUtil::resolveAccessCanCurrentUserDeleteModel($emailTemplate);
             $type          = $emailTemplate->type;
             $emailTemplate->delete();
-            if($type == EmailTemplate::TYPE_WORKFLOW)
+            if ($type == EmailTemplate::TYPE_WORKFLOW)
             {
                 $this->redirect(array($this->getId() . '/listForWorkflow'));
             }
-            elseif($emailTemplate->type == EmailTemplate::TYPE_CONTACT)
+            elseif ($emailTemplate->type == EmailTemplate::TYPE_CONTACT)
             {
                 $this->redirect(array($this->getId() . '/listForMarketing'));
             }
@@ -253,6 +273,18 @@
             {
                 throw new NotSupportedException();
             }
+        }
+
+        public function actionMergeTagGuide()
+        {
+            Yii::app()->getClientScript()->setToAjaxMode();
+            $view = new ModalView($this, new MergeTagGuideView());
+            echo $view->render();
+        }
+
+        protected static function getZurmoControllerUtil()
+        {
+            return new EmailTemplateZurmoControllerUtil();
         }
     }
 ?>

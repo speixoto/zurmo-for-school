@@ -4,7 +4,7 @@
      * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
-     * the terms of the GNU General Public License version 3 as published by the
+     * the terms of the GNU Affero General Public License version 3 as published by the
      * Free Software Foundation with the addition of the following permission added
      * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
      * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
@@ -12,10 +12,10 @@
      *
      * Zurmo is distributed in the hope that it will be useful, but WITHOUT
      * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-     * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+     * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
      * details.
      *
-     * You should have received a copy of the GNU General Public License along with
+     * You should have received a copy of the GNU Affero General Public License along with
      * this program; if not, see http://www.gnu.org/licenses or write to the Free
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
@@ -25,9 +25,9 @@
      *
      * The interactive user interfaces in original and modified versions
      * of this program must display Appropriate Legal Notices, as required under
-     * Section 5 of the GNU General Public License version 3.
+     * Section 5 of the GNU Affero General Public License version 3.
      *
-     * In accordance with Section 7(b) of the GNU General Public License version 3,
+     * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
@@ -78,7 +78,7 @@
             $emailMessage->content      = $emailContent;
             $emailMessage->sender       = $this->resolveSender();
             $this->resolveRecipients($emailMessage);
-            if($emailMessage->recipients->count() == 0)
+            if ($emailMessage->recipients->count() == 0)
             {
                 throw new MissingRecipientsForEmailMessageException();
             }
@@ -96,7 +96,7 @@
         {
             $mergeTagsUtil = MergeTagsUtilFactory::make($emailTemplate->type, $emailTemplate->language,
                                                         $emailTemplate->subject);
-            if(false === $resolvedContent = $mergeTagsUtil->resolveMergeTags($this->triggeredModel))
+            if (false === $resolvedContent = $mergeTagsUtil->resolveMergeTags($this->triggeredModel))
             {
                 return $emailTemplate->subject;
             }
@@ -112,7 +112,7 @@
         {
             $mergeTagsUtil = MergeTagsUtilFactory::make($emailTemplate->type, $emailTemplate->language,
                                                         $emailTemplate->textContent);
-            if(false === $resolvedContent = $mergeTagsUtil->resolveMergeTags($this->triggeredModel))
+            if (false === $resolvedContent = $mergeTagsUtil->resolveMergeTags($this->triggeredModel))
             {
                 return $emailTemplate->textContent;
             }
@@ -128,7 +128,7 @@
         {
             $mergeTagsUtil = MergeTagsUtilFactory::make($emailTemplate->type, $emailTemplate->language,
                                                         $emailTemplate->htmlContent);
-            if(false === $resolvedContent = $mergeTagsUtil->resolveMergeTags($this->triggeredModel))
+            if (false === $resolvedContent = $mergeTagsUtil->resolveMergeTags($this->triggeredModel))
             {
                 return $emailTemplate->htmlContent;
             }
@@ -142,13 +142,13 @@
         protected function resolveSender()
         {
             $sender                     = new EmailMessageSender();
-            if($this->emailMessageForm->sendFromType == EmailMessageForWorkflowForm::SEND_FROM_TYPE_DEFAULT)
+            if ($this->emailMessageForm->sendFromType == EmailMessageForWorkflowForm::SEND_FROM_TYPE_DEFAULT)
             {
-                $userToSendMessagesFrom     = Yii::app()->emailHelper->getUserToSendNotificationsAs();
+                $userToSendMessagesFrom     = BaseJobControlUserConfigUtil::getUserToRunAs();
                 $sender->fromAddress        = Yii::app()->emailHelper->resolveFromAddressByUser($userToSendMessagesFrom);
                 $sender->fromName           = strval($userToSendMessagesFrom);
             }
-            elseif($this->emailMessageForm->sendFromType == EmailMessageForWorkflowForm::SEND_FROM_TYPE_CUSTOM)
+            elseif ($this->emailMessageForm->sendFromType == EmailMessageForWorkflowForm::SEND_FROM_TYPE_CUSTOM)
             {
                 $sender->fromAddress        = $this->emailMessageForm->sendFromAddress;
                 $sender->fromName           = $this->emailMessageForm->sendFromName;
@@ -165,9 +165,9 @@
          */
         protected function resolveRecipients(EmailMessage $emailMessage)
         {
-            foreach($this->emailMessageForm->getEmailMessageRecipients() as $emailMessageRecipient)
+            foreach ($this->emailMessageForm->getEmailMessageRecipients() as $emailMessageRecipient)
             {
-                foreach($emailMessageRecipient->makeRecipients($this->triggeredModel, $this->triggeredByUser) as $recipient)
+                foreach ($emailMessageRecipient->makeRecipients($this->triggeredModel, $this->triggeredByUser) as $recipient)
                 {
                     $emailMessage->recipients->add($recipient);
                 }

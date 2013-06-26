@@ -4,7 +4,7 @@
      * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
-     * the terms of the GNU General Public License version 3 as published by the
+     * the terms of the GNU Affero General Public License version 3 as published by the
      * Free Software Foundation with the addition of the following permission added
      * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
      * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
@@ -12,10 +12,10 @@
      *
      * Zurmo is distributed in the hope that it will be useful, but WITHOUT
      * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-     * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+     * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
      * details.
      *
-     * You should have received a copy of the GNU General Public License along with
+     * You should have received a copy of the GNU Affero General Public License along with
      * this program; if not, see http://www.gnu.org/licenses or write to the Free
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
@@ -25,9 +25,9 @@
      *
      * The interactive user interfaces in original and modified versions
      * of this program must display Appropriate Legal Notices, as required under
-     * Section 5 of the GNU General Public License version 3.
+     * Section 5 of the GNU Affero General Public License version 3.
      *
-     * In accordance with Section 7(b) of the GNU General Public License version 3,
+     * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
@@ -123,6 +123,7 @@
         protected $isValidating           = false;
         protected $isSaving               = false;
         protected $isNewModel             = false;
+        protected $isCopied               = false;
 
         /**
          * Can this model be saved when save is called from a related model?  True if it can, false if it cannot.
@@ -144,6 +145,7 @@
             'defaultCalculatedDate'  => 'RedBeanModelDefaultCalculatedDateValidator',
             'readOnly'               => 'RedBeanModelReadOnlyValidator',
             'dateTimeDefault'        => 'RedBeanModelDateTimeDefaultValueValidator',
+            'probability'            => 'RedBeanModelProbabilityValidator',
         );
 
         /**
@@ -228,6 +230,41 @@
             assert('$where   === null || is_string ($where)   && $where   != ""');
             assert('$orderBy === null || is_string ($orderBy) && $orderBy != ""');
             assert('$modelClassName === null || is_string($modelClassName) && $modelClassName != ""');
+
+            if ($modelClassName === null)
+            {
+                $modelClassName = get_called_class();
+            }
+            $ids = self::getSubsetIds($joinTablesAdapter, $offset, $count, $where,
+                $orderBy, $modelClassName, $selectDistinct);
+            $tableName = self::getTableName($modelClassName);
+            $beans = R::batch ($tableName, $ids);
+            return self::makeModels($beans, $modelClassName);
+        }
+
+        /**
+         * Gets a range of model ids from the database of the named model type.
+         * @param $modelClassName
+         * @param $joinTablesAdapter null or instance of joinTablesAdapter.
+         * @param $offset The zero based index of the first model to be returned.
+         * @param $count The number of models to be returned.
+         * @param $where
+         * @param $orderBy - sql string. Example 'a desc' or 'a.b desc'.  Currently only supports non-related attributes
+         * @param $modelClassName Pass only when getting it at runtime gets the wrong name.
+         * @return An array of models ids
+         */
+        public static function getSubsetIds(RedBeanModelJoinTablesQueryAdapter $joinTablesAdapter = null,
+                                            $offset = null, $count = null,
+                                            $where = null, $orderBy = null,
+                                            $modelClassName = null,
+                                            $selectDistinct = false)
+        {
+            assert('$offset  === null || is_integer($offset)  && $offset  >= 0');
+            assert('$count   === null || is_integer($count)   && $count   >= 1');
+            assert('$where   === null || is_string ($where)   && $where   != ""');
+            assert('$orderBy === null || is_string ($orderBy) && $orderBy != ""');
+            assert('$modelClassName === null || is_string($modelClassName) && $modelClassName != ""');
+
             if ($modelClassName === null)
             {
                 $modelClassName = get_called_class();
@@ -238,11 +275,9 @@
             }
             $tableName = self::getTableName($modelClassName);
             $sql       = static::makeSubsetOrCountSqlQuery($tableName, $joinTablesAdapter, $offset, $count, $where,
-                                                           $orderBy, false, $selectDistinct);
+                $orderBy, false, $selectDistinct);
             $ids       = R::getCol($sql);
-            $tableName = self::getTableName($modelClassName);
-            $beans = R::batch ($tableName, $ids);
-            return self::makeModels($beans, $modelClassName);
+            return $ids;
         }
 
         /**
@@ -369,10 +404,9 @@
         public function __construct($setDefaults = true, RedBean_OODBBean $bean = null, $forceTreatAsCreation = false,
                                     $runConstruction = true)
         {
-
             $this->pseudoId = self::$nextPseudoId--;
             $this->init();
-            if(!$runConstruction)
+            if (!$runConstruction)
             {
                 return;
             }
@@ -436,7 +470,11 @@
             else
             {
                 $this->onLoaded();
-                RedBeanModelsCache::cacheModel($this);
+                $modelClassName = get_called_class();
+                if ($modelClassName::isCacheable())
+                {
+                    RedBeanModelsCache::cacheModel($this);
+                }
             }
             $this->modified = false;
         }
@@ -598,6 +636,11 @@
          */
         protected function onCreated()
         {
+            if ($this->hasEventHandler('onCreated'))
+            {
+                $event = new CModelEvent($this);
+                $this->onCreated($event);
+            }
         }
 
         /**
@@ -605,6 +648,11 @@
          */
         protected function onLoaded()
         {
+            if ($this->hasEventHandler('onLoaded'))
+            {
+                $event = new CModelEvent($this);
+                $this->onLoaded($event);
+            }
         }
 
         /**
@@ -683,6 +731,7 @@
                         assert('in_array($relationType, array(self::HAS_ONE_BELONGS_TO, self::HAS_MANY_BELONGS_TO, ' .
                                                              'self::HAS_ONE, self::HAS_MANY, self::MANY_MANY))');
                         $this->attributeNameToBeanAndClassName[$relationName] = array($bean, $modelClassName);
+
                         /**
                         $this->relationNameToRelationTypeModelClassNameAndOwns[$relationName] = array($relationType,
                                                                                                 $relationModelClassName,
@@ -1223,7 +1272,6 @@
                                 $linkName = self::makeCasedLinkName($relationType, $linkType, $relationLinkName);
                                 if ($bean->id > 0 && !in_array($attributeName, $this->unlinkedRelationNames))
                                 {
-
                                     $linkFieldName = ZurmoRedBeanLinkManager::getLinkField($relatedTableName, $linkName);
 
                                     if ((int)$bean->$linkFieldName > 0)
@@ -1368,7 +1416,7 @@
                     {
                         $this->unrestrictedGet($attributeName);
                     }
-                    elseif($value !== null && $owns == RedBeanModel::OWNED &&
+                    elseif ($value !== null && $owns == RedBeanModel::OWNED &&
                            !in_array($attributeName, $this->unlinkedRelationNames) &&
                            !isset($this->relationNameToRelatedModel[$attributeName]))
                     {
@@ -1387,7 +1435,7 @@
                             isset($this->relationNameToRelatedModel[$attributeName]))
                         {
                             $this->unlinkedRelationNames[] = $attributeName;
-                            if($owns == RedBeanModel::OWNED)
+                            if ($owns == RedBeanModel::OWNED)
                             {
                                 $this->unlinkedOwnedRelatedModelsToRemove[$attributeName] =
                                        $this->relationNameToRelatedModel[$attributeName];
@@ -1466,6 +1514,25 @@
             foreach ($this->validators as $validator)
             {
                 if ($validator instanceof RedBeanModelReadOnlyValidator)
+                {
+                    if (in_array($attributeName, $validator->attributes, true))
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+
+        /**
+         * Returns true if the attribute is formattted as probability
+         */
+        public function isAttributeFormattedAsProbability($attributeName)
+        {
+            assert("\$this->isAttribute(\"$attributeName\")");
+            foreach ($this->validators as $validator)
+            {
+                if ($validator instanceof RedBeanModelProbabilityValidator)
                 {
                     if (in_array($attributeName, $validator->attributes, true))
                     {
@@ -1756,8 +1823,9 @@
                                 $linkName = strtolower(static::getRelationLinkName($relationName));
                             }
                             ZurmoRedBeanLinkManager::breakLink($bean, $relatedTableName, $linkName);
-                            if($this->{$relationName} !== null &&
-                               isset($this->unlinkedOwnedRelatedModelsToRemove[$relationName]))
+                            //Check the $this->{$relationName} second in the if clause to avoid accidentially getting
+                            //a relation to now save. //todo: this needs to be properly handled.
+                            if (isset($this->unlinkedOwnedRelatedModelsToRemove[$relationName]) && $this->{$relationName} !== null)
                             {
                                 //Remove hasOne owned related models that are no longer needed because they have
                                 //been replaced with another hasOne owned model.
@@ -1833,8 +1901,13 @@
                                 {
                                     $relatedModel = $this->relationNameToRelatedModel[$relationName];
                                     $relatedBean  = $relatedModel->getClassBean($relatedModelClassName);
-                                    ZurmoRedBeanLinkManager::link($bean, $relatedBean, $linkName);
-
+                                    //Exclude HAS_MANY_BELONGS_TO because if the existing relation is unlinked, then
+                                    //this link should not be reactivated, because it will improperly create the bean
+                                    //in the database.
+                                    if (!($relationType == RedBeanModel::HAS_MANY_BELONGS_TO && $this->{$relationName}->id < 0))
+                                    {
+                                        ZurmoRedBeanLinkManager::link($bean, $relatedBean, $linkName);
+                                    }
                                     if (!RedBeanDatabase::isFrozen())
                                     {
                                         $tableName  = self::getTableName(static::getAttributeModelClassName($relationName));
@@ -1858,7 +1931,11 @@
                         }
                         $this->modified = false;
                         $this->afterSave();
-                        RedBeanModelsCache::cacheModel($this);
+                        $calledModelClassName = get_called_class();
+                        if ($calledModelClassName::isCacheable())
+                        {
+                            RedBeanModelsCache::cacheModel($this);
+                        }
                         $this->isSaving = false;
                         return true;
                     }
@@ -2179,7 +2256,7 @@
             assert('is_string($relatedModelClassName)');
             assert('$relatedModelClassName != ""');
             assert('is_int($id)');
-            assert('$id > 0');
+            //assert('$id > 0');
             assert('$modelClassName === null || is_string($modelClassName) && $modelClassName != ""');
             if ($modelClassName === null)
             {
@@ -2310,7 +2387,7 @@
          */
         protected static function getLabel($language = null)
         {
-            if(null != $moduleClassName = static::getModuleClassName())
+            if (null != $moduleClassName = static::getModuleClassName())
             {
                 return $moduleClassName::getModuleLabelByTypeAndLanguage('Singular', $language);
             }
@@ -2325,7 +2402,7 @@
          */
         protected static function getPluralLabel($language = null)
         {
-            if(null != $moduleClassName = static::getModuleClassName())
+            if (null != $moduleClassName = static::getModuleClassName())
             {
                 return $moduleClassName::getModuleLabelByTypeAndLanguage('Plural', $language);
             }
@@ -2995,6 +3072,30 @@
         public static function getSortAttributesByAttribute($attribute)
         {
             return array($attribute);
+        }
+
+        /**
+         * Utilized by copy mechanism, helps elements, views, understand the model better before the new model is saved.
+         */
+        public function setIsCopied()
+        {
+            $this->isCopied = true;
+        }
+
+        /**
+         * @return bool
+         */
+        public function isCopied()
+        {
+            return $this->isCopied;
+        }
+
+        /**
+         * @return bool
+         */
+        public static function isCacheable()
+        {
+            return true;
         }
     }
 ?>

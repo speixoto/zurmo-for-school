@@ -4,7 +4,7 @@
      * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
-     * the terms of the GNU General Public License version 3 as published by the
+     * the terms of the GNU Affero General Public License version 3 as published by the
      * Free Software Foundation with the addition of the following permission added
      * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
      * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
@@ -12,10 +12,10 @@
      *
      * Zurmo is distributed in the hope that it will be useful, but WITHOUT
      * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-     * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+     * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
      * details.
      *
-     * You should have received a copy of the GNU General Public License along with
+     * You should have received a copy of the GNU Affero General Public License along with
      * this program; if not, see http://www.gnu.org/licenses or write to the Free
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
@@ -25,9 +25,9 @@
      *
      * The interactive user interfaces in original and modified versions
      * of this program must display Appropriate Legal Notices, as required under
-     * Section 5 of the GNU General Public License version 3.
+     * Section 5 of the GNU Affero General Public License version 3.
      *
-     * In accordance with Section 7(b) of the GNU General Public License version 3,
+     * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
@@ -181,8 +181,8 @@
             => 'Konfigurieren',
         'Convert'
             => 'Konvertieren',
-        'Copyright &#169; Zurmo Inc., 2012. All Rights reserved.'
-            => 'Copyright © Zurmo Inc., 2012. Alle Rechte vorbehalten.',
+        'Copyright &#169; Zurmo Inc., 2013. All Rights reserved.'
+            => 'Copyright © Zurmo Inc., 2013. Alle Rechte vorbehalten.',
         'Could not remove relation.'
             => 'Unfähig, die Beziehung zu löschen.',
         'Could not save relation.'
@@ -319,6 +319,8 @@
             => 'hier',
         'Home'
             => 'Startseite',
+        'Host'
+            => 'Hostname',
         'If there is new metadata to load using CustomManagement, use this option.'
             => 'Diese Option verwenden, wenn es neue Metadaten mit CustomManagement zu laden gibt.',
         'In Progress'
@@ -509,6 +511,8 @@
             => 'Richtlinien erfolgreich gespeichert.',
         'Popup list page size'
             => 'Popup-Liste Seitengröße',
+        'Port'
+            => 'Port', // Same Word Translated
         'Post to Profile'
             => 'Teilen auf deinem Profil ',
         'Postal Code'
@@ -639,6 +643,8 @@
             => 'Mit Tag Cloud Felder kann man Datensätze mit Werten  markieren, so man sie leicht später finden kann.',
         'Technology'
             => 'Technologie',
+        'Test Connection'
+            => 'Verbindung prüfen',
         'The currency rate web service says this currency code is invalid even though zurmo says it is valid. The rate could not be automatically updated.'
             => 'Der Wechselkurs Web-Service behauptet dass dieser Währung ist ungültig, obwohl zurmo behauptet, es gültig ist. Der Wechselkurs war nicht automatisch aktualisiert.',
         'The currency rate web service was unavailable. The rate could not be automatically updated.'
