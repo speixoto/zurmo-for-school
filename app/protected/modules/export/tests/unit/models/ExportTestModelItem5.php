@@ -44,10 +44,7 @@
             $metadata = parent::getDefaultMetadata();
             $metadata[__CLASS__] = array(
                 'members' => array(
-                    'fromAddress',
-                ),
-                'relations' => array(
-                    'fromAddress'   => array(RedBeanModel::HAS_ONE,   'Email', RedBeanModel::OWNED),
+                    'emailAddress',
                 ),
                 'rules' => array(
                     array('emailAddress',   'type', 'type' => 'string'),
