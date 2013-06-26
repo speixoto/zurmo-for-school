@@ -241,9 +241,9 @@
         /**
          * Encrypt password beforeSave
          */
-        public function beforeSave()
+        public function afterValidate()
         {
-            parent::beforeSave();
+            parent::afterValidate();
             if ($this->outboundPassword !== null && $this->outboundPassword !== '')
             {
                 $this->outboundPassword = ZurmoPasswordSecurityUtil::encrypt($this->outboundPassword);
