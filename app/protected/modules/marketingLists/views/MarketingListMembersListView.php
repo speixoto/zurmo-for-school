@@ -368,8 +368,9 @@
 
         protected function getEmptyText()
         {
+            $params = LabelUtil::getTranslationParamsForAllModules();
             $content  = '<div class="general-issue-notice no-subscribers-found"><span class="icon-notice"></span><p>';
-            $content .= Zurmo::t('CampaignsModule', 'No Subscribers found text...');
+            $content .= Zurmo::t('CampaignsModule', 'No ContactsModulePluralLabel or LeadsModulePluralLabel Subscribed', $params);
             $content .= '</p></div>';
             return $content;
         }

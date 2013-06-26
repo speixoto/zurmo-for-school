@@ -39,7 +39,6 @@
      */
     class ReportResultsGridForPortletView extends ReportResultsComponentForPortletView
     {
-
         private $gridViewId;
 
         /**
