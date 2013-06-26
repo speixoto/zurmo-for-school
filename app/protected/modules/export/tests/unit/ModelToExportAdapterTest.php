@@ -87,7 +87,7 @@
             parent::teardown();
         }
 
-        public function testGetDataWithemailAddress()
+        public function testGetDataWithEmailAddress()
         {
             $testItem                               = new ExportTestModelItem5();
             $createStamp = strtotime(DateTimeUtil::convertTimestampToDbFormatDateTime(time()));
