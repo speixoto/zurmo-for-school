@@ -102,6 +102,18 @@
             'outboundPassword',
             'outboundSecurity'
         );
+        
+        /**
+         * Fallback from address to use for sending out notifications.
+         * @var string
+         */
+        public $defaultFromAddress;  
+
+        /**
+         * Utilized when sending a test email nightly to check the status of the smtp server
+         * @var string
+         */
+        public $defaultTestToAddress;  
 
         /**
          * Fallback from address to use for sending out notifications.
@@ -123,6 +135,8 @@
         public function init()
         {
             $this->loadOutboundSettings();
+            $this->defaultFromAddress   = EmailHelper::resolveDefaultEmailAddress('notification');
+            $this->defaultTestToAddress = EmailHelper::resolveDefaultEmailAddress('testJobEmail');
         }
 
         protected function loadOutboundSettings()
@@ -403,6 +417,14 @@
                 return $this->defaultFromAddress;
             }
             return $user->primaryEmail->emailAddress;
+        }
+        
+        /*
+         * Resolving Default Email Addess For Email Testing
+         */
+        public static function resolveDefaultEmailAddress($defaultEmailAddress)
+        {                       
+            return $defaultEmailAddress . '@' . StringUtil::resolveCustomizedLabel . 'alerts.com';
         }
     }
 ?>
