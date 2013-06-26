@@ -34,57 +34,27 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * Use this form when creating or modifying a user's email account information
-     */
-    class UserEmailConfigurationForm extends ModelForm
+    class PersonSlidingPanelsUtilTest extends ZurmoBaseTest
     {
-        public $aTestToAddress;
-
-        public $emailSignatureHtmlContent;
-
-        protected static function getRedBeanModelClassName()
+        public function testGetSlideToSecondPanelLabel()
         {
-            return 'EmailAccount';
+            $this->assertEquals(
+                    'Switch to Full View',
+                    PersonSlidingPanelsUtil::getSlideToSecondPanelLabel());
         }
 
-        public function __construct(EmailAccount $model)
+        public function testGetSlideToFirstPanelLabel()
         {
-            $this->model = $model;
+            $this->assertEquals(
+                    'Switch to Business Card View',
+                    PersonSlidingPanelsUtil::getSlideToFirstPanelLabel());
         }
 
-        public function rules()
+        public function testRenderToggleLinkContent()
         {
-            return array(
-                array('aTestToAddress',                    'email'),
-                array('emailSignatureHtmlContent', 'type', 'type' => 'string'),
-            );
-        }
-
-        public function attributeLabels()
-        {
-            return array_merge($this->model->attributeLabels(), array(
-                'aTestToAddress'            => Zurmo::t('UsersModule', 'Send a test email to'),
-                'emailSignatureHtmlContent' => Zurmo::t('UsersModule', 'Email Signature')
-            ));
-        }
-
-        /**
-         * Save the emailSignatureHtmlContent
-         */
-        public function save($runValidation = true, array $attributeNames = null)
-        {
-            if (parent::save(false))
-            {
-                $emailSignature              = $this->model->user->getEmailSignature();
-                $emailSignature->htmlContent = $this->emailSignatureHtmlContent;
-                $this->model->user->save();
-            }
-            else
-            {
-                return false;
-            }
-            return true;
+            $this->assertContains(
+                    '<a id="sliding-panel-toggle" class="vertical-forward-pager slide-to-second-panel"',
+                    PersonSlidingPanelsUtil::renderToggleLinkContent());
         }
     }
 ?>
