@@ -47,14 +47,21 @@
             $messageLogger->addInfoMessage(Zurmo::t('Core', 'Building Table Schema for Models'));
             foreach ($modelClassNames as $modelClassName)
             {
-                $tables[] = RedBeanModelToTableSchemaAdapter::resolve($modelClassName, $messageLogger);
+                $table = RedBeanModelToTableSchemaAdapter::resolve($modelClassName, $messageLogger);
+                if ($table)
+                {
+                    $tables[] = $table;
+                }
             }
             foreach($tables as $schemaDefinition)
             {
                 $tableName          = key($schemaDefinition);
                 $polymorphicColumns = RedBeanModelRelationToColumnAdapter::resolvePolymorphicColumnsByTableName($tableName);
-                $columns            = CMap::mergeArray($schemaDefinition[$tableName]['columns'], $polymorphicColumns);
-                $schemaDefinition[$tableName]['columns']   = $columns;
+                if (!empty($polymorphicColumns))
+                {
+                    $columns            = CMap::mergeArray($schemaDefinition[$tableName]['columns'], $polymorphicColumns);
+                    $schemaDefinition[$tableName]['columns']   = $columns;
+                }
                 CreateOrUpdateExistingTableFromSchemaDefinitionArrayUtil::
                                         generateOrUpdateTableBySchemaDefinition($schemaDefinition, $messageLogger);
                 $messageLogger->addInfoMessage(Zurmo::t('Core', 'Scheme generated for {{table}}.',

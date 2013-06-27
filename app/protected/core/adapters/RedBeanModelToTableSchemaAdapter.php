@@ -44,6 +44,10 @@
         public static function resolve($modelClassName, & $messageLogger)
         {
             $metadata                       = $modelClassName::getDefaultMetaData();
+            if (!isset($metadata[$modelClassName]))
+            {
+                return false;
+            }
             $modelMetadata                  = $metadata[$modelClassName];
             $memberColumns                  = array();
             $relationColumns                = array();
@@ -68,10 +72,24 @@
             }
             if (isset($modelMetadata['indexes']) || !empty($uniqueIndexesFromValidators))
             {
-                $indexesMetadata    = CMap::mergeArray($modelMetadata['indexes'], $uniqueIndexesFromValidators);
-                $indexes            = RedBeanModelMemberIndexesMetadataAdapter::resolve($modelClassName,
-                                                                                        $indexesMetadata,
-                                                                                        $messageLogger);
+                $indexesMetadata        = $uniqueIndexesFromValidators;
+                if (!empty($modelMetadata['indexes']))
+                {
+                    if (!empty($indexesMetadata))
+                    {
+                        $indexesMetadata = CMap::mergeArray($indexesMetadata, $modelMetadata['indexes']);
+                    }
+                    else
+                    {
+                        $indexesMetadata    = $modelMetadata['indexes'];
+                    }
+                }
+                if (!empty($indexesMetadata))
+                {
+                    $indexes            = RedBeanModelMemberIndexesMetadataAdapter::resolve($modelClassName,
+                                                                                            $indexesMetadata,
+                                                                                            $messageLogger);
+                }
             }
             $parentColumnName   = RedBeanModelChildParentRelationshipToColumnAdapter::resolve($modelClassName);
             if ($parentColumnName)

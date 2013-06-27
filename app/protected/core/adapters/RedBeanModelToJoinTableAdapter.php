@@ -46,7 +46,11 @@
         public static function resolve($modelClassName, array $relationMetadata, & $messageLogger)
         {
             $relatedModelClassName  = $relationMetadata[1];
-            $relationLinkName       = $relationMetadata[4];
+            $relationLinkName       = null;
+            if (isset($relationMetadata[4]))
+            {
+                $relationLinkName       = $relationMetadata[4];
+            }
             $tableName              = RedBeanManyToManyRelatedModels::getTableNameByModelClassNames($modelClassName,
                                                                                                 $relatedModelClassName,
                                                                                                 $relationLinkName);

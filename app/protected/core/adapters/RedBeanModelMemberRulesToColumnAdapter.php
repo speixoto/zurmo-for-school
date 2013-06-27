@@ -52,7 +52,11 @@
 
         public static function resolveUniqueIndexesFromValidator($modelClassName)
         {
-            return static::$uniqueIndexes[$modelClassName];
+            if (isset(static::$uniqueIndexes[$modelClassName]))
+            {
+                return static::$uniqueIndexes[$modelClassName];
+            }
+            return null;
         }
 
         public static function resolve($modelClassName, array $rules, & $messageLogger)

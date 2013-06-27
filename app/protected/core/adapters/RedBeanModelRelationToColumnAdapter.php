@@ -45,17 +45,25 @@
 
         public static function resolvePolymorphicColumnsByTableName($tableName)
         {
-            return static::$polymorphicLinkColumns[$tableName];
+            if (isset(static::$polymorphicLinkColumns[$tableName]))
+            {
+                return static::$polymorphicLinkColumns[$tableName];
+            }
+            return null;
         }
 
         public static function resolve($modelClassName, $relationName, array $relationMetadata, & $messageLogger)
         {
             $column = null;
             $relationType           = $relationMetadata[0];
-            $linkType               = $relationMetadata[3];
             $relatedModelClass      = $relationMetadata[1];
-            assert('in_array($relationType, array(self::HAS_ONE_BELONGS_TO, self::HAS_MANY_BELONGS_TO, ' .
-                                                                'self::HAS_ONE, self::HAS_MANY, self::MANY_MANY))');
+            $linkType               = RedBeanModel::LINK_TYPE_ASSUMPTIVE;
+            if (isset($relationMetadata[3]))
+            {
+                $linkType               = $relationMetadata[3];
+            }
+            assert('in_array($relationType, array(RedBeanModel::HAS_ONE_BELONGS_TO, RedBeanModel::HAS_MANY_BELONGS_TO, ' .
+                                        'RedBeanModel::HAS_ONE, RedBeanModel::HAS_MANY, RedBeanModel::MANY_MANY))');
             if ($relationType == RedBeanModel::MANY_MANY)
             {
                 RedBeanModelToJoinTableAdapter::resolve($modelClassName, $relationMetadata, $messageLogger);

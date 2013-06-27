@@ -1071,6 +1071,14 @@
                             assert('ctype_lower($relationName{0})');
                         }
                     }
+                    if (isset($metadata[$modelClassName]['indexes']))
+                    {
+                        assert('is_array($metadata[$modelClassName]["indexes"])');
+                        foreach ($metadata[$modelClassName]["indexes"] as $indexName => $notUsed)
+                        {
+                            assert('ctype_lower($indexName{0})');
+                        }
+                    }
                     if (isset($metadata[$modelClassName]['rules']))
                     {
                         assert('is_array($metadata[$modelClassName]["rules"])');

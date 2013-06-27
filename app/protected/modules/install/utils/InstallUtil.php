@@ -615,6 +615,8 @@
          */
         public static function autoBuildDatabase(& $messageLogger)
         {
+            AutoBuildOptimizedInstallUtil::autoBuildDatabase($messageLogger);
+            return;
             $rootModels   = array();
             $rootModels[] = 'AuditEvent';
             foreach (Module::getModuleObjects() as $module)
