@@ -102,7 +102,7 @@
             'outboundPassword',
             'outboundSecurity'
         );
-        
+
         /**
          * Fallback from address to use for sending out notifications.
          * @var string
