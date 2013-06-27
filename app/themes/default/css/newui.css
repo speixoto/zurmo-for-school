@@ -17194,21 +17194,6 @@ a.user-link {
 #ModuleForReportWizardView table td {
   padding-left: 0;
 }
-/*
-#GeneralDataForReportWizardView{
-    .panel{
-        width: 70%;
-        float: left;
-    }
-    .right-side-edit-view-panel{
-        width: 30%;
-        float: right;
-        position: relative;
-        top:-2px;
-        right:0;
-    }
-}
-*/
 .hasTree {
   width: 25%;
   float: left;
@@ -17624,6 +17609,9 @@ a.user-link {
 }
 .ReportResultsGridView .items {
   overflow-x: hidden;
+}
+.ReportResultsGridView .icon-empty:before {
+  content: "V";
 }
 #MatrixReportResultsGridView #report-results-grid-view > .items th,
 #MatrixReportResultsGridView #report-results-grid-view td {
