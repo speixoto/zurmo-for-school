@@ -43,10 +43,8 @@
         {
             $className = get_class($this);
             
-            if ($this->getIsLink())
-            {                 
-                $linkContent = $this->view->getRelatedLinkString('$data->' . $this->attribute, 'contact', 'contacts');
-            }
+            $linkContent = $this->view->getRelatedLinkString('$data->contact', 'contact', 'contacts');
+            
             $value      = $className. '::resolveValueFromNameAndUnsubscribed('.$linkContent.', ' .
                                                                     '$data->unsubscribed, ' .
                                                                     '"' . $this->view->getContainerModuleClassName() .
