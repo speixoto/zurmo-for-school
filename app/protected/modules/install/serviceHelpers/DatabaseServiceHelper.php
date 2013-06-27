@@ -56,7 +56,7 @@
 
         protected function callCheckServiceMethod($methodName, & $actualVersion)
         {
-            return InstallUtil::$methodName('mysql',
+            return AutoBuildOptimizedInstallUtil::$methodName('mysql',
                                             $this->form->databaseHostname,
                                             $this->form->databaseUsername,
                                             $this->form->databasePassword,

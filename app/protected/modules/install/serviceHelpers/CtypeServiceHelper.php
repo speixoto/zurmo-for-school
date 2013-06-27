@@ -41,7 +41,7 @@
     {
         protected function checkService()
         {
-            $ctypeInstalled =  InstallUtil::checkCtype();
+            $ctypeInstalled =  AutoBuildOptimizedInstallUtil::checkCtype();
             if ($ctypeInstalled)
             {
                 $this->message  = Zurmo::t('InstallModule', 'Ctype extension is loaded.');

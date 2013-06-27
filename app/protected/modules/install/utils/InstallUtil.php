@@ -615,8 +615,6 @@
          */
         public static function autoBuildDatabase(& $messageLogger)
         {
-            AutoBuildOptimizedInstallUtil::autoBuildDatabase($messageLogger);
-            return;
             $rootModels   = array();
             $rootModels[] = 'AuditEvent';
             foreach (Module::getModuleObjects() as $module)
@@ -892,9 +890,6 @@
          */
         public static function runInstallation($form, & $messageStreamer)
         {
-            // TODO: @Shoaibi: Critical: Swap this
-            AutoBuildOptimizedInstallUtil::runInstallation($form, $messageStreamer);
-            return;
             assert('$form instanceof InstallSettingsForm');
             assert('$messageStreamer instanceof MessageStreamer');
 

@@ -163,7 +163,7 @@
         {
             assert('is_string($methodName)');
             assert('$actualVersion == null');
-            return InstallUtil::$methodName($this->minimumVersion, $actualVersion);
+            return AutoBuildOptimizedInstallUtil::$methodName($this->minimumVersion, $actualVersion);
         }
 
         protected function getMinimumVersionLabel()

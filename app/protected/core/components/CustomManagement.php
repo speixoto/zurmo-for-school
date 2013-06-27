@@ -44,7 +44,7 @@
     {
         /**
          * Called right before the auto build is initialized in the installation process.
-         * @see InstallUtil::runInstallation
+         * @see AutoBuildOptimizedInstallUtil::runInstallation
          * @param MessageLogger $messageLogger
          */
         public function runBeforeInstallationAutoBuildDatabase(MessageLogger $messageLogger)
@@ -53,7 +53,7 @@
 
         /**
          * Called right after the default data is loaded in the installation process.
-         * @see InstallUtil::runInstallation
+         * @see AutoBuildOptimizedInstallUtil::runInstallation
          * @param MessageLogger $messageLogger
          */
         public function runAfterInstallationDefaultDataLoad(MessageLogger $messageLogger)

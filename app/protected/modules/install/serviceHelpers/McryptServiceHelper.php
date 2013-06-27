@@ -42,7 +42,7 @@
     {
         protected function checkService()
         {
-            $isMcryptInstalled =  InstallUtil::isMcryptInstalled();
+            $isMcryptInstalled =  AutoBuildOptimizedInstallUtil::isMcryptInstalled();
             if ($isMcryptInstalled)
             {
                 $this->message  = Zurmo::t('InstallModule', 'Mcrypt extension is loaded.');

@@ -199,7 +199,7 @@
          */
         protected static function checkIfZipExtensionIsLoaded()
         {
-            $isZipExtensionInstalled =  InstallUtil::checkZip();
+            $isZipExtensionInstalled =  AutoBuildOptimizedInstallUtil::checkZip();
             if (!$isZipExtensionInstalled)
             {
                 $message = Zurmo::t('Core', 'Zip PHP extension is required by upgrade process, please install it.');

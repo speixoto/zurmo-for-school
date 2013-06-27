@@ -42,7 +42,7 @@
         protected function checkService()
         {
             $passed = true;
-            $debugWritable =  InstallUtil::isDebugConfigWritable(INSTANCE_ROOT);
+            $debugWritable =  AutoBuildOptimizedInstallUtil::isDebugConfigWritable(INSTANCE_ROOT);
             if ($debugWritable)
             {
                 $this->message  = Zurmo::t('InstallModule', 'The debug.php config file is writable.');
@@ -52,7 +52,7 @@
                 $this->message  = Zurmo::t('InstallModule', 'The debug.php config file is not writable.');
                 $passed = false;
             }
-            $perInstanceWritable = InstallUtil::isPerInstanceConfigWritable(INSTANCE_ROOT);
+            $perInstanceWritable = AutoBuildOptimizedInstallUtil::isPerInstanceConfigWritable(INSTANCE_ROOT);
             if ($perInstanceWritable)
             {
                 $this->message  .= "\n" . Zurmo::t('InstallModule', 'The perInstance.php config file is writable.');

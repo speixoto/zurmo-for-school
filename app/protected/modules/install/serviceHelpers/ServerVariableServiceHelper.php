@@ -43,7 +43,7 @@
         protected function checkService()
         {
             $message = '';
-            $serverVariableAccesible =  InstallUtil::checkServerVariable($message);
+            $serverVariableAccesible =  AutoBuildOptimizedInstallUtil::checkServerVariable($message);
             if ($serverVariableAccesible)
             {
                 $this->message  = Zurmo::t('InstallModule', '$_SERVER is accessible.');

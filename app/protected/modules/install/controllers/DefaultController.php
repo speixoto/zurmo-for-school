@@ -76,8 +76,8 @@
             {
                 $form->setMemcacheIsNotAvailable();
             }
-            $form->hostInfo = InstallUtil::getDefaultHostInfo();
-            $form->scriptUrl = InstallUtil::getDefaultScriptUrl($this->getRoute());
+            $form->hostInfo = AutoBuildOptimizedInstallUtil::getDefaultHostInfo();
+            $form->scriptUrl = AutoBuildOptimizedInstallUtil::getDefaultScriptUrl($this->getRoute());
 
             if (isset($_POST['ajax']) && $_POST['ajax'] === 'install-form')
             {
@@ -137,7 +137,7 @@
 
             $template = ZurmoHtml::script("$('#logging-table').prepend('{message}<br/>');");
             $messageStreamer = new MessageStreamer($template);
-            InstallUtil::runInstallation($form, $messageStreamer);
+            AutoBuildOptimizedInstallUtil::runInstallation($form, $messageStreamer);
             if ($form->installDemoData)
             {
                 echo ZurmoHtml::script('$("#progress-table").hide(); $("#demo-data-table").show();');
@@ -145,7 +145,7 @@
             else
             {
                 $messageStreamer->add(Zurmo::t('InstallModule', 'Locking Installation.'));
-                InstallUtil::writeInstallComplete(INSTANCE_ROOT);
+                AutoBuildOptimizedInstallUtil::writeInstallComplete(INSTANCE_ROOT);
                 ForgetAllCacheUtil::forgetAllCaches();
                 echo ZurmoHtml::script('$("#progress-table").hide(); $("#complete-table").show();');
             }
@@ -159,7 +159,7 @@
             RedBeanDatabase::setup(Yii::app()->db->connectionString,
                                    Yii::app()->db->username,
                                    Yii::app()->db->password);
-            InstallUtil::freezeDatabase();
+            AutoBuildOptimizedInstallUtil::freezeDatabase();
             ForgetAllCacheUtil::forgetAllCaches();
             Yii::app()->user->userModel = User::getByUsername('super');
             $nextView = new InstallCompleteView($this->getId(), $this->getModule()->getId());
@@ -172,7 +172,7 @@
             DemoDataUtil::load($messageLogger, 6);
             $messageStreamer->add(Zurmo::t('InstallModule', 'Finished loading demo data.'));
             $messageStreamer->add(Zurmo::t('InstallModule', 'Locking Installation.'));
-            InstallUtil::writeInstallComplete(INSTANCE_ROOT);
+            AutoBuildOptimizedInstallUtil::writeInstallComplete(INSTANCE_ROOT);
             ForgetAllCacheUtil::forgetAllCaches();
             echo ZurmoHtml::script('$("#progress-table").hide(); $("#complete-table").show();');
         }

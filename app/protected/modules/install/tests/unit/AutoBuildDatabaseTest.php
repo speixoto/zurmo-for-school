@@ -78,7 +78,7 @@
             Yii::app()->user->userModel = $super;
             $messageLogger              = new MessageLogger();
             $beforeRowCount             = DatabaseCompatibilityUtil::getTableRowsCountTotal();
-            InstallUtil::autoBuildDatabase($messageLogger);
+            AutoBuildOptimizedInstallUtil::autoBuildDatabase($messageLogger);
 
             $afterRowCount              = DatabaseCompatibilityUtil::getTableRowsCountTotal();
             //There are only 1 extra rows that are not being removed during the autobuild process.
@@ -241,7 +241,7 @@
             Yii::app()->user->userModel = $super;
             $messageLogger              = new MessageLogger();
             $beforeRowCount             = DatabaseCompatibilityUtil::getTableRowsCountTotal();
-            InstallUtil::autoBuildDatabase($messageLogger);
+            AutoBuildOptimizedInstallUtil::autoBuildDatabase($messageLogger);
 
             $afterRowCount              = DatabaseCompatibilityUtil::getTableRowsCountTotal();
             $this->assertEquals($beforeRowCount, $afterRowCount);
@@ -282,7 +282,7 @@
                 }
             }
             Account::setMetadata($metadata);
-            InstallUtil::autoBuildDatabase($messageLogger);
+            AutoBuildOptimizedInstallUtil::autoBuildDatabase($messageLogger);
 
             RedBeanModel::forgetAll();
             $modifiedAccount = Account::getById($account->id);

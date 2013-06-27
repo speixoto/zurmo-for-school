@@ -41,7 +41,7 @@
     {
         protected function checkService()
         {
-            $soapInstalled =  InstallUtil::checkSoap();
+            $soapInstalled =  AutoBuildOptimizedInstallUtil::checkSoap();
             if ($soapInstalled)
             {
                 $this->message  = Zurmo::t('InstallModule', 'SOAP is installed.');

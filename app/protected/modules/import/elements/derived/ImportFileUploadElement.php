@@ -80,7 +80,7 @@
                 'hiddenInputName'      => 'fileId',
                 'formName'             => $this->form->id,
                 'existingFiles'        => $existingFilesInformation,
-                'maxSize'              => (int)InstallUtil::getMaxAllowedFileSize(),
+                'maxSize'              => (int)AutoBuildOptimizedInstallUtil::getMaxAllowedFileSize(),
                 'beforeUploadAction'   => $beforeUploadAction,
                 'afterDeleteAction'    => $afterDeleteAction
             ));

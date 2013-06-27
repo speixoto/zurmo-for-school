@@ -46,7 +46,7 @@
         {
             $this->assertTrue(ContactsModule::loadStartingData());
             $messageLogger              = new MessageLogger();
-            InstallUtil::autoBuildDatabase($messageLogger);
+            AutoBuildOptimizedInstallUtil::autoBuildDatabase($messageLogger);
 
             chdir(COMMON_ROOT . DIRECTORY_SEPARATOR . 'protected' . DIRECTORY_SEPARATOR . 'commands');
 

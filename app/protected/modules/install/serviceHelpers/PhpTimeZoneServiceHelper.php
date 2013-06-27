@@ -42,7 +42,7 @@
         protected function checkService()
         {
             $allPassed = false;
-            if (InstallUtil::checkPhpTimezoneSetting())
+            if (AutoBuildOptimizedInstallUtil::checkPhpTimezoneSetting())
             {
                 $this->message = Zurmo::t('InstallModule', 'PHP date.timezone is set.');
                 return true;

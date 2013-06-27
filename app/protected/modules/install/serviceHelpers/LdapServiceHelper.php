@@ -43,7 +43,7 @@
 
         protected function checkService()
         {
-            $passed = InstallUtil::isLdapInstalled();
+            $passed = AutoBuildOptimizedInstallUtil::isLdapInstalled();
             if ($passed)
             {
                 $this->message = Zurmo::t('InstallModule', 'Ldap is installed.');

@@ -54,7 +54,7 @@
         {
             $passed = true;
             $threadStackValue = null;
-            if (!InstallUtil::checkDatabaseThreadStackValue('mysql',
+            if (!AutoBuildOptimizedInstallUtil::checkDatabaseThreadStackValue('mysql',
                                                        $this->form->databaseHostname,
                                                        $this->form->databaseUsername,
                                                        $this->form->databasePassword,

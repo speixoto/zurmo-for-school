@@ -44,7 +44,7 @@
         protected function checkService()
         {
             $passed = true;
-            if (!InstallUtil::isFileUploadsOn())
+            if (!AutoBuildOptimizedInstallUtil::isFileUploadsOn())
             {
                 $this->message = Zurmo::t('InstallModule', 'PHP file_uploads is Off.  This should be on.');
                 $passed        = false;

@@ -48,7 +48,7 @@
             {
                 return true;
             }
-            $isLdapExtensionLoaded = InstallUtil::isLdapInstalled();
+            $isLdapExtensionLoaded = AutoBuildOptimizedInstallUtil::isLdapInstalled();
             if ($isLdapExtensionLoaded)
             {
                 return true;

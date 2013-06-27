@@ -95,7 +95,7 @@ EOD;
             $this->usageError('The installation is marked as being already completed.  Cannot run the installer.');
         }
         echo "\n";
-        InstallUtil::runFromInstallCommand($args, true);
+        AutoBuildOptimizedInstallUtil::runFromInstallCommand($args, true);
     }
 }
 ?>

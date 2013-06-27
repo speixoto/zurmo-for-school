@@ -47,7 +47,7 @@
         {
             $passed = true;
             $actualUploadSizeBytes = null;
-            $uploadSizeBytesPassed = InstallUtil::checkPhpUploadSizeSetting($this->minimumUploadRequireBytes,
+            $uploadSizeBytesPassed = AutoBuildOptimizedInstallUtil::checkPhpUploadSizeSetting($this->minimumUploadRequireBytes,
                                                                             $actualUploadSizeBytes);
             if ($uploadSizeBytesPassed)
             {
