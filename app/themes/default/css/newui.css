@@ -11608,6 +11608,9 @@ div.hasHalfs > div input {
   vertical-align: middle;
   position: relative;
 }
+.juiportlet-widget.AllSocialItemsForPortletView .empty {
+  display: none;
+}
 .juiportlet-widget.AllSocialItemsForPortletView .icon-empty:before {
   content: 'u';
   font-weight: normal;
@@ -15931,6 +15934,9 @@ a.close-ModalGameNotification.simple-link {
   box-shadow: none;
   float: none;
   margin-bottom: 0;
+}
+.UserSocialItemsForPortletView .empty {
+  display: none;
 }
 #UserDetailsView {
   padding: 0 20px 20px 0;

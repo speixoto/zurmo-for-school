@@ -34,34 +34,27 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * Override begin request behavior used by console applications.  Certain request/http/url specific logic
-     * is not included since it is not applicable when using the console application.
-     */
-    class CommandBeginRequestBehavior extends BeginRequestBehavior
+    class PersonSlidingPanelsUtilTest extends ZurmoBaseTest
     {
-        public function attach($owner)
+        public function testGetSlideToSecondPanelLabel()
         {
-            $this->attachNonApiRequestBehaviors($owner);
-            if (Yii::app()->isApplicationInstalled())
-            {
-                $this->attachNonApiRequestBehaviorsForInstalledApplication($owner);
-            }
+            $this->assertEquals(
+                    'Switch to Full View',
+                    PersonSlidingPanelsUtil::getSlideToSecondPanelLabel());
         }
 
-        protected function attachNonApiRequestBehaviors(CComponent $owner)
+        public function testGetSlideToFirstPanelLabel()
         {
-            $owner->attachEventHandler('onBeginRequest', array($this, 'handleApplicationCache'));
-            $owner->attachEventHandler('onBeginRequest', array($this, 'handleImports'));
-            $owner->attachEventHandler('onBeginRequest', array($this, 'handleLibraryCompatibilityCheck'));
-            $owner->attachEventHandler('onBeginRequest', array($this, 'handleStartPerformanceClock'));
-            $owner->attachEventHandler('onBeginRequest', array($this, 'handleLoadLanguage'));
-            $owner->attachEventHandler('onBeginRequest', array($this, 'handleLoadTimeZone'));
+            $this->assertEquals(
+                    'Switch to Business Card View',
+                    PersonSlidingPanelsUtil::getSlideToFirstPanelLabel());
         }
 
-        protected function attachNonApiRequestBehaviorsForInstalledApplication(CComponent $owner)
+        public function testRenderToggleLinkContent()
         {
-            $owner->attachEventHandler('onBeginRequest', array($this, 'handleSetupDatabaseConnection'));
+            $this->assertContains(
+                    '<a id="sliding-panel-toggle" class="vertical-forward-pager slide-to-second-panel"',
+                    PersonSlidingPanelsUtil::renderToggleLinkContent());
         }
     }
 ?>
