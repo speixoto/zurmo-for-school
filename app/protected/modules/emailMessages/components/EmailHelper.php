@@ -116,18 +116,6 @@
         public $defaultTestToAddress;  
 
         /**
-         * Fallback from address to use for sending out notifications.
-         * @var string
-         */
-        public $defaultFromAddress   = 'notifications@zurmoalerts.com';
-
-        /**
-         * Utilized when sending a test email nightly to check the status of the smtp server
-         * @var string
-         */
-        public $defaultTestToAddress = 'testJobEmail@zurmoalerts.com';
-
-        /**
          * Called once per page load, will load up outbound settings from the database if available.
          * (non-PHPdoc)
          * @see CApplicationComponent::init()
@@ -424,7 +412,7 @@
          */
         public static function resolveDefaultEmailAddress($defaultEmailAddress)
         {                       
-            return $defaultEmailAddress . '@' . StringUtil::resolveCustomizedLabel . 'alerts.com';
+            return $defaultEmailAddress . '@' . StringUtil::resolveCustomizedLabel() . 'alerts.com';
         }
     }
 ?>
