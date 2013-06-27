@@ -34,50 +34,47 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class MarketingListDetailsAndRelationsView extends DetailsAndRelationsView
+    abstract class MarketingListsRelatedListView extends SecuredRelatedListView
     {
-        const METRICS_PORTLET_CLASS     = 'marketing-list-metrics-container';
-
-        const MEMBERS_PORTLET_CLASS     = 'marketing-list-members-portlet-container';
-
-        const AUTORESPONDERS_PORTLET_CLASS  = 'marketing-list-autoresponder-portlet-container';
-
         public static function getDefaultMetadata()
         {
             $metadata = array(
+                'perUser' => array(
+                    'title' => "eval:Zurmo::t('MarketingListsModule', 'Marketing Lists')",
+                ),
                 'global' => array(
-                    'leftTopView' => array(
-                        'viewClassName' => 'MarketingListDetailsView',
+                    'toolbar' => array(
+                        'elements' => array(),
                     ),
-                    'leftBottomView' => array(
-                        'showAsTabbed' => false,
-                        'columns' => array(
-                            array(
-                                'rows' => array(
-                                    array(
-                                        'type' => 'MarketingListMembersPortlet'
-                                    ),
-                                    array(
-                                        'type' => 'AutorespondersPortlet'
-                                    ),
-                                    array(
-                                        'type' => 'CampaignsForMarketingListRelatedList',
-                                    ),
-                                    array(
-                                        'type' => 'MarketingListOverallMetrics'
-                                    ),
-                                )
-                            )
-                        )
+                    'rowMenu' => array(
+                        'elements' => array(
+                            array('type' => 'EditLink'),
+                        ),
                     ),
-                )
+                    'gridViewType' => RelatedListView::GRID_VIEW_TYPE_STACKED,
+                    'panels' => array(
+                        array(
+                            'rows' => array(
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'name', 'type' => 'Text', 'isLink' => true),
+                                            ),
+                                        ),
+                                    )
+                                ),
+                            ),
+                        ),
+                    ),
+                ),
             );
             return $metadata;
         }
 
-        public function isUniqueToAPage()
+        public static function getModuleClassName()
         {
-            return true;
+            return 'MarketingListsModule';
         }
     }
 ?>

@@ -34,50 +34,16 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class MarketingListDetailsAndRelationsView extends DetailsAndRelationsView
+    class CampaignsForMarketingListRelatedListView extends CampaignsRelatedListView
     {
-        const METRICS_PORTLET_CLASS     = 'marketing-list-metrics-container';
-
-        const MEMBERS_PORTLET_CLASS     = 'marketing-list-members-portlet-container';
-
-        const AUTORESPONDERS_PORTLET_CLASS  = 'marketing-list-autoresponder-portlet-container';
-
-        public static function getDefaultMetadata()
+        protected function getRelationAttributeName()
         {
-            $metadata = array(
-                'global' => array(
-                    'leftTopView' => array(
-                        'viewClassName' => 'MarketingListDetailsView',
-                    ),
-                    'leftBottomView' => array(
-                        'showAsTabbed' => false,
-                        'columns' => array(
-                            array(
-                                'rows' => array(
-                                    array(
-                                        'type' => 'MarketingListMembersPortlet'
-                                    ),
-                                    array(
-                                        'type' => 'AutorespondersPortlet'
-                                    ),
-                                    array(
-                                        'type' => 'CampaignsForMarketingListRelatedList',
-                                    ),
-                                    array(
-                                        'type' => 'MarketingListOverallMetrics'
-                                    ),
-                                )
-                            )
-                        )
-                    ),
-                )
-            );
-            return $metadata;
+            return 'marketingList';
         }
 
-        public function isUniqueToAPage()
+        public static function getDisplayDescription()
         {
-            return true;
+            return Zurmo::t('CampaignsModule', 'Campaigns For Marketing List');
         }
     }
 ?>
