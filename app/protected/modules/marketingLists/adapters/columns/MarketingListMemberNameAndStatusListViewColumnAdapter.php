@@ -42,12 +42,12 @@
         public function renderGridViewData()
         {
             $className = get_class($this);
-            $memberName         = 'strval($data->contact)';
+            
             if ($this->getIsLink())
             {                 
-                $memberName = $this->view->getRelatedLinkString('$data->' . $this->attribute, $this->attribute, 'contacts');
+                $linkContent = $this->view->getRelatedLinkString('$data->' . $this->attribute, 'contact', 'contacts');
             }
-            $value      = $className. '::resolveValueFromNameAndUnsubscribed('.$memberName.', ' .
+            $value      = $className. '::resolveValueFromNameAndUnsubscribed('.$linkContent.', ' .
                                                                     '$data->unsubscribed, ' .
                                                                     '"' . $this->view->getContainerModuleClassName() .
                                                                     '")';
