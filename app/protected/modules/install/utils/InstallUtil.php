@@ -68,7 +68,7 @@
                     $actualVersion = $matches[2];
                     if (array_key_exists($serverName, $minimumRequiredVersions))
                     {
-                        return self::checkVersion($minimumRequiredVersions[$serverName], $actualVersion);
+                        return static::checkVersion($minimumRequiredVersions[$serverName], $actualVersion);
                     }
                 }
             }
@@ -80,7 +80,7 @@
                     $actualVersion = $matches[2];
                     if (array_key_exists($serverName, $minimumRequiredVersions))
                     {
-                        return self::checkVersion($minimumRequiredVersions[$serverName], $actualVersion);
+                        return static::checkVersion($minimumRequiredVersions[$serverName], $actualVersion);
                     }
                 }
             }
@@ -100,7 +100,7 @@
         public static function checkPhp($minimumRequiredVersion, /* out */ &$actualVersion)
         {
             $actualVersion = PHP_VERSION;
-            return self::checkVersion($minimumRequiredVersion, $actualVersion);
+            return static::checkVersion($minimumRequiredVersion, $actualVersion);
         }
 
         /**
@@ -143,7 +143,7 @@
         public static function checkPhpMaxMemorySetting($minimumMemoryRequireBytes, /* out */ & $actualMemoryLimitBytes)
         {
             $memoryLimit            = ini_get('memory_limit');
-            $actualMemoryLimitBytes = self::getBytes($memoryLimit);
+            $actualMemoryLimitBytes = static::getBytes($memoryLimit);
             return $minimumMemoryRequireBytes <= $actualMemoryLimitBytes;
         }
 
@@ -153,7 +153,7 @@
         public static function checkPhpUploadSizeSetting($minimumUploadRequireBytes, /* out */ & $actualUploadLimitBytes)
         {
             $maxFileSize            = ini_get('upload_max_filesize');
-            $actualUploadLimitBytes = self::getBytes($maxFileSize);
+            $actualUploadLimitBytes = static::getBytes($maxFileSize);
             return $minimumUploadRequireBytes <= $actualUploadLimitBytes;
         }
 
@@ -163,7 +163,7 @@
         public static function checkPhpPostSizeSetting($minimumPostRequireBytes, /* out */ & $actualPostLimitBytes)
         {
             $maxPostSize            = ini_get('post_max_size');
-            $actualPostLimitBytes = self::getBytes($maxPostSize);
+            $actualPostLimitBytes = static::getBytes($maxPostSize);
             return $minimumPostRequireBytes <= $actualPostLimitBytes;
         }
 
@@ -221,7 +221,7 @@
                                                                            $databaseUsername,
                                                                            $databasePassword,
                                                                            $databasePort);
-            return self::checkVersion($minimumRequiredVersion, $actualVersion);
+            return static::checkVersion($minimumRequiredVersion, $actualVersion);
         }
 
         /**
@@ -232,7 +232,7 @@
             $actualVersion = phpversion('apc');
             if ($actualVersion !== false && $actualVersion !== null)
             {
-                return self::checkVersion($minimumRequiredVersion, $actualVersion);
+                return static::checkVersion($minimumRequiredVersion, $actualVersion);
             }
             return false;
         }
@@ -331,7 +331,7 @@
             $actualVersion = phpversion('memcache');
             if ($actualVersion != false && extension_loaded('memcache'))
             {
-                return self::checkVersion($minimumRequiredVersion, $actualVersion);
+                return static::checkVersion($minimumRequiredVersion, $actualVersion);
             }
             return false;
         }
@@ -349,7 +349,7 @@
             $actualVersion = $versionInfo['version'];
             if ($actualVersion !== null)
             {
-                return self::checkVersion($minimumRequiredVersion, $actualVersion);
+                return static::checkVersion($minimumRequiredVersion, $actualVersion);
             }
             return false;
         }
@@ -359,7 +359,7 @@
             $actualVersion = Yii::getVersion();
             if ($actualVersion !== null)
             {
-                return self::checkVersion($minimumRequiredVersion, $actualVersion);
+                return static::checkVersion($minimumRequiredVersion, $actualVersion);
             }
             return false;
         }
@@ -369,7 +369,7 @@
             $actualVersion = R::getVersion();
             if ($actualVersion !== null)
             {
-                return self::checkVersion($minimumRequiredVersion, $actualVersion);
+                return static::checkVersion($minimumRequiredVersion, $actualVersion);
             }
             return false;
         }
@@ -404,7 +404,7 @@
                                                                 $minimumRequireBytes,
                                                                 /* out */ & $actualBytes)
         {
-            assert('in_array($databaseType, self::getSupportedDatabaseTypes())');
+            assert('in_array($databaseType, static::getSupportedDatabaseTypes())');
             $actualBytes = DatabaseCompatibilityUtil::getDatabaseMaxAllowedPacketsSize($databaseType,
                                                                                        $databaseHostname,
                                                                                        $databaseUsername,
@@ -424,7 +424,7 @@
                                                               $minimumRequiredMaxSpRecursionDepth,
                                                               /* out */ & $maxSpRecursionDepth)
         {
-            assert('in_array($databaseType, self::getSupportedDatabaseTypes())');
+            assert('in_array($databaseType, static::getSupportedDatabaseTypes())');
             $maxSpRecursionDepth = DatabaseCompatibilityUtil::getDatabaseMaxSpRecursionDepth($databaseType,
                                                                                              $databaseHostname,
                                                                                              $databaseUsername,
@@ -444,7 +444,7 @@
                                                              $minimumRequiredThreadStackValue,
                                                              /* out */ & $threadStackValue)
         {
-            assert('in_array($databaseType, self::getSupportedDatabaseTypes())');
+            assert('in_array($databaseType, static::getSupportedDatabaseTypes())');
             $threadStackValue = DatabaseCompatibilityUtil::getDatabaseThreadStackValue($databaseType,
                                                                                        $databaseHostname,
                                                                                        $databaseUsername,
@@ -463,7 +463,7 @@
                                                                       $databasePort,
                                                                       /* out */ & $optimizerSearchDepth)
         {
-            assert('in_array($databaseType, self::getSupportedDatabaseTypes())');
+            assert('in_array($databaseType, static::getSupportedDatabaseTypes())');
             $optimizerSearchDepth = DatabaseCompatibilityUtil::getDatabaseOptimizerSearchDepthValue($databaseType,
                                                                                                     $databaseHostname,
                                                                                                     $databaseUsername,
@@ -484,7 +484,7 @@
                                                              $notAllowedDatabaseCollations,
                                                              /* out */ & $databaseDefaultCollation)
         {
-            assert('in_array($databaseType, self::getSupportedDatabaseTypes())');
+            assert('in_array($databaseType, static::getSupportedDatabaseTypes())');
             assert('is_array($notAllowedDatabaseCollations)');
             $databaseDefaultCollation = DatabaseCompatibilityUtil::getDatabaseDefaultCollation($databaseType,
                                                                                                $databaseHostname,
@@ -505,7 +505,7 @@
                                                         $databasePort,
                                                         /* out */ & $logBinValue)
         {
-            assert('in_array($databaseType, self::getSupportedDatabaseTypes())');
+            assert('in_array($databaseType, static::getSupportedDatabaseTypes())');
             $logBinValue = DatabaseCompatibilityUtil::getDatabaseLogBinValue($databaseType,
                                                                              $databaseHostname,
                                                                              $databaseUsername,
@@ -532,7 +532,7 @@
                                                                              $databasePort,
                                                                              /* out */ & $logBinTrustFunctionCreatorsValue)
         {
-            assert('in_array($databaseType, self::getSupportedDatabaseTypes())');
+            assert('in_array($databaseType, static::getSupportedDatabaseTypes())');
             $logBinTrustFunctionCreatorsValue = DatabaseCompatibilityUtil::getDatabaseLogBinTrustFunctionCreatorsValue(
                                                                             $databaseType,
                                                                             $databaseHostname,
@@ -554,13 +554,13 @@
          */
         public static function connectToDatabase($databaseType, $host, $databaseName, $username, $password, $port)
         {
-            assert('in_array($databaseType, self::getSupportedDatabaseTypes())');
+            assert('in_array($databaseType, static::getSupportedDatabaseTypes())');
             assert('is_string($host)         && $host         != ""');
             assert('is_string($databaseName) && $databaseName != ""');
             assert('is_string($username)     && $username     != ""');
             assert('is_string($password)');
             $connectionString = "$databaseType:host=$host;port=$port;dbname=$databaseName"; // Not Coding Standard
-            self::connectToDatabaseWithConnectionString($connectionString, $username, $password);
+            static::connectToDatabaseWithConnectionString($connectionString, $username, $password);
         }
 
         /**
@@ -655,7 +655,7 @@
                                                   $submitCrashToSentry = true)
         {
             assert('is_dir($instanceRoot)');
-            assert('in_array($databaseType, self::getSupportedDatabaseTypes())');
+            assert('in_array($databaseType, static::getSupportedDatabaseTypes())');
             assert('is_string($databaseHost) && $databaseHost != ""');
             assert('is_string($databaseName) && $databaseName != ""');
             assert('is_string($username)     && $username     != ""');
@@ -857,8 +857,8 @@
 
         protected static function checkVersion($minimumRequiredVersion, $actualVersion)
         {
-            assert('self::isVersion($minimumRequiredVersion)');
-            if (!self::isVersion($actualVersion))
+            assert('static::isVersion($minimumRequiredVersion)');
+            if (!static::isVersion($actualVersion))
             {
                 return false;
             }
@@ -892,6 +892,7 @@
         {
             // TODO: @Shoaibi: Critical: Swap this
             AutoBuildOptimizedInstallUtil::runInstallation($form, $messageStreamer);
+            return;
             assert('$form instanceof InstallSettingsForm');
             assert('$messageStreamer instanceof MessageStreamer');
 
@@ -1108,7 +1109,7 @@
                 $freezeWhenDone = true;
             }
 
-            self::autoBuildDatabase($messageLogger);
+            static::autoBuildDatabase($messageLogger);
 
             if ($freezeWhenDone)
             {

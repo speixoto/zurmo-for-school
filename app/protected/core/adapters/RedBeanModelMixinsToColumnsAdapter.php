@@ -34,13 +34,37 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    $basePath  =  Yii::app()->getBasePath();
-    require_once("$basePath/../../redbean/rb.php");
-
     /**
-     * A criteria for use with RedbeanModelDataProvider.
+     * Adapter class to generate column definitions for mixins when provided with modelClassName
      */
-    class RedBeanModelDbCriteria extends CDbCriteria
+    abstract class RedBeanModelMixinsToColumnsAdapter
     {
+        // TODO: @Shoaibi: Critical: Add some documentation for this.
+        // TODO: @Shoaibi: Critical: Tests
+        public static function resolve($modelClassName, & $messageLogger)
+        {
+            $messageLogger->addInfoMessage(Zurmo::t('Core', 'Building Column definitions for mixins of {{model}}',
+                                                                                array('{{model}}' => $modelClassName)));
+            $columns       = array();
+            $mixins        = $modelClassName::getMixedInModelClassNames();
+            foreach($mixins as $mixinModelClassName)
+            {
+                $column = RedBeanModelMixinToColumnAdapter::resolve($mixinModelClassName);
+                if ($column)
+                {
+                    $columns[] = $column;
+                }
+                else
+                {
+                    $errorMessage = Zurmo::t('Core', 'Failed to resolve {{model}}.{{mixinModelClassName}} to column',
+                                                            array('{{model}}' => $modelClassName,
+                                                                    '{{mixinModelClassName}}' => $mixinModelClassName));
+                    $messageLogger->addErrorMessage($errorMessage);
+                    throw new CException($errorMessage);
+                }
+            }
+            $messageLogger->addInfoMessage(Zurmo::t('Core', 'Column definitions for mixins Built'));
+            return $columns;
+        }
     }
 ?>

@@ -50,20 +50,28 @@
          */
         public static function getModuleObjects()
         {
-            // TODO: @Shoaibi/@Jason: Critical: Results of this should be cached
-            $moduleConfig = Yii::app()->getModules();
-            $modules = array();
-            foreach ($moduleConfig as $moduleName => $info)
+            $cacheKey   = 'application.allModules';
+            try
             {
-                 $module = Yii::app()->findModule($moduleName);
-                 if (isset($info['modules']) && is_array($info['modules']))
-                 {
-                    foreach ($info['modules'] as $nestedModuleName => $nestedInfo)
-                    {
-                        $modules[$nestedModuleName] = $module->getModule($nestedModuleName);
-                    }
-                 }
-                 $modules[$moduleName] = $module;
+                $modules    = GeneralCache::getEntry($cacheKey);
+            }
+            catch (NotFoundException $e)
+            {
+                $moduleConfig = Yii::app()->getModules();
+                $modules = array();
+                foreach ($moduleConfig as $moduleName => $info)
+                {
+                     $module = Yii::app()->findModule($moduleName);
+                     if (isset($info['modules']) && is_array($info['modules']))
+                     {
+                        foreach ($info['modules'] as $nestedModuleName => $nestedInfo)
+                        {
+                            $modules[$nestedModuleName] = $module->getModule($nestedModuleName);
+                        }
+                     }
+                     $modules[$moduleName] = $module;
+                }
+                GeneralCache::cacheEntry($cacheKey, $modules);
             }
             return $modules;
         }

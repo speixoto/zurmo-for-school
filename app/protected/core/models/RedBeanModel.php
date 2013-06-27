@@ -1873,7 +1873,7 @@
                                 $relationAndOwns       = static::getRelationNameToRelationTypeModelClassNameAndOwnsForModel();
                                 $relatedModelClassName = $relationAndOwns[$relationName][1];
                                 $linkName = strtolower($relationName);
-                                if (strtolower($linkName) == strtolower($relatedModelClassName) ||
+                                if (strtolower($linkName) == strtolower($relatedModelClassName) &&
                                     static::getRelationLinkType($relationName) == self::LINK_TYPE_ASSUMPTIVE)
                                 {
                                     $linkName = null;
@@ -1908,12 +1908,15 @@
                                     {
                                         ZurmoRedBeanLinkManager::link($bean, $relatedBean, $linkName);
                                     }
+                                    /*
+                                     * // TODO: @Shoaibi/@Jason: Critical: We don't need this anymore.
                                     if (!RedBeanDatabase::isFrozen())
                                     {
                                         $tableName  = self::getTableName(static::getAttributeModelClassName($relationName));
                                         $columnName = self::getForeignKeyName(get_class($this), $relationName);
                                         RedBeanColumnTypeOptimizer::optimize($tableName, $columnName, 'id');
                                     }
+                                    */
                                 }
                             }
                         }

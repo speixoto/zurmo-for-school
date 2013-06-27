@@ -37,44 +37,52 @@
     /**
      * Adapter class to generate table schema when provided an model name
      */
-    abstract class RedBeanModelToTableAdapter
+    abstract class RedBeanModelToTableSchemaAdapter
     {
         // TODO: @Shoaibi: Critical: Add some documentation for this.
         // TODO: @Shoaibi: Critical: Tests
-        public static function generateTableFromModelClassName($modelClassName, & $messageLogger)
+        public static function resolve($modelClassName, & $messageLogger)
         {
-            $metadata           = $modelClassName::getDefaultMetaData();
-            $modelMetadata      = $metadata[$modelClassName];
-            $memberColumns      = array();
-            $relationColumns    = array();
-            $indexes            = array();
+            $metadata                       = $modelClassName::getDefaultMetaData();
+            $modelMetadata                  = $metadata[$modelClassName];
+            $memberColumns                  = array();
+            $relationColumns                = array();
+            $indexes                        = array();
+            $uniqueIndexesFromValidators    = array();
+            $parentColumnName               = null;
             if (isset($modelMetadata['members'], $modelMetadata['rules']))
             {
                 $memberColumns      = RedBeanModelMemberRulesToColumnsAdapter::resolve($modelClassName,
                                                                                         $modelMetadata['members'],
                                                                                         $modelMetadata['rules'],
                                                                                         $messageLogger);
+                $uniqueIndexesFromValidators = RedBeanModelMemberRulesToColumnAdapter::
+                                                                resolveUniqueIndexesFromValidator($modelClassName);
             }
+
             if (isset($modelMetadata['relations']))
             {
                 $relationColumns    = RedBeanModelRelationsToColumnsAdapter::resolve($modelClassName,
                                                                                         $modelMetadata['relations'],
                                                                                         $messageLogger);
             }
-            if (isset($modelMetadata['indexes']))
+            if (isset($modelMetadata['indexes']) || !empty($uniqueIndexesFromValidators))
             {
+                $indexesMetadata    = CMap::mergeArray($modelMetadata['indexes'], $uniqueIndexesFromValidators);
                 $indexes            = RedBeanModelMemberIndexesMetadataAdapter::resolve($modelClassName,
-                                                                                        $modelMetadata['indexes'],
+                                                                                        $indexesMetadata,
                                                                                         $messageLogger);
             }
-            // TODO: @Shoaibi: Critical: Check if we still need to pass $modelClassName to this functions after removing info messages
-            $columns            = CMap::mergeArray($memberColumns, $relationColumns);
+            $parentColumnName   = RedBeanModelChildParentRelationshipToColumnAdapter::resolve($modelClassName);
+            if ($parentColumnName)
+            {
+                $memberColumns[] = $parentColumnName;
+            }
+            $mixinColumns       = RedBeanModelMixinsToColumnsAdapter::resolve($modelClassName, $messageLogger);
+            $columns            = CMap::mergeArray($memberColumns, $mixinColumns, $relationColumns);
             $tableName          = RedBeanModel::getTableName($modelClassName);
             $schemaDefinition   = array($tableName => array('columns' => $columns, 'indexes' => $indexes));
-            return CreateOrUpdateExistingTableFromSchemaDefinitionArrayUtil::generateOrUpdateTableBySchemaDefinition(
-                                                                                                    $schemaDefinition,
-                                                                                                    $messageLogger);
-
+            return $schemaDefinition;
       }
     }
 ?>

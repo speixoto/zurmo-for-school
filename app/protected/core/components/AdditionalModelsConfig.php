@@ -35,44 +35,18 @@
      ********************************************************************************/
 
     /**
-     * Adapter class to generate index definition when provided with indexName and indexMetadata
+     * Class used to configure path aliases to non-module wrapped models.
      */
-    abstract class RedBeanModelMemberIndexMetadataAdapter
+    class AdditionalModelsConfig extends CApplicationComponent
     {
-        // TODO: @Shoaibi: Critical: Add some documentation for this.
-        // TODO: @Shoaibi: Critical: Tests
-        public static function resolve(& $indexName, array & $indexMetadata)
-        {
-            $unique         = false;
-            if (isset($indexMetadata['unique']))
-            {
-                $unique = $indexMetadata['unique'];
-            }
-            $indexName      = static::resolveIndexName($indexName, $unique);
-            $indexMembers   = $indexMetadata['members'];
-            if (empty($indexMembers))
-            {
-                return false;
-            }
-            $indexMembers   = array_map(function($indexMember)
-                                        {
-                                            return RedBeanModelMemberToColumnNameUtil::resolve($indexMember);
-                                        }, $indexMembers);
-            $indexMetadata  = array(
-                                    'columns'   => $indexMembers,
-                                    'unique'    => $unique,
-                                );
-            return true;
-        }
+        // do not change the defaults here, update configs in common.php and related files instead.
+        public $zurmoModels = array('application.core.models', 'application.core.portlets');
 
-        public static function resolveIndexName($columnName, $unique = false)
+        public $userModels  = array();
+
+        public function resolvePathAliases()
         {
-            $prefix = null;
-            if ($unique)
-            {
-                $prefix = 'unique_';
-            }
-            return $prefix . StringUtil::uncamelize($columnName) . '_Index';
+            return CMap::mergeArray($this->zurmoModels, $this->userModels);
         }
     }
 ?>

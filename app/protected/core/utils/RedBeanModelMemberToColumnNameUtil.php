@@ -59,21 +59,16 @@
             $column['name']         = $name;
             $column['type']         = 'integer';
             $column['unsigned']     = DatabaseCompatibilityUtil::resolveUnsignedByHintType($column['type'], false);
-            $column['notNull']      = null;
+            $column['notNull']      = 'NULL';
             $column['collation']    = null;
             $column['default']      = 'DEFAULT NULL';
             $column['type']         = DatabaseCompatibilityUtil::mapHintTypeIntoDatabaseColumnType($column['type']);
             return $column;
         }
 
-        public static function resolveIndexName($columnName)
-        {
-            return StringUtil::uncamelize($columnName) . '_Index';
-        }
-
         protected static function resolveForeignKeyNameByModelName($className)
         {
-            return static::resolve($className) . '_id';
+            return RedBeanModel::getTableName($className) . '_id';
         }
     }
 ?>

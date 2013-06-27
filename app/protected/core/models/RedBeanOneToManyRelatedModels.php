@@ -171,7 +171,10 @@
                 }
                 else
                 {
+                    // TODO: @Shoaibi/@Jason: Critical: This adds the non-prefix version of column
                     ZurmoRedBeanLinkManager::link($bean, $this->bean, $this->resolveLinkNameForCasing());
+                    /*
+                     // TODO: @Shoaibi/@Jason: Critical: We don't need this anymore.
                     if (!RedBeanDatabase::isFrozen())
                     {
                         $tableName        = RedBeanModel::getTableName($this->modelClassName);
@@ -180,6 +183,7 @@
                                             resolveColumnPrefix($this->resolveLinkNameForCasing()) . $columnName;
                         RedBeanColumnTypeOptimizer::optimize($tableName, $columnName, 'id');
                     }
+                    */
                 }
                 R::store($bean);
             }

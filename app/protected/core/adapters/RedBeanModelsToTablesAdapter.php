@@ -43,23 +43,22 @@
         // TODO: @Shoaibi: Critical: Tests
         public static function generateTablesFromModelClassNames(array $modelClassNames, & $messageLogger)
         {
+            $tables = array();
             $messageLogger->addInfoMessage(Zurmo::t('Core', 'Building Table Schema for Models'));
             foreach ($modelClassNames as $modelClassName)
             {
-                $schemaGenerated = RedBeanModelToTableAdapter::generateTableFromModelClassName($modelClassName,
-                                                                                                        $messageLogger);
-                if ($schemaGenerated)
-                {
-                    $messageLogger->addInfoMessage(Zurmo::t('Core', 'Scheme generated for {{model}}.',
-                                                                                array('{{model}}' => $modelClassName)));
-                }
-                else
-                {
-                    $errorMessage = Zurmo::t('Core', 'Schema generation failed for {{model}}',
-                                                                                array('{{model}}' => $modelClassName));
-                    $messageLogger->addErrorMessage($errorMessage);
-                    throw new CException($errorMessage);
-                }
+                $tables[] = RedBeanModelToTableSchemaAdapter::resolve($modelClassName, $messageLogger);
+            }
+            foreach($tables as $schemaDefinition)
+            {
+                $tableName          = key($schemaDefinition);
+                $polymorphicColumns = RedBeanModelRelationToColumnAdapter::resolvePolymorphicColumnsByTableName($tableName);
+                $columns            = CMap::mergeArray($schemaDefinition[$tableName]['columns'], $polymorphicColumns);
+                $schemaDefinition[$tableName]['columns']   = $columns;
+                CreateOrUpdateExistingTableFromSchemaDefinitionArrayUtil::
+                                        generateOrUpdateTableBySchemaDefinition($schemaDefinition, $messageLogger);
+                $messageLogger->addInfoMessage(Zurmo::t('Core', 'Scheme generated for {{table}}.',
+                                                                                array('{{table}}' => $tableName)));
             }
             $messageLogger->addInfoMessage(Zurmo::t('Core', 'Schema generation completed'));
         }

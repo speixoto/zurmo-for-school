@@ -39,14 +39,22 @@
      */
     abstract class RedBeanModelMemberRulesToColumnAdapter
     {
+        // TODO: @Shoaibi: Critical: Add some documentation for this.
+        // TODO: @Shoaibi: Critical: Tests
+
         const ASSUME_SIGNED = true;
 
         const DEFAULT_MODEL_CLASS = 'Item';
 
         const FORCE_DEFAULT_MODEL_CLASS = true;
 
-        // TODO: @Shoaibi: Critical: Add some documentation for this.
-        // TODO: @Shoaibi: Critical: Tests
+        protected static $uniqueIndexes = array();
+
+        public static function resolveUniqueIndexesFromValidator($modelClassName)
+        {
+            return static::$uniqueIndexes[$modelClassName];
+        }
+
         public static function resolve($modelClassName, array $rules, & $messageLogger)
         {
             $column                         = array();
@@ -55,7 +63,7 @@
             $column['name']                 = RedBeanModelMemberToColumnNameUtil::resolve($member);
             $column['type']                 = null;
             $column['unsigned']             = null;
-            $column['notNull']              = null; // TODO: @Shoaibi/@Jason: Medium: We will handle this later.
+            $column['notNull']              = 'NULL'; // TODO: @Shoaibi/@Jason: Medium: We will handle this later.
             $column['collation']            = null;
             $column['default']              = 'DEFAULT NULL'; // TODO: @Shoaibi/@Jason: Medium: We will handle this later.
             $column['length']               = null;
@@ -74,11 +82,6 @@
         protected static function resolveColumnTypeAndLengthFromRules($modelClassName, $member, array $rules,
                                                                                             & $column, & $messageLogger)
         {
-            if (substr($member, -2) == 'Id')
-            {
-                $column['type'] = 'id';
-                return;
-            }
             $suitableModelClassName = static::findSuitableModelClassName($modelClassName);
             if (!$suitableModelClassName)
             {
@@ -128,17 +131,20 @@
                         $column['type'] = 'boolean';
                         break;
                     case 'CStringValidator':
-                        $column['type'] = 'text';
-                        if (isset($validator->max) && $validator->max > 0)
+                        if ((!isset($column['type']) || $column['type'] == 'string'))
                         {
-                            if ($validator->max > 65535)
+                            $column['type'] = 'text';
+                            if (isset($validator->max) && $validator->max > 0)
                             {
-                                $column['type'] = 'longtext';
-                            }
-                            elseif ($validator->max < 255)
-                            {
-                                $column['type']     = 'string';
-                                $column['length']   = $validator->max;
+                                if ($validator->max > 65535)
+                                {
+                                    $column['type'] = 'longtext';
+                                }
+                                elseif ($validator->max < 255)
+                                {
+                                    $column['type']     = 'string';
+                                    $column['length']   = $validator->max;
+                                }
                             }
                         }
                         break;
@@ -164,8 +170,8 @@
                                         $minAllowedValue = -1 * $valueLimit;
                                     }
 
-                                    if ((!isset($validator->min) || $validator->min <= $minAllowedValue) &&
-                                                                                        $validator->max < $maxAllowedValue)
+                                    if ((!isset($validator->min) || $validator->min >= $minAllowedValue) &&
+                                                                                    $validator->max < $maxAllowedValue)
                                     {
                                         $column['type'] = $type;
                                         break;
@@ -183,6 +189,10 @@
                     case 'CRequiredValidator':
                         //$column['notNull'] = 'NOT NULL';
                         // TODO: @Shoaibi/@Jason: Medium: Left here for future use if we want to set required on db level too.
+                        break;
+                    case 'RedBeanModelUniqueValidator':
+                    case 'CUniqueValidator':
+                        static::registerUniqueIndexByMemberName($member, $modelClassName);
                         break;
                 }
             }
@@ -229,6 +239,11 @@
             {
                 return $modelClassName;
             }
+        }
+
+        protected static function registerUniqueIndexByMemberName($member, $modelClassName)
+        {
+            static::$uniqueIndexes[$modelClassName][$member] = array('members' => array($member), 'unique' => true);
         }
     }
 ?>

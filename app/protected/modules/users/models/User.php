@@ -128,7 +128,7 @@
             }
         }
 
-        protected static function getMixedInModelClassNames()
+        public static function getMixedInModelClassNames()
         {
             return array('Person');
         }

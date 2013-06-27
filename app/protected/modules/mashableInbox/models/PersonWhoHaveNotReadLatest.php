@@ -71,6 +71,7 @@
                 'relations' => array(
                     'person'      => array(RedBeanModel::HAS_ONE, 'Item', RedBeanModel::NOT_OWNED,
                                                 RedBeanModel::LINK_TYPE_SPECIFIC, 'person'),
+                    'mission' => array(RedBeanModel::HAS_ONE,  'Mission', RedBeanModel::NOT_OWNED),
                 ),
             );
             return $metadata;

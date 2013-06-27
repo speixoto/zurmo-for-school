@@ -52,7 +52,7 @@
                                                                                                 $relationLinkName);
             if (in_array($tableName, static::$processedManyToManyTables))
             {
-                return null;
+                return;
             }
             $columns            = array();
             $columns[]          = RedBeanModelMemberToColumnNameUtil::resolveForeignKeyColumnMetadata(null,
@@ -65,14 +65,9 @@
                                                         'indexes'   => $indexes,
                                                         ),
                                                     );
-            $tableCreated       = CreateOrUpdateExistingTableFromSchemaDefinitionArrayUtil::
+            CreateOrUpdateExistingTableFromSchemaDefinitionArrayUtil::
                                                 generateOrUpdateTableBySchemaDefinition($schemaDefinition, $messageLogger);
-            if ($tableCreated)
-            {
-                static::$processedManyToManyTables[] = $tableName;
-                return null;
-            }
-            return false;
+            static::$processedManyToManyTables[] = $tableName;
         }
 
         protected static function resolveIndexesByColumnNames($columns)
@@ -83,7 +78,7 @@
             foreach($columns as $column)
             {
                 $columnName             = $column['name'];
-                $indexName              = RedBeanModelMemberToColumnNameUtil::resolveIndexName($columnName);
+                $indexName              = RedBeanModelMemberIndexMetadataAdapter::resolveIndexName($columnName, false);
                 $indexes[$indexName]   = array('columns'     => array($columnName),
                                                 'unique'      => false,
                                             );
@@ -94,7 +89,7 @@
                 $compositeIndexKey  .= $columnName;
                 $compositeIndexValues['columns'][] = $columnName;
             }
-            $indexName              = RedBeanModelMemberToColumnNameUtil::resolveIndexName($compositeIndexKey);
+            $indexName              = RedBeanModelMemberIndexMetadataAdapter::resolveIndexName($compositeIndexKey, true);
             $indexes[$indexName]    = $compositeIndexValues;
             return $indexes;
         }

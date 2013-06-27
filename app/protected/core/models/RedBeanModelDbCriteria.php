@@ -34,45 +34,15 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * Adapter class to generate index definition when provided with indexName and indexMetadata
-     */
-    abstract class RedBeanModelMemberIndexMetadataAdapter
-    {
-        // TODO: @Shoaibi: Critical: Add some documentation for this.
-        // TODO: @Shoaibi: Critical: Tests
-        public static function resolve(& $indexName, array & $indexMetadata)
-        {
-            $unique         = false;
-            if (isset($indexMetadata['unique']))
-            {
-                $unique = $indexMetadata['unique'];
-            }
-            $indexName      = static::resolveIndexName($indexName, $unique);
-            $indexMembers   = $indexMetadata['members'];
-            if (empty($indexMembers))
-            {
-                return false;
-            }
-            $indexMembers   = array_map(function($indexMember)
-                                        {
-                                            return RedBeanModelMemberToColumnNameUtil::resolve($indexMember);
-                                        }, $indexMembers);
-            $indexMetadata  = array(
-                                    'columns'   => $indexMembers,
-                                    'unique'    => $unique,
-                                );
-            return true;
-        }
+    $basePath  =  Yii::app()->getBasePath();
+    require_once("$basePath/../../redbean/rb.php");
 
-        public static function resolveIndexName($columnName, $unique = false)
-        {
-            $prefix = null;
-            if ($unique)
-            {
-                $prefix = 'unique_';
-            }
-            return $prefix . StringUtil::uncamelize($columnName) . '_Index';
-        }
+    // TODO: @Shoaibi/@Jason: Critical: Not used anywhere?
+
+    /**
+     * A criteria for use with RedbeanModelDataProvider.
+     */
+    class RedBeanModelDbCriteria extends CDbCriteria
+    {
     }
 ?>

@@ -61,14 +61,7 @@
                     'processDateTime',
                 ),
                 'relations' => array(
-                    // TODO: @Shoaibi: Critical: Had to modify it, item_id, duplicate, added link type
-                    // TODO: @Shoaibi: Critical:
-                    /* if the relation name is the same as the model it relates to. then you HAVE TO specificy type specific and alink name
-                    BUT otherwise
-                    if you dont specificy type specific and the relation name is DIFFERENT than the model it relates to it will use the relation name as the linkname
-                    */
-                    'modelItem'     => array(RedBeanModel::HAS_ONE, 'Item',          RedBeanModel::NOT_OWNED,
-                                                                    RedBeanModel::LINK_TYPE_SPECIFIC, 'modelItem'),
+                    'modelItem'     => array(RedBeanModel::HAS_ONE, 'Item',          RedBeanModel::NOT_OWNED),
                     'savedWorkflow' => array(RedBeanModel::HAS_ONE, 'SavedWorkflow', RedBeanModel::NOT_OWNED),
                 ),
                 'rules' => array(

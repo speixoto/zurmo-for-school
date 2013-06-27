@@ -35,44 +35,20 @@
      ********************************************************************************/
 
     /**
-     * Adapter class to generate index definition when provided with indexName and indexMetadata
+     * Adapter class to generate column definition when provided with a mixinClassName
      */
-    abstract class RedBeanModelMemberIndexMetadataAdapter
+    abstract class RedBeanModelMixinToColumnAdapter
     {
-        // TODO: @Shoaibi: Critical: Add some documentation for this.
-        // TODO: @Shoaibi: Critical: Tests
-        public static function resolve(& $indexName, array & $indexMetadata)
+        public static function resolve($mixinModelClassName)
         {
-            $unique         = false;
-            if (isset($indexMetadata['unique']))
+            $column     = null;
+            if ($mixinModelClassName::getCanHaveBean())
             {
-                $unique = $indexMetadata['unique'];
+                $column = RedBeanModelMemberToColumnNameUtil::resolveForeignKeyColumnMetadata(null,
+                                                                                                $mixinModelClassName);
+                return $column;
             }
-            $indexName      = static::resolveIndexName($indexName, $unique);
-            $indexMembers   = $indexMetadata['members'];
-            if (empty($indexMembers))
-            {
-                return false;
-            }
-            $indexMembers   = array_map(function($indexMember)
-                                        {
-                                            return RedBeanModelMemberToColumnNameUtil::resolve($indexMember);
-                                        }, $indexMembers);
-            $indexMetadata  = array(
-                                    'columns'   => $indexMembers,
-                                    'unique'    => $unique,
-                                );
-            return true;
-        }
-
-        public static function resolveIndexName($columnName, $unique = false)
-        {
-            $prefix = null;
-            if ($unique)
-            {
-                $prefix = 'unique_';
-            }
-            return $prefix . StringUtil::uncamelize($columnName) . '_Index';
+            return $column;
         }
     }
 ?>

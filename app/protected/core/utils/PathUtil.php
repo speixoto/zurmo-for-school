@@ -38,24 +38,71 @@
     {
         public static function getAllClassNamesByPathAlias($alias)
         {
-            // TODO: @Shoaibi: Critical: Cache results
             assert('is_string($alias)');
-            $classNames = array();
-            $pathOfAlias = Yii::getPathOfAlias($alias . '.*');
-            if (is_dir($pathOfAlias))
+            try
             {
-                $directoryFiles = ZurmoFileHelper::findFiles($pathOfAlias);
+                $classNames = GeneralCache::getEntry($alias);
+            }
+            catch (NotFoundException $e)
+            {
                 $classNames = array();
-                foreach ($directoryFiles as $filePath)
+                $pathOfAlias = Yii::getPathOfAlias($alias . '.*');
+                if (is_dir($pathOfAlias))
                 {
-                    $filePathInfo = pathinfo($filePath);
-                    if ($filePathInfo['extension'] == 'php')
+                    $directoryFiles = ZurmoFileHelper::findFiles($pathOfAlias);
+                    $classNames = array();
+                    foreach ($directoryFiles as $filePath)
                     {
-                        $classNames[] = $filePathInfo['filename'];
+                        $filePathInfo = pathinfo($filePath);
+                        if ($filePathInfo['extension'] == 'php')
+                        {
+                            $classNames[] = $filePathInfo['filename'];
+                        }
                     }
                 }
+                GeneralCache::cacheEntry($alias, $classNames);
             }
             return $classNames;
+        }
+
+        public static function getAllModelClassNames($filter = null)
+        {
+            $allModelClasses            = array();
+            $nonModuleModelPathAliases  = Yii::app()->additionalModelsConfig->resolvePathAliases();
+            $modules                    = Module::getModuleObjects();
+            foreach ($modules as $module)
+            {
+                $modelClasses	=  $module::getModelClassNames();
+                if (!empty($modelClasses))
+                {
+                    $allModelClasses = CMap::mergeArray($allModelClasses, array_values($modelClasses));
+                }
+            }
+            foreach ($nonModuleModelPathAliases as $alias)
+            {
+                $models             = array_values(static::getAllClassNamesByPathAlias($alias));
+                $allModelClasses    = CMap::mergeArray($allModelClasses, $models);
+            }
+            if ($filter && is_callable($filter))
+            {
+                $allModelClasses = array_filter($allModelClasses, $filter);
+            }
+            $allModelClasses = array_unique($allModelClasses);
+            return $allModelClasses;
+        }
+
+        public static function getAllCanHaveBeanModelClassNames()
+        {
+            return static::getAllModelClassNames('static::filterCanHaveBeenModels');
+        }
+
+        protected static function filterCanHaveBeenModels($model)
+        {
+            if (is_subclass_of($model, 'RedBeanModel') && $model::getCanHaveBean())
+            {
+                return $model;
+            }
+            return null;
         }
     }
 ?>

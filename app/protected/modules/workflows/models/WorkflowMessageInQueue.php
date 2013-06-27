@@ -62,9 +62,7 @@
                     'serializedData',
                 ),
                 'relations' => array(
-                    // TODO: @Shoaibi: Critical: Had to modify it, item_id, duplicate, added link type
-                    'modelItem'     => array(RedBeanModel::HAS_ONE, 'Item',          RedBeanModel::NOT_OWNED,
-                                                                        RedBeanModel::LINK_TYPE_SPECIFIC, 'modelItem'),
+                    'modelItem'     => array(RedBeanModel::HAS_ONE, 'Item',          RedBeanModel::NOT_OWNED),
                     'savedWorkflow'   => array(RedBeanModel::HAS_ONE,   'SavedWorkflow', RedBeanModel::NOT_OWNED),
                     'triggeredByUser' => array(RedBeanModel::HAS_ONE,   'User',          RedBeanModel::NOT_OWNED,
                                                RedBeanModel::LINK_TYPE_SPECIFIC, 'triggeredByUser'),

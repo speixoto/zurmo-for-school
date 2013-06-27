@@ -85,11 +85,6 @@
                 $errorMessage .= $columnNames . ')';
                 throw new CException($errorMessage);
             }
-            $parentColumnName   = RedBeanModelChildParentRelationshipToColumnAdapter::resolve($modelClassName);
-            if ($parentColumnName)
-            {
-                $columns[] = $parentColumnName;
-            }
             $messageLogger->addInfoMessage(Zurmo::t('Core', 'Column definitions Built'));
             return $columns;
         }

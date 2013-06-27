@@ -116,6 +116,9 @@
                                             $form->hostInfo,
                                             $form->scriptUrl,
                                             $form->submitCrashToSentry);
+            static::setZurmoTokenAndWriteToPerInstanceFile(INSTANCE_ROOT);
+            ZurmoPasswordSecurityUtil::setPasswordSaltAndWriteToPerInstanceFile(INSTANCE_ROOT);
+            static::createSuperUser('super', $form->superUserPassword);
             $messageStreamer->add(Zurmo::t('InstallModule', 'Setting up default data.'));
             DefaultDataUtil::load($messageLogger);
             Yii::app()->custom->runAfterInstallationDefaultDataLoad($messageLogger);
@@ -136,10 +139,6 @@
                 $rules                      = new EnableMinifyNotificationRules();
                 NotificationsUtil::submit($message, $rules);
             }
-
-            static::setZurmoTokenAndWriteToPerInstanceFile(INSTANCE_ROOT);
-            ZurmoPasswordSecurityUtil::setPasswordSaltAndWriteToPerInstanceFile(INSTANCE_ROOT);
-            static::createSuperUser('super', $form->superUserPassword);
             $messageStreamer->add(Zurmo::t('InstallModule', 'Installation Complete.'));
         }
 
@@ -150,31 +149,10 @@
          */
         public static function autoBuildDatabase(& $messageLogger)
         {
-            $rootModels         = array();
-            $baseModelClass     = 'RedBeanModel';
-            $allModelClasses    = array();
-            //get_declared_classes()
-            $modules            = Module::getModuleObjects();
-            $messageLogger->addInfoMessage(Zurmo::t('InstallModule','Searching for models'));
-            foreach ($modules as $module)
-            {
-                $modelClasses	=  $module::getModelClassNames();
-                if (!empty($modelClasses))
-                {
-                    $allModelClasses = CMap::mergeArray($allModelClasses, array_values($modelClasses));
-                }
-            }
-            $allModelClasses = CMap::mergeArray($allModelClasses,
-                                        array_values(PathUtil::getAllClassNamesByPathAlias('application.core.models')));
-            foreach ($allModelClasses as $className)
-            {
-                if (is_subclass_of($className, $baseModelClass) && $className::getCanHaveBean())
-                {
-                    $rootModels[] = $className;
-                }
-            }
-            $messageLogger->addInfoMessage(Zurmo::t('InstallModule', 'Models catalog built.'));
             ZurmoDatabaseCompatibilityUtil::createStoredFunctionsAndProcedures();
+            $messageLogger->addInfoMessage(Zurmo::t('InstallModule','Searching for models'));
+            $rootModels = PathUtil::getAllCanHaveBeanModelClassNames();
+            $messageLogger->addInfoMessage(Zurmo::t('InstallModule', 'Models catalog built.'));
             RedBeanModelsToTablesAdapter::generateTablesFromModelClassNames($rootModels, $messageLogger);
         }
     }

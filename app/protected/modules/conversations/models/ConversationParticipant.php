@@ -84,6 +84,7 @@
                 'relations' => array(
                     'person'      => array(RedBeanModel::HAS_ONE, 'Item', RedBeanModel::NOT_OWNED,
                                                 RedBeanModel::LINK_TYPE_SPECIFIC, 'person'),
+                    'conversation' => array(RedBeanModel::HAS_ONE,  'Conversation', RedBeanModel::NOT_OWNED),
                 ),
                 'rules' => array(
                     array('hasReadLatest', 'boolean'),

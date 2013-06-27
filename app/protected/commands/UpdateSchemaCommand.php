@@ -87,7 +87,8 @@ EOD;
             $messageStreamer->setExtraRenderBytes(0);
             $messageStreamer->add(Zurmo::t('Commands', 'Starting schema update process.'));
             $messageLogger = new MessageLogger($messageStreamer);
-            InstallUtil::runAutoBuildFromUpdateSchemaCommand($messageLogger);
+            // TODO: @Shoaibi/@Jason: Critical: Swap this.
+            AutoBuildOptimizedInstallUtil::runAutoBuildFromUpdateSchemaCommand($messageLogger);
             $messageStreamer->add(Zurmo::t('Commands', 'Autobuild complete, rebuilding read permissions.'));
             if (SHOW_QUERY_DATA)
             {

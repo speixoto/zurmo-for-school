@@ -39,25 +39,70 @@
      */
     abstract class RedBeanModelRelationToColumnAdapter
     {
+        protected static $polymorphicLinkColumns = array();
         // TODO: @Shoaibi: Critical: Add some documentation for this.
         // TODO: @Shoaibi: Critical: Tests
+
+        public static function resolvePolymorphicColumnsByTableName($tableName)
+        {
+            return static::$polymorphicLinkColumns[$tableName];
+        }
+
         public static function resolve($modelClassName, $relationName, array $relationMetadata, & $messageLogger)
         {
             $column = null;
-            $relationType          = $relationMetadata[0];
+            $relationType           = $relationMetadata[0];
+            $linkType               = $relationMetadata[3];
+            $relatedModelClass      = $relationMetadata[1];
             assert('in_array($relationType, array(self::HAS_ONE_BELONGS_TO, self::HAS_MANY_BELONGS_TO, ' .
                                                                 'self::HAS_ONE, self::HAS_MANY, self::MANY_MANY))');
             if ($relationType == RedBeanModel::MANY_MANY)
             {
-                return RedBeanModelToJoinTableAdapter::resolve($modelClassName, $relationMetadata, $messageLogger);
+                RedBeanModelToJoinTableAdapter::resolve($modelClassName, $relationMetadata, $messageLogger);
+                return null;
             }
             else if (in_array($relationType, array(RedBeanModel::HAS_ONE, RedBeanModel::HAS_MANY_BELONGS_TO)))
             {
-                $name   = RedBeanModel::getForeignKeyName($modelClassName, $relationName);
+                $linkName               = null;
+                if ($linkType == RedBeanModel::LINK_TYPE_ASSUMPTIVE &&
+                                                        strtolower($relatedModelClass) != strtolower($relationName))
+                {
+                    $linkName   = strtolower($relationName) . '_';
+                }
+                $name   = $linkName . RedBeanModel::getForeignKeyName($modelClassName, $relationName);
                 $column = RedBeanModelMemberToColumnNameUtil::resolveForeignKeyColumnMetadata($name);
+            }
+            else if ($relationType == RedBeanModel::HAS_MANY && $linkType == RedBeanModel::LINK_TYPE_POLYMORPHIC)
+            {
+                static::setColumnsForPolymorphicLink($relatedModelClass, $relationMetadata[4]);
             }
             // ignore HAS_MANY and HAS_ONE_BELONGS_TO as we are dealing with HAS_ONE and HAS_MANY_BELONGS e.g.
             // we are ignore the sides which shouldn't have columns.
+            return $column;
+        }
+
+        protected static function setColumnsForPolymorphicLink($relatedModelClassName, $linkName)
+        {
+            $columns        = array();
+            $columns[]      = RedBeanModelMemberToColumnNameUtil::resolveForeignKeyColumnMetadata(
+                                                RedBeanModelMemberToColumnNameUtil::resolve($linkName). '_id');
+            $columns[]      = static::resolvePolymorphicTypeColumnByLinkName($linkName);
+            $tableName      = RedBeanModel::getTableName($relatedModelClassName);
+            static::$polymorphicLinkColumns[$tableName] = $columns;
+        }
+
+        protected static function resolvePolymorphicTypeColumnByLinkName($linkName)
+        {
+            $column['name']         = RedBeanModelMemberToColumnNameUtil::resolve($linkName) . '_type';
+            $column['type']         = 'string';
+            $column['length']       = 255;
+            $column['unsigned']     = DatabaseCompatibilityUtil::resolveUnsignedByHintType($column['type'], false);
+            $column['notNull']      = 'NULL';
+            $column['collation']    = DatabaseCompatibilityUtil::resolveCollationByHintType($column['type']);
+            $column['default']      = 'DEFAULT NULL';
+            $column['type']         = DatabaseCompatibilityUtil::mapHintTypeIntoDatabaseColumnType($column['type'],
+                                                                                                    $column['length']);
+            unset($column['length']);
             return $column;
         }
     }

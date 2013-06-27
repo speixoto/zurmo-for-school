@@ -59,6 +59,7 @@
                     'createdDateTime',
                 ),
                 'relations' => array(
+                    'gamepoint' => array(RedBeanModel::HAS_ONE, 'GamePoint', RedBeanModel::NOT_OWNED),
                 ),
                 'rules' => array(
                     array('value',            'type',    'type' => 'integer'),

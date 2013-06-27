@@ -77,17 +77,15 @@
             if ($needsCreateTable)
             {
                 $query = static::resolveCreateTableQuery($tableName, $columnsAndIndexes);
-                R::exec($query);
-                return true;
             }
             else
             {
-                // TODO: @Shoaibi: Critical: implement.
-                // var dump existing fields
-                // use a function to loop through all fields and return mismatched fields(type, notNull, default, unsigned, collation)
-                // use a function to create query against those mismatched fields
-                // execute query
-                // return true/false depending on query execution
+                // TODO: @Shoaibi/@Jason: Critical: What about indexes.
+                $query  = static::resolveAlterTableQuery($tableName, $columnsAndIndexes['columns'], $existingFields);
+            }
+            if ($query)
+            {
+                R::exec($query);
             }
         }
 
@@ -95,7 +93,6 @@
         {
             if (count($schemaDefinition) == 1)
             {
-
                 $columnsAndIndexes = reset($schemaDefinition);
                 if (count($columnsAndIndexes) == 2 &&
                                             isset($columnsAndIndexes['columns'], $columnsAndIndexes['indexes']))
@@ -149,21 +146,61 @@
 
         protected static function resolveAlterQueryForColumn($column)
         {
-
+            $columnDefinition   = $column['columnDefinition'];
+            $statement          = strtoupper($column['method']) . ' ';
+            $isAddition         = ($column['method'] == 'add');
+            $statement          .= static::resolveColumnStatementFromDefinition($columnDefinition, $isAddition);
+            return $statement;
         }
 
-        protected static function resolveAlterQueryForIndex($index)
+        protected static function resolveAlterTableQuery($tableName, $columns, $existingFields)
         {
-
+            $columnsNeedingUpgrade  = array();
+            $upgradeStatements      = array();
+            // TODO: @Shoaibi/@Jason: Critical: What about fields that are in db but not in schema definition? drop them?
+            foreach ($columns as $column)
+            {
+                if ($upgradeDefinition = static::resolveColumnUpgradeDefinition($column, $existingFields))
+                {
+                    $columnsNeedingUpgrade[] = $upgradeDefinition;
+                }
+            }
+            foreach ($columnsNeedingUpgrade as $columnNeedingUpgrade)
+            {
+                $upgradeStatements[] = static::resolveAlterQueryForColumn($columnNeedingUpgrade);
+            }
+            if (!empty($upgradeStatements))
+            {
+                $upgradeStatements  = join(',' . PHP_EOL, $upgradeStatements);
+                $query              = "ALTER TABLE `${tableName}` " . PHP_EOL .
+                                        $upgradeStatements . ";";
+                return $query;
+            }
+            return false;
         }
 
-        protected static function resolveAlterTableQuery($table, $mismatchColumns)
+        protected static function resolveColumnUpgradeDefinition($column, $existingFields)
         {
-            // for each column get statement and put them in an array
-            // for each index get statement and put it in same array in above
-            // join on , and line break
-            // prepend id and append other stuff
-            // return
+            if (!in_array($column['name'], array_keys($existingFields)))
+            {
+                return array('columnDefinition' => $column, 'method' => 'add');
+            }
+            else
+            {
+                $resolvedType       = $column['type'];
+                if ($column['unsigned'])
+                {
+                    $resolvedType .= ' ' . $column['unsigned'];
+                }
+                $resolvedType       = strtolower($resolvedType);
+                $existingFieldType  = strtolower($existingFields[$column['name']]);
+                if ($resolvedType != $existingFieldType)
+                {
+                    return array('columnDefinition' => $column, 'method' => 'change');
+                }
+                // TODO: @Shoaibi/@Jason: what about collation, default, notNull, etc?
+            }
+            return null;
         }
 
         protected static function resolveCreateTableQuery($tableName, $columnsAndIndexesSchema)
@@ -172,7 +209,7 @@
             $indexes        = array('PRIMARY KEY (id)');
             foreach ($columnsAndIndexesSchema['columns'] as $column)
             {
-                $columns[]    = static::resolveColumnForTableCreation($column);
+                $columns[]    = static::resolveColumnStatementFromDefinition($column, true);
             }
             foreach ($columnsAndIndexesSchema['indexes'] as $indexName => $indexMetadata)
             {
@@ -181,17 +218,24 @@
             // PHP_EOLs below are purely for readability, sql would work just fine without it.
             $tableMetadata  = CMap::mergeArray($columns, $indexes);
             $tableMetadata  = join(',' . PHP_EOL, $tableMetadata);
-            $query          = "CREATE TABLE $tableName (" . PHP_EOL .
+            $query          = "CREATE TABLE `${tableName}` (" . PHP_EOL .
                                 $tableMetadata . PHP_EOL .
                                 " ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1;";
             return $query;
 
         }
 
-        protected static function resolveColumnForTableCreation($column)
+        protected static function resolveColumnStatementFromDefinition($column, $isAddition = true)
         {
             extract($column);
-            $clause = "`${name}` ${type} ${unsigned} ${notNull} ${collation} {$default}";
+            if ($isAddition)
+            {
+                $clause = "`${name}` ${type} ${unsigned} ${notNull} ${collation} {$default}";
+            }
+            else
+            {
+                $clause = "`${name}` `${name}` ${type} ${unsigned} ${collation} ${notNull} {$default}";
+            }
             return $clause;
         }
 

@@ -54,13 +54,13 @@
         protected static function resolveParentThatCanHaveBeen($modelClassName)
         {
             $parentClassName = get_parent_class($modelClassName);
-            if ($parentClassName::getCanHaveBean())
-            {
-                return $parentClassName;
-            }
-            elseif ($parentClassName == 'RedBeanModel')
+            if ($parentClassName == 'RedBeanModel') // we assume OwnedModel can't have a bean
             {
                 return null;
+            }
+            elseif ($parentClassName::getCanHaveBean())
+            {
+                return $parentClassName;
             }
             else
             {
