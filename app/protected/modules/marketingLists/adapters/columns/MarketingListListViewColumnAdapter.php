@@ -34,34 +34,27 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * Override begin request behavior used by console applications.  Certain request/http/url specific logic
-     * is not included since it is not applicable when using the console application.
-     */
-    class CommandBeginRequestBehavior extends BeginRequestBehavior
+    class MarketingListListViewColumnAdapter extends TextListViewColumnAdapter
     {
-        public function attach($owner)
+        public function renderGridViewData()
         {
-            $this->attachNonApiRequestBehaviors($owner);
-            if (Yii::app()->isApplicationInstalled())
+            if ($this->getIsLink())
             {
-                $this->attachNonApiRequestBehaviorsForInstalledApplication($owner);
+                return array(
+                    'name' => $this->attribute,
+                    'type' => 'raw',
+                    'value' => $this->view->getRelatedLinkString(
+                               '$data->' . $this->attribute, $this->attribute, 'marketingLists'),
+                );
             }
-        }
-
-        protected function attachNonApiRequestBehaviors(CComponent $owner)
-        {
-            $owner->attachEventHandler('onBeginRequest', array($this, 'handleApplicationCache'));
-            $owner->attachEventHandler('onBeginRequest', array($this, 'handleImports'));
-            $owner->attachEventHandler('onBeginRequest', array($this, 'handleLibraryCompatibilityCheck'));
-            $owner->attachEventHandler('onBeginRequest', array($this, 'handleStartPerformanceClock'));
-            $owner->attachEventHandler('onBeginRequest', array($this, 'handleLoadLanguage'));
-            $owner->attachEventHandler('onBeginRequest', array($this, 'handleLoadTimeZone'));
-        }
-
-        protected function attachNonApiRequestBehaviorsForInstalledApplication(CComponent $owner)
-        {
-            $owner->attachEventHandler('onBeginRequest', array($this, 'handleSetupDatabaseConnection'));
+            else
+            {
+                return array(
+                    'name'  => $this->attribute,
+                    'value' => 'strval($data->' . $this->attribute . ')',
+                    'type'  => 'raw',
+                );
+            }
         }
     }
 ?>

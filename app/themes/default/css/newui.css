@@ -7569,7 +7569,6 @@ tr.even {
   display: block;
   font-size: 11px;
   font-weight: bold;
-  background: rgba(255, 255, 255, 0.5);
   text-align: center;
 }
 .empty .icon-empty {
@@ -11378,6 +11377,9 @@ div.hasHalfs > div input {
   color: #FFF;
   font-weight: bold;
 }
+.empty + .pager + .products-portlet-totals {
+  display: none;
+}
 .editable-cell {
   border-bottom: 1px dotted #ccc;
   width: auto;
@@ -11561,8 +11563,121 @@ div.hasHalfs > div input {
   vertical-align: middle;
   position: relative;
 }
+.juiportlet-widget.TasksMyListView .icon-empty:before,
+.juiportlet-widget.OpenTasksForOpportunityRelatedListView .icon-empty:before,
+.juiportlet-widget.OpenTasksForContactRelatedListView .icon-empty:before,
 .juiportlet-widget.OpenTasksForAccountRelatedListView .icon-empty:before {
   content: "4";
+  font-weight: normal;
+  font-size: 45px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  padding: 0 0 0 0;
+  margin: 0 6px 0 -30px;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  vertical-align: middle;
+  position: relative;
+}
+.juiportlet-widget.AllLatestActivitiesForPortletView .icon-empty:before,
+.juiportlet-widget.OpportunityLatestActivitiesForPortletView .icon-empty:before,
+.juiportlet-widget.AccountLatestActivitiesForPortletView .icon-empty:before,
+.juiportlet-widget.ContactLatestActivitiesForPortletView .icon-empty:before {
+  content: '\00A5';
+  font-weight: normal;
+  font-size: 45px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  padding: 0 0 0 0;
+  margin: 0 6px 0 -30px;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  vertical-align: middle;
+  position: relative;
+}
+.juiportlet-widget.ProductsForAccountRelatedListView .icon-empty:before {
+  content: '\003E';
+  font-weight: normal;
+  font-size: 45px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  padding: 0 0 0 0;
+  margin: 0 6px 0 -30px;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  vertical-align: middle;
+  position: relative;
+}
+.juiportlet-widget.AllSocialItemsForPortletView .empty {
+  display: none;
+}
+.juiportlet-widget.AllSocialItemsForPortletView .icon-empty:before {
+  content: 'u';
+  font-weight: normal;
+  font-size: 45px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  padding: 0 0 0 0;
+  margin: 0 6px 0 -30px;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  vertical-align: middle;
+  position: relative;
+}
+.juiportlet-widget.MyMissionsForPortletView .icon-empty:before {
+  content: 'Q';
+  font-weight: normal;
+  font-size: 45px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  padding: 0 0 0 0;
+  margin: 0 6px 0 -30px;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  vertical-align: middle;
+  position: relative;
+}
+.juiportlet-widget.LeadsMyListView .icon-empty:before {
+  content: '.';
+  font-weight: normal;
+  font-size: 45px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  padding: 0 0 0 0;
+  margin: 0 6px 0 -30px;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  vertical-align: middle;
+  position: relative;
+}
+.juiportlet-widget.AccountsMyListView .icon-empty:before {
+  content: 'P';
+  font-weight: normal;
+  font-size: 45px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  padding: 0 0 0 0;
+  margin: 0 6px 0 -30px;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  vertical-align: middle;
+  position: relative;
+}
+.juiportlet-widget.ContactsMyListView .icon-empty:before {
+  content: "e";
+  font-weight: normal;
+  font-size: 45px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  padding: 0 0 0 0;
+  margin: 0 6px 0 -30px;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  vertical-align: middle;
+  position: relative;
+}
+#ProductTemplatesModalListView .icon-empty:before {
+  content: '\00AC';
   font-weight: normal;
   font-size: 45px;
   font-family: "ZurmoGamificationSymblyReguRg";
@@ -15820,6 +15935,9 @@ a.close-ModalGameNotification.simple-link {
   float: none;
   margin-bottom: 0;
 }
+.UserSocialItemsForPortletView .empty {
+  display: none;
+}
 #UserDetailsView {
   padding: 0 20px 20px 0;
 }
@@ -18545,6 +18663,11 @@ a + .autoresponder-stats {
   float: left;
   width: 100%;
   margin: 30px 0 15px 0;
+}
+#marketing-intro-steps > div {
+  float: left;
+  margin-left: 2%;
+  min-height: 150px;
   background-color: rgba(51, 51, 51, 0.75);
   background-repeat: repeat-x;
   background-image: -moz-linear-gradient(top, rgba(34, 34, 34, 0.85), rgba(51, 51, 51, 0.75));
@@ -18554,11 +18677,6 @@ a + .autoresponder-stats {
   background-image: -o-linear-gradient(top, rgba(34, 34, 34, 0.85), rgba(51, 51, 51, 0.75));
   background-image: linear-gradient(top, rgba(34, 34, 34, 0.85), rgba(51, 51, 51, 0.75));
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='rgba(34, 34, 34, 0.85)', endColorstr='rgba(51, 51, 51, 0.75)', GradientType=0);
-}
-#marketing-intro-steps > div {
-  float: left;
-  margin-left: 2%;
-  min-height: 150px;
   color: #EFEFEF;
   border: 1px solid #333;
   -webkit-border-radius: 4px;

@@ -320,7 +320,7 @@
             {
                 throw new NotSupportedException();
             }
-            DataToReportUtil::resolveFilters($postData[$wizardFormClassName], $report);
+            DataToReportUtil::resolveFilters($postData[$wizardFormClassName], $report, true);
             if (isset($postData['ajax']) && $postData['ajax'] == 'edit-form')
             {
                 $adapter          = new ReportToWizardFormAdapter($report);
@@ -388,7 +388,7 @@
             ControllerSecurityUtil::resolveCanCurrentUserAccessModule($savedReport->moduleClassName);
             ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($savedReport);
             $report                         = SavedReportToReportAdapter::makeReportBySavedReport($savedReport);
-            $dataProvider                   = $this->getDataProviderForExport($report, (int)$stickySearchKey, false);
+            $dataProvider                   = $this->getDataProviderForExport($report, $report->getId(), false);
             $totalItems                     = intval($dataProvider->calculateTotalItemCount());
             $data                           = array();
             if ($totalItems > 0)
