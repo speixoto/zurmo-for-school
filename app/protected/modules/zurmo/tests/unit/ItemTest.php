@@ -121,7 +121,6 @@
             $contact = ContactTestHelper::createContactByNameForOwner('contactTest', $user);
             $account->contacts->add($contact);
             $this->assertWithinTolerance($createdTime,      DateTimeUtil::convertDbFormatDateTimeToTimestamp($account->createdDateTime),  2);
-            $this->assertNotEquals      ($lastModifiedTime, DateTimeUtil::convertDbFormatDateTimeToTimestamp($account->modifiedDateTime));
             $this->assertTrue($account->save());
             $this->assertWithinTolerance($createdTime,      DateTimeUtil::convertDbFormatDateTimeToTimestamp($account->createdDateTime),  2);
             $this->assertNotEquals      ($lastModifiedTime, DateTimeUtil::convertDbFormatDateTimeToTimestamp($account->modifiedDateTime));
