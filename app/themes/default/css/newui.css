@@ -18839,8 +18839,8 @@ a + .autoresponder-stats {
   -ms-text-shadow: 0 0 5px #ffd900;
   text-shadow: 0 0 5px #ffd900;
 }
-.CampaignItemsRelatedListView .icon-empty {
-  display: none;
+.CampaignItemsRelatedListView .icon-empty:before {
+  content: "f";
 }
 .no-subscribers-found .icon-notice:before,
 .no-email-recipients-found .icon-notice:before {
