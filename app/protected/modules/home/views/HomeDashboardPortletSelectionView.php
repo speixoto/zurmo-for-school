@@ -81,7 +81,7 @@
                                         'portletType'    => $portletRules->getType(),
                                         )
                                     );
-                                    $onClick = 'window.location.href="' . $url;
+                                    $onClick = 'window.location.href="' . $url . '"';
                                     $content .= '<li>';
                                     $portletName    = $metadata['perUser']['title'];
                                     MetadataUtil::resolveEvaluateSubString($portletName);
