@@ -93,6 +93,14 @@
             }
         }
 
+        /**
+         * used for customizing label in UI
+         */
+        public static function resolveCustomizedLabel()
+        {
+            return strtolower(preg_replace('/[^\da-z]/i', '', Yii::app()->label));
+        }
+
         public static function uncamelize($string ) {
             $string[0] = strtolower($string[0]);
             $uncamelizeFunction = create_function('$c', 'return "_" . strtolower($c[1]);');
@@ -110,3 +118,4 @@
                                                                                     $camelizeFunction, $string);
         }
     }
+?>

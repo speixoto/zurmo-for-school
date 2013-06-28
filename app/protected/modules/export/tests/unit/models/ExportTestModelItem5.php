@@ -44,12 +44,12 @@
             $metadata = parent::getDefaultMetadata();
             $metadata[__CLASS__] = array(
                 'members' => array(
-                    'EmailAddress',
+                    'emailAddress',
                 ),
                 'rules' => array(
-                    array('EmailAddress',   'type', 'type' => 'string'),
-                    array('EmailAddress',   'length',  'min'  => 6, 'max' => 64),
-                    array('EmailAddress',   'email', 'except' => 'autoBuildDatabase'),
+                    array('emailAddress',   'type', 'type' => 'string'),
+                    array('emailAddress',   'length',  'min'  => 6, 'max' => 64),
+                    array('emailAddress',   'email', 'except' => 'autoBuildDatabase'),
                 ),
             );
             return $metadata;
