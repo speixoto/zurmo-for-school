@@ -4,7 +4,7 @@
      * Zurmo, Inc. Copyright (C) 2012 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
-     * the terms of the GNU General Public License version 3 as published by the
+     * the terms of the GNU Affero General Public License version 3 as published by the
      * Free Software Foundation with the addition of the following permission added
      * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
      * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
@@ -12,10 +12,10 @@
      *
      * Zurmo is distributed in the hope that it will be useful, but WITHOUT
      * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-     * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+     * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
      * details.
      *
-     * You should have received a copy of the GNU General Public License along with
+     * You should have received a copy of the GNU Affero General Public License along with
      * this program; if not, see http://www.gnu.org/licenses or write to the Free
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
@@ -30,18 +30,18 @@
     class ProductTemplateElementUtil
     {
         /**
-         * Script used by some policy elements to control the helper
+         * Script used by slle price formula elements to control the helper
          * dropdown and toggling disable and enable on the text field
-         * @see PolicyIntegerAndStaticDropDownElement
+         * @see SellPriceFormulaInformationElement
          */
         public static function getShowHideDiscountOrMarkupPercentageTextFieldScript()
         {
             return "
-                var typeProfitMargin = " . SellPriceFormula::TYPE_PROFIT_MARGIN . ";
-                var typeMarkOverCost = " . SellPriceFormula::TYPE_MARKUP_OVER_COST . ";
-                var typeDiscountFromList = " . SellPriceFormula::TYPE_DISCOUNT_FROM_LIST . ";
                 function showHideDiscountOrMarkupPercentageTextField(helperValue, textFieldId)
                 {
+                    var typeProfitMargin = " . SellPriceFormula::TYPE_PROFIT_MARGIN . ";
+                    var typeMarkOverCost = " . SellPriceFormula::TYPE_MARKUP_OVER_COST . ";
+                    var typeDiscountFromList = " . SellPriceFormula::TYPE_DISCOUNT_FROM_LIST . ";
                     if (helperValue == typeProfitMargin || helperValue == typeMarkOverCost || helperValue == typeDiscountFromList)
                     {
                         $('#' + textFieldId).show();
@@ -54,12 +54,15 @@
             ";
         }
 
+        /**
+         * @return string
+         */
         public static function getEnableDisableSellPriceElementBySellPriceFormulaScript()
         {
             return "
-                var typeEditable = " . SellPriceFormula::TYPE_EDITABLE . ";
                 function enableDisableSellPriceElementBySellPriceFormula(helperValue, elementId, attribute)
                 {
+                    var typeEditable = " . SellPriceFormula::TYPE_EDITABLE . ";
                     if (helperValue != typeEditable)
                     {
                         $('#' + elementId).attr('readonly', true);
@@ -78,19 +81,23 @@
             ";
         }
 
+        /**
+         * @return string
+         */
         public static function getCalculatedSellPriceBySellPriceFormulaScript()
         {
+            // Begin Not Coding Standard
             return "
-                var typeEditable = " . SellPriceFormula::TYPE_EDITABLE . ";
-                var typeProfitMargin = " . SellPriceFormula::TYPE_PROFIT_MARGIN . ";
-                var typeMarkOverCost = " . SellPriceFormula::TYPE_MARKUP_OVER_COST . ";
-                var typeDiscountFromList = " . SellPriceFormula::TYPE_DISCOUNT_FROM_LIST . ";
-                var typeSameAsList = " . SellPriceFormula::TYPE_SAME_AS_LIST . ";
                 $('#ProductTemplate_cost_currency_id').change(function(){calculateSellPriceBySellPriceFormula()});
                 $('#ProductTemplate_listPrice_currency_id').change(function(){calculateSellPriceBySellPriceFormula()});
-                var priceCurrency = '';
                 function calculateSellPriceBySellPriceFormula()
                 {
+                    var priceCurrency = '';
+                    var typeEditable = " . SellPriceFormula::TYPE_EDITABLE . ";
+                    var typeProfitMargin = " . SellPriceFormula::TYPE_PROFIT_MARGIN . ";
+                    var typeMarkOverCost = " . SellPriceFormula::TYPE_MARKUP_OVER_COST . ";
+                    var typeDiscountFromList = " . SellPriceFormula::TYPE_DISCOUNT_FROM_LIST . ";
+                    var typeSameAsList = " . SellPriceFormula::TYPE_SAME_AS_LIST . ";
                     var helperValue = $('#ProductTemplate_sellPriceFormula_type').val();
                     var calculatedSellPrice = 0;
                     var discountOrMarkupPercentage = $('#ProductTemplate_sellPriceFormula_discountOrMarkupPercentage').val();
@@ -167,8 +174,12 @@
                     }
                 }
             ";
+            // End Not Coding Standard
         }
 
+        /**
+         * @return string
+         */
         public static function bindActionsWithFormFieldsForSellPrice()
         {
             return "
@@ -188,6 +199,9 @@
             ";
         }
 
+        /**
+         * @return array
+         */
         public static function getProductTemplateStatusDropdownArray()
         {
             return array(
@@ -196,6 +210,9 @@
             );
         }
 
+        /**
+         * @return array
+         */
         public static function getProductTemplateTypeDropdownArray()
         {
             return array(
@@ -205,6 +222,9 @@
             );
         }
 
+        /**
+         * @return array
+         */
         public static function getProductTemplatePriceFrequencyDropdownArray()
         {
             return array(
@@ -214,6 +234,12 @@
             );
         }
 
+        /**
+         * Get the value of type displayed in grid view for product template
+         * @param RedBeanModel $data
+         * @param int $row
+         * @return null or string
+         */
         public static function getProductTemplateTypeDisplayedGridValue($data, $row)
         {
             $typeDropdownData = self::getProductTemplateTypeDropdownArray();
@@ -227,6 +253,12 @@
             }
         }
 
+        /**
+         * Get the value of status displayed in grid view for product template
+         * @param RedBeanModel $data
+         * @param int $row
+         * @return null or string
+         */
         public static function getProductTemplateStatusDisplayedGridValue($data, $row)
         {
             $statusDropdownData = self::getProductTemplateStatusDropdownArray();
@@ -240,6 +272,12 @@
             }
         }
 
+        /**
+         * Get the value of price frequency displayed in grid view for product template
+         * @param RedBeanModel $data
+         * @param int $row
+         * @return null or string
+         */
         public static function getProductTemplatePriceFrequencyDisplayedGridValue($data, $row)
         {
             $frequencyDropdownData = self::getProductTemplatePriceFrequencyDropdownArray();
@@ -253,6 +291,12 @@
             }
         }
 
+        /**
+         * Get the value of sell price formula displayed in grid view for product template
+         * @param RedBeanModel $data
+         * @param int $row
+         * @return string
+         */
         public static function getSellPriceFormulaDisplayedGridValue($data, $row)
         {
             $sellPriceFormulaModel = $data->sellPriceFormula;
@@ -271,6 +315,49 @@
             }
 
             return $content;
+        }
+
+        /**
+         * Get the attribute value for the report grid view based on the input
+         * dropdown attribute
+         * @param object $data
+         * @param int $row
+         * @param string $inputAttribute
+         * @param array $dataArray
+         * @return string or null value
+         */
+        public static function renderProductTemplateListViewAttributeForReports($model, $attribute)
+        {
+            assert('$model instanceof ReportResultsRowData');
+            if (null === $displayAttributeKey = $model::resolveKeyByAttributeName($attribute))
+            {
+                return $model->{$attribute};
+            }
+            $displayAttributes = $model->getDisplayAttributes();
+            $displayAttribute  = $displayAttributes[$displayAttributeKey];
+            $realAttributeName = $displayAttribute->getResolvedAttribute();
+            switch($realAttributeName)
+            {
+                case 'priceFrequency':
+                    $dataArray = self::getProductTemplatePriceFrequencyDropdownArray();
+                    break;
+                case 'status'        :
+                    $dataArray = self::getProductTemplateStatusDropdownArray();
+                    break;
+                case 'type'          :
+                    $dataArray = self::getProductTemplateTypeDropdownArray();
+                    break;
+                default              :   break;
+            }
+            $value = $model->{$attribute};
+            if (isset($dataArray[$value]))
+            {
+                return $dataArray[$value];
+            }
+            else
+            {
+                return null;
+            }
         }
     }
 ?>

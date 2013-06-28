@@ -4,7 +4,7 @@
      * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
-     * the terms of the GNU General Public License version 3 as published by the
+     * the terms of the GNU Affero General Public License version 3 as published by the
      * Free Software Foundation with the addition of the following permission added
      * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
      * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
@@ -12,10 +12,10 @@
      *
      * Zurmo is distributed in the hope that it will be useful, but WITHOUT
      * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-     * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+     * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
      * details.
      *
-     * You should have received a copy of the GNU General Public License along with
+     * You should have received a copy of the GNU Affero General Public License along with
      * this program; if not, see http://www.gnu.org/licenses or write to the Free
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
@@ -25,9 +25,9 @@
      *
      * The interactive user interfaces in original and modified versions
      * of this program must display Appropriate Legal Notices, as required under
-     * Section 5 of the GNU General Public License version 3.
+     * Section 5 of the GNU Affero General Public License version 3.
      *
-     * In accordance with Section 7(b) of the GNU General Public License version 3,
+     * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
@@ -48,20 +48,31 @@
 
         public static function resolveContactAndMetricsSummary(CampaignItem $campaignItem)
         {
-            $content  = static::resolveContactWithLink($campaignItem->contact);
-            $content .= static::renderMetricsContent($campaignItem);
-            return $content;
+            if (ActionSecurityUtil::canCurrentUserPerformAction('Details', $campaignItem->contact))
+            {
+                $content  = static::resolveContactWithLink($campaignItem->contact);
+                $content .= static::renderMetricsContent($campaignItem);
+                return $content;
+            }
+            else
+            {
+                return static::renderRestrictedContactAccessLink($campaignItem->contact);
+            }
         }
 
         public static function resolveContactWithLink(Contact $contact)
         {
-            $moduleClassName = static::resolveModuleClassName($contact);
-            $linkRoute       = '/' . $moduleClassName::getDirectoryName() . '/default/details';
-            $linkContent     = ActionSecurityUtil::resolveLinkToModelForCurrentUser(strval($contact), $contact,
-                               $moduleClassName, $linkRoute);
-            if($linkContent == null)
+            $linkContent = static::renderRestrictedContactAccessLink($contact);
+            if (ActionSecurityUtil::canCurrentUserPerformAction('Details', $contact))
             {
-                $linkContent = static::renderRestrictedContactAccessLink($contact);
+                $moduleClassName = static::resolveModuleClassName($contact);
+                $linkRoute       = '/' . $moduleClassName::getDirectoryName() . '/default/details';
+                $link            = ActionSecurityUtil::resolveLinkToModelForCurrentUser(strval($contact), $contact,
+                                       $moduleClassName, $linkRoute);
+                if ($link != null)
+                {
+                    $linkContent = $link;
+                }
             }
             return ZurmoHtml::tag('div', array('class' => 'email-recipient-name'), $linkContent);
         }
@@ -79,6 +90,19 @@
             return $content;
         }
 
+        protected static function renderRestrictedEmailMessageAccessLink(EmailMessage $emailMessage)
+        {
+            $title       = Zurmo::t('CampaignsModule', 'You cannot see the performance metrics due to limited access');
+            $content     = ZurmoHtml::tag('em', array(), Zurmo::t('CampaignsModule', 'Restricted'));
+            $content    .= ZurmoHtml::tag('span', array('id'    => 'restricted-access-email-message-tooltip' . $emailMessage->id,
+                           'class' => 'tooltip',
+                           'title' => $title), '?');
+            $qtip = new ZurmoTip(array('options' => array('position' => array('my' => 'bottom left', 'at' => 'top left',
+                           'adjust' => array('x' => 6, 'y' => -1)))));
+            $qtip->addQTip('#restricted-access-email-message-tooltip' . $emailMessage->id);
+            return $content;
+        }
+
         protected static function resolveModuleClassName(Contact $contact)
         {
             if (LeadsUtil::isStateALead($contact->state))
@@ -93,36 +117,40 @@
 
         protected static function renderMetricsContent(CampaignItem $campaignItem)
         {
+            if (!ActionSecurityUtil::canCurrentUserPerformAction('Details', $campaignItem->emailMessage))
+            {
+                return static::renderRestrictedEmailMessageAccessLink($campaignItem->emailMessage);
+            }
             $isQueuedOrSkipped     = $campaignItem->isQueuedOrSkipped();
             $isSkipped             = $campaignItem->isSkipped();
-            if($isQueuedOrSkipped && !$isSkipped)
+            if ($isQueuedOrSkipped && !$isSkipped)
             {
                 $content = static::getQueuedContent();
             }
-            elseif($isQueuedOrSkipped && $isSkipped)
+            elseif ($isQueuedOrSkipped && $isSkipped)
             {
                 $content = static::getSkippedContent();
             }
-            elseif($campaignItem->hasFailedToSend())
+            elseif ($campaignItem->hasFailedToSend())
             {
                 $content = static::getSendFailedContent();
             }
             else //sent
             {
                 $content = static::getSentContent();
-                if($campaignItem->hasAtLeastOneOpenActivity())
+                if ($campaignItem->hasAtLeastOneOpenActivity())
                 {
                     $content .= static::getOpenedContent();
                 }
-                if($campaignItem->hasAtLeastOneClickActivity())
+                if ($campaignItem->hasAtLeastOneClickActivity())
                 {
                     $content .= static::getClickedContent();
                 }
-                if($campaignItem->hasAtLeastOneUnsubscribeActivity())
+                if ($campaignItem->hasAtLeastOneUnsubscribeActivity())
                 {
                     $content .= static::getUnsubscribedContent();
                 }
-                if($campaignItem->hasAtLeastOneBounceActivity())
+                if ($campaignItem->hasAtLeastOneBounceActivity())
                 {
                     $content .= static::getBouncedContent();
                 }

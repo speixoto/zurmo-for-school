@@ -4,7 +4,7 @@
      * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
-     * the terms of the GNU General Public License version 3 as published by the
+     * the terms of the GNU Affero General Public License version 3 as published by the
      * Free Software Foundation with the addition of the following permission added
      * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
      * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
@@ -12,10 +12,10 @@
      *
      * Zurmo is distributed in the hope that it will be useful, but WITHOUT
      * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-     * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+     * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
      * details.
      *
-     * You should have received a copy of the GNU General Public License along with
+     * You should have received a copy of the GNU Affero General Public License along with
      * this program; if not, see http://www.gnu.org/licenses or write to the Free
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
@@ -25,9 +25,9 @@
      *
      * The interactive user interfaces in original and modified versions
      * of this program must display Appropriate Legal Notices, as required under
-     * Section 5 of the GNU General Public License version 3.
+     * Section 5 of the GNU Affero General Public License version 3.
      *
-     * In accordance with Section 7(b) of the GNU General Public License version 3,
+     * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
@@ -77,7 +77,7 @@
                                                     false,
                                                     $portletsAreMovable,
                                                     false,
-                                                    '75,25', // Not Coding Standard
+                                                    static::getDefaultLayoutType(), // This could be driven by a db value based on layout type id
                                                     $portletsAreRemovable);
             $content          .=  $configurableView->render();
             $content          .= $this->renderScripts();
@@ -151,10 +151,10 @@
             assert('is_bool($portletsAreMovable)');
             assert('is_bool($portletsAreRemovable)');
             $getData = GetUtil::getData();
-            if(isset($getData['lockPortlets']))
+            if (isset($getData['lockPortlets']))
             {
                 $lockPortlets = (bool)$getData['lockPortlets'];
-                if($lockPortlets)
+                if ($lockPortlets)
                 {
                     ZurmoDefaultViewUtil::setLockKeyForDetailsAndRelationsView('lockPortletsForDetailsAndRelationsView', true);
                 }
@@ -165,7 +165,7 @@
             }
             $isViewLocked = ZurmoDefaultViewUtil::getLockKeyForDetailsAndRelationsView('lockPortletsForDetailsAndRelationsView');
             //Default case for the first time
-            if($isViewLocked === null)
+            if ($isViewLocked === null)
             {
                 ZurmoDefaultViewUtil::setLockKeyForDetailsAndRelationsView('lockPortletsForDetailsAndRelationsView', true);
                 $isViewLocked = true;
@@ -175,6 +175,28 @@
                 $portletsAreRemovable   = false;
                 $portletsAreMovable     = false;
             }
+        }
+
+        /**
+         * Get layout type for configurable details and relations view
+         * @return type
+         */
+        public static function getLayoutTypesData()
+        {
+            return array(
+                '100'   => Zurmo::t('HomeModule', '1 Column'),
+                '50,50' => Zurmo::t('HomeModule', '2 Columns'), // Not Coding Standard
+                '75,25' => Zurmo::t('HomeModule', '2 Columns Left Strong'), // Not Coding Standard
+            );
+        }
+
+        /**
+         * Get the layout type
+         * @return string
+         */
+        public static function getDefaultLayoutType()
+        {
+            return '75,25'; // Not Coding Standard
         }
     }
 ?>

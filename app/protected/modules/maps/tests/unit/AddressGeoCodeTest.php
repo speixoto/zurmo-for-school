@@ -4,7 +4,7 @@
      * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
-     * the terms of the GNU General Public License version 3 as published by the
+     * the terms of the GNU Affero General Public License version 3 as published by the
      * Free Software Foundation with the addition of the following permission added
      * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
      * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
@@ -12,10 +12,10 @@
      *
      * Zurmo is distributed in the hope that it will be useful, but WITHOUT
      * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-     * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+     * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
      * details.
      *
-     * You should have received a copy of the GNU General Public License along with
+     * You should have received a copy of the GNU Affero General Public License along with
      * this program; if not, see http://www.gnu.org/licenses or write to the Free
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
@@ -25,9 +25,9 @@
      *
      * The interactive user interfaces in original and modified versions
      * of this program must display Appropriate Legal Notices, as required under
-     * Section 5 of the GNU General Public License version 3.
+     * Section 5 of the GNU Affero General Public License version 3.
      *
-     * In accordance with Section 7(b) of the GNU General Public License version 3,
+     * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
@@ -48,6 +48,14 @@
             }
             Yii::app()->user->userModel = $super;
             AddressGeoCodeTestHelper::createAndRemoveAccountWithAddress($super);
+        }
+
+        public function testStringLength()
+        {
+            $this->assertEquals(-112.8327778, AddressMappingUtil::sanitizeLatitudeOrLongitude(-112.83277785));
+            $this->assertEquals(-112.8327778, AddressMappingUtil::sanitizeLatitudeOrLongitude(-112.8327778));
+            $this->assertEquals(112.83277785, AddressMappingUtil::sanitizeLatitudeOrLongitude(112.83277785));
+            $this->assertEquals(112.8327778, AddressMappingUtil::sanitizeLatitudeOrLongitude(112.8327778));
         }
 
         public function testAddressFetchLatitudeAndLongitude()
@@ -107,10 +115,9 @@
             unset($account1);
 
             AddressMappingUtil::updateChangedAddresses(2);
-
-            $account1 = Account::getById($accountId1);
-            $this->assertEquals(round('42.1153153', 4),  round($account1->billingAddress->latitude, 4));
-            $this->assertEquals(round('-87.9763703', 4), round($account1->billingAddress->longitude, 4));
+            $account1 = Account::getById($accountId1);            
+            $this->assertEquals(round('41.8817767', 4),  round($account1->billingAddress->latitude, 4));
+            $this->assertEquals(round('-87.6371461', 4), round($account1->billingAddress->longitude, 4));
             $this->assertEquals(0,             $account1->billingAddress->invalid);
             unset($account1);
 
@@ -193,8 +200,8 @@
             AddressMappingUtil::updateChangedAddresses();
 
             $account1 = Account::getById($accountId1);
-            $this->assertEquals(round('42.1153153', 4),  round($account1->billingAddress->latitude, 4));
-            $this->assertEquals(round('-87.9763703', 4), round($account1->billingAddress->longitude, 4));
+            $this->assertEquals(round('41.8817767', 4),  round($account1->billingAddress->latitude, 4));
+            $this->assertEquals(round('-87.6371461', 4), round($account1->billingAddress->longitude, 4));
             $this->assertEquals(0,             $account1->billingAddress->invalid);
         }
     }

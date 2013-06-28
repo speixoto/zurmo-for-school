@@ -4,7 +4,7 @@
      * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
-     * the terms of the GNU General Public License version 3 as published by the
+     * the terms of the GNU Affero General Public License version 3 as published by the
      * Free Software Foundation with the addition of the following permission added
      * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
      * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
@@ -12,10 +12,10 @@
      *
      * Zurmo is distributed in the hope that it will be useful, but WITHOUT
      * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-     * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+     * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
      * details.
      *
-     * You should have received a copy of the GNU General Public License along with
+     * You should have received a copy of the GNU Affero General Public License along with
      * this program; if not, see http://www.gnu.org/licenses or write to the Free
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
@@ -25,9 +25,9 @@
      *
      * The interactive user interfaces in original and modified versions
      * of this program must display Appropriate Legal Notices, as required under
-     * Section 5 of the GNU General Public License version 3.
+     * Section 5 of the GNU Affero General Public License version 3.
      *
-     * In accordance with Section 7(b) of the GNU General Public License version 3,
+     * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
@@ -77,6 +77,7 @@
             {
                 throw new ApiNoRightWebApiLoginException();
             }
+            $user->login();
             return $user;
         }
 
@@ -441,6 +442,7 @@
                     'hash'              => Zurmo::t('UsersModule',         'Hash',              array(), null, $language),
                     'isActive'          => Zurmo::t('UsersModule',         'Is Active',         array(), null, $language),
                     'language'          => Zurmo::t('ZurmoModule',         'Language',          array(), null, $language),
+                    'locale'            => Zurmo::t('ZurmoModule',         'Locale',            array(), null, $language),
                     'manager'           => Zurmo::t('UsersModule',         'Manager',           array(), null, $language),
                     'primaryEmail'      => Zurmo::t('ZurmoModule',         'Email',             array(), null, $language),
                     'primaryAddress'    => Zurmo::t('ZurmoModule',         'Address',           array(), null, $language),
@@ -448,6 +450,7 @@
                     'timeZone'          => Zurmo::t('UsersModule',         'Time Zone',         array(), null, $language),
                     'title'             => Zurmo::t('ZurmoModule',         'Salutation',        array(), null, $language),
                     'username'          => Zurmo::t('UsersModule',         'Username',          array(), null, $language),
+                    'lastLoginDateTime' => Zurmo::t('UsersModule',         'Last Login',        array(), null, $language),
                 )
             );
         }
@@ -648,10 +651,12 @@
                 'members' => array(
                     'hash',
                     'language',
+                    'locale',
                     'timeZone',
                     'username',
                     'serializedAvatarData',
                     'isActive',
+                    'lastLoginDateTime',
                 ),
                 'relations' => array(
                     'currency'          => array(RedBeanModel::HAS_ONE,             'Currency'),
@@ -673,6 +678,8 @@
                     array('hash',     'length',  'min'   => 32, 'max' => 32),
                     array('language', 'type',    'type'  => 'string'),
                     array('language', 'length',  'max'   => 10),
+                    array('locale',   'type',    'type'  => 'string'),
+                    array('locale',   'length',  'max'   => 10),
                     array('timeZone', 'type',    'type'  => 'string'),
                     array('timeZone', 'length',  'max'   => 64),
                     array('timeZone', 'UserDefaultTimeZoneDefaultValueValidator'),
@@ -687,6 +694,7 @@
                     array('serializedAvatarData', 'type', 'type' => 'string'),
                     array('isActive', 'readOnly'),
                     array('isActive', 'boolean'),
+                    array('lastLoginDateTime',    'type', 'type' => 'datetime'),
                 ),
                 'elements' => array(
                 ),
@@ -840,6 +848,15 @@
                 return array('firstName', $attribute);
             }
             return parent::getSortAttributesByAttribute($attribute);
+        }
+
+        protected function login()
+        {
+            if (!ApiRequest::isApiRequest())
+            {
+                $this->unrestrictedSet('lastLoginDateTime',  DateTimeUtil::convertTimestampToDbFormatDateTime(time()));
+                $this->save();
+            }
         }
     }
 ?>

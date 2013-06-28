@@ -4,7 +4,7 @@
      * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
-     * the terms of the GNU General Public License version 3 as published by the
+     * the terms of the GNU Affero General Public License version 3 as published by the
      * Free Software Foundation with the addition of the following permission added
      * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
      * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
@@ -12,10 +12,10 @@
      *
      * Zurmo is distributed in the hope that it will be useful, but WITHOUT
      * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-     * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+     * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
      * details.
      *
-     * You should have received a copy of the GNU General Public License along with
+     * You should have received a copy of the GNU Affero General Public License along with
      * this program; if not, see http://www.gnu.org/licenses or write to the Free
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
@@ -25,9 +25,9 @@
      *
      * The interactive user interfaces in original and modified versions
      * of this program must display Appropriate Legal Notices, as required under
-     * Section 5 of the GNU General Public License version 3.
+     * Section 5 of the GNU Affero General Public License version 3.
      *
-     * In accordance with Section 7(b) of the GNU General Public License version 3,
+     * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
@@ -49,29 +49,33 @@
             return parent::beforeAction($action);
         }
 
-        public function actionUnsubscribe($hash)
+        public function actionUnsubscribe($hash, $preview = 0)
         {
+            $this->renderPreviewMessage($preview);
             $this->toggleUnsubscribed($hash, 0);
         }
 
-        public function actionSubscribe($hash)
+        public function actionSubscribe($hash, $preview = 0)
         {
+            $this->renderPreviewMessage($preview);
             $this->toggleUnsubscribed($hash, 1);
         }
 
-        public function actionOptOut($hash)
+        public function actionOptOut($hash, $preview = 0)
         {
+            $this->renderPreviewMessage($preview);
             $this->toggleUnsubscribed($hash, 0, true);
         }
 
-        public function actionManageSubscriptions($hash)
+        public function actionManageSubscriptions($hash, $preview = 0)
         {
+            $this->renderPreviewMessage($preview);
             $contact                = null;
             $personId               = null;
             $marketingListId        = null;
             $modelId                = null;
             $modelType              = null;
-            extract($this->resolveHashForMarketingListIdAndPersonIdandContact($hash));
+            extract($this->resolveHashForMarketingListIdAndPersonIdAndContact($hash));
             $marketingLists         = MarketingList::getByUnsubscribedAndAnyoneCanSubscribe($contact->id);
             $listView               = new MarketingListsManageSubscriptionsListView($this->getId(),
                                                                                         $this->getModule()->getId(),
@@ -82,6 +86,18 @@
                                                                                         $modelType);
             $view                   = new MarketingListsManageSubscriptionsPageView($this, $listView);
             echo $view->render();
+        }
+
+        protected function renderPreviewMessage($preview)
+        {
+            if (!$preview)
+            {
+                return;
+            }
+            $splashView         = new MarketingListsExternalActionsPreviewView();
+            $view               = new MarketingListsExternalActionsPageView($this, $splashView);
+            echo $view->render();
+            Yii::app()->end(0, false);
         }
 
         protected function resolveAndValidateQueryStringHash($hash)
@@ -99,7 +115,7 @@
             $modelType              = null;
             $createNewActivity      = false;
             $newUnsubcribedValue   = (!$currentUnsubscribedValue);
-            extract($this->resolveHashForMarketingListIdAndPersonIdandContact($hash));
+            extract($this->resolveHashForMarketingListIdAndPersonIdAndContact($hash));
             $members                = $this->resolveMembers($currentUnsubscribedValue, $contact, $marketingListId, $optOut);
             if ($members)
             {
@@ -189,19 +205,21 @@
 
         protected function createActivityIfRequired($createNewActivity, $newUnsubcribedValue, $modelId, $modelType, $personId)
         {
-            if (!$createNewActivity)
+            if (!$createNewActivity || $newUnsubcribedValue != 1)
             {
                 return;
             }
-            // TODO: @Shoaibi: Critical: Tests to cover $newUnsubscribedValue to 0 or createNewActivity =0
-            if ($newUnsubcribedValue == 1)
-            {
-                $activityClassName  = EmailMessageActivityUtil::resolveModelClassNameByModelType($modelType);
-                $type               = $activityClassName::TYPE_UNSUBSCRIBE;
-                $url                = null;
-                $sourceIP           = Yii::app()->request->userHostAddress;
-                $activityClassName::createNewActivity($type, $modelId, $personId, $url, $sourceIP);
-            }
+            $activityClassName      = EmailMessageActivityUtil::resolveModelClassNameByModelType($modelType);
+            $activityUtilClassName  = $activityClassName . 'Util';
+            $type                   = $activityClassName::TYPE_UNSUBSCRIBE;
+            $url                    = null;
+            $sourceIP               = Yii::app()->request->userHostAddress;
+            $activityData           = array('modelId'   => $modelId,
+                                                'modelType' => $modelType,
+                                                'personId'  => $personId,
+                                                'url'       => null,
+                                                'type'      => $type);
+            return $activityUtilClassName::createOrUpdateActivity($activityData);
         }
 
         protected function setToggleUnsubscribedCookie($message)
@@ -220,7 +238,7 @@
             return $contact;
         }
 
-        protected function resolveHashForMarketingListIdAndPersonIdandContact($hash)
+        protected function resolveHashForMarketingListIdAndPersonIdAndContact($hash)
         {
             $queryStringArray               = $this->resolveAndValidateQueryStringHash($hash);
             $queryStringArray['contact']    = $this->getContactByPersonId($queryStringArray['personId']);

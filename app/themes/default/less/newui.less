@@ -3,7 +3,7 @@
  * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
  *
  * Zurmo is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License version 3 as published by the
+ * the terms of the GNU Affero General Public License version 3 as published by the
  * Free Software Foundation with the addition of the following permission added
  * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
  * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
@@ -11,10 +11,10 @@
  *
  * Zurmo is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+ * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
  * details.
  *
- * You should have received a copy of the GNU General Public License along with
+ * You should have received a copy of the GNU Affero General Public License along with
  * this program; if not, see http://www.gnu.org/licenses or write to the Free
  * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
  * 02110-1301 USA.
@@ -24,22 +24,24 @@
  *
  * The interactive user interfaces in original and modified versions
  * of this program must display Appropriate Legal Notices, as required under
- * Section 5 of the GNU General Public License version 3.
+ * Section 5 of the GNU Affero General Public License version 3.
  *
- * In accordance with Section 7(b) of the GNU General Public License version 3,
+ * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the Zurmo
  * logo and Zurmo copyright notice. If the display of the logo is not reasonably
  * feasible for technical reasons, the Appropriate Legal Notices must display the words
  * Copyright Zurmo Inc. 2013. All rights reserved.
  ********************************************************************************/
 
-*{
+.zurmo *{
 	margin:0;
 	padding:0;
 }
 
 @import 'color-scheme.less';
 
+//@unicode : ~`unicode-range: U+00-FF;`;
+/*
 @font-face {
 	font-family: 'ZurmoGamificationSymblyReguRg';
 	src: url('../fonts/zurmogamificationsymblyregular-regular-webfont.eot');
@@ -50,7 +52,7 @@
 	font-weight: normal;
 	font-style: normal;
 }
-
+*/
 .symbly( @size : 32px ) {
 	font-weight:normal;
 	font-size:@size;
@@ -91,12 +93,13 @@
 	float: left;
 }
 
-html, body{
-	background:#DDDEDE;
-	min-height:100%;
+html.zurmo,
+html.zurmo body{
+		background:#DDDEDE;
+		min-height:100%;
 }
 
-body{
+.zurmo body{
 	font-family:"Helvetica Neue", Helvetica, Arial, sans-serif;
 	font-size:12px;
 	color: #545454;
@@ -105,19 +108,20 @@ body{
 	-moz-font-smoothing: antialiased;
 	-o-font-smoothing: antialiased;
 	font-smoothing: antialiased;
-}
 
-a:link, a:hover, a:active, a:visited{
-	text-decoration:none;
-	outline: none;
-	img{
-		border:none;
+	a:link, a:hover, a:active, a:visited{
+		text-decoration:none;
+		outline: none;
+		img{
+			border:none;
+		}
+	}
+	a:focus{
+		outline:none;
 	}
 }
 
-a:focus{
-	outline:none;
-}
+
 
 /*=HTML5*/
 article, aside, details, figcaption, figure,
@@ -1607,7 +1611,7 @@ form,
 
 #MassDeleteLinkActionElement .parent > a:before,
 #ListViewDeleteMassActionMenu .parent > a:before{
-	content: "—"; //underscore!
+	content: '\2014'; //emdash!
 	.view-toolbar-icons(22px);
 	top:-2px;
 }
@@ -2008,6 +2012,9 @@ caption, th, td {
 }
 
 .stacked-list{
+	td + td{
+		width:25px
+	}
 	td{
 		padding-left:0;// !important;
 		div.button-column{
@@ -2104,7 +2111,7 @@ tr.even{
 
 .juiportlet-widget{
 	.empty{
-		padding:10px 0 10px 15px;
+		padding:5px 0 10px 0;
 		display:block;
 	}
 	td.empty > .empty{
@@ -2116,11 +2123,54 @@ tr.even{
 	display:block;
 	.smaller();
 	font-weight: bold;
-	background: rgba(255, 255, 255, 0.5);
+	//background: rgba(255, 255, 255, 0.5);
+	text-align:center;
+	.icon-empty{
+		display: block;
+		line-height: 1;
+		margin: 0;
+	}
+	.icon-empty:before{
+		margin: 0;
+		font-size:40px;
+		line-height:1;
+	}
 }
 
 td.empty{
 	display:table-cell !important;
+}
+
+.icon-notice:before{
+	content: "j";
+	.view-toolbar-icons();
+}
+
+.icon-empty:before{
+	content: "z";
+	.view-toolbar-icons();
+	margin:0 !important;
+}
+
+.general-issue-notice{
+	text-align: center;
+	width:75%;
+	margin:10px auto 15px auto !important;
+	position: relative;
+	.icon-notice{
+		display: block;
+		line-height: 1;
+		margin-bottom: 10px;
+	}
+	.icon-notice:before{
+		margin: 0;
+		font-size:100px;
+		line-height: 60px !important;
+	}
+	p{
+		font-size: 14px;
+		line-height: 21px;
+	}
 }
 
 /*forms*/
@@ -2562,6 +2612,11 @@ div.wide.form{
 	.t-shadow(0 1px 0 rgba(255, 255, 255, 0.8));
 }
 
+.juiportlet-widget-head .list-view-items-summary-clone{
+	position: relative;
+	margin: 0;
+}
+
 .list-preloader{
 	display:none;
 	background: rgba(0, 0, 0, 0.5);
@@ -2638,8 +2693,9 @@ div.wide.form{
 		color:#555;
 		font-weight:bold;
 		float:left;
-		width:70%;
+		width:65%;
 		margin:45px 0 0 30px;
+		++.border-box;
 	}
 	a{
 		margin-left:30px;
@@ -4324,6 +4380,50 @@ div.hasHalfs{
 	}
 }
 
+.edit-row-menu{
+	white-space: nowrap;
+	> li{
+		position: relative;
+		white-space: nowrap;
+
+	}
+	> li > a{
+		position: relative;
+		z-index: 10;
+		white-space: nowrap;
+	}
+	ul{
+		line-height: 1;
+		white-space: nowrap;
+		left: auto;
+		right: -10px;
+		margin:0;
+		top:-3px;
+		z-index: 1;
+		padding-right: 30px;
+		.radius(0 15px 15px 0);
+		> li{
+			+ li{
+				margin-left: -3px; //for teh white space
+			}
+			display:inline; // can't float cause it breaks in FF
+			border-left: 1px solid #d8d8d8;
+			a{
+				display: inline-block;
+				//padding: 0 10px;
+			}
+			&:first-child{
+				border-left: none;
+			}
+		}
+	}
+	> li.over > a{
+		pointer-event:none;
+		opacity:0.5;
+		//z-index: 20;
+	}
+}
+
 /*Upcoming Meeting Pager*/
 .pager{
 	++.border-box;
@@ -5218,18 +5318,23 @@ div.hasHalfs{
 	font-weight: bold;
 }
 
+.empty + .pager + .products-portlet-totals{
+	display:none;
+}
+
 .editable-cell{
 	border-bottom: 1px dotted #ccc;
 	width: auto;
 	display: inline-block;
-	padding-bottom: 2px;
-	margin-top: 3px;
+	//padding-bottom: 2px;
+	//margin-top: 3px;
 	&:after{
 		content:"!";
 		.symbly(20px);
 		position: relative;
 		right: -10px;
 		top: 1px;
+		line-height: 1;
 	}
 }
 
@@ -5256,4 +5361,5 @@ div.hasHalfs{
 @import 'marketing.less';
 @import 'kanban.less';
 @import 'webforms.less';
+@import 'lab.less';
 @import 'media-queries.less';

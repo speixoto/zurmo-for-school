@@ -4,7 +4,7 @@
      * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
-     * the terms of the GNU General Public License version 3 as published by the
+     * the terms of the GNU Affero General Public License version 3 as published by the
      * Free Software Foundation with the addition of the following permission added
      * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
      * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
@@ -12,10 +12,10 @@
      *
      * Zurmo is distributed in the hope that it will be useful, but WITHOUT
      * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-     * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+     * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
      * details.
      *
-     * You should have received a copy of the GNU General Public License along with
+     * You should have received a copy of the GNU Affero General Public License along with
      * this program; if not, see http://www.gnu.org/licenses or write to the Free
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
@@ -25,9 +25,9 @@
      *
      * The interactive user interfaces in original and modified versions
      * of this program must display Appropriate Legal Notices, as required under
-     * Section 5 of the GNU General Public License version 3.
+     * Section 5 of the GNU Affero General Public License version 3.
      *
-     * In accordance with Section 7(b) of the GNU General Public License version 3,
+     * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
@@ -614,6 +614,140 @@
                                             'attributeTypeName'     => $attributeTypeName,
                                             'attributeName'         => $name));
                 $content = $this->runControllerWithRedirectExceptionAndGetContent('designer/default/attributeEdit');
+            }
+        }
+
+        private function buildAttributesArrayFromPostArray($postArray)
+        {
+            $testAttributes = array();
+            foreach ($postArray as $moduleClass => $values)
+            {
+                foreach ($values as $attribute => $value)
+                {
+                    if (is_array($value))
+                    {
+                        $testAttributes[$attribute] = $this->buildAttributesArrayFromPostArray(array('dummy' => $value));
+                    }
+                    else
+                    {
+                        $testAttributes[] = $attribute;
+                    }
+                }
+            }
+            return $testAttributes;
+        }
+
+        /**
+         * Uses postArray to check response field values.
+         *
+         * @param OwnedSecurableItem $model     Model to get values from
+         * @param array              $postArray Array of post values
+         * @return boolean
+         */
+        protected function checkCopyActionResponseAttributeValuesFromPostArray($model, $postArray, $linkClass = null)
+        {
+            return $this->checkCopyActionResponseAttributeValues(
+                $model,
+                $this->buildAttributesArrayFromPostArray($postArray),
+                $linkClass
+            );
+        }
+
+        /**
+         * Test if form fields have values from record.
+         *
+         * It supports selects, plain text fields and textareas.
+         *
+         * @param OwnedSecurableItem $model          Model to get values from
+         * @param array              $testAttributes Array of fields to test
+         * @return boolean
+         */
+        protected function checkCopyActionResponseAttributeValues($model, $testAttributes, $linkClass = null)
+        {
+            $class = get_class($model);
+            if (empty($linkClass))
+            {
+                $realm = strtolower($class);
+            }
+            else
+            {
+                $realm = rtrim(strtolower($linkClass), 's');
+            }
+            $this->setGetArray(array('id' => $model->id));
+            $this->resetPostArray();
+            $response = $this->runControllerWithNoExceptionsAndGetContent($realm.'s/default/copy');
+            return $this->checkResponseAgainstAttributeArray($response, $model, $class, $testAttributes, $linkClass);
+        }
+
+        private function checkResponseAgainstAttributeArray($response, $model, $class, $testAttributes, $linkClass = null)
+        {
+            $attributesValid = true;
+            $matchRulesBase = array();
+            $matchRulesBase[] = '/id="%testAttribute%".*?>%value%<\/t/';
+            $matchRulesBase[] = '/id="%testAttribute%".*?value="%value%"/';
+            $matchRulesBase[] = '/id="%testAttribute%">.*?<option value="%value%" selected="selected"/s';
+            foreach ($testAttributes as $relation => $testAttribute)
+            {
+                if (is_array($testAttribute))
+                {
+                    $attributesValid = $attributesValid && $this->checkResponseAgainstAttributeArray($response, $model->{$relation}, $class . '_' . $relation, $testAttribute, $linkClass);
+                }
+                else
+                {
+                    $matchResult = false;
+                    $matchRules  = str_replace(
+                        array('%testAttribute%', '%value%'),
+                        array($class . '_' . $testAttribute, str_replace('/', '\/', $model->{$testAttribute})),
+                        $matchRulesBase
+                    );
+                    foreach ($matchRules as $matchRule)
+                    {
+                        $matchResult = $matchResult || preg_match($matchRule, $response);
+                    }
+                    $this->assertTrue($matchResult, $class . '_' . $testAttribute . '==' . $model->{$testAttribute});
+                    $attributesValid = $attributesValid && $matchResult;
+                }
+            }
+            return (bool)$attributesValid;
+        }
+
+        /**
+         * Updates the model with values from post array.
+         *
+         * @param OwnedSecurableItem $model     Updated model
+         * @param array              $postArray Array of post values
+         */
+        protected function updateModelValuesFromPostArray($model, $postArray)
+        {
+            foreach ($postArray as $moduleClass => $attributeValues)
+            {
+                $this->assertInstanceOf($moduleClass, $model);
+                $model->setAttributes($attributeValues);
+            }
+        }
+
+        /**
+         * Checks if the model has values from post array.
+         *
+         * @param OwnedSecurableItem $model     Updated model
+         * @param array              $postArray Array of post values
+         */
+        protected function assertModelHasValuesFromPostArray($model, $postArray)
+        {
+            foreach ($postArray as $moduleClass => $attributeValues)
+            {
+                $this->assertInstanceOf($moduleClass, $model);
+                foreach ($attributeValues as $attribute => $attributeValue)
+                {
+                    if (is_array($attributeValue))
+                    {
+                        $this->assertModelHasValuesFromPostArray($model->{$attribute}, array(get_class($model->{$attribute}) => $attributeValue));
+                    }
+                    else
+                    {
+                        $this->assertEquals($attributeValue, $model->{$attribute});
+                    }
+                }
             }
         }
     }

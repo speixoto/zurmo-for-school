@@ -4,7 +4,7 @@
      * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
-     * the terms of the GNU General Public License version 3 as published by the
+     * the terms of the GNU Affero General Public License version 3 as published by the
      * Free Software Foundation with the addition of the following permission added
      * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
      * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
@@ -12,10 +12,10 @@
      *
      * Zurmo is distributed in the hope that it will be useful, but WITHOUT
      * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-     * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+     * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
      * details.
      *
-     * You should have received a copy of the GNU General Public License along with
+     * You should have received a copy of the GNU Affero General Public License along with
      * this program; if not, see http://www.gnu.org/licenses or write to the Free
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
@@ -25,9 +25,9 @@
      *
      * The interactive user interfaces in original and modified versions
      * of this program must display Appropriate Legal Notices, as required under
-     * Section 5 of the GNU General Public License version 3.
+     * Section 5 of the GNU Affero General Public License version 3.
      *
-     * In accordance with Section 7(b) of the GNU General Public License version 3,
+     * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
@@ -160,12 +160,12 @@
             {
                 return null;
             }
-            if($displayFormat == self::DISPLAY_FORMAT_ABBREVIATED_MONTH_ONLY_WIDTH)
+            if ($displayFormat == self::DISPLAY_FORMAT_ABBREVIATED_MONTH_ONLY_WIDTH)
             {
                 $month = Yii::app()->dateFormatter->format('M', $parsedTimeStamp);
                 return Yii::app()->locale->getMonthName($month, 'abbreviated', true);
             }
-            elseif($displayFormat == self::DISPLAY_FORMAT_ABBREVIATED_MONTH_AND_DAY_WIDTH)
+            elseif ($displayFormat == self::DISPLAY_FORMAT_ABBREVIATED_MONTH_AND_DAY_WIDTH)
             {
                 $month    = Yii::app()->dateFormatter->format('M', $parsedTimeStamp);
                 $content  = Yii::app()->locale->getMonthName($month, 'abbreviated', true);
@@ -425,36 +425,36 @@
             assert('is_string($beginDate)');
             assert('is_string($endDate)');
             $weekTimeStamp      = strtotime($beginDate);
-            $endTimeStamp        = strtotime($endDate);
+            $endTimeStamp       = strtotime($endDate);
             $weeksData          = array();
-            while($weekTimeStamp < $endTimeStamp)
+            while ($weekTimeStamp <= $endTimeStamp)
             {
                 $date = new DateTime(date('Y-m-d', $weekTimeStamp));
-                $date->modify('this week last monday');
+                $date->modify(('Sunday' == $date->format('l')) ? 'Monday last week' : 'Monday this week');
                 $beginDateOfWeek = $date->format('Y-m-d');
                 $date->modify('this week next sunday');
-                $endDateOfWeek =$date->format('Y-m-d');
+                $endDateOfWeek = $date->format('Y-m-d');
                 $weeksData[$beginDateOfWeek] = $endDateOfWeek;
-                $weekTimeStamp = strtotime("+1 week", $weekTimeStamp);
+                $weekTimeStamp = strtotime("+1 week", $weekTimeStamp); // Not Coding Standard
             }
             //Capture dates in last week if needed
             $date = new DateTime(date('Y-m-d', $weekTimeStamp));
-            $date->modify('this week last monday');
+            $date->modify(('Sunday' == $date->format('l')) ? 'Monday last week' : 'Monday this week');
             $beginDateOfWeek = $date->format('Y-m-d');
-            if($beginDateOfWeek < $endDate)
+            if ($beginDateOfWeek < $endDate)
             {
                 $date->modify('this week next sunday');
-                $endDateOfWeek =$date->format('Y-m-d');
+                $endDateOfWeek = $date->format('Y-m-d');
                 $weeksData[$beginDateOfWeek] = $endDateOfWeek;
-                $weekTimeStamp               = strtotime("+1 week", $weekTimeStamp);
+                $weekTimeStamp               = strtotime("+1 week", $weekTimeStamp); // Not Coding Standard
             }
-            if($endDateOfWeek < $endDate)
+            if ($endDateOfWeek < $endDate)
             {
                 $date = new DateTime(date('Y-m-d', $weekTimeStamp));
-                $date->modify('this week last monday');
+                $date->modify(('Sunday' == $date->format('l')) ? 'Monday last week' : 'Monday this week');
                 $beginDateOfWeek = $date->format('Y-m-d');
                 $date->modify('this week next sunday');
-                $endDateOfWeek =$date->format('Y-m-d');
+                $endDateOfWeek = $date->format('Y-m-d');
                 $weeksData[$beginDateOfWeek] = $endDateOfWeek;
             }
             return $weeksData;
@@ -474,34 +474,34 @@
             $monthTimeStamp      = strtotime($beginDate);
             $endTimeStamp        = strtotime($endDate);
             $monthsData          = array();
-            while($monthTimeStamp < $endTimeStamp)
+            while ($monthTimeStamp <= $endTimeStamp)
             {
                 $date = new DateTime(date('Y-m-d', $monthTimeStamp));
                 $date->modify('first day of this month');
                 $beginDateOfMonth = $date->format('Y-m-d');
                 $date->modify('last day of this month');
-                $endDateOfMonth =$date->format('Y-m-d');
+                $endDateOfMonth = $date->format('Y-m-d');
                 $monthsData[$beginDateOfMonth] = $endDateOfMonth;
-                $monthTimeStamp = strtotime("+1 month", $monthTimeStamp);
+                $monthTimeStamp = strtotime("+1 month", $monthTimeStamp); // Not Coding Standard
             }
             //Capture dates in last month if needed
             $date = new DateTime(date('Y-m-d', $monthTimeStamp));
             $date->modify('first day of this month');
             $beginDateOfMonth = $date->format('Y-m-d');
-            if($beginDateOfMonth < $endDate)
+            if ($beginDateOfMonth < $endDate)
             {
                 $date->modify('last day of this month');
-                $endDateOfMonth =$date->format('Y-m-d');
+                $endDateOfMonth = $date->format('Y-m-d');
                 $monthsData[$beginDateOfMonth] = $endDateOfMonth;
-                $monthTimeStamp = strtotime("+1 month", $monthTimeStamp);
+                $monthTimeStamp = strtotime("+1 month", $monthTimeStamp); // Not Coding Standard
             }
-            if($endDateOfMonth < $endDate)
+            if ($endDateOfMonth < $endDate)
             {
                 $date = new DateTime(date('Y-m-d', $monthTimeStamp));
                 $date->modify('first day of this month');
                 $beginDateOfMonth = $date->format('Y-m-d');
                 $date->modify('last day of this month');
-                $endDateOfMonth =$date->format('Y-m-d');
+                $endDateOfMonth = $date->format('Y-m-d');
                 $monthsData[$beginDateOfMonth] = $endDateOfMonth;
             }
             return $monthsData;

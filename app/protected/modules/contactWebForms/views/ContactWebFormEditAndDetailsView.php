@@ -4,7 +4,7 @@
      * Zurmo, Inc. Copyright (C) 2012 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
-     * the terms of the GNU General Public License version 3 as published by the
+     * the terms of the GNU Affero General Public License version 3 as published by the
      * Free Software Foundation with the addition of the following permission added
      * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
      * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
@@ -12,10 +12,10 @@
      *
      * Zurmo is distributed in the hope that it will be useful, but WITHOUT
      * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-     * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+     * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
      * details.
      *
-     * You should have received a copy of the GNU General Public License along with
+     * You should have received a copy of the GNU Affero General Public License along with
      * this program; if not, see http://www.gnu.org/licenses or write to the Free
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
@@ -26,6 +26,9 @@
 
     class ContactWebFormEditAndDetailsView extends SecuredEditAndDetailsView
     {
+        /**
+         * @return array
+         */
         public static function getDefaultMetadata()
         {
             $metadata = array(
@@ -77,6 +80,15 @@
                                     array(
                                         array(
                                             'elements' => array(
+                                                array('attributeName' => 'language', 'type' => 'LanguageStaticDropDown'),
+                                            ),
+                                        ),
+                                    )
+                                ),
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
                                                 array('attributeName' => 'null', 'type' => 'AllContactStatesDropDownForContactWebForm'),
                                             ),
                                         ),
@@ -105,6 +117,15 @@
                                     array(
                                         array(
                                             'elements' => array(
+                                                array('attributeName' => 'excludeStyles', 'type' => 'CheckBox'),
+                                            ),
+                                        ),
+                                    )
+                                ),
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
                                                 array('attributeName' => 'serializedData', 'type' => 'SortableContactWebFormAttributes'),
                                             ),
                                         ),
@@ -118,17 +139,27 @@
             return $metadata;
         }
 
+        /**
+         * @return string|void
+         */
         protected function getNewModelTitleLabel()
         {
             return Zurmo::t('ContactWebFormsModule', 'Create ContactWebFormsModuleSingularLabel',
                              LabelUtil::getTranslationParamsForAllModules());
         }
 
+        /**
+         * @param $form
+         * @return null|string|void
+         */
         protected function renderRightSideFormLayoutForEdit($form)
         {
             return null;
         }
 
+        /**
+         * @return string|void
+         */
         protected function renderBeforeFormLayoutForDetailsContent()
         {
             $embedScript = '<div id="zurmoExternalWebForm">' .

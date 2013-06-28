@@ -4,7 +4,7 @@
      * Zurmo, Inc. Copyright (C) 2012 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
-     * the terms of the GNU General Public License version 3 as published by the
+     * the terms of the GNU Affero General Public License version 3 as published by the
      * Free Software Foundation with the addition of the following permission added
      * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
      * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
@@ -12,10 +12,10 @@
      *
      * Zurmo is distributed in the hope that it will be useful, but WITHOUT
      * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-     * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+     * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
      * details.
      *
-     * You should have received a copy of the GNU General Public License along with
+     * You should have received a copy of the GNU Affero General Public License along with
      * this program; if not, see http://www.gnu.org/licenses or write to the Free
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
@@ -57,9 +57,14 @@
 
         public function actionForm($id)
         {
-            Yii::app()->getClientScript()->setIsolationMode();
+            $cs = Yii::app()->getClientScript();
+            $cs->setIsolationMode();
             $contactWebForm = static::getModelAndCatchNotFoundAndDisplayError('ContactWebForm', intval($id));
             $metadata       = static::getMetadataByWebForm($contactWebForm);
+            if ($contactWebForm->language !== null)
+            {
+                Yii::app()->language = $contactWebForm->language;
+            }
             if (is_string($contactWebForm->submitButtonLabel) && !empty($contactWebForm->submitButtonLabel))
             {
                 $metadata['global']['toolbar']['elements'][0]['label'] = $contactWebForm->submitButtonLabel;
@@ -68,6 +73,8 @@
             $contact                                 = new Contact();
             $contact->state                          = $contactWebForm->defaultState;
             $contact->owner                          = $contactWebForm->defaultOwner;
+            $contact->googleWebTrackingId            = Yii::app()->getRequest()->getPost(
+                                                       ContactExternalEditAndDetailsView::GOOGLE_WEB_TRACKING_ID_FIELD);
             $postVariableName                        = get_class($contact);
             $containedView                           = new ContactExternalEditAndDetailsView('Edit',
                                                             $this->getId(),
@@ -83,10 +90,18 @@
                 $responseData['redirectUrl']         = $contactWebForm->redirectUrl;
                 $this->renderResponse(CJSON::encode($responseData));
             }
+            $cs->registerScript('catchGoogleWebTrackingId', "
+                                $(document).ready(function()
+                                {
+                                    $('html').addClass('zurmo-embedded-form-active');
+                                    var googleWebTrackingId = $(this).readCookie('__utma');
+                                    $('#" . ContactExternalEditAndDetailsView::GOOGLE_WEB_TRACKING_ID_FIELD . "').val(googleWebTrackingId);
+                                });");
+            $excludeStyles                           = $contactWebForm->excludeStyles;
             $rawXHtml                                = $view->render();
             $rawXHtml                                = ZurmoExternalViewUtil::resolveAndCombineScripts($rawXHtml);
             $combinedHtml                            = array();
-            $combinedHtml['head']                    = ZurmoExternalViewUtil::resolveHeadTag($rawXHtml);
+            $combinedHtml['head']                    = ZurmoExternalViewUtil::resolveHeadTag($rawXHtml, $excludeStyles);
             $combinedHtml['body']                    = ZurmoExternalViewUtil::resolveHtmlAndScriptInBody($rawXHtml);
             $response = 'renderFormCallback('. CJSON::encode($combinedHtml) . ');';
             $this->renderResponse($response);
@@ -137,7 +152,7 @@
             {
                 $contactWebFormEntryContact      = null;
             }
-            $hashIndex                           = Yii::app()->getRequest()->getPost(ContactWebFormEntry::HIDDEN_FIELD);
+            $hashIndex                           = Yii::app()->getRequest()->getPost(ContactWebFormEntry::HASH_INDEX_HIDDEN_FIELD);
             $contactWebFormEntry                 = ContactWebFormEntry::getByHashIndex($hashIndex);
             if ($contactWebFormEntry === null)
             {
@@ -168,9 +183,7 @@
             $moduleClassName          = 'ContactsModule';
             $modelClassName           = $moduleClassName::getPrimaryModelName();
             $editableMetadata         = $viewClassName::getMetadata();
-            $designerRulesType        = $viewClassName::getDesignerRulesType();
-            $designerRulesClassName   = $designerRulesType . 'DesignerRules';
-            $designerRules            = new $designerRulesClassName();
+            $designerRules            = new EditAndDetailsViewDesignerRules();
             $modelAttributesAdapter   = DesignerModelToViewUtil::getModelAttributesAdapter($viewClassName, $modelClassName);
             $derivedAttributesAdapter = new DerivedAttributesAdapter($modelClassName);
             $attributeCollection      = array_merge($modelAttributesAdapter->getAttributes(),
@@ -187,6 +200,13 @@
                                             $attributesLayoutAdapter->getRequiredDerivedLayoutAttributeTypes());
             $metadata                 = $layoutMetadataAdapter->resolveMetadataFromSelectedListAttributes($viewClassName,
                                         $contactWebFormAttributes);
+            foreach ($metadata['global']['panels'][0]['rows'] as $index => $data)
+            {
+                if ($data['cells'][0]['elements'][0]['type'] == 'EmailAddressInformation')
+                {
+                    $metadata['global']['panels'][0]['rows'][$index]['cells'][0]['elements'][0]['hideOptOut'] = true;
+                }
+            }
             return $metadata;
         }
     }

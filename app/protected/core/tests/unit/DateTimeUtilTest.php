@@ -4,7 +4,7 @@
      * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
-     * the terms of the GNU General Public License version 3 as published by the
+     * the terms of the GNU Affero General Public License version 3 as published by the
      * Free Software Foundation with the addition of the following permission added
      * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
      * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
@@ -12,10 +12,10 @@
      *
      * Zurmo is distributed in the hope that it will be useful, but WITHOUT
      * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-     * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+     * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
      * details.
      *
-     * You should have received a copy of the GNU General Public License along with
+     * You should have received a copy of the GNU Affero General Public License along with
      * this program; if not, see http://www.gnu.org/licenses or write to the Free
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
@@ -25,9 +25,9 @@
      *
      * The interactive user interfaces in original and modified versions
      * of this program must display Appropriate Legal Notices, as required under
-     * Section 5 of the GNU General Public License version 3.
+     * Section 5 of the GNU Affero General Public License version 3.
      *
-     * In accordance with Section 7(b) of the GNU General Public License version 3,
+     * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
@@ -81,7 +81,6 @@
             $this->assertEquals('2013-08-04', $monthsData['2013-07-29']);
             $monthsData = DateTimeUtil::getWeekStartAndEndDatesBetweenTwoDatesInARange('2013-01-21', '2013-01-28');
             $compareData = array(
-                '2013-01-14' => '2013-01-20',
                 '2013-01-21' => '2013-01-27',
                 '2013-01-28' => '2013-02-03');
             $this->assertEquals($compareData, $monthsData);
@@ -97,6 +96,10 @@
             $compareData = array(
                 '2012-12-24' => '2012-12-30',
                 '2012-12-31' => '2013-01-06');
+            $this->assertEquals($compareData, $monthsData);
+            $monthsData = DateTimeUtil::getWeekStartAndEndDatesBetweenTwoDatesInARange('2013-04-01', '2013-04-01');
+            $compareData = array(
+                '2013-04-01' => '2013-04-07');
             $this->assertEquals($compareData, $monthsData);
         }
 
@@ -140,6 +143,10 @@
                 '2013-11-01' => '2013-11-30',
                 '2013-12-01' => '2013-12-31',
                 '2014-01-01' => '2014-01-31');
+            $this->assertEquals($compareData, $monthsData);
+            $monthsData = DateTimeUtil::getMonthStartAndEndDatesBetweenTwoDatesInARange('2013-04-01', '2013-04-01');
+            $compareData = array(
+                '2013-04-01' => '2013-04-30');
             $this->assertEquals($compareData, $monthsData);
         }
 

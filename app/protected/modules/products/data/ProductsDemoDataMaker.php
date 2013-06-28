@@ -4,7 +4,7 @@
      * Zurmo, Inc. Copyright (C) 2012 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
-     * the terms of the GNU General Public License version 3 as published by the
+     * the terms of the GNU Affero General Public License version 3 as published by the
      * Free Software Foundation with the addition of the following permission added
      * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
      * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
@@ -12,10 +12,10 @@
      *
      * Zurmo is distributed in the hope that it will be useful, but WITHOUT
      * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-     * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+     * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
      * details.
      *
-     * You should have received a copy of the GNU General Public License along with
+     * You should have received a copy of the GNU Affero General Public License along with
      * this program; if not, see http://www.gnu.org/licenses or write to the Free
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
@@ -31,11 +31,18 @@
     {
         protected $ratioToLoad = 1;
 
+        /**
+         * Gets the dependencies before creating products data
+         * @return array
+         */
         public static function getDependencies()
         {
             return array('productTemplates');
         }
 
+        /**
+         * @param object $demoDataHelper
+         */
         public function makeAll(& $demoDataHelper)
         {
             assert('$demoDataHelper instanceof DemoDataHelper');
@@ -44,9 +51,7 @@
             assert('$demoDataHelper->isSetRange("Opportunity")');
             assert('$demoDataHelper->isSetRange("User")');
             $products = array();
-            $filePath                  = Yii::getPathOfAlias('application.modules.products.data.ProductRandomData') . '.php';
-            require($filePath);
-            $productRandomData = getProductsRandomData();
+            $productRandomData = self::getProductsRandomData();
             for ($i = 0; $i < count($productRandomData['names']); $i++)
             {
                 $product = new Product();
@@ -96,17 +101,52 @@
                                                 'A Gift of Monotheists October Issue'       => 'A Gift of Monotheists',
                                                 'Enjoy Once in a Lifetime Music'            => 'Once in a Lifetime'
                                             );
-            if(!array_key_exists($product, $productTemplateMapping))
+            if (!array_key_exists($product, $productTemplateMapping))
             {
                 $productNameSubstr = explode('-P', $product);
-                if((strpos($product, 'Laptop') !== false)
-                                            || (strpos($product, 'Camera') !== false)
-                                                                 || (strpos($product, 'Handycam') !== false))
+                if ((strpos($product, 'Laptop') !== false) ||
+                    (strpos($product, 'Camera') !== false) ||
+                    (strpos($product, 'Handycam') !== false))
                 {
                     return $productNameSubstr[0];
                 }
             }
             return $productTemplateMapping[$product];
+        }
+
+        /**
+         * Gets the products random data
+         * @return array
+         */
+        public static function getProductsRandomData()
+        {
+            $productNames = array(
+                                    'names' => array(
+                                        'Amazing Kid Sample',
+                                        'You Can Do Anything Sample',
+                                        'A Bend in the River November Issue',
+                                        'A Gift of Monotheists October Issue',
+                                        'Enjoy Once in a Lifetime Music'
+                                    )
+                                );
+
+            $productTemplates = ProductTemplate::getAll();
+
+            foreach ($productTemplates as $template)
+            {
+                if ((strpos($template->name, 'Laptop') !== false) ||
+                    (strpos($template->name, 'Camera') !== false) ||
+                    (strpos($template->name, 'Handycam') !== false))
+                {
+                    for ($i = 1; $i < 3; $i++)
+                    {
+                       $randomString = substr(str_shuffle("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0, 2);
+                       $productNames['names'][] = $template->name . '-P' . $randomString;
+                    }
+                }
+            }
+
+            return $productNames;
         }
     }
 ?>

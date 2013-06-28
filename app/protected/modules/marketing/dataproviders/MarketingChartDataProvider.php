@@ -4,7 +4,7 @@
      * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
-     * the terms of the GNU General Public License version 3 as published by the
+     * the terms of the GNU Affero General Public License version 3 as published by the
      * Free Software Foundation with the addition of the following permission added
      * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
      * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
@@ -12,10 +12,10 @@
      *
      * Zurmo is distributed in the hope that it will be useful, but WITHOUT
      * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-     * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+     * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
      * details.
      *
-     * You should have received a copy of the GNU General Public License along with
+     * You should have received a copy of the GNU Affero General Public License along with
      * this program; if not, see http://www.gnu.org/licenses or write to the Free
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
@@ -25,9 +25,9 @@
      *
      * The interactive user interfaces in original and modified versions
      * of this program must display Appropriate Legal Notices, as required under
-     * Section 5 of the GNU General Public License version 3.
+     * Section 5 of the GNU Affero General Public License version 3.
      *
-     * In accordance with Section 7(b) of the GNU General Public License version 3,
+     * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
@@ -83,7 +83,6 @@
          */
         protected $campaign;
 
-
         /**
          * Given a begin date, end date and grouping type, return array of data that includes information on how the
          * grouping breaks up by the date range including the start/end dateTime for each range and a display label
@@ -102,27 +101,27 @@
             assert('is_string($endDate)');
             assert('is_string($groupBy)');
             $data = array();
-            if($groupBy == MarketingOverallMetricsForm::GROUPING_TYPE_DAY)
+            if ($groupBy == MarketingOverallMetricsForm::GROUPING_TYPE_DAY)
             {
-                foreach(DateTimeUtil::getDatesBetweenTwoDatesInARange($beginDate, $endDate) as $date)
+                foreach (DateTimeUtil::getDatesBetweenTwoDatesInARange($beginDate, $endDate) as $date)
                 {
                     $data[] = array('beginDate' => $date, 'endDate' => $date,
                                     'displayLabel' => static::resolveAbbreviatedDayMonthDisplayLabel($date));
                 }
             }
-            elseif($groupBy == MarketingOverallMetricsForm::GROUPING_TYPE_WEEK)
+            elseif ($groupBy == MarketingOverallMetricsForm::GROUPING_TYPE_WEEK)
             {
-                foreach(DateTimeUtil::
+                foreach (DateTimeUtil::
                         getWeekStartAndEndDatesBetweenTwoDatesInARange($beginDate, $endDate) as $beginWeekDate => $endWeekDate)
                 {
                     $displayLabel = static::resolveAbbreviatedDayMonthDisplayLabel($beginWeekDate);
-                    if($treatDatesAsDefinitive)
+                    if ($treatDatesAsDefinitive)
                     {
-                        if($beginWeekDate < $beginDate)
+                        if ($beginWeekDate < $beginDate)
                         {
                             $beginWeekDate = $beginDate;
                         }
-                        if($endWeekDate > $endDate)
+                        if ($endWeekDate > $endDate)
                         {
                             $endWeekDate   = $endDate;
                         }
@@ -132,18 +131,18 @@
                                     'displayLabel' => $displayLabel);
                 }
             }
-            elseif($groupBy == MarketingOverallMetricsForm::GROUPING_TYPE_MONTH)
+            elseif ($groupBy == MarketingOverallMetricsForm::GROUPING_TYPE_MONTH)
             {
-                foreach(DateTimeUtil::
+                foreach (DateTimeUtil::
                         getMonthStartAndEndDatesBetweenTwoDatesInARange($beginDate, $endDate) as $beginMonthDate => $endMonthDate)
                 {
-                    if($treatDatesAsDefinitive)
+                    if ($treatDatesAsDefinitive)
                     {
-                        if($beginMonthDate < $beginDate)
+                        if ($beginMonthDate < $beginDate)
                         {
                             $beginMonthDate = $beginDate;
                         }
-                        if($endMonthDate > $endDate)
+                        if ($endMonthDate > $endDate)
                         {
                             $endMonthDate   = $endDate;
                         }
@@ -251,7 +250,7 @@
         protected function resolveDateBalloonLabel($displayLabel)
         {
             assert('is_string($displayLabel)');
-            if($this->groupBy == MarketingOverallMetricsForm::GROUPING_TYPE_WEEK)
+            if ($this->groupBy == MarketingOverallMetricsForm::GROUPING_TYPE_WEEK)
             {
                 return Zurmo::t('Core', 'Week of {dateLabel}', array('{dateLabel}' => $displayLabel));
             }
@@ -267,15 +266,15 @@
          */
         protected function resolveIndexGroupByToUse()
         {
-            if($this->groupBy == MarketingOverallMetricsForm::GROUPING_TYPE_DAY)
+            if ($this->groupBy == MarketingOverallMetricsForm::GROUPING_TYPE_DAY)
             {
                 return self::DAY_DATE;
             }
-            elseif($this->groupBy == MarketingOverallMetricsForm::GROUPING_TYPE_WEEK)
+            elseif ($this->groupBy == MarketingOverallMetricsForm::GROUPING_TYPE_WEEK)
             {
                 return self::FIRST_DAY_OF_WEEK_DATE;
             }
-            elseif($this->groupBy == MarketingOverallMetricsForm::GROUPING_TYPE_MONTH)
+            elseif ($this->groupBy == MarketingOverallMetricsForm::GROUPING_TYPE_MONTH)
             {
                 return self::FIRST_DAY_OF_MONTH_DATE;
             }
@@ -299,15 +298,15 @@
             $tableName                 = $modelClassName::getTableName($modelClassName);
             $columnName                = $modelClassName::getColumnNameByAttribute($attributeName);
             $groupByColumnString       = "{$quote}{$tableName}{$quote}.{$quote}{$columnName}{$quote}";
-            if($this->groupBy == MarketingOverallMetricsForm::GROUPING_TYPE_DAY)
+            if ($this->groupBy == MarketingOverallMetricsForm::GROUPING_TYPE_DAY)
             {
                 return $groupByColumnString;
             }
-            elseif($this->groupBy == MarketingOverallMetricsForm::GROUPING_TYPE_WEEK)
+            elseif ($this->groupBy == MarketingOverallMetricsForm::GROUPING_TYPE_WEEK)
             {
                 return "YEARWEEK(" . $groupByColumnString . ")";
             }
-            elseif($this->groupBy == MarketingOverallMetricsForm::GROUPING_TYPE_MONTH)
+            elseif ($this->groupBy == MarketingOverallMetricsForm::GROUPING_TYPE_MONTH)
             {
                 return "extract(YEAR_MONTH from " . $groupByColumnString . ")";
             }
@@ -323,8 +322,8 @@
         protected function resolveChartDataStructure()
         {
             $chartData           = array();
-            $groupedDateTimeData = static::makeGroupedDateTimeData($this->beginDate, $this->endDate, $this->groupBy);
-            foreach($groupedDateTimeData as $groupData)
+            $groupedDateTimeData = static::makeGroupedDateTimeData($this->beginDate, $this->endDate, $this->groupBy, false);
+            foreach ($groupedDateTimeData as $groupData)
             {
                 $chartData[$groupData['beginDate']] = array_merge(static::resolveChartDataBaseGroupElements(),
                                                         array('displayLabel'     => $groupData['displayLabel'],

@@ -4,7 +4,7 @@
      * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
-     * the terms of the GNU General Public License version 3 as published by the
+     * the terms of the GNU Affero General Public License version 3 as published by the
      * Free Software Foundation with the addition of the following permission added
      * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
      * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
@@ -12,10 +12,10 @@
      *
      * Zurmo is distributed in the hope that it will be useful, but WITHOUT
      * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-     * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+     * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
      * details.
      *
-     * You should have received a copy of the GNU General Public License along with
+     * You should have received a copy of the GNU Affero General Public License along with
      * this program; if not, see http://www.gnu.org/licenses or write to the Free
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
@@ -25,9 +25,9 @@
      *
      * The interactive user interfaces in original and modified versions
      * of this program must display Appropriate Legal Notices, as required under
-     * Section 5 of the GNU General Public License version 3.
+     * Section 5 of the GNU Affero General Public License version 3.
      *
-     * In accordance with Section 7(b) of the GNU General Public License version 3,
+     * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
@@ -48,64 +48,83 @@
         {
             if (ApiRequest::isApiRequest())
             {
-                $owner->attachEventHandler('onBeginRequest', array($this, 'handleSentryLogs'));
-                $owner->attachEventHandler('onBeginRequest', array($this, 'handleApplicationCache'));
-                $owner->detachEventHandler('onBeginRequest', array(Yii::app()->request, 'validateCsrfToken'));
-                $owner->attachEventHandler('onBeginRequest', array($this, 'handleImports'));
-
-                $owner->attachEventHandler('onBeginRequest', array($this, 'handleSetupDatabaseConnection'));
-                $owner->attachEventHandler('onBeginRequest', array($this, 'handleCheckAutoBuildCompleted'));
-                $owner->attachEventHandler('onBeginRequest', array($this, 'handleDisableGamification'));
-                $owner->attachEventHandler('onBeginRequest', array($this, 'handleInitApiRequest'));
-                $owner->attachEventHandler('onBeginRequest', array($this, 'handleBeginApiRequest'));
-                $owner->attachEventHandler('onBeginRequest', array($this, 'handleLibraryCompatibilityCheck'));
-                $owner->attachEventHandler('onBeginRequest', array($this, 'handleStartPerformanceClock'));
-
+                $this->attachApiRequestBehaviors($owner);
                 if (Yii::app()->isApplicationInstalled())
                 {
-                    $owner->attachEventHandler('onBeginRequest', array($this, 'handleClearCache'));
-                    $owner->attachEventHandler('onBeginRequest', array($this, 'handleLoadLanguage'));
-                    $owner->attachEventHandler('onBeginRequest', array($this, 'handleLoadTimeZone'));
-                    $owner->attachEventHandler('onBeginRequest', array($this, 'handleLoadWorkflowsObserver'));
-                    $owner->attachEventHandler('onBeginRequest', array($this, 'handleCheckAndUpdateCurrencyRates'));
-                    $owner->attachEventHandler('onBeginRequest', array($this, 'handleResolveCustomData'));
+                    $this->attachApiRequestBehaviorsForInstalledApplication($owner);
                 }
             }
             else
             {
-                $owner->attachEventHandler('onBeginRequest', array($this, 'handleSentryLogs'));
-                $owner->attachEventHandler('onBeginRequest', array($this, 'handleApplicationCache'));
-                $owner->attachEventHandler('onBeginRequest', array($this, 'handleImports'));
-
-                $owner->attachEventHandler('onBeginRequest', array($this, 'handleLibraryCompatibilityCheck'));
-                $owner->attachEventHandler('onBeginRequest', array($this, 'handleStartPerformanceClock'));
-                $owner->attachEventHandler('onBeginRequest', array($this, 'handleBrowserCheck'));
-
+                $this->attachNonApiRequestBehaviors($owner);
                 if (!Yii::app()->isApplicationInstalled())
                 {
-                    $owner->attachEventHandler('onBeginRequest', array($this, 'handleInstanceFolderCheck'));
-                    $owner->attachEventHandler('onBeginRequest', array($this, 'handleInstallCheck'));
-                    //$owner->attachEventHandler('onBeginRequest', array($this, 'handleLoadLanguage'));
-                    //$owner->attachEventHandler('onBeginRequest', array($this, 'handleLoadTimeZone'));
+                    $this->attachNonApiRequestBehaviorsForNonInstalledApplication($owner);
                 }
                 else
                 {
-                    $owner->attachEventHandler('onBeginRequest', array($this, 'handleSetupDatabaseConnection'));
-                    $owner->attachEventHandler('onBeginRequest', array($this, 'handleCheckAutoBuildCompleted'));
-                    $owner->attachEventHandler('onBeginRequest', array($this, 'handleBeginRequest'));
-                    $owner->attachEventHandler('onBeginRequest', array($this, 'handleClearCache'));
-                    $owner->attachEventHandler('onBeginRequest', array($this, 'handleLoadLanguage'));
-                    $owner->attachEventHandler('onBeginRequest', array($this, 'handleLoadTimeZone'));
-                    $owner->attachEventHandler('onBeginRequest', array($this, 'handleUserTimeZoneConfirmed'));
-                    $owner->attachEventHandler('onBeginRequest', array($this, 'handleLoadActivitiesObserver'));
-                    $owner->attachEventHandler('onBeginRequest', array($this, 'handleLoadConversationsObserver'));
-                    $owner->attachEventHandler('onBeginRequest', array($this, 'handleLoadWorkflowsObserver'));
-                    $owner->attachEventHandler('onBeginRequest', array($this, 'handleLoadGamification'));
-                    $owner->attachEventHandler('onBeginRequest', array($this, 'handleCheckAndUpdateCurrencyRates'));
-                    $owner->attachEventHandler('onBeginRequest', array($this, 'handleResolveCustomData'));
-                    $owner->attachEventHandler('onBeginRequest', array($this, 'handlePublishLogoAssets'));
+                    $this->attachNonApiRequestBehaviorsForInstalledApplication($owner);
                 }
             }
+        }
+
+        protected function attachApiRequestBehaviors(CComponent $owner)
+        {
+            $owner->attachEventHandler('onBeginRequest', array($this, 'handleSentryLogs'));
+            $owner->attachEventHandler('onBeginRequest', array($this, 'handleApplicationCache'));
+            $owner->detachEventHandler('onBeginRequest', array(Yii::app()->request, 'validateCsrfToken'));
+            $owner->attachEventHandler('onBeginRequest', array($this, 'handleImports'));
+            $owner->attachEventHandler('onBeginRequest', array($this, 'handleSetupDatabaseConnection'));
+            $owner->attachEventHandler('onBeginRequest', array($this, 'handleCheckAutoBuildCompleted'));
+            $owner->attachEventHandler('onBeginRequest', array($this, 'handleDisableGamification'));
+            $owner->attachEventHandler('onBeginRequest', array($this, 'handleInitApiRequest'));
+            $owner->attachEventHandler('onBeginRequest', array($this, 'handleBeginApiRequest'));
+            $owner->attachEventHandler('onBeginRequest', array($this, 'handleLibraryCompatibilityCheck'));
+            $owner->attachEventHandler('onBeginRequest', array($this, 'handleStartPerformanceClock'));
+        }
+
+        protected function attachApiRequestBehaviorsForInstalledApplication(CComponent $owner)
+        {
+            $owner->attachEventHandler('onBeginRequest', array($this, 'handleClearCache'));
+            $owner->attachEventHandler('onBeginRequest', array($this, 'handleLoadLanguage'));
+            $owner->attachEventHandler('onBeginRequest', array($this, 'handleLoadTimeZone'));
+            $owner->attachEventHandler('onBeginRequest', array($this, 'handleLoadWorkflowsObserver'));
+            $owner->attachEventHandler('onBeginRequest', array($this, 'handleCheckAndUpdateCurrencyRates'));
+            $owner->attachEventHandler('onBeginRequest', array($this, 'handleResolveCustomData'));
+        }
+
+        protected function attachNonApiRequestBehaviors(CComponent $owner)
+        {
+            $owner->attachEventHandler('onBeginRequest', array($this, 'handleSentryLogs'));
+            $owner->attachEventHandler('onBeginRequest', array($this, 'handleApplicationCache'));
+            $owner->attachEventHandler('onBeginRequest', array($this, 'handleImports'));
+            $owner->attachEventHandler('onBeginRequest', array($this, 'handleLibraryCompatibilityCheck'));
+            $owner->attachEventHandler('onBeginRequest', array($this, 'handleStartPerformanceClock'));
+            $owner->attachEventHandler('onBeginRequest', array($this, 'handleBrowserCheck'));
+        }
+
+        protected function attachNonApiRequestBehaviorsForNonInstalledApplication(CComponent $owner)
+        {
+            $owner->attachEventHandler('onBeginRequest', array($this, 'handleInstanceFolderCheck'));
+            $owner->attachEventHandler('onBeginRequest', array($this, 'handleInstallCheck'));
+        }
+
+        protected function attachNonApiRequestBehaviorsForInstalledApplication(CComponent $owner)
+        {
+            $owner->attachEventHandler('onBeginRequest', array($this, 'handleSetupDatabaseConnection'));
+            $owner->attachEventHandler('onBeginRequest', array($this, 'handleCheckAutoBuildCompleted'));
+            $owner->attachEventHandler('onBeginRequest', array($this, 'handleBeginRequest'));
+            $owner->attachEventHandler('onBeginRequest', array($this, 'handleClearCache'));
+            $owner->attachEventHandler('onBeginRequest', array($this, 'handleLoadLanguage'));
+            $owner->attachEventHandler('onBeginRequest', array($this, 'handleLoadTimeZone'));
+            $owner->attachEventHandler('onBeginRequest', array($this, 'handleUserTimeZoneConfirmed'));
+            $owner->attachEventHandler('onBeginRequest', array($this, 'handleLoadActivitiesObserver'));
+            $owner->attachEventHandler('onBeginRequest', array($this, 'handleLoadConversationsObserver'));
+            $owner->attachEventHandler('onBeginRequest', array($this, 'handleLoadWorkflowsObserver'));
+            $owner->attachEventHandler('onBeginRequest', array($this, 'handleLoadGamification'));
+            $owner->attachEventHandler('onBeginRequest', array($this, 'handleCheckAndUpdateCurrencyRates'));
+            $owner->attachEventHandler('onBeginRequest', array($this, 'handleResolveCustomData'));
+            $owner->attachEventHandler('onBeginRequest', array($this, 'handlePublishLogoAssets'));
         }
 
         public function handleSentryLogs()

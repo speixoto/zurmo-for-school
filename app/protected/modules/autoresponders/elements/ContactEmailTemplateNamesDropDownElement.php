@@ -4,7 +4,7 @@
      * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
-     * the terms of the GNU General Public License version 3 as published by the
+     * the terms of the GNU Affero General Public License version 3 as published by the
      * Free Software Foundation with the addition of the following permission added
      * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
      * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
@@ -12,10 +12,10 @@
      *
      * Zurmo is distributed in the hope that it will be useful, but WITHOUT
      * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-     * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+     * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
      * details.
      *
-     * You should have received a copy of the GNU General Public License along with
+     * You should have received a copy of the GNU Affero General Public License along with
      * this program; if not, see http://www.gnu.org/licenses or write to the Free
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
@@ -25,9 +25,9 @@
      *
      * The interactive user interfaces in original and modified versions
      * of this program must display Appropriate Legal Notices, as required under
-     * Section 5 of the GNU General Public License version 3.
+     * Section 5 of the GNU Affero General Public License version 3.
      *
-     * In accordance with Section 7(b) of the GNU General Public License version 3,
+     * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
@@ -77,12 +77,24 @@
             {
                 // Begin Not Coding Standard
                 Yii::app()->clientScript->registerScript($scriptName, '
-                        function updateContentAreaWithDataFromAjax(textContentElement, htmlContentElement,
-                                                                                                redActorElement, data)
+                        function updateContentElementsWithData(textContentElement, htmlContentElement, redActorElement, subjectElement, data)
                         {
-                            $(textContentElement).html(data.textContent);
-                            $(htmlContentElement).html(data.htmlContent);
-                            $(redActorElement).html(data.htmlContent);
+                            updateElementWithData(textContentElement, data.textContent);
+                            updateElementWithData(htmlContentElement, data.htmlContent);
+                            updateElementWithData(redActorElement, data.htmlContent);
+                            updateElementWithData(subjectElement, data.subject);
+                        }
+
+                        function updateElementWithData(element, data)
+                        {
+                            if ($(element).attr("type") == "text")
+                            {
+                                $(element).val(data);
+                            }
+                            else
+                            {
+                                $(element).html(data);
+                            }
                         }
 
                         function deleteExistingAttachments()
@@ -138,6 +150,8 @@
                                 var disableTextBox      = "' . static::DISABLE_TEXTBOX_WHEN_AJAX_IN_PROGRESS. '";
                                 var textContentId       = "' . $this->getTextContentId() . '";
                                 var htmlContentId       = "' . $this->getHtmlContentId() . '";
+                                var subjectId           = "' . $this->getSubjectId() . '";
+                                var subjectElement      = $("#" + subjectId);
                                 var textContentElement  = $("#" + textContentId);
                                 var htmlContentElement  = $("#" + htmlContentId);
                                 var redActorElement     = $("#" + htmlContentId).parent().find(".redactor_editor");
@@ -161,6 +175,7 @@
                                                         {
                                                             $(textContentElement).attr("disabled", "disabled");
                                                             $(htmlContentElement).attr("disabled", "disabled");
+                                                            $(subjectElement).attr("disabled", "disabled");
                                                             $(redActorElement).hide();
                                                         }
                                                         deleteExistingAttachments();
@@ -169,10 +184,11 @@
                                                     {
                                                         $(this).makeLargeLoadingSpinner(false, ".email-template-content");
                                                         $(".email-template-content .big-spinner").remove();
-                                                        updateContentAreaWithDataFromAjax(textContentElement,
-                                                                                            htmlContentElement,
-                                                                                            redActorElement,
-                                                                                            data);
+                                                        updateContentElementsWithData(textContentElement,
+                                                                                        htmlContentElement,
+                                                                                        redActorElement,
+                                                                                        subjectElement,
+                                                                                        data);
                                                         updateAddFilesWithDataFromAjax(data.filesIds, notificationBarId);
                                                     },
                                         error:      function(request, status, error)
@@ -191,6 +207,7 @@
                                                         $(dropDown).val("");
                                                         $(textContentElement).removeAttr("disabled");
                                                         $(htmlContentElement).removeAttr("disabled");
+                                                        $(subjectElement).removeAttr("disabled");
                                                         $(redActorElement).show();
                                                         event.preventDefault();
                                                         return false;
@@ -275,6 +292,13 @@
             $textContentId .= '_';
             $textContentId .= EmailTemplateHtmlAndTextContentElement::TEXT_CONTENT_INPUT_NAME;
             return $textContentId;
+        }
+
+        protected function getSubjectId()
+        {
+            $id = $this->getModuleId();
+            $id .= '_subject';
+            return $id;
         }
 
         protected function getHtmlContentId()

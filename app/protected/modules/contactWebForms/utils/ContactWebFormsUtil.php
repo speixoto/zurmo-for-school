@@ -4,7 +4,7 @@
      * Zurmo, Inc. Copyright (C) 2012 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
-     * the terms of the GNU General Public License version 3 as published by the
+     * the terms of the GNU Affero General Public License version 3 as published by the
      * Free Software Foundation with the addition of the following permission added
      * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
      * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
@@ -12,10 +12,10 @@
      *
      * Zurmo is distributed in the hope that it will be useful, but WITHOUT
      * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-     * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+     * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
      * details.
      *
-     * You should have received a copy of the GNU General Public License along with
+     * You should have received a copy of the GNU Affero General Public License along with
      * this program; if not, see http://www.gnu.org/licenses or write to the Free
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
@@ -33,7 +33,7 @@
     {
         /**
          * Get list of all index and derived attributes
-         * @return array of attributes
+         * @return array of all attributes
          */
         public static function getAllAttributes()
         {
@@ -44,6 +44,11 @@
             return $attributes;
         }
 
+        /**
+         * @param $attributes
+         * @param null $contactWebFormAttributes
+         * @return array of attributes placed on web form, default to required fields
+         */
         public static function getAllPlacedAttributes($attributes, $contactWebFormAttributes = null)
         {
             $items = array();
@@ -62,13 +67,13 @@
                 {
                     if ($attributeData['isRequired'])
                     {
-                        $checkedAndReadOnly    = ' checked="checked" disabled="disabled" ';
                         $items[$attributeName] = array('{content}'            => $attributeData['attributeLabel'],
-                                                       '{checkedAndReadOnly}' => $checkedAndReadOnly);
+                                                       '{checkedAndReadOnly}' => '');
                     }
                     elseif ($contactWebFormAttributes !== null)
                     {
-                        $checkedAndReadOnly    = ' checked="checked" ';
+                        $checkedAndReadOnly    = '<a class="remove-dynamic-row-link" id="ContactWebForm_serializedData_' .
+                                                  $attributeName . '" data-value="' . $attributeName . '" href="#">—</a>';
                         $items[$attributeName] = array('{content}'            => $attributeData['attributeLabel'],
                                                        '{checkedAndReadOnly}' => $checkedAndReadOnly);
                     }
@@ -77,12 +82,18 @@
             return $items;
         }
 
+        /**
+         * @param $attributes
+         * @param null $contactWebFormAttributes
+         * @return array of attributes not placed on web form, but can be placed
+         */
         public static function getAllNonPlacedAttributes($attributes, $contactWebFormAttributes = null)
         {
             $items = array();
             foreach ($attributes as $attributeName => $attributeData)
             {
-                if (!$attributeData['isReadOnly'])
+                //TODO: Figure out, how to hide attributes like googleWebTrackingId
+                if (!$attributeData['isReadOnly'] && $attributeName != 'googleWebTrackingId')
                 {
                     if (!$attributeData['isRequired'])
                     {
@@ -101,6 +112,19 @@
                 }
             }
             return $items;
+        }
+
+        /**
+         * @param integer $id
+         * @return string
+         */
+        public static function getEmbedScript($id)
+        {
+            $embedScript = '<div id="zurmoExternalWebForm">' .
+                           '<script type="text/javascript" ' .
+                           'src="' . Yii::app()->createAbsoluteUrl('contacts/external/sourceFiles/', array('id' => $id)) . '">' .
+                           '</script></div>';
+            return $embedScript;
         }
     }
 ?>

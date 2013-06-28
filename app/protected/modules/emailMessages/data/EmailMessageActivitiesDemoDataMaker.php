@@ -4,7 +4,7 @@
      * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
-     * the terms of the GNU General Public License version 3 as published by the
+     * the terms of the GNU Affero General Public License version 3 as published by the
      * Free Software Foundation with the addition of the following permission added
      * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
      * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
@@ -12,10 +12,10 @@
      *
      * Zurmo is distributed in the hope that it will be useful, but WITHOUT
      * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-     * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+     * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
      * details.
      *
-     * You should have received a copy of the GNU General Public License along with
+     * You should have received a copy of the GNU Affero General Public License along with
      * this program; if not, see http://www.gnu.org/licenses or write to the Free
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
@@ -25,9 +25,9 @@
      *
      * The interactive user interfaces in original and modified versions
      * of this program must display Appropriate Legal Notices, as required under
-     * Section 5 of the GNU General Public License version 3.
+     * Section 5 of the GNU Affero General Public License version 3.
      *
-     * In accordance with Section 7(b) of the GNU General Public License version 3,
+     * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
@@ -36,9 +36,17 @@
 
     abstract class EmailMessageActivitiesDemoDataMaker extends DemoDataMaker
     {
+        protected $emailBox;
+
+        public function __construct()
+        {
+            $user           = User::getByUsername('super');
+            $this->emailBox = EmailBoxUtil::getDefaultEmailBoxByUser($user);
+        }
+
         protected function populateMarketingItems($marketingItemClassName)
         {
-            foreach($marketingItemClassName::getAll() as $marketingItem)
+            foreach ($marketingItemClassName::getAll() as $marketingItem)
             {
                 $marketingItem->emailMessage = $this->makeEmailMessage($marketingItem->contact);
                 $saved = $marketingItem->unrestrictedSave();
@@ -52,11 +60,10 @@
         protected function makeEmailMessage(Contact $contact)
         {
             $interval = mt_rand(1, 30) * 86400;
-            $box = EmailBoxUtil::getDefaultEmailBoxByUser(Yii::app()->user->userModel);
             //#1 Create Archived - Sent
             $emailMessage              = new EmailMessage();
             $emailMessage->setScenario('importModel');
-            $emailMessage->owner       = Yii::app()->user->userModel;
+            $emailMessage->owner       = $contact->owner;
             $emailMessage->subject     = 'A test archived sent email';
             $emailContent              = new EmailMessageContent();
             $emailContent->textContent = 'My First Message';
@@ -75,14 +82,19 @@
             $recipient->personOrAccount = $contact;
             $recipient->type            = EmailMessageRecipient::TYPE_TO;
             $emailMessage->recipients->add($recipient);
-            $emailMessage->folder       = EmailFolder::getByBoxAndType($box, EmailFolder::TYPE_ARCHIVED);
+            $emailMessage->folder       = EmailFolder::getByBoxAndType($this->emailBox, EmailFolder::TYPE_ARCHIVED);
             $emailMessage->sentDateTime = DateTimeUtil::convertTimestampToDbFormatDateTime(time() - $interval);
             $emailMessage->createdDateTime = $emailMessage->sentDateTime;
-            $saved = $emailMessage->save();
+            $emailMessage->addPermissions(Group::getByName(Group::EVERYONE_GROUP_NAME), Permission::READ_WRITE_CHANGE_PERMISSIONS_CHANGE_OWNER);
+            $saved                          = $emailMessage->save();
             if (!$saved)
             {
-                throw new NotSupportedException();
+                throw new FailedToSaveModelException();
             }
+            $emailMessage = EmailMessage::getById($emailMessage->id);
+            ReadPermissionsOptimizationUtil::
+                securableItemGivenPermissionsForGroup($emailMessage, Group::getByName(Group::EVERYONE_GROUP_NAME));
+            $emailMessage->save();
             return $emailMessage;
         }
     }

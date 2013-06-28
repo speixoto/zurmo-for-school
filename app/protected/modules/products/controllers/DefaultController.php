@@ -4,7 +4,7 @@
      * Zurmo, Inc. Copyright (C) 2012 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
-     * the terms of the GNU General Public License version 3 as published by the
+     * the terms of the GNU Affero General Public License version 3 as published by the
      * Free Software Foundation with the addition of the following permission added
      * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
      * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
@@ -12,10 +12,10 @@
      *
      * Zurmo is distributed in the hope that it will be useful, but WITHOUT
      * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-     * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+     * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
      * details.
      *
-     * You should have received a copy of the GNU General Public License along with
+     * You should have received a copy of the GNU Affero General Public License along with
      * this program; if not, see http://www.gnu.org/licenses or write to the Free
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
@@ -349,6 +349,17 @@
             die();
         }
 
+        /**
+         * Create product from product template when user select a product
+         * template while adding a product in product portlet view
+         * @param string $relationModuleId
+         * @param int $portletId
+         * @param string $uniqueLayoutId
+         * @param int $id
+         * @param int $relationModelId
+         * @param string $relationAttributeName
+         * @param string $relationModelClassName
+         */
         public function actionCreateProductFromProductTemplate($relationModuleId, $portletId, $uniqueLayoutId, $id,
                                 $relationModelId, $relationAttributeName, $relationModelClassName = null)
         {
@@ -378,6 +389,37 @@
                                     'portletParams'        => array(  'relationModuleId' => $relationModuleId,
                                                                       'relationModelId'  => $relationModelId),
                             ));
+        }
+
+        /**
+         * Copies the product
+         * @param int $id
+         */
+        public function actionCopy($id)
+        {
+            $copyToProduct      = new Product();
+            $postVariableName   = get_class($copyToProduct);
+            if (!isset($_POST[$postVariableName]))
+            {
+                $product        = Product::getById((int)$id);
+                ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($product);
+                ProductZurmoCopyModelUtil::copy($product, $copyToProduct);
+            }
+            $this->processEdit($copyToProduct);
+        }
+
+        /**
+         * Process the editing of product
+         * @param Product $product
+         * @param string $redirectUrl
+         */
+        protected function processEdit(Product $product, $redirectUrl = null)
+        {
+            $view = new ProductsPageView(ZurmoDefaultViewUtil::
+                            makeStandardViewForCurrentUser($this,
+                            $this->makeEditAndDetailsView(
+                                $this->attemptToSaveModelFromPost($product, $redirectUrl), 'Edit')));
+            echo $view->render();
         }
     }
 ?>

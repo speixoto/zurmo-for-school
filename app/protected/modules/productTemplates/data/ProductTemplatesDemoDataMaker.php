@@ -4,7 +4,7 @@
      * Zurmo, Inc. Copyright (C) 2012 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
-     * the terms of the GNU General Public License version 3 as published by the
+     * the terms of the GNU Affero General Public License version 3 as published by the
      * Free Software Foundation with the addition of the following permission added
      * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
      * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
@@ -12,10 +12,10 @@
      *
      * Zurmo is distributed in the hope that it will be useful, but WITHOUT
      * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-     * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+     * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
      * details.
      *
-     * You should have received a copy of the GNU General Public License along with
+     * You should have received a copy of the GNU Affero General Public License along with
      * this program; if not, see http://www.gnu.org/licenses or write to the Free
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
@@ -31,19 +31,23 @@
     {
         protected $ratioToLoad = 1;
 
+        /**
+         * @return array
+         */
         public static function getDependencies()
         {
             return array();
         }
 
+        /**
+         * @param Object $demoDataHelper
+         */
         public function makeAll(& $demoDataHelper)
         {
             assert('$demoDataHelper instanceof DemoDataHelper');
             $currencies = Currency::getAll('id');
             $productTemplates = array();
-            $filePath                  = Yii::getPathOfAlias('application.modules.productTemplates.data.ProductTemplateRandomData') . '.php';
-            require($filePath);
-            $productTemplateRandomData = getProductTemplatesRandomData();
+            $productTemplateRandomData = self::getProductTemplatesRandomData();
             for ($i = 0; $i < count($productTemplateRandomData['names']); $i++)
             {
                 $productTemplate = new ProductTemplate();
@@ -65,11 +69,16 @@
             $demoDataHelper->setRangeByModelName('ProductTemplate', $productTemplates[0], $productTemplates[count($productTemplates)-1]);
         }
 
+        /**
+         * Populate Product Template Model with data
+         * @param Product Template object $model
+         * @param int $counter
+         */
         public function populateModelData(& $model, $counter)
         {
             assert('$model instanceof ProductTemplate');
             parent::populateModel($model);
-            $productTemplateRandomData = getProductTemplatesRandomData();
+            $productTemplateRandomData = self::getProductTemplatesRandomData();
             $name                      = $productTemplateRandomData['names'][$counter];
             $productCategoryName       = self::getProductCategoryForTemplate($name);
             $allCats = ProductCategory::getAll();
@@ -95,6 +104,11 @@
             $model->sellPriceFormula   = $sellPriceFormula;
         }
 
+        /**
+         * Get product category based on template
+         * @param string $template
+         * @return string
+         */
         private static function getProductCategoryForTemplate($template)
         {
             $templateCategoryMapping = array(
@@ -104,22 +118,57 @@
                                                 'A Gift of Monotheists' => 'Books',
                                                 'Once in a Lifetime'    => 'Music'
                                             );
-            if(!array_key_exists($template, $templateCategoryMapping))
+            if (!array_key_exists($template, $templateCategoryMapping))
             {
-                if(strpos($template, 'Laptop Inc - Model') !== false)
+                if (strpos($template, 'Laptop Inc - Model') !== false)
                 {
                     return 'Laptops';
                 }
-                if(strpos($template, 'Camera Inc') !== false)
+                if (strpos($template, 'Camera Inc') !== false)
                 {
                     return 'Camera';
                 }
-                if(strpos($template, 'Handycam Inc - Model') !== false)
+                if (strpos($template, 'Handycam Inc - Model') !== false)
                 {
                     return 'Handycam';
                 }
             }
             return $templateCategoryMapping[$template];
+        }
+
+        /**
+         * Gets the product templates random data
+         * @return array
+         */
+        public static function getProductTemplatesRandomData()
+        {
+            $templateNames = array(
+                                    'names' => array(
+                                        'Amazing Kid',
+                                        'You Can Do Anything',
+                                        'A Bend in the River',
+                                        'A Gift of Monotheists',
+                                        'Once in a Lifetime'
+                                    )
+                                   );
+            for ($i = 1; $i < 10; $i++)
+            {
+               $randomString = substr(str_shuffle("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0, 6);
+               $templateNames['names'][] = 'Laptop Inc - Model ' . $randomString;
+            }
+
+            for ($i = 1; $i < 10; $i++)
+            {
+               $randomString = substr(str_shuffle("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0, 6);
+               $templateNames['names'][] = 'Camera Inc 2 MegaPixel - Model ' . $randomString;
+            }
+
+            for ($i = 1; $i < 10; $i++)
+            {
+               $randomString = substr(str_shuffle("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0, 6);
+               $templateNames['names'][] = 'Handycam Inc - Model ' . $randomString;
+            }
+            return $templateNames;
         }
     }
 ?>

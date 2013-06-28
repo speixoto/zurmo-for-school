@@ -4,7 +4,7 @@
      * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
-     * the terms of the GNU General Public License version 3 as published by the
+     * the terms of the GNU Affero General Public License version 3 as published by the
      * Free Software Foundation with the addition of the following permission added
      * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
      * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
@@ -12,10 +12,10 @@
      *
      * Zurmo is distributed in the hope that it will be useful, but WITHOUT
      * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-     * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+     * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
      * details.
      *
-     * You should have received a copy of the GNU General Public License along with
+     * You should have received a copy of the GNU Affero General Public License along with
      * this program; if not, see http://www.gnu.org/licenses or write to the Free
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
@@ -25,9 +25,9 @@
      *
      * The interactive user interfaces in original and modified versions
      * of this program must display Appropriate Legal Notices, as required under
-     * Section 5 of the GNU General Public License version 3.
+     * Section 5 of the GNU Affero General Public License version 3.
      *
-     * In accordance with Section 7(b) of the GNU General Public License version 3,
+     * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
@@ -46,7 +46,7 @@
             foreach ($rows as $row)
             {
                 $chartIndexToCompare = $row[$this->resolveIndexGroupByToUse()];
-                if(isset($chartData[$chartIndexToCompare]))
+                if (isset($chartData[$chartIndexToCompare]))
                 {
                     $chartData[$chartIndexToCompare][self::QUEUED]        = $row[self::QUEUED];
                     $chartData[$chartIndexToCompare][self::SENT]          = $row[self::SENT];
@@ -57,7 +57,7 @@
                 }
             }
             $newChartData = array();
-            foreach($chartData as $data)
+            foreach ($chartData as $data)
             {
                 $newChartData[] = $data;
             }
@@ -71,10 +71,10 @@
         {
             $combinedRows        = array();
             //todo: should fix and get proper table name of attribute instead of passing in item
-            $groupBy             = $this->resolveGroupBy('Item', 'createdDateTime');
+            $groupBy             = $this->resolveGroupBy('EmailMessage', 'sentDateTime');
             $beginDateTime       = DateTimeUtil::convertDateIntoTimeZoneAdjustedDateTimeBeginningOfDay($this->beginDate);
             $endDateTime         = DateTimeUtil::convertDateIntoTimeZoneAdjustedDateTimeEndOfDay($this->endDate);
-            if($this->marketingList == null)
+            if ($this->marketingList == null)
             {
                 $searchAttributeData = static::makeCampaignsSearchAttributeData('createdDateTime', $beginDateTime,
                                        $endDateTime, $this->campaign);
@@ -86,7 +86,7 @@
                     $combinedRows[$chartIndexToCompare] = $row;
                 }
             }
-            if($this->campaign == null)
+            if ($this->campaign == null)
             {
                 $searchAttributeData = static::makeAutorespondersSearchAttributeData('createdDateTime', $beginDateTime,
                                        $endDateTime, $this->marketingList);
@@ -95,7 +95,7 @@
                 foreach ($rows as $row)
                 {
                     $chartIndexToCompare = $row[$this->resolveIndexGroupByToUse()];
-                    if(!isset($combinedRows[$chartIndexToCompare]))
+                    if (!isset($combinedRows[$chartIndexToCompare]))
                     {
                         $combinedRows[$chartIndexToCompare] = $row;
                     }
@@ -125,8 +125,10 @@
             $selectDistinct            = false;
             $campaignTableName         = Campaign::getTableName('Campaign');
             $campaignItemTableName     = CampaignItem::getTableName('CampaignItem');
+            $itemTableName             = Item::getTableName('Item');
             $emailMessageTableName     = EmailMessage::getTableName('EmailMessage');
             $sentDateTimeColumnName    = EmailMessage::getColumnNameByAttribute('sentDateTime');
+            $createdDateTimeColumnName = Item::getColumnNameByAttribute('createdDateTime');
             $joinTablesAdapter         = new RedBeanModelJoinTablesQueryAdapter('Campaign');
             $where                     = RedBeanModelDataProvider::makeWhere('Campaign', $searchAttributeData, $joinTablesAdapter);
             Campaign::resolveReadPermissionsOptimizationToSqlQuery(Yii::app()->user->userModel,
@@ -136,16 +138,16 @@
             $selectQueryAdapter        = new RedBeanModelSelectQueryAdapter($selectDistinct);
             $queuedEmailsSelectPart    = "sum(CASE WHEN {$quote}{$emailMessageTableName}{$quote}.{$quote}{$sentDateTimeColumnName}" .
                                          $quote . " = '0000-00-00 00:00:00' OR {$quote}{$emailMessageTableName}{$quote}" .
-                                         ".{$quote}{$sentDateTimeColumnName}{$quote} IS NULL THEN 1 ELSE 0 END)";
+                                         ".{$quote}{$sentDateTimeColumnName}{$quote} IS NULL THEN 1 ELSE 0 END)"; // Not Coding Standard
             $sentEmailsSelectPart      = "sum(CASE WHEN {$quote}{$emailMessageTableName}{$quote}.{$quote}{$sentDateTimeColumnName}" .
                                          $quote . " > '0000-00-00 00:00:00' THEN 1 ELSE 0 END)";
             $uniqueOpensSelectPart     = static::resolveCampaignTypeSubQuery(EmailMessageActivity::TYPE_OPEN);
             $uniqueClicksSelectPart    = static::resolveCampaignTypeSubQuery(EmailMessageActivity::TYPE_CLICK);
             $bouncedSelectPart         = static::resolveCampaignTypeSubQuery(EmailMessageActivity::TYPE_BOUNCE);
-            $optedOutSelectPart        = static::resolveCampaignTypeSubQuery(EmailMessageActivity::TYPE_UNSUBSCRIBE);
-            static::addEmailMessageDayDateClause            ($selectQueryAdapter, $sentDateTimeColumnName);
-            static::addEmailMessageFirstDayOfWeekDateClause ($selectQueryAdapter, $sentDateTimeColumnName);
-            static::addEmailMessageFirstDayOfMonthDateClause($selectQueryAdapter, $sentDateTimeColumnName);
+            $optedOutSelectPart        = static::resolveCampaignTypeSubQuery(EmailMessageActivity::TYPE_UNSUBSCRIBE);//
+            $selectQueryAdapter->addDayDateClause($itemTableName, $createdDateTimeColumnName, static::DAY_DATE);
+            $selectQueryAdapter->addFirstDayOfWeekDateClause($itemTableName, $createdDateTimeColumnName, static::FIRST_DAY_OF_WEEK_DATE);
+            $selectQueryAdapter->addFirstDayOfMonthDateClause($itemTableName, $createdDateTimeColumnName, static::FIRST_DAY_OF_MONTH_DATE);
             $selectQueryAdapter->addNonSpecificCountClause();
             $selectQueryAdapter->addClauseByQueryString($queuedEmailsSelectPart,  static::QUEUED);
             $selectQueryAdapter->addClauseByQueryString($sentEmailsSelectPart,  static::SENT);
@@ -170,29 +172,31 @@
             $quote                      = DatabaseCompatibilityUtil::getQuote();
             $where                      = null;
             $selectDistinct             = false;
+            $itemTableName              = Item::getTableName('Item');
             $marketingListTableName     = Autoresponder::getTableName('MarketingList');
             $autoresponderTableName     = Autoresponder::getTableName('Autoresponder');
             $autoresponderItemTableName = AutoresponderItem::getTableName('AutoresponderItem');
             $emailMessageTableName      = EmailMessage::getTableName('EmailMessage');
             $sentDateTimeColumnName     = EmailMessage::getColumnNameByAttribute('sentDateTime');
+            $createdDateTimeColumnName  = Item::getColumnNameByAttribute('createdDateTime');
             $joinTablesAdapter          = new RedBeanModelJoinTablesQueryAdapter('Autoresponder');
             MarketingList::resolveReadPermissionsOptimizationToSqlQuery(Yii::app()->user->userModel,
                 $joinTablesAdapter,
                 $where,
                 $selectDistinct);
             $selectQueryAdapter     = new RedBeanModelSelectQueryAdapter($selectDistinct);
-            $queuedEmailsSelectPart = "count(CASE WHEN {$quote}{$emailMessageTableName}{$quote}.{$quote}{$sentDateTimeColumnName}" .
+            $queuedEmailsSelectPart = "sum(CASE WHEN {$quote}{$emailMessageTableName}{$quote}.{$quote}{$sentDateTimeColumnName}" .
                                       $quote . " = '0000-00-00 00:00:00' OR {$quote}{$emailMessageTableName}{$quote}" .
-                                      ".{$quote}{$sentDateTimeColumnName}{$quote} IS NULL THEN 1 ELSE 0 END)";
-            $sentEmailsSelectPart   = "count(CASE WHEN {$quote}{$emailMessageTableName}{$quote}.{$quote}{$sentDateTimeColumnName}" .
+                                      ".{$quote}{$sentDateTimeColumnName}{$quote} IS NULL THEN 1 ELSE 0 END)"; // Not Coding Standard
+            $sentEmailsSelectPart   = "sum(CASE WHEN {$quote}{$emailMessageTableName}{$quote}.{$quote}{$sentDateTimeColumnName}" .
                                       $quote . " > '0000-00-00 00:00:00' THEN 1 ELSE 0 END)";
             $uniqueOpensSelectPart  = static::resolveAutoresponderTypeSubQuery(EmailMessageActivity::TYPE_OPEN);
             $uniqueClicksSelectPart = static::resolveAutoresponderTypeSubQuery(EmailMessageActivity::TYPE_CLICK);
             $bouncedSelectPart      = static::resolveAutoresponderTypeSubQuery(EmailMessageActivity::TYPE_BOUNCE);
             $optedOutSelectPart     = static::resolveAutoresponderTypeSubQuery(EmailMessageActivity::TYPE_UNSUBSCRIBE);
-            static::addEmailMessageDayDateClause            ($selectQueryAdapter, $sentDateTimeColumnName);
-            static::addEmailMessageFirstDayOfWeekDateClause ($selectQueryAdapter, $sentDateTimeColumnName);
-            static::addEmailMessageFirstDayOfMonthDateClause($selectQueryAdapter, $sentDateTimeColumnName);
+            $selectQueryAdapter->addDayDateClause($itemTableName, $createdDateTimeColumnName, static::DAY_DATE);
+            $selectQueryAdapter->addFirstDayOfWeekDateClause($itemTableName, $createdDateTimeColumnName, static::FIRST_DAY_OF_WEEK_DATE);
+            $selectQueryAdapter->addFirstDayOfMonthDateClause($itemTableName, $createdDateTimeColumnName, static::FIRST_DAY_OF_MONTH_DATE);
             $selectQueryAdapter->addNonSpecificCountClause();
             $selectQueryAdapter->addClauseByQueryString($queuedEmailsSelectPart,  static::QUEUED);
             $selectQueryAdapter->addClauseByQueryString($sentEmailsSelectPart,  static::SENT);

@@ -2,7 +2,7 @@
 // Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
 //
 // Zurmo is free software; you can redistribute it and/or modify it under
-// the terms of the GNU General Public License version 3 as published by the
+// the terms of the GNU Affero General Public License version 3 as published by the
 // Free Software Foundation with the addition of the following permission added
 // to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
 // IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
@@ -10,10 +10,10 @@
 //
 // Zurmo is distributed in the hope that it will be useful, but WITHOUT
 // ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-// FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+// FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
 // details.
 //
-// You should have received a copy of the GNU General Public License along with
+// You should have received a copy of the GNU Affero General Public License along with
 // this program; if not, see http://www.gnu.org/licenses or write to the Free
 // Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 // 02110-1301 USA.
@@ -23,9 +23,9 @@
 //
 // The interactive user interfaces in original and modified versions
 // of this program must display Appropriate Legal Notices, as required under
-// Section 5 of the GNU General Public License version 3.
+// Section 5 of the GNU Affero General Public License version 3.
 //
-// In accordance with Section 7(b) of the GNU General Public License version 3,
+// In accordance with Section 7(b) of the GNU Affero General Public License version 3,
 // these Appropriate Legal Notices must retain the display of the Zurmo
 // logo and Zurmo copyright notice. If the display of the logo is not reasonably
 // feasible for technical reasons, the Appropriate Legal Notices must display the words
@@ -85,6 +85,17 @@
 
 #marketing-list-member-select-contact-or-report-form{
 	padding:15px;
+	position: relative;
+	.close-flyout{
+		position: absolute;
+		right: 5px;
+		top: 2px;
+		.symbly(18px);
+		cursor: pointer;
+		&:hover{
+			background: none !important;
+		}
+	}
 	.search-without-scope{
 		margin-top: 10px;
 		border:1px solid #d5d4d4;
@@ -238,9 +249,10 @@
 }
 
 .autoresponder-stats{
-	.fifth();
+	++.border-box;
+	padding-right:5px;
+	width:20%;
 	float: left;
-	margin-left: 2%;
 	text-align: left;
 	font-size: 12px;
 	strong{
@@ -294,6 +306,8 @@ a + .autoresponder-stats{
 	float: left;
 	width: 100%;
 	margin: 30px 0 15px 0;
+
+	//#gradient > .vertical( rgba(34, 34, 34, 0.85), rgba(51,51,51, 0.75) );
 
 	> div{
 		float: left;
@@ -450,9 +464,23 @@ a + .autoresponder-stats{
 	}
 }
 
+.CampaignItemsRelatedListView{
+	.icon-empty:before{
+		//display: none;
+		content: "f";
+	}
+}
+
+.no-subscribers-found,
 .no-email-recipients-found{
 	.icon-notice:before {
 		content: "f";
+	}
+}
+
+.no-autoresponders-found{
+	.icon-notice:before {
+		content: "g7"; //gh
 	}
 }
 
@@ -488,4 +516,87 @@ a + .autoresponder-stats{
 .screen-options{
 	padding: 5px;
 	text-align: right;
+}
+
+/*Manage Subscriptions*/
+#MarketingListsExternalActionsPageView,
+#MarketingListsManageSubscriptionsPageView{
+	max-width: 900px;
+	margin: 30px auto;
+	> .GridView{
+		++.clearfix;
+	}
+	#HeaderLinksView{
+		margin:0 0 20px 0;
+		> div{
+			margin:0;
+		}
+		+ div{
+			background:none;
+			.unstyle-panel();
+		}
+	}
+	#corp-logo span{
+		color: #545454;
+	}
+	.Warning,
+	.wrapper{
+		.unstyle-panel();
+		float: none;
+	}
+	.Warning,
+	.wrapper{
+		background: #fff;
+		.b-shadow(0 0 12px 5px rgba(153, 153, 153, 0.3)); /*999*/
+		.radius(5px);
+	}
+	.Warning{
+		++.clearfix;
+		padding: 15px 0 30px 0;
+		h2, div, p{
+			float: none;
+			margin: 0;
+			width: 100%;
+			text-align: center;
+		}
+		h2{
+			padding: 0;
+		}
+		div{
+			margin:15px 0 20px 0;
+			border: 0;
+		}
+	}
+	#FooterView {
+		margin: 20px 0;
+		padding-bottom: 20px;
+		clear: both;
+	}
+	h1{
+		background: none;
+		border: none;
+		.unstyle-panel();
+	}
+	#MarketingListsManageSubscriptionsListView{
+
+	}
+	#marketingLists-manageSubscriptionsList{
+		table{
+			width: 100%;
+			th{
+				font-weight: bold !important;
+				height: 35px;
+				line-height: 35px;
+				//background: url(../images/table-items-header.png) left top repeat-x;
+				padding: 0 5px;
+				white-space: nowrap;
+			}
+			td{
+				padding-bottom: 15px;
+			}
+		}
+	}
+	.switch{
+		margin-right: 15px;
+	}
 }

@@ -4,7 +4,7 @@
      * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
-     * the terms of the GNU General Public License version 3 as published by the
+     * the terms of the GNU Affero General Public License version 3 as published by the
      * Free Software Foundation with the addition of the following permission added
      * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
      * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
@@ -12,10 +12,10 @@
      *
      * Zurmo is distributed in the hope that it will be useful, but WITHOUT
      * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-     * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+     * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
      * details.
      *
-     * You should have received a copy of the GNU General Public License along with
+     * You should have received a copy of the GNU Affero General Public License along with
      * this program; if not, see http://www.gnu.org/licenses or write to the Free
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
@@ -25,9 +25,9 @@
      *
      * The interactive user interfaces in original and modified versions
      * of this program must display Appropriate Legal Notices, as required under
-     * Section 5 of the GNU General Public License version 3.
+     * Section 5 of the GNU Affero General Public License version 3.
      *
-     * In accordance with Section 7(b) of the GNU General Public License version 3,
+     * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
@@ -489,6 +489,84 @@
             $this->assertEquals(14, count($contacts));
 
             //todo: test save with account.
+        }
+
+        /**
+         * @depends testSuperUserCreateFromRelationAction
+         */
+        public function testSuperUserCopyAction()
+        {
+            $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
+
+            $contacts = Contact::getByName('myNewContact myNewContactson');
+            $this->assertCount(1, $contacts);
+
+            $postArray = array(
+                'Contact' => array(
+                    'firstName' => 'myNewContact',
+                    'lastName'  => 'myNewContactson',
+                    'jobTitle'  => 'job title',
+                    'account'   => array(
+                            'name'  => 'Linked account',
+                    ),
+                    'department'    => 'Some department',
+                    'officePhone'   => '456765421',
+                    'mobilePhone'   => '958462315',
+                    'officeFax'     => '123456789',
+                    'primaryEmail'  => array(
+                            'emailAddress' => 'a@a.com',
+                    ),
+                    'secondaryEmail' => array(
+                            'emailAddress' => 'b@b.com',
+                    ),
+                    'primaryAddress' => array(
+                            'street1'    => 'Street1',
+                            'street2'    => 'Street2',
+                            'city'       => 'City',
+                            'state'      => 'State',
+                            'postalCode' => '12345',
+                            'country'    => 'Country',
+                    ),
+                    'secondaryAddress' => array(
+                            'street1'    => 'Street1',
+                            'street2'    => 'Street2',
+                            'city'       => 'City',
+                            'state'      => 'State',
+                            'postalCode' => '12345',
+                            'country'    => 'Country',
+                    ),
+                    'description' => 'some description',
+                )
+            );
+
+            $this->updateModelValuesFromPostArray($contacts[0], $postArray);
+            $this->assertModelHasValuesFromPostArray($contacts[0], $postArray);
+
+            $this->assertTrue($contacts[0]->save());
+            $this->assertTrue(
+                $this->checkCopyActionResponseAttributeValuesFromPostArray($contacts[0], $postArray)
+            );
+
+            $postArray['Contact']['firstName']  = 'myClonedContact';
+            $postArray['Contact']['lastName']   = 'myClonedContactson';
+            $postArray['Contact']['state']      = array('id' => LeadsUtil::getStartingState()->id);
+            $this->setGetArray(array('id' => $contacts[0]->id));
+            $this->setPostArray($postArray);
+            $this->runControllerWithRedirectExceptionAndGetUrl('contacts/default/copy');
+
+            $contacts = Contact::getByName('myClonedContact myClonedContactson');
+            $this->assertCount(1, $contacts);
+            $this->assertTrue($contacts[0]->owner->isSame($super));
+
+            unset($postArray['Contact']['state']);
+            $this->assertModelHasValuesFromPostArray($contacts[0], $postArray);
+
+            $contacts = Contact::getAll();
+            $this->assertCount(15, $contacts);
+
+            $contacts = Contact::getByName('myClonedContact myClonedContactson');
+            $this->assertCount(1, $contacts);
+            $this->assertTrue($contacts[0]->delete());
         }
 
         /**
