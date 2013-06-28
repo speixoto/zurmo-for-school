@@ -13025,6 +13025,20 @@ table.configuration-list td:last-child a .z-label:before {
   padding: 15px 15px 0 15px;
   list-style: none;
   zoom: 1;
+  max-height: 400px;
+  overflow-y: scroll;
+  /*
+	.icon-:before{
+		content: "z";
+	}
+	.icon-:before{
+		content: "z";
+	}
+	.icon-:before{
+		content: "z";
+	}
+	*/
+
 }
 .available-portlets:before {
   content: "";
@@ -13049,11 +13063,11 @@ table.configuration-list td:last-child a .z-label:before {
 .available-portlets h3 span:before {
   content: "z";
   font-weight: normal;
-  font-size: 60px;
+  font-size: 40px;
   font-family: "ZurmoGamificationSymblyReguRg";
   line-height: 1;
   position: absolute;
-  top: -15px;
+  top: -8px;
   border: none;
   outline: none !important;
   display: inline-block;
@@ -13079,6 +13093,42 @@ table.configuration-list td:last-child a .z-label:before {
   display: block;
   padding: 0 6px 0 6px;
   background: none;
+}
+.available-portlets .icon-contacts:before {
+  content: "y";
+}
+.available-portlets .icon-leads:before {
+  content: ".";
+}
+.available-portlets .icon-opportunities:before {
+  content: "9";
+}
+.available-portlets .icon-reports:before {
+  content: '\V';
+}
+.available-portlets .icon-products:before {
+  content: '\003E';
+}
+.available-portlets .icon-rssReader:before {
+  content: "z";
+}
+.available-portlets .icon-tasks:before {
+  content: "4";
+}
+.available-portlets .icon-missions:before {
+  content: 'Q';
+}
+.available-portlets .icon-accounts:before {
+  content: "P";
+}
+.available-portlets .icon-activities:before {
+  content: '00A5';
+}
+.available-portlets .icon-socialItems:before {
+  content: "u";
+}
+.available-portlets .icon-activities:before {
+  content: 'u';
 }
 /*Edit Portlet*/
 #modal-edit-form th {

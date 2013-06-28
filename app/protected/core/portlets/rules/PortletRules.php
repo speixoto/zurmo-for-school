@@ -88,6 +88,11 @@
             return 'type-'. $this->getIconType();
         }
 
+        public function resolveIconName()
+        {
+            return 'icon-'. $this->getIconType();
+        }
+
         public function getDescription()
         {
             $viewClassName   = $this->viewClassName;
