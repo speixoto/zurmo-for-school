@@ -494,6 +494,14 @@
                     Yii::app()->user->setFlash('notification',
                         Zurmo::t('UsersModule', 'User email configuration saved successfully.')
                     );
+
+                   $relatedModelClassName = Yii::app()->request->getParam('relatedModelClassName');
+                   $relatedId = Yii::app()->request->getParam('relatedId');
+                   if(!empty($relatedModelClassName) && !empty($relatedId)){
+                            $relatedModel = new $relatedModelClassName();
+                            $url     = Yii::app()->createUrl($relatedModel->getModelLabelByTypeAndLanguage('PluralLowerCase') . '/default/details',array('id' => $relatedId));
+                            $this->redirect($url);
+                    }
                     $this->redirect(array($this->getId() . '/details', 'id' => $user->id));
                 }
             }
