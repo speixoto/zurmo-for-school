@@ -11528,12 +11528,10 @@ div.hasHalfs > div input {
   border-bottom: none;
 }
 /*ICONS..*/
-.juiportlet-widget.OpportunitiesForContactRelatedListView h3:before,
-.juiportlet-widget.OpportunitiesForAccountRelatedListView h3:before {
+.juiportlet-widget.type-opportunities h3:before {
   content: "9";
 }
-.juiportlet-widget.OpportunitiesForContactRelatedListView .icon-empty:before,
-.juiportlet-widget.OpportunitiesForAccountRelatedListView .icon-empty:before {
+.juiportlet-widget.type-opportunities .icon-empty:before {
   content: "9";
   font-weight: normal;
   font-size: 45px;
@@ -11546,12 +11544,10 @@ div.hasHalfs > div input {
   vertical-align: middle;
   position: relative;
 }
-.juiportlet-widget.ContactsForOpportunityRelatedListView h3:before,
-.juiportlet-widget.ContactsForAccountRelatedListView h3:before {
+.juiportlet-widget.type-contacts h3:before {
   content: "e";
 }
-.juiportlet-widget.ContactsForOpportunityRelatedListView .icon-empty:before,
-.juiportlet-widget.ContactsForAccountRelatedListView .icon-empty:before {
+.juiportlet-widget.type-contacts .icon-empty:before {
   content: "e";
   font-weight: normal;
   font-size: 45px;
@@ -11564,10 +11560,7 @@ div.hasHalfs > div input {
   vertical-align: middle;
   position: relative;
 }
-.juiportlet-widget.TasksMyListView .icon-empty:before,
-.juiportlet-widget.OpenTasksForOpportunityRelatedListView .icon-empty:before,
-.juiportlet-widget.OpenTasksForContactRelatedListView .icon-empty:before,
-.juiportlet-widget.OpenTasksForAccountRelatedListView .icon-empty:before {
+.juiportlet-widget.type-tasks .icon-empty:before {
   content: "4";
   font-weight: normal;
   font-size: 45px;
@@ -11580,10 +11573,7 @@ div.hasHalfs > div input {
   vertical-align: middle;
   position: relative;
 }
-.juiportlet-widget.AllLatestActivitiesForPortletView .icon-empty:before,
-.juiportlet-widget.OpportunityLatestActivitiesForPortletView .icon-empty:before,
-.juiportlet-widget.AccountLatestActivitiesForPortletView .icon-empty:before,
-.juiportlet-widget.ContactLatestActivitiesForPortletView .icon-empty:before {
+.juiportlet-widget.type-activities .icon-empty:before {
   content: '\00A5';
   font-weight: normal;
   font-size: 45px;
@@ -11596,7 +11586,7 @@ div.hasHalfs > div input {
   vertical-align: middle;
   position: relative;
 }
-.juiportlet-widget.ProductsForAccountRelatedListView .icon-empty:before {
+.juiportlet-widget.type-products .icon-empty:before {
   content: '\003E';
   font-weight: normal;
   font-size: 45px;
@@ -11609,7 +11599,7 @@ div.hasHalfs > div input {
   vertical-align: middle;
   position: relative;
 }
-.juiportlet-widget.AllSocialItemsForPortletView .icon-empty:before {
+.juiportlet-widget.type-socialItems .icon-empty:before {
   content: 'u';
   font-weight: normal;
   font-size: 45px;
@@ -11622,7 +11612,7 @@ div.hasHalfs > div input {
   vertical-align: middle;
   position: relative;
 }
-.juiportlet-widget.MyMissionsForPortletView .icon-empty:before {
+.juiportlet-widget.type-missions .icon-empty:before {
   content: 'Q';
   font-weight: normal;
   font-size: 45px;
@@ -11635,7 +11625,7 @@ div.hasHalfs > div input {
   vertical-align: middle;
   position: relative;
 }
-.juiportlet-widget.LeadsMyListView .icon-empty:before {
+.juiportlet-widget.type-leads .icon-empty:before {
   content: '.';
   font-weight: normal;
   font-size: 45px;
@@ -11648,7 +11638,7 @@ div.hasHalfs > div input {
   vertical-align: middle;
   position: relative;
 }
-.juiportlet-widget.AccountsMyListView .icon-empty:before {
+.type-accounts .icon-empty:before {
   content: 'P';
   font-weight: normal;
   font-size: 45px;
@@ -11661,7 +11651,7 @@ div.hasHalfs > div input {
   vertical-align: middle;
   position: relative;
 }
-.juiportlet-widget.ContactsMyListView .icon-empty:before {
+.juiportlet-widget.type-contacts .icon-empty:before {
   content: "e";
   font-weight: normal;
   font-size: 45px;
@@ -11674,7 +11664,7 @@ div.hasHalfs > div input {
   vertical-align: middle;
   position: relative;
 }
-#ProductTemplatesModalListView .icon-empty:before {
+.juiportlet-widget.type-products .icon-empty:before {
   content: '\00AC';
   font-weight: normal;
   font-size: 45px;
@@ -11687,17 +11677,11 @@ div.hasHalfs > div input {
   vertical-align: middle;
   position: relative;
 }
-.juiportlet-widget.OpportunitiesForContactRelatedListView h3,
-.juiportlet-widget.OpportunitiesForAccountRelatedListView h3,
-.juiportlet-widget.ContactsForOpportunityRelatedListView h3,
-.juiportlet-widget.ContactsForAccountRelatedListView h3 {
+.juiportlet-widget.type-opportunities h3 {
   padding-left: 30px;
   position: relative;
 }
-.juiportlet-widget.OpportunitiesForContactRelatedListView h3:before,
-.juiportlet-widget.OpportunitiesForAccountRelatedListView h3:before,
-.juiportlet-widget.ContactsForOpportunityRelatedListView h3:before,
-.juiportlet-widget.ContactsForAccountRelatedListView h3:before {
+.juiportlet-widget.type-opportunities h3:before {
   font-weight: normal;
   font-size: 32px;
   font-family: "ZurmoGamificationSymblyReguRg";
