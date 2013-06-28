@@ -55,15 +55,6 @@
         protected $hideView;
 
         /**
-         * Override to return the validation of the wizard view
-         * @retunr string
-         */
-        protected function getValidationScenario()
-        {
-            return null;
-        }
-
-        /**
          * @return string
          */
         abstract protected function renderFormContent();
@@ -123,7 +114,6 @@
         {
             assert('is_bool($hideView)');
             $this->model    = $model;
-            $this->model->setScenario($this->getValidationScenario());
             $this->form     = $form;
             $this->hideView = $hideView;
         }

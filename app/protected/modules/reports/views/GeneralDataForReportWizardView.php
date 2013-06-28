@@ -39,12 +39,6 @@
      */
     class GeneralDataForReportWizardView extends ComponentForReportWizardView
     {
-
-        protected function getValidationScenario()
-        {
-            return ReportWizardForm::GENERAL_DATA_VALIDATION_SCENARIO;
-        }
-
         /**
          * @return string
          */
