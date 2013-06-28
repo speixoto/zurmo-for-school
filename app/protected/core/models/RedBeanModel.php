@@ -1,10 +1,10 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2012 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
-     * the terms of the GNU General Public License version 3 as published by the
+     * the terms of the GNU Affero General Public License version 3 as published by the
      * Free Software Foundation with the addition of the following permission added
      * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
      * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
@@ -12,16 +12,26 @@
      *
      * Zurmo is distributed in the hope that it will be useful, but WITHOUT
      * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-     * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+     * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
      * details.
      *
-     * You should have received a copy of the GNU General Public License along with
+     * You should have received a copy of the GNU Affero General Public License along with
      * this program; if not, see http://www.gnu.org/licenses or write to the Free
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
      *
-     * You can contact Zurmo, Inc. with a mailing address at 113 McHenry Road Suite 207,
-     * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
+     * You can contact Zurmo, Inc. with a mailing address at 27 North Wacker Drive
+     * Suite 370 Chicago, IL 60606. or at email address contact@zurmo.com.
+     *
+     * The interactive user interfaces in original and modified versions
+     * of this program must display Appropriate Legal Notices, as required under
+     * Section 5 of the GNU Affero General Public License version 3.
+     *
+     * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
+     * these Appropriate Legal Notices must retain the display of the Zurmo
+     * logo and Zurmo copyright notice. If the display of the logo is not reasonably
+     * feasible for technical reasons, the Appropriate Legal Notices must display the words
+     * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -95,6 +105,7 @@
         private $attributeNameToBeanAndClassName                             = array();
         private $relationNameToRelatedModel                                  = array();
         private $unlinkedRelationNames                                       = array();
+        private $unlinkedOwnedRelatedModelsToRemove                          = array();
         private $validators                                                  = array();
         private $attributeNameToErrors                                       = array();
         private $scenarioName                                                = '';
@@ -112,6 +123,7 @@
         protected $isValidating           = false;
         protected $isSaving               = false;
         protected $isNewModel             = false;
+        protected $isCopied               = false;
 
         /**
          * Can this model be saved when save is called from a related model?  True if it can, false if it cannot.
@@ -133,6 +145,7 @@
             'defaultCalculatedDate'  => 'RedBeanModelDefaultCalculatedDateValidator',
             'readOnly'               => 'RedBeanModelReadOnlyValidator',
             'dateTimeDefault'        => 'RedBeanModelDateTimeDefaultValueValidator',
+            'probability'            => 'RedBeanModelProbabilityValidator',
         );
 
         /**
@@ -217,6 +230,41 @@
             assert('$where   === null || is_string ($where)   && $where   != ""');
             assert('$orderBy === null || is_string ($orderBy) && $orderBy != ""');
             assert('$modelClassName === null || is_string($modelClassName) && $modelClassName != ""');
+
+            if ($modelClassName === null)
+            {
+                $modelClassName = get_called_class();
+            }
+            $ids = self::getSubsetIds($joinTablesAdapter, $offset, $count, $where,
+                $orderBy, $modelClassName, $selectDistinct);
+            $tableName = self::getTableName($modelClassName);
+            $beans = R::batch ($tableName, $ids);
+            return self::makeModels($beans, $modelClassName);
+        }
+
+        /**
+         * Gets a range of model ids from the database of the named model type.
+         * @param $modelClassName
+         * @param $joinTablesAdapter null or instance of joinTablesAdapter.
+         * @param $offset The zero based index of the first model to be returned.
+         * @param $count The number of models to be returned.
+         * @param $where
+         * @param $orderBy - sql string. Example 'a desc' or 'a.b desc'.  Currently only supports non-related attributes
+         * @param $modelClassName Pass only when getting it at runtime gets the wrong name.
+         * @return An array of models ids
+         */
+        public static function getSubsetIds(RedBeanModelJoinTablesQueryAdapter $joinTablesAdapter = null,
+                                            $offset = null, $count = null,
+                                            $where = null, $orderBy = null,
+                                            $modelClassName = null,
+                                            $selectDistinct = false)
+        {
+            assert('$offset  === null || is_integer($offset)  && $offset  >= 0');
+            assert('$count   === null || is_integer($count)   && $count   >= 1');
+            assert('$where   === null || is_string ($where)   && $where   != ""');
+            assert('$orderBy === null || is_string ($orderBy) && $orderBy != ""');
+            assert('$modelClassName === null || is_string($modelClassName) && $modelClassName != ""');
+
             if ($modelClassName === null)
             {
                 $modelClassName = get_called_class();
@@ -227,11 +275,9 @@
             }
             $tableName = self::getTableName($modelClassName);
             $sql       = static::makeSubsetOrCountSqlQuery($tableName, $joinTablesAdapter, $offset, $count, $where,
-                                                           $orderBy, false, $selectDistinct);
+                $orderBy, false, $selectDistinct);
             $ids       = R::getCol($sql);
-            $tableName = self::getTableName($modelClassName);
-            $beans = R::batch ($tableName, $ids);
-            return self::makeModels($beans, $modelClassName);
+            return $ids;
         }
 
         /**
@@ -358,10 +404,9 @@
         public function __construct($setDefaults = true, RedBean_OODBBean $bean = null, $forceTreatAsCreation = false,
                                     $runConstruction = true)
         {
-
             $this->pseudoId = self::$nextPseudoId--;
             $this->init();
-            if(!$runConstruction)
+            if (!$runConstruction)
             {
                 return;
             }
@@ -425,7 +470,11 @@
             else
             {
                 $this->onLoaded();
-                RedBeanModelsCache::cacheModel($this);
+                $modelClassName = get_called_class();
+                if ($modelClassName::isCacheable())
+                {
+                    RedBeanModelsCache::cacheModel($this);
+                }
             }
             $this->modified = false;
         }
@@ -474,9 +523,10 @@
                 $this->attributeNameToBeanAndClassName                             = $data[2];
                 $this->validators                                                  = $data[3];
 
-                $this->relationNameToRelatedModel = array();
-                $this->unlinkedRelationNames      = array();
-                $this->attributeNameToErrors      = array();
+                $this->relationNameToRelatedModel         = array();
+                $this->unlinkedRelationNames              = array();
+                $this->unlinkedOwnedRelatedModelsToRemove = array();
+                $this->attributeNameToErrors              = array();
                 $this->scenarioName               = '';
                 $this->modified                   = false;
                 $this->deleted                    = false;
@@ -586,6 +636,11 @@
          */
         protected function onCreated()
         {
+            if ($this->hasEventHandler('onCreated'))
+            {
+                $event = new CModelEvent($this);
+                $this->onCreated($event);
+            }
         }
 
         /**
@@ -593,6 +648,11 @@
          */
         protected function onLoaded()
         {
+            if ($this->hasEventHandler('onLoaded'))
+            {
+                $event = new CModelEvent($this);
+                $this->onLoaded($event);
+            }
         }
 
         /**
@@ -671,6 +731,7 @@
                         assert('in_array($relationType, array(self::HAS_ONE_BELONGS_TO, self::HAS_MANY_BELONGS_TO, ' .
                                                              'self::HAS_ONE, self::HAS_MANY, self::MANY_MANY))');
                         $this->attributeNameToBeanAndClassName[$relationName] = array($bean, $modelClassName);
+
                         /**
                         $this->relationNameToRelationTypeModelClassNameAndOwns[$relationName] = array($relationType,
                                                                                                 $relationModelClassName,
@@ -684,17 +745,6 @@
                         }
                     }
                 }
-                /**
-                if (isset($metadata[$modelClassName]['derivedRelationsViaCastedUpModel']))
-                {
-                    foreach ($metadata[$modelClassName]['derivedRelationsViaCastedUpModel'] as $relationName =>
-                             $relationTypeModelClassNameAndOpposingRelation)
-                    {
-                        $this->derivedRelationNameToTypeModelClassNameAndOppposingRelation[$relationName] =
-                                $relationTypeModelClassNameAndOpposingRelation;
-                    }
-                }
-                **/
                 // Add model validators. Parent validators are already applied.
                 if (isset($metadata[$modelClassName]['rules']))
                 {
@@ -1222,7 +1272,6 @@
                                 $linkName = self::makeCasedLinkName($relationType, $linkType, $relationLinkName);
                                 if ($bean->id > 0 && !in_array($attributeName, $this->unlinkedRelationNames))
                                 {
-
                                     $linkFieldName = ZurmoRedBeanLinkManager::getLinkField($relatedTableName, $linkName);
 
                                     if ((int)$bean->$linkFieldName > 0)
@@ -1367,6 +1416,12 @@
                     {
                         $this->unrestrictedGet($attributeName);
                     }
+                    elseif ($value !== null && $owns == RedBeanModel::OWNED &&
+                           !in_array($attributeName, $this->unlinkedRelationNames) &&
+                           !isset($this->relationNameToRelatedModel[$attributeName]))
+                    {
+                        $this->unrestrictedGet($attributeName);
+                    }
                     if (isset($this->relationNameToRelatedModel[$attributeName]) &&
                         $value !== null                                          &&
                         $this->relationNameToRelatedModel[$attributeName]->isSame($value))
@@ -1380,6 +1435,11 @@
                             isset($this->relationNameToRelatedModel[$attributeName]))
                         {
                             $this->unlinkedRelationNames[] = $attributeName;
+                            if ($owns == RedBeanModel::OWNED)
+                            {
+                                $this->unlinkedOwnedRelatedModelsToRemove[$attributeName] =
+                                       $this->relationNameToRelatedModel[$attributeName];
+                            }
                         }
                         if ($value === null)
                         {
@@ -1465,6 +1525,25 @@
         }
 
         /**
+         * Returns true if the attribute is formattted as probability
+         */
+        public function isAttributeFormattedAsProbability($attributeName)
+        {
+            assert("\$this->isAttribute(\"$attributeName\")");
+            foreach ($this->validators as $validator)
+            {
+                if ($validator instanceof RedBeanModelProbabilityValidator)
+                {
+                    if (in_array($attributeName, $validator->attributes, true))
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+
+        /**
          * @param boolean $attributeName
          * @return true/false whether the attributeName specified, it is allowed to be set externally even though it is
          * a read-only attribute.
@@ -1493,31 +1572,19 @@
 
         /**
          * See the yii documentation.
-         * RedBeanModels utilize untranslatedAttributeLabels to store any attribute information, which
-         * can then be translated in this method.
+         * RedBeanModels utilize translatedAttributeLabels to store any attribute information.
          */
         public function attributeLabels()
         {
-            $attributeLabels = array();
-            foreach (static::untranslatedAttributeLabels() as $attributeName => $label)
-            {
-                $attributeLabels[$attributeName] = Zurmo::t('Core', $label);
-            }
-            return $attributeLabels;
+            return static::translatedAttributeLabels(Yii::app()->language);
         }
 
         /**
-         * RedBeanModels utilize untranslatedAbbreviatedAttributeLabels to store any abbreviated attribute information, which
-         * can then be translated in this method.
+         * Public method
          */
         public function abbreviatedAttributeLabels()
         {
-            $abbreviatedAttributeLabels = array();
-            foreach (static::untranslatedAbbreviatedAttributeLabels() as $attributeName => $label)
-            {
-                $abbreviatedAttributeLabels[$attributeName] = Zurmo::t('Core', $label);
-            }
-            return $abbreviatedAttributeLabels;
+            return static::translatedAbbreviatedAttributeLabels(Yii::app()->language);
         }
 
         /**
@@ -1739,7 +1806,7 @@
                         // never actually saved.
                         foreach ($this->unlinkedRelationNames as $key => $relationName)
                         {
-                            $bean                      = $this->attributeNameToBeanAndClassName                [$relationName][0];
+                            $bean                      = $this->attributeNameToBeanAndClassName[$relationName][0];
                             $relationAndOwns           = static::getRelationNameToRelationTypeModelClassNameAndOwnsForModel();
                             $relatedModelClassName     = $relationAndOwns[$relationName][1];
                             $tempRelatedModelClassName = $relatedModelClassName;
@@ -1750,12 +1817,24 @@
                             {
                                 $linkName = null;
                             }
-                            elseif ($this->getRelationType($relationName) == self::HAS_ONE &&
-                                    $this->getRelationLinkType($relationName) == self::LINK_TYPE_SPECIFIC)
+                            elseif (static::getRelationType($relationName) == self::HAS_ONE &&
+                                    static::getRelationLinkType($relationName) == self::LINK_TYPE_SPECIFIC)
                             {
-                                $linkName = strtolower($this->getRelationLinkName($relationName));
+                                $linkName = strtolower(static::getRelationLinkName($relationName));
                             }
                             ZurmoRedBeanLinkManager::breakLink($bean, $relatedTableName, $linkName);
+                            //Check the $this->{$relationName} second in the if clause to avoid accidentially getting
+                            //a relation to now save. //todo: this needs to be properly handled.
+                            if (isset($this->unlinkedOwnedRelatedModelsToRemove[$relationName]) && $this->{$relationName} !== null)
+                            {
+                                //Remove hasOne owned related models that are no longer needed because they have
+                                //been replaced with another hasOne owned model.
+                                if ($this->unlinkedOwnedRelatedModelsToRemove[$relationName]->id > 0)
+                                {
+                                    $this->unlinkedOwnedRelatedModelsToRemove[$relationName]->unrestrictedDelete();
+                                }
+                                unset($this->unlinkedOwnedRelatedModelsToRemove[$relationName]);
+                            }
                             unset($this->unlinkedRelationNames[$key]);
                         }
                         assert('count($this->unlinkedRelationNames) == 0');
@@ -1795,14 +1874,14 @@
                                 $relatedModelClassName = $relationAndOwns[$relationName][1];
                                 $linkName = strtolower($relationName);
                                 if (strtolower($linkName) == strtolower($relatedModelClassName) ||
-                                    $this->getRelationLinkType($relationName) == self::LINK_TYPE_ASSUMPTIVE)
+                                    static::getRelationLinkType($relationName) == self::LINK_TYPE_ASSUMPTIVE)
                                 {
                                     $linkName = null;
                                 }
                                 elseif ($relationType == self::HAS_ONE &&
-                                        $this->getRelationLinkType($relationName) == self::LINK_TYPE_SPECIFIC)
+                                    static::getRelationLinkType($relationName) == self::LINK_TYPE_SPECIFIC)
                                 {
-                                    $linkName = strtolower($this->getRelationLinkName($relationName));
+                                    $linkName = strtolower(static::getRelationLinkName($relationName));
                                 }
                                 elseif ($relationType == RedBeanModel::HAS_MANY_BELONGS_TO ||
                                         $relationType == RedBeanModel::HAS_ONE_BELONGS_TO)
@@ -1822,8 +1901,13 @@
                                 {
                                     $relatedModel = $this->relationNameToRelatedModel[$relationName];
                                     $relatedBean  = $relatedModel->getClassBean($relatedModelClassName);
-                                    ZurmoRedBeanLinkManager::link($bean, $relatedBean, $linkName);
-
+                                    //Exclude HAS_MANY_BELONGS_TO because if the existing relation is unlinked, then
+                                    //this link should not be reactivated, because it will improperly create the bean
+                                    //in the database.
+                                    if (!($relationType == RedBeanModel::HAS_MANY_BELONGS_TO && $this->{$relationName}->id < 0))
+                                    {
+                                        ZurmoRedBeanLinkManager::link($bean, $relatedBean, $linkName);
+                                    }
                                     if (!RedBeanDatabase::isFrozen())
                                     {
                                         $tableName  = self::getTableName(static::getAttributeModelClassName($relationName));
@@ -1847,7 +1931,11 @@
                         }
                         $this->modified = false;
                         $this->afterSave();
-                        RedBeanModelsCache::cacheModel($this);
+                        $calledModelClassName = get_called_class();
+                        if ($calledModelClassName::isCacheable())
+                        {
+                            RedBeanModelsCache::cacheModel($this);
+                        }
                         $this->isSaving = false;
                         return true;
                     }
@@ -2168,7 +2256,7 @@
             assert('is_string($relatedModelClassName)');
             assert('$relatedModelClassName != ""');
             assert('is_int($id)');
-            assert('$id > 0');
+            //assert('$id > 0');
             assert('$modelClassName === null || is_string($modelClassName) && $modelClassName != ""');
             if ($modelClassName === null)
             {
@@ -2274,34 +2362,51 @@
             assert('in_array($type, array("Singular", "SingularLowerCase", "Plural", "PluralLowerCase"))');
             if ($type == 'Singular')
             {
-               return Zurmo::t('Core', static::getLabel(),
-                        LabelUtil::getTranslationParamsForAllModules(), null, $language);
+                return static::getLabel($language);
             }
             if ($type == 'SingularLowerCase')
             {
-               return strtolower(Zurmo::t('Core', static::getLabel(),
-                        LabelUtil::getTranslationParamsForAllModules(), null, $language));
+                return TextUtil::strToLowerWithDefaultEncoding(static::getLabel($language));
             }
             if ($type == 'Plural')
             {
-               return Zurmo::t('Core', static::getPluralLabel(),
-                        LabelUtil::getTranslationParamsForAllModules(), null, $language);
+                return static::getPluralLabel($language);
             }
             if ($type == 'PluralLowerCase')
             {
-               return strtolower(Zurmo::t('Core', static::getPluralLabel(),
-                        LabelUtil::getTranslationParamsForAllModules(), null, $language));
+                return TextUtil::strToLowerWithDefaultEncoding(static::getPluralLabel($language));
             }
         }
 
-        protected static function getLabel()
+        /**
+         * Returns the display name for the model class. Defaults to the module label. Override if the model
+         * label is not the module label. Make sure to return a translated label. Also provides fall back in
+         * moduleClassName is null.
+         * @param null | string $language
+         * @return dynamic label name based on module.
+         */
+        protected static function getLabel($language = null)
         {
+            if (null != $moduleClassName = static::getModuleClassName())
+            {
+                return $moduleClassName::getModuleLabelByTypeAndLanguage('Singular', $language);
+            }
             return get_called_class();
         }
 
-        protected static function getPluralLabel()
+        /**
+         * Returns the display name for plural of the model class. Defaults to the module label. Override if the model
+         * label is not the module label. Make sure to return a translated label
+         * @param null | string $language
+         * @return dynamic label name based on module.
+         */
+        protected static function getPluralLabel($language = null)
         {
-            return static::getLabel() . 's';
+            if (null != $moduleClassName = static::getModuleClassName())
+            {
+                return $moduleClassName::getModuleLabelByTypeAndLanguage('Plural', $language);
+            }
+            return static::getLabel($language) . 's';
         }
 
         /**
@@ -2329,7 +2434,7 @@
         {
             assert('is_string($attributeName)');
             assert('is_string($language)');
-            $labels       = static::untranslatedAttributeLabels();
+            $labels       = static::translatedAttributeLabels($language);
             $customLabel  = static::getTranslatedCustomAttributeLabelByLanguage($attributeName, $language);
             if ($customLabel != null)
             {
@@ -2337,12 +2442,12 @@
             }
             elseif (isset($labels[$attributeName]))
             {
-                return Zurmo::t('Core', $labels[$attributeName],
-                              LabelUtil::getTranslationParamsForAllModules(), null, $language);
+                return $labels[$attributeName];
             }
             else
             {
-                //should do a T:: wrapper here too.
+                //This is a last resort if the translated attribute was not located.  Make sure to define all
+                //attributes in translatedAttributeLabels($language)
                 return Zurmo::t('Core', static::generateAnAttributeLabel($attributeName), array(), null, $language);
             }
         }
@@ -2351,34 +2456,34 @@
          * Given an attributeName, attempt to find in the metadata a custom attribute label for the given language.
          * @return string - translated attribute label, if not found return null.
          */
-        protected static function getTranslatedCustomAttributeLabelByLanguage($attributeName, $language)
+        protected static function getTranslatedCustomAttributeLabelByLanguage($attributeName, $languageCode)
         {
             assert('is_string($attributeName)');
-            assert('is_string($language)');
+            assert('is_string($languageCode)');
             $metadata = static::getMetadata();
             foreach ($metadata as $notUsed => $modelClassMetadata)
             {
                 if (isset($modelClassMetadata['labels']) &&
                     isset($modelClassMetadata['labels'][$attributeName]) &&
-                    isset($modelClassMetadata['labels'][$attributeName][$language]))
+                    isset($modelClassMetadata['labels'][$attributeName][$languageCode]))
                 {
-                    return $modelClassMetadata['labels'][$attributeName][$language];
+                    return $modelClassMetadata['labels'][$attributeName][$languageCode];
                 }
             }
             return null;
         }
 
         /**
-         * Given an attributeName, return an array of all attribute labels for each language available.
+         * Given an attributeName, return an array of all attribute labels for each active language.
          * @return array - attribute labels by language for the given attributeName.
          */
-        public function getAttributeLabelsForAllSupportedLanguagesByAttributeName($attributeName)
+        public function getAttributeLabelsForAllActiveLanguagesByAttributeName($attributeName)
         {
             assert('is_string($attributeName)');
             $attirbuteLabelData = array();
-            foreach (Yii::app()->languageHelper->getSupportedLanguagesData() as $language => $name)
+            foreach (Yii::app()->languageHelper->getActiveLanguagesData() as $languageCode => $languageData)
             {
-                $attirbuteLabelData[$language] = $this->getAttributeLabelByLanguage($attributeName, $language);
+                $attirbuteLabelData[$languageCode] = $this->getAttributeLabelByLanguage($attributeName, $languageCode);
             }
             return $attirbuteLabelData;
         }
@@ -2763,7 +2868,8 @@
         {
             if (YII_DEBUG)
             {
-                Yii::log(Zurmo::t('Core', 'Failed to set unsafe attribute "{attribute}".', array('{attribute}' => $name)), CLogger::LEVEL_WARNING);
+                Yii::log(Zurmo::t('Core', 'Failed to set unsafe attribute "{attribute}".', array('{attribute}' => $name)),
+                    CLogger::LEVEL_WARNING);
             }
         }
 
@@ -2953,9 +3059,43 @@
             return $modelClassName;
         }
 
-		public static function getLastClassInBeanHeirarchy()
+        public static function getLastClassInBeanHeirarchy()
         {
             return static::$lastClassInBeanHeirarchy;
+        }
+
+        /**
+         * Returns a list of attributes to be added when sorting by the attribute
+         * @param string $attribute
+         * @return array
+         */
+        public static function getSortAttributesByAttribute($attribute)
+        {
+            return array($attribute);
+        }
+
+        /**
+         * Utilized by copy mechanism, helps elements, views, understand the model better before the new model is saved.
+         */
+        public function setIsCopied()
+        {
+            $this->isCopied = true;
+        }
+
+        /**
+         * @return bool
+         */
+        public function isCopied()
+        {
+            return $this->isCopied;
+        }
+
+        /**
+         * @return bool
+         */
+        public static function isCacheable()
+        {
+            return true;
         }
     }
 ?>

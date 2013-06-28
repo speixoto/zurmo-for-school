@@ -1,10 +1,10 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2012 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
-     * the terms of the GNU General Public License version 3 as published by the
+     * the terms of the GNU Affero General Public License version 3 as published by the
      * Free Software Foundation with the addition of the following permission added
      * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
      * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
@@ -12,16 +12,26 @@
      *
      * Zurmo is distributed in the hope that it will be useful, but WITHOUT
      * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-     * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+     * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
      * details.
      *
-     * You should have received a copy of the GNU General Public License along with
+     * You should have received a copy of the GNU Affero General Public License along with
      * this program; if not, see http://www.gnu.org/licenses or write to the Free
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
      *
-     * You can contact Zurmo, Inc. with a mailing address at 113 McHenry Road Suite 207,
-     * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
+     * You can contact Zurmo, Inc. with a mailing address at 27 North Wacker Drive
+     * Suite 370 Chicago, IL 60606. or at email address contact@zurmo.com.
+     *
+     * The interactive user interfaces in original and modified versions
+     * of this program must display Appropriate Legal Notices, as required under
+     * Section 5 of the GNU Affero General Public License version 3.
+     *
+     * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
+     * these Appropriate Legal Notices must retain the display of the Zurmo
+     * logo and Zurmo copyright notice. If the display of the logo is not reasonably
+     * feasible for technical reasons, the Appropriate Legal Notices must display the words
+     * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -77,24 +87,76 @@
             parent::teardown();
         }
 
+        public function testGetDataWithEmailAddress()
+        {
+            $testItem                               = new ExportTestModelItem5();
+            $createStamp = strtotime(DateTimeUtil::convertTimestampToDbFormatDateTime(time()));
+            $testItem->emailAddress                 = 'a@a.com';
+            
+            $this->assertTrue($testItem->save());
+            $id = $testItem->id;
+            $testItem->forget();
+            unset($testItem);
+
+            $testItem    = ExportTestModelItem5::getById($id);
+            $adapter     = new ModelToExportAdapter($testItem);
+            $data        = $adapter->getData();
+            
+            $headerData  = $adapter->getHeaderData();
+           
+            $compareData = array(
+                $id,
+                'stubDateTime',
+                'stubDateTime',
+                'super',
+                'super',
+                'super',
+                'a@a.com',
+                );
+            $compareHeaderData = array(
+                $testItem->getAttributeLabel('id'),
+                $testItem->getAttributeLabel('createdDateTime'),
+                $testItem->getAttributeLabel('modifiedDateTime'),
+                $testItem->getAttributeLabel('createdByUser'),
+                $testItem->getAttributeLabel('modifiedByUser'),
+                $testItem->getAttributeLabel('owner'),
+                $testItem->getAttributeLabel('emailAddress'),
+                );
+                
+            $createdDateTimeKey = array_search($testItem->getAttributeLabel('createdDateTime'), $headerData);
+            $modifiedDateTimeKey = array_search($testItem->getAttributeLabel('modifiedDateTime'), $headerData);
+            $this->assertEquals($createStamp, strtotime($data[$createdDateTimeKey]), '', 2);
+            $this->assertEquals($createStamp, strtotime($data[$modifiedDateTimeKey]), '', 2);
+            $data[$createdDateTimeKey]  = 'stubDateTime';
+            $data[$modifiedDateTimeKey] = 'stubDateTime';
+            $this->assertEquals($compareData,       $data);
+            $this->assertEquals($compareHeaderData, $headerData);
+
+        }
+
         public function testGetDataWithNoRelationsSet()
         {
-            $super = User::getByUsername('super');
-            Yii::app()->user->userModel = $super;
-            $testItem = new ExportTestModelItem();
-            $testItem->firstName = 'Bob';
-            $testItem->lastName  = 'Bob';
-            $testItem->boolean   = true;
-            $testItem->date      = '2002-04-03';
-            $testItem->dateTime  = '2002-04-03 02:00:43';
-            $testItem->float     = 54.22;
-            $testItem->integer   = 10;
-            $testItem->phone     = '21313213';
-            $testItem->string    = 'aString';
-            $testItem->textArea  = 'Some Text Area';
-            $testItem->url       = 'http://www.asite.com';
-            $testItem->email       = 'a@a.com';
-            $testItem->owner     = $super;
+            $super                                  = User::getByUsername('super');
+            Yii::app()->user->userModel             = $super;
+            $testItem                               = new ExportTestModelItem();
+            $testItem->firstName                    = 'Bob';
+            $testItem->lastName                     = 'Bob';
+            $testItem->boolean                      = true;
+            $testItem->date                         = '2002-04-03';
+            $testItem->dateTime                     = '2002-04-03 02:00:43';
+            $testItem->float                        = 54.22;
+            $testItem->integer                      = 10;
+            $testItem->phone                        = '21313213';
+            $testItem->string                       = 'aString';
+            $testItem->textArea                     = 'Some Text Area';
+            $testItem->url                          = 'http://www.asite.com';
+            $testItem->email                        = 'a@a.com';
+            $testItem->owner                        = $super;
+            $testItem->primaryAddress->street1      = '129 Noodle Boulevard';
+            $testItem->primaryAddress->street2      = 'Apartment 6000A';
+            $testItem->primaryAddress->city         = 'Noodleville';
+            $testItem->primaryAddress->postalCode   = '23453';
+            $testItem->primaryAddress->country      = 'The Good Old US of A';
 
             $customFieldValue = new CustomFieldValue();
             $customFieldValue->value = 'Multi 1';
@@ -146,21 +208,18 @@
                 null,
                 null,
                 null,
-                'Multi 1, Multi 3',
-                'Cloud 2, Cloud 3',
+                'Multi 1,Multi 3', // Not Coding Standard
+                'Cloud 2,Cloud 3', // Not Coding Standard
                 null,
                 null,
                 null,
                 null,
                 null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
+                'Noodleville',
+                'The Good Old US of A',
+                '23453',
+                '129 Noodle Boulevard',
+                'Apartment 6000A',
                 null,
                 null,
                 null,
@@ -200,9 +259,6 @@
                 'Primary Email - Opt Out',
                 'Primary Address - City',
                 'Primary Address - Country',
-                'Primary Address - Invalid',
-                'Primary Address - Latitude',
-                'Primary Address - Longitude',
                 'Primary Address - Postal Code',
                 'Primary Address - Street 1',
                 'Primary Address - Street 2',
@@ -317,9 +373,6 @@
                 null,
                 null,
                 null,
-                null,
-                null,
-                null,
             );
             $compareHeaderData = array(
                 $testItem->getAttributeLabel('id'),
@@ -354,9 +407,6 @@
                 'Primary Email - Opt Out',
                 'Primary Address - City',
                 'Primary Address - Country',
-                'Primary Address - Invalid',
-                'Primary Address - Latitude',
-                'Primary Address - Longitude',
                 'Primary Address - Postal Code',
                 'Primary Address - Street 1',
                 'Primary Address - Street 2',
@@ -479,9 +529,6 @@
                 null,
                 null,
                 null,
-                null,
-                null,
-                null,
             );
             $compareHeaderData = array(
                 $testItem->getAttributeLabel('id'),
@@ -516,9 +563,6 @@
                 'Primary Email - Opt Out',
                 'Primary Address - City',
                 'Primary Address - Country',
-                'Primary Address - Invalid',
-                'Primary Address - Latitude',
-                'Primary Address - Longitude',
                 'Primary Address - Postal Code',
                 'Primary Address - Street 1',
                 'Primary Address - Street 2',

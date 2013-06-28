@@ -1,10 +1,10 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2012 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
-     * the terms of the GNU General Public License version 3 as published by the
+     * the terms of the GNU Affero General Public License version 3 as published by the
      * Free Software Foundation with the addition of the following permission added
      * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
      * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
@@ -12,16 +12,26 @@
      *
      * Zurmo is distributed in the hope that it will be useful, but WITHOUT
      * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-     * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+     * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
      * details.
      *
-     * You should have received a copy of the GNU General Public License along with
+     * You should have received a copy of the GNU Affero General Public License along with
      * this program; if not, see http://www.gnu.org/licenses or write to the Free
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
      *
-     * You can contact Zurmo, Inc. with a mailing address at 113 McHenry Road Suite 207,
-     * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
+     * You can contact Zurmo, Inc. with a mailing address at 27 North Wacker Drive
+     * Suite 370 Chicago, IL 60606. or at email address contact@zurmo.com.
+     *
+     * The interactive user interfaces in original and modified versions
+     * of this program must display Appropriate Legal Notices, as required under
+     * Section 5 of the GNU Affero General Public License version 3.
+     *
+     * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
+     * these Appropriate Legal Notices must retain the display of the Zurmo
+     * logo and Zurmo copyright notice. If the display of the logo is not reasonably
+     * feasible for technical reasons, the Appropriate Legal Notices must display the words
+     * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
     class ContactsDefaultController extends ZurmoModuleController
@@ -103,6 +113,7 @@
                                                                                 $relationAttributeName,
                                                                                 (int)$relationModelId,
                                                                                 $relationModuleId);
+            ContactsUtil::resolveAddressesFromRelatedAccount($contact);
             $this->actionCreateByModel($contact, $redirectUrl);
         }
 
@@ -119,10 +130,28 @@
         {
             $contact = Contact::getById(intval($id));
             ControllerSecurityUtil::resolveAccessCanCurrentUserWriteModel($contact);
+            $this->processEdit($contact, $redirectUrl);
+        }
+
+        public function actionCopy($id)
+        {
+            $copyToContact  = new Contact();
+            $postVariableName   = get_class($copyToContact);
+            if (!isset($_POST[$postVariableName]))
+            {
+                $contact        = Contact::getById((int)$id);
+                ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($contact);
+                ZurmoCopyModelUtil::copy($contact, $copyToContact);
+            }
+            $this->processEdit($copyToContact);
+        }
+
+        protected function processEdit(Contact $contact, $redirectUrl = null)
+        {
             $view    = new ContactsPageView(ZurmoDefaultViewUtil::
-                                            makeStandardViewForCurrentUser($this,
-                                                $this->makeEditAndDetailsView(
-                                                    $this->attemptToSaveModelFromPost($contact, $redirectUrl), 'Edit')));
+                            makeStandardViewForCurrentUser($this,
+                            $this->makeEditAndDetailsView(
+                                $this->attemptToSaveModelFromPost($contact, $redirectUrl), 'Edit')));
             echo $view->render();
         }
 
@@ -152,7 +181,7 @@
                             Yii::app()->user->userModel->id,
                             'ContactsStateMetadataAdapter',
                             'ContactsSearchView');
-            $selectedRecordCount = $this->getSelectedRecordCountByResolvingSelectAllFromGet($dataProvider);
+            $selectedRecordCount = static::getSelectedRecordCountByResolvingSelectAllFromGet($dataProvider);
             $contact = $this->processMassEdit(
                 $pageSize,
                 $activeAttributes,
@@ -226,7 +255,7 @@
                             Yii::app()->user->userModel->id,
                             'ContactsStateMetadataAdapter',
                             'ContactsSearchView');
-            $selectedRecordCount = $this->getSelectedRecordCountByResolvingSelectAllFromGet($dataProvider);
+            $selectedRecordCount = static::getSelectedRecordCountByResolvingSelectAllFromGet($dataProvider);
             $contact = $this->processMassDelete(
                 $pageSize,
                 $activeAttributes,
@@ -277,7 +306,8 @@
         {
             $modalListLinkProvider = new SelectFromRelatedEditModalListLinkProvider(
                                             $_GET['modalTransferInformation']['sourceIdFieldId'],
-                                            $_GET['modalTransferInformation']['sourceNameFieldId']
+                                            $_GET['modalTransferInformation']['sourceNameFieldId'],
+                                            $_GET['modalTransferInformation']['modalId']
             );
             echo ModalSearchListControllerUtil::setAjaxModeAndRenderModalSearchList($this, $modalListLinkProvider,
                                                 'ContactsStateMetadataAdapter');
@@ -319,6 +349,22 @@
                             'autoCompleteListPageSize', get_class($this->getModule()));
             $autoCompleteResults = ContactAutoCompleteUtil::getByPartialName($term, $pageSize, 'ContactsStateMetadataAdapter');
             echo CJSON::encode($autoCompleteResults);
+        }
+
+        public function actionGetAccountAddressesToCopy($id)
+        {
+            $account = static::getModelAndCatchNotFoundAndDisplayError('Account', intval($id));
+            ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($account);
+            $addressData = array();
+            foreach ($account->billingAddress->getAttributeNames() as $attribute)
+            {
+                $addressData['billingAddress_' . $attribute] = $account->billingAddress->{$attribute};
+            }
+            foreach ($account->shippingAddress->getAttributeNames() as $attribute)
+            {
+                $addressData['shippingAddress_' . $attribute] = $account->shippingAddress->{$attribute};
+            }
+            echo CJSON::encode($addressData);
         }
 
         protected static function getSearchFormClassName()

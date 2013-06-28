@@ -1,10 +1,10 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2012 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
-     * the terms of the GNU General Public License version 3 as published by the
+     * the terms of the GNU Affero General Public License version 3 as published by the
      * Free Software Foundation with the addition of the following permission added
      * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
      * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
@@ -12,16 +12,26 @@
      *
      * Zurmo is distributed in the hope that it will be useful, but WITHOUT
      * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-     * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+     * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
      * details.
      *
-     * You should have received a copy of the GNU General Public License along with
+     * You should have received a copy of the GNU Affero General Public License along with
      * this program; if not, see http://www.gnu.org/licenses or write to the Free
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
      *
-     * You can contact Zurmo, Inc. with a mailing address at 113 McHenry Road Suite 207,
-     * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
+     * You can contact Zurmo, Inc. with a mailing address at 27 North Wacker Drive
+     * Suite 370 Chicago, IL 60606. or at email address contact@zurmo.com.
+     *
+     * The interactive user interfaces in original and modified versions
+     * of this program must display Appropriate Legal Notices, as required under
+     * Section 5 of the GNU Affero General Public License version 3.
+     *
+     * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
+     * these Appropriate Legal Notices must retain the display of the Zurmo
+     * logo and Zurmo copyright notice. If the display of the logo is not reasonably
+     * feasible for technical reasons, the Appropriate Legal Notices must display the words
+     * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
     class RedBeanModelSelectQueryAdapterTest extends BaseTest
@@ -227,6 +237,17 @@
             $this->assertEquals($compareString, $adapter->getSelect());
         }
 
+        public function testAddDayDateClause()
+        {
+            $quote   = DatabaseCompatibilityUtil::getQuote();
+            $adapter = new RedBeanModelSelectQueryAdapter();
+            $this->assertEquals(0, $adapter->getClausesCount());
+            $adapter->addDayDateClause('table', 'abc', 'c');
+            $this->assertEquals(1, $adapter->getClausesCount());
+            $compareString = "select DATE_FORMAT({$quote}table{$quote}.{$quote}abc{$quote}, '%Y-%m-%d') c ";
+            $this->assertEquals($compareString, $adapter->getSelect());
+        }
+
         public function testAddWeekClause()
         {
             $quote   = DatabaseCompatibilityUtil::getQuote();
@@ -250,6 +271,19 @@
             $this->assertEquals($compareString, $adapter->getSelect());
         }
 
+        public function testAddFirstDayOfWeekDateClause()
+        {
+            $quote   = DatabaseCompatibilityUtil::getQuote();
+            $adapter = new RedBeanModelSelectQueryAdapter();
+            $this->assertEquals(0, $adapter->getClausesCount());
+            $adapter->addFirstDayOfWeekDateClause('table', 'abc', 'c');
+            $this->assertEquals(1, $adapter->getClausesCount());
+            $compareString = "select DATE_FORMAT(DATE_SUB({$quote}table{$quote}.{$quote}abc{$quote}, " .
+                             "INTERVAL(WEEKDAY({$quote}table{$quote}.{$quote}abc{$quote})) day), " .
+                             "'%Y-%m-%d') c ";
+            $this->assertEquals($compareString, $adapter->getSelect());
+        }
+
         public function testAddMonthClause()
         {
             $quote   = DatabaseCompatibilityUtil::getQuote();
@@ -270,6 +304,19 @@
             $this->assertEquals(1, $adapter->getClausesCount());
             $compareString = "select month({$quote}table{$quote}.{$quote}abc{$quote} - INTERVAL " .
                              abs(self::$chicagoOffsetInSeconds) . " SECOND) c ";
+            $this->assertEquals($compareString, $adapter->getSelect());
+        }
+
+        public function testAddFirstDayOfMonthDateClause()
+        {
+            $quote   = DatabaseCompatibilityUtil::getQuote();
+            $adapter = new RedBeanModelSelectQueryAdapter();
+            $this->assertEquals(0, $adapter->getClausesCount());
+            $adapter->addFirstDayOfMonthDateClause('table', 'abc', 'c');
+            $this->assertEquals(1, $adapter->getClausesCount());
+            $compareString = "select DATE_FORMAT(DATE_ADD({$quote}table{$quote}.{$quote}abc{$quote}, " .
+                             "INTERVAL(1-DAYOFMONTH({$quote}table{$quote}.{$quote}abc{$quote})) day), " .
+                             "'%Y-%m-%d') c ";
             $this->assertEquals($compareString, $adapter->getSelect());
         }
 
@@ -359,11 +406,6 @@
             $this->assertEquals(1, $adapter->getClausesCount());
             $compareString = "select querystring aliasName ";
             $this->assertEquals($compareString, $adapter->getSelect());
-        }
-
-        public function testNewStaticCalculationOrModifierMethods()
-        {
-            $this->fail(); //todo
         }
     }
 ?>

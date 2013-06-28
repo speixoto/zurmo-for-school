@@ -1,10 +1,10 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2012 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
-     * the terms of the GNU General Public License version 3 as published by the
+     * the terms of the GNU Affero General Public License version 3 as published by the
      * Free Software Foundation with the addition of the following permission added
      * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
      * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
@@ -12,16 +12,26 @@
      *
      * Zurmo is distributed in the hope that it will be useful, but WITHOUT
      * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-     * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+     * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
      * details.
      *
-     * You should have received a copy of the GNU General Public License along with
+     * You should have received a copy of the GNU Affero General Public License along with
      * this program; if not, see http://www.gnu.org/licenses or write to the Free
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
      *
-     * You can contact Zurmo, Inc. with a mailing address at 113 McHenry Road Suite 207,
-     * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
+     * You can contact Zurmo, Inc. with a mailing address at 27 North Wacker Drive
+     * Suite 370 Chicago, IL 60606. or at email address contact@zurmo.com.
+     *
+     * The interactive user interfaces in original and modified versions
+     * of this program must display Appropriate Legal Notices, as required under
+     * Section 5 of the GNU Affero General Public License version 3.
+     *
+     * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
+     * these Appropriate Legal Notices must retain the display of the Zurmo
+     * logo and Zurmo copyright notice. If the display of the logo is not reasonably
+     * feasible for technical reasons, the Appropriate Legal Notices must display the words
+     * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -118,7 +128,7 @@
          */
         public function getResolvedModelClassName()
         {
-            if($this->castingHintStartingModelClassName != null)
+            if ($this->castingHintStartingModelClassName != null)
             {
                 return $this->castingHintStartingModelClassName;
             }
@@ -192,6 +202,23 @@
         }
 
         /**
+         * @return string The column name for the attribute to be used in the
+         * sort by the attribute specified in this adapater based on the position
+         * in the array returned by getSortAttributesByAttribute
+         */
+        public function getColumnNameByPosition($attributePosition)
+        {
+            $modelClassName = $this->modelClassName;
+            $sortAttributes = $modelClassName::getSortAttributesByAttribute($this->attribute);
+            if ($attributePosition >= count($sortAttributes))
+            {
+                throw new InvalidArgumentException('Attribute position is not valid');
+            }
+            $sortAtribute = $sortAttributes[$attributePosition];
+            return $modelClassName::getColumnNameByAttribute($sortAtribute);
+        }
+
+        /**
          * @return true/false - Is the attribute a relation on the model class name.
          */
         public function isRelation()
@@ -211,7 +238,7 @@
 
         public function isOwnedRelation()
         {
-            if(!$this->getModel()->isRelation($this->attribute))
+            if (!$this->getModel()->isRelation($this->attribute))
             {
                 return false;
             }
@@ -223,13 +250,8 @@
          */
         public function isRelationTypeAHasManyVariant()
         {
-            if($this->getRelationType() == RedBeanModel::HAS_MANY  ||
-               $this->getRelationType() == RedBeanModel::HAS_MANY_BELONGS_TO ||
-               $this->getRelationType() == RedBeanModel::HAS_ONE_BELONGS_TO)
-            {
-                return true;
-            }
-            return false;
+            $modelClassName = $this->modelClassName;
+            return $modelClassName::isRelationTypeAHasManyVariant($this->attribute);
         }
 
         /**
@@ -237,12 +259,8 @@
          */
         public function isRelationTypeAHasOneVariant()
         {
-            if($this->getRelationType() == RedBeanModel::HAS_MANY_BELONGS_TO ||
-               $this->getRelationType() == RedBeanModel::HAS_ONE)
-            {
-                return true;
-            }
-            return false;
+            $modelClassName = $this->modelClassName;
+            return $modelClassName::isRelationTypeAHasOneVariant($this->attribute);
         }
 
         /**
@@ -308,7 +326,7 @@
         public function getRelationTableName()
         {
             $modelClassName = $this->getRelationModelClassName();
-            if($this->canRelationHaveTable())
+            if ($this->canRelationHaveTable())
             {
                 return $modelClassName::getTableName($modelClassName);
             }
@@ -317,7 +335,7 @@
                 while (get_parent_class($modelClassName) != 'RedBeanModel')
                 {
                     $modelClassName = get_parent_class($modelClassName);
-                    if($modelClassName::getCanHaveBean())
+                    if ($modelClassName::getCanHaveBean())
                     {
                         return $modelClassName::getTableName($modelClassName);
                     }
@@ -333,7 +351,7 @@
         public function getRelationModelClassNameThatCanHaveATable()
         {
             $modelClassName = $this->getRelationModelClassName();
-            if($this->canRelationHaveTable())
+            if ($this->canRelationHaveTable())
             {
                 return $modelClassName;
             }
@@ -342,7 +360,7 @@
                 while (get_parent_class($modelClassName) != 'RedBeanModel')
                 {
                     $modelClassName = get_parent_class($modelClassName);
-                    if($modelClassName::getCanHaveBean())
+                    if ($modelClassName::getCanHaveBean())
                     {
                         return $modelClassName;
                     }
@@ -368,6 +386,24 @@
         {
             $modelClassName = $this->getRelationModelClassName();
             return $modelClassName::getColumnNameByAttribute($this->relatedAttribute);
+        }
+
+        /**
+         * If the attribute is a relation and the attribute has more sort attributes on the relation
+         * retunrs the column name to make the sort by the position in the array return from
+         * getSortAttributesByAttribute
+         * @return string
+         */
+        public function getRelatedAttributeColumnNameByPosition($attributePosition)
+        {
+            $modelClassName = $this->getRelationModelClassName();
+            $sortAttributes = $modelClassName::getSortAttributesByAttribute($this->relatedAttribute);
+            if ($attributePosition >= count($sortAttributes))
+            {
+                throw new InvalidArgumentException('Attribute position is not valid');
+            }
+            $sortAttribute = $sortAttributes[$attributePosition];
+            return $modelClassName::getColumnNameByAttribute($sortAttribute);
         }
 
         /**
@@ -412,7 +448,7 @@
          */
         public function getManyToManyTableName()
         {
-            if($this->getRelationType() != RedBeanModel::MANY_MANY)
+            if ($this->getRelationType() != RedBeanModel::MANY_MANY)
             {
                 throw new NotSupportedException();
             }
@@ -438,7 +474,7 @@
          */
         public function isAttributeOnDifferentModel()
         {
-            if($this->getAttributeModelClassName() == $this->getModelClassName())
+            if ($this->getAttributeModelClassName() == $this->getModelClassName())
             {
                 return false;
             }
@@ -464,7 +500,7 @@
         public function isAttributeDerivedRelationViaCastedUpModel()
         {
             $modelClassName = $this->modelClassName;
-            if($modelClassName::isADerivedRelationViaCastedUpModel($this->attribute))
+            if ($modelClassName::isADerivedRelationViaCastedUpModel($this->attribute))
             {
                 return true;
             }
@@ -473,24 +509,25 @@
 
         public function getCastedUpModelClassNameForDerivedRelation()
         {
-            if(!$this->isAttributeDerivedRelationViaCastedUpModel())
+            if (!$this->isAttributeDerivedRelationViaCastedUpModel())
             {
                 throw new NotSupportedException();
             }
-            $relationModelClassName = $this->getModel()->getDerivedRelationModelClassName($this->attribute);
-            $opposingRelationName   = $this->getModel()->getDerivedRelationViaCastedUpModelOpposingRelationName($this->attribute);
+            $modelClassName         = $this->modelClassName;
+            $relationModelClassName = $modelClassName::getDerivedRelationModelClassName($this->attribute);
+            $opposingRelationName   = $modelClassName::getDerivedRelationViaCastedUpModelOpposingRelationName($this->attribute);
             $relationModel          = new $relationModelClassName();
             return $relationModel->getRelationModelClassName($opposingRelationName);
         }
 
-
         public function getManyToManyTableNameForDerivedRelationViaCastedUpModel()
         {
-            $relationModelClassName = $this->getModel()->getDerivedRelationModelClassName($this->attribute);
-            $opposingRelationName   = $this->getModel()->getDerivedRelationViaCastedUpModelOpposingRelationName($this->attribute);
+            $modelClassName         = $this->modelClassName;
+            $relationModelClassName = $modelClassName::getDerivedRelationModelClassName($this->attribute);
+            $opposingRelationName   = $modelClassName::getDerivedRelationViaCastedUpModelOpposingRelationName($this->attribute);
             $relationModel          = new $relationModelClassName();
 
-            if($this->getModel()->getDerivedRelationType($this->attribute) != RedBeanModel::MANY_MANY)
+            if ($modelClassName::getDerivedRelationType($this->attribute) != RedBeanModel::MANY_MANY)
             {
                 throw new NotSupportedException();
             }
@@ -506,8 +543,9 @@
          */
         public function getOpposingRelationModelClassName()
         {
+            $modelClassName         = $this->modelClassName;
             $relationModelClassName = $this->getDerivedRelationViaCastedUpModelClassName();
-            $opposingRelationName   = $this->getModel()->getDerivedRelationViaCastedUpModelOpposingRelationName($this->attribute);
+            $opposingRelationName   = $modelClassName::getDerivedRelationViaCastedUpModelOpposingRelationName($this->attribute);
             $relationModel          = new $relationModelClassName();
             return $relationModel->getAttributeModelClassName($opposingRelationName);
         }
@@ -517,7 +555,8 @@
          */
         public function getDerivedRelationViaCastedUpModelClassName()
         {
-            return $this->getModel()->getDerivedRelationModelClassName($this->getAttribute());
+            $modelClassName = $this->modelClassName;
+            return $modelClassName::getDerivedRelationModelClassName($this->getAttribute());
         }
 
         public function getOpposingRelationTableName()
@@ -530,7 +569,7 @@
         {
             $opposingRelationModelClassName  = $this->getOpposingRelationModelClassName();
             $derivedRelationModelClassName   = $this->getDerivedRelationViaCastedUpModelClassName();
-            if($opposingRelationModelClassName != $derivedRelationModelClassName)
+            if ($opposingRelationModelClassName != $derivedRelationModelClassName)
             {
                 return true;
             }
@@ -544,6 +583,30 @@
          */
         public function isInferredRelation()
         {
+            return false;
+        }
+
+        /**
+         * Returns true if the attribute uses another attribute in the sort
+         * @return boolean
+         */
+        public function sortUsesTwoAttributes()
+        {
+            $modelClassName = $this->modelClassName;
+            if (count($modelClassName::getSortAttributesByAttribute($this->attribute)) > 1)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        public function relatedAttributesSortUsesTwoAttributes()
+        {
+            $modelClassName = $this->getRelationModelClassName();
+            if (count($modelClassName::getSortAttributesByAttribute($this->relatedAttribute)) > 1)
+            {
+                return true;
+            }
             return false;
         }
     }

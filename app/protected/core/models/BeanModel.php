@@ -1,10 +1,10 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2012 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
-     * the terms of the GNU General Public License version 3 as published by the
+     * the terms of the GNU Affero General Public License version 3 as published by the
      * Free Software Foundation with the addition of the following permission added
      * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
      * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
@@ -12,16 +12,26 @@
      *
      * Zurmo is distributed in the hope that it will be useful, but WITHOUT
      * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-     * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+     * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
      * details.
      *
-     * You should have received a copy of the GNU General Public License along with
+     * You should have received a copy of the GNU Affero General Public License along with
      * this program; if not, see http://www.gnu.org/licenses or write to the Free
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
      *
-     * You can contact Zurmo, Inc. with a mailing address at 113 McHenry Road Suite 207,
-     * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
+     * You can contact Zurmo, Inc. with a mailing address at 27 North Wacker Drive
+     * Suite 370 Chicago, IL 60606. or at email address contact@zurmo.com.
+     *
+     * The interactive user interfaces in original and modified versions
+     * of this program must display Appropriate Legal Notices, as required under
+     * Section 5 of the GNU Affero General Public License version 3.
+     *
+     * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
+     * these Appropriate Legal Notices must retain the display of the Zurmo
+     * logo and Zurmo copyright notice. If the display of the logo is not reasonably
+     * feasible for technical reasons, the Appropriate Legal Notices must display the words
+     * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -192,6 +202,7 @@
          * attribute name defined by the extending class's getMetadata() method.
          * For use by RedBeanModelDataProvider. Is unlikely to be of any
          * use to an application.
+         * @param string $attributeName
          */
         public static function getAttributeModelClassName($attributeName)
         {
@@ -252,7 +263,7 @@
          * Returns the link type for a
          * relation name defined by the extending class's getMetadata() method.
          */
-        public function getRelationLinkType($relationName)
+        public static function getRelationLinkType($relationName)
         {
             assert('self::isRelation($relationName, get_called_class())');
             $relationAndOwns = static::getRelationNameToRelationTypeModelClassNameAndOwnsForModel();
@@ -262,8 +273,9 @@
         /**
          * Returns the link name for a
          * relation name defined by the extending class's getMetadata() method.
+         * @param string $relationName
          */
-        public function getRelationLinkName($relationName)
+        public static function getRelationLinkName($relationName)
         {
             assert('self::isRelation($relationName, get_called_class())');
             $relationAndOwns = static::getRelationNameToRelationTypeModelClassNameAndOwnsForModel();
@@ -271,13 +283,44 @@
         }
 
         /**
-         * Returns the opposing relation name of a derived relation
-         * defined by the extending class's getMetadata() method.
+         * @param string $relationName
+         * @return bool
+         */
+        public static function isRelationTypeAHasManyVariant($relationName)
+        {
+            assert('self::isRelation($relationName, get_called_class())');
+            if (static::getRelationType($relationName) == RedBeanModel::HAS_MANY  ||
+               static::getRelationType($relationName) == RedBeanModel::HAS_MANY_BELONGS_TO ||
+               static::getRelationType($relationName) == RedBeanModel::HAS_ONE_BELONGS_TO)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        /**
+         * @param string $relationName
+         * @return bool
+         */
+        public static function isRelationTypeAHasOneVariant($relationName)
+        {
+            assert('self::isRelation($relationName, get_called_class())');
+            if (static::getRelationType($relationName) == RedBeanModel::HAS_MANY_BELONGS_TO ||
+               static::getRelationType($relationName) == RedBeanModel::HAS_ONE)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        /**
+         * @param string $relationName
+         * @return boolean true if the relation is a derived relation
          */
         public static function isADerivedRelationViaCastedUpModel($relationName)
         {
             $derivedRelations = static::getDerivedRelationNameToTypeModelClassNameAndOppposingRelationForModel();
-            if(array_key_exists($relationName, $derivedRelations))
+            if (array_key_exists($relationName, $derivedRelations))
             {
                 return true;
             }
@@ -287,8 +330,9 @@
         /**
          * Returns the relation type of a derived relation
          * defined by the extending class's getMetadata() method.
+         * @param string $relationName
          */
-        public function getDerivedRelationType($relationName)
+        public static function getDerivedRelationType($relationName)
         {
             assert("self::isADerivedRelationViaCastedUpModel('$relationName')");
             $derivedRelations = static::getDerivedRelationNameToTypeModelClassNameAndOppposingRelationForModel();
@@ -298,8 +342,9 @@
         /**
          * Returns the relation model class name of a derived relation
          * defined by the extending class's getMetadata() method.
+         * @param string $relationName
          */
-        public function getDerivedRelationModelClassName($relationName)
+        public static function getDerivedRelationModelClassName($relationName)
         {
             assert("self::isADerivedRelationViaCastedUpModel('$relationName')");
             $derivedRelations = static::getDerivedRelationNameToTypeModelClassNameAndOppposingRelationForModel();
@@ -310,11 +355,28 @@
          * Returns the opposing relation name of a derived relation
          * defined by the extending class's getMetadata() method.
          */
-        public function getDerivedRelationViaCastedUpModelOpposingRelationName($relationName)
+        public static function getDerivedRelationViaCastedUpModelOpposingRelationName($relationName)
         {
             assert("self::isADerivedRelationViaCastedUpModel('$relationName')");
             $derivedRelations = static::getDerivedRelationNameToTypeModelClassNameAndOppposingRelationForModel();
             return $derivedRelations[$relationName][2];
+        }
+
+        /**
+         * @param $relation
+         * @return null|string
+         */
+        public static function getInferredRelationModelClassNamesForRelation($relation)
+        {
+            assert('is_string($relation)');
+            $metadata   = static::getMetadata();
+            foreach ($metadata as $modelClassName => $modelClassMetadata)
+            {
+                if (isset($metadata[$modelClassName][$relation . 'ModelClassNames']))
+                {
+                    return $metadata[$modelClassName][$relation . 'ModelClassNames'];
+                }
+            }
         }
 
         /**
@@ -353,54 +415,48 @@
             return ucfirst(preg_replace('/([A-Z0-9])/', ' \1', $attributeName));
         }
 
-        public static function getAbbreviatedAttributeLabel($attributeName)
-        {
-            return static::getAbbreviatedAttributeLabelByLanguage($attributeName, Yii::app()->language);
-        }
-
         /**
-         * Public for message checker only.
-         */
-        public static function getUntranslatedAbbreviatedAttributeLabels()
-        {
-            return static::untranslatedAbbreviatedAttributeLabels();
-        }
-
-        /**
-         * Array of untranslated abbreviated attribute labels.
-         */
-        protected static function untranslatedAbbreviatedAttributeLabels()
-        {
-            return array();
-        }
-
-        protected static function untranslatedAttributeLabels()
-        {
-            return array();
-        }
-
-        /**
-         * Given an attributeName and a language, retrieve the translated attribute label. Attempts to find a customized
+         * Given an attributeName, retrieve the translated attribute label. Attempts to find a customized
          * label in the metadata first, before falling back on the standard attribute label for the specified attribute.
          * @param string $attributeName
-         * @param string $language
          * @return string - translated attribute label
          */
-        protected static function getAbbreviatedAttributeLabelByLanguage($attributeName, $language)
+        public static function getAbbreviatedAttributeLabel($attributeName)
         {
             assert('is_string($attributeName)');
-            assert('is_string($language)');
-            $labels = static::untranslatedAbbreviatedAttributeLabels();
+            $labels = static::translatedAbbreviatedAttributeLabels(Yii::app()->language);
             if (isset($labels[$attributeName]))
             {
                 return ZurmoHtml::tag('span', array('title' => static::generateAnAttributeLabel($attributeName)),
-                    Zurmo::t('Default', $labels[$attributeName],
-                        LabelUtil::getTranslationParamsForAllModules(), null, $language));
+                    $labels[$attributeName]);
             }
             else
             {
                 return null;
             }
+        }
+
+        /**
+         * Public for message checker only
+         * @param $language
+         * @return array;
+         */
+        public static function getTranslatedAttributeLabels($language)
+        {
+            return static::translatedAttributeLabels($language);
+        }
+
+        /**
+         * Array of untranslated abbreviated attribute labels.
+         */
+        protected static function translatedAbbreviatedAttributeLabels($language)
+        {
+            return array();
+        }
+
+        protected static function translatedAttributeLabels($language)
+        {
+            return array();
         }
 
         /**
@@ -416,7 +472,7 @@
          */
         protected static function getAttributeNamesToClassNamesForModel()
         {
-            if(!PHP_CACHING_ON || !isset(self::$attributeNamesToClassNames[get_called_class()]))
+            if (!PHP_CACHING_ON || !isset(self::$attributeNamesToClassNames[get_called_class()]))
             {
                 self::resolveCacheAndMapMetadataForAllClassesInHeirarchy();
             }
@@ -428,7 +484,7 @@
          */
         protected static function getAttributeNamesNotBelongsToOrManyManyForModel()
         {
-            if(!PHP_CACHING_ON || !isset(self::$attributeNamesNotBelongsToOrManyMany[get_called_class()]))
+            if (!PHP_CACHING_ON || !isset(self::$attributeNamesNotBelongsToOrManyMany[get_called_class()]))
             {
                 self::resolveCacheAndMapMetadataForAllClassesInHeirarchy();
             }
@@ -440,7 +496,7 @@
          */
         protected static function getRelationNameToRelationTypeModelClassNameAndOwnsForModel()
         {
-            if(!PHP_CACHING_ON || !isset(self::$relationNameToRelationTypeModelClassNameAndOwns[get_called_class()]))
+            if (!PHP_CACHING_ON || !isset(self::$relationNameToRelationTypeModelClassNameAndOwns[get_called_class()]))
             {
                 self::resolveCacheAndMapMetadataForAllClassesInHeirarchy();
             }
@@ -452,7 +508,7 @@
          */
         protected static function getDerivedRelationNameToTypeModelClassNameAndOppposingRelationForModel()
         {
-            if(!PHP_CACHING_ON || !isset(self::$derivedRelationNameToTypeModelClassNameAndOppposingRelation[get_called_class()]))
+            if (!PHP_CACHING_ON || !isset(self::$derivedRelationNameToTypeModelClassNameAndOppposingRelation[get_called_class()]))
             {
                 self::resolveCacheAndMapMetadataForAllClassesInHeirarchy();
             }
@@ -464,19 +520,19 @@
          */
         protected static function forgetBeanModel($modelClassName)
         {
-            if(isset(self::$attributeNamesToClassNames[$modelClassName]))
+            if (isset(self::$attributeNamesToClassNames[$modelClassName]))
             {
                 unset(self::$attributeNamesToClassNames[$modelClassName]);
             }
-            if(isset(self::$relationNameToRelationTypeModelClassNameAndOwns[$modelClassName]))
+            if (isset(self::$relationNameToRelationTypeModelClassNameAndOwns[$modelClassName]))
             {
                 unset(self::$relationNameToRelationTypeModelClassNameAndOwns[$modelClassName]);
             }
-            if(isset(self::$derivedRelationNameToTypeModelClassNameAndOppposingRelation[$modelClassName]))
+            if (isset(self::$derivedRelationNameToTypeModelClassNameAndOppposingRelation[$modelClassName]))
             {
                 unset(self::$derivedRelationNameToTypeModelClassNameAndOppposingRelation[$modelClassName]);
             }
-            if(isset(self::$attributeNamesNotBelongsToOrManyMany[$modelClassName]))
+            if (isset(self::$attributeNamesNotBelongsToOrManyMany[$modelClassName]))
             {
                 unset(self::$attributeNamesNotBelongsToOrManyMany[$modelClassName]);
             }
@@ -506,7 +562,7 @@
                 self::$derivedRelationNameToTypeModelClassNameAndOppposingRelation[get_called_class()]         =
                     $cachedData['derivedRelationNameToTypeModelClassNameAndOppposingRelation'][get_called_class()];
             }
-            catch(NotFoundException $e)
+            catch (NotFoundException $e)
             {
                 self::mapMetadataForAllClassesInHeirarchy();
                 $cachedData = array();
@@ -521,7 +577,6 @@
                 BeanModelCache::cacheEntry(self::CACHE_IDENTIFIER . get_called_class(), $cachedData);
             }
         }
-
 
         /**
          * Maps metadata for the class and all of the classes in the heirarchy up to the BeanModel
@@ -539,7 +594,7 @@
                     self::mapMetadataByModelClassName($modelClassName);
                 }
             }
-            foreach(static::getMixedInModelClassNames() as $modelClassName)
+            foreach (static::getMixedInModelClassNames() as $modelClassName)
             {
                 if ($modelClassName::getCanHaveBean())
                 {
@@ -563,7 +618,6 @@
                 {
                     foreach ($metadata[$modelClassName]['members'] as $memberName)
                     {
-
                         self::$attributeNamesToClassNames[get_called_class()][$memberName] = $modelClassName;
                         self::$attributeNamesNotBelongsToOrManyMany[get_called_class()][]  = $memberName;
                     }
@@ -596,24 +650,18 @@
                     {
                         $owns = false;
                     }
-/**
-                    if (count($relationTypeModelClassNameAndOwns) == 4 && $relationType != self::HAS_MANY)
-                    {
-                        throw new NotSupportedException();
-                    }
-                    if (count($relationTypeModelClassNameAndOwns) == 4)
-                    {
-                        $relationPolyOneToManyName = $relationTypeModelClassNameAndOwns[3];
-                    }
-                    else
-                    {
-                        $relationPolyOneToManyName = null;
-                    }
- * */
                     $linkType          = null;
                     $relationLinkName  = null;
                     self::resolveLinkTypeAndRelationLinkName($relationTypeModelClassNameAndOwns, $linkType,
                           $relationLinkName);
+                    if ($linkType == self::LINK_TYPE_SPECIFIC &&
+                        $relationTypeModelClassNameAndOwns[2] == self::NOT_OWNED &&
+                        strtolower($relationTypeModelClassNameAndOwns[1]) == strtolower($relationName))
+                    {
+                        //When a relation is the same as the relatedModelClassName and it is a specific link, this is not
+                        //supportive. Either use assumptive or change the relation name.
+                        throw new NotSupportedException();
+                    }
                     assert('in_array($relationType, array(self::HAS_ONE_BELONGS_TO, self::HAS_MANY_BELONGS_TO, ' .
                         'self::HAS_ONE, self::HAS_MANY, self::MANY_MANY))');
                     self::$attributeNamesToClassNames[get_called_class()][$relationName] = $modelClassName;

@@ -1,10 +1,10 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2012 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
-     * the terms of the GNU General Public License version 3 as published by the
+     * the terms of the GNU Affero General Public License version 3 as published by the
      * Free Software Foundation with the addition of the following permission added
      * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
      * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
@@ -12,16 +12,26 @@
      *
      * Zurmo is distributed in the hope that it will be useful, but WITHOUT
      * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-     * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+     * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
      * details.
      *
-     * You should have received a copy of the GNU General Public License along with
+     * You should have received a copy of the GNU Affero General Public License along with
      * this program; if not, see http://www.gnu.org/licenses or write to the Free
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
      *
-     * You can contact Zurmo, Inc. with a mailing address at 113 McHenry Road Suite 207,
-     * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
+     * You can contact Zurmo, Inc. with a mailing address at 27 North Wacker Drive
+     * Suite 370 Chicago, IL 60606. or at email address contact@zurmo.com.
+     *
+     * The interactive user interfaces in original and modified versions
+     * of this program must display Appropriate Legal Notices, as required under
+     * Section 5 of the GNU Affero General Public License version 3.
+     *
+     * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
+     * these Appropriate Legal Notices must retain the display of the Zurmo
+     * logo and Zurmo copyright notice. If the display of the logo is not reasonably
+     * feasible for technical reasons, the Appropriate Legal Notices must display the words
+     * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -45,12 +55,14 @@
          * return true.  This does not necessarily mean the current user is allowed through
          * the user interface to edit the $model (User).  This must be controlled by
          * controller rights filters.
-         * @return boolean true if user can perform action.
+         * @param $actionType
+         * @param $model
+         * @param $user
+         * @return bool true if user can perform action.
          */
         public static function canUserPerformAction($actionType, $model, $user)
         {
             assert('$user instanceof User && $user->id > 0');
-            assert('$model instanceof Item');
             assert('$actionType == null || is_string($actionType)');
             if (!$model instanceof SecurableItem)
             {
@@ -80,7 +92,8 @@
          * @param $model
          * @param $moduleClassName
          * @param $linkRoute
-         * @return string content.
+         * @param null $offset
+         * @return null|string
          */
         public static function resolveLinkToModelForCurrentUser(
             $attributeString,
@@ -94,6 +107,10 @@
             assert('is_string($moduleClassName)');
             assert('is_string($linkRoute)');
             assert('$offset === null || is_int($offset)');
+            if ($model->id <= 0)
+            {
+                return null;
+            }
             if (!ActionSecurityUtil::canCurrentUserPerformAction('Details', $model))
             {
                 return null;
@@ -121,7 +138,8 @@
          * @param $model
          * @param $moduleClassName
          * @param $linkRoute
-         * @return string content.
+         * @param null $redirectUrl
+         * @return null|string
          */
         public static function resolveLinkToEditModelForCurrentUser(
             $attributeString,

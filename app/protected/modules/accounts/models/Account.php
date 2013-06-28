@@ -1,10 +1,10 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2012 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
-     * the terms of the GNU General Public License version 3 as published by the
+     * the terms of the GNU Affero General Public License version 3 as published by the
      * Free Software Foundation with the addition of the following permission added
      * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
      * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
@@ -12,16 +12,26 @@
      *
      * Zurmo is distributed in the hope that it will be useful, but WITHOUT
      * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-     * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+     * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
      * details.
      *
-     * You should have received a copy of the GNU General Public License along with
+     * You should have received a copy of the GNU Affero General Public License along with
      * this program; if not, see http://www.gnu.org/licenses or write to the Free
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
      *
-     * You can contact Zurmo, Inc. with a mailing address at 113 McHenry Road Suite 207,
-     * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
+     * You can contact Zurmo, Inc. with a mailing address at 27 North Wacker Drive
+     * Suite 370 Chicago, IL 60606. or at email address contact@zurmo.com.
+     *
+     * The interactive user interfaces in original and modified versions
+     * of this program must display Appropriate Legal Notices, as required under
+     * Section 5 of the GNU Affero General Public License version 3.
+     *
+     * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
+     * these Appropriate Legal Notices must retain the display of the Zurmo
+     * logo and Zurmo copyright notice. If the display of the logo is not reasonably
+     * feasible for technical reasons, the Appropriate Legal Notices must display the words
+     * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
     class Account extends OwnedSecurableItem
@@ -29,17 +39,6 @@
         public static function getByName($name)
         {
             return self::getByNameOrEquivalent('name', $name);
-        }
-
-        protected static function untranslatedAttributeLabels()
-        {
-            return array_merge(parent::untranslatedAttributeLabels(),
-                array(
-                    'account'       => 'Parent AccountsModuleSingularLabel',
-                    'contacts'      => 'ContactsModulePluralLabel',
-                    'opportunities' => 'OpportunitiesModulePluralLabel',
-                )
-            );
         }
 
         public function __toString()
@@ -61,24 +60,6 @@
         public static function getModuleClassName()
         {
             return 'AccountsModule';
-        }
-
-        /**
-         * Returns the display name for the model class.
-         * @return dynamic label name based on module.
-         */
-        protected static function getLabel()
-        {
-            return 'AccountsModuleSingularLabel';
-        }
-
-        /**
-         * Returns the display name for plural of the model class.
-         * @return dynamic label name based on module.
-         */
-        protected static function getPluralLabel()
-        {
-            return 'AccountsModulePluralLabel';
         }
 
         public static function canSaveMetadata()
@@ -104,6 +85,7 @@
                     'accounts'         => array(RedBeanModel::HAS_MANY,             'Account'),
                     'billingAddress'   => array(RedBeanModel::HAS_ONE,              'Address',          RedBeanModel::OWNED,
                                                 RedBeanModel::LINK_TYPE_SPECIFIC, 'billingAddress'),
+                    'products'         => array(RedBeanModel::HAS_MANY,             'Product'),
                     'contacts'         => array(RedBeanModel::HAS_MANY,             'Contact'),
                     'industry'         => array(RedBeanModel::HAS_ONE,              'OwnedCustomField', RedBeanModel::OWNED,
                                                 RedBeanModel::LINK_TYPE_SPECIFIC, 'industry'),
@@ -133,7 +115,7 @@
                     array('officePhone',   'length',  'min'  => 1, 'max' => 24),
                     array('officeFax',     'type',    'type' => 'string'),
                     array('officeFax',     'length',  'min'  => 1, 'max' => 24),
-                    array('website',       'url'),
+                    array('website',       'url',     'defaultScheme' => 'http'),
                 ),
                 'elements' => array(
                     'account'         => 'Account',
@@ -183,6 +165,35 @@
         public static function getGamificationRulesType()
         {
             return 'AccountGamification';
+        }
+
+        protected static function translatedAttributeLabels($language)
+        {
+            $params = LabelUtil::getTranslationParamsForAllModules();
+            return array_merge(parent::translatedAttributeLabels($language),
+                array(
+                    'account'         => Zurmo::t('AccountsModule', 'Parent AccountsModuleSingularLabel',  $params, null, $language),
+                    'accounts'        => Zurmo::t('AccountsModule', 'AccountsModulePluralLabel',           $params, null, $language),
+                    'annualRevenue'   => Zurmo::t('AccountsModule', 'Annual Revenue',  array(), null, $language),
+                    'billingAddress'  => Zurmo::t('AccountsModule', 'Billing Address',  array(), null, $language),
+                    'contacts'        => Zurmo::t('ContactsModule', 'ContactsModulePluralLabel',           $params, null, $language),
+                    'description'     => Zurmo::t('ZurmoModule',    'Description', array(), null, $language),
+                    'employees'       => Zurmo::t('AccountsModule', 'Employees',  array(), null, $language),
+                    'industry'        => Zurmo::t('ZurmoModule',    'Industry',  array(), null, $language),
+                    'meetings'        => Zurmo::t('MeetingsModule', 'Meetings',  array(), null, $language),
+                    'name'            => Zurmo::t('ZurmoModule',    'Name',  array(), null, $language),
+                    'notes'           => Zurmo::t('NotesModule',    'Notes',  array(), null, $language),
+                    'officePhone'     => Zurmo::t('AccountsModule', 'Office Phone',  array(), null, $language),
+                    'officeFax'       => Zurmo::t('AccountsModule', 'Office Fax',  array(), null, $language),
+                    'opportunities'   => Zurmo::t('OpportunitiesModule', 'OpportunitiesModulePluralLabel', $params, null, $language),
+                    'primaryEmail'    => Zurmo::t('ZurmoModule',    'Primary Email',  array(), null, $language),
+                    'secondaryEmail'  => Zurmo::t('ZurmoModule',    'Secondary Email',  array(), null, $language),
+                    'shippingAddress' => Zurmo::t('AccountsModule', 'Shipping Address',  array(), null, $language),
+                    'tasks'           => Zurmo::t('TasksModule',    'Tasks',  array(), null, $language),
+                    'type'            => Zurmo::t('AccountsModule', 'Type',  array(), null, $language),
+                    'website'         => Zurmo::t('ZurmoModule',    'Website',  array(), null, $language),
+                )
+            );
         }
     }
 ?>

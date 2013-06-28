@@ -1,10 +1,10 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2012 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
-     * the terms of the GNU General Public License version 3 as published by the
+     * the terms of the GNU Affero General Public License version 3 as published by the
      * Free Software Foundation with the addition of the following permission added
      * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
      * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
@@ -12,16 +12,26 @@
      *
      * Zurmo is distributed in the hope that it will be useful, but WITHOUT
      * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-     * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+     * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
      * details.
      *
-     * You should have received a copy of the GNU General Public License along with
+     * You should have received a copy of the GNU Affero General Public License along with
      * this program; if not, see http://www.gnu.org/licenses or write to the Free
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
      *
-     * You can contact Zurmo, Inc. with a mailing address at 113 McHenry Road Suite 207,
-     * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
+     * You can contact Zurmo, Inc. with a mailing address at 27 North Wacker Drive
+     * Suite 370 Chicago, IL 60606. or at email address contact@zurmo.com.
+     *
+     * The interactive user interfaces in original and modified versions
+     * of this program must display Appropriate Legal Notices, as required under
+     * Section 5 of the GNU Affero General Public License version 3.
+     *
+     * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
+     * these Appropriate Legal Notices must retain the display of the Zurmo
+     * logo and Zurmo copyright notice. If the display of the logo is not reasonably
+     * feasible for technical reasons, the Appropriate Legal Notices must display the words
+     * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -32,6 +42,8 @@
         protected $gridIdSuffix;
 
         protected $hideAllSearchPanelsToStart;
+
+        protected $showAdvancedSearch = true;
 
         /**
          * Constructs a detail view specifying the controller as
@@ -78,6 +90,7 @@
             $content .= $this->renderAfterFormLayout($form);
             $formEnd  = $clipWidget->renderEndWidget();
             $content .= $formEnd;
+            $content .= $this->renderModalContainer();
             $content .= '</div>';
             return $content;
         }
@@ -110,8 +123,9 @@
          */
         protected function renderFormBottomPanel()
         {
-            $moreSearchOptionsLink        = ZurmoHtml::link(Zurmo::t('Core', 'Advanced'), '#', array('id' => 'more-search-link' . $this->gridIdSuffix));
+            $moreSearchOptionsLink        = $this->resolveMoreSearchOptionsLinkContent();
             $selectListAttributesLink     = $this->getSelectListAttributesLinkContent();
+            $kanbanBoardOptionsLink       = $this->getKanbanBoardOptionsLinkContent();
             $clearSearchLabelPrefix       = $this->getClearSearchLabelPrefixContent();
             $clearSearchLabel             = $this->getClearSearchLabelContent();
             $clearSearchLinkStartingStyle = $this->getClearSearchLinkStartingStyle();
@@ -126,11 +140,20 @@
             $content  = '<div class="search-form-tools">';
             $content .= $moreSearchOptionsLink;
             $content .= $selectListAttributesLink;
+            $content .= $kanbanBoardOptionsLink;
             $content .= $clearSearchLink;
             $content .= $this->renderFormBottomPanelExtraLinks();
             $content .= $this->renderClearingSearchInputContent();
             $content .= '</div>';
             return $content;
+        }
+
+        protected function resolveMoreSearchOptionsLinkContent()
+        {
+            if ($this->showAdvancedSearch)
+            {
+                return ZurmoHtml::link(Zurmo::t('Core', 'Advanced'), '#', array('id' => 'more-search-link' . $this->gridIdSuffix));
+            }
         }
 
         protected function getClearSearchLabelPrefixContent()
@@ -144,6 +167,10 @@
 
         protected function getClearSearchLinkStartingStyle()
         {
+            if ($this->model->anyMixedAttributes == null)
+            {
+                return "display:none;";
+            }
         }
 
         protected function getExtraRenderForClearSearchLinkScript()
@@ -175,6 +202,7 @@
                 $('#clear-search-link" . $this->gridIdSuffix . "').unbind('click.clear');
                 $('#clear-search-link" . $this->gridIdSuffix . "').bind('click.clear', function(){
                         $('#" . $this->getClearingSearchInputId() . "').val('1');
+                        $('#clear-search-link" . $this->gridIdSuffix . "').hide();
                         " . $this->getExtraRenderForClearSearchLinkScript() . "
                         $(this).closest('form').submit();
                         $('#" . $this->getClearingSearchInputId() . "').val('');
@@ -184,7 +212,8 @@
                 $('#more-search-link" . $this->gridIdSuffix . "').unbind('click.more');
                 $('#more-search-link" . $this->gridIdSuffix . "').bind('click.more',  function(event){
                         $('.select-list-attributes-view').hide();
-                        $(this).closest('form').find('.search-view-1').toggle();                        
+                        $('.kanban-board-options-view').hide();
+                        $(this).closest('form').find('.search-view-1').toggle();
                         return false;
                     }
                 );
@@ -204,7 +233,9 @@
                 $('#" . $this->getSearchFormId() . "').bind('submit', function(event)
                     {
                         $(this).closest('form').find('.search-view-1').hide();
+                        " . $this->getHideOrShowClearSearchLinkScript() . "
                         $('.select-list-attributes-view').hide();
+                        $('.kanban-board-options-view').hide();
                         $('#" . $this->gridId . $this->gridIdSuffix . "-selectedIds').val(null);
                         $.fn.yiiGridView.update('" . $this->gridId . $this->gridIdSuffix . "',
                         {
@@ -216,6 +247,34 @@
                         return false;
                     }
                 );");
+        }
+
+        /**
+         * Override as needed.
+         * @return string the script to show/hide the clear link if depending on if
+         * there is any search condition
+         */
+        protected function getHideOrShowClearSearchLinkScript()
+        {
+            $script = "
+                var empty = $('#" . $this->getSearchFormId(). "').find('.anyMixedAttributes-input').val() == '';
+                $(this).closest('form').find('.search-view-1').find(':input').each(function()
+                {
+                    if ($(this).val() != '')
+                    {
+                        empty = false;
+                    }
+                });
+                if (!empty)
+                {
+                    $('#clear-search-link" . $this->gridIdSuffix . "').show();
+                }
+                else
+                {
+                    $('#clear-search-link" . $this->gridIdSuffix . "').hide();
+                }
+            ";
+            return $script;
         }
 
         /**
@@ -239,7 +298,14 @@
          */
         protected function getExtraRenderFormBottomPanelScriptPart()
         {
-            return null;
+            $script = "
+                $('#" . $this->getSearchFormId(). "').find('.anyMixedAttributes-input').unbind('input.clear propertychange.clear keyup.clear');
+                $('#" . $this->getSearchFormId(). "').find('.anyMixedAttributes-input').bind('input.clear propertychange.clear keyup.clear', function(event)
+                {
+                    $('#clear-search-link" . $this->gridIdSuffix . "').show();
+                });
+            ";
+            return $script;
         }
 
         /**
@@ -253,7 +319,7 @@
             $maxCellsPerRow  = $this->getMaxCellsPerRow();
             $content         = "";
             $content        .= $this->renderSummaryCloneContent();
-            assert('count($metadata["global"]["panels"]) == 2');
+            assert('count($metadata["global"]["panels"]) == 2 || count($metadata["global"]["panels"]) == 1');
             foreach ($metadata['global']['panels'] as $key => $panel)
             {
                 $startingDivStyle = "";
@@ -277,6 +343,7 @@
                 $content .= '</div>';
             }
             $content .= $this->renderListAttributesSelectionContent($form);
+            $content .= $this->renderKanbanBoardOptionsContent($form);
             $content .= $this->renderFormBottomPanel();
 
             return $content;
@@ -284,7 +351,12 @@
 
         protected function renderSummaryCloneContent()
         {
-            return '<div class="list-view-items-summary-clone"></div>';
+            return ZurmoHtml::tag('div',
+                                  array(
+                                      'id'    => $this->getListViewId() . '-summary-clone',
+                                      'class' => ExtendedGridView::CLONE_SUMMARY_CLASS,
+                                  ),
+                                  '');
         }
 
         protected function getSelectListAttributesLinkContent()
@@ -306,6 +378,7 @@
                 $('#select-list-attributes-link" . $this->gridIdSuffix . "').bind('click.more',  function(event)
                     {
                         $(this).closest('form').find('.search-view-1').hide();
+                        $(this).closest('form').find('.kanban-board-options-view').hide();
                         $('.select-list-attributes-view').toggle();
                         return false;
                     }
@@ -330,6 +403,56 @@
                                             'style'    => 'display:none'), $content);
         }
 
+        /**
+         * @return string
+         */
+        protected function getKanbanBoardOptionsLinkContent()
+        {
+            if ($this->model->getKanbanBoard() != null && $this->model->getKanbanBoard()->getIsActive())
+            {
+                return ZurmoHtml::link(Zurmo::t('Core', 'Options'), '#', array('id' => 'kanban-board-options-link' . $this->gridIdSuffix));
+            }
+        }
+
+        /**
+         * @param ZurmoActiveForm $form
+         * @return string
+         */
+        protected function renderKanbanBoardOptionsContent(ZurmoActiveForm $form)
+        {
+            if ($this->model->getKanbanBoard() == null || !$this->model->getKanbanBoard()->getIsActive())
+            {
+                return;
+            }
+            Yii::app()->clientScript->registerScript('kanbanBoardOptions' . $this->getSearchFormId(), "
+                $('#kanban-board-options-link" . $this->gridIdSuffix . "').unbind('click.more');
+                $('#kanban-board-options-link" . $this->gridIdSuffix . "').bind('click.more',  function(event)
+                    {
+                        $(this).closest('form').find('.search-view-1').hide();
+                        $('.select-list-attributes-view').hide();
+                        $('.kanban-board-options-view').toggle();
+                        return false;
+                    }
+                );
+                $('#kanban-board-options-reset').unbind('click.close');
+                $('#kanban-board-options-reset').bind('click.close', function()
+                    {
+                        $('.kanban-board-options-view').hide();
+                    }
+                );
+                $('#kanban-board-options-apply').unbind('click.close');
+                $('#kanban-board-options-apply').bind('click.close', function()
+                    {
+                        $('.kanban-board-options-view').hide();
+                    }
+                );
+                ");
+            $element = new KanbanBoardOptionsElement($this->model, null, $form, array());
+            $element->editableTemplate = '{content}';
+            $content = $element->render();
+            return ZurmoHtml::tag('div', array('class' => 'kanban-board-options-view', 'style' => 'display:none'), $content);
+        }
+
         protected function renderViewToolBarContainerForAdvancedSearch($form)
         {
             $content  = '<div class="view-toolbar-container clearfix">';
@@ -341,13 +464,13 @@
 
         protected function renderViewToolBarLinksForAdvancedSearch($form)
         {
-            $params = array();
+            $params                = array();
             $params['label']       = Zurmo::t('Core', 'Search');
             $params['htmlOptions'] = array('id' => 'search-advanced-search', 'onclick' => 'js:$(this).addClass("attachLoadingTarget");');
-            $searchElement = new SaveButtonActionElement(null, null, null, $params);
-            $content  = $searchElement->render();
-            $closeButton = ZurmoHtml::link(ZurmoHtml::wrapLabel(Zurmo::t('Core', 'Close')),
-                            '#', array('id' => 'cancel-advanced-search', 'class' => 'z-button'));
+            $searchElement         = new SaveButtonActionElement(null, null, null, $params);
+            $content               = $searchElement->render();
+            $closeButton           = ZurmoHtml::link(ZurmoHtml::wrapLabel(Zurmo::t('Core', 'Close')),
+                                     '#', array('id' => 'cancel-advanced-search', 'class' => 'z-button'));
             return $closeButton . $content;
         }
 
@@ -502,6 +625,13 @@
             $designerRulesClassName = $designerRulesType . 'DesignerRules';
             $designerRules          = new $designerRulesClassName();
             return $designerRules->maxCellsPerRow();
+        }
+
+        protected function renderModalContainer()
+        {
+            return ZurmoHtml::tag('div', array(
+                        'id' => ModelElement::MODAL_CONTAINER_PREFIX . '-' . $this->getSearchFormId()
+                   ), '');
         }
     }
 ?>
