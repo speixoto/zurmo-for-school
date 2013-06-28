@@ -39,6 +39,12 @@
      */
     class OrderBysForReportWizardView extends ComponentWithTreeForReportWizardView
     {
+
+        protected function getValidationScenario()
+        {
+            return ReportWizardForm::ORDER_BYS_VALIDATION_SCENARIO;
+        }
+
         /**
          * @return string
          */

@@ -39,6 +39,12 @@
      */
     class DisplayAttributesForReportWizardView extends ComponentWithTreeForReportWizardView
     {
+
+        protected function getValidationScenario()
+        {
+            return ReportWizardForm::DISPLAY_ATTRIBUTES_VALIDATION_SCENARIO;
+        }
+
         /**
          * @return string
          */

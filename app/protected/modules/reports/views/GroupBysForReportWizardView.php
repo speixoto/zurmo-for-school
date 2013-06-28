@@ -39,6 +39,12 @@
      */
     class GroupBysForReportWizardView extends ComponentWithTreeForReportWizardView
     {
+
+        protected function getValidationScenario()
+        {
+            return ReportWizardForm::GROUP_BYS_VALIDATION_SCENARIO;
+        }
+
         /**
          * @return string
          */

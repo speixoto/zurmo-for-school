@@ -39,6 +39,12 @@
      */
     class ChartForReportWizardView extends ComponentForReportWizardView
     {
+
+        protected function getValidationScenario()
+        {
+            return ReportWizardForm::CHART_VALIDATION_SCENARIO;
+        }
+
         /**
          * @return string
          */

@@ -39,6 +39,12 @@
      */
     class FiltersForReportWizardView extends ComponentWithTreeForReportWizardView
     {
+        
+        protected function getValidationScenario()
+        {
+            return ReportWizardForm::FILTERS_VALIDATION_SCENARIO;
+        }
+
         /**
          * @return string
          */

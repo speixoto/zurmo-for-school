@@ -146,7 +146,7 @@
                 array('description',         'type',               'type' => 'string'),
                 array('name',                'type',               'type' => 'string'),
                 array('name',                'length',             'max' => 64),
-                array('name',                'required'),
+                array('name',                'required',           'on' => self::GENERAL_DATA_VALIDATION_SCENARIO),
                 array('moduleClassName',     'type',               'type' => 'string'),
                 array('moduleClassName',     'length',             'max' => 64),
                 array('moduleClassName',     'required',           'on' => self::MODULE_VALIDATION_SCENARIO),

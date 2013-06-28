@@ -39,6 +39,12 @@
      */
     class DrillDownDisplayAttributesForReportWizardView extends ComponentWithTreeForReportWizardView
     {
+
+        protected function getValidationScenario()
+        {
+            return ReportWizardForm::DRILL_DOWN_DISPLAY_ATTRIBUTES_VALIDATION_SCENARIO;
+        }
+
         /**
          * @return string
          */
