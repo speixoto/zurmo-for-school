@@ -45,6 +45,7 @@
     $config = INSTANCE_ROOT . "/protected/config/test.php";
 
     require_once(COMMON_ROOT   . "/version.php");
+    require_once(COMMON_ROOT   . "/protected/modules/install/utils/InstallUtil.php");
     require_once(COMMON_ROOT   . "/protected/modules/install/utils/AutoBuildOptimizedInstallUtil.php");
     require_once(COMMON_ROOT   . "/protected/core/utils/ZurmoPasswordSecurityUtil.php");
     AutoBuildOptimizedInstallUtil::setZurmoTokenAndWriteToPerInstanceFile(INSTANCE_ROOT, 'perInstanceTest.php');
