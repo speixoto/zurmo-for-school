@@ -188,9 +188,9 @@
             $this->assertTrue($account->save());
 
             $this->assertFalse(StarredUtil::isModelStarred($account));
-            $this->assertEquals('starred', StarredUtil::toggleModelStarStatus('Account', $account->id));
+            $this->assertEquals('icon-star starred', StarredUtil::toggleModelStarStatus('Account', $account->id));
             $this->assertTrue(StarredUtil::isModelStarred($account));
-            $this->assertEquals('unstarred', StarredUtil::toggleModelStarStatus('Account', $account->id));
+            $this->assertEquals('icon-star unstarred', StarredUtil::toggleModelStarStatus('Account', $account->id));
             $this->assertFalse(StarredUtil::isModelStarred($account));
         }
 

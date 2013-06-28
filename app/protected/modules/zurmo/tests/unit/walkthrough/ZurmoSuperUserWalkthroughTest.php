@@ -284,10 +284,10 @@
                 $this->setGetArray(array('modelClassName' => 'Account',
                                          'modelId' => $account->id));
                 $content = $this->runControllerWithNoExceptionsAndGetContent('zurmo/default/toggleStar');
-                $this->assertEquals('starred', $content);
+                $this->assertEquals('icon-star starred', $content);
                 $this->assertTrue(StarredUtil::isModelStarred($account));
                 $content = $this->runControllerWithNoExceptionsAndGetContent('zurmo/default/toggleStar');
-                $this->assertEquals('unstarred', $content);
+                $this->assertEquals('icon-star unstarred', $content);
                 $this->assertFalse(StarredUtil::isModelStarred($account));
             }
         }
