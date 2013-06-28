@@ -52,7 +52,6 @@
         protected function renderContent()
         {
             $placedViewTypes = $this->getPlacedViewTypes();
-            $content = '<ul class="available-portlets">';
             $modules = Module::getModuleObjects();
             foreach ($modules as $module)
             {
@@ -81,6 +80,12 @@
                                         'portletType'    => $portletRules->getType(),
                                         )
                                     );
+                                    $title    = $metadata['perUser']['title'];
+                                    MetadataUtil::resolveEvaluateSubString($title);
+                                    $sortablePortlets[$title] = array('url' => $url,
+                                        'title' => $title,
+                                        'portletRules' => $portletRules);
+                                    /**
                                     $onClick = 'window.location.href="' . $url . '"';
                                     $content .= '<li>';
                                     $portletName    = $metadata['perUser']['title'];
@@ -93,14 +98,14 @@
                                     $description = $portletRules->getDescription();
                                     $content .= ZurmoHtml::tag('div', array('class' => 'clearfix'), $description . $button );
                                     $content .= '</li>';
+                                     * **/
                                 }
                             }
                         }
                     }
                 }
             }
-            $content .= '</ul>';
-            return $content;
+            return PortletUtil::renderAddPortletsContent($sortablePortlets);
         }
 
         protected function getPlacedViewTypes()
