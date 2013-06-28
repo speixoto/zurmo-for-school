@@ -166,6 +166,10 @@
                         }
                     }
                 }
+                if($this->isModified())
+                {
+                    $this->onModified();
+                }
                 return true;
              }
              else
