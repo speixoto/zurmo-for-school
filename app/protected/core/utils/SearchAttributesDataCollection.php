@@ -181,11 +181,7 @@
 
             if ($sortDescending === false)
             {
-                if (!empty($this->model->sortDescending))
-                {
-                    $sortDescending = true;
-                }
-                else
+                if (empty($this->model->sortDescending))
                 {
                     $sortDescending = false;
                 }
