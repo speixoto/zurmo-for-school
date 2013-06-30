@@ -35,34 +35,13 @@
      ********************************************************************************/
 
     /**
-     * Form to work with boolean attributes
+     * Form to work with dropDown attributes
      */
-    class CheckBoxWorkflowActionAttributeForm extends WorkflowActionAttributeForm
+    class ProductTemplateTypeDropDownWorkflowActionAttributeForm extends WorkflowActionAttributeForm
     {
-        /**
-         * Override to make sure the value attribute is set as a boolean value
-         */
-        public function rules()
-        {
-            return array_merge(parent::rules(), array(array('value', 'boolean')));
-        }
-
         public function getValueElementType()
         {
-            return 'BooleanForWizardStaticDropDown';
-        }
-
-        /**
-         * Value can only be true or false
-         * @return bool
-         */
-        public function validateValue()
-        {
-            if($this->value == 0 || $this->value == 1)
-            {
-                return true;
-            }
-            return false;
+            return 'ProductTemplateTypeDropDown';
         }
 
         /**
@@ -77,25 +56,6 @@
             $data                           = array();
             $data[static::TYPE_STATIC]      = Zurmo::t('WorkflowsModule', 'As');
             return $data;
-        }
-
-        public function shouldSetNullAlternativeValue()
-        {
-            return true;
-        }
-
-        /**
-         * @param WorkflowActionProcessingModelAdapter $adapter
-         * @param $attribute
-         */
-        public function resolveNullAlternativeValueAndSetToModel(WorkflowActionProcessingModelAdapter $adapter, $attribute)
-        {
-            assert('is_string($attribute)');
-            parent::resolveNullAlternativeValueAndSetToModel($adapter, $attribute);
-            if ($adapter->getModel()->{$attribute} === null)
-            {
-                $adapter->getModel()->{$attribute} = false;
-            }
         }
     }
 ?>
