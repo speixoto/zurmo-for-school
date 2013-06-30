@@ -78,5 +78,10 @@
             $email->emailAddress = $model->firstName . '.' . $model->lastName . '@company.com';
             return $email;
         }
+
+        protected static function resolveDemoEmailAddress($username)
+        {
+            return $username . '@test.' . StringUtil::resolveCustomizedLabel() . '.com';
+        }
     }
 ?>

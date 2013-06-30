@@ -37,9 +37,11 @@
             $opportunity            = OpportunityTestHelper::createOpportunityByNameForOwner('superOpportunity', $super);
             $productTemplate        = ProductTemplateTestHelper::createProductTemplateByName('superProductTemplate');
             $contactWithNoAccount   = ContactTestHelper::createContactByNameForOwner('noAccountContact', $super);
-            $a = new Group();
-            $a->name = 'AAA';
-            $a->save();
+            $everyoneGroup = Group::getByName(Group::EVERYONE_GROUP_NAME);
+            $everyoneGroup->save();
+//            $a = new Group();
+//            $a->name = 'AAA';
+//            $a->save();
         }
 
         public function testDemoDataMaker()
@@ -182,9 +184,8 @@
             $productTemplates = ProductTemplate::getByName('superProductTemplate');
             $account          = $accounts[0];
             $user             = $account->owner;
-            $group            = Group::getByName('AAA');
+            $everyoneGroup    = Group::getByName(Group::EVERYONE_GROUP_NAME);
             $explicitReadWriteModelPermissions = new ExplicitReadWriteModelPermissions();
-            //$explicitReadWriteModelPermissions->addReadWritePermitable($group);
             $currencyHelper = Yii::app()->currencyHelper;
             $currencyCode = $currencyHelper->getBaseCode();
             $currency = Currency::getByCode($currencyCode);
@@ -197,12 +198,12 @@
                                         'opportunity' => array('id' => ''),
                                         'type' => ProductTemplate::TYPE_PRODUCT,
                                         'priceFrequency' => ProductTemplate::PRICE_FREQUENCY_ONE_TIME,
-                                        'sellPrice' => array('currency' => array('id' => $currency->id),'value' => 210                                           ),
+                                        'sellPrice' => array('currency' => array('id' => $currency->id), 'value' => 210                                           ),
                                         'stage' => array('value' => 'Open'),
                                         'owner' => array('id' => $user->id),
                                         'explicitReadWriteModelPermissions' => array(
                                                 'type' => ExplicitReadWriteModelPermissionsUtil::MIXED_TYPE_EVERYONE_GROUP,
-                                                'nonEveryoneGroup' => $group->id
+                                                'nonEveryoneGroup' => ''
                                             )
 
                                     );
@@ -210,9 +211,7 @@
             $sanitizedPostData      = PostUtil::sanitizePostByDesignerTypeForSavingModel($model, $postData);
             if ($model instanceof SecurableItem)
             {
-                //$explicitReadWriteModelPermissions = ExplicitReadWriteModelPermissionsUtil::resolveByPostDataAndModelThenMake($sanitizedPostData, $model);
-                $explicitReadWriteModelPermissions->addReadWritePermitable($group);
-                ExplicitReadWriteModelPermissionsUtil::resolveForDifferencesBySecurableItem($explicitReadWriteModelPermissions, $model);
+                $explicitReadWriteModelPermissions = ExplicitReadWriteModelPermissionsUtil::resolveByPostDataAndModelThenMake($sanitizedPostData, $model);
             }
             else
             {
@@ -227,7 +226,6 @@
             $sanitizedDataWithoutOwner     = PostUtil::
                                                  removeElementFromPostDataForSavingModel($readyToUseData, 'owner');
             $model->setAttributes($sanitizedDataWithoutOwner);
-            //$this->afterSetAttributesDuringSave($model, $explicitReadWriteModelPermissions);
             if ($model->validate())
             {
                 $modelToStringValue = strval($model);
@@ -245,23 +243,13 @@
                 }
                 if ($passedOwnerValidation && $model->save(false))
                 {
-//                    $modelId = $model->id;
-//                    $modelClassName = get_class($model);
-//                    $model->forget();
-                    //$model = $modelClassName::getById($modelId);
                     if ($explicitReadWriteModelPermissions != null)
                     {
-                        print "<pre>";
-                        print_r($explicitReadWriteModelPermissions);
-                        print "</pre>";
-
-                        exit;
                         $success = ExplicitReadWriteModelPermissionsUtil::
-                        resolveExplicitReadWriteModelPermissions($model, $explicitReadWriteModelPermissions);
+                                    resolveExplicitReadWriteModelPermissions($model, $explicitReadWriteModelPermissions);
                         //todo: handle if success is false, means adding/removing permissions save failed.
                     }
                     $savedSuccessfully = true;
-                    //$this->afterSuccessfulSave($model);
                 }
             }
             else

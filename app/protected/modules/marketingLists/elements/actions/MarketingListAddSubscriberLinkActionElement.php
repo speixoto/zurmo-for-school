@@ -129,10 +129,11 @@
 
         protected function registerScripts()
         {
-            $script = "$('close-flyout').click(function(){
+            $script = "$('close-flyout').click(function()
+                        {
                             $(this).parentsUntil(li).parent().hide();
                         });";
-            Yii::app()->clientScript->registerScript(get_class() . 'CheckBoxClickScript', $script);
+            Yii::app()->clientScript->registerScript(get_class() . 'CloseFlyoutScript', $script);
         }
     }
 ?>

@@ -33,18 +33,28 @@
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
-    /**
-     * Column adapter for name value for product list
-     */
-    class ProductNameRelatedListViewColumnAdapter extends TextListViewColumnAdapter
+
+    class PersonSlidingPanelsUtilTest extends ZurmoBaseTest
     {
-        public function renderGridViewData()
+        public function testGetSlideToSecondPanelLabel()
         {
-                return array(
-                    'name'  => $this->attribute,
-                    'value' => array('ProductElementUtil', 'getProductNameLinkString'),
-                    'type'  => 'raw',
-                );
+            $this->assertEquals(
+                    'Switch to Full View',
+                    PersonSlidingPanelsUtil::getSlideToSecondPanelLabel());
+        }
+
+        public function testGetSlideToFirstPanelLabel()
+        {
+            $this->assertEquals(
+                    'Switch to Business Card View',
+                    PersonSlidingPanelsUtil::getSlideToFirstPanelLabel());
+        }
+
+        public function testRenderToggleLinkContent()
+        {
+            $this->assertContains(
+                    '<a id="sliding-panel-toggle" class="vertical-forward-pager slide-to-second-panel"',
+                    PersonSlidingPanelsUtil::renderToggleLinkContent());
         }
     }
 ?>

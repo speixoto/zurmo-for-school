@@ -253,7 +253,7 @@
             }
 
             //Please see @link:AccountDetailsAndRelationsPortletViewTest
-            if(isset($_GET['redirect']))
+            if (isset($_GET['redirect']))
             {
                 return;
             }
@@ -283,7 +283,7 @@
             $maximumIterativeIndex = min($maximumIndexFromCollection, $maximumColumns);
             if (!empty($portletCollection))
             {
-                if($maximumIterativeIndex > 1)
+                if ($maximumIterativeIndex > 1)
                 {
                     foreach ($portletCollection[$maximumIterativeIndex] as $position => $portlet)
                     {

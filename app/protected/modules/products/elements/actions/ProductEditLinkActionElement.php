@@ -26,7 +26,7 @@
 
     class ProductEditLinkActionElement extends EditLinkActionElement
     {
-        public function getRedirectUrl()
+        protected function getRedirectUrl()
         {
             return Yii::app()->createUrl($this->params['relationModuleId'] . '/default/details?id=' . $this->params['relationModelId']);
         }

@@ -34,12 +34,16 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * A listview class should implement this interface if
-     * it needs to manually specify the path to summary clone div
-     */
-    interface RendersMultipleSummaryPlaceholdersInterface
+    class LocaleStaticDropDownElement extends StaticDropDownFormElement
     {
-        public static function getSummaryCloneQueryPath();
+        protected function getDropDownArray()
+        {
+            $dropDownArray = array('' => Zurmo::t('ZurmoModule', 'Same as language'));
+            foreach (ZurmoLocale::getSelectableLocaleIds() as $locale)
+            {
+                $dropDownArray[$locale] = Yii::app()->locale->getLocaleDisplayName($locale) . '(' . $locale . ') ';
+            }
+            return $dropDownArray;
+        }
     }
 ?>
