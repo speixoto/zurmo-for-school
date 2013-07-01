@@ -34,25 +34,27 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * Element used by the import mapping process.
-     */
-    class ImportMappingModelIdValueTypeDropDownElement extends ImportMappingRuleStaticDropDownFormElement
+    class PersonSlidingPanelsUtilTest extends ZurmoBaseTest
     {
-        /**
-         * Override to ensure the model is an IdValueTypeMappingRuleForm.
-         */
-        public function __construct($model, $attribute, $form = null, array $params = array())
+        public function testGetSlideToSecondPanelLabel()
         {
-            assert('$model instanceof IdValueTypeMappingRuleForm');
-            parent::__construct($model, $attribute, $form, $params);
+            $this->assertEquals(
+                    'Switch to Full View',
+                    PersonSlidingPanelsUtil::getSlideToSecondPanelLabel());
         }
 
-        protected function getDropDownArray()
+        public function testGetSlideToFirstPanelLabel()
         {
-            return array(
-                IdValueTypeMappingRuleForm::ZURMO_MODEL_ID     => Zurmo::t('ImportModule', 'Zurmo Id', LabelUtil::getTranslationParamsForAllModules()),
-                IdValueTypeMappingRuleForm::EXTERNAL_SYSTEM_ID => Zurmo::t('ImportModule', 'Other Id'));
+            $this->assertEquals(
+                    'Switch to Business Card View',
+                    PersonSlidingPanelsUtil::getSlideToFirstPanelLabel());
+        }
+
+        public function testRenderToggleLinkContent()
+        {
+            $this->assertContains(
+                    '<a id="sliding-panel-toggle" class="vertical-forward-pager slide-to-second-panel"',
+                    PersonSlidingPanelsUtil::renderToggleLinkContent());
         }
     }
 ?>

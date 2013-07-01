@@ -34,25 +34,27 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * Element used by the import mapping process.
-     */
-    class ImportMappingModelIdValueTypeDropDownElement extends ImportMappingRuleStaticDropDownFormElement
+    class MarketingListListViewColumnAdapter extends TextListViewColumnAdapter
     {
-        /**
-         * Override to ensure the model is an IdValueTypeMappingRuleForm.
-         */
-        public function __construct($model, $attribute, $form = null, array $params = array())
+        public function renderGridViewData()
         {
-            assert('$model instanceof IdValueTypeMappingRuleForm');
-            parent::__construct($model, $attribute, $form, $params);
-        }
-
-        protected function getDropDownArray()
-        {
-            return array(
-                IdValueTypeMappingRuleForm::ZURMO_MODEL_ID     => Zurmo::t('ImportModule', 'Zurmo Id', LabelUtil::getTranslationParamsForAllModules()),
-                IdValueTypeMappingRuleForm::EXTERNAL_SYSTEM_ID => Zurmo::t('ImportModule', 'Other Id'));
+            if ($this->getIsLink())
+            {
+                return array(
+                    'name' => $this->attribute,
+                    'type' => 'raw',
+                    'value' => $this->view->getRelatedLinkString(
+                               '$data->' . $this->attribute, $this->attribute, 'marketingLists'),
+                );
+            }
+            else
+            {
+                return array(
+                    'name'  => $this->attribute,
+                    'value' => 'strval($data->' . $this->attribute . ')',
+                    'type'  => 'raw',
+                );
+            }
         }
     }
 ?>
