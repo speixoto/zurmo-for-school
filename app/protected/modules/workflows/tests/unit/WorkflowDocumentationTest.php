@@ -194,12 +194,9 @@
                                                     'priceFrequency' => array('shouldSetValue'    => '1',
                                                         'type'       => WorkflowActionAttributeForm::TYPE_STATIC,
                                                         'value'      => 2),
-//                                                    'listPrice'      => array('shouldSetValue'    => '1',
-//                                                        'type'       => WorkflowActionAttributeForm::TYPE_STATIC,
-//                                                        'value'      => 800),
-//                                                    'sellPrice'      => array('shouldSetValue'    => '1',
-//                                                        'type'       => WorkflowActionAttributeForm::TYPE_STATIC,
-//                                                        'value'      => 650),
+                                                    'listPrice'      => array('shouldSetValue'    => '1',
+                                                        'type'       => WorkflowActionAttributeForm::TYPE_STATIC,
+                                                        'value'      => 800),
                                                     'cost'           => array('shouldSetValue'    => '1',
                                                         'type'       => WorkflowActionAttributeForm::TYPE_STATIC,
                                                         'value'      => 700),
@@ -231,7 +228,7 @@
             $this->assertEquals('Set Price', $product->productTemplate->description);
             $this->assertEquals(2, $product->productTemplate->priceFrequency);
             $this->assertEquals(700, $product->productTemplate->cost->value);
-            //$this->assertEquals(800, $product->productTemplate->listPrice->value);
+            $this->assertEquals(800, $product->productTemplate->listPrice->value);
         }
     }
 ?>
