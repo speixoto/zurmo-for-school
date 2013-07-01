@@ -196,10 +196,12 @@
                                                         'value'      => 2),
                                                     'listPrice'      => array('shouldSetValue'    => '1',
                                                         'type'       => WorkflowActionAttributeForm::TYPE_STATIC,
-                                                        'value'      => 800),
+                                                        'value'      => 800,
+                                                        'currencyId' => $currencies[0]->id),
                                                     'cost'           => array('shouldSetValue'    => '1',
                                                         'type'       => WorkflowActionAttributeForm::TYPE_STATIC,
-                                                        'value'      => 700),
+                                                        'value'      => 700,
+                                                        'currencyId' => $currencies[0]->id),
                                                 );
             $action->setAttributes(array(ActionForWorkflowForm::ACTION_ATTRIBUTES => $attributes));
             $workflow->addAction($action);
