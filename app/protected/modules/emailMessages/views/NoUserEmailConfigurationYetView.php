@@ -46,7 +46,7 @@
         {
             $params  = array('label' => $this->getCreateLinkDisplayLabel());
             $url     = Yii::app()->createUrl('/users/default/emailConfiguration',
-                                             array('id' => Yii::app()->user->userModel->id,'relatedId'=>Yii::app()->request->getParam('relatedId'), 'relatedModelClassName' => Yii::app()->request->getParam('relatedModelClassName')));
+                                             array('id' => Yii::app()->user->userModel->id, 'refurl'=>base64_encode(Yii::app()->request->getUrlReferrer())));
             $content = '<div class="' . $this->getIconName() . '">';
             $content .= $this->getMessageContent();
             $content .= ZurmoHtml::link(ZurmoHtml::wrapLabel($this->getCreateLinkDisplayLabel()), $url, array('class' => 'z-button green-button'));
