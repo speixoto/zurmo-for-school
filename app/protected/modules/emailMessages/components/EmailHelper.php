@@ -107,13 +107,13 @@
          * Fallback from address to use for sending out notifications.
          * @var string
          */
-        public $defaultFromAddress;  
+        public $defaultFromAddress;
 
         /**
          * Utilized when sending a test email nightly to check the status of the smtp server
          * @var string
          */
-        public $defaultTestToAddress;  
+        public $defaultTestToAddress;
 
         /**
          * Called once per page load, will load up outbound settings from the database if available.
@@ -406,12 +406,12 @@
             }
             return $user->primaryEmail->emailAddress;
         }
-        
+
         /*
          * Resolving Default Email Addess For Email Testing
          */
         public static function resolveDefaultEmailAddress($defaultEmailAddress)
-        {                       
+        {
             return $defaultEmailAddress . '@' . StringUtil::resolveCustomizedLabel() . 'alerts.com';
         }
     }

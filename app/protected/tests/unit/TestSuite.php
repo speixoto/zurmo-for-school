@@ -117,8 +117,7 @@
 
             if ($freeze && !$reuse)
             {
-
-                if(!is_writable(sys_get_temp_dir()))
+                if (!is_writable(sys_get_temp_dir()))
                 {
                     echo "\n\nTemp directory must be writable to store reusable schema\n"; // Not Coding Standard
                     echo "Temp directory: " . sys_get_temp_dir() . "\n\n"; // Not Coding Standard
@@ -145,7 +144,7 @@
                                        ' -p' . Yii::app()->db->password .
                                        ' ' . $databaseName            .
                                        " > $schemaFile");
-                if($systemOutput != null)
+                if ($systemOutput != null)
                 {
                     echo 'Dumping schema using system command. Output: ' . $systemOutput . "\n\n";
                 }

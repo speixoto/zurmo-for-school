@@ -57,11 +57,10 @@
                     $systemOutput = system('mysql -u' . Yii::app()->db->username .
                                 ' -p' . Yii::app()->db->password .
                                   ' ' . $databaseName            . " < $schemaFile");
-                   if($systemOutput != null)
+                   if ($systemOutput != null)
                    {
                        echo 'Loading schema using system command. Output: ' . $systemOutput . "\n\n";
                    }
-
                 }
                 else
                 {
