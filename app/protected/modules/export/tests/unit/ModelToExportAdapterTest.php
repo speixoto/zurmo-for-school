@@ -92,7 +92,7 @@
             $testItem                               = new ExportTestModelItem5();
             $createStamp = strtotime(DateTimeUtil::convertTimestampToDbFormatDateTime(time()));
             $testItem->emailAddress                 = 'a@a.com';
-            
+
             $this->assertTrue($testItem->save());
             $id = $testItem->id;
             $testItem->forget();
@@ -101,9 +101,9 @@
             $testItem    = ExportTestModelItem5::getById($id);
             $adapter     = new ModelToExportAdapter($testItem);
             $data        = $adapter->getData();
-            
+
             $headerData  = $adapter->getHeaderData();
-           
+
             $compareData = array(
                 $id,
                 'stubDateTime',
@@ -122,7 +122,7 @@
                 $testItem->getAttributeLabel('owner'),
                 $testItem->getAttributeLabel('emailAddress'),
                 );
-                
+
             $createdDateTimeKey = array_search($testItem->getAttributeLabel('createdDateTime'), $headerData);
             $modifiedDateTimeKey = array_search($testItem->getAttributeLabel('modifiedDateTime'), $headerData);
             $this->assertEquals($createStamp, strtotime($data[$createdDateTimeKey]), '', 2);
@@ -131,7 +131,6 @@
             $data[$modifiedDateTimeKey] = 'stubDateTime';
             $this->assertEquals($compareData,       $data);
             $this->assertEquals($compareHeaderData, $headerData);
-
         }
 
         public function testGetDataWithNoRelationsSet()

@@ -49,7 +49,7 @@
 
         public function getValueElementType()
         {
-            return 'BooleanForWizardStaticDropDownElement';
+            return 'BooleanForWizardStaticDropDown';
         }
 
         /**
@@ -58,7 +58,7 @@
          */
         public function validateValue()
         {
-            if($this->value == 0 || $this->value == 1)
+            if ($this->value == 0 || $this->value == 1)
             {
                 return true;
             }

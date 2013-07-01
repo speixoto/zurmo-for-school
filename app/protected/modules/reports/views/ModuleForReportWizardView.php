@@ -39,11 +39,6 @@
      */
     class ModuleForReportWizardView extends ComponentForReportWizardView
     {
-        protected function getValidationScenario()
-        {
-            return ReportWizardForm::MODULE_VALIDATION_SCENARIO;
-        }
-
         /**
          * @return string
          */

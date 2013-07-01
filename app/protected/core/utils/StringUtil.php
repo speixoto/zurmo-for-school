@@ -92,7 +92,7 @@
                 return          ZurmoHtml::tag('h1', array(), $content);
             }
         }
-        
+
         /**
          * used for customizing label in UI
          */
