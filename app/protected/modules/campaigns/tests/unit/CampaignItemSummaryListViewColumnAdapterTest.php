@@ -46,7 +46,7 @@
             $super = User::getByUsername('super');
             $super->primaryEmail->emailAddress = 'super@zurmo.org';
             $saved = $super->save();
-            if(!$saved)
+            if (!$saved)
             {
                 throw new FailedToSaveModelException();
             }
@@ -60,7 +60,7 @@
             $campaignItem->campaign     = $campaign;
             $campaignItem->emailMessage = $emailMessage;
             $campaignItem->unrestrictedSave();
-            if(!$saved)
+            if (!$saved)
             {
                 throw new FailedToSaveModelException();
             }
