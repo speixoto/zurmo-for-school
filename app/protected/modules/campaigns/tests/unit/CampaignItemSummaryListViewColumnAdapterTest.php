@@ -45,7 +45,11 @@
             SecurityTestHelper::createUsers();
             $super = User::getByUsername('super');
             $super->primaryEmail->emailAddress = 'super@zurmo.org';
-            assert('$super->save()');
+            $saved = $super->save();
+            if(!$saved)
+            {
+                throw new FailedToSaveModelException();
+            }
             MarketingListTestHelper::createMarketingListByName('testMarketingList');
             $campaign                   = CampaignTestHelper::createCampaign('testCampaign', 'testSubject', 'testContent');
             $contact                    = ContactTestHelper::createContactByNameForOwner('test', $super);
@@ -55,7 +59,11 @@
             $campaignItem->processed    = true;
             $campaignItem->campaign     = $campaign;
             $campaignItem->emailMessage = $emailMessage;
-            assert('$campaignItem->unrestrictedSave()');
+            $campaignItem->unrestrictedSave();
+            if(!$saved)
+            {
+                throw new FailedToSaveModelException();
+            }
             ReadPermissionsOptimizationUtil::rebuild();
         }
 
