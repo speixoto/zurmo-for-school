@@ -117,7 +117,6 @@
                 true,
             );
             $this->assertEquals($compareData, $data);
-            
         }
     }
 ?>
