@@ -85,6 +85,8 @@
             $this->assertTrue($saved);
 
             $report = new Report();
+            $report->setType(Report::TYPE_ROWS_AND_COLUMNS);
+            $report->setModuleClassName('ReportsTestModule');
 
             //for fullname attribute  (derived attribute)
             $reportModelTestItem = new ReportModelTestItem();
@@ -239,20 +241,10 @@
             $displayAttribute19->setModelAliasUsingTableAliasName('model1');
             $displayAttribute19->attributeIndexOrDerivedType = 'owner__User';
 
-            $saved                = $reportModelTestItem->save();
+            $saved              = $reportModelTestItem->save();
             $this->assertTrue($saved);
-            $tempId               = 1;
-            $reportResultsRowData = new ReportResultsRowData(array(
-                                        $displayAttribute1, $displayAttribute2, $displayAttribute3,
-                                        $displayAttribute4, $displayAttribute5, $displayAttribute6,
-                                        $displayAttribute7, $displayAttribute8, $displayAttribute9,
-                                        $displayAttribute10, $displayAttribute11, $displayAttribute12,
-                                        $displayAttribute13, $displayAttribute14, $displayAttribute15,
-                                        $displayAttribute16, $displayAttribute17, $displayAttribute18,
-                                        $displayAttribute19), $tempId);
-
-            $reportResultsRowData->addModelAndAlias($reportModelTestItem,  'model1');
-            $adapter            = new ReportToExportAdapter($reportResultsRowData, $report);
+            $dataProvider       = new RowsAndColumnsReportDataProvider($report);
+            $adapter            = new ReportToExportAdapter($dataProvider, $report);
             $compareHeaderData  = array( 'Name', 'Boolean', 'Date', 'Date Time', 'Float',
                                          'Integer', 'Phone', 'String', 'Text Area', 'Url', 'Drop Down',
                                          'Currency Value', 'Currency Value Currency', 'Primary Address >> Street 1',
