@@ -34,7 +34,7 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class InstallUtilTest extends ZurmoBaseTest
+    class AutoBuildOptimizedInstallUtilTest extends ZurmoBaseTest
     {
         protected $temporaryDatabaseHostname;
         protected $temporaryDatabasePort = 3306;
@@ -84,54 +84,54 @@
         public function testWebServer()
         {
             $_SERVER['SERVER_SOFTWARE'] = 'Apache/2.2.16 (Debian) Server Blaa Blaa Blaa';
-            InstallUtil::checkWebServer(array('apache' => '10.0.0'), $expectedVersion);
-            $this->assertFalse (InstallUtil::checkWebServer(array('apache' => '3.0.0'),  $actualVersion));
+            AutoBuildOptimizedInstallUtil::checkWebServer(array('apache' => '10.0.0'), $expectedVersion);
+            $this->assertFalse (AutoBuildOptimizedInstallUtil::checkWebServer(array('apache' => '3.0.0'),  $actualVersion));
             $this->assertEquals($expectedVersion, $actualVersion);
-            $this->assertTrue(InstallUtil::checkWebServer(array('apache' => '2.2.16'), $actualVersion));
+            $this->assertTrue(AutoBuildOptimizedInstallUtil::checkWebServer(array('apache' => '2.2.16'), $actualVersion));
             $this->assertEquals($expectedVersion, $actualVersion);
-            $this->assertTrue(InstallUtil::checkWebServer(array('apache' => '2.2.0'),  $actualVersion));
+            $this->assertTrue(AutoBuildOptimizedInstallUtil::checkWebServer(array('apache' => '2.2.0'),  $actualVersion));
             $this->assertEquals($expectedVersion, $actualVersion);
-            $this->assertFalse (InstallUtil::checkWebServer(array('iis'    => '5.0.0'),  $actualVersion));
+            $this->assertFalse (AutoBuildOptimizedInstallUtil::checkWebServer(array('iis'    => '5.0.0'),  $actualVersion));
             $this->assertEquals($expectedVersion, $actualVersion);
             $_SERVER['SERVER_SOFTWARE'] = 'Apache';
-            $this->assertFalse (InstallUtil::checkWebServer(array('apache' => '1.0.0'),  $actualVersion));
+            $this->assertFalse (AutoBuildOptimizedInstallUtil::checkWebServer(array('apache' => '1.0.0'),  $actualVersion));
 
             $_SERVER['SERVER_SOFTWARE'] = 'Apache/2.2.16 (Debian) Server Blaa Blaa Blaa';
-            InstallUtil::checkWebServer(array('apache' => '10.0.0'), $expectedVersion);
-            $this->assertFalse (InstallUtil::checkWebServer(array('apache' => '3.0.0'),  $actualVersion));
+            AutoBuildOptimizedInstallUtil::checkWebServer(array('apache' => '10.0.0'), $expectedVersion);
+            $this->assertFalse (AutoBuildOptimizedInstallUtil::checkWebServer(array('apache' => '3.0.0'),  $actualVersion));
             $this->assertEquals($expectedVersion, $actualVersion);
-            $this->assertTrue(InstallUtil::checkWebServer(array('apache' => '2.2.16'), $actualVersion));
+            $this->assertTrue(AutoBuildOptimizedInstallUtil::checkWebServer(array('apache' => '2.2.16'), $actualVersion));
             $this->assertEquals($expectedVersion, $actualVersion);
-            $this->assertTrue(InstallUtil::checkWebServer(array('apache' => '2.2.0'),  $actualVersion));
+            $this->assertTrue(AutoBuildOptimizedInstallUtil::checkWebServer(array('apache' => '2.2.0'),  $actualVersion));
             $this->assertEquals($expectedVersion, $actualVersion);
-            $this->assertFalse (InstallUtil::checkWebServer(array('iis'    => '5.0.0'),  $actualVersion));
+            $this->assertFalse (AutoBuildOptimizedInstallUtil::checkWebServer(array('iis'    => '5.0.0'),  $actualVersion));
             $this->assertEquals($expectedVersion, $actualVersion);
             $_SERVER['SERVER_SOFTWARE'] = 'Apache';
-            $this->assertFalse (InstallUtil::checkWebServer(array('apache' => '1.0.0'),  $actualVersion));
+            $this->assertFalse (AutoBuildOptimizedInstallUtil::checkWebServer(array('apache' => '1.0.0'),  $actualVersion));
 
             $_SERVER['SERVER_SOFTWARE'] = 'Microsoft-IIS/5.0';
-            InstallUtil::checkWebServer(array('microsoft-iis' => '5.0.0'), $expectedVersion);
-            $this->assertTrue (InstallUtil::checkWebServer(array('microsoft-iis' => '5.0.0'),  $actualVersion));
+            AutoBuildOptimizedInstallUtil::checkWebServer(array('microsoft-iis' => '5.0.0'), $expectedVersion);
+            $this->assertTrue (AutoBuildOptimizedInstallUtil::checkWebServer(array('microsoft-iis' => '5.0.0'),  $actualVersion));
             $this->assertEquals($expectedVersion, $actualVersion);
-            $this->assertTrue (InstallUtil::checkWebServer(array('microsoft-iis' => '3.0.0'),  $actualVersion));
+            $this->assertTrue (AutoBuildOptimizedInstallUtil::checkWebServer(array('microsoft-iis' => '3.0.0'),  $actualVersion));
             $this->assertEquals($expectedVersion, $actualVersion);
 
             $_SERVER['SERVER_SOFTWARE'] = 'Microsoft-IIS/3.0';
-            InstallUtil::checkWebServer(array('microsoft-iis' => '5.0.0'), $expectedVersion);
-            $this->assertFalse (InstallUtil::checkWebServer(array('microsoft-iis' => '5.0.0'),  $actualVersion));
+            AutoBuildOptimizedInstallUtil::checkWebServer(array('microsoft-iis' => '5.0.0'), $expectedVersion);
+            $this->assertFalse (AutoBuildOptimizedInstallUtil::checkWebServer(array('microsoft-iis' => '5.0.0'),  $actualVersion));
             $this->assertEquals($expectedVersion, $actualVersion);
         }
 
         public function testCheckPhp()
         {
             $expectedVersion = PHP_VERSION;
-            $this->assertFalse (InstallUtil::checkPhp('6.0.0',     $actualVersion));
+            $this->assertFalse (AutoBuildOptimizedInstallUtil::checkPhp('6.0.0',     $actualVersion));
             $this->assertEquals($expectedVersion, $actualVersion);
-            $this->assertFalse (InstallUtil::checkPhp('5.8.0',     $actualVersion));
+            $this->assertFalse (AutoBuildOptimizedInstallUtil::checkPhp('5.8.0',     $actualVersion));
             $this->assertEquals($expectedVersion, $actualVersion);
-            $this->assertTrue(InstallUtil::checkPhp(PHP_VERSION, $actualVersion));
+            $this->assertTrue(AutoBuildOptimizedInstallUtil::checkPhp(PHP_VERSION, $actualVersion));
             $this->assertEquals($expectedVersion, $actualVersion);
-            $this->assertTrue(InstallUtil::checkPhp('4.4.1',     $actualVersion));
+            $this->assertTrue(AutoBuildOptimizedInstallUtil::checkPhp('4.4.1',     $actualVersion));
             $this->assertEquals($expectedVersion, $actualVersion);
         }
 
@@ -139,9 +139,9 @@
         {
             $oldValue = ini_get('date.timezone');
             ini_set('date.timezone', '');
-            $this->assertFalse(InstallUtil::checkPhpTimezoneSetting());
+            $this->assertFalse(AutoBuildOptimizedInstallUtil::checkPhpTimezoneSetting());
             ini_set('date.timezone', 'EST');
-            $this->assertTrue (InstallUtil::checkPhpTimezoneSetting());
+            $this->assertTrue (AutoBuildOptimizedInstallUtil::checkPhpTimezoneSetting());
             ini_set('date.timezone', $oldValue);
         }
 
@@ -149,56 +149,56 @@
         {
             $oldValue = ini_get('memory_limit');
             ini_set('memory_limit', '64M');
-            $this->assertFalse(InstallUtil::checkPhpMaxMemorySetting(1024 * 1024 * 1024, $actualMemoryLimitBytes));
-            $this->assertTrue(InstallUtil::checkPhpMaxMemorySetting(64 * 1024 * 1024, $actualMemoryLimitBytes));
+            $this->assertFalse(AutoBuildOptimizedInstallUtil::checkPhpMaxMemorySetting(1024 * 1024 * 1024, $actualMemoryLimitBytes));
+            $this->assertTrue(AutoBuildOptimizedInstallUtil::checkPhpMaxMemorySetting(64 * 1024 * 1024, $actualMemoryLimitBytes));
             $this->assertEquals(64 * 1024 * 1024, $actualMemoryLimitBytes);
-            $this->assertTrue( InstallUtil::checkPhpMaxMemorySetting(12 * 1024 * 1024, $actualMemoryLimitBytes));
+            $this->assertTrue( AutoBuildOptimizedInstallUtil::checkPhpMaxMemorySetting(12 * 1024 * 1024, $actualMemoryLimitBytes));
             $this->assertEquals(64 * 1024 * 1024, $actualMemoryLimitBytes);
-            $this->assertTrue(InstallUtil::checkPhpMaxMemorySetting( 1 * 1024, $actualMemoryLimitBytes));
+            $this->assertTrue(AutoBuildOptimizedInstallUtil::checkPhpMaxMemorySetting( 1 * 1024, $actualMemoryLimitBytes));
             $this->assertEquals(64 * 1024 * 1024, $actualMemoryLimitBytes);
             ini_set('memory_limit', '64m');
-            $this->assertFalse(InstallUtil::checkPhpMaxMemorySetting(1024 * 1024 * 1024, $actualMemoryLimitBytes));
+            $this->assertFalse(AutoBuildOptimizedInstallUtil::checkPhpMaxMemorySetting(1024 * 1024 * 1024, $actualMemoryLimitBytes));
             $this->assertEquals(64 * 1024 * 1024, $actualMemoryLimitBytes);
-            $this->assertTrue(InstallUtil::checkPhpMaxMemorySetting(64 * 1024 * 1024, $actualMemoryLimitBytes));
+            $this->assertTrue(AutoBuildOptimizedInstallUtil::checkPhpMaxMemorySetting(64 * 1024 * 1024, $actualMemoryLimitBytes));
             $this->assertEquals(64 * 1024 * 1024, $actualMemoryLimitBytes);
-            $this->assertTrue(InstallUtil::checkPhpMaxMemorySetting(12 * 1024 * 1024, $actualMemoryLimitBytes));
+            $this->assertTrue(AutoBuildOptimizedInstallUtil::checkPhpMaxMemorySetting(12 * 1024 * 1024, $actualMemoryLimitBytes));
             $this->assertEquals(64 * 1024 * 1024, $actualMemoryLimitBytes);
-            $this->assertTrue(InstallUtil::checkPhpMaxMemorySetting( 1 * 1024, $actualMemoryLimitBytes));
+            $this->assertTrue(AutoBuildOptimizedInstallUtil::checkPhpMaxMemorySetting( 1 * 1024, $actualMemoryLimitBytes));
             $this->assertEquals(64 * 1024 * 1024,        $actualMemoryLimitBytes);
             //causing actual exhausting of memory during tests.
             /*
             ini_set('memory_limit', '64K');
-            $this->assertFalse (64 * 1024, InstallUtil::checkPhpMaxMemorySetting(1024 * 1024, $actualMemoryLimitBytes));
+            $this->assertFalse (64 * 1024, AutoBuildOptimizedInstallUtil::checkPhpMaxMemorySetting(1024 * 1024, $actualMemoryLimitBytes));
             $this->assertEquals(64 * 1024, $actualMemoryLimitBytes);
-            $this->assertTrue(InstallUtil::checkPhpMaxMemorySetting(64 * 1024, $actualMemoryLimitBytes));
+            $this->assertTrue(AutoBuildOptimizedInstallUtil::checkPhpMaxMemorySetting(64 * 1024, $actualMemoryLimitBytes));
             $this->assertEquals(64 * 1024, $actualMemoryLimitBytes);
-            $this->assertTrue(InstallUtil::checkPhpMaxMemorySetting(12 * 1024, $actualMemoryLimitBytes));
+            $this->assertTrue(AutoBuildOptimizedInstallUtil::checkPhpMaxMemorySetting(12 * 1024, $actualMemoryLimitBytes));
             $this->assertEquals(64 * 1024, $actualMemoryLimitBytes);
-            $this->assertTrue(InstallUtil::checkPhpMaxMemorySetting( 1 * 1024, $actualMemoryLimitBytes));
+            $this->assertTrue(AutoBuildOptimizedInstallUtil::checkPhpMaxMemorySetting( 1 * 1024, $actualMemoryLimitBytes));
             $this->assertEquals(64 * 1024, $actualMemoryLimitBytes);
           */
             ini_set('memory_limit', '64G');
-            $this->assertFalse( InstallUtil::checkPhpMaxMemorySetting(1024 * 1024 * 1024 * 1024, $actualMemoryLimitBytes));
+            $this->assertFalse( AutoBuildOptimizedInstallUtil::checkPhpMaxMemorySetting(1024 * 1024 * 1024 * 1024, $actualMemoryLimitBytes));
             $this->assertEquals(64 * 1024 * 1024 * 1024, $actualMemoryLimitBytes);
-            $this->assertTrue(InstallUtil::checkPhpMaxMemorySetting(64 * 1024 * 1024 * 1024, $actualMemoryLimitBytes));
+            $this->assertTrue(AutoBuildOptimizedInstallUtil::checkPhpMaxMemorySetting(64 * 1024 * 1024 * 1024, $actualMemoryLimitBytes));
             $this->assertEquals(64 * 1024 * 1024 * 1024, $actualMemoryLimitBytes);
-            $this->assertTrue(InstallUtil::checkPhpMaxMemorySetting(12 * 1024 * 1024, $actualMemoryLimitBytes));
+            $this->assertTrue(AutoBuildOptimizedInstallUtil::checkPhpMaxMemorySetting(12 * 1024 * 1024, $actualMemoryLimitBytes));
             $this->assertEquals(64 * 1024 * 1024 * 1024, $actualMemoryLimitBytes);
-            $this->assertTrue(InstallUtil::checkPhpMaxMemorySetting( 1 * 1024, $actualMemoryLimitBytes));
+            $this->assertTrue(AutoBuildOptimizedInstallUtil::checkPhpMaxMemorySetting( 1 * 1024, $actualMemoryLimitBytes));
             $this->assertEquals(64 * 1024 * 1024 * 1024, $actualMemoryLimitBytes);
             ini_set('memory_limit', $oldValue);
         }
 
         public function testCheckDatabase_mysql()
         {
-            InstallUtil::checkDatabase('mysql',
+            AutoBuildOptimizedInstallUtil::checkDatabase('mysql',
                                     $this->temporaryDatabaseHostname,
                                     $this->temporaryDatabaseUsername,
                                     $this->temporaryDatabasePassword,
                                     $this->temporaryDatabasePort,
                                     '10.5.5',
                                     $expectedVersion);
-            $this->assertFalse (InstallUtil::checkDatabase('mysql',
+            $this->assertFalse (AutoBuildOptimizedInstallUtil::checkDatabase('mysql',
                                 $this->temporaryDatabaseHostname,
                                 $this->temporaryDatabaseUsername,
                                 $this->temporaryDatabasePassword,
@@ -206,7 +206,7 @@
                                 '7.0.0  ',
                                 $actualVersion));
             $this->assertEquals($expectedVersion, $actualVersion);
-            $this->assertTrue(InstallUtil::checkDatabase('mysql',
+            $this->assertTrue(AutoBuildOptimizedInstallUtil::checkDatabase('mysql',
                             $this->temporaryDatabaseHostname,
                             $this->temporaryDatabaseUsername,
                             $this->temporaryDatabasePassword,
@@ -214,7 +214,7 @@
                             $expectedVersion,
                             $actualVersion));
             $this->assertEquals($expectedVersion, $actualVersion);
-            $this->assertTrue(InstallUtil::checkDatabase('mysql',
+            $this->assertTrue(AutoBuildOptimizedInstallUtil::checkDatabase('mysql',
                             $this->temporaryDatabaseHostname,
                             $this->temporaryDatabaseUsername,
                             $this->temporaryDatabasePassword,
@@ -226,14 +226,14 @@
 
         public function testCheckAPC()
         {
-            InstallUtil::checkAPC('10.1.3', $expectedVersion);
-            $this->assertFalse(InstallUtil::checkAPC('5.1.3',          $actualVersion));
+            AutoBuildOptimizedInstallUtil::checkAPC('10.1.3', $expectedVersion);
+            $this->assertFalse(AutoBuildOptimizedInstallUtil::checkAPC('5.1.3',          $actualVersion));
             $this->assertEquals($expectedVersion, $actualVersion);
             if (phpversion('apc') !== false)
             {
-                $this->assertTrue (InstallUtil::checkAPC($expectedVersion, $actualVersion));
+                $this->assertTrue (AutoBuildOptimizedInstallUtil::checkAPC($expectedVersion, $actualVersion));
                 $this->assertEquals($expectedVersion, $actualVersion);
-                $this->assertTrue (InstallUtil::checkAPC('2.0.5',          $actualVersion));
+                $this->assertTrue (AutoBuildOptimizedInstallUtil::checkAPC('2.0.5',          $actualVersion));
                 $this->assertEquals($expectedVersion, $actualVersion);
             }
         }
@@ -243,7 +243,7 @@
       */
         public function testCheckSoap()
         {
-            $this->assertNotNull(InstallUtil::checkSoap());
+            $this->assertNotNull(AutoBuildOptimizedInstallUtil::checkSoap());
         }
 
         /**
@@ -251,7 +251,7 @@
       */
         public function testCheckSPL()
         {
-            $this->assertNotNull(InstallUtil::checkSPL());
+            $this->assertNotNull(AutoBuildOptimizedInstallUtil::checkSPL());
         }
 
         /**
@@ -259,7 +259,7 @@
       */
         public function testCheckCtype()
         {
-            $this->assertNotNull(InstallUtil::checkCtype());
+            $this->assertNotNull(AutoBuildOptimizedInstallUtil::checkCtype());
         }
 
         /**
@@ -267,7 +267,7 @@
       */
         public function testCheckPCRE()
         {
-            $this->assertNotNull(InstallUtil::checkPCRE());
+            $this->assertNotNull(AutoBuildOptimizedInstallUtil::checkPCRE());
         }
 
         /**
@@ -275,7 +275,7 @@
       */
         public function testCheckImap()
         {
-            $this->assertNotNull(InstallUtil::checkImap());
+            $this->assertNotNull(AutoBuildOptimizedInstallUtil::checkImap());
         }
 
         /**
@@ -283,45 +283,45 @@
       */
         public function testCheckZip()
         {
-            $this->assertNotNull(InstallUtil::checkZip());
+            $this->assertNotNull(AutoBuildOptimizedInstallUtil::checkZip());
         }
 
         public function testCheckServerVariable()
         {
             $error = null;
-            $this->assertNotNull(InstallUtil::checkServerVariable($error));
+            $this->assertNotNull(AutoBuildOptimizedInstallUtil::checkServerVariable($error));
         }
 
         public function testCheckYii()
         {
-            InstallUtil::checkYii('10.1.8', $expectedVersion);
-            $this->assertFalse(InstallUtil::checkYii('3.1.8',          $actualVersion));
+            AutoBuildOptimizedInstallUtil::checkYii('10.1.8', $expectedVersion);
+            $this->assertFalse(AutoBuildOptimizedInstallUtil::checkYii('3.1.8',          $actualVersion));
             $this->assertEquals($expectedVersion, $actualVersion);
-            $this->assertTrue (InstallUtil::checkYii($expectedVersion, $actualVersion));
+            $this->assertTrue (AutoBuildOptimizedInstallUtil::checkYii($expectedVersion, $actualVersion));
             $this->assertEquals($expectedVersion, $actualVersion);
-            $this->assertTrue (InstallUtil::checkYii('1.1.6',          $actualVersion));
+            $this->assertTrue (AutoBuildOptimizedInstallUtil::checkYii('1.1.6',          $actualVersion));
             $this->assertEquals($expectedVersion, $actualVersion);
         }
 
         public function testCheckRedBean()
         {
-            InstallUtil::checkRedBean('10.1.3', $expectedVersion);
-            $this->assertFalse(InstallUtil::checkRedBean('5.1.3',          $actualVersion));
+            AutoBuildOptimizedInstallUtil::checkRedBean('10.1.3', $expectedVersion);
+            $this->assertFalse(AutoBuildOptimizedInstallUtil::checkRedBean('5.1.3',          $actualVersion));
             $this->assertEquals($expectedVersion, $actualVersion);
-            $this->assertTrue (InstallUtil::checkRedBean($expectedVersion, $actualVersion));
+            $this->assertTrue (AutoBuildOptimizedInstallUtil::checkRedBean($expectedVersion, $actualVersion));
             $this->assertEquals($expectedVersion, $actualVersion);
-            $this->assertTrue (InstallUtil::checkRedBean('1.2.9',          $actualVersion));
+            $this->assertTrue (AutoBuildOptimizedInstallUtil::checkRedBean('1.2.9',          $actualVersion));
             $this->assertEquals($expectedVersion, $actualVersion);
         }
 
         public function testIsMbStringInstalled()
         {
-            $this->assertTrue(InstallUtil::isMbStringInstalled());
+            $this->assertTrue(AutoBuildOptimizedInstallUtil::isMbStringInstalled());
         }
 
         public function testIsFileUploadsOn()
         {
-            $this->assertTrue(InstallUtil::isFileUploadsOn());
+            $this->assertTrue(AutoBuildOptimizedInstallUtil::isFileUploadsOn());
         }
 
         /**
@@ -329,8 +329,8 @@
        */
         public function testCheckPhpUploadSizeSetting()
         {
-            $this->assertFalse(InstallUtil::checkPhpUploadSizeSetting(1024 * 1024 * 1024, $actualUploadLimitBytes));
-            $this->assertTrue(InstallUtil::checkPhpUploadSizeSetting(1 * 1024 * 1024, $actualUploadLimitBytes));
+            $this->assertFalse(AutoBuildOptimizedInstallUtil::checkPhpUploadSizeSetting(1024 * 1024 * 1024, $actualUploadLimitBytes));
+            $this->assertTrue(AutoBuildOptimizedInstallUtil::checkPhpUploadSizeSetting(1 * 1024 * 1024, $actualUploadLimitBytes));
         }
 
         /**
@@ -338,8 +338,8 @@
        */
         public function testCheckPhpPostSizeSetting()
         {
-            $this->assertFalse (InstallUtil::checkPhpPostSizeSetting(1024 * 1024 * 1024, $actualPostLimitBytes));
-            $this->assertTrue(InstallUtil::checkPhpPostSizeSetting(1 * 1024 * 1024, $actualPostLimitBytes));
+            $this->assertFalse (AutoBuildOptimizedInstallUtil::checkPhpPostSizeSetting(1024 * 1024 * 1024, $actualPostLimitBytes));
+            $this->assertTrue(AutoBuildOptimizedInstallUtil::checkPhpPostSizeSetting(1 * 1024 * 1024, $actualPostLimitBytes));
         }
 
         /**
@@ -349,7 +349,7 @@
         {
             $minimumRequireBytes = 1;
             $actualBytes         = null;
-            $this->assertNotNull(InstallUtil::checkDatabaseMaxAllowedPacketsSize('mysql',
+            $this->assertNotNull(AutoBuildOptimizedInstallUtil::checkDatabaseMaxAllowedPacketsSize('mysql',
                                                                                $this->temporaryDatabaseHostname,
                                                                                $this->temporaryDatabaseUsername,
                                                                                $this->temporaryDatabasePassword,
@@ -365,7 +365,7 @@
         {
             $minimumRequiredMaxSpRecursionDepth = 20;
             $maxSpRecursionDepth                = null;
-            $this->assertNotNull(InstallUtil::checkDatabaseMaxSpRecursionDepth('mysql',
+            $this->assertNotNull(AutoBuildOptimizedInstallUtil::checkDatabaseMaxSpRecursionDepth('mysql',
                                                                              $this->temporaryDatabaseHostname,
                                                                              $this->temporaryDatabaseUsername,
                                                                              $this->temporaryDatabasePassword,
@@ -381,7 +381,7 @@
         {
             $minimumRequiredThreadStackValue = 524288;
             $threadStackValue                = null;
-            $this->assertNotNull(InstallUtil::checkDatabaseThreadStackValue('mysql',
+            $this->assertNotNull(AutoBuildOptimizedInstallUtil::checkDatabaseThreadStackValue('mysql',
                                                                 $this->temporaryDatabaseHostname,
                                                                 $this->temporaryDatabaseUsername,
                                                                 $this->temporaryDatabasePassword,
@@ -396,7 +396,7 @@
         public function testCheckDatabaseOptimizerSearchDepthValue()
         {
             $threadStackValue                = null;
-            $this->assertNotNull(InstallUtil::checkDatabaseOptimizerSearchDepthValue('mysql',
+            $this->assertNotNull(AutoBuildOptimizedInstallUtil::checkDatabaseOptimizerSearchDepthValue('mysql',
                                                             $this->temporaryDatabaseHostname,
                                                             $this->temporaryDatabaseUsername,
                                                             $this->temporaryDatabasePassword,
@@ -411,7 +411,7 @@
         {
             $notAllowedDatabaseCollations = array('utf8_general_ci');
             $databaseDefaultCollation     = null;
-            $this->assertNotNull(InstallUtil::checkDatabaseDefaultCollation('mysql',
+            $this->assertNotNull(AutoBuildOptimizedInstallUtil::checkDatabaseDefaultCollation('mysql',
                                                                           $this->temporaryDatabaseHostname,
                                                                           $this->temporaryDatabaseName,
                                                                           $this->temporaryDatabaseUsername,
@@ -439,7 +439,7 @@
         public function testCheckDatabaseLogBinValue()
         {
             $logBinValue     = null;
-            $this->assertNotNull(InstallUtil::checkDatabaseLogBinValue('mysql',
+            $this->assertNotNull(AutoBuildOptimizedInstallUtil::checkDatabaseLogBinValue('mysql',
                                                                        $this->temporaryDatabaseHostname,
                                                                        $this->temporaryDatabaseName,
                                                                        $this->temporaryDatabaseUsername,
@@ -454,7 +454,7 @@
         public function testCheckDatabaseLogBinTrustFunctionCreatorsValue()
         {
             $logBinTrustFunctionCreatorsValue     = null;
-            $this->assertNotNull(InstallUtil::checkDatabaseLogBinTrustFunctionCreatorsValue(
+            $this->assertNotNull(AutoBuildOptimizedInstallUtil::checkDatabaseLogBinTrustFunctionCreatorsValue(
                                                                             'mysql',
                                                                             $this->temporaryDatabaseHostname,
                                                                             $this->temporaryDatabaseName,
@@ -471,12 +471,12 @@
                 $this->markTestSkipped('Memcache level caching is turned off.');
             }
 
-            $this->assertTrue(InstallUtil::checkMemcacheConnection('127.0.0.1', 11211));
-            $this->assertTrue(InstallUtil::checkMemcacheConnection('localhost', 11211));
-            $results = InstallUtil::checkMemcacheConnection('10.3.3.3',  11211);
+            $this->assertTrue(AutoBuildOptimizedInstallUtil::checkMemcacheConnection('127.0.0.1', 11211));
+            $this->assertTrue(AutoBuildOptimizedInstallUtil::checkMemcacheConnection('localhost', 11211));
+            $results = AutoBuildOptimizedInstallUtil::checkMemcacheConnection('10.3.3.3',  11211);
             $this->assertTrue(  110 == $results[0] ||
                                 10060 == $results[0]);
-            $results = InstallUtil::checkMemcacheConnection('localhost', 12345);
+            $results = AutoBuildOptimizedInstallUtil::checkMemcacheConnection('localhost', 12345);
             $this->assertTrue(  111 == $results[0] ||
                                 10061 == $results[0] ||
                                 10060 == $results[0]);
@@ -501,18 +501,18 @@
                                                                                 $this->temporaryDatabaseName,
                                                                                 'wacko',
                                                                                 'wacked'));
-                InstallUtil::connectToDatabase('mysql',
+                AutoBuildOptimizedInstallUtil::connectToDatabase('mysql',
                                                 $this->temporaryDatabaseHostname,
                                                 'wacky',
                                                 $this->temporaryDatabaseUsername,
                                                 $this->temporaryDatabasePassword,
                                                 $this->temporaryDatabasePort);
-                Yii::app()->user->userModel = InstallUtil::createSuperUser('super', 'super');
+                Yii::app()->user->userModel = AutoBuildOptimizedInstallUtil::createSuperUser('super', 'super');
                 $messageLogger = new MessageLogger();
-                InstallUtil::autoBuildDatabase($messageLogger);
+                AutoBuildOptimizedInstallUtil::autoBuildDatabase($messageLogger);
                 $this->assertFalse($messageLogger->isErrorMessagePresent());
                 ReadPermissionsOptimizationUtil::rebuild();
-                InstallUtil::freezeDatabase();
+                AutoBuildOptimizedInstallUtil::freezeDatabase();
                 $tableNames = R::getCol('show tables');
                 $this->assertEquals(array(
                                         '_group',
@@ -587,7 +587,7 @@
 
             try
             {
-                InstallUtil::writeConfiguration($instanceRoot,
+                AutoBuildOptimizedInstallUtil::writeConfiguration($instanceRoot,
                                                 'mysql', 'databases.r-us.com', 'wacky', 'wacko', 'wacked', 3306,
                                                 'memcache.jason.com', 5432, false,
                                                 'es',
@@ -650,7 +650,7 @@
             $this->runInstallation(true);
             $messageLogger = new MessageLogger();
             $messageLogger->addInfoMessage(Zurmo::t('InstallModule', 'Starting schema update process.'));
-            $result = InstallUtil::runAutoBuildFromUpdateSchemaCommand($messageLogger);
+            $result = AutoBuildOptimizedInstallUtil::runAutoBuildFromUpdateSchemaCommand($messageLogger);
             $messageLogger->addInfoMessage(Zurmo::t('InstallModule', 'Schema update complete.'));
             $this->assertTrue($result);
         }
@@ -696,7 +696,7 @@
             $this->assertTrue(!is_file($perInstanceConfigFile));
             $this->assertTrue(!is_file($debugConfigFile));
 
-            InstallUtil::runInstallation($form, $messageStreamer);
+            AutoBuildOptimizedInstallUtil::runInstallation($form, $messageStreamer);
             $perInstanceConfiguration = file_get_contents($perInstanceConfigFile);
             $debugConfiguration = file_get_contents($debugConfigFile);
             //Check if super user is created.

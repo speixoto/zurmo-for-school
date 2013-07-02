@@ -39,10 +39,18 @@
      */
     abstract class RedBeanModelMemberIndexMetadataAdapter
     {
-        // TODO: @Shoaibi: Critical: Add some documentation for this.
-        // TODO: @Shoaibi: Critical: Tests
+        /**
+         * Provided indexName and metadata is resolved to match the requirements of schema definition
+         * @param string $indexName passed by reference
+         * @param array $indexMetadata passed by reference, array containing index definition
+         * @return bool whether or not we were able to resolve index correctly
+         */
         public static function resolve(& $indexName, array & $indexMetadata)
         {
+            if (empty($indexMetadata['members']) || !is_array($indexMetadata['members']))
+            {
+                return false;
+            }
             $unique         = false;
             if (isset($indexMetadata['unique']))
             {
@@ -50,10 +58,6 @@
             }
             $indexName      = static::resolveIndexName($indexName, $unique);
             $indexMembers   = $indexMetadata['members'];
-            if (empty($indexMembers))
-            {
-                return false;
-            }
             $indexMembers   = array_map(function($indexMember)
                                         {
                                             return RedBeanModelMemberToColumnNameUtil::resolve($indexMember);
@@ -65,14 +69,20 @@
             return true;
         }
 
-        public static function resolveIndexName($columnName, $unique = false)
+        /**
+         * Resolved an index name with proper prefix and suffix
+         * @param string $indexName
+         * @param bool $unique
+         * @return string
+         */
+        public static function resolveIndexName($indexName, $unique = false)
         {
             $prefix = null;
             if ($unique)
             {
                 $prefix = 'unique_';
             }
-            return $prefix . StringUtil::uncamelize($columnName) . '_Index';
+            return $prefix . StringUtil::uncamelize($indexName) . '_Index';
         }
     }
 ?>

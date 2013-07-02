@@ -39,17 +39,32 @@
      */
     abstract class RedBeanModelMemberRulesToColumnAdapter
     {
-        // TODO: @Shoaibi: Critical: Add some documentation for this.
-        // TODO: @Shoaibi: Critical: Tests
-
+        /**
+         * Should we assume all int types signed?
+         */
         const ASSUME_SIGNED = true;
 
+        /**
+         * this the default model class thats passed to validator in case we can't find a suitable model class.
+         * this class must allow having beans.
+         */
         const DEFAULT_MODEL_CLASS = 'Item';
 
+        /**
+         * Should be force using the default model class defined above for validators or try to find suitable one?
+         */
         const FORCE_DEFAULT_MODEL_CLASS = true;
 
+        /*
+         * list of uniqueIndexes built from Unique Validators
+         */
         protected static $uniqueIndexes = array();
 
+        /**
+         * returns unique indexes for a modelClass if there are any unique validators for its members
+         * @param string $modelClassName
+         * @return array|null
+         */
         public static function resolveUniqueIndexesFromValidator($modelClassName)
         {
             if (isset(static::$uniqueIndexes[$modelClassName]))
@@ -59,8 +74,19 @@
             return null;
         }
 
+        /**
+         * Provided modelClassName and rules for a member we resolve a column in table.
+         * @param string $modelClassName
+         * @param array $rules
+         * @param $messageLogger
+         * @return array|bool
+         */
         public static function resolve($modelClassName, array $rules, & $messageLogger)
         {
+            if (empty($rules))
+            {
+                return false;
+            }
             $column                         = array();
             $member                         = $rules[0][0];
             assert('strpos($member, " ") === false');
@@ -77,8 +103,8 @@
                 return false;
             }
             $column['type']                 = DatabaseCompatibilityUtil::mapHintTypeIntoDatabaseColumnType(
-                                                                                                        $column['type'],
-                                                                                                        $column['length']);
+                                                                                                    $column['type'],
+                                                                                                    $column['length']);
             unset($column['length']);
             return $column;
         }
@@ -144,7 +170,7 @@
                                 {
                                     $column['type'] = 'longtext';
                                 }
-                                elseif ($validator->max < 255)
+                                elseif ($validator->max <= 255)
                                 {
                                     $column['type']     = 'string';
                                     $column['length']   = $validator->max;
@@ -153,15 +179,23 @@
                         }
                         break;
                     case 'CUrlValidator':
-                        $column['type'] = 'url';
+                        $column['type'] = 'string';
+                        if (!isset($column['length']))
+                        {
+                            $column['length'] = 255;
+                        }
                         break;
                     case 'CEmailValidator':
-                        $column['type'] = 'email';
+                        $column['type'] = 'string';
+                        if (!isset($column['length']))
+                        {
+                            $column['length'] = 255;
+                        }
                         break;
                     case 'RedBeanModelNumberValidator':
                     case 'CNumberValidator':
                         if ((!isset($column['type']) || $column['type'] == 'integer') && !isset($validator->precision))
-                            {
+                        {
                             $column['type'] = 'integer';
                             if (isset($validator->max))
                             {
@@ -173,7 +207,6 @@
                                     {
                                         $minAllowedValue = -1 * $valueLimit;
                                     }
-
                                     if ((!isset($validator->min) || $validator->min >= $minAllowedValue) &&
                                                                                     $validator->max < $maxAllowedValue)
                                     {

@@ -39,8 +39,16 @@
      */
     abstract class RedBeanModelMemberRulesToColumnsAdapter
     {
-        // TODO: @Shoaibi: Critical: Add some documentation for this.
-        // TODO: @Shoaibi: Critical: Tests
+        /**
+         * Provided a modelClassName, members and corresponding rules columns array is generated for schema generation.
+         * Members with unique validators are tracked separately to be used with index array generation later.
+         * @param string $modelClassName
+         * @param array $members
+         * @param array $rules
+         * @param $messageLogger
+         * @return array
+         * @throws CException
+         */
         public static function resolve($modelClassName, array $members, array $rules, & $messageLogger)
         {
             $messageLogger->addInfoMessage(Zurmo::t('Core', 'Building Column definitions for {{model}}',

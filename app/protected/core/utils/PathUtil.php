@@ -36,7 +36,6 @@
 
     abstract class PathUtil
     {
-        // TODO: @Shoaibi: Critical: Tests
         public static function getAllClassNamesByPathAlias($alias)
         {
             assert('is_string($alias)');

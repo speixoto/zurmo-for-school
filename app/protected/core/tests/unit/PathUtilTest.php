@@ -34,40 +34,44 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    abstract class RedBeanModelMemberToColumnNameUtil
+    class PathUtilTest extends BaseTest
     {
-        public static function resolve($memberName)
+        public static function setUpBeforeClass()
         {
-            return strtolower($memberName);
+            parent::setUpBeforeClass();
+            SecurityTestHelper::createSuperAdmin();
+            $super = User::getByUsername('super');
+            Yii::app()->user->userModel = $super;
         }
 
-        public static function resolveForeignKeyColumnMetadata($name, $relatedModelClass = null)
+        public function testGetAllClassNamesByPathAlias()
         {
-            $column                 = array();
-            if (!isset($name))
-            {
-                if (isset($relatedModelClass))
-                {
-                    $name       = static::resolveForeignKeyNameByModelName($relatedModelClass);
-                }
-                else
-                {
-                    throw new NotSupportedException();
-                }
-            }
-            $column['name']         = $name;
-            $column['type']         = 'integer';
-            $column['unsigned']     = DatabaseCompatibilityUtil::resolveUnsignedByHintType($column['type'], false);
-            $column['notNull']      = 'NULL';
-            $column['collation']    = null;
-            $column['default']      = 'DEFAULT NULL';
-            $column['type']         = DatabaseCompatibilityUtil::mapHintTypeIntoDatabaseColumnType($column['type']);
-            return $column;
+            $alias = 'application.core.tests.unit';
+            $classes = PathUtil::getAllClassNamesByPathAlias($alias);
+            $this->assertNotEmpty($classes);
+            $this->assertContains('PathUtilTest', $classes);
         }
 
-        protected static function resolveForeignKeyNameByModelName($className)
+        /**
+         * @depends testGetAllClassNamesByPathAlias
+         */
+        public function testGetAllModelClassNames()
         {
-            return RedBeanModel::getTableName($className) . '_id';
+            $models = PathUtil::getAllModelClassNames();
+            $this->assertNotEmpty($models);
+            $this->assertContains('RedBeanModel', $models);
+            $this->assertContains('OwnedModel', $models);
+        }
+
+        /**
+         * @depends testGetAllModelClassNames
+         */
+        public function testGetAllCanHaveBeanModelClassNames()
+        {
+            $models = PathUtil::getAllCanHaveBeanModelClassNames();
+            $this->assertNotEmpty($models);
+            $this->assertNotContains('RedBeanModel', $models);
+            $this->assertNotContains('OwnedModel', $models);
         }
     }
 ?>

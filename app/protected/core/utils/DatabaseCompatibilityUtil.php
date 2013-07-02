@@ -1120,8 +1120,6 @@
                             $databaseColumnType = "DATETIME";
                             break;
                         case 'string':
-                        case 'url':
-                        case 'email':
                             if (!isset($length))
                             {
                                 $length = 255;

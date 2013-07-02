@@ -39,8 +39,14 @@
      */
     abstract class RedBeanModelMemberIndexesMetadataAdapter
     {
-        // TODO: @Shoaibi: Critical: Add some documentation for this.
-        // TODO: @Shoaibi: Critical: Tests
+        /**
+         * Provided modelClassName, $indexMetadata it generated index definitions that match schema requirements
+         * @param string $modelClassName
+         * @param array $indexesMetadata
+         * @param $messageLogger
+         * @return array index rules
+         * @throws CException if we were unable to resolve an index
+         */
         public static function resolve($modelClassName, array $indexesMetadata, & $messageLogger)
         {
             $messageLogger->addInfoMessage(Zurmo::t('Core', 'Building Indexes definitions for {{model}}',
