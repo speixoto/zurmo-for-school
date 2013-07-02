@@ -495,13 +495,16 @@
                         Zurmo::t('UsersModule', 'User email configuration saved successfully.')
                     );
 
-                    $refurl = Yii::app()->request->getParam('refurl');
-                    if(!empty($refurl) )
+                    $redirectUrl = Yii::app()->request->getParam('redirectUrl');
+                    if($redirectUrl != null)
                     {
-                        $url     = base64_decode($refurl);
+                        $url     = base64_decode($redirectUrl);
                         $this->redirect($url);
                     }
-                    $this->redirect(array($this->getId() . '/details', 'id' => $user->id));
+                    else
+                    {
+                        $this->redirect(array($this->getId() . '/details', 'id' => $user->id));
+                    }
                 }
             }
             $titleBarAndEditView = new UserActionBarAndEmailConfigurationEditView(
