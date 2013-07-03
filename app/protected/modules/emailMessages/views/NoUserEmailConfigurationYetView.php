@@ -42,11 +42,16 @@
     {
         public $cssClasses = array('splash-view');
 
+        public function __construct($redirectUrl = null)
+        {
+            $this->redirectUrl = $redirectUrl;
+        }
+
         protected function renderContent()
         {
             $params  = array('label' => $this->getCreateLinkDisplayLabel());
             $url     = Yii::app()->createUrl('/users/default/emailConfiguration',
-                                             array('id' => Yii::app()->user->userModel->id, 'redirectUrl'=>Yii::app()->request->getParam('redirectUrl')));
+                                             array('id' => Yii::app()->user->userModel->id, 'redirectUrl'=>$this->redirectUrl));
             $content = '<div class="' . $this->getIconName() . '">';
             $content .= $this->getMessageContent();
             $content .= ZurmoHtml::link(ZurmoHtml::wrapLabel($this->getCreateLinkDisplayLabel()), $url, array('class' => 'z-button green-button'));
