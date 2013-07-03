@@ -212,12 +212,13 @@
                 'column_1'  => ImportMappingUtil::makeStringColumnMappingData      ('name'),
                 'column_2'  => ImportMappingUtil::makeTextAreaColumnMappingData    ('description'),
                 'column_3'  => ImportMappingUtil::makeIntegerColumnMappingData     ('quantity'),
-                'column_4'  => ImportMappingUtil::makeStringColumnMappingData      ('account'),
+                'column_4'  => ImportMappingUtil::makeHasOneColumnMappingData      ('account',
+                               RelatedModelValueTypeMappingRuleForm::ZURMO_MODEL_NAME),
                 'column_5'  => ImportMappingUtil::makeStringColumnMappingData      ('stage'),
                 'column_6'  => ImportMappingUtil::makeCurrencyColumnMappingData    ('sellPrice', $currencies[0]),
                 'column_7'  => ImportMappingUtil::makeStringColumnMappingData      ('priceFrequency'),
                 'column_8'  => ImportMappingUtil::makeStringColumnMappingData      ('type'),
-                'column_9'  => ImportMappingUtil::makeStringColumnMappingData      ('contact'),
+                'column_9'  => ImportMappingUtil::makeHasOneColumnMappingData      ('contact'),
             );
 
             $importRules  = ImportRulesUtil::makeImportRulesByType('Products');
