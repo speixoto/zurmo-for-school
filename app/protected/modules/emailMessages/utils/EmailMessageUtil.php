@@ -230,8 +230,7 @@
                                                            array('toAddress'             => $emailAddress,
                                                                  'relatedId'             => $model->id,
                                                                  'relatedModelClassName' => get_class($model),
-                                                                 'redirectUrl'           =>  Yii::app()->request->getRequestUri()
-                                                                 ));
+                                                                 'redirectUrl'           =>  Yii::app()->request->getRequestUri()));
                 $modalAjaxOptions  = ModalView::getAjaxOptionsForModalLink(
                                      Zurmo::t('EmailMessagesModule', 'Compose Email'), 'modalContainer', 'auto', 800,
                                                                     array(
