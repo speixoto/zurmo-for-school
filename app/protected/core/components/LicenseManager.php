@@ -42,5 +42,13 @@
         public function resolveValidationOnCreateOrEditUser(User $user, UserStatus $userStatus)
         {
         }
+
+        public function resolveUserIdentityAuthenticationForError(LoginForm $form, UserIdentity $identity)
+        {
+        }
+
+        public function resolveUserIdentityApiAuthenticationForError(UserIdentity $identity)
+        {
+        }
     }
 ?>
