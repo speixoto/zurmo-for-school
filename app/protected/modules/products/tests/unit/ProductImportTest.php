@@ -160,42 +160,6 @@
             //Create Contact
             $contact                               = ContactTestHelper::createContactByNameForOwner("My Contact", Yii::app()->user->userModel);
 
-            $pathToFile = Yii::getPathOfAlias('application.modules.products.tests.unit.files');
-            $filePath    = $pathToFile . DIRECTORY_SEPARATOR . 'products_sample_with_relations.csv';
-            $row = 1;
-            $newCsvData = array();
-            $tempData = array();
-            if (($handle = fopen($filePath, "r")) !== FALSE)
-            {
-                while (($data = fgetcsv($handle, 1000, ",")) !== FALSE)
-                {
-                    if($row == 1)
-                    {
-                        $tempData       = $data;
-                        $tempData[]     = 'Contact';
-                        $newCsvData[]   = $tempData;
-                    }
-                    else
-                    {
-                        $tempData       = $data;
-                        $tempData[]     = $contact->id;
-                        $newCsvData[]   = $tempData;
-                    }
-                    $row++;
-                }
-                fclose($handle);
-            }
-
-            $newFilePath    = $pathToFile . DIRECTORY_SEPARATOR . 'products_sample_with_relations_mod.csv';
-            $handle = fopen($newFilePath, 'w');
-
-            foreach ($newCsvData as $line)
-            {
-               fputcsv($handle, $line);
-            }
-
-            fclose($handle);
-
             $import                                = new Import();
             $serializedData['importRulesType']     = 'Products';
             $serializedData['firstRowIsHeaderRow'] = true;
@@ -203,8 +167,12 @@
             $this->assertTrue($import->save());
 
             ImportTestHelper::
-            createTempTableByFileNameAndTableName('products_sample_with_relations_mod.csv', $import->getTempTableName(),
+            createTempTableByFileNameAndTableName('products_sample_with_relations.csv', $import->getTempTableName(),
                                                   Yii::getPathOfAlias('application.modules.products.tests.unit.files'));
+
+            //update the ids of the account column to match the parent account.
+            R::exec("update " . $import->getTempTableName() . " set column_9 = " .
+                    $contact->id . " where id != 1 limit 3");
 
             $this->assertEquals(3, ImportDatabaseUtil::getCount($import->getTempTableName())); // includes header rows.
 
@@ -269,10 +237,6 @@
             $this->assertEquals(2,                         $products[0]->priceFrequency);
             $this->assertEquals(2,                         $products[0]->type);
             $this->assertEquals('My Contact',              $products[0]->contact->firstName);
-
-            //Confirm 10 rows were processed as 'created'.
-//            $this->assertEquals(2, ImportDatabaseUtil::getCount($import->getTempTableName(), "status = "
-//                                                                 . ImportRowDataResultsUtil::CREATED));
 
             //Confirm that 2 rows were processed as 'updated'.
             $this->assertEquals(0, ImportDatabaseUtil::getCount($import->getTempTableName(),  "status = "
