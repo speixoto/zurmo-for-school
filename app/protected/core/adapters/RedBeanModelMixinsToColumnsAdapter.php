@@ -39,28 +39,36 @@
      */
     abstract class RedBeanModelMixinsToColumnsAdapter
     {
-        // TODO: @Shoaibi: Critical: Add some documentation for this.
-        // TODO: @Shoaibi: Critical: Tests
+        /**
+         * Generated column definition for a model's mixins
+         * @param string $modelClassName
+         * @param $messageLogger
+         * @return array
+         * @throws CException
+         */
         public static function resolve($modelClassName, & $messageLogger)
         {
             $messageLogger->addInfoMessage(Zurmo::t('Core', 'Building Column definitions for mixins of {{model}}',
                                                                                 array('{{model}}' => $modelClassName)));
             $columns       = array();
-            $mixins        = $modelClassName::getMixedInModelClassNames();
-            foreach($mixins as $mixinModelClassName)
+            if (!empty($modelClassName) && @class_exists($modelClassName))
             {
-                $column = RedBeanModelMixinToColumnAdapter::resolve($mixinModelClassName);
-                if ($column)
+                $mixins        = $modelClassName::getMixedInModelClassNames();
+                foreach($mixins as $mixinModelClassName)
                 {
-                    $columns[] = $column;
-                }
-                else
-                {
-                    $errorMessage = Zurmo::t('Core', 'Failed to resolve {{model}}.{{mixinModelClassName}} to column',
-                                                            array('{{model}}' => $modelClassName,
-                                                                    '{{mixinModelClassName}}' => $mixinModelClassName));
-                    $messageLogger->addErrorMessage($errorMessage);
-                    throw new CException($errorMessage);
+                    $column = RedBeanModelMixinToColumnAdapter::resolve($mixinModelClassName);
+                    if ($column)
+                    {
+                        $columns[] = $column;
+                    }
+                    else
+                    {
+                        $errorMessage = Zurmo::t('Core', 'Failed to resolve {{model}}.{{mixinModelClassName}} to column',
+                                                                array('{{model}}' => $modelClassName,
+                                                                        '{{mixinModelClassName}}' => $mixinModelClassName));
+                        $messageLogger->addErrorMessage($errorMessage);
+                        throw new CException($errorMessage);
+                    }
                 }
             }
             $messageLogger->addInfoMessage(Zurmo::t('Core', 'Column definitions for mixins Built'));

@@ -42,7 +42,8 @@
         public static function resolve($mixinModelClassName)
         {
             $column     = null;
-            if ($mixinModelClassName::getCanHaveBean())
+            if (!empty($mixinModelClassName) && @class_exists($mixinModelClassName) &&
+                                                                        $mixinModelClassName::getCanHaveBean())
             {
                 $column = RedBeanModelMemberToColumnNameUtil::resolveForeignKeyColumnMetadata(null,
                                                                                                 $mixinModelClassName);

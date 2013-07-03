@@ -44,7 +44,7 @@
         public static function resolve($modelClassName, & $messageLogger)
         {
             $metadata                       = $modelClassName::getDefaultMetaData();
-            if (!isset($metadata[$modelClassName]))
+            if (empty($modelClassName) || !@class_exists($modelClassName) || !isset($metadata[$modelClassName]))
             {
                 return false;
             }
