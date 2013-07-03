@@ -165,8 +165,10 @@
             $row = 1;
             $newCsvData = array();
             $tempData = array();
-            if (($handle = fopen($filePath, "r")) !== FALSE) {
-                while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
+            if (($handle = fopen($filePath, "r")) !== FALSE)
+            {
+                while (($data = fgetcsv($handle, 1000, ",")) !== FALSE)
+                {
                     if($row == 1)
                     {
                         $tempData       = $data;
@@ -187,7 +189,8 @@
             $newFilePath    = $pathToFile . DIRECTORY_SEPARATOR . 'products_sample_with_relations_mod.csv';
             $handle = fopen($newFilePath, 'w');
 
-            foreach ($newCsvData as $line) {
+            foreach ($newCsvData as $line)
+            {
                fputcsv($handle, $line);
             }
 
@@ -241,7 +244,7 @@
             $this->assertEquals(2, count($products));
 
             $products = Product::getByName('A Bend in the River November Issue import');
-            
+
             $this->assertEquals(1,                         count($products[0]));
             $this->assertEquals('super',                   $products[0]->owner->username);
             $this->assertEquals('A Bend in the River November Issue import',   $products[0]->name);
