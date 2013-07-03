@@ -72,6 +72,8 @@
                                               'listPageSize', get_class($this->getModule()));
             $savedReport                    = new SavedReport(false);
             $searchForm                     = new ReportsSearchForm($savedReport);
+            $listAttributesSelector         = new ListAttributesSelector('ReportsListView', get_class($this->getModule()));
+            $searchForm->setListAttributesSelector($listAttributesSelector);
             $dataProvider                   = $this->resolveSearchDataProvider(
                 $searchForm,
                 $pageSize,
