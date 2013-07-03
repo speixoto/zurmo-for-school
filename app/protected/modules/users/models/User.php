@@ -780,6 +780,21 @@
             return true;
         }
 
+        public static function getActiveUserCount()
+        {
+            $searchAttributeData['clauses'] = array(
+                1 => array(
+                    'attributeName'        => 'isActive',
+                    'operatorType'         => 'equals',
+                    'value'                => true,
+                )
+            );
+            $searchAttributeData['structure'] = '1';
+            $joinTablesAdapter = new RedBeanModelJoinTablesQueryAdapter('User');
+            $where = RedBeanModelDataProvider::makeWhere('User', $searchAttributeData, $joinTablesAdapter);
+            return User::getCount($joinTablesAdapter, $where, null);
+        }
+
         public static function isTypeDeletable()
         {
             return true;

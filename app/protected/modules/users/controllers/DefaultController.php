@@ -562,5 +562,31 @@
                     makeViewWithBreadcrumbsForCurrentUser($this, $containedView, $breadcrumbLinks, $breadcrumbViewClassName);
             }
         }
+
+        /**
+         * Override to handle userStatus validation
+         * @param User | ModelForm $model
+         * @param string $postVariableName
+         */
+        protected function attemptToValidateAjaxFromPost($model, $postVariableName)
+        {
+            if (isset($_POST['ajax']) && $_POST['ajax'] == 'edit-form')
+            {
+                $model->setAttributes($_POST[$postVariableName]);
+                $model->validate();
+                $userStatus = UserStatusUtil::makeByPostData($_POST[$postVariableName]);
+                if($model instanceof User)
+                {
+                    Yii::app()->licenseManager->resolveValidationOnCreateOrEditUser($model, $userStatus);
+                }
+                elseif($model instanceof ModelForm)
+                {
+                    Yii::app()->licenseManager->resolveValidationOnCreateOrEditUser($model->getModel(), $userStatus);
+                }
+                $errorData = ZurmoActiveForm::makeErrorsDataAndResolveForOwnedModelAttributes($model);
+                echo CJSON::encode($errorData);
+                Yii::app()->end(0, false);
+            }
+        }
     }
 ?>
