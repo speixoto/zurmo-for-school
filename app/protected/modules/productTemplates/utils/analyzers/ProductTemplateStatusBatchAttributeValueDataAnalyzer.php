@@ -35,58 +35,46 @@
      ********************************************************************************/
 
     /**
-     * Display the product template selection. This is a
-     * combination of a type-ahead input text field
-     * and a selection button which renders a modal list view
-     * to search on product template.  Also includes a hidden input for the user
-     * id.
+     * Data analyzer for a product template status attribute.
      */
-    class ProductTemplateElement extends ModelElement
+    class ProductTemplateStatusBatchAttributeValueDataAnalyzer extends BatchAttributeValueDataAnalyzer
+                                                      implements DataAnalyzerInterface
     {
-        protected static $moduleId = 'productTemplates';
+        protected $dropDownValues;
 
-        /**
-         * Render a hidden input, a text input with an auto-complete
-         * event, and a select button. These three items together
-         * form the Template Editable Element
-         * @return The element's content as a string.
-         */
-        protected function renderControlEditable()
+        public function __construct($modelClassName, $attributeName)
         {
-            assert('$this->model->{$this->attribute} instanceof ProductTemplate');
-            return parent::renderControlEditable();
+            parent:: __construct($modelClassName, $attributeName);
+            $this->dropDownValues = ProductTemplateElementUtil::getProductTemplateStatusDropdownArray();
         }
 
-        /**
-         * @return string
-         */
-        protected function getModalTitleForSelectingModel()
+        public function runAndMakeMessages(AnalyzerSupportedDataProvider $dataProvider, $columnName)
         {
-            return Zurmo::t('ProductTemplatesModule', 'Catalog Item Search');
+            assert('is_string($columnName)');
+            $this->processAndMakeMessage($dataProvider, $columnName);
         }
 
-        /**
-         * Registers scripts for autocomplete text field
-         */
-        protected function registerScriptForAutoCompleteTextField()
+        protected function analyzeByValue($value)
         {
-            parent::registerScriptForAutoCompleteTextField();
-            Yii::app()->clientScript->registerScriptFile(Yii::app()->getAssetManager()->publish(
-                    Yii::getPathOfAlias('application.modules.productTemplates.elements.assets')
-                    ) . '/Modal.js',
-                CClientScript::POS_END);
+            if ($value != null)
+            {
+                if (!array_key_exists(intval($value), $this->dropDownValues))
+                {
+                    $this->messageCountData[static::INVALID]++;
+                }
+            }
         }
 
-        /**
-         * Gets on select option for the automcomplete text field
-         * @param string $idInputName
-         * @return string
-         */
-        protected function getOnSelectOptionForAutoComplete($idInputName)
+        protected function makeMessages()
         {
-            $url = Yii::app()->createUrl("productTemplates/default/details");
-            return 'js:function(event, ui){ jQuery("#' . $idInputName . '").val(ui.item["id"]).trigger("change");
-                        copyProductTemplateDataForProduct(ui.item["id"], \'' . $url . '\')}';
+            $invalid  = $this->messageCountData[static::INVALID];
+            if ($invalid > 0)
+            {
+                $label   = Zurmo::t('ImportModule', '{count} dropdown value(s) are missing from the field. ' .
+                                             'These values will be added upon import.',
+                                             array('{count}' => $invalid));
+                $this->addMessage($label);
+            }
         }
     }
 ?>

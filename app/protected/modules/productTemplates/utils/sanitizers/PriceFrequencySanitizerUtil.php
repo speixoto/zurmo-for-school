@@ -34,59 +34,60 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * Display the product template selection. This is a
-     * combination of a type-ahead input text field
-     * and a selection button which renders a modal list view
-     * to search on product template.  Also includes a hidden input for the user
-     * id.
+   /**
+     * Sanitizer for handling price frequency.
      */
-    class ProductTemplateElement extends ModelElement
+    class PriceFrequencySanitizerUtil extends SanitizerUtil
     {
-        protected static $moduleId = 'productTemplates';
-
-        /**
-         * Render a hidden input, a text input with an auto-complete
-         * event, and a select button. These three items together
-         * form the Template Editable Element
-         * @return The element's content as a string.
-         */
-        protected function renderControlEditable()
+        public static function supportsSqlAttributeValuesDataAnalysis()
         {
-            assert('$this->model->{$this->attribute} instanceof ProductTemplate');
-            return parent::renderControlEditable();
+            return false;
+        }
+
+        public static function getBatchAttributeValueDataAnalyzerType()
+        {
+            return 'PriceFrequency';
         }
 
         /**
-         * @return string
+         * Given a user status, attempt to resolve it as a valid status.  If the status is invalid, a
+         * InvalidValueToSanitizeException will be thrown.
+         * @param string $modelClassName
+         * @param string $attributeName
+         * @param mixed $value
+         * @param array $mappingRuleData
          */
-        protected function getModalTitleForSelectingModel()
+        public static function sanitizeValue($modelClassName, $attributeName, $value, $mappingRuleData)
         {
-            return Zurmo::t('ProductTemplatesModule', 'Catalog Item Search');
-        }
-
-        /**
-         * Registers scripts for autocomplete text field
-         */
-        protected function registerScriptForAutoCompleteTextField()
-        {
-            parent::registerScriptForAutoCompleteTextField();
-            Yii::app()->clientScript->registerScriptFile(Yii::app()->getAssetManager()->publish(
-                    Yii::getPathOfAlias('application.modules.productTemplates.elements.assets')
-                    ) . '/Modal.js',
-                CClientScript::POS_END);
-        }
-
-        /**
-         * Gets on select option for the automcomplete text field
-         * @param string $idInputName
-         * @return string
-         */
-        protected function getOnSelectOptionForAutoComplete($idInputName)
-        {
-            $url = Yii::app()->createUrl("productTemplates/default/details");
-            return 'js:function(event, ui){ jQuery("#' . $idInputName . '").val(ui.item["id"]).trigger("change");
-                        copyProductTemplateDataForProduct(ui.item["id"], \'' . $url . '\')}';
+            assert('is_string($modelClassName)');
+            assert('$mappingRuleData == null');
+            if ($value == null)
+            {
+                return $value;
+            }
+            try
+            {
+                if (strtolower($value) == strtolower(ProductTemplate::PRICE_FREQUENCY_ONE_TIME))
+                {
+                    return ProductTemplate::PRICE_FREQUENCY_ONE_TIME;
+                }
+                elseif (strtolower($value) == strtolower(ProductTemplate::PRICE_FREQUENCY_MONTHLY))
+                {
+                    return ProductTemplate::PRICE_FREQUENCY_MONTHLY;
+                }
+                elseif (strtolower($value) == strtolower(ProductTemplate::PRICE_FREQUENCY_ANNUALLY))
+                {
+                    return ProductTemplate::PRICE_FREQUENCY_ANNUALLY;
+                }
+                else
+                {
+                    throw new InvalidValueToSanitizeException();
+                }
+            }
+            catch (NotFoundException $e)
+            {
+                throw new InvalidValueToSanitizeException(Zurmo::t('ProductTemplatesModule', 'The price frequency specified is invalid.'));
+            }
         }
     }
 ?>
