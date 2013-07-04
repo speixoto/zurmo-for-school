@@ -21,6 +21,10 @@ function copyProductTemplateDataForProduct(templateId, url)
                          $('#Product_sellPrice_currency_id').val(data.productSellPriceCurrency);
                          $('#Product_sellPrice_value').val(data.productSellPriceValue);
                          $('#Product_name').val(data.productName);
+                         if($("#Product_description").length > 0)
+                         {
+                            $('#Product_description').val(data.productDescription);
+                         }
                      }
         }
     );
