@@ -374,8 +374,11 @@
             $product->quantity          = 1;
             $product->stage->value      = Product::OPEN_STAGE;
             $product->productTemplate   = $productTemplate;
+            $sellPrice                  = new CurrencyValue();
+            $sellPrice->value           = $productTemplate->sellPrice->value;
+            $sellPrice->currency        = $productTemplate->sellPrice->currency;
             $product->priceFrequency    = $productTemplate->priceFrequency;
-            $product->sellPrice         = $productTemplate->sellPrice;
+            $product->sellPrice         = $sellPrice;
             $product->type              = $productTemplate->type;
 
             $relationModel              = $relationModelClassName::getById((int)$relationModelId);
