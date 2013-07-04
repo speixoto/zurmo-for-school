@@ -213,7 +213,7 @@
 
             $products = Product::getByName('A Bend in the River November Issue import');
 
-            $this->assertEquals(1,                         count($products[0]));
+            $this->assertEquals(1,                         count($products));
             $this->assertEquals('super',                   $products[0]->owner->username);
             $this->assertEquals('A Bend in the River November Issue import',   $products[0]->name);
             $this->assertEquals(6,                         $products[0]->quantity);
@@ -226,7 +226,7 @@
             $this->assertEquals('My Contact',              $products[0]->contact->firstName);
 
             $products = Product::getByName('A Bend in the River November Issue import copy');
-            $this->assertEquals(1,                         count($products[0]));
+            $this->assertEquals(1,                         count($products));
             $this->assertEquals('super',                   $products[0]->owner->username);
             $this->assertEquals('A Bend in the River November Issue import copy',   $products[0]->name);
             $this->assertEquals(6,                         $products[0]->quantity);
