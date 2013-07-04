@@ -41,6 +41,7 @@
     class NoUserEmailConfigurationYetView extends View
     {
         public $cssClasses = array('splash-view');
+        protected $redirectUrl;
 
         public function __construct($redirectUrl = null)
         {
