@@ -34,14 +34,24 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * Sanitizer for attributes that are ids. This would be used if mapping an id for the model that is being imported.
+   /**
+     * Sanitizer for handling price frequency.
      */
-    class ModelIdValueTypeSanitizerUtil extends IdValueTypeSanitizerUtil
+    class SellPriceFormulaTypeSanitizerUtil extends SanitizerUtil
     {
+        public static function supportsSqlAttributeValuesDataAnalysis()
+        {
+            return false;
+        }
+
+        public static function getBatchAttributeValueDataAnalyzerType()
+        {
+            return 'SellPriceFormulaType';
+        }
+
         /**
-         * Given a value that is either a zurmo id or an external system id, resolve that the
-         * value is valid.  If the value is not valid then an InvalidValueToSanitizeException is thrown.
+         * Given a user status, attempt to resolve it as a valid status.  If the status is invalid, a
+         * InvalidValueToSanitizeException will be thrown.
          * @param string $modelClassName
          * @param string $attributeName
          * @param mixed $value
@@ -50,37 +60,41 @@
         public static function sanitizeValue($modelClassName, $attributeName, $value, $mappingRuleData)
         {
             assert('is_string($modelClassName)');
-            assert('is_string($attributeName) && $attributeName != "id"');
-            assert('$value != ""');
-            assert('$mappingRuleData["type"] == IdValueTypeMappingRuleForm::ZURMO_MODEL_ID ||
-                    $mappingRuleData["type"] == IdValueTypeMappingRuleForm::EXTERNAL_SYSTEM_ID');
+            assert('$mappingRuleData == null');
             if ($value == null)
             {
                 return $value;
             }
-            $model                   = new $modelClassName(false);
-            $attributeModelClassName = $modelClassName::resolveAttributeModelClassName($attributeName);
-            if ($mappingRuleData["type"] == IdValueTypeMappingRuleForm::ZURMO_MODEL_ID)
+            try
             {
-                try
+                if (strtolower($value) == strtolower(SellPriceFormula::TYPE_EDITABLE))
                 {
-                    return $attributeModelClassName::getById((int)$value);
+                    return SellPriceFormula::TYPE_EDITABLE;
                 }
-                catch (NotFoundException $e)
+                elseif (strtolower($value) == strtolower(SellPriceFormula::TYPE_DISCOUNT_FROM_LIST))
                 {
-                    throw new InvalidValueToSanitizeException(Zurmo::t('ImportModule', 'The id specified did not match any existing records.'));
+                    return SellPriceFormula::TYPE_DISCOUNT_FROM_LIST;
+                }
+                elseif (strtolower($value) == strtolower(SellPriceFormula::TYPE_MARKUP_OVER_COST))
+                {
+                    return SellPriceFormula::TYPE_MARKUP_OVER_COST;
+                }
+                elseif (strtolower($value) == strtolower(SellPriceFormula::TYPE_PROFIT_MARGIN))
+                {
+                    return SellPriceFormula::TYPE_PROFIT_MARGIN;
+                }
+                elseif (strtolower($value) == strtolower(SellPriceFormula::TYPE_MARKUP_OVER_COST))
+                {
+                    return SellPriceFormula::TYPE_MARKUP_OVER_COST;
+                }
+                else
+                {
+                    throw new InvalidValueToSanitizeException();
                 }
             }
-            elseif ($mappingRuleData["type"] == IdValueTypeMappingRuleForm::EXTERNAL_SYSTEM_ID)
+            catch (NotFoundException $e)
             {
-                try
-                {
-                    return static::getModelByExternalSystemIdAndModelClassName($value, $attributeModelClassName);
-                }
-                catch (NotFoundException $e)
-                {
-                    throw new InvalidValueToSanitizeException(Zurmo::t('ImportModule', 'The other id specified did not match any existing records.'));
-                }
+                throw new InvalidValueToSanitizeException(Zurmo::t('ProductTemplatesModule', 'The sell price formula type specified is invalid.'));
             }
         }
     }
