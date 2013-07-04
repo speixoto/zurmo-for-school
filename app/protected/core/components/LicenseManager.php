@@ -50,5 +50,9 @@
         public function resolveUserIdentityApiAuthenticationForError(UserIdentity $identity)
         {
         }
+
+        public function checkAndUpdateLicenseInfo()
+        {
+        }
     }
 ?>

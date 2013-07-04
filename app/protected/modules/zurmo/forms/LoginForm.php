@@ -91,6 +91,7 @@
                 if ($group->contains($user))
                 {
                     ZurmoModule::checkAndUpdateZurmoInfo();
+                    Yii::app()->licenseManager->checkAndUpdateLicenseInfo();
                 }
                 return true;
             }
