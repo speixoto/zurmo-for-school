@@ -142,5 +142,15 @@
         {
             return true;
         }
+
+        public static function canHaveWorkflow()
+        {
+            return true;
+        }
+
+        public static function canHaveTimeBasedWorkflow()
+        {
+            return false;
+        }
     }
 ?>
