@@ -53,7 +53,7 @@
 
             $columnsAndIndexes  = reset($schemaDefinition);
             $tableName          = key($schemaDefinition);
-            $needsCreateTable = true;
+            $needsCreateTable   = true;
             $existingFields     = array();
             $messageLogger->addInfoMessage(Zurmo::t('Core', 'Creating/Updating schema for {{tableName}}',
                                                                                 array('{{tableName}}' => $tableName)));

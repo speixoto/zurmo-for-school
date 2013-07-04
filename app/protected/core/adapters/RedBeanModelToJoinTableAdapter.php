@@ -41,10 +41,20 @@
     {
         protected static $processedManyToManyTables = array();
 
-        // TODO: @Shoaibi: Critical: Add some documentation for this.
-        // TODO: @Shoaibi: Critical: Tests
+        /**
+         * Generates junction table for a MANY_MANY relationship
+         * @param string $modelClassName
+         * @param array $relationMetadata
+         * @param $messageLogger
+         */
         public static function resolve($modelClassName, array $relationMetadata, & $messageLogger)
         {
+            if (empty($modelClassName) || !@class_exists($modelClassName) || empty($relationMetadata)
+                        || count($relationMetadata) < 2 || $relationMetadata[0] != RedBeanModel::MANY_MANY ||
+                                                                                !@class_exists($relationMetadata[1]))
+            {
+                return;
+            }
             $relatedModelClassName  = $relationMetadata[1];
             $relationLinkName       = null;
             if (isset($relationMetadata[4]))
@@ -56,6 +66,7 @@
                                                                                                 $relationLinkName);
             if (in_array($tableName, static::$processedManyToManyTables))
             {
+                var_dump('Table already processed');
                 return;
             }
             $columns            = array();
@@ -72,6 +83,12 @@
             CreateOrUpdateExistingTableFromSchemaDefinitionArrayUtil::
                                                 generateOrUpdateTableBySchemaDefinition($schemaDefinition, $messageLogger);
             static::$processedManyToManyTables[] = $tableName;
+        }
+
+        public static function resolveProcessedManyManyTableNames()
+        {
+            // this is just used for unit tests
+            return static::$processedManyToManyTables;
         }
 
         protected static function resolveIndexesByColumnNames($columns)
