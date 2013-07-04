@@ -605,13 +605,5 @@
         {
             return false;
         }
-
-        /**
-         * Override in modules that can have workflow rules in the workflow module
-         */
-        public static function canHaveTimeBasedWorkflow()
-        {
-            return true;
-        }
     }
 ?>
