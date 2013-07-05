@@ -39,29 +39,38 @@
      */
     abstract class RedBeanModelRelationsToColumnsAdapter
     {
-        // TODO: @Shoaibi: Critical: Add some documentation for this.
-        // TODO: @Shoaibi: Critical: Tests
+        /**
+         * Generates column definitions and/or junction tables depending on relationships
+         * @param string $modelClassName
+         * @param array $relations
+         * @param $messageLogger
+         * @return array
+         * @throws CException
+         */
         public static function resolve($modelClassName, array $relations, & $messageLogger)
         {
             $messageLogger->addInfoMessage(Zurmo::t('Core', 'Building Column definitions for relations of {{model}}',
                                                                                 array('{{model}}' => $modelClassName)));
             $columns            = array();
-            foreach($relations as $relationName => $relationMetadata)
+            if ($modelClassName && @class_exists($modelClassName))
             {
-                $column = RedBeanModelRelationToColumnAdapter::resolve($modelClassName,
-                                                                        $relationName,
-                                                                        $relationMetadata,
-                                                                        $messageLogger);
-                if ($column)
+                foreach($relations as $relationName => $relationMetadata)
                 {
-                    $columns[] = $column;
-                }
-                else if ($column === false)
-                {
-                    $errorMessage = Zurmo::t('Core', 'Failed to resolve {{model}}.{{relation}} to column',
-                                                array('{{model}}' => $modelClassName, '{{relation}}' => $relationName));
-                    $messageLogger->addErrorMessage($errorMessage);
-                    throw new CException($errorMessage);
+                    $column = RedBeanModelRelationToColumnAdapter::resolve($modelClassName,
+                                                                            $relationName,
+                                                                            $relationMetadata,
+                                                                            $messageLogger);
+                    if ($column)
+                    {
+                        $columns[] = $column;
+                    }
+                    else if ($column === false)
+                    {
+                        $errorMessage = Zurmo::t('Core', 'Failed to resolve {{model}}.{{relation}} to column',
+                                                    array('{{model}}' => $modelClassName, '{{relation}}' => $relationName));
+                        $messageLogger->addErrorMessage($errorMessage);
+                        throw new CException($errorMessage);
+                    }
                 }
             }
             $messageLogger->addInfoMessage(Zurmo::t('Core', 'Column definitions for relations Built'));

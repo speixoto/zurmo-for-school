@@ -40,7 +40,6 @@
     abstract class RedBeanModelRelationToColumnAdapter
     {
         protected static $polymorphicLinkColumns = array();
-        // TODO: @Shoaibi: Critical: Tests
 
         /**
          * Return column definition for any polymorphic relationships to provided tableName
@@ -80,7 +79,7 @@
                 if (!in_array($relationType, array(RedBeanModel::HAS_ONE_BELONGS_TO, RedBeanModel::HAS_MANY_BELONGS_TO,
                                 RedBeanModel::HAS_ONE, RedBeanModel::HAS_MANY, RedBeanModel::MANY_MANY)))
                 {
-                    return $column;
+                    return false;
                 }
                 if ($relationType == RedBeanModel::MANY_MANY)
                 {
@@ -104,6 +103,10 @@
                 }
                 // ignore HAS_MANY(non-polymorphic) and HAS_ONE_BELONGS_TO as we are dealing with HAS_ONE and HAS_MANY_BELONGS e.g.
                 // we are ignore the sides which shouldn't have columns.
+            }
+            else
+            {
+                return false;
             }
             return $column;
         }

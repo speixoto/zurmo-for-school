@@ -56,7 +56,7 @@
                                                                                 $relationName,
                                                                                 $relationMetadata,
                                                                                 static::$messageLogger);
-            $this->assertNull($column);
+            $this->assertFalse($column);
 
         }
 
@@ -72,7 +72,7 @@
                                                                                 $relationName,
                                                                                 $relationMetadata,
                                                                                 static::$messageLogger);
-            $this->assertNull($column);
+            $this->assertFalse($column);
 
         }
 
@@ -88,7 +88,7 @@
                                                                                 $relationName,
                                                                                 $relationMetadata,
                                                                                 static::$messageLogger);
-            $this->assertNull($column);
+            $this->assertFalse($column);
 
         }
 
@@ -104,7 +104,7 @@
                                                                                 $relationName,
                                                                                 $relationMetadata,
                                                                                 static::$messageLogger);
-            $this->assertNull($column);
+            $this->assertFalse($column);
 
         }
 
@@ -120,7 +120,7 @@
                                                                                 $relationName,
                                                                                 $relationMetadata,
                                                                                 static::$messageLogger);
-            $this->assertNull($column);
+            $this->assertFalse($column);
 
         }
 
@@ -136,7 +136,7 @@
                                                                                 $relationName,
                                                                                 $relationMetadata,
                                                                                 static::$messageLogger);
-            $this->assertNull($column);
+            $this->assertFalse($column);
 
         }
 
@@ -152,7 +152,7 @@
                                                                                 $relationName,
                                                                                 $relationMetadata,
                                                                                 static::$messageLogger);
-            $this->assertNull($column);
+            $this->assertFalse($column);
 
         }
 

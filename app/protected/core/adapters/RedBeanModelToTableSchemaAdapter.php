@@ -39,15 +39,19 @@
      */
     abstract class RedBeanModelToTableSchemaAdapter
     {
-        // TODO: @Shoaibi: Critical: Add some documentation for this.
-        // TODO: @Shoaibi: Critical: Tests
+        /**
+         * Generates Table schema for a model class using its metadata of members, relations, mixins and indexes.
+         * @param string $modelClassName
+         * @param $messageLogger
+         * @return array|bool
+         */
         public static function resolve($modelClassName, & $messageLogger)
         {
-            $metadata                       = $modelClassName::getDefaultMetaData();
-            if (empty($modelClassName) || !@class_exists($modelClassName) || !isset($metadata[$modelClassName]))
+            if (empty($modelClassName) || !@class_exists($modelClassName) || !$modelClassName::getCanHaveBean())
             {
                 return false;
             }
+            $metadata                       = $modelClassName::getDefaultMetaData();
             $modelMetadata                  = $metadata[$modelClassName];
             $memberColumns                  = array();
             $relationColumns                = array();
