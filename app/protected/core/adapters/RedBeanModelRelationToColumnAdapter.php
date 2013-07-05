@@ -40,9 +40,13 @@
     abstract class RedBeanModelRelationToColumnAdapter
     {
         protected static $polymorphicLinkColumns = array();
-        // TODO: @Shoaibi: Critical: Add some documentation for this.
         // TODO: @Shoaibi: Critical: Tests
 
+        /**
+         * Return column definition for any polymorphic relationships to provided tableName
+         * @param string $tableName
+         * @return null|array
+         */
         public static function resolvePolymorphicColumnsByTableName($tableName)
         {
             if (isset(static::$polymorphicLinkColumns[$tableName]))
@@ -52,40 +56,55 @@
             return null;
         }
 
+        /**
+         * Generates a column definition or processes junctions table depending on relation and link type.
+         * @param string $modelClassName
+         * @param string $relationName
+         * @param array $relationMetadata
+         * @param $messageLogger
+         * @return array|null
+         */
         public static function resolve($modelClassName, $relationName, array $relationMetadata, & $messageLogger)
         {
             $column = null;
-            $relationType           = $relationMetadata[0];
-            $relatedModelClass      = $relationMetadata[1];
-            $linkType               = RedBeanModel::LINK_TYPE_ASSUMPTIVE;
-            if (isset($relationMetadata[3]))
+            if (!empty($modelClassName) && @class_exists($modelClassName) && !empty($relationName)
+                                            && count($relationMetadata) >= 2 && @class_exists($relationMetadata[1]))
             {
-                $linkType               = $relationMetadata[3];
-            }
-            assert('in_array($relationType, array(RedBeanModel::HAS_ONE_BELONGS_TO, RedBeanModel::HAS_MANY_BELONGS_TO, ' .
-                                        'RedBeanModel::HAS_ONE, RedBeanModel::HAS_MANY, RedBeanModel::MANY_MANY))');
-            if ($relationType == RedBeanModel::MANY_MANY)
-            {
-                RedBeanModelToJoinTableAdapter::resolve($modelClassName, $relationMetadata, $messageLogger);
-                return null;
-            }
-            else if (in_array($relationType, array(RedBeanModel::HAS_ONE, RedBeanModel::HAS_MANY_BELONGS_TO)))
-            {
-                $linkName               = null;
-                if ($linkType == RedBeanModel::LINK_TYPE_ASSUMPTIVE &&
-                                                        strtolower($relatedModelClass) != strtolower($relationName))
+                $relationType           = $relationMetadata[0];
+                $relatedModelClass      = $relationMetadata[1];
+                $linkType               = RedBeanModel::LINK_TYPE_ASSUMPTIVE;
+                if (isset($relationMetadata[3]))
                 {
-                    $linkName   = strtolower($relationName) . '_';
+                    $linkType               = $relationMetadata[3];
                 }
-                $name   = $linkName . RedBeanModel::getForeignKeyName($modelClassName, $relationName);
-                $column = RedBeanModelMemberToColumnNameUtil::resolveForeignKeyColumnMetadata($name);
+                if (!in_array($relationType, array(RedBeanModel::HAS_ONE_BELONGS_TO, RedBeanModel::HAS_MANY_BELONGS_TO,
+                                RedBeanModel::HAS_ONE, RedBeanModel::HAS_MANY, RedBeanModel::MANY_MANY)))
+                {
+                    return $column;
+                }
+                if ($relationType == RedBeanModel::MANY_MANY)
+                {
+                    RedBeanModelToJoinTableAdapter::resolve($modelClassName, $relationMetadata, $messageLogger);
+                    return null;
+                }
+                else if (in_array($relationType, array(RedBeanModel::HAS_ONE, RedBeanModel::HAS_MANY_BELONGS_TO)))
+                {
+                    $linkName               = null;
+                    if ($linkType == RedBeanModel::LINK_TYPE_ASSUMPTIVE &&
+                                                            strtolower($relatedModelClass) != strtolower($relationName))
+                    {
+                        $linkName   = strtolower($relationName) . '_';
+                    }
+                    $name   = $linkName . RedBeanModel::getForeignKeyName($modelClassName, $relationName);
+                    $column = RedBeanModelMemberToColumnNameUtil::resolveForeignKeyColumnMetadata($name);
+                }
+                else if ($relationType == RedBeanModel::HAS_MANY && $linkType == RedBeanModel::LINK_TYPE_POLYMORPHIC)
+                {
+                    static::setColumnsForPolymorphicLink($relatedModelClass, $relationMetadata[4]);
+                }
+                // ignore HAS_MANY(non-polymorphic) and HAS_ONE_BELONGS_TO as we are dealing with HAS_ONE and HAS_MANY_BELONGS e.g.
+                // we are ignore the sides which shouldn't have columns.
             }
-            else if ($relationType == RedBeanModel::HAS_MANY && $linkType == RedBeanModel::LINK_TYPE_POLYMORPHIC)
-            {
-                static::setColumnsForPolymorphicLink($relatedModelClass, $relationMetadata[4]);
-            }
-            // ignore HAS_MANY and HAS_ONE_BELONGS_TO as we are dealing with HAS_ONE and HAS_MANY_BELONGS e.g.
-            // we are ignore the sides which shouldn't have columns.
             return $column;
         }
 

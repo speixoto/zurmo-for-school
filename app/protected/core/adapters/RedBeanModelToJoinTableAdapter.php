@@ -66,7 +66,6 @@
                                                                                                 $relationLinkName);
             if (in_array($tableName, static::$processedManyToManyTables))
             {
-                var_dump('Table already processed');
                 return;
             }
             $columns            = array();

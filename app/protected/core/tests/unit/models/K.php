@@ -55,6 +55,11 @@
                 ),
                 'relations' => array(
                     'i'  => array(RedBeanModel::HAS_MANY_BELONGS_TO, 'I'),
+                    'ii'  => array(RedBeanModel::HAS_MANY_BELONGS_TO, 'I'),
+                    'iii'  => array(RedBeanModel::HAS_MANY_BELONGS_TO, 'I', RedBeanModel::OWNED,
+                                                                    RedBeanModel::LINK_TYPE_SPECIFIC, 'ilink'),
+                    'iiii' => array(RedBeanModel::HAS_MANY_BELONGS_TO, 'I', RedBeanModel::OWNED,
+                                        RedBeanModel::LINK_TYPE_POLYMORPHIC, 'irelated'),
                 ),
                 'rules' => array(
                     array('kMember', 'safe'),
