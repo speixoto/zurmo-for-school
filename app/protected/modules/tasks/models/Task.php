@@ -36,6 +36,19 @@
 
     class Task extends MashableActivity
     {
+        /*
+         * Constants for task status
+         */
+        const TASK_STATUS_NEW                   = 1;
+
+        const TASK_STATUS_IN_PROGRESS           = 2;
+
+        const TASK_STATUS_AWAITING_ACCEPTANCE   = 3;
+
+        const TASK_STATUS_REJECTED              = 4;
+
+        const TASK_STATUS_COMPLETED             = 5;
+
         public function __toString()
         {
             try
@@ -72,19 +85,30 @@
                     'description',
                     'dueDateTime',
                     'name',
+                    'status'
+                ),
+                'relations' => array(
+                    'requestedByUser'           => array(RedBeanModel::HAS_ONE, 'User'),
+                    'comments'                  => array(RedBeanModel::HAS_MANY, 'Comment', RedBeanModel::OWNED),
+                    'checkListItem'             => array(RedBeanModel::HAS_MANY, 'TaskCheckListItem', RedBeanModel::OWNED),
+                    'notificationSubscriber'    => array(RedBeanModel::HAS_MANY, 'NotificationSubscriber', RedBeanModel::OWNED),
                 ),
                 'rules' => array(
-                    array('completedDateTime', 'type', 'type' => 'datetime'),
+                    array('completedDateTime','type', 'type' => 'datetime'),
                     array('completed',        'boolean'),
-                    array('dueDateTime',       'type', 'type' => 'datetime'),
+                    array('dueDateTime',      'type', 'type' => 'datetime'),
                     array('description',      'type',    'type' => 'string'),
                     array('name',             'required'),
                     array('name',             'type',    'type' => 'string'),
                     array('name',             'length',  'min'  => 3, 'max' => 64),
+                    array('status',           'type', 'type' => 'integer'),
                 ),
                 'elements' => array(
                     'completedDateTime' => 'DateTime',
                     'dueDateTime'       => 'DateTime',
+                    'requestedByUser'   => 'User',
+                    'comment'           => 'Comment',
+                    'checkListItem'     => 'TaskCheckListItem'
                 ),
                 'defaultSortAttribute' => 'name',
                 'noAudit' => array(
@@ -103,6 +127,8 @@
                     'description'       => Zurmo::t('ZurmoModule', 'Description',  array(), null, $language),
                     'dueDateTime'       => Zurmo::t('TasksModule', 'Due On',       array(), null, $language),
                     'name'              => Zurmo::t('TasksModule', 'Name',  array(), null, $language),
+                    'status'            => Zurmo::t('TasksModule', 'Status',  array(), null, $language),
+                    'requestedByUser'   => Zurmo::t('TasksModule', 'Requested By User',  array(), null, $language),
                 )
             );
         }
@@ -146,6 +172,20 @@
         public static function getGamificationRulesType()
         {
             return 'TaskGamification';
+        }
+
+        /**
+         * @return array of status values and labels
+         */
+        public static function getStatusDropDownArray()
+        {
+            return array(
+                self::TASK_STATUS_NEW                      => Zurmo::t('TasksModule', 'New'),
+                self::TASK_STATUS_IN_PROGRESS              => Zurmo::t('TasksModule', 'In Progress'),
+                self::TASK_STATUS_AWAITING_ACCEPTANCE      => Zurmo::t('TasksModule', 'Awaiting Acceptance'),
+                self::TASK_STATUS_REJECTED                 => Zurmo::t('TasksModule', 'Rejected'),
+                self::TASK_STATUS_COMPLETED                => Zurmo::t('TasksModule', 'Completed'),
+            );
         }
     }
 ?>
