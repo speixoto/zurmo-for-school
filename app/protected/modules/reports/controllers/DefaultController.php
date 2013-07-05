@@ -401,7 +401,7 @@
                     $count = count($dataProvider->getData());
                     if ($dataProvider)
                     {                                       
-                          $reportToExportAdapter  = new ReportToExportAdapter($dataProvider, $report);                          
+                          $reportToExportAdapter  = ReportToExportAdapterFactory::createReportToExportAdapter($report, $dataProvider);                        
                           $headerData             = $reportToExportAdapter->getHeaderData();                          
                           $data                   = $reportToExportAdapter->getData();                        
                     }

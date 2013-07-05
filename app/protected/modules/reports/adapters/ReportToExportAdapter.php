@@ -35,12 +35,11 @@
      ********************************************************************************/
 
     /**
-     * Helper class used to convert models into arrays
+     * Abstract class used to convert report models into arrays
      */
-    class ReportToExportAdapter
+    abstract class ReportToExportAdapter
     {
-        //TODO: @sergio: reporttoexportadaptertest need to adapt this changes
-        
+                
         protected $dataProvider;
         
         protected $dataForExport;
@@ -69,143 +68,29 @@
             return $this->headerData;
         }
 
+        /**
+         * Override if needed to adapt the way data is made for export
+         */
         protected function makeData()
-        {            
-            if(get_class($this->dataProvider) == 'MatrixReportDataProvider')
-            {
-                $this->makeDataFromMatrixReportDataProvider();
-            }                                        
-            else                  
-            {
-                foreach ($this->dataForExport as $reportResultsRowData)
-                {
-                    $data             = array();
-                    $this->headerData = array();                
-                    foreach ($reportResultsRowData->getDisplayAttributes() as $key => $displayAttribute)
-                    {                        
-                        $resolvedAttributeName = $displayAttribute->resolveAttributeNameForGridViewColumn($key);                    
-                        $className             = $this->resolveExportClassNameForReportToExportValueAdapter($displayAttribute);
-                        $params                = array();
-                        $this->resolveParamsForCurrencyTypes($displayAttribute, $params);
-                        $adapter = new $className($reportResultsRowData, $resolvedAttributeName, $params);
-                        $adapter->resolveData($data);
-                        $adapter->resolveHeaderData($this->headerData);                        
-                    }
-                    $this->data[] = $data;                
-                }
-            }                        
-        }
-        
-        protected function makeDataFromMatrixReportDataProvider()
-        {                             
-            $data                      = array(); 
-            $this->headerData          = array();                                  
+        {                        
             foreach ($this->dataForExport as $reportResultsRowData)
-            {                                  
-                $line                      = array();
-                $header                    = array();   
-                $temporaryHeader           = array(); //This is used because when resolving header for last columns we got strange results                                
-                $key                       = $this->dataProvider->getXAxisGroupByDataValuesCount();
-                $column                    = array();  
-                $extraLeadingHeaderColumns = 0;        
-                foreach ($this->dataProvider->getDisplayAttributesThatAreYAxisGroupBys() as $displayAttribute)
-                {                           
-                    $header[]           = $displayAttribute->label;
-                    $className          = $this->resolveExportClassNameForReportToExportValueAdapter(
-                                            $displayAttribute);
-                    $attributeName      = MatrixReportDataProvider::resolveHeaderColumnAliasName(
-                                            $displayAttribute->columnAliasName);
-                    $params             = array();                                                                                                                
-                    $line[]             = $displayAttribute->resolveValueAsLabelForHeaderCell(
-                                            $reportResultsRowData->$attributeName);                    
-                }               
-                $leadingHeaders         = $this->dataProvider->makeAxisCrossingColumnCountAndLeadingHeaderRowsData();                                                
-                $rows                   = count($leadingHeaders['rows']);                
-                $matrixColumnCount      = $leadingHeaders['rows'][$rows - 1]['colSpan']; //This is the true columns count, the other are repeated for each grouping                                                                                               
-                $attributeKey           = 0;
-                for ($i = 0; $i < $this->dataProvider->getXAxisGroupByDataValuesCount(); $i++)
-                {
-                    foreach ($this->dataProvider->resolveDisplayAttributes() as $displayAttribute)
-                    {
-                        if (!$displayAttribute->queryOnly)
-                        {          
-                            $params        = array();                                        
-                            $column        = MatrixReportDataProvider::resolveColumnAliasName($attributeKey);
-                            $className     = $this->resolveExportClassNameForReportToExportValueAdapter(
-                                                $displayAttribute); 
-                            $adapter       = new $className($reportResultsRowData, $column, $params);
-                            $adapter->resolveData($line);     
-                            if($attributeKey < $matrixColumnCount)
-                            {                                    
-                                $oldHeaderCount = count($temporaryHeader);
-                                $adapter->resolveHeaderData($temporaryHeader);
-                                $adapter->resolveHeaderData($header);                                                                 
-                                $extraLeadingHeaderColumns += (count($temporaryHeader) - ($oldHeaderCount+1));                                    
-                            }
-                            elseif ($attributeKey % $matrixColumnCount == 0) 
-                            {
-                                foreach ($temporaryHeader as $column)
-                                {
-                                    $header[] = $column;
-                                }
-                            }
-                            
-                            $attributeKey++;                        
-                        }
-                    }
-                }              
-                $data[]   = $line;                             
-            }                              
-            $leadingHeaderData      = $this->getLeadingHeadersDataFromMatrixReportDataProvider($extraLeadingHeaderColumns);            
-            $this->data = array_merge($leadingHeaderData, array_merge(array($header), $data));
-        }
-               
-        protected function getLeadingHeadersDataFromMatrixReportDataProvider($extraLeadingHeaderColumns)
-        {
-            //TODO: @sergio: add test for cover and doc
-            $leadingHeaders             = $this->dataProvider->makeAxisCrossingColumnCountAndLeadingHeaderRowsData();                        
-            $previousGroupByValuesCount = 1;
-            $headerData = array();        
-            for ($i = 0; $i < count($leadingHeaders['rows']); $i++)
             {
-                $headerRow = array();                
-                for ($j = 0; $j < $leadingHeaders['axisCrossingColumnCount']; $j++)
-                {
-                    $headerRow[] = null;
+                $data             = array();
+                $this->headerData = array();                
+                foreach ($reportResultsRowData->getDisplayAttributes() as $key => $displayAttribute)
+                {                        
+                    $resolvedAttributeName = $displayAttribute->resolveAttributeNameForGridViewColumn($key);                    
+                    $className             = $this->resolveExportClassNameForReportToExportValueAdapter($displayAttribute);
+                    $params                = array();
+                    $this->resolveParamsForCurrencyTypes($displayAttribute, $params);
+                    $adapter = new $className($reportResultsRowData, $resolvedAttributeName, $params);
+                    $adapter->resolveData($data);
+                    $adapter->resolveHeaderData($this->headerData);                        
                 }
-                for ($k = 0; $k < $previousGroupByValuesCount; $k++)
-                {
-                    foreach ($leadingHeaders['rows'][$i]['groupByValues'] as $value)
-                    {
-                        for ($l = 0; $l < $leadingHeaders['rows'][$i]['colSpan']; $l++)
-                        {
-                            $headerRow[] = $value;                                                                            
-                        }
-                        if ($extraLeadingHeaderColumns > 0)
-                        {
-                            if ($i != (count($leadingHeaders['rows']) - 1))
-                            {
-                                $columnsToAdd = $extraLeadingHeaderColumns * 
-                                                $leadingHeaders['rows'][$i]['colSpan'] / 
-                                                $leadingHeaders['rows'][$i+1]['colSpan'];
-                            }      
-                            else
-                            {
-                                $columnsToAdd = $extraLeadingHeaderColumns;
-                            }                                
-                            for ($m = 0; $m < $columnsToAdd; $m++)
-                            {
-                                $headerRow[] = $value;                                                
-                            }
-                        }
-                    }
-                }
-                $previousGroupByValuesCount = count($leadingHeaders['rows'][$i]['groupByValues']);
-                $headerData[] = $headerRow;
-            }            
-            return $headerData;
+                $this->data[] = $data;                
+            }
         }
-
+                                       
         protected function resolveExportClassNameForReportToExportValueAdapter(DisplayAttributeForReportForm $displayAttribute)
         {
             $displayElementType = $displayAttribute->getDisplayElementType();
