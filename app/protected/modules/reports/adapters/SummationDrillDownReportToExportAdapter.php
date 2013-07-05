@@ -35,24 +35,9 @@
      ********************************************************************************/
 
     /**
-     * Helper class to make ReportToExportAdapter object
+     * Helper class used to convert RowsAndColumnsReport models into arrays
      */
-    class ReportToExportAdapterFactory
+    class SummationDrillDownReportToExportAdapter extends ReportToExportAdapter
     {        
-        public static function createReportToExportAdapter(
-                                    Report $report, 
-                                    ReportDataProvider $dataProvider)
-        {            
-            $dataProviderClassName = get_class($dataProvider);
-            if ($dataProviderClassName == 'SummationDrillDownReportDataProvider')
-            {
-                $className = 'SummationDrillDownReportToExportAdapter';                
-            }
-            else
-            {
-                $className  = $report->getType() . 'ReportToExportAdapter';
-            }
-            return new $className($dataProvider, $report);
-        }
     }
 ?>
