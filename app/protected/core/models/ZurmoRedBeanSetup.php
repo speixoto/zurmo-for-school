@@ -34,55 +34,11 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class PPPP extends RedBeanModel
+    class ZurmoRedBeanSetup extends RedBean_Setup
     {
-        public static function getByName($name)
+        protected static function resolveMySQLWriterClassName()
         {
-            assert('is_string($name)');
-            assert('$name != ""');
-            $bean = ZurmoRedBean::findOne('pppp', "name = '$name'");
-            assert('$bean === false || $bean instanceof RedBean_OODBBean');
-            if ($bean === false)
-            {
-                throw new NotFoundErception();
-            }
-            return self::makeModel($bean);
-        }
-
-        public static function canSaveMetadata()
-        {
-            return true;
-        }
-
-        public static function getDefaultMetadata()
-        {
-            $metadata = parent::getDefaultMetadata();
-            $metadata[__CLASS__] = array(
-                'members' => array(
-                    'name'
-                ),
-                'rules' => array(
-                    array('name',          'required'),
-                    array('name',          'type',    'type' => 'string'),
-                    array('name',          'length',  'min'  => 3, 'max' => 64),
-                ),
-                'relations' => array(
-                    'ppAssumptive'        => array(RedBeanModel::HAS_ONE, 'PP'),
-                    'pp1'                 => array(RedBeanModel::HAS_ONE, 'PP',  RedBeanModel::NOT_OWNED,
-                                                   RedBeanModel::LINK_TYPE_SPECIFIC, 'pp1Link'),
-                ),
-            );
-            return $metadata;
-        }
-
-        public static function isTypeDeletable()
-        {
-            return true;
-        }
-
-        public static function getModuleClassName()
-        {
-            return 'TestModule';
+            return 'ZurmoMySqlQueryWriter';
         }
     }
 ?>

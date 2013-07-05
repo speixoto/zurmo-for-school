@@ -79,8 +79,8 @@
             RedBeanColumnTypeOptimizer::
             externalIdColumn(User::getTableName('User'), $columnName);
             $userTableName = User::getTableName('User');
-            R::exec("update " . $userTableName . " set $columnName = 'A' where id = {$super->id}");
-            R::exec("update " . $userTableName . " set $columnName = 'B' where id = {$jim->id}");
+            ZurmoRedBean::exec("update " . $userTableName . " set $columnName = 'A' where id = {$super->id}");
+            ZurmoRedBean::exec("update " . $userTableName . " set $columnName = 'B' where id = {$jim->id}");
 
             RedBeanColumnTypeOptimizer::
             externalIdColumn(ImportModelTestItem::getTableName('ImportModelTestItem'),   $columnName);
@@ -211,7 +211,7 @@
             $import->serializedData            = serialize($serializedData);
             $this->assertTrue($import->save());
             ImportTestHelper::createTempTableByFileNameAndTableName('importAnalyzerTest.csv', $import->getTempTableName());
-            R::exec("update " . $import->getTempTableName() . " set column_8 = " .
+            ZurmoRedBean::exec("update " . $import->getTempTableName() . " set column_8 = " .
                      Yii::app()->user->userModel->id . " where id != 1 limit 4");
 
             $externalSystemIdColumnName = ExternalSystemIdUtil::EXTERNAL_SYSTEM_ID_COLUMN_NAME;
@@ -219,10 +219,10 @@
             $importModelTestItemModel1 = ImportTestHelper::createImportModelTestItem('aaa', 'aba');
             $importModelTestItemModel2 = ImportTestHelper::createImportModelTestItem('ddw', 'daf');
             //Update for of the import rows to point to model 1.  This is for the ZURMO_MODEL_ID mapping rule form type value.
-            R::exec("update " . $import->getTempTableName() . " set column_10 = " .
+            ZurmoRedBean::exec("update " . $import->getTempTableName() . " set column_10 = " .
                      $importModelTestItemModel1->id . " where id != 1 limit 3");
             //Update model2 to have an externalSystemId.
-            R::exec("update " . ImportModelTestItem::getTableName('ImportModelTestItem')
+            ZurmoRedBean::exec("update " . ImportModelTestItem::getTableName('ImportModelTestItem')
             . " set $externalSystemIdColumnName = 'B' where id = {$importModelTestItemModel2->id}");
 
             //Add test ImportModelTestItem2 models for use in this test.
@@ -230,30 +230,30 @@
             $importModelTestItem2Model2 = ImportTestHelper::createImportModelTestItem2('bbb');
             $importModelTestItem2Model3 = ImportTestHelper::createImportModelTestItem2('ccc');
             //Update for of the import rows to point to model 1.  This is for the ZURMO_MODEL_ID mapping.
-            R::exec("update " . $import->getTempTableName() . " set column_14 = " .
+            ZurmoRedBean::exec("update " . $import->getTempTableName() . " set column_14 = " .
                      $importModelTestItem2Model1->id . " where id != 1 limit 4");
             //Update model2 to have an externalSystemId.
-            R::exec("update " . ImportModelTestItem2::getTableName('ImportModelTestItem2')
+            ZurmoRedBean::exec("update " . ImportModelTestItem2::getTableName('ImportModelTestItem2')
             . " set $externalSystemIdColumnName = 'B' where id = {$importModelTestItem2Model2->id}");
 
             //Add test ImportModelTestItem3 models for use in this test.
             $importModelTestItem3Model1 = ImportTestHelper::createImportModelTestItem3('aaa');
             $importModelTestItem3Model2 = ImportTestHelper::createImportModelTestItem3('dd');
             //Update for of the import rows to point to model 1.  This is for the ZURMO_MODEL_ID mapping rule form type value.
-            R::exec("update " . $import->getTempTableName() . " set column_17 = " .
+            ZurmoRedBean::exec("update " . $import->getTempTableName() . " set column_17 = " .
                      $importModelTestItem3Model1->id . " where id != 1 limit 3");
             //Update model2 to have an externalSystemId.
-            R::exec("update " . ImportModelTestItem3::getTableName('ImportModelTestItem3')
+            ZurmoRedBean::exec("update " . ImportModelTestItem3::getTableName('ImportModelTestItem3')
             . " set $externalSystemIdColumnName = 'K' where id = {$importModelTestItem3Model2->id}");
 
             //Add test ImportModelTestItem4 models for use in this test.
             $importModelTestItem4Model1 = ImportTestHelper::createImportModelTestItem4('aaa');
             $importModelTestItem4Model2 = ImportTestHelper::createImportModelTestItem4('dd');
             //Update for of the import rows to point to model 1.  This is for the ZURMO_MODEL_ID mapping rule form type value.
-            R::exec("update " . $import->getTempTableName() . " set column_12 = " .
+            ZurmoRedBean::exec("update " . $import->getTempTableName() . " set column_12 = " .
                      $importModelTestItem4Model1->id . " where id != 1 limit 5");
             //Update model2 to have an externalSystemId.
-            R::exec("update " . ImportModelTestItem3::getTableName('ImportModelTestItem4')
+            ZurmoRedBean::exec("update " . ImportModelTestItem3::getTableName('ImportModelTestItem4')
             . " set $externalSystemIdColumnName = 'J' where id = {$importModelTestItem4Model2->id}");
 
             $mappingData = array(
@@ -550,7 +550,7 @@
             $import->serializedData            = serialize($serializedData);
             $this->assertTrue($import->save());
             ImportTestHelper::createTempTableByFileNameAndTableName('importAnalyzerTest.csv', $import->getTempTableName());
-            R::exec("update " . $import->getTempTableName() . " set column_8 = " .
+            ZurmoRedBean::exec("update " . $import->getTempTableName() . " set column_8 = " .
                      Yii::app()->user->userModel->id . " where id != 1 limit 6");
 
             $config       = array('pagination' => array('pageSize' => 2));

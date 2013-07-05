@@ -61,7 +61,7 @@
             $labels          = CustomFieldDataUtil::
                                getDataIndexedByDataAndTranslatedLabelsByLanguage($customFieldData, Yii::app()->language);
             $sql             = static::makeChartSqlQuery();
-            $rows            = R::getAll($sql);
+            $rows            = ZurmoRedBean::getAll($sql);
             $chartData       = array();
             foreach ($rows as $row)
             {

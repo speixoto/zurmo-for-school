@@ -227,7 +227,7 @@
             $modelClassName = $this->attributeModelClassName;
             $sql = 'select id from ' . $modelClassName::getTableName($modelClassName) .
             ' where id = ' . $sqlReadyString . ' limit 1';
-            $ids =  R::getCol($sql);
+            $ids =  ZurmoRedBean::getCol($sql);
             assert('count($ids) <= 1');
             if (count($ids) == 0)
             {
@@ -251,7 +251,7 @@
             $columnName     = ExternalSystemIdUtil::EXTERNAL_SYSTEM_ID_COLUMN_NAME;
             $sql = 'select id from ' . $modelClassName::getTableName($modelClassName) .
             ' where ' . $columnName . ' = \'' . $value . '\' limit 1';
-            $ids =  R::getCol($sql);
+            $ids =  ZurmoRedBean::getCol($sql);
             assert('count($ids) <= 1');
             if (count($ids) == 0)
             {

@@ -74,12 +74,12 @@
         public static function dropTable($tableName)
         {
             assert('is_string($tableName) && $tableName != ""');
-            R::exec("drop table $tableName;");
+            ZurmoRedBean::exec("drop table $tableName;");
         }
 
         public static function escape($value)
         {
-            return R::$adapter->escape($value);
+            return ZurmoRedBean::$adapter->escape($value);
         }
 
         /**
@@ -90,11 +90,11 @@
             assert('RedBeanDatabase::isSetup()');
             if (RedBeanDatabase::getDatabaseType() == 'sqlite')
             {
-                return R::getCol('select name from sqlite_master where type = \'table\' order by name;');
+                return ZurmoRedBean::getCol('select name from sqlite_master where type = \'table\' order by name;');
             }
             elseif (RedBeanDatabase::getDatabaseType() == 'pgsql')
             {
-                return R::getCol("
+                return ZurmoRedBean::getCol("
                     select relname from pg_catalog.pg_class
                          left join pg_catalog.pg_namespace n on n.oid = pg_catalog.pg_class.relnamespace
                     where pg_catalog.pg_class.relkind in ('r', '') and
@@ -107,7 +107,7 @@
             }
             else
             {
-                return R::getCol('show tables;');
+                return ZurmoRedBean::getCol('show tables;');
             }
         }
 
@@ -339,7 +339,7 @@
                     {
                         $quotedRow = array_map(array('DatabaseCompatibilityUtil', 'escape'), $row);
                         $sql .= "('" . implode("','", $quotedRow). "')"; // Not Coding Standard
-                        R::exec($sql);
+                        ZurmoRedBean::exec($sql);
                         $counter = 0;
                     }
                     else
@@ -361,7 +361,7 @@
             if ($counter > 0)
             {
                 $sql = trim($sql, ','); // Not Coding Standard
-                R::exec($sql);
+                ZurmoRedBean::exec($sql);
             }
         }
 
@@ -417,7 +417,7 @@
                 throw new NotSupportedException();
             }
 
-            $row = R::getRow("SHOW VARIABLES LIKE 'max_allowed_packet'");
+            $row = ZurmoRedBean::getRow("SHOW VARIABLES LIKE 'max_allowed_packet'");
 
             if (isset($row['Value']))
             {
@@ -979,13 +979,13 @@
             $databaseName = RedBeanDatabase::getDatabaseNameFromDsnString(Yii::app()->db->connectionString);
             $sql       = "show tables";
             $totalCount = 0;
-            $rows       = R::getAll($sql);
+            $rows       = ZurmoRedBean::getAll($sql);
             $columnName = 'Tables_in_' . $databaseName;
             foreach ($rows as $row)
             {
                 $tableName  = $row[$columnName];
                 $tableSql   = "select count(*) count from " . $tableName;
-                $row        = R::getRow($tableSql);
+                $row        = ZurmoRedBean::getRow($tableSql);
                 $totalCount = $totalCount + $row['count'];
             }
             return $totalCount;

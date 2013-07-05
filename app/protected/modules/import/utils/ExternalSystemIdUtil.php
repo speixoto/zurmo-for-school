@@ -56,7 +56,7 @@
             $columnName = self::EXTERNAL_SYSTEM_ID_COLUMN_NAME;
             $tableName  = $model::getTableName(get_class($model));
             RedBeanColumnTypeOptimizer::externalIdColumn($tableName, $columnName);
-            R::exec("update " . $tableName . " set $columnName = '" . $externalSystemId . "' where id = " . $model->id);
+            ZurmoRedBean::exec("update " . $tableName . " set $columnName = '" . $externalSystemId . "' where id = " . $model->id);
         }
     }
 ?>

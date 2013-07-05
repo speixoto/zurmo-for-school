@@ -51,7 +51,7 @@
         {
             if (!$bean2->id)
             {
-                R::store( $bean2 );
+                ZurmoRedBean::store( $bean2 );
             }
             $fieldName = self::getLinkField( $bean2->getMeta("type"), $name);
             $bean1->$fieldName = $bean2->id;
@@ -70,7 +70,7 @@
             $id = (int)$bean->$fieldName;
             if ($id)
             {
-                return R::load($typeName, $id);
+                return ZurmoRedBean::load($typeName, $id);
             }
             else
             {
@@ -85,7 +85,7 @@
             $columnPrefix = self::resolveColumnPrefix($name);
             $columnName   = $columnPrefix . $bean->getMeta("type") . '_id';
 
-            $ids = R::getCol("select id from {$typeName} where " . $columnName . " = {$bean->id}");
+            $ids = ZurmoRedBean::getCol("select id from {$typeName} where " . $columnName . " = {$bean->id}");
             return $ids;
         }
 

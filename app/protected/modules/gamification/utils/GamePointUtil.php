@@ -66,7 +66,7 @@
         {
             assert('is_string($type)');
             $sql             = static::makeUserLeaderboardSqlQuery($type);
-            $rows            = R::getAll($sql);
+            $rows            = ZurmoRedBean::getAll($sql);
             $rank            = 1;
             $leaderboardData = array();
             foreach ($rows as $row)

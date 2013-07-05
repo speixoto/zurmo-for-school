@@ -65,12 +65,12 @@
             assert('!self::isSetup()');
             try
             {
-                R::setup($dsn, $username, $password);
-                R::$redbean->addEventListener("update",       new RedBeanBeforeUpdateHintManager(R::$toolbox));
+                ZurmoRedBean::setup($dsn, $username, $password);
+                ZurmoRedBean::$redbean->addEventListener("update",       new RedBeanBeforeUpdateHintManager(ZurmoRedBean::$toolbox));
                 if (SHOW_QUERY_DATA)
                 {
                     Yii::app()->performance->setRedBeanQueryLogger(ZurmoRedBeanPluginQueryLogger::
-                                                                   getInstanceAndAttach(R::$adapter ));
+                                                                   getInstanceAndAttach(ZurmoRedBean::$adapter ));
                 }
 
                 if (defined('REDBEAN_DEBUG_TO_FILE') && REDBEAN_DEBUG_TO_FILE)
@@ -80,11 +80,11 @@
                     ));
                     $queryLoggerComponent->init();
                     Yii::app()->setComponent('queryFileLogger', $queryLoggerComponent);
-                    R::debug(true, Yii::app()->queryFileLogger);
+                    ZurmoRedBean::debug(true, Yii::app()->queryFileLogger);
                 }
                 else
                 {
-                    R::debug(defined('REDBEAN_DEBUG') && REDBEAN_DEBUG);
+                    ZurmoRedBean::debug(defined('REDBEAN_DEBUG') && REDBEAN_DEBUG);
                 }
 
                 self::$isSetup      = true;
@@ -108,17 +108,17 @@
         public static function close()
         {
             // TODO - find out if there is a proper way.
-            R::$toolboxes          = array();
-            R::$toolbox            = null;
-            R::$redbean            = null;
-            R::$writer             = null;
-            R::$adapter            = null;
-            R::$associationManager = null;
-            R::$extAssocManager    = null;
-            R::$exporter           = null;
-            R::$tagManager         = null;
-            R::$currentDB          = '';
-            R::$f                  = null;
+            ZurmoRedBean::$toolboxes          = array();
+            ZurmoRedBean::$toolbox            = null;
+            ZurmoRedBean::$redbean            = null;
+            ZurmoRedBean::$writer             = null;
+            ZurmoRedBean::$adapter            = null;
+            ZurmoRedBean::$associationManager = null;
+            ZurmoRedBean::$extAssocManager    = null;
+            ZurmoRedBean::$exporter           = null;
+            ZurmoRedBean::$tagManager         = null;
+            ZurmoRedBean::$currentDB          = '';
+            ZurmoRedBean::$f                  = null;
             self::$isSetup = false;
         }
 
@@ -135,7 +135,7 @@
          */
         public static function freeze()
         {
-            R::freeze(true);
+            ZurmoRedBean::freeze(true);
         }
 
         /**
@@ -143,7 +143,7 @@
          */
         public static function isFrozen()
         {
-            return R::$redbean !== null && R::$redbean->isFrozen();
+            return ZurmoRedBean::$redbean !== null && ZurmoRedBean::$redbean->isFrozen();
         }
 
         /**
@@ -152,7 +152,7 @@
          */
         public static function unfreeze()
         {
-            R::freeze(false);
+            ZurmoRedBean::freeze(false);
         }
 
         /**

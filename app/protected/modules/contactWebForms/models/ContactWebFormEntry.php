@@ -154,7 +154,7 @@
             $modelClassName = get_called_class();
             $tableName      = self::getTableName($modelClassName);
             $columnName     = self::getColumnNameByAttribute('hashIndex');
-            $beans          = R::find($tableName, "$columnName = '$hashIndex'");
+            $beans          = ZurmoRedBean::find($tableName, "$columnName = '$hashIndex'");
             assert('count($beans) <= 1');
             if (count($beans) == 0)
             {

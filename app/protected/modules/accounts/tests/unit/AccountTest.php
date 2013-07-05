@@ -64,7 +64,7 @@
             $account->account = null;
             $saved = $account->save();
             $this->assertTrue($saved);
-            $count = R::getCell('select count(*) from account');
+            $count = ZurmoRedBean::getCell('select count(*) from account');
             $this->assertEquals(1, $count);
             Account::setMetadata($oldMetadata);
             $this->assertTrue($account->delete());

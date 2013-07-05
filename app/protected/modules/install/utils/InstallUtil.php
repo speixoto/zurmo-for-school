@@ -366,7 +366,7 @@
 
         public static function checkRedBean($minimumRequiredVersion, /* out */ &$actualVersion)
         {
-            $actualVersion = R::getVersion();
+            $actualVersion = ZurmoRedBean::getVersion();
             if ($actualVersion !== null)
             {
                 return static::checkVersion($minimumRequiredVersion, $actualVersion);
@@ -600,12 +600,12 @@
          */
         public static function dropAllTables()
         {
-            $tableNames = R::getCol('show tables');
+            $tableNames = ZurmoRedBean::getCol('show tables');
             foreach ($tableNames as $tableName)
             {
-                R::exec("drop table $tableName");
+                ZurmoRedBean::exec("drop table $tableName");
             }
-            assert('count(R::getCol("show tables")) == 0');
+            assert('count(ZurmoRedBean::getCol("show tables")) == 0');
         }
 
         /**

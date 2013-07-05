@@ -79,7 +79,7 @@
                 $searchAttributeData = static::makeCampaignsSearchAttributeData('createdDateTime', $beginDateTime,
                                        $endDateTime, $this->campaign);
                 $sql                 = static::makeCampaignsSqlQuery($searchAttributeData, $groupBy);
-                $rows                = R::getAll($sql);
+                $rows                = ZurmoRedBean::getAll($sql);
                 foreach ($rows as $row)
                 {
                     $chartIndexToCompare = $row[$this->resolveIndexGroupByToUse()];
@@ -91,7 +91,7 @@
                 $searchAttributeData = static::makeAutorespondersSearchAttributeData('createdDateTime', $beginDateTime,
                                        $endDateTime, $this->marketingList);
                 $sql                 = static::makeAutorespondersSqlQuery($searchAttributeData, $groupBy);
-                $rows                = R::getAll($sql);
+                $rows                = ZurmoRedBean::getAll($sql);
                 foreach ($rows as $row)
                 {
                     $chartIndexToCompare = $row[$this->resolveIndexGroupByToUse()];

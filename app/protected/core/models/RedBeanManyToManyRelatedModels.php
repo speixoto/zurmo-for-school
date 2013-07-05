@@ -67,8 +67,8 @@
             $this->linkName              = $linkName;
             if ($this->bean->id > 0)
             {
-                $this->relatedBeansAndModels = array_values(R::related($this->bean, $tableName, null, array(),
-                    $this->getTableName(R::dispense($tableName))));
+                $this->relatedBeansAndModels = array_values(ZurmoRedBean::related($this->bean, $tableName, null, array(),
+                    $this->getTableName(ZurmoRedBean::dispense($tableName))));
             }
             else
             {
@@ -107,7 +107,7 @@
             foreach ($this->deferredRelateBeans as $bean)
             {
                 $tableName = $this->getTableName($bean);
-                R::associate($this->bean, $bean, null, $tableName);
+                ZurmoRedBean::associate($this->bean, $bean, null, $tableName);
                 if (!RedBeanDatabase::isFrozen())
                 {
                     foreach (array($this->bean->getMeta("type"), $bean->getMeta("type")) as $type)
@@ -121,7 +121,7 @@
             foreach ($this->deferredUnrelateBeans as $bean)
             {
                 $tableName = $this->getTableName($bean);
-                R::unassociate($this->bean, $bean, false, $tableName);
+                ZurmoRedBean::unassociate($this->bean, $bean, false, $tableName);
             }
             $this->deferredUnrelateBeans = array();
             return true;
@@ -131,7 +131,7 @@
         {
             if ($bean == null)
             {
-                $bean = R::dispense(RedBeanModel::getTableName($this->modelClassName));
+                $bean = ZurmoRedBean::dispense(RedBeanModel::getTableName($this->modelClassName));
             }
             $types = array($this->bean->getMeta("type"), $bean->getMeta("type"));
             return static::resolveTableNamesWithLinkName($types, $this->linkName);

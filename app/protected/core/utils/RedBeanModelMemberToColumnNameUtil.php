@@ -65,6 +65,16 @@
             return $column;
         }
 
+        public static function resolveColumnNamesArrayFromColumnSchemaDefinition($columns)
+        {
+            $columnNames = array_map("static::extractNameFromColumnSchemaDefinition", $columns);
+            return $columnNames;
+        }
+        protected static function extractNameFromColumnSchemaDefinition($column)
+        {
+            return $column['name'];
+        }
+
         protected static function resolveForeignKeyNameByModelName($className)
         {
             return RedBeanModel::getTableName($className) . '_id';

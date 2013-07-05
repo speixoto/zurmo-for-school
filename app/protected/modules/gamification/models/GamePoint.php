@@ -267,7 +267,7 @@
             $wherePart = static::getPointTypeWherePartByLevelType($levelType);
             $sql       = "select sum(value) sum from gamepoint where " . $wherePart . " person_item_id = " .
                          $user->getClassId('Item') . " group by person_item_id";
-            return R::getRow($sql);
+            return ZurmoRedBean::getRow($sql);
         }
 
         /**
@@ -280,7 +280,7 @@
             assert('$user->id > 0');
             $sql       = "select type, sum(value) sum from gamepoint where person_item_id = " .
                          $user->getClassId('Item') . " group by type";
-            $rows      = R::getAll($sql);
+            $rows      = ZurmoRedBean::getAll($sql);
             $indexedData = array();
             foreach ($rows as $row)
             {

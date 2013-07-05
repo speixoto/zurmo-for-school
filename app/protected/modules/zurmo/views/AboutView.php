@@ -42,7 +42,7 @@
             $yiiVersion     = YiiBase::getVersion();
             if (method_exists('R', 'getVersion'))
             {
-                $redBeanVersion =  R::getVersion();
+                $redBeanVersion =  ZurmoRedBean::getVersion();
             }
             else
             {

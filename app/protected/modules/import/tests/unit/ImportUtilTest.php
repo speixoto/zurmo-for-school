@@ -122,7 +122,7 @@
             $this->assertEquals('Dartmouth Financial Services', $testModels[1]->name);
 
             //Clear out data in table
-            R::exec("delete from " . ImportModelTestItem::getTableName('ImportModelTestItem'));
+            ZurmoRedBean::exec("delete from " . ImportModelTestItem::getTableName('ImportModelTestItem'));
 
             //Re-freeze if needed.
             if ($freezeWhenComplete)
@@ -280,7 +280,7 @@
             $this->assertEquals(0, count($beansWithErrors));
 
             //Clear out data in table
-            R::exec("delete from " . ImportModelTestItem::getTableName('ImportModelTestItem'));
+            ZurmoRedBean::exec("delete from " . ImportModelTestItem::getTableName('ImportModelTestItem'));
 
             //Re-freeze if needed.
             if ($freezeWhenComplete)
@@ -379,7 +379,7 @@
             $this->assertEquals(0, count($beansWithErrors));
 
             //Clear out data in table
-            R::exec("delete from " . ImportModelTestItem::getTableName('ImportModelTestItem'));
+            ZurmoRedBean::exec("delete from " . ImportModelTestItem::getTableName('ImportModelTestItem'));
 
             //Re-freeze if needed.
             if ($freezeWhenComplete)
@@ -480,7 +480,7 @@
             $this->assertEquals('USD', $testModels[0]->currencyValue->currency->code);
 
             //Clear out data in table
-            R::exec("delete from " . ImportModelTestItem::getTableName('ImportModelTestItem'));
+            ZurmoRedBean::exec("delete from " . ImportModelTestItem::getTableName('ImportModelTestItem'));
 
             //Re-freeze if needed.
             if ($freezeWhenComplete)
@@ -583,7 +583,7 @@
             $this->assertEquals($compareMessages, unserialize(next($beansWithErrors)->serializedmessages));
 
             //Clear out data in table
-            R::exec("delete from " . ImportModelTestItem::getTableName('ImportModelTestItem'));
+            ZurmoRedBean::exec("delete from " . ImportModelTestItem::getTableName('ImportModelTestItem'));
 
             //Re-freeze if needed.
             if ($freezeWhenComplete)
@@ -662,7 +662,7 @@
             }
 
             //Clear out data in table
-            R::exec("delete from " . ImportModelTestItem::getTableName('ImportModelTestItem'));
+            ZurmoRedBean::exec("delete from " . ImportModelTestItem::getTableName('ImportModelTestItem'));
 
             //Now test with read/write permissions being set.
             $explicitReadWriteModelPermissions = new ExplicitReadWriteModelPermissions();

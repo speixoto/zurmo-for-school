@@ -87,11 +87,11 @@
             ImportTestHelper::
             createTempTableByFileNameAndTableName('importAnalyzerTest.csv', $import->getTempTableName(),
                                                   Yii::getPathOfAlias('application.modules.tasks.tests.unit.files'));
-            R::exec("update " . $import->getTempTableName() . " set column_0 = " .
+            ZurmoRedBean::exec("update " . $import->getTempTableName() . " set column_0 = " .
                     $account3->id . " where id != 1 limit 3");
-            R::exec("update " . $import->getTempTableName() . " set column_2 = " .
+            ZurmoRedBean::exec("update " . $import->getTempTableName() . " set column_2 = " .
                     $contact3->id . " where id != 1 limit 4");
-            R::exec("update " . $import->getTempTableName() . " set column_4 = " .
+            ZurmoRedBean::exec("update " . $import->getTempTableName() . " set column_4 = " .
                     $opportunity3->id . " where id != 1 limit 5");
 
             $mappingData = array(

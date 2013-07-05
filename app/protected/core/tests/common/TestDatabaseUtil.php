@@ -44,7 +44,7 @@
             {
                 if ($tableName != 'log')
                 {
-                    R::exec("drop table $tableName");
+                    ZurmoRedBean::exec("drop table $tableName");
                 }
             }
         }
@@ -57,7 +57,7 @@
             {
                 if ($tableName != 'log')
                 {
-                    R::exec("delete from $tableName");
+                    ZurmoRedBean::exec("delete from $tableName");
                 }
             }
         }

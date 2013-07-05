@@ -36,7 +36,7 @@
         {
             assert('is_string($name)');
             assert('$name != ""');
-            $bean = R::findOne(ProductCatalog::getTableName('ProductCatalog'), "name = :name ", array(':name' => $name));
+            $bean = ZurmoRedBean::findOne(ProductCatalog::getTableName('ProductCatalog'), "name = :name ", array(':name' => $name));
             assert('$bean === false || $bean instanceof RedBean_OODBBean');
             if ($bean === false)
             {

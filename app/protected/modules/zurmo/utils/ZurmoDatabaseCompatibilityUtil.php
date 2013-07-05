@@ -1585,13 +1585,13 @@
         {
             try
             {
-                return R::getCell("select $sql;");
+                return ZurmoRedBean::getCell("select $sql;");
             }
             catch (RedBean_Exception_SQL $e)
             {
                 self::createStoredFunctionsAndProcedures();
                 self::createActualPermissionsCacheTable();
-                return R::getCell("select $sql;");
+                return ZurmoRedBean::getCell("select $sql;");
             }
         }
 
@@ -1599,13 +1599,13 @@
         {
             try
             {
-                return R::getCell("call $sql;");
+                return ZurmoRedBean::getCell("call $sql;");
             }
             catch (RedBean_Exception_SQL $e)
             {
                 self::createStoredFunctionsAndProcedures();
                 self::createActualPermissionsCacheTable();
-                return R::getCell("call $sql;");
+                return ZurmoRedBean::getCell("call $sql;");
             }
         }
 
@@ -1615,7 +1615,7 @@
             if (RedBeanDatabase::getDatabaseType() == 'mysql')
             {
                 self::dropStoredFunctionsAndProcedures();
-                R::exec('CREATE TABLE IF NOT EXISTS __role_children_cache(permitable_id int(11),
+                ZurmoRedBean::exec('CREATE TABLE IF NOT EXISTS __role_children_cache(permitable_id int(11),
                          role_id int(11), PRIMARY KEY (permitable_id, role_id),
                          UNIQUE KEY (permitable_id, role_id));');
                 try
@@ -1623,18 +1623,18 @@
                     foreach (self::$storedFunctions as $sql)
                     {
                         $sql = self::stripNonFrozenModeErrorHandlersIfFrozen($sql);
-                        R::exec($sql);
+                        ZurmoRedBean::exec($sql);
                     }
                     foreach (self::$storedProcedures as $sql)
                     {
                         $sql = self::stripNonFrozenModeErrorHandlersIfFrozen($sql);
-                        R::exec($sql);
+                        ZurmoRedBean::exec($sql);
                     }
                     if (YII_DEBUG)
                     {
-                        R::exec('create table if not exists log
+                        ZurmoRedBean::exec('create table if not exists log
                                  (timestamp timestamp, message varchar(255))');
-                        R::exec('create procedure write_log(in message varchar(255))
+                        ZurmoRedBean::exec('create procedure write_log(in message varchar(255))
                                  begin
                                      insert into log (timestamp, message)
                                      values (now(), message);
@@ -1696,7 +1696,7 @@
 
         public static function createActualPermissionsCacheTable()
         {
-            R::exec('
+            ZurmoRedBean::exec('
                 create table if not exists actual_permissions_cache
                     (securableitem_id int(11) unsigned not null,
                      permitable_id     int(11) unsigned not null,
@@ -1715,10 +1715,10 @@
             {
                 try
                 {
-                    $rows = R::getAll("select routine_name, routine_type from information_schema.routines;");
+                    $rows = ZurmoRedBean::getAll("select routine_name, routine_type from information_schema.routines;");
                     foreach ($rows as $row)
                     {
-                        R::exec("drop {$row['routine_type']} if exists {$row['routine_name']}");
+                        ZurmoRedBean::exec("drop {$row['routine_type']} if exists {$row['routine_name']}");
                     }
                 }
                 catch (Exception $e)
@@ -1731,7 +1731,7 @@
                 }
                 if (YII_DEBUG)
                 {
-                    R::exec("drop procedure if exists write_log");
+                    ZurmoRedBean::exec("drop procedure if exists write_log");
                 }
             }
             else
@@ -1774,7 +1774,7 @@
             {
                 try
                 {
-                    $rows = R::getAll("SHOW INDEX FROM $tableName");
+                    $rows = ZurmoRedBean::getAll("SHOW INDEX FROM $tableName");
                     if (!empty($rows))
                     {
                         foreach ($rows as $row)
@@ -1782,12 +1782,12 @@
                             // Delete only first index in sequence
                             if ($row['Key_name'] == $indexName && $row['Seq_in_index'] == '1')
                             {
-                                R::exec("DROP INDEX $indexName ON $tableName");
+                                ZurmoRedBean::exec("DROP INDEX $indexName ON $tableName");
                             }
                         }
                     }
                     $columnsString = implode(",", $columns); // Not Coding Standard
-                    R::exec("ALTER TABLE $tableName  ADD  UNIQUE INDEX $indexName ($columnsString);");
+                    ZurmoRedBean::exec("ALTER TABLE $tableName  ADD  UNIQUE INDEX $indexName ($columnsString);");
                 }
                 catch (Exception $e)
                 {
@@ -1811,7 +1811,7 @@
             {
                 try
                 {
-                    $rows = R::getAll("SHOW INDEX FROM $tableName");
+                    $rows = ZurmoRedBean::getAll("SHOW INDEX FROM $tableName");
                     if (!empty($rows))
                     {
                         foreach ($rows as $row)
@@ -1819,12 +1819,12 @@
                             // Delete only first index in sequence
                             if ($row['Key_name'] == $indexName && $row['Seq_in_index'] == '1')
                             {
-                                R::exec("DROP INDEX $indexName ON $tableName");
+                                ZurmoRedBean::exec("DROP INDEX $indexName ON $tableName");
                             }
                         }
                     }
                     $columnsString = implode(",", $columns); // Not Coding Standard
-                    R::exec("ALTER TABLE $tableName  ADD INDEX $indexName ($columnsString);");
+                    ZurmoRedBean::exec("ALTER TABLE $tableName  ADD INDEX $indexName ($columnsString);");
                 }
                 catch (Exception $e)
                 {

@@ -77,7 +77,7 @@
             $sql .= "{$quote}{$baseCustomFieldTableName}{$quote}.id ";
             $sql .= "AND {$quote}{$dataAttributeColumnName}{$quote} = $customFieldDataId ";
             $sql .= "AND {$quote}{$valueAttributeColumnName}{$quote} = '{$oldValue}'";
-            R::exec($sql);
+            ZurmoRedBean::exec($sql);
         }
     }
 ?>

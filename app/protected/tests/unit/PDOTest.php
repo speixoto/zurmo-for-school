@@ -39,9 +39,9 @@
     {
         public function testPDOTypesToShowTheDodginessOfNotBeingAbleToGetNumbersOut()
         {
-            $wukka = R::dispense('wukka');
+            $wukka = ZurmoRedBean::dispense('wukka');
             $wukka->integer = 69;
-            R::store($wukka);
+            ZurmoRedBean::store($wukka);
             $id = $wukka->id;
             unset($wukka);
 
@@ -63,7 +63,7 @@
             $pdo->setAttribute(PDO::ATTR_STRINGIFY_FETCHES, false);
             $pdo->setAttribute(PDO::ATTR_EMULATE_PREPARES,  false);
 
-            $wukka = R::load('wukka', $id);
+            $wukka = ZurmoRedBean::load('wukka', $id);
 
             $statement = $pdo->prepare('select * from wukka;');
             $statement->execute();

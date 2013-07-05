@@ -83,7 +83,7 @@
                 $selectQueryAdapter->addClause(Account::getTableName('Account'), 'id');
                 $sql                    = SQLQueryUtil::makeQuery(Account::getTableName('Account'),
                                           $selectQueryAdapter, $joinTablesAdapter, null, null, $content, null, null);
-                $rows                   = R::getAll($sql);
+                $rows                   = ZurmoRedBean::getAll($sql);
                 $this->assertEquals(0, count($rows));
             }
         }

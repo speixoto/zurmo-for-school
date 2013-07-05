@@ -63,7 +63,7 @@
             assert('$model instanceof Item');
             $itemId                  = $model->getClassId('Item');
             $sql                     = 'DELETE from conversation_item where item_id = ' . $itemId;
-            R::exec($sql);
+            ZurmoRedBean::exec($sql);
         }
     }
 ?>

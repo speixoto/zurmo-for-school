@@ -81,7 +81,7 @@
             $dataProvider = new ImportDataProvider($testTableName, true, $config);
             $data = $dataProvider->getData();
             $this->assertEquals(4, count($data));
-            R::exec("update " . $testTableName . " set status = " . ImportRowDataResultsUtil::ERROR . " where id != 1 limit 1");
+            ZurmoRedBean::exec("update " . $testTableName . " set status = " . ImportRowDataResultsUtil::ERROR . " where id != 1 limit 1");
 
             //Filter by error status.
             $dataProvider = new ImportDataProvider($testTableName, true, $config, ImportRowDataResultsUtil::ERROR);

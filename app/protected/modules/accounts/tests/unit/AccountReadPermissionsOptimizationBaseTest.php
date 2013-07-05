@@ -38,9 +38,9 @@
     {
         protected function rebuildAndTestThatTheMungeDoesntChange()
         {
-            $beforeRows = R::getAll('select munge_id, securableitem_id, count from account_read order by munge_id, securableitem_id, count');
+            $beforeRows = ZurmoRedBean::getAll('select munge_id, securableitem_id, count from account_read order by munge_id, securableitem_id, count');
             ReadPermissionsOptimizationUtil::rebuild();
-            $afterRows  = R::getAll('select munge_id, securableitem_id, count from account_read order by munge_id, securableitem_id, count');
+            $afterRows  = ZurmoRedBean::getAll('select munge_id, securableitem_id, count from account_read order by munge_id, securableitem_id, count');
 
             if ($beforeRows != $afterRows)
             {
@@ -213,7 +213,7 @@
         {
             if ($securableItem === null)
             {
-                $rows = R::getAll('select   name, munge_id, count
+                $rows = ZurmoRedBean::getAll('select   name, munge_id, count
                                    from     account_read, ownedsecurableitem, account
                                    where    account_read.securableitem_id = ownedsecurableitem.securableitem_id and
                                             ownedsecurableitem.id         = account.ownedsecurableitem_id
@@ -222,7 +222,7 @@
             else
             {
                 $securableItemId = $securableItem->getClassId('SecurableItem');
-                $rows = R::getAll("select   munge_id, count
+                $rows = ZurmoRedBean::getAll("select   munge_id, count
                                    from     account_read
                                    where    securableitem_id = $securableItemId
                                    order by munge_id, count");
@@ -264,7 +264,7 @@
 
         protected static function getAccountMungeRowCount()
         {
-            return intval(R::getCell('select count(*) from account_read'));
+            return intval(ZurmoRedBean::getCell('select count(*) from account_read'));
         }
     }
 ?>

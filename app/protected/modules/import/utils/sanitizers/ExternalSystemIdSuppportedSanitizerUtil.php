@@ -50,7 +50,7 @@
             assert('$id != null && is_string($id)');
             assert('is_string($modelClassName)');
             $tableName = $modelClassName::getTableName($modelClassName);
-            $beans = R::find($tableName, ExternalSystemIdUtil::EXTERNAL_SYSTEM_ID_COLUMN_NAME . " = '$id'");
+            $beans = ZurmoRedBean::find($tableName, ExternalSystemIdUtil::EXTERNAL_SYSTEM_ID_COLUMN_NAME . " = '$id'");
             assert('count($beans) <= 1');
             if (count($beans) == 0)
             {

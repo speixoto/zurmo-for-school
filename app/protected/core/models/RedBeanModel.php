@@ -238,7 +238,7 @@
             $ids = self::getSubsetIds($joinTablesAdapter, $offset, $count, $where,
                 $orderBy, $modelClassName, $selectDistinct);
             $tableName = self::getTableName($modelClassName);
-            $beans = R::batch ($tableName, $ids);
+            $beans = ZurmoRedBean::batch ($tableName, $ids);
             return self::makeModels($beans, $modelClassName);
         }
 
@@ -276,7 +276,7 @@
             $tableName = self::getTableName($modelClassName);
             $sql       = static::makeSubsetOrCountSqlQuery($tableName, $joinTablesAdapter, $offset, $count, $where,
                 $orderBy, false, $selectDistinct);
-            $ids       = R::getCol($sql);
+            $ids       = ZurmoRedBean::getCol($sql);
             return $ids;
         }
 
@@ -338,7 +338,7 @@
             $tableName      = self::getTableName($modelClassName);
             $sql = static::makeSubsetOrCountSqlQuery($tableName, $joinTablesAdapter, null, null, $where, null, true,
                                                      $selectDistinct);
-            $count = R::getCell($sql);
+            $count = ZurmoRedBean::getCell($sql);
             if ($count === null || empty($count))
             {
                 $count = 0;
@@ -357,7 +357,7 @@
         {
             assert('is_integer($id) && $id > 0');
             assert('$modelClassName === null || is_string($modelClassName) && $modelClassName != ""');
-            // I would have thought it was correct to user R::load() and get
+            // I would have thought it was correct to user ZurmoRedBean::load() and get
             // a null, or error or something if the bean doesn't exist, but
             // it still returns a bean. So until I've investigated further
             // I'm using Finder.
@@ -366,7 +366,7 @@
                 $modelClassName = get_called_class();
             }
             $tableName = self::getTableName($modelClassName);
-            $beans = R::find($tableName, "id = '$id'");
+            $beans = ZurmoRedBean::find($tableName, "id = '$id'");
             assert('count($beans) <= 1');
             if (count($beans) == 0)
             {
@@ -417,7 +417,7 @@
                     if ($modelClassName::getCanHaveBean())
                     {
                         $tableName = self::getTableName($modelClassName);
-                        $newBean = R::dispense($tableName);
+                        $newBean = ZurmoRedBean::dispense($tableName);
                         $this->modelClassNameToBean[$modelClassName] = $newBean;
                         $this->mapAndCacheMetadataAndSetHints($modelClassName, $newBean);
                     }
@@ -1154,7 +1154,7 @@
         {
             $key = strtolower($modelClassName1) . '_id';
             $tableName = self::getTableName($modelClassName2);
-            $beans = R::find($tableName, "$key = :id", array('id' => $bean->id));
+            $beans = ZurmoRedBean::find($tableName, "$key = :id", array('id' => $bean->id));
             if (count($beans) == 1)
             {
                 return reset($beans);
@@ -1260,7 +1260,7 @@
                             case self::HAS_ONE_BELONGS_TO:
                                 $linkName          = strtolower(get_class($this));
                                 $columnName        = $linkName . '_id';
-                                $relatedBeans      = R::find($relatedTableName, $columnName . " = " . $bean->id);
+                                $relatedBeans      = ZurmoRedBean::find($relatedTableName, $columnName . " = " . $bean->id);
                                 if (count($relatedBeans) > 1)
                                 {
                                     throw new NotFoundException();
@@ -1764,7 +1764,7 @@
             {
                 $modelClassName = $this->attributeNameToBeanAndClassName[$attributeName][1];
                 $tableName = self::getTableName($modelClassName);
-                $rows = R::getAll('select id from ' . $tableName . " where $attributeName = ?", array($value));
+                $rows = ZurmoRedBean::getAll('select id from ' . $tableName . " where $attributeName = ?", array($value));
                 return count($rows) == 0 || count($rows) == 1 && $rows[0]['id'] == $this->id;
             }
             else
@@ -1777,7 +1777,7 @@
                 $relationAndOwns = static::getRelationNameToRelationTypeModelClassNameAndOwnsForModel();
                 $modelClassName = $relationAndOwns[$attributeName][1];
                 $tableName = self::getTableName($modelClassName);
-                $rows = R::getAll('select id from ' . $tableName . ' where id = ?', array($model->id));
+                $rows = ZurmoRedBean::getAll('select id from ' . $tableName . ' where id = ?', array($model->id));
                 return count($rows) == 0 || count($rows) == 1 && $rows[0]['id'] == $this->id;
             }
         }
@@ -1931,7 +1931,7 @@
                         $baseModelClassName = null;
                         foreach ($this->modelClassNameToBean as $modelClassName => $bean)
                         {
-                            R::store($bean);
+                            ZurmoRedBean::store($bean);
                             assert('$bean->id > 0');
                             if (!RedBeanDatabase::isFrozen())
                             {
@@ -2199,7 +2199,7 @@
             }
             foreach ($this->modelClassNameToBean as $modelClassName => $bean)
             {
-                R::trash($bean);
+                ZurmoRedBean::trash($bean);
             }
             // The model cannot be used anymore.
             $this->deleted = true;
@@ -2275,7 +2275,7 @@
             }
             $tableName = self::getTableName($relatedModelClassName);
             $foreignKeyName = strtolower($modelClassName) . '_id';
-            $beans = R::find($tableName, "$foreignKeyName = $id");
+            $beans = ZurmoRedBean::find($tableName, "$foreignKeyName = $id");
             return self::makeModels($beans, $relatedModelClassName);
         }
 

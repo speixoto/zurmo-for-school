@@ -76,7 +76,7 @@
             $resultsUtil->processStatusAndMessagesForEachRow();
 
             $sql = 'select * from ' . $testTableName . ' where id != 1';
-            $tempTableData = R::getAll($sql);
+            $tempTableData = ZurmoRedBean::getAll($sql);
             $compareData   = array(
                 array
                 (

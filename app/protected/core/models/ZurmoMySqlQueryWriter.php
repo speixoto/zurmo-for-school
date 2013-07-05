@@ -34,55 +34,18 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class PPPP extends RedBeanModel
+    class ZurmoMySqlQueryWriter extends RedBean_QueryWriter_MySQL
     {
-        public static function getByName($name)
+        public function getColumns($tableName)
         {
-            assert('is_string($name)');
-            assert('$name != ""');
-            $bean = ZurmoRedBean::findOne('pppp', "name = '$name'");
-            assert('$bean === false || $bean instanceof RedBean_OODBBean');
-            if ($bean === false)
-            {
-                throw new NotFoundErception();
+            $tableName  = $this->safeTable($tableName);
+            $columnsRaw = $this->adapter->get("DESCRIBE $tableName");
+            echo PHP_EOL;
+            print_r($columnsRaw);
+            foreach($columnsRaw as $r) {
+                $columns[$r['Field']]=$r['Type'];
             }
-            return self::makeModel($bean);
-        }
-
-        public static function canSaveMetadata()
-        {
-            return true;
-        }
-
-        public static function getDefaultMetadata()
-        {
-            $metadata = parent::getDefaultMetadata();
-            $metadata[__CLASS__] = array(
-                'members' => array(
-                    'name'
-                ),
-                'rules' => array(
-                    array('name',          'required'),
-                    array('name',          'type',    'type' => 'string'),
-                    array('name',          'length',  'min'  => 3, 'max' => 64),
-                ),
-                'relations' => array(
-                    'ppAssumptive'        => array(RedBeanModel::HAS_ONE, 'PP'),
-                    'pp1'                 => array(RedBeanModel::HAS_ONE, 'PP',  RedBeanModel::NOT_OWNED,
-                                                   RedBeanModel::LINK_TYPE_SPECIFIC, 'pp1Link'),
-                ),
-            );
-            return $metadata;
-        }
-
-        public static function isTypeDeletable()
-        {
-            return true;
-        }
-
-        public static function getModuleClassName()
-        {
-            return 'TestModule';
+            return $columns;
         }
     }
 ?>

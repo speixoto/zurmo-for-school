@@ -44,18 +44,18 @@
             $account  = AccountTestHelper::createAccountByNameForOwner('anAccount2', Yii::app()->user->userModel);
             $task     = TaskTestHelper::createTaskWithOwnerAndRelatedAccount('startTask', $super, $account);
             $task->delete();
-            R::exec('delete from activity_item');
+            ZurmoRedBean::exec('delete from activity_item');
         }
 
         public function testProperlyDeletingActivityItems()
         {
             Yii::app()->user->userModel = User::getByUsername('super');
-            $count   = R::getRow('select count(*) count from activity_item');
+            $count   = ZurmoRedBean::getRow('select count(*) count from activity_item');
             $this->assertEquals(0, $count['count']);
             $account = AccountTestHelper::createAccountByNameForOwner('anAccount', Yii::app()->user->userModel);
             $deleted = $account->delete();
             $this->assertTrue($deleted);
-            $count   = R::getRow('select count(*) count from activity_item');
+            $count   = ZurmoRedBean::getRow('select count(*) count from activity_item');
             $this->assertEquals(0, $count['count']);
 
             $account2 = AccountTestHelper::createAccountByNameForOwner('anAccount2', Yii::app()->user->userModel);
@@ -68,14 +68,14 @@
 
             RedBeansCache::forgetAll();
 
-            $count   = R::getRow('select count(*) count from activity_item');
+            $count   = ZurmoRedBean::getRow('select count(*) count from activity_item');
             $this->assertEquals(2, $count['count']);
 
             $deleted = $account2->delete();
             $this->assertTrue($deleted);
             $account2->forget();
 
-            $count   = R::getRow('select count(*) count from activity_item');
+            $count   = ZurmoRedBean::getRow('select count(*) count from activity_item');
             $this->assertEquals(1, $count['count']);
 
             RedBeansCache::forgetAll();

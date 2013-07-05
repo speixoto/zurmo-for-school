@@ -109,7 +109,7 @@
                     if (isset($meta[$model]['rules']))
                     {
                         $tableName      = RedBeanModel::getTableName($model);
-                        $columns = R::$writer->getColumns($tableName);
+                        $columns = ZurmoRedBean::$writer->getColumns($tableName);
                         foreach ($meta[$model]['rules'] as $rule)
                         {
                             if (is_array($rule) && count($rule) >= 3)
@@ -248,7 +248,7 @@
 
             //Check Account fields
             $tableName = RedBeanModel::getTableName('Account');
-            $columns   = R::$writer->getColumns($tableName);
+            $columns   = ZurmoRedBean::$writer->getColumns($tableName);
 
             $this->assertEquals('text',             $columns['newfield']);
             $this->assertEquals('varchar(128)',     $columns['string128']);
@@ -291,7 +291,7 @@
 
             //Check Account fields
             $tableName = RedBeanModel::getTableName('Account');
-            $columns   = R::$writer->getColumns($tableName);
+            $columns   = ZurmoRedBean::$writer->getColumns($tableName);
             $this->assertEquals('varchar(128)',     $columns['string128']);
         }
 

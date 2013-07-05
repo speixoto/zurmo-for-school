@@ -46,7 +46,7 @@
             assert('is_string($rightName)');
             assert('$moduleName != ""');
             assert('$rightName != ""');
-            $bean = R::findOne('_right', "modulename = '$moduleName' and name = '$rightName'");
+            $bean = ZurmoRedBean::findOne('_right', "modulename = '$moduleName' and name = '$rightName'");
             assert('$bean === false || $bean instanceof RedBean_OODBBean');
             if ($bean === false)
             {
@@ -57,13 +57,13 @@
 
         public static function removeAllForPermitable(Permitable $permitable)
         {
-            R::exec("delete from _right where permitable_id = :id;",
+            ZurmoRedBean::exec("delete from _right where permitable_id = :id;",
                     array('id' => $permitable->getClassId('Permitable')));
         }
 
         public static function removeAll()
         {
-            R::exec("delete from _right;");
+            ZurmoRedBean::exec("delete from _right;");
         }
 
         public static function rightToString($right)

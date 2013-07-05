@@ -46,7 +46,7 @@
         {
             assert('is_string($username)');
             assert('$username != ""');
-            $bean = R::findOne('_user', "username = :username ", array(':username' => $username));
+            $bean = ZurmoRedBean::findOne('_user', "username = :username ", array(':username' => $username));
             assert('$bean === false || $bean instanceof RedBean_OODBBean');
             if ($bean === false)
             {
@@ -92,7 +92,7 @@
             $tableName = self::getTableName($modelClassName);
             if ($bean === null)
             {
-                $personBean = R::dispense($tableName);
+                $personBean = ZurmoRedBean::dispense($tableName);
             }
             else
             {

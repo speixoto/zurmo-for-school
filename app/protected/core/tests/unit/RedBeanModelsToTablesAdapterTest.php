@@ -47,7 +47,7 @@
             static::$messageLogger = new MessageLogger();
         }
 
-        public function testResolveWithEmptyModelClassNames()
+        public function testGenerateTablesFromModelClassNamesWithEmptyModelClassNames()
         {
             $modelClassName     = array();
             RedBeanModelsToTablesAdapter::generateTablesFromModelClassNames($modelClassName, static::$messageLogger);
@@ -56,9 +56,9 @@
         }
 
         /**
-         * @depends testResolveWithEmptyModelClassNames
+         * @depends testGenerateTablesFromModelClassNamesWithEmptyModelClassNames
          */
-        public function testResolveWithInexistentModelClassName()
+        public function testGenerateTablesFromModelClassNamesWithInexistentModelClassName()
         {
             $modelClassName     = array('ModelClass');
             RedBeanModelsToTablesAdapter::generateTablesFromModelClassNames($modelClassName, static::$messageLogger);
@@ -67,9 +67,9 @@
         }
 
         /**
-         * @depends testResolveWithInexistentModelClassName
+         * @depends testGenerateTablesFromModelClassNamesWithInexistentModelClassName
          */
-        public function testResolveForModelClassWithNoOwnMetadataAndCannotHaveBean()
+        public function testGenerateTablesFromModelClassNamesForModelClassWithNoOwnMetadataAndCannotHaveBean()
         {
             $modelClassName     = array('MashableActivity');
             RedBeanModelsToTablesAdapter::generateTablesFromModelClassNames($modelClassName, static::$messageLogger);
@@ -78,9 +78,9 @@
         }
 
         /**
-         * @depends testResolveForModelClassWithNoOwnMetadataAndCannotHaveBean
+         * @depends testGenerateTablesFromModelClassNamesForModelClassWithNoOwnMetadataAndCannotHaveBean
          */
-        public function testResolveForModelClassWithNoOwnMetadataAndCanHaveBean()
+        public function testGenerateTablesFromModelClassNamesForModelClassWithNoOwnMetadataAndCanHaveBean()
         {
             $modelClassName     = array('OwnedSecurableItem');
             RedBeanModelsToTablesAdapter::generateTablesFromModelClassNames($modelClassName, static::$messageLogger);

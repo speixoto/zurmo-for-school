@@ -46,7 +46,7 @@
             assert('is_string($policyName)');
             assert('$moduleName != ""');
             assert('$policyName != ""');
-            $bean = R::findOne('policy', "modulename = '$moduleName' and name = '$policyName'");
+            $bean = ZurmoRedBean::findOne('policy', "modulename = '$moduleName' and name = '$policyName'");
             assert('$bean === false || $bean instanceof RedBean_OODBBean');
             if ($bean === false)
             {
@@ -59,18 +59,18 @@
         {
             assert('is_string($moduleName)');
             assert('$moduleName != ""');
-            R::exec("delete from policy where modulename = '$moduleName';");
+            ZurmoRedBean::exec("delete from policy where modulename = '$moduleName';");
         }
 
         public static function removeAllForPermitable(Permitable $permitable)
         {
-            R::exec("delete from policy where permitable_id = :id;",
+            ZurmoRedBean::exec("delete from policy where permitable_id = :id;",
                     array('id' => $permitable->getClassId('Permitable')));
         }
 
         public static function removeAll()
         {
-            R::exec("delete from policy;");
+            ZurmoRedBean::exec("delete from policy;");
         }
 
         public function __toString()

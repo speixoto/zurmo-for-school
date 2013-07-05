@@ -84,11 +84,11 @@
             $opportunity->amount->currency->rateToBase = 1.0;
             $this->assertTrue($opportunity->save());
             $opportunity->delete();
-            $this->assertEquals(1, R::getCell('select count(*) from currency'));
+            $this->assertEquals(1, ZurmoRedBean::getCell('select count(*) from currency'));
             $currency = Currency::getByCode('BTC');
             $currency->delete();
             $currency->forget();
-            $this->assertEquals(0, R::getCell('select count(*) from currency'));
+            $this->assertEquals(0, ZurmoRedBean::getCell('select count(*) from currency'));
         }
 
         public function testGetAndSetCurrencyValue()

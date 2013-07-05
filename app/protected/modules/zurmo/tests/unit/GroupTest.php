@@ -327,7 +327,7 @@
         {
             assert('is_int($groupId) && $groupId > 0'); // Not Coding Standard
             assert('is_int($userId)  && $userId  > 0'); // Not Coding Standard
-            return R::getCell("select group_contains_user($groupId, $userId);") == 1;
+            return ZurmoRedBean::getCell("select group_contains_user($groupId, $userId);") == 1;
         }
 
         /**

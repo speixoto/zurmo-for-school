@@ -109,7 +109,7 @@
         {
             assert('is_string($sql)');
             $countData = array();
-            $rows = R::getAll($sql);
+            $rows = ZurmoRedBean::getAll($sql);
             foreach ($rows as $row)
             {
                 $countData[$row['attribute']] = $row['count'];

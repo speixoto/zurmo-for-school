@@ -41,7 +41,6 @@
     {
         protected static $processedTables = array();
 
-        // TODO: @Shoaibi: Critical: Tests
         /**
          * Provide a schema definition array queries to create/update database schema are executed.
          * @param array $schemaDefinition
@@ -61,6 +60,11 @@
 
             $columnsAndIndexes  = reset($schemaDefinition);
             $tableName          = key($schemaDefinition);
+            if (in_array($tableName, static::$processedTables) && Yii::app()->params['isFreshInstall'])
+            {
+                // we don't skip if running under updateSchema as we might have multiple requests to update same table.
+                return;
+            }
             $needsCreateTable   = true;
             $existingFields     = array();
             $messageLogger->addInfoMessage(Zurmo::t('Core', 'Creating/Updating schema for {{tableName}}',
@@ -69,7 +73,7 @@
             {
                 try
                 {
-                    $existingFields     = R::$writer->getColumns($tableName);
+                    $existingFields     = ZurmoRedBean::$writer->getColumns($tableName);
                     $needsCreateTable   = false;
                 }
                 catch (RedBean_Exception_SQL $e)
@@ -93,7 +97,8 @@
             }
             if ($query)
             {
-                R::exec($query);
+                var_dump($query);
+                ZurmoRedBean::exec($query);
             }
             if (!in_array($tableName, static::$processedTables))
             {
@@ -116,12 +121,14 @@
             if (count($schemaDefinition) == 1)
             {
                 $columnsAndIndexes = reset($schemaDefinition);
-                if (count($columnsAndIndexes) == 2 &&
+                $tableName          = key($schemaDefinition);
+                if (is_string($tableName) && count($columnsAndIndexes) == 2 &&
                                             isset($columnsAndIndexes['columns'], $columnsAndIndexes['indexes']))
                 {
                     if(static::validateColumnDefinitionsFromSchema($columnsAndIndexes['columns']))
                     {
-                        return static::validateIndexDefinitionsFromSchema($columnsAndIndexes['indexes']);
+                        return static::validateIndexDefinitionsFromSchema($columnsAndIndexes['indexes'],
+                                                                            $columnsAndIndexes['columns']);
                     }
                 }
             }
@@ -131,6 +138,10 @@
         protected static function validateColumnDefinitionsFromSchema(array $columns)
         {
             $valid  = true;
+            if (empty($columns))
+            {
+                return false;
+            }
             $keys   = array('name', 'type', 'unsigned', 'notNull', 'collation', 'default');
             foreach ($columns as $column)
             {
@@ -151,16 +162,26 @@
             return $valid;
         }
 
-        protected static function validateIndexDefinitionsFromSchema(array $indexes)
+        protected static function validateIndexDefinitionsFromSchema(array $indexes, array $columns)
         {
             $valid  = true;
-            foreach ($indexes as $index)
+            $columnNames = RedBeanModelMemberToColumnNameUtil::resolveColumnNamesArrayFromColumnSchemaDefinition($columns);
+            foreach ($indexes as $indexName => $index)
             {
-                if (count($index) != 2 || !ArrayUtil::isValidArrayIndex('columns', $index) ||
+                if (!is_string($indexName) || count($index) != 2 || !ArrayUtil::isValidArrayIndex('columns', $index) ||
                                     !ArrayUtil::isValidArrayIndex('unique', $index) || !is_array($index['columns']))
                 {
                     $valid = false;
                     break;
+                }
+                foreach($index['columns'] as $column)
+                {
+                    list($column) = explode('(', $column);
+                    if (!in_array($column, $columnNames))
+                    {
+                        $valid = false;
+                        break;
+                    }
                 }
             }
             return $valid;
@@ -179,7 +200,6 @@
         {
             $columnsNeedingUpgrade  = array();
             $upgradeStatements      = array();
-            // TODO: @Shoaibi/@Jason: Critical: What about fields that are in db but not in schema definition? drop them?
             foreach ($columns as $column)
             {
                 if ($upgradeDefinition = static::resolveColumnUpgradeDefinition($column, $existingFields))

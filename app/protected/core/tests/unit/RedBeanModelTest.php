@@ -1177,9 +1177,9 @@
          */
         public function testParentModelsOnNewModelsDoNotGetRowsUntilTheyAreSaved()
         {
-            $countBefore = intval(R::getCell("select count(*) from a;"));
+            $countBefore = intval(ZurmoRedBean::getCell("select count(*) from a;"));
             $account = new B();
-            $countAfter  = intval(R::getCell("select count(*) from a;"));
+            $countAfter  = intval(ZurmoRedBean::getCell("select count(*) from a;"));
             $this->assertEquals($countBefore, $countAfter);
         }
 
@@ -1449,7 +1449,7 @@
             $this->assertGreaterThanOrEqual($now - 2, DateTimeUtil::convertDbFormatDateTimeToTimestamp($model->myDateTime));
             $this->assertLessThanOrEqual($now + 2, DateTimeUtil::convertDbFormatDateTimeToTimestamp($model->myDateTime));
 
-            $rows = R::getAll('desc testdatetimemodel');
+            $rows = ZurmoRedBean::getAll('desc testdatetimemodel');
             $this->assertEquals('mydate',     $rows[1]['Field']);
             $this->assertEquals('date',       $rows[1]['Type']);
             $this->assertEquals('mydatetime', $rows[2]['Field']);
@@ -1481,7 +1481,7 @@
             $model->forget();
             unset($model);
 
-            $rows = R::getAll('desc testblobmodel');
+            $rows = ZurmoRedBean::getAll('desc testblobmodel');
             $this->assertEquals('binarystuff',    $rows[1]['Field']);
             $this->assertEquals('blob',           $rows[1]['Type']);
             $this->assertEquals('bigbinarystuff', $rows[2]['Field']);

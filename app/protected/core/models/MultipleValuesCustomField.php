@@ -93,7 +93,7 @@
             $sql .= "AND {$quote}{$dataAttributeColumnName}{$quote} = $customFieldDataId ";
             $sql .= "AND {$quote}{$customFieldTableName}{$quote}.id = {$quote}{$customFieldValueTableName}{$quote}.{$customFieldTableName}_id ";
             $sql .= "AND {$quote}{$customFieldValueTableName}{$quote}.{$valueAttributeColumnName} = '{$oldValue}'";
-            R::exec($sql);
+            ZurmoRedBean::exec($sql);
         }
 
         public function setValues($values)

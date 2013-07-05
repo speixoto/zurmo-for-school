@@ -83,25 +83,25 @@
             $securableItemId = $account->getClassId('SecurableItem');
             $permitableId    = $user   ->getClassId('Permitable');
 
-            R::exec("call get_securableitem_cached_actual_permissions_for_permitable($securableItemId, $permitableId, @allow_permissions, @deny_permissions)");
-            $allow_permissions = intval(R::getCell('select @allow_permissions'));
-            $deny_permissions  = intval(R::getCell('select @deny_permissions'));
+            ZurmoRedBean::exec("call get_securableitem_cached_actual_permissions_for_permitable($securableItemId, $permitableId, @allow_permissions, @deny_permissions)");
+            $allow_permissions = intval(ZurmoRedBean::getCell('select @allow_permissions'));
+            $deny_permissions  = intval(ZurmoRedBean::getCell('select @deny_permissions'));
             $this->assertEquals(Permission::NONE, $allow_permissions);
             $this->assertEquals(Permission::NONE, $deny_permissions);
 
             ZurmoDatabaseCompatibilityUtil::callProcedureWithoutOuts("cache_securableitem_actual_permissions_for_permitable($securableItemId, $permitableId, 1, 0)");
 
-            R::exec("call get_securableitem_cached_actual_permissions_for_permitable($securableItemId, $permitableId, @allow_permissions, @deny_permissions)");
-            $allow_permissions = intval(R::getCell('select @allow_permissions'));
-            $deny_permissions  = intval(R::getCell('select @deny_permissions'));
+            ZurmoRedBean::exec("call get_securableitem_cached_actual_permissions_for_permitable($securableItemId, $permitableId, @allow_permissions, @deny_permissions)");
+            $allow_permissions = intval(ZurmoRedBean::getCell('select @allow_permissions'));
+            $deny_permissions  = intval(ZurmoRedBean::getCell('select @deny_permissions'));
             $this->assertEquals(Permission::READ, $allow_permissions);
             $this->assertEquals(Permission::NONE, $deny_permissions);
 
             ZurmoDatabaseCompatibilityUtil::callProcedureWithoutOuts("clear_cache_securableitem_actual_permissions($securableItemId)");
 
-            R::exec("call get_securableitem_cached_actual_permissions_for_permitable($securableItemId, $permitableId, @allow_permissions, @deny_permissions)");
-            $allow_permissions = intval(R::getCell('select @allow_permissions'));
-            $deny_permissions  = intval(R::getCell('select @deny_permissions'));
+            ZurmoRedBean::exec("call get_securableitem_cached_actual_permissions_for_permitable($securableItemId, $permitableId, @allow_permissions, @deny_permissions)");
+            $allow_permissions = intval(ZurmoRedBean::getCell('select @allow_permissions'));
+            $deny_permissions  = intval(ZurmoRedBean::getCell('select @deny_permissions'));
             $this->assertEquals(Permission::NONE, $allow_permissions);
             $this->assertEquals(Permission::NONE, $deny_permissions);
 

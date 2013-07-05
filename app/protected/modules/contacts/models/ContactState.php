@@ -42,7 +42,7 @@
         public static function getByName($name)
         {
             assert('is_string($name) && $name != ""');
-            return self::makeModels(R::find('contactstate', "name = :name ", array(':name' => $name)));
+            return self::makeModels(ZurmoRedBean::find('contactstate', "name = :name ", array(':name' => $name)));
         }
 
         protected static function translatedAttributeLabels($language)

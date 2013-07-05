@@ -140,7 +140,7 @@
             $this->assertEquals(0, count($beansWithErrors));
 
             //Clear out data in table
-            R::exec("delete from " . Contact::getTableName('Contact'));
+            ZurmoRedBean::exec("delete from " . Contact::getTableName('Contact'));
         }
 
         /**
@@ -166,7 +166,7 @@
                                                   Yii::getPathOfAlias('application.modules.contacts.tests.unit.files'));
 
             //update the ids of the account column to match the parent account.
-            R::exec("update " . $import->getTempTableName() . " set column_17 = " .
+            ZurmoRedBean::exec("update " . $import->getTempTableName() . " set column_17 = " .
                     $account->id . " where id != 1 limit 4");
 
             $this->assertEquals(4, ImportDatabaseUtil::getCount($import->getTempTableName())); // includes header rows.

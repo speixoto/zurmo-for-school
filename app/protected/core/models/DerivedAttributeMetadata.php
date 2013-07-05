@@ -139,7 +139,7 @@
                 $tableName = self::getTableName('DerivedAttributeMetadata');
                 $sql       = 'select id from ' . $tableName . " where name = '{$this->$attribute}' and ";
                 $sql      .= "modelclassname = '" . $this->modelClassName . "'";
-                $rows      = R::getAll($sql);
+                $rows      = ZurmoRedBean::getAll($sql);
                 if (count($rows) == 0 || count($rows) == 1 && $rows[0]['id'] == $this->getClassId('DerivedAttributeMetadata'))
                 {
                     return;

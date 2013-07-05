@@ -122,7 +122,7 @@
         {
             $selectQueryAdapter     = new RedBeanModelSelectQueryAdapter();
             $sql = $this->makeSqlQueryForFetchingTotalItemCount($selectQueryAdapter, true);
-            $count = R::getCell($sql);
+            $count = ZurmoRedBean::getCell($sql);
             if ($count === null || empty($count))
             {
                 $count = 0;
@@ -353,7 +353,7 @@
             assert('is_string($sql)');
             if ($this->_rowsData == null)
             {
-                $this->_rowsData = R::getAll($sql);
+                $this->_rowsData = ZurmoRedBean::getAll($sql);
             }
             return $this->_rowsData;
         }

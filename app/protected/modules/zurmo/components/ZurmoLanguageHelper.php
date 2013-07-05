@@ -348,7 +348,7 @@
         {
             assert('is_string($language)');
             $tableName = User::getTableName('User');
-            $beans = R::find($tableName, "language = '$language'");
+            $beans = ZurmoRedBean::find($tableName, "language = '$language'");
             if (count($beans) > 0)
             {
                 return true;

@@ -220,8 +220,8 @@
             $sql .= "{$quote}{$baseCustomFieldTableName}{$quote}.id = ";
             $sql .= "{$quote}{$customFieldTableName}{$quote}.basecustomfield_id ";
             $sql .= "where {$quote}{$dataAttributeColumnName}{$quote} = {$id}";
-            $ids = R::getCol($sql);
-            $beans = R::batch($customFieldTableName, $ids);
+            $ids = ZurmoRedBean::getCol($sql);
+            $beans = ZurmoRedBean::batch($customFieldTableName, $ids);
             $customFields = RedBeanModel::makeModels($beans, 'CustomField');
             $this->assertEquals(4, count($customFields));
 
@@ -234,7 +234,7 @@
             $sql .= "where {$quote}{$valueAttributeColumnName}{$quote} IN('B','C') "; // Not Coding Standard
             $sql .= "and {$quote}{$customFieldTableName}{$quote}.id = {$customFieldValueTableName}.{$customFieldTableName}_id)";
             $sql .= " = 2";
-            $this->assertEquals(1, count(R::getCol($sql)));
+            $this->assertEquals(1, count(ZurmoRedBean::getCol($sql)));
             $sql  = "select {$quote}{$customFieldTableName}{$quote}.id from {$quote}{$customFieldTableName}{$quote} ";
             $sql .= "left join {$quote}{$baseCustomFieldTableName}{$quote} on ";
             $sql .= "{$quote}{$baseCustomFieldTableName}{$quote}.id = ";
@@ -244,7 +244,7 @@
             $sql .= "where {$quote}{$valueAttributeColumnName}{$quote} IN('C') ";
             $sql .= "and {$quote}{$customFieldTableName}{$quote}.id = {$customFieldValueTableName}.{$customFieldTableName}_id)";
             $sql .= " = 1";
-            $this->assertEquals(2, count(R::getCol($sql)));
+            $this->assertEquals(2, count(ZurmoRedBean::getCol($sql)));
             $sql  = "select {$quote}{$customFieldTableName}{$quote}.id from {$quote}{$customFieldTableName}{$quote} ";
             $sql .= "left join {$quote}{$baseCustomFieldTableName}{$quote} on ";
             $sql .= "{$quote}{$baseCustomFieldTableName}{$quote}.id = ";
@@ -254,7 +254,7 @@
             $sql .= "where {$quote}{$valueAttributeColumnName}{$quote} IN('E') ";
             $sql .= "and {$quote}{$customFieldTableName}{$quote}.id = {$customFieldValueTableName}.{$customFieldTableName}_id)";
             $sql .= " = 1";
-            $this->assertEquals(0, count(R::getCol($sql)));
+            $this->assertEquals(0, count(ZurmoRedBean::getCol($sql)));
 
             MultipleValuesCustomField::updateValueByDataIdAndOldValueAndNewValue($id, 'C', 'E');
             $sql  = "select {$quote}{$customFieldTableName}{$quote}.id from {$quote}{$customFieldTableName}{$quote} ";
@@ -266,7 +266,7 @@
             $sql .= "where {$quote}{$valueAttributeColumnName}{$quote} IN('B') ";
             $sql .= "and {$quote}{$customFieldTableName}{$quote}.id = {$customFieldValueTableName}.{$customFieldTableName}_id)";
             $sql .= " = 1";
-            $this->assertEquals(1, count(R::getCol($sql)));
+            $this->assertEquals(1, count(ZurmoRedBean::getCol($sql)));
             $sql  = "select {$quote}{$customFieldTableName}{$quote}.id from {$quote}{$customFieldTableName}{$quote} ";
             $sql .= "left join {$quote}{$baseCustomFieldTableName}{$quote} on ";
             $sql .= "{$quote}{$baseCustomFieldTableName}{$quote}.id = ";
@@ -276,7 +276,7 @@
             $sql .= "where {$quote}{$valueAttributeColumnName}{$quote} IN('C') ";
             $sql .= "and {$quote}{$customFieldTableName}{$quote}.id = {$customFieldValueTableName}.{$customFieldTableName}_id)";
             $sql .= " = 1";
-            $this->assertEquals(0, count(R::getCol($sql)));
+            $this->assertEquals(0, count(ZurmoRedBean::getCol($sql)));
             $sql  = "select {$quote}{$customFieldTableName}{$quote}.id from {$quote}{$customFieldTableName}{$quote} ";
             $sql .= "left join {$quote}{$baseCustomFieldTableName}{$quote} on ";
             $sql .= "{$quote}{$baseCustomFieldTableName}{$quote}.id = ";
@@ -286,7 +286,7 @@
             $sql .= "where {$quote}{$valueAttributeColumnName}{$quote} IN('E') ";
             $sql .= "and {$quote}{$customFieldTableName}{$quote}.id = {$customFieldValueTableName}.{$customFieldTableName}_id)";
             $sql .= " = 1";
-            $this->assertEquals(2, count(R::getCol($sql)));
+            $this->assertEquals(2, count(ZurmoRedBean::getCol($sql)));
             $sql  = "select {$quote}{$customFieldTableName}{$quote}.id from {$quote}{$customFieldTableName}{$quote} ";
             $sql .= "left join {$quote}{$baseCustomFieldTableName}{$quote} on ";
             $sql .= "{$quote}{$baseCustomFieldTableName}{$quote}.id = ";
@@ -296,6 +296,6 @@
             $sql .= "where {$quote}{$valueAttributeColumnName}{$quote} IN('B', 'E') ";
             $sql .= "and {$quote}{$customFieldTableName}{$quote}.id = {$customFieldValueTableName}.{$customFieldTableName}_id)";
             $sql .= " = 2";
-            $this->assertEquals(1, count(R::getCol($sql)));
+            $this->assertEquals(1, count(ZurmoRedBean::getCol($sql)));
         }
     }

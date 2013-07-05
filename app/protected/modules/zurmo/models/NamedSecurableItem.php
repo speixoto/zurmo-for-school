@@ -51,7 +51,7 @@
             }
             catch (NotFoundException $e)
             {
-                $bean = R::findOne('namedsecurableitem', "name = :name ", array(':name' => $name));
+                $bean = ZurmoRedBean::findOne('namedsecurableitem', "name = :name ", array(':name' => $name));
                 assert('$bean === false || $bean instanceof RedBean_OODBBean');
                 if ($bean === false)
                 {

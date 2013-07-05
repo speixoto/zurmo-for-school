@@ -106,7 +106,7 @@
 
         public function testDropTable()
         {
-            R::exec("create table temptable (temptable_id int(11) unsigned not null)");
+            ZurmoRedBean::exec("create table temptable (temptable_id int(11) unsigned not null)");
             DatabaseCompatibilityUtil::dropTable('temptable');
             $tables = DatabaseCompatibilityUtil::getAllTableNames();
             $this->assertFalse(in_array('temptable', $tables));
@@ -114,7 +114,7 @@
 
         public function testGetAllTableNames()
         {
-            R::exec("create table temptable (temptable_id int(11) unsigned not null)");
+            ZurmoRedBean::exec("create table temptable (temptable_id int(11) unsigned not null)");
             $tables = DatabaseCompatibilityUtil::getAllTableNames();
             $this->assertTrue(in_array('temptable', $tables));
         }
@@ -307,7 +307,7 @@
             );
             DatabaseCompatibilityUtil::bulkInsert($tableName, $insertData, $columnNames, 3);
 
-            $bulkInsertedRows      = R::getAll("select * from $tableName order by id");
+            $bulkInsertedRows      = ZurmoRedBean::getAll("select * from $tableName order by id");
             $this->assertEquals(count($bulkInsertedRows), 3);
             for ($i = 0; $i < 3; $i++)
             {
@@ -332,7 +332,7 @@
             $insertData  = $this->createDumpDataForBulkInsert($numberOfRows);
 
             DatabaseCompatibilityUtil::bulkInsert($tableName, $insertData, $columnNames, $bulkQuantity);
-            $bulkInsertedRows      = R::getAll("select * from $tableName order by id");
+            $bulkInsertedRows      = ZurmoRedBean::getAll("select * from $tableName order by id");
             $this->assertEquals(count($bulkInsertedRows), $numberOfRows);
             for ($i = 0; $i < $numberOfRows; $i++)
             {
@@ -372,7 +372,7 @@
                 DatabaseCompatibilityUtil::bulkInsert($tableName, $importDataForOneLoop, $columnNames, $bulkQuantity);
             }
 
-            $bulkInsertedRows      = R::getAll("select * from $tableName order by id");
+            $bulkInsertedRows      = ZurmoRedBean::getAll("select * from $tableName order by id");
             $this->assertEquals(count($bulkInsertedRows), $numberOfRows);
             for ($i = 0; $i < $numberOfRows; $i++)
             {
@@ -618,9 +618,9 @@
             if (RedBeanDatabase::getDatabaseType() == 'mysql')
             {
                 $tableRowsCountTotal = DatabaseCompatibilityUtil::getTableRowsCountTotal();
-                R::exec("create table temptesttable (temptable_id int(11) unsigned not null)");
-                R::exec("insert into temptesttable (temptable_id) values (2)");
-                R::exec("insert into temptesttable (temptable_id) values (9)");
+                ZurmoRedBean::exec("create table temptesttable (temptable_id int(11) unsigned not null)");
+                ZurmoRedBean::exec("insert into temptesttable (temptable_id) values (2)");
+                ZurmoRedBean::exec("insert into temptesttable (temptable_id) values (9)");
                 $tableRowsCountTotalAfterQuery = DatabaseCompatibilityUtil::getTableRowsCountTotal();
                 $this->assertEquals(2, $tableRowsCountTotalAfterQuery - $tableRowsCountTotal);
             }

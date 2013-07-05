@@ -417,7 +417,7 @@
         {
             $basePath       = Yii::app()->getBasePath();
             require_once("$basePath/../../redbean/rb.php");
-            $redBeanVersion =  R::getVersion();
+            $redBeanVersion =  ZurmoRedBean::getVersion();
             $yiiVersion     =  YiiBase::getVersion();
             if ( $redBeanVersion != Yii::app()->params['redBeanVersion'])
             {

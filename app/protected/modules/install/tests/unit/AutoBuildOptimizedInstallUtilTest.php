@@ -513,7 +513,7 @@
                 $this->assertFalse($messageLogger->isErrorMessagePresent());
                 ReadPermissionsOptimizationUtil::rebuild();
                 AutoBuildOptimizedInstallUtil::freezeDatabase();
-                $tableNames = R::getCol('show tables');
+                $tableNames = ZurmoRedBean::getCol('show tables');
                 $this->assertEquals(array(
                                         '_group',
                                         '_group__user',

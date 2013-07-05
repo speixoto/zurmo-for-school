@@ -74,7 +74,7 @@
                 $modelClassName = get_called_class();
             }
             $tableName = self::getTableName($modelClassName);
-            $bean = R::findOne(
+            $bean = ZurmoRedBean::findOne(
                 $tableName,
                 ' code = :code',
                 array(

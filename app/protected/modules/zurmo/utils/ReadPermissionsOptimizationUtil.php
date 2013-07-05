@@ -273,7 +273,7 @@
             assert('$modelClassName != "OwnedSecurableItem"');
             $mungeTableName = self::getMungeTableName($modelClassName);
             $securableItemId = $securableItem->getClassId('SecurableItem');
-            R::exec("delete from $mungeTableName
+            ZurmoRedBean::exec("delete from $mungeTableName
                      where       securableitem_id = $securableItemId");
         }
 
@@ -357,7 +357,7 @@
                     self::garbageCollect($mungeTableName);
                 }
                 $userId = $user->id;
-                R::exec("delete from $mungeTableName
+                ZurmoRedBean::exec("delete from $mungeTableName
                          where       munge_id = 'U$userId'");
             }
         }
@@ -373,7 +373,7 @@
                 $sql = "select securableitem_id
                         from   $mungeTableName
                         where  munge_id = concat('G', $groupId)";
-                $securableItemIds = R::getCol($sql);
+                $securableItemIds = ZurmoRedBean::getCol($sql);
                 self::bulkIncrementParentRolesCounts($mungeTableName, $securableItemIds, $user->role);
                 /*
                  * This extra step is not needed. See slide 21.  This is similar to userBeingRemovedFromRole in that
@@ -392,7 +392,7 @@
                 $sql = "select securableitem_id
                         from   $mungeTableName
                         where  munge_id = concat('G', $groupId)";
-                $securableItemIds = R::getCol($sql);
+                $securableItemIds = ZurmoRedBean::getCol($sql);
                 self::bulkDecrementParentRolesCounts($mungeTableName, $securableItemIds, $user->role);
                 /*
                  * This extra step is not needed. See slide 22. This is similar to userBeingRemovedFromRole or
@@ -435,7 +435,7 @@
             {
                 $groupId = $group->id;
                 $mungeTableName = self::getMungeTableName($modelClassName);
-                R::exec("delete from $mungeTableName
+                ZurmoRedBean::exec("delete from $mungeTableName
                      where       munge_id = 'G$groupId'");
             }
         }
@@ -468,7 +468,7 @@
                 $sql = 'select securableitem_id
                         from   permission
                         where  permitable_id in (' . join(', ', $parentGroupPermitableIds) . ')';
-                $securableItemIds = R::getCol($sql);
+                $securableItemIds = ZurmoRedBean::getCol($sql);
                 foreach (self::getMungableModelClassNames() as $modelClassName)
                 {
                     $mungeTableName = self::getMungeTableName($modelClassName);
@@ -555,7 +555,7 @@
                 $roleId = $role->id;
                 $sql = "delete from $mungeTableName
                         where       munge_id = 'R$roleId'";
-                R::exec($sql);
+                ZurmoRedBean::exec($sql);
             }
         }
 
@@ -594,7 +594,7 @@
                             select securableitem_id
                             from   permission
                             where  permitable_id in (' . join(', ', $permitableIds) . ')';
-                    $securableItemIds = R::getCol($sql);
+                    $securableItemIds = ZurmoRedBean::getCol($sql);
                     self::$countMethod($mungeTableName, $securableItemIds, $role->role);
                 }
 
@@ -617,7 +617,7 @@
                             select securableitem_id
                             from   permission
                             where  permitable_id in (' . join(', ', $permitableIds) . ')';
-                    $securableItemIds = R::getCol($sql);
+                    $securableItemIds = ZurmoRedBean::getCol($sql);
                     self::$countMethod($mungeTableName, $securableItemIds, $role);
                 }
 
@@ -638,7 +638,7 @@
                     $sql = 'select securableitem_id
                             from   permission
                             where  permitable_id in (' . join(', ', $permitableIds) . ')';
-                    $securableItemIds = R::getCol($sql);
+                    $securableItemIds = ZurmoRedBean::getCol($sql);
                     self::$countMethod($mungeTableName, $securableItemIds, $role->role);
                 }
 
@@ -661,7 +661,7 @@
                         $sql = 'select securableitem_id
                                 from   permission
                                 where  permitable_id in (' . join(', ', $permitableIds) . ')';
-                        $securableItemIds = R::getCol($sql);
+                        $securableItemIds = ZurmoRedBean::getCol($sql);
                     }
                     else
                     {
@@ -704,7 +704,7 @@
                 $sql = "select securableitem_id
                         from   ownedsecurableitem
                         where  owner__user_id = $userId";
-                $securableItemIds = R::getCol($sql);
+                $securableItemIds = ZurmoRedBean::getCol($sql);
                 //Increment the parent roles for securableItems that the user is the owner on.
                 self::bulkIncrementParentRolesCounts($mungeTableName, $securableItemIds, $user->role);
 
@@ -722,7 +722,7 @@
                     $sql = "select distinct $mungeTableName.securableitem_id
                             from   $mungeTableName
                             where  $mungeTableName.munge_id $inSqlPart";
-                    $securableItemIds = R::getCol($sql);
+                    $securableItemIds = ZurmoRedBean::getCol($sql);
                     self::bulkIncrementParentRolesCounts($mungeTableName, $securableItemIds, $user->role);
                 }
             }
@@ -737,14 +737,14 @@
                 $sql = "select securableitem_id
                         from   ownedsecurableitem
                         where  owner__user_id = $userId";
-                $securableItemIds = R::getCol($sql);
+                $securableItemIds = ZurmoRedBean::getCol($sql);
                 self::bulkDecrementParentRolesCounts($mungeTableName, $securableItemIds, $role);
 
                 $sql = "select $mungeTableName.securableitem_id
                         from   $mungeTableName, _group__user
                         where  $mungeTableName.munge_id = concat('G', _group__user._group_id) and
                                _group__user._user_id = $userId";
-                $securableItemIds = R::getCol($sql);
+                $securableItemIds = ZurmoRedBean::getCol($sql);
                 self::bulkDecrementParentRolesCounts($mungeTableName, $securableItemIds, $role);
                 /*
                  * This additional step I don't think is needed because the sql query above actually traps
@@ -822,14 +822,14 @@
         public static function recreateTable($mungeTableName)
         {
             assert('is_string($mungeTableName) && $mungeTableName  != ""');
-            R::exec("drop table if exists $mungeTableName");
-            R::exec("create table $mungeTableName (
+            ZurmoRedBean::exec("drop table if exists $mungeTableName");
+            ZurmoRedBean::exec("create table $mungeTableName (
                         securableitem_id int(11)     unsigned not null,
                         munge_id         varchar(12)          not null,
                         count            int(8)      unsigned not null,
                         primary key (securableitem_id, munge_id)
                      )");
-            R::exec("create index index_${mungeTableName}_securable_item_id
+            ZurmoRedBean::exec("create index index_${mungeTableName}_securable_item_id
                      on $mungeTableName (securableitem_id);");
         }
 
@@ -841,7 +841,7 @@
             $itemId  = $item->id;
             $type    = self::getMungeType($item);
             $mungeId = "$type$itemId";
-            R::exec("insert into $mungeTableName
+            ZurmoRedBean::exec("insert into $mungeTableName
                                  (securableitem_id, munge_id, count)
                      values ($securableItemId, '$mungeId', 1)
                      on duplicate key
@@ -856,7 +856,7 @@
             $itemId  = $item->id;
             $type    = self::getMungeType($item);
             $mungeId = "$type$itemId";
-            R::exec("insert into $mungeTableName
+            ZurmoRedBean::exec("insert into $mungeTableName
                                  (securableitem_id, munge_id, count)
                      values ($securableItemId, '$mungeId', $count)
                      on duplicate key
@@ -871,7 +871,7 @@
             $itemId  = $item->id;
             $type    = self::getMungeType($item);
             $mungeId = "$type$itemId";
-            R::exec("update $mungeTableName
+            ZurmoRedBean::exec("update $mungeTableName
                      set count = count - 1
                      where securableitem_id = $securableItemId and
                            munge_id         = '$mungeId'");
@@ -884,7 +884,7 @@
             $itemId  = $item->id;
             $type    = self::getMungeType($item);
             $mungeId = "$type$itemId";
-            R::exec("update $mungeTableName
+            ZurmoRedBean::exec("update $mungeTableName
                      set count = count - 1
                      where munge_id = '$mungeId'");
         }
@@ -975,12 +975,12 @@
         // than is necessary.
         protected static function garbageCollect($mungeTableName)
         {
-            assert("(int)R::getCell('select count(*)
+            assert("(int)ZurmoRedBean::getCell('select count(*)
                                 from   $mungeTableName
                                 where  count < 0') == 0");
-            R::exec("delete from $mungeTableName
+            ZurmoRedBean::exec("delete from $mungeTableName
                      where       count = 0");
-            assert("(int)R::getCell('select count(*)
+            assert("(int)ZurmoRedBean::getCell('select count(*)
                                 from   $mungeTableName
                                 where  count < 1') == 0");
         }

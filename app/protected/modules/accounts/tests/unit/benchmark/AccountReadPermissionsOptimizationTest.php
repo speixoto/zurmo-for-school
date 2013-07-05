@@ -465,7 +465,7 @@
                 {
                     echo 'Rebuilt the munge in php in ' . round($endTime - $startTime, 1) . ' seconds, ' . self::getAccountMungeRowCount() . " rows.\n";
                 }
-                $phpRows = R::getAll('select munge_id, securableitem_id, count from account_read order by munge_id, securableitem_id, count');
+                $phpRows = ZurmoRedBean::getAll('select munge_id, securableitem_id, count from account_read order by munge_id, securableitem_id, count');
 
                 // If $securityOptimized is false in debug.php the second one will just do the php again.
                 $startTime = microtime(true);
@@ -475,7 +475,7 @@
                 {
                     echo 'Rebuilt the munge ' . (SECURITY_OPTIMIZED ? 'optimized' : 'in php') . ' in ' . round($endTime - $startTime, 1) . ' seconds, ' . self::getAccountMungeRowCount() . " rows.\n";
                 }
-                $otherRows = R::getAll('select munge_id, securableitem_id, count from account_read order by munge_id, securableitem_id, count');
+                $otherRows = ZurmoRedBean::getAll('select munge_id, securableitem_id, count from account_read order by munge_id, securableitem_id, count');
 
                 if (count(array_diff($phpRows, $otherRows)) > 0)
                 {

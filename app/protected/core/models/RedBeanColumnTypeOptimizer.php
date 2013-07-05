@@ -56,12 +56,12 @@
                     // It is possible that field is created outside optimizer, so in this case reload fields from database
                     if (!in_array($columnName, array_keys($fields)))
                     {
-                        $fields = R::$writer->getColumns($table);
+                        $fields = ZurmoRedBean::$writer->getColumns($table);
                     }
                 }
                 else
                 {
-                    $fields = R::$writer->getColumns($table);
+                    $fields = ZurmoRedBean::$writer->getColumns($table);
                 }
 
                 if (in_array($columnName, array_keys($fields)))
@@ -71,21 +71,21 @@
                     {
                         if (strtolower($datatype) == 'string' && isset($length) && $length > 0)
                         {
-                            $maxLength = R::getCell("SELECT MAX(LENGTH($columnName)) FROM $table");
+                            $maxLength = ZurmoRedBean::getCell("SELECT MAX(LENGTH($columnName)) FROM $table");
                             if ($maxLength <= $length)
                             {
-                                R::exec("alter table {$table} change {$columnName} {$columnName} " . $databaseColumnType);
+                                ZurmoRedBean::exec("alter table {$table} change {$columnName} {$columnName} " . $databaseColumnType);
                             }
                         }
                         else
                         {
-                            R::exec("alter table {$table} change {$columnName} {$columnName} " . $databaseColumnType);
+                            ZurmoRedBean::exec("alter table {$table} change {$columnName} {$columnName} " . $databaseColumnType);
                         }
                     }
                 }
                 else
                 {
-                    R::exec("alter table {$table} add {$columnName} " . $databaseColumnType);
+                    ZurmoRedBean::exec("alter table {$table} add {$columnName} " . $databaseColumnType);
                 }
             }
             catch (RedBean_Exception_SQL $e)
@@ -97,8 +97,8 @@
                 }
                 else
                 {
-                    R::$writer->createTable($table);
-                    R::exec("alter table {$table} add {$columnName} " . $databaseColumnType);
+                    ZurmoRedBean::$writer->createTable($table);
+                    ZurmoRedBean::exec("alter table {$table} add {$columnName} " . $databaseColumnType);
                 }
             }
 
@@ -108,7 +108,7 @@
             }
             else
             {
-                self::$optimizedTableColumns[$table] = R::$writer->getColumns($table);
+                self::$optimizedTableColumns[$table] = ZurmoRedBean::$writer->getColumns($table);
             }
             self::$optimizedTableColumns[$table][$columnName] = $databaseColumnType;
         }

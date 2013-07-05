@@ -109,7 +109,7 @@
             if ($isBeingCopied || $savedWorkflow->id < 0 ||
                 array_key_exists('moduleClassName', $savedWorkflow->originalAttributeValues))
             {
-                $maxOrder             = R::getCell($sql);
+                $maxOrder             = ZurmoRedBean::getCell($sql);
                 $savedWorkflow->order = (int)$maxOrder +  1;
             }
         }
