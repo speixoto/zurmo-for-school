@@ -41,6 +41,11 @@
     {
         // TODO: @Shoaibi: Critical: Add some documentation for this.
         // TODO: @Shoaibi: Critical: Tests
+        /**
+         * Provided an array of modelClassNames database schema generation is performed using each model's metadata.
+         * @param array $modelClassNames
+         * @param $messageLogger
+         */
         public static function generateTablesFromModelClassNames(array $modelClassNames, & $messageLogger)
         {
             $tables = array();

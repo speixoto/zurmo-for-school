@@ -39,8 +39,16 @@
      */
     abstract class CreateOrUpdateExistingTableFromSchemaDefinitionArrayUtil
     {
-        // TODO: @Shoaibi: Critical: Documentation
+        protected static $processedTables = array();
+
         // TODO: @Shoaibi: Critical: Tests
+        /**
+         * Provide a schema definition array queries to create/update database schema are executed.
+         * @param array $schemaDefinition
+         * @param $messageLogger
+         * @throws CException
+         * @throws Exception|RedBean_Exception_SQL
+         */
         public static function generateOrUpdateTableBySchemaDefinition(array $schemaDefinition, & $messageLogger)
         {
             $isValidSchema  = static::validateSchemaDefinition($schemaDefinition);
@@ -87,6 +95,20 @@
             {
                 R::exec($query);
             }
+            if (!in_array($tableName, static::$processedTables))
+            {
+                static::$processedTables[] = $tableName;
+            }
+        }
+
+        /**
+         * Returns an array of processed tables.
+         * @return array
+         */
+        public static function resolveProcessedTables()
+        {
+            // this is only used by tests
+            return static::$processedTables;
         }
 
         protected static function validateSchemaDefinition(array $schemaDefinition)
