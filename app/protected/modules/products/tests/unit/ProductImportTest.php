@@ -189,7 +189,7 @@
                 'column_6'  => ImportMappingUtil::makeCurrencyColumnMappingData    ('sellPrice', $currencies[0]),
                 'column_7'  => ImportMappingUtil::makeStringColumnMappingData      ('priceFrequency'),
                 'column_8'  => ImportMappingUtil::makeStringColumnMappingData      ('type'),
-                'column_9'  => ImportMappingUtil::makeHasOneColumnMappingData      ('contact'),
+                //'column_9'  => ImportMappingUtil::makeHasOneColumnMappingData      ('contact'),
             );
 
             $importRules  = ImportRulesUtil::makeImportRulesByType('Products');
@@ -223,7 +223,7 @@
             $this->assertEquals(210,                       $products[0]->sellPrice->value);
             $this->assertEquals(2,                         $products[0]->priceFrequency);
             $this->assertEquals(2,                         $products[0]->type);
-            $this->assertEquals('My Contact',              $products[0]->contact->firstName);
+            //$this->assertEquals('My Contact',              $products[0]->contact->firstName);
 
             $products = Product::getByName('A Bend in the River November Issue import copy');
             $this->assertEquals(1,                         count($products));
@@ -236,7 +236,7 @@
             $this->assertEquals(210,                       $products[0]->sellPrice->value);
             $this->assertEquals(2,                         $products[0]->priceFrequency);
             $this->assertEquals(2,                         $products[0]->type);
-            $this->assertEquals('My Contact',              $products[0]->contact->firstName);
+            //$this->assertEquals('My Contact',              $products[0]->contact->firstName);
 
             //Confirm that 2 rows were processed as 'updated'.
             $this->assertEquals(0, ImportDatabaseUtil::getCount($import->getTempTableName(),  "status = "
