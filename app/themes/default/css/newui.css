@@ -9213,6 +9213,7 @@ div.wide.form label.hasCheckBox {
   width: 100%;
 }
 .has-model-select {
+  z-index: 0;
   clear: left;
   padding: 0 !important;
 }
@@ -13794,12 +13795,12 @@ div.wide.form .errorMessage {
 }
 /* Example tokeninput style #2: Facebook style */
 ul.token-input-list {
+  z-index: 0;
   overflow: hidden;
   height: auto !important;
   height: 1%;
   cursor: text;
   min-height: 1px;
-  z-index: 999;
   margin: 0;
   padding: 0;
   background-color: #fff;
