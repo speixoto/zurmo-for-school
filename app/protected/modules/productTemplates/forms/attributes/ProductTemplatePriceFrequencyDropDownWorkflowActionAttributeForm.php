@@ -35,58 +35,27 @@
      ********************************************************************************/
 
     /**
-     * Display the product template selection. This is a
-     * combination of a type-ahead input text field
-     * and a selection button which renders a modal list view
-     * to search on product template.  Also includes a hidden input for the user
-     * id.
+     * Form to work with dropDown attributes
      */
-    class ProductTemplateElement extends ModelElement
+    class ProductTemplatePriceFrequencyDropDownWorkflowActionAttributeForm extends WorkflowActionAttributeForm
     {
-        protected static $moduleId = 'productTemplates';
-
-        /**
-         * Render a hidden input, a text input with an auto-complete
-         * event, and a select button. These three items together
-         * form the Template Editable Element
-         * @return The element's content as a string.
-         */
-        protected function renderControlEditable()
+        public function getValueElementType()
         {
-            assert('$this->model->{$this->attribute} instanceof ProductTemplate');
-            return parent::renderControlEditable();
+            return 'ProductTemplatePriceFrequencyDropDown';
         }
 
         /**
-         * @return string
+         * @param bool $isCreatingNewModel
+         * @param bool $isRequired
+         * @return array
          */
-        protected function getModalTitleForSelectingModel()
+        protected function makeTypeValuesAndLabels($isCreatingNewModel, $isRequired)
         {
-            return Zurmo::t('ProductTemplatesModule', 'Catalog Item Search');
-        }
-
-        /**
-         * Registers scripts for autocomplete text field
-         */
-        protected function registerScriptForAutoCompleteTextField()
-        {
-            parent::registerScriptForAutoCompleteTextField();
-            Yii::app()->clientScript->registerScriptFile(Yii::app()->getAssetManager()->publish(
-                    Yii::getPathOfAlias('application.modules.productTemplates.elements.assets')
-                    ) . '/Modal.js',
-                CClientScript::POS_END);
-        }
-
-        /**
-         * Gets on select option for the automcomplete text field
-         * @param string $idInputName
-         * @return string
-         */
-        protected function getOnSelectOptionForAutoComplete($idInputName)
-        {
-            $url = Yii::app()->createUrl("productTemplates/default/details");
-            return 'js:function(event, ui){ jQuery("#' . $idInputName . '").val(ui.item["id"]).trigger("change");
-                        copyProductTemplateDataForProduct(ui.item["id"], \'' . $url . '\')}';
+            assert('is_bool($isCreatingNewModel)');
+            assert('is_bool($isRequired)');
+            $data                           = array();
+            $data[static::TYPE_STATIC]      = Zurmo::t('WorkflowsModule', 'As');
+            return $data;
         }
     }
 ?>
