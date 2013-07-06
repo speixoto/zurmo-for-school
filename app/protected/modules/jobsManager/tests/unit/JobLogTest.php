@@ -34,59 +34,49 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * Display the product template selection. This is a
-     * combination of a type-ahead input text field
-     * and a selection button which renders a modal list view
-     * to search on product template.  Also includes a hidden input for the user
-     * id.
-     */
-    class ProductTemplateElement extends ModelElement
+    class JobLogTest extends ZurmoBaseTest
     {
-        protected static $moduleId = 'productTemplates';
-
-        /**
-         * Render a hidden input, a text input with an auto-complete
-         * event, and a select button. These three items together
-         * form the Template Editable Element
-         * @return The element's content as a string.
-         */
-        protected function renderControlEditable()
+        public static function setUpBeforeClass()
         {
-            assert('$this->model->{$this->attribute} instanceof ProductTemplate');
-            return parent::renderControlEditable();
+            parent::setUpBeforeClass();
+            SecurityTestHelper::createSuperAdmin();
         }
 
-        /**
-         * @return string
-         */
-        protected function getModalTitleForSelectingModel()
+        public function testGetByType()
         {
-            return Zurmo::t('ProductTemplatesModule', 'Catalog Item Search');
-        }
+            Yii::app()->user->userModel = User::getByUsername('super');
+            $jobLog                = new JobLog();
+            $jobLog->type          = 'Monitor';
+            $jobLog->startDateTime = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
+            $jobLog->endDateTime   = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
+            $jobLog->status        = JobLog::STATUS_COMPLETE_WITHOUT_ERROR;
+            $jobLog->isProcessed   = false;
+            $this->assertTrue($jobLog->save());
 
-        /**
-         * Registers scripts for autocomplete text field
-         */
-        protected function registerScriptForAutoCompleteTextField()
-        {
-            parent::registerScriptForAutoCompleteTextField();
-            Yii::app()->clientScript->registerScriptFile(Yii::app()->getAssetManager()->publish(
-                    Yii::getPathOfAlias('application.modules.productTemplates.elements.assets')
-                    ) . '/ProductTemplateUtils.js',
-                CClientScript::POS_END);
-        }
+            $jobLog                = new JobLog();
+            $jobLog->type          = 'Monitor';
+            $jobLog->startDateTime = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
+            $jobLog->endDateTime   = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
+            $jobLog->status        = JobLog::STATUS_COMPLETE_WITHOUT_ERROR;
+            $jobLog->isProcessed   = false;
+            $this->assertTrue($jobLog->save());
 
-        /**
-         * Gets on select option for the automcomplete text field
-         * @param string $idInputName
-         * @return string
-         */
-        protected function getOnSelectOptionForAutoComplete($idInputName)
-        {
-            $url = Yii::app()->createUrl("productTemplates/default/details");
-            return 'js:function(event, ui){ jQuery("#' . $idInputName . '").val(ui.item["id"]).trigger("change");
-                        copyProductTemplateDataForProduct(ui.item["id"], \'' . $url . '\')}';
+            $jobLog                = new JobLog();
+            $jobLog->type          = 'SomethingElse';
+            $jobLog->startDateTime = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
+            $jobLog->endDateTime   = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
+            $jobLog->status        = JobLog::STATUS_COMPLETE_WITHOUT_ERROR;
+            $jobLog->isProcessed   = false;
+            $this->assertTrue($jobLog->save());
+
+            $jobLogs = JobLog::getByType('Monitor');
+            $this->assertCount(2, $jobLogs);
+            $jobLogs = JobLog::getByType('Monitor', 1);
+            $this->assertCount(1, $jobLogs);
+            $jobLogs = JobLog::getByType('SomethingElse');
+            $this->assertCount(1, $jobLogs);
+            $jobLogs = JobLog::getByType('SomethingElse', 1);
+            $this->assertCount(1, $jobLogs);
         }
     }
 ?>

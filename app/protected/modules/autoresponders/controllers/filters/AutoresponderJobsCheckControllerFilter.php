@@ -45,17 +45,14 @@
             {
                 return true;
             }
-
-            $queueJobLogs = JobLog::getByType('AutoresponderQueueMessagesInOutbox', 1);
+            $queueJobLogs    = JobLog::getByType('AutoresponderQueueMessagesInOutbox', 1);
             $processJobLogs  = JobLog::getByType('ProcessOutboundEmail', 1);
-
             if(count($queueJobLogs) == 0 || count($processJobLogs) == 0)
             {
                 Yii::app()->user->setFlash('notification',
                     Zurmo::t('AutorespondersModule', 'Autoresponders will not run properly until scheduled jobs are set up. Contact your administrator.')
                 );
             }
-            //todo: make an autoresponder one that checks AutoresponderQueueMessagesInOutbox
             return true;
         }
     }
