@@ -90,7 +90,7 @@
                                                                                 null,
                                                                                 null,
                                                                                 null,
-                                                                                Campaign::STATUS_ACTIVE,
+                                                                                Campaign::STATUS_PROCESSING,
                                                                                 null,
                                                                                 0,
                                                                                 $marketingList);
@@ -116,7 +116,7 @@
                                                                                 null,
                                                                                 null,
                                                                                 null,
-                                                                                Campaign::STATUS_ACTIVE,
+                                                                                Campaign::STATUS_PROCESSING,
                                                                                 null,
                                                                                 null,
                                                                                 $marketingList);
@@ -149,7 +149,7 @@
                                                                                 null,
                                                                                 null,
                                                                                 null,
-                                                                                Campaign::STATUS_ACTIVE,
+                                                                                Campaign::STATUS_PROCESSING,
                                                                                 null,
                                                                                 0,
                                                                                 $marketingList);
@@ -185,7 +185,7 @@
                                                                                 null,
                                                                                 null,
                                                                                 null,
-                                                                                Campaign::STATUS_ACTIVE,
+                                                                                Campaign::STATUS_PROCESSING,
                                                                                 null,
                                                                                 null,
                                                                                 $marketingList);
@@ -220,7 +220,7 @@
                                                                                 null,
                                                                                 null,
                                                                                 null,
-                                                                                Campaign::STATUS_ACTIVE,
+                                                                                Campaign::STATUS_PROCESSING,
                                                                                 null,
                                                                                 0,
                                                                                 $marketingList,
@@ -258,7 +258,7 @@
                                                                                 null,
                                                                                 null,
                                                                                 null,
-                                                                                Campaign::STATUS_ACTIVE,
+                                                                                Campaign::STATUS_PROCESSING,
                                                                                 null,
                                                                                 null,
                                                                                 $marketingList);
@@ -297,7 +297,7 @@
                                                                                 null,
                                                                                 null,
                                                                                 null,
-                                                                                Campaign::STATUS_ACTIVE,
+                                                                                Campaign::STATUS_PROCESSING,
                                                                                 null,
                                                                                 null,
                                                                                 $marketingList);
@@ -355,7 +355,7 @@
                                                                                 null,
                                                                                 null,
                                                                                 null,
-                                                                                Campaign::STATUS_ACTIVE,
+                                                                                Campaign::STATUS_PROCESSING,
                                                                                 null,
                                                                                 null,
                                                                                 $marketingList);
