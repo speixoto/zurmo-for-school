@@ -155,9 +155,9 @@
                     $content .= static::getBouncedContent();
                 }
             }
-            else // not processed
+            else //still awaiting queueing
             {
-                $content = static::getUnprocessedContent();
+                $content = static::getAwaitingQueueingContent();
             }
             $clearFixContent = ZurmoHtml::tag('div', array('class' => 'clearfix'), $content);
             return ZurmoHtml::tag('div', array('class' => 'continuum'), $clearFixContent);
@@ -211,10 +211,10 @@
             return ZurmoHtml::tag('div', array('class' => 'email-recipient-stage-status stage-false'), $content);
         }
         
-        protected static function getUnprocessedContent()
+        protected static function getAwaitingQueueingContent()
         {
-            $content = '<i>&#9679;</i><span>' . Zurmo::t('MarketingModule', 'Unprocessed') . '</span>';
-            return ZurmoHtml::tag('div', array('class' => 'email-recipient-stage-status stage-false'), $content);
+            $content = '<i>&#9679;</i><span>' . Zurmo::t('MarketingModule', 'Awaiting queueing') . '</span>';
+            return ZurmoHtml::tag('div', array('class' => 'email-recipient-stage-status queued'), $content);
         }
     }
 ?>
