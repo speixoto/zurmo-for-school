@@ -41,8 +41,13 @@
     {
         public function __construct($model, $attribute, $form = null, array $params = array())
         {
-            assert('$model instanceof SellPriceFormulaTypeModelAttributeMappingRuleForm');
+            assert('$model instanceof DefaultValueModelAttributeMappingRuleForm');
             parent::__construct($model, $attribute, $form, $params);
+        }
+
+        protected function getAddBlank()
+        {
+            return true;
         }
 
         protected function getDropDownArray()
