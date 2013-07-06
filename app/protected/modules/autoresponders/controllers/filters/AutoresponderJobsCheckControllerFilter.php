@@ -34,42 +34,28 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class FlashMessageView extends View
+    /**
+     * Filter used by autoresponder controller to check if campaign related jobs have ever run.
+     */
+    class AutoresponderJobsCheckControllerFilter extends CFilter
     {
-        protected $controller;
-
-        public function __construct(CController $controller)
+        protected function preFilter($filterChain)
         {
-            $this->controller = $controller;
-        }
-
-        protected function renderContent()
-        {
-            $content = '<div id="FlashMessageBar"></div>';
-            if (Yii::app()->user->hasFlash('notification'))
+            if (isset($_POST['ajax']))
             {
-                $script = "
-                $('#FlashMessageBar').jnotifyAddMessage(
-                {
-                    text: '". ZurmoHtml::encode(Yii::app()->user->getFlash('notification')) ."',
-                    permanent: true,
-                    showIcon: true,
-                }
-                );
-                ";
-                Yii::app()->clientScript->registerScript('FlashMessage', $script);
+                return true;
             }
-            $this->controller->beginClip("FlashMessage");
-            $this->controller->widget('application.core.widgets.JNotify', array(
-                'statusBarId' => 'FlashMessageBar',
-            ));
-            $this->controller->endClip();
-            $content .= $this->controller->clips['FlashMessage'];
-            return $content;
-        }
 
-        public function isUniqueToAPage()
-        {
+            $queueJobLogs = JobLog::getByType('AutoresponderQueueMessagesInOutbox', 1);
+            $processJobLogs  = JobLog::getByType('ProcessOutboundEmail', 1);
+
+            if(count($queueJobLogs) == 0 || count($processJobLogs) == 0)
+            {
+                Yii::app()->user->setFlash('notification',
+                    Zurmo::t('AutorespondersModule', 'Autoresponders will not run properly until scheduled jobs are set up. Contact your administrator.')
+                );
+            }
+            //todo: make an autoresponder one that checks AutoresponderQueueMessagesInOutbox
             return true;
         }
     }

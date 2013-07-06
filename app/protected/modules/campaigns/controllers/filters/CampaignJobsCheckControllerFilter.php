@@ -34,26 +34,30 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class AutoresponderDeleteListRowActionElement extends AutoresponderListRowActionElement
+    /**
+     * Filter used by campaign controller to check if campaign related jobs have ever run.
+     */
+    class CampaignJobsCheckControllerFilter extends CFilter
     {
-        public function getActionType()
+        protected function preFilter($filterChain)
         {
-            return 'Delete';
-        }
+            if (isset($_POST['ajax']))
+            {
+                return true;
+            }
 
-        protected function getDefaultLabel()
-        {
-            return Zurmo::t('AutorespondersModule', 'Delete');
-        }
+            $generateJobLogs = JobLog::getByType('CampaignGenerateDueCampaignItems', 1);
+            $markJobLogs     = JobLog::getByType('CampaignMarkCompleted', 1);
+            $queueJobLogs    = JobLog::getByType('CampaignQueueMessagesInOutbox', 1);
+            $processJobLogs  = JobLog::getByType('ProcessOutboundEmail', 1);
 
-        protected function getActionId()
-        {
-            return 'delete';
-        }
-
-        protected function getUnlinkTranslatedMessage()
-        {
-            return Zurmo::t('AutorespondersModule', 'Are you sure you want to delete this autoresponder?');
+            if(count($generateJobLogs) == 0 || count($markJobLogs) == 0 || count($queueJobLogs) == 0 || count($processJobLogs) == 0)
+            {
+                Yii::app()->user->setFlash('notification',
+                    Zurmo::t('CampaignsModule', 'Campaigns will not run properly until scheduled jobs are set up. Contact your administrator.')
+                );
+            }
+            return true;
         }
     }
 ?>
