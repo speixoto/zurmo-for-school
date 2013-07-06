@@ -34,43 +34,19 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class FlashMessageView extends View
+    /**
+     * Specific rules for handling the type dropdown attribute
+     */
+    class ProductTemplateTypeDropDownAttributeImportRules extends DropDownAttributeImportRules
     {
-        protected $controller;
-
-        public function __construct(CController $controller)
+        protected static function getAllModelAttributeMappingRuleFormTypesAndElementTypes()
         {
-            $this->controller = $controller;
+            return array('DefaultValueModelAttribute' => 'ImportMappingRuleProductTemplateTypeDropDown');
         }
 
-        protected function renderContent()
+        public static function getSanitizerUtilTypesInProcessingOrder()
         {
-            $content = '<div id="FlashMessageBar"></div>';
-            if (Yii::app()->user->hasFlash('notification'))
-            {
-                $script = "
-                $('#FlashMessageBar').jnotifyAddMessage(
-                {
-                    text: '". ZurmoHtml::encode(Yii::app()->user->getFlash('notification')) ."',
-                    permanent: true,
-                    showIcon: true,
-                }
-                );
-                ";
-                Yii::app()->clientScript->registerScript('FlashMessage', $script);
-            }
-            $this->controller->beginClip("FlashMessage");
-            $this->controller->widget('application.core.widgets.JNotify', array(
-                'statusBarId' => 'FlashMessageBar',
-            ));
-            $this->controller->endClip();
-            $content .= $this->controller->clips['FlashMessage'];
-            return $content;
-        }
-
-        public function isUniqueToAPage()
-        {
-            return true;
+            return array('ProductTemplateType', 'Required');
         }
     }
 ?>
