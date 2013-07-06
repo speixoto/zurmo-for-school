@@ -86,8 +86,8 @@
                                     RelatedModelValueTypeMappingRuleForm::ZURMO_MODEL_NAME),
                 'column_5'  => ImportMappingUtil::makeStringColumnMappingData      ('stage'),
                 'column_6'  => ImportMappingUtil::makeCurrencyColumnMappingData    ('sellPrice', $currencies[0]),
-                'column_7'  => ImportMappingUtil::makeStringColumnMappingData      ('priceFrequency'),
-                'column_8'  => ImportMappingUtil::makeStringColumnMappingData      ('type'),
+                'column_7'  => ImportMappingUtil::makeIntegerColumnMappingData      ('priceFrequency'),
+                'column_8'  => ImportMappingUtil::makeIntegerColumnMappingData      ('type'),
             );
 
             $importRules  = ImportRulesUtil::makeImportRulesByType('Products');
@@ -203,8 +203,8 @@
                                RelatedModelValueTypeMappingRuleForm::ZURMO_MODEL_NAME),
                 'column_5'  => ImportMappingUtil::makeStringColumnMappingData      ('stage'),
                 'column_6'  => ImportMappingUtil::makeCurrencyColumnMappingData    ('sellPrice', $currencies[0]),
-                'column_7'  => ImportMappingUtil::makeStringColumnMappingData      ('priceFrequency'),
-                'column_8'  => ImportMappingUtil::makeStringColumnMappingData      ('type'),
+                'column_7'  => ImportMappingUtil::makeIntegerColumnMappingData      ('priceFrequency'),
+                'column_8'  => ImportMappingUtil::makeIntegerColumnMappingData      ('type'),
                 //'column_9'  => ImportMappingUtil::makeHasOneColumnMappingData      ('contact'),
             );
 

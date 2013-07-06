@@ -41,12 +41,12 @@
     {
         protected static function getAllModelAttributeMappingRuleFormTypesAndElementTypes()
         {
-            return array('PriceFrequencyModelAttribute' => 'ImportMappingRulePriceFrequencyDropDown');
+            return array('DefaultValueModelAttribute' => 'ImportMappingRulePriceFrequencyDropDown');
         }
 
         public static function getSanitizerUtilTypesInProcessingOrder()
         {
-            return array('PriceFrequency');
+            return array('PriceFrequency', 'Required');
         }
     }
 ?>
