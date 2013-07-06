@@ -34,43 +34,20 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class FlashMessageView extends View
+    /**
+     * Display a drop down of sell price formula specifically for mapping rules during the import process.
+     */
+    class ImportMappingRuleSellPriceFormulaTypeDropDownElement extends ImportMappingRuleStaticDropDownFormElement
     {
-        protected $controller;
-
-        public function __construct(CController $controller)
+        public function __construct($model, $attribute, $form = null, array $params = array())
         {
-            $this->controller = $controller;
+            assert('$model instanceof SellPriceFormulaTypeModelAttributeMappingRuleForm');
+            parent::__construct($model, $attribute, $form, $params);
         }
 
-        protected function renderContent()
+        protected function getDropDownArray()
         {
-            $content = '<div id="FlashMessageBar"></div>';
-            if (Yii::app()->user->hasFlash('notification'))
-            {
-                $script = "
-                $('#FlashMessageBar').jnotifyAddMessage(
-                {
-                    text: '". ZurmoHtml::encode(Yii::app()->user->getFlash('notification')) ."',
-                    permanent: true,
-                    showIcon: true,
-                }
-                );
-                ";
-                Yii::app()->clientScript->registerScript('FlashMessage', $script);
-            }
-            $this->controller->beginClip("FlashMessage");
-            $this->controller->widget('application.core.widgets.JNotify', array(
-                'statusBarId' => 'FlashMessageBar',
-            ));
-            $this->controller->endClip();
-            $content .= $this->controller->clips['FlashMessage'];
-            return $content;
-        }
-
-        public function isUniqueToAPage()
-        {
-            return true;
+            return SellPriceFormula::getTypeDropDownArray();
         }
     }
 ?>

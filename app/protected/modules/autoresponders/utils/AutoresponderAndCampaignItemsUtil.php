@@ -110,14 +110,14 @@
                                                                             $language,
                                                                             $errorOnFirstMissing);
 
-            if ($resolvedTextContent && $resolvedHtmlContent)
+            if ($resolvedTextContent === false || $resolvedHtmlContent === false)
             {
-                $textContent    = $resolvedTextContent;
-                $htmlContent    = $resolvedHtmlContent;
+                throw new NotSupportedException(Zurmo::t('EmailTemplatesModule', 'Provided content contains few invalid merge tags.'));
             }
             else
             {
-                throw new NotSupportedException(Zurmo::t('EmailTemplatesModule', 'Provided content contains few invalid merge tags.'));
+                $textContent    = $resolvedTextContent;
+                $htmlContent    = $resolvedHtmlContent;
             }
         }
 
