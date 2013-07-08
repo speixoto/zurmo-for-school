@@ -41,12 +41,12 @@
     {
         protected static function getAllModelAttributeMappingRuleFormTypesAndElementTypes()
         {
-            return array('SellPriceFormulaTypeModelAttribute' => 'ImportMappingRuleSellPriceFormulaTypeDropDown');
+            return array('DefaultValueModelAttribute' => 'ImportMappingRuleSellPriceFormulaTypeDropDown');
         }
 
         public static function getSanitizerUtilTypesInProcessingOrder()
         {
-            return array('SellPriceFormulaType');
+            return array('SellPriceFormulaType', 'Required');
         }
     }
 ?>

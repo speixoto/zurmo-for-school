@@ -41,12 +41,12 @@
     {
         protected static function getAllModelAttributeMappingRuleFormTypesAndElementTypes()
         {
-            return array('ProductTemplateStatusModelAttribute' => 'ImportMappingRuleProductTemplateStatusDropDown');
+            return array('DefaultValueModelAttribute' => 'ImportMappingRuleProductTemplateStatusDropDown');
         }
 
         public static function getSanitizerUtilTypesInProcessingOrder()
         {
-            return array('ProductTemplateStatus');
+            return array('ProductTemplateStatus', 'Required');
         }
     }
 ?>
