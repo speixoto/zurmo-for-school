@@ -36,16 +36,38 @@
 
     class ZurmoMySqlQueryWriter extends RedBean_QueryWriter_MySQL
     {
-        public function getColumns($tableName)
+        public function getColumnsWithDetails($tableName)
         {
+            $columns    = array();
             $tableName  = $this->safeTable($tableName);
             $columnsRaw = $this->adapter->get("DESCRIBE $tableName");
-            echo PHP_EOL;
-            print_r($columnsRaw);
-            foreach($columnsRaw as $r) {
-                $columns[$r['Field']]=$r['Type'];
+            foreach ($columnsRaw as $r) {
+                $columns[$r['Field']]   =   $r;
             }
             return $columns;
+        }
+
+        public function getIndexes($tableName)
+        {
+            $indexes    = array();
+            $tableName  = $this->safeTable($tableName);
+            $indexesRaw = $this->adapter->get("SHOW KEYS FROM $tableName");
+            foreach ($indexesRaw as $index)
+            {
+                $indexName  = $index['Key_name'];
+                $column     = $index['Column_name'];
+                $unique     = (!(bool)$index['Non_unique']);
+                $indexes[$indexName]['unique']  = $unique;
+                if (isset($indexes[$indexName]['columns']))
+                {
+                    $indexes[$indexName]['columns'][] = $column;
+                }
+                else
+                {
+                    $indexes[$indexName]['columns'] = array($column);
+                }
+            }
+            return $indexes;
         }
     }
 ?>

@@ -574,7 +574,11 @@
                     'unique_username_Index' => array(
                         'columns' => array('username'),
                         'unique' => true
-                    )
+                    ),
+                    'user_role_id_Index' => array(
+                        'columns'       => array('username', 'role_id'),
+                        'unique'        => false,
+                    ),
                 )
             )
             );
@@ -673,12 +677,16 @@
                         'unique' => true
                     ),
                     'unique_isactive_Index' => array(
-                        'columns' => array('username'),
+                        'columns' => array('isactive'),
                         'unique' => true
                     ),
                     'role_id_Index' => array(
                         'columns'   => array('role_id'),
                         'unique'    => false,
+                    ),
+                    'user_role_id_Index' => array(
+                        'columns'       => array('username', 'role_id'),
+                        'unique'        => false,
                     ),
                 )
             )
@@ -696,53 +704,11 @@
          */
         public function testGenerateOrUpdateTableBySchemaDefinitionWithValidButChangedSchemaForExistingTableWithNoIsFreshInstall()
         {
-            echo PHP_EOL . PHP_EOL;
-            var_dump(__CLASS__ . '.' . __FUNCTION__ . '.' . __LINE__ . PHP_EOL);
             Yii::app()->params['isFreshInstall'] = false;
             $schema     = array('tableName3' => array(
                 'columns' => array(
                     array(
                         'name' => 'hash',
-                        'type' => 'VARCHAR(64)',
-                        'unsigned' => null,
-                        'notNull' => 'NOT NULL',
-                        'collation' => 'COLLATE utf8_unicode_ci',
-                        'default' => 'DEFAULT "bacdefghi"',
-                    ),
-                    array(
-                        'name' => 'newlanguage',
-                        'type' => 'VARCHAR(100)',
-                        'unsigned' => null,
-                        'notNull' => 'NOT NULL',
-                        'collation' => 'COLLATE utf8_unicode_ci',
-                        'default' => 'DEFAULT "1234567"',
-                    ),
-                    array(
-                        'name' => 'locale',
-                        'type' => 'VARCHAR(100)',
-                        'unsigned' => null,
-                        'notNull' => 'NULL',
-                        'collation' => 'COLLATE utf8_unicode_ci',
-                        'default' => 'DEFAULT NULL',
-                    ),
-                    array(
-                        'name' => 'timezone',
-                        'type' => 'VARCHAR(32)',
-                        'unsigned' => null,
-                        'notNull' => 'NOT NULL',
-                        'collation' => 'COLLATE utf8_general_ci',
-                        'default' => 'DEFAULT "abc/def"',
-                    ),
-                    array(
-                        'name' => 'username',
-                        'type' => 'VARCHAR(10)',
-                        'unsigned' => null,
-                        'notNull' => 'NOT NULL',
-                        'collation' => 'COLLATE utf8_unicode_ci',
-                        'default' => 'DEFAULT "superman"',
-                    ),
-                    array(
-                        'name' => 'serializedavatardata',
                         'type' => 'TEXT',
                         'unsigned' => null,
                         'notNull' => 'NULL',
@@ -750,20 +716,44 @@
                         'default' => 'DEFAULT NULL',
                     ),
                     array(
-                        'name' => 'isactive',
-                        'type' => 'TINYINT(1) UNSIGNED',
+                        'name' => 'language',
+                        'type' => 'VARCHAR(100)',
                         'unsigned' => null,
                         'notNull' => 'NULL',
-                        'collation' => null,
+                        'collation' => 'COLLATE utf8_unicode_ci',
                         'default' => 'DEFAULT NULL',
                     ),
                     array(
-                        'name' => 'permitable_id',
-                        'type' => 'INT(11)',
-                        'unsigned' => 'UNSIGNED',
+                        'name' => 'newlocale',
+                        'type' => 'VARCHAR(10)',
+                        'unsigned' => null,
                         'notNull' => 'NULL',
-                        'collation' => null,
+                        'collation' => 'COLLATE utf8_unicode_ci',
                         'default' => 'DEFAULT NULL',
+                    ),
+                    array(
+                        'name' => 'timezone',
+                        'type' => 'VARCHAR(64)',
+                        'unsigned' => null,
+                        'notNull' => 'NOT NULL',
+                        'collation' => 'COLLATE utf8_unicode_ci',
+                        'default' => 'DEFAULT "America/Chicago"',
+                    ),
+                    array(
+                        'name' => 'username',
+                        'type' => 'VARCHAR(64)',
+                        'unsigned' => null,
+                        'notNull' => 'NULL',
+                        'collation' => 'COLLATE utf8_unicode_ci',
+                        'default' => 'DEFAULT "superman"',
+                    ),
+                    array(
+                        'name' => 'serializedavatardata',
+                        'type' => 'VARCHAR(255)',
+                        'unsigned' => null,
+                        'notNull' => 'NOT NULL',
+                        'collation' => 'COLLATE utf8_unicode_ci',
+                        'default' => 'DEFAULT "abcdef"',
                     ),
                     array(
                         'name' => 'role_id',
@@ -779,13 +769,21 @@
                         'columns' => array('username'),
                         'unique' => true
                     ),
-                    'unique_isactive_Index' => array(
-                        'columns' => array('username'),
+                    'unique_language_Index' => array(
+                        'columns' => array('language'),
                         'unique' => true
                     ),
                     'role_id_Index' => array(
                         'columns'   => array('role_id'),
                         'unique'    => false,
+                    ),
+                    'new_username_Index' => array(
+                        'columns' => array('username'),
+                        'unique' => false
+                    ),
+                    'user_role_id_Index' => array(
+                        'columns'       => array('role_id', 'username'),
+                        'unique'        => false,
                     ),
                 )
             )
@@ -796,12 +794,23 @@
             $this->assertNotEmpty($processedTables);
             $this->assertCount(2, $processedTables);
             $this->assertEquals('tableName3', $processedTables[1]);
-            // ensure column types, other properties have changed, no columns have been added, old haven't been deleted
-            // missing indexes are added.
-            // valid but different schema, same table, ensure types have changed to new ones
-            // valid schema but new indexes, ensure new indexes have been added
-            // valid schema but missing few columns, ensure they aren't dropped
-            // try with and without isFreshInstall
+            // we do not need try-catch here as if there was an exception it would have been thrown already.
+            $existingFields     = ZurmoRedBean::$writer->getColumnsWithDetails('tableName3');
+            $this->assertNotEmpty($existingFields);
+            $this->assertCount(15, $existingFields);
+            $this->assertEquals('text', $existingFields['hash']['Type']);
+            $this->assertEquals('varchar(100)', $existingFields['language']['Type']);
+            $this->assertArrayHasKey('newlocale', $existingFields);
+            $this->assertEquals('NO', $existingFields['timezone']['Null']);
+            $this->assertEquals('America/Chicago', $existingFields['timezone']['Default']);
+            $this->assertEquals('superman', $existingFields['username']['Default']);
+            $this->assertEquals('varchar(255)', $existingFields['serializedavatardata']['Type']);
+            $this->assertEquals('abcdef', $existingFields['serializedavatardata']['Default']);
+            $existingIndexes    = ZurmoRedBean::$writer->getIndexes('tableName3');
+            $this->assertCount(6, $existingIndexes);
+            $this->assertArrayHasKey('unique_language_Index', $existingIndexes);
+            $this->assertArrayHasKey('role_id_Index', $existingIndexes);
+            $this->assertArrayHasKey('user_role_id_Index', $existingIndexes);
         }
     }
 ?>

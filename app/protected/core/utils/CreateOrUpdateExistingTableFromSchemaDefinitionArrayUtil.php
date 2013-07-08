@@ -67,13 +67,15 @@
             }
             $needsCreateTable   = true;
             $existingFields     = array();
+            $existingIndexes    = array();
             $messageLogger->addInfoMessage(Zurmo::t('Core', 'Creating/Updating schema for {{tableName}}',
                                                                                 array('{{tableName}}' => $tableName)));
             if (!isset(Yii::app()->params['isFreshInstall']) || !Yii::app()->params['isFreshInstall'])
             {
                 try
                 {
-                    $existingFields     = ZurmoRedBean::$writer->getColumns($tableName);
+                    $existingFields     = ZurmoRedBean::$writer->getColumnsWithDetails($tableName);
+                    $existingIndexes    = ZurmoRedBean::$writer->getIndexes($tableName);
                     $needsCreateTable   = false;
                 }
                 catch (RedBean_Exception_SQL $e)
@@ -92,12 +94,13 @@
             }
             else
             {
-                // TODO: @Shoaibi/@Jason: Critical: What about indexes.
-                $query  = static::resolveAlterTableQuery($tableName, $columnsAndIndexes['columns'], $existingFields);
+                $query  = static::resolveAlterTableQuery($tableName,
+                                                            $columnsAndIndexes,
+                                                            $existingFields,
+                                                            $existingIndexes);
             }
             if ($query)
             {
-                var_dump($query);
                 ZurmoRedBean::exec($query);
             }
             if (!in_array($tableName, static::$processedTables))
@@ -196,10 +199,10 @@
             return $statement;
         }
 
-        protected static function resolveAlterTableQuery($tableName, $columns, $existingFields)
+        protected static function resolveColumnUpgradeQueries($columns, $existingFields)
         {
-            $columnsNeedingUpgrade  = array();
-            $upgradeStatements      = array();
+            $columnsNeedingUpgrade      = array();
+            $columnUpgradeStatements    = array();
             foreach ($columns as $column)
             {
                 if ($upgradeDefinition = static::resolveColumnUpgradeDefinition($column, $existingFields))
@@ -209,8 +212,53 @@
             }
             foreach ($columnsNeedingUpgrade as $columnNeedingUpgrade)
             {
-                $upgradeStatements[] = static::resolveAlterQueryForColumn($columnNeedingUpgrade);
+                $columnUpgradeStatements[] = static::resolveAlterQueryForColumn($columnNeedingUpgrade);
             }
+            return $columnUpgradeStatements;
+        }
+
+        protected static function doesIndexNeedUpgrade($indexMetadata, $existingIndexes)
+        {
+            $needsUpgrade   = true;
+            $indexColumns   = $indexMetadata['columns'];
+            sort($indexColumns);
+            foreach ($existingIndexes as $existingIndexMetadata)
+            {
+                $existingIndexColumns = $existingIndexMetadata['columns'];
+                sort($existingIndexColumns);
+                if ($indexMetadata['unique'] === $existingIndexMetadata['unique'] && $indexColumns === $existingIndexColumns)
+                {
+                    $needsUpgrade = false;
+                    break;
+                }
+            }
+            return $needsUpgrade;
+        }
+
+        protected static function resolveIndexUpgradeQueries($indexes, $existingIndexes)
+        {
+            $indexesNeedingUpgrade      = array();
+            $indexUpgradeStatements     = array();
+            foreach ($indexes as $indexName => $indexMetadata)
+            {
+                if (static::doesIndexNeedUpgrade($indexMetadata, $existingIndexes))
+                {
+                    $indexesNeedingUpgrade[$indexName] = $indexMetadata;
+                }
+            }
+            foreach ($indexesNeedingUpgrade as $indexName => $indexMetadata)
+            {
+                $indexUpgradeStatements[] = static::resolveIndexStatementCreation($indexName, $indexMetadata, true);
+            }
+            return $indexUpgradeStatements;
+        }
+
+        protected static function resolveAlterTableQuery($tableName, $columnsAndIndexes, $existingFields, $existingIndexes)
+        {
+            $upgradeStatements       = array();
+            $columnUpgradeStatements = static::resolveColumnUpgradeQueries($columnsAndIndexes['columns'], $existingFields);
+            $indexUpgradeStatements  = static::resolveIndexUpgradeQueries($columnsAndIndexes['indexes'], $existingIndexes);
+            $upgradeStatements       = CMap::mergeArray($columnUpgradeStatements, $indexUpgradeStatements);
             if (!empty($upgradeStatements))
             {
                 $upgradeStatements  = join(',' . PHP_EOL, $upgradeStatements);
@@ -227,22 +275,54 @@
             {
                 return array('columnDefinition' => $column, 'method' => 'add');
             }
-            else
+            else if (static::doesColumnNeedUpgrade($column, $existingFields[$column['name']]))
             {
-                $resolvedType       = $column['type'];
-                if ($column['unsigned'])
-                {
-                    $resolvedType .= ' ' . $column['unsigned'];
-                }
-                $resolvedType       = strtolower($resolvedType);
-                $existingFieldType  = strtolower($existingFields[$column['name']]);
-                if ($resolvedType != $existingFieldType)
-                {
-                    return array('columnDefinition' => $column, 'method' => 'change');
-                }
-                // TODO: @Shoaibi/@Jason: what about collation, default, notNull, etc?
+                return array('columnDefinition' => $column, 'method' => 'change');
             }
             return null;
+        }
+
+        protected static function doesColumnNeedUpgrade($column, $existingField)
+        {
+            if (static::isColumnTypeSameAsExistingField($column, $existingField) &&
+                static::isColumnNullSameAsExistingField($column, $existingField) &&
+                static::isColumnDefaultValueSameAsExistingField($column, $existingField))
+            {
+                return false;
+            }
+            return true;
+        }
+
+        protected static function isColumnTypeSameAsExistingField($column, $existingField)
+        {
+            $resolvedType       = $column['type'];
+            if ($column['unsigned'])
+            {
+                $resolvedType .= ' ' . $column['unsigned'];
+            }
+            $resolvedType       = strtolower($resolvedType);
+            $existingFieldType  = strtolower($existingField['Type']);
+            return ($resolvedType == $existingFieldType);
+        }
+
+        protected static function isColumnNullSameAsExistingField($column, $existingField)
+        {
+            $notNull = 'NOT NULL';
+            if ($existingField['Null'] == 'YES')
+            {
+                $notNull = 'NULL';
+            }
+            return ($column['notNull'] == $notNull);
+        }
+
+        protected static function isColumnDefaultValueSameAsExistingField($column, $existingField)
+        {
+            $default = null;
+            if ($column['default'] != 'DEFAULT NULL')
+            {
+                $default = substr($column['default'], strpos($column['default'], 'DEFAULT '));
+            }
+            return ($default == $existingField['Default']);
         }
 
         protected static function resolveCreateTableQuery($tableName, $columnsAndIndexesSchema)
@@ -255,7 +335,7 @@
             }
             foreach ($columnsAndIndexesSchema['indexes'] as $indexName => $indexMetadata)
             {
-                $indexes[]    = static::resolveIndexForTableCreation($indexName, $indexMetadata);
+                $indexes[]    = static::resolveIndexStatementCreation($indexName, $indexMetadata, false);
             }
             // PHP_EOLs below are purely for readability, sql would work just fine without it.
             $tableMetadata  = CMap::mergeArray($columns, $indexes);
@@ -281,12 +361,16 @@
             return $clause;
         }
 
-        protected static function resolveIndexForTableCreation($indexName, $indexMetadata)
+        protected static function resolveIndexStatementCreation($indexName, $indexMetadata, $alterTable = false)
         {
             $clause = "KEY ${indexName} (" . join(',', $indexMetadata['columns']) . ")";
             if ($indexMetadata['unique'])
             {
                 $clause = 'UNIQUE ' . $clause;
+            }
+            if ($alterTable)
+            {
+                $clause = 'ADD ' . $clause;
             }
             return $clause;
         }
