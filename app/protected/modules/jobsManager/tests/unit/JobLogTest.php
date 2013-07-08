@@ -34,21 +34,49 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * Form for handling default values for the sell price formula model attribute
-     */
-    class SellPriceFormulaTypeModelAttributeMappingRuleForm extends ModelAttributeMappingRuleForm
+    class JobLogTest extends ZurmoBaseTest
     {
-        public $sellPriceFormulaType;
-
-        public function attributeLabels()
+        public static function setUpBeforeClass()
         {
-            return array('sellPriceFormulaType' => Zurmo::t('ProductTemplatesModule', 'Sell Price Formula Type'));
+            parent::setUpBeforeClass();
+            SecurityTestHelper::createSuperAdmin();
         }
 
-        public static function getAttributeName()
+        public function testGetByType()
         {
-            return 'sellPriceFormulaType';
+            Yii::app()->user->userModel = User::getByUsername('super');
+            $jobLog                = new JobLog();
+            $jobLog->type          = 'Monitor';
+            $jobLog->startDateTime = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
+            $jobLog->endDateTime   = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
+            $jobLog->status        = JobLog::STATUS_COMPLETE_WITHOUT_ERROR;
+            $jobLog->isProcessed   = false;
+            $this->assertTrue($jobLog->save());
+
+            $jobLog                = new JobLog();
+            $jobLog->type          = 'Monitor';
+            $jobLog->startDateTime = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
+            $jobLog->endDateTime   = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
+            $jobLog->status        = JobLog::STATUS_COMPLETE_WITHOUT_ERROR;
+            $jobLog->isProcessed   = false;
+            $this->assertTrue($jobLog->save());
+
+            $jobLog                = new JobLog();
+            $jobLog->type          = 'SomethingElse';
+            $jobLog->startDateTime = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
+            $jobLog->endDateTime   = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
+            $jobLog->status        = JobLog::STATUS_COMPLETE_WITHOUT_ERROR;
+            $jobLog->isProcessed   = false;
+            $this->assertTrue($jobLog->save());
+
+            $jobLogs = JobLog::getByType('Monitor');
+            $this->assertCount(2, $jobLogs);
+            $jobLogs = JobLog::getByType('Monitor', 1);
+            $this->assertCount(1, $jobLogs);
+            $jobLogs = JobLog::getByType('SomethingElse');
+            $this->assertCount(1, $jobLogs);
+            $jobLogs = JobLog::getByType('SomethingElse', 1);
+            $this->assertCount(1, $jobLogs);
         }
     }
 ?>
