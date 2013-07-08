@@ -52,7 +52,11 @@
                 return false;
             }
             $metadata                       = $modelClassName::getDefaultMetaData();
-            $modelMetadata                  = $metadata[$modelClassName];
+            $modelMetadata                  = array();
+            if (isset($metadata[$modelClassName]))
+            {
+                $modelMetadata                  = $metadata[$modelClassName];
+            }
             $memberColumns                  = array();
             $relationColumns                = array();
             $indexes                        = array();

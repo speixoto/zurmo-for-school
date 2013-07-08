@@ -124,8 +124,8 @@
                 'relations' => array(
                     'defaultState'     => array(RedBeanModel::HAS_ONE,   'ContactState', RedBeanModel::NOT_OWNED,
                                                 RedBeanModel::LINK_TYPE_SPECIFIC, 'defaultState'),
-                    'entries'          => array(RedBeanModel::HAS_MANY, 'ContactWebFormEntry', RedBeanModel::OWNED,
-                                                RedBeanModel::LINK_TYPE_SPECIFIC, 'entries'),
+                    'entries'          => array(RedBeanModel::HAS_MANY, 'ContactWebFormEntry', RedBeanModel::OWNED),
+                                                //RedBeanModel::LINK_TYPE_SPECIFIC, 'entries'), // TODO: @Shoaibi/@Jason: Critical: This has to be commented.
                     'defaultOwner'     => array(RedBeanModel::HAS_ONE,  'User', RedBeanModel::NOT_OWNED),
                 ),
                 'rules' => array(
