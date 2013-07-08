@@ -35,20 +35,25 @@
      ********************************************************************************/
 
     /**
-     * Form for handling default values for the product template type model attribute
+     * Filter used by autoresponder controller to check if campaign related jobs have ever run.
      */
-    class ProductTemplateTypeModelAttributeMappingRuleForm extends ModelAttributeMappingRuleForm
+    class AutoresponderJobsCheckControllerFilter extends CFilter
     {
-        public $type;
-
-        public function attributeLabels()
+        protected function preFilter($filterChain)
         {
-            return array('type' => Zurmo::t('ProductTemplatesModule', 'Type'));
-        }
-
-        public static function getAttributeName()
-        {
-            return 'type';
+            if (isset($_POST['ajax']))
+            {
+                return true;
+            }
+            $queueJobLogs    = JobLog::getByType('AutoresponderQueueMessagesInOutbox', 1);
+            $processJobLogs  = JobLog::getByType('ProcessOutboundEmail', 1);
+            if(count($queueJobLogs) == 0 || count($processJobLogs) == 0)
+            {
+                Yii::app()->user->setFlash('notification',
+                    Zurmo::t('AutorespondersModule', 'Autoresponders will not run properly until scheduled jobs are set up. Contact your administrator.')
+                );
+            }
+            return true;
         }
     }
 ?>
