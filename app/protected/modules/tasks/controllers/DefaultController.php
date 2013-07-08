@@ -48,5 +48,61 @@
                 throw new NotSupportedException();
             }
         }
+
+        public function actionDetails($id, $redirectUrl = null)
+        {
+            $modelClassName    = $this->getModule()->getPrimaryModelName();
+            $activity = static::getModelAndCatchNotFoundAndDisplayError($modelClassName, intval($id));
+            ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($activity);
+            AuditEvent::logAuditEvent('ZurmoModule', ZurmoModule::AUDIT_EVENT_ITEM_VIEWED, array(strval($activity), get_class($this->getModule())), $activity);
+            $pageViewClassName = $this->getPageViewClassName();
+            $detailsView       = new TaskDetailsView($this->getId(), $this->getModule()->getId(), $activity);
+            $view              = new $pageViewClassName(ZurmoDefaultViewUtil::
+                                         makeStandardViewForCurrentUser($this,$detailsView));
+            echo $view->render();
+        }
+
+        /**
+         * Action for saving a new comment inline edit form.
+         * @param string or array $redirectUrl
+         */
+        public function actionInlineCreateTaskCheckItemSave($redirectUrl = null, $uniquePageId = null)
+        {
+            if (isset($_POST['ajax']) && $_POST['ajax'] === 'task-check-item-inline-edit-form' . $uniquePageId)
+            {
+                $this->actionInlineEditValidate(new TaskCheckListItem());
+            }
+            $this->attemptToSaveModelFromPost(new TaskCheckListItem(), $redirectUrl);
+        }
+
+        public function actionInlineCreateCommentFromAjax($id, $uniquePageId)
+        {
+            $taskCheckListItem  = new TaskCheckListItem();
+            $redirectUrl        = Yii::app()->createUrl('/tasks/default/inlineCreateTaskCheckItemFromAjax',
+                                                    array('id' => $this->model->id,
+                                                          'uniquePageId' => $uniquePageId));
+            $urlParameters      = array('relatedModelId'           => $this->model->id,
+                                        'relatedModelClassName'    => 'Task',
+                                        'relatedModelRelationName' => 'checkListItems',
+                                        'redirectUrl'              => $redirectUrl); //After save, the url to go to.
+            $uniquePageId       = 'TaskCheckItemInlineEditForModelView';
+            $inlineView         = new TaskCheckItemInlineEditView($taskCheckListItem, 'default', 'tasks', 'inlineCreateTaskCheckItemSave',
+                                                      $urlParameters, $uniquePageId);
+            $view               = new AjaxPageView($inlineView);
+            echo $view->render();
+        }
+
+        protected function actionInlineEditValidate($model)
+        {
+            $postData                      = PostUtil::getData();
+            $postFormData                  = ArrayUtil::getArrayValue($postData, get_class($model));
+            $sanitizedPostData             = PostUtil::
+                                             sanitizePostByDesignerTypeForSavingModel($model, $postFormData);
+            $model->setAttributes($sanitizedPostData);
+            $model->validate();
+            $errorData = ZurmoActiveForm::makeErrorsDataAndResolveForOwnedModelAttributes($model);
+            echo CJSON::encode($errorData);
+            Yii::app()->end(0, false);
+        }
     }
 ?>

@@ -90,8 +90,8 @@
                 'relations' => array(
                     'requestedByUser'           => array(RedBeanModel::HAS_ONE, 'User'),
                     'comments'                  => array(RedBeanModel::HAS_MANY, 'Comment', RedBeanModel::OWNED),
-                    'checkListItem'             => array(RedBeanModel::HAS_MANY, 'TaskCheckListItem', RedBeanModel::OWNED),
-                    'notificationSubscriber'    => array(RedBeanModel::HAS_MANY, 'NotificationSubscriber', RedBeanModel::OWNED),
+                    'checkListItems'            => array(RedBeanModel::HAS_MANY, 'TaskCheckListItem', RedBeanModel::OWNED),
+                    'notificationSubscribers'   => array(RedBeanModel::HAS_MANY, 'NotificationSubscriber', RedBeanModel::OWNED),
                 ),
                 'rules' => array(
                     array('completedDateTime','type', 'type' => 'datetime'),
