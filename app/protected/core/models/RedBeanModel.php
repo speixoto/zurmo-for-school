@@ -941,7 +941,7 @@
             }
             catch (NotFoundException $e)
             {
-                $className = get_called_Class();
+                $className = get_called_class();
                 $defaultMetadata = $className::getDefaultMetadata();
                 $metadata = array();
                 foreach (array_reverse(RuntimeUtil::getClassHierarchy($className, static::$lastClassInBeanHeirarchy)) as $modelClassName)

@@ -57,7 +57,7 @@
                         'latestDateTime',
                         'owner'
                     ),
-                    'panelsDisplayType' => FormLayout::PANELS_DISPLAY_TYPE_ALL,
+                    'panelsDisplayType' => FormLayout::PANELS_DISPLAY_TYPE_FIRST,
                     'panels' => array(
                         array(
                             'rows' => array(
@@ -74,11 +74,33 @@
                                     array(
                                         array(
                                             'elements' => array(
+                                                array('attributeName' => 'description', 'type' => 'TextArea'),
+                                            ),
+                                        ),
+                                    )
+                                ),
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'status', 'type' => 'TaskStatusDropDown'),
+                                            ),
+                                        ),
+                                    )
+                                ),
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
                                                 array('attributeName' => 'dueDateTime', 'type' => 'DateTime'),
                                             ),
                                         ),
                                     )
                                 ),
+                             ),
+                       ),
+                       array(
+                            'rows' => array(
                                 array('cells' =>
                                     array(
                                         array(
@@ -102,15 +124,6 @@
                                         array(
                                             'elements' => array(
                                                 array('attributeName' => 'null', 'type' => 'ActivityItems'),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'description', 'type' => 'TextArea'),
                                             ),
                                         ),
                                     )
