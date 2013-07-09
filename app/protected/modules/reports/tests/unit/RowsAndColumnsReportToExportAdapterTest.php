@@ -35,9 +35,9 @@
      ********************************************************************************/
 
     /**
-    * Test RedBeanModelAttributeValueToExportValueAdapter functions.
-    */
-    class ReportToExportAdapterTest extends ZurmoBaseTest
+     * Test RowsAndColumnsReportToExportAdapter
+     */
+    class RowsAndColumnsReportToExportAdapterTest extends ZurmoBaseTest
     {
         public $freeze = false;
 
@@ -264,7 +264,7 @@
             $saved              = $reportModelTestItem->save();
             $this->assertTrue($saved);
             $dataProvider       = new RowsAndColumnsReportDataProvider($report);
-            $adapter            = new ReportToExportAdapter($dataProvider, $report);
+            $adapter            = ReportToExportAdapterFactory::createReportToExportAdapter($report, $dataProvider);                                        
             $compareHeaderData  = array( 'Name', 'Boolean', 'Date', 'Date Time', 'Float',
                                          'Integer', 'Phone', 'String', 'Text Area', 'Url', 'Drop Down',
                                          'Currency Value', 'Currency Value Currency', 'Primary Address >> Street 1',
@@ -478,7 +478,7 @@
             $this->assertTrue($reportModelTestItem2->save());
             
             $dataProvider       = new RowsAndColumnsReportDataProvider($report);                                    
-            $adapter            = new ReportToExportAdapter($dataProvider, $report);
+            $adapter            = ReportToExportAdapterFactory::createReportToExportAdapter($report, $dataProvider); 
             $compareHeaderData  = array('Name',
                                         'Reports Tests >> Boolean',
                                         'Reports Tests >> Date',
@@ -540,6 +540,8 @@
          */
         public function testExportSummationAttributes()
         {
+            //TODO: @sergio: remove this and fix the next test since this was moved to
+            //SummationReportToExportAdapterTest
             $report = new Report();
             $report->setType(Report::TYPE_SUMMATION);
             $report->setModuleClassName('ReportsTestModule');
@@ -692,7 +694,7 @@
             $report->addDisplayAttribute($displayAttribute20);
 
             $dataProvider       = new SummationReportDataProvider($report);            
-            $adapter            = new ReportToExportAdapter($dataProvider, $report);                        
+            $adapter            = ReportToExportAdapterFactory::createReportToExportAdapter($report, $dataProvider);              
             $compareHeaderData  = array('Date -(Max)',
                                         'Date -(Min)',
                                         'Date Time -(Min)',
@@ -760,7 +762,7 @@
             $reportResultsRowData->addSelectedColumnNameAndValue('col0', 9000);
             $reportResultsRowData->addModelAndAlias($reportModelTestItem,  'model1');
 
-            $adapter            = new ReportToExportAdapter($reportResultsRowData, $report);
+            $adapter            = ReportToExportAdapterFactory::createReportToExportAdapter($report, $dataProvider); 
             $compareHeaderData  = array('Integer -(Min)', 'Boolean');
             $compareRowData     = array(9000, true);
             $this->assertEquals($compareHeaderData, $adapter->getHeaderData());
