@@ -34,32 +34,38 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class TasksDefaultController extends ActivityModelsDefaultController
+    /**
+     * Task module walkthrough tests.
+     */
+    class TasksSuperUserMiscTest extends ZurmoWalkthroughBaseTest
     {
-        public function actionCloseTask($id)
+        public static function setUpBeforeClass()
         {
-            $task                    = Task::getById(intval($id));
-            ControllerSecurityUtil::resolveAccessCanCurrentUserWriteModel($task);
-            $task->completedDateTime = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
-            $task->completed         = true;
-            $saved                   = $task->save();
-            if (!$saved)
-            {
-                throw new NotSupportedException();
-            }
+            parent::setUpBeforeClass();
+            SecurityTestHelper::createSuperAdmin();
+            $super = User::getByUsername('super');
+            Yii::app()->user->userModel = $super;
         }
 
-        public function actionDetails($id, $redirectUrl = null)
+        public function testCreateChecklistItemForTaskUsingAjax()
         {
-            $modelClassName    = $this->getModule()->getPrimaryModelName();
-            $activity = static::getModelAndCatchNotFoundAndDisplayError($modelClassName, intval($id));
-            ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($activity);
-            AuditEvent::logAuditEvent('ZurmoModule', ZurmoModule::AUDIT_EVENT_ITEM_VIEWED, array(strval($activity), get_class($this->getModule())), $activity);
-            $pageViewClassName = $this->getPageViewClassName();
-            $detailsView       = new TaskDetailsView($this->getId(), $this->getModule()->getId(), $activity);
-            $view              = new $pageViewClassName(ZurmoDefaultViewUtil::
-                                         makeStandardViewForCurrentUser($this,$detailsView));
-            echo $view->render();
+            $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
+
+            $task = new Task();
+            $task->name = 'aTest';
+            $nowStamp = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
+            $this->assertTrue($task->save());
+
+            //add related task for account using createFromRelation action
+            $checkListItemPostData = array('TaskCheckListItem' => array('name' => 'Test Item'));
+            $this->setPostArray($checkListItemPostData);
+
+            //Test just going to the create from relation view.
+            $redirectUrl = Yii::app()->createUrl('tasks/taskCheckItems/inlineCreateTaskCheckItemFromAjax',
+                                                array('id' => $task->id, 'uniquePageId' => 'TaskCheckItemInlineEditForModelView'));
+            $this->setGetArray(array('relatedModelId' => $task->id, 'relatedModelClassName' => 'Task',
+                                        'relatedModelRelationName' => 'checkListItems', 'redirectUrl' => $redirectUrl));
+            $this->runControllerWithNoExceptionsAndGetContent('tasks/taskCheckItems/inlineCreateTaskCheckItemSave');
         }
-    }
+   }
 ?>

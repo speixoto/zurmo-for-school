@@ -46,10 +46,7 @@
          */
         protected function renderControlEditable()
         {
-            assert('$this->model instanceof Task');
-            assert('$this->attribute == "checkListItems"');
-            $data = $this->getExistingTaskCheckList();
-            return $this->form->checkBoxList($this->model, $this->attribute, $data, array());
+            throw new NotImplementedException($message, $code, $previous);
         }
 
         protected function getEditableHtmlOptions()
@@ -87,7 +84,7 @@
 //                    $content .= $checkbox->render();
 //                }
 //            }
-
+            $content .= $this->renderTaskCheckListItems();
             $content .= $this->renderTaskCreateCheckItem();
 
             return $content;
@@ -138,7 +135,7 @@
             $content            = null;
             $taskCheckListItem  = new TaskCheckListItem();
             $uniquePageId       = 'TaskCheckItemInlineEditForModelView';
-            $redirectUrl        = Yii::app()->createUrl('/tasks/default/inlineCreateTaskCheckItemFromAjax',
+            $redirectUrl        = Yii::app()->createUrl('/tasks/taskCheckItems/inlineCreateTaskCheckItemFromAjax',
                                                     array('id' => $this->model->id,
                                                           'uniquePageId' => $uniquePageId));
             $urlParameters      = array('relatedModelId'           => $this->model->id,
@@ -146,8 +143,7 @@
                                         'relatedModelRelationName' => 'checkListItems',
                                         'redirectUrl'              => $redirectUrl); //After save, the url to go to.
 
-            $inlineView         = new TaskCheckItemInlineEditView($taskCheckListItem, 'default', 'tasks', 'inlineCreateTaskCheckItemSave',
-                                                      $urlParameters, $uniquePageId);
+            $inlineView         = new TaskCheckItemInlineEditView($taskCheckListItem, 'taskCheckItems', 'tasks', 'inlineCreateTaskCheckItemSave', $urlParameters, $uniquePageId);
             $content            .= $inlineView->render();
             $htmlOptions = array('id' => 'TaskCheckItemInlineEditForModelView');
             return ZurmoHtml::tag('div', $htmlOptions, $content);
@@ -156,6 +152,17 @@
         protected function getNonEditableTemplate()
         {
             return '<th style="text-align:left; padding-left:5px;">{label}</th></tr><tr><td>{content}</td>';
+        }
+
+        protected function renderTaskCheckListItems()
+        {
+            $getParams      = array('relatedModelId'           => $this->model->id,
+                                  'relatedModelClassName'    => get_class($this->model),
+                                  'relatedModelRelationName' => 'checkListItems');
+            $checkItemsData = TaskCheckListItem::getTaskCheckListItemsByTask($this->model->id);
+            $view           = new TaskCheckListItemsForTaskView('taskCheckItems', 'tasks', $checkItemsData, $this->model, $this->form, $getParams, 'TaskCheckItemInlineEditForModelView');
+            $content        = $view->render();
+            return $content;
         }
     }
 ?>

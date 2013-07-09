@@ -76,5 +76,20 @@
         {
             return 'TasksModule';
         }
+
+        /**
+         * Given a related model id return a list of check items models.
+         * @param integer $relatedId
+         */
+        public static function getTaskCheckListItemsByTask($relatedId)
+        {
+            assert('is_int($relatedId)');
+            $joinTablesAdapter = new RedBeanModelJoinTablesQueryAdapter('TaskCheckListItem');
+            $orderByColumnName = RedBeanModelDataProvider::
+                                 resolveSortAttributeColumnName('TaskCheckListItem', $joinTablesAdapter, 'id');
+            $where             = "task_id = '" . $relatedId . "'";
+            $orderBy           = $orderByColumnName . ' desc';
+            return self::getSubset($joinTablesAdapter, null, null, $where, $orderBy);
+        }
     }
 ?>
