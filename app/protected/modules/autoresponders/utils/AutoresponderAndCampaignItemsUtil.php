@@ -69,7 +69,7 @@
                 $textContent                = $itemOwnerModel->textContent;
                 $htmlContent                = $itemOwnerModel->htmlContent;
                 static::resolveContent($textContent, $htmlContent, $contact, $itemOwnerModel->enableTracking,
-                                                                    $itemId, $itemClass, $contact, $marketingList->id);
+                                       (int)$itemId, $itemClass, (int)$marketingList->id);
                 try
                 {
                     $item->emailMessage = static::resolveEmailMessage($textContent, $htmlContent, $itemOwnerModel,
@@ -86,6 +86,8 @@
         protected static function resolveContent(& $textContent, & $htmlContent, Contact $contact,
                                                             $enableTracking, $modelId, $modelType, $marketingListId)
         {
+            assert('is_int($modelId)');
+            assert('is_int($marketingListId)');
             static::resolveContentForMergeTags($textContent, $htmlContent, $contact);
             static::resolveContentForTrackingAndFooter($textContent, $htmlContent, $enableTracking, $modelId,
                                                                                 $modelType, $contact, $marketingListId);
@@ -110,26 +112,34 @@
                                                                             $language,
                                                                             $errorOnFirstMissing);
 
-            if ($resolvedTextContent && $resolvedHtmlContent)
+            if ($resolvedTextContent === false || $resolvedHtmlContent === false)
             {
-                $textContent    = $resolvedTextContent;
-                $htmlContent    = $resolvedHtmlContent;
+                throw new NotSupportedException(Zurmo::t('EmailTemplatesModule', 'Provided content contains few invalid merge tags.'));
             }
             else
             {
-                throw new NotSupportedException(Zurmo::t('EmailTemplatesModule', 'Provided content contains few invalid merge tags.'));
+                $textContent    = $resolvedTextContent;
+                $htmlContent    = $resolvedHtmlContent;
             }
         }
 
         protected static function resolveContentForTrackingAndFooter(& $textContent, & $htmlContent, $enableTracking, $modelId,
                                                                         $modelType, Contact $contact, $marketingListId)
         {
+            assert('is_int($modelId)');
+            assert('is_int($marketingListId)');
             $personId                 = $contact->getClassId('Person');
             $activityUtil             = $modelType . 'ActivityUtil';
-            $activityUtil::resolveContentForTrackingAndFooter($enableTracking, $textContent, $modelId, $modelType,
+            if (isset($textContent))
+            {
+                $activityUtil::resolveContentForTrackingAndFooter($enableTracking, $textContent, $modelId, $modelType,
                                                                                     $personId, $marketingListId, false);
-            $activityUtil::resolveContentForTrackingAndFooter($enableTracking, $htmlContent, $modelId, $modelType,
+            }
+            if (isset($htmlContent))
+            {
+                $activityUtil::resolveContentForTrackingAndFooter($enableTracking, $htmlContent, $modelId, $modelType,
                                                                                     $personId, $marketingListId, true);
+            }
         }
 
         protected static function resolveEmailMessage($textContent, $htmlContent, Item $itemOwnerModel,

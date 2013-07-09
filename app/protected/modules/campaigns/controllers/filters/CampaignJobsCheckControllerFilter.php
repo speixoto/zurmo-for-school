@@ -35,20 +35,29 @@
      ********************************************************************************/
 
     /**
-     * Form for handling default values for the price frequency model attribute
+     * Filter used by campaign controller to check if campaign related jobs have ever run.
      */
-    class PriceFrequencyModelAttributeMappingRuleForm extends ModelAttributeMappingRuleForm
+    class CampaignJobsCheckControllerFilter extends CFilter
     {
-        public $priceFrequency;
-
-        public function attributeLabels()
+        protected function preFilter($filterChain)
         {
-            return array('priceFrequency' => Zurmo::t('ProductTemplatesModule', 'Price Frequency'));
-        }
+            if (isset($_POST['ajax']))
+            {
+                return true;
+            }
 
-        public static function getAttributeName()
-        {
-            return 'priceFrequency';
+            $generateJobLogs = JobLog::getByType('CampaignGenerateDueCampaignItems', 1);
+            $markJobLogs     = JobLog::getByType('CampaignMarkCompleted', 1);
+            $queueJobLogs    = JobLog::getByType('CampaignQueueMessagesInOutbox', 1);
+            $processJobLogs  = JobLog::getByType('ProcessOutboundEmail', 1);
+
+            if(count($generateJobLogs) == 0 || count($markJobLogs) == 0 || count($queueJobLogs) == 0 || count($processJobLogs) == 0)
+            {
+                Yii::app()->user->setFlash('notification',
+                    Zurmo::t('CampaignsModule', 'Campaigns will not run properly until scheduled jobs are set up. Contact your administrator.')
+                );
+            }
+            return true;
         }
     }
 ?>

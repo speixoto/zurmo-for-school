@@ -53,6 +53,60 @@
         }
 
         /**
+         * Do not throw exception. That means it passes
+         */
+        public function testProcessDueCampaignItemThrowsExceptionWhenContentHasInvalidMergeTagsForOnlyHtml()
+        {
+            $html = "[[FIRST^NAME]], You are receiving this email";
+            $text = null;
+            $contact                    = ContactTestHelper::createContactByNameForOwner('contact 01', $this->user);
+            $marketingList              = MarketingListTestHelper::populateMarketingListByName('marketingList 01');
+            $campaign                   = CampaignTestHelper::createCampaign('campaign 01',
+                'subject 01',
+                $text,
+                $html,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                $marketingList,
+                false);
+            $processed                  = 0;
+            $campaignItem               = CampaignItemTestHelper::createCampaignItem($processed, $campaign, $contact);
+            CampaignItemsUtil::processDueItem($campaignItem);            
+        }
+
+        /**
+         * @depends testProcessDueCampaignItemThrowsExceptionWhenContentHasInvalidMergeTagsForOnlyHtml
+         * Do not throw exception. That means it passes
+         */
+        public function testProcessDueCampaignItemThrowsExceptionWhenContentHasInvalidMergeTagsForOnlyText()
+        {
+            $text = "[[FIRST^NAME]], You are receiving this email";
+            $html = null;
+            $contact                    = ContactTestHelper::createContactByNameForOwner('contact 01', $this->user);
+            $marketingList              = MarketingListTestHelper::populateMarketingListByName('marketingList 01');
+            $campaign                   = CampaignTestHelper::createCampaign('campaign 01',
+                'subject 01',
+                $text,
+                $html,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                $marketingList,
+                false);
+            $processed                  = 0;
+            $campaignItem               = CampaignItemTestHelper::createCampaignItem($processed, $campaign, $contact);
+            CampaignItemsUtil::processDueItem($campaignItem);            
+        }
+
+        /**
+         * @depends testProcessDueCampaignItemThrowsExceptionWhenContentHasInvalidMergeTagsForOnlyText
          * @expectedException NotFoundException
          */
         public function testProcessDueCampaignItemThrowsExceptionWhenNoContactIsAvailable()
@@ -584,6 +638,66 @@
                                                 'Return-Path' => 'bounce@zurmo.com');
             $expectedHeaders            = serialize($headersArray);
             $this->assertEquals($expectedHeaders, $emailMessage->headers);
+        }
+        
+        public function testProcessDueCampaignItemWithoutHtmlContent()
+        {
+            $email                      = new Email();
+            $email->emailAddress        = 'demo10@zurmo.com';
+            $contact                    = ContactTestHelper::createContactByNameForOwner('contact 10', $this->user);
+            $contact->primaryEmail      = $email;
+            $this->assertTrue($contact->save());
+            $marketingList              = MarketingListTestHelper::createMarketingListByName('marketingList 10',
+                                                                                            'description',
+                                                                                            'CustomFromName',
+                                                                                            'custom@from.com');
+            $campaign                   = CampaignTestHelper::createCampaign('campaign 10',
+                                                                             'subject 10',
+                                                                             'Dr. [[FIRST^NAME]] [[LAST^NAME]]',
+                                                                             null,
+                                                                             null,
+                                                                             null,
+                                                                             null,
+                                                                             null,
+                                                                             null,
+                                                                             null,
+                                                                             $marketingList);
+            $processed                  = 0;
+            $campaignItem               = CampaignItemTestHelper::createCampaignItem($processed, $campaign, $contact);
+            CampaignItemsUtil::processDueItem($campaignItem);            
+            $emailMessage               = $campaignItem->emailMessage;            
+            $this->assertNotNull($emailMessage->content->textContent);
+            $this->assertNull   ($emailMessage->content->htmlContent);            
+        }
+        
+        public function testProcessDueCampaignItemWithoutTextContent()
+        {
+            $email                      = new Email();
+            $email->emailAddress        = 'demo11@zurmo.com';
+            $contact                    = ContactTestHelper::createContactByNameForOwner('contact 11', $this->user);
+            $contact->primaryEmail      = $email;
+            $this->assertTrue($contact->save());
+            $marketingList              = MarketingListTestHelper::createMarketingListByName('marketingList 11',
+                                                                                            'description',
+                                                                                            'CustomFromName',
+                                                                                            'custom@from.com');
+            $campaign                   = CampaignTestHelper::createCampaign('campaign 10',
+                                                                             'subject 10',
+                                                                             null,
+                                                                             '<b>[[LAST^NAME]]</b>, [[FIRST^NAME]]',
+                                                                             null,
+                                                                             null,
+                                                                             null,
+                                                                             null,
+                                                                             null,
+                                                                             null,
+                                                                             $marketingList);
+            $processed                  = 0;
+            $campaignItem               = CampaignItemTestHelper::createCampaignItem($processed, $campaign, $contact);
+            CampaignItemsUtil::processDueItem($campaignItem);            
+            $emailMessage               = $campaignItem->emailMessage;            
+            $this->assertNull   ($emailMessage->content->textContent);
+            $this->assertNotNull($emailMessage->content->htmlContent);                        
         }
 
         protected function purgeAllCampaigns()

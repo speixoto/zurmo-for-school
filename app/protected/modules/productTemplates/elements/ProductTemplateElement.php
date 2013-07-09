@@ -73,7 +73,7 @@
             parent::registerScriptForAutoCompleteTextField();
             Yii::app()->clientScript->registerScriptFile(Yii::app()->getAssetManager()->publish(
                     Yii::getPathOfAlias('application.modules.productTemplates.elements.assets')
-                    ) . '/Modal.js',
+                    ) . '/ProductTemplateUtils.js',
                 CClientScript::POS_END);
         }
 
