@@ -35,8 +35,7 @@
      ********************************************************************************/
 
     /**
-     * View for showing in the user interface when the user does not have a valid email configuration.  This needs to be
-     * configured first before a user can send email from the application.
+     * View to show when there is no portlet to add
      */
     class NoPortletsToPlaceView extends View
     {
