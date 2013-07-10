@@ -76,32 +76,10 @@
         protected function renderControlNonEditable()
         {
             $content  = null;
-//            $data = $this->getExistingTaskCheckList();
-//            if(!empty($data))
-//            {
-//                foreach($data as $checkbox)
-//                {
-//                    $content .= $checkbox->render();
-//                }
-//            }
             $content .= $this->renderTaskCheckListItems();
             $content .= $this->renderTaskCreateCheckItem();
 
             return $content;
-        }
-
-        /**
-         * @return array
-         */
-        protected function getExistingTaskCheckList()
-        {
-            $existingCheckListItems = array();
-            for ($i = 0; $i < count($this->model->checkListItem); $i++)
-            {
-                $checkListItemElement = new CheckBoxElement($this->model->checkListItem[$i], 'name', $this->form, $this->params);
-                $existingCheckListItems[] = $checkListItemElement;
-            }
-            return $existingCheckListItems;
         }
 
         /**
@@ -127,9 +105,13 @@
          */
         protected function getFormattedAttributeLabel()
         {
-            return Yii::app()->format->text(Zurmo::t('TasksModule', 'Tasks'));
+            return Yii::app()->format->text(Zurmo::t('TasksModule', 'Check List'));
         }
 
+        /**
+         * Renders task create check item
+         * @return string
+         */
         protected function renderTaskCreateCheckItem()
         {
             $content            = null;
@@ -149,18 +131,26 @@
             return ZurmoHtml::tag('div', $htmlOptions, $content);
         }
 
+        /**
+         * Get non editabel template for inline create check item view
+         * @return string
+         */
         protected function getNonEditableTemplate()
         {
             return '<th style="text-align:left; padding-left:5px;">{label}</th></tr><tr><td>{content}</td>';
         }
 
+        /**
+         * Renders task check list items
+         * @return string
+         */
         protected function renderTaskCheckListItems()
         {
-            $getParams      = array('relatedModelId'           => $this->model->id,
+            $getParams      = array('relatedModelId'         => $this->model->id,
                                   'relatedModelClassName'    => get_class($this->model),
                                   'relatedModelRelationName' => 'checkListItems');
             $checkItemsData = TaskCheckListItem::getTaskCheckListItemsByTask($this->model->id);
-            $view           = new TaskCheckListItemsForTaskView('taskCheckItems', 'tasks', $checkItemsData, $this->model, $this->form, $getParams, 'TaskCheckItemInlineEditForModelView');
+            $view           = new TaskCheckListItemsForTaskView('taskCheckItems', 'tasks', $checkItemsData, $this->model, $this->form, $getParams);
             $content        = $view->render();
             return $content;
         }

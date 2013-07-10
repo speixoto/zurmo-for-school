@@ -81,7 +81,7 @@
         protected function renderContent()
         {
             $content = null;
-            //$content = '<div>' . $this->renderHiddenRefreshLinkContent() . '</div>';
+            $content = '<div>' . $this->renderHiddenRefreshLinkContent() . '</div>';
             if (count($this->checkListItemsData) > 0)
             {
                 $content .= '<div id="TaskCheckListItems' . $this->uniquePageId . '" class="CommentList">' . $this->renderCheckListItemsContent() . '</div>';
@@ -89,31 +89,31 @@
             return $content;
         }
 
-//        protected function renderHiddenRefreshLinkContent()
-//        {
-//            $url     =   Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/ajaxListForRelatedModel',
-//                            $this->getParams);
-//            return       ZurmoHtml::ajaxLink('Refresh', $url,
-//                         array('type' => 'GET',
-//                               'success' => 'function(data){$("#CommentsForRelatedModelView' . $this->uniquePageId . '").replaceWith(data)}'),
-//                         array('id'         => 'hiddenCommentRefresh'. $this->uniquePageId,
-//                                'class'     => 'hiddenCommentRefresh',
-//                                'namespace' => 'refresh',
-//                                'style'     => 'display:none;'));
-//        }
+        protected function renderHiddenRefreshLinkContent()
+        {
+            $url     =   Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/ajaxCheckItemListForRelatedTaskModel',
+                            $this->getParams);
+            return       ZurmoHtml::ajaxLink('Refresh', $url,
+                         array('type' => 'GET',
+                               'success' => 'function(data){$("#TaskCheckListItemsForTaskView' . $this->uniquePageId . '").replaceWith(data)}'),
+                         array('id'         => 'hiddenCheckListItemRefresh'. $this->uniquePageId,
+                                'class'     => 'hiddenCheckListItemRefresh',
+                                'namespace' => 'refresh',
+                                'style'     => 'display:none;'));
+        }
 
         protected function renderCheckListItemsContent()
         {
             $content  = null;
             $rows = 0;
+            $data = array();
+            $taskModel = Task::getById(intval($this->getParams['relatedModelId']));
             foreach (array_reverse($this->checkListItemsData) as $checkListItem)
             {
-                $stringContent = null;
-                $checkListItemElement = new CheckBoxElement($checkListItem, 'name', $this->form);
-                $stringContent .= $checkListItemElement->render();
-                $content .= '<div class="comment">' . $stringContent . '</div>';
-                $rows++;
+                  $data[] = $checkListItem->name;
             }
+
+            $content = ZurmoHtml::activeCheckBoxList($taskModel, $this->getParams['relatedModelRelationName'], $data, array('separator' => ' '));
             return $content;
         }
 

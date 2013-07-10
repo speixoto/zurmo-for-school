@@ -47,6 +47,11 @@
             $this->redirect($redirectUrl);
         }
 
+        /**
+         * Create inline task check item using ajax
+         * @param int $id
+         * @param string $uniquePageId
+         */
         public function actionInlineCreateTaskCheckItemFromAjax($id, $uniquePageId)
         {
             $taskCheckListItem  = new TaskCheckListItem();
@@ -75,6 +80,29 @@
             $errorData = ZurmoActiveForm::makeErrorsDataAndResolveForOwnedModelAttributes($model);
             echo CJSON::encode($errorData);
             Yii::app()->end(0, false);
+        }
+
+        /**
+         * Get check item list for the task using ajax
+         * @param string $uniquePageId
+         */
+        public function actionAjaxCheckItemListForRelatedTaskModel($uniquePageId = null)
+        {
+            $getData                  = GetUtil::getData();
+            $relatedModelId           = ArrayUtil::getArrayValue($getData, 'relatedModelId');
+            $relatedModelClassName    = ArrayUtil::getArrayValue($getData, 'relatedModelClassName');
+            $relatedModelRelationName = ArrayUtil::getArrayValue($getData, 'relatedModelRelationName');
+            $checkItemsData           = TaskCheckListItem::getTaskCheckListItemsByTask((int)$relatedModelId);
+            $getParams                = array('uniquePageId'             => $uniquePageId,
+                                              'relatedModelId'           => $relatedModelId,
+                                              'relatedModelClassName'    => $relatedModelClassName,
+                                              'relatedModelRelationName' => $relatedModelRelationName);
+            $relatedModel             = $relatedModelClassName::getById((int)$relatedModelId);
+            $view                     = new TaskCheckListItemsForTaskView('taskCheckItems', 'tasks', $checkItemsData, $relatedModel, null, $getParams);
+            $content                  = $view->render();
+            Yii::app()->getClientScript()->setToAjaxMode();
+            Yii::app()->getClientScript()->render($content);
+            echo $content;
         }
     }
 ?>

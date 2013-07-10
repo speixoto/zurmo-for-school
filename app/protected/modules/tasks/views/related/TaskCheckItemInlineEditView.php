@@ -109,7 +109,10 @@
                     'type' => 'POST',
                     'data' => 'js:$("#' . $formName . '").serialize()',
                     'url'  =>  $this->getValidateAndSaveUrl(),
-                    'update' => '#' . $this->uniquePageId
+                    'update' => '#' . $this->uniquePageId,
+                    'complete' => "function(XMLHttpRequest, textStatus){
+                        //find if there is a check list item thread to refresh
+                        $('.hiddenCheckListItemRefresh').click();}"
                 ));
             // End Not Coding Standard
         }
