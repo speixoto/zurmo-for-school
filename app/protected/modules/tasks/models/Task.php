@@ -89,9 +89,12 @@
                 ),
                 'relations' => array(
                     'requestedByUser'           => array(RedBeanModel::HAS_ONE, 'User'),
-                    'comments'                  => array(RedBeanModel::HAS_MANY, 'Comment', RedBeanModel::OWNED),
+                    'comments'                  => array(RedBeanModel::HAS_MANY, 'Comment', RedBeanModel::OWNED,
+                                                        RedBeanModel::LINK_TYPE_POLYMORPHIC, 'relatedModel'),
                     'checkListItems'            => array(RedBeanModel::HAS_MANY, 'TaskCheckListItem', RedBeanModel::OWNED),
                     'notificationSubscribers'   => array(RedBeanModel::HAS_MANY, 'NotificationSubscriber', RedBeanModel::OWNED),
+                    'files'                     => array(RedBeanModel::HAS_MANY,  'FileModel', RedBeanModel::OWNED,
+                                                        RedBeanModel::LINK_TYPE_POLYMORPHIC, 'relatedModel'),
                 ),
                 'rules' => array(
                     array('completedDateTime','type', 'type' => 'datetime'),
@@ -108,7 +111,8 @@
                     'dueDateTime'       => 'DateTime',
                     'requestedByUser'   => 'User',
                     'comment'           => 'Comment',
-                    'checkListItem'     => 'TaskCheckListItem'
+                    'checkListItem'     => 'TaskCheckListItem',
+                    'files'             => 'Files',
                 ),
                 'defaultSortAttribute' => 'name',
                 'noAudit' => array(
@@ -129,6 +133,7 @@
                     'name'              => Zurmo::t('TasksModule', 'Name',  array(), null, $language),
                     'status'            => Zurmo::t('TasksModule', 'Status',  array(), null, $language),
                     'requestedByUser'   => Zurmo::t('TasksModule', 'Requested By User',  array(), null, $language),
+                    'files'             => Zurmo::t('ZurmoModule', 'Files',  array(), null, $language),
                 )
             );
         }
