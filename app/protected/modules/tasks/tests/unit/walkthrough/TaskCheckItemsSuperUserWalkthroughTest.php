@@ -35,23 +35,51 @@
      ********************************************************************************/
 
     /**
-     * Displays the standard boolean field
-     * rendered as a check box.
+     * Task module walkthrough tests.
      */
-    class TaskCheckItemCheckBoxElement extends CheckBoxElement
+    class TaskCheckItemsSuperUserWalkthroughTest extends ZurmoWalkthroughBaseTest
     {
-        /**
-         * Renders the attribute from the model.
-         * @return The element's content.
-         */
-        protected function renderControlNonEditable()
+        public static function setUpBeforeClass()
         {
-            $model = $this->model;
-            $attribute = $this->attribute;
-            $htmlOptions             = array();
-            $htmlOptions['id']       = $this->getEditableInputId();
-            $htmlOptions['name']     = $this->getEditableInputName();
-            $checkBoxContent = ZurmoHtml::activeCheckBox($this->model, $this->attribute, $htmlOptions);
+            parent::setUpBeforeClass();
+            SecurityTestHelper::createSuperAdmin();
+            $super = User::getByUsername('super');
+            Yii::app()->user->userModel = $super;
         }
-    }
+
+        public function testSaveChecklistItemForTaskUsingAjax()
+        {
+            $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
+
+            $task = new Task();
+            $task->name = 'aTest';
+            $nowStamp = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
+            $this->assertTrue($task->save());
+
+            //add related task for account using createFromRelation action
+            $checkListItemPostData = array('TaskCheckListItem' => array('name' => 'Test Item'));
+            $this->setPostArray($checkListItemPostData);
+
+            //Test just going to the create from relation view.
+            $redirectUrl = null;
+            $this->setGetArray(array('relatedModelId' => $task->id, 'relatedModelClassName' => 'Task',
+                                        'relatedModelRelationName' => 'checkListItems', 'redirectUrl' => $redirectUrl));
+            $this->runControllerWithNoExceptionsAndGetContent('tasks/taskCheckItems/inlineCreateTaskCheckItemSave', true);
+        }
+
+        public function testCreateChecklistItemViewForTaskUsingAjax()
+        {
+            $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
+
+            $task = new Task();
+            $task->name = 'aTest1';
+            $nowStamp = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
+            $this->assertTrue($task->save());
+
+            $this->setGetArray(array('id' => $task->id, 'uniquePageId' => 'TaskCheckItemInlineEditForModelView'));
+
+            $content = $this->runControllerWithNoExceptionsAndGetContent('tasks/taskCheckItems/inlineCreateTaskCheckItemFromAjax', false);
+            $this->assertTrue(strpos($content, 'TaskCheckListItem_name') > 0);
+        }
+   }
 ?>

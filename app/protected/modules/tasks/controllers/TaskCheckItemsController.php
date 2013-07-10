@@ -44,7 +44,10 @@
             $task                       = Task::getById(intval($relatedModelId));
             $task->checkListItems->add($taskCheckListItem);
             $task->save(false);
-            $this->redirect($redirectUrl);
+            if($redirectUrl != null)
+            {
+                $this->redirect($redirectUrl);
+            }
         }
 
         /**
@@ -62,13 +65,14 @@
                                         'relatedModelClassName'    => 'Task',
                                         'relatedModelRelationName' => 'checkListItems',
                                         'redirectUrl'              => $redirectUrl); //After save, the url to go to.
-            $uniquePageId       = 'TaskCheckItemInlineEditForModelView';
-            $inlineView         = new TaskCheckItemInlineEditView($taskCheckListItem, 'taskCheckItems', 'tasks', 'inlineCreateTaskCheckItemSave',
-                                                      $urlParameters, $uniquePageId);
+            $inlineView         = new TaskCheckItemInlineEditView($taskCheckListItem, 'taskCheckItems', 'tasks', 'inlineCreateTaskCheckItemSave', $urlParameters, $uniquePageId);
             $view               = new AjaxPageView($inlineView);
             echo $view->render();
         }
 
+        /**
+         * @param RedBeanModel $model
+         */
         protected function actionInlineEditValidate($model)
         {
             $postData                      = PostUtil::getData();

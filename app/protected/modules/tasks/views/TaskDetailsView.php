@@ -32,7 +32,7 @@
                 'global' => array(
                     'toolbar' => array(
                         'elements' => array(
-                            array('type'  => 'EditLink',                  'renderType' => 'Details'),
+                            array('type'  => 'EditLink',  'renderType' => 'Details'),
                         ),
                     ),
                     'nonPlaceableAttributeNames' => array(
@@ -46,7 +46,16 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'null', 'type' => 'TaskCheckBoxList'),
+                                                array('attributeName' => 'null', 'type' => 'TaskCheckListItemsList'),
+                                            ),
+                                        ),
+                                    )
+                                ),
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'null', 'type' => 'TaskComments', 'moduleId' => 'tasks'),
                                             ),
                                         ),
                                     )

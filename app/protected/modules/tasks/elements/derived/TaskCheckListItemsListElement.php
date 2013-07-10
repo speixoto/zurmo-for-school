@@ -38,7 +38,7 @@
      * Displays the standard boolean field
      * rendered as a check box.
      */
-    class TaskCheckBoxListElement extends Element implements DerivedElementInterface
+    class TaskCheckListItemsListElement extends Element implements DerivedElementInterface
     {
         /**
          * Render A standard text input.
@@ -47,26 +47,6 @@
         protected function renderControlEditable()
         {
             throw new NotImplementedException($message, $code, $previous);
-        }
-
-        protected function getEditableHtmlOptions()
-        {
-            $htmlOptions             = array();
-            $htmlOptions['id']       = $this->getEditableInputId();
-            $htmlOptions['name']     = $this->getEditableInputName();
-            if ($this->getDisabledValue())
-            {
-                $htmlOptions['disabled'] = $this->getDisabledValue();
-                if (BooleanUtil::boolVal($this->model->{$this->attribute}))
-                {
-                    $htmlOptions['uncheckValue'] = 1;
-                }
-                if ($htmlOptions['disabled'] == 'disabled')
-                {
-                    $htmlOptions['labelClass'] = 'disabled';
-                }
-            }
-            return $htmlOptions;
         }
 
         /**

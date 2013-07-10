@@ -35,29 +35,25 @@
      ********************************************************************************/
 
     /**
-     * Displays the standard text field
-     * rendered as a text input box.
+     * Displays the comments list for task along with input text area
      */
-    class TextBoxWithInlineAjaxLinkElement extends TextElement
+    class TaskCommentsElement extends CommentsElement
     {
         /**
-         * Render A standard text input.
-         * @return The element's content as a string.
+         * @return string
          */
-        protected function renderControlEditable()
+        protected function getFormattedAttributeLabel()
         {
-            $textElementContent = parent::renderControlEditable();
-            return $textElementContent . $this->renderAjaxAddLinkContent();
+            return Yii::app()->format->text(Zurmo::t('TasksModule', 'Comments'));
         }
 
-        protected function renderAjaxAddLinkContent()
+        /**
+         * Get non editabel template for inline create check item view
+         * @return string
+         */
+        protected function getNonEditableTemplate()
         {
-            $url     =   Yii::app()->createUrl('tasks/default/ajaxAddTaskCheckItem');
-            return       ZurmoHtml::ajaxLink('Add', $url,
-                         array('type' => 'POST',
-                               'success' => 'function(data){$("#CommentsForRelatedModelView").replaceWith(data)}'),
-                         array('id'         => 'hiddenCommentRefresh',
-                                'class'     => 'hiddenCommentRefresh'));
+            return '<th style="text-align:left; padding-left:5px;">{label}</th></tr><tr><td>{content}</td>';
         }
     }
 ?>
