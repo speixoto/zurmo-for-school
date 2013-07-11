@@ -259,5 +259,26 @@
             $this->assertEquals($stateAdapter->getStateIds(),       $filters[2]->value);
             $this->assertEquals('1 and (2 and 3)', $filtersStructure);
         }
+        
+        public function testSqlQueryWithLinkTypeSpecificOnRelatedModels()
+        {
+            Yii::app()->user->userModel = User::getByUsername('super');
+            $report = new Report();
+            $report->setType(Report::TYPE_ROWS_AND_COLUMNS);
+            $report->setModuleClassName('ReportsTest2Module');
+            $report->setFiltersStructure('');
+            
+            $displayAttribute1    = new DisplayAttributeForReportForm('ReportsTest2Module', 'ReportModelTestItem2',
+                                     Report::TYPE_ROWS_AND_COLUMNS);
+            $displayAttribute1->setModelAliasUsingTableAliasName('relatedModel');
+            $displayAttribute1->attributeIndexOrDerivedType = 'hasMany2___FullName';
+            $report->addDisplayAttribute($displayAttribute1);
+            
+            $dataProvider = new RowsAndColumnsReportDataProvider($report);
+            $this->assertContains('hasOne_reportmodeltestitem2_id', $dataProvider->makeSqlQueryForDisplay());
+            //TODO: @sergio: ask jason if this should also work if we use ReportsTestModule instead of ReportsTest2Module
+        }
+        
+                
     }
 ?>

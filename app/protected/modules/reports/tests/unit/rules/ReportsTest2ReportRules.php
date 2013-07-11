@@ -38,31 +38,12 @@
      * Report rules to be used with the ReportModelTestItems.  Rules are module based and should store the rules
      * for all the module's models.
      */
-    class ReportsTestReportRules extends SecuredReportRules
+    class ReportsTest2ReportRules extends SecuredReportRules
     {
         public static function getDefaultMetadata()
         {
             $metadata = array(
-                'ReportModelTestItem' => array(
-                    'relationsReportedAsAttributes' =>
-                        array('reportedAsAttribute',
-                              'likeContactState'),
-                    'relationsReportedAsAttributesSortAttributes' =>
-                        array('reportedAsAttribute' => 'name', 'likeContactState'    => 'name'),
-                    'relationsReportedAsAttributesGroupByAttributes' =>
-                        array('reportedAsAttribute' => 'name', 'likeContactState'    => 'id'),
-                    'relationsReportedAsAttributesRawValueAttributes' =>
-                        array('reportedAsAttribute' => 'name', 'likeContactState'    => 'id'),
-                    'nonReportable' =>
-                        array('nonReportable',
-                              'nonReportable2'),
-                    'derivedAttributeTypes' =>
-                        array('FullName'),
-                    'availableOperatorsTypes' =>
-                        array('likeContactState' => ModelAttributeToReportOperatorTypeUtil::AVAILABLE_OPERATORS_TYPE_DROPDOWN),
-                    'filterValueElementTypes' =>
-                        array('likeContactState' => 'AllContactStatesStaticDropDownForWizardModel'),
-                ),                
+                'ReportModelTestItem2' => array()
             );
             return array_merge(parent::getDefaultMetadata(), $metadata);
         }

@@ -34,37 +34,56 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * Report rules to be used with the ReportModelTestItems.  Rules are module based and should store the rules
-     * for all the module's models.
-     */
-    class ReportsTestReportRules extends SecuredReportRules
+    class ReportsTest2Module extends SecurableModule
     {
+        const RIGHT_ACCESS_REPORTS_TESTS = 'Access Reports Test Tab';
+
+        public function getDependencies()
+        {
+            return array(
+            );
+        }
+
         public static function getDefaultMetadata()
         {
-            $metadata = array(
-                'ReportModelTestItem' => array(
-                    'relationsReportedAsAttributes' =>
-                        array('reportedAsAttribute',
-                              'likeContactState'),
-                    'relationsReportedAsAttributesSortAttributes' =>
-                        array('reportedAsAttribute' => 'name', 'likeContactState'    => 'name'),
-                    'relationsReportedAsAttributesGroupByAttributes' =>
-                        array('reportedAsAttribute' => 'name', 'likeContactState'    => 'id'),
-                    'relationsReportedAsAttributesRawValueAttributes' =>
-                        array('reportedAsAttribute' => 'name', 'likeContactState'    => 'id'),
-                    'nonReportable' =>
-                        array('nonReportable',
-                              'nonReportable2'),
-                    'derivedAttributeTypes' =>
-                        array('FullName'),
-                    'availableOperatorsTypes' =>
-                        array('likeContactState' => ModelAttributeToReportOperatorTypeUtil::AVAILABLE_OPERATORS_TYPE_DROPDOWN),
-                    'filterValueElementTypes' =>
-                        array('likeContactState' => 'AllContactStatesStaticDropDownForWizardModel'),
-                ),                
+            $metadata = array();
+            $metadata['global'] = array(
+                'tabMenuItems' => array(
+                ),
+                'designerMenuItems' => array(
+                ),
+                'a' => 1,
+                'b' => 2,
+                'c' => 3,
+                //globalSearchAttributeNames is used by A model.
+                'globalSearchAttributeNames' => array('a', 'name')
             );
-            return array_merge(parent::getDefaultMetadata(), $metadata);
+            return $metadata;
+        }
+
+        public static function getPrimaryModelName()
+        {
+            return 'ReportModelTestItem2';
+        }
+
+        public static function getGlobalSearchFormClassName()
+        {
+            return 'ReportModelTestItem2';
+        }
+
+        public static function hasPermissions()
+        {
+            return true;
+        }
+
+        protected static function getSingularModuleLabel($language)
+        {
+            return 'Reports Test2';
+        }
+
+        protected static function getPluralModuleLabel($language)
+        {
+            return 'Reports Test2s';
         }
     }
 ?>

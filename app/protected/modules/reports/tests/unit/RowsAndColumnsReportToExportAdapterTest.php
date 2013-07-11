@@ -297,14 +297,14 @@
 
             $report = new Report();
             $report->setType(Report::TYPE_ROWS_AND_COLUMNS);
-            $report->setModuleClassName('ReportsTestModule');
+            $report->setModuleClassName('ReportsTest2Module');
             $report->setFiltersStructure('');
                        
             //for fullname attribute
             $reportModelTestItem = new ReportModelTestItem();
             $reportModelTestItem->firstName = 'xFirst';
             $reportModelTestItem->lastName = 'xLast';
-            $displayAttribute1    = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem2',
+            $displayAttribute1    = new DisplayAttributeForReportForm('ReportsTest2Module', 'ReportModelTestItem2',
                                      Report::TYPE_ROWS_AND_COLUMNS);
             $displayAttribute1->setModelAliasUsingTableAliasName('relatedModel');
             $displayAttribute1->attributeIndexOrDerivedType = 'hasMany2___FullName';
@@ -312,7 +312,7 @@
 
             //for boolean attribute
             $reportModelTestItem->boolean = true;
-            $displayAttribute2    = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem2',
+            $displayAttribute2    = new DisplayAttributeForReportForm('ReportsTest2Module', 'ReportModelTestItem2',
                                      Report::TYPE_ROWS_AND_COLUMNS);
             $displayAttribute2->setModelAliasUsingTableAliasName('relatedModel');
             $displayAttribute2->attributeIndexOrDerivedType = 'hasMany2___boolean';
@@ -320,7 +320,7 @@
 
             //for date attribute
             $reportModelTestItem->date = '2013-02-12';
-            $displayAttribute3    = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem2',
+            $displayAttribute3    = new DisplayAttributeForReportForm('ReportsTest2Module', 'ReportModelTestItem2',
                                      Report::TYPE_ROWS_AND_COLUMNS);
             $displayAttribute3->setModelAliasUsingTableAliasName('relatedModel');
             $displayAttribute3->attributeIndexOrDerivedType = 'hasMany2___date';
@@ -328,7 +328,7 @@
 
             //for datetime attribute
             $reportModelTestItem->dateTime = '2013-02-12 10:15:00';
-            $displayAttribute4    = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem2',
+            $displayAttribute4    = new DisplayAttributeForReportForm('ReportsTest2Module', 'ReportModelTestItem2',
                                      Report::TYPE_ROWS_AND_COLUMNS);
             $displayAttribute4->setModelAliasUsingTableAliasName('relatedModel');
             $displayAttribute4->attributeIndexOrDerivedType = 'hasMany2___dateTime';
@@ -336,7 +336,7 @@
 
             //for float attribute
             $reportModelTestItem->float = 10.5;
-            $displayAttribute5    = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem2',
+            $displayAttribute5    = new DisplayAttributeForReportForm('ReportsTest2Module', 'ReportModelTestItem2',
                                      Report::TYPE_ROWS_AND_COLUMNS);
             $displayAttribute5->setModelAliasUsingTableAliasName('relatedModel');
             $displayAttribute5->attributeIndexOrDerivedType = 'hasMany2___float';
@@ -344,7 +344,7 @@
 
             //for integer attribute
             $reportModelTestItem->integer = 10;
-            $displayAttribute6    = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem2',
+            $displayAttribute6    = new DisplayAttributeForReportForm('ReportsTest2Module', 'ReportModelTestItem2',
                                      Report::TYPE_ROWS_AND_COLUMNS);
             $displayAttribute6->setModelAliasUsingTableAliasName('relatedModel');
             $displayAttribute6->attributeIndexOrDerivedType = 'hasMany2___integer';
@@ -352,7 +352,7 @@
 
             //for phone attribute
             $reportModelTestItem->phone = '7842151012';
-            $displayAttribute7    = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem2',
+            $displayAttribute7    = new DisplayAttributeForReportForm('ReportsTest2Module', 'ReportModelTestItem2',
                                      Report::TYPE_ROWS_AND_COLUMNS);
             $displayAttribute7->setModelAliasUsingTableAliasName('relatedModel');
             $displayAttribute7->attributeIndexOrDerivedType = 'hasMany2___phone';
@@ -360,7 +360,7 @@
 
             //for string attribute
             $reportModelTestItem->string = 'xString';
-            $displayAttribute8    = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem2',
+            $displayAttribute8    = new DisplayAttributeForReportForm('ReportsTest2Module', 'ReportModelTestItem2',
                                      Report::TYPE_ROWS_AND_COLUMNS);
             $displayAttribute8->setModelAliasUsingTableAliasName('relatedModel');
             $displayAttribute8->attributeIndexOrDerivedType = 'hasMany2___string';
@@ -368,7 +368,7 @@
 
             //for textArea attribute
             $reportModelTestItem->textArea = 'xtextAreatest';
-            $displayAttribute9    = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem2',
+            $displayAttribute9    = new DisplayAttributeForReportForm('ReportsTest2Module', 'ReportModelTestItem2',
                                      Report::TYPE_ROWS_AND_COLUMNS);
             $displayAttribute9->setModelAliasUsingTableAliasName('relatedModel');
             $displayAttribute9->attributeIndexOrDerivedType = 'hasMany2___textArea';
@@ -376,7 +376,7 @@
 
             //for url attribute
             $reportModelTestItem->url = 'http://www.test.com';
-            $displayAttribute10    = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem2',
+            $displayAttribute10    = new DisplayAttributeForReportForm('ReportsTest2Module', 'ReportModelTestItem2',
                                      Report::TYPE_ROWS_AND_COLUMNS);
             $displayAttribute10->setModelAliasUsingTableAliasName('relatedModel');
             $displayAttribute10->attributeIndexOrDerivedType = 'hasMany2___url';
@@ -384,7 +384,7 @@
 
             //for dropdown attribute
             $reportModelTestItem->dropDown->value = $values[1];
-            $displayAttribute11    = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem2',
+            $displayAttribute11    = new DisplayAttributeForReportForm('ReportsTest2Module', 'ReportModelTestItem2',
                                      Report::TYPE_ROWS_AND_COLUMNS);
             $displayAttribute11->setModelAliasUsingTableAliasName('relatedModel');
             $displayAttribute11->attributeIndexOrDerivedType = 'hasMany2___dropDown';
@@ -398,7 +398,7 @@
             $this->assertEquals('USD', $currencyValue->currency->code);
 
             $reportModelTestItem->currencyValue   = $currencyValue;
-            $displayAttribute12    = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem2',
+            $displayAttribute12    = new DisplayAttributeForReportForm('ReportsTest2Module', 'ReportModelTestItem2',
                                      Report::TYPE_ROWS_AND_COLUMNS);
             $displayAttribute12->setModelAliasUsingTableAliasName('relatedModel');
             $displayAttribute12->attributeIndexOrDerivedType = 'hasMany2___currencyValue';
@@ -406,7 +406,7 @@
 
             //for primaryAddress attribute
             $reportModelTestItem->primaryAddress->street1 = 'someString';
-            $displayAttribute13   = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem2',
+            $displayAttribute13   = new DisplayAttributeForReportForm('ReportsTest2Module', 'ReportModelTestItem2',
                                      Report::TYPE_ROWS_AND_COLUMNS);
             $displayAttribute13->setModelAliasUsingTableAliasName('relatedModel');
             $displayAttribute13->attributeIndexOrDerivedType = 'hasMany2___primaryAddress___street1';
@@ -414,7 +414,7 @@
 
             //for primaryEmail attribute
             $reportModelTestItem->primaryEmail->emailAddress = "test@someString.com";
-            $displayAttribute14   = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem2',
+            $displayAttribute14   = new DisplayAttributeForReportForm('ReportsTest2Module', 'ReportModelTestItem2',
                                      Report::TYPE_ROWS_AND_COLUMNS);
             $displayAttribute14->setModelAliasUsingTableAliasName('relatedModel');
             $displayAttribute14->attributeIndexOrDerivedType = 'hasMany2___primaryEmail___emailAddress';
@@ -427,7 +427,7 @@
             $customFieldValue = new CustomFieldValue();
             $customFieldValue->value = 'Multi 2';
             $reportModelTestItem->multiDropDown->values->add($customFieldValue);
-            $displayAttribute15   = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem2',
+            $displayAttribute15   = new DisplayAttributeForReportForm('ReportsTest2Module', 'ReportModelTestItem2',
                                      Report::TYPE_ROWS_AND_COLUMNS);
             $displayAttribute15->setModelAliasUsingTableAliasName('relatedModel');
             $displayAttribute15->attributeIndexOrDerivedType = 'hasMany2___multiDropDown';
@@ -440,7 +440,7 @@
             $customFieldValue = new CustomFieldValue();
             $customFieldValue->value = 'Cloud 3';
             $reportModelTestItem->tagCloud->values->add($customFieldValue);
-            $displayAttribute16   = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem2',
+            $displayAttribute16   = new DisplayAttributeForReportForm('ReportsTest2Module', 'ReportModelTestItem2',
                                      Report::TYPE_ROWS_AND_COLUMNS);
             $displayAttribute16->setModelAliasUsingTableAliasName('relatedModel');
             $displayAttribute16->attributeIndexOrDerivedType = 'hasMany2___tagCloud';
@@ -448,7 +448,7 @@
 
             //for radioDropDown attribute
             $reportModelTestItem->radioDropDown->value = $values[1];
-            $displayAttribute17   = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem2',
+            $displayAttribute17   = new DisplayAttributeForReportForm('ReportsTest2Module', 'ReportModelTestItem2',
                                      Report::TYPE_ROWS_AND_COLUMNS);
             $displayAttribute17->setModelAliasUsingTableAliasName('relatedModel');
             $displayAttribute17->attributeIndexOrDerivedType = 'hasMany2___radioDropDown';
@@ -458,7 +458,7 @@
             $reportModelTestItem7         = new ReportModelTestItem7;
             $reportModelTestItem7->name   = 'someName';
             $reportModelTestItem->likeContactState = $reportModelTestItem7;
-            $displayAttribute18            = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem2',
+            $displayAttribute18            = new DisplayAttributeForReportForm('ReportsTest2Module', 'ReportModelTestItem2',
                                             Report::TYPE_ROWS_AND_COLUMNS);
             $displayAttribute18->setModelAliasUsingTableAliasName('relatedModel');
             $displayAttribute18->attributeIndexOrDerivedType = 'hasMany2___likeContactState';
@@ -466,7 +466,7 @@
 
             //for dynamic user attribute
             $reportModelTestItem->owner   = Yii::app()->user->userModel;
-            $displayAttribute19           = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem2',
+            $displayAttribute19           = new DisplayAttributeForReportForm('ReportsTest2Module', 'ReportModelTestItem2',
                                             Report::TYPE_ROWS_AND_COLUMNS);
             $displayAttribute19->setModelAliasUsingTableAliasName('relatedModel');
             $displayAttribute19->attributeIndexOrDerivedType = 'hasMany2___owner__User';
@@ -477,7 +477,7 @@
             $reportModelTestItem2->hasMany2->add($reportModelTestItem);
             $this->assertTrue($reportModelTestItem2->save());
             
-            $dataProvider       = new RowsAndColumnsReportDataProvider($report);                                    
+            $dataProvider       = new RowsAndColumnsReportDataProvider($report);             
             $adapter            = ReportToExportAdapterFactory::createReportToExportAdapter($report, $dataProvider); 
             $compareHeaderData  = array('Name',
                                         'Reports Tests >> Boolean',
@@ -527,7 +527,8 @@
 
             $reportResultsRowData->addModelAndAlias($reportModelTestItem,  'relatedModel1');
 
-            $adapter            = new ReportToExportAdapter($reportResultsRowData, $report);
+            $dataProvider       = new RowsAndColumnsReportDataProvider($report);
+            $adapter            = ReportToExportAdapterFactory::createReportToExportAdapter($report, $dataProvider);        
             $compareHeaderData  = array('ReportModelTestItem2 >> ReportModelTestItem3s >> Name',
                                         'ReportModelTestItem2 >> ReportModelTestItem3s >> Something On 3');
             $compareRowData     = array('xFirst', 'somethingOn3');
