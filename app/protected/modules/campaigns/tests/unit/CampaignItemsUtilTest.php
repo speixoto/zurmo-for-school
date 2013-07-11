@@ -164,7 +164,7 @@
             CampaignItemsUtil::processDueItem($campaignItem);
             $this->assertEquals(1, $campaignItem->processed);
             $emailMessage               = $campaignItem->emailMessage;
-            $this->assertEquals($marketingList->owner, $emailMessage->owner);
+            $this->assertEquals($campaign->owner, $emailMessage->owner);
             $this->assertNull($emailMessage->subject);
             $this->assertNull($emailMessage->content->textContent);
             $this->assertNull($emailMessage->content->htmlContent);
@@ -201,7 +201,7 @@
             CampaignItemsUtil::processDueItem($campaignItem);
             $this->assertEquals(1, $campaignItem->processed);
             $emailMessage               = $campaignItem->emailMessage;
-            $this->assertEquals($marketingList->owner, $emailMessage->owner);
+            $this->assertEquals($campaign->owner, $emailMessage->owner);
             $this->assertEquals($campaign->subject, $emailMessage->subject);
             $this->assertTrue(strpos($emailMessage->content->textContent, $campaign->textContent) !== false);
             $this->assertTrue(strpos($emailMessage->content->textContent, '/marketingLists/external/') !== false);
@@ -257,7 +257,7 @@
             CampaignItemsUtil::processDueItem($campaignItem);
             $this->assertEquals(1, $campaignItem->processed);
             $emailMessage               = $campaignItem->emailMessage;
-            $this->assertEquals($marketingList->owner, $emailMessage->owner);
+            $this->assertEquals($campaign->owner, $emailMessage->owner);
             $this->assertEquals($campaign->subject, $emailMessage->subject);
             $this->assertTrue(strpos($emailMessage->content->textContent, $campaign->textContent) !== false);
             $this->assertTrue(strpos($emailMessage->content->textContent, '/marketingLists/external/') !== false);
@@ -310,7 +310,7 @@
             CampaignItemsUtil::processDueItem($campaignItem);
             $this->assertEquals(1, $campaignItem->processed);
             $emailMessage               = $campaignItem->emailMessage;
-            $this->assertEquals($marketingList->owner, $emailMessage->owner);
+            $this->assertEquals($campaign->owner, $emailMessage->owner);
             $this->assertEquals($campaign->subject, $emailMessage->subject);
             $this->assertNotEquals($campaign->textContent, $emailMessage->content->textContent);
             $this->assertNotEquals($campaign->htmlContent, $emailMessage->content->htmlContent);
@@ -377,7 +377,7 @@
             CampaignItemsUtil::processDueItem($campaignItem);
             $this->assertEquals(1, $campaignItem->processed);
             $emailMessage               = $campaignItem->emailMessage;
-            $this->assertEquals($marketingList->owner, $emailMessage->owner);
+            $this->assertEquals($campaign->owner, $emailMessage->owner);
             $this->assertEquals($campaign->subject, $emailMessage->subject);
             $this->assertNotEquals($campaign->textContent, $emailMessage->content->textContent);
             $this->assertNotEquals($campaign->htmlContent, $emailMessage->content->htmlContent);
@@ -614,7 +614,7 @@
             CampaignItemsUtil::processDueItem($campaignItem);
             $this->assertEquals(1, $campaignItem->processed);
             $emailMessage               = $campaignItem->emailMessage;
-            $this->assertEquals($marketingList->owner, $emailMessage->owner);
+            $this->assertEquals($campaign->owner, $emailMessage->owner);
             $this->assertEquals($campaign->subject, $emailMessage->subject);
             $this->assertNotEquals($campaign->textContent, $emailMessage->content->textContent);
             $this->assertNotEquals($campaign->htmlContent, $emailMessage->content->htmlContent);

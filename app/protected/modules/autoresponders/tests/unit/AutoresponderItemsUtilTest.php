@@ -110,7 +110,7 @@
             AutoresponderItemsUtil::processDueItem($autoresponderItem);
             $this->assertEquals(1, $autoresponderItem->processed);
             $emailMessage               = $autoresponderItem->emailMessage;
-            $this->assertEquals($marketingList->owner, $emailMessage->owner);
+            $this->assertEquals($autoresponder->owner, $emailMessage->owner);
             $this->assertNull($emailMessage->subject);
             $this->assertNull($emailMessage->content->textContent);
             $this->assertNull($emailMessage->content->htmlContent);
@@ -146,7 +146,7 @@
             AutoresponderItemsUtil::processDueItem($autoresponderItem);
             $this->assertEquals(1, $autoresponderItem->processed);
             $emailMessage               = $autoresponderItem->emailMessage;
-            $this->assertEquals($marketingList->owner, $emailMessage->owner);
+            $this->assertEquals($autoresponder->owner, $emailMessage->owner);
             $this->assertEquals($autoresponder->subject, $emailMessage->subject);
             $this->assertTrue(strpos($emailMessage->content->textContent, $autoresponder->textContent) !== false);
             $this->assertTrue(strpos($emailMessage->content->textContent, '/marketingLists/external/') !== false);
@@ -202,7 +202,7 @@
             AutoresponderItemsUtil::processDueItem($autoresponderItem);
             $this->assertEquals(1, $autoresponderItem->processed);
             $emailMessage               = $autoresponderItem->emailMessage;
-            $this->assertEquals($marketingList->owner, $emailMessage->owner);
+            $this->assertEquals($autoresponder->owner, $emailMessage->owner);
             $this->assertEquals($autoresponder->subject, $emailMessage->subject);
             $this->assertTrue(strpos($emailMessage->content->textContent, $autoresponder->textContent) !== false);
             $this->assertTrue(strpos($emailMessage->content->textContent, '/marketingLists/external/') !== false);
@@ -255,7 +255,7 @@
             AutoresponderItemsUtil::processDueItem($autoresponderItem);
             $this->assertEquals(1, $autoresponderItem->processed);
             $emailMessage               = $autoresponderItem->emailMessage;
-            $this->assertEquals($marketingList->owner, $emailMessage->owner);
+            $this->assertEquals($autoresponder->owner, $emailMessage->owner);
             $this->assertEquals($autoresponder->subject, $emailMessage->subject);
             $this->assertNotEquals($autoresponder->textContent, $emailMessage->content->textContent);
             $this->assertNotEquals($autoresponder->htmlContent, $emailMessage->content->htmlContent);
@@ -322,7 +322,7 @@
             AutoresponderItemsUtil::processDueItem($autoresponderItem);
             $this->assertEquals(1, $autoresponderItem->processed);
             $emailMessage               = $autoresponderItem->emailMessage;
-            $this->assertEquals($marketingList->owner, $emailMessage->owner);
+            $this->assertEquals($autoresponder->owner, $emailMessage->owner);
             $this->assertEquals($autoresponder->subject, $emailMessage->subject);
             $this->assertNotEquals($autoresponder->textContent, $emailMessage->content->textContent);
             $this->assertNotEquals($autoresponder->htmlContent, $emailMessage->content->htmlContent);
@@ -426,7 +426,7 @@
             AutoresponderItemsUtil::processDueItem($autoresponderItem);
             $this->assertEquals(1, $autoresponderItem->processed);
             $emailMessage               = $autoresponderItem->emailMessage;
-            $this->assertEquals($marketingList->owner, $emailMessage->owner);
+            $this->assertEquals($autoresponder->owner, $emailMessage->owner);
             $this->assertEquals($autoresponder->subject, $emailMessage->subject);
             $this->assertNotEquals($autoresponder->textContent, $emailMessage->content->textContent);
             $this->assertNotEquals($autoresponder->htmlContent, $emailMessage->content->htmlContent);
