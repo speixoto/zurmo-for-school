@@ -146,7 +146,7 @@
                                                     Contact $contact, MarketingList $marketingList, $itemId, $itemClass)
         {
             $emailMessage                   = new EmailMessage();
-            $emailMessage->owner            = $itemOwnerModel->owner;
+            $emailMessage->owner            = $marketingList->owner;
             $emailMessage->subject          = $itemOwnerModel->subject;
             $emailContent                   = new EmailMessageContent();
             $emailContent->textContent      = $textContent;
