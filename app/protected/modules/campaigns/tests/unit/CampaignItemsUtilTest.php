@@ -75,7 +75,7 @@
                 false);
             $processed                  = 0;
             $campaignItem               = CampaignItemTestHelper::createCampaignItem($processed, $campaign, $contact);
-            CampaignItemsUtil::processDueItem($campaignItem);            
+            CampaignItemsUtil::processDueItem($campaignItem);
         }
 
         /**
@@ -102,7 +102,7 @@
                 false);
             $processed                  = 0;
             $campaignItem               = CampaignItemTestHelper::createCampaignItem($processed, $campaign, $contact);
-            CampaignItemsUtil::processDueItem($campaignItem);            
+            CampaignItemsUtil::processDueItem($campaignItem);
         }
 
         /**
@@ -639,7 +639,10 @@
             $expectedHeaders            = serialize($headersArray);
             $this->assertEquals($expectedHeaders, $emailMessage->headers);
         }
-        
+
+        /**
+         * @depends testProcessDueCampaignItemWithReturnPathHeaders
+         */
         public function testProcessDueCampaignItemWithoutHtmlContent()
         {
             $email                      = new Email();
@@ -664,12 +667,15 @@
                                                                              $marketingList);
             $processed                  = 0;
             $campaignItem               = CampaignItemTestHelper::createCampaignItem($processed, $campaign, $contact);
-            CampaignItemsUtil::processDueItem($campaignItem);            
-            $emailMessage               = $campaignItem->emailMessage;            
+            CampaignItemsUtil::processDueItem($campaignItem);
+            $emailMessage               = $campaignItem->emailMessage;
             $this->assertNotNull($emailMessage->content->textContent);
-            $this->assertNull   ($emailMessage->content->htmlContent);            
+            $this->assertNull   ($emailMessage->content->htmlContent);
         }
-        
+
+        /**
+         * @depends testProcessDueCampaignItemWithoutHtmlContent
+         */
         public function testProcessDueCampaignItemWithoutTextContent()
         {
             $email                      = new Email();
@@ -694,10 +700,47 @@
                                                                              $marketingList);
             $processed                  = 0;
             $campaignItem               = CampaignItemTestHelper::createCampaignItem($processed, $campaign, $contact);
-            CampaignItemsUtil::processDueItem($campaignItem);            
-            $emailMessage               = $campaignItem->emailMessage;            
+            CampaignItemsUtil::processDueItem($campaignItem);
+            $emailMessage               = $campaignItem->emailMessage;
             $this->assertNull   ($emailMessage->content->textContent);
-            $this->assertNotNull($emailMessage->content->htmlContent);                        
+            $this->assertNotNull($emailMessage->content->htmlContent);
+        }
+
+        /**
+         * @depends testProcessDueCampaignItemWithoutTextContent
+         */
+        public function testProcessDueCampaignItemWithModelUrlMergeTag()
+        {
+            $email                      = new Email();
+            $email->emailAddress        = 'demo11@zurmo.com';
+            $contact                    = ContactTestHelper::createContactByNameForOwner('contact 12', $this->user);
+            $contact->primaryEmail      = $email;
+            $this->assertTrue($contact->save());
+            $marketingList              = MarketingListTestHelper::createMarketingListByName('marketingList 12',
+                                                                                                'description',
+                                                                                                'CustomFromName',
+                                                                                                'custom@from.com');
+            $campaign                   = CampaignTestHelper::createCampaign('campaign 11',
+                                                                                'subject 11',
+                                                                                'Url: [[MODEL^URL]]',
+                                                                                'Click <a href="[[MODEL^URL]]">here</a>',
+                                                                                null,
+                                                                                null,
+                                                                                null,
+                                                                                null,
+                                                                                null,
+                                                                                null,
+                                                                                $marketingList);
+            $processed                  = 0;
+            $campaignItem               = CampaignItemTestHelper::createCampaignItem($processed, $campaign, $contact);
+            CampaignItemsUtil::processDueItem($campaignItem);
+            $emailMessage               = $campaignItem->emailMessage;
+            $this->assertNotNull   ($emailMessage->content->textContent);
+            $this->assertNotNull($emailMessage->content->htmlContent);
+            $this->assertTrue(strpos($emailMessage->content->textContent,
+                                                            '/contacts/default/details?id=' . $contact->id) !== false);
+            $this->assertTrue(strpos($emailMessage->content->htmlContent,
+                                                            '/contacts/default/details?id=' . $contact->id) !== false);
         }
 
         protected function purgeAllCampaigns()

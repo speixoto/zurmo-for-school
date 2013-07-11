@@ -451,5 +451,43 @@
             $expectedHeaders            = serialize($headersArray);
             $this->assertEquals($expectedHeaders, $emailMessage->headers);
         }
+
+        /**
+         * @//depends testProcessDueAutoresponderItemWithReturnPath
+         */
+        public function testProcessDueAutoresponderItemWithModelUrlMergeTags()
+        {
+            $email                      = new Email();
+            $email->emailAddress        = 'demo@zurmo.com';
+            $contact                    = ContactTestHelper::createContactByNameForOwner('contact 09', $this->user);
+            $contact->primaryEmail      = $email;
+            $this->assertTrue($contact->save());
+            $marketingList              = MarketingListTestHelper::createMarketingListByName('marketingList 09',
+                                                                                                'description',
+                                                                                                'CustomFromName',
+                                                                                                'custom@from.com');
+            $autoresponder              = AutoresponderTestHelper::createAutoresponder('subject 09',
+                                                                            'Url: [[MODEL^URL]]',
+                                                                            'Click <a href="[[MODEL^URL]]">here</a>',
+                                                                            1,
+                                                                            Autoresponder::OPERATION_SUBSCRIBE,
+                                                                            true,
+                                                                            $marketingList);
+            $processed                  = 0;
+            $processDateTime            = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
+            $autoresponderItem          = AutoresponderItemTestHelper::createAutoresponderItem($processed,
+                                                                                                $processDateTime,
+                                                                                                $autoresponder,
+                                                                                                $contact);
+            AutoresponderItemsUtil::processDueItem($autoresponderItem);
+            $this->assertEquals(1, $autoresponderItem->processed);
+            $emailMessage               = $autoresponderItem->emailMessage;
+            $this->assertNotEquals($autoresponder->textContent, $emailMessage->content->textContent);
+            $this->assertNotEquals($autoresponder->htmlContent, $emailMessage->content->htmlContent);
+            $this->assertTrue(strpos($emailMessage->content->textContent,
+                                                            '/contacts/default/details?id=' . $contact->id) !== false);
+            $this->assertTrue(strpos($emailMessage->content->htmlContent,
+                                                            '/contacts/default/details?id=' . $contact->id) !== false);
+        }
     }
 ?>
