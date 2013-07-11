@@ -55,10 +55,10 @@
          */
         protected function renderControlNonEditable()
         {
-            $content  = null;
+            $content  = $this->getFormattedAttributeLabel();
             $content .= $this->renderTaskCheckListItems();
             $content .= $this->renderTaskCreateCheckItem();
-
+            $content  = ZurmoHtml::tag('div', array('class' => 'left-column'), $content);
             return $content;
         }
 
@@ -77,15 +77,16 @@
          */
         protected function renderLabel()
         {
-            return $this->getFormattedAttributeLabel();
+            return null;
         }
 
         /**
+         * Gets formatted attribute label
          * @return string
          */
         protected function getFormattedAttributeLabel()
         {
-            return Yii::app()->format->text(Zurmo::t('TasksModule', 'Check List'));
+            return '<h2>' . Zurmo::t('TasksModule', 'Check List') . '</h2>';
         }
 
         /**
@@ -109,15 +110,6 @@
             $content            .= $inlineView->render();
             $htmlOptions = array('id' => 'TaskCheckItemInlineEditForModelView');
             return ZurmoHtml::tag('div', $htmlOptions, $content);
-        }
-
-        /**
-         * Get non editabel template for inline create check item view
-         * @return string
-         */
-        protected function getNonEditableTemplate()
-        {
-            return '<th style="text-align:left; padding-left:5px;">{label}</th></tr><tr><td>{content}</td>';
         }
 
         /**

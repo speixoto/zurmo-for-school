@@ -69,7 +69,7 @@
          */
         public function actionInlineCreateCommentFromAjax($id, $uniquePageId)
         {
-            $task          = new Task();
+            $comment       = new Comment();
             $redirectUrl   = Yii::app()->createUrl('/tasks/default/inlineCreateCommentFromAjax',
                                                     array('id'           => $id,
                                                           'uniquePageId' => $uniquePageId));
@@ -79,7 +79,7 @@
                                    'redirectUrl'              => $redirectUrl); //After save, the url to go to.
             $uniquePageId  = 'CommentInlineEditForModelView';
             echo             ZurmoHtml::tag('h2', array(), Zurmo::t('CovnersationsModule', 'Add Comment'));
-            $inlineView    = new CommentInlineEditView($task, 'default', 'comments', 'inlineCreateSave',
+            $inlineView    = new CommentInlineEditView($comment, 'default', 'comments', 'inlineCreateSave',
                                                        $urlParameters, $uniquePageId);
             $view          = new AjaxPageView($inlineView);
             echo $view->render();

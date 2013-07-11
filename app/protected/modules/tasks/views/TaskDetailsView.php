@@ -35,34 +35,6 @@
                             array('type'  => 'EditLink',  'renderType' => 'Details'),
                         ),
                     ),
-                    'nonPlaceableAttributeNames' => array(
-
-                    ),
-                    'panelsDisplayType' => FormLayout::PANELS_DISPLAY_TYPE_ALL,
-                    'panels' => array(
-                        array(
-                            'rows' => array(
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'null', 'type' => 'TaskCheckListItemsList'),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'null', 'type' => 'TaskComments', 'moduleId' => 'tasks'),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                            ),
-                        ),
-                    ),
                 ),
             );
             return $metadata;
@@ -71,6 +43,62 @@
         public function getTitle()
         {
             return $this->model->name;
+        }
+
+        /**
+         * Renders content for a view including a layout title, form toolbar,
+         * and form layout.
+         * @return A string containing the element's content.
+         */
+        protected function renderContent()
+        {
+            $content  = '<div class="details-table">';
+            $content .= $this->renderTitleContent();
+            $content .= $this->resolveAndRenderActionElementMenu();
+            $leftContent  = $this->renderBeforeFormLayoutForDetailsContent();
+            $leftContent .= $this->renderFormLayout();
+            $content .= ZurmoHtml::tag('div', array('class' => 'left-column'), $leftContent);
+            $content .= $this->renderRightSideContent();
+            $content .= $this->renderAfterRightSideContent();
+            $content .= '</div>';
+            $content .= $this->renderAfterDetailsTable();
+            return $content;
+        }
+
+        /**
+         * Renders form layout
+         * @param string $form
+         * @return string
+         */
+        protected function renderFormLayout($form = null)
+        {
+            $content  = $this->renderTaskCheckListItemsList($form);
+            $content .= $this->renderTaskComments($form);
+            return $content;
+        }
+
+        /**
+         * Renders check items list
+         * @param type $form
+         * @return string
+         */
+        protected function renderTaskCheckListItemsList($form)
+        {
+            $checkItemsListElement = new TaskCheckListItemsListElement($this->getModel(), 'null', $form, array());
+            $content = $checkItemsListElement->render();
+            return $content;
+        }
+
+        /**
+         * Renders task comments
+         * @param type $form
+         * @return string
+         */
+        protected function renderTaskComments($form)
+        {
+            $commentsElement = new TaskCommentsElement($this->getModel(), 'null', $form, array('moduleId' => 'tasks'));
+            $content = $commentsElement->render();
+            return $content;
         }
     }
 ?>

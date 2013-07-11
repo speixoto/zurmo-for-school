@@ -96,10 +96,10 @@
          */
         protected function renderControlNonEditable()
         {
-            $content  = null;
+            $content  = $this->getFormattedAttributeLabel();
             $content .= $this->renderRelatedModelCommentsContent();
             $content .= $this->renderRelatedModelCreateCommentContent();
-
+            $content  = ZurmoHtml::tag('div', array('class' => 'left-column', 'style' => 'margin-top:15px'), $content);
             return $content;
         }
 
@@ -118,7 +118,7 @@
          */
         protected function renderLabel()
         {
-            return $this->getFormattedAttributeLabel();
+            return null;
         }
 
         /**

@@ -40,20 +40,12 @@
     class TaskCommentsElement extends CommentsElement
     {
         /**
+         * Gets formatted attribute label
          * @return string
          */
         protected function getFormattedAttributeLabel()
         {
-            return Yii::app()->format->text(Zurmo::t('TasksModule', 'Comments'));
-        }
-
-        /**
-         * Get non editabel template for inline create check item view
-         * @return string
-         */
-        protected function getNonEditableTemplate()
-        {
-            return '<th style="text-align:left; padding-left:5px;">{label}</th></tr><tr><td>{content}</td>';
+            return '<h2>' . Zurmo::t('ConversationsModule', 'Comments') . '</h2>';
         }
     }
 ?>
