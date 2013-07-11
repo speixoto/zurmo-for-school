@@ -58,7 +58,7 @@
             $content  = $this->getFormattedAttributeLabel();
             $content .= $this->renderTaskCheckListItems();
             $content .= $this->renderTaskCreateCheckItem();
-            $content  = ZurmoHtml::tag('div', array('class' => 'left-column'), $content);
+            $content  = ZurmoHtml::tag('div', array('class' => 'left-column', 'style' => 'margin-top:15px;'), $content);
             return $content;
         }
 
@@ -86,7 +86,7 @@
          */
         protected function getFormattedAttributeLabel()
         {
-            return '<h2>' . Zurmo::t('TasksModule', 'Check List') . '</h2>';
+            return '<h3>' . Zurmo::t('TasksModule', 'Check List') . '</h3>';
         }
 
         /**

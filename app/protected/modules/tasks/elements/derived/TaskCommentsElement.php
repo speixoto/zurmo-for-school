@@ -45,7 +45,7 @@
          */
         protected function getFormattedAttributeLabel()
         {
-            return '<h2>' . Zurmo::t('ConversationsModule', 'Comments') . '</h2>';
+            return '<h3>' . Zurmo::t('ConversationsModule', 'Comments') . '</h3>';
         }
     }
 ?>

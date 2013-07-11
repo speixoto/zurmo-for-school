@@ -56,7 +56,7 @@
             ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($activity);
             AuditEvent::logAuditEvent('ZurmoModule', ZurmoModule::AUDIT_EVENT_ITEM_VIEWED, array(strval($activity), get_class($this->getModule())), $activity);
             $pageViewClassName = $this->getPageViewClassName();
-            $detailsView       = new TaskDetailsView($this->getId(), $this->getModule()->getId(), $activity);
+            $detailsView       = new TaskDetailsView('Details', $this->getId(), $this->getModule()->getId(), $activity);
             $view              = new $pageViewClassName(ZurmoDefaultViewUtil::
                                          makeStandardViewForCurrentUser($this,$detailsView));
             echo $view->render();

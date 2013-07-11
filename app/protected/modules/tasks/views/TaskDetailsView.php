@@ -24,7 +24,7 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class TaskDetailsView extends DetailsView
+    class TaskDetailsView extends SecuredEditAndDetailsView
     {
         public static function getDefaultMetadata()
         {
@@ -38,6 +38,11 @@
                 ),
             );
             return $metadata;
+        }
+
+        protected static function getFormId()
+        {
+            return 'task-right-column-form-data';
         }
 
         public function getTitle()
@@ -98,6 +103,43 @@
         {
             $commentsElement = new TaskCommentsElement($this->getModel(), 'null', $form, array('moduleId' => 'tasks'));
             $content = $commentsElement->render();
+            return $content;
+        }
+
+        /**
+         * Render content before form layout
+         */
+        protected function renderBeforeFormLayoutForDetailsContent()
+        {
+            $leftContent = '<p>' . $this->model->description . '</p>';
+            $content     = ZurmoHtml::tag('div', array('class' => 'left-column'), $leftContent);
+            return $content;
+        }
+
+        protected function renderRightSideContent($form = null)
+        {
+            $content = null;
+            $content .= '<div class="wide form">';
+            $clipWidget = new ClipWidget();
+            list($form, $formStart) = $clipWidget->renderBeginWidget(
+                                                                'ZurmoActiveForm',
+                                                                array_merge(
+                                                                    array('id' => 'task-right-column-form-data'                                                               )
+                                                            ));
+            $content .= $formStart;
+            if ($this->getModel() instanceof OwnedSecurableItem)
+            {
+                $content .= '<div id="owner-box">';
+                $element  = new UserElement($this->getModel(), 'owner', $form);
+                $element->editableTemplate = '{label}{content}{error}';
+                $content .= $element->render().'</div>';
+            }
+            $formEnd = $clipWidget->renderEndWidget();
+            $content .= $formEnd;
+            $content .= $this->renderModalContainer();
+            $content .= '</div>';
+            $content  = ZurmoHtml::tag('div', array('class' => 'right-side-edit-view-panel thread-info'), $content);
+            $content  = ZurmoHtml::tag('div', array('class' => 'right-column'), $content);
             return $content;
         }
     }
