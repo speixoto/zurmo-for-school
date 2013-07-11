@@ -34,57 +34,30 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class AccountConvertToView extends EditView
+    /**
+     * View to show when there is no portlet to add
+     */
+    class NoPortletsToPlaceView extends View
     {
-        /**
-         * Override to pass in the relation Id as the modelId. In the case of lead conversion, the lead->id is the
-         * $modelId. This can then be used for a cancel button to return to the lead detailview.
-         * @param string $controllerId
-         * @param string $moduleId
-         * @param RedsBeanModel $model
-         * @param integer $modelId
-         */
-        public function __construct($controllerId, $moduleId, $model, $modelId)
-        {
-            assert('is_int($modelId)');
-            parent::__construct($controllerId, $moduleId, $model);
-            $this->modelId = $modelId;
+        public $cssClasses = array('splash-view');        
+
+        protected function renderContent()
+        {                     
+            $content = '<div class="' . $this->getIconName() . '">';
+            $content .= $this->getMessageContent();            
+            $content .= '</div>';
+            return $content;
         }
 
-        public static function getDefaultMetadata()
+        protected function getIconName()
         {
-            $metadata = array(
-                'global' => array(
-                    'toolbar' => array(
-                        'elements' => array(
-                            array('type'  => 'CancelConvertLink'),
-                            array('type'  => 'SaveButton', 'label' => "eval:Zurmo::t('AccountsModule', 'Complete Conversion')"),
-                        ),
-                    ),
-                    'panelsDisplayType' => FormLayout::PANELS_DISPLAY_TYPE_ALL,
-                    'panels' => array(
-                        array(
-                            'rows' => array(
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'name', 'type' => 'Text'),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                            ),
-                        ),
-                    ),
-                ),
-            );
-            return $metadata;
+            return 'Portlet';
         }
         
-        public static function getDesignerRulesType()
+        protected function getMessageContent()
         {
-            return 'AccountConvertToView';
+            return Zurmo::t('Core', '<h2>What are you doing here?</h2>' .
+                                    '<div class="large-icon"></div><p>There are no more portlets you can add to this view.</p>');
         }
     }
 ?>
