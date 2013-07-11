@@ -130,10 +130,16 @@
             assert('is_int($marketingListId)');
             $personId                 = $contact->getClassId('Person');
             $activityUtil             = $modelType . 'ActivityUtil';
-            $activityUtil::resolveContentForTrackingAndFooter($enableTracking, $textContent, $modelId, $modelType,
+            if (isset($textContent))
+            {
+                $activityUtil::resolveContentForTrackingAndFooter($enableTracking, $textContent, $modelId, $modelType,
                                                                                     $personId, $marketingListId, false);
-            $activityUtil::resolveContentForTrackingAndFooter($enableTracking, $htmlContent, $modelId, $modelType,
+            }
+            if (isset($htmlContent))
+            {
+                $activityUtil::resolveContentForTrackingAndFooter($enableTracking, $htmlContent, $modelId, $modelType,
                                                                                     $personId, $marketingListId, true);
+            }
         }
 
         protected static function resolveEmailMessage($textContent, $htmlContent, Item $itemOwnerModel,
