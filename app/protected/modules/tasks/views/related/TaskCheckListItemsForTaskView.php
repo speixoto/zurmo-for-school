@@ -86,6 +86,7 @@
             {
                 $content .= '<div id="TaskCheckListItems' . $this->uniquePageId . '" class="CommentList">' . $this->renderCheckListItemsContent() . '</div>';
             }
+            $this->registerCheckBoxEventHandlerScript();
             return $content;
         }
 
@@ -108,15 +109,32 @@
             $rows = 0;
             $data = array();
             $taskModel = Task::getById(intval($this->getParams['relatedModelId']));
-            foreach (array_reverse($this->checkListItemsData) as $checkListItem)
+            foreach ($this->checkListItemsData as $checkListItem)
             {
-                  $data[] = $checkListItem->name;
+                  $data[$checkListItem->id] = $checkListItem->name;
             }
 
-            $content = ZurmoHtml::activeCheckBoxList($taskModel, $this->getParams['relatedModelRelationName'], $data, array('separator' => ' '));
+
+            $content = ZurmoHtml::activeCheckBoxList($taskModel, $this->getParams['relatedModelRelationName'], $data, array('separator' => ' ', 'class' => 'checkListItem'));
             return $content;
         }
 
+        protected function registerCheckBoxEventHandlerScript()
+        {
+            $url     =   Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/updateStatusViaAjax');
+            Yii::app()->clientScript->registerScript('checkListItemCheckboxClick',"
+                                                      $('.checkListItem').change(function(){
+                                                          $.post(
+                                                              " . $url . ",
+                                                              {
+                                                                   id: $(this).val()
+                                                              },
+                                                              function(data){
+                                                                   alert(data);
+                                                              });
+                                                          });
+                                                      ", CClientScript::POS_END);
+        }
 //        protected function renderDeleteLinkContent(Comment $comment)
 //        {
 //            $url     =   Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/deleteViaAjax',
