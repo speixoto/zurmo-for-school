@@ -108,14 +108,20 @@
             $content  = null;
             $rows = 0;
             $data = array();
-            $taskModel = Task::getById(intval($this->getParams['relatedModelId']));
             foreach ($this->checkListItemsData as $checkListItem)
             {
-                  $data[$checkListItem->id] = $checkListItem->name;
+                if($checkListItem->completed == null || $checkListItem->completed == 0)
+                {
+                    $checked = false;
+                }
+                else
+                {
+                    $checked = true;
+                }
+
+                $content .= ZurmoHtml::checkBox('TaskCheckListItem_' . $checkListItem->id, $checked, array('class' => 'checkListItem')) . $checkListItem->name;
+
             }
-
-
-            $content = ZurmoHtml::activeCheckBoxList($taskModel, $this->getParams['relatedModelRelationName'], $data, array('separator' => ' ', 'class' => 'checkListItem'));
             return $content;
         }
 
@@ -124,14 +130,24 @@
             $url     =   Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/updateStatusViaAjax');
             Yii::app()->clientScript->registerScript('checkListItemCheckboxClick',"
                                                       $('.checkListItem').change(function(){
-                                                          $.post(
-                                                              " . $url . ",
-                                                              {
-                                                                   id: $(this).val()
-                                                              },
-                                                              function(data){
-                                                                   alert(data);
-                                                              });
+                                                          $.ajax(
+                                                                    {
+                                                                        url : '" . $url . "?id=' + $(this).val() + '&taskId=" . $this->getParams['relatedModelId'] . "',
+                                                                        type : 'GET',
+                                                                        data : {
+                                                                                    checkListItemCompleted : $(this).is(':checked')?1:0
+                                                                               },
+                                                                        dataType: 'json',
+                                                                        success : function(data)
+                                                                        {
+                                                                            console.log('success');
+                                                                        },
+                                                                        error : function()
+                                                                        {
+
+                                                                        }
+                                                                    }
+                                                                 );
                                                           });
                                                       ", CClientScript::POS_END);
         }

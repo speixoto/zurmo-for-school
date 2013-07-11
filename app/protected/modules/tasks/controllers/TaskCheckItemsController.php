@@ -108,5 +108,16 @@
             Yii::app()->getClientScript()->render($content);
             echo $content;
         }
+
+        /**
+         * Update status of task check item using ajax
+         * @param int $id
+         */
+        public function actionUpdateStatusViaAjax($id, $taskId, $checkListItemCompleted)
+        {
+            $taskCheckListItem = TaskCheckListItem::getById(intval($id));
+            $taskCheckListItem->completed = $checkListItemCompleted;
+            $taskCheckListItem->unrestrictedSave();
+        }
     }
 ?>
