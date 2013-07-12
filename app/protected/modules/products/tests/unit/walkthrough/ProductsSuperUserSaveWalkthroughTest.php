@@ -84,9 +84,17 @@
             $superProductId     = self::getModelIdByModelNameAndName('Product', 'My Product 1');
             $this->setGetArray(array('attribute' => 'sellPrice', 'item' => $superProductId, 'value' => '300.54'));
             $this->runControllerWithNoExceptionsAndGetContent('products/default/update', true);
+
             //Save product.
             $superProduct       = Product::getById($superProductId);
             $this->assertEquals(300.54, $superProduct->sellPrice->value);
+
+            $this->setGetArray(array('attribute' => 'sellPrice', 'item' => $superProductId, 'value' => '3000.54'));
+            $this->runControllerWithNoExceptionsAndGetContent('products/default/update', true);
+
+            //Save product.
+            $superProduct       = Product::getById($superProductId);
+            $this->assertEquals(3000.54, $superProduct->sellPrice->value);
 
             $this->setGetArray(array('attribute' => 'quantity', 'item' => $superProductId, 'value' => '10'));
             $this->runControllerWithNoExceptionsAndGetContent('products/default/update', true);
@@ -134,6 +142,7 @@
             $this->assertEquals('Test Category',   $productSavedCategory->name);
             $this->assertEquals('Test CategoryII', $productSavedCategoryII->name);
             $this->assertEquals('My Product Template', $latestProduct->name);
+            $this->assertEquals(500.54, $latestProduct->sellPrice->value);
         }
     }
 ?>
