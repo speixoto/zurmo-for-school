@@ -56,8 +56,8 @@
         
         protected function getMessageContent()
         {
-            return Zurmo::t('Core', '<h2>What are you doing here?</h2>' .
-                                    '<div class="large-icon"></div><p>There are no more portlets you can add to this view.</p>');
+            return Zurmo::t('Core', '<h2>Everybody loves portlets</h2>' .
+                                    '<div class="large-icon"></div><p>Unfortunately there are no more portlets to add.</p>');
         }
     }
 ?>
