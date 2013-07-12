@@ -136,7 +136,8 @@
                 ),
                 'relations' => array(
                     // TODO: @Shoaibi: Critical: not owned? this has to be link type specific.
-                    'messages' => array(RedBeanModel::HAS_MANY, 'EmailMessage'),//, RedBeanModel::NOT_OWNED, RedBeanModel::LINK_TYPE_SPECIFIC, 'account'),
+                    'messages' => array(RedBeanModel::HAS_MANY, 'EmailMessage', RedBeanModel::NOT_OWNED,
+                                                                        RedBeanModel::LINK_TYPE_SPECIFIC, 'account'),
                     'user'     => array(RedBeanModel::HAS_ONE,  'User'),
                 ),
                 'rules'     => array(
