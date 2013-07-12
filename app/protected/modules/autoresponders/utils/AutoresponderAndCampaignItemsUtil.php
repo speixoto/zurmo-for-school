@@ -164,7 +164,6 @@
             $emailMessage->folder               = EmailFolder::getByBoxAndType($box, EmailFolder::TYPE_DRAFT);
             Yii::app()->emailHelper->send($emailMessage);
             $emailMessage->owner                = $marketingList->owner;
-            // TODO: @Shoaibi: Critical: Fix it.
             $explicitReadWriteModelPermissions  = ExplicitReadWriteModelPermissionsUtil::makeBySecurableItem($marketingList);
             ExplicitReadWriteModelPermissionsUtil::resolveExplicitReadWriteModelPermissions($emailMessage,
                                                                                     $explicitReadWriteModelPermissions);
