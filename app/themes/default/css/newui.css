@@ -8528,6 +8528,9 @@ div.wide.form label.hasCheckBox {
   float: left;
   width: 70%;
 }
+.left-column:first-child h3 {
+  margin-bottom: 15px !important;
+}
 .left-column.full-width {
   width: 100%;
   float: none;
@@ -12114,6 +12117,12 @@ table.configuration-list td:last-child a .z-label:before {
   display: block;
   margin: -1px 10px 0 0;
 }
+#import-temp-table-list-view table {
+  border-bottom: 1px solid #CCCCCC;
+}
+#import-temp-table-list-view table td {
+  padding: 10px 5px 10px 15px;
+}
 #ImportWizardDataAnalysisCompleteView > div {
   margin: 0;
   border: none;
@@ -12239,12 +12248,22 @@ table.configuration-list td:last-child a .z-label:before {
 #ImportErrorsListView {
   margin-bottom: 15px;
 }
-#ImportErrorsListView > #list-view {
+#ImportErrorsListView #list-view {
+  -webkit-box-shadow: none !important;
+  -moz-box-shadow: none !important;
+  -o-box-shadow: none !important;
+  -ms-box-shadow: none !important;
+  box-shadow: none !important;
+  border: none;
+  background: none;
   -webkit-box-shadow: none;
   -moz-box-shadow: none;
   -o-box-shadow: none;
   -ms-box-shadow: none;
   box-shadow: none;
+  padding: 0;
+  margin: 0;
+  filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
 }
 /*Theme Chooser*/
 .color-swatch,

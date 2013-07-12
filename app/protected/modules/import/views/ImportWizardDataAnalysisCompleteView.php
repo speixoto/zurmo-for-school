@@ -76,19 +76,21 @@
         protected function renderFormLayout($form = null)
         {
             assert('$form instanceof ZurmoActiveForm');
-            $content  = '<table>'     . "\n";
-            $content .= '<tbody>'     . "\n";
-            $content .= '<tr><td><h3>' . "\n";
+            //$content  = '<table>'     . "\n";
+            //$content .= '<tbody>'     . "\n";
+            //$content .= '<tr><td><h3>' . "\n";
            // if (count($this->model->dataAnalyzerMessagesData) == 0)
            // {
           //      $content .= Zurmo::t('ImportModule', 'Data Analysis is complete. Click "Next" to import your data.');
            // }
            // else
             //{
-                $content .= Zurmo::t('ImportModule', 'Data Analysis is complete. Please review the results below. ' .
+
+                $content = Zurmo::t('ImportModule', 'Data Analysis is complete. Please review the results below. ' .
                                               'When you are ready, click "Next" to import your data.');
+                $content = ZurmoHtml::tag('h3', array(), $content);
            // }
-            $content .= '</h3></td></tr>'   . "\n";
+            //$content .= '</h3></td></tr>'   . "\n";
             /**
             foreach ($this->model->dataAnalyzerMessagesData as $columnName => $messagesData)
             {
@@ -102,8 +104,8 @@
                 $content .= '</td></tr>'  . "\n";
             }
              **/
-            $content .= '</tbody>'    . "\n";
-            $content .= '</table>'    . "\n";
+            //$content .= '</tbody>'    . "\n";
+            //$content .= '</table>'    . "\n";
             return $content;
         }
 

@@ -69,6 +69,23 @@
             $this->gridId            = 'import-temp-table-list-view';
         }
 
+
+        protected function renderContent()
+        {
+            $cClipWidget = new CClipWidget();
+            $cClipWidget->beginClip("ListView");
+            $cClipWidget->widget($this->getGridViewWidgetPath(), $this->getCGridViewParams());
+            $cClipWidget->endClip();
+            $content = $this->renderViewToolBar();
+            $content .= $cClipWidget->getController()->clips['ListView'] . "\n";
+            if ($this->rowsAreSelectable)
+            {
+                $content .= ZurmoHtml::hiddenField($this->gridId . $this->gridIdSuffix . '-selectedIds', implode(",", $this->selectedIds)) . "\n"; // Not Coding Standard
+            }
+            $content .= $this->renderScripts();
+            return ZurmoHtml::tag('div', array('class' => 'left-column full-width'), $content);
+        }
+
         public function getLinkString($attributeString, $attribute)
         {
             throw new NotSupportedException();
