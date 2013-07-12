@@ -223,8 +223,7 @@
         {
             if ($message)
             {
-                $cookieName = static::TOGGLE_UNSUBSCRIBED_COOKIE_NAME;
-                Yii::app()->request->cookies[$cookieName] = new CHttpCookie($cookieName, $message);
+                Yii::app()->user->setFlash('notification', $message);                
             }
         }
 
