@@ -103,7 +103,7 @@
                 ),
                 'relations' => array(
                     'contact'            => array(RedBeanModel::HAS_ONE, 'Contact'),
-                    // TODO: @Shoaibi/@Jason: Critical: Old Autobuild fails, BeanModel:663, demo data fails.
+                    // TODO: @Shoaibi/@Jason: Critical: Old Autobuild fails, BeanModel:663, demo data fails, remove this exception.
                     'contactWebForm'     => array(RedBeanModel::HAS_ONE, 'ContactWebForm', RedBeanModel::NOT_OWNED),
                                                                         //RedBeanModel::LINK_TYPE_SPECIFIC, 'entries'),
                 ),

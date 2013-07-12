@@ -1917,6 +1917,7 @@
                                         ZurmoRedBeanLinkManager::link($bean, $relatedBean, $linkName);
                                     }
                                     /*
+                                     * // TODO: @Shoaibi: Critical: run tests with this enabled and disabled
                                      * // TODO: @Shoaibi/@Jason: Critical: We don't need this anymore.
                                     if (!RedBeanDatabase::isFrozen())
                                     {
