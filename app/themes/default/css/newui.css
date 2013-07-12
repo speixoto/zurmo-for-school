@@ -12265,6 +12265,13 @@ table.configuration-list td:last-child a .z-label:before {
   margin: 0;
   filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
 }
+#ImportErrorsListView .items {
+  table-layout: fixed;
+}
+#ImportErrorsListView tr td:first-child,
+#ImportErrorsListView tr th:first-child {
+  width: 35px !important;
+}
 /*Theme Chooser*/
 .color-swatch,
 .texture-swatch {
