@@ -105,7 +105,6 @@
                     'recipients'    => array(RedBeanModel::HAS_MANY, 'EmailMessageRecipient',  RedBeanModel::OWNED),
                     'error'         => array(RedBeanModel::HAS_ONE,  'EmailMessageSendError' , RedBeanModel::OWNED,
                                              RedBeanModel::LINK_TYPE_SPECIFIC, 'error'),
-                    // TODO: @Shoaibi: Critical: not owned? this has to be link type specific.
                     'account'       => array(RedBeanModel::HAS_ONE,  'EmailAccount', RedBeanModel::NOT_OWNED,
                                                                         RedBeanModel::LINK_TYPE_SPECIFIC, 'account'),
                 ),

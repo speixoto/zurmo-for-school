@@ -1825,8 +1825,8 @@
                             {
                                 $linkName = null;
                             }
-                            elseif (static::getRelationType($relationName) == self::HAS_ONE &&
-                                    static::getRelationLinkType($relationName) == self::LINK_TYPE_SPECIFIC)
+                            // TODO: @Shoaibi: Critical: elseif -> if and removed static::getRelationType($relationName) == self::HAS_ONE &&
+                            if (static::getRelationLinkType($relationName) == self::LINK_TYPE_SPECIFIC)
                             {
                                 $linkName = strtolower(static::getRelationLinkName($relationName));
                             }
