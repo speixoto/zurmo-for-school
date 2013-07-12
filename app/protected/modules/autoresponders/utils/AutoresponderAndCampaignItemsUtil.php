@@ -130,23 +130,28 @@
             assert('is_int($marketingListId)');
             $personId                 = $contact->getClassId('Person');
             $activityUtil             = $modelType . 'ActivityUtil';
-            $activityUtil::resolveContentForTrackingAndFooter($enableTracking, $textContent, $modelId, $modelType,
+            if (isset($textContent))
+            {
+                $activityUtil::resolveContentForTrackingAndFooter($enableTracking, $textContent, $modelId, $modelType,
                                                                                     $personId, $marketingListId, false);
-            $activityUtil::resolveContentForTrackingAndFooter($enableTracking, $htmlContent, $modelId, $modelType,
+            }
+            if (isset($htmlContent))
+            {
+                $activityUtil::resolveContentForTrackingAndFooter($enableTracking, $htmlContent, $modelId, $modelType,
                                                                                     $personId, $marketingListId, true);
+            }
         }
 
         protected static function resolveEmailMessage($textContent, $htmlContent, Item $itemOwnerModel,
                                                     Contact $contact, MarketingList $marketingList, $itemId, $itemClass)
         {
-            $emailMessage                   = new EmailMessage();
-            $emailMessage->owner            = $marketingList->owner;
-            $emailMessage->subject          = $itemOwnerModel->subject;
-            $emailContent                   = new EmailMessageContent();
-            $emailContent->textContent      = $textContent;
-            $emailContent->htmlContent      = $htmlContent;
-            $emailMessage->content          = $emailContent;
-            $emailMessage->sender           = static::resolveSender($marketingList);
+            $emailMessage                       = new EmailMessage();
+            $emailMessage->subject              = $itemOwnerModel->subject;
+            $emailContent                       = new EmailMessageContent();
+            $emailContent->textContent          = $textContent;
+            $emailContent->htmlContent          = $htmlContent;
+            $emailMessage->content              = $emailContent;
+            $emailMessage->sender               = static::resolveSender($marketingList);
             static::resolveRecipient($emailMessage, $contact);
             static::resolveAttachments($emailMessage, $itemOwnerModel);
             static::resolveHeaders($emailMessage, $itemId, $itemClass, $contact->getClassId('Person'));
@@ -154,10 +159,14 @@
             {
                 throw new MissingRecipientsForEmailMessageException();
             }
-            $boxName                        = static::resolveEmailBoxName(get_class($itemOwnerModel));
-            $box                            = EmailBox::resolveAndGetByName($boxName);
-            $emailMessage->folder           = EmailFolder::getByBoxAndType($box, EmailFolder::TYPE_DRAFT);
+            $boxName                            = static::resolveEmailBoxName(get_class($itemOwnerModel));
+            $box                                = EmailBox::resolveAndGetByName($boxName);
+            $emailMessage->folder               = EmailFolder::getByBoxAndType($box, EmailFolder::TYPE_DRAFT);
             Yii::app()->emailHelper->send($emailMessage);
+            $emailMessage->owner                = $marketingList->owner;
+            $explicitReadWriteModelPermissions  = ExplicitReadWriteModelPermissionsUtil::makeBySecurableItem($marketingList);
+            ExplicitReadWriteModelPermissionsUtil::resolveExplicitReadWriteModelPermissions($emailMessage,
+                                                                                    $explicitReadWriteModelPermissions);
             return $emailMessage;
         }
 

@@ -34,57 +34,59 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class AccountConvertToView extends EditView
+    class AccountConvertToViewDesignerRules extends DesignerRules
     {
-        /**
-         * Override to pass in the relation Id as the modelId. In the case of lead conversion, the lead->id is the
-         * $modelId. This can then be used for a cancel button to return to the lead detailview.
-         * @param string $controllerId
-         * @param string $moduleId
-         * @param RedsBeanModel $model
-         * @param integer $modelId
-         */
-        public function __construct($controllerId, $moduleId, $model, $modelId)
+        public function getDisplayName()
         {
-            assert('is_int($modelId)');
-            parent::__construct($controllerId, $moduleId, $model);
-            $this->modelId = $modelId;
-        }
-
-        public static function getDefaultMetadata()
-        {
-            $metadata = array(
-                'global' => array(
-                    'toolbar' => array(
-                        'elements' => array(
-                            array('type'  => 'CancelConvertLink'),
-                            array('type'  => 'SaveButton', 'label' => "eval:Zurmo::t('AccountsModule', 'Complete Conversion')"),
-                        ),
-                    ),
-                    'panelsDisplayType' => FormLayout::PANELS_DISPLAY_TYPE_ALL,
-                    'panels' => array(
-                        array(
-                            'rows' => array(
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'name', 'type' => 'Text'),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                            ),
-                        ),
-                    ),
-                ),
-            );
-            return $metadata;
+            return Zurmo::t('DesignerModule', 'Lead to Account Convert View');
         }
         
-        public static function getDesignerRulesType()
+        public function getNonPlaceableLayoutAttributeNames()
         {
-            return 'AccountConvertToView';
+            return array(
+                'createdDateTime',
+                'modifiedDateTime',
+                'createdByUser',
+                'modifiedByUser',
+                'id',
+                'owner'
+            );
         }
+        
+        public function canAddPanels()
+        {
+            return false;
+        }     
+        
+        public function canRemovePanels()
+        {
+            return false;
+        }
+        
+        public function canMovePanels()
+        {
+            return false;
+        }
+        
+        public function requireAllRequiredFieldsInLayout()
+        {
+            return true;
+        }
+        
+        public function canModifyCellSettings()
+        {
+            return false;
+        }
+
+        public function canModifyPanelSettings()
+        {
+            return false;
+        }
+        
+        public function getSavableMetadataRules()
+        {
+            return array('AddBlankForDropDown');
+        }
+                
     }
 ?>
