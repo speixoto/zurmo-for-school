@@ -51,7 +51,7 @@
             {
                 return false;
             }
-            $metadata                       = $modelClassName::getDefaultMetaData();
+            $metadata                       = $modelClassName::getMetadata();
             $modelMetadata                  = array();
             if (isset($metadata[$modelClassName]))
             {

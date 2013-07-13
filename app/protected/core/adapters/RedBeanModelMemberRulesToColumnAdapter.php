@@ -241,7 +241,6 @@
             $column['collation'] = DatabaseCompatibilityUtil::resolveCollationByHintType($column['type']);
             $column['unsigned'] = DatabaseCompatibilityUtil::resolveUnsignedByHintType($column['type'],
                                                                                             static::ASSUME_SIGNED);
-
         }
 
         protected static function findSuitableModelClassName($modelClassName)

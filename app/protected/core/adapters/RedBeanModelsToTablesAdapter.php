@@ -39,8 +39,6 @@
      */
     abstract class RedBeanModelsToTablesAdapter
     {
-        // TODO: @Shoaibi: Critical: Add some documentation for this.
-        // TODO: @Shoaibi: Critical: Tests
         /**
          * Provided an array of modelClassNames database schema generation is performed using each model's metadata.
          * @param array $modelClassNames
