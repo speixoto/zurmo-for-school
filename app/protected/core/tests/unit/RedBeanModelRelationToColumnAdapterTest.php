@@ -606,7 +606,7 @@
                                                                                 $relationMetadata,
                                                                                 static::$messageLogger);
             $this->assertNull($column);
-            $processedTables = RedBeanModelToJoinTableAdapter::resolveProcessedManyManyTableNames();
+            $processedTables = RedBeanModelToJoinTableAdapter::resolveProcessedTableNames();
             $this->assertNotEmpty($processedTables);
             $this->assertCount(1, $processedTables);
             $this->assertEquals('contact_opportunity', $processedTables[0]);
@@ -625,7 +625,7 @@
                                                                                 $relationMetadata,
                                                                                 static::$messageLogger);
             $this->assertNull($column);
-            $processedTables = RedBeanModelToJoinTableAdapter::resolveProcessedManyManyTableNames();
+            $processedTables = RedBeanModelToJoinTableAdapter::resolveProcessedTableNames();
             $this->assertNotEmpty($processedTables);
             $this->assertCount(2, $processedTables);
             $this->assertEquals('contact_opportunity', $processedTables[0]);
@@ -646,7 +646,7 @@
                                                                                 $relationMetadata,
                                                                                 static::$messageLogger);
             $this->assertNull($column);
-            $processedTables = RedBeanModelToJoinTableAdapter::resolveProcessedManyManyTableNames();
+            $processedTables = RedBeanModelToJoinTableAdapter::resolveProcessedTableNames();
             $this->assertNotEmpty($processedTables);
             $this->assertCount(2, $processedTables);
             $this->assertEquals('contact_opportunity', $processedTables[0]);
@@ -667,7 +667,7 @@
                                                                                 $relationMetadata,
                                                                                 static::$messageLogger);
             $this->assertNull($column);
-            $processedTables = RedBeanModelToJoinTableAdapter::resolveProcessedManyManyTableNames();
+            $processedTables = RedBeanModelToJoinTableAdapter::resolveProcessedTableNames();
             $this->assertNotEmpty($processedTables);
             $this->assertCount(3, $processedTables);
             $this->assertEquals('contact_opportunity', $processedTables[0]);

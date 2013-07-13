@@ -39,7 +39,7 @@
      */
     abstract class CreateOrUpdateExistingTableFromSchemaDefinitionArrayUtil
     {
-        protected static $processedTables = array();
+        const CACHE_KEY = 'CreateOrUpdateExistingTableFromSchemaDefinitionArrayUtil_processedTableNames';
 
         /**
          * Provide a schema definition array queries to create/update database schema are executed.
@@ -60,8 +60,9 @@
 
             $columnsAndIndexes  = reset($schemaDefinition);
             $tableName          = key($schemaDefinition);
-            if (in_array($tableName, static::$processedTables) && Yii::app()->params['isFreshInstall'])
+            if (ProcessedTableCache::isProcessed($tableName, static::CACHE_KEY) && Yii::app()->params['isFreshInstall'])
             {
+                var_dump("Skipped");
                 // we don't skip if running under updateSchema as we might have multiple requests to update same table.
                 return;
             }
@@ -103,10 +104,7 @@
             {
                 ZurmoRedBean::exec($query);
             }
-            if (!in_array($tableName, static::$processedTables))
-            {
-                static::$processedTables[] = $tableName;
-            }
+            ProcessedTableCache::setAsProcessed($tableName, static::CACHE_KEY);
         }
 
         /**

@@ -39,7 +39,7 @@
      */
     abstract class RedBeanModelToJoinTableAdapter
     {
-        protected static $processedManyToManyTables = array();
+        const CACHE_KEY = 'RedBeanModelToJoinTableAdapter_processedManyManyTableNames';
 
         /**
          * Generates junction table for a MANY_MANY relationship
@@ -64,7 +64,8 @@
             $tableName              = RedBeanManyToManyRelatedModels::getTableNameByModelClassNames($modelClassName,
                                                                                                 $relatedModelClassName,
                                                                                                 $relationLinkName);
-            if (in_array($tableName, static::$processedManyToManyTables))
+
+            if (ProcessedTableCache::isProcessed($tableName, static::CACHE_KEY))
             {
                 return;
             }
@@ -81,13 +82,12 @@
                                                     );
             CreateOrUpdateExistingTableFromSchemaDefinitionArrayUtil::
                                                 generateOrUpdateTableBySchemaDefinition($schemaDefinition, $messageLogger);
-            static::$processedManyToManyTables[] = $tableName;
+            ProcessedTableCache::setAsProcessed($tableName, static::CACHE_KEY);
         }
 
-        public static function resolveProcessedManyManyTableNames()
+        public static function resolveProcessedTableNames()
         {
-            // this is just used for unit tests
-            return static::$processedManyToManyTables;
+            ProcessedTableCache::resolveProcessedTableNames(static::CACHE_KEY);
         }
 
         protected static function resolveIndexesByColumnNames($columns)

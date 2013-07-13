@@ -75,7 +75,7 @@
             $modelClassName     = null;
             $relationMetadata   = array(RedBeanModel::MANY_MANY, 'Person');
             RedBeanModelToJoinTableAdapter::resolve($modelClassName, $relationMetadata, static::$messageLogger);
-            $this->assertEmpty(RedBeanModelToJoinTableAdapter::resolveProcessedManyManyTableNames());
+            $this->assertEmpty(RedBeanModelToJoinTableAdapter::resolveProcessedTableNames());
         }
 
         /**
@@ -86,7 +86,7 @@
             $modelClassName     = 'InexistentClassName';
             $relationMetadata   = array(RedBeanModel::MANY_MANY, 'User');
             RedBeanModelToJoinTableAdapter::resolve($modelClassName, $relationMetadata, static::$messageLogger);
-            $this->assertEmpty(RedBeanModelToJoinTableAdapter::resolveProcessedManyManyTableNames());
+            $this->assertEmpty(RedBeanModelToJoinTableAdapter::resolveProcessedTableNames());
         }
 
         /**
@@ -97,7 +97,7 @@
             $modelClassName     = 'Person';
             $relationMetadata   = array(RedBeanModel::MANY_MANY, 'RelatedInexistentClass');
             RedBeanModelToJoinTableAdapter::resolve($modelClassName, $relationMetadata, static::$messageLogger);
-            $this->assertEmpty(RedBeanModelToJoinTableAdapter::resolveProcessedManyManyTableNames());
+            $this->assertEmpty(RedBeanModelToJoinTableAdapter::resolveProcessedTableNames());
         }
 
         /**
@@ -108,7 +108,7 @@
             $modelClassName     = 'Person';
             $relationMetadata   = array();
             RedBeanModelToJoinTableAdapter::resolve($modelClassName, $relationMetadata, static::$messageLogger);
-            $this->assertEmpty(RedBeanModelToJoinTableAdapter::resolveProcessedManyManyTableNames());
+            $this->assertEmpty(RedBeanModelToJoinTableAdapter::resolveProcessedTableNames());
         }
 
         /**
@@ -119,7 +119,7 @@
             $modelClassName     = 'Person';
             $relationMetadata   = array(RedBeanModel::MANY_MANY);
             RedBeanModelToJoinTableAdapter::resolve($modelClassName, $relationMetadata, static::$messageLogger);
-            $this->assertEmpty(RedBeanModelToJoinTableAdapter::resolveProcessedManyManyTableNames());
+            $this->assertEmpty(RedBeanModelToJoinTableAdapter::resolveProcessedTableNames());
         }
 
         /**
@@ -130,7 +130,7 @@
             $modelClassName     = 'Person';
             $relationMetadata   = array(RedBeanModel::HAS_MANY, 'User');
             RedBeanModelToJoinTableAdapter::resolve($modelClassName, $relationMetadata, static::$messageLogger);
-            $this->assertEmpty(RedBeanModelToJoinTableAdapter::resolveProcessedManyManyTableNames());
+            $this->assertEmpty(RedBeanModelToJoinTableAdapter::resolveProcessedTableNames());
         }
 
         /**
@@ -141,7 +141,7 @@
             $modelClassName     = 'Person';
             $relationMetadata   = array(RedBeanModel::MANY_MANY, 'User');
             RedBeanModelToJoinTableAdapter::resolve($modelClassName, $relationMetadata, static::$messageLogger);
-            $processedTables    = RedBeanModelToJoinTableAdapter::resolveProcessedManyManyTableNames();
+            $processedTables    = RedBeanModelToJoinTableAdapter::resolveProcessedTableNames();
             $this->assertNotEmpty($processedTables);
             $this->assertCount(1, $processedTables);
             $this->assertEquals('_user_person', $processedTables[0]);
