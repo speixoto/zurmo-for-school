@@ -130,12 +130,12 @@
             assert('is_int($marketingListId)');
             $personId                 = $contact->getClassId('Person');
             $activityUtil             = $modelType . 'ActivityUtil';
-            if (isset($textContent))
+            if ($textContent != null)
             {
                 $activityUtil::resolveContentForTrackingAndFooter($enableTracking, $textContent, $modelId, $modelType,
                                                                                     $personId, $marketingListId, false);
             }
-            if (isset($htmlContent))
+            if ($htmlContent != null)
             {
                 $activityUtil::resolveContentForTrackingAndFooter($enableTracking, $htmlContent, $modelId, $modelType,
                                                                                     $personId, $marketingListId, true);
