@@ -146,6 +146,9 @@
             return JobLog::getSubset($joinTablesAdapter, null, self::$pageSize, $where, null);
         }
 
+        /**
+         * Single sql query to improve performance
+         */
         protected static function updateUnprocessedJobLogsWithoutErrors()
         {
             $sql = 'update joblog set isprocessed = 1 where joblog.isprocessed = 0';
