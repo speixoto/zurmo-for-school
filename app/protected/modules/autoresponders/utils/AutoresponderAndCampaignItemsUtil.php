@@ -177,18 +177,22 @@
         protected static function resolveSender(MarketingList $marketingList, $itemOwnerModel)
         {
             $sender                         = new EmailMessageSender();
-            $userToSendMessagesFrom         = BaseJobControlUserConfigUtil::getUserToRunAs();
-            $sender->fromAddress            = Yii::app()->emailHelper->resolveFromAddressByUser($userToSendMessagesFrom);
-            $sender->fromName               = strval($userToSendMessagesFrom);
+            if (get_class($itemOwnerModel) == 'Campaign')
+            {
+                $sender->fromAddress        = $itemOwnerModel->fromAddress;
+                $sender->fromName           = $itemOwnerModel->fromName;
+                return $sender;
+            }            
             if (!empty($marketingList->fromName) && !empty($marketingList->fromAddress))
             {
                 $sender->fromAddress        = $marketingList->fromAddress;
                 $sender->fromName           = $marketingList->fromName;
             }
-            if (get_class($itemOwnerModel) == 'Campaign')
+            else
             {
-                $sender->fromAddress        = $itemOwnerModel->fromAddress;
-                $sender->fromName           = $itemOwnerModel->fromName;
+                $userToSendMessagesFrom         = BaseJobControlUserConfigUtil::getUserToRunAs();
+                $sender->fromAddress            = Yii::app()->emailHelper->resolveFromAddressByUser($userToSendMessagesFrom);
+                $sender->fromName               = strval($userToSendMessagesFrom);
             }
             return $sender;
         }
