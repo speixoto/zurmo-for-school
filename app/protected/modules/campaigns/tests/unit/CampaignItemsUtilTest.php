@@ -658,9 +658,6 @@
             $this->assertEquals($expectedHeaders, $emailMessage->headers);
         }
 
-        /**
-         * @depends testProcessDueCampaignItemWithReturnPathHeaders
-         */
         public function testProcessDueCampaignItemWithoutHtmlContent()
         {
             $email                      = new Email();
@@ -691,9 +688,6 @@
             $this->assertNull   ($emailMessage->content->htmlContent);
         }
 
-        /**
-         * @depends testProcessDueCampaignItemWithoutHtmlContent
-         */
         public function testProcessDueCampaignItemWithoutTextContent()
         {
             $email                      = new Email();
@@ -705,8 +699,8 @@
                                                                                             'description',
                                                                                             'CustomFromName',
                                                                                             'custom@from.com');
-            $campaign                   = CampaignTestHelper::createCampaign('campaign 10',
-                                                                             'subject 10',
+            $campaign                   = CampaignTestHelper::createCampaign('campaign 11',
+                                                                             'subject 11',
                                                                              null,
                                                                              '<b>[[LAST^NAME]]</b>, [[FIRST^NAME]]',
                                                                              null,
@@ -723,23 +717,50 @@
             $this->assertNull   ($emailMessage->content->textContent);
             $this->assertNotNull($emailMessage->content->htmlContent);
         }
-
-        /**
-         * @depends testProcessDueCampaignItemWithoutTextContent
-         */
-        public function testProcessDueCampaignItemWithModelUrlMergeTag()
+        
+        public function testProcessDueCampaignItemWithoutRichTextSupport()
         {
             $email                      = new Email();
-            $email->emailAddress        = 'demo11@zurmo.com';
+            $email->emailAddress        = 'demo12@zurmo.com';
             $contact                    = ContactTestHelper::createContactByNameForOwner('contact 12', $this->user);
             $contact->primaryEmail      = $email;
             $this->assertTrue($contact->save());
             $marketingList              = MarketingListTestHelper::createMarketingListByName('marketingList 12',
+                                                                                            'description',
+                                                                                            'CustomFromName',
+                                                                                            'custom@from.com');
+            $campaign                   = CampaignTestHelper::createCampaign('campaign 12',
+                                                                             'subject 12',
+                                                                             'Dr. [[FIRST^NAME]] [[LAST^NAME]]',
+                                                                             '<b>[[LAST^NAME]]</b>, [[FIRST^NAME]]',
+                                                                             null,
+                                                                             null,
+                                                                             false,
+                                                                             null,
+                                                                             null,
+                                                                             null,
+                                                                             $marketingList);
+            $processed                  = 0;            
+            $campaignItem               = CampaignItemTestHelper::createCampaignItem($processed, $campaign, $contact);
+            CampaignItemsUtil::processDueItem($campaignItem);
+            $emailMessage               = $campaignItem->emailMessage;
+            $this->assertNotNull($emailMessage->content->textContent);
+            $this->assertNull   ($emailMessage->content->htmlContent);
+        }
+
+        public function testProcessDueCampaignItemWithModelUrlMergeTag()
+        {
+            $email                      = new Email();
+            $email->emailAddress        = 'demo13@zurmo.com';
+            $contact                    = ContactTestHelper::createContactByNameForOwner('contact 13', $this->user);
+            $contact->primaryEmail      = $email;
+            $this->assertTrue($contact->save());
+            $marketingList              = MarketingListTestHelper::createMarketingListByName('marketingList 13',
                                                                                                 'description',
                                                                                                 'CustomFromName',
                                                                                                 'custom@from.com');
-            $campaign                   = CampaignTestHelper::createCampaign('campaign 11',
-                                                                                'subject 11',
+            $campaign                   = CampaignTestHelper::createCampaign('campaign 13',
+                                                                                'subject 13',
                                                                                 'Url: [[MODEL^URL]]',
                                                                                 'Click <a href="[[MODEL^URL]]">here</a>',
                                                                                 null,

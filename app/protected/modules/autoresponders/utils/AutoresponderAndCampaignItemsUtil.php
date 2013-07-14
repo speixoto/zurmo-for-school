@@ -67,9 +67,13 @@
                 assert('is_object($marketingList)');
                 assert('get_class($marketingList) === "MarketingList"');
                 $textContent                = $itemOwnerModel->textContent;
-                $htmlContent                = $itemOwnerModel->htmlContent;
+                $htmlContent                = null;
+                if (($itemClass == 'CampaignItem' && $itemOwnerModel->supportsRichText) || ($itemClass == 'AutoresponderItem'))
+                {
+                    $htmlContent = $itemOwnerModel->htmlContent;   
+                }                
                 static::resolveContent($textContent, $htmlContent, $contact, $itemOwnerModel->enableTracking,
-                                       (int)$itemId, $itemClass, (int)$marketingList->id);
+                                       (int)$itemId, $itemClass, (int)$marketingList->id);                
                 try
                 {
                     $item->emailMessage = static::resolveEmailMessage($textContent, $htmlContent, $itemOwnerModel,
