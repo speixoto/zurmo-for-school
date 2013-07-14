@@ -214,12 +214,9 @@
             $this->assertEquals(2, substr_count($emailMessage->content->textContent, '/marketingLists/external/'));
             $this->assertTrue(strpos($emailMessage->content->htmlContent, $campaign->htmlContent) !== false);
             $this->assertTrue(strpos($emailMessage->content->htmlContent, '/marketingLists/external/') !== false);
-            $this->assertEquals(2, substr_count($emailMessage->content->htmlContent, '/marketingLists/external/'));
-            $userToSendMessagesFrom     = BaseJobControlUserConfigUtil::getUserToRunAs();
-            $defaultFromAddress         = Yii::app()->emailHelper->resolveFromAddressByUser($userToSendMessagesFrom);
-            $defaultFromName            = strval($userToSendMessagesFrom);
-            $this->assertEquals($defaultFromAddress, $emailMessage->sender->fromAddress);
-            $this->assertEquals($defaultFromName, $emailMessage->sender->fromName);
+            $this->assertEquals(2, substr_count($emailMessage->content->htmlContent, '/marketingLists/external/'));            
+            $this->assertEquals('support@zurmo.com', $emailMessage->sender->fromAddress);
+            $this->assertEquals('Support Team',      $emailMessage->sender->fromName);
             $this->assertEquals(1, $emailMessage->recipients->count());
             $recipients                 = $emailMessage->recipients;
             $this->assertEquals(strval($contact), $recipients[0]->toName);
@@ -274,8 +271,8 @@
             $this->assertTrue(strpos($emailMessage->content->htmlContent, $campaign->htmlContent) !== false);
             $this->assertTrue(strpos($emailMessage->content->htmlContent, '/marketingLists/external/') !== false);
             $this->assertEquals(2, substr_count($emailMessage->content->htmlContent, '/marketingLists/external/'));
-            $this->assertEquals($marketingList->fromAddress, $emailMessage->sender->fromAddress);
-            $this->assertEquals($marketingList->fromName, $emailMessage->sender->fromName);
+            $this->assertEquals('support@zurmo.com', $emailMessage->sender->fromAddress);
+            $this->assertEquals('Support Team',      $emailMessage->sender->fromName);
             $this->assertEquals(1, $emailMessage->recipients->count());
             $recipients                 = $emailMessage->recipients;
             $this->assertEquals(strval($contact), $recipients[0]->toName);
@@ -332,8 +329,8 @@
             $this->assertTrue(strpos($emailMessage->content->htmlContent, '<b>contact 05son</b>, contact 05') !== false);
             $this->assertTrue(strpos($emailMessage->content->htmlContent, '/marketingLists/external/') !== false);
             $this->assertEquals(2, substr_count($emailMessage->content->htmlContent, '/marketingLists/external/'));
-            $this->assertEquals($marketingList->fromAddress, $emailMessage->sender->fromAddress);
-            $this->assertEquals($marketingList->fromName, $emailMessage->sender->fromName);
+            $this->assertEquals('support@zurmo.com', $emailMessage->sender->fromAddress);
+            $this->assertEquals('Support Team',      $emailMessage->sender->fromName);
             $this->assertEquals(1, $emailMessage->recipients->count());
             $recipients                 = $emailMessage->recipients;
             $this->assertEquals(strval($contact), $recipients[0]->toName);
@@ -402,8 +399,8 @@
             $this->assertTrue(strpos($emailMessage->content->htmlContent, '<b>contact 06son</b>, contact 06') !== false);
             $this->assertTrue(strpos($emailMessage->content->htmlContent, '/marketingLists/external/') !== false);
             $this->assertEquals(2, substr_count($emailMessage->content->htmlContent, '/marketingLists/external/'));
-            $this->assertEquals($marketingList->fromAddress, $emailMessage->sender->fromAddress);
-            $this->assertEquals($marketingList->fromName, $emailMessage->sender->fromName);
+            $this->assertEquals('support@zurmo.com', $emailMessage->sender->fromAddress);
+            $this->assertEquals('Support Team',      $emailMessage->sender->fromName);
             $this->assertEquals(1, $emailMessage->recipients->count());
             $recipients                 = $emailMessage->recipients;
             $this->assertEquals(strval($contact), $recipients[0]->toName);
@@ -642,8 +639,8 @@
             $this->assertTrue(strpos($emailMessage->content->htmlContent, '<b>contact 09son</b>, contact 09') !== false);
             $this->assertTrue(strpos($emailMessage->content->htmlContent, '/marketingLists/external/') !== false);
             $this->assertEquals(2, substr_count($emailMessage->content->htmlContent, '/marketingLists/external/'));
-            $this->assertEquals($marketingList->fromAddress, $emailMessage->sender->fromAddress);
-            $this->assertEquals($marketingList->fromName, $emailMessage->sender->fromName);
+            $this->assertEquals('support@zurmo.com', $emailMessage->sender->fromAddress);
+            $this->assertEquals('Support Team',      $emailMessage->sender->fromName);
             $this->assertEquals(1, $emailMessage->recipients->count());
             $recipients                 = $emailMessage->recipients;
             $this->assertEquals(strval($contact), $recipients[0]->toName);
@@ -780,6 +777,36 @@
                                                             '/contacts/default/details?id=' . $contact->id) !== false);
             $this->assertTrue(strpos($emailMessage->content->htmlContent,
                                                             '/contacts/default/details?id=' . $contact->id) !== false);
+        }
+        
+        public function testProcessDueCampaignItemSenderIsSetFromCampaign()
+        {
+            $email                      = new Email();
+            $email->emailAddress        = 'demo14@zurmo.com';
+            $contact                    = ContactTestHelper::createContactByNameForOwner('contact 14', $this->user);
+            $contact->primaryEmail      = $email;
+            $this->assertTrue($contact->save());
+            $marketingList              = MarketingListTestHelper::createMarketingListByName('marketingList 14',
+                                                                                            'description',
+                                                                                            null,
+                                                                                            null);
+            $campaign                   = CampaignTestHelper::createCampaign('campaign 12',
+                                                                             'subject 12',
+                                                                             'Dr. [[FIRST^NAME]] [[LAST^NAME]]',
+                                                                             '<b>[[LAST^NAME]]</b>, [[FIRST^NAME]]',
+                                                                             'testFromName',
+                                                                             'test@zurmo.com',
+                                                                             null,
+                                                                             null,
+                                                                             null,
+                                                                             null,
+                                                                             $marketingList);
+            $processed                  = 0;            
+            $campaignItem               = CampaignItemTestHelper::createCampaignItem($processed, $campaign, $contact);
+            CampaignItemsUtil::processDueItem($campaignItem);
+            $emailMessage               = $campaignItem->emailMessage;
+            $this->assertEquals('testFromName',   $emailMessage->sender->fromName);
+            $this->assertEquals('test@zurmo.com', $emailMessage->sender->fromAddress);
         }
 
         protected function purgeAllCampaigns()
