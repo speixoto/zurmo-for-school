@@ -155,7 +155,7 @@
             $emailContent->textContent          = $textContent;
             $emailContent->htmlContent          = $htmlContent;
             $emailMessage->content              = $emailContent;
-            $emailMessage->sender               = static::resolveSender($marketingList);
+            $emailMessage->sender               = static::resolveSender($marketingList, $itemOwnerModel);
             static::resolveRecipient($emailMessage, $contact);
             static::resolveAttachments($emailMessage, $itemOwnerModel);
             static::resolveHeaders($emailMessage, $itemId, $itemClass, $contact->getClassId('Person'));
@@ -174,19 +174,21 @@
             return $emailMessage;
         }
 
-        protected static function resolveSender(MarketingList $marketingList)
+        protected static function resolveSender(MarketingList $marketingList, $itemOwnerModel)
         {
             $sender                         = new EmailMessageSender();
+            $userToSendMessagesFrom         = BaseJobControlUserConfigUtil::getUserToRunAs();
+            $sender->fromAddress            = Yii::app()->emailHelper->resolveFromAddressByUser($userToSendMessagesFrom);
+            $sender->fromName               = strval($userToSendMessagesFrom);
             if (!empty($marketingList->fromName) && !empty($marketingList->fromAddress))
             {
                 $sender->fromAddress        = $marketingList->fromAddress;
                 $sender->fromName           = $marketingList->fromName;
             }
-            else
+            if (get_class($itemOwnerModel) == 'Campaign')
             {
-                $userToSendMessagesFrom     = BaseJobControlUserConfigUtil::getUserToRunAs();
-                $sender->fromAddress        = Yii::app()->emailHelper->resolveFromAddressByUser($userToSendMessagesFrom);
-                $sender->fromName           = strval($userToSendMessagesFrom);
+                $sender->fromAddress        = $itemOwnerModel->fromAddress;
+                $sender->fromName           = $itemOwnerModel->fromName;
             }
             return $sender;
         }
