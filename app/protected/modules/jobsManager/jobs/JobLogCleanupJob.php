@@ -57,7 +57,7 @@
 
         public static function getRecommendedRunFrequencyContent()
         {
-            return Zurmo::t('JobsManagerModule', 'Twice per day.');
+            return Zurmo::t('JobsManagerModule', 'Once per day.');
         }
 
         /**
