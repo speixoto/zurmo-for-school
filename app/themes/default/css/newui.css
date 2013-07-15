@@ -7631,6 +7631,13 @@ td.empty {
   font-size: 14px;
   line-height: 21px;
 }
+.splash-view .general-issue-notice p {
+  margin: 0;
+  float: none;
+  width: 100%;
+  font-size: 14px;
+  line-height: 21px;
+}
 /*forms*/
 .form input[type="checkbox"] {
   margin: 0 0 10px 0 !important;
@@ -19723,6 +19730,15 @@ a + .autoresponder-stats {
 }
 .icon-youtube {
   background: url(../images/social-icons/youtube.png) center center no-repeat;
+}
+.icon-klout {
+  background: url(../images/social-icons/klout.png) center center no-repeat;
+}
+.icon-gravatar {
+  background: url(../images/social-icons/gravatar.png) center center no-repeat;
+}
+.icon-plancast {
+  background: url(../images/social-icons/plancast.png) center center no-repeat;
 }
 .back-of-card {
   display: none;

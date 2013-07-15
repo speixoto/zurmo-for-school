@@ -43,8 +43,8 @@
 
         protected function renderContent()
         {                     
-            $content = '<div class="' . $this->getIconName() . '">';
-            $content .= $this->getMessageContent();            
+            $content = '<div class="general-issue-notice ' . $this->getIconName() . '">';
+            $content .= $this->getMessageContent();
             $content .= '</div>';
             return $content;
         }
@@ -56,8 +56,10 @@
         
         protected function getMessageContent()
         {
-            return Zurmo::t('Core', '<h2>Everybody loves portlets</h2>' .
-                                    '<div class="large-icon"></div><p>Unfortunately there are no more portlets to add.</p>');
+            $message  = Zurmo::t('Core', 'There are no more portlets to add');
+            $content  = ZurmoHtml::tag('span', array('class' => 'icon-notice'), '');
+            $content .= ZurmoHtml::tag('p', array(), $message);
+            return $content;
         }
     }
 ?>
