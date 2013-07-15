@@ -114,39 +114,42 @@
 
         public function actionDetails($id)
         {
-            $productTemplate = static::getModelAndCatchNotFoundAndDisplayError('ProductTemplate', intval($id));
+            $getData = GetUtil::getData();
+            $productTemplate    = static::getModelAndCatchNotFoundAndDisplayError('ProductTemplate', intval($id));
             $breadcrumbLinks    = static::getDetailsAndEditBreadcrumbLinks();
             $breadcrumbLinks[]  = StringUtil::getChoppedStringContent(strval($productTemplate), 25);
-            if (Yii::app()->request->isAjaxRequest)
+            if (Yii::app()->request->isAjaxRequest || (isset($getData['ajax']) && (bool)$getData['ajax']))
             {
-                $categoryOutput = array();
-                $productType = $productTemplate->type;
-                $productPriceFrequency = $productTemplate->priceFrequency;
-                $productSellPriceCurrency = $productTemplate->sellPrice->currency->id;
-                $productSellPriceValue = $productTemplate->sellPrice->value;
+                $categoryOutput             = array();
+                $productType                = $productTemplate->type;
+                $productPriceFrequency      = $productTemplate->priceFrequency;
+                $productSellPriceCurrency   = $productTemplate->sellPrice->currency->id;
+                $productSellPriceValue      = $productTemplate->sellPrice->value;
                 foreach ($productTemplate->productCategories as $category)
                 {
                     $categoryOutput[] = array( 'id' => $category->id, 'name' => $category->name);
                 }
-                $output = array('categoryOutput' => $categoryOutput,
-                        'productType' => $productType,
-                        'productPriceFrequency' => $productPriceFrequency,
-                        'productSellPriceCurrency' => $productSellPriceCurrency,
-                        'productSellPriceValue' => $productSellPriceValue,
-                        'productName'           => $productTemplate->name,
-                        'productDescription'    => $productTemplate->description
-                        );
+                $output = array('categoryOutput'           => $categoryOutput,
+                                'productType'              => $productType,
+                                'productPriceFrequency'    => $productPriceFrequency,
+                                'productSellPriceCurrency' => $productSellPriceCurrency,
+                                'productSellPriceValue'    => $productSellPriceValue,
+                                'productName'              => $productTemplate->name,
+                                'productDescription'       => $productTemplate->description
+                               );
 
-                echo json_encode($output);
-                die();
+                echo CJSON::encode($output);
             }
-            ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($productTemplate);
-            AuditEvent::logAuditEvent('ZurmoModule', ZurmoModule::AUDIT_EVENT_ITEM_VIEWED, array(strval($productTemplate), 'ProductTemplatesModule'), $productTemplate);
-            $detailsView        = new ProductTemplateDetailsView($this->getId(), $this->getModule()->getId(), $productTemplate);
-            $view               = new ProductTemplatesPageView(ProductDefaultViewUtil::
-                                                            makeViewWithBreadcrumbsForCurrentUser(
-                                                                $this, $detailsView, $breadcrumbLinks, 'ProductBreadCrumbView'));
-            echo $view->render();
+            else
+            {
+                ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($productTemplate);
+                AuditEvent::logAuditEvent('ZurmoModule', ZurmoModule::AUDIT_EVENT_ITEM_VIEWED, array(strval($productTemplate), 'ProductTemplatesModule'), $productTemplate);
+                $detailsView        = new ProductTemplateDetailsView($this->getId(), $this->getModule()->getId(), $productTemplate);
+                $view               = new ProductTemplatesPageView(ProductDefaultViewUtil::
+                                                                makeViewWithBreadcrumbsForCurrentUser(
+                                                                    $this, $detailsView, $breadcrumbLinks, 'ProductBreadCrumbView'));
+                echo $view->render();
+            }
         }
 
         public function actionCreate()
