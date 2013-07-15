@@ -68,7 +68,6 @@
             );
             $gridViewId              = 'notUsed';
             $pageVar                 = 'notUsed';
-            $introCookieValue        = Yii::app()->request->cookies[MarketingDashboardIntroView::resolveCookieId()];
             $actionBarView           = new SecuredActionBarForMarketingSearchAndListView(
                                             'default',
                                             'marketing',
@@ -77,6 +76,7 @@
                                             $pageVar,
                                             false,
                                        'MarketingDashboardLink');
+            $introCookieValue        = Yii::app()->request->cookies[MarketingDashboardIntroView::resolveCookieId()];
             $actionBarView->setIntroCookieValue($introCookieValue);
             $introView               = new MarketingDashboardIntroView($introCookieValue);
             $marketingDashboardView  = new MarketingDashboardView(
@@ -86,7 +86,6 @@
                                             $params);
             $marketingDashboardView->setCssClasses( array( 'clearfix' ) );
 
-            //todo: don't show introView if hidden
             $gridView                = new GridView(3, 1);
             $gridView->setView($actionBarView, 0, 0);
             $gridView->setView($introView, 1, 0);

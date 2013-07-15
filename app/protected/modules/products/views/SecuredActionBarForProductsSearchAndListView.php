@@ -78,6 +78,14 @@
                             ),
                         ),
                     ),
+                    'secondToolbar' => array(
+                        'elements' => array(
+                            array('type'  => 'ProductIntroLink',
+                                'cookieValue' => 'eval:$this->introCookieValue',
+                                'htmlOptions' => array('class' => 'icon-intro-change-this'), //todo: need new class name
+                            ),
+                        ),
+                    ),
                 ),
             );
             return $metadata;

@@ -49,7 +49,19 @@
          */
         protected $activeActionElementType;
 
+        /**
+         * Identifies whether the intro view should be hidden or show on the marketing dashboard
+         * @var null|string
+         */
+        protected $introCookieValue;
+
         abstract protected function makeModel();
+
+        public function setIntroCookieValue($introCookieValue)
+        {
+            assert('$introCookieValue == null || is_string($introCookieValue)');
+            $this->introCookieValue = $introCookieValue;
+        }
 
         public function __construct($controllerId, $moduleId, $activeActionElementType = null)
         {
@@ -67,9 +79,16 @@
             $actionBarContent = $this->renderActionElementBar(false);
             if ($actionBarContent != null)
             {
-                $content .= '<div class="view-toolbar-container clearfix"><div class="view-toolbar">';
+                $content .= '<div class="view-toolbar-container clearfix">';
+                $content .= '<div class="view-toolbar">';
                 $content .= $actionBarContent;
-                $content .= '</div></div>';
+                $content .= '</div>';
+                if (!Yii::app()->userInterface->isMobile() &&
+                    null != $secondActionElementBarContent = $this->renderSecondActionElementBar(false))
+                {
+                    $content .= '<div class="view-toolbar">' . $secondActionElementBarContent . '</div>';
+                }
+                $content .= '</div>';
             }
             return $content;
         }

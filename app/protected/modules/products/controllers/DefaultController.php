@@ -88,9 +88,11 @@
             }
             else
             {
+                $introCookieValue = Yii::app()->request->cookies[ProductsIntroView::resolveCookieId()];
+                $introView        = new ProductsIntroView($introCookieValue, $activeActionElementType);
                 $mixedView  = $this->makeActionBarSearchAndListView($searchForm, $dataProvider,
                                    'SecuredActionBarForProductsSearchAndListView',
-                                    null, $activeActionElementType);
+                                    null, $activeActionElementType, $introView, $introCookieValue);
                 $view       = new ProductsPageView(ZurmoDefaultViewUtil::
                                                     makeViewWithBreadcrumbsForCurrentUser(
                                                         $this, $mixedView, $breadcrumbLinks, 'ProductBreadCrumbView'));

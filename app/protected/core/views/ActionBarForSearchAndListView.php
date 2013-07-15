@@ -73,6 +73,18 @@
          */
         protected $activeActionElementType;
 
+        /**
+         * Identifies whether the intro view should be hidden or show on the marketing dashboard
+         * @var null|string
+         */
+        protected $introCookieValue;
+
+        public function setIntroCookieValue($introCookieValue)
+        {
+            assert('$introCookieValue == null || is_string($introCookieValue)');
+            $this->introCookieValue = $introCookieValue;
+        }
+
         public function __construct($controllerId, $moduleId, RedBeanModel $model, $listViewGridId,
                                     $pageVarName, $listViewRowsAreSelectable, $activeActionElementType = null)
         {

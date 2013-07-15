@@ -41,12 +41,6 @@
     class SecuredActionBarForMarketingSearchAndListView extends SecuredActionBarForSearchAndListView
     {
         /**
-         * Identifies whether the intro view should be hidden or show on the marketing dashboard
-         * @var null|string
-         */
-        protected $introCookieValue;
-
-        /**
          * @return array
          */
         public static function getDefaultMetadata()
@@ -84,16 +78,9 @@
                             ),
                         ),
                     ),
-
                 ),
             );
             return $metadata;
-        }
-
-        public function setIntroCookieValue($introCookieValue)
-        {
-            assert('$introCookieValue == null || is_string($introCookieValue)');
-            $this->introCookieValue = $introCookieValue;
         }
     }
 ?>
