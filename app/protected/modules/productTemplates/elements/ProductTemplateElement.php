@@ -84,7 +84,7 @@
          */
         protected function getOnSelectOptionForAutoComplete($idInputName)
         {
-            $url = Yii::app()->createUrl("productTemplates/default/details");
+            $url = Yii::app()->createUrl("productTemplates/default/getProductTemplateDataForProduct");
             return 'js:function(event, ui){ jQuery("#' . $idInputName . '").val(ui.item["id"]).trigger("change");
                         copyProductTemplateDataForProduct(ui.item["id"], \'' . $url . '\')}';
         }
