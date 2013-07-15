@@ -4,7 +4,7 @@
      * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
-     * the terms of the GNU General Public License version 3 as published by the
+     * the terms of the GNU Affero General Public License version 3 as published by the
      * Free Software Foundation with the addition of the following permission added
      * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
      * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
@@ -12,10 +12,10 @@
      *
      * Zurmo is distributed in the hope that it will be useful, but WITHOUT
      * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-     * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+     * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
      * details.
      *
-     * You should have received a copy of the GNU General Public License along with
+     * You should have received a copy of the GNU Affero General Public License along with
      * this program; if not, see http://www.gnu.org/licenses or write to the Free
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
@@ -25,9 +25,9 @@
      *
      * The interactive user interfaces in original and modified versions
      * of this program must display Appropriate Legal Notices, as required under
-     * Section 5 of the GNU General Public License version 3.
+     * Section 5 of the GNU Affero General Public License version 3.
      *
-     * In accordance with Section 7(b) of the GNU General Public License version 3,
+     * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
@@ -74,65 +74,94 @@
             return static::renderModelAttributeLabel(static::TEXT_CONTENT_INPUT_NAME);
         }
 
-        protected function resolveTabbedContent($plainTextContent, $htmlContent)
+        protected function resolveTabbedContent($plainTextContent, $htmlContent, $activeTab = 'text')
         {
             $this->registerTabbedContentScripts();
-            $textTabHyperLink   = ZurmoHtml::link($this->renderTextContentAreaLabel(), '#tab1', array('class' => 'active-tab'));
-            $htmlTabHyperLink   = ZurmoHtml::link($this->renderHtmlContentAreaLabel(), '#tab2');
+            $textClass = 'active-tab';
+            $htmlClass = null;
+            if ($activeTab == 'html')
+            {
+                $textClass = null;
+                $htmlClass = 'active-tab';
+            }
+            $textTabHyperLink   = ZurmoHtml::link($this->renderTextContentAreaLabel(), 
+                                                  '#tab1', 
+                                                  array('class' => $textClass));
+            $htmlTabHyperLink   = ZurmoHtml::link($this->renderHtmlContentAreaLabel(), 
+                                                  '#tab2', 
+                                                  array('class' => $htmlClass));
             $tagsGuideLink      = null;
             if ($this->form)
             {
                 $controllerId           = $this->getControllerId();
                 $moduleId               = $this->getModuleId();
                 $modelId                = $this->model->id;
-                $params                 = array('htmlOptions' => array('id' => 'mergetag-guide', 'class' => 'simple-link'));
-                $tagsGuideLinkElement   = new MergeTagGuideAjaxLinkActionElement($controllerId, $moduleId, $modelId, $params);
+                $tagsGuideLinkElement   = new MergeTagGuideAjaxLinkActionElement($controllerId, $moduleId, $modelId);
                 $tagsGuideLink          = $tagsGuideLinkElement->render();
             }
             $tabContent         = ZurmoHtml::tag('div', array('class' => 'tabs-nav'), $textTabHyperLink . $htmlTabHyperLink . $tagsGuideLink);
 
             $plainTextDiv       = ZurmoHtml::tag('div',
                                                 array('id' => 'tab1',
-                                                      'class' => 'active-tab tab email-template-' . static::TEXT_CONTENT_INPUT_NAME),
+                                                      'class' => $textClass . ' tab email-template-' . static::TEXT_CONTENT_INPUT_NAME),
                                                 $plainTextContent);
             $htmlContentDiv     = ZurmoHtml::tag('div',
                                                 array('id' => 'tab2',
-                                                      'class' => 'tab email-template-' . static::HTML_CONTENT_INPUT_NAME),
+                                                      'class' => $htmlClass . ' tab email-template-' . static::HTML_CONTENT_INPUT_NAME),
                                                 $htmlContent);
             return ZurmoHtml::tag('div', array('class' => 'email-template-content'), $tabContent . $plainTextDiv . $htmlContentDiv);
         }
 
         protected function registerTabbedContentScripts()
         {
-            Yii::app()->clientScript->registerScript('email-templates-tab-switch-handler', "
-                    $('.tabs-nav a:not(.simple-link)').click( function()
-                    {
-                        //the menu items
-                        $('.active-tab', $(this).parent()).removeClass('active-tab');
-                        $(this).addClass('active-tab');
-                        //the sections
-                        var _old = $('.tab.active-tab'); //maybe add context here for tab-container
-                        _old.fadeToggle();
-                        var _new = $( $(this).attr('href') );
-                        _new.fadeToggle(150, 'linear', function()
+            $scriptName = 'email-templates-tab-switch-handler';
+            if (Yii::app()->clientScript->isScriptRegistered($scriptName))
+            {
+                return;
+            }
+            else
+            {
+                Yii::app()->clientScript->registerScript($scriptName, "
+                        $('.tabs-nav a:not(.simple-link)').click( function()
                         {
-                                _old.removeClass('active-tab');
-                                _new.addClass('active-tab');
+                            //the menu items
+                            $('.active-tab', $(this).parent()).removeClass('active-tab');
+                            $(this).addClass('active-tab');
+                            //the sections
+                            var _old = $('.tab.active-tab'); //maybe add context here for tab-container
+                            _old.fadeToggle();
+                            var _new = $( $(this).attr('href') );
+                            _new.fadeToggle(150, 'linear', function()
+                            {
+                                    _old.removeClass('active-tab');
+                                    _new.addClass('active-tab');
+                            });
+                            return false;
                         });
-                        return false;
-                    });
-                ");
+                    ");
+            }
         }
 
         protected function renderControlNonEditable()
         {
             assert('$this->attribute == null');
-            return $this->resolveTabbedContent($this->model->textContent, $this->model->htmlContent);
+            $activeTab = $this->getActiveTab();
+            return $this->resolveTabbedContent($this->model->textContent, $this->model->htmlContent, $activeTab);
         }
 
         protected function renderControlEditable()
         {
-            return $this->resolveTabbedContent($this->renderTextContentArea(), $this->renderHtmlContentArea());
+            $activeTab = $this->getActiveTab();
+            return $this->resolveTabbedContent($this->renderTextContentArea(), $this->renderHtmlContentArea(), $activeTab);
+        }
+        
+        protected function getActiveTab()
+        {
+            if (empty($this->model->textContent))
+            {
+                return 'html';
+            }
+            return 'text';
         }
 
         // REVIEW : @Shoaibi Create a HTML element out of it.

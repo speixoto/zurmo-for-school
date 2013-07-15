@@ -4,7 +4,7 @@
      * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
-     * the terms of the GNU General Public License version 3 as published by the
+     * the terms of the GNU Affero General Public License version 3 as published by the
      * Free Software Foundation with the addition of the following permission added
      * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
      * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
@@ -12,10 +12,10 @@
      *
      * Zurmo is distributed in the hope that it will be useful, but WITHOUT
      * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-     * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+     * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
      * details.
      *
-     * You should have received a copy of the GNU General Public License along with
+     * You should have received a copy of the GNU Affero General Public License along with
      * this program; if not, see http://www.gnu.org/licenses or write to the Free
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
@@ -25,9 +25,9 @@
      *
      * The interactive user interfaces in original and modified versions
      * of this program must display Appropriate Legal Notices, as required under
-     * Section 5 of the GNU General Public License version 3.
+     * Section 5 of the GNU Affero General Public License version 3.
      *
-     * In accordance with Section 7(b) of the GNU General Public License version 3,
+     * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
@@ -39,6 +39,8 @@
      */
     class MonitorJob extends BaseJob
     {
+        protected static $pageSize = 50;
+
         /**
          * @returns Translated label that describes this job type.
          */
@@ -81,26 +83,24 @@
                     $jobsAreStuck     = true;
                 }
             }
-            if($jobsAreStuck)
+            if ($jobsAreStuck)
             {
                 self::makeJobStuckNotification($jobTitleLabels);
             }
-            $jobLogs = static::getNonMonitorJobLogsUnprocessed();
+            $jobLogs = static::getNonMonitorJobLogsUnprocessedWithErrors();
             foreach ($jobLogs as $jobLog)
             {
-                if ($jobLog->status == JobLog::STATUS_COMPLETE_WITH_ERROR)
-                {
-                    $message                      = new NotificationMessage();
-                    $message->htmlContent         = Zurmo::t('JobsManagerModule', 'Job completed with errors.');
-                    $url                          = Yii::app()->createAbsoluteUrl('jobsManager/default/jobLogDetails/',
-                                                                        array('id' => $jobLog->id));
-                    $message->htmlContent        .= "<br/>" . ZurmoHtml::link(Zurmo::t('Core', 'Click Here'), $url);
-                    $rules                        = new JobCompletedWithErrorsNotificationRules();
-                    NotificationsUtil::submit($message, $rules);
-                }
+                $message                      = new NotificationMessage();
+                $message->htmlContent         = Zurmo::t('JobsManagerModule', 'Job completed with errors.');
+                $url                          = Yii::app()->createAbsoluteUrl('jobsManager/default/jobLogDetails/',
+                                                                    array('id' => $jobLog->id));
+                $message->htmlContent        .= "<br/>" . ZurmoHtml::link(Zurmo::t('Core', 'Click Here'), $url);
+                $rules                        = new JobCompletedWithErrorsNotificationRules();
+                NotificationsUtil::submit($message, $rules);
                 $jobLog->isProcessed         = true;
                 $jobLog->save();
             }
+            $this->updateUnprocessedJobLogsWithoutErrors();
             return true;
         }
 
@@ -120,7 +120,7 @@
             return JobInProcess::getSubset($joinTablesAdapter, null, null, $where, null);
         }
 
-        protected static function getNonMonitorJobLogsUnprocessed()
+        protected static function getNonMonitorJobLogsUnprocessedWithErrors()
         {
             $searchAttributeData = array();
             $searchAttributeData['clauses'] = array(
@@ -134,11 +134,25 @@
                     'operatorType'         => 'doesNotEqual',
                     'value'                => (bool)1,
                 ),
+                3 => array(
+                    'attributeName'        => 'status',
+                    'operatorType'         => 'equals',
+                    'value'                => JobLog::STATUS_COMPLETE_WITH_ERROR,
+                ),
             );
-            $searchAttributeData['structure'] = '1 and 2';
+            $searchAttributeData['structure'] = '1 and 2 and 3';
             $joinTablesAdapter = new RedBeanModelJoinTablesQueryAdapter('JobLog');
             $where = RedBeanModelDataProvider::makeWhere('JobLog', $searchAttributeData, $joinTablesAdapter);
-            return JobLog::getSubset($joinTablesAdapter, null, null, $where, null);
+            return JobLog::getSubset($joinTablesAdapter, null, self::$pageSize, $where, null);
+        }
+
+        /**
+         * Single sql query to improve performance
+         */
+        protected static function updateUnprocessedJobLogsWithoutErrors()
+        {
+            $sql = 'update joblog set isprocessed = 1 where joblog.isprocessed = 0';
+            R::exec($sql);
         }
 
         /**
@@ -152,13 +166,13 @@
             $message->htmlContent = $prefixContent;
             $textContent          = null;
             $htmlContent          = null;
-            foreach($jobTitleLabels as $label)
+            foreach ($jobTitleLabels as $label)
             {
-                if($textContent != null)
+                if ($textContent != null)
                 {
                     $textContent .= ', ';
                 }
-                if($htmlContent != null)
+                if ($htmlContent != null)
                 {
                     $htmlContent .= ', ';
                 }

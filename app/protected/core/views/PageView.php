@@ -4,7 +4,7 @@
      * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
-     * the terms of the GNU General Public License version 3 as published by the
+     * the terms of the GNU Affero General Public License version 3 as published by the
      * Free Software Foundation with the addition of the following permission added
      * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
      * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
@@ -12,10 +12,10 @@
      *
      * Zurmo is distributed in the hope that it will be useful, but WITHOUT
      * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-     * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+     * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
      * details.
      *
-     * You should have received a copy of the GNU General Public License along with
+     * You should have received a copy of the GNU Affero General Public License along with
      * this program; if not, see http://www.gnu.org/licenses or write to the Free
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
@@ -25,9 +25,9 @@
      *
      * The interactive user interfaces in original and modified versions
      * of this program must display Appropriate Legal Notices, as required under
-     * Section 5 of the GNU General Public License version 3.
+     * Section 5 of the GNU Affero General Public License version 3.
      *
-     * In accordance with Section 7(b) of the GNU General Public License version 3,
+     * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
@@ -206,7 +206,7 @@
          */
         protected function renderXHtmlStart()
         {
-            $themeUrl = Yii::app()->baseUrl . '/themes';
+            $themeUrl  = Yii::app()->themeManager->baseUrl;
             $theme    = Yii::app()->theme->name;
             if (!MINIFY_SCRIPTS && Yii::app()->isApplicationInstalled())
             {
@@ -227,8 +227,8 @@
                 Yii::app()->getAssetManager()->publish(
                     Yii::getPathOfAlias('application.core.views.assets')) . '/jquery.truncateText.js');
             return '<!DOCTYPE html>' .
-                   '<!--[if IE 8]><html class="ie8" lang="en"><![endif]-->' .
-                   '<!--[if gt IE 8]><!--><html lang="en"><!--<![endif]-->';
+                   '<!--[if IE 8]><html class="zurmo ie8" lang="en"><![endif]-->' .
+                   '<!--[if gt IE 8]><!--><html class="zurmo" lang="en"><!--<![endif]-->';
         }
 
         /**
@@ -245,31 +245,33 @@
             {
                 $title = "$title - $subtitle";
             }
-            $defaultTheme = 'themes/default';
-            $theme        = 'themes/' . Yii::app()->theme->name;
+            $defaultThemeName       = 'default';
+            $defaultThemeBaseUrl    =  Yii::app()->themeManager->baseUrl . '/' . $defaultThemeName;
+            $themeName              = Yii::app()->theme->name;
+            $themeBaseUrl           =  Yii::app()->themeManager->baseUrl . '/' . $themeName;
             $cs = Yii::app()->getClientScript();
             //$cs->registerMetaTag('UTF-8', null, 'charset'); // Not Coding Standard
-            $cs->registerCssFile(Yii::app()->baseUrl . '/' . $theme . '/css/keyframes.css');
+            $cs->registerCssFile($themeBaseUrl . '/css/keyframes.css');
 
             $specialCssContent = null;
             if (!MINIFY_SCRIPTS && Yii::app()->isApplicationInstalled())
             {
                 $specialCssContent .= '<link rel="stylesheet/less" type="text/css" id="newui" href="' .
-                                      Yii::app()->baseUrl . '/' . $theme . '/less/newui.less"/>';
+                                                                                $themeBaseUrl . '/less/newui.less"/>';
                 if (Yii::app()->userInterface->isMobile())
                 {
                     $specialCssContent .= '<link rel="stylesheet/less" type="text/css" id="mobile" href="' .
-                        Yii::app()->baseUrl . '/' . $theme . '/less/mobile.less"/>';
+                                                                                $themeBaseUrl . '/less/mobile.less"/>';
                 }
                 $specialCssContent .= '<!--[if lt IE 9]><link rel="stylesheet/less" type="text/css" href="' .
-                                      Yii::app()->baseUrl . '/' . $theme . '/less/ie.less"/><![endif]-->';
+                                                                        $themeBaseUrl . '/less/ie.less"/><![endif]-->';
             }
             else
             {
-                $cs->registerCssFile(Yii::app()->baseUrl . '/' . $theme . '/css/newui.css');
+                $cs->registerCssFile($themeBaseUrl . '/css/newui.css');
                 if (Yii::app()->userInterface->isMobile())
                 {
-                    $cs->registerCssFile(Yii::app()->baseUrl . '/' . $theme . '/css/mobile.css');
+                    $cs->registerCssFile($themeBaseUrl . '/css/mobile.css');
                 }
             }
             if (MINIFY_SCRIPTS)
@@ -282,34 +284,34 @@
             }
             if (Yii::app()->browser->getName() == 'msie' && Yii::app()->browser->getVersion() < 9)
             {
-                $cs->registerCssFile(Yii::app()->baseUrl . '/' . $theme . '/css' . '/ie.css', 'screen, projection');
+                $cs->registerCssFile($themeBaseUrl . '/css' . '/ie.css', 'screen, projection');
             }
 
             foreach ($this->getStyles() as $style)
             {
                 if ($style != 'ie')
                 {
-                    if (file_exists("$theme/css/$style.css"))
+                    if (file_exists("themes/$themeName/css/$style.css"))
                     {
-                        $cs->registerCssFile(Yii::app()->baseUrl . '/' . $theme . '/css/' . $style. '.css'); // Not Coding Standard
+                        $cs->registerCssFile($themeBaseUrl . '/css/' . $style. '.css'); // Not Coding Standard
                     }
                 }
             }
 
-            if (file_exists("$theme/ico/favicon.ico"))
+            if (file_exists("themes/$themeName/ico/favicon.ico"))
             {
-                $cs->registerLinkTag('shortcut icon', null, Yii::app()->baseUrl . '/' . $theme . '/ico/favicon.ico');
+                $cs->registerLinkTag('shortcut icon', null, $themeBaseUrl . '/ico/favicon.ico');
             }
             else
             {
-                $cs->registerLinkTag('shortcut icon', null, Yii::app()->baseUrl . '/' . $defaultTheme . '/ico/favicon.ico');
+                $cs->registerLinkTag('shortcut icon', null, $defaultThemeBaseUrl . '/ico/favicon.ico');
             }
             return '<head>' .
                    '<meta charset="utf-8">' .
                    '<meta http-equiv="X-UA-Compatible" content="IE=edge" />' . // Not Coding Standard
                    '<meta name="viewport"  content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">' . // Not Coding Standard
                    '<meta name="apple-mobile-web-app-capable" content="yes" />' . // Not Coding Standard
-                   '<link rel="apple-touch-icon" sizes="144x144" href="' . Yii::app()->baseUrl . '/themes/default/images/touch-icon-iphone4.png" />'  . //also add 57px, 72px, 144px // Not Coding Standard
+                   '<link rel="apple-touch-icon" sizes="144x144" href="' . $defaultThemeBaseUrl . '/images/touch-icon-iphone4.png" />'  . //also add 57px, 72px, 144px // Not Coding Standard
                    $specialCssContent .
                    '<title>' . $title . '</title>'  .
                    '</head>';

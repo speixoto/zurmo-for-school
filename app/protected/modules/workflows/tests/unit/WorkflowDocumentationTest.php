@@ -4,7 +4,7 @@
      * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
-     * the terms of the GNU General Public License version 3 as published by the
+     * the terms of the GNU Affero General Public License version 3 as published by the
      * Free Software Foundation with the addition of the following permission added
      * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
      * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
@@ -12,10 +12,10 @@
      *
      * Zurmo is distributed in the hope that it will be useful, but WITHOUT
      * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-     * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+     * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
      * details.
      *
-     * You should have received a copy of the GNU General Public License along with
+     * You should have received a copy of the GNU Affero General Public License along with
      * this program; if not, see http://www.gnu.org/licenses or write to the Free
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
@@ -25,9 +25,9 @@
      *
      * The interactive user interfaces in original and modified versions
      * of this program must display Appropriate Legal Notices, as required under
-     * Section 5 of the GNU General Public License version 3.
+     * Section 5 of the GNU Affero General Public License version 3.
      *
-     * In accordance with Section 7(b) of the GNU General Public License version 3,
+     * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
@@ -161,6 +161,76 @@
         public function testAWorkflowProcess()
         {
             //todo: write a full set of tests to document workflow
+        }
+
+        public function testUpdateRelatedCatalogItemOnAProductBySellPriceCriteria()
+        {
+            $super = User::getByUsername('super');
+            $contactStates = ContactState::getAll();
+            //Create workflow
+            $workflow = new Workflow();
+            $workflow->setDescription    ('aDescription');
+            $workflow->setIsActive       (true);
+            $workflow->setOrder          (1);
+            $workflow->setModuleClassName('ProductsModule');
+            $workflow->setName           ('myFirstProductWorkflow');
+            $workflow->setTriggerOn      (Workflow::TRIGGER_ON_NEW_AND_EXISTING);
+            $workflow->setType           (Workflow::TYPE_ON_SAVE);
+            $workflow->setTriggersStructure('1');
+            //Add Trigger
+            $trigger     = new TriggerForWorkflowForm('ProductsModule', 'Product', Workflow::TYPE_ON_SAVE);
+            $trigger->attributeIndexOrDerivedType = 'sellPrice';
+            $trigger->value                       = 600;
+            $trigger->operator                    = 'greaterThanOrEqualTo';
+            $workflow->addTrigger($trigger);
+            //Add action
+            $currencies                   = Currency::getAll();
+            $action                       = new ActionForWorkflowForm('Product', Workflow::TYPE_ON_SAVE);
+            $action->type                 = ActionForWorkflowForm::TYPE_UPDATE_RELATED;
+            $action->relation             = 'productTemplate';
+            $attributes                   = array(  'description'    => array('shouldSetValue'    => '1',
+                                                        'type'       => WorkflowActionAttributeForm::TYPE_STATIC,
+                                                        'value'      => 'Set Price'),
+                                                    'priceFrequency' => array('shouldSetValue'    => '1',
+                                                        'type'       => WorkflowActionAttributeForm::TYPE_STATIC,
+                                                        'value'      => 2),
+                                                    'listPrice'      => array('shouldSetValue'    => '1',
+                                                        'type'       => WorkflowActionAttributeForm::TYPE_STATIC,
+                                                        'value'      => 800,
+                                                        'currencyId' => $currencies[0]->id),
+                                                    'cost'           => array('shouldSetValue'    => '1',
+                                                        'type'       => WorkflowActionAttributeForm::TYPE_STATIC,
+                                                        'value'      => 700,
+                                                        'currencyId' => $currencies[0]->id),
+                                                );
+            $action->setAttributes(array(ActionForWorkflowForm::ACTION_ATTRIBUTES => $attributes));
+            $workflow->addAction($action);
+            //Create the saved Workflow
+            $savedWorkflow = new SavedWorkflow();
+            SavedWorkflowToWorkflowAdapter::resolveWorkflowToSavedWorkflow($workflow, $savedWorkflow);
+            $saved = $savedWorkflow->save();
+            $this->assertTrue($saved);
+
+            $productTemplate  = ProductTemplateTestHelper::createProductTemplateByName('superProductTemplate');
+            $productTemplates = ProductTemplate::getByName('superProductTemplate');
+            $product = ProductTestHelper::createProductByNameForOwner('Test Product', $super);
+            $this->assertTrue($product->id > 0);
+            $product->productTemplate = $productTemplates[0];
+
+            //Change product sell price
+            $product->sellPrice->value = 650;
+            $this->assertTrue(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $product));
+            $saved = $product->save();
+            $this->assertTrue($saved);
+
+            $productId = $product->id;
+            $product->forget();
+
+            $product = Product::getById($productId);
+            $this->assertEquals('Set Price', $product->productTemplate->description);
+            $this->assertEquals(2, $product->productTemplate->priceFrequency);
+            $this->assertEquals(700, $product->productTemplate->cost->value);
+            $this->assertEquals(800, $product->productTemplate->listPrice->value);
         }
     }
 ?>

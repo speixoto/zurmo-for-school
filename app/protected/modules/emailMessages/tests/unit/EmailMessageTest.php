@@ -4,7 +4,7 @@
      * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
-     * the terms of the GNU General Public License version 3 as published by the
+     * the terms of the GNU Affero General Public License version 3 as published by the
      * Free Software Foundation with the addition of the following permission added
      * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
      * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
@@ -12,10 +12,10 @@
      *
      * Zurmo is distributed in the hope that it will be useful, but WITHOUT
      * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-     * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+     * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
      * details.
      *
-     * You should have received a copy of the GNU General Public License along with
+     * You should have received a copy of the GNU Affero General Public License along with
      * this program; if not, see http://www.gnu.org/licenses or write to the Free
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
@@ -25,9 +25,9 @@
      *
      * The interactive user interfaces in original and modified versions
      * of this program must display Appropriate Legal Notices, as required under
-     * Section 5 of the GNU General Public License version 3.
+     * Section 5 of the GNU Affero General Public License version 3.
      *
-     * In accordance with Section 7(b) of the GNU General Public License version 3,
+     * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
@@ -60,7 +60,7 @@
             $this->assertEquals(0, count(EmailMessage::getAll()));
 
             $emailMessage = new EmailMessage();
-            $emailMessage->owner   = Yii::app()->emailHelper->getUserToSendNotificationsAs();
+            $emailMessage->owner   = BaseJobControlUserConfigUtil::getUserToRunAs();
             $emailMessage->subject = 'My First Email';
 
             //Attempt to save without setting required information
@@ -378,6 +378,108 @@
             Yii::app()->emailHelper->send($emailMessage);
             $this->assertEquals(1, Yii::app()->emailHelper->getQueuedCount());
             $this->assertEquals(0, Yii::app()->emailHelper->getSentCount());
+        }
+        
+        public function testCrudForHasOneAndHasManyEmailMessageRelations()
+        {
+            $super          = User::getByUsername('super');
+            Yii::app()->user->userModel = $super;
+            $emailMessage   = EmailMessageTestHelper::createDraftSystemEmail('test crud relations', $super);
+            $this->assertTrue($emailMessage->save());
+            $emailMessageId = $emailMessage->id;
+            
+            //Check read hasOne relation
+            $emailMessage       = EmailMessage::getById($emailMessageId);
+            $emailMessageSender = $emailMessage->sender;            
+            $this->assertEquals('system@somewhere.com', $emailMessageSender->fromAddress);
+            
+            //Check update hasOne relation
+            $emailMessageSender->fromAddress = 'system@somewhere.org';
+            $this->assertTrue($emailMessage->save());
+            $emailMessage       = EmailMessage::getById($emailMessageId);
+            $emailMessageSender = $emailMessage->sender;            
+            $this->assertEquals('system@somewhere.org', $emailMessageSender->fromAddress);
+            
+            //Check delete hasOne relation
+            $emailMessageSender2  = new EmailMessageSender();
+            $emailMessageSender2->fromAddress = 'system@somewhere.org';
+            $emailMessageSender2->fromName    = 'system name';
+            $emailMessage->sender = $emailMessageSender2;
+            $this->assertTrue($emailMessage->save());            
+            $found                = true;
+            try
+            {
+                EmailMessageSender::getById($emailMessageSender->id);                         
+            }
+            catch (NotFoundException $exception)
+            {
+                $found = false;                
+            }
+            $this->assertFalse($found);
+            
+            //Check read hasMany relation
+            $emailMessage       = EmailMessage::getById($emailMessageId);
+            $recipients         = $emailMessage->recipients;
+            $recipient          = $recipients[0];
+            $this->assertCount (1, $recipients);
+            $this->assertEquals('billy@fakeemail.com', $recipient->toAddress);
+            
+            //Check update hasMany relation
+            $recipient->toAddress = 'billy@fakeemail.org';
+            $this->assertTrue($emailMessage->save());
+            $emailMessage         = EmailMessage::getById($emailMessageId);
+            $recipient            = $emailMessage->recipients[0];            
+            $this->assertEquals('billy@fakeemail.org', $recipient->toAddress);
+            
+            //Check add hasMany relation            
+            $recipient              = new EmailMessageRecipient();
+            $recipient->toAddress   = 'anne@fakeemail.com';
+            $recipient->toName      = 'Anne Frank';
+            $recipient->type        = EmailMessageRecipient::TYPE_BCC;
+            $emailMessage->recipients->add($recipient);
+            $this->assertTrue($emailMessage->save());
+            $emailMessage           = EmailMessage::getById($emailMessageId);
+            $recipients             = $emailMessage->recipients;                        
+            $recipient              = $recipients[1];
+            $this->assertCount (2, $recipients);                        
+            
+            //Check update hasMany relation with more than one model set
+            $recipient->toAddress = 'anne@fakeemail.org';
+            $this->assertTrue($emailMessage->save());
+            $emailMessage         = EmailMessage::getById($emailMessageId);
+            $recipient            = $emailMessage->recipients[1];            
+            $this->assertEquals('anne@fakeemail.org', $recipient->toAddress);
+            
+            //Check delete hasMany relation            
+            $emailMessage->recipients->remove($recipient);
+            $this->assertTrue($emailMessage->save());            
+            $found                = true;
+            try
+            {
+                EmailMessageRecipient::getById($recipient->id);                         
+            }
+            catch (NotFoundException $exception)
+            {
+                $found = false;                
+            }
+            $this->assertFalse($found);
+            
+            //Check delete last hasMany relation model
+            $emailMessage         = EmailMessage::getById($emailMessageId);
+            $recipient             = $emailMessage->recipients[0];
+            $emailMessage->recipients->remove($recipient);
+            $this->assertTrue($emailMessage->save());            
+            $found                = true;
+            try
+            {
+                EmailMessageRecipient::getById($recipient->id);                         
+            }
+            catch (NotFoundException $exception)
+            {
+                $found = false;                
+            }
+            $this->assertFalse($found);
+            $this->assertCount(0, $emailMessage->recipients);
         }
     }
 ?>

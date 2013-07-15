@@ -4,7 +4,7 @@
      * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
-     * the terms of the GNU General Public License version 3 as published by the
+     * the terms of the GNU Affero General Public License version 3 as published by the
      * Free Software Foundation with the addition of the following permission added
      * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
      * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
@@ -12,10 +12,10 @@
      *
      * Zurmo is distributed in the hope that it will be useful, but WITHOUT
      * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-     * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+     * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
      * details.
      *
-     * You should have received a copy of the GNU General Public License along with
+     * You should have received a copy of the GNU Affero General Public License along with
      * this program; if not, see http://www.gnu.org/licenses or write to the Free
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
@@ -25,9 +25,9 @@
      *
      * The interactive user interfaces in original and modified versions
      * of this program must display Appropriate Legal Notices, as required under
-     * Section 5 of the GNU General Public License version 3.
+     * Section 5 of the GNU Affero General Public License version 3.
      *
-     * In accordance with Section 7(b) of the GNU General Public License version 3,
+     * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
@@ -260,7 +260,7 @@
                                          'Tag Cloud', 'Radio Drop Down', 'A name for a state', 'Owner');
             $compareRowData     = array( 'xFirst xLast', 1, '2013-02-12', '2013-02-12 10:15:00',
                                          10.5, 10, '7842151012', 'xString', 'xtextAreatest',
-                                         'http://www.test.com', 'Test2', '$100.00', 'USD', 'someString', 'test@someString.com',
+                                         'http://www.test.com', 'Test2', '100.00', 'USD', 'someString', 'test@someString.com',
                                          'Multi 1,Multi 2', 'Cloud 2,Cloud 3', 'Test2', 'someName', 'super'); // Not Coding Standard
             $this->assertEquals($compareHeaderData, $adapter->getHeaderData());
             $this->assertEquals($compareRowData, $adapter->getData());
@@ -473,7 +473,7 @@
                                         'Reports Tests >> Owner');
             $compareRowData     = array('xFirst xLast', 1, '2013-02-12', '2013-02-12 10:15:00',
                                         10.5, 10, '7842151012', 'xString', 'xtextAreatest',
-                                        'http://www.test.com', 'Test2', '$100.00', 'USD', 'someString', 'test@someString.com',
+                                        'http://www.test.com', 'Test2', '100.00', 'USD', 'someString', 'test@someString.com',
                                         'Multi 1,Multi 2', 'Cloud 2,Cloud 3', 'Test2', 'someName', 'super'); // Not Coding Standard
             $this->assertEquals($compareHeaderData, $adapter->getHeaderData());
             $this->assertEquals($compareRowData, $adapter->getData());
@@ -704,8 +704,8 @@
                                         '2013-02-14 00:00:00',
                                         '2013-02-12 00:59:00',
                                         18.45, 19.41, 192.15, 180.21, 2000,
-                                        5000, 1000, 9000, '5,000', 'Mixed Currency', '6,000', // Not Coding Standard
-                                        'Mixed Currency', '7,000', 'Mixed Currency','8,000', 'Mixed Currency'); // Not Coding Standard
+                                        5000, 1000, 9000, 5000, 'Mixed Currency', 6000, // Not Coding Standard
+                                        'Mixed Currency', 7000, 'Mixed Currency',8000, 'Mixed Currency'); // Not Coding Standard
             $this->assertEquals($compareHeaderData, $adapter->getHeaderData());
             $this->assertEquals($compareRowData, $adapter->getData());
         }

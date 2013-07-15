@@ -74,21 +74,16 @@
 </tr>
 <tr>
 	<td>waitForText</td>
-	<td>//div[@id='WorkflowDetailsView']/div/div[2]/table/tbody/tr[1]/td</td>
+	<td>//div[@id='WorkflowDetailsView']/div/div[2]/div/table/tbody/tr[1]/td</td>
 	<td>WorkflowTestEdit ${randomSuffix}</td>
 </tr>
 <tr>
-	<td>click</td>
-	<td>//div[@id='WorkflowDetailsView']/div/div/div/ul/li/a/span</td>
+	<td>clickAndWait</td>
+	<td>link=Delete</td>
 	<td></td>
 </tr>
 <tr>
-	<td>click</td>
-	<td>//a[@id='yt0']/span</td>
-	<td></td>
-</tr>
-<tr>
-	<td>assertConfirmation</td>
+	<td>waitForConfirmation</td>
 	<td>Are you sure you want to delete this workflow?</td>
 	<td></td>
 </tr>

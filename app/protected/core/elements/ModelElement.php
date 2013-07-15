@@ -4,7 +4,7 @@
      * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
-     * the terms of the GNU General Public License version 3 as published by the
+     * the terms of the GNU Affero General Public License version 3 as published by the
      * Free Software Foundation with the addition of the following permission added
      * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
      * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
@@ -12,10 +12,10 @@
      *
      * Zurmo is distributed in the hope that it will be useful, but WITHOUT
      * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-     * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+     * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
      * details.
      *
-     * You should have received a copy of the GNU General Public License along with
+     * You should have received a copy of the GNU Affero General Public License along with
      * this program; if not, see http://www.gnu.org/licenses or write to the Free
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
@@ -25,9 +25,9 @@
      *
      * The interactive user interfaces in original and modified versions
      * of this program must display Appropriate Legal Notices, as required under
-     * Section 5 of the GNU General Public License version 3.
+     * Section 5 of the GNU Affero General Public License version 3.
      *
-     * In accordance with Section 7(b) of the GNU General Public License version 3,
+     * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
@@ -43,7 +43,6 @@
      */
     abstract class ModelElement extends Element implements ElementActionTypeInterface
     {
-
         const MODAL_CONTAINER_PREFIX = 'modalContainer';
 
         /**
@@ -136,20 +135,7 @@
          */
         protected function renderTextField($idInputName)
         {
-            $script = "
-                function clearIdFromAutoCompleteField(value, id)
-                {
-                    if (value == '')
-                    {
-                        $('#' + id).val('');
-                    }
-                }
-            ";
-            Yii::app()->clientScript->registerScript(
-                'clearIdFromAutoCompleteField',
-                $script,
-                CClientScript::POS_END
-            );
+            $this->registerScriptForAutoCompleteTextField();
             $cClipWidget = new CClipWidget();
             $cClipWidget->beginClip("ModelElement");
             $cClipWidget->widget('zii.widgets.jui.CJuiAutoComplete', array(
@@ -159,25 +145,25 @@
                 'source'  => Yii::app()->createUrl($this->resolveModuleId() . '/' . $this->getAutoCompleteControllerId()
                                                    . '/' . static::$autoCompleteActionId, $this->getAutoCompleteUrlParams()),
                 'options' => array(
-                    'select'   => 'js:function(event, ui){ jQuery("#' . $idInputName . '").val(ui.item["id"]).trigger("change");}', // Not Coding Standard
+                    'select'   => $this->getOnSelectOptionForAutoComplete($idInputName), // Not Coding Standard
                     'appendTo' => 'js:$("#' . $this->getIdForTextField() . '").parent().parent()',
                     'search'   => 'js: function(event, ui)
                                   {
                                        var context = $("#' . $this->getIdForTextField() . '").parent();
                                        $(".model-select-icon", context).fadeOut(100);
-                                       makeOrRemoveTogglableSpinner(true, context);
+                                       $(this).makeOrRemoveTogglableSpinner(true, context);
                                   }',
                     'open'     => 'js: function(event, ui)
                                   {
                                        var context = $("#' . $this->getIdForTextField() . '").parent();
                                        $(".model-select-icon", context).fadeIn(250);
-                                       makeOrRemoveTogglableSpinner(false, context);
+                                       $(this).makeOrRemoveTogglableSpinner(false, context);
                                   }',
                     'close'    => 'js: function(event, ui)
                                   {
                                        var context = $("#' . $this->getIdForTextField() . '").parent();
                                        $(".model-select-icon", context).fadeIn(250);
-                                       makeOrRemoveTogglableSpinner(false, context);
+                                       $(this).makeOrRemoveTogglableSpinner(false, context);
                                   }',
                     'response' => 'js: function(event, ui)
                                   {
@@ -185,7 +171,7 @@
                                        {
                                            var context = $("#' . $this->getIdForTextField() . '").parent();
                                            $(".model-select-icon", context).fadeIn(250);
-                                           makeOrRemoveTogglableSpinner(false, context);
+                                           $(this).makeOrRemoveTogglableSpinner(false, context);
                                        }
                                   }'
                 ),
@@ -455,6 +441,37 @@
         public static function getNonEditableActionType()
         {
             return static::$nonEditableActionType;
+        }
+
+        /**
+         * Registers scripts for autocomplete text field
+         */
+        protected function registerScriptForAutoCompleteTextField()
+        {
+           $script = "
+                function clearIdFromAutoCompleteField(value, id)
+                {
+                    if (value == '')
+                    {
+                        $('#' + id).val('');
+                    }
+                }
+            ";
+            Yii::app()->clientScript->registerScript(
+                'clearIdFromAutoCompleteField',
+                $script,
+                CClientScript::POS_END
+            );
+        }
+
+        /**
+         * Gets on select option for the automcomplete text field
+         * @param string $idInputName
+         * @return string
+         */
+        protected function getOnSelectOptionForAutoComplete($idInputName)
+        {
+            return 'js:function(event, ui){ jQuery("#' . $idInputName . '").val(ui.item["id"]).trigger("change");}';
         }
     }
 ?>

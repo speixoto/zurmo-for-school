@@ -4,7 +4,7 @@
      * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
-     * the terms of the GNU General Public License version 3 as published by the
+     * the terms of the GNU Affero General Public License version 3 as published by the
      * Free Software Foundation with the addition of the following permission added
      * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
      * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
@@ -12,10 +12,10 @@
      *
      * Zurmo is distributed in the hope that it will be useful, but WITHOUT
      * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-     * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+     * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
      * details.
      *
-     * You should have received a copy of the GNU General Public License along with
+     * You should have received a copy of the GNU Affero General Public License along with
      * this program; if not, see http://www.gnu.org/licenses or write to the Free
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
@@ -25,9 +25,9 @@
      *
      * The interactive user interfaces in original and modified versions
      * of this program must display Appropriate Legal Notices, as required under
-     * Section 5 of the GNU General Public License version 3.
+     * Section 5 of the GNU Affero General Public License version 3.
      *
-     * In accordance with Section 7(b) of the GNU General Public License version 3,
+     * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
@@ -78,16 +78,17 @@
          * @param array $attachments
          * @param array $settings
          */
-        public function sendRawEmail($subject, $from, $to, $textContent = '', $htmlContent = '', $cc = null, $bcc = null, $attachments = null, $settings = null)
+        public function sendRawEmail($subject, $from, $to, $textContent = '', $htmlContent = '', $cc = null, $bcc = null, $attachments = null, $settings = null, $headers = array())
         {
             assert('is_string($subject) && $subject != ""');
             assert('is_string($from)    && $from != ""');
-            assert('(is_array($to) || is_string($to)) && !empty($to)');
+            assert('(is_array($to) && !empty($to)) || is_string($to) || !isset($to)');
             assert('is_string($textContent)');
             assert('is_string($htmlContent)');
             assert('$textContent != ""  || $htmlContent != ""');
-            assert('is_array($cc)       || !isset($cc)');
-            assert('is_array($bcc)      || !isset($bcc)');
+            assert('(is_array($cc) && !empty($cc)) || is_string($cc) || !isset($cc)');
+            assert('(is_array($bcc) && !empty($bcc)) || is_string($bcc) || !isset($bcc)');            
+            assert('isset($to) || isset($cc) || isset($bcc)');            
             assert('is_array($attachments) || !isset($attachments)');
 
             $mailer           = $this->getOutboundMailer();
@@ -135,7 +136,7 @@
                     $mailer->addAddressByType($recipientEmail, '', EmailMessageRecipient::TYPE_TO);
                 }
             }
-            else
+            elseif (is_string($to))
             {
                 $mailer->addAddressByType($to, '', EmailMessageRecipient::TYPE_TO);
             }
@@ -147,6 +148,10 @@
                     $mailer->addAddressByType($recipientEmail, '', EmailMessageRecipient::TYPE_CC);
                 }
             }
+            elseif (is_string($cc))
+            {
+                $mailer->addAddressByType($cc, '', EmailMessageRecipient::TYPE_CC);
+            }
 
             if (is_array($bcc) && !empty($bcc))
             {
@@ -154,6 +159,10 @@
                 {
                     $mailer->addAddressByType($recipientEmail, '', EmailMessageRecipient::TYPE_BCC);
                 }
+            }
+            elseif (is_string($bcc))
+            {
+                $mailer->addAddressByType($bcc, '', EmailMessageRecipient::TYPE_BCC);
             }
 
             if (isset($attachments) && !empty($attachments))
@@ -164,6 +173,7 @@
                 }
             }
 
+            $mailer->headers    = $headers;
             $acceptedRecipients = $mailer->send();
             if ($acceptedRecipients > 0)
             {

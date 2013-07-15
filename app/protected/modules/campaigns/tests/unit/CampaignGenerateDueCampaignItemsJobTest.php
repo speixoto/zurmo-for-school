@@ -4,7 +4,7 @@
      * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
-     * the terms of the GNU General Public License version 3 as published by the
+     * the terms of the GNU Affero General Public License version 3 as published by the
      * Free Software Foundation with the addition of the following permission added
      * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
      * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
@@ -12,10 +12,10 @@
      *
      * Zurmo is distributed in the hope that it will be useful, but WITHOUT
      * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-     * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+     * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
      * details.
      *
-     * You should have received a copy of the GNU General Public License along with
+     * You should have received a copy of the GNU Affero General Public License along with
      * this program; if not, see http://www.gnu.org/licenses or write to the Free
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
@@ -25,9 +25,9 @@
      *
      * The interactive user interfaces in original and modified versions
      * of this program must display Appropriate Legal Notices, as required under
-     * Section 5 of the GNU General Public License version 3.
+     * Section 5 of the GNU Affero General Public License version 3.
      *
-     * In accordance with Section 7(b) of the GNU General Public License version 3,
+     * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
@@ -89,9 +89,7 @@
                                                 null,
                                                 null,
                                                 null,
-                                                Campaign::TYPE_MARKETING_LIST,
                                                 Campaign::STATUS_PROCESSING,
-                                                null,
                                                 null,
                                                 null,
                                                 $marketingList);
@@ -102,9 +100,7 @@
                                                 null,
                                                 null,
                                                 null,
-                                                Campaign::TYPE_MARKETING_LIST,
-                                                Campaign::STATUS_INCOMPLETE,
-                                                null,
+                                                Campaign::STATUS_PAUSED,
                                                 null,
                                                 null,
                                                 $marketingList);
@@ -115,9 +111,7 @@
                                                 null,
                                                 null,
                                                 null,
-                                                Campaign::TYPE_MARKETING_LIST,
                                                 Campaign::STATUS_PAUSED,
-                                                null,
                                                 null,
                                                 null,
                                                 $marketingList);
@@ -142,9 +136,7 @@
                                                 null,
                                                 null,
                                                 null,
-                                                Campaign::TYPE_MARKETING_LIST,
                                                 Campaign::STATUS_ACTIVE,
-                                                null,
                                                 $tenDaysFromNowDateTime,
                                                 null,
                                                 $marketingList);
@@ -167,9 +159,7 @@
                                                 null,
                                                 null,
                                                 null,
-                                                Campaign::TYPE_MARKETING_LIST,
                                                 Campaign::STATUS_ACTIVE,
-                                                null,
                                                 null,
                                                 null,
                                                 $marketingList);
@@ -207,9 +197,7 @@
                                                 null,
                                                 null,
                                                 null,
-                                                Campaign::TYPE_MARKETING_LIST,
                                                 Campaign::STATUS_ACTIVE,
-                                                null,
                                                 null,
                                                 null,
                                                 $marketingList);
@@ -224,6 +212,100 @@
             $campaignItems      = CampaignItem::getByProcessedAndCampaignId(0, $campaign[0]->id);
             $this->assertNotEmpty($campaignItems);
             $this->assertCount(5, $campaignItems);
+        }
+
+        /**
+         * @depends testRunWithDueActiveCampaignsWithMembers
+         */
+        public function testRunWithDueActiveCampaignsWithCustomBatchSize()
+        {
+            $this->purgeAllCampaigns();
+            $contactIds         = array();
+            $marketingListIds   = array();
+            $campaignIds        = array();
+            for ($index = 6; $index < 9; $index++)
+            {
+                $contact        = ContactTestHelper::createContactByNameForOwner('campaignContact 0' . $index,
+                    $this->user);
+                $contactIds[] = $contact->id;
+                $contact->forgetAll();
+            }
+            for ($index = 5; $index < 10; $index++)
+            {
+                $marketingList      = MarketingListTestHelper::createMarketingListByName('marketingList 0' . $index);
+                $marketingListId    = $marketingList->id;
+                $marketingListIds[] = $marketingListId;
+                foreach ($contactIds as $contactId)
+                {
+                    $contact        = Contact::getById($contactId);
+                    $unsubscribed   = (rand(10, 20) % 2);
+                    MarketingListMemberTestHelper::createMarketingListMember($unsubscribed, $marketingList, $contact);
+                }
+                $marketingList->forgetAll();
+                $marketingList      = MarketingList::getById($marketingListId);
+                $campaignSuffix     = substr($marketingList->name, -2);
+                $campaign           = CampaignTestHelper::createCampaign('campaign ' . $campaignSuffix,
+                                                                            'subject ' . $campaignSuffix,
+                                                                            'text ' . $campaignSuffix,
+                                                                            'html ' . $campaignSuffix,
+                                                                            null,
+                                                                            null,
+                                                                            null,
+                                                                            null,
+                                                                            null,
+                                                                            null,
+                                                                            $marketingList);
+                $this->assertNotNull($campaign);
+                $campaignIds[]      = $campaign->id;
+                $campaign->forgetAll();
+            }
+
+            foreach ($campaignIds as $campaignId)
+            {
+                $campaignItems      = CampaignItem::getByProcessedAndCampaignId(0, $campaignId);
+                $this->assertEmpty($campaignItems);
+            }
+
+            AutoresponderOrCampaignBatchSizeConfigUtil::setBatchSize(1);
+            $job    = new CampaignGenerateDueCampaignItemsJob();
+            $this->assertTrue($job->run());
+            foreach ($campaignIds as $index => $campaignId)
+            {
+                $campaign           = Campaign::getById($campaignId);
+                $campaignItems      = CampaignItem::getByProcessedAndCampaignId(0, $campaignId);
+                if ($index === 0)
+                {
+                    $this->assertNotEmpty($campaignItems);
+                    $this->assertCount(3, $campaignItems);
+                    $this->assertEquals(Campaign::STATUS_PROCESSING, $campaign->status);
+                }
+                else
+                {
+                    $this->assertEmpty($campaignItems);
+                    $this->assertEquals(Campaign::STATUS_ACTIVE, $campaign->status);
+                }
+            }
+
+            AutoresponderOrCampaignBatchSizeConfigUtil::setBatchSize(null);
+            $this->assertTrue($job->run());
+            foreach ($campaignIds as $campaignId)
+            {
+                $campaign           = Campaign::getById($campaignId);
+                $campaignItems      = CampaignItem::getByProcessedAndCampaignId(0, $campaignId);
+                $this->assertNotEmpty($campaignItems);
+                $this->assertCount(3, $campaignItems);
+                $this->assertEquals(Campaign::STATUS_PROCESSING, $campaign->status);
+            }
+            // TODO: @Shoaibi: Medium: Add tests for the other campaign type.
+        }
+
+        protected function purgeAllCampaigns()
+        {
+            $campaigns = Campaign::getAll();
+            foreach ($campaigns as $campaign)
+            {
+                $campaign->delete();
+            }
         }
     }
 ?>

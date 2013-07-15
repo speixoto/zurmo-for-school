@@ -4,7 +4,7 @@
      * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
-     * the terms of the GNU General Public License version 3 as published by the
+     * the terms of the GNU Affero General Public License version 3 as published by the
      * Free Software Foundation with the addition of the following permission added
      * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
      * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
@@ -12,10 +12,10 @@
      *
      * Zurmo is distributed in the hope that it will be useful, but WITHOUT
      * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-     * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+     * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
      * details.
      *
-     * You should have received a copy of the GNU General Public License along with
+     * You should have received a copy of the GNU Affero General Public License along with
      * this program; if not, see http://www.gnu.org/licenses or write to the Free
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
@@ -25,9 +25,9 @@
      *
      * The interactive user interfaces in original and modified versions
      * of this program must display Appropriate Legal Notices, as required under
-     * Section 5 of the GNU General Public License version 3.
+     * Section 5 of the GNU Affero General Public License version 3.
      *
-     * In accordance with Section 7(b) of the GNU General Public License version 3,
+     * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
@@ -90,9 +90,7 @@
                                                                                 null,
                                                                                 null,
                                                                                 null,
-                                                                                Campaign::TYPE_MARKETING_LIST,
-                                                                                null,
-                                                                                null,
+                                                                                Campaign::STATUS_PROCESSING,
                                                                                 null,
                                                                                 0,
                                                                                 $marketingList);
@@ -118,9 +116,7 @@
                                                                                 null,
                                                                                 null,
                                                                                 null,
-                                                                                Campaign::TYPE_MARKETING_LIST,
-                                                                                null,
-                                                                                null,
+                                                                                Campaign::STATUS_PROCESSING,
                                                                                 null,
                                                                                 null,
                                                                                 $marketingList);
@@ -136,6 +132,39 @@
 
         /**
          * @depends testRunWithContactNotContainingPrimaryEmail
+         */
+        public function testRunWithContactContainingPrimaryEmailButWithTheWrongStatus()
+        {
+            $job                        = new CampaignQueueMessagesInOutboxJob();
+            $email                      = new Email();
+            $email->emailAddress        = 'demo@zurmo.com';
+            $contact                    = ContactTestHelper::createContactByNameForOwner('contact 02', $this->user);
+            $contact->primaryEmail      = $email;
+            $this->assertTrue($contact->save());
+            $marketingList              = MarketingListTestHelper::createMarketingListByName('marketingList 03');
+            $campaign                   = CampaignTestHelper::createCampaign('campaign 03',
+                                                                                'subject',
+                                                                                'text Content',
+                                                                                'Html Content',
+                                                                                null,
+                                                                                null,
+                                                                                null,
+                                                                                Campaign::STATUS_ACTIVE,
+                                                                                null,
+                                                                                0,
+                                                                                $marketingList);
+
+            $processed                  = 0;
+            CampaignItemTestHelper::createCampaignItem($processed, $campaign, $contact);
+            $this->assertTrue($job->run());
+            $campaignItems         = CampaignItem::getAll();
+            $this->assertCount(2, $campaignItems);
+            $campaignItemsProcessed = CampaignItem::getByProcessedAndCampaignId(1, $campaign->id);
+            $this->assertCount(0, $campaignItemsProcessed);
+        }
+
+        /**
+         * @depends testRunWithContactContainingPrimaryEmailButWithTheWrongStatus
          */
         public function testRunWithContactContainingPrimaryEmail()
         {
@@ -153,9 +182,7 @@
                                                                                 null,
                                                                                 null,
                                                                                 null,
-                                                                                Campaign::TYPE_MARKETING_LIST,
-                                                                                null,
-                                                                                null,
+                                                                                Campaign::STATUS_PROCESSING,
                                                                                 null,
                                                                                 0,
                                                                                 $marketingList);
@@ -164,7 +191,7 @@
             CampaignItemTestHelper::createCampaignItem($processed, $campaign, $contact);
             $this->assertTrue($job->run());
             $campaignItems         = CampaignItem::getAll();
-            $this->assertCount(2, $campaignItems);
+            $this->assertCount(3, $campaignItems);
             $campaignItemsProcessed = CampaignItem::getByProcessedAndCampaignId(1, $campaign->id);
             $this->assertCount(1, $campaignItemsProcessed);
         }
@@ -191,9 +218,7 @@
                                                                                 null,
                                                                                 null,
                                                                                 null,
-                                                                                Campaign::TYPE_MARKETING_LIST,
-                                                                                null,
-                                                                                null,
+                                                                                Campaign::STATUS_PROCESSING,
                                                                                 null,
                                                                                 null,
                                                                                 $marketingList);
@@ -201,7 +226,7 @@
             CampaignItemTestHelper::createCampaignItem($processed, $campaign, $contact);
             $this->assertTrue($job->run());
             $campaignItems         = CampaignItem::getAll();
-            $this->assertCount(3, $campaignItems);
+            $this->assertCount(4, $campaignItems);
             $campaignItemsProcessed = CampaignItem::getByProcessedAndCampaignId(1, $campaign->id);
             $this->assertCount(1, $campaignItemsProcessed);
         }
@@ -228,9 +253,7 @@
                                                                                 null,
                                                                                 null,
                                                                                 null,
-                                                                                Campaign::TYPE_MARKETING_LIST,
-                                                                                null,
-                                                                                null,
+                                                                                Campaign::STATUS_PROCESSING,
                                                                                 null,
                                                                                 0,
                                                                                 $marketingList,
@@ -240,7 +263,7 @@
             $this->assertFalse($job->run());
             $this->assertEquals('Provided content contains few invalid merge tags.', $job->getErrorMessage());
             $campaignItems         = CampaignItem::getAll();
-            $this->assertCount(4, $campaignItems);
+            $this->assertCount(5, $campaignItems);
             $campaignItemsProcessed = CampaignItem::getByProcessedAndCampaignId( 1, $campaign->id);
             $this->assertCount(0, $campaignItemsProcessed);
             $this->assertTrue($campaignItem->delete()); // Need to get rid of this so it doesn't interfere with next test.
@@ -268,9 +291,7 @@
                                                                                 null,
                                                                                 null,
                                                                                 null,
-                                                                                Campaign::TYPE_MARKETING_LIST,
-                                                                                null,
-                                                                                null,
+                                                                                Campaign::STATUS_PROCESSING,
                                                                                 null,
                                                                                 null,
                                                                                 $marketingList);
@@ -278,7 +299,7 @@
             CampaignItemTestHelper::createCampaignItem($processed, $campaign, $contact);
             $this->assertTrue($job->run());
             $campaignItems         = CampaignItem::getAll();
-            $this->assertCount(4, $campaignItems);
+            $this->assertCount(5, $campaignItems);
             $campaignItemsProcessed = CampaignItem::getByProcessedAndCampaignId(
                                                                                             1,
                                                                                             $campaign->id);
@@ -291,7 +312,7 @@
         public function testRunWithCustomBatchSize()
         {
             $unprocessedItems           = CampaignItem::getByProcessed(0);
-            $this->assertEmpty($unprocessedItems);
+            $this->assertCount(1, $unprocessedItems);
             $job                        = new CampaignQueueMessagesInOutboxJob();
             $email                      = new Email();
             $email->emailAddress        = 'demo@zurmo.com';
@@ -309,9 +330,7 @@
                                                                                 null,
                                                                                 null,
                                                                                 null,
-                                                                                Campaign::TYPE_MARKETING_LIST,
-                                                                                null,
-                                                                                null,
+                                                                                Campaign::STATUS_PROCESSING,
                                                                                 null,
                                                                                 null,
                                                                                 $marketingList);
@@ -324,20 +343,69 @@
                                                                                     0,
                                                                                     $campaign->id);
             $this->assertCount(10, $unprocessedItems);
-            ZurmoConfigurationUtil::setByModuleName('CampaignsModule',
-                                                    CampaignQueueMessagesInOutboxJob::BATCH_SIZE_CONFIG_KEY, 5);
+            AutoresponderOrCampaignBatchSizeConfigUtil::setBatchSize(5);
             $this->assertTrue($job->run());
             $unprocessedItems               = CampaignItem::getByProcessedAndCampaignId(
                                                                                     0,
                                                                                     $campaign->id);
             $this->assertCount(5, $unprocessedItems);
-            ZurmoConfigurationUtil::setByModuleName('CampaignsModule',
-                                                        CampaignQueueMessagesInOutboxJob::BATCH_SIZE_CONFIG_KEY, 3);
+            AutoresponderOrCampaignBatchSizeConfigUtil::setBatchSize(3);
             $this->assertTrue($job->run());
             $unprocessedItems               = CampaignItem::getByProcessedAndCampaignId(
                                                                                         0,
                                                                                         $campaign->id);
             $this->assertCount(2, $unprocessedItems);
+            AutoresponderOrCampaignBatchSizeConfigUtil::setBatchSize(10);
+            $this->assertTrue($job->run());
+            $unprocessedItems               = CampaignItem::getByProcessedAndCampaignId(
+                                                                                        0,
+                                                                                        $campaign->id);
+            $this->assertCount(0, $unprocessedItems);
+        }
+
+        /**
+         * @depends testRunWithCustomBatchSize
+         */
+        public function testRunWithContactContainingPrimaryEmailOptedOut()
+        {
+            $unprocessedItems           = CampaignItem::getByProcessed(0);
+            $this->assertCount(1, $unprocessedItems);
+            $job                        = new CampaignQueueMessagesInOutboxJob();
+            $email                      = new Email();
+            $email->emailAddress        = 'demo@zurmo.com';
+            $email->optOut              = true;
+            $contact                    = ContactTestHelper::createContactByNameForOwner('contact 07', $this->user);
+            $contact->primaryEmail      = $email;
+            $this->assertTrue($contact->save());
+            $marketingList              = MarketingListTestHelper::createMarketingListByName('marketingList 08',
+                                                                                                'description goes here',
+                                                                                                'fromName',
+                                                                                                'from@domain.com');
+            $campaign                   = CampaignTestHelper::createCampaign('campaign 08',
+                                                                                'subject',
+                                                                                '[[FIRST^NAME]]',
+                                                                                '[[LAST^NAME]]',
+                                                                                null,
+                                                                                null,
+                                                                                null,
+                                                                                Campaign::STATUS_PROCESSING,
+                                                                                null,
+                                                                                null,
+                                                                                $marketingList);
+            $processed                  = 0;
+            $campaignItem               = CampaignItemTestHelper::createCampaignItem($processed, $campaign, $contact);
+            $unprocessedItems           = CampaignItem::getByProcessedAndCampaignId($processed, $campaign->id);
+            $this->assertCount(1, $unprocessedItems);
+            $this->assertTrue($job->run());
+            $unprocessedItems           = CampaignItem::getByProcessedAndCampaignId($processed, $campaign->id);
+            $this->assertCount(0, $unprocessedItems);
+            $personId                   = $contact->getClassId('Person');
+            $activities                 = CampaignItemActivity::getByTypeAndModelIdAndPersonIdAndUrl(
+                                                                                    CampaignItemActivity::TYPE_SKIP,
+                                                                                    $campaignItem->id,
+                                                                                    $personId);
+            $this->assertNotEmpty($activities);
+            $this->assertCount(1, $activities);
         }
     }
 ?>

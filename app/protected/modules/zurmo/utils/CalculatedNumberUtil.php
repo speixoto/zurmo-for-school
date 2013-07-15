@@ -4,7 +4,7 @@
      * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
-     * the terms of the GNU General Public License version 3 as published by the
+     * the terms of the GNU Affero General Public License version 3 as published by the
      * Free Software Foundation with the addition of the following permission added
      * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
      * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
@@ -12,10 +12,10 @@
      *
      * Zurmo is distributed in the hope that it will be useful, but WITHOUT
      * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-     * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+     * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
      * details.
      *
-     * You should have received a copy of the GNU General Public License along with
+     * You should have received a copy of the GNU Affero General Public License along with
      * this program; if not, see http://www.gnu.org/licenses or write to the Free
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
@@ -25,9 +25,9 @@
      *
      * The interactive user interfaces in original and modified versions
      * of this program must display Appropriate Legal Notices, as required under
-     * Section 5 of the GNU General Public License version 3.
+     * Section 5 of the GNU Affero General Public License version 3.
      *
-     * In accordance with Section 7(b) of the GNU General Public License version 3,
+     * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
@@ -57,19 +57,19 @@
             $formatType   = self::FORMAT_TYPE_INTEGER;
             $currencyCode = null;
             $value = static::calculateByFormulaAndModel($formula, $model, $formatType, $currencyCode);
-            if($formatType == self::FORMAT_TYPE_INTEGER)
+            if ($formatType == self::FORMAT_TYPE_INTEGER)
             {
                 return Yii::app()->format->formatNumber((int)$value);
             }
-            elseif($formatType == self::FORMAT_TYPE_DECIMAL)
+            elseif ($formatType == self::FORMAT_TYPE_DECIMAL)
             {
                 return Yii::app()->numberFormatter->formatDecimal((float)$value);
             }
-            elseif($formatType == self::FORMAT_TYPE_CURRENCY_VALUE && $currencyCode != null)
+            elseif ($formatType == self::FORMAT_TYPE_CURRENCY_VALUE && $currencyCode != null)
             {
                 return Yii::app()->numberFormatter->formatCurrency((float)$value, $currencyCode);
             }
-            elseif($formatType == self::FORMAT_TYPE_CURRENCY_VALUE)
+            elseif ($formatType == self::FORMAT_TYPE_CURRENCY_VALUE)
             {
                 return Yii::app()->numberFormatter->formatDecimal((float)$value);
             }
@@ -96,7 +96,6 @@
             $adapter = new ModelNumberOrCurrencyAttributesAdapter($model);
             foreach ($adapter->getAttributes() as $attribute => $data)
             {
-
                 if (($model->{$attribute} instanceof CurrencyValue && $model->{$attribute}->value == null) ||
                    $model->{$attribute} == null)
                 {
@@ -115,7 +114,7 @@
                 }
                 $oldFormula = $formula;
                 $formula = str_replace($attribute, $replacementValue, $formula);
-                if($formula !== $oldFormula)
+                if ($formula !== $oldFormula)
                 {
                     self::resolveFormatTypeAndCurrencyCode($formatType, $currencyCode, $model, $attribute);
                 }
@@ -179,20 +178,20 @@
             assert('is_int($formatType)');
             assert('is_string($currencyCode) || $currencyCode === null');
             $attributeType = ModelAttributeToMixedTypeUtil::getType($model, $attribute);
-            if($attributeType == 'Decimal' && $formatType == self::FORMAT_TYPE_INTEGER)
+            if ($attributeType == 'Decimal' && $formatType == self::FORMAT_TYPE_INTEGER)
             {
                 $formatType = self::FORMAT_TYPE_DECIMAL;
             }
-            if($attributeType == 'CurrencyValue' &&
+            if ($attributeType == 'CurrencyValue' &&
                ($formatType == self::FORMAT_TYPE_INTEGER || $formatType == self::FORMAT_TYPE_DECIMAL))
             {
                 $formatType = self::FORMAT_TYPE_CURRENCY_VALUE;
             }
-            if($attributeType == 'CurrencyValue' && $currencyCode === null)
+            if ($attributeType == 'CurrencyValue' && $currencyCode === null)
             {
                 $currencyCode = $model->{$attribute}->currency->code;
             }
-            elseif($attributeType == 'CurrencyValue' && $currencyCode != null &&
+            elseif ($attributeType == 'CurrencyValue' && $currencyCode != null &&
                    $model->{$attribute}->currency->code != $currencyCode)
             {
                 //An empty value, not null, indicates there is mixed currencies
