@@ -147,10 +147,5 @@
         {
             return true;
         }
-
-        public static function canHaveTimeBasedWorkflow()
-        {
-            return false;
-        }
     }
 ?>
