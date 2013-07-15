@@ -30,5 +30,11 @@
         {
             return Yii::app()->createUrl($this->params['relationModuleId'] . '/default/details?id=' . $this->params['relationModelId']);
         }
+
+        protected function getDefaultRoute()
+        {
+            $params = array('id' => $this->modelId, 'redirectUrl' => $this->getRedirectUrl());
+            return Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/edit/', $params);
+        }
     }
 ?>

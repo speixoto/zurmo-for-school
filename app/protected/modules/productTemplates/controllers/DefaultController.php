@@ -114,7 +114,6 @@
 
         public function actionDetails($id)
         {
-            $getData = GetUtil::getData();
             $productTemplate    = static::getModelAndCatchNotFoundAndDisplayError('ProductTemplate', intval($id));
             $breadcrumbLinks    = static::getDetailsAndEditBreadcrumbLinks();
             $breadcrumbLinks[]  = StringUtil::getChoppedStringContent(strval($productTemplate), 25);
