@@ -37,31 +37,9 @@
     /**
      * Renders an action bar specifically for the search and listview.
      */
-    abstract class ActionBarForSecurityTreeListView extends ConfigurableMetadataView
+    abstract class ActionBarForSecurityTreeListView extends ActionBarConfigurableMetadataView
     {
-        protected $controllerId;
-
-        protected $moduleId;
-
-        /**
-         * Used to identify the active action for the action bar elements
-         * @var mixed null or string
-         */
-        protected $activeActionElementType;
-
-        /**
-         * Identifies whether the intro view should be hidden or show on the marketing dashboard
-         * @var null|string
-         */
-        protected $introCookieValue;
-
         abstract protected function makeModel();
-
-        public function setIntroCookieValue($introCookieValue)
-        {
-            assert('$introCookieValue == null || is_string($introCookieValue)');
-            $this->introCookieValue = $introCookieValue;
-        }
 
         public function __construct($controllerId, $moduleId, $activeActionElementType = null)
         {
@@ -91,11 +69,6 @@
                 $content .= '</div>';
             }
             return $content;
-        }
-
-        public function isUniqueToAPage()
-        {
-            return true;
         }
 
         public static function getDefaultMetadata()

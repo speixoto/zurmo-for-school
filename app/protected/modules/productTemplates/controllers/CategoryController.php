@@ -78,7 +78,7 @@
             $breadcrumbLinks                = static::getListBreadcrumbLinks();
             $introCookieValue               = Yii::app()->request->cookies[ProductsIntroView::resolveCookieId()];
             $introView                      = new ProductsIntroView($introCookieValue, $activeActionElementType);
-            $actionBarAndTreeView           = new CategoriesActionBarAndTreeListView(
+            $actionBarAndTreeView           = new ProductCategoriesActionBarAndTreeListView(
                                                                                         $this->getId(),
                                                                                         $this->getModule()->getId(),
                                                                                         ProductCategory::getAll('name'),

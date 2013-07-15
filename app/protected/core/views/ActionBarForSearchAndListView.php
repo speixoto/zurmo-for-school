@@ -37,12 +37,8 @@
     /**
      * Renders an action bar specifically for the search and listview.
      */
-    class ActionBarForSearchAndListView extends ConfigurableMetadataView
+    class ActionBarForSearchAndListView extends ActionBarConfigurableMetadataView
     {
-        protected $controllerId;
-
-        protected $moduleId;
-
         /**
          * Typically the model used for the list view.
          * @var Object
@@ -66,24 +62,6 @@
          * @var boolean
          */
         protected $listViewRowsAreSelectable;
-
-        /**
-         * Used to identify the active action for the action bar elements
-         * @var mixed null or string
-         */
-        protected $activeActionElementType;
-
-        /**
-         * Identifies whether the intro view should be hidden or show on the marketing dashboard
-         * @var null|string
-         */
-        protected $introCookieValue;
-
-        public function setIntroCookieValue($introCookieValue)
-        {
-            assert('$introCookieValue == null || is_string($introCookieValue)');
-            $this->introCookieValue = $introCookieValue;
-        }
 
         public function __construct($controllerId, $moduleId, RedBeanModel $model, $listViewGridId,
                                     $pageVarName, $listViewRowsAreSelectable, $activeActionElementType = null)
@@ -114,11 +92,6 @@
             }
             $content .= '</div>';
             return $content;
-        }
-
-        public function isUniqueToAPage()
-        {
-            return true;
         }
 
         public static function getDefaultMetadata()

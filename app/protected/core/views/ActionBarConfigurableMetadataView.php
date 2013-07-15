@@ -34,22 +34,31 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class CategoriesActionBarAndTreeListView extends GridView
+    /**
+     * Base class for creating an ActionBar view.
+     */
+    abstract class ActionBarConfigurableMetadataView extends ConfigurableMetadataView
     {
-        public function __construct($controllerId, $moduleId, $categories, $activeActionElementType = null,
-                                    View $introView, $introCookieValue)
+        protected $controllerId;
+
+        protected $moduleId;
+
+        /**
+         * Used to identify the active action for the action bar elements
+         * @var mixed null or string
+         */
+        protected $activeActionElementType;
+
+        /**
+         * Identifies whether the intro view should be hidden or show on the marketing dashboard
+         * @var null|string
+         */
+        protected $introCookieValue;
+
+        public function setIntroCookieValue($introCookieValue)
         {
-            assert('$controllerId != null');
-            assert('$moduleId != null');
-            assert('is_array($categories)');
-            parent::__construct(3, 1);
-            $actionBarView = new ActionBarForCategoriesTreeListView ($controllerId, $moduleId, $activeActionElementType);
-            $actionBarView->setIntroCookieValue($introCookieValue);
-            $this->setView($actionBarView, 0, 0);
-            $this->setView($introView, 1, 0);
-            $categoriesTreeListView = new ProductCategoriesTreeListView($controllerId, $moduleId, $categories);
-            $categoriesTreeListView->setCssClasses(array('DetailsView'));
-            $this->setView($categoriesTreeListView, 2, 0);
+            assert('$introCookieValue == null || is_string($introCookieValue)');
+            $this->introCookieValue = $introCookieValue;
         }
 
         public function isUniqueToAPage()

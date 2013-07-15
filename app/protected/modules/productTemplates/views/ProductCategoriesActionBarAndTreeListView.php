@@ -34,56 +34,26 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * Renders an action bar specifically for the listview.
-     */
-    class ActionBarForCategoriesTreeListView extends ActionBarForSecurityTreeListView
+    class ProductCategoriesActionBarAndTreeListView extends GridView
     {
-        public static function getDefaultMetadata()
+        public function __construct($controllerId, $moduleId, $categories, $activeActionElementType = null,
+                                    View $introView, $introCookieValue)
         {
-            $metadata = array(
-                'global' => array(
-                    'toolbar' => array(
-                        'elements' => array(
-                            array('type'          => 'ProductCreateLink',
-                                'htmlOptions'     => array('class' => 'icon-create'),
-                            ),
-                            array(
-                                'type'            => 'ProductsLink',
-                                'htmlOptions'     => array( 'class' => 'icon-products' )
-                            ),
-                            array(
-                                'type'            => 'ProductTemplatesLink',
-                                'htmlOptions'     => array( 'class' => 'icon-catalog-items' )
-                            ),
-                            array(
-                                'type'            => 'ProductCategoriesLink',
-                                'htmlOptions'     => array( 'class' => 'icon-product-categories' )
-                            ),
-                        ),
-                    ),
-                    'secondToolbar' => array(
-                        'elements' => array(
-                            array('type'  => 'ProductIntroLink',
-                                'cookieValue' => 'eval:$this->introCookieValue',
-                                'htmlOptions' => array('class' => 'icon-intro-change-this'), //todo: need new class name
-                            ),
-                        ),
-                    ),
-                ),
-            );
-            return $metadata;
+            assert('$controllerId != null');
+            assert('$moduleId != null');
+            assert('is_array($categories)');
+            parent::__construct(3, 1);
+            $actionBarView = new ActionBarForProductCategoriesTreeListView ($controllerId, $moduleId, $activeActionElementType);
+            $actionBarView->setIntroCookieValue($introCookieValue);
+            $this->setView($actionBarView, 0, 0);
+            $this->setView($introView, 1, 0);
+            $categoriesTreeListView = new ProductCategoriesTreeListView($controllerId, $moduleId, $categories);
+            $categoriesTreeListView->setCssClasses(array('DetailsView'));
+            $this->setView($categoriesTreeListView, 2, 0);
         }
 
-        protected function makeModel()
+        public function isUniqueToAPage()
         {
-            return new ProductCategory(false);
-        }
-
-        protected function shouldRenderToolBarElement($element, $elementInformation)
-        {
-            assert('$element instanceof ActionElement');
-            assert('is_array($elementInformation)');
             return true;
         }
     }
