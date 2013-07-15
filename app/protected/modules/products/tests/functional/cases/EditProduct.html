@@ -60,7 +60,7 @@
 <tr>
 	<td>type</td>
 	<td>id=ProductsSearchForm_anyMixedAttributes</td>
-	<td>ProductTest ${randomSuffix}</td>
+	<td>A Bend in the River</td>
 </tr>
 <tr>
 	<td>keyUp</td>
@@ -70,17 +70,17 @@
 <tr>
 	<td>waitForText</td>
 	<td>//div[@id='list-view']/table/tbody/tr/td[2]</td>
-	<td>ProductTest ${randomSuffix}</td>
+	<td>A Bend in the River</td>
 </tr>
 <tr>
 	<td>verifyTextPresent</td>
-	<td>ProductTest ${randomSuffix}</td>
+	<td>A Bend in the River</td>
 	<td></td>
 </tr>
 <tr>
 	<td>verifyValue</td>
 	<td>ProductsSearchForm_anyMixedAttributes</td>
-	<td>ProductTest ${randomSuffix}</td>
+	<td>A Bend in the River</td>
 </tr>
 <tr>
 	<td>click</td>
@@ -111,6 +111,71 @@
 	<td>setSpeed</td>
 	<td>0</td>
 	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=Product_productTemplate_SelectLink</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForCondition</td>
+	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+	<td>30000</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=ProductTemplatesSearchForm_anyMixedAttributes</td>
+	<td>A Gift of Monotheists</td>
+</tr>
+<tr>
+	<td>keyUp</td>
+	<td>id=ProductTemplatesSearchForm_anyMixedAttributes</td>
+	<td>\10</td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>A Gift of Monotheists</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyValue</td>
+	<td>ProductTemplatesSearchForm_anyMixedAttributes</td>
+	<td>A Gift of Monotheists</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=A Gift of Monotheists</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForCondition</td>
+	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+	<td>30000</td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Product</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Monthly</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>JPY</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Open</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForCondition</td>
+	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+	<td>30000</td>
 </tr>
 <tr>
 	<td>type</td>

@@ -37,96 +37,6 @@
 	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
 	<td>30000</td>
 </tr>
-<!--tr>
-	<td>click</td>
-	<td>link=Settings</td>
-	<td></td>
-</tr>
-<tr>
-	<td>waitForCondition</td>
-	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
-	<td>30000</td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>link=Designer</td>
-	<td></td>
-</tr>
-<tr>
-	<td>waitForCondition</td>
-	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
-	<td>30000</td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>//div[@id='TitleBarAndDesignerPageMenuView']/div/ul/li[7]/a/span</td>
-	<td></td>
-</tr>
-<tr>
-	<td>waitForCondition</td>
-	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
-	<td>30000</td>
-</tr>
-<tr>
-	<td>setSpeed</td>
-	<td>3000</td>
-	<td></td>
-</tr>
-<tr>
-	<td>click</td>
-	<td>//span[@id='ProductsModuleForm_globalSearchAttributeNames']/div/label/label/input</td>
-	<td></td>
-</tr>
-<tr>
-	<td>waitForCondition</td>
-	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
-	<td>30000</td>
-</tr>
-<tr>
-	<td>click</td>
-	<td>//span[@id='ProductsModuleForm_globalSearchAttributeNames']/div[2]/label[1]/label/input</td>
-	<td></td>
-</tr>
-<tr>
-	<td>waitForCondition</td>
-	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
-	<td>30000</td>
-</tr>
-<tr>
-	<td>setSpeed</td>
-	<td>0</td>
-	<td></td>
-</tr>
-<tr>
-	<td>click</td>
-	<td>//div[@id='ProductsModuleEditView']/div/div/form/div[3]/div/div/a[2]</td>
-	<td></td>
-</tr>
-<tr>
-	<td>waitForCondition</td>
-	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
-	<td>30000</td>
-</tr>
-<tr>
-	<td>waitForPageToLoad</td>
-	<td></td>
-	<td></td>
-</tr>
-<tr>
-	<td>open</td>
-	<td>index.php/products/default</td>
-	<td></td>
-</tr>
-<tr>
-	<td>waitForPageToLoad</td>
-	<td></td>
-	<td></td>
-</tr>
-<tr>
-	<td>waitForCondition</td>
-	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
-	<td>30000</td>
-</tr-->
 <tr>
 	<td>clickAndWait</td>
 	<td>//ul[@id='MashableInboxCreateDropdown']/li/ul/li/a/span</td>
@@ -183,9 +93,64 @@
 	<td>30000</td>
 </tr>
 <tr>
+	<td>click</td>
+	<td>id=Product_productTemplate_SelectLink</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForCondition</td>
+	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+	<td>30000</td>
+</tr>
+<tr>
 	<td>type</td>
-	<td>Product_name</td>
-	<td>ProductTest ${randomSuffix}</td>
+	<td>id=ProductTemplatesSearchForm_anyMixedAttributes</td>
+	<td>A Bend in the River</td>
+</tr>
+<tr>
+	<td>keyUp</td>
+	<td>id=ProductTemplatesSearchForm_anyMixedAttributes</td>
+	<td>\10</td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>A Bend in the River</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyValue</td>
+	<td>ProductTemplatesSearchForm_anyMixedAttributes</td>
+	<td>A Bend in the River</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=A Bend in the River</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForCondition</td>
+	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+	<td>30000</td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Product</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Monthly</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>CAD</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Open</td>
+	<td></td>
 </tr>
 <tr>
 	<td>waitForCondition</td>
@@ -219,7 +184,7 @@
 </tr>
 <tr>
 	<td>assertTextPresent</td>
-	<td>ProductTest ${randomSuffix}</td>
+	<td>A Bend in the River</td>
 	<td></td>
 </tr>
 </tbody>
