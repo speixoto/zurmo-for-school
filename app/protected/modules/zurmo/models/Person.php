@@ -136,7 +136,7 @@
                     array('jobTitle',       'length', 'min'  => 3, 'max' => 64),
                     array('lastName',       'required'),
                     array('lastName',       'type',   'type' => 'string'),
-                    array('lastName',       'length', 'min'  => 2, 'max' => 32),
+                    array('lastName',       'length', 'min'  => 1, 'max' => 32),
                     array('mobilePhone',    'type',   'type' => 'string'),
                     array('mobilePhone',    'length', 'min'  => 1, 'max' => 24),
                     array('officePhone',    'type',   'type' => 'string'),
