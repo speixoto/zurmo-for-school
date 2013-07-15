@@ -38,65 +38,38 @@
      * Displays a date/time localized
      * display.
      */
-    class DateTimeElement extends Element
+    class TaskAjaxDateTimeElement extends DateTimeElement
     {
-        /**
-         * Render a datetime JUI widget
-         * @return The element's content as a string.
-         */
-        protected function renderControlEditable()
-        {
-            $themePath = Yii::app()->themeManager->baseUrl . '/' . Yii::app()->theme->name;
-            $value     = DateTimeUtil::convertDbFormattedDateTimeToLocaleFormattedDisplay(
-                            $this->model->{$this->attribute});
-            $cClipWidget = new CClipWidget();
-            $cClipWidget->beginClip("EditableDateTimeElement");
-            $cClipWidget->widget('application.core.widgets.ZurmoJuiDateTimePicker', array(
-                'attribute'   => $this->attribute,
-                'value'       => $value,
-                'htmlOptions' => $this->resolveHtmlOptions(),
-                'options'     => $this->resolveDatePickerOptions()
-            ));
-            $cClipWidget->endClip();
-            $content = $cClipWidget->getController()->clips['EditableDateTimeElement'];
-            return ZurmoHtml::tag('div', array('class' => 'has-date-select'), $content);
-        }
-
-        /**
-         * Renders the attribute from the model.
-         * @return The element's content.
-         */
-        protected function renderControlNonEditable()
-        {
-            if ($this->model->{$this->attribute} != null)
-            {
-                $content = DateTimeUtil::
-                           convertDbFormattedDateTimeToLocaleFormattedDisplay(
-                               $this->model->{$this->attribute});
-                return ZurmoHtml::encode($content);
-            }
-        }
-
-        /**
-         * Resolve html options
-         * @return array
-         */
-        protected function resolveHtmlOptions()
-        {
-            return array(
-                    'id'              => $this->getEditableInputId(),
-                    'name'            => $this->getEditableInputName(),
-                    'disabled'        => $this->getDisabledValue(),
-                );
-        }
-
         /**
          * Resolve datepicker options
          * @return array
          */
         protected function resolveDatePickerOptions()
         {
-            return array();
+            return array(
+                'onClose' => 'js:function (dateText)
+                              {
+                                    $.ajax({
+                                                type: "GET",
+                                                url: "' . $this->resolveUpdateTimeStampUrl() . '",
+                                                data: {
+                                                    dateTime: dateText
+                                                },
+                                                success: function(data){
+
+                                                }
+                                              });
+                              }'
+            );
+        }
+
+        /**
+         * Resolves url to update timestamp
+         * @return string
+         */
+        protected function resolveUpdateTimeStampUrl()
+        {
+            return Yii::app()->createUrl('tasks/default/updateDueDateTimeViaAjax', array('id' => $this->model->id));
         }
     }
 ?>

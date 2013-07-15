@@ -584,15 +584,5 @@
             );
             echo ModalSearchListControllerUtil::setAjaxModeAndRenderModalSearchList($this, $modalListLinkProvider);
         }
-
-        /**
-         * Update owner or requested by user for task
-         * @param int $id
-         */
-        public function actionUpdateUserViaAjax($taskId, $attribute, $userId)
-        {
-            print "here";
-            exit;
-        }
     }
 ?>

@@ -1,4 +1,4 @@
-function transferModalValues(dialogId, data, url, attribute)
+function transferModalValues(dialogId, data, url, attribute, errorInProcess)
 {
     var userId;
     $.each(data, function(sourceFieldId, value)

@@ -129,10 +129,9 @@
             $content .= $formStart;
             if ($this->getModel() instanceof OwnedSecurableItem)
             {
-                $content .= '<div id="owner-box">';
-                $element  = new TaskUserElement($this->getModel(), 'owner', $form);
-                $element->editableTemplate = '{label}{content}{error}';
-                $content .= $element->render().'</div>';
+                $content .= $this->renderOwnerBox($form);
+                $content .= $this->renderRequestedByUserBox($form);
+                $content .= $this->renderDueDateTime($form);
             }
             $formEnd = $clipWidget->renderEndWidget();
             $content .= $formEnd;
@@ -140,6 +139,48 @@
             $content .= '</div>';
             $content  = ZurmoHtml::tag('div', array('class' => 'right-side-edit-view-panel thread-info'), $content);
             $content  = ZurmoHtml::tag('div', array('class' => 'right-column'), $content);
+            return $content;
+        }
+
+        /**
+         * Renders owner box
+         * @param string $form
+         * @return string
+         */
+        protected function renderOwnerBox($form)
+        {
+            $content = '<div id="owner-box">';
+            $element  = new TaskUserElement($this->getModel(), 'owner', $form);
+            $element->editableTemplate = '{label}{content}{error}';
+            $content .= $element->render().'</div>';
+            return $content;
+        }
+
+        /**
+         * Renders requested by user box
+         * @param string $form
+         * @return string
+         */
+        protected function renderRequestedByUserBox($form)
+        {
+            $content = '<div id="owner-box">';
+            $element  = new TaskUserElement($this->getModel(), 'requestedByUser', $form);
+            $element->editableTemplate = '{label}{content}{error}';
+            $content .= $element->render().'</div>';
+            return $content;
+        }
+
+        /**
+         * Renders due date time
+         * @param string $form
+         * @return string
+         */
+        protected function renderDueDateTime($form)
+        {
+            $content = '';
+            $element  = new TaskAjaxDateTimeElement($this->getModel(), 'dueDateTime', $form);
+            $element->editableTemplate = '{label}{content}{error}';
+            $content .= $element->render();
             return $content;
         }
     }

@@ -76,10 +76,11 @@
         public function getLinkString($attributeString)
         {
             $url     = Yii::app()->createUrl('tasks/default/updateUserViaAjax', array('id' => $this->sourceModelId));
+            $errorInProcess = CJavaScript::quote(Zurmo::t('Core', 'There was an error processing your request'));
             $string  = 'ZurmoHtml::link(';
             $string .= $attributeString . ', ';
             $string .= '"javascript:transferModalValues(\"#'. $this->modalId . '\", " . CJavaScript::encode(array(\'' . $this->sourceIdFieldId . '\' => $data->id, \'' . $this->sourceNameFieldId . '\' => strval(' . $attributeString . ')))';
-            $string .= '. ",\'' . $url . '\',\'' . $this->attribute . '\');"';
+            $string .= '. ",\'' . $url . '\',\'' . $this->attribute . '\', \'' . $errorInProcess . '\');"';
             $string .= ')';
             return $string;
         }

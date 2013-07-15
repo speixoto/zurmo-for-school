@@ -84,5 +84,42 @@
             $view          = new AjaxPageView($inlineView);
             echo $view->render();
         }
+
+        /**
+         * Update owner or requested by user for task
+         * @param int $id
+         */
+        public function actionUpdateUserViaAjax($id, $attribute, $userId)
+        {
+            $task = Task::getById(intval($id));
+
+            $user = User::getById(intval($userId));
+
+            switch($attribute)
+            {
+                case 'owner':
+                              $task->owner = $user;
+                              $task->save();
+                              break;
+
+                case 'requestedByUser':
+                              $task->requestedByUser = $user;
+                              $task->save();
+                              break;
+            }
+        }
+
+        /**
+         * Update owner or requested by user for task
+         * @param int $id
+         */
+        public function actionUpdateDueDateTimeViaAjax($id, $dateTime)
+        {
+            $task         = Task::getById(intval($id));
+            $dateTime     = strtotime($dateTime);
+            $dueDateTime  = DateTimeUtil::convertTimestampToDbFormatDateTime($dateTime);
+            $task->dueDateTime = $dueDateTime;
+            $task->save();
+        }
     }
 ?>
