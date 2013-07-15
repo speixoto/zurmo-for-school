@@ -7631,6 +7631,13 @@ td.empty {
   font-size: 14px;
   line-height: 21px;
 }
+.splash-view .general-issue-notice p {
+  margin: 0;
+  float: none;
+  width: 100%;
+  font-size: 14px;
+  line-height: 21px;
+}
 /*forms*/
 .form input[type="checkbox"] {
   margin: 0 0 10px 0 !important;
