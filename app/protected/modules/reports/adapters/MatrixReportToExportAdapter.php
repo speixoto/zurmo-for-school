@@ -39,8 +39,6 @@
      */
     class MatrixReportToExportAdapter extends ReportToExportAdapter
     {
-        //TODO: @sergio: Test MatrixReportToExportAdapter
-                                
         protected function makeData()
         {                             
             $data                      = array(); 
@@ -107,7 +105,6 @@
                
         protected function getLeadingHeadersDataFromMatrixReportDataProvider($extraLeadingHeaderColumns)
         {
-            //TODO: @sergio: add test for cover and doc
             $leadingHeaders             = $this->dataProvider->makeAxisCrossingColumnCountAndLeadingHeaderRowsData();                        
             $previousGroupByValuesCount = 1;
             $headerData = array();        

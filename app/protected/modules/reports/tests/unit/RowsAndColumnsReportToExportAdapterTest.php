@@ -276,11 +276,9 @@
                                          'Multi 1,Multi 2', 'Cloud 2,Cloud 3', 'Test2', 'someName', 'super')); // Not Coding Standard
             $this->assertEquals($compareHeaderData, $adapter->getHeaderData());
             $this->assertEquals($compareRowData, $adapter->getData());
+            $reportModelTestItem->delete();
         }
-
-        /**
-         * @depends testGetDataWithNoRelationsSet
-         */
+        
         public function testExportRelationAttributes()
         {
             $values = array(
@@ -499,248 +497,55 @@
                                         'Reports Tests >> Radio Drop Down',
                                         'Reports Tests >> A name for a state',
                                         'Reports Tests >> Owner');
-            $compareRowData     = array('xFirst xLast', 1, '2013-02-12', '2013-02-12 10:15:00',
+            $compareRowData     = array(array('xFirst xLast', 1, '2013-02-12', '2013-02-12 10:15:00',
                                         10.5, 10, '7842151012', 'xString', 'xtextAreatest',
                                         'http://www.test.com', 'Test2', '100.00', 'USD', 'someString', 'test@someString.com',
-                                        'Multi 1,Multi 2', 'Cloud 2,Cloud 3', 'Test2', 'someName', 'super'); // Not Coding Standard
+                                        'Multi 1,Multi 2', 'Cloud 2,Cloud 3', 'Test2', 'someName', 'super')); // Not Coding Standard
             $this->assertEquals($compareHeaderData, $adapter->getHeaderData());
             $this->assertEquals($compareRowData, $adapter->getData());
 
-            //for MANY-MANY Relationship
+            //for MANY-MANY Relationship                                               
+            $report = new Report();
+            $report->setType(Report::TYPE_ROWS_AND_COLUMNS);
+            $report->setModuleClassName('ReportsTestModule');
+            $report->setFiltersStructure('');
+            
             //for name attribute
-            $reportModelTestItem = new ReportModelTestItem3();
-            $reportModelTestItem->name = 'xFirst';
+            $reportModelTestItem3 = new ReportModelTestItem3();
+            $reportModelTestItem3->name = 'xFirst';
             $displayAttribute1    = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
                                      Report::TYPE_ROWS_AND_COLUMNS);
             $displayAttribute1->setModelAliasUsingTableAliasName('relatedModel1');
             $displayAttribute1->attributeIndexOrDerivedType = 'hasOne___hasMany3___name';
+            $report->addDisplayAttribute($displayAttribute1);
 
             //for somethingOn3 attribute
-            $reportModelTestItem->somethingOn3 = 'somethingOn3';
+            $reportModelTestItem3->somethingOn3 = 'somethingOn3';
             $displayAttribute2    = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
                                      Report::TYPE_ROWS_AND_COLUMNS);
             $displayAttribute2->setModelAliasUsingTableAliasName('relatedModel1');
-            $displayAttribute2->attributeIndexOrDerivedType = 'hasOne___hasMany3___somethingOn3';
-
-            $reportResultsRowData = new ReportResultsRowData(array(
-                                        $displayAttribute1, $displayAttribute2), 4);
-
-            $reportResultsRowData->addModelAndAlias($reportModelTestItem,  'relatedModel1');
+            $displayAttribute2->attributeIndexOrDerivedType = 'hasOne___hasMany3___somethingOn3';        
+            $report->addDisplayAttribute($displayAttribute2);
+                        
+            $reportModelTestItem3->owner     = Yii::app()->user->userModel;
+            $reportModelTestItem3->hasMany2->add($reportModelTestItem2);
+            $this->assertTrue($reportModelTestItem3->save());
 
             $dataProvider       = new RowsAndColumnsReportDataProvider($report);
             $adapter            = ReportToExportAdapterFactory::createReportToExportAdapter($report, $dataProvider);        
             $compareHeaderData  = array('ReportModelTestItem2 >> ReportModelTestItem3s >> Name',
                                         'ReportModelTestItem2 >> ReportModelTestItem3s >> Something On 3');
-            $compareRowData     = array('xFirst', 'somethingOn3');
+            $compareRowData     = array(array('xFirst', 'somethingOn3'));
             $this->assertEquals($compareHeaderData, $adapter->getHeaderData());
-            $this->assertEquals($compareRowData, $adapter->getData());
+            $this->assertEquals($compareRowData, $adapter->getData());            
+            $reportModelTestItem->delete();
+            $reportModelTestItem2->delete();
+            $reportModelTestItem3->delete();
         }
-
-        /**
-         * @depends testExportRelationAttributes
-         */
-        public function testExportSummationAttributes()
-        {
-            //TODO: @sergio: remove this and fix the next test since this was moved to
-            //SummationReportToExportAdapterTest
-            $report = new Report();
-            $report->setType(Report::TYPE_SUMMATION);
-            $report->setModuleClassName('ReportsTestModule');
-            $report->setFiltersStructure('');
-            //for date summation
-            $displayAttribute1 = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
-                                     Report::TYPE_SUMMATION);
-            $displayAttribute1->attributeIndexOrDerivedType = 'date__Maximum';
-            $displayAttribute1->madeViaSelectInsteadOfViaModel = true;
-            $this->assertTrue($displayAttribute1->columnAliasName == 'col0');
-            $report->addDisplayAttribute($displayAttribute1);
-
-            $displayAttribute2 = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
-                                     Report::TYPE_SUMMATION);
-            $displayAttribute2->attributeIndexOrDerivedType = 'date__Minimum';
-            $displayAttribute2->madeViaSelectInsteadOfViaModel = true;
-            $this->assertTrue($displayAttribute2->columnAliasName == 'col1');
-            $report->addDisplayAttribute($displayAttribute2);
-
-            //for dateTime summation
-            $displayAttribute3 = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
-                                     Report::TYPE_SUMMATION);
-            $displayAttribute3->attributeIndexOrDerivedType = 'dateTime__Minimum';
-            $displayAttribute3->madeViaSelectInsteadOfViaModel = true;
-            $this->assertTrue($displayAttribute3->columnAliasName == 'col2');
-            $report->addDisplayAttribute($displayAttribute3);
-
-            $displayAttribute4 = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
-                                     Report::TYPE_SUMMATION);
-            $displayAttribute4->attributeIndexOrDerivedType = 'dateTime__Minimum';
-            $displayAttribute4->madeViaSelectInsteadOfViaModel = true;
-            $this->assertTrue($displayAttribute4->columnAliasName == 'col3');
-            $report->addDisplayAttribute($displayAttribute4);
-
-            //for createdDateTime summation
-            $displayAttribute5 = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
-                                     Report::TYPE_SUMMATION);
-            $displayAttribute5->attributeIndexOrDerivedType = 'createdDateTime__Maximum';
-            $displayAttribute5->madeViaSelectInsteadOfViaModel = true;
-            $this->assertTrue($displayAttribute5->columnAliasName == 'col4');
-            $report->addDisplayAttribute($displayAttribute5);
-
-            $displayAttribute6 = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
-                                     Report::TYPE_SUMMATION);
-            $displayAttribute6->attributeIndexOrDerivedType = 'createdDateTime__Minimum';
-            $displayAttribute6->madeViaSelectInsteadOfViaModel = true;
-            $this->assertTrue($displayAttribute6->columnAliasName == 'col5');
-            $report->addDisplayAttribute($displayAttribute6);
-
-            //for modifiedDateTime summation
-            $displayAttribute7 = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
-                                     Report::TYPE_SUMMATION);
-            $displayAttribute7->attributeIndexOrDerivedType = 'modifiedDateTime__Maximum';
-            $displayAttribute7->madeViaSelectInsteadOfViaModel = true;
-            $this->assertTrue($displayAttribute7->columnAliasName == 'col6');
-            $report->addDisplayAttribute($displayAttribute7);
-
-            $displayAttribute8 = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
-                                     Report::TYPE_SUMMATION);
-            $displayAttribute8->attributeIndexOrDerivedType = 'modifiedDateTime__Minimum';
-            $displayAttribute8->madeViaSelectInsteadOfViaModel = true;
-            $this->assertTrue($displayAttribute8->columnAliasName == 'col7');
-            $report->addDisplayAttribute($displayAttribute8);
-
-            //for float summation
-            $displayAttribute9 = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
-                                     Report::TYPE_SUMMATION);
-            $displayAttribute9->attributeIndexOrDerivedType = 'float__Minimum';
-            $displayAttribute9->madeViaSelectInsteadOfViaModel = true;
-            $this->assertTrue($displayAttribute9->columnAliasName == 'col8');
-            $report->addDisplayAttribute($displayAttribute9);
-
-            $displayAttribute10 = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
-                                     Report::TYPE_SUMMATION);
-            $displayAttribute10->attributeIndexOrDerivedType = 'float__Maximum';
-            $displayAttribute10->madeViaSelectInsteadOfViaModel = true;
-            $this->assertTrue($displayAttribute10->columnAliasName == 'col9');
-            $report->addDisplayAttribute($displayAttribute10);
-
-            $displayAttribute11 = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
-                                     Report::TYPE_SUMMATION);
-            $displayAttribute11->attributeIndexOrDerivedType = 'float__Summation';
-            $displayAttribute11->madeViaSelectInsteadOfViaModel = true;
-            $this->assertTrue($displayAttribute11->columnAliasName == 'col10');
-            $report->addDisplayAttribute($displayAttribute11);
-
-            $displayAttribute12 = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
-                                     Report::TYPE_SUMMATION);
-            $displayAttribute12->attributeIndexOrDerivedType = 'float__Average';
-            $displayAttribute12->madeViaSelectInsteadOfViaModel = true;
-            $this->assertTrue($displayAttribute12->columnAliasName == 'col11');
-            $report->addDisplayAttribute($displayAttribute12);
-
-            //for integer summation
-            $displayAttribute13 = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
-                                     Report::TYPE_SUMMATION);
-            $displayAttribute13->attributeIndexOrDerivedType = 'integer__Minimum';
-            $displayAttribute13->madeViaSelectInsteadOfViaModel = true;
-            $this->assertTrue($displayAttribute13->columnAliasName == 'col12');
-            $report->addDisplayAttribute($displayAttribute13);
-
-            $displayAttribute14 = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
-                                     Report::TYPE_SUMMATION);
-            $displayAttribute14->attributeIndexOrDerivedType = 'integer__Maximum';
-            $displayAttribute14->madeViaSelectInsteadOfViaModel = true;
-            $this->assertTrue($displayAttribute14->columnAliasName == 'col13');
-            $report->addDisplayAttribute($displayAttribute14);
-
-            $displayAttribute15 = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
-                                     Report::TYPE_SUMMATION);
-            $displayAttribute15->attributeIndexOrDerivedType = 'integer__Summation';
-            $displayAttribute15->madeViaSelectInsteadOfViaModel = true;
-            $this->assertTrue($displayAttribute15->columnAliasName == 'col14');
-            $report->addDisplayAttribute($displayAttribute15);
-
-            $displayAttribute16 = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
-                                     Report::TYPE_SUMMATION);
-            $displayAttribute16->attributeIndexOrDerivedType = 'integer__Average';
-            $displayAttribute16->madeViaSelectInsteadOfViaModel = true;
-            $this->assertTrue($displayAttribute16->columnAliasName == 'col15');
-            $report->addDisplayAttribute($displayAttribute16);
-
-            //for currency summation
-            $displayAttribute17 = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
-                                     Report::TYPE_SUMMATION);
-            $displayAttribute17->attributeIndexOrDerivedType = 'currencyValue__Minimum';
-            $displayAttribute17->madeViaSelectInsteadOfViaModel = true;
-            $this->assertTrue($displayAttribute17->columnAliasName == 'col16');
-            $report->addDisplayAttribute($displayAttribute17);
-
-            $displayAttribute18 = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
-                                     Report::TYPE_SUMMATION);
-            $displayAttribute18->attributeIndexOrDerivedType = 'currencyValue__Maximum';
-            $displayAttribute18->madeViaSelectInsteadOfViaModel = true;
-            $this->assertTrue($displayAttribute18->columnAliasName == 'col17');
-            $report->addDisplayAttribute($displayAttribute18);
-
-            $displayAttribute19 = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
-                                     Report::TYPE_SUMMATION);
-            $displayAttribute19->attributeIndexOrDerivedType = 'currencyValue__Summation';
-            $displayAttribute19->madeViaSelectInsteadOfViaModel = true;
-            $this->assertTrue($displayAttribute19->columnAliasName == 'col18');
-            $report->addDisplayAttribute($displayAttribute19);
-
-            $displayAttribute20 = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
-                                     Report::TYPE_SUMMATION);
-            $displayAttribute20->attributeIndexOrDerivedType = 'currencyValue__Average';
-            $displayAttribute20->madeViaSelectInsteadOfViaModel = true;
-            $this->assertTrue($displayAttribute20->columnAliasName == 'col19');
-            $report->addDisplayAttribute($displayAttribute20);
-
-            $dataProvider       = new SummationReportDataProvider($report);            
-            $adapter            = ReportToExportAdapterFactory::createReportToExportAdapter($report, $dataProvider);              
-            $compareHeaderData  = array('Date -(Max)',
-                                        'Date -(Min)',
-                                        'Date Time -(Min)',
-                                        'Date Time -(Min)',
-                                        'Created Date Time -(Max)',
-                                        'Created Date Time -(Min)',
-                                        'Modified Date Time -(Max)',
-                                        'Modified Date Time -(Min)',
-                                        'Float -(Min)',
-                                        'Float -(Max)',
-                                        'Float -(Sum)',
-                                        'Float -(Avg)',
-                                        'Integer -(Min)',
-                                        'Integer -(Max)',
-                                        'Integer -(Sum)',
-                                        'Integer -(Avg)',
-                                        'Currency Value -(Min)',
-                                        'Currency Value -(Min) Currency',
-                                        'Currency Value -(Max)',
-                                        'Currency Value -(Max) Currency',
-                                        'Currency Value -(Sum)',
-                                        'Currency Value -(Sum) Currency',
-                                        'Currency Value -(Avg)',
-                                        'Currency Value -(Avg) Currency');
-            $compareRowData     = array(array('2013-02-14',
-                                        '2013-02-12',
-                                        '2013-02-14 00:00:00',
-                                        '2013-02-12 00:59:00',
-                                        '2013-02-14 00:00:00',
-                                        '2013-02-12 00:59:00',
-                                        '2013-02-14 00:00:00',
-                                        '2013-02-12 00:59:00',
-                                        18.45, 19.41, 192.15, 180.21, 2000,
-                                        5000, 1000, 9000, 5000, 'Mixed Currency', 6000, // Not Coding Standard
-                                        'Mixed Currency', 7000, 'Mixed Currency',8000, 'Mixed Currency')); // Not Coding Standard
-            $this->assertEquals($compareHeaderData, $adapter->getHeaderData());
-            $this->assertEquals($compareRowData, $adapter->getData());
-        }
-
-       /**
-        * Test for viaSelect and viaModel together
-        * @depends testExportSummationAttributes
-        */
+                
         public function testViaSelectAndViaModelTogether()
         {
+            //TODO: @sergio: Ask jason whats the purpose of this test
             $reportModelTestItem = new ReportModelTestItem();
             $report              = new Report();
 
