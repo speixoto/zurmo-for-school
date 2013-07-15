@@ -130,7 +130,7 @@
             if ($this->getModel() instanceof OwnedSecurableItem)
             {
                 $content .= '<div id="owner-box">';
-                $element  = new UserElement($this->getModel(), 'owner', $form);
+                $element  = new TaskUserElement($this->getModel(), 'owner', $form);
                 $element->editableTemplate = '{label}{content}{error}';
                 $content .= $element->render().'</div>';
             }

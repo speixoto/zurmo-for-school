@@ -107,7 +107,7 @@
             $cs->registerCoreScript('bbq');
             $cs->registerScriptFile(
                 Yii::app()->getAssetManager()->publish(
-                    Yii::getPathOfAlias('application.core.elements.assets')
+                    Yii::getPathOfAlias($this->getModalJavascriptFileBasePath())
                     ) . '/Modal.js',
                 CClientScript::POS_END
             );
@@ -120,8 +120,7 @@
             $content       = $this->form->hiddenField($this->model, $this->idAttributeId, $idInputHtmlOptions);
             if (!$this->showOnlyHiddenInputForEditable())
             {
-                $inputContent  = $this->renderTextField($this->getIdForHiddenField());
-                $inputContent .= $this->renderSelectLink();
+                $inputContent  = $this->resolveInputTextBoxWithSelectLinkContent();
                 $content       = $content . ZurmoHtml::tag('div', array('class' => 'has-model-select'), $inputContent);
             }
             return $content;
@@ -472,6 +471,25 @@
         protected function getOnSelectOptionForAutoComplete($idInputName)
         {
             return 'js:function(event, ui){ jQuery("#' . $idInputName . '").val(ui.item["id"]).trigger("change");}';
+        }
+
+        /**
+         * Gets modal javascript file base path
+         */
+        protected function getModalJavascriptFileBasePath()
+        {
+            return 'application.core.elements.assets';
+        }
+
+        /**
+         * Resolve input text box with select link content
+         * @return string
+         */
+        protected function resolveInputTextBoxWithSelectLinkContent()
+        {
+            $inputContent  = $this->renderTextField($this->getIdForHiddenField());
+            $inputContent .= $this->renderSelectLink();
+            return $inputContent;
         }
     }
 ?>
