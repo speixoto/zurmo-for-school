@@ -391,7 +391,7 @@
 
             if(!is_bool($redirect))
             {
-                $redirect = (bool)intval($redirect);
+                $redirect = (bool)$redirect;
             }
 
             if($redirect)

@@ -118,7 +118,7 @@
             $productTemplate    = static::getModelAndCatchNotFoundAndDisplayError('ProductTemplate', intval($id));
             $breadcrumbLinks    = static::getDetailsAndEditBreadcrumbLinks();
             $breadcrumbLinks[]  = StringUtil::getChoppedStringContent(strval($productTemplate), 25);
-            if (Yii::app()->request->isAjaxRequest || (isset($getData['ajax']) && (bool)intval($getData['ajax'])))
+            if (Yii::app()->request->isAjaxRequest || (isset($getData['ajax']) && (bool)$getData['ajax']))
             {
                 $categoryOutput             = array();
                 $productType                = $productTemplate->type;
