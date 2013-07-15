@@ -262,12 +262,22 @@
         
         public function testSqlQueryWithLinkTypeSpecificOnRelatedModels()
         {
+            $quote = DatabaseCompatibilityUtil::getQuote();
             Yii::app()->user->userModel = User::getByUsername('super');
+
+            $reportModelTestItem2          = new ReportModelTestItem2();
+            $reportModelTestItem2->name    = 'name';
+            $this->assertTrue($reportModelTestItem2->save());
+            $reportModelTestItem           = new ReportModelTestItem();
+            $reportModelTestItem->lastName = 'lastName';
+            $reportModelTestItem->string   = 'string';
+            $reportModelTestItem->hasOne   = $reportModelTestItem2;
+            $this->assertTrue($reportModelTestItem->save());
+
             $report = new Report();
             $report->setType(Report::TYPE_ROWS_AND_COLUMNS);
             $report->setModuleClassName('ReportsTest2Module');
             $report->setFiltersStructure('');
-            
             $displayAttribute1    = new DisplayAttributeForReportForm('ReportsTest2Module', 'ReportModelTestItem2',
                                      Report::TYPE_ROWS_AND_COLUMNS);
             $displayAttribute1->setModelAliasUsingTableAliasName('relatedModel');
@@ -275,10 +285,13 @@
             $report->addDisplayAttribute($displayAttribute1);
             
             $dataProvider = new RowsAndColumnsReportDataProvider($report);
-            $this->assertContains('hasOne_reportmodeltestitem2_id', $dataProvider->makeSqlQueryForDisplay());
-            //TODO: @sergio: ask jason if this should also work if we use ReportsTestModule instead of ReportsTest2Module
+            $content = $dataProvider->makeSqlQueryForDisplay();
+            $compareContent = "select {$quote}reportmodeltestitem{$quote}.{$quote}id{$quote} reportmodeltestitemid " .
+                              "from {$quote}reportmodeltestitem2{$quote} " .
+                              "left join {$quote}reportmodeltestitem{$quote} on " .
+                              "{$quote}reportmodeltestitem{$quote}.{$quote}hasone_reportmodeltestitem2_id{$quote} " .
+                              "= {$quote}reportmodeltestitem2{$quote}.{$quote}id{$quote}  limit 10 offset 0";
+            $this->assertEquals($compareContent, $content);
         }
-        
-                
     }
 ?>
