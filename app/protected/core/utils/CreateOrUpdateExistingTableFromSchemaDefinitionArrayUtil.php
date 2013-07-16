@@ -62,7 +62,6 @@
             $tableName          = key($schemaDefinition);
             if (ProcessedTableCache::isProcessed($tableName, static::CACHE_KEY) && Yii::app()->params['isFreshInstall'])
             {
-                var_dump("Skipped");
                 // we don't skip if running under updateSchema as we might have multiple requests to update same table.
                 return;
             }

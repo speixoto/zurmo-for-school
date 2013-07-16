@@ -87,7 +87,7 @@
 
         public static function resolveProcessedTableNames()
         {
-            ProcessedTableCache::resolveProcessedTableNames(static::CACHE_KEY);
+            return ProcessedTableCache::resolveProcessedTableNames(static::CACHE_KEY);
         }
 
         protected static function resolveIndexesByColumnNames($columns)
