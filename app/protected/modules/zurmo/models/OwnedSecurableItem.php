@@ -175,7 +175,8 @@
                 {
                     ReadPermissionsOptimizationUtil::ownedSecurableItemCreated($this);
                 }
-                elseif (isset($this->originalAttributeValues['owner']))
+                elseif (isset($this->originalAttributeValues['owner']) &&
+                              $this->originalAttributeValues['owner'][1] > 0)
                 {
                     ReadPermissionsOptimizationUtil::ownedSecurableItemOwnerChanged($this,
                                                             User::getById($this->originalAttributeValues['owner'][1]));
