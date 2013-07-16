@@ -74,10 +74,10 @@
             assert('$form instanceof ZurmoActiveForm');
             $content  = null;
             $content .= '<h3>' . Zurmo::t('ImportModule', 'Congratulations! Your import is complete.  Below is a summary of the results.') . '</h3>';
-            $content .= '<ul class="import-summary">';
-            $content .= '<li>' . Zurmo::t('ImportModule', '<span>{created}</span>Records created', array('{created}' => $this->modelsCreated)) . '</li>';//TODO use zurmo::html for the span
-            $content .= '<li>' . Zurmo::t('ImportModule', 'Records updated: {updated}', array('{updated}' => $this->modelsUpdated)) . '</li>';
-            $content .= '<li>' . Zurmo::t('ImportModule', 'Rows with errors: {errors}', array('{errors}' => $this->rowsWithErrors)) . '</li>';
+            $content .= '<ul class="import-summary clearfix">';
+            $content .= '<li>' . Zurmo::t('ImportModule', '<strong>{created}</strong>Records created', array('{created}' => $this->modelsCreated)) . '</li>';//TODO use zurmo::html for the span
+            $content .= '<li>' . Zurmo::t('ImportModule', '<strong>{updated}</strong>Records updated', array('{updated}' => $this->modelsUpdated)) . '</li>';
+            $content .= '<li>' . Zurmo::t('ImportModule', '<strong>{errors}</strong>Rows with errors', array('{errors}' => $this->rowsWithErrors)) . '</li>';
             $content .= '</ul>';
             $content .= $this->renderErrorListContent();
             return $content;
