@@ -776,5 +776,57 @@
             $this->assertNotEmpty($this->invalidTags);
             $this->assertEquals('WAS%MODEL^URL', $this->invalidTags[0]);
         }
+
+        /**
+         * @depends testModelUrlMergeTag
+         */
+        public function testCompanyNameMergeTag()
+        {
+            ZurmoConfigurationUtil::setByModuleName('ZurmoModule', 'applicationName', 'Demo App');
+            $content                        = '[[COMPANY^NAME]]';
+            $expectedContent                = ZurmoConfigurationUtil::getByModuleName('ZurmoModule', 'applicationName');
+            $mergeTagsUtil                  = MergeTagsUtilFactory::make(EmailTemplate::TYPE_WORKFLOW, null, $content);
+            $this->assertTrue($mergeTagsUtil instanceof MergeTagsUtil);
+            $this->assertTrue($mergeTagsUtil instanceof WorkflowMergeTagsUtil);
+            $resolvedContent                = $mergeTagsUtil->resolveMergeTags(self::$emailTemplate, $this->invalidTags);
+            $this->assertTrue($resolvedContent !== false);
+            $this->assertNotEquals($resolvedContent, $content);
+            $this->assertEquals($expectedContent, $resolvedContent);
+            $this->assertEmpty($this->invalidTags);
+        }
+
+        /**
+         * @depends testCompanyNameMergeTag
+         */
+        public function testCurrentYearMergeTag()
+        {
+            $content                        = '[[CURRENT^YEAR]]';
+            $expectedContent                = date('Y');
+            $mergeTagsUtil                  = MergeTagsUtilFactory::make(EmailTemplate::TYPE_WORKFLOW, null, $content);
+            $this->assertTrue($mergeTagsUtil instanceof MergeTagsUtil);
+            $this->assertTrue($mergeTagsUtil instanceof WorkflowMergeTagsUtil);
+            $resolvedContent                = $mergeTagsUtil->resolveMergeTags(self::$emailTemplate, $this->invalidTags);
+            $this->assertTrue($resolvedContent !== false);
+            $this->assertNotEquals($resolvedContent, $content);
+            $this->assertEquals($expectedContent, $resolvedContent);
+            $this->assertEmpty($this->invalidTags);
+        }
+
+        /**
+         * @depends testCurrentYearMergeTag
+         */
+        public function testLastYearMergeTag()
+        {
+            $content                        = '[[LAST^YEAR]]';
+            $expectedContent                = date('Y') - 1;
+            $mergeTagsUtil                  = MergeTagsUtilFactory::make(EmailTemplate::TYPE_WORKFLOW, null, $content);
+            $this->assertTrue($mergeTagsUtil instanceof MergeTagsUtil);
+            $this->assertTrue($mergeTagsUtil instanceof WorkflowMergeTagsUtil);
+            $resolvedContent                = $mergeTagsUtil->resolveMergeTags(self::$emailTemplate, $this->invalidTags);
+            $this->assertTrue($resolvedContent !== false);
+            $this->assertNotEquals($resolvedContent, $content);
+            $this->assertEquals($expectedContent, $resolvedContent);
+            $this->assertEmpty($this->invalidTags);
+        }
     }
 ?>
