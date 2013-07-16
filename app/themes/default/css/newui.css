@@ -18837,11 +18837,11 @@ a + .autoresponder-stats {
   line-height: 60px;
   position: absolute;
   top: 10px;
-  -webkit-text-shadow: 0 1px 0 #000000;
-  -moz-text-shadow: 0 1px 0 #000000;
-  -o-text-shadow: 0 1px 0 #000000;
-  -ms-text-shadow: 0 1px 0 #000000;
-  text-shadow: 0 1px 0 #000000;
+  -webkit-text-shadow: 0 -1px 0 #000000;
+  -moz-text-shadow: 0 -1px 0 #000000;
+  -o-text-shadow: 0 -1px 0 #000000;
+  -ms-text-shadow: 0 -1px 0 #000000;
+  text-shadow: 0 -1px 0 #000000;
 }
 .catalog-item-description p {
   margin-left: 95px;
@@ -18972,12 +18972,29 @@ a + .autoresponder-stats {
   position: relative;
   top: 4px;
 }
+#ProductIntroLinkActionElement .parent,
+#MarketingIntroLinkActionElement .parent {
+  /*> a > span:after{
+			content:"n";
+			.symbly(24px);
+			position: relative;
+			top: 2px;
+		}*/
+
+}
 #ProductIntroLinkActionElement .parent a,
 #MarketingIntroLinkActionElement .parent a {
   padding-left: 10px;
 }
 #ProductIntroLinkActionElement .parent > a > span,
 #MarketingIntroLinkActionElement .parent > a > span {
+  text-indent: -9999px;
+  display: inline-block;
+  width: 0;
+}
+#ProductIntroLinkActionElement .parent > a:before,
+#MarketingIntroLinkActionElement .parent > a:before {
+  content: "n";
   font-weight: normal;
   font-size: 24px;
   font-family: "ZurmoGamificationSymblyReguRg";
