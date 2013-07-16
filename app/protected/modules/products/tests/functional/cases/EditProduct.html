@@ -50,7 +50,7 @@
 <tr>
 	<td>type</td>
 	<td>id=ProductsSearchForm_anyMixedAttributes</td>
-	<td>A Bend in the River</td>
+	<td>Product ${randomSuffix}</td>
 </tr>
 <tr>
 	<td>keyUp</td>
@@ -60,17 +60,17 @@
 <tr>
 	<td>waitForText</td>
 	<td>//div[@id='list-view']/table/tbody/tr/td[2]</td>
-	<td>A Bend in the River</td>
+	<td>Product ${randomSuffix}</td>
 </tr>
 <tr>
 	<td>verifyTextPresent</td>
-	<td>A Bend in the River</td>
+	<td>Product ${randomSuffix}</td>
 	<td></td>
 </tr>
 <tr>
 	<td>verifyValue</td>
 	<td>ProductsSearchForm_anyMixedAttributes</td>
-	<td>A Bend in the River</td>
+	<td>Product ${randomSuffix}</td>
 </tr>
 <tr>
 	<td>click</td>
@@ -171,6 +171,16 @@
 	<td>setSpeed</td>
 	<td>0</td>
 	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>Product_name</td>
+	<td>Product ${randomSuffix}</td>
+</tr>
+<tr>
+	<td>waitForCondition</td>
+	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+	<td>30000</td>
 </tr>
 <tr>
 	<td>type</td>

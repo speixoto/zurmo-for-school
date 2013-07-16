@@ -179,6 +179,16 @@
 </tr>
 <tr>
 	<td>type</td>
+	<td>Product_name</td>
+	<td>Product ${randomSuffix}</td>
+</tr>
+<tr>
+	<td>waitForCondition</td>
+	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+	<td>30000</td>
+</tr>
+<tr>
+	<td>type</td>
 	<td>Product_quantity</td>
 	<td>20000</td>
 </tr>
@@ -204,7 +214,7 @@
 </tr>
 <tr>
 	<td>assertTextPresent</td>
-	<td>A Bend in the River</td>
+	<td>Product ${randomSuffix}</td>
 	<td></td>
 </tr>
 </tbody>
