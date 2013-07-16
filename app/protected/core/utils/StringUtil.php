@@ -117,5 +117,23 @@
             return preg_replace_callback('/' . preg_quote(MergeTagsUtil::CAPITAL_DELIMITER) . '([a-z])/',
                                                                                     $camelizeFunction, $string);
         }
+
+        /**
+         * used to add a new line to content.
+         * @param $content
+         * @param $isHtmlContent
+         */
+        public static function prependNewLine(& $content, $isHtmlContent)
+        {
+            if ($isHtmlContent)
+            {
+                $content = ZurmoHtml::tag('br') . $content;
+            }
+            else
+            {
+                $content = PHP_EOL . $content;
+            }
+        }
+
     }
 ?>

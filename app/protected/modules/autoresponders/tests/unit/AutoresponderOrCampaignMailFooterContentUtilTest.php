@@ -61,12 +61,23 @@
          */
         public function testGetByContentTypeReturnsDefaultWithNoneSet()
         {
-            $defaultFooter = AutoresponderOrCampaignMailFooterContentUtil::UNSUBSCRIBE_URL_PLACEHOLDER . ' | ' .
-                                    AutoresponderOrCampaignMailFooterContentUtil::MANAGE_SUBSCRIPTIONS_URL_PLACEHOLDER;
-            $plainTextFooter = AutoresponderOrCampaignMailFooterContentUtil::getContentByType(false);
+            $isHtmlContent                      = false;
+            $unsubscribeUrlPlaceHolder          = AutoresponderOrCampaignMailFooterContentUtil::UNSUBSCRIBE_URL_PLACEHOLDER;
+            $manageSubscriptionsUrlPlaceHolder  = AutoresponderOrCampaignMailFooterContentUtil::MANAGE_SUBSCRIPTIONS_URL_PLACEHOLDER;
+            StringUtil::prependNewLine($unsubscribeUrlPlaceHolder, $isHtmlContent);
+            StringUtil::prependNewLine($manageSubscriptionsUrlPlaceHolder, $isHtmlContent);
+            $defaultFooter  = $unsubscribeUrlPlaceHolder . $manageSubscriptionsUrlPlaceHolder;
+            $plainTextFooter = AutoresponderOrCampaignMailFooterContentUtil::getContentByType($isHtmlContent);
             $this->assertNotNull($plainTextFooter);
             $this->assertEquals($defaultFooter, $plainTextFooter);
-            $richTextFooter = AutoresponderOrCampaignMailFooterContentUtil::getContentByType(true);
+
+            $isHtmlContent                      = true;
+            $unsubscribeUrlPlaceHolder          = AutoresponderOrCampaignMailFooterContentUtil::UNSUBSCRIBE_URL_PLACEHOLDER;
+            $manageSubscriptionsUrlPlaceHolder  = AutoresponderOrCampaignMailFooterContentUtil::MANAGE_SUBSCRIPTIONS_URL_PLACEHOLDER;
+            StringUtil::prependNewLine($unsubscribeUrlPlaceHolder, $isHtmlContent);
+            StringUtil::prependNewLine($manageSubscriptionsUrlPlaceHolder, $isHtmlContent);
+            $defaultFooter  = $unsubscribeUrlPlaceHolder . $manageSubscriptionsUrlPlaceHolder;
+            $richTextFooter = AutoresponderOrCampaignMailFooterContentUtil::getContentByType($isHtmlContent);
             $this->assertNotNull($richTextFooter);
             $this->assertEquals($defaultFooter, $richTextFooter);
         }

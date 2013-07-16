@@ -52,7 +52,7 @@
             $content    = ZurmoConfigurationUtil::getByModuleName(static::CONFIG_MODULE_NAME, $key);
             if (empty($content) && $returnDefault)
             {
-                $content = static::resolveDefaultValue();
+                $content = static::resolveDefaultValue($isHtmlContent);
             }
             return $content;
         }
@@ -75,9 +75,13 @@
             }
         }
 
-        protected static function resolveDefaultValue()
+        protected static function resolveDefaultValue($isHtmlContent)
         {
-            $content     = static::UNSUBSCRIBE_URL_PLACEHOLDER . ' | ' . static::MANAGE_SUBSCRIPTIONS_URL_PLACEHOLDER;
+            $unsubscribeUrlPlaceHolder          = static::UNSUBSCRIBE_URL_PLACEHOLDER;
+            $manageSubscriptionsUrlPlaceHolder  = static::MANAGE_SUBSCRIPTIONS_URL_PLACEHOLDER;
+            StringUtil::prependNewLine($unsubscribeUrlPlaceHolder, $isHtmlContent);
+            StringUtil::prependNewLine($manageSubscriptionsUrlPlaceHolder, $isHtmlContent);
+            $content     = $unsubscribeUrlPlaceHolder . $manageSubscriptionsUrlPlaceHolder;
             return $content;
         }
     }
