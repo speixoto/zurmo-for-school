@@ -71,6 +71,7 @@
                 {
                     throw new NoCurrentUserSecurityException();
                 }
+                AuditUtil::saveOriginalAttributeValue($this, 'owner', $currentUser);
                 $this->unrestrictedSet('owner', $currentUser);
             }
         }
