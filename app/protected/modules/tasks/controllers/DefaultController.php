@@ -121,5 +121,25 @@
             $task->dueDateTime = $dueDateTime;
             $task->save();
         }
+
+        /**
+         * Update owner or requested by user for task
+         * @param int $id
+         */
+        public function actionAddSubscriber($id)
+        {
+            $task = Task::getById(intval($id));
+            $user = Yii::app()->user->userModel;
+            $itemId = $user->getClassId('Item');
+            $item   = Item::getById((int)$itemId);
+            $notificationSubscriber = new NotificationSubscriber();
+            $notificationSubscriber->person = $item;
+            $notificationSubscriber->hasReadLatest = false;
+            $task->notificationSubscribers->add($notificationSubscriber);
+            $task->save();
+
+            $content = TasksUtil::getTaskSubscriberData($task);
+            echo $content;
+        }
     }
 ?>

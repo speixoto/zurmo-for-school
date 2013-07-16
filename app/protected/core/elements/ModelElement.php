@@ -105,12 +105,7 @@
         {
             $cs = Yii::app()->getClientScript();
             $cs->registerCoreScript('bbq');
-            $cs->registerScriptFile(
-                Yii::app()->getAssetManager()->publish(
-                    Yii::getPathOfAlias($this->getModalJavascriptFileBasePath())
-                    ) . '/Modal.js',
-                CClientScript::POS_END
-            );
+            static::registerModalScriptFile();
             $idInputHtmlOptions = array(
                 'name'     => $this->getNameForHiddenField(),
                 'id'       => $this->getIdForHiddenField(),
@@ -476,7 +471,7 @@
         /**
          * Gets modal javascript file base path
          */
-        protected function getModalJavascriptFileBasePath()
+        protected static function getModalJavascriptFileBasePath()
         {
             return 'application.core.elements.assets';
         }
@@ -490,6 +485,20 @@
             $inputContent  = $this->renderTextField($this->getIdForHiddenField());
             $inputContent .= $this->renderSelectLink();
             return $inputContent;
+        }
+
+        /**
+         * Register script file for handling link on items in modal window
+         */
+        protected static function registerModalScriptFile()
+        {
+            $cs = Yii::app()->getClientScript();
+            $cs->registerScriptFile(
+                Yii::app()->getAssetManager()->publish(
+                    Yii::getPathOfAlias(static::getModalJavascriptFileBasePath())
+                    ) . '/Modal.js',
+                CClientScript::POS_END
+            );
         }
     }
 ?>

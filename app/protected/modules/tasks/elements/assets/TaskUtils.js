@@ -1,6 +1,5 @@
 function transferUserModalValues(dialogId, data, url, attribute, errorInProcess)
 {
-    console.log("In method");
     var userId;
     $.each(data, function(sourceFieldId, value)
     {
@@ -14,20 +13,16 @@ function transferUserModalValues(dialogId, data, url, attribute, errorInProcess)
         {
             type: 'GET',
             url: url,
-            beforeSend: function(xhr)
+            beforeSend: function()
                        {
                            $(dialogId).html('');
                            $(this).makeLargeLoadingSpinner(true, dialogId);
                        },
-            success: function(dataOrHtml, textStatus, xmlReq)
+            success: function(data)
                      {
-                         $(this).processAjaxSuccessUpdateHtmlOrShowDataOnFailure(dataOrHtml, uniquePortletPageId);
+                         $(dialogId).dialog().dialog("close");
                      },
-            complete:function(XMLHttpRequest, textStatus)
-                     {
-                       $(dialogId).dialog("close");
-                     },
-            error:function(xhr, textStatus, errorThrown)
+            error:function()
                   {
                       alert(errorInProcess);
                   }

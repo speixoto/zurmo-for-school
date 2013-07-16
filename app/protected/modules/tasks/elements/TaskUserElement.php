@@ -48,7 +48,7 @@
         /**
          * Gets modal javascript file base path
          */
-        protected function getModalJavascriptFileBasePath()
+        protected static function getModalJavascriptFileBasePath()
         {
             return 'application.modules.tasks.elements.assets';
         }
@@ -75,6 +75,20 @@
                     'modalId'           => $this->getModalContainerId(),
                     'attribute'         => $this->attribute
             ), $this->resolveSourceModelIdForModalTransferInformation());
+        }
+
+        /**
+         * Register script file for handling link on items in modal window
+         */
+        protected static function registerModalScriptFile()
+        {
+            $cs = Yii::app()->getClientScript();
+            $cs->registerScriptFile(
+                Yii::app()->getAssetManager()->publish(
+                    Yii::getPathOfAlias(static::getModalJavascriptFileBasePath())
+                    ) . '/TaskUtils.js',
+                CClientScript::POS_END
+            );
         }
     }
 ?>

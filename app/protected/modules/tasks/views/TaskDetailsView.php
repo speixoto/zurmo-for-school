@@ -132,6 +132,7 @@
                 $content .= $this->renderOwnerBox($form);
                 $content .= $this->renderRequestedByUserBox($form);
                 $content .= $this->renderDueDateTime($form);
+                $content .= $this->renderNotificationSubscribers($form);
             }
             $formEnd = $clipWidget->renderEndWidget();
             $content .= $formEnd;
@@ -182,6 +183,72 @@
             $element->editableTemplate = '{label}{content}{error}';
             $content .= $element->render();
             return $content;
+        }
+
+        /**
+         * Renders the detail after right side content is displayed
+         * @return string
+         */
+        protected function renderAfterRightSideContent()
+        {
+            return $this->renderAfterFormLayoutForDetailsContent();
+        }
+
+        /**
+         * Renders notification subscribers
+         * @param string $form
+         * @return string
+         */
+        protected function renderNotificationSubscribers($form)
+        {
+            $task = Task::getById($this->model->id);
+            $notificationSubscribers = $task->notificationSubscribers;
+            $content = '<div id="task-subscriber-box">';
+            $content .= Zurmo::t('TasksModule', 'Who is receiving notifications');
+
+            if(TasksUtil::isUserSubscribedForTask($task, Yii::app()->user->userModel) === false)
+            {
+                $content .= ' ' . ZurmoHtml::ajaxLink('<strong>' . Zurmo::t('TasksModule', 'Subscribe') . '</strong>', $this->resolveSubscribeUrl(), $this->resolveSubscriberAjaxOptions(), array('id' => 'subscribe-task-link')) ;
+            }
+
+            $content .= '<div id="subscriberList">';
+
+            if ($task->notificationSubscribers->count() > 0)
+            {
+                $content .= TasksUtil::getTaskSubscriberData($task);
+            }
+
+            $content .= '</div>';
+
+            $content .= '</div>';
+            return $content;
+        }
+
+        /**
+         * Resolves Subscribe Url
+         * @return string
+         */
+        protected function resolveSubscribeUrl()
+        {
+            return Yii::app()->createUrl('tasks/default/addSubscriber', array('id' => $this->model->id));
+        }
+
+        /**
+         * Resolve subscriber ajax options
+         * @return array
+         */
+        protected function resolveSubscriberAjaxOptions()
+        {
+            return array(
+                'type'    => 'GET',
+                'dataType'=> 'html',
+                'data'    => array(),
+                'success' => 'function(data)
+                              {
+                                $("#subscribe-task-link").hide();
+                                $("#subscriberList").replaceWith(data);
+                              }'
+            );
         }
     }
 ?>
