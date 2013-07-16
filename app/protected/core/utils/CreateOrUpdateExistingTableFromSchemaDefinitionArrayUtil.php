@@ -114,7 +114,7 @@
         public static function resolveProcessedTables()
         {
             // this is only used by tests
-            return static::$processedTables;
+            return ProcessedTableCache::resolveProcessedTableNames(static::CACHE_KEY);
         }
 
         protected static function validateSchemaDefinition(array $schemaDefinition)
