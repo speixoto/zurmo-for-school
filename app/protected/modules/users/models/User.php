@@ -691,6 +691,7 @@
                     array('username', 'match',   'pattern' => '/^[^A-Z]+$/', // Not Coding Standard
                                                'message' => 'Username must be lowercase.'),
                     array('username', 'length',  'max'   => 64),
+                    array('username', 'filter', 'filter'=>'trim'),
                     array('serializedAvatarData', 'type', 'type' => 'string'),
                     array('isActive', 'readOnly'),
                     array('isActive', 'boolean'),
