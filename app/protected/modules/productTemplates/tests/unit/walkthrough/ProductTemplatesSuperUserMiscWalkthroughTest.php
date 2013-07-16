@@ -44,8 +44,8 @@
             $productTemplates   = ProductTemplate::getAll();
             $this->assertEquals(1, count($productTemplates));
             $superProductTemplateId  = self::getModelIdByModelNameAndName('ProductTemplate', 'My Product Template');
-            $this->setGetArray(array('id' => $superProductTemplateId, 'ajax' => '1'));
-            $content = $this->runControllerWithNoExceptionsAndGetContent('productTemplates/default/details');
+            $this->setGetArray(array('id' => $superProductTemplateId));
+            $content = $this->runControllerWithNoExceptionsAndGetContent('productTemplates/default/getProductTemplateDataForProduct');
             $content = CJSON::decode($content);
             $this->assertEquals("Description", $content['productDescription']);
         }

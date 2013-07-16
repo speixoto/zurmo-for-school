@@ -389,12 +389,7 @@
             $product->$relationAttributeName = $relationModel;
             $product->save();
 
-            if(!is_bool($redirect))
-            {
-                $redirect = (bool)$redirect;
-            }
-
-            if($redirect)
+            if((bool)$redirect)
             {
                 $redirectUrl = Yii::app()->createUrl('/' . $relationModuleId . '/default/details', array('id' => $relationModelId));
                 $this->redirect(array('/' . $relationModuleId . '/defaultPortlet/modalRefresh',
