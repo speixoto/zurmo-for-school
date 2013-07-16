@@ -274,8 +274,11 @@ a.ModalGameNotification a,
 .email-template-combined-content .big-spinner,
 .email-template-content .big-spinner,
 .autoresponder-stats,
+.module-intro-steps > div,
 #marketing-intro-steps > div,
+.module-intro-steps h3,
 #marketing-intro-steps h3,
+.module-intro-steps p,
 #marketing-intro-steps p,
 .continuum > div,
 .continuum .email-recipient-stage-status,
@@ -1006,6 +1009,7 @@ body.blue .configuration-list td:last-child a:hover span:before,
 body.blue .addfileinput-button:hover span,
 body.blue .available-portlets span,
 body.blue .hide-welcome span,
+body.blue .hide-module-intro span,
 body.blue .hide-marketing-intro span,
 body.blue #kanban-board-options-link:hover,
 body.blue #more-search-link:hover,
@@ -1581,6 +1585,7 @@ body.brown .configuration-list td:last-child a:hover span:before,
 body.brown .addfileinput-button:hover span,
 body.brown .available-portlets span,
 body.brown .hide-welcome span,
+body.brown .hide-module-intro span,
 body.brown .hide-marketing-intro span,
 body.brown #kanban-board-options-link:hover,
 body.brown #more-search-link:hover,
@@ -2156,6 +2161,7 @@ body.lime .configuration-list td:last-child a:hover span:before,
 body.lime .addfileinput-button:hover span,
 body.lime .available-portlets span,
 body.lime .hide-welcome span,
+body.lime .hide-module-intro span,
 body.lime .hide-marketing-intro span,
 body.lime #kanban-board-options-link:hover,
 body.lime #more-search-link:hover,
@@ -2731,6 +2737,7 @@ body.cherry .configuration-list td:last-child a:hover span:before,
 body.cherry .addfileinput-button:hover span,
 body.cherry .available-portlets span,
 body.cherry .hide-welcome span,
+body.cherry .hide-module-intro span,
 body.cherry .hide-marketing-intro span,
 body.cherry #kanban-board-options-link:hover,
 body.cherry #more-search-link:hover,
@@ -3306,6 +3313,7 @@ body.turquoise .configuration-list td:last-child a:hover span:before,
 body.turquoise .addfileinput-button:hover span,
 body.turquoise .available-portlets span,
 body.turquoise .hide-welcome span,
+body.turquoise .hide-module-intro span,
 body.turquoise .hide-marketing-intro span,
 body.turquoise #kanban-board-options-link:hover,
 body.turquoise #more-search-link:hover,
@@ -3881,6 +3889,7 @@ body.violet .configuration-list td:last-child a:hover span:before,
 body.violet .addfileinput-button:hover span,
 body.violet .available-portlets span,
 body.violet .hide-welcome span,
+body.violet .hide-module-intro span,
 body.violet .hide-marketing-intro span,
 body.violet #kanban-board-options-link:hover,
 body.violet #more-search-link:hover,
@@ -4456,6 +4465,7 @@ body.honey .configuration-list td:last-child a:hover span:before,
 body.honey .addfileinput-button:hover span,
 body.honey .available-portlets span,
 body.honey .hide-welcome span,
+body.honey .hide-module-intro span,
 body.honey .hide-marketing-intro span,
 body.honey #kanban-board-options-link:hover,
 body.honey #more-search-link:hover,
@@ -18668,14 +18678,24 @@ a + .autoresponder-stats {
 		}*/
 
 }
+.module-intro-content,
 #marketing-intro-content {
   margin-bottom: 30px;
 }
+.module-intro-examples h3 {
+  margin-bottom: 10px;
+}
+.module-intro-examples ol {
+  padding-left: 15px;
+  line-height: 175%;
+}
+.module-intro-steps,
 #marketing-intro-steps {
   float: left;
   width: 100%;
   margin: 30px 0 15px 0;
 }
+.module-intro-steps > div,
 #marketing-intro-steps > div {
   float: left;
   margin-left: 2%;
@@ -18703,9 +18723,11 @@ a + .autoresponder-stats {
   box-shadow: inset 0 1px 1px 0 rgba(200, 200, 200, 0.4), 0 1px 0 0 #111;
   padding: 1px 0 0 0;
 }
+.module-intro-steps > div:first-child,
 #marketing-intro-steps > div:first-child {
   margin-left: 0;
 }
+.module-intro-steps h3,
 #marketing-intro-steps h3 {
   color: #fff;
   font-size: 14px;
@@ -18724,11 +18746,13 @@ a + .autoresponder-stats {
   width: 85px;
   border-right: 1px solid #282828;
 }
+.module-intro-steps h3 strong,
 #marketing-intro-steps h3 strong {
   display: block;
   font-size: 50px;
   line-height: 1;
 }
+.module-intro-steps h3 span,
 #marketing-intro-steps h3 span {
   color: #fff;
   display: inline-block;
@@ -18737,6 +18761,7 @@ a + .autoresponder-stats {
   line-height: 50px;
   margin-top: -5px;
 }
+.module-intro-steps p,
 #marketing-intro-steps p {
   min-height: 149px;
   padding: 10px 10px 10px 10px;
@@ -18746,15 +18771,27 @@ a + .autoresponder-stats {
   border-left: 1px solid #333333;
   color: #ececec;
 }
+.module-intro-steps p strong,
 #marketing-intro-steps p strong {
   color: #fff;
   display: block;
   font-size: 14px;
   line-height: 22px;
 }
+.module-intro-steps span,
 #marketing-intro-steps span {
   display: block;
 }
+#products-intro-steps img {
+  float: left;
+  margin: 10px 15px 10px 10px;
+  opacity: 0.83;
+}
+#products-intro-steps .third p {
+  border-left: none !important;
+  padding-top: 0;
+}
+.hide-module-intro,
 .hide-marketing-intro {
   display: block;
   clear: both;
@@ -18767,6 +18804,7 @@ a + .autoresponder-stats {
   float: right;
   margin-bottom: 30px;
 }
+.hide-module-intro span,
 .hide-marketing-intro span {
   font-weight: normal;
   font-size: 26px;
@@ -18777,8 +18815,34 @@ a + .autoresponder-stats {
   outline: none !important;
   display: inline-block;
 }
+.hide-module-intro span:before,
 .hide-marketing-intro span:before {
   content: "•";
+}
+.catalog-item-description .icon,
+.product-description .icon,
+.catalog-description .icon {
+  position: relative;
+  margin: 0px 15px 0 0;
+  display: inline-block;
+  height: 100%;
+}
+.catalog-item-description .icon:before,
+.product-description .icon:before,
+.catalog-description .icon:before {
+  content: '\00CE';
+  font-weight: normal;
+  font-size: 160px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  line-height: 65px;
+  position: absolute;
+  top: 10px;
+}
+.catalog-item-description .icon:before {
+  content: '\00CF';
+}
+.product-description .icon:before {
+  content: '\0027';
 }
 /*Continuum*/
 .email-recipient-name {
@@ -18873,21 +18937,26 @@ a + .autoresponder-stats {
 .no-autoresponders-found .icon-notice:before {
   content: "g7";
 }
+#ProductIntroLinkActionElement ul,
 #MarketingIntroLinkActionElement ul {
   right: 0;
 }
+#ProductIntroLinkActionElement ul li,
 #MarketingIntroLinkActionElement ul li {
   padding: 0 5px 5px 5px;
 }
+#ProductIntroLinkActionElement ul li .hasCheckBox,
 #MarketingIntroLinkActionElement ul li .hasCheckBox {
   display: inline-block;
   margin-right: 5px;
   position: relative;
   top: 4px;
 }
+#ProductIntroLinkActionElement .parent a,
 #MarketingIntroLinkActionElement .parent a {
   padding-left: 10px;
 }
+#ProductIntroLinkActionElement .parent > a > span,
 #MarketingIntroLinkActionElement .parent > a > span {
   font-weight: normal;
   font-size: 24px;
@@ -18895,6 +18964,7 @@ a + .autoresponder-stats {
   position: relative;
   top: 2px;
 }
+#ProductIntroLinkActionElement .parent a:after,
 #MarketingIntroLinkActionElement .parent a:after {
   margin-left: 2px;
   top: 0;

@@ -78,10 +78,10 @@
             {
                 $style = null;
             }
-            $content  = '<div id="' . self::PANEL_ID . '" ' . $style . '>';
+            $content  = '<div id="' . self::PANEL_ID . '" class="module-intro-content" ' . $style . '>';
             $content .= '<h1>' . Zurmo::t('MarketingModule', 'How does Email Marketing work in Zurmo?', LabelUtil::getTranslationParamsForAllModules()). '</h1>';
 
-            $content .= '<div id="marketing-intro-steps" class="clearfix">';
+            $content .= '<div id="marketing-intro-steps" class="module-intro-steps clearfix">';
             $content .= '<div class="third"><h3>' . Zurmo::t('Core', 'Step') . '<strong>1<span>➜</span></strong></h3>';
             $content .= '<p><strong>' . Zurmo::t('MarketingModule', 'Group') . '</strong>';
             $content .= Zurmo::t('MarketingModule', 'Group together the email recipients into a list, use different lists for different purposes');
@@ -93,7 +93,7 @@
                         'rich HTML templates or plain text');
             $content .= '</p>';
             $content .= '</div>';
-            $content .= '<div class="third"><h3>' . Zurmo::t('Core', 'Step') . '<strong>3</strong></h3>';
+            $content .= '<div class="third"><h3>' . Zurmo::t('Core', 'Step') . '<strong>3<span>➜</span></strong></h3>';
             $content .= '<p><strong>' . Zurmo::t('MarketingModule', 'Launch') . '</strong>';
             $content .= Zurmo::t('MarketingModule', 'Create a campaign where you can schedule your email to go out, pick the List(s) of recipients, ' .
                         'add and schedule autoresponders and track your overall campaign performance');
@@ -111,7 +111,7 @@
         protected function renderHideLinkContent()
         {
             $label    = '<span></span>' . Zurmo::t('MarketingModule', 'Dismiss');
-            $content  = '<div class="' . self::LINK_ID . '">'.ZurmoHtml::link($label, '#');
+            $content  = '<div class="hide-module-intro ' . self::LINK_ID . '">'.ZurmoHtml::link($label, '#');
             $content .= '</div>';
             return $content;
         }
