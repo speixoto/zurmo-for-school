@@ -419,21 +419,38 @@ a + .autoresponder-stats{
 	}
 	.icon:before{
 		content: '\00CE';
-		.symbly(160px);
-		line-height: 65px;
+		.symbly(145px);
+		line-height: 60px;
 		position: absolute;
-		top:10px
+		top:10px;
+		.t-shadow(0 1px 0 #000);
 	}
 }
 .catalog-item-description{
+	p{
+		margin-left: 95px;
+	}
 	.icon:before{
 		content: '\00CF';
+		font-size: 160px;
 	}
 }
 .product-description{
-	.icon:before{
-		content: '\0027';
+	p{
+		margin-left: 110px;
 	}
+	.icon:before{
+		left: 10px;
+		content: '\0027';
+		font-size: 160px;
+	}
+}
+
+.products .product-description{
+	color: #fff !important;
+}
+.producttemplates .catalog-item-description .icon:before{
+	color: #fff !important;
 }
 
 

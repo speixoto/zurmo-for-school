@@ -18832,17 +18832,37 @@ a + .autoresponder-stats {
 .catalog-description .icon:before {
   content: '\00CE';
   font-weight: normal;
-  font-size: 160px;
+  font-size: 145px;
   font-family: "ZurmoGamificationSymblyReguRg";
-  line-height: 65px;
+  line-height: 60px;
   position: absolute;
   top: 10px;
+  -webkit-text-shadow: 0 1px 0 #000000;
+  -moz-text-shadow: 0 1px 0 #000000;
+  -o-text-shadow: 0 1px 0 #000000;
+  -ms-text-shadow: 0 1px 0 #000000;
+  text-shadow: 0 1px 0 #000000;
+}
+.catalog-item-description p {
+  margin-left: 95px;
 }
 .catalog-item-description .icon:before {
   content: '\00CF';
+  font-size: 160px;
+}
+.product-description p {
+  margin-left: 110px;
 }
 .product-description .icon:before {
+  left: 10px;
   content: '\0027';
+  font-size: 160px;
+}
+.products .product-description {
+  color: #fff !important;
+}
+.producttemplates .catalog-item-description .icon:before {
+  color: #fff !important;
 }
 /*Continuum*/
 .email-recipient-name {

@@ -80,7 +80,7 @@
 
         protected function getDefaultLabel()
         {
-            return Zurmo::t('ProductsModule', 'n');
+            return 'n';
         }
 
         protected function getDefaultRoute()

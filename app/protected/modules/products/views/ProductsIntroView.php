@@ -81,9 +81,9 @@
             {
                 $style = null;
             }
-            $content  = '<div id="' . self::PANEL_ID . '" class="module-intro-content" ' . $style . '>';
+            $currentClass = $this->resolveSectionName();
+            $content  = '<div id="' . self::PANEL_ID . '" class="module-intro-content ' . $currentClass . '" ' . $style . '>';
             $content .= '<h1>' . Zurmo::t('ProductsModule', 'How do Products work in Zurmo?', LabelUtil::getTranslationParamsForAllModules()). '</h1>';
-
             $content .= '<div id="products-intro-steps" class="module-intro-steps clearfix">';
             $content .= '<div class="third catalog-description"><span class="icon"></span>';
             $content .= '<p><strong>' . Zurmo::t('ProductsModule', 'Catalog') . '</strong>';
@@ -118,6 +118,12 @@
             $content .= $this->renderHideLinkContent();
             $content .= '</div>';
             return $content;
+        }
+
+        protected function resolveSectionName()
+        {
+            $sectionName = str_replace('link', '', strtolower($this->activeActionElementType));
+            return $sectionName;
         }
 
         /**

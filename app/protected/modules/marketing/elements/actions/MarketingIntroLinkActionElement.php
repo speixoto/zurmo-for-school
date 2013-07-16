@@ -81,7 +81,7 @@
 
         protected function getDefaultLabel()
         {
-            return Zurmo::t('MarketingModule', 'n');
+            return 'n';
         }
 
         protected function getDefaultRoute()
