@@ -358,7 +358,7 @@ PTN;
             $manageSubscriptionsUrl         = static::resolveManageSubscriptionsUrl($hash, $preview);
             static::resolvePlaceholderUrlsForHtmlContent($unsubscribeUrl, $manageSubscriptionsUrl, $isHtmlContent);
             static::resolveFooterTagsWithUrls($placeholderContent, $unsubscribeUrl, $manageSubscriptionsUrl);
-            static::addNewLine($placeholderContent, $isHtmlContent);
+            StringUtil::prependNewLine($placeholderContent, $isHtmlContent);
             $content            .= $placeholderContent;
         }
 
@@ -383,19 +383,6 @@ PTN;
             $placeholderContent = str_replace($manageSubscriptionsPlaceholder, $manageSubscriptionsUrl,
                                                                                                 $placeholderContent);
         }
-
-        protected static function addNewLine(& $content, $isHtmlContent)
-        {
-            if ($isHtmlContent)
-            {
-                $content = ZurmoHtml::tag('br') . $content;
-            }
-            else
-            {
-                $content = PHP_EOL . $content;
-            }
-        }
-
         protected static function resolveFooterPlaceholderContentByType($isHtmlContent)
         {
             return AutoresponderOrCampaignMailFooterContentUtil::getContentByType($isHtmlContent);

@@ -35,62 +35,31 @@
      ********************************************************************************/
 
     /**
-     * Class utilized by 'select' modal popup in the edit view
+     * View to show when there is no portlet to add
      */
-    class ProductTemplateSelectFromRelatedEditModalListLinkProvider extends ModalListLinkProvider
+    class NoPortletsToPlaceView extends View
     {
-        /**
-         * Id of input field in display for saving back a selected
-         * record from the modal list view.
-         * @see $sourceIdFieldId
-         */
-        protected $sourceIdFieldId;
+        public $cssClasses = array('splash-view');        
 
-        /**
-         * Name of input field in display for saving back a selected
-         * record from the modal list view.
-         * @see $sourceNameFieldId
-         */
-        protected $sourceNameFieldId;
-
-        protected $modalId;
-
-        /**
-         * sourceIdFieldName and sourceNameFieldId are needed to know
-         * which fields in the parent form to populate data with
-         * upon selecting a row in the listview
-         *
-         */
-        public function __construct($sourceIdFieldId, $sourceNameFieldId, $modalId = null)
-        {
-            assert('is_string($sourceIdFieldId)');
-            assert('is_string($sourceNameFieldId)');
-            $this->sourceIdFieldId   = $sourceIdFieldId;
-            $this->sourceNameFieldId = $sourceNameFieldId;
-            $this->modalId           = $modalId;
+        protected function renderContent()
+        {                     
+            $content = '<div class="general-issue-notice ' . $this->getIconName() . '">';
+            $content .= $this->getMessageContent();
+            $content .= '</div>';
+            return $content;
         }
 
-        /**
-         * @param string $attributeString
-         * @return string
-         */
-        public function getLinkString($attributeString)
+        protected function getIconName()
         {
-            if ($this->modalId == null)
-            {
-                $modalId = 'modalContainer';
-            }
-            else
-            {
-                $modalId = $this->modalId;
-            }
-            $url = Yii::app()->createUrl("productTemplates/default/getProductTemplateDataForProduct");
-            $string  = 'ZurmoHtml::link(';
-            $string .= $attributeString . ', ';
-            $string .= '"javascript:transferModalValues(\"#' . $modalId . '\", " . CJavaScript::encode(array(\'' . $this->sourceIdFieldId . '\' => $data->id, \'' . $this->sourceNameFieldId . '\' => strval(' . $attributeString . '))) . ");
-                        copyProductTemplateDataForProduct(\'$data->id\', \'' . $url . '\')"';
-            $string .= ')';
-            return $string;
+            return 'Portlet';
+        }
+        
+        protected function getMessageContent()
+        {
+            $message  = Zurmo::t('Core', 'There are no more portlets to add');
+            $content  = ZurmoHtml::tag('span', array('class' => 'icon-notice'), '');
+            $content .= ZurmoHtml::tag('p', array(), $message);
+            return $content;
         }
     }
 ?>

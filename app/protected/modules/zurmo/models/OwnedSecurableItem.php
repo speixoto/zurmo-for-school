@@ -71,6 +71,7 @@
                 {
                     throw new NoCurrentUserSecurityException();
                 }
+                AuditUtil::saveOriginalAttributeValue($this, 'owner', $currentUser);
                 $this->unrestrictedSet('owner', $currentUser);
             }
         }
@@ -98,9 +99,11 @@
                 return Permission::ALL;
             }
             //If the record has not been created yet, then the created user should have full access
+            //Or if the record has not been created yet and doesn't have a createdByUser than any user can
+            //have full access
             elseif (($this->id < 0 || $this->treatCreatedByUserAsOwnerForPermissions) &&
-                   $createdByUser->id > 0 &&
-                   $createdByUser->isSame($permitable))
+                   (($createdByUser->id > 0 &&
+                    $createdByUser->isSame($permitable)) || $createdByUser->id < 0))
             {
                 return Permission::ALL;
             }
@@ -172,7 +175,8 @@
                 {
                     ReadPermissionsOptimizationUtil::ownedSecurableItemCreated($this);
                 }
-                elseif (isset($this->originalAttributeValues['owner']))
+                elseif (isset($this->originalAttributeValues['owner']) &&
+                              $this->originalAttributeValues['owner'][1] > 0)
                 {
                     ReadPermissionsOptimizationUtil::ownedSecurableItemOwnerChanged($this,
                                                             User::getById($this->originalAttributeValues['owner'][1]));
