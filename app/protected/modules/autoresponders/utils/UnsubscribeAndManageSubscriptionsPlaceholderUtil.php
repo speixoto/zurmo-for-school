@@ -34,7 +34,7 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class AutoresponderOrCampaignMailFooterContentUtil
+    class UnsubscribeAndManageSubscriptionsPlaceholderUtil
     {
         const CONFIG_KEY_PLAIN                      = 'AutoresponderOrCampaignFooterPlainText';
 
