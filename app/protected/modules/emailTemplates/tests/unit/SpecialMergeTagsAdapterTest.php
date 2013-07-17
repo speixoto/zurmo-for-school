@@ -33,7 +33,7 @@
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
-    class AutoresponderOrCampaignMailFooterContentUtilTest extends ZurmoBaseTest
+    class SpecialMergeTagsAdapterTest extends ZurmoBaseTest
     {
         public static function setUpBeforeClass()
         {
@@ -48,42 +48,48 @@
             Yii::app()->user->userModel = User::getByUsername('super');
         }
 
-        public function testGetByContentTypeReturnsNullWithNoneSetAndNoDefault()
+        public function testIsSpecialMergeTag()
         {
-            $plainTextFooter = AutoresponderOrCampaignMailFooterContentUtil::getContentByType(false, false);
-            $this->assertNull($plainTextFooter);
-            $richTextFooter = AutoresponderOrCampaignMailFooterContentUtil::getContentByType(true, false);
-            $this->assertNull($richTextFooter);
+            $this->assertFalse(SpecialMergeTagsAdapter::isSpecialMergeTag('attribute', null));
+            $this->assertFalse(SpecialMergeTagsAdapter::isSpecialMergeTag('attribute', 'something'));
+            $this->assertFalse(SpecialMergeTagsAdapter::isSpecialMergeTag('modelURl', null));
+            $this->assertFalse(SpecialMergeTagsAdapter::isSpecialMergeTag('modelURl', 'something'));
+            $this->assertTrue(SpecialMergeTagsAdapter::isSpecialMergeTag('modelUrl', null));
+            $this->assertFalse(SpecialMergeTagsAdapter::isSpecialMergeTag('modelUrl', 'something'));
         }
 
-        /**
-         * @depends testGetByContentTypeReturnsNullWithNoneSetAndNoDefault
-         */
-        public function testGetByContentTypeReturnsDefaultWithNoneSet()
+        public function testResolveModelUrl()
         {
-            $defaultFooter = AutoresponderOrCampaignMailFooterContentUtil::UNSUBSCRIBE_URL_PLACEHOLDER . ' | ' .
-                                    AutoresponderOrCampaignMailFooterContentUtil::MANAGE_SUBSCRIPTIONS_URL_PLACEHOLDER;
-            $plainTextFooter = AutoresponderOrCampaignMailFooterContentUtil::getContentByType(false);
-            $this->assertNotNull($plainTextFooter);
-            $this->assertEquals($defaultFooter, $plainTextFooter);
-            $richTextFooter = AutoresponderOrCampaignMailFooterContentUtil::getContentByType(true);
-            $this->assertNotNull($richTextFooter);
-            $this->assertEquals($defaultFooter, $richTextFooter);
+            $contact = ContactTestHelper::createContactByNameForOwner('contact 01', Yii::app()->user->userModel);
+            $resolvedModelUrl   = SpecialMergeTagsAdapter::resolve('modelUrl', $contact);
+            $this->assertNotNull($resolvedModelUrl);
+            $expectedSuffix                 = '/contacts/default/details?id=' . $contact->id;
+            $this->assertTrue(strpos($resolvedModelUrl, $expectedSuffix) !== false);
         }
 
-        /**
-         * @depends testGetByContentTypeReturnsDefaultWithNoneSet
-         */
-        public function testSetByContentType()
+        public function testResolveCompanyName()
         {
-            AutoresponderOrCampaignMailFooterContentUtil::setContentByType('plain', false);
-            $plainTextFooter = AutoresponderOrCampaignMailFooterContentUtil::getContentByType(false);
-            $this->assertNotNull($plainTextFooter);
-            $this->assertEquals('plain', $plainTextFooter);
-            AutoresponderOrCampaignMailFooterContentUtil::setContentByType('rich', true);
-            $richTextFooter = AutoresponderOrCampaignMailFooterContentUtil::getContentByType(true);
-            $this->assertNotNull($richTextFooter);
-            $this->assertEquals('rich', $richTextFooter);
+            ZurmoConfigurationUtil::setByModuleName('ZurmoModule', 'applicationName', 'Demo App');
+            $resolvedCompanyName    = SpecialMergeTagsAdapter::resolve('companyName', null);
+            $expectedCompanyName    = ZurmoConfigurationUtil::getByModuleName('ZurmoModule', 'applicationName');
+            $this->assertNotNull($resolvedCompanyName);
+            $this->assertEquals($expectedCompanyName, $resolvedCompanyName);
+        }
+
+        public function testResolveCurrentYear()
+        {
+            $resolvedCurrentYear    = SpecialMergeTagsAdapter::resolve('currentYear', null);
+            $expectedCurrentYear    = date('Y');
+            $this->assertNotNull($resolvedCurrentYear);
+            $this->assertEquals($expectedCurrentYear, $resolvedCurrentYear);
+        }
+
+        public function testResolveLastYear()
+        {
+            $resolvedLastYear        = SpecialMergeTagsAdapter::resolve('lastYear', null);
+            $expectedLastYear       = date('Y') - 1;
+            $this->assertNotNull($resolvedLastYear);
+            $this->assertEquals($expectedLastYear, $resolvedLastYear);
         }
     }
 ?>

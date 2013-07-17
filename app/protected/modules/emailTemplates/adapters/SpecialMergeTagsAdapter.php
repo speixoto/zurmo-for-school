@@ -34,63 +34,52 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * Class utilized by 'select' modal popup in the edit view
+    /*
+     * This class is responsible from converting special merge tags to relevant attribute values.
      */
-    class ProductTemplateSelectFromRelatedEditModalListLinkProvider extends ModalListLinkProvider
+    class SpecialMergeTagsAdapter
     {
-        /**
-         * Id of input field in display for saving back a selected
-         * record from the modal list view.
-         * @see $sourceIdFieldId
-         */
-        protected $sourceIdFieldId;
+        // TODO: @Shoaibi: Critical: Tests
+        protected static $specialAttributesResolver = array (
+                                'modelUrl'      => 'resolveModelUrlByModel',
+                                'companyName'   => 'resolveCompanyName',
+                                'currentYear'   => 'resolveCurrentYear',
+                                'lastYear'      => 'resolveLastYear',
+                                );
 
-        /**
-         * Name of input field in display for saving back a selected
-         * record from the modal list view.
-         * @see $sourceNameFieldId
-         */
-        protected $sourceNameFieldId;
-
-        protected $modalId;
-
-        /**
-         * sourceIdFieldName and sourceNameFieldId are needed to know
-         * which fields in the parent form to populate data with
-         * upon selecting a row in the listview
-         *
-         */
-        public function __construct($sourceIdFieldId, $sourceNameFieldId, $modalId = null)
+        public static function isSpecialMergeTag($attributeName, $timeQualifier)
         {
-            assert('is_string($sourceIdFieldId)');
-            assert('is_string($sourceNameFieldId)');
-            $this->sourceIdFieldId   = $sourceIdFieldId;
-            $this->sourceNameFieldId = $sourceNameFieldId;
-            $this->modalId           = $modalId;
+            return (empty($timeQualifier) && array_key_exists($attributeName, static::$specialAttributesResolver));
         }
 
-        /**
-         * @param string $attributeString
-         * @return string
-         */
-        public function getLinkString($attributeString)
+        public static function resolve($attributeName, $model = null)
         {
-            if ($this->modalId == null)
-            {
-                $modalId = 'modalContainer';
-            }
-            else
-            {
-                $modalId = $this->modalId;
-            }
-            $url = Yii::app()->createUrl("productTemplates/default/getProductTemplateDataForProduct");
-            $string  = 'ZurmoHtml::link(';
-            $string .= $attributeString . ', ';
-            $string .= '"javascript:transferModalValues(\"#' . $modalId . '\", " . CJavaScript::encode(array(\'' . $this->sourceIdFieldId . '\' => $data->id, \'' . $this->sourceNameFieldId . '\' => strval(' . $attributeString . '))) . ");
-                        copyProductTemplateDataForProduct(\'$data->id\', \'' . $url . '\')"';
-            $string .= ')';
-            return $string;
+            $methodName = static::$specialAttributesResolver[$attributeName];
+            return static::$methodName($model);
+        }
+
+        // individual resolvers
+        protected static function resolveModelUrlByModel($model)
+        {
+            $modelClassName     = get_class($model);
+            $moduleClassName    = $modelClassName::getModuleClassName();
+            $moduleId           = $moduleClassName::getDirectoryName();
+            return Yii::app()->createAbsoluteUrl('/' . $moduleId . '/default/details/', array('id' => $model->id));
+        }
+
+        protected static function resolveCompanyName()
+        {
+            return ZurmoConfigurationUtil::getByModuleName('ZurmoModule', 'applicationName');
+        }
+
+        protected static function resolveCurrentYear()
+        {
+            return date('Y');
+        }
+
+        protected static function resolveLastYear()
+        {
+            return date('Y') - 1 ;
         }
     }
 ?>

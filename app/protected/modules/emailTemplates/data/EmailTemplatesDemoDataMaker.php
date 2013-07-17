@@ -37,7 +37,7 @@
     /**
      * Class that builds demo emailTemplates.
      */
-    class EmailTemplatesDemoDataMaker extends DemoDataMaker
+    class EmailTemplatesDemoDataMaker extends MarketingDemoDataMaker
     {
         protected $index;
 
@@ -97,6 +97,7 @@
             }
             $model->textContent         = $this->seedData['textContent'][0];
             $model->htmlContent         = $this->seedData['htmlContent'][0];
+            $this->populateMarketingModelWithFiles($model);
         }
     }
 ?>

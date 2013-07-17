@@ -34,63 +34,55 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * Class utilized by 'select' modal popup in the edit view
-     */
-    class ProductTemplateSelectFromRelatedEditModalListLinkProvider extends ModalListLinkProvider
+    class UnsubscribeAndManageSubscriptionsPlaceholderUtil
     {
-        /**
-         * Id of input field in display for saving back a selected
-         * record from the modal list view.
-         * @see $sourceIdFieldId
-         */
-        protected $sourceIdFieldId;
+        const CONFIG_KEY_PLAIN                      = 'AutoresponderOrCampaignFooterPlainText';
 
-        /**
-         * Name of input field in display for saving back a selected
-         * record from the modal list view.
-         * @see $sourceNameFieldId
-         */
-        protected $sourceNameFieldId;
+        const CONFIG_KEY_RICH_TEXT                  = 'AutoresponderOrCampaignFooterRichText';
 
-        protected $modalId;
+        const CONFIG_MODULE_NAME                    = 'AutorespondersModule';
 
-        /**
-         * sourceIdFieldName and sourceNameFieldId are needed to know
-         * which fields in the parent form to populate data with
-         * upon selecting a row in the listview
-         *
-         */
-        public function __construct($sourceIdFieldId, $sourceNameFieldId, $modalId = null)
+        const UNSUBSCRIBE_URL_PLACEHOLDER           = '{{UNSUBSCRIBE_URL}}';
+
+        const MANAGE_SUBSCRIPTIONS_URL_PLACEHOLDER  = '{{MANAGE_SUBSCRIPTIONS_URL}}';
+
+        public static function getContentByType($isHtmlContent, $returnDefault = true)
         {
-            assert('is_string($sourceIdFieldId)');
-            assert('is_string($sourceNameFieldId)');
-            $this->sourceIdFieldId   = $sourceIdFieldId;
-            $this->sourceNameFieldId = $sourceNameFieldId;
-            $this->modalId           = $modalId;
+            $key        = static::resolveConfigKeyByContentType($isHtmlContent);
+            $content    = ZurmoConfigurationUtil::getByModuleName(static::CONFIG_MODULE_NAME, $key);
+            if (empty($content) && $returnDefault)
+            {
+                $content = static::resolveDefaultValue($isHtmlContent);
+            }
+            return $content;
         }
 
-        /**
-         * @param string $attributeString
-         * @return string
-         */
-        public function getLinkString($attributeString)
+        public static function setContentByType($content, $isHtmlContent)
         {
-            if ($this->modalId == null)
+            $key        = static::resolveConfigKeyByContentType($isHtmlContent);
+            ZurmoConfigurationUtil::setByModuleName(static::CONFIG_MODULE_NAME, $key, $content);
+        }
+
+        protected static function resolveConfigKeyByContentType($isHtmlContent)
+        {
+            if ($isHtmlContent)
             {
-                $modalId = 'modalContainer';
+                return static::CONFIG_KEY_RICH_TEXT;
             }
             else
             {
-                $modalId = $this->modalId;
+                return static::CONFIG_KEY_PLAIN;
             }
-            $url = Yii::app()->createUrl("productTemplates/default/getProductTemplateDataForProduct");
-            $string  = 'ZurmoHtml::link(';
-            $string .= $attributeString . ', ';
-            $string .= '"javascript:transferModalValues(\"#' . $modalId . '\", " . CJavaScript::encode(array(\'' . $this->sourceIdFieldId . '\' => $data->id, \'' . $this->sourceNameFieldId . '\' => strval(' . $attributeString . '))) . ");
-                        copyProductTemplateDataForProduct(\'$data->id\', \'' . $url . '\')"';
-            $string .= ')';
-            return $string;
+        }
+
+        protected static function resolveDefaultValue($isHtmlContent)
+        {
+            $unsubscribeUrlPlaceHolder          = static::UNSUBSCRIBE_URL_PLACEHOLDER;
+            $manageSubscriptionsUrlPlaceHolder  = static::MANAGE_SUBSCRIPTIONS_URL_PLACEHOLDER;
+            StringUtil::prependNewLine($unsubscribeUrlPlaceHolder, $isHtmlContent);
+            StringUtil::prependNewLine($manageSubscriptionsUrlPlaceHolder, $isHtmlContent);
+            $content     = $unsubscribeUrlPlaceHolder . $manageSubscriptionsUrlPlaceHolder;
+            return $content;
         }
     }
 ?>

@@ -1137,12 +1137,16 @@
                     $nextBean = $bean;
                     foreach ($modelClassNames as $nextModelClassName)
                     {
-                        $nextBean = self::findNextDerivativeBean($nextBean, $currentModelClassName, $nextModelClassName);
-                        if ($nextBean === null)
+
+                        if($nextModelClassName::getCanHaveBean())
                         {
-                            break;
+                            $nextBean = self::findNextDerivativeBean($nextBean, $currentModelClassName, $nextModelClassName);
+                            if ($nextBean === null)
+                            {
+                                break;
+                            }
+                            $currentModelClassName = $nextModelClassName;
                         }
-                        $currentModelClassName = $nextModelClassName;
                     }
                 }
                 if ($nextBean !== null)

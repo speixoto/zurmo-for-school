@@ -18243,7 +18243,6 @@ a.user-link {
 .tabs-container,
 .email-template-content {
   position: relative;
-  min-height: 200px;
   margin-bottom: 15px;
 }
 .tabs-container > .tab,
@@ -18252,7 +18251,6 @@ a.user-link {
   top: 28px;
   left: 0;
   width: 100%;
-  min-height: 170px;
   display: none;
   line-height: 150%;
   padding: 0;

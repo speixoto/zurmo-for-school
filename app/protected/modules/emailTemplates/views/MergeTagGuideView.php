@@ -121,6 +121,19 @@
             $specialTagsItems[]     = $this->renderBoldMergeTag(MergeTagsUtil::TAG_PREFIX . "MODEL" .
                                         MergeTagsUtil::CAPITAL_DELIMITER . "URL" . MergeTagsUtil::TAG_SUFFIX) .
                                         " : prints absolute url to the current model attached to template.";
+            $specialTagsItems[]     = $this->renderBoldMergeTag(MergeTagsUtil::TAG_PREFIX . "COMPANY" .
+                                        MergeTagsUtil::CAPITAL_DELIMITER . "NAME" . MergeTagsUtil::TAG_SUFFIX) .
+                                        " : prints company name as set in global settings > application name.";
+            $specialTagsItems[]     = $this->renderBoldMergeTag(MergeTagsUtil::TAG_PREFIX . "CURRENT" .
+                                        MergeTagsUtil::CAPITAL_DELIMITER . "YEAR" . MergeTagsUtil::TAG_SUFFIX) .
+                                        " : prints current year.";
+            $specialTagsItems[]     = $this->renderBoldMergeTag(MergeTagsUtil::TAG_PREFIX . "LAST" .
+                                        MergeTagsUtil::CAPITAL_DELIMITER . "YEAR" . MergeTagsUtil::TAG_SUFFIX) .
+                                        " : prints last year.";
+            $specialTagsItems[]     = $this->renderBoldMergeTag('{{UNSUBSCRIBE_URL}}') .
+                                        " : prints unsubscribe url.";
+            $specialTagsItems[]     = $this->renderBoldMergeTag('{{MANAGE_SUBSCRIPTIONS_URL}}') .
+                                        " : prints manage subscriptions url.";
             foreach ($specialTagsItems as $specialTagsItem)
             {
                 $specialTagsContent .= ZurmoHtml::tag('li', array(), $specialTagsItem);
