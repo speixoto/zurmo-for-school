@@ -123,6 +123,11 @@
             $user->username                                 = 'kevinjones';
             $user->currency                                 = $currencies[0];
             $user->manager                                  = $users[0];
+            
+            //Custom attribute
+            $attributeLabels  = array('en' => 'test label en');            
+            ModelMetadataUtil::addOrUpdateMember('EmailTemplateModelTestItem', 'custom', $attributeLabels,
+                null, null, null, null, null, false, false, 'Text', array(), null);               
 
             $model                                          = new EmailTemplateModelTestItem();
             $model->string                                  = 'abc';
@@ -151,6 +156,7 @@
             $model->multiDropDown->values->add($multiDropDownCustomFieldValue3);
             $model->tagCloud->values->add($tagCustomFieldValue1);
             $model->tagCloud->values->add($tagCustomFieldValue2);
+            $model->customCstm                              = 'text custom';    
             $saved                                          = $model->save();
             assert('$saved'); // Not Coding Standard
             self::$emailTemplate                            = $model;
@@ -650,9 +656,26 @@
             $this->assertTrue(strpos($resolvedContent, $expectedSuffix) !== false);
             $this->assertEmpty($this->invalidTags);
         }
-
+        
         /**
          * @depends testModelUrlMergeTag
+         */
+        public function testModelCustomAttribute()
+        {           
+            $content                = 'customCstm: [[CUSTOM^CSTM]]';
+            $compareContent         = 'customCstm: text custom';
+            $mergeTagsUtil          = MergeTagsUtilFactory::make(EmailTemplate::TYPE_WORKFLOW, null, $content);
+            $this->assertTrue($mergeTagsUtil instanceof MergeTagsUtil);
+            $this->assertTrue($mergeTagsUtil instanceof WorkflowMergeTagsUtil);
+            $resolvedContent        = $mergeTagsUtil->resolveMergeTags(self::$emailTemplate, $this->invalidTags);
+            $this->assertTrue($resolvedContent !== false);
+            $this->assertNotEquals($resolvedContent, $content);
+            $this->assertEquals($compareContent, $resolvedContent);
+            $this->assertEmpty($this->invalidTags);                                                                 
+        }
+
+        /**
+         * @depends testModelCustomAttribute
          */
         public function testCompanyNameMergeTag()
         {
