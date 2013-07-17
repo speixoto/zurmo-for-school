@@ -92,9 +92,7 @@
         public function actionUpdateUserViaAjax($id, $attribute, $userId)
         {
             $task = Task::getById(intval($id));
-
             $user = User::getById(intval($userId));
-
             switch($attribute)
             {
                 case 'owner':
@@ -103,10 +101,14 @@
                               break;
 
                 case 'requestedByUser':
+                              $explicitReadWriteModelPermissions = ExplicitReadWriteModelPermissionsUtil::makeBySecurableItem($task);
                               $task->requestedByUser = $user;
                               $task->save();
+                              $success  = ExplicitReadWriteModelPermissionsUtil::
+                                                 resolveExplicitReadWriteModelPermissions($task,                                                 $explicitReadWriteModelPermissions);
                               break;
             }
+            echo $this->getPermissionContent($task);
         }
 
         /**
@@ -163,6 +165,19 @@
                 $task->completed         = false;
                 $task->save();
             }
+        }
+
+        /**
+         * Gets the permission content
+         * @param RedBeanModel $model
+         * @return string
+         */
+        protected function getPermissionContent($model)
+        {
+            $ownedSecurableItemDetailsContent   = OwnedSecurableItemDetailsViewUtil::renderAfterFormLayoutForDetailsContent(
+                                                                                                        $model,
+                                                                                                        null);
+            return $ownedSecurableItemDetailsContent;
         }
     }
 ?>

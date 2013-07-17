@@ -81,5 +81,44 @@
             $content = $this->runControllerWithNoExceptionsAndGetContent('tasks/taskCheckItems/inlineCreateTaskCheckItemFromAjax', false);
             $this->assertTrue(strpos($content, 'TaskCheckListItem_name') > 0);
         }
+
+        /**
+         * @depends testSaveChecklistItemForTaskUsingAjax
+         */
+        public function testAjaxCheckItemListForRelatedTaskModel()
+        {
+            $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
+
+            $tasks  = Task::getByName('aTest');
+            $task   = $tasks[0];
+            $taskId = $task->id;
+
+            $this->setGetArray(array('relatedModelId' => $task->id, 'relatedModelClassName' => 'Task',
+                                        'relatedModelRelationName' => 'checkListItems', 'uniquePageId' => null));
+            $content = $this->runControllerWithNoExceptionsAndGetContent('tasks/taskCheckItems/ajaxCheckItemListForRelatedTaskModel');
+            $this->assertTrue(strpos($content, 'TaskCheckListItemsForTaskView') > 0);
+        }
+
+        /**
+         * @depends testSaveChecklistItemForTaskUsingAjax
+         */
+        public function testUpdateStatusViaAjax()
+        {
+            $super  = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
+            $tasks  = Task::getByName('aTest');
+            $task   = $tasks[0];
+            $taskId = $task->id;
+
+            $checkListItems = $task->checkListItems;
+            $this->setGetArray(array('id' => $checkListItems[0]->id, 'taskId' => $taskId, 'checkListItemCompleted' => '1'));
+            $content = $this->runControllerWithNoExceptionsAndGetContent('tasks/taskCheckItems/updateStatusViaAjax', true);
+            $taskCheckListItem = TaskCheckListItem::getById(intval($checkListItems[0]->id));
+            $this->assertTrue((bool)$taskCheckListItem->completed);
+
+            $this->setGetArray(array('id' => $checkListItems[0]->id, 'taskId' => $taskId, 'checkListItemCompleted' => '0'));
+            $content = $this->runControllerWithNoExceptionsAndGetContent('tasks/taskCheckItems/updateStatusViaAjax', true);
+            $taskCheckListItem = TaskCheckListItem::getById(intval($checkListItems[0]->id));
+            $this->assertFalse((bool)$taskCheckListItem->completed);
+        }
    }
 ?>

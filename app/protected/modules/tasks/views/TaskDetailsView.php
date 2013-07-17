@@ -197,7 +197,7 @@
          */
         protected function renderAfterRightSideContent()
         {
-            return $this->renderAfterFormLayoutForDetailsContent();
+            return '<div id="permissionContent">' . $this->renderAfterFormLayoutForDetailsContent() . '</div>';
         }
 
         /**

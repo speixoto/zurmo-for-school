@@ -116,7 +116,7 @@
         public function actionUpdateStatusViaAjax($id, $taskId, $checkListItemCompleted)
         {
             $taskCheckListItem = TaskCheckListItem::getById(intval($id));
-            $taskCheckListItem->completed = $checkListItemCompleted;
+            $taskCheckListItem->completed = (bool)$checkListItemCompleted;
             $taskCheckListItem->unrestrictedSave();
         }
     }

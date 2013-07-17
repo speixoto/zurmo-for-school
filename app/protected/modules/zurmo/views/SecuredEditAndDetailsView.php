@@ -83,7 +83,8 @@
                 $element  = new UserElement($this->getModel(), 'owner', $form);
                 $element->editableTemplate = '{label}{content}{error}';
                 $content .= $element->render().'</div>';
-                $element  = new DerivedExplicitReadWriteModelPermissionsElement($this->getModel(), 'null', $form);
+                $explicitReadWriteModelPermissionsElementClassName = $this->resolveExplicitReadWriteModelPermissionsElementClassName();
+                $element  = new $explicitReadWriteModelPermissionsElementClassName($this->getModel(), 'null', $form);
                 $element->editableTemplate = '{label}{content}{error}';
                 $content .= $element->render();
             }
@@ -97,6 +98,15 @@
                                                                                                         $this->getModel(),
                                                                                                         $content);
             return $ownedSecurableItemDetailsContent;
+        }
+
+        /**
+         * Resolve explicit read write model permission element class name
+         * @return string
+         */
+        protected function resolveExplicitReadWriteModelPermissionsElementClassName()
+        {
+            return 'DerivedExplicitReadWriteModelPermissionsElement';
         }
     }
 ?>

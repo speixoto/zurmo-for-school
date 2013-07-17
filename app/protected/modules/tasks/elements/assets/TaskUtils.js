@@ -20,6 +20,7 @@ function transferUserModalValues(dialogId, data, url, attribute, errorInProcess)
                        },
             success: function(data)
                      {
+                         $("#permissionContent").html(data);
                          $(dialogId).dialog().dialog("close");
                      },
             error:function()
