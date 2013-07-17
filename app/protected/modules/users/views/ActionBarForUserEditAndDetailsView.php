@@ -109,5 +109,20 @@
                 $elementInformation['htmlOptions']['class'] .= ' active';
             }
         }
+
+        protected function shouldRenderToolBarElement($element, $elementInformation)
+        {
+            if (!parent::shouldRenderToolBarElement($element, $elementInformation))
+            {
+                return false;
+            }
+            if(in_array($elementInformation['type'],
+                    array('UserEditLink', 'AuditEventsModalListLink', 'ChangePasswordLink', 'UserConfigurationLink')) &&
+                !UserAccessUtil::canCurrentUserViewALinkRequiringElevatedAccess($this->model))
+            {
+                return false;
+            }
+            return true;
+        }
     }
 ?>

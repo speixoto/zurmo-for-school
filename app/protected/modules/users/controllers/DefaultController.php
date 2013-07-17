@@ -115,10 +115,17 @@
                 RightsUtil::canUserAccessModule('UsersModule', Yii::app()->user->userModel))
             {
                 $user                 = User::getById(intval($id));
-                $userAvatarForm       = new UserAvatarForm($user);
-                $this->attemptToValidateAjaxFromPost($userAvatarForm, 'UserAvatarForm');
-                $viewForModal = new UserChangeAvatarView($this->getId(), $this->getModule()->getId(), $userAvatarForm);
-                $this->attemptToSaveModelFromPost($userAvatarForm);
+                if(UserAccessUtil::resolveCanCurrentUserAccessRootUser($user, false))
+                {
+                    $userAvatarForm       = new UserAvatarForm($user);
+                    $this->attemptToValidateAjaxFromPost($userAvatarForm, 'UserAvatarForm');
+                    $viewForModal = new UserChangeAvatarView($this->getId(), $this->getModule()->getId(), $userAvatarForm);
+                    $this->attemptToSaveModelFromPost($userAvatarForm);
+                }
+                else
+                {
+                    $viewForModal = new AccessFailureView();
+                }
             }
             else
             {
@@ -157,6 +164,13 @@
             parent::actionAuditEventsModalList($id);
         }
 
+        protected function resolveModelForAuditEventsModalList($id)
+        {
+            $user = User::getById((int)$id);
+            UserAccessUtil::resolveCanCurrentUserAccessRootUser($user);
+            return $user;
+        }
+
         public function actionCreate()
         {
             $title           = Zurmo::t('UsersModule', 'Create User');
@@ -180,6 +194,7 @@
         {
             UserAccessUtil::resolveCanCurrentUserAccessAction(intval($id));
             $user            = User::getById(intval($id));
+            UserAccessUtil::resolveCanCurrentUserAccessRootUser($user);
             $user->setScenario('editUser');
             $title           = Zurmo::t('UsersModule', 'Details');
             $breadcrumbLinks = array(strval($user) => array('default/details',  'id' => $id), $title);
@@ -213,6 +228,7 @@
         {
             UserAccessUtil::resolveCanCurrentUserAccessAction(intval($id));
             $user = User::getById(intval($id));
+            UserAccessUtil::resolveCanCurrentUserAccessRootUser($user);
             $title           = Zurmo::t('UsersModule', 'Change Password');
             $breadcrumbLinks = array(strval($user) => array('default/details',  'id' => $id), $title);
             $user->setScenario('changePassword');
@@ -393,13 +409,15 @@
                                             $_GET['modalTransferInformation']['sourceNameFieldId'],
                                             $_GET['modalTransferInformation']['modalId']
             );
-            echo ModalSearchListControllerUtil::setAjaxModeAndRenderModalSearchList($this, $modalListLinkProvider);
+            echo ModalSearchListControllerUtil::setAjaxModeAndRenderModalSearchList($this, $modalListLinkProvider,
+                                                'SelectableUsersStateMetadataAdapter');
         }
 
         public function actionSecurityDetails($id)
         {
             UserAccessUtil::resolveCanCurrentUserAccessAction(intval($id));
             $user = User::getById(intval($id));
+            UserAccessUtil::resolveCanCurrentUserAccessRootUser($user);
             $title           = Zurmo::t('UsersModule', 'Security Overview');
             $breadcrumbLinks = array(strval($user) => array('default/details',  'id' => $id), $title);
             $modulePermissionsData =  PermissionsUtil::getAllModulePermissionsDataByPermitable($user);
@@ -440,6 +458,7 @@
         {
             UserAccessUtil::resolveCanCurrentUserAccessAction(intval($id));
             $user = User::getById(intval($id));
+            UserAccessUtil::resolveCanCurrentUserAccessRootUser($user);
             $title           = Zurmo::t('UsersModule', 'Configuration');
             $breadcrumbLinks = array(strval($user) => array('default/details',  'id' => $id), $title);
             $configurationForm = UserConfigurationFormAdapter::makeFormFromUserConfigurationByUser($user);
@@ -478,6 +497,7 @@
         {
             UserAccessUtil::resolveCanCurrentUserAccessAction(intval($id));
             $user  = User::getById(intval($id));
+            UserAccessUtil::resolveCanCurrentUserAccessRootUser($user);
             $title = Zurmo::t('UsersModule', 'Email Configuration');
             $breadcrumbLinks = array(strval($user) => array('default/details',  'id' => $id), $title);
             $emailAccount = EmailAccount::resolveAndGetByUserAndName($user);

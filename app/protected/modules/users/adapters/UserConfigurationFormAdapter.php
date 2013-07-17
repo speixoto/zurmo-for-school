@@ -58,6 +58,8 @@
             $form->defaultPermissionSetting         = static::resolveAndGetDefaultPermissionSetting($user);
             $form->visibleAndOrderedTabMenuItems    = static::getVisibleAndOrderedTabMenuItemsByUser($user);
             $form->selectedVisibleAndOrderedTabMenuItems = static::getVisibleAndOrderedTabMenuItemsByUser($user, true);
+            $form->hideFromSelecting                = $user->hideFromSelecting;
+            $form->hideFromLeaderboard              = $user->hideFromLeaderboard;
             return $form;
         }
 
@@ -80,6 +82,14 @@
             ZurmoConfigurationUtil::setByUserAndModuleName($user, 'ZurmoModule', 'VisibleAndOrderedTabMenuItems',
                                                            serialize($form->selectedVisibleAndOrderedTabMenuItems));
             MenuUtil::forgetCacheEntryForTabMenuByUser($user);
+
+            $user->hideFromSelecting   = $form->hideFromSelecting;
+            $user->hideFromLeaderboard = $form->hideFromLeaderboard;
+            $saved = $user->save();
+            if(!$saved)
+            {
+                throw new FailedToSaveModelException();
+            }
         }
 
         /**

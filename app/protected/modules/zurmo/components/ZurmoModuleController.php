@@ -186,13 +186,18 @@
 
         public function actionAuditEventsModalList($id)
         {
-            $modelClassName = $this->getModule()->getPrimaryModelName();
-            $model = $modelClassName::getById((int)$id);
+            $model = $this->resolveModelForAuditEventsModalList($id);
             ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($model);
             $searchAttributeData = AuditEventsListControllerUtil::makeModalSearchAttributeDataByAuditedModel($model);
             $dataProvider = AuditEventsListControllerUtil::makeDataProviderBySearchAttributeData($searchAttributeData);
             Yii::app()->getClientScript()->setToAjaxMode();
             echo AuditEventsListControllerUtil::renderList($this, $dataProvider);
+        }
+
+        protected function resolveModelForAuditEventsModalList($id)
+        {
+            $modelClassName = $this->getModule()->getPrimaryModelName();
+            return $modelClassName::getById((int)$id);
         }
 
         protected function getModelName()

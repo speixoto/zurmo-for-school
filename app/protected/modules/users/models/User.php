@@ -441,6 +441,10 @@
                     'groups'            => Zurmo::t('ZurmoModule',         'Groups',            array(), null, $language),
                     'hash'              => Zurmo::t('UsersModule',         'Hash',              array(), null, $language),
                     'isActive'          => Zurmo::t('UsersModule',         'Is Active',         array(), null, $language),
+                    'isRootUser'        => Zurmo::t('UsersModule',         'Is Root User',      array(), null, $language),
+                    'hideFromSelecting' => Zurmo::t('UsersModule',         'Hide from selecting', array(), null, $language),
+                    'hideFromLeaderboard' => Zurmo::t('UsersModule',       'Hide from leaderboard', array(), null, $language),
+                    'isSystemUser'      => Zurmo::t('UsersModule',         'Is System User',    array(), null, $language),
                     'language'          => Zurmo::t('ZurmoModule',         'Language',          array(), null, $language),
                     'locale'            => Zurmo::t('ZurmoModule',         'Locale',            array(), null, $language),
                     'manager'           => Zurmo::t('UsersModule',         'Manager',           array(), null, $language),
@@ -657,6 +661,10 @@
                     'serializedAvatarData',
                     'isActive',
                     'lastLoginDateTime',
+                    'isRootUser',
+                    'hideFromSelecting',
+                    'isSystemUser',
+                    'hideFromLeaderboard'
                 ),
                 'relations' => array(
                     'currency'          => array(RedBeanModel::HAS_ONE,             'Currency'),
@@ -695,6 +703,12 @@
                     array('serializedAvatarData', 'type', 'type' => 'string'),
                     array('isActive', 'readOnly'),
                     array('isActive', 'boolean'),
+                    array('isRootUser', 'readOnly'),
+                    array('isRootUser',          'boolean'),
+                    array('hideFromSelecting',   'boolean'),
+                    array('isSystemUser', 'readOnly'),
+                    array('isSystemUser',        'boolean'),
+                    array('hideFromLeaderboard', 'boolean'),
                     array('lastLoginDateTime',    'type', 'type' => 'datetime'),
                 ),
                 'elements' => array(
@@ -788,7 +802,42 @@
                     'attributeName'        => 'isActive',
                     'operatorType'         => 'equals',
                     'value'                => true,
+                ),
+                2 => array(
+                    'attributeName'        => 'isRootUser',
+                    'operatorType'         => 'equals',
+                    'value'                => 0,
+                ),
+                3 => array(
+                    'attributeName'        => 'isRootUser',
+                    'operatorType'         => 'isNull',
+                    'value'                => null,
+                ),
+                4 => array(
+                    'attributeName'        => 'isSystemUser',
+                    'operatorType'         => 'equals',
+                    'value'                => 0,
+                ),
+                5 => array(
+                    'attributeName'        => 'isSystemUser',
+                    'operatorType'         => 'isNull',
+                    'value'                => null,
                 )
+            );
+            $searchAttributeData['structure'] = '1 and (2 or 3) and (4 or 5)';
+            $joinTablesAdapter = new RedBeanModelJoinTablesQueryAdapter('User');
+            $where = RedBeanModelDataProvider::makeWhere('User', $searchAttributeData, $joinTablesAdapter);
+            return User::getCount($joinTablesAdapter, $where, null);
+        }
+
+        public static function getRootUserCount()
+        {
+            $searchAttributeData['clauses'] = array(
+                1 => array(
+                    'attributeName'        => 'isRootUser',
+                    'operatorType'         => 'equals',
+                    'value'                => true,
+                ),
             );
             $searchAttributeData['structure'] = '1';
             $joinTablesAdapter = new RedBeanModelJoinTablesQueryAdapter('User');
@@ -830,6 +879,24 @@
                 return false;
             }
             return parent::isDeletable();
+        }
+
+        /**
+         * Sets the user as the root user only if there is not an existing root user.  There is only one root user allowed
+         * @throws NotSupportedException
+         */
+        public function setIsRootUser()
+        {
+            if(User::getRootUserCount() > 0)
+            {
+                throw new ExistingRootUserException();
+            }
+            $this->unrestrictedSet('isRootUser', true);
+        }
+
+        public function setIsSystemUser()
+        {
+            $this->unrestrictedSet('isSystemUser', true);
         }
 
         /**

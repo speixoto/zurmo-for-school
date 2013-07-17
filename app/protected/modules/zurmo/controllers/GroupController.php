@@ -156,7 +156,11 @@
             {
                 $castedPostData = GroupUserMembershipFormUtil::typeCastPostData($_POST[$postVariableName]);
                 GroupUserMembershipFormUtil::setFormFromCastedPost($membershipForm, $castedPostData);
-                if (GroupUserMembershipFormUtil::setMembershipFromForm($membershipForm, $group))
+                if(null != $message = GroupUserMembershipFormUtil::validateMembershipChange($membershipForm, $group))
+                {
+                    Yii::app()->user->setFlash('notification', $message);
+                }
+                elseif (GroupUserMembershipFormUtil::setMembershipFromForm($membershipForm, $group))
                 {
                         $this->clearCaches();
                         Yii::app()->user->setFlash('notification',

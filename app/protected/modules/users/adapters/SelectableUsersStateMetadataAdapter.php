@@ -34,76 +34,54 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class UserAccessUtil
+    /**
+     * Adapter class to filter only selectable users. This means the users that are selectable in the user interface
+     * See attribute hideFromSelecting in User.
+     */
+    class SelectableUsersStateMetadataAdapter implements StateMetadataAdapterInterface
     {
-        public static function resolveCanCurrentUserAccessAction($userId)
+        protected $metadata;
+
+        public static function getStateAttributeName()
         {
-            if (Yii::app()->user->userModel->id == $userId ||
-                RightsUtil::canUserAccessModule('UsersModule', Yii::app()->user->userModel))
-            {
-                return;
-            }
-            $messageView = new AccessFailureView();
-            $view = new AccessFailurePageView($messageView);
-            echo $view->render();
-            Yii::app()->end(0, false);
+            throw new NotImplementedException();
         }
 
-        public static function resolveCanCurrentUserAccessRootUser(User $user, $renderAccessViewOnFailure = true)
+        public function __construct(array $metadata)
         {
-            if(!$user->isRootUser)
-            {
-                return true;
-            }
-            if($user->id != Yii::app()->user->userModel->id)
-            {
-                if(!$renderAccessViewOnFailure)
-                {
-                    return false;
-                }
-                else
-                {
-                    $messageView = new AccessFailureView();
-                    $view = new AccessFailurePageView($messageView);
-                    echo $view->render();
-                    Yii::app()->end(0, false);
-                }
-            }
-            else
-            {
-                return true;
-            }
+            assert('isset($metadata["clauses"])');
+            assert('isset($metadata["structure"])');
+            $this->metadata = $metadata;
         }
 
         /**
-         * @see ActionBarForUserEditAndDetailsView, most pill box links are only available to a user viewing the profile
-         * under certain conditions.
-         * @param User $user
-         * @return boolean if the current user can view the edit type links or not
+         * Creates where clauses and adds structure information
+         * to existing DataProvider metadata.
          */
-        public static function canCurrentUserViewALinkRequiringElevatedAccess(User $user)
+        public function getAdaptedDataProviderMetadata()
         {
-            if (Yii::app()->user->userModel->id == $user->id ||
-                RightsUtil::canUserAccessModule('UsersModule', Yii::app()->user->userModel))
+            $metadata             = $this->metadata;
+            $clauseCount          = count($metadata['clauses']);
+            $startingCount        = $clauseCount + 1;
+            $startingCountPlusOne = $startingCount + 1;
+            $metadata['clauses'][$startingCount] = array(
+                'attributeName'        => 'hideFromSelecting',
+                'operatorType'         => 'equals',
+                'value'                => 0);
+            $metadata['clauses'][$startingCountPlusOne] = array(
+                'attributeName'        => 'hideFromSelecting',
+                'operatorType'         => 'isNull',
+                'value'                => null);
+            $structure = $startingCount . ' or ' . $startingCountPlusOne;
+            if (empty($metadata['structure']))
             {
-                if(!$user->isRootUser)
-                {
-                    return true;
-                }
-                elseif($user->id != Yii::app()->user->userModel->id)
-                {
-                    return false;
-                }
-                else
-                {
-
-                    return true;
-                }
+                $metadata['structure'] = '(' . $structure . ')';
             }
             else
             {
-                return false;
+                $metadata['structure'] = '(' . $metadata['structure'] . ') and (' . $structure . ')';
             }
+            return $metadata;
         }
     }
 ?>
