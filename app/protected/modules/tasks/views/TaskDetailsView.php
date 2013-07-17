@@ -116,6 +116,11 @@
             return $content;
         }
 
+        /**
+         * Renders right side content
+         * @param string $form
+         * @return string
+         */
         protected function renderRightSideContent($form = null)
         {
             $content = null;
@@ -129,6 +134,7 @@
             $content .= $formStart;
             if ($this->getModel() instanceof OwnedSecurableItem)
             {
+                $content .= $this->renderTaskStatus($form);
                 $content .= $this->renderOwnerBox($form);
                 $content .= $this->renderRequestedByUserBox($form);
                 $content .= $this->renderDueDateTime($form);
@@ -249,6 +255,26 @@
                                 $("#subscriberList").replaceWith(data);
                               }'
             );
+        }
+
+        /**
+         * Renders owner box
+         * @param string $form
+         * @return string
+         */
+        protected function renderTaskStatus($form)
+        {
+            $content  = '<div id="status-box">';
+            $element  = new TaskStatusDropDownElement($this->getModel(), 'status', $form);
+            $content .= $element->render();
+            $content .= '<span id="completionDate">';
+            if($this->model->status == Task::TASK_STATUS_COMPLETED)
+            {
+                $content .= '<p>' . Zurmo::t('TasksModule', 'Completed On') . ': ' . DateTimeUtil::convertDbFormattedDateTimeToLocaleFormattedDisplay($this->model->completedDateTime) . '</p>';
+            }
+            $content .= '</span>';
+            $content .= '</div>';
+            return $content;
         }
     }
 ?>

@@ -141,5 +141,28 @@
             $content = TasksUtil::getTaskSubscriberData($task);
             echo $content;
         }
+
+        /**
+         * Update status via ajax
+         * @param int $id
+         */
+        public function actionUpdateStatusViaAjax($id, $status)
+        {
+            $task         = Task::getById(intval($id));
+            $task->status = intval($status);
+            if(intval($status) == Task::TASK_STATUS_COMPLETED)
+            {
+                $task->completedDateTime = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
+                $task->completed         = true;
+                $task->save();
+                echo '<p>' . Zurmo::t('TasksModule', 'Completed On') . ': ' . DateTimeUtil::convertDbFormattedDateTimeToLocaleFormattedDisplay($task->completedDateTime) . '</p>';
+            }
+            else
+            {
+                $task->completedDateTime = null;
+                $task->completed         = false;
+                $task->save();
+            }
+        }
     }
 ?>
