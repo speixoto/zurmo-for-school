@@ -58,6 +58,9 @@
             $this->assertFalse(SpecialMergeTagsAdapter::isSpecialMergeTag('modelUrl', 'something'));
         }
 
+        /**
+         * @depends testIsSpecialMergeTag
+         */
         public function testResolveModelUrl()
         {
             $contact = ContactTestHelper::createContactByNameForOwner('contact 01', Yii::app()->user->userModel);
@@ -67,6 +70,19 @@
             $this->assertTrue(strpos($resolvedModelUrl, $expectedSuffix) !== false);
         }
 
+        /**
+         * @depends testResolveModelUrl
+         */
+        public function testResolveBaseUrl()
+        {
+            $resolvedCompanyName    = SpecialMergeTagsAdapter::resolve('baseUrl', null);
+            $this->assertNotNull($resolvedCompanyName);
+            $this->assertTrue(strpos($resolvedCompanyName, 'localhost/') === 0);
+        }
+
+        /**
+         * @depends testResolveBaseUrl
+         */
         public function testResolveCompanyName()
         {
             ZurmoConfigurationUtil::setByModuleName('ZurmoModule', 'applicationName', 'Demo App');
@@ -76,6 +92,9 @@
             $this->assertEquals($expectedCompanyName, $resolvedCompanyName);
         }
 
+        /**
+         * @depends testResolveCompanyName
+         */
         public function testResolveCurrentYear()
         {
             $resolvedCurrentYear    = SpecialMergeTagsAdapter::resolve('currentYear', null);
@@ -84,6 +103,9 @@
             $this->assertEquals($expectedCurrentYear, $resolvedCurrentYear);
         }
 
+        /**
+         * @depends testResolveCurrentYear
+         */
         public function testResolveLastYear()
         {
             $resolvedLastYear        = SpecialMergeTagsAdapter::resolve('lastYear', null);

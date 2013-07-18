@@ -42,6 +42,7 @@
         // TODO: @Shoaibi: Critical: Tests
         protected static $specialAttributesResolver = array (
                                 'modelUrl'      => 'resolveModelUrlByModel',
+                                'baseUrl'       => 'resolveBaseUrl',
                                 'companyName'   => 'resolveCompanyName',
                                 'currentYear'   => 'resolveCurrentYear',
                                 'lastYear'      => 'resolveLastYear',
@@ -55,7 +56,7 @@
         public static function resolve($attributeName, $model = null)
         {
             $methodName = static::$specialAttributesResolver[$attributeName];
-            return static::$methodName($model);
+            return static::$methodName($model); // we send $model to all, those which need it use it, other gets it as optional param.
         }
 
         // individual resolvers
@@ -65,6 +66,11 @@
             $moduleClassName    = $modelClassName::getModuleClassName();
             $moduleId           = $moduleClassName::getDirectoryName();
             return Yii::app()->createAbsoluteUrl('/' . $moduleId . '/default/details/', array('id' => $model->id));
+        }
+
+        protected static function resolveBaseUrl()
+        {
+            return Yii::app()->getBaseUrl(true);
         }
 
         protected static function resolveCompanyName()

@@ -34,32 +34,14 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class AutoresponderOrCampaignFooterTextPreviewView extends View
+    /**
+     * Displays an integer value as read only
+     */
+    class ReadOnlyIntegerElement extends IntegerElement
     {
-        protected $isHtmlContent;
-
-        protected  $placeholderContent;
-
-        public function __construct($isHtmlContent, $content)
+        public static function isReadOnly()
         {
-            $this->isHtmlContent = $isHtmlContent;
-            $this->placeholderContent = $content;
-        }
-
-        protected function renderContent()
-        {
-            EmailMessageActivityUtil::resolveUnsubscribeAndManageSubscriptionPlaceholders($this->placeholderContent,
-                                                                                            0,
-                                                                                            0,
-                                                                                            0,
-                                                                                            'AutoresponderItem',
-                                                                                            $this->isHtmlContent,
-                                                                                            true,
-                                                                                            true);
-            $content        = ZurmoHtml::tag('div', array('id' => 'footer-preview-modal-content',
-                                                            'class' => 'footer-preview-modal'),
-                                                    $this->placeholderContent);
-            return $content;
+            return true;
         }
     }
 ?>

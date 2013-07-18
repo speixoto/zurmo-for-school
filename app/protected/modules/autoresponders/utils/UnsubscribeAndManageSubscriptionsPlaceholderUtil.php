@@ -34,31 +34,54 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class AutoresponderOrCampaignFooterTextPreviewView extends View
+    class UnsubscribeAndManageSubscriptionsPlaceholderUtil
     {
-        protected $isHtmlContent;
+        const CONFIG_KEY_PLAIN                      = 'AutoresponderOrCampaignFooterPlainText';
 
-        protected  $placeholderContent;
+        const CONFIG_KEY_RICH_TEXT                  = 'AutoresponderOrCampaignFooterRichText';
 
-        public function __construct($isHtmlContent, $content)
+        const CONFIG_MODULE_NAME                    = 'AutorespondersModule';
+
+        const UNSUBSCRIBE_URL_PLACEHOLDER           = '{{UNSUBSCRIBE_URL}}';
+
+        const MANAGE_SUBSCRIPTIONS_URL_PLACEHOLDER  = '{{MANAGE_SUBSCRIPTIONS_URL}}';
+
+        public static function getContentByType($isHtmlContent, $returnDefault = true)
         {
-            $this->isHtmlContent = $isHtmlContent;
-            $this->placeholderContent = $content;
+            $key        = static::resolveConfigKeyByContentType($isHtmlContent);
+            $content    = ZurmoConfigurationUtil::getByModuleName(static::CONFIG_MODULE_NAME, $key);
+            if (empty($content) && $returnDefault)
+            {
+                $content = static::resolveDefaultValue($isHtmlContent);
+            }
+            return $content;
         }
 
-        protected function renderContent()
+        public static function setContentByType($content, $isHtmlContent)
         {
-            EmailMessageActivityUtil::resolveUnsubscribeAndManageSubscriptionPlaceholders($this->placeholderContent,
-                                                                                            0,
-                                                                                            0,
-                                                                                            0,
-                                                                                            'AutoresponderItem',
-                                                                                            $this->isHtmlContent,
-                                                                                            true,
-                                                                                            true);
-            $content        = ZurmoHtml::tag('div', array('id' => 'footer-preview-modal-content',
-                                                            'class' => 'footer-preview-modal'),
-                                                    $this->placeholderContent);
+            $key        = static::resolveConfigKeyByContentType($isHtmlContent);
+            ZurmoConfigurationUtil::setByModuleName(static::CONFIG_MODULE_NAME, $key, $content);
+        }
+
+        protected static function resolveConfigKeyByContentType($isHtmlContent)
+        {
+            if ($isHtmlContent)
+            {
+                return static::CONFIG_KEY_RICH_TEXT;
+            }
+            else
+            {
+                return static::CONFIG_KEY_PLAIN;
+            }
+        }
+
+        protected static function resolveDefaultValue($isHtmlContent)
+        {
+            $unsubscribeUrlPlaceHolder          = static::UNSUBSCRIBE_URL_PLACEHOLDER;
+            $manageSubscriptionsUrlPlaceHolder  = static::MANAGE_SUBSCRIPTIONS_URL_PLACEHOLDER;
+            StringUtil::prependNewLine($unsubscribeUrlPlaceHolder, $isHtmlContent);
+            StringUtil::prependNewLine($manageSubscriptionsUrlPlaceHolder, $isHtmlContent);
+            $content     = $unsubscribeUrlPlaceHolder . $manageSubscriptionsUrlPlaceHolder;
             return $content;
         }
     }

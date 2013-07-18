@@ -70,10 +70,21 @@
                 $htmlContent                = null;
                 if (($itemClass == 'CampaignItem' && $itemOwnerModel->supportsRichText) || ($itemClass == 'AutoresponderItem'))
                 {
-                    $htmlContent = $itemOwnerModel->htmlContent;   
-                }                
+                    $htmlContent = $itemOwnerModel->htmlContent;
+                }
+                if (strpos($textContent, 'Zurmo is to provide an '))
+                {
+                    print(PHP_EOL . PHP_EOL . PHP_EOL);
+                    var_dump(__CLASS__ . '.' . __FUNCTION__ . '.' . __LINE__);
+                    print(PHP_EOL);
+                    var_dump("Text Content:");
+                    print($textContent);
+                    print(PHP_EOL);
+                    var_dump("HTML Content:");
+                    print($htmlContent);
+                }
                 static::resolveContent($textContent, $htmlContent, $contact, $itemOwnerModel->enableTracking,
-                                       (int)$itemId, $itemClass, (int)$marketingList->id);                
+                                       (int)$itemId, $itemClass, (int)$marketingList->id);
                 try
                 {
                     $item->emailMessage = static::resolveEmailMessage($textContent, $htmlContent, $itemOwnerModel,
@@ -92,9 +103,31 @@
         {
             assert('is_int($modelId)');
             assert('is_int($marketingListId)');
+            if (strpos($textContent, 'Zurmo is to provide an '))
+            {
+                print(PHP_EOL . PHP_EOL . PHP_EOL);
+                var_dump(__CLASS__ . '.' . __FUNCTION__ . '.' . __LINE__);
+                print(PHP_EOL);
+                var_dump("Text Content:");
+                print($textContent);
+                print(PHP_EOL);
+                var_dump("HTML Content:");
+                print($htmlContent);
+            }
             static::resolveContentForMergeTags($textContent, $htmlContent, $contact);
             static::resolveContentForTrackingAndFooter($textContent, $htmlContent, $enableTracking, $modelId,
                                                                                 $modelType, $contact, $marketingListId);
+            if (strpos($textContent, 'Zurmo is to provide an '))
+            {
+                print(PHP_EOL . PHP_EOL . PHP_EOL);
+                var_dump(__CLASS__ . '.' . __FUNCTION__ . '.' . __LINE__);
+                print(PHP_EOL);
+                var_dump("Text Content:");
+                print($textContent);
+                print(PHP_EOL);
+                var_dump("HTML Content:");
+                print($htmlContent);
+            }
         }
 
         protected static function resolveContentForMergeTags(& $textContent, & $htmlContent, Contact $contact)
@@ -182,7 +215,7 @@
                 $sender->fromAddress        = $itemOwnerModel->fromAddress;
                 $sender->fromName           = $itemOwnerModel->fromName;
                 return $sender;
-            }            
+            }
             if (!empty($marketingList->fromName) && !empty($marketingList->fromAddress))
             {
                 $sender->fromAddress        = $marketingList->fromAddress;
