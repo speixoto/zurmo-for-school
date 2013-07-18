@@ -55,8 +55,10 @@
 
             $emailTemplates = array();
             $types          = array_keys(EmailTemplate::getTypeDropDownArray());
-            for ($this->index = 0; $this->index < 6; $this->index++)
+            for ($this->index = 0; $this->index < 7; $this->index++)
             {
+                echo PHP_EOL;
+                var_dump($this->index);
                 $emailTemplate              = new EmailTemplate();
                 $emailTemplate->type        = $types[$this->index % 2];
                 $emailTemplate->owner       = $demoDataHelper->getRandomByModelName('User');;
@@ -70,6 +72,8 @@
                 $emailTemplate->save();
                 $emailTemplates[]           = $emailTemplate->id;
             }
+            echo PHP_EOL . PHP_EOL;
+            var_dump(count($emailTemplates));
             $demoDataHelper->setRangeByModelName('EmailTemplate', $emailTemplates[0], $emailTemplates[count($emailTemplates)-1]);
         }
 
@@ -95,8 +99,8 @@
             {
                 $model->language            = $this->seedData['language'][$this->index];
             }
-            $model->textContent         = $this->seedData['textContent'][0];
-            $model->htmlContent         = $this->seedData['htmlContent'][0];
+            $model->textContent         = $this->seedData['textContent'][$this->index % 2];
+            $model->htmlContent         = $this->seedData['htmlContent'][$this->index % 2];
             $this->populateMarketingModelWithFiles($model);
         }
     }
