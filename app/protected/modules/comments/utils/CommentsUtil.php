@@ -104,7 +104,7 @@
 
         public static function getEmailSubject($model)
         {
-            if ($model instanceof Conversation || $model instanceof Mission)
+            if ($model instanceof Conversation || $model instanceof Mission  || $model instanceof Task)
             {
                 return Zurmo::t('CommentsModule', 'New comment on {modelName}: {subject}',
                                     array('{subject}'   => strval($model),
@@ -121,6 +121,10 @@
             elseif ($model instanceof Mission)
             {
                 return Yii::app()->createAbsoluteUrl('missions/default/details/', array('id' => $model->id));
+            }
+            elseif ($model instanceof Task)
+            {
+                return Yii::app()->createAbsoluteUrl('tasks/default/details/', array('id' => $model->id));
             }
         }
     }

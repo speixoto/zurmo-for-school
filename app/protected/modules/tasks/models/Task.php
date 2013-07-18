@@ -49,6 +49,9 @@
 
         const TASK_STATUS_COMPLETED             = 5;
 
+        /**
+         * @return string
+         */
         public function __toString()
         {
             try
@@ -65,16 +68,26 @@
             }
         }
 
+        /**
+         * Gets module class name
+         * @return string
+         */
         public static function getModuleClassName()
         {
             return 'TasksModule';
         }
 
+        /**
+         * @return bool
+         */
         public static function canSaveMetadata()
         {
             return true;
         }
 
+        /**
+         * @return array
+         */
         public static function getDefaultMetadata()
         {
             $metadata = parent::getDefaultMetadata();
@@ -93,7 +106,7 @@
                                                         RedBeanModel::LINK_TYPE_POLYMORPHIC, 'relatedModel'),
                     'checkListItems'            => array(RedBeanModel::HAS_MANY, 'TaskCheckListItem', RedBeanModel::OWNED),
                     'notificationSubscribers'   => array(RedBeanModel::HAS_MANY, 'NotificationSubscriber', RedBeanModel::OWNED),
-                    'files'                     => array(RedBeanModel::HAS_MANY,  'FileModel', RedBeanModel::OWNED,
+                    'files'                     => array(RedBeanModel::HAS_MANY, 'FileModel', RedBeanModel::OWNED,
                                                         RedBeanModel::LINK_TYPE_POLYMORPHIC, 'relatedModel'),
                 ),
                 'rules' => array(
@@ -122,6 +135,9 @@
             return $metadata;
         }
 
+        /**
+         * @return array
+         */
         protected static function translatedAttributeLabels($language)
         {
             return array_merge(parent::translatedAttributeLabels($language),
@@ -138,16 +154,25 @@
             );
         }
 
+        /**
+         * @return bool
+         */
         public static function isTypeDeletable()
         {
             return true;
         }
 
+        /**
+         * @return string
+         */
         public static function getMashableActivityRulesType()
         {
             return 'Task';
         }
 
+        /**
+         * @return bool
+         */
         protected function beforeSave()
         {
             if (parent::beforeSave())
@@ -169,11 +194,17 @@
             }
         }
 
+        /**
+         * @return bool
+         */
         public static function hasReadPermissionsOptimization()
         {
             return true;
         }
 
+        /**
+         * @return string
+         */
         public static function getGamificationRulesType()
         {
             return 'TaskGamification';

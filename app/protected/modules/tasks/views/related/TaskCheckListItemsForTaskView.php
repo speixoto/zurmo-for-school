@@ -73,11 +73,19 @@
             $this->uniquePageId           = $uniquePageId;
         }
 
+        /**
+         * Gets id for the list
+         * @return string
+         */
         protected function getId()
         {
             return 'TaskCheckListItemsForTaskView' . $this->uniquePageId;
         }
 
+        /**
+         * Renders content of the list
+         * @return string
+         */
         protected function renderContent()
         {
             $content = null;
@@ -90,6 +98,10 @@
             return $content;
         }
 
+        /**
+         * Renders hidden link which refresh the list on entering new comment
+         * @return string
+         */
         protected function renderHiddenRefreshLinkContent()
         {
             $url     =   Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/ajaxCheckItemListForRelatedTaskModel',
@@ -103,6 +115,10 @@
                                 'style'     => 'display:none;'));
         }
 
+        /**
+         * Renders check list
+         * @return string
+         */
         protected function renderCheckListItemsContent()
         {
             $content  = null;
@@ -119,7 +135,10 @@
                     $checked = true;
                 }
 
-                $content .= ZurmoHtml::checkBox('TaskCheckListItem_' . $checkListItem->id, $checked, array('class' => 'checkListItem')) . $checkListItem->name;
+                $content .= ZurmoHtml::checkBox('TaskCheckListItem_' . $checkListItem->id, $checked,
+                                                    array('class' => 'checkListItem',
+                                                            'value' => $checkListItem->id)
+                                                ) . $checkListItem->name;
 
             }
             return $content;

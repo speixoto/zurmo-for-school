@@ -50,9 +50,9 @@
                     'completed',
                 ),
                 'rules' => array(
-                    array('name',                        'required'),
-                    array('name',                        'type',    'type' => 'string'),
-                    array('completed',                   'type',    'type' => 'boolean'),
+                    array('name',       'required'),
+                    array('name',       'type', 'type' => 'string'),
+                    array('completed',  'type', 'type' => 'boolean'),
                 ),
                 'defaultSortAttribute' => 'name',
                 'customFields' => array(

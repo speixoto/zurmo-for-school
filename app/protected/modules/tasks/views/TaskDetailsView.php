@@ -40,11 +40,19 @@
             return $metadata;
         }
 
+        /**
+         * Gets form id
+         * @return string
+         */
         protected static function getFormId()
         {
             return 'task-right-column-form-data';
         }
 
+        /**
+         * Gets title
+         * @return string
+         */
         public function getTitle()
         {
             return $this->model->name;
@@ -123,14 +131,15 @@
          */
         protected function renderRightSideContent($form = null)
         {
-            $content = null;
-            $content .= '<div class="wide form">';
+            $content    = null;
+            $content    .= '<div class="wide form">';
             $clipWidget = new ClipWidget();
             list($form, $formStart) = $clipWidget->renderBeginWidget(
-                                                                'ZurmoActiveForm',
-                                                                array_merge(
-                                                                    array('id' => 'task-right-column-form-data'                                                               )
-                                                            ));
+                                                'ZurmoActiveForm',
+                                                array_merge
+                                                (
+                                                    array('id' => 'task-right-column-form-data')
+                                                ));
             $content .= $formStart;
             if ($this->getModel() instanceof OwnedSecurableItem)
             {
@@ -140,7 +149,7 @@
                 $content .= $this->renderDueDateTime($form);
                 $content .= $this->renderNotificationSubscribers($form);
             }
-            $formEnd = $clipWidget->renderEndWidget();
+            $formEnd  = $clipWidget->renderEndWidget();
             $content .= $formEnd;
             $content .= $this->renderModalContainer();
             $content .= '</div>';
@@ -156,7 +165,7 @@
          */
         protected function renderOwnerBox($form)
         {
-            $content = '<div id="owner-box">';
+            $content  = '<div id="owner-box">';
             $element  = new TaskUserElement($this->getModel(), 'owner', $form);
             $element->editableTemplate = '{label}{content}{error}';
             $content .= $element->render().'</div>';
@@ -170,7 +179,7 @@
          */
         protected function renderRequestedByUserBox($form)
         {
-            $content = '<div id="owner-box">';
+            $content  = '<div id="owner-box">';
             $element  = new TaskUserElement($this->getModel(), 'requestedByUser', $form);
             $element->editableTemplate = '{label}{content}{error}';
             $content .= $element->render().'</div>';
@@ -184,7 +193,7 @@
          */
         protected function renderDueDateTime($form)
         {
-            $content = '';
+            $content  = '';
             $element  = new TaskAjaxDateTimeElement($this->getModel(), 'dueDateTime', $form);
             $element->editableTemplate = '{label}{content}{error}';
             $content .= $element->render();
@@ -214,7 +223,10 @@
 
             if(TasksUtil::isUserSubscribedForTask($task, Yii::app()->user->userModel) === false)
             {
-                $content .= ' ' . ZurmoHtml::ajaxLink('<strong>' . Zurmo::t('TasksModule', 'Subscribe') . '</strong>', $this->resolveSubscribeUrl(), $this->resolveSubscriberAjaxOptions(), array('id' => 'subscribe-task-link')) ;
+                $content .= ' ' . ZurmoHtml::ajaxLink('<strong>' . Zurmo::t('TasksModule', 'Subscribe') . '</strong>',
+                                                        $this->resolveSubscribeUrl(),
+                                                        $this->resolveSubscriberAjaxOptions(),
+                                                        array('id' => 'subscribe-task-link')) ;
             }
 
             $content .= '<div id="subscriberList">';
@@ -225,7 +237,6 @@
             }
 
             $content .= '</div>';
-
             $content .= '</div>';
             return $content;
         }
