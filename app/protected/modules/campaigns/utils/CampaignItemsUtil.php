@@ -39,12 +39,22 @@
      */
     abstract class CampaignItemsUtil extends AutoresponderAndCampaignItemsUtil
     {
+        const DEFAULT_CAMPAIGNITEMS_TO_CREATE_PAGE_SIZE = 100;
+
+        /**
+         * For now we should limit to process one campaign at a time until it is completely processed. This will
+         * avoid potential performance problems.
+         * @param null $pageSize - used to determine how many campaignItems to create per run.
+         * @return bool
+         */
         public static function generateCampaignItemsForDueCampaigns($pageSize = null)
         {
-            $dueCampaigns   = Campaign::getByStatusAndSendingTime(Campaign::STATUS_ACTIVE, time(), $pageSize);
+            //todo: we should pass in the pageSize for campaigns to process that way we can make it work correctly
+            //for
+            $dueCampaigns   = Campaign::getByStatusAndSendingTime(Campaign::STATUS_ACTIVE, time(), 20);
             foreach ($dueCampaigns as $dueCampaign)
             {
-                if (static::generateCampaignItems($dueCampaign))
+                if (static::generateCampaignItems($dueCampaign, $pageSize))
                 {
                     $dueCampaign->status = Campaign::STATUS_PROCESSING;
                     if (!$dueCampaign->save())
@@ -56,20 +66,38 @@
             return true;
         }
 
-        protected static function generateCampaignItems($campaign)
+        protected static function generateCampaignItems($campaign, $pageSize)
         {
-            $contacts = array();
-            foreach ($campaign->marketingList->marketingListMembers as $member)
+            if($pageSize == null)
             {
-                $contacts[] = $member->contact;
+                $pageSize = self::DEFAULT_CAMPAIGNITEMS_TO_CREATE_PAGE_SIZE;
+            }
+            $contacts = array();
+            $sql = 'select marketinglistmember.contact_id from marketinglistmember
+                    left join campaignitem on campaignitem.contact_id = marketinglistmember.contact_id ' .
+                    'AND campaignitem.campaign_id = ' . $campaign->id . ' where marketinglistmember.marketinglist_id = ' .
+                    $campaign->marketingList->id . ' and campaignitem.id IS NULL limit ' . $pageSize;
+           // echo $sql;
+            $ids = R::getCol($sql);
+            //echo 'bastow: ' . count($ids) . "\n";
+            foreach($ids as $contactId)
+            {
+                $contacts[] = Contact::getById((int)$contactId);
             }
             if (!empty($contacts))
             {
-                return CampaignItem::registerCampaignItemsByCampaign($campaign, $contacts);
+               // echo 'what is going on and why: ' . count($ids) . "\n";
+                //todo: if the return value is false, then we might need to catch that since it didn't go well.
+                CampaignItem::registerCampaignItemsByCampaign($campaign, $contacts);
+                if(count($ids) < $pageSize)
+                {
+                    return true;
+                }
             }
             else
             {
-                return false;
+               // echo 'we are here for this campaign: ' . $campaign->id . "\n";
+                return true;
             }
         }
     }
