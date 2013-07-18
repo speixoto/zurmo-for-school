@@ -56,6 +56,15 @@
             return self::makeModel($bean);
         }
 
+        /**
+         * Added fallback for system users to never be able to login
+         * @param $username
+         * @param $password
+         * @return An
+         * @throws NoRightWebLoginException
+         * @throws BadPasswordException
+         * @throws ApiNoRightWebApiLoginException
+         */
         public static function authenticate($username, $password)
         {
             assert('is_string($username)');
@@ -74,6 +83,14 @@
 
             if (Right::ALLOW != $user->getEffectiveRight('UsersModule', UsersModule::RIGHT_LOGIN_VIA_WEB_API) &&
                 ApiRequest::isApiRequest())
+            {
+                throw new ApiNoRightWebApiLoginException();
+            }
+            if($user->isSystemUser && !ApiRequest::isApiRequest())
+            {
+                throw new NoRightWebLoginException();
+            }
+            if($user->isSystemUser && ApiRequest::isApiRequest())
             {
                 throw new ApiNoRightWebApiLoginException();
             }
@@ -703,10 +720,10 @@
                     array('serializedAvatarData', 'type', 'type' => 'string'),
                     array('isActive', 'readOnly'),
                     array('isActive', 'boolean'),
-                    array('isRootUser', 'readOnly'),
+                    array('isRootUser',          'readOnly'),
                     array('isRootUser',          'boolean'),
                     array('hideFromSelecting',   'boolean'),
-                    array('isSystemUser', 'readOnly'),
+                    array('isSystemUser',        'readOnly'),
                     array('isSystemUser',        'boolean'),
                     array('hideFromLeaderboard', 'boolean'),
                     array('lastLoginDateTime',    'type', 'type' => 'datetime'),

@@ -231,13 +231,13 @@
             {
                 throw new NotSupportedException();
             }
-            $stateMetadataAdapterClassName = $this->getModule()->getStateMetadataAdapterClassName();
 
+            $stateMetadataAdapterClassName = $this->resolveStateMetadataAdapterClassNameForExport();
             $dataProvider = $this->getDataProviderByResolvingSelectAllFromGet(
                 $searchForm,
                 $pageSize,
                 Yii::app()->user->userModel->id,
-                null,
+                $stateMetadataAdapterClassName,
                 $stickySearchKey
             );
 
@@ -340,6 +340,11 @@
                 );
             }
             $this->redirect(array($this->getId() . '/index'));
+        }
+
+        protected function resolveStateMetadataAdapterClassNameForExport()
+        {
+            return $this->getModule()->getStateMetadataAdapterClassName();
         }
 
         protected static function getModelAndCatchNotFoundAndDisplayError($modelClassName, $id)

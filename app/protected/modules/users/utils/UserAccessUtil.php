@@ -75,6 +75,25 @@
             }
         }
 
+        public static function resolveAccessingASystemUser($user, $renderAccessViewOnFailure = true)
+        {
+            if(!$user->isSystemUser)
+            {
+                return true;
+            }
+            elseif(!$renderAccessViewOnFailure)
+            {
+                return false;
+            }
+            else
+            {
+                $messageView = new AccessFailureView();
+                $view = new AccessFailurePageView($messageView);
+                echo $view->render();
+                Yii::app()->end(0, false);
+            }
+        }
+
         /**
          * @see ActionBarForUserEditAndDetailsView, most pill box links are only available to a user viewing the profile
          * under certain conditions.

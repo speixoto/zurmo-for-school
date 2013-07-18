@@ -89,7 +89,7 @@
                 }
                 foreach ($group->users as $index => $user)
                 {
-                    if (empty($form->userMembershipData[$user->id]) && $user->isRootUser)
+                    if (empty($form->userMembershipData[$user->id]) && ($user->isRootUser || $user->isSystemUser))
                     {
                         return Zurmo::t('ZurmoModule', 'You cannot remove {user} from this group', array('{user}' => strval($user)));
                     }
@@ -112,7 +112,7 @@
             $addedUsers   = array();
             foreach ($group->users as $index => $user)
             {
-                if (empty($form->userMembershipData[$user->id]))
+                if (empty($form->userMembershipData[$user->id]) && !$user->isSystemUser)
                 {
                     $group->users->removeByIndex($index);
                     $removedUsers[] = $user;
@@ -165,7 +165,10 @@
             $data = array();
             foreach ($users as $user)
             {
-                $data[$user->id] = strval($user);
+                if(!$user->isSystemUser)
+                {
+                    $data[$user->id] = strval($user);
+                }
             }
             return $data;
         }
@@ -186,7 +189,7 @@
             $data     = array();
             foreach ($allUsers as $user)
             {
-                if (empty($userData[$user->id]))
+                if (empty($userData[$user->id]) && !$user->isSystemUser)
                 {
                     $data[$user->id] = strval($user);
                 }

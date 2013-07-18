@@ -48,6 +48,18 @@
             Yii::app()->user->userModel = User::getByUsername('super');
         }
 
+        /**
+         * You can only use setIsSystemUser to set the isSystemUser attribute
+         * @expectedException NotSupportedException
+         */
+        public function testCannotSetIsSystemUserDirectlyOnModel()
+        {
+            $user = User::getByUsername('super');
+            Yii::app()->user->userModel = $user;
+            $user = new User();
+            $user->isSystemUser = true;
+        }
+
         public function testEmailUniquenessValidation()
         {
             $user = User::getByUsername('super');
