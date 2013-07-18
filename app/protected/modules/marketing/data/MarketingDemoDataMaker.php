@@ -34,55 +34,51 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class AutoresponderOrCampaignMailFooterContentUtil
+    /**
+     * Class that adds common objects to all marketing related models.
+     */
+    abstract class MarketingDemoDataMaker extends DemoDataMaker
     {
-        const CONFIG_KEY_PLAIN                      = 'AutoresponderOrCampaignFooterPlainText';
+        protected $files = array('testDocument.docx',
+                                    'testImage.png',
+                                    'testLogo.png',
+                                    'testNote.txt',
+                                    'testPDF.pdf',
+                                    'testZip.zip');
 
-        const CONFIG_KEY_RICH_TEXT                  = 'AutoresponderOrCampaignFooterRichText';
-
-        const CONFIG_MODULE_NAME                    = 'AutorespondersModule';
-
-        const UNSUBSCRIBE_URL_PLACEHOLDER           = '{{UNSUBSCRIBE_URL}}';
-
-        const MANAGE_SUBSCRIPTIONS_URL_PLACEHOLDER  = '{{MANAGE_SUBSCRIPTIONS_URL}}';
-
-        public static function getContentByType($isHtmlContent, $returnDefault = true)
+        public function populateMarketingModelWithFiles($marketingModel, $count = null)
         {
-            $key        = static::resolveConfigKeyByContentType($isHtmlContent);
-            $content    = ZurmoConfigurationUtil::getByModuleName(static::CONFIG_MODULE_NAME, $key);
-            if (empty($content) && $returnDefault)
+            $pathToFiles            = Yii::getPathOfAlias('application.modules.marketing.data.files');
+            $numberOfFilesToAttach  = $count;
+            if (!isset($numberOfFilesToAttach))
             {
-                $content = static::resolveDefaultValue($isHtmlContent);
+                $numberOfFilesToAttach  = rand(1, 5);
             }
-            return $content;
+            $this->populateWithFiles($marketingModel, $numberOfFilesToAttach, $pathToFiles);
         }
 
-        public static function setContentByType($content, $isHtmlContent)
+        protected function populateWithFiles($model, $numberOfFilesToAttach, $pathToFiles)
         {
-            $key        = static::resolveConfigKeyByContentType($isHtmlContent);
-            ZurmoConfigurationUtil::setByModuleName(static::CONFIG_MODULE_NAME, $key, $content);
-        }
-
-        protected static function resolveConfigKeyByContentType($isHtmlContent)
-        {
-            if ($isHtmlContent)
+            assert('$model instanceof EmailTemplate  || $model instanceof Autoresponder || $model instanceof Campaign');
+            for ($i = 0; $i < $numberOfFilesToAttach; $i++)
             {
-                return static::CONFIG_KEY_RICH_TEXT;
+                $fileName               = $this->files[array_rand($this->files)];
+                $filePath               = $pathToFiles . DIRECTORY_SEPARATOR . $fileName;
+                $contents               = file_get_contents($pathToFiles . DIRECTORY_SEPARATOR . $fileName);
+                $fileContent            = new FileContent();
+                $fileContent->content   = $contents;
+                $file                   = new FileModel();
+                $file->fileContent      = $fileContent;
+                $file->name             = $fileName;
+                $file->type             = ZurmoFileHelper::getMimeType($pathToFiles . DIRECTORY_SEPARATOR . $fileName);
+                $file->size             = filesize($filePath);
+                $saved                  = $file->save();
+                if (!$saved)
+                {
+                    throw new FailedToSaveModelException();
+                }
+                $model->files->add($file);
             }
-            else
-            {
-                return static::CONFIG_KEY_PLAIN;
-            }
-        }
-
-        protected static function resolveDefaultValue($isHtmlContent)
-        {
-            $unsubscribeUrlPlaceHolder          = static::UNSUBSCRIBE_URL_PLACEHOLDER;
-            $manageSubscriptionsUrlPlaceHolder  = static::MANAGE_SUBSCRIPTIONS_URL_PLACEHOLDER;
-            StringUtil::prependNewLine($unsubscribeUrlPlaceHolder, $isHtmlContent);
-            StringUtil::prependNewLine($manageSubscriptionsUrlPlaceHolder, $isHtmlContent);
-            $content     = $unsubscribeUrlPlaceHolder . $manageSubscriptionsUrlPlaceHolder;
-            return $content;
         }
     }
 ?>
