@@ -35,19 +35,20 @@
      ********************************************************************************/
 
     /**
-     * Derived version of @see DerivedExplicitReadWriteModelPermissionsElement.
+     * Extended class to support task
      */
-    class TaskDerivedExplicitReadWriteModelPermissionsElement extends DerivedExplicitReadWriteModelPermissionsElement
+    class TaskZurmoControllerUtil extends ZurmoControllerUtil
     {
-        const REQUESTED_BY_USER = 3;
-
-        protected function getPermissionTypes()
+       /**
+         * Override to handle sending email messages on task update
+         */
+        protected function afterSuccessfulSave($model)
         {
-            return array(
-                null                                                                 => Zurmo::t('ZurmoModule', 'Owner'),
-                //self::REQUESTED_BY_USER                                              => Zurmo::t('ZurmoModule', 'Requested by user'),
-                ExplicitReadWriteModelPermissionsUtil::MIXED_TYPE_NONEVERYONE_GROUP  => Zurmo::t('ZurmoModule', 'Owner and users in'),
-                ExplicitReadWriteModelPermissionsUtil::MIXED_TYPE_EVERYONE_GROUP     => Zurmo::t('ZurmoModule', 'Everyone'));
+            assert('$model instanceof Item');
+            parent::afterSuccessfulSave($model);
+            $user = Yii::app()->user->userModel;
+            $participants = TasksUtil::resolvePeopleToSendNotificationToOnTaskUpdate($model, $user);
+            TasksUtil::sendNotificationOnTaskUpdate($model, $user, $participants);
         }
     }
 ?>

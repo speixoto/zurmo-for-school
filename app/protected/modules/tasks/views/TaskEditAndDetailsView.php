@@ -141,14 +141,5 @@
             return Zurmo::t('TasksModule', 'Create TasksModuleSingularLabel',
                                      LabelUtil::getTranslationParamsForAllModules());
         }
-
-        /**
-         * Resolve explicit read write model permission element class name
-         * @return string
-         */
-        protected function resolveExplicitReadWriteModelPermissionsElementClassName()
-        {
-            return 'TaskDerivedExplicitReadWriteModelPermissionsElement';
-        }
     }
 ?>

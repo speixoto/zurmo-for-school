@@ -40,8 +40,8 @@
     class TasksUtil
     {
         /**
-         * Given a Conversation and User, determine if the user is already a conversationParticipant.
-         * @param Conversation $model
+         * Given a Task and User, determine if the user is already a subscriber.
+         * @param Task $model
          * @param User $user
          * @return boolean
          */
@@ -81,64 +81,177 @@
         }
 
         /**
-         * Given a conversation and a user, mark that the user has read or not read the latest changes as a conversation
-         * participant, or if the user is the owner, than as the owner.
+         * Gets task participant
+         * @param Task $task
+         * @return array
+         */
+        public static function getTaskSubscribers(Task $task)
+        {
+            $modelDerivationPathToItem = RuntimeUtil::getModelDerivationPathToItem('User');
+            foreach ($task->notificationSubscribers as $subscriber)
+            {
+                $participants[] = $subscriber->person->castDown(array($modelDerivationPathToItem));
+            }
+            return $participants;
+        }
+
+        /**
+         * Given a Task and the User that updates the task
+         * return the people on the task to send new notification to
+         * @param Task $task
+         * @param User $user
+         * @return Array $peopleToSendNotification
+         */
+        public static function resolvePeopleToSendNotificationToOnTaskUpdate(Task $task, User $user)
+        {
+            $peopleToSendNotification = array();
+            $peopleSubscribedForTask     = self::resolvePeopleSubscribedForTask($task);
+            foreach ($peopleSubscribedForTask as $people)
+            {
+                if (!$people->isSame($user))
+                {
+                    $peopleToSendNotification[] = $people;
+                }
+            }
+            return $peopleToSendNotification;
+        }
+
+        /**
+         * Resolve people on task
+         * @param Task $task
+         * @return array
+         */
+        public static function resolvePeopleSubscribedForTask(Task $task)
+        {
+            $people   = self::getTaskSubscribers($task);
+            $people[] = $task->owner;
+            $people[] = $task->requestedByUser;
+            return $people;
+        }
+
+        /**
+         * Send notification to user on task update
+         * @param Task $task
+         * @param type $senderPerson
+         * @param type $peopleToSendNotification
+         * @return type
+         */
+        public static function sendNotificationOnTaskUpdate(Task $task, $message)
+        {
+            $senderPerson = Yii::app()->user->userModel;
+            $peopleToSendNotification = self::resolvePeopleToSendNotificationToOnTaskUpdate($task, $senderPerson);
+            if (count($peopleToSendNotification) > 0)
+            {
+                $emailRecipients = array();
+                foreach ($peopleToSendNotification as $people)
+                {
+                    if ($people->primaryEmail->emailAddress !== null &&
+                    !UserConfigurationFormAdapter::resolveAndGetValue($people, 'turnOffEmailNotifications'))
+                    {
+                        $emailRecipients[] = $people;
+                    }
+                }
+                $subject = self::getEmailSubject($task);
+                $content = self::getEmailContent($task, $message, $senderPerson);
+                if ($emailRecipients > 0)
+                {
+                    EmailNotificationUtil::resolveAndSendEmail($senderPerson, $emailRecipients, $subject, $content);
+                }
+                else
+                {
+                    return;
+                }
+            }
+            else
+            {
+                return;
+            }
+        }
+
+        /**
+         * Get email content
+         * @param RedBeanModel $model
+         * @param string $message
+         * @param User $user
+         * @return EmailMessageContent
+         */
+        public static function getEmailContent(RedBeanModel $model, $message, User $user)
+        {
+            $emailContent  = new EmailMessageContent();
+            $url           = static::getUrlToEmail($model);
+            $textContent   = Zurmo::t('TasksModule', "Hello, {lineBreak} {updaterName} updates to the " .
+                                             "{strongStartTag}{modelName}{strongEndTag}: {lineBreak}" .
+                                             "\"{message}.\" {lineBreak}{lineBreak} {url} ",
+                                    array('{lineBreak}'           => "\n",
+                                          '{strongStartTag}'      => null,
+                                          '{strongEndTag}'        => null,
+                                          '{updaterName}'         => strval($user),
+                                          '{modelName}'           => $model->getModelLabelByTypeAndLanguage(
+                                                                     'SingularLowerCase'),
+                                          '{message}'             => strval($message),
+                                          '{url}'                 => ZurmoHtml::link($url, $url)
+                                        ));
+            $emailContent->textContent  = EmailNotificationUtil::
+                                                resolveNotificationTextTemplate($textContent);
+            $htmlContent = Zurmo::t('TasksModule', "Hello, {lineBreak} {updaterName} updates to the " .
+                                             "{strongStartTag}{url}{strongEndTag}: {lineBreak}" .
+                                             "\"{message}.\"",
+                               array('{lineBreak}'           => "<br/>",
+                                     '{strongStartTag}'      => '<strong>',
+                                     '{strongEndTag}'        => '</strong>',
+                                     '{updaterName}'         => strval($user),
+                                     '{message}'             => strval($message),
+                                     '{url}'                 => ZurmoHtml::link($model->getModelLabelByTypeAndLanguage(
+                                                                'SingularLowerCase'), $url)
+                                   ));
+            $emailContent->htmlContent  = EmailNotificationUtil::resolveNotificationHtmlTemplate($htmlContent);
+            return $emailContent;
+        }
+
+        /**
+         * Gets email subject for the notification
+         * @param Task $model
+         * @return type
+         */
+        public static function getEmailSubject($model)
+        {
+            if ($model instanceof Task)
+            {
+                return Zurmo::t('TasksModule', 'New update on {modelName}: {subject}',
+                                    array('{subject}'   => strval($model),
+                                          '{modelName}' => $model->getModelLabelByTypeAndLanguage('SingularLowerCase')));
+            }
+        }
+
+        /**
+         * Gets url to task detail view
+         * @param RedBeanModel $model
+         * @return string
+         */
+        public static function getUrlToEmail($model)
+        {
+            return Yii::app()->createAbsoluteUrl('tasks/default/details/', array('id' => $model->id));
+        }
+
+        /**
+         * Given a Conversation and the User that created the new comment
+         * return the people on the conversation to send new notification to
          * @param Conversation $conversation
          * @param User $user
-         * @param Boolean $hasReadLatest
+         * @return Array $peopleToSendNotification
          */
-//        public static function markUserHasReadLatest(Conversation $conversation, User $user, $hasReadLatest = true)
-//        {
-//            assert('$conversation->id > 0');
-//            assert('$user->id > 0');
-//            assert('is_bool($hasReadLatest)');
-//            $save = false;
-//            if ($user->getClassId('Item') == $conversation->owner->getClassId('Item'))
-//            {
-//                if ($conversation->ownerHasReadLatest != $hasReadLatest)
-//                {
-//                    $conversation->ownerHasReadLatest = $hasReadLatest;
-//                    $save                             = true;
-//                }
-//            }
-//            else
-//            {
-//                foreach ($conversation->conversationParticipants as $position => $participant)
-//                {
-//                    if ($participant->person->getClassId('Item') == $user->getClassId('Item') && $participant->hasReadLatest != $hasReadLatest)
-//                    {
-//                        $conversation->conversationParticipants[$position]->hasReadLatest = $hasReadLatest;
-//                        $save                                                             = true;
-//                    }
-//                }
-//            }
-//            if ($save)
-//            {
-//                $conversation->save();
-//            }
-//        }
-
-//        public static function hasUserReadConversationLatest(Conversation $conversation, User $user)
-//        {
-//            assert('$conversation->id > 0');
-//            assert('$user->id > 0');
-//            if ($user->isSame($conversation->owner))
-//            {
-//                return $conversation->ownerHasReadLatest;
-//            }
-//            else
-//            {
-//                foreach ($conversation->conversationParticipants as $position => $participant)
-//                {
-//                    if ($participant->person->getClassId('Item') == $user->getClassId('Item'))
-//                    {
-//                        return $participant->hasReadLatest;
-//                    }
-//                }
-//            }
-//            return false;
-//        }
-
-
+        public static function  resolvePeopleToSendNotificationToOnNewComment(Task $task, User $user)
+        {
+            $peopleToSendNotification    = array();
+            $peopleSubscribedForTask     = self::resolvePeopleSubscribedForTask($task);
+            foreach ($peopleSubscribedForTask as $people)
+            {
+                if (!$people->isSame($user))
+                {
+                    $peopleToSendNotification[] = $people;
+                }
+            }
+            return $peopleToSendNotification;
+        }
     }
 ?>

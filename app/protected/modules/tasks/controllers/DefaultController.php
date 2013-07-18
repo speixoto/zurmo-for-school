@@ -89,7 +89,7 @@
          * Update owner or requested by user for task
          * @param int $id
          */
-        public function actionUpdateUserViaAjax($id, $attribute, $userId)
+        public function actionUpdateRelatedUsersViaAjax($id, $attribute, $userId)
         {
             $task = Task::getById(intval($id));
             $user = User::getById(intval($userId));
@@ -98,12 +98,15 @@
                 case 'owner':
                               $task->owner = $user;
                               $task->save();
+                              TasksUtil::sendNotificationOnTaskUpdate($task, Zurmo::t('TasksModule', 'Owner is updated'));
                               break;
 
                 case 'requestedByUser':
                               $explicitReadWriteModelPermissions = ExplicitReadWriteModelPermissionsUtil::makeBySecurableItem($task);
                               $task->requestedByUser = $user;
                               $task->save();
+                              TasksUtil::sendNotificationOnTaskUpdate($task, Zurmo::t('TasksModule', 'Requested by user is updated'));
+
                               $success  = ExplicitReadWriteModelPermissionsUtil::
                                                  resolveExplicitReadWriteModelPermissions($task,                                                 $explicitReadWriteModelPermissions);
                               break;

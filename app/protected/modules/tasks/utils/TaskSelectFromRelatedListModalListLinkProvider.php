@@ -75,7 +75,7 @@
          */
         public function getLinkString($attributeString)
         {
-            $url     = Yii::app()->createUrl('tasks/default/updateUserViaAjax', array('id' => $this->sourceModelId));
+            $url     = Yii::app()->createUrl('tasks/default/updateRelatedUsersViaAjax', array('id' => $this->sourceModelId));
             $errorInProcess = CJavaScript::quote(Zurmo::t('Core', 'There was an error processing your request'));
             $string  = 'ZurmoHtml::link(';
             $string .= $attributeString . ', ';

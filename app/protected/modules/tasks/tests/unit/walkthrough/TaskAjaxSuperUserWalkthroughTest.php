@@ -71,12 +71,12 @@
             $task   = $tasks[0];
             $taskId = $task->id;
             $this->setGetArray(array('id' => $task->id, 'attribute' => 'owner', 'userId' => $user->id));
-            $this->runControllerWithNoExceptionsAndGetContent('tasks/default/updateUserViaAjax');
+            $this->runControllerWithNoExceptionsAndGetContent('tasks/default/updateRelatedUsersViaAjax');
             $task   = Task::getById($taskId);
             $this->assertEquals($user->id, $task->owner->id);
 
             $this->setGetArray(array('id' => $task->id, 'attribute' => 'requestedByUser', 'userId' => $user->id));
-            $this->runControllerWithNoExceptionsAndGetContent('tasks/default/updateUserViaAjax');
+            $this->runControllerWithNoExceptionsAndGetContent('tasks/default/updateRelatedUsersViaAjax');
             $task   = Task::getById($taskId);
 
             $this->assertEquals($user->id, $task->requestedByUser->id);
