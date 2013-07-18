@@ -459,11 +459,9 @@
             $campaignId         = $campaign->id;
             $campaignItems      = CampaignItem::getByProcessedAndCampaignId(0, $campaignId);
             $this->assertEmpty($campaignItems);
-            echo 'here we are ' .  $campaign->marketingList->id . ' xxxx'."\n";
             //Process open campaigns.
-            //todO:
             CampaignItemsUtil::generateCampaignItemsForDueCampaigns();
-           // $this->assertTrue(CampaignItemsUtil::generateCampaignItemsForDueCampaigns());
+            $this->assertTrue(CampaignItemsUtil::generateCampaignItemsForDueCampaigns(null, 50));
             $campaign           = Campaign::getById($campaignId);
             $this->assertNotNull($campaign);
             $this->assertEquals(Campaign::STATUS_PROCESSING, $campaign->status);
