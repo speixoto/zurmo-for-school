@@ -84,13 +84,9 @@
         protected function resolveNameContent()
         {
             $element                       = new DropDownElement($this->model, 'title', null);
-            $element->nonEditableTemplate  = '{content}';
-            $spanContent                   = ZurmoHtml::tag('span', array('class' => 'salutation'), $element->render());
-            $starLink = StarredUtil::getToggleStarStatusLink($this->model, null);
-            return ZurmoHtml::tag('h2', array(), $spanContent . strval($this->model) . $starLink);
-            $spanContent                   = ZurmoHtml::tag('span', array('class' => 'salutation'), $element->render());
-            return ZurmoHtml::tag('h2', array(), $spanContent . strval($this->model));
-            $salutation = $element->render();
+            $element->nonEditableTemplate  = '{content}';            
+            $starLink                      = StarredUtil::getToggleStarStatusLink($this->model, null);                        
+            $salutation                    = $element->render();
             if($salutation != null)
             {
                 $spanContent = ZurmoHtml::tag('span', array('class' => 'salutation'), $element->render());
@@ -99,7 +95,7 @@
             {
                 $spanContent = null;
             }
-            return ZurmoHtml::tag('h2', array(), $spanContent . strval($this->model));
+            return ZurmoHtml::tag('h2', array(), $spanContent . strval($this->model) . $starLink);            
         }
 
         protected function resolveBackOfCardLinkContent()
