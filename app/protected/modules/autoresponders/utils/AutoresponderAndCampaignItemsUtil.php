@@ -45,7 +45,7 @@
             $itemId                     = $item->id;
             $itemClass                  = get_class($item);
             assert('$itemClass === "AutoresponderItem" || $itemClass === "CampaignItem"');
-            $contact                                = $item->contact;
+            $contact                    = $item->contact;
             if (empty($contact) || $contact->id < 0)
             {
                 throw new NotFoundException();
@@ -54,7 +54,11 @@
             $itemOwnerModel             = $item->$ownerModelRelationName;
             assert('is_object($itemOwnerModel)');
             assert('get_class($itemOwnerModel) === "Autoresponder" || get_class($itemOwnerModel) === "Campaign"');
-            if ($contact->primaryEmail->optOut)
+            if ($contact->primaryEmail->optOut ||
+               (get_class($itemOwnerModel) === "Campaign" && MarketingListMember::getByMarketingListIdContactIdAndSubscribed(
+                                                                                $itemOwnerModel->marketingList->id,
+                                                                                $contact->id,
+                                                                                true) != false))
             {
                 $activityClass  = $itemClass . 'Activity';
                 $personId       = $contact->getClassId('Person');
