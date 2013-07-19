@@ -4879,29 +4879,29 @@ body.honey .action-reject:hover .z-label {
 .color-swatch.honey .theme-color-3 {
   background: #582823;
 }
-.background-texture-1 body.light-noise-diagonal,
+body.light-noise-diagonal,
 .texture-swatch.light-noise-diagonal .background-texture-1 {
-  background: url(../patterns/light-noise-diagonal/light-noise-diagonal.png) left top repeat;
+  background: url(../patterns/light-noise-diagonal/light-noise-diagonal.png) left top repeat !important;
 }
 body.french-stucco,
 .texture-swatch.french-stucco .background-texture-1 {
-  background: url(../patterns/french-stucco/french-stucco.png) left top repeat;
+  background: url(../patterns/french-stucco/french-stucco.png) left top repeat !important;
 }
 body.exclusive-paper,
 .texture-swatch.exclusive-paper .background-texture-1 {
-  background: url(../patterns/exclusive-paper/exclusive-paper.png) left top repeat;
+  background: url(../patterns/exclusive-paper/exclusive-paper.png) left top repeat !important;
 }
 body.diagonal-noise,
 .texture-swatch.iagonal-noise .background-texture-1 {
-  background: url(../patterns/diagonal-noise/diagonal-noise.png) left top repeat;
+  background: url(../patterns/diagonal-noise/diagonal-noise.png) left top repeat !important;
 }
 body.paper,
 .texture-swatch.paper .background-texture-1 {
-  background: url(../patterns/paper/paper.png) left top repeat;
+  background: url(../patterns/paper/paper.png) left top repeat !important;
 }
 body.light-toast,
 .texture-swatch.light-toast .background-texture-1 {
-  background: url(../patterns/light-toast/light-toast.png) left top repeat;
+  background: url(../patterns/light-toast/light-toast.png) left top repeat !important;
 }
 /*END COLOR SCHEME/THEME*//*
 @font-face {
@@ -7680,6 +7680,13 @@ td.empty {
   font-size: 14px;
   line-height: 21px;
 }
+.splash-view .general-issue-notice p {
+  margin: 0;
+  float: none;
+  width: 100%;
+  font-size: 14px;
+  line-height: 21px;
+}
 /*forms*/
 .form input[type="checkbox"] {
   margin: 0 0 10px 0 !important;
@@ -7783,17 +7790,20 @@ td.empty {
   display: inline-block;
   font-style: italic;
   font-size: 11px;
-  padding: 0 0 5px 0;
+  padding: 0 20px 5px 0;
+  position: relative;
+  left: 20px;
+  top: 5px;
 }
 .form .row-description:before {
   content: "T";
   font-weight: normal;
   font-size: 24px;
   font-family: "ZurmoGamificationSymblyReguRg";
-  margin-right: 6px;
+  margin-left: -20px;
   font-style: normal;
-  position: relative;
-  top: 2px;
+  position: absolute;
+  top: -4px;
 }
 .AppContent label {
   font-size: 12px;
@@ -8449,6 +8459,13 @@ div.wide.form label.hasCheckBox {
   font-size: 300px;
   font-family: "ZurmoGamificationSymblyReguRg";
   line-height: 52%;
+}
+.highlight-create-button {
+  -o-animation: throb 2.5s infinite ease-in-out;
+  -ms-animation: throb 2.5s infinite ease-in-out;
+  -moz-animation: throb 2.5s infinite ease-in-out;
+  -webkit-animation: throb 2.5s infinite ease-in-out;
+  animation: throb 2.5s infinite ease-in-out;
 }
 #NoUserEmailConfigurationYetView .z-label {
   z-index: auto;
@@ -9262,6 +9279,7 @@ div.wide.form label.hasCheckBox {
   width: 100%;
 }
 .has-model-select {
+  z-index: 0;
   clear: left;
   padding: 0 !important;
 }
@@ -13843,12 +13861,12 @@ div.wide.form .errorMessage {
 }
 /* Example tokeninput style #2: Facebook style */
 ul.token-input-list {
+  z-index: 0;
   overflow: hidden;
   height: auto !important;
   height: 1%;
   cursor: text;
   min-height: 1px;
-  z-index: 999;
   margin: 0;
   padding: 0;
   background-color: #fff;
@@ -16830,11 +16848,17 @@ a.user-link {
 #AllSocialItemsForPortletView .comment-content {
   padding-right: 15px;
 }
+#MissionsPageView #comment-inline-edit-form .left-column,
 #ConversationsPageView #comment-inline-edit-form .left-column,
+#MissionsPageView #social-item-inline-edit-form .left-column,
 #ConversationsPageView #social-item-inline-edit-form .left-column {
   padding: 0;
+  z-index: 110;
+  position: relative;
 }
+#MissionsPageView #comment-inline-edit-form .form-toolbar,
 #ConversationsPageView #comment-inline-edit-form .form-toolbar,
+#MissionsPageView #social-item-inline-edit-form .form-toolbar,
 #ConversationsPageView #social-item-inline-edit-form .form-toolbar {
   padding: 0;
 }
@@ -18268,7 +18292,6 @@ a.user-link {
 .tabs-container,
 .email-template-content {
   position: relative;
-  min-height: 200px;
   margin-bottom: 15px;
 }
 .tabs-container > .tab,
@@ -18277,7 +18300,6 @@ a.user-link {
   top: 28px;
   left: 0;
   width: 100%;
-  min-height: 170px;
   display: none;
   line-height: 150%;
   padding: 0;
@@ -18888,8 +18910,8 @@ a + .autoresponder-stats {
   -ms-text-shadow: 0 0 5px #ffd900;
   text-shadow: 0 0 5px #ffd900;
 }
-.CampaignItemsRelatedListView .icon-empty {
-  display: none;
+.CampaignItemsRelatedListView .icon-empty:before {
+  content: "f";
 }
 .no-subscribers-found .icon-notice:before,
 .no-email-recipients-found .icon-notice:before {
@@ -19755,6 +19777,15 @@ a + .autoresponder-stats {
 }
 .icon-youtube {
   background: url(../images/social-icons/youtube.png) center center no-repeat;
+}
+.icon-klout {
+  background: url(../images/social-icons/klout.png) center center no-repeat;
+}
+.icon-gravatar {
+  background: url(../images/social-icons/gravatar.png) center center no-repeat;
+}
+.icon-plancast {
+  background: url(../images/social-icons/plancast.png) center center no-repeat;
 }
 .back-of-card {
   display: none;

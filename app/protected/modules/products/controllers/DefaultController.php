@@ -334,19 +334,18 @@
             assert('$id != null && $id != ""');
             assert('$value != null && $value != ""');
             $id         = intval($id);
-            $value      = intval($value);
             $product    = Product::getById($id);
             ControllerSecurityUtil::resolveAccessCanCurrentUserWriteModel($product);
             switch($attribute)
             {
-                case 'quantity'     : $product->quantity     = $value;
+                case 'quantity'     :   $value      = intval($value);
+                                        $product->quantity     = $value;
                                         break;
-                case 'sellPrice'    : $product->sellPrice->value = $value;
+                case 'sellPrice'    :   $value      = floatval($value);
+                                        $product->sellPrice->value = $value;
                                         break;
             }
             $product->save();
-            header('Content-type: application/json');
-            die();
         }
 
         /**
@@ -361,7 +360,7 @@
          * @param string $relationModelClassName
          */
         public function actionCreateProductFromProductTemplate($relationModuleId, $portletId, $uniqueLayoutId, $id,
-                                $relationModelId, $relationAttributeName, $relationModelClassName = null)
+                                $relationModelId, $relationAttributeName, $relationModelClassName = null, $redirect = true)
         {
             if ($relationModelClassName == null)
             {
@@ -374,21 +373,33 @@
             $product->quantity          = 1;
             $product->stage->value      = Product::OPEN_STAGE;
             $product->productTemplate   = $productTemplate;
+            $sellPrice                  = new CurrencyValue();
+            $sellPrice->value           = $productTemplate->sellPrice->value;
+            $sellPrice->currency        = $productTemplate->sellPrice->currency;
             $product->priceFrequency    = $productTemplate->priceFrequency;
-            $product->sellPrice         = $productTemplate->sellPrice;
+            $product->sellPrice         = $sellPrice;
             $product->type              = $productTemplate->type;
+
+            foreach($productTemplate->productCategories as $productCategory)
+            {
+                $product->productCategories->add($productCategory);
+            }
 
             $relationModel              = $relationModelClassName::getById((int)$relationModelId);
             $product->$relationAttributeName = $relationModel;
             $product->save();
-            $redirectUrl = Yii::app()->createUrl('/' . $relationModuleId . '/default/details', array('id' => $relationModelId));
-            $this->redirect(array('/' . $relationModuleId . '/defaultPortlet/modalRefresh',
-                                    'portletId'            => $portletId,
-                                    'uniqueLayoutId'       => $uniqueLayoutId,
-                                    'redirectUrl'          => $redirectUrl,
-                                    'portletParams'        => array(  'relationModuleId' => $relationModuleId,
-                                                                      'relationModelId'  => $relationModelId),
-                            ));
+
+            if((bool)$redirect)
+            {
+                $redirectUrl = Yii::app()->createUrl('/' . $relationModuleId . '/default/details', array('id' => $relationModelId));
+                $this->redirect(array('/' . $relationModuleId . '/defaultPortlet/modalRefresh',
+                                        'portletId'            => $portletId,
+                                        'uniqueLayoutId'       => $uniqueLayoutId,
+                                        'redirectUrl'          => $redirectUrl,
+                                        'portletParams'        => array(  'relationModuleId' => $relationModuleId,
+                                                                          'relationModelId'  => $relationModelId),
+                                ));
+            }
         }
 
         /**

@@ -34,51 +34,19 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class AutoresponderOrCampaignMailFooterContentUtil
+    /**
+     * Specific rules for handling the type dropdown attribute
+     */
+    class ProductTemplateTypeDropDownAttributeImportRules extends DropDownAttributeImportRules
     {
-        const CONFIG_KEY_PLAIN                      = 'AutoresponderOrCampaignFooterPlainText';
-
-        const CONFIG_KEY_RICH_TEXT                  = 'AutoresponderOrCampaignFooterRichText';
-
-        const CONFIG_MODULE_NAME                    = 'AutorespondersModule';
-
-        const UNSUBSCRIBE_URL_PLACEHOLDER           = '{{UNSUBSCRIBE_URL}}';
-
-        const MANAGE_SUBSCRIPTIONS_URL_PLACEHOLDER  = '{{MANAGE_SUBSCRIPTIONS_URL}}';
-
-        public static function getContentByType($isHtmlContent, $returnDefault = true)
+        protected static function getAllModelAttributeMappingRuleFormTypesAndElementTypes()
         {
-            $key        = static::resolveConfigKeyByContentType($isHtmlContent);
-            $content    = ZurmoConfigurationUtil::getByModuleName(static::CONFIG_MODULE_NAME, $key);
-            if (empty($content) && $returnDefault)
-            {
-                $content = static::resolveDefaultValue();
-            }
-            return $content;
+            return array('DefaultValueModelAttribute' => 'ImportMappingRuleProductTemplateTypeDropDown');
         }
 
-        public static function setContentByType($content, $isHtmlContent)
+        public static function getSanitizerUtilTypesInProcessingOrder()
         {
-            $key        = static::resolveConfigKeyByContentType($isHtmlContent);
-            ZurmoConfigurationUtil::setByModuleName(static::CONFIG_MODULE_NAME, $key, $content);
-        }
-
-        protected static function resolveConfigKeyByContentType($isHtmlContent)
-        {
-            if ($isHtmlContent)
-            {
-                return static::CONFIG_KEY_RICH_TEXT;
-            }
-            else
-            {
-                return static::CONFIG_KEY_PLAIN;
-            }
-        }
-
-        protected static function resolveDefaultValue()
-        {
-            $content     = static::UNSUBSCRIBE_URL_PLACEHOLDER . ' | ' . static::MANAGE_SUBSCRIPTIONS_URL_PLACEHOLDER;
-            return $content;
+            return array('ProductTemplateType', 'Required');
         }
     }
 ?>

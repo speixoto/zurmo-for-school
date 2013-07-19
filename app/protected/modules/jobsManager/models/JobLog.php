@@ -51,6 +51,12 @@
          */
         const STATUS_COMPLETE_WITH_ERROR    = 2;
 
+        /**
+         * Do not audit JobLog model
+         * @var bool
+         */
+        protected $isAudited = false;
+
         public function __toString()
         {
             if ($this->type == null)
@@ -58,6 +64,23 @@
                 return null;
             }
             return JobsUtil::resolveStringContentByType($this->type);
+        }
+
+        public static function getByType($type, $pageSize = null)
+        {
+            assert('is_string($type)');
+            $searchAttributeData = array();
+            $searchAttributeData['clauses'] = array(
+                1 => array(
+                    'attributeName'             => 'type',
+                    'operatorType'              => 'equals',
+                    'value'                     => $type,
+                ),
+            );
+            $searchAttributeData['structure'] = '1';
+            $joinTablesAdapter                = new RedBeanModelJoinTablesQueryAdapter(get_called_class());
+            $where = RedBeanModelDataProvider::makeWhere(get_called_class(), $searchAttributeData, $joinTablesAdapter);
+            return self::getSubset($joinTablesAdapter, null, $pageSize, $where, null);
         }
 
         public static function getDefaultMetadata()
@@ -87,16 +110,9 @@
                     array('type',           'length', 'min'  => 3, 'max' => 64),
                 ),
                 'defaultSortAttribute' => 'type',
-                'noAudit' => array(
-                    'endDateTime',
-                    'message',
-                    'startDateTime',
-                    'status',
-                    'type'
-                ),
                 'elements' => array(
                     'description'     => 'TextArea',
-                    'endDateTimex'    => 'DateTime',
+                    'endDateTime'     => 'DateTime',
                     'startDateTime'   => 'DateTime',
                 ),
             );

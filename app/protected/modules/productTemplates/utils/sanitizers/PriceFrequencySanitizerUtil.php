@@ -34,43 +34,60 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class FlashMessageView extends View
+   /**
+     * Sanitizer for handling price frequency.
+     */
+    class PriceFrequencySanitizerUtil extends SanitizerUtil
     {
-        protected $controller;
-
-        public function __construct(CController $controller)
+        public static function supportsSqlAttributeValuesDataAnalysis()
         {
-            $this->controller = $controller;
+            return false;
         }
 
-        protected function renderContent()
+        public static function getBatchAttributeValueDataAnalyzerType()
         {
-            $content = '<div id="FlashMessageBar"></div>';
-            if (Yii::app()->user->hasFlash('notification'))
+            return 'PriceFrequency';
+        }
+
+        /**
+         * Given a user status, attempt to resolve it as a valid status.  If the status is invalid, a
+         * InvalidValueToSanitizeException will be thrown.
+         * @param string $modelClassName
+         * @param string $attributeName
+         * @param mixed $value
+         * @param array $mappingRuleData
+         */
+        public static function sanitizeValue($modelClassName, $attributeName, $value, $mappingRuleData)
+        {
+            assert('is_string($modelClassName)');
+            assert('$mappingRuleData == null');
+            if ($value == null)
             {
-                $script = "
-                $('#FlashMessageBar').jnotifyAddMessage(
-                {
-                    text: '". ZurmoHtml::encode(Yii::app()->user->getFlash('notification')) ."',
-                    permanent: true,
-                    showIcon: true,
-                }
-                );
-                ";
-                Yii::app()->clientScript->registerScript('FlashMessage', $script);
+                return $value;
             }
-            $this->controller->beginClip("FlashMessage");
-            $this->controller->widget('application.core.widgets.JNotify', array(
-                'statusBarId' => 'FlashMessageBar',
-            ));
-            $this->controller->endClip();
-            $content .= $this->controller->clips['FlashMessage'];
-            return $content;
-        }
-
-        public function isUniqueToAPage()
-        {
-            return true;
+            try
+            {
+                if (strtolower($value) == strtolower(ProductTemplate::PRICE_FREQUENCY_ONE_TIME))
+                {
+                    return ProductTemplate::PRICE_FREQUENCY_ONE_TIME;
+                }
+                elseif (strtolower($value) == strtolower(ProductTemplate::PRICE_FREQUENCY_MONTHLY))
+                {
+                    return ProductTemplate::PRICE_FREQUENCY_MONTHLY;
+                }
+                elseif (strtolower($value) == strtolower(ProductTemplate::PRICE_FREQUENCY_ANNUALLY))
+                {
+                    return ProductTemplate::PRICE_FREQUENCY_ANNUALLY;
+                }
+                else
+                {
+                    throw new InvalidValueToSanitizeException();
+                }
+            }
+            catch (NotFoundException $e)
+            {
+                throw new InvalidValueToSanitizeException(Zurmo::t('ProductTemplatesModule', 'The price frequency specified is invalid.'));
+            }
         }
     }
 ?>

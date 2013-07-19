@@ -2219,6 +2219,16 @@ td.empty{
 	}
 }
 
+.splash-view{
+	.general-issue-notice p{
+		margin: 0;
+		float: none;
+		width: 100%;
+		font-size: 14px;
+		line-height: 21px;
+	}
+}
+
 /*forms*/
 .form{
 	input[type="checkbox"]{
@@ -2294,14 +2304,18 @@ td.empty{
 		display: inline-block;
 		font-style: italic;
 		.smaller();
-		padding: 0 0 5px 0;
+		padding: 0 20px 5px 0;
+		//white-space: nowrap;
+		position: relative;
+		left: 20px;
+		top:5px;
 		&:before{
 			content:"T";
 			.symbly(24px);
-			margin-right: 6px;
+			margin-left: -20px;
 			font-style: normal;
-			position: relative;
-			top: 2px;
+			position: absolute;
+			top: -4px;
 		}
 	}
 }
@@ -2843,6 +2857,14 @@ div.wide.form{
 		.symbly(300px);
 		line-height: 52%;
 	}
+}
+
+.highlight-create-button{
+	-o-animation: throb 2.5s infinite ease-in-out;
+	-ms-animation: throb 2.5s infinite ease-in-out;
+	-moz-animation: throb 2.5s infinite ease-in-out;
+	-webkit-animation: throb 2.5s infinite ease-in-out;
+	animation: throb 2.5s infinite ease-in-out;
 }
 
 
@@ -3548,6 +3570,7 @@ div.wide.form{
 }
 
 .has-model-select{
+	z-index: 0;
 	clear:left;
 	padding:0 !important;
 	input{

@@ -107,13 +107,13 @@
          * Fallback from address to use for sending out notifications.
          * @var string
          */
-        public $defaultFromAddress;  
+        public $defaultFromAddress;
 
         /**
          * Utilized when sending a test email nightly to check the status of the smtp server
          * @var string
          */
-        public $defaultTestToAddress;  
+        public $defaultTestToAddress;
 
         /**
          * Called once per page load, will load up outbound settings from the database if available.
@@ -301,19 +301,13 @@
             $mailer->security = $this->outboundSecurity;
             $mailer->Subject  = $emailMessage->subject;
             $mailer->headers  = unserialize($emailMessage->headers);
-            if ($emailMessage->content->htmlContent == null && $emailMessage->content->textContent != null)
+            if (!empty($emailMessage->content->textContent))
             {
-                $mailer->body     = $emailMessage->content->textContent;
                 $mailer->altBody  = $emailMessage->content->textContent;
             }
-            elseif ($emailMessage->content->htmlContent != null && $emailMessage->content->textContent == null)
+            if (!empty($emailMessage->content->htmlContent))
             {
                 $mailer->body     = $emailMessage->content->htmlContent;
-            }
-            elseif ($emailMessage->content->htmlContent != null && $emailMessage->content->textContent != null)
-            {
-                $mailer->body     = $emailMessage->content->htmlContent;
-                $mailer->altBody  = $emailMessage->content->textContent;
             }
             $mailer->From = array($emailMessage->sender->fromAddress => $emailMessage->sender->fromName);
             foreach ($emailMessage->recipients as $recipient)
@@ -406,12 +400,12 @@
             }
             return $user->primaryEmail->emailAddress;
         }
-        
+
         /*
          * Resolving Default Email Addess For Email Testing
          */
         public static function resolveDefaultEmailAddress($defaultEmailAddress)
-        {                       
+        {
             return $defaultEmailAddress . '@' . StringUtil::resolveCustomizedLabel() . 'alerts.com';
         }
     }

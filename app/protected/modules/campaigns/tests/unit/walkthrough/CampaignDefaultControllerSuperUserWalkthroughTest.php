@@ -97,12 +97,58 @@
             // Test all default controller actions that do not require any POST/GET variables to be passed.
             $this->runControllerWithNoExceptionsAndGetContent('campaigns/default');
             $this->runControllerWithNoExceptionsAndGetContent('campaigns/default/index');
-            $this->runControllerWithNoExceptionsAndGetContent('campaigns/default/list');
-            $this->runControllerWithNoExceptionsAndGetContent('campaigns/default/create');
+            $content = $this->runControllerWithNoExceptionsAndGetContent('campaigns/default/list');
+            $compareContent = 'Campaigns will not run properly until scheduled jobs are set up. Contact your administrator.';
+            $this->assertTrue(strpos($content, $compareContent) === false);
+            $content = $this->runControllerWithNoExceptionsAndGetContent('campaigns/default/create');
+            $compareContent = 'Campaigns will not run properly until scheduled jobs are set up. Contact your administrator.';
+            $this->assertTrue(strpos($content, $compareContent) !== false);
         }
 
         /**
          * @depends testSuperUserAllDefaultControllerActions
+         */
+        public function testWhenJobsHaveRunTheFlashMessageDoesNotShowUp()
+        {
+            $jobLog                = new JobLog();
+            $jobLog->type          = 'CampaignGenerateDueCampaignItems';
+            $jobLog->startDateTime = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
+            $jobLog->endDateTime   = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
+            $jobLog->status        = JobLog::STATUS_COMPLETE_WITHOUT_ERROR;
+            $jobLog->isProcessed   = false;
+            $this->assertTrue($jobLog->save());
+
+            $jobLog                = new JobLog();
+            $jobLog->type          = 'CampaignMarkCompleted';
+            $jobLog->startDateTime = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
+            $jobLog->endDateTime   = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
+            $jobLog->status        = JobLog::STATUS_COMPLETE_WITHOUT_ERROR;
+            $jobLog->isProcessed   = false;
+            $this->assertTrue($jobLog->save());
+
+            $jobLog                = new JobLog();
+            $jobLog->type          = 'CampaignQueueMessagesInOutbox';
+            $jobLog->startDateTime = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
+            $jobLog->endDateTime   = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
+            $jobLog->status        = JobLog::STATUS_COMPLETE_WITHOUT_ERROR;
+            $jobLog->isProcessed   = false;
+            $this->assertTrue($jobLog->save());
+
+            $jobLog                = new JobLog();
+            $jobLog->type          = 'ProcessOutboundEmail';
+            $jobLog->startDateTime = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
+            $jobLog->endDateTime   = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
+            $jobLog->status        = JobLog::STATUS_COMPLETE_WITHOUT_ERROR;
+            $jobLog->isProcessed   = false;
+            $this->assertTrue($jobLog->save());
+
+            $content = $this->runControllerWithNoExceptionsAndGetContent('campaigns/default/create');
+            $compareContent = 'Campaigns will not run properly until scheduled jobs are set up. Contact your administrator.';
+            $this->assertTrue(strpos($content, $compareContent) === false);
+        }
+
+        /**
+         * @depends testWhenJobsHaveRunTheFlashMessageDoesNotShowUp
          */
         public function testSuperUserListAction()
         {
@@ -310,16 +356,16 @@
             $this->assertTrue(strpos($content, '<div class="right-column">') !== false);
             $this->assertTrue(strpos($content, '<div class="email-template-combined-content">') !== false);
             $this->assertTrue(strpos($content, '<div class="email-template-content"><div class="tabs-nav">') !== false);
-            $this->assertTrue(strpos($content, '<a class="active-tab" href="#tab1">Text Content</a>') !== false);
-            $this->assertTrue(strpos($content, '<a href="#tab2">Html Content</a>') !== false);
+            $this->assertTrue(strpos($content, '<a href="#tab1">Text Content</a>') !== false);
+            $this->assertTrue(strpos($content, '<a class="active-tab" href="#tab2">Html Content</a>') !== false);
             $this->assertTrue(strpos($content, '<a id="mergetag-guide" class="simple-link" href="#">' .
                                                 'MergeTag Guide</a></div>') !== false);
-            $this->assertTrue(strpos($content, '<div id="tab1" class="active-tab tab email-template-textContent">') !== false);
+            $this->assertTrue(strpos($content, '<div id="tab1" class=" tab email-template-textContent">') !== false);
             $this->assertTrue(strpos($content, '<th><label for="Campaign_textContent">Text Content</label></th>') !== false);
             $this->assertTrue(strpos($content, '<td colspan="1"><textarea id="Campaign_textContent" ' .
                                                 'name="Campaign[textContent]" rows="6" cols="50">' .
                                                 '</textarea></td></div>') !== false);
-            $this->assertTrue(strpos($content, '<div id="tab2" class="tab email-template-htmlContent">' .
+            $this->assertTrue(strpos($content, '<div id="tab2" class="active-tab tab email-template-htmlContent">' .
                                                 '<label for="Campaign_htmlContent">Html Content</label>') !== false);
             $this->assertTrue(strpos($content, '<textarea id=\'Campaign_htmlContent\' name=\'Campaign[htmlContent]\'>' .
                                                 '</textarea></div></div></td></div>') !== false);
@@ -511,10 +557,8 @@
             $this->assertTrue(strpos($content, '<div class="campaign-items-container">') !== false);
             $this->assertTrue(strpos($content, '<div class="cgrid-view" id="list-viewCampaignDetailsAndRelations' .
                                                 'ViewLeftBottomView') !== false);
-            $this->assertTrue(strpos($content, '<div class="general-issue-notice no-email-recipients-found">' .
-                                                '<span class="icon-notice"></span>') !== false);
-            $this->assertTrue(strpos($content, '<p>Email recipients will appear here once the campaign begins ' .
-                                                'sending out</p></div></span>') !== false);
+            $this->assertTrue(strpos($content, 'Email recipients will appear here once the campaign begins ' .
+                                                'sending out') !== false);
         }
 
         /**
@@ -616,7 +660,7 @@
             $this->assertTrue(strpos($content, '<td colspan="1"><textarea id="Campaign_textContent" ' .
                                                 'name="Campaign[textContent]" rows="6" cols="50">Text' .
                                                 '</textarea></td></div>') !== false);
-            $this->assertTrue(strpos($content, '<div id="tab2" class="tab email-template-htmlContent">' .
+            $this->assertTrue(strpos($content, '<div id="tab2" class=" tab email-template-htmlContent">' .
                                                 '<label for="Campaign_htmlContent">Html Content</label>') !== false);
             $this->assertTrue(strpos($content, '<textarea id=\'Campaign_htmlContent\' name=\'Campaign[htmlContent]\'>' .
                                                 'Html</textarea></div>') !== false);

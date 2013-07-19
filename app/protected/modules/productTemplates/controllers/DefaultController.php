@@ -114,37 +114,15 @@
 
         public function actionDetails($id)
         {
-            $productTemplate = static::getModelAndCatchNotFoundAndDisplayError('ProductTemplate', intval($id));
+            $productTemplate    = static::getModelAndCatchNotFoundAndDisplayError('ProductTemplate', intval($id));
             $breadcrumbLinks    = static::getDetailsAndEditBreadcrumbLinks();
             $breadcrumbLinks[]  = StringUtil::getChoppedStringContent(strval($productTemplate), 25);
-            if (Yii::app()->request->isAjaxRequest)
-            {
-                $categoryOutput = array();
-                $productType = $productTemplate->type;
-                $productPriceFrequency = $productTemplate->priceFrequency;
-                $productSellPriceCurrency = $productTemplate->sellPrice->currency->id;
-                $productSellPriceValue = $productTemplate->sellPrice->value;
-                foreach ($productTemplate->productCategories as $category)
-                {
-                    $categoryOutput[] = array( 'id' => $category->id, 'name' => $category->name);
-                }
-                $output = array('categoryOutput' => $categoryOutput,
-                        'productType' => $productType,
-                        'productPriceFrequency' => $productPriceFrequency,
-                        'productSellPriceCurrency' => $productSellPriceCurrency,
-                        'productSellPriceValue' => $productSellPriceValue,
-                        'productName'           => $productTemplate->name
-                        );
-
-                echo json_encode($output);
-                die();
-            }
             ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($productTemplate);
             AuditEvent::logAuditEvent('ZurmoModule', ZurmoModule::AUDIT_EVENT_ITEM_VIEWED, array(strval($productTemplate), 'ProductTemplatesModule'), $productTemplate);
             $detailsView        = new ProductTemplateDetailsView($this->getId(), $this->getModule()->getId(), $productTemplate);
             $view               = new ProductTemplatesPageView(ProductDefaultViewUtil::
-                                                            makeViewWithBreadcrumbsForCurrentUser(
-                                                                $this, $detailsView, $breadcrumbLinks, 'ProductBreadCrumbView'));
+                                                                makeViewWithBreadcrumbsForCurrentUser(
+                                                                    $this, $detailsView, $breadcrumbLinks, 'ProductBreadCrumbView'));
             echo $view->render();
         }
 
@@ -492,6 +470,36 @@
                             $this->makeEditAndDetailsView(
                                 $this->attemptToSaveModelFromPost($productTemplate, $redirectUrl), 'Edit')));
             echo $view->render();
+        }
+
+        /**
+         * Gets product template data for product
+         * @param string $id
+         */
+        public function actionGetProductTemplateDataForProduct($id)
+        {
+            $getData = GetUtil::getData();
+            $productTemplate    = static::getModelAndCatchNotFoundAndDisplayError('ProductTemplate', intval($id));
+
+            $categoryOutput             = array();
+            $productType                = $productTemplate->type;
+            $productPriceFrequency      = $productTemplate->priceFrequency;
+            $productSellPriceCurrency   = $productTemplate->sellPrice->currency->id;
+            $productSellPriceValue      = $productTemplate->sellPrice->value;
+            foreach ($productTemplate->productCategories as $category)
+            {
+                $categoryOutput[] = array( 'id' => $category->id, 'name' => $category->name);
+            }
+            $output = array('categoryOutput'           => $categoryOutput,
+                            'productType'              => $productType,
+                            'productPriceFrequency'    => $productPriceFrequency,
+                            'productSellPriceCurrency' => $productSellPriceCurrency,
+                            'productSellPriceValue'    => $productSellPriceValue,
+                            'productName'              => $productTemplate->name,
+                            'productDescription'       => $productTemplate->description
+                           );
+
+            echo CJSON::encode($output);
         }
     }
 ?>

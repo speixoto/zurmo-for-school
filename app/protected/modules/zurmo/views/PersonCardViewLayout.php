@@ -88,6 +88,18 @@
             $spanContent                   = ZurmoHtml::tag('span', array('class' => 'salutation'), $element->render());
             $starLink = StarredUtil::getToggleStarStatusLink($this->model, null);
             return ZurmoHtml::tag('h2', array(), $spanContent . strval($this->model) . $starLink);
+            $spanContent                   = ZurmoHtml::tag('span', array('class' => 'salutation'), $element->render());
+            return ZurmoHtml::tag('h2', array(), $spanContent . strval($this->model));
+            $salutation = $element->render();
+            if($salutation != null)
+            {
+                $spanContent = ZurmoHtml::tag('span', array('class' => 'salutation'), $element->render());
+            }
+            else
+            {
+                $spanContent = null;
+            }
+            return ZurmoHtml::tag('h2', array(), $spanContent . strval($this->model));
         }
 
         protected function resolveBackOfCardLinkContent()
