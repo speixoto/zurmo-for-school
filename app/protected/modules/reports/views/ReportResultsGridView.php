@@ -121,10 +121,7 @@
          */
         public function getLinkString($attributeString, $attribute)
         {
-            $string  = 'ZurmoHtml::link(';
-            $string .=  $attributeString . ', ';
-            $string .= 'ReportResultsGridUtil::makeUrlForLink("' . $attribute . '", $data)';
-            $string .= ', array("target" => "new"))';
+            $string = 'ReportResultsGridUtil::makeStringForLinkOrLinks("' . $attribute . '", $data)';            
             return $string;
         }
 

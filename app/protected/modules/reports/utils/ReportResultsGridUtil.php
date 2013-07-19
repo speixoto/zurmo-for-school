@@ -68,5 +68,35 @@
                 return $data->getModel($attribute)->getModuleClassName();
             }
         }
-    }
+        
+        public static function makeStringForLinkOrLinks($attribute, ReportResultsRowData $data)
+        {
+            assert('is_string($attribute)');
+            if (null == $model = $data->getModel($attribute))
+            {
+                return null;
+            }
+            $modelClassName  = get_class($data->getModel($attribute));
+            $modelName       = strval($data->getModel($attribute));
+            $models          = $modelClassName::getByName($modelName);            
+            if (count($models) <= 1)
+            {
+                $url = static::makeUrlForLink($attribute, $data);
+                return ZurmoHtml::link($modelName, $url, array("target" => "new"));
+            }
+            else
+            {
+                $content = 'many models';
+//                $title       = Zurmo::t('ReportsModule', 'WHAT SHOULD BE THE TITLE');
+//                $content     = ZurmoHtml::tag('em', array(), Zurmo::t('CampaignsModule', 'Restricted'));
+//                $content    .= ZurmoHtml::tag('span', array('id'    => 'restricted-access-contact-tooltip' . $data->id,
+//                                                        'class' => 'tooltip',
+//                                                        'title' => $title), '?');
+//                $qtip = new ZurmoTip(array('options' => array('position' => array('my' => 'bottom left', 'at' => 'top left',
+//                                                          'adjust' => array('x' => 6, 'y' => -1)))));
+//                $qtip->addQTip('#restricted-access-contact-tooltip' . $data->id);
+                return $content;    
+            }
+        }
+    }                
 ?>
