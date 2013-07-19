@@ -458,7 +458,7 @@
             $campaign->forgetAll();
             $campaignId         = $campaign->id;
             $campaignItems      = CampaignItem::getByProcessedAndCampaignId(0, $campaignId);
-            $this->assertEmpty($campaignItems);
+            $this->assertEmpty($campaignItems);            
             //Process open campaigns.
             CampaignItemsUtil::generateCampaignItemsForDueCampaigns();
             $this->assertTrue(CampaignItemsUtil::generateCampaignItemsForDueCampaigns(null, 50));
@@ -1012,6 +1012,43 @@
             $this->assertEquals(1, substr_count($htmlContent, '/marketingLists/external/manageSubscriptions?hash='));
             $this->assertTrue(strpos($htmlContent, '">Manage Subscriptions</a>') !== false);
             $this->assertEquals(1, substr_count($htmlContent, '">Manage Subscriptions</a>'));
+        }
+        
+        public function testProcessDueCampaignItemContactUnsubscribed()
+        {
+            $email                      = new Email();
+            $email->emailAddress        = 'demo@zurmo.com';
+            $email->optOut              = false;
+            $contact                    = ContactTestHelper::createContactByNameForOwner('contact 17', $this->user);
+            $contact->primaryEmail      = $email;
+            $this->assertTrue($contact->save());
+            $marketingList              = MarketingListTestHelper::createMarketingListByName('marketingList 17',
+                                                                                                'description',
+                                                                                                'CustomFromName',
+                                                                                                'custom@from.com');
+            MarketingListMemberTestHelper::createMarketingListMember(true, $marketingList, $contact);
+            $campaign                   = CampaignTestHelper::createCampaign('campaign 17',
+                                                                             'subject 17',
+                                                                             'Dear. Sir',
+                                                                             'Dear. Sir',
+                                                                             null,
+                                                                             null,
+                                                                             null,
+                                                                             null,
+                                                                             null,
+                                                                             null,
+                                                                             $marketingList);
+            $processed                  = 0;
+            $campaignItem               = CampaignItemTestHelper::createCampaignItem($processed, $campaign, $contact);            
+            CampaignItemsUtil::processDueItem($campaignItem);
+            $this->assertEquals(1, $campaignItem->processed);
+            $personId                   = $contact->getClassId('Person');
+            $activities                 = CampaignItemActivity::getByTypeAndModelIdAndPersonIdAndUrl(
+                                                                                CampaignItemActivity::TYPE_SKIP,
+                                                                                $campaignItem->id,
+                                                                                $personId);                                   
+            $this->assertNotEmpty($activities);
+            $this->assertCount(1, $activities);
         }
 
         protected function purgeAllCampaigns()

@@ -402,7 +402,7 @@
             AutoresponderItemsUtil::processDueItem($autoresponderItem);
             $this->assertEquals(1, $autoresponderItem->processed);
             $personId                   = $contact->getClassId('Person');
-            $activities                = AutoresponderItemActivity::getByTypeAndModelIdAndPersonIdAndUrl(
+            $activities                 = AutoresponderItemActivity::getByTypeAndModelIdAndPersonIdAndUrl(
                                                                                 AutoresponderItemActivity::TYPE_SKIP,
                                                                                 $autoresponderItem->id,
                                                                                 $personId);
