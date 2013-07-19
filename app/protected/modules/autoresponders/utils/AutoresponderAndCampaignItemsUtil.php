@@ -54,17 +54,17 @@
             $itemOwnerModel             = $item->$ownerModelRelationName;
             assert('is_object($itemOwnerModel)');
             assert('get_class($itemOwnerModel) === "Autoresponder" || get_class($itemOwnerModel) === "Campaign"');
-            if ($contact->primaryEmail->optOut || 
+            if ($contact->primaryEmail->optOut ||
                (get_class($itemOwnerModel) === "Campaign" && MarketingListMember::getByMarketingListIdContactIdAndSubscribed(
-                                                                                $itemOwnerModel->marketingList->id, 
-                                                                                $contact->id, 
+                                                                                $itemOwnerModel->marketingList->id,
+                                                                                $contact->id,
                                                                                 true) != false))
             {
                 $activityClass  = $itemClass . 'Activity';
                 $personId       = $contact->getClassId('Person');
                 $type           = $activityClass::TYPE_SKIP;
                 $activityClass::createNewActivity($type, $itemId, $personId);
-            }            
+            }
             else
             {
                 $marketingList              = $itemOwnerModel->marketingList;
@@ -75,17 +75,6 @@
                 if (($itemClass == 'CampaignItem' && $itemOwnerModel->supportsRichText) || ($itemClass == 'AutoresponderItem'))
                 {
                     $htmlContent = $itemOwnerModel->htmlContent;
-                }
-                if (strpos($textContent, 'Zurmo is to provide an '))
-                {                    
-                    print(PHP_EOL . PHP_EOL . PHP_EOL);
-                    var_dump(__CLASS__ . '.' . __FUNCTION__ . '.' . __LINE__);
-                    print(PHP_EOL);
-                    var_dump("Text Content:");
-                    print($textContent);
-                    print(PHP_EOL);
-                    var_dump("HTML Content:");
-                    print($htmlContent);
                 }
                 static::resolveContent($textContent, $htmlContent, $contact, $itemOwnerModel->enableTracking,
                                        (int)$itemId, $itemClass, (int)$marketingList->id);
@@ -101,37 +90,15 @@
             }
             static::markItemAsProcessed($item);
         }
-              
+
         protected static function resolveContent(& $textContent, & $htmlContent, Contact $contact,
                                                             $enableTracking, $modelId, $modelType, $marketingListId)
         {
             assert('is_int($modelId)');
             assert('is_int($marketingListId)');
-            if (strpos($textContent, 'Zurmo is to provide an '))
-            {
-                print(PHP_EOL . PHP_EOL . PHP_EOL);
-                var_dump(__CLASS__ . '.' . __FUNCTION__ . '.' . __LINE__);
-                print(PHP_EOL);
-                var_dump("Text Content:");
-                print($textContent);
-                print(PHP_EOL);
-                var_dump("HTML Content:");
-                print($htmlContent);
-            }
             static::resolveContentForMergeTags($textContent, $htmlContent, $contact);
             static::resolveContentForTrackingAndFooter($textContent, $htmlContent, $enableTracking, $modelId,
                                                                                 $modelType, $contact, $marketingListId);
-            if (strpos($textContent, 'Zurmo is to provide an '))
-            {
-                print(PHP_EOL . PHP_EOL . PHP_EOL);
-                var_dump(__CLASS__ . '.' . __FUNCTION__ . '.' . __LINE__);
-                print(PHP_EOL);
-                var_dump("Text Content:");
-                print($textContent);
-                print(PHP_EOL);
-                var_dump("HTML Content:");
-                print($htmlContent);
-            }
         }
 
         protected static function resolveContentForMergeTags(& $textContent, & $htmlContent, Contact $contact)

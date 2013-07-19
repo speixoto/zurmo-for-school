@@ -124,9 +124,9 @@
             $specialTagsItems[]     = $this->renderBoldMergeTag(MergeTagsUtil::TAG_PREFIX . "BASE" .
                                         MergeTagsUtil::CAPITAL_DELIMITER . "URL" . MergeTagsUtil::TAG_SUFFIX) .
                                         " : prints absolute url current zurmo install without trailing slash.";
-            $specialTagsItems[]     = $this->renderBoldMergeTag(MergeTagsUtil::TAG_PREFIX . "COMPANY" .
+            $specialTagsItems[]     = $this->renderBoldMergeTag(MergeTagsUtil::TAG_PREFIX . "APPLICATION" .
                                         MergeTagsUtil::CAPITAL_DELIMITER . "NAME" . MergeTagsUtil::TAG_SUFFIX) .
-                                        " : prints company name as set in global settings > application name.";
+                                        " : prints application name as set in global settings > application name.";
             $specialTagsItems[]     = $this->renderBoldMergeTag(MergeTagsUtil::TAG_PREFIX . "CURRENT" .
                                         MergeTagsUtil::CAPITAL_DELIMITER . "YEAR" . MergeTagsUtil::TAG_SUFFIX) .
                                         " : prints current year.";
