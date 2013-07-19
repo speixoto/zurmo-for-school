@@ -121,8 +121,19 @@
          */
         public function getLinkString($attributeString, $attribute)
         {
-            $string = 'ReportResultsGridUtil::makeStringForLinkOrLinks("' . $attribute . '", $data)';            
+            $shouldRenderMultipleLinks = $this->getShouldRenderMultipleLinksByReportDataProvider($this->dataProvider);
+            $string = 'ReportResultsGridUtil::makeStringForLinkOrLinks("' . 
+                            $attribute . '", $data, "' . $shouldRenderMultipleLinks . '")';            
             return $string;
+        }
+        
+        protected function getShouldRenderMultipleLinksByReportDataProvider(ReportDataProvider $dataProvider)
+        {           
+            if ($dataProvider->report->getType() == Report::TYPE_ROWS_AND_COLUMNS)
+            {
+                return false;
+            }
+            return true;
         }
 
         /**
@@ -391,7 +402,7 @@
         }
 
         /**
-         * Override in child as neededs
+         * Override in child as needed
          */
         protected function getLeadingHeaders()
         {

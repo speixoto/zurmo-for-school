@@ -69,7 +69,7 @@
             }
         }
         
-        public static function makeStringForLinkOrLinks($attribute, ReportResultsRowData $data)
+        public static function makeStringForLinkOrLinks($attribute, ReportResultsRowData $data, $shouldRenderMultipleLinks)
         {
             assert('is_string($attribute)');
             if (null == $model = $data->getModel($attribute))
@@ -80,7 +80,7 @@
             $modelClassName  = get_class($data->getModel($attribute));
             $modelName       = strval($data->getModel($attribute));
             $models          = $modelClassName::getByName($modelName);            
-            if (count($models) <= 1)
+            if (count($models) <= 1 || !$shouldRenderMultipleLinks)
             {
                 $url = static::makeUrlForLink($attribute, $data);
                 return ZurmoHtml::link($modelName, $url, array("target" => "new"));
