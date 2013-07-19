@@ -844,9 +844,9 @@
          */
         public static function getSortAttributesByAttribute($attribute)
         {
-            if ($attribute == 'lastName')
+            if ($attribute == 'firstName')
             {
-                return array('firstName', $attribute);
+                return array($attribute, 'lastName');
             }
             return parent::getSortAttributesByAttribute($attribute);
         }
