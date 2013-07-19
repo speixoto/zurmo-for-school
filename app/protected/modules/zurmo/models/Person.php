@@ -75,7 +75,7 @@
                     'firstName'      => Zurmo::t('ZurmoModule', 'First Name', array(), null, $language),
                     'fullName'       => Zurmo::t('ZurmoModule', 'Name', array(), null, $language),
                     'jobTitle'       => Zurmo::t('ZurmoModule', 'Job Title', array(), null, $language),
-                    'lastname'       => Zurmo::t('ZurmoModule', 'Last Name', array(), null, $language),
+                    'lastName'       => Zurmo::t('ZurmoModule', 'Last Name', array(), null, $language),
                     'mobilePhone'    => Zurmo::t('ZurmoModule', 'Mobile Phone', array(), null, $language),
                     'officePhone'    => Zurmo::t('ZurmoModule', 'Office Phone', array(), null, $language),
                     'officeFax'      => Zurmo::t('ZurmoModule', 'Office Fax', array(), null, $language),
@@ -168,9 +168,9 @@
          */
         public static function getSortAttributesByAttribute($attribute)
         {
-            if ($attribute == 'lastName')
+            if ($attribute == 'firstName')
             {
-                return array('firstName', $attribute);
+                return array($attribute, 'lastName');
             }
             return parent::getSortAttributesByAttribute($attribute);
         }
