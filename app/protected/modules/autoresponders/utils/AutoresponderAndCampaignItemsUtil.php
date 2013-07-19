@@ -72,17 +72,6 @@
                 {
                     $htmlContent = $itemOwnerModel->htmlContent;
                 }
-                if (strpos($textContent, 'Zurmo is to provide an '))
-                {
-                    print(PHP_EOL . PHP_EOL . PHP_EOL);
-                    var_dump(__CLASS__ . '.' . __FUNCTION__ . '.' . __LINE__);
-                    print(PHP_EOL);
-                    var_dump("Text Content:");
-                    print($textContent);
-                    print(PHP_EOL);
-                    var_dump("HTML Content:");
-                    print($htmlContent);
-                }
                 static::resolveContent($textContent, $htmlContent, $contact, $itemOwnerModel->enableTracking,
                                        (int)$itemId, $itemClass, (int)$marketingList->id);
                 try
@@ -103,31 +92,9 @@
         {
             assert('is_int($modelId)');
             assert('is_int($marketingListId)');
-            if (strpos($textContent, 'Zurmo is to provide an '))
-            {
-                print(PHP_EOL . PHP_EOL . PHP_EOL);
-                var_dump(__CLASS__ . '.' . __FUNCTION__ . '.' . __LINE__);
-                print(PHP_EOL);
-                var_dump("Text Content:");
-                print($textContent);
-                print(PHP_EOL);
-                var_dump("HTML Content:");
-                print($htmlContent);
-            }
             static::resolveContentForMergeTags($textContent, $htmlContent, $contact);
             static::resolveContentForTrackingAndFooter($textContent, $htmlContent, $enableTracking, $modelId,
                                                                                 $modelType, $contact, $marketingListId);
-            if (strpos($textContent, 'Zurmo is to provide an '))
-            {
-                print(PHP_EOL . PHP_EOL . PHP_EOL);
-                var_dump(__CLASS__ . '.' . __FUNCTION__ . '.' . __LINE__);
-                print(PHP_EOL);
-                var_dump("Text Content:");
-                print($textContent);
-                print(PHP_EOL);
-                var_dump("HTML Content:");
-                print($htmlContent);
-            }
         }
 
         protected static function resolveContentForMergeTags(& $textContent, & $htmlContent, Contact $contact)
