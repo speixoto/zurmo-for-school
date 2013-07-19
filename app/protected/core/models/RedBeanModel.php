@@ -1829,8 +1829,8 @@
                             {
                                 $linkName = null;
                             }
-                            // TODO: @Shoaibi: Critical: elseif -> if and removed static::getRelationType($relationName) == self::HAS_ONE &&
-                            if (static::getRelationLinkType($relationName) == self::LINK_TYPE_SPECIFIC)
+                            elseif (static::getRelationType($relationName) == self::HAS_ONE &&
+                                        static::getRelationLinkType($relationName) == self::LINK_TYPE_SPECIFIC)
                             {
                                 $linkName = strtolower(static::getRelationLinkName($relationName));
                             }
@@ -1885,7 +1885,7 @@
                                 $relationAndOwns       = static::getRelationNameToRelationTypeModelClassNameAndOwnsForModel();
                                 $relatedModelClassName = $relationAndOwns[$relationName][1];
                                 $linkName = strtolower($relationName);
-                                if (strtolower($linkName) == strtolower($relatedModelClassName) &&
+                                if (strtolower($linkName) == strtolower($relatedModelClassName) ||
                                     static::getRelationLinkType($relationName) == self::LINK_TYPE_ASSUMPTIVE)
                                 {
                                     $linkName = null;

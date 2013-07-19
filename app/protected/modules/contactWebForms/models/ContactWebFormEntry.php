@@ -103,8 +103,7 @@
                 ),
                 'relations' => array(
                     'contact'            => array(RedBeanModel::HAS_ONE, 'Contact'),
-                    'contactWebForm'     => array(RedBeanModel::HAS_ONE, 'ContactWebForm', RedBeanModel::NOT_OWNED,
-                                                                        RedBeanModel::LINK_TYPE_SPECIFIC, 'entries'),
+                    'contactWebForm'     => array(RedBeanModel::HAS_ONE, 'ContactWebForm', RedBeanModel::NOT_OWNED),
                 ),
                 'rules' => array(
                     array('serializedData',    'type', 'type' => 'string'),
