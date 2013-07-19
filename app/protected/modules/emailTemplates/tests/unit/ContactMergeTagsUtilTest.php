@@ -738,7 +738,7 @@
             $resolvedContent                = $mergeTagsUtil->resolveMergeTags(self::$emailTemplate, $this->invalidTags);
             $this->assertTrue($resolvedContent !== false);
             $this->assertNotEquals($resolvedContent, $content);
-            $this->assertTrue(strpos($resolvedContent, 'localhost/') === 0);
+            $this->assertTrue(strpos($resolvedContent, 'localhost') === 0);
             $this->assertEmpty($this->invalidTags);
         }
     }
