@@ -57,7 +57,11 @@
 
         public function setIntroCookieValue($introCookieValue)
         {
-            assert('$introCookieValue == null || is_string($introCookieValue)');
+            assert('$introCookieValue == null || $introCookieValue instanceof CHttpCookie');
+            if($introCookieValue instanceof CHttpCookie)
+            {
+                $this->introCookieValue = $introCookieValue->value;
+            }
             $this->introCookieValue = $introCookieValue;
         }
 

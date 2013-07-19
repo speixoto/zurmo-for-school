@@ -62,8 +62,11 @@
 
         public function __construct($cookieValue, $activeActionElementType)
         {
-            assert('$cookieValue == null || is_string($cookieValue)');
-            $this->cookieValue             = $cookieValue;
+            assert('$cookieValue == null || $cookieValue instanceof CHttpCookie');
+            if($cookieValue instanceof CHttpCookie)
+            {
+                $this->cookieValue = $cookieValue->value;
+            }
             $this->activeActionElementType = $activeActionElementType;
         }
 
