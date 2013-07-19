@@ -76,6 +76,7 @@
             {
                 return null;
             }
+            $moduleClassName = self::resolveModuleClassName($attribute, $data);
             $modelClassName  = get_class($data->getModel($attribute));
             $modelName       = strval($data->getModel($attribute));
             $models          = $modelClassName::getByName($modelName);            
@@ -84,17 +85,31 @@
                 $url = static::makeUrlForLink($attribute, $data);
                 return ZurmoHtml::link($modelName, $url, array("target" => "new"));
             }
-            else
-            {
-                $content = 'many models';
-//                $title       = Zurmo::t('ReportsModule', 'WHAT SHOULD BE THE TITLE');
-//                $content     = ZurmoHtml::tag('em', array(), Zurmo::t('CampaignsModule', 'Restricted'));
-//                $content    .= ZurmoHtml::tag('span', array('id'    => 'restricted-access-contact-tooltip' . $data->id,
-//                                                        'class' => 'tooltip',
-//                                                        'title' => $title), '?');
-//                $qtip = new ZurmoTip(array('options' => array('position' => array('my' => 'bottom left', 'at' => 'top left',
-//                                                          'adjust' => array('x' => 6, 'y' => -1)))));
-//                $qtip->addQTip('#restricted-access-contact-tooltip' . $data->id);
+            else                
+            {                
+                $qtipContent = null;
+                $count       = 1;
+                foreach ($models as $model)
+                {
+                    $url          = Yii::app()->createUrl('/' . $moduleClassName::getDirectoryName() . '/default/details',
+                                         array('id' => $model->id));
+                    $qtipContent .= ZurmoHtml::link('Link' . $count++, $url, array("target" => "new")) . '<br />';                    
+                }
+                $content     = $modelName;
+                $content    .= '<span id="report-multiple-link-' .
+                               $data->id . '" class="tooltip">' . count($models) . '</span>';
+                $options     = array('content' =>
+                                     array(
+                                        'title' => $modelName,                                                                                    
+                                        'text'  => $qtipContent,
+                                     ),
+                                     'hide' => array('event' => 'click'),
+                                     'show' => array('event' => 'click', 'solo' => true),
+                                     'adjust' =>
+                                        array('screen' => true),                                     
+                                     'style'  => array('width' => array('max' => 600)));
+                $qtip        = new ZurmoTip();
+                $qtip->addQTip("#report-multiple-link-" . $data->id, $options);
                 return $content;    
             }
         }
