@@ -57,8 +57,6 @@
             $types          = array_keys(EmailTemplate::getTypeDropDownArray());
             for ($this->index = 0; $this->index < 7; $this->index++)
             {
-                echo PHP_EOL;
-                var_dump($this->index);
                 $emailTemplate              = new EmailTemplate();
                 $emailTemplate->type        = $types[$this->index % 2];
                 $emailTemplate->owner       = $demoDataHelper->getRandomByModelName('User');;
@@ -72,8 +70,6 @@
                 $emailTemplate->save();
                 $emailTemplates[]           = $emailTemplate->id;
             }
-            echo PHP_EOL . PHP_EOL;
-            var_dump(count($emailTemplates));
             $demoDataHelper->setRangeByModelName('EmailTemplate', $emailTemplates[0], $emailTemplates[count($emailTemplates)-1]);
         }
 

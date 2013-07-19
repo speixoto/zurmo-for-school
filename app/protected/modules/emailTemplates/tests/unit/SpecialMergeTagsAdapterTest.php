@@ -75,9 +75,9 @@
          */
         public function testResolveBaseUrl()
         {
-            $resolvedCompanyName    = SpecialMergeTagsAdapter::resolve('baseUrl', null);
-            $this->assertNotNull($resolvedCompanyName);
-            $this->assertTrue(strpos($resolvedCompanyName, 'localhost/') === 0);
+            $resolvedBaseUrl    = SpecialMergeTagsAdapter::resolve('baseUrl', null);
+            $this->assertNotNull($resolvedBaseUrl);
+            $this->assertTrue(strpos($resolvedBaseUrl, 'localhost') === 0);
         }
 
         /**

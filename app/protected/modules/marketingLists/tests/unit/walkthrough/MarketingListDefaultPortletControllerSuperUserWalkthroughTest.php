@@ -158,7 +158,7 @@
             $this->assertNotEmpty($contentArray);
             $this->assertArrayHasKey('type', $contentArray);
             $this->assertArrayHasKey('message', $contentArray);
-            $this->assertEquals('0 subscribed. 1 skipped.', $contentArray['message']);
+            $this->assertEquals('0 subscribed. 1 skipped, already in the list.', $contentArray['message']);
             $this->assertEquals('message', $contentArray['type']);
         }
 
@@ -188,17 +188,17 @@
             $this->assertNotEmpty($contentArray);
             $this->assertArrayHasKey('type', $contentArray);
             $this->assertArrayHasKey('message', $contentArray);
-            $this->assertEquals('0 subscribed. ' . $contactCount . ' skipped.', $contentArray['message']);
+            $this->assertEquals('0 subscribed. ' . $contactCount . ' skipped, already in the list.', $contentArray['message']);
             $this->assertEquals('message', $contentArray['type']);
-                                   
-            Yii::app()->pagination->setForCurrentUserByType('reportResultsListPageSize', 1);            
+
+            Yii::app()->pagination->setForCurrentUserByType('reportResultsListPageSize', 1);
             $this->setGetArray(array(
                                     'marketingListId'   => $marketingListId,
                                     'id'                => $report->id,
                                     'type'              => $type,
                                     'page'              => 2,
                                 ));
-            
+
             $content                    = $this->runControllerWithNoExceptionsAndGetContent('marketingLists/defaultPortlet/subscribeContacts');
             $contentArray               = CJson::decode($content);
             $percent                    = round((2 / $contactCount) * 100,0) ;
@@ -210,7 +210,7 @@
             $this->assertEquals(3, $contentArray['nextPage']);
             $this->assertEquals(0, $contentArray['subscribedCount']);
             $this->assertEquals(1, $contentArray['skippedCount']);
-            
+
             $this->setGetArray(array(
                                     'marketingListId'   => $marketingListId,
                                     'id'                => $report->id,
@@ -219,15 +219,15 @@
                                     'skippedCount'      => $contactCount - 1,
                                     'subscribedCount'   => 0,
                                 ));
-            
+
             $content                    = $this->runControllerWithNoExceptionsAndGetContent('marketingLists/defaultPortlet/subscribeContacts');
             $contentArray               = CJson::decode($content);
             $this->assertNotEmpty($contentArray);
             $this->assertArrayHasKey('type', $contentArray);
             $this->assertArrayHasKey('message', $contentArray);
-            $this->assertEquals("0 subscribed. {$contactCount} skipped.", $contentArray['message']);
+            $this->assertEquals("0 subscribed. {$contactCount} skipped, already in the list.", $contentArray['message']);
             $this->assertEquals('message', $contentArray['type']);
-            
+
         }
     }
 ?>
