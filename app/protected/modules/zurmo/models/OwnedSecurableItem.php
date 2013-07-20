@@ -144,7 +144,7 @@
         {
             if ($attributeName == 'owner')
             {
-                self::checkPermissionsHasAnyOf(Permission::CHANGE_OWNER);
+                $this->checkPermissionsHasAnyOf(Permission::CHANGE_OWNER);
                 $this->isSetting = true;
                 try
                 {

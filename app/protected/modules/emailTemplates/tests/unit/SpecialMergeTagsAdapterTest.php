@@ -83,17 +83,17 @@
         /**
          * @depends testResolveBaseUrl
          */
-        public function testResolveCompanyName()
+        public function testResolveApplicationName()
         {
             ZurmoConfigurationUtil::setByModuleName('ZurmoModule', 'applicationName', 'Demo App');
-            $resolvedCompanyName    = SpecialMergeTagsAdapter::resolve('companyName', null);
-            $expectedCompanyName    = ZurmoConfigurationUtil::getByModuleName('ZurmoModule', 'applicationName');
-            $this->assertNotNull($resolvedCompanyName);
-            $this->assertEquals($expectedCompanyName, $resolvedCompanyName);
+            $resolvedApplicationName    = SpecialMergeTagsAdapter::resolve('applicationName', null);
+            $expectedApplicationName    = ZurmoConfigurationUtil::getByModuleName('ZurmoModule', 'applicationName');
+            $this->assertNotNull($resolvedApplicationName);
+            $this->assertEquals($expectedApplicationName, $resolvedApplicationName);
         }
 
         /**
-         * @depends testResolveCompanyName
+         * @depends testResolveApplicationName
          */
         public function testResolveCurrentYear()
         {

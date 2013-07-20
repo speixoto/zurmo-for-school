@@ -123,6 +123,14 @@
         public function init()
         {
             $this->loadOutboundSettings();
+            $this->loadDefaultFromAndToAddresses();
+        }
+
+        /**
+         * Used to load defaultFromAddress and defaultTestToAddress
+         */
+        public function loadDefaultFromAndToAddresses()
+        {
             $this->defaultFromAddress   = EmailHelper::resolveDefaultEmailAddress('notification');
             $this->defaultTestToAddress = EmailHelper::resolveDefaultEmailAddress('testJobEmail');
         }

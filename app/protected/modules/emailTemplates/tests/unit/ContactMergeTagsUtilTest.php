@@ -677,10 +677,10 @@
         /**
          * @depends testModelCustomAttribute
          */
-        public function testCompanyNameMergeTag()
+        public function testApplicationNameMergeTag()
         {
             ZurmoConfigurationUtil::setByModuleName('ZurmoModule', 'applicationName', 'Demo App');
-            $content                        = '[[COMPANY^NAME]]';
+            $content                        = '[[APPLICATION^NAME]]';
             $expectedContent                = ZurmoConfigurationUtil::getByModuleName('ZurmoModule', 'applicationName');
             $mergeTagsUtil                  = MergeTagsUtilFactory::make(EmailTemplate::TYPE_CONTACT, null, $content);
             $this->assertTrue($mergeTagsUtil instanceof MergeTagsUtil);
@@ -693,7 +693,7 @@
         }
 
         /**
-         * @depends testCompanyNameMergeTag
+         * @depends testApplicationNameMergeTag
          */
         public function testCurrentYearMergeTag()
         {
