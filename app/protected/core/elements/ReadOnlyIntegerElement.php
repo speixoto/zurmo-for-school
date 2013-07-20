@@ -34,27 +34,14 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class FullNameListViewColumnAdapter extends ListViewColumnAdapter
+    /**
+     * Displays an integer value as read only
+     */
+    class ReadOnlyIntegerElement extends IntegerElement
     {
-        public function renderGridViewData()
+        public static function isReadOnly()
         {
-            if ($this->getIsLink())
-            {
-                return array(
-                'name' => 'firstName',
-                'header' => Zurmo::t('Core', 'Name'),
-                'type' => 'raw',
-                'value' => $this->view->getLinkString('$data', $this->attribute),
-                );
-            }
-            else
-            {
-                return array(
-                    'name' => 'firstName',
-                    'header' => Zurmo::t('Core', 'Name'),
-                    'value'  => 'strval($data)',
-                );
-            }
+            return true;
         }
     }
 ?>

@@ -34,27 +34,14 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class FullNameListViewColumnAdapter extends ListViewColumnAdapter
+    /**
+     * Displays a date/time localized display as always non-editable
+     */
+    class ReadOnlyDateTimeElement extends DateTimeElement
     {
-        public function renderGridViewData()
+        public static function isReadOnly()
         {
-            if ($this->getIsLink())
-            {
-                return array(
-                'name' => 'firstName',
-                'header' => Zurmo::t('Core', 'Name'),
-                'type' => 'raw',
-                'value' => $this->view->getLinkString('$data', $this->attribute),
-                );
-            }
-            else
-            {
-                return array(
-                    'name' => 'firstName',
-                    'header' => Zurmo::t('Core', 'Name'),
-                    'value'  => 'strval($data)',
-                );
-            }
+            return true;
         }
     }
 ?>

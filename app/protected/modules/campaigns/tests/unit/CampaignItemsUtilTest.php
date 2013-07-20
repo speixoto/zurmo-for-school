@@ -43,6 +43,12 @@
         {
             parent::setUpBeforeClass();
             SecurityTestHelper::createSuperAdmin();
+            if (!RedBeanDatabase::isFrozen())
+            {
+                // TODO: @Shoaibi: High: get rid of this for God's sake.
+                $campaignItem = CampaignItemTestHelper::createCampaignItem(0);
+                $campaignItem->delete();
+            }
         }
 
         public function setUp()
@@ -50,6 +56,7 @@
             parent::setUp();
             $this->user                 = User::getByUsername('super');
             Yii::app()->user->userModel = $this->user;
+            $this->purgeAllCampaigns();
         }
 
         /**
@@ -62,17 +69,17 @@
             $contact                    = ContactTestHelper::createContactByNameForOwner('contact 01', $this->user);
             $marketingList              = MarketingListTestHelper::populateMarketingListByName('marketingList 01');
             $campaign                   = CampaignTestHelper::createCampaign('campaign 01',
-                'subject 01',
-                $text,
-                $html,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                $marketingList,
-                false);
+                                                                                'subject 01',
+                                                                                $text,
+                                                                                $html,
+                                                                                null,
+                                                                                null,
+                                                                                null,
+                                                                                null,
+                                                                                null,
+                                                                                null,
+                                                                                $marketingList,
+                                                                                false);
             $processed                  = 0;
             $campaignItem               = CampaignItemTestHelper::createCampaignItem($processed, $campaign, $contact);
             CampaignItemsUtil::processDueItem($campaignItem);
@@ -89,17 +96,17 @@
             $contact                    = ContactTestHelper::createContactByNameForOwner('contact 01', $this->user);
             $marketingList              = MarketingListTestHelper::populateMarketingListByName('marketingList 01');
             $campaign                   = CampaignTestHelper::createCampaign('campaign 01',
-                'subject 01',
-                $text,
-                $html,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                $marketingList,
-                false);
+                                                                                'subject 01',
+                                                                                $text,
+                                                                                $html,
+                                                                                null,
+                                                                                null,
+                                                                                null,
+                                                                                null,
+                                                                                null,
+                                                                                null,
+                                                                                $marketingList,
+                                                                                false);
             $processed                  = 0;
             $campaignItem               = CampaignItemTestHelper::createCampaignItem($processed, $campaign, $contact);
             CampaignItemsUtil::processDueItem($campaignItem);
@@ -459,7 +466,8 @@
             $campaignId         = $campaign->id;
             $campaignItems      = CampaignItem::getByProcessedAndCampaignId(0, $campaignId);
             $this->assertEmpty($campaignItems);
-            CampaignItemsUtil::generateCampaignItemsForDueCampaigns();
+            //Process open campaigns.
+            $this->assertTrue(CampaignItemsUtil::generateCampaignItemsForDueCampaigns(null, 50));
             $campaign           = Campaign::getById($campaignId);
             $this->assertNotNull($campaign);
             $this->assertEquals(Campaign::STATUS_PROCESSING, $campaign->status);
@@ -474,7 +482,6 @@
          */
         public function testGenerateCampaignItemsForDueCampaignsWithCustomBatchSize()
         {
-            $this->purgeAllCampaigns();
             $contactIds         = array();
             $marketingListIds   = array();
             $campaignIds        = array();
@@ -526,15 +533,21 @@
                 $this->assertEmpty($campaignItems);
             }
 
-            $this->assertTrue(CampaignItemsUtil::generateCampaignItemsForDueCampaigns(1));
+            $this->assertTrue(CampaignItemsUtil::generateCampaignItemsForDueCampaigns(5));
             foreach ($campaignIds as $index => $campaignId)
             {
                 $campaign           = Campaign::getById($campaignId);
                 $campaignItems      = CampaignItem::getByProcessedAndCampaignId(0, $campaignId);
                 if ($index === 0)
                 {
+                    $expectedCount  = AutoresponderOrCampaignBatchSizeConfigUtil::getBatchSize();
+                    $memberCount    = count($campaign->marketingList->marketingListMembers);
+                    if ($memberCount < $expectedCount)
+                    {
+                        $expectedCount = $memberCount;
+                    }
                     $this->assertNotEmpty($campaignItems);
-                    $this->assertCount(3, $campaignItems);
+                    $this->assertCount($expectedCount, $campaignItems);
                     $this->assertEquals(Campaign::STATUS_PROCESSING, $campaign->status);
                 }
                 else
@@ -549,9 +562,23 @@
             {
                 $campaign           = Campaign::getById($campaignId);
                 $campaignItems      = CampaignItem::getByProcessedAndCampaignId(0, $campaignId);
-                $this->assertNotEmpty($campaignItems);
-                $this->assertCount(3, $campaignItems);
-                $this->assertEquals(Campaign::STATUS_PROCESSING, $campaign->status);
+                if ($index < 2)
+                {
+                    $expectedCount  = AutoresponderOrCampaignBatchSizeConfigUtil::getBatchSize();
+                    $memberCount    = count($campaign->marketingList->marketingListMembers);
+                    if ($memberCount < $expectedCount)
+                    {
+                        $expectedCount = $memberCount;
+                    }
+                    $this->assertNotEmpty($campaignItems);
+                    $this->assertCount($expectedCount, $campaignItems);
+                    $this->assertEquals(Campaign::STATUS_PROCESSING, $campaign->status);
+                }
+                else
+                {
+                    $this->assertEmpty($campaignItems);
+                    $this->assertEquals(Campaign::STATUS_ACTIVE, $campaign->status);
+                }
             }
             // TODO: @Shoaibi: Medium: Add tests for the other campaign type.
         }
@@ -856,13 +883,13 @@
             $htmlContent                = $campaignItem->emailMessage->content->htmlContent;
             $this->assertNotEquals($campaign->textContent, $textContent);
             $this->assertNotEquals($campaign->htmlContent, $htmlContent);
-            $this->assertTrue(strpos($textContent, 'Unsubscribe: localhost/') !== false);
+            $this->assertTrue(strpos($textContent, 'Unsubscribe: localhost') !== false);
             $this->assertEquals(1, substr_count($textContent, '/marketingLists/external/unsubscribe?hash='));
-            $this->assertTrue(strpos($htmlContent, 'Unsubscribe: <a href="localhost/') !== false);
+            $this->assertTrue(strpos($htmlContent, 'Unsubscribe: <a href="localhost') !== false);
             $this->assertEquals(1, substr_count($htmlContent, '/marketingLists/external/unsubscribe?hash='));
             $this->assertTrue(strpos($htmlContent, '">Unsubscribe</a>') !== false);
             $this->assertEquals(1, substr_count($htmlContent, '">Unsubscribe</a>'));
-            $this->assertTrue(strpos($htmlContent, '<img width="1" height="1" src="localhost/') !== false);
+            $this->assertTrue(strpos($htmlContent, '<img width="1" height="1" src="localhost') !== false);
             $this->assertTrue(strpos($htmlContent, '/tracking/default/track?id=') !== false);
             $this->assertTrue(strpos($htmlContent, '/marketingLists/external/manageSubscriptions') === false);
         }
@@ -899,13 +926,13 @@
             $htmlContent                = $campaignItem->emailMessage->content->htmlContent;
             $this->assertNotEquals($campaign->textContent, $textContent);
             $this->assertNotEquals($campaign->htmlContent, $htmlContent);
-            $this->assertTrue(strpos($textContent, 'Manage: localhost/') !== false);
+            $this->assertTrue(strpos($textContent, 'Manage: localhost') !== false);
             $this->assertEquals(1, substr_count($textContent, '/marketingLists/external/manageSubscriptions?hash='));
-            $this->assertTrue(strpos($htmlContent, 'Manage: <a href="localhost/') !== false);
+            $this->assertTrue(strpos($htmlContent, 'Manage: <a href="localhost') !== false);
             $this->assertEquals(1, substr_count($htmlContent, '/marketingLists/external/manageSubscriptions?hash='));
             $this->assertTrue(strpos($htmlContent, '">Manage Subscriptions</a>') !== false);
             $this->assertEquals(1, substr_count($htmlContent, '">Manage Subscriptions</a>'));
-            $this->assertTrue(strpos($htmlContent, '<img width="1" height="1" src="localhost/') !== false);
+            $this->assertTrue(strpos($htmlContent, '<img width="1" height="1" src="localhost') !== false);
             $this->assertTrue(strpos($htmlContent, '/tracking/default/track?id=') !== false);
             $this->assertTrue(strpos($htmlContent, '/marketingLists/external/unsubscribe') === false);
         }
@@ -944,21 +971,21 @@
             $htmlContent                = $campaignItem->emailMessage->content->htmlContent;
             $this->assertNotEquals($campaign->textContent, $textContent);
             $this->assertNotEquals($campaign->htmlContent, $htmlContent);
-            $this->assertTrue(strpos($textContent, 'Unsubscribe: localhost/') !== false);
+            $this->assertTrue(strpos($textContent, 'Unsubscribe: localhost') !== false);
             $this->assertEquals(1, substr_count($textContent, '/marketingLists/external/unsubscribe?hash='));
-            $this->assertTrue(strpos($htmlContent, 'Unsubscribe: <a href="localhost/') !== false);
+            $this->assertTrue(strpos($htmlContent, 'Unsubscribe: <a href="localhost') !== false);
             $this->assertEquals(1, substr_count($htmlContent, '/marketingLists/external/unsubscribe?hash='));
             $this->assertTrue(strpos($htmlContent, '">Unsubscribe</a>') !== false);
             $this->assertEquals(1, substr_count($htmlContent, '">Unsubscribe</a>'));
-            $this->assertTrue(strpos($htmlContent, '<img width="1" height="1" src="localhost/') !== false);
+            $this->assertTrue(strpos($htmlContent, '<img width="1" height="1" src="localhost') !== false);
             $this->assertTrue(strpos($htmlContent, '/tracking/default/track?id=') !== false);
-            $this->assertTrue(strpos($textContent, ', Manage: localhost/') !== false);
+            $this->assertTrue(strpos($textContent, ', Manage: localhost') !== false);
             $this->assertEquals(1, substr_count($textContent, '/marketingLists/external/manageSubscriptions?hash='));
-            $this->assertTrue(strpos($htmlContent, ', Manage: <a href="localhost/') !== false);
+            $this->assertTrue(strpos($htmlContent, ', Manage: <a href="localhost') !== false);
             $this->assertEquals(1, substr_count($htmlContent, '/marketingLists/external/manageSubscriptions?hash='));
             $this->assertTrue(strpos($htmlContent, '">Manage Subscriptions</a>') !== false);
             $this->assertEquals(1, substr_count($htmlContent, '">Manage Subscriptions</a>'));
-            $this->assertTrue(strpos($htmlContent, '<img width="1" height="1" src="localhost/') !== false);
+            $this->assertTrue(strpos($htmlContent, '<img width="1" height="1" src="localhost') !== false);
             $this->assertTrue(strpos($htmlContent, '/tracking/default/track?id=') !== false);
         }
 
@@ -999,17 +1026,54 @@
             $this->assertEquals(1, substr_count($textContent, '/marketingLists/external/unsubscribe?hash='));
             $this->assertTrue(strpos($textContent, '/marketingLists/external/manageSubscriptions?hash=') !== false);
             $this->assertEquals(1, substr_count($textContent, '/marketingLists/external/manageSubscriptions?hash='));
-            $this->assertTrue(strpos($htmlContent, 'HTML<br /><img width="1" height="1" src="localhost/') !== false);
+            $this->assertTrue(strpos($htmlContent, 'HTML<br /><img width="1" height="1" src="localhost') !== false);
             $this->assertTrue(strpos($htmlContent, '/tracking/default/track?id=') !== false);
             $this->assertEquals(1, substr_count($htmlContent, '/tracking/default/track?id='));
             $this->assertTrue(strpos($htmlContent, '/marketingLists/external/unsubscribe?hash=') !== false);
             $this->assertEquals(1, substr_count($htmlContent, '/marketingLists/external/unsubscribe?hash='));
-            $this->assertTrue(strpos($htmlContent, '">Unsubscribe</a><br /><a href="localhost/') !== false);
-            $this->assertEquals(1, substr_count($htmlContent, '">Unsubscribe</a><br /><a href="localhost/'));
+            $this->assertTrue(strpos($htmlContent, '">Unsubscribe</a><br /><a href="localhost') !== false);
+            $this->assertEquals(1, substr_count($htmlContent, '">Unsubscribe</a><br /><a href="localhost'));
             $this->assertTrue(strpos($htmlContent, '/marketingLists/external/manageSubscriptions?hash=') !== false);
             $this->assertEquals(1, substr_count($htmlContent, '/marketingLists/external/manageSubscriptions?hash='));
             $this->assertTrue(strpos($htmlContent, '">Manage Subscriptions</a>') !== false);
             $this->assertEquals(1, substr_count($htmlContent, '">Manage Subscriptions</a>'));
+        }
+
+        public function testProcessDueCampaignItemContactUnsubscribed()
+        {
+            $email                      = new Email();
+            $email->emailAddress        = 'demo@zurmo.com';
+            $email->optOut              = false;
+            $contact                    = ContactTestHelper::createContactByNameForOwner('contact 17', $this->user);
+            $contact->primaryEmail      = $email;
+            $this->assertTrue($contact->save());
+            $marketingList              = MarketingListTestHelper::createMarketingListByName('marketingList 17',
+                                                                                                'description',
+                                                                                                'CustomFromName',
+                                                                                                'custom@from.com');
+            MarketingListMemberTestHelper::createMarketingListMember(true, $marketingList, $contact);
+            $campaign                   = CampaignTestHelper::createCampaign('campaign 17',
+                                                                             'subject 17',
+                                                                             'Dear. Sir',
+                                                                             'Dear. Sir',
+                                                                             null,
+                                                                             null,
+                                                                             null,
+                                                                             null,
+                                                                             null,
+                                                                             null,
+                                                                             $marketingList);
+            $processed                  = 0;
+            $campaignItem               = CampaignItemTestHelper::createCampaignItem($processed, $campaign, $contact);
+            CampaignItemsUtil::processDueItem($campaignItem);
+            $this->assertEquals(1, $campaignItem->processed);
+            $personId                   = $contact->getClassId('Person');
+            $activities                 = CampaignItemActivity::getByTypeAndModelIdAndPersonIdAndUrl(
+                                                                                CampaignItemActivity::TYPE_SKIP,
+                                                                                $campaignItem->id,
+                                                                                $personId);
+            $this->assertNotEmpty($activities);
+            $this->assertCount(1, $activities);
         }
 
         protected function purgeAllCampaigns()
