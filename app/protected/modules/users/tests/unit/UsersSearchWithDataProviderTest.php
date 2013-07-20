@@ -76,10 +76,10 @@
             $searchAttributeData        = array();
             $dataProvider               = new RedBeanModelDataProvider('User', null, false, $searchAttributeData);
             $data                       = $dataProvider->getData();
-            $this->assertEquals($user3, $data[0]);
-            $this->assertEquals($user1, $data[1]);
+            $this->assertEquals($user3, $data[1]);
+            $this->assertEquals($user1, $data[3]);
             $this->assertEquals($super, $data[2]);
-            $this->assertEquals($user2, $data[3]);
+            $this->assertEquals($user2, $data[0]);
         }
     }
 ?>
