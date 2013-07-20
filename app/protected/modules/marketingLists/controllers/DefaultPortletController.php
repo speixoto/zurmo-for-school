@@ -118,7 +118,7 @@
                 array('{subscribedCount}' => $subscriberInformation['subscribedCount']));
             if (array_key_exists('skippedCount', $subscriberInformation) && $subscriberInformation['skippedCount'])
             {
-                $message .= ' ' . Zurmo::t('MarketingListsModule', '{skippedCount} skipped.',
+                $message .= ' ' . Zurmo::t('MarketingListsModule', '{skippedCount} skipped, already in the list.',
                         array('{skippedCount}' => $subscriberInformation['skippedCount']));
             }
             return $message;
