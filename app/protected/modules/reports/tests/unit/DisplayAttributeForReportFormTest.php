@@ -252,6 +252,18 @@
             $this->assertEquals('Recycled', $contactStates[2]->name);
             $this->assertEquals('Recycled', $displayAttribute->resolveValueAsLabelForHeaderCell($contactStates[2]->id));
         }
+        
+        public function testResolveValueAsLabelForHeaderCellForAnLinkableAttribute()
+        {            
+            $account1         = AccountTestHelper::createAccountByNameForOwner('account name', Yii::app()->user->userModel);
+            $account2         = AccountTestHelper::createAccountByNameForOwner('account name', Yii::app()->user->userModel);
+            $displayAttribute = new DisplayAttributeForReportForm('AccountsModule', 'Account',
+                                Report::TYPE_SUMMATION);
+            $displayAttribute->attributeIndexOrDerivedType = 'name';
+            //Make a tooltip for multiple results
+            $this->assertEquals('account name<span id="report-multiple-link-AccountsModule-2" class="tooltip">2</span>',                    
+                                $displayAttribute->resolveValueAsLabelForHeaderCell('account name'));
+        }
 
         public function testGetDisplayLabel()
         {

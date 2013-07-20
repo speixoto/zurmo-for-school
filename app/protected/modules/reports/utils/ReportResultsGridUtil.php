@@ -52,8 +52,7 @@
                 return null;
             }
             $moduleClassName = self::resolveModuleClassName($attribute, $data);
-            return Yii::app()->createUrl('/' . $moduleClassName::getDirectoryName() . '/default/details',
-                                         array('id' => $data->getModel($attribute)->id));
+            return static::makeUrl($data->getModel($attribute)->id, $moduleClassName);            
         }
 
         protected static function resolveModuleClassName($attribute, ReportResultsRowData $data)
@@ -69,21 +68,26 @@
             }
         }
         
-        public static function makeStringForLinkOrLinks($attribute, ReportResultsRowData $data, $shouldRenderMultipleLinks)
+        public static function makeStringForLinkOrLinks($attribute, ReportResultsRowData $data, 
+                                                        $shouldRenderMultipleLinks, $attributeString)
         {
             assert('is_string($attribute)');
             if (null == $model = $data->getModel($attribute))
             {
                 return null;
-            }
-            $moduleClassName = self::resolveModuleClassName($attribute, $data);
+            }            
             $modelClassName  = get_class($data->getModel($attribute));
-            $modelName       = strval($data->getModel($attribute));
-            $models          = $modelClassName::getByName($modelName);            
+            return static::makeStringForMultipleLinks($attributeString, $modelClassName, $shouldRenderMultipleLinks);            
+        }
+        
+        public static function makeStringForMultipleLinks($value, $modelClassName, $shouldRenderMultipleLinks = true)
+        {
+            assert('is_string($modelClassName)');                                                
+            $models          = $modelClassName::getByName(strval($value));            
             if (count($models) <= 1 || !$shouldRenderMultipleLinks)
             {
-                $url = static::makeUrlForLink($attribute, $data);
-                return ZurmoHtml::link($modelName, $url, array("target" => "new"));
+                $url = static::makeUrl($models[0]->id, $models[0]->getModuleClassName());
+                return ZurmoHtml::link($value, $url, array("target" => "new"));
             }
             else                
             {                
@@ -91,16 +95,17 @@
                 $count       = 1;
                 foreach ($models as $model)
                 {
-                    $url          = Yii::app()->createUrl('/' . $moduleClassName::getDirectoryName() . '/default/details',
-                                         array('id' => $model->id));
-                    $qtipContent .= ZurmoHtml::link('Link' . $count++, $url, array("target" => "new")) . '<br />';                    
+                    $id              = $model->id;
+                    $moduleClassName = $model->getModuleClassName();
+                    $url             = static::makeUrl($id, $model->getModuleClassName());
+                    $qtipContent    .= ZurmoHtml::link('Link' . $count++, $url, array("target" => "new")) . '<br />';                                        
                 }
-                $content     = $modelName;
+                $content     = $value;
                 $content    .= '<span id="report-multiple-link-' .
-                               $data->id . '" class="tooltip">' . count($models) . '</span>';
+                                $moduleClassName . "-" . $id . '" class="tooltip">' . count($models) . '</span>';
                 $options     = array('content' =>
                                      array(
-                                        'title' => $modelName,                                                                                    
+                                        'title' => $value,                                                                                    
                                         'text'  => $qtipContent,
                                      ),
                                      'hide' => array('event' => 'click'),
@@ -109,9 +114,17 @@
                                         array('screen' => true),                                     
                                      'style'  => array('width' => array('max' => 600)));
                 $qtip        = new ZurmoTip();
-                $qtip->addQTip("#report-multiple-link-" . $data->id, $options);
+                $qtip->addQTip("#report-multiple-link-" . $moduleClassName . "-" . $id, $options);
                 return $content;    
             }
+        }
+        
+        protected static function makeUrl($id, $moduleClassName)
+        {
+            assert('is_int($id)');
+            assert('is_string($moduleClassName)');                                    
+            return Yii::app()->createUrl('/' . $moduleClassName::getDirectoryName() . '/default/details',
+                                         array('id' => $id));
         }
     }                
 ?>

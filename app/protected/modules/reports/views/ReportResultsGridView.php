@@ -123,13 +123,13 @@
         {
             $shouldRenderMultipleLinks = $this->getShouldRenderMultipleLinksByReportDataProvider($this->dataProvider);
             $string = 'ReportResultsGridUtil::makeStringForLinkOrLinks("' . 
-                            $attribute . '", $data, "' . $shouldRenderMultipleLinks . '")';            
+                            $attribute . '", $data, "' . $shouldRenderMultipleLinks . '", ' . $attributeString . ')';            
             return $string;
         }
         
         protected function getShouldRenderMultipleLinksByReportDataProvider(ReportDataProvider $dataProvider)
         {           
-            if ($dataProvider->report->getType() == Report::TYPE_ROWS_AND_COLUMNS)
+            if ($dataProvider instanceof RowsAndColumnsReportDataProvider)
             {
                 return false;
             }
@@ -347,7 +347,7 @@
         protected function resolveParamsForColumnElement(DisplayAttributeForReportForm $displayAttribute)
         {
             $params  = array();
-            if ($displayAttribute->isALinkableAttribute() == 'name')
+            if ($displayAttribute->isALinkableAttribute())
             {
                 $params['isLink'] = true;
             }
