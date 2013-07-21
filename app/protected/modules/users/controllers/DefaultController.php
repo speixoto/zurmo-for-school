@@ -133,7 +133,6 @@
         public function actionDetails($id)
         {
             $user = User::getById(intval($id));
-            echo $user->getClassId("Item");
             $title           = Zurmo::t('UsersModule', 'Profile');
             $breadcrumbLinks = array(strval($user) => array('default/details',  'id' => $id), $title);
             AuditEvent::logAuditEvent('ZurmoModule', ZurmoModule::AUDIT_EVENT_ITEM_VIEWED, array(strval($user), 'UsersModule'), $user);
