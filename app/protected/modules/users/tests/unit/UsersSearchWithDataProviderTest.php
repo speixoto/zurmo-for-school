@@ -91,8 +91,8 @@
             $searchAttributeData        = array();
             $dataProvider               = new RedBeanModelDataProvider('User', null, false, $searchAttributeData);
             $data                       = $dataProvider->getData();
-            $this->assertEquals($this->user2, $data[0]);
-            $this->assertEquals($this->user3, $data[1]);
+            $this->assertTrue($this->user3->id == $data[0]->id || $this->user3->id == $data[1]->id);
+            $this->assertTrue($this->user2->id == $data[1]->id || $this->user2->id == $data[0]->id);
             $this->assertEquals($this->super, $data[2]);
             $this->assertEquals($this->user1, $data[3]);
         }
@@ -119,8 +119,8 @@
             $searchAttributeData                = array();
             $dataProvider                       = new RedBeanModelDataProvider('User', 'lastName', false, $searchAttributeData);             
             $data                               = $dataProvider->getData();
-            $this->assertEquals($this->user2, $data[0]);
-            $this->assertEquals($this->user3, $data[1]);
+            $this->assertTrue($this->user3->id == $data[0]->id || $this->user3->id == $data[1]->id);
+            $this->assertTrue($this->user2->id == $data[1]->id || $this->user2->id == $data[0]->id);
             $this->assertEquals($this->super, $data[2]);
             $this->assertEquals($this->user1, $data[3]);
         }
