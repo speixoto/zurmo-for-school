@@ -280,5 +280,33 @@
                   }
             }
         }
+
+        /**
+         * Given a task and a user, mark that the user has read or not read the latest changes as a task
+         * owner, requested by user or subscriber
+         * @param Task $task
+         * @param User $user
+         * @param Boolean $hasReadLatest
+         */
+        public static function markUserHasReadLatest(Task $task, User $user, $hasReadLatest = true)
+        {
+            assert('$task->id > 0');
+            assert('$user->id > 0');
+            assert('is_bool($hasReadLatest)');
+            $save = false;
+            foreach ($task->notificationSubscribers as $position => $subscriber)
+            {
+                if ($subscriber->person->getClassId('Item') == $user->getClassId('Item') && $subscriber->hasReadLatest != $hasReadLatest)
+                {
+                    $task->notificationSubscribers[$position]->hasReadLatest = $hasReadLatest;
+                    $save                                                    = true;
+                }
+            }
+
+            if ($save)
+            {
+                $task->save();
+            }
+        }
     }
 ?>

@@ -55,6 +55,7 @@
             $activity = static::getModelAndCatchNotFoundAndDisplayError($modelClassName, intval($id));
             ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($activity);
             AuditEvent::logAuditEvent('ZurmoModule', ZurmoModule::AUDIT_EVENT_ITEM_VIEWED, array(strval($activity), get_class($this->getModule())), $activity);
+            TasksUtil::markUserHasReadLatest($activity, Yii::app()->user->userModel);
             $pageViewClassName = $this->getPageViewClassName();
             $detailsView       = new TaskDetailsView('Details', $this->getId(), $this->getModule()->getId(), $activity);
             $view              = new $pageViewClassName(ZurmoDefaultViewUtil::
@@ -107,7 +108,7 @@
                               $task->requestedByUser = $user;
                               $task->save();
                               TasksUtil::resolveExplicitPermissionsForRequestedByUser($task, $origRequestedByUser);
-                              TasksUtil::sendNotificationOnTaskUpdate($task, Zurmo::t('TasksModule', 'The requested by user for the task #' . $task->id . ' is updated to ' . $user->getFullName()));
+//                              TasksUtil::sendNotificationOnTaskUpdate($task, Zurmo::t('TasksModule', 'The requested by user for the task #' . $task->id . ' is updated to ' . $user->getFullName()));
                               break;
             }
             echo $this->getPermissionContent($task);

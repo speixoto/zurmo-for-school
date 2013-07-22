@@ -325,10 +325,8 @@
 
             $task = Task::getById($task->id);
             $user = Yii::app()->user->userModel;
-            $itemId = $user->getClassId('Item');
-            $item   = Item::getById((int)$itemId);
             $notificationSubscriber = new NotificationSubscriber();
-            $notificationSubscriber->person = $item;
+            $notificationSubscriber->person = $user;
             $notificationSubscriber->hasReadLatest = false;
             $task->notificationSubscribers->add($notificationSubscriber);
             $this->assertTrue($task->save());
