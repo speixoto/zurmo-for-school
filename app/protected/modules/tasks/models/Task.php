@@ -223,5 +223,15 @@
                 self::TASK_STATUS_COMPLETED                => Zurmo::t('TasksModule', 'Completed'),
             );
         }
+
+        /**
+         * Gets the display name for the status
+         * @param int $status
+         */
+        public static function getStatusDisplayName($status)
+        {
+            $statusArray = self::getStatusDropDownArray();
+            return $statusArray[$status];
+        }
     }
 ?>

@@ -234,9 +234,9 @@
         }
 
         /**
-         * Given a Conversation and the User that created the new comment
-         * return the people on the conversation to send new notification to
-         * @param Conversation $conversation
+         * Given a Task and the User that created the new comment
+         * return the people on the task to send new notification to
+         * @param Task $conversation
          * @param User $user
          * @return Array $peopleToSendNotification
          */
@@ -252,6 +252,33 @@
                 }
             }
             return $peopleToSendNotification;
+        }
+
+        /**
+         * Resolve explicit permissions of the requested by user for the task
+         * @param Task $task
+         * @param Permitable $origRequestedByUser
+         */
+        public static function resolveExplicitPermissionsForRequestedByUser(Task $task, $origRequestedByUser)
+        {
+            $user = $task->requestedByUser;
+            $explicitReadWriteModelPermissions = ExplicitReadWriteModelPermissionsUtil::makeBySecurableItem($task);
+            ExplicitReadWriteModelPermissionsUtil::
+                                        resolveExplicitReadWriteModelPermissions($task, $explicitReadWriteModelPermissions);
+            if ($origRequestedByUser instanceof Permitable)
+            {
+                  if($origRequestedByUser->username != 'super')
+                  {
+                    $explicitReadWriteModelPermissions->addReadWritePermitableToRemove($origRequestedByUser);
+                  }
+            }
+            if ($user instanceof Permitable)
+            {
+                  if($user->username != 'super')
+                  {
+                    $explicitReadWriteModelPermissions->addReadWritePermitable($user);
+                  }
+            }
         }
     }
 ?>

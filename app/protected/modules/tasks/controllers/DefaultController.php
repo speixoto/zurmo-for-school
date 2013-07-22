@@ -98,17 +98,16 @@
                 case 'owner':
                               $task->owner = $user;
                               $task->save();
-                              TasksUtil::sendNotificationOnTaskUpdate($task, Zurmo::t('TasksModule', 'Owner is updated'));
+                              TasksUtil::sendNotificationOnTaskUpdate($task, Zurmo::t('TasksModule', 'The owner for the task #' . $task->id . ' is updated to ' . $user->getFullName()));
                               break;
 
                 case 'requestedByUser':
-                              $explicitReadWriteModelPermissions = ExplicitReadWriteModelPermissionsUtil::makeBySecurableItem($task);
+                              $origRequestedByUser = $task->requestedByUser;
+
                               $task->requestedByUser = $user;
                               $task->save();
-                              TasksUtil::sendNotificationOnTaskUpdate($task, Zurmo::t('TasksModule', 'Requested by user is updated'));
-
-                              $success  = ExplicitReadWriteModelPermissionsUtil::
-                                                 resolveExplicitReadWriteModelPermissions($task,                                                 $explicitReadWriteModelPermissions);
+                              TasksUtil::resolveExplicitPermissionsForRequestedByUser($task, $origRequestedByUser);
+                              TasksUtil::sendNotificationOnTaskUpdate($task, Zurmo::t('TasksModule', 'The requested by user for the task #' . $task->id . ' is updated to ' . $user->getFullName()));
                               break;
             }
             echo $this->getPermissionContent($task);
@@ -125,6 +124,7 @@
             $dueDateTime  = DateTimeUtil::convertTimestampToDbFormatDateTime($dateTime);
             $task->dueDateTime = $dueDateTime;
             $task->save();
+            TasksUtil::sendNotificationOnTaskUpdate($task, Zurmo::t('TasksModule', 'The due date for task #' . $task->id . ' is updated'));
         }
 
         /**
@@ -135,13 +135,13 @@
         {
             $task = Task::getById(intval($id));
             $user = Yii::app()->user->userModel;
-            $itemId = $user->getClassId('Item');
-            $item   = Item::getById((int)$itemId);
             $notificationSubscriber = new NotificationSubscriber();
-            $notificationSubscriber->person = $item;
+            $notificationSubscriber->person = $user;
             $notificationSubscriber->hasReadLatest = false;
             $task->notificationSubscribers->add($notificationSubscriber);
             $task->save();
+
+            TasksUtil::sendNotificationOnTaskUpdate($task, Zurmo::t('TasksModule', $user->getFullName() . ' has subscribed for the task #' . $task->id));
 
             $content = TasksUtil::getTaskSubscriberData($task);
             echo $content;
@@ -168,6 +168,8 @@
                 $task->completed         = false;
                 $task->save();
             }
+
+            TasksUtil::sendNotificationOnTaskUpdate($task, Zurmo::t('TasksModule', 'The status for the task #' . $task->id . ' has been updated to ' . Task::getStatusDisplayName(intval($status))));
         }
 
         /**
