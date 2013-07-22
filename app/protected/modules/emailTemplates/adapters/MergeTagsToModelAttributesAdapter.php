@@ -92,11 +92,9 @@
         protected static function resolveMergeTagToStandardOrRelatedAttribute($attributeAccessorString, $model, $language, $timeQualifier)
         {
             $attributeName = strtok($attributeAccessorString, '->');
-            $modelAttributeAdapter = new ModelAttributesAdapter($model);
-            if (array_key_exists($attributeName, static::$specialAttributesResolver) && empty($timeQualifier))
+            if (SpecialMergeTagsAdapter::isSpecialMergeTag($attributeName, $timeQualifier))
             {
-                $methodName = static::$specialAttributesResolver[$attributeName];
-                return static::$methodName($model);
+                return SpecialMergeTagsAdapter::resolve($attributeName, $model);
             }
             else
             {
