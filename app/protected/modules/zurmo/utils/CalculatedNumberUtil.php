@@ -131,25 +131,104 @@
          * Given a formula string and a model, determine if the formula is correctly formed and is using valid
          * attributes from the given model.
          * @param $formula
-         * @param ModelNumberOrCurrencyAttributesAdapter $adapter
+         * @param $modelClassName
          * @return bool
          */
-        public static function isFormulaValid($formula, ModelNumberOrCurrencyAttributesAdapter $adapter)
+        public static function isFormulaValid($formula, $modelClassName)
         {
-            assert('is_string($formula)');
+            assert('is_string($formula)');                                              
+            $matches = array();            
+            preg_match('/IF\((.*);(.*);(.*)\)/', $formula, $matches);
+            if (!empty($matches))
+            {                
+                return static::isIfStatementValid($matches[1], $matches[2], $matches[3], $modelClassName);
+            }                        
+            return static::isExpressionValid($formula, $modelClassName);
+        }
+        
+        protected static function isExpressionValid($expression, $modelClassName)
+        {
+            assert('is_string($expression)');                        
+            if (static::isString($expression))
+            {
+                return true;
+            }            
+            if (static::isAttribute($expression, $modelClassName))
+            {
+                return true;
+            }
+            $model          = new $modelClassName(false);            
+            $adapter        = new ModelNumberOrCurrencyAttributesAdapter($model);
             foreach ($adapter->getAttributes() as $attribute => $data)
             {
-                $formula = str_replace($attribute, 1, $formula);
+                $expression = str_replace($attribute, 1, $expression);
             }
-            if ($formula != strtoupper($formula) || $formula != strtolower($formula))
+            if ($expression != strtoupper($expression) || $expression != strtolower($expression))
             {
                 return false;
             }
-            if (static::mathEval($formula) === false)
+            if (static::mathEval($expression) === false)
             {
                 return false;
             }
             return true;
+        }
+        
+        protected static function isString($expression)
+        {
+            $matches = array();
+            preg_match('/[\"\'](.*)[\"\']/', $expression, $matches);
+            if (!empty($matches))
+            {
+                return true;
+            }
+            return false;
+        }
+        
+        protected static function isAttribute($expression, $modelClassName)
+        {
+            $model          = new $modelClassName(false);  
+            $adapter        = new ModelAttributesAdapter($model);
+            $attributeNames = array_keys($adapter->getAttributes());
+            if (in_array($expression, $attributeNames))
+            {
+                return true;
+            }
+            return false;
+        }
+        
+        protected static function isConditionValid($condition, $modelClassName)
+        {
+            $matches = array();
+            preg_match('/(.*)(<=|>=|!=|==|>|<)(.*)/', $condition, $matches);
+            if (!empty($matches))
+            {
+                if ($matches[2] != '==' && $matches[2] != '!=')
+                {                   
+                    if (static::isString(trim($matches[1])) || static::isString(trim($matches[3])))
+                    {
+                        return false;
+                    }                                 
+                }
+                if (static::isExpressionValid(trim($matches[1]), $modelClassName) && 
+                        static::isExpressionValid(trim($matches[3]), $modelClassName))
+                {
+                    return true;
+                }   
+            }
+            return false;
+        }
+
+        protected static function isIfStatementValid($condition, $trueExpression, $falseExpression, $modelClassName)
+        {          
+            $isConditionValid       = static::isConditionValid($condition, $modelClassName);            
+            $isTrueExpressionValid  = static::isExpressionValid($trueExpression, $modelClassName);
+            $isFlaseExpressionValid = static::isExpressionValid($falseExpression, $modelClassName);
+            if ($isConditionValid && $isFlaseExpressionValid && $isTrueExpressionValid)
+            {
+                return true;
+            }
+            return false;
         }
 
         protected static function mathEval($equation)
