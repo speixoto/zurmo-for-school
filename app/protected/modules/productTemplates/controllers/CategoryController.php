@@ -75,15 +75,14 @@
         public function actionList()
         {
             $activeActionElementType        = 'ProductCategoriesLink';
-            $breadcrumbLinks                = static::getListBreadcrumbLinks();
-            $introCookieValue               = Yii::app()->request->cookies[ProductsIntroView::resolveCookieId()];
-            $introView                      = new ProductsIntroView($introCookieValue, $activeActionElementType);
+            $breadcrumbLinks                = static::getListBreadcrumbLinks();            
+            $introView                      = new ProductsIntroView('ProductsModule');
             $actionBarAndTreeView           = new ProductCategoriesActionBarAndTreeListView(
                                                                                         $this->getId(),
                                                                                         $this->getModule()->getId(),
                                                                                         ProductCategory::getAll('name'),
                                                                                         $activeActionElementType,
-                                                                                        $introView, $introCookieValue
+                                                                                        $introView
                                                );
             $view                           = new ProductCategoriesPageView(ProductDefaultViewUtil::
                                                     makeViewWithBreadcrumbsForCurrentUser(

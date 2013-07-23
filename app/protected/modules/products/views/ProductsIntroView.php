@@ -35,58 +35,13 @@
      ********************************************************************************/
 
     /**
-     * View when a user first comes to the marketing dashboard. Provides an overview of how marketing works
+     * View when a user first comes to the marketing dashboard. Provides an overview of how products works
      */
-    class ProductsIntroView extends View
-    {
-        const PANEL_ID            = 'product-intro-content';
-
-        const LINK_ID             = 'hide-product-intro';
-
-        const HIDDEN_COOKIE_VALUE = 'hidden';
-
-        /**
-         * @var string
-         */
-        protected $cookieValue;
-
-        protected $activeActionElementType;
-
-        /**
-         * @return string
-         */
-        public static function resolveCookieId()
-        {
-            return self::PANEL_ID . '-panel';
-        }
-
-        public function __construct($cookieValue, $activeActionElementType)
-        {
-            assert('$cookieValue == null || $cookieValue instanceof CHttpCookie');
-            if($cookieValue instanceof CHttpCookie)
-            {
-                $this->cookieValue = $cookieValue->value;
-            }
-            $this->activeActionElementType = $activeActionElementType;
-        }
-
-        /**
-         * @return bool|string
-         */
-        protected function renderContent()
-        {
-            $this->registerScripts();
-            if ($this->cookieValue == self::HIDDEN_COOKIE_VALUE)
-            {
-                $style = "style=display:none;"; // Not Coding Standard
-            }
-            else
-            {
-                $style = null;
-            }
-            $currentClass = $this->resolveSectionName();
-            $content  = '<div id="' . self::PANEL_ID . '" class="module-intro-content ' . $currentClass . '" ' . $style . '>';
-            $content .= '<h1>' . Zurmo::t('ProductsModule', 'How do Products work in Zurmo?', LabelUtil::getTranslationParamsForAllModules()). '</h1>';
+    class ProductsIntroView extends IntroView
+    {        
+        protected function renderIntroContent()
+        {            
+            $content  = '<h1>' . Zurmo::t('ProductsModule', 'How do Products work in Zurmo?', LabelUtil::getTranslationParamsForAllModules()). '</h1>';
             $content .= '<div id="products-intro-steps" class="module-intro-steps clearfix">';
             $content .= '<div class="third catalog-description"><span class="icon"></span>';
             $content .= '<p><strong>' . Zurmo::t('ProductsModule', 'Catalog') . '</strong>';
@@ -116,10 +71,7 @@
                                 <li>Zurmo has a <strong>Catalog</strong> of software, they offer on-demand and on-premise software.</li>
                                 <li>Zurmo Group is a <strong>Catalog Item</strong> that can be purchased, it includes features X+Y+Z.</li>
                                 <li>When ABC Company purchases Zurmo Group — they now have a Zurmo Group <strong>Product</strong> with 5 users that expires on date X</li>
-                            </ol></div>';
-
-            $content .= $this->renderHideLinkContent();
-            $content .= '</div>';
+                            </ol></div>';           
             return $content;
         }
 
@@ -127,29 +79,6 @@
         {
             $sectionName = str_replace('link', '', strtolower($this->activeActionElementType));
             return $sectionName;
-        }
-
-        /**
-         * @return string
-         */
-        protected function renderHideLinkContent()
-        {
-            $label    = '<span></span>' . Zurmo::t('Core', 'Dismiss');
-            $content  = '<div class="hide-module-intro ' . self::LINK_ID . '">'.ZurmoHtml::link($label, '#');
-            $content .= '</div>';
-            return $content;
-        }
-
-        protected function registerScripts()
-        {
-            $script = "$('." . self::LINK_ID . "').click(function()
-            {
-                        $('#" . self::PANEL_ID . "').slideToggle();
-                        document.cookie = '" . self::resolveCookieId() . "=" . static::HIDDEN_COOKIE_VALUE . "';
-                        $('#" . self::PANEL_ID . "-checkbox-id').attr('checked', false).parent().removeClass('c_on');
-                        return false;
-            })";
-            Yii::app()->clientScript->registerScript(self::LINK_ID, $script);
-        }
+        }        
     }
 ?>

@@ -68,6 +68,7 @@
             );
             $gridViewId              = 'notUsed';
             $pageVar                 = 'notUsed';
+            $introView               = new MarketingDashboardIntroView(get_class($this->getModule()));
             $actionBarView           = new SecuredActionBarForMarketingSearchAndListView(
                                             'default',
                                             'marketing',
@@ -75,10 +76,8 @@
                                             $gridViewId,
                                             $pageVar,
                                             false,
-                                       'MarketingDashboardLink');
-            $introCookieValue        = Yii::app()->request->cookies[MarketingDashboardIntroView::resolveCookieId()];
-            $actionBarView->setIntroCookieValue($introCookieValue);
-            $introView               = new MarketingDashboardIntroView($introCookieValue);
+                                            'MarketingDashboardLink',
+                                            $introView);                        
             $marketingDashboardView  = new MarketingDashboardView(
                                             $this->getId(),
                                             $this->getModule()->getId(),
@@ -86,10 +85,9 @@
                                             $params);
             $marketingDashboardView->setCssClasses( array( 'clearfix' ) );
 
-            $gridView                = new GridView(3, 1);
-            $gridView->setView($actionBarView, 0, 0);
-            $gridView->setView($introView, 1, 0);
-            $gridView->setView($marketingDashboardView, 2, 0);
+            $gridView                = new GridView(2, 1);
+            $gridView->setView($actionBarView, 0, 0);            
+            $gridView->setView($marketingDashboardView, 1, 0);
             $breadcrumbLinks         = static::getDashboardBreadcrumbLinks();
             $view                    = new MarketingPageView(MarketingDefaultViewUtil::
                                        makeViewWithBreadcrumbsForCurrentUser(

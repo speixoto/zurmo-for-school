@@ -47,27 +47,6 @@
          * Used to identify the active action for the action bar elements
          * @var mixed null or string
          */
-        protected $activeActionElementType;
-
-        /**
-         * Identifies whether the intro view should be hidden or show on the marketing dashboard
-         * @var null|string
-         */
-        protected $introCookieValue;
-
-        public function setIntroCookieValue($introCookieValue)
-        {
-            assert('$introCookieValue == null || $introCookieValue instanceof CHttpCookie');
-            if($introCookieValue instanceof CHttpCookie)
-            {
-                $this->introCookieValue = $introCookieValue->value;
-            }
-            $this->introCookieValue = $introCookieValue;
-        }
-
-        public function isUniqueToAPage()
-        {
-            return true;
-        }
+        protected $activeActionElementType;        
     }
 ?>

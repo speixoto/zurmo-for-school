@@ -64,9 +64,11 @@
                     ),
                     'secondToolbar' => array(
                         'elements' => array(
-                            array('type'  => 'ProductIntroLink',
-                                'cookieValue' => 'eval:$this->introCookieValue',
-                                'htmlOptions' => array('class' => 'icon-intro-change-this'), //todo: need new class name
+                            array('type'        => 'ProductIntroLink',                                
+                                  'panelId'     => 'eval:$this->introView->getPanelId()',
+                                  'checked'     => 'eval:!$this->introView->isIntroViewDismissed()',
+                                  'moduleName'  => 'eval:$this->introView->getModuleName()',
+                                  'htmlOptions' => array('class' => 'icon-intro-change-this'), //todo: need new class name
                             ),
                         ),
                     ),

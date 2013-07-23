@@ -37,19 +37,20 @@
     class ProductCategoriesActionBarAndTreeListView extends GridView
     {
         public function __construct($controllerId, $moduleId, $categories, $activeActionElementType = null,
-                                    View $introView, $introCookieValue)
+                                    IntroView $introView = null)
         {
             assert('$controllerId != null');
             assert('$moduleId != null');
             assert('is_array($categories)');
-            parent::__construct(3, 1);
-            $actionBarView = new ActionBarForProductCategoriesTreeListView ($controllerId, $moduleId, $activeActionElementType);
-            $actionBarView->setIntroCookieValue($introCookieValue);
-            $this->setView($actionBarView, 0, 0);
-            $this->setView($introView, 1, 0);
+            parent::__construct(2, 1);
+            $actionBarView = new ActionBarForProductCategoriesTreeListView ($controllerId, 
+                                                                            $moduleId, 
+                                                                            $activeActionElementType,
+                                                                            $introView);            
+            $this->setView($actionBarView, 0, 0);            
             $categoriesTreeListView = new ProductCategoriesTreeListView($controllerId, $moduleId, $categories);
             $categoriesTreeListView->setCssClasses(array('DetailsView'));
-            $this->setView($categoriesTreeListView, 2, 0);
+            $this->setView($categoriesTreeListView, 1, 0);
         }
 
         public function isUniqueToAPage()

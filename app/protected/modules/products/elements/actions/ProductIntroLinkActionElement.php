@@ -43,7 +43,6 @@
 
         public function render()
         {
-            $this->registerScripts();
             if (Yii::app()->controller->action->id == 'list' ||
                 Yii::app()->controller->action->id == null ||
                 Yii::app()->controller->action->id == 'index')
@@ -90,40 +89,46 @@
 
         protected function renderHideOrShowContent()
         {
-            $name        = ProductsIntroView::PANEL_ID . '-checkbox-id';
-            $htmlOptions = array('id' => ProductsIntroView::PANEL_ID . '-checkbox-id');
-            $checkBox    = ZurmoHtml::checkBox($name, $this->resolveChecked(), $htmlOptions);
-            return '<div class="screen-options"><h4>Screen Options</h4>' . $checkBox . Zurmo::t('ProductsModule', 'Show intro message') . '</div>';
+            $name        = $this->getPanelId() . '-checkbox-id';
+            $ajaxOptions = array('type'     => 'GET',
+                                 'url'      => Yii::app()->createUrl('zurmo/default/toggleDismissIntroView', 
+                                                                  array('moduleName' => $this->getModuleName(), 
+                                                                        'panelId'    => $this->getPanelId())
+                                                    ), 
+                                 'success'  => "function()
+                                       {
+                                           var checked = $('#{$this->getPanelId()}-checkbox-id').attr('checked');
+                                           $('#{$this->getPanelId()}').slideToggle();
+                                           $('#{$this->getPanelId()}-checkbox-id').attr('checked', !checked);
+                                           if (checked)
+                                           {
+                                             $('#{$this->getPanelId()}-checkbox-id').parent().removeClass('c_on');
+                                           }
+                                           else
+                                           {
+                                             $('#{$this->getPanelId()}-checkbox-id').parent().addClass('c_on');
+                                           }                                           
+                                       }
+            ");            
+            $htmlOptions = array('id'   => $this->getPanelId() . '-checkbox-id',
+                                 'ajax' => $ajaxOptions);
+            $checkBox    = ZurmoHtml::checkBox($name, $this->getChecked(), $htmlOptions);                                                                                                
+            return '<div class="screen-options"><h4>Screen Options</h4>' . $checkBox . Zurmo::t('MarketingModule', 'Show intro message') . '</div>';
         }
 
-        protected function resolveChecked()
+        protected function getPanelId()
         {
-            if ($this->params['cookieValue'] == ProductsIntroView::HIDDEN_COOKIE_VALUE)
-            {
-                return false;
-            }
-            else
-            {
-                return true;
-            }
+            return $this->params['panelId'];
         }
-
-        protected function registerScripts()
+        
+        protected function getChecked()
         {
-            $script = "$('#" . ProductsIntroView::PANEL_ID . "-checkbox-id').click(function()
-                        {
-                            if (!$(this).attr('checked'))
-                            {
-                                document.cookie = '" . ProductsIntroView::resolveCookieId() . "=" .
-                                                       ProductsIntroView::HIDDEN_COOKIE_VALUE . "';
-                            }
-                            else
-                            {
-                                document.cookie = '" . ProductsIntroView::resolveCookieId() . "=';
-                            }
-                            $('#" . ProductsIntroView::PANEL_ID . "').slideToggle();
-                        });";
-            Yii::app()->clientScript->registerScript(get_class() . 'CheckBoxClickScript', $script);
+            return $this->params['checked'];
         }
+        
+        protected function getModuleName()
+        {
+            return $this->params['moduleName'];
+        }     
     }
 ?>

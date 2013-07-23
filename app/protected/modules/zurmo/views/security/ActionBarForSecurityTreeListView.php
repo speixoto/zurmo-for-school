@@ -41,7 +41,7 @@
     {
         abstract protected function makeModel();
 
-        public function __construct($controllerId, $moduleId, $activeActionElementType = null)
+        public function __construct($controllerId, $moduleId, $activeActionElementType = null, IntroView $introView = null)
         {
             assert('is_string($controllerId)');
             assert('is_string($moduleId)');
@@ -49,6 +49,7 @@
             $this->controllerId              = $controllerId;
             $this->moduleId                  = $moduleId;
             $this->activeActionElementType   = $activeActionElementType;
+            $this->introView                 = $introView;
         }
 
         protected function renderContent()
@@ -67,6 +68,10 @@
                     $content .= '<div class="view-toolbar">' . $secondActionElementBarContent . '</div>';
                 }
                 $content .= '</div>';
+            }
+            if (isset($this->introView))
+            {
+                $content .= $this->introView->render();
             }
             return $content;
         }

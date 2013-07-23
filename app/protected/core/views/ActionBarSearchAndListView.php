@@ -41,8 +41,7 @@
     {
         public function __construct($controllerId, $moduleId, ModelForm $searchModel, RedBeanModel $listModel,
                                     $viewPrefixName, CDataProvider $dataProvider, $selectedIds,
-                                    $actionBarViewClassName, $activeActionElementType = null, View $introView = null,
-                                    $introCookieValue = null)
+                                    $actionBarViewClassName, $activeActionElementType = null, IntroView $introView = null)
         {
             assert('is_string($controllerId)');
             assert('is_string($moduleId)');
@@ -60,24 +59,14 @@
             $actionBarView       = new $actionBarViewClassName($controllerId, $moduleId, $listModel,
                                                                $listView->getGridViewId(),
                                                                $dataProvider->getPagination()->pageVar,
-                                                               $listView->getRowsAreSelectable(), $activeActionElementType);
-            if($introView != null)
-            {
-                $actionBarView->setIntroCookieValue($introCookieValue);
-                parent::__construct(4, 1);
-                $this->setView($actionBarView, 0, 0);
-                $this->setView($introView, 1, 0);
-                $this->setView($searchView, 2, 0);
-                $this->setView($listView, 3, 0);
-
-            }
-            else
-            {
-                parent::__construct(3, 1);
-                $this->setView($actionBarView, 0, 0);
-                $this->setView($searchView, 1, 0);
-                $this->setView($listView, 2, 0);
-            }
+                                                               $listView->getRowsAreSelectable(), 
+                                                               $activeActionElementType,
+                                                               $introView);
+            
+            parent::__construct(3, 1);
+            $this->setView($actionBarView, 0, 0);
+            $this->setView($searchView, 1, 0);
+            $this->setView($listView, 2, 0);
         }
 
         public function isUniqueToAPage()

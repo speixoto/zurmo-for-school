@@ -62,9 +62,16 @@
          * @var boolean
          */
         protected $listViewRowsAreSelectable;
+        
+        /**
+         * If set an intro view will be rendered
+         * @var null|IntroView
+         */
+        protected $introView;
 
         public function __construct($controllerId, $moduleId, RedBeanModel $model, $listViewGridId,
-                                    $pageVarName, $listViewRowsAreSelectable, $activeActionElementType = null)
+                                    $pageVarName, $listViewRowsAreSelectable, $activeActionElementType = null,
+                                    IntroView $introView = null)
         {
             assert('is_string($controllerId)');
             assert('is_string($moduleId)');
@@ -79,6 +86,7 @@
             $this->pageVarName               = $pageVarName;
             $this->listViewRowsAreSelectable = $listViewRowsAreSelectable;
             $this->activeActionElementType   = $activeActionElementType;
+            $this->introView                 = $introView;
         }
 
         protected function renderContent()
@@ -91,6 +99,10 @@
                 $content .= '<div class="view-toolbar">' . $secondActionElementBarContent . '</div>';
             }
             $content .= '</div>';
+            if (isset($this->introView))
+            {
+                $content .= $this->introView->render();
+            }
             return $content;
         }
 

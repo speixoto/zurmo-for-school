@@ -103,7 +103,7 @@
         protected function makeActionBarSearchAndListView($searchModel, $dataProvider,
                                                           $actionBarViewClassName = 'SecuredActionBarForSearchAndListView',
                                                           $viewPrefixName = null, $activeActionElementType = null,
-                                                          View $introView = null, $introCookieValue = null)
+                                                          IntroView $introView = null)
         {
             assert('is_string($actionBarViewClassName)');
             assert('is_string($viewPrefixName) || $viewPrefixName == null');
@@ -123,8 +123,7 @@
                 GetUtil::resolveSelectedIdsFromGet(),
                 $actionBarViewClassName,
                 $activeActionElementType,
-                $introView,
-                $introCookieValue
+                $introView                
             );
         }
 
