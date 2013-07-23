@@ -156,7 +156,7 @@
             $this->runControllerWithRedirectExceptionAndGetContent('tasks/default/createFromRelation');
 
             $tasks = Task::getByName('myTask');
-            $this->assertCount(1, $tasks);
+            $this->assertEquals(1, count($tasks));
 
             $this->setGetArray(array('id' => $tasks[0]->id));
             $this->resetPostArray();
@@ -186,7 +186,7 @@
             $content = $this->runControllerWithRedirectExceptionAndGetContent('tasks/default/copy');
 
             $tasks = Task::getByName('myTask');
-            $this->assertCount(2, $tasks);
+            $this->assertEquals(2, count($tasks));
             $this->assertEquals($tasks[0]->name,             $tasks[1]->name);
             $this->assertEquals($tasks[0]->description,      $tasks[1]->description);
             $this->assertEquals($tasks[0]->activityItems[0], $tasks[1]->activityItems[0]);
@@ -194,6 +194,35 @@
 
             $tasks[0]->delete();
             $tasks[1]->delete();
+        }
+
+        public function testSuperUserCreateAndEditActions()
+        {
+            $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
+
+            $task = TaskTestHelper::createTaskByNameForOwner('My New Task', $super);
+            $this->runControllerWithNoExceptionsAndGetContent('tasks/default/create');
+
+            //add related task for account using createFromRelation action
+            $activityItemPostData = array();
+            $this->setGetArray(array('id' => $task->id));
+            //$this->setPostArray(array('ActivityItemForm' => $activityItemPostData, 'Task' => array('name' => 'myTask')));
+            $this->runControllerWithNoExceptionsAndGetContent('tasks/default/edit');
+
+            //Save task.
+            $superTask = Task::getById($task->id);
+            $this->assertEquals('My New Task', $superTask->name);
+            $this->setPostArray(array('ActivityItemForm' => $activityItemPostData, 'Task' => array('name' => 'HelloTask')));
+            //Make sure the redirect is to the details view and not the list view.
+            $this->runControllerWithRedirectExceptionAndGetContent('tasks/default/edit',
+                        Yii::app()->createUrl('tasks/default/details', array('id' => $superTask->id)));
+            $superTask = Task::getById($superTask->id);
+            $this->assertEquals('HelloTask', $superTask->name);
+            //Test having a failed validation on the task during save.
+            $this->setGetArray (array('id'      => $superTask->id));
+            $this->setPostArray(array('ActivityItemForm' => $activityItemPostData, 'Task' => array('name' => '')));
+            $content = $this->runControllerWithNoExceptionsAndGetContent('tasks/default/edit');
+            $this->assertFalse(strpos($content, 'Name cannot be blank') === false);
         }
    }
 ?>

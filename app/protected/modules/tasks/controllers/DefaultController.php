@@ -52,7 +52,7 @@
         public function actionDetails($id, $redirectUrl = null)
         {
             $modelClassName    = $this->getModule()->getPrimaryModelName();
-            $activity = static::getModelAndCatchNotFoundAndDisplayError($modelClassName, intval($id));
+            $activity          = static::getModelAndCatchNotFoundAndDisplayError($modelClassName, intval($id));
             ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($activity);
             AuditEvent::logAuditEvent('ZurmoModule', ZurmoModule::AUDIT_EVENT_ITEM_VIEWED, array(strval($activity), get_class($this->getModule())), $activity);
             TasksUtil::markUserHasReadLatest($activity, Yii::app()->user->userModel);
@@ -184,6 +184,28 @@
                                                                                                         $model,
                                                                                                         null);
             return $ownedSecurableItemDetailsContent;
+        }
+
+        public function actionCreate()
+        {
+            $title                  = Zurmo::t('TasksModule', 'Create Task');
+            $editAndDetailsView     = $this->makeEditAndDetailsView(
+                                            $this->attemptToSaveModelFromPost(new Task()), 'Edit');
+            $view                   = new TasksPageView(ZurmoDefaultViewUtil::
+                                                makeStandardViewForCurrentUser($this, $editAndDetailsView));
+            echo $view->render();
+        }
+
+        public function actionEdit($id, $redirectUrl = null)
+        {
+            $task            = Task::getById(intval($id));
+            ControllerSecurityUtil::resolveAccessCanCurrentUserWriteModel($task);
+            $view            = new TasksPageView(ZurmoDefaultViewUtil::
+                                                        makeStandardViewForCurrentUser($this,
+                                                            $this->makeEditAndDetailsView(
+                                                                $this->attemptToSaveModelFromPost(
+                                                                    $task, $redirectUrl), 'Edit')                                                  ));
+            echo $view->render();
         }
     }
 ?>

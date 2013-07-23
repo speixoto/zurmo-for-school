@@ -87,12 +87,13 @@
          */
         public static function getTaskSubscribers(Task $task)
         {
+            $subscribers = array();
             $modelDerivationPathToItem = RuntimeUtil::getModelDerivationPathToItem('User');
             foreach ($task->notificationSubscribers as $subscriber)
             {
-                $participants[] = $subscriber->person->castDown(array($modelDerivationPathToItem));
+                $subscribers[] = $subscriber->person->castDown(array($modelDerivationPathToItem));
             }
-            return $participants;
+            return $subscribers;
         }
 
         /**
