@@ -224,7 +224,7 @@
         {
             if (isset($item['dynamicLabelContent']))
             {
-                return ZurmoHtml::tag('span', array(), $item['dynamicLabelContent']);
+                return $item['dynamicLabelContent'];
             }
         }
 

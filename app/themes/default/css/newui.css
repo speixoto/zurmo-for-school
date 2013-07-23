@@ -6368,7 +6368,8 @@ body > .ui-autocomplete {
 }
 .unread-count {
   display: inline-block;
-  margin-left: 8px;
+  margin-left: 6px;
+  margin-top: -2px;
   -webkit-border-radius: 50%;
   -moz-border-radius: 50%;
   -ms-border-radius: 50%;
@@ -6988,7 +6989,7 @@ form .view-toolbar-container,
   position: relative;
   top: 0;
 }
-.icon-conversation:before {
+.icon-conversation > a:before {
   content: "O";
   font-weight: normal;
   font-size: 24px;
@@ -7016,7 +7017,7 @@ form .view-toolbar-container,
   position: relative;
   top: -1px;
 }
-.icon-mission:before,
+.icon-mission > a:before,
 .icon-missions-available:before {
   content: "Q";
   font-weight: normal;
@@ -7045,7 +7046,7 @@ form .view-toolbar-container,
   position: relative;
   top: -2px;
 }
-.icon-notification:before {
+.icon-notification > a:before {
   content: '\00A5';
   font-weight: normal;
   font-size: 24px;
@@ -7059,7 +7060,7 @@ form .view-toolbar-container,
   position: relative;
   top: -2px;
 }
-.icon-combined:before {
+.icon-combined > a:before {
   content: '\00A7';
   font-weight: normal;
   font-size: 26px;
@@ -18169,6 +18170,23 @@ a.user-link {
 }
 #MashableInboxActionBarForViews #MashableInboxForm_searchTerm {
   width: 204px;
+}
+#MashableInboxActionBarForViews .nav > li:first-child:before {
+  margin: 0;
+}
+#MashableInboxActionBarForViews .nav > li:first-child > a {
+  color: #656565;
+  font-weight: bold;
+  text-shadow: #fff 0 1px 0;
+  padding: 0 10px 0 40px;
+  line-height: 30px;
+  display: inline-block;
+  position: relative;
+  vertical-align: middle;
+  border-left: 1px solid #bababa;
+}
+#MashableInboxActionBarForViews .nav > li:first-child > a:after {
+  margin-left: 6px;
 }
 .inbox-item {
   position: relative;

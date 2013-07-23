@@ -1354,7 +1354,8 @@ body > .ui-autocomplete{
 
 .unread-count{
 	display: inline-block;
-	margin-left: 8px;
+	margin-left: 6px;
+	margin-top: -2px;
 	.radius(50%);
 	width:16px;
 	height:16px;
@@ -1725,7 +1726,7 @@ form,
 	top:0;
 }
 
-.icon-conversation:before{
+.icon-conversation > a:before{
 	content:"O";
 	.view-toolbar-icons();
 	top:-1px;
@@ -1737,7 +1738,7 @@ form,
 	top:-1px;
 }
 
-.icon-mission:before,
+.icon-mission > a:before,
 .icon-missions-available:before{
 	content:"Q";
 	.view-toolbar-icons();
@@ -1750,13 +1751,13 @@ form,
 	top:-2px;
 }
 
-.icon-notification:before{
+.icon-notification > a:before{
 	content:'\00A5';
 	.view-toolbar-icons();
 	top:-2px;
 }
 
-.icon-combined:before{
+.icon-combined > a:before{
 	content:'\00A7';
 	.view-toolbar-icons(26px);
 	top:-2px;
