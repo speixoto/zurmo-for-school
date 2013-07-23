@@ -34,13 +34,8 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    abstract class ModalLinkActionElement extends LinkActionElement
+    class TaskModalEditAndDetailsView extends TaskEditAndDetailsView
     {
-        const RELATED_MODAL_CONTAINER_PREFIX = 'relatedModalContainer';
-
-        public function render()
-        {
-            return ZurmoHtml::ajaxLink($this->resolveLabelAndWrap(), $this->route, $this->getAjaxOptions(), $this->getHtmlOptions());
-        }
+        
     }
 ?>

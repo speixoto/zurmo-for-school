@@ -34,13 +34,31 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    abstract class ModalLinkActionElement extends LinkActionElement
+    class CreateModalLinkActionElement extends ModalLinkActionElement
     {
-        const RELATED_MODAL_CONTAINER_PREFIX = 'relatedModalContainer';
-
-        public function render()
+        protected function getDefaultLabel()
         {
-            return ZurmoHtml::ajaxLink($this->resolveLabelAndWrap(), $this->route, $this->getAjaxOptions(), $this->getHtmlOptions());
+            return Zurmo::t('Core', 'Create');
+        }
+
+        protected function getDefaultRoute()
+        {
+            return Yii::app()->createUrl($this->getRouteModuleId() . '/' .
+                        $this->controllerId . '/modalCreate/', $this->getRouteParameters());
+        }
+
+        protected function getRouteModuleId()
+        {
+            if (!isset($this->params['routeModuleId']))
+            {
+                return array();
+            }
+            return $this->params['routeModuleId'];
+        }
+
+        public function getActionType()
+        {
+            return 'Create';
         }
     }
 ?>

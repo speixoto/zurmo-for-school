@@ -34,13 +34,36 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    abstract class ModalLinkActionElement extends LinkActionElement
+    /**
+     * Helper class to render modal edit and detail view called from a model controller.
+     */
+    class ModalEditAndDetailsControllerUtil
     {
-        const RELATED_MODAL_CONTAINER_PREFIX = 'relatedModalContainer';
-
-        public function render()
+        public static function setAjaxModeAndRenderModalEditAndDetailsView(CController $controller, $modalEditAndDetailsLinkProvider,
+                                                 $renderType)
         {
-            return ZurmoHtml::ajaxLink($this->resolveLabelAndWrap(), $this->route, $this->getAjaxOptions(), $this->getHtmlOptions());
+            Yii::app()->getClientScript()->setToAjaxMode();
+            return self::renderModalWindow($controller, $modalEditAndDetailsLinkProvider, $renderType);
+        }
+
+        /**
+         * @return rendered content from view as string.
+         */
+        protected static function renderModalWindow(CController $controller, $modalEditAndDetailsLinkProvider,
+                                                        $renderType)
+        {
+            assert('$modalEditAndDetailsLinkProvider instanceof ModalEditAndDetailsLinkProvider');
+            $className           = $controller->getModule()->getSingularCamelCasedName() . 'ModalEditAndDetailsView';
+            $modelClassName      = $controller->getModule()->getPrimaryModelName();
+            $model               = new $modelClassName(false);
+            $editAndDetailsView  = new $className(
+                                                    $renderType,
+                                                    $controller->getId(),
+                                                    $controller->getModule()->getId(),
+                                                    $model
+                                                );
+            $view = new ModalView($controller, $editAndDetailsView);
+            return $view->render();
         }
     }
 ?>

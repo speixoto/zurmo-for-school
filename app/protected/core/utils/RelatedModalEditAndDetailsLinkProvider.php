@@ -34,13 +34,26 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    abstract class ModalLinkActionElement extends LinkActionElement
+    /**
+     * Helper class for ModalEditAndDetailsViews.
+     */
+    class RelatedModalEditAndDetailsLinkProvider extends ModalEditAndDetailsLinkProvider
     {
-        const RELATED_MODAL_CONTAINER_PREFIX = 'relatedModalContainer';
+        protected $relationAttributeName;
 
-        public function render()
+        protected $relationModelId;
+
+        protected $relationModuleId;
+
+        protected $redirectUrl;
+
+        function __construct($relationAttributeName, $relationModelId, $relationModuleId, $redirectUrl)
         {
-            return ZurmoHtml::ajaxLink($this->resolveLabelAndWrap(), $this->route, $this->getAjaxOptions(), $this->getHtmlOptions());
+            $this->relationAttributeName = $relationAttributeName;
+            $this->relationModelId = $relationModelId;
+            $this->relationModuleId = $relationModuleId;
+            $this->redirectUrl = $redirectUrl;
         }
+
     }
 ?>

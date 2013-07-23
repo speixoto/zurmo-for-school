@@ -45,9 +45,13 @@
                 'global' => array(
                     'toolbar' => array(
                         'elements' => array(
-                            array(  'type'            => 'CreateFromRelatedListLink',
+//                            array(  'type'            => 'CreateFromRelatedListLink',
+//                                    'routeModuleId'   => 'eval:$this->moduleId',
+//                                    'routeParameters' => 'eval:$this->getCreateLinkRouteParameters()'),
+                            array(  'type'            => 'CreateFromRelatedModalLink',
                                     'routeModuleId'   => 'eval:$this->moduleId',
-                                    'routeParameters' => 'eval:$this->getCreateLinkRouteParameters()'),
+                                    'routeParameters' => 'eval:$this->getCreateLinkRouteParameters()',
+                                    'ajaxOptions'     => 'eval:$this->resolveAjaxOptionsForSelectingModel()'),
                         ),
                     ),
                     'rowMenu' => array(
@@ -121,6 +125,37 @@
         public static function getModuleClassName()
         {
             return 'TasksModule';
+        }
+
+        protected function resolveAjaxOptionsForSelectingModel()
+        {
+            $title = $this->getModalTitleForSelectingModel();
+            return   ModalView::getAjaxOptionsForModalLink($title, $this->getModalContainerId());
+        }
+
+        protected function getModalTitleForSelectingModel()
+        {
+            $module              = Yii::app()->getModule('tasks');
+            $moduleSingularLabel = $module->getModuleLabelByTypeAndLanguage('Singular');
+            return Zurmo::t('Core', 'Create {moduleSingularLabel}',
+                                      array('{moduleSingularLabel}' => $moduleSingularLabel));
+        }
+
+        protected function getModalContainerId()
+        {
+            return ModalLinkActionElement::RELATED_MODAL_CONTAINER_PREFIX . '-open-tasks';
+        }
+
+        protected function renderContent()
+        {
+            $content = parent::renderContent();
+            $content .= $this->renderModalContainer();
+            return $content;
+        }
+
+        protected function renderModalContainer()
+        {
+            return ZurmoHtml::tag('div', array('id' => $this->getModalContainerId()), '');
         }
     }
 ?>

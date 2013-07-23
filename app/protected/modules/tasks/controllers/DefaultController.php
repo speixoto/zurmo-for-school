@@ -188,14 +188,15 @@
             return $ownedSecurableItemDetailsContent;
         }
 
-        public function actionCreate()
+        public function actionModalCreateFromRelation()
         {
-            $title                  = Zurmo::t('TasksModule', 'Create Task');
-            $editAndDetailsView     = $this->makeEditAndDetailsView(
-                                            $this->attemptToSaveModelFromPost(new Task()), 'Edit');
-            $view                   = new TasksPageView(ZurmoDefaultViewUtil::
-                                                makeStandardViewForCurrentUser($this, $editAndDetailsView));
-            echo $view->render();
+            $relatedModalEditAndDetailsLinkProvider = new RelatedModalEditAndDetailsLinkProvider(
+                                                        $_GET['relationAttributeName'],
+                                                        $_GET['relationModelId'],
+                                                        $_GET['relationModuleId'],
+                                                        $_GET['redirectUrl']
+                                                     );
+            echo ModalEditAndDetailsControllerUtil::setAjaxModeAndRenderModalEditAndDetailsView($this, $relatedModalEditAndDetailsLinkProvider, 'Edit');
         }
 
         public function actionEdit($id, $redirectUrl = null)
