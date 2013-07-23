@@ -107,7 +107,9 @@
 
                               $task->requestedByUser = $user;
                               $task->save();
-                              TasksUtil::resolveExplicitPermissionsForRequestedByUser($task, $origRequestedByUser);
+                              $user = $task->requestedByUser;
+                              $explicitReadWriteModelPermissions = ExplicitReadWriteModelPermissionsUtil::makeBySecurableItem($task);
+                              TasksUtil::resolveExplicitPermissionsForRequestedByUser($task, $origRequestedByUser, $user, $explicitReadWriteModelPermissions);
 //                              TasksUtil::sendNotificationOnTaskUpdate($task, Zurmo::t('TasksModule', 'The requested by user for the task #' . $task->id . ' is updated to ' . $user->getFullName()));
                               break;
             }

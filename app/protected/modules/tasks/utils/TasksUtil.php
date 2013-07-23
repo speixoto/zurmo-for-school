@@ -260,10 +260,8 @@
          * @param Task $task
          * @param Permitable $origRequestedByUser
          */
-        public static function resolveExplicitPermissionsForRequestedByUser(Task $task, $origRequestedByUser)
+        public static function resolveExplicitPermissionsForRequestedByUser(Task $task, $origRequestedByUser, $requestedByUser, $explicitReadWriteModelPermissions)
         {
-            $user = $task->requestedByUser;
-            $explicitReadWriteModelPermissions = ExplicitReadWriteModelPermissionsUtil::makeBySecurableItem($task);
             ExplicitReadWriteModelPermissionsUtil::
                                         resolveExplicitReadWriteModelPermissions($task, $explicitReadWriteModelPermissions);
             if ($origRequestedByUser instanceof Permitable)
@@ -273,11 +271,11 @@
                     $explicitReadWriteModelPermissions->addReadWritePermitableToRemove($origRequestedByUser);
                   }
             }
-            if ($user instanceof Permitable)
+            if ($requestedByUser instanceof Permitable)
             {
-                  if($user->username != 'super')
+                  if($requestedByUser->username != 'super')
                   {
-                    $explicitReadWriteModelPermissions->addReadWritePermitable($user);
+                    $explicitReadWriteModelPermissions->addReadWritePermitable($requestedByUser);
                   }
             }
         }
