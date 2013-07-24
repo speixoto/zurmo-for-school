@@ -44,7 +44,7 @@
         protected function getDefaultRoute()
         {
             return Yii::app()->createUrl($this->getRouteModuleId() . '/' .
-                        $this->controllerId . '/modalCreateFromRelation/', $this->getRouteParameters());
+                        $this->controllerId . '/modalCreateFromRelation/', $this->getCreateLinkUrlParams());
         }
 
         protected function getRouteModuleId()
@@ -59,6 +59,25 @@
         public function getActionType()
         {
             return 'Create';
+        }
+
+        protected function getCreateLinkUrlParams()
+        {
+            return array(
+                'modalTransferInformation' => $this->getModalTransferInformation(),
+            );
+        }
+
+        protected function getModalTransferInformation()
+        {
+            return array_merge(array(
+                    'modalId'           => $this->getModalContainerId(),
+            ), $this->getRouteParameters());
+        }
+
+        protected function getModalContainerId()
+        {
+            return ModalLinkActionElement::RELATED_MODAL_CONTAINER_PREFIX . '-open-tasks';
         }
     }
 ?>

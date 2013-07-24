@@ -191,12 +191,26 @@
         public function actionModalCreateFromRelation()
         {
             $relatedModalEditAndDetailsLinkProvider = new RelatedModalEditAndDetailsLinkProvider(
-                                                        $_GET['relationAttributeName'],
-                                                        $_GET['relationModelId'],
-                                                        $_GET['relationModuleId'],
-                                                        $_GET['redirectUrl']
+                                                        $_GET['modalTransferInformation']['relationAttributeName'],
+                                                        $_GET['modalTransferInformation']['relationModelId'],
+                                                        $_GET['modalTransferInformation']['relationModuleId'],
+                                                        $_GET['modalTransferInformation']['redirectUrl'],
+                                                        $_GET['modalTransferInformation']['modalId']
                                                      );
             echo ModalEditAndDetailsControllerUtil::setAjaxModeAndRenderModalEditAndDetailsView($this, $relatedModalEditAndDetailsLinkProvider, 'Edit');
+        }
+
+        public function actionModalSaveFromRelation($relationAttributeName, $relationModelId, $relationModuleId)
+        {
+            $modelClassName   = $this->getModule()->getPrimaryModelName();
+            $activity         = $this->resolveNewModelByRelationInformation( new $modelClassName(),
+                                                                                $relationAttributeName,
+                                                                                (int)$relationModelId,
+                                                                                $relationModuleId);
+
+            $activity         = $this->attemptToSaveModelFromPost($activity, null, false);
+
+
         }
 
         public function actionEdit($id, $redirectUrl = null)

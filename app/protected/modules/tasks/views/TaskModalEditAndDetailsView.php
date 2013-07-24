@@ -36,6 +36,51 @@
 
     class TaskModalEditAndDetailsView extends TaskEditAndDetailsView
     {
-        
+         public static function getDefaultMetadata()
+         {
+            $relationAttributeName   = $_GET['modalTransferInformation']['relationAttributeName'];
+            $relationModelId         = $_GET['modalTransferInformation']['relationModelId'];
+            $relationModuleId        = $_GET['modalTransferInformation']['relationModuleId'];
+            $modalId                 = $_GET['modalTransferInformation']['modalId'];
+            $metadata = parent::getDefaultMetadata();
+            $url = Yii::app()->createUrl('tasks/default/modalSaveFromRelation', array('relationAttributeName' => $relationAttributeName,
+                                                                                      'relationModelId' => $relationModelId,
+                                                                                      'relationModuleId' => $relationModuleId));
+            $metadata['global']['toolbar']['elements'][0] = array('type'  => 'ModalSaveButton',
+                                                                  'url'   => $url,
+                                                                  'ajaxOptions'    => 'eval:static::resolveAjaxOptionsForSave("' .
+                                                                                       $relationAttributeName . '","' .
+                                                                                       $relationModelId . '","' .
+                                                                                       $relationModuleId . '","' .
+                                                                                       $modalId . '")',
+                                                                  );
+            return $metadata;
+
+         }
+
+         protected function getNewModelTitleLabel()
+         {
+             return '';
+         }
+
+         protected static function resolveAjaxOptionsForSave($relationAttributeName, $relationModelId, $relationModuleId, $modalId)
+         {
+            return array(
+                'type'      => 'post',
+                'dataType'  => 'json',
+                'data'      => 'js:$("#task-modal-edit-form").serialize()',
+                'success'   => 'function(data)
+                                {
+
+                                }
+                               '
+            );
+
+         }
+
+         protected static function getFormId()
+        {
+            return 'task-modal-edit-form';
+        }
     }
 ?>

@@ -34,29 +34,16 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * Helper class for ModalEditAndDetailsViews.
-     */
-    class RelatedModalEditAndDetailsLinkProvider extends ModalEditAndDetailsLinkProvider
+    class ModalSaveButtonActionElement extends SaveButtonActionElement
     {
-        protected $relationAttributeName;
-
-        protected $relationModelId;
-
-        protected $relationModuleId;
-
-        protected $redirectUrl;
-
-        protected $modalId;
-
-        function __construct($relationAttributeName, $relationModelId, $relationModuleId, $redirectUrl, $modalId)
+        public function render()
         {
-            $this->relationAttributeName = $relationAttributeName;
-            $this->relationModelId       = $relationModelId;
-            $this->relationModuleId      = $relationModuleId;
-            $this->redirectUrl           = $redirectUrl;
-            $this->modalId               = $modalId;
+            return ZurmoHtml::ajaxSubmitButton($this->getLabel(), $this->route, $this->getAjaxOptions(), $this->getHtmlOptions());
         }
 
+        protected function getDefaultRoute()
+        {
+            return $this->params['url'];
+        }
     }
 ?>

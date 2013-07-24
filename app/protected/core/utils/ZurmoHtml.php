@@ -664,5 +664,19 @@ EOD;
                 $content .= ZurmoHtml::tag('div', $htmlOptions, $innerContent);
             }
         }
+
+        public static function ajaxButton($label,$url,$ajaxOptions=array(),$htmlOptions=array())
+        {
+            $ajaxOptions['url']=$url;
+            $htmlOptions['ajax']=$ajaxOptions;
+            return static::button($label,$htmlOptions);
+        }
+
+        public static function ajaxSubmitButton($label,$url,$ajaxOptions=array(),$htmlOptions=array())
+        {
+            $ajaxOptions['type']='POST';
+            $htmlOptions['type']='submit';
+            return self::ajaxButton($label,$url,$ajaxOptions,$htmlOptions);
+        }
     }
 ?>
