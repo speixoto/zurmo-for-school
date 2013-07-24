@@ -1825,9 +1825,8 @@
                             self::resolveModelClassNameForClassesWithoutBeans($tempRelatedModelClassName);
                             $relatedTableName          = self::getTableName($tempRelatedModelClassName);
                             $linkName = strtolower($relationName);
-                            // TODO: @Shoaibi/@Jason: Critical: Why do we have:
-                            //static::getRelationType($relationName) == self::HAS_ONE && static::getRelationLinkType($relationName) == self::LINK_TYPE_SPECIFIC
-                            if (static::getRelationLinkType($relationName) == self::LINK_TYPE_SPECIFIC)
+                            if (static::getRelationType($relationName) == self::HAS_ONE &&
+                                static::getRelationLinkType($relationName) == self::LINK_TYPE_SPECIFIC)
                             {
                                 $linkName = strtolower(static::getRelationLinkName($relationName));
                             }
@@ -1886,13 +1885,13 @@
                                 $relationAndOwns       = static::getRelationNameToRelationTypeModelClassNameAndOwnsForModel();
                                 $relatedModelClassName = $relationAndOwns[$relationName][1];
                                 $linkName = strtolower($relationName);
-                                // TODO: @Shoaibi/@Jason: Critical: why: $relationType == self::HAS_ONE && static::getRelationLinkType($relationName) == self::LINK_TYPE_SPECIFIC
-                                if (static::getRelationLinkType($relationName) == self::LINK_TYPE_SPECIFIC)
+                                if ($relationType == self::HAS_ONE &&
+                                    static::getRelationLinkType($relationName) == self::LINK_TYPE_SPECIFIC)
                                 {
                                     $linkName = strtolower(static::getRelationLinkName($relationName));
                                 }
-                                // TODO: @Shoaibi/@Jason: Critical: Why: strtolower($linkName) == strtolower($relatedModelClassName) || static::getRelationLinkType($relationName) == self::LINK_TYPE_ASSUMPTIVE
-                                else if (strtolower($linkName) == strtolower($relatedModelClassName))
+                                else if (strtolower($linkName) == strtolower($relatedModelClassName)  ||
+                                    static::getRelationLinkType($relationName) == self::LINK_TYPE_ASSUMPTIVE)
                                 {
                                     $linkName = null;
                                 }
