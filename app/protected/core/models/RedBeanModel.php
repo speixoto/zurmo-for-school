@@ -1825,14 +1825,15 @@
                             self::resolveModelClassNameForClassesWithoutBeans($tempRelatedModelClassName);
                             $relatedTableName          = self::getTableName($tempRelatedModelClassName);
                             $linkName = strtolower($relationName);
-                            if ($linkName == strtolower($relatedModelClassName))
-                            {
-                                $linkName = null;
-                            }
-                            elseif (static::getRelationType($relationName) == self::HAS_ONE &&
-                                        static::getRelationLinkType($relationName) == self::LINK_TYPE_SPECIFIC)
+                            // TODO: @Shoaibi/@Jason: Critical: Why do we have:
+                            //static::getRelationType($relationName) == self::HAS_ONE && static::getRelationLinkType($relationName) == self::LINK_TYPE_SPECIFIC
+                            if (static::getRelationLinkType($relationName) == self::LINK_TYPE_SPECIFIC)
                             {
                                 $linkName = strtolower(static::getRelationLinkName($relationName));
+                            }
+                            else if ($linkName == strtolower($relatedModelClassName))
+                            {
+                                $linkName = null;
                             }
                             ZurmoRedBeanLinkManager::breakLink($bean, $relatedTableName, $linkName);
                             //Check the $this->{$relationName} second in the if clause to avoid accidentially getting
@@ -1885,15 +1886,15 @@
                                 $relationAndOwns       = static::getRelationNameToRelationTypeModelClassNameAndOwnsForModel();
                                 $relatedModelClassName = $relationAndOwns[$relationName][1];
                                 $linkName = strtolower($relationName);
-                                if (strtolower($linkName) == strtolower($relatedModelClassName) ||
-                                    static::getRelationLinkType($relationName) == self::LINK_TYPE_ASSUMPTIVE)
-                                {
-                                    $linkName = null;
-                                }
-                                elseif ($relationType == self::HAS_ONE &&
-                                    static::getRelationLinkType($relationName) == self::LINK_TYPE_SPECIFIC)
+                                // TODO: @Shoaibi/@Jason: Critical: why: $relationType == self::HAS_ONE && static::getRelationLinkType($relationName) == self::LINK_TYPE_SPECIFIC
+                                if (static::getRelationLinkType($relationName) == self::LINK_TYPE_SPECIFIC)
                                 {
                                     $linkName = strtolower(static::getRelationLinkName($relationName));
+                                }
+                                // TODO: @Shoaibi/@Jason: Critical: Why: strtolower($linkName) == strtolower($relatedModelClassName) || static::getRelationLinkType($relationName) == self::LINK_TYPE_ASSUMPTIVE
+                                else if (strtolower($linkName) == strtolower($relatedModelClassName))
+                                {
+                                    $linkName = null;
                                 }
                                 elseif ($relationType == RedBeanModel::HAS_MANY_BELONGS_TO ||
                                         $relationType == RedBeanModel::HAS_ONE_BELONGS_TO)

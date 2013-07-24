@@ -105,7 +105,8 @@
                     'recipients'    => array(RedBeanModel::HAS_MANY, 'EmailMessageRecipient',  RedBeanModel::OWNED),
                     'error'         => array(RedBeanModel::HAS_ONE,  'EmailMessageSendError' , RedBeanModel::OWNED,
                                              RedBeanModel::LINK_TYPE_SPECIFIC, 'error'),
-                    'account'       => array(RedBeanModel::HAS_ONE,  'EmailAccount'),
+                    'account'       => array(RedBeanModel::HAS_ONE,  'EmailAccount', RedBeanModel::NOT_OWNED,
+                                                                        RedBeanModel::LINK_TYPE_SPECIFIC, 'account'),
                 ),
                 'rules' => array(
                     array('subject',         'required'),
