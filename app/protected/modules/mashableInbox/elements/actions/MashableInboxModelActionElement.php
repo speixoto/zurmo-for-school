@@ -74,8 +74,10 @@
             $mashableUtilRules  = MashableUtil::createMashableInboxRulesByModel($this->getModelClassName());
             if ($mashableUtilRules->shouldRenderCreateAction)
             {
-                return array(array('label'  => $this->getDefaultLabel(),
-                               'url'    => $this->getRouteForItem($this->getModelClassName())));
+                return array(array('label'  => Zurmo::t('MashableInboxModule', 'List'),
+                                   'url'    => $this->getDefaultRoute()),
+                            array('label'  => $this->getDefaultLabel(),
+                                   'url'    => $this->getRouteForItem($this->getModelClassName())));
             }            
         }
 
