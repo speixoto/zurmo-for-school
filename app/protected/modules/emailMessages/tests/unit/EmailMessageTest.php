@@ -387,6 +387,7 @@
             $emailMessage   = EmailMessageTestHelper::createDraftSystemEmail('test crud relations', $super);
             $this->assertTrue($emailMessage->save());
             $emailMessageId = $emailMessage->id;
+            $emailMessage->forgetAll();
             
             //Check read hasOne relation
             $emailMessage       = EmailMessage::getById($emailMessageId);
@@ -396,6 +397,7 @@
             //Check update hasOne relation
             $emailMessageSender->fromAddress = 'system@somewhere.org';
             $this->assertTrue($emailMessage->save());
+            $emailMessage->forgetAll();
             $emailMessage       = EmailMessage::getById($emailMessageId);
             $emailMessageSender = $emailMessage->sender;            
             $this->assertEquals('system@somewhere.org', $emailMessageSender->fromAddress);
@@ -405,7 +407,8 @@
             $emailMessageSender2->fromAddress = 'system@somewhere.org';
             $emailMessageSender2->fromName    = 'system name';
             $emailMessage->sender = $emailMessageSender2;
-            $this->assertTrue($emailMessage->save());            
+            $this->assertTrue($emailMessage->save());      
+            $emailMessage->forgetAll();
             $found                = true;
             try
             {
@@ -427,6 +430,7 @@
             //Check update hasMany relation
             $recipient->toAddress = 'billy@fakeemail.org';
             $this->assertTrue($emailMessage->save());
+            $emailMessage->forgetAll();
             $emailMessage         = EmailMessage::getById($emailMessageId);
             $recipient            = $emailMessage->recipients[0];            
             $this->assertEquals('billy@fakeemail.org', $recipient->toAddress);
@@ -438,6 +442,7 @@
             $recipient->type        = EmailMessageRecipient::TYPE_BCC;
             $emailMessage->recipients->add($recipient);
             $this->assertTrue($emailMessage->save());
+            $emailMessage->forgetAll();
             $emailMessage           = EmailMessage::getById($emailMessageId);
             $recipients             = $emailMessage->recipients;                        
             $recipient              = $recipients[1];
@@ -446,13 +451,15 @@
             //Check update hasMany relation with more than one model set
             $recipient->toAddress = 'anne@fakeemail.org';
             $this->assertTrue($emailMessage->save());
+            $emailMessage->forgetAll();
             $emailMessage         = EmailMessage::getById($emailMessageId);
             $recipient            = $emailMessage->recipients[1];            
             $this->assertEquals('anne@fakeemail.org', $recipient->toAddress);
             
             //Check delete hasMany relation            
             $emailMessage->recipients->remove($recipient);
-            $this->assertTrue($emailMessage->save());            
+            $this->assertTrue($emailMessage->save());       
+            $emailMessage->forgetAll();
             $found                = true;
             try
             {
@@ -468,7 +475,8 @@
             $emailMessage         = EmailMessage::getById($emailMessageId);
             $recipient             = $emailMessage->recipients[0];
             $emailMessage->recipients->remove($recipient);
-            $this->assertTrue($emailMessage->save());            
+            $this->assertTrue($emailMessage->save());      
+            $emailMessage->forgetAll();
             $found                = true;
             try
             {
