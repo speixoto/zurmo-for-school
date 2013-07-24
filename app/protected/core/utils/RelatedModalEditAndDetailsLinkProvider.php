@@ -49,13 +49,20 @@
 
         protected $modalId;
 
-        function __construct($relationAttributeName, $relationModelId, $relationModuleId, $redirectUrl, $modalId)
+        protected $portletId;
+
+        protected $uniqueLayoutId;
+
+        function __construct($relationAttributeName, $relationModelId, $relationModuleId, $redirectUrl, $modalId,
+                                $portletId, $uniqueLayoutId)
         {
             $this->relationAttributeName = $relationAttributeName;
             $this->relationModelId       = $relationModelId;
             $this->relationModuleId      = $relationModuleId;
             $this->redirectUrl           = $redirectUrl;
             $this->modalId               = $modalId;
+            $this->portletId             = $portletId;
+            $this->uniqueLayoutId        = $uniqueLayoutId;
         }
 
     }

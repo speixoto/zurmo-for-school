@@ -36,6 +36,7 @@
 
     class CreateFromRelatedModalLinkActionElement extends RelatedModalLinkActionElement
     {
+
         protected function getDefaultLabel()
         {
             return Zurmo::t('Core', 'Create');
@@ -72,12 +73,32 @@
         {
             return array_merge(array(
                     'modalId'           => $this->getModalContainerId(),
+                    'portletId'         => $this->getPortletId(),
+                    'uniqueLayoutId'    => $this->getUniqueLayoutId()
             ), $this->getRouteParameters());
         }
 
         protected function getModalContainerId()
         {
             return ModalLinkActionElement::RELATED_MODAL_CONTAINER_PREFIX . '-open-tasks';
+        }
+
+        protected function getPortletId()
+        {
+            if (!isset($this->params['portletId']))
+            {
+                return array();
+            }
+            return $this->params['portletId'];
+        }
+
+        protected function getUniqueLayoutId()
+        {
+            if (!isset($this->params['uniqueLayoutId']))
+            {
+                return array();
+            }
+            return $this->params['uniqueLayoutId'];
         }
     }
 ?>

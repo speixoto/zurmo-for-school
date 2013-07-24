@@ -42,10 +42,15 @@
             $relationModelId         = $_GET['modalTransferInformation']['relationModelId'];
             $relationModuleId        = $_GET['modalTransferInformation']['relationModuleId'];
             $modalId                 = $_GET['modalTransferInformation']['modalId'];
+            $portletId               = $_GET['modalTransferInformation']['portletId'];
+            $uniqueLayoutId          = $_GET['modalTransferInformation']['uniqueLayoutId'];
             $metadata = parent::getDefaultMetadata();
             $url = Yii::app()->createUrl('tasks/default/modalSaveFromRelation', array('relationAttributeName' => $relationAttributeName,
                                                                                       'relationModelId' => $relationModelId,
-                                                                                      'relationModuleId' => $relationModuleId));
+                                                                                      'relationModuleId' => $relationModuleId,
+                                                                                      'portletId'   => $portletId,
+                                                                                      'uniqueLayoutId'  => $uniqueLayoutId
+                                                                                    ));
             $metadata['global']['toolbar']['elements'][0] = array('type'  => 'ModalSaveButton',
                                                                   'url'   => $url,
                                                                   'ajaxOptions'    => 'eval:static::resolveAjaxOptionsForSave("' .
@@ -71,9 +76,14 @@
                 'data'      => 'js:$("#task-modal-edit-form").serialize()',
                 'success'   => 'function(data)
                                 {
-
+                                    console.log(data.errors);
                                 }
-                               '
+                               ',
+                'complete'  => 'function(XMLHttpRequest, textStatus)
+                                {
+                                    $("#" + "' . $modalId . '").dialog("close");
+                                }
+                                '
             );
 
          }

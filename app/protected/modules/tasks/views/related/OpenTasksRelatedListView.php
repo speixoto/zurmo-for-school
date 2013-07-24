@@ -49,9 +49,12 @@
 //                                    'routeModuleId'   => 'eval:$this->moduleId',
 //                                    'routeParameters' => 'eval:$this->getCreateLinkRouteParameters()'),
                             array(  'type'            => 'CreateFromRelatedModalLink',
+                                    'portletId'       => 'eval:$this->params["portletId"]',
                                     'routeModuleId'   => 'eval:$this->moduleId',
                                     'routeParameters' => 'eval:$this->getCreateLinkRouteParameters()',
-                                    'ajaxOptions'     => 'eval:$this->resolveAjaxOptionsForSelectingModel()'),
+                                    'ajaxOptions'     => 'eval:$this->resolveAjaxOptionsForSelectingModel()',
+                                    'uniqueLayoutId'  => 'eval:$this->uniqueLayoutId'
+                                 ),
                         ),
                     ),
                     'rowMenu' => array(

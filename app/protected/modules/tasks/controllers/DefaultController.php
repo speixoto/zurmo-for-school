@@ -195,22 +195,36 @@
                                                         $_GET['modalTransferInformation']['relationModelId'],
                                                         $_GET['modalTransferInformation']['relationModuleId'],
                                                         $_GET['modalTransferInformation']['redirectUrl'],
-                                                        $_GET['modalTransferInformation']['modalId']
+                                                        $_GET['modalTransferInformation']['modalId'],
+                                                        $_GET['modalTransferInformation']['portletId'],
+                                                        $_GET['modalTransferInformation']['uniqueLayoutId']
                                                      );
             echo ModalEditAndDetailsControllerUtil::setAjaxModeAndRenderModalEditAndDetailsView($this, $relatedModalEditAndDetailsLinkProvider, 'Edit');
         }
 
-        public function actionModalSaveFromRelation($relationAttributeName, $relationModelId, $relationModuleId)
+        public function actionModalSaveFromRelation($relationAttributeName, $relationModelId, $relationModuleId, $portletId, $uniqueLayoutId)
         {
             $modelClassName   = $this->getModule()->getPrimaryModelName();
             $activity         = $this->resolveNewModelByRelationInformation( new $modelClassName(),
                                                                                 $relationAttributeName,
                                                                                 (int)$relationModelId,
                                                                                 $relationModuleId);
-
             $activity         = $this->attemptToSaveModelFromPost($activity, null, false);
-
-
+            if(count($activity->getErrors()) == 0)
+            {
+                $redirectUrl  = Yii::app()->createUrl('/' . $relationModuleId . '/default/details', array('id' => $relationModelId));
+                $this->redirect(array('/' . $relationModuleId . '/defaultPortlet/modalRefresh',
+                                        'portletId'            => $portletId,
+                                        'uniqueLayoutId'       => $uniqueLayoutId,
+                                        'redirectUrl'          => $redirectUrl,
+                                        'portletParams'        => array(  'relationModuleId' => $relationModuleId,
+                                                                          'relationModelId'  => $relationModelId),
+                                ));
+            }
+            else
+            {
+                echo CJSON::encode(array('errors' => $activity->getErrors()));
+            }
         }
 
         public function actionEdit($id, $redirectUrl = null)
