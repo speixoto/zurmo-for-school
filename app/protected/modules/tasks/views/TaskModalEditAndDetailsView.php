@@ -57,6 +57,7 @@
                                                                                        $relationAttributeName . '","' .
                                                                                        $relationModelId . '","' .
                                                                                        $relationModuleId . '","' .
+                                                                                       $uniqueLayoutId . '","' .
                                                                                        $modalId . '")',
                                                                   );
             return $metadata;
@@ -68,20 +69,23 @@
              return '';
          }
 
-         protected static function resolveAjaxOptionsForSave($relationAttributeName, $relationModelId, $relationModuleId, $modalId)
+         protected static function resolveAjaxOptionsForSave($relationAttributeName, $relationModelId, $relationModuleId, $uniqueLayoutId, $modalId)
          {
             return array(
                 'type'      => 'post',
-                'dataType'  => 'json',
                 'data'      => 'js:$("#task-modal-edit-form").serialize()',
-                'success'   => 'function(data)
+                'beforeSend'=> 'function(xhr)
                                 {
-                                    console.log(data.errors);
+                                    $(this).makeLargeLoadingSpinner(true, "#' . $modalId . '");
+                                }',
+                'success'   => 'function(data, textStatus, xmlReq)
+                                {
+                                    $(this).processAjaxSuccessUpdateHtmlOrShowDataOnFailure(data, "' . $uniqueLayoutId . '");
                                 }
                                ',
                 'complete'  => 'function(XMLHttpRequest, textStatus)
                                 {
-                                    $("#" + "' . $modalId . '").dialog("close");
+                                    $("#ModalView").parent().dialog("close");
                                 }
                                 '
             );

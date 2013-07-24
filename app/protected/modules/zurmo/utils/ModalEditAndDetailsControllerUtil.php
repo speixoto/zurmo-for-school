@@ -39,24 +39,19 @@
      */
     class ModalEditAndDetailsControllerUtil
     {
-        public static function setAjaxModeAndRenderModalEditAndDetailsView(Controller $controller, $modalEditAndDetailsLinkProvider,
-                                                 $renderType)
+        public static function setAjaxModeAndRenderModalEditAndDetailsView($controller, $modalEditAndDetailsLinkProvider, $modalEditAndDetailsView, $model, $renderType)
         {
             Yii::app()->getClientScript()->setToAjaxMode();
-            return self::renderModalEditForm($controller, $modalEditAndDetailsLinkProvider, $renderType);
+            return static::renderModalEditAndDetailsView($controller, $modalEditAndDetailsLinkProvider, $modalEditAndDetailsView, $model, $renderType);
         }
 
         /**
          * @return rendered content from view as string.
          */
-        protected static function renderModalEditForm(Controller $controller, $modalEditAndDetailsLinkProvider,
-                                                        $renderType)
+        protected static function renderModalEditAndDetailsView($controller, $modalEditAndDetailsLinkProvider,$modalEditAndDetailsView, $model, $renderType)
         {
             assert('$modalEditAndDetailsLinkProvider instanceof ModalEditAndDetailsLinkProvider');
-            $className           = $controller->getModule()->getSingularCamelCasedName() . 'ModalEditAndDetailsView';
-            $modelClassName      = $controller->getModule()->getPrimaryModelName();
-            $model               = new $modelClassName(false);
-            $editAndDetailsView  = new $className(
+            $editAndDetailsView  = new $modalEditAndDetailsView(
                                                     $renderType,
                                                     $controller->getId(),
                                                     $controller->getModule()->getId(),

@@ -65,5 +65,10 @@
             $this->uniqueLayoutId        = $uniqueLayoutId;
         }
 
+        public function getAttribute($attribute)
+        {
+            return $this->$attribute;
+        }
+
     }
 ?>

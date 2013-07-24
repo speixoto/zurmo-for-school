@@ -190,6 +190,11 @@
 
         public function actionModalCreateFromRelation()
         {
+            $modelClassName   = $this->getModule()->getPrimaryModelName();
+            $activity         = $this->resolveNewModelByRelationInformation( new $modelClassName(),
+                                                                                $_GET['modalTransferInformation']['relationAttributeName'],
+                                                                                (int)$_GET['modalTransferInformation']['relationModelId'],
+                                                                                $_GET['modalTransferInformation']['relationModuleId']);
             $relatedModalEditAndDetailsLinkProvider = new RelatedModalEditAndDetailsLinkProvider(
                                                         $_GET['modalTransferInformation']['relationAttributeName'],
                                                         $_GET['modalTransferInformation']['relationModelId'],
@@ -199,7 +204,7 @@
                                                         $_GET['modalTransferInformation']['portletId'],
                                                         $_GET['modalTransferInformation']['uniqueLayoutId']
                                                      );
-            echo ModalEditAndDetailsControllerUtil::setAjaxModeAndRenderModalEditAndDetailsView($this, $relatedModalEditAndDetailsLinkProvider, 'Edit');
+            echo ModalEditAndDetailsControllerUtil::setAjaxModeAndRenderModalEditAndDetailsView($this, $relatedModalEditAndDetailsLinkProvider,'TaskModalEditAndDetailsView', $activity, 'Edit');
         }
 
         public function actionModalSaveFromRelation($relationAttributeName, $relationModelId, $relationModuleId, $portletId, $uniqueLayoutId)
@@ -219,12 +224,26 @@
                                         'redirectUrl'          => $redirectUrl,
                                         'portletParams'        => array(  'relationModuleId' => $relationModuleId,
                                                                           'relationModelId'  => $relationModelId),
-                                ));
+                                ), false);
             }
             else
             {
-                echo CJSON::encode(array('errors' => $activity->getErrors()));
+                echo CJSON::encode(array('status' => 'failure', 'errors' => $activity->getErrors()));
             }
+        }
+
+        public function actionModalViewFromRelation()
+        {
+            $relatedModalEditAndDetailsLinkProvider = new RelatedModalEditAndDetailsLinkProvider(
+                                                        $_GET['modalTransferInformation']['relationAttributeName'],
+                                                        $_GET['modalTransferInformation']['relationModelId'],
+                                                        $_GET['modalTransferInformation']['relationModuleId'],
+                                                        $_GET['modalTransferInformation']['redirectUrl'],
+                                                        $_GET['modalTransferInformation']['modalId'],
+                                                        $_GET['modalTransferInformation']['portletId'],
+                                                        $_GET['modalTransferInformation']['uniqueLayoutId']
+                                                     );
+            echo ModalEditAndDetailsControllerUtil::setAjaxModeAndRenderModalEditAndDetailsView($this, $relatedModalEditAndDetailsLinkProvider,'TaskDetailsView', 'Task', 'Details');
         }
 
         public function actionEdit($id, $redirectUrl = null)
