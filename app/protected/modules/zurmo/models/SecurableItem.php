@@ -436,36 +436,5 @@
         {
             return false;
         }
-
-        protected function afterSave()
-        {
-            // TODO: @Shoaibi/@Jason: Critical: getCanHaveBean?
-            if( $this->isNewModel && count($this->permissions) == 0)
-            {
-                $defaultPermission  = UserConfigurationFormAdapter::resolveAndGetDefaultPermissionSetting(
-                                                                                    Yii::app()->user->userModel);
-
-                $nonEveryoneGroup   = UserConfigurationFormAdapter::resolveAndGetValue(
-                                                                                    Yii::app()->user->userModel,
-                                                                                    'defaultPermissionGroupSetting',
-                                                                                    false);
-                $type               = static::resolveDefaultPermissionToExplicitReadWriteModelPermissionsUtilType(
-                                                                                    $defaultPermission);
-                $postData           = compact('type', 'nonEveryoneGroup');
-                $explicitReadWriteModelPermissions = ExplicitReadWriteModelPermissionsUtil::makeByPostData($postData);
-                ExplicitReadWriteModelPermissionsUtil::resolveExplicitReadWriteModelPermissions($this,
-                                                                                $explicitReadWriteModelPermissions);
-            }
-            parent::afterSave();
-        }
-
-        protected static function resolveDefaultPermissionToExplicitReadWriteModelPermissionsUtilType($defaultPermission)
-        {
-            if ($defaultPermission == UserConfigurationForm::DEFAULT_PERMISSIONS_SETTING_EVERYONE)
-            {
-                return ExplicitReadWriteModelPermissionsUtil::MIXED_TYPE_EVERYONE_GROUP;
-            }
-            return ExplicitReadWriteModelPermissionsUtil::MIXED_TYPE_NONEVERYONE_GROUP;
-        }
     }
 ?>
