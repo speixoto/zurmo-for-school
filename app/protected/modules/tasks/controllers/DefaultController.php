@@ -219,6 +219,7 @@
             {
                 $redirectUrl  = Yii::app()->createUrl('/' . $relationModuleId . '/default/details', array('id' => $relationModelId));
                 $this->redirect(array('/' . $relationModuleId . '/defaultPortlet/modalRefresh',
+                                        'id'                   => $relationModelId,
                                         'portletId'            => $portletId,
                                         'uniqueLayoutId'       => $uniqueLayoutId,
                                         'redirectUrl'          => $redirectUrl,

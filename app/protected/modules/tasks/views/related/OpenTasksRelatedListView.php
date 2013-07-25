@@ -160,5 +160,31 @@
         {
             return ZurmoHtml::tag('div', array('id' => $this->getModalContainerId()), '');
         }
+
+        protected function getCGridViewPagerParams()
+        {
+            $getData = GetUtil::getData();
+            if(isset($getData['uniqueLayoutId']))
+            {
+                unset($getData['uniqueLayoutId']);
+            }
+            if(isset($getData['redirectUrl']))
+            {
+                unset($getData['redirectUrl']);
+            }
+            if(isset($getData['portletParams']))
+            {
+                unset($getData['portletParams']);
+            }
+            return array(
+                    'firstPageLabel' => '<span>first</span>',
+                    'prevPageLabel'  => '<span>previous</span>',
+                    'nextPageLabel'  => '<span>next</span>',
+                    'lastPageLabel'  => '<span>last</span>',
+                    'class'          => 'SimpleListLinkPager',
+                    'paginationParams' => array_merge($getData, array('portletId' => $this->params['portletId'])),
+                    'route'         => 'defaultPortlet/details',
+                );
+        }
     }
 ?>

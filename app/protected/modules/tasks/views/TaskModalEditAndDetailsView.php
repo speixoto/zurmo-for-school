@@ -51,14 +51,19 @@
                                                                                       'portletId'   => $portletId,
                                                                                       'uniqueLayoutId'  => $uniqueLayoutId
                                                                                     ));
-            $metadata['global']['toolbar']['elements'][0] = array('type'  => 'ModalSaveButton',
-                                                                  'url'   => $url,
+            $metadata['global']['toolbar']['elements'][0] = array('type'           => 'ModalSaveButton',
+                                                                  'url'            => $url,
                                                                   'ajaxOptions'    => 'eval:static::resolveAjaxOptionsForSave("' .
                                                                                        $relationAttributeName . '","' .
                                                                                        $relationModelId . '","' .
                                                                                        $relationModuleId . '","' .
                                                                                        $uniqueLayoutId . '","' .
                                                                                        $modalId . '")',
+                                                                  );
+
+            $metadata['global']['toolbar']['elements'][1] = array('type'            => 'ModalCancelLink',
+                                                                  'url'             => $url,
+                                                                  'htmlOptions'     => 'eval:static::resolveHtmlOptionsForCancel()',
                                                                   );
             return $metadata;
 
@@ -92,9 +97,17 @@
 
          }
 
-         protected static function getFormId()
+        protected static function getFormId()
         {
             return 'task-modal-edit-form';
+        }
+
+        protected static function resolveHtmlOptionsForCancel()
+        {
+            return array(
+                'onclick'      => '$("#ModalView").parent().dialog("close");'
+            );
+
         }
     }
 ?>
