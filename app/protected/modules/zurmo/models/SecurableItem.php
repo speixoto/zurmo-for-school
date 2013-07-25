@@ -439,6 +439,7 @@
 
         protected function afterSave()
         {
+            // TODO: @Shoaibi/@Jason: Critical: getCanHaveBean?
             if( $this->isNewModel && count($this->permissions) == 0)
             {
                 $defaultPermission  = UserConfigurationFormAdapter::resolveAndGetDefaultPermissionSetting(
