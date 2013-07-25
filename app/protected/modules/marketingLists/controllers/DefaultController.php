@@ -78,6 +78,15 @@
 
         public function actionList()
         {
+            // TODO: @Shoaibi: Critical: get rid of this.
+            $marketingList                      = new MarketingList();
+            $marketingList->name                = 'testing ' . time();
+            $marketingList->description         = 'description';
+            $marketingList->fromName            = null;
+            $marketingList->fromAddress         = null;
+            $marketingList->anyoneCanSubscribe    = false;
+            $marketingList->save();
+
             $pageSize                       = Yii::app()->pagination->resolveActiveForCurrentUserByType(
                                                                         'listPageSize', get_class($this->getModule()));
             $marketingList                  = new MarketingList(false);
