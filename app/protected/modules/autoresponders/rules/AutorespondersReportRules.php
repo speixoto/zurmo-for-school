@@ -47,7 +47,7 @@
             $metadata = array(
                 'Autoresponder' => array(
                     'nonReportable' =>
-                    array('autoresponders', 'autoresponder'),
+                    array(),
                 )
             );
             return array_merge(parent::getDefaultMetadata(), $metadata);

@@ -47,7 +47,7 @@
             $metadata = array(
                 'MarketingList' => array(
                     'nonReportable' =>
-                    array('marketingLists', 'marketingList'),
+                    array(),
                 )
             );
             return array_merge(parent::getDefaultMetadata(), $metadata);
