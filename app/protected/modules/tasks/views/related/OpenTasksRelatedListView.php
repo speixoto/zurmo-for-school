@@ -45,9 +45,6 @@
                 'global' => array(
                     'toolbar' => array(
                         'elements' => array(
-//                            array(  'type'            => 'CreateFromRelatedListLink',
-//                                    'routeModuleId'   => 'eval:$this->moduleId',
-//                                    'routeParameters' => 'eval:$this->getCreateLinkRouteParameters()'),
                             array(  'type'            => 'CreateFromRelatedModalLink',
                                     'portletId'       => 'eval:$this->params["portletId"]',
                                     'routeModuleId'   => 'eval:$this->moduleId',

@@ -39,14 +39,14 @@
      */
     class ZurmoControllerUtil
     {
-        public function saveModelFromPost($postData, $model, & $savedSuccessfully, & $modelToStringValue)
+        public function saveModelFromPost($postData, $model, & $savedSuccessfully, & $modelToStringValue, $returnOnValidate = false)
         {
             $sanitizedPostData                 = PostUtil::sanitizePostByDesignerTypeForSavingModel(
                                                  $model, $postData);
-            return $this->saveModelFromSanitizedData($sanitizedPostData, $model, $savedSuccessfully, $modelToStringValue);
+            return $this->saveModelFromSanitizedData($sanitizedPostData, $model, $savedSuccessfully, $modelToStringValue, $returnOnValidate);
         }
 
-        public function saveModelFromSanitizedData($sanitizedData, $model, & $savedSuccessfully, & $modelToStringValue)
+        public function saveModelFromSanitizedData($sanitizedData, $model, & $savedSuccessfully, & $modelToStringValue, $returnOnValidate)
         {
             //note: the logic for ExplicitReadWriteModelPermission might still need to be moved up into the
             //post method above, not sure how this is coming in from API.
@@ -61,7 +61,12 @@
                                                  removeElementFromPostDataForSavingModel($readyToUseData, 'owner');
             $model->setAttributes($sanitizedDataWithoutOwner);
             $this->afterSetAttributesDuringSave($model, $explicitReadWriteModelPermissions);
-            if ($model->validate())
+            $isValidData = $model->validate();
+            if($returnOnValidate)
+            {
+                return $model;
+            }
+            elseif ($isValidData)
             {
                 $modelToStringValue = strval($model);
                 if ($sanitizedOwnerData != null)

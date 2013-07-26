@@ -38,28 +38,18 @@
     {
          public static function getDefaultMetadata()
          {
-            $relationAttributeName   = $_GET['modalTransferInformation']['relationAttributeName'];
-            $relationModelId         = $_GET['modalTransferInformation']['relationModelId'];
-            $relationModuleId        = $_GET['modalTransferInformation']['relationModuleId'];
-            $modalId                 = $_GET['modalTransferInformation']['modalId'];
-            $portletId               = $_GET['modalTransferInformation']['portletId'];
-            $uniqueLayoutId          = $_GET['modalTransferInformation']['uniqueLayoutId'];
+
             $metadata = parent::getDefaultMetadata();
-            $url = Yii::app()->createUrl('tasks/default/modalSaveFromRelation', array('relationAttributeName' => $relationAttributeName,
-                                                                                      'relationModelId' => $relationModelId,
-                                                                                      'relationModuleId' => $relationModuleId,
-                                                                                      'portletId'   => $portletId,
-                                                                                      'uniqueLayoutId'  => $uniqueLayoutId
-                                                                                    ));
-            $metadata['global']['toolbar']['elements'][0] = array('type'           => 'ModalSaveButton',
-                                                                  'url'            => $url,
-                                                                  'ajaxOptions'    => 'eval:static::resolveAjaxOptionsForSave("' .
-                                                                                       $relationAttributeName . '","' .
-                                                                                       $relationModelId . '","' .
-                                                                                       $relationModuleId . '","' .
-                                                                                       $uniqueLayoutId . '","' .
-                                                                                       $modalId . '")',
-                                                                  );
+
+//            $metadata['global']['toolbar']['elements'][0] = array('type'           => 'ModalSaveButton',
+//                                                                  'url'            => $url,
+//                                                                  'ajaxOptions'    => 'eval:static::resolveAjaxOptionsForSave("' .
+//                                                                                       $relationAttributeName . '","' .
+//                                                                                       $relationModelId . '","' .
+//                                                                                       $relationModuleId . '","' .
+//                                                                                       $uniqueLayoutId . '","' .
+//                                                                                       $modalId . '")',
+//                                                                  );
 
             $metadata['global']['toolbar']['elements'][1] = array('type'            => 'ModalCancelLink',
                                                                   'url'             => $url,
@@ -85,12 +75,13 @@
                                 }',
                 'success'   => 'function(data, textStatus, xmlReq)
                                 {
-                                    $(this).processAjaxSuccessUpdateHtmlOrShowDataOnFailure(data, "' . $uniqueLayoutId . '");
+                                    $(this).makeLargeLoadingSpinner(false, "#' . $modalId . '");
+                                    console.log("success");
                                 }
                                ',
                 'complete'  => 'function(XMLHttpRequest, textStatus)
                                 {
-                                    $("#ModalView").parent().dialog("close");
+
                                 }
                                 '
             );
@@ -105,9 +96,47 @@
         protected static function resolveHtmlOptionsForCancel()
         {
             return array(
-                'onclick'      => '$("#ModalView").parent().dialog("close");'
+                'onclick' => '$("#ModalView").parent().dialog("close");'
             );
 
+        }
+
+        protected function resolveActiveFormAjaxValidationOptions()
+        {
+            $relationAttributeName   = $_GET['modalTransferInformation']['relationAttributeName'];
+            $relationModelId         = $_GET['modalTransferInformation']['relationModelId'];
+            $relationModuleId        = $_GET['modalTransferInformation']['relationModuleId'];
+            $modalId                 = $_GET['modalTransferInformation']['modalId'];
+            $portletId               = $_GET['modalTransferInformation']['portletId'];
+            $uniqueLayoutId          = $_GET['modalTransferInformation']['uniqueLayoutId'];
+
+            $url = Yii::app()->createUrl('tasks/default/modalSaveFromRelation', array('relationAttributeName' => $relationAttributeName,
+                                                                                      'relationModelId' => $relationModelId,
+                                                                                      'relationModuleId' => $relationModuleId,
+                                                                                      'portletId'   => $portletId,
+                                                                                      'uniqueLayoutId'  => $uniqueLayoutId
+                                                                                    ));
+            $errorInProcess = CJavaScript::quote(Zurmo::t('Core', 'There was an error processing your request'));
+            return array('enableAjaxValidation' => true,
+                'clientOptions' => array(
+                    'beforeValidate'    => 'js:$(this).beforeValidateAction',
+                    'afterValidate'     => 'js:function(form, data, hasError){
+                                                if(hasError)
+                                                {
+                                                    form.find(".attachLoading:first").removeClass("loading");
+                                                    form.find(".attachLoading:first").removeClass("loading-ajax-submit");
+                                                }
+                                                else
+                                                {
+                                                    js:saveTaskFromRelation("' . $url . '", "'. $errorInProcess . '");
+                                                }
+                                                return false;
+                                            }',
+                    'validateOnSubmit'  => true,
+                    'validateOnChange'  => false,
+                    'inputContainer'    => 'td'
+                )
+            );
         }
     }
 ?>

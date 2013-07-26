@@ -39,18 +39,17 @@
      */
     class ModalEditAndDetailsControllerUtil
     {
-        public static function setAjaxModeAndRenderModalEditAndDetailsView($controller, $modalEditAndDetailsLinkProvider, $modalEditAndDetailsView, $model, $renderType)
+        public static function setAjaxModeAndRenderModalEditAndDetailsView($controller, $modalEditAndDetailsView, $model, $renderType)
         {
             Yii::app()->getClientScript()->setToAjaxMode();
-            return static::renderModalEditAndDetailsView($controller, $modalEditAndDetailsLinkProvider, $modalEditAndDetailsView, $model, $renderType);
+            return static::renderModalEditAndDetailsView($controller, $modalEditAndDetailsView, $model, $renderType);
         }
 
         /**
          * @return rendered content from view as string.
          */
-        protected static function renderModalEditAndDetailsView($controller, $modalEditAndDetailsLinkProvider,$modalEditAndDetailsView, $model, $renderType)
+        protected static function renderModalEditAndDetailsView($controller, $modalEditAndDetailsView, $model, $renderType)
         {
-            assert('$modalEditAndDetailsLinkProvider instanceof ModalEditAndDetailsLinkProvider');
             $editAndDetailsView  = new $modalEditAndDetailsView(
                                                     $renderType,
                                                     $controller->getId(),
@@ -59,6 +58,26 @@
                                                 );
             $view                = new ModalView($controller, $editAndDetailsView);
             return $view->render();
+        }
+
+        /*TODO: Ask Jason as i need to use it here because redirect is causing issue*/
+        public static function getModalContentOnRefresh($moduleId, $portletId, $uniqueLayoutId, $redirectUrl, array $portletParams = array(),
+                                           $portletsAreRemovable = true)
+        {
+            $portlet = Portlet::getById(intval($portletId));
+            $portlet->params = array_merge(array(
+                    'controllerId' => 'default',
+                    'moduleId'     => $moduleId,
+                    'redirectUrl'  => $redirectUrl), $portletParams);
+            if (isset($portlet->params['relationModelId']) && $portlet->params['relationModelId'] != '')
+            {
+                assert('$portlet->params["relationModuleId"] != ""');
+                $modelClassName = Yii::app()->findModule($portlet->params["relationModuleId"])->getPrimaryModelName();
+                $portlet->params['relationModel'] = $modelClassName::getById((int)$portlet->params['relationModelId']);
+            }
+            $view = new AjaxPageView(new PortletRefreshView($portlet, $uniqueLayoutId, $moduleId,
+                                                            (bool)$portletsAreRemovable));
+            echo $view->render();
         }
     }
 ?>

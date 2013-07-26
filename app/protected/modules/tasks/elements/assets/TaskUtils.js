@@ -58,3 +58,25 @@ function updateTaskStatus(status, url, errorInProcess)
         }
     );
 }
+
+function saveTaskFromRelation(url, errorInProcess)
+{
+    $.ajax(
+        {
+            type: 'POST',
+            url: url,
+            data: $("#task-modal-edit-form").serialize(),
+            dataType: 'html',
+            success: function(data)
+                     {
+                         form = $("#task-modal-edit-form");
+                         form.find(".attachLoading:first").removeClass("loading");
+                         form.find(".attachLoading:first").removeClass("loading-ajax-submit");
+                     },
+            error:function()
+                  {
+                      alert(errorInProcess);
+                  }
+        }
+    );
+}
