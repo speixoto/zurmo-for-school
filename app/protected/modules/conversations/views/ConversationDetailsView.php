@@ -53,8 +53,12 @@
 
         protected function renderContent()
         {
+            $starLink = StarredUtil::getToggleStarStatusLink($this->model, null);
             $content  = '<div class="details-table">';
+            $content .= '<div class="head">';
             $content .= $this->renderTitleContent();
+            $content .= $starLink;
+            $content .= '</div>';
             $content .= $this->resolveAndRenderActionElementMenu();
             $leftContent  = $this->renderBeforeFormLayoutForDetailsContent();
             $leftContent .= $this->renderFormLayout();
@@ -75,9 +79,8 @@
         }
 
         public function getTitle()
-        {
-            $starLink = StarredUtil::getToggleStarStatusLink($this->model, null);
-            return strval($this->model) . $starLink;
+        {            
+            return strval($this->model);
         }
 
         protected function renderRightSideContent($form = null)
