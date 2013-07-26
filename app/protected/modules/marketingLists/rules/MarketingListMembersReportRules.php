@@ -34,16 +34,23 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class LocaleStaticDropDownElement extends StaticDropDownFormElement
+    /**
+     * Report rules to be used with the MarketingList Model.
+     */
+    class MarketingListMembersReportRules extends SecuredReportRules
     {
-        protected function getDropDownArray()
+        /**
+         * @return array
+         */
+        public static function getDefaultMetadata()
         {
-            $dropDownArray = array('' => Zurmo::t('ZurmoModule', 'Same as language'));
-            foreach (ZurmoLocale::getSelectableLocaleIds() as $locale)
-            {
-                $dropDownArray[$locale] = Yii::app()->locale->getLocaleDisplayName($locale) . ' (' . $locale . ') ';
-            }
-            return $dropDownArray;
+            $metadata = array(
+                'MarketingListMember' => array(
+                    'nonReportable' =>
+                    array('marketingListMembers', 'marketingListMember'),
+                )
+            );
+            return array_merge(parent::getDefaultMetadata(), $metadata);
         }
     }
 ?>
