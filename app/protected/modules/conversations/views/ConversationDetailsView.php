@@ -52,13 +52,9 @@
         }
 
         protected function renderContent()
-        {
-            $starLink = StarredUtil::getToggleStarStatusLink($this->model, null);
-            $content  = '<div class="details-table">';
-            $content .= '<div class="head">';
-            $content .= $this->renderTitleContent();
-            $content .= $starLink;
-            $content .= '</div>';
+        {            
+            $content  = '<div class="details-table">';            
+            $content .= $this->renderTitleContent();            
             $content .= $this->resolveAndRenderActionElementMenu();
             $leftContent  = $this->renderBeforeFormLayoutForDetailsContent();
             $leftContent .= $this->renderFormLayout();
@@ -67,6 +63,14 @@
             $content .= $this->renderAfterFormLayoutForDetailsContent();
             $content .= '</div>';
             return $content;
+        }
+        
+        protected function renderTitleContent()
+        {
+            $starLink = StarredUtil::getToggleStarStatusLink($this->model, null);
+            $content  = StringUtil::renderFluidContent($this->getTitle());
+            $content .= $starLink;            
+            return ZurmoHtml::tag('h1', array(), $content);    
         }
 
         protected function renderFormLayout($form = null)
