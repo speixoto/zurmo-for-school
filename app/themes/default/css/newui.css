@@ -7390,19 +7390,6 @@ td {
 		scroll,
 		scroll;
 }
-#list-view .icon-empty:before {
-  content: 'C';
-  font-weight: normal;
-  font-size: 45px;
-  font-family: "zurmo_gamification_symbly_rRg";
-  padding: 0 0 0 0;
-  margin: 0 6px 0 -30px;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-  vertical-align: middle;
-  position: relative;
-}
 .items {
   width: 100%;
   border: 1px solid #dfdfdf;
@@ -7498,10 +7485,6 @@ td {
 .stacked-list td div.checkbox-column ~ div {
   padding-left: 25px;
 }
-.stacked-list td .star-column {
-  margin: -6px 15px 0 0 !important;
-  float: right;
-}
 .stacked-list td > div {
   margin: 0 0 2px 0;
 }
@@ -7555,11 +7538,6 @@ tr.even {
 .checkbox-column .hasCheckBox {
   margin: -4px auto 0 auto;
 }
-.star-column {
-  width: 20px;
-  text-align: center;
-  padding: 0 !important;
-}
 .button-column {
   width: 35px;
   text-align: center;
@@ -7572,40 +7550,6 @@ tr.even {
   font-size: 24px;
   font-family: "zurmo_gamification_symbly_rRg";
   visibility: hidden;
-}
-.icon-star {
-  font-weight: normal;
-  font-size: 26px;
-  font-family: "zurmo_gamification_symbly_rRg";
-  color: #ccc !important;
-  -webkit-text-shadow: 0 0 1px #333333;
-  -moz-text-shadow: 0 0 1px #333333;
-  -o-text-shadow: 0 0 1px #333333;
-  -ms-text-shadow: 0 0 1px #333333;
-  text-shadow: 0 0 1px #333333;
-  top: -1px;
-  position: relative;
-  line-height: 1;
-}
-.icon-star:hover,
-.icon-star.starred {
-  color: #ffef42 !important;
-}
-#list-view_columnStar {
-  line-height: 1;
-  width: 20px;
-  text-align: center;
-  padding-right: 0 !important;
-  padding-left: 0 !important;
-}
-#list-view_columnStar .icon-star {
-  top: 0;
-  left: -2px;
-}
-.head .icon-star,
-.juiportlet-widget-head .icon-star {
-  top: 1px;
-  margin-left: 5px;
 }
 .juiportlet-widget .empty {
   padding: 5px 0 10px 0;
