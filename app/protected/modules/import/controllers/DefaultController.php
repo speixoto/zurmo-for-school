@@ -242,7 +242,7 @@
          * @param integer id - Import model id
          * @param string $step
          */
-        function actionStep5($id, $step = null)
+        public function actionStep5($id, $step = null, $pageSize = null)
         {
             if (isset($_GET['nextParams']))
             {
@@ -258,7 +258,10 @@
             $import               = Import::getById((int)$id);
             $importWizardForm     = ImportWizardUtil::makeFormByImport($import);
             $unserializedData     = unserialize($import->serializedData);
-            $pageSize             = Yii::app()->pagination->resolveActiveForCurrentUserByType('importPageSize');
+            if($pageSize == null)
+            {
+                $pageSize = Yii::app()->pagination->resolveActiveForCurrentUserByType('importPageSize');
+            }
             $config               = array('pagination' => array('pageSize' => $pageSize));
             $dataProvider         = new ImportDataProvider($import->getTempTableName(),
                                                            (bool)$importWizardForm->firstRowIsHeaderRow,
@@ -268,6 +271,7 @@
             $route                = $this->getModule()->getId() . '/' . $this->getId() . '/step5';
             if ($sequentialProcess->isComplete())
             {
+                $this->resolveResettingPageOnAnalysisCompletion($dataProvider);
                 $columnNamesAndAttributeIndexOrDerivedTypeLabels = ImportMappingUtil::
                                                                   makeColumnNamesAndAttributeIndexOrDerivedTypeLabels(
                                                                   $unserializedData['mappingData'],
@@ -302,12 +306,21 @@
             echo $view->render();
         }
 
+        protected function resolveResettingPageOnAnalysisCompletion(ImportDataProvider $dataProvider)
+        {
+            $getData = GetUtil::getData();
+            if(!isset($getData['ajax']))
+            {
+                $dataProvider->getPagination()->setCurrentPage(0);
+            }
+        }
+
         /**
          * Step 6. Sanitize and create/update models using a sequential process.
          * @param integer id - Import model id
          * @param string $step
          */
-        function actionStep6($id, $step = null)
+        public function actionStep6($id, $step = null)
         {
             if (isset($_GET['nextParams']))
             {

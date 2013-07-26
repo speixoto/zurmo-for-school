@@ -65,6 +65,11 @@
             }
         }
 
+        public function hasHeaderRow()
+        {
+            return $this->excludeFirstRow;
+        }
+
         /**
          * See the yii documentation.
          */

@@ -39,8 +39,12 @@
      */
     class ImportTempTableListView extends ListView
     {
+        const EXPANDABLE_ANALYSIS_CONTENT_TYPE = 'Analysis';
+
+        const EXPANDABLE_IMPORT_RESULTS_CONTENT_TYPE = 'Import Results';
+
         /**
-         * @var ReportDataProvider
+         * @var ImportDataProvider
          */
         protected $dataProvider;
 
@@ -55,17 +59,56 @@
         protected $mappingData;
 
         /**
+         * @var string
+         */
+        protected $importRulesType;
+
+        public static function resolveAnalysisStatusLabel($data)
+        {
+            return ImportDataAnalyzer::getStatusLabelByType((int)$data->analysisStatus);
+        }
+
+        protected static function resolveHeaderLabelByColumnNameAndLabel($columnName, $label)
+        {
+            if($label == null)
+            {
+                $headerLabel = static::resolveColumnCountByName($columnName);
+            }
+            else
+            {
+                $headerLabel = $label;
+            }
+            return $headerLabel;
+        }
+
+        protected static function resolveColumnCountByName($columnName)
+        {
+            $columnNameParts = explode('_', $columnName);
+            if(count($columnNameParts) != 2)
+            {
+                $columnNameCount = null;
+            }
+            else
+            {
+                $columnNameCount = $columnNameParts[1];
+            }
+            return  Zurmo::t('ImportModule', 'Column {n}', array('{n}' => $columnNameCount));
+        }
+
+        /**
          * @param $controllerId
          * @param $moduleId
          * @param ImportDataProvider $dataProvider
-         * @param array $mappingData
+         * @param $mappingData
+         * @param $importRulesType
          * @param null $gridIdSuffix
          */
-        public function __construct( $controllerId, $moduleId, ImportDataProvider $dataProvider, $mappingData, $gridIdSuffix = null)
+        public function __construct( $controllerId, $moduleId, ImportDataProvider $dataProvider, $mappingData, $importRulesType, $gridIdSuffix = null)
         {
             parent::__construct($controllerId, $moduleId, 'NotUsed', $dataProvider, array(), false, $gridIdSuffix);
             $this->rowsAreSelectable = false;
             $this->mappingData       = $mappingData;
+            $this->importRulesType   = $importRulesType;
             $this->gridId            = 'import-temp-table-list-view';
         }
 
@@ -112,8 +155,9 @@
          */
         protected function getCGridViewParams()
         {
-            return array_merge(parent::getCGridViewParams(), array('enableSorting' => false));
-            //'expandableRows'       => $this->rowsAreExpandable(), //todo: turn on or remove
+            return array_merge(parent::getCGridViewParams(), array('columnLabelsByName' => $this->resolveColumnLabelsByName(),
+                                                                   'enableSorting'      => false,
+                                                                   'expandableRows'     => $this->rowsAreExpandable()));
         }
 
         /**
@@ -128,8 +172,28 @@
                 'lastPageLabel'    => '<span>last</span>',
                 'class'            => 'SimpleListLinkPager',
                 'paginationParams' => GetUtil::getData(),
-                'route'            => 'defaultPortlet/details',
+                'route'            => 'demo/step5',
             );
+        }
+
+        protected function resolveColumnLabelsByName()
+        {
+            $columnLabelsByName = array();
+            $headerRow = ImportDatabaseUtil::getFirstRowByTableName($this->dataProvider->getTableName());
+            foreach ($headerRow as $columnName => $label)
+            {
+                if (!in_array($columnName, ImportDatabaseUtil::getReservedColumnNames()) &&
+                    $this->mappingData[$columnName]['type'] == 'importColumn' &&
+                    $this->mappingData[$columnName]['attributeIndexOrDerivedType'] != null)
+                {
+                    if(!$this->dataProvider->hasHeaderRow())
+                    {
+                        $label = static::resolveColumnCountByName($columnName);
+                    }
+                    $columnLabelsByName[$columnName] = $label;
+                }
+            }
+            return $columnLabelsByName;
         }
 
         /**
@@ -140,28 +204,39 @@
         protected function getCGridViewColumns()
         {
             $columns = array();
-/**
+
             if ($this->rowsAreExpandable())
             {
                 $firstColumn = array(
-                    'class'               => 'DrillDownColumn',
+                    'class'               => 'ImportDrillDownColumn',
                     'id'                  => $this->gridId . $this->gridIdSuffix . '-rowDrillDown',
                     'htmlOptions'         => array('class' => 'hasDrillDownLink')
                 );
                 array_push($columns, $firstColumn);
             }
- * **/
+            $secondColumn = array(
+                'class'               => 'DataColumn',
+                'type' => 'raw',
+                'value' => 'ImportTempTableListView::resolveAnalysisStatusLabel($data)'
+            );
+            array_push($columns, $secondColumn);
             $headerRow = ImportDatabaseUtil::getFirstRowByTableName($this->dataProvider->getTableName());
             foreach ($headerRow as $columnName => $label)
             {
+
                 if (!in_array($columnName, ImportDatabaseUtil::getReservedColumnNames()) &&
                     $this->mappingData[$columnName]['type'] == 'importColumn' &&
                     $this->mappingData[$columnName]['attributeIndexOrDerivedType'] != null)
                 {
+                    if(!$this->dataProvider->hasHeaderRow())
+                    {
+                        $label = static::resolveColumnCountByName($columnName);
+                    }
                     $params           = array();
                     $columnAdapter    = new BeanStringListViewColumnAdapter($columnName, $this, $params);
                     $column           = $columnAdapter->renderGridViewData();
-                    $column['header'] = $this->resolveHeaderLabelByColumnNameAndLabel($columnName, $label);
+                    $column['header'] = static::resolveHeaderColumnContent($columnName, $label);
+                    $this->columnLabelsByName[$columnName] = $column['header'];
                     if (!isset($column['class']))
                     {
                         $column['class'] = 'DataColumn';
@@ -172,17 +247,18 @@
             return $columns;
         }
 
-        protected function resolveHeaderLabelByColumnNameAndLabel($columnName, $label)
+        protected function resolveHeaderColumnContent($columnName, $label)
         {
-            if($label == null)
+            $content  = static::resolveHeaderLabelByColumnNameAndLabel($columnName, $label);
+            if($this->mappingData[$columnName]['attributeIndexOrDerivedType'] != null)
             {
-                $headerLabel = $columnName;
+                $attributeIndexOrDerivedType = $this->mappingData[$columnName]['attributeIndexOrDerivedType'];
+                $attributeImportRules = AttributeImportRulesFactory::makeByImportRulesTypeAndAttributeIndexOrDerivedType(
+                                        $this->importRulesType, $attributeIndexOrDerivedType);
+                $content .= '<BR>down arrow<BR>';
+                $content .= $attributeImportRules->getDisplayLabel();
             }
-            else
-            {
-                $headerLabel = $label;
-            }
-            return $headerLabel;
+            return $content;
         }
 
         /**
@@ -190,7 +266,7 @@
          */
         protected function getCGridViewBeforeAjaxUpdate()
         {
-            return 'js:function(id, options) {makeSmallLoadingSpinner(true, "#"+id + " > .list-preloader"); }'; // Not Coding Standard
+            return 'js:function(id, options) {$(this).makeSmallLoadingSpinner(true, "#"+id + " > .list-preloader"); }'; // Not Coding Standard
         }
 
         /**
@@ -210,14 +286,9 @@
         /**
          * @return bool
          */
-        //todo: can remove maybe, we don't need this depending on how we do this.
         protected function rowsAreExpandable()
         {
-            if (count($this->dataProvider->getReport()->getDrillDownDisplayAttributes()) > 0)
-            {
-                return true;
-            }
-            return false;
+            return true;
         }
     }
 ?>

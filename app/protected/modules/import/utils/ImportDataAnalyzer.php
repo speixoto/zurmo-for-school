@@ -72,6 +72,23 @@
 
         private $customFieldsInstructionData;
 
+        public static function getStatusLabelByType($type)
+        {
+            assert('is_int($type)');
+            if($type == self::STATUS_CLEAN)
+            {
+                return Zurmo::t('ImportModule', 'Ok');
+            }
+            elseif($type == self::STATUS_WARN)
+            {
+                return Zurmo::t('ImportModule', 'Warning');
+            }
+            elseif($type == self::STATUS_SKIP)
+            {
+                return Zurmo::t('ImportModule', 'Skip');
+            }
+        }
+
         protected static function resolveAttributeNameByRules(AttributeImportRules $attributeImportRules)
         {
             $attributeNames       = $attributeImportRules->getRealModelAttributeNames();

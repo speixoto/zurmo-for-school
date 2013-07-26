@@ -106,12 +106,14 @@
              **/
             //$content .= '</tbody>'    . "\n";
             //$content .= '</table>'    . "\n";
+            $content .= $this->renderStatusGroupsContent();
             return $content;
         }
 
         protected function renderAfterFormLayout($form)
         {
-            $view = new ImportTempTableListView($this->controllerId, $this->moduleId, $this->dataProvider, $this->mappingData);
+            $view = new AnalysisResultsImportTempTableListView($this->controllerId, $this->moduleId, $this->dataProvider,
+                        $this->mappingData, $this->model->importRulesType);
             return $view->render();
         }
 
@@ -129,6 +131,32 @@
         protected function renderPreviousPageLinkContent()
         {
             return $this->getPreviousPageLinkContentByControllerAction('step4');
+        }
+
+        protected function renderStatusGroupsContent()
+        {
+            $groupData = $this->dataProvider->getCountDataByGroupByColumnName('analysisStatus');
+            $content  = null;
+            $content .= Zurmo::t('ImportModule', 'Ok');
+            $content .= self::findCountByGroupDataAndStatus($groupData, ImportDataAnalyzer::STATUS_CLEAN);
+            $content .= Zurmo::t('ImportModule', 'Warning');
+            $content .= self::findCountByGroupDataAndStatus($groupData, ImportDataAnalyzer::STATUS_WARN);
+            $content .= Zurmo::t('ImportModule', 'Skip');
+            $content .= self::findCountByGroupDataAndStatus($groupData, ImportDataAnalyzer::STATUS_SKIP);
+            return $content;
+        }
+
+        protected function findCountByGroupDataAndStatus(array $groupData, $status)
+        {
+            assert('is_int($status)');
+            foreach($groupData as $group)
+            {
+                if((int)$group['analysisStatus'] === $status)
+                {
+                    return (int)$group['count'];
+                }
+            }
+            return 0;
         }
     }
 ?>

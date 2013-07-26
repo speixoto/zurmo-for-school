@@ -42,6 +42,10 @@
     {
         public $expandableRows = false;
 
+        public $expandableContentType;
+
+        public $columnLabelsByName = array();
+
         public function renderTableBody()
         {
             $data = $this->dataProvider->getData();
@@ -55,7 +59,7 @@
                     $this->renderTableRow($row);
                     if ($this->expandableRows)
                     {
-                        $this->renderExpandableRow($this->dataProvider->data[$row]->getId());
+                        $this->renderExpandableRow($this->dataProvider->data[$row], $this->dataProvider->data[$row]->getId());
                     }
                 }
             }
@@ -69,13 +73,46 @@
         }
 
         /**
+         * @param bean $row
          * @param $id
          */
-        protected function renderExpandableRow($id)
+        protected function renderExpandableRow($row, $id)
         {
             echo '<tr style="display:none;"><td class="hasDrillDownContent" colspan="' . (count($this->columns)) . '">';
-            echo '<div class="drillDownContent" id="drillDownContentFor-' . $id . '"></div>';
+            echo '<div class="drillDownContent" id="drillDownContentFor-' . $id . '">';
+            echo $this->renderExpandableContent($row);
+            echo '</div>';
             echo "</td></tr>\n";
+        }
+
+        protected function renderExpandableContent($row)
+        {
+            $content = null;
+            if($this->expandableContentType == ImportTempTableListView::EXPANDABLE_ANALYSIS_CONTENT_TYPE &&
+               $row->serializedAnalysisMessages != null)
+            {
+                $analysisMessages = unserialize($row->serializedAnalysisMessages);
+                foreach($analysisMessages as $columnName => $columnData)
+                {
+                    foreach($columnData as $message)
+                    {
+                        if(isset($this->columnLabelsByName[$columnName]))
+                        {
+                            $label = $this->columnLabelsByName[$columnName];
+                        }
+                        else
+                        {
+                            $label = $columnName;
+                        }
+                        $content .= ZurmoHtml::tag('li', array(), $label . ' - ' . $message);
+                    }
+                }
+            }
+            if($content != null)
+            {
+                return ZurmoHtml::tag('ul', array(), $content);
+            }
+            return null;
         }
     }
 ?>

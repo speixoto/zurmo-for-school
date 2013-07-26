@@ -46,6 +46,16 @@
          * @param string $tableName
          * @return true on success.
          */
+
+        /**
+         * Given a file resource, convert the file into a database table based on the table name provided.
+         * Assumes the file is a csv.
+         * @param object $fileHandle
+         * @param string $tableName
+         * @param string $delimiter
+         * @param string $enclosure
+         * @return bool
+         */
         public static function makeDatabaseTableByFileHandleAndTableName($fileHandle, $tableName, $delimiter = ',', // Not Coding Standard
                                                                          $enclosure = "'")
         {
@@ -70,6 +80,23 @@
                 RedBeanDatabase::freeze();
             }
             return true;
+        }
+
+        public static function optimizeTableNonImportColumns($tableName)
+        {
+            $bean                 = R::dispense($tableName);
+            $bean->analysisStatus = '2147483647'; //Creates an integer todo: optimize to status SET
+            $bean->status         = '2147483647'; //Creates an integer todo: optimize to status SET
+            while (strlen($bean->serializedAnalysisMessages) < '1024')
+            {
+                $bean->serializedAnalysisMessages .= chr(rand(ord('a'), ord('z')));
+            }
+            while (strlen($bean->serializedMessages) < '1024')
+            {
+                $bean->serializedMessages .= chr(rand(ord('a'), ord('z')));
+            }
+            R::store($bean);
+            R::trash($bean);
         }
 
         protected static function optimizeTableImportColumnsAndGetColumnNames($fileHandle, $tableName, $delimiter, $enclosure)
@@ -149,23 +176,6 @@
             {
                 DatabaseCompatibilityUtil::bulkInsert($tableName, $importArray, $columns, $bulkQuantity);
             }
-        }
-
-        protected static function optimizeTableNonImportColumns($tableName)
-        {
-            $bean                 = R::dispense($tableName);
-            $bean->analysisStatus = '2147483647'; //Creates an integer todo: optimize to status SET
-            $bean->status         = '2147483647'; //Creates an integer todo: optimize to status SET
-            while (strlen($bean->serializedAnalysisMessages) < '1024')
-            {
-                $bean->serializedAnalysisMessages .= chr(rand(ord('a'), ord('z')));
-            }
-            while (strlen($bean->serializedMessages) < '1024')
-            {
-                $bean->serializedMessages .= chr(rand(ord('a'), ord('z')));
-            }
-            R::store($bean);
-            R::trash($bean);
         }
 
         /**
