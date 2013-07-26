@@ -175,7 +175,7 @@
         protected static function resolveAjaxOptionsForSelectList()
         {
             $title = Zurmo::t('ProductsModule', 'ProductsModuleSingularLabel Search',
-                            LabelUtil::getTranslationParamsForAllModules());
+                              LabelUtil::getTranslationParamsForAllModules());
             return ModalView::getAjaxOptionsForModalLink($title);
         }
 
