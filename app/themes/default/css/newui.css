@@ -18266,6 +18266,11 @@ a.user-link {
 .email-template-content > .tab .redactor_box {
   border: none !important;
 }
+.tabs-container > .tab .redactor_box textarea,
+.email-template-content > .tab .redactor_box textarea {
+  color: #fff !important;
+  background: #111 !important;
+}
 .tabs-container > .tab textarea,
 .email-template-content > .tab textarea {
   border: none !important;
