@@ -385,9 +385,10 @@
                 $product->productCategories->add($productCategory);
             }
 
-            $relationModel              = $relationModelClassName::getById((int)$relationModelId);
-            $product->$relationAttributeName = $relationModel;
+            $relationModel                      = $relationModelClassName::getById((int)$relationModelId);
+            $product->$relationAttributeName    = $relationModel;
             $product->save();
+            ZurmoControllerUtil::updatePermissionsWithDefaultForModelByCurrentUser($product);
 
             if((bool)$redirect)
             {
