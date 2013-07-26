@@ -982,16 +982,22 @@ body.blue a.active-tab,
 body.blue .edit-autoresponder-link {
   color: #282a76;
 }
+body.blue #MashableInboxActionBarForViews .nav > li > a:hover,
+body.blue #MashableInboxActionBarForViews .nav > li > a:active,
+body.blue #MashableInboxActionBarForViews a:hover .unread-count,
+body.blue #MashableInboxActionBarForViews a:active .unread-count,
 body.blue #notifications-flyout .single-notification h4,
-body.blue .view-toolbar a:hover,
-body.blue .view-toolbar a:active,
-body.blue .view-toolbar a:hover:before,
-body.blue .view-toolbar a:active:before,
-body.blue .view-toolbar a:hover span,
-body.blue .view-toolbar a:active span,
+body.blue .view-toolbar > a:hover,
+body.blue .view-toolbar > a:active,
+body.blue .view-toolbar > a:hover:before,
+body.blue .view-toolbar > a:active:before,
+body.blue .view-toolbar > a:hover span,
+body.blue .view-toolbar > a:active span,
 body.blue .view-toolbar .active,
 body.blue .view-toolbar .active > a span,
 body.blue .view-toolbar .active > a:before,
+body.blue .view-toolbar .nav > li > a:hover,
+body.blue .view-toolbar .nav > li > a:active,
 body.blue .portlet-toolbar .icon-delete:before,
 body.blue .portlet-toolbar .icon-edit:before,
 body.blue .mini-pillbox a:hover,
@@ -1562,16 +1568,22 @@ body.brown a.active-tab,
 body.brown .edit-autoresponder-link {
   color: #547980;
 }
+body.brown #MashableInboxActionBarForViews .nav > li > a:hover,
+body.brown #MashableInboxActionBarForViews .nav > li > a:active,
+body.brown #MashableInboxActionBarForViews a:hover .unread-count,
+body.brown #MashableInboxActionBarForViews a:active .unread-count,
 body.brown #notifications-flyout .single-notification h4,
-body.brown .view-toolbar a:hover,
-body.brown .view-toolbar a:active,
-body.brown .view-toolbar a:hover:before,
-body.brown .view-toolbar a:active:before,
-body.brown .view-toolbar a:hover span,
-body.brown .view-toolbar a:active span,
+body.brown .view-toolbar > a:hover,
+body.brown .view-toolbar > a:active,
+body.brown .view-toolbar > a:hover:before,
+body.brown .view-toolbar > a:active:before,
+body.brown .view-toolbar > a:hover span,
+body.brown .view-toolbar > a:active span,
 body.brown .view-toolbar .active,
 body.brown .view-toolbar .active > a span,
 body.brown .view-toolbar .active > a:before,
+body.brown .view-toolbar .nav > li > a:hover,
+body.brown .view-toolbar .nav > li > a:active,
 body.brown .portlet-toolbar .icon-delete:before,
 body.brown .portlet-toolbar .icon-edit:before,
 body.brown .mini-pillbox a:hover,
@@ -2142,16 +2154,22 @@ body.lime a.active-tab,
 body.lime .edit-autoresponder-link {
   color: #2b434f;
 }
+body.lime #MashableInboxActionBarForViews .nav > li > a:hover,
+body.lime #MashableInboxActionBarForViews .nav > li > a:active,
+body.lime #MashableInboxActionBarForViews a:hover .unread-count,
+body.lime #MashableInboxActionBarForViews a:active .unread-count,
 body.lime #notifications-flyout .single-notification h4,
-body.lime .view-toolbar a:hover,
-body.lime .view-toolbar a:active,
-body.lime .view-toolbar a:hover:before,
-body.lime .view-toolbar a:active:before,
-body.lime .view-toolbar a:hover span,
-body.lime .view-toolbar a:active span,
+body.lime .view-toolbar > a:hover,
+body.lime .view-toolbar > a:active,
+body.lime .view-toolbar > a:hover:before,
+body.lime .view-toolbar > a:active:before,
+body.lime .view-toolbar > a:hover span,
+body.lime .view-toolbar > a:active span,
 body.lime .view-toolbar .active,
 body.lime .view-toolbar .active > a span,
 body.lime .view-toolbar .active > a:before,
+body.lime .view-toolbar .nav > li > a:hover,
+body.lime .view-toolbar .nav > li > a:active,
 body.lime .portlet-toolbar .icon-delete:before,
 body.lime .portlet-toolbar .icon-edit:before,
 body.lime .mini-pillbox a:hover,
@@ -2722,16 +2740,22 @@ body.cherry a.active-tab,
 body.cherry .edit-autoresponder-link {
   color: #6c8092;
 }
+body.cherry #MashableInboxActionBarForViews .nav > li > a:hover,
+body.cherry #MashableInboxActionBarForViews .nav > li > a:active,
+body.cherry #MashableInboxActionBarForViews a:hover .unread-count,
+body.cherry #MashableInboxActionBarForViews a:active .unread-count,
 body.cherry #notifications-flyout .single-notification h4,
-body.cherry .view-toolbar a:hover,
-body.cherry .view-toolbar a:active,
-body.cherry .view-toolbar a:hover:before,
-body.cherry .view-toolbar a:active:before,
-body.cherry .view-toolbar a:hover span,
-body.cherry .view-toolbar a:active span,
+body.cherry .view-toolbar > a:hover,
+body.cherry .view-toolbar > a:active,
+body.cherry .view-toolbar > a:hover:before,
+body.cherry .view-toolbar > a:active:before,
+body.cherry .view-toolbar > a:hover span,
+body.cherry .view-toolbar > a:active span,
 body.cherry .view-toolbar .active,
 body.cherry .view-toolbar .active > a span,
 body.cherry .view-toolbar .active > a:before,
+body.cherry .view-toolbar .nav > li > a:hover,
+body.cherry .view-toolbar .nav > li > a:active,
 body.cherry .portlet-toolbar .icon-delete:before,
 body.cherry .portlet-toolbar .icon-edit:before,
 body.cherry .mini-pillbox a:hover,
@@ -3302,16 +3326,22 @@ body.turquoise a.active-tab,
 body.turquoise .edit-autoresponder-link {
   color: #447799;
 }
+body.turquoise #MashableInboxActionBarForViews .nav > li > a:hover,
+body.turquoise #MashableInboxActionBarForViews .nav > li > a:active,
+body.turquoise #MashableInboxActionBarForViews a:hover .unread-count,
+body.turquoise #MashableInboxActionBarForViews a:active .unread-count,
 body.turquoise #notifications-flyout .single-notification h4,
-body.turquoise .view-toolbar a:hover,
-body.turquoise .view-toolbar a:active,
-body.turquoise .view-toolbar a:hover:before,
-body.turquoise .view-toolbar a:active:before,
-body.turquoise .view-toolbar a:hover span,
-body.turquoise .view-toolbar a:active span,
+body.turquoise .view-toolbar > a:hover,
+body.turquoise .view-toolbar > a:active,
+body.turquoise .view-toolbar > a:hover:before,
+body.turquoise .view-toolbar > a:active:before,
+body.turquoise .view-toolbar > a:hover span,
+body.turquoise .view-toolbar > a:active span,
 body.turquoise .view-toolbar .active,
 body.turquoise .view-toolbar .active > a span,
 body.turquoise .view-toolbar .active > a:before,
+body.turquoise .view-toolbar .nav > li > a:hover,
+body.turquoise .view-toolbar .nav > li > a:active,
 body.turquoise .portlet-toolbar .icon-delete:before,
 body.turquoise .portlet-toolbar .icon-edit:before,
 body.turquoise .mini-pillbox a:hover,
@@ -3882,16 +3912,22 @@ body.violet a.active-tab,
 body.violet .edit-autoresponder-link {
   color: #4a3970;
 }
+body.violet #MashableInboxActionBarForViews .nav > li > a:hover,
+body.violet #MashableInboxActionBarForViews .nav > li > a:active,
+body.violet #MashableInboxActionBarForViews a:hover .unread-count,
+body.violet #MashableInboxActionBarForViews a:active .unread-count,
 body.violet #notifications-flyout .single-notification h4,
-body.violet .view-toolbar a:hover,
-body.violet .view-toolbar a:active,
-body.violet .view-toolbar a:hover:before,
-body.violet .view-toolbar a:active:before,
-body.violet .view-toolbar a:hover span,
-body.violet .view-toolbar a:active span,
+body.violet .view-toolbar > a:hover,
+body.violet .view-toolbar > a:active,
+body.violet .view-toolbar > a:hover:before,
+body.violet .view-toolbar > a:active:before,
+body.violet .view-toolbar > a:hover span,
+body.violet .view-toolbar > a:active span,
 body.violet .view-toolbar .active,
 body.violet .view-toolbar .active > a span,
 body.violet .view-toolbar .active > a:before,
+body.violet .view-toolbar .nav > li > a:hover,
+body.violet .view-toolbar .nav > li > a:active,
 body.violet .portlet-toolbar .icon-delete:before,
 body.violet .portlet-toolbar .icon-edit:before,
 body.violet .mini-pillbox a:hover,
@@ -4462,16 +4498,22 @@ body.honey a.active-tab,
 body.honey .edit-autoresponder-link {
   color: #46201c;
 }
+body.honey #MashableInboxActionBarForViews .nav > li > a:hover,
+body.honey #MashableInboxActionBarForViews .nav > li > a:active,
+body.honey #MashableInboxActionBarForViews a:hover .unread-count,
+body.honey #MashableInboxActionBarForViews a:active .unread-count,
 body.honey #notifications-flyout .single-notification h4,
-body.honey .view-toolbar a:hover,
-body.honey .view-toolbar a:active,
-body.honey .view-toolbar a:hover:before,
-body.honey .view-toolbar a:active:before,
-body.honey .view-toolbar a:hover span,
-body.honey .view-toolbar a:active span,
+body.honey .view-toolbar > a:hover,
+body.honey .view-toolbar > a:active,
+body.honey .view-toolbar > a:hover:before,
+body.honey .view-toolbar > a:active:before,
+body.honey .view-toolbar > a:hover span,
+body.honey .view-toolbar > a:active span,
 body.honey .view-toolbar .active,
 body.honey .view-toolbar .active > a span,
 body.honey .view-toolbar .active > a:before,
+body.honey .view-toolbar .nav > li > a:hover,
+body.honey .view-toolbar .nav > li > a:active,
 body.honey .portlet-toolbar .icon-delete:before,
 body.honey .portlet-toolbar .icon-edit:before,
 body.honey .mini-pillbox a:hover,
@@ -6400,38 +6442,6 @@ body > .ui-autocomplete {
 }
 .juiportlet-widget-head .view-toolbar {
   margin-bottom: 0;
-}
-.unread-count {
-  display: inline-block;
-  margin-left: 6px;
-  margin-top: -2px;
-  -webkit-border-radius: 50%;
-  -moz-border-radius: 50%;
-  -ms-border-radius: 50%;
-  -o-border-radius: 50%;
-  border-radius: 50%;
-  width: 16px;
-  height: 16px;
-  line-height: 15px;
-  text-align: center;
-  color: #545454;
-  -webkit-text-shadow: none;
-  -moz-text-shadow: none;
-  -o-text-shadow: none;
-  -ms-text-shadow: none;
-  text-shadow: none;
-  font-size: 9px;
-  font-weight: bold !important;
-  background-color: #dfdfdf;
-  background-repeat: repeat-x;
-  background-image: -moz-linear-gradient(top, #ffffff, #dfdfdf);
-  background-image: -ms-linear-gradient(top, #ffffff, #dfdfdf);
-  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ffffff), color-stop(100%, #dfdfdf));
-  background-image: -webkit-linear-gradient(top, #ffffff, #dfdfdf);
-  background-image: -o-linear-gradient(top, #ffffff, #dfdfdf);
-  background-image: linear-gradient(top, #ffffff, #dfdfdf);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#dfdfdf', GradientType=0);
-  border: 1px solid #dfdfdf;
 }
 form .view-toolbar-container,
 .ActionBarForSecurityTreeListView .view-toolbar-container,
@@ -18233,6 +18243,41 @@ a.user-link {
   left: 0;
   right: 0;
   top: 31px;
+}
+.unread-count {
+  display: inline-block;
+  margin-left: 6px;
+  margin-top: -2px;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  -ms-border-radius: 50%;
+  -o-border-radius: 50%;
+  border-radius: 50%;
+  width: 16px;
+  height: 16px;
+  line-height: 15px;
+  text-align: center;
+  color: #545454;
+  -webkit-text-shadow: none;
+  -moz-text-shadow: none;
+  -o-text-shadow: none;
+  -ms-text-shadow: none;
+  text-shadow: none;
+  font-size: 9px;
+  font-weight: bold !important;
+  background-color: #dfdfdf;
+  background-repeat: repeat-x;
+  background-image: -moz-linear-gradient(top, #ffffff, #dfdfdf);
+  background-image: -ms-linear-gradient(top, #ffffff, #dfdfdf);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ffffff), color-stop(100%, #dfdfdf));
+  background-image: -webkit-linear-gradient(top, #ffffff, #dfdfdf);
+  background-image: -o-linear-gradient(top, #ffffff, #dfdfdf);
+  background-image: linear-gradient(top, #ffffff, #dfdfdf);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#dfdfdf', GradientType=0);
+  border: 1px solid #dfdfdf;
+}
+.unread-count:hover {
+  color: inherit;
 }
 .inbox-item {
   position: relative;

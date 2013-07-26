@@ -77,6 +77,26 @@
 	}
 }
 
+.unread-count{
+	display: inline-block;
+	margin-left: 6px;
+	margin-top: -2px;
+	.radius(50%);
+	width:16px;
+	height:16px;
+	line-height: 15px;
+	text-align: center;
+	color: #545454;
+	.t-shadow(none);
+	font-size:9px;
+	font-weight: bold !important;
+	#gradient > .vertical( #fff, #dfdfdf );
+	border:1px solid #dfdfdf;
+	&:hover{
+		color: inherit;
+	}
+}
+
 .inbox-item{
 	position: relative;
 	div + span{
