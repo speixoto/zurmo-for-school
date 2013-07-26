@@ -271,7 +271,7 @@
             $route                = $this->getModule()->getId() . '/' . $this->getId() . '/step5';
             if ($sequentialProcess->isComplete())
             {
-                $this->resolveResettingPageOnAnalysisCompletion($dataProvider);
+                $this->resolveResettingPageOnCompletion($dataProvider);
                 $columnNamesAndAttributeIndexOrDerivedTypeLabels = ImportMappingUtil::
                                                                   makeColumnNamesAndAttributeIndexOrDerivedTypeLabels(
                                                                   $unserializedData['mappingData'],
@@ -306,7 +306,7 @@
             echo $view->render();
         }
 
-        protected function resolveResettingPageOnAnalysisCompletion(ImportDataProvider $dataProvider)
+        protected function resolveResettingPageOnCompletion(ImportDataProvider $dataProvider)
         {
             $getData = GetUtil::getData();
             if(!isset($getData['ajax']))
@@ -317,10 +317,11 @@
 
         /**
          * Step 6. Sanitize and create/update models using a sequential process.
-         * @param integer id - Import model id
-         * @param string $step
+         * @param integer $id - Import model id
+         * @param null|string $step
+         * @param null|int $pageSize
          */
-        public function actionStep6($id, $step = null)
+        public function actionStep6($id, $step = null, $pageSize = null)
         {
             if (isset($_GET['nextParams']))
             {
@@ -344,7 +345,11 @@
                 Yii::app()->end(0, false);
             }
             $unserializedData     = unserialize($import->serializedData);
-            $pageSize             = Yii::app()->pagination->resolveActiveForCurrentUserByType('importPageSize');
+            $passedInPageSize     = $pageSize;
+            if($pageSize == null)
+            {
+                $pageSize             = Yii::app()->pagination->resolveActiveForCurrentUserByType('importPageSize');
+            }
             $config               = array('pagination' => array('pageSize' => $pageSize));
             $dataProvider         = new ImportDataProvider($import->getTempTableName(),
                                                            (bool)$importWizardForm->firstRowIsHeaderRow,
@@ -357,9 +362,10 @@
             $route                = $this->getModule()->getId() . '/' . $this->getId() . '/step6';
             if ($sequentialProcess->isComplete())
             {
+                $this->resolveResettingPageOnCompletion($dataProvider);
                 $importingIntoModelClassName = $unserializedData['importRulesType'] . 'ImportRules';
                 Yii::app()->gameHelper->triggerImportEvent($importingIntoModelClassName::getModelClassName());
-                $importCompleteView          = $this->makeImportCompleteView($import, $importWizardForm, true);
+                $importCompleteView          = $this->makeImportCompleteView($import, $importWizardForm, $dataProvider, true, $passedInPageSize);
                 $sequenceView                = new ContainedViewCompleteSequentialProcessView($importCompleteView);
             }
             else
@@ -381,31 +387,24 @@
             echo $view->render();
         }
 
-        protected function makeImportCompleteView(Import $import, ImportWizardForm $importWizardForm, $setCurrentPageToFirst = false)
+        protected function makeImportCompleteView(Import $import, ImportWizardForm $importWizardForm, ImportDataProvider $dataProvider,
+                                                  $setCurrentPageToFirst = false, $pageSize = null)
         {
-            $pageSize                 = Yii::app()->pagination->resolveActiveForCurrentUserByType('listPageSize');
-            $config                   = array('pagination' => array('pageSize' => $pageSize));
-            if ($setCurrentPageToFirst)
+            if($pageSize == null)
             {
-                $config['pagination']['currentPage'] = 0;
+                $pageSize             = Yii::app()->pagination->resolveActiveForCurrentUserByType('listPageSize');
             }
-            $importErrorsDataProvider = new ImportDataProvider($import->getTempTableName(),
-                                                               (bool)$importWizardForm->firstRowIsHeaderRow,
-                                                               $config,
-                                                               ImportRowDataResultsUtil::ERROR);
-            $errorListView            = new ImportErrorsListView(
-                                            $this->getId(),
-                                            $this->getModule()->getId(),
-                                            'NotUsed',
-                                            $importErrorsDataProvider
-                                            );
+            $config               = array('pagination' => array('pageSize' => $pageSize));
+            $unserializedData     = unserialize($import->serializedData);
+
             $importCompleteView       = new ImportWizardCreateUpdateModelsCompleteView($this->getId(),
                                             $this->getModule()->getId(),
                                             $importWizardForm,
+                                            $dataProvider,
+                                            $unserializedData['mappingData'],
                                             (int)ImportRowDataResultsUtil::getCreatedCount($import->getTempTableName()),
                                             (int)ImportRowDataResultsUtil::getUpdatedCount($import->getTempTableName()),
-                                            (int)ImportRowDataResultsUtil::getErrorCount($import->getTempTableName()),
-                                            $errorListView);
+                                            (int)ImportRowDataResultsUtil::getErrorCount($import->getTempTableName()));
             return $importCompleteView;
         }
 

@@ -41,26 +41,43 @@
      */
     class ImportWizardCreateUpdateModelsCompleteView extends ImportWizardView
     {
+        /**
+         * @var ImportDataProvider
+         */
+        protected $dataProvider;
+
+        /**
+         * @var null|array
+         */
+        protected $mappingData;
+
+        /**
+         * @var int
+         */
         protected $modelsCreated    = 0;
 
+        /**
+         * @var int
+         */
         protected $modelsUpdated    = 0;
 
+        /**
+         * @var int
+         */
         protected $rowsWithErrors   = 0;
 
-        protected $importErrorsListView;
-
-        public function __construct($controllerId, $moduleId, ImportWizardForm $model,
-                                    $modelsCreated = 0, $modelsUpdated = 0, $rowsWithErrors = 0,
-                                    ImportErrorsListView $importErrorsListView)
+        public function __construct($controllerId, $moduleId, ImportWizardForm $model, ImportDataProvider $dataProvider,
+                                    array $mappingData, $modelsCreated = 0, $modelsUpdated = 0, $rowsWithErrors = 0)
         {
             assert('is_int($modelsCreated)');
             assert('is_int($modelsUpdated)');
             assert('is_int($rowsWithErrors)');
             parent::__construct($controllerId, $moduleId, $model);
+            $this->dataProvider             = $dataProvider;
+            $this->mappingData  = $mappingData;
             $this->modelsCreated            = $modelsCreated;
             $this->modelsUpdated            = $modelsUpdated;
             $this->rowsWithErrors           = $rowsWithErrors;
-            $this->importErrorsListView     = $importErrorsListView;
         }
 
         /**
@@ -72,31 +89,45 @@
         protected function renderFormLayout($form = null)
         {
             assert('$form instanceof ZurmoActiveForm');
+            $content  = Zurmo::t('ImportModule', 'Congratulations! Your import is complete.  Below is a summary of the results.');
+            $content  = ZurmoHtml::tag('h3', array(), $content);
+            $content .= $this->renderStatusGroupsContent();
+            return $content;
+        }
+
+        protected function renderStatusGroupsContent()
+        {
             $content  = null;
-            $content .= '<h3>' . Zurmo::t('ImportModule', 'Congratulations! Your import is complete.  Below is a summary of the results.') . '</h3>';
-            $content .= '<ul class="import-summary clearfix">';
-            $content .= '<li>' . Zurmo::t('ImportModule', '<strong>{created}</strong>Records created', array('{created}' => $this->modelsCreated)) . '</li>';//TODO use zurmo::html for the span
-            $content .= '<li>' . Zurmo::t('ImportModule', '<strong>{updated}</strong>Records updated', array('{updated}' => $this->modelsUpdated)) . '</li>';
-            $content .= '<li>' . Zurmo::t('ImportModule', '<strong>{errors}</strong>Rows with errors', array('{errors}' => $this->rowsWithErrors)) . '</li>';
-            $content .= '</ul>';
-            $content .= $this->renderErrorListContent();
+            $content .= Zurmo::t('ImportModule', 'Created');
+            $content .= $this->modelsCreated;
+            $content .= Zurmo::t('ImportModule', 'Updated');
+            $content .= $this->modelsUpdated;
+            $content .= Zurmo::t('ImportModule', 'Skipped');
+            $content .= $this->rowsWithErrors;
             return $content;
         }
 
-        protected function renderActionElementBar($renderedInForm)
+        protected function renderAfterFormLayout($form)
         {
-            assert('$renderedInForm == true');
-            if ($this->rowsWithErrors > 0)
+            $view = new ImportResultsImportTempTableListView($this->controllerId, $this->moduleId, $this->dataProvider,
+                    $this->mappingData, $this->model->importRulesType, $this->resolveConfigurationForm());
+            return $view->render();
+        }
+
+        protected function resolveConfigurationForm()
+        {
+            $configurationForm = new ImportAnalysisResultsConfigurationForm();
+            $this->resolveConfigFormFromRequest($configurationForm);
+            return $configurationForm;
+        }
+
+        protected function resolveConfigFormFromRequest(& $configurationForm)
+        {
+            $excludeFromRestore = array();
+            if (isset($_GET[get_class($configurationForm)]))
             {
-                return $this->renderActionLinksContent();
+                $configurationForm->setAttributes($_GET[get_class($configurationForm)]);
             }
-        }
-
-        protected function renderErrorListContent()
-        {
-            $content  = '<h3>' . Zurmo::t('ImportModule', 'Information about the rows with errors') . '</h3>';
-            $content .= $this->importErrorsListView->render();
-            return $content;
         }
 
         /**
