@@ -149,7 +149,7 @@
             $selectQueryAdapter     = new RedBeanModelSelectQueryAdapter();
             return $this->makeSqlQueryForFetchingData($selectQueryAdapter, $offset, $limit);
         }
-
+                
         /**
          * Public for testing purposes only
          * @param $filters
@@ -235,6 +235,12 @@
                 }
             }
             return $filters;
+        }
+        
+        public function getGrandTotalsRowData()
+        {
+            $sql = $this->makeSqlQueryForGrandTotals();            
+            return R::getAll($sql);
         }
 
         /**
@@ -371,7 +377,7 @@
             }
             return $keys;
         }
-
+              
         /**
          * @param RedBeanModelSelectQueryAdapter $selectQueryAdapter
          * @param $offset
@@ -393,7 +399,7 @@
             return                    SQLQueryUtil::makeQuery($modelClassName::getTableName($modelClassName),
                                       $selectQueryAdapter, $joinTablesAdapter, $offset, $limit, $where, $orderBy, $groupBy);
         }
-
+                                
         /**
          * @param $selectQueryAdapter
          * @param bool $selectJustCount
@@ -422,6 +428,23 @@
             }
             return                    SQLQueryUtil::makeQuery($modelClassName::getTableName($modelClassName),
                                       $selectQueryAdapter, $joinTablesAdapter, null, null, $where, $orderBy, $groupBy);
+        }
+        
+        public function makeSqlQueryForGrandTotals()
+        {            
+            $selectQueryAdapter     = new RedBeanModelSelectQueryAdapter();            
+            $moduleClassName        = $this->report->getModuleClassName();
+            $modelClassName         = $moduleClassName::getPrimaryModelName();
+            $joinTablesAdapter      = new RedBeanModelJoinTablesQueryAdapter($modelClassName);
+            $this->makeDisplayAttributes($joinTablesAdapter, $selectQueryAdapter);
+            $where                  = $this->makeFiltersContent($joinTablesAdapter);
+            $orderBy                = null;
+            $groupBy                = null;
+            $offset                 = null;
+            $limit                  = null;
+
+            return                    SQLQueryUtil::makeQuery($modelClassName::getTableName($modelClassName),
+                                      $selectQueryAdapter, $joinTablesAdapter, $offset, $limit, $where, $orderBy, $groupBy);            
         }
 
         /**
