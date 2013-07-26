@@ -70,6 +70,11 @@
             return ImportDataAnalyzer::getStatusLabelByType((int)$data->analysisStatus);
         }
 
+        public static function resolveResultStatusLabel($data)
+        {
+            return ImportRowDataResultsUtil::getStatusLabelByType((int)$data->status);
+        }
+
         protected static function resolveHeaderLabelByColumnNameAndLabel($columnName, $label)
         {
             if($label == null)
@@ -224,12 +229,7 @@
                 );
                 array_push($columns, $firstColumn);
             }
-            $secondColumn = array(
-                'class'               => 'DataColumn',
-                'type' => 'raw',
-                'value' => 'ImportTempTableListView::resolveAnalysisStatusLabel($data)'
-            );
-            array_push($columns, $secondColumn);
+            array_push($columns, $this->resolveSecondColumn());
             $headerRow = ImportDatabaseUtil::getFirstRowByTableName($this->dataProvider->getTableName());
             foreach ($headerRow as $columnName => $label)
             {
@@ -255,6 +255,15 @@
                 }
             }
             return $columns;
+        }
+
+        protected function resolveSecondColumn()
+        {
+            return $secondColumn = array(
+                'class'               => 'DataColumn',
+                'type' => 'raw',
+                'value' => 'ImportTempTableListView::resolveAnalysisStatusLabel($data)'
+            );
         }
 
         protected function resolveHeaderColumnContent($columnName, $label)

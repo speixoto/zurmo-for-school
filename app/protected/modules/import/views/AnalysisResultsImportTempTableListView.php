@@ -51,6 +51,15 @@
             $this->configurationForm = $configurationForm;
         }
 
+        protected function resolveSecondColumn()
+        {
+            return $secondColumn = array(
+                'class' => 'DataColumn',
+                'type'  => 'raw',
+                'value' => 'ImportTempTableListView::resolveAnalysisStatusLabel($data)'
+            );
+        }
+
         protected function getDefaultRoute()
         {
             return 'default/step5';

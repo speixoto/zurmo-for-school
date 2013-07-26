@@ -108,6 +108,15 @@
                     }
                 }
             }
+            if($this->expandableContentType == ImportTempTableListView::EXPANDABLE_IMPORT_RESULTS_CONTENT_TYPE &&
+                $row->serializedMessages != null)
+            {
+                $resultMessages = unserialize($row->serializedMessages);
+                foreach($resultMessages as $message)
+                {
+                    $content .= ZurmoHtml::tag('li', array(), $message);
+                }
+            }
             if($content != null)
             {
                 return ZurmoHtml::tag('ul', array(), $content);

@@ -77,6 +77,23 @@
          */
         private $status;
 
+        public static function getStatusLabelByType($type)
+        {
+            assert('is_int($type)');
+            if($type == self::UPDATED)
+            {
+                return Zurmo::t('ImportModule', 'Updated');
+            }
+            elseif($type == self::CREATED)
+            {
+                return Zurmo::t('ImportModule', 'Created');
+            }
+            elseif($type == self::ERROR)
+            {
+                return Zurmo::t('ImportModule', 'Skipped');
+            }
+        }
+
         /**
          * Given an identifier of the row, set this identifier as the id.
          * @param integer $id
