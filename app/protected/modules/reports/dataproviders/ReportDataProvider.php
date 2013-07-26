@@ -61,12 +61,18 @@
          * @var integer | null
          */
         protected $offset;
+        
+        /**
+         * Set to true if you dataProvider should get grand totals
+         * @var bool
+         */
+        protected $haveGrandTotals = false;
 
         /**
          * @var array
          */
         private $_rowsData;
-
+        
         /**
          * @param Report $report
          * @param array $config
@@ -236,13 +242,7 @@
             }
             return $filters;
         }
-        
-        public function getGrandTotalsRowData()
-        {
-            $sql = $this->makeSqlQueryForGrandTotals();            
-            return R::getAll($sql);
-        }
-
+                
         /**
          * @return array
          */
@@ -253,6 +253,10 @@
             if ($this->getTotalItemCount() == 0)
             {
                 return array();
+            }
+            if ($this->haveGrandTotals)
+            {
+                return $this->runQueryAndGetResolveResultsDataWithGrandTotals($offset, $limit);
             }
             return $this->runQueryAndGetResolveResultsData($offset, $limit);
         }
@@ -332,6 +336,36 @@
                 }
                 $resultsData[$key] = $reportResultsRowData;
                 $idByOffset++;
+            }            
+            return $resultsData;
+        }
+        
+        protected function runQueryAndGetResolveResultsDataWithGrandTotals($offset, $limit)
+        {            
+            $resultsData            = $this->runQueryAndGetResolveResultsData($offset, $limit);
+            $countResults           = count($resultsData);            
+            $selectQueryAdapter     = new RedBeanModelSelectQueryAdapter();
+            $rows                   = $this->getGrandTotalsRowsData();
+            $idByOffset             = self::resolveIdByOffset($offset);
+            foreach ($rows as $key => $row)
+            {
+                $reportResultsRowData = new ReportResultsRowData($this->resolveDisplayAttributes(), $idByOffset);
+                foreach ($selectQueryAdapter->getIdTableAliasesAndModelClassNames() as $tableAlias => $modelClassName)
+                {
+                    $idColumnName = $selectQueryAdapter->getIdColumNameByTableAlias($tableAlias);
+                    $id           = (int)$row[$idColumnName];
+                    if ($id != null)
+                    {
+                        $reportResultsRowData->addModelAndAlias($modelClassName::getById($id), $tableAlias);
+                    }
+                    unset($row[$idColumnName]);
+                }
+                foreach ($row as $columnName => $value)
+                {
+                    $reportResultsRowData->addSelectedColumnNameAndValue($columnName, $value);
+                }
+                $resultsData[$key + $countResults] = $reportResultsRowData;
+                $idByOffset++;
             }
             return $resultsData;
         }
@@ -362,6 +396,12 @@
                 $this->_rowsData = R::getAll($sql);
             }
             return $this->_rowsData;
+        }
+        
+        protected function getGrandTotalsRowsData()
+        {
+            $sql = $this->makeSqlQueryForGrandTotals();            
+            return R::getAll($sql);
         }
 
         /**

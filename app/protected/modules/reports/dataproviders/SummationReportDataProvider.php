@@ -39,6 +39,8 @@
      */
     class SummationReportDataProvider extends ReportDataProvider
     {
+        protected $haveGrandTotals = true;
+        
         /**
          * Resolved to include the groupBys as query only display attributes, and mark all display attributes that are
          * also groupBys as used by the drillDown.
@@ -300,7 +302,7 @@
                                                                $secondSeriesValueData, $secondSeriesDisplayLabels,
                                                                $secondSeriesValueCount - 1);
         }
-
+               
         private function resolveGroupBysThatAreNotYetDisplayAttributesAsDisplayAttributes()
         {
             foreach ($this->resolveGroupBys() as $groupBy)
