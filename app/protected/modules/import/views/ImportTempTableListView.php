@@ -37,7 +37,7 @@
     /**
      * Base class for working with import temp table data
      */
-    class ImportTempTableListView extends ListView
+    abstract class ImportTempTableListView extends ListView
     {
         const EXPANDABLE_ANALYSIS_CONTENT_TYPE = 'Analysis';
 
@@ -62,6 +62,8 @@
          * @var string
          */
         protected $importRulesType;
+
+        abstract protected function getDefaultRoute();
 
         public static function resolveAnalysisStatusLabel($data)
         {
@@ -119,7 +121,8 @@
             $cClipWidget->beginClip("ListView");
             $cClipWidget->widget($this->getGridViewWidgetPath(), $this->getCGridViewParams());
             $cClipWidget->endClip();
-            $content = $this->renderViewToolBar();
+            $content  = $this->renderConfigurationForm();
+            $content .= $this->renderViewToolBar();
             $content .= $cClipWidget->getController()->clips['ListView'] . "\n";
             if ($this->rowsAreSelectable)
             {
@@ -140,6 +143,13 @@
         protected static function getPagerCssClass()
         {
             return 'pager horizontal';
+        }
+
+        /**
+         * Override as needed.
+         */
+        protected function renderConfigurationForm()
+        {
         }
 
         /**
@@ -172,7 +182,7 @@
                 'lastPageLabel'    => '<span>last</span>',
                 'class'            => 'SimpleListLinkPager',
                 'paginationParams' => GetUtil::getData(),
-                'route'            => 'demo/step5',
+                'route'            => $this->getDefaultRoute(),
             );
         }
 

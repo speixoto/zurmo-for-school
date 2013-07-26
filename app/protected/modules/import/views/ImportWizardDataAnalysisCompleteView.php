@@ -112,11 +112,28 @@
 
         protected function renderAfterFormLayout($form)
         {
+
+
             $view = new AnalysisResultsImportTempTableListView($this->controllerId, $this->moduleId, $this->dataProvider,
-                        $this->mappingData, $this->model->importRulesType);
+                        $this->mappingData, $this->model->importRulesType, $this->resolveConfigurationForm());
             return $view->render();
         }
 
+        protected function resolveConfigurationForm()
+        {
+            $configurationForm = new ImportAnalysisResultsConfigurationForm();
+            $this->resolveConfigFormFromRequest($configurationForm);
+            return $configurationForm;
+        }
+
+        protected function resolveConfigFormFromRequest(& $configurationForm)
+        {
+            $excludeFromRestore = array();
+            if (isset($_GET[get_class($configurationForm)]))
+            {
+                $configurationForm->setAttributes($_GET[get_class($configurationForm)]);
+            }
+        }
 
         /**
          * Override to specify step 6
