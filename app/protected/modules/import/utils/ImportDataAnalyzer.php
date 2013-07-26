@@ -77,16 +77,23 @@
             assert('is_int($type)');
             if($type == self::STATUS_CLEAN)
             {
-                return Zurmo::t('ImportModule', 'Ok');
+                $label = Zurmo::t('ImportModule', 'Ok');
+                $stage = ' stage-true';
             }
             elseif($type == self::STATUS_WARN)
             {
-                return Zurmo::t('ImportModule', 'Warning');
+                $label = Zurmo::t('ImportModule', 'Warning');
+                $stage = ' stage-false';
             }
             elseif($type == self::STATUS_SKIP)
             {
-                return Zurmo::t('ImportModule', 'Skip');
+                $label = Zurmo::t('ImportModule', 'Skip');
+                $stage = '';
             }
+
+            $pill = '<div class="email-recipient-stage-status' . $stage . '"><i>●</i>' . ZurmoHtml::tag('span', array(), $label) . '</div>';
+
+            return $pill;
         }
 
         protected static function resolveAttributeNameByRules(AttributeImportRules $attributeImportRules)

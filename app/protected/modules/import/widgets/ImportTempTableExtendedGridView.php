@@ -119,7 +119,7 @@
             }
             if($content != null)
             {
-                return ZurmoHtml::tag('ul', array(), $content);
+                return ZurmoHtml::tag('ol', array('class' => 'import-notifications'), $content);
             }
             return null;
         }
