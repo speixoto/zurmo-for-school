@@ -52,7 +52,6 @@
 //                                                                  );
 
             $metadata['global']['toolbar']['elements'][1] = array('type'            => 'ModalCancelLink',
-                                                                  'url'             => $url,
                                                                   'htmlOptions'     => 'eval:static::resolveHtmlOptionsForCancel()',
                                                                   );
             return $metadata;

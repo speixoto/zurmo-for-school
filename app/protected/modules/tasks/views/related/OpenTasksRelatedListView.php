@@ -146,10 +146,16 @@
             return ModalLinkActionElement::RELATED_MODAL_CONTAINER_PREFIX . '-open-tasks';
         }
 
+        protected function getViewModalContainerId()
+        {
+            return ModalLinkActionElement::RELATED_MODAL_CONTAINER_PREFIX . '-view-task';
+        }
+
         protected function renderContent()
         {
             $content = parent::renderContent();
             $content .= $this->renderModalContainer();
+            $content .= $this->renderViewModalContainer();
             return $content;
         }
 
@@ -158,6 +164,12 @@
             return ZurmoHtml::tag('div', array('id' => $this->getModalContainerId()), '');
         }
 
+        protected function renderViewModalContainer()
+        {
+            return ZurmoHtml::tag('div', array('id' => $this->getViewModalContainerId()), '');
+        }
+
+        /*TODO this needs to be removed if modal refresh would not be called*/
         protected function getCGridViewPagerParams()
         {
             $getData = GetUtil::getData();
@@ -182,6 +194,39 @@
                     'paginationParams' => array_merge($getData, array('portletId' => $this->params['portletId'])),
                     'route'         => 'defaultPortlet/details',
                 );
+        }
+
+        /**
+         * Override to handle security/access resolution on links.
+         */
+        public function getLinkString($attributeString, $attribute)
+        {
+            return array($this, 'resolveLinkString');
+        }
+
+        protected function resolveViewAjaxOptionsForSelectingModel()
+        {
+            $title = $this->getViewModalTitleForSelectingModel();
+            return   ModalView::getAjaxOptionsForModalLink($title, $this->getViewModalContainerId());
+        }
+
+        public function resolveLinkString($data, $row)
+        {
+            $params = LabelUtil::getTranslationParamsForAllModules();
+            $title = Zurmo::t('TasksModule', $data->name, $params);
+            $ajaxOptions = $this->resolveViewAjaxOptionsForSelectingModel();
+            $params = array('label' => $title, 'routeModuleId' => 'tasks', 'ajaxOptions' => $ajaxOptions);
+            $viewFromRelatedModalLinkActionElement = new ViewFromRelatedModalLinkActionElement($this->controllerId, $this->moduleId, $data->id, $params);
+            $linkContent = $viewFromRelatedModalLinkActionElement->render();
+            $string      = TaskActionSecurityUtil::resolveViewLinkToModelForCurrentUser($data, $this->getActionModuleClassName(), $linkContent);
+            return $string;
+        }
+
+        protected function getViewModalTitleForSelectingModel()
+        {
+            $params = LabelUtil::getTranslationParamsForAllModules();
+            $title = Zurmo::t('TasksModule', 'View TasksModuleSingularLabel', $params);
+            return $title;
         }
     }
 ?>

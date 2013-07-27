@@ -195,33 +195,36 @@
                                                                                 $_GET['modalTransferInformation']['relationAttributeName'],
                                                                                 (int)$_GET['modalTransferInformation']['relationModelId'],
                                                                                 $_GET['modalTransferInformation']['relationModuleId']);
-            if (isset($_POST['ajax']) && $_POST['ajax'] == 'task-modal-edit-form')
+            if (RightsUtil::canUserAccessModule('TasksModule', Yii::app()->user->userModel))
             {
-                $this->validateAjaxFromPost($task, 'Task');
-                Yii::app()->getClientScript()->setToAjaxMode();
-                //$task             = $this->attemptToSaveModelFromPost($task, null, false);
-                Yii::app()->end(0, true);
-            }
-            /*TODO Might have to remove RelatedModalEditAndDetailsLinkProvider*/
-//                $relatedModalEditAndDetailsLinkProvider = new RelatedModalEditAndDetailsLinkProvider(
-//                                                            $_GET['modalTransferInformation']['relationAttributeName'],
-//                                                            $_GET['modalTransferInformation']['relationModelId'],
-//                                                            $_GET['modalTransferInformation']['relationModuleId'],
-//                                                            $_GET['modalTransferInformation']['redirectUrl'],
-//                                                            $_GET['modalTransferInformation']['modalId'],
-//                                                            $_GET['modalTransferInformation']['portletId'],
-//                                                            $_GET['modalTransferInformation']['uniqueLayoutId']
-//                                                         );
-            else
-            {
-                $cs = Yii::app()->getClientScript();
-                $cs->registerScriptFile(
-                    Yii::app()->getAssetManager()->publish(
-                        Yii::getPathOfAlias('application.modules.tasks.elements.assets')
-                        ) . '/TaskUtils.js',
-                    CClientScript::POS_END
-                );
-                echo ModalEditAndDetailsControllerUtil::setAjaxModeAndRenderModalEditAndDetailsView($this,'TaskModalEditAndDetailsView', $task, 'Edit');
+                if (isset($_POST['ajax']) && $_POST['ajax'] == 'task-modal-edit-form')
+                {
+                    $this->validateAjaxFromPost($task, 'Task');
+                    Yii::app()->getClientScript()->setToAjaxMode();
+                    //$task             = $this->attemptToSaveModelFromPost($task, null, false);
+                    Yii::app()->end(0, true);
+                }
+                /*TODO Might have to remove RelatedModalEditAndDetailsLinkProvider*/
+    //                $relatedModalEditAndDetailsLinkProvider = new RelatedModalEditAndDetailsLinkProvider(
+    //                                                            $_GET['modalTransferInformation']['relationAttributeName'],
+    //                                                            $_GET['modalTransferInformation']['relationModelId'],
+    //                                                            $_GET['modalTransferInformation']['relationModuleId'],
+    //                                                            $_GET['modalTransferInformation']['redirectUrl'],
+    //                                                            $_GET['modalTransferInformation']['modalId'],
+    //                                                            $_GET['modalTransferInformation']['portletId'],
+    //                                                            $_GET['modalTransferInformation']['uniqueLayoutId']
+    //                                                         );
+                else
+                {
+                    $cs = Yii::app()->getClientScript();
+                    $cs->registerScriptFile(
+                        Yii::app()->getAssetManager()->publish(
+                            Yii::getPathOfAlias('application.modules.tasks.elements.assets')
+                            ) . '/TaskUtils.js',
+                        CClientScript::POS_END
+                    );
+                    echo ModalEditAndDetailsControllerUtil::setAjaxModeAndRenderModalEditAndDetailsView($this,'TaskModalEditAndDetailsView', $task, 'Edit');
+                }
             }
         }
 
@@ -252,28 +255,12 @@
 //                ob_end_clean();
                 //echo CJSON::encode(array('status' => 'success', 'content' => $content));
             }
-//            else
-//            {
-//                ob_start();
-//                echo ModalEditAndDetailsControllerUtil::setAjaxModeAndRenderModalEditAndDetailsView($this,'TaskModalEditAndDetailsView', $activity, 'Edit');
-//                $content = ob_get_contents();
-//                ob_end_clean();
-//                echo CJSON::encode(array('status' => 'failure', 'content' => $content));
-//            }
         }
 
-        public function actionModalViewFromRelation()
+        public function actionModalViewFromRelation($id)
         {
-            $relatedModalEditAndDetailsLinkProvider = new RelatedModalEditAndDetailsLinkProvider(
-                                                        $_GET['modalTransferInformation']['relationAttributeName'],
-                                                        $_GET['modalTransferInformation']['relationModelId'],
-                                                        $_GET['modalTransferInformation']['relationModuleId'],
-                                                        $_GET['modalTransferInformation']['redirectUrl'],
-                                                        $_GET['modalTransferInformation']['modalId'],
-                                                        $_GET['modalTransferInformation']['portletId'],
-                                                        $_GET['modalTransferInformation']['uniqueLayoutId']
-                                                     );
-            echo ModalEditAndDetailsControllerUtil::setAjaxModeAndRenderModalEditAndDetailsView($this, $relatedModalEditAndDetailsLinkProvider,'TaskDetailsView', 'Task', 'Details');
+            $task = Task::getById(intval($id));
+            echo ModalEditAndDetailsControllerUtil::setAjaxModeAndRenderModalEditAndDetailsView($this,'TaskDetailsView', $task, 'Details');
         }
 
         public function actionEdit($id, $redirectUrl = null)
@@ -302,26 +289,6 @@
                 echo CJSON::encode($errorData);
                 Yii::app()->end(0, false);
             }
-        }
-
-        /**
-         * Check if form is posted. If form is posted attempt to save. If save is complete, confirm the current
-         * user can still read the model.  If not, then redirect the user to the index action for the module.
-         */
-        protected function attemptToSaveModelFromPost($model, $redirectUrlParams = null, $redirect = true)
-        {
-            assert('$redirectUrlParams == null || is_array($redirectUrlParams) || is_string($redirectUrlParams)');
-            $savedSuccessfully   = false;
-            $modelToStringValue = null;
-            $postVariableName   = get_class($model);
-            if (isset($_POST[$postVariableName]))
-            {
-                $postData         = $_POST[$postVariableName];
-                $controllerUtil   = static::getZurmoControllerUtil();
-                $model            = $controllerUtil->saveModelFromPost($postData, $model, $savedSuccessfully,
-                                                                       $modelToStringValue);
-            }
-            return $model;
         }
     }
 ?>
