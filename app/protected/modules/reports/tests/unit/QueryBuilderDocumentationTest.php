@@ -99,6 +99,7 @@
         public function testOrderByWorksOnAccountsAndNoteReport()
         {
             $report = new Report();
+            $report->setFiltersStructure('');
             $report->setType(Report::TYPE_ROWS_AND_COLUMNS);
             $report->setModuleClassName('NotesModule');
             $displayAttribute = new DisplayAttributeForReportForm('NotesModule', 'Note', $report->getType());
