@@ -206,7 +206,7 @@
 
         protected function resolveViewAjaxOptionsForSelectingModel()
         {
-            $title = $this->getViewModalTitleForSelectingModel();
+            $title = TasksUtil::getViewModalTitleForSelectingModel();
             return   ModalView::getAjaxOptionsForModalLink($title, $this->getViewModalContainerId());
         }
 
@@ -220,13 +220,6 @@
             $linkContent = $viewFromRelatedModalLinkActionElement->render();
             $string      = TaskActionSecurityUtil::resolveViewLinkToModelForCurrentUser($data, $this->getActionModuleClassName(), $linkContent);
             return $string;
-        }
-
-        protected function getViewModalTitleForSelectingModel()
-        {
-            $params = LabelUtil::getTranslationParamsForAllModules();
-            $title = Zurmo::t('TasksModule', 'View TasksModuleSingularLabel', $params);
-            return $title;
         }
     }
 ?>

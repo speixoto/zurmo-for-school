@@ -235,26 +235,9 @@
                                                                                 $relationAttributeName,
                                                                                 (int)$relationModelId,
                                                                                 $relationModuleId);
-            $task         = $this->attemptToSaveModelFromPost($activity, null, false);
-            if(count($activity->getErrors()) == 0)
-            {
-//                $redirectUrl  = Yii::app()->createUrl('/' . $relationModuleId . '/default/details', array('id' => $relationModelId));
-////                ob_start();
-//                $this->redirect(array('/' . $relationModuleId . '/defaultPortlet/modalRefresh',
-//                                        'id'                   => $relationModelId,
-//                                        'portletId'            => $portletId,
-//                                        'uniqueLayoutId'       => $uniqueLayoutId,
-//                                        'redirectUrl'          => $redirectUrl,
-//                                        'portletParams'        => array(  'relationModuleId' => $relationModuleId,
-//                                                                          'relationModelId'  => $relationModelId),
-//                                ), false);
-//                $portletParams = array('relationModuleId' => $relationModuleId,
-//                                          'relationModelId'  => $relationModelId);
-//                echo ModalEditAndDetailsControllerUtil::getModalContentOnRefresh($relationModuleId, $portletId, $uniqueLayoutId, $redirectUrl, $portletParams);
-//                $content = ob_get_contents();
-//                ob_end_clean();
-                //echo CJSON::encode(array('status' => 'success', 'content' => $content));
-            }
+            $task             = $this->attemptToSaveModelFromPost($activity, null, false);
+            //$redirectUrl      = Yii::app()->createUrl('/tasks/default/modalViewFromRelation', array('id' => $task->id));
+            $this->actionModalViewFromRelation($task->id);
         }
 
         public function actionModalViewFromRelation($id)

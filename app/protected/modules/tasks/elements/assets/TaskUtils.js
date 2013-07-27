@@ -59,7 +59,7 @@ function updateTaskStatus(status, url, errorInProcess)
     );
 }
 
-function saveTaskFromRelation(url, errorInProcess)
+function saveTaskFromRelation(url, errorInProcess, viewTitle)
 {
     $.ajax(
         {
@@ -72,11 +72,13 @@ function saveTaskFromRelation(url, errorInProcess)
                          form = $("#task-modal-edit-form");
                          form.find(".attachLoading:first").removeClass("loading");
                          form.find(".attachLoading:first").removeClass("loading-ajax-submit");
+                         $("#ModalView").html(data);
+                         $(".ui-dialog-title").html(viewTitle);
                      },
-            error:function()
-                  {
-                      alert(errorInProcess);
-                  }
+            error:  function()
+                    {
+                        alert(errorInProcess);
+                    }
         }
     );
 }

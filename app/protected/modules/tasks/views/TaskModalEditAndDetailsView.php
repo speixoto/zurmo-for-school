@@ -127,7 +127,7 @@
                                                 }
                                                 else
                                                 {
-                                                    js:saveTaskFromRelation("' . $url . '", "'. $errorInProcess . '");
+                                                    js:saveTaskFromRelation("' . $url . '", "'. $errorInProcess . '","' . TasksUtil::getViewModalTitleForSelectingModel() . '");
                                                 }
                                                 return false;
                                             }',

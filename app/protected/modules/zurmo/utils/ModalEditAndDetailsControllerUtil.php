@@ -59,25 +59,5 @@
             $view                = new ModalView($controller, $editAndDetailsView);
             return $view->render();
         }
-
-        /*TODO: Ask Jason as i need to use it here because redirect is causing issue*/
-        public static function getModalContentOnRefresh($moduleId, $portletId, $uniqueLayoutId, $redirectUrl, array $portletParams = array(),
-                                           $portletsAreRemovable = true)
-        {
-            $portlet = Portlet::getById(intval($portletId));
-            $portlet->params = array_merge(array(
-                    'controllerId' => 'default',
-                    'moduleId'     => $moduleId,
-                    'redirectUrl'  => $redirectUrl), $portletParams);
-            if (isset($portlet->params['relationModelId']) && $portlet->params['relationModelId'] != '')
-            {
-                assert('$portlet->params["relationModuleId"] != ""');
-                $modelClassName = Yii::app()->findModule($portlet->params["relationModuleId"])->getPrimaryModelName();
-                $portlet->params['relationModel'] = $modelClassName::getById((int)$portlet->params['relationModelId']);
-            }
-            $view = new AjaxPageView(new PortletRefreshView($portlet, $uniqueLayoutId, $moduleId,
-                                                            (bool)$portletsAreRemovable));
-            echo $view->render();
-        }
     }
 ?>

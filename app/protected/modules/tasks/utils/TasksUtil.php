@@ -307,5 +307,12 @@
                 $task->save();
             }
         }
+
+        public static function getViewModalTitleForSelectingModel()
+        {
+            $params = LabelUtil::getTranslationParamsForAllModules();
+            $title = Zurmo::t('TasksModule', 'View TasksModuleSingularLabel', $params);
+            return $title;
+        }
     }
 ?>
