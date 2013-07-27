@@ -284,6 +284,7 @@
                 $emailSenderOrRecipientEmailNotFoundInSystem = $emailRecipientNotFoundInSystem;
             }
             $box                       = EmailBox::resolveAndGetByName(EmailBox::NOTIFICATIONS_NAME);
+            //todo: get user box of emailOwner instead of notification box. EmailBoxUtil:: getDefaultEmailBoxByUser(User $user)
             if ($emailSenderOrRecipientEmailNotFoundInSystem)
             {
                 $emailMessage->folder  = EmailFolder::getByBoxAndType($box, EmailFolder::TYPE_ARCHIVED_UNMATCHED);
