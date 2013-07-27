@@ -72,12 +72,13 @@
                 ImportWizardUtil::setFormByPostForStep1($importWizardForm, $_POST[get_class($importWizardForm)]);
                 $this->attemptToValidateImportWizardFormAndSave($importWizardForm, $import, 'step2');
             }
-            $title = Zurmo::t('ImportModule', 'Import Wizard: Step 1 of 6');
+            $title = Zurmo::t('ImportModule', 'Import Wizard - Select Module');
+            $progressBarAndStepsView = new ImportStepsAndProgressBarForWizardView(0);
             $importView = new ImportWizardImportRulesView($this->getId(),
                                                           $this->getModule()->getId(),
                                                           $importWizardForm, $title);
             $view       = new ImportPageView(ZurmoDefaultAdminViewUtil::
-                                             makeStandardViewForCurrentUser($this, $importView));
+                              makeTwoStandardViewsForCurrentUser($this, $progressBarAndStepsView, $importView));
             echo $view->render();
         }
 
@@ -124,11 +125,12 @@
                     $this->attemptToValidateImportWizardFormAndSave($importWizardForm, $import, $nextStep);
                 }
             }
-            $title = Zurmo::t('ImportModule', 'Import Wizard: Step 2 of 6');
+            $title = Zurmo::t('ImportModule', 'Import Wizard - Upload File');
+            $progressBarAndStepsView = new ImportStepsAndProgressBarForWizardView(1);
             $importView = new ImportWizardUploadFileView($this->getId(), $this->getModule()->getId(),
                                                          $importWizardForm, $title);
             $view       = new ImportPageView(ZurmoDefaultAdminViewUtil::
-                                             makeStandardViewForCurrentUser($this, $importView));
+                              makeTwoStandardViewsForCurrentUser($this, $progressBarAndStepsView, $importView));
             echo $view->render();
         }
 
@@ -144,12 +146,13 @@
                 ImportWizardUtil::setFormByPostForStep3($importWizardForm, $_POST[get_class($importWizardForm)]);
                 $this->attemptToValidateImportWizardFormAndSave($importWizardForm, $import, 'step4');
             }
-            $title      = Zurmo::t('ImportModule', 'Import Wizard: Step 3 of 6');
+            $title      = Zurmo::t('ImportModule', 'Import Wizard - Select Permissions');
+            $progressBarAndStepsView = new ImportStepsAndProgressBarForWizardView(2);
             $importView = new ImportWizardSetModelPermissionsView($this->getId(),
                                                                   $this->getModule()->getId(),
                                                                   $importWizardForm, $title);
             $view       = new ImportPageView(ZurmoDefaultAdminViewUtil::
-                                             makeStandardViewForCurrentUser($this, $importView));
+                                makeTwoStandardViewsForCurrentUser($this, $progressBarAndStepsView, $importView));
             echo $view->render();
         }
 
@@ -222,7 +225,8 @@
                                                               $sample, $headerRow);
             $mappableAttributeIndicesAndDerivedTypes        = $importRulesClassName::
                                                               getMappableAttributeIndicesAndDerivedTypes();
-            $title                                          = Zurmo::t('ImportModule', 'Import Wizard: Step 4 of 6');
+            $title                                          = Zurmo::t('ImportModule', 'Import Wizard - Map Fields');
+            $progressBarAndStepsView                        = new ImportStepsAndProgressBarForWizardView(3);
             $importView                                     = new ImportWizardMappingView($this->getId(),
                                                               $this->getModule()->getId(),
                                                               $importWizardForm,
@@ -233,7 +237,8 @@
                                                               $importRulesClassName::getRequiredAttributesLabelsData(),
                                                               $title);
             $view                                           = new ImportPageView(ZurmoDefaultAdminViewUtil::
-                                                              makeStandardViewForCurrentUser($this, $importView));
+                                                              makeTwoStandardViewsForCurrentUser($this,
+                                                              $progressBarAndStepsView, $importView));
             echo $view->render();
         }
 
@@ -291,13 +296,14 @@
             }
             if ($step == null)
             {
-                $title = Zurmo::t('ImportModule', 'Import Wizard: Step 5 of 6');
+                $title                   = Zurmo::t('ImportModule', 'Import Wizard - Analyze Data');
+                $progressBarAndStepsView = new ImportStepsAndProgressBarForWizardView(4);
                 $wrapperView  = new ImportSequentialProcessContainerView($sequenceView,
                                                                          $sequentialProcess->getAllStepsMessage(),
                                                                          $title);
                 $wrapperView->setCssClasses(array('DetailsView'));
-                $view         = new ImportPageView(ZurmoDefaultAdminViewUtil::
-                                       makeStandardViewForCurrentUser($this, $wrapperView));
+                $view = new ImportPageView(ZurmoDefaultAdminViewUtil::makeTwoStandardViewsForCurrentUser($this,
+                                $progressBarAndStepsView, $wrapperView));
             }
             else
             {
@@ -337,13 +343,6 @@
             $importWizardForm     = ImportWizardUtil::makeFormByImport($import);
             $cs                   = Yii::app()->getClientScript();
             $cs->registerCoreScript('bbq');
-            if (isset($_GET['ajax']) && $_GET['ajax'] == 'list-view')
-            {
-                $importCompleteView = $this->makeImportCompleteView($import, $importWizardForm);
-                $view               = new AjaxPageView($importCompleteView);
-                echo $view->render();
-                Yii::app()->end(0, false);
-            }
             $unserializedData     = unserialize($import->serializedData);
             $passedInPageSize     = $pageSize;
             if($pageSize == null)
@@ -374,11 +373,12 @@
             }
             if ($step == null)
             {
-                $title = Zurmo::t('ImportModule', 'Import Wizard: Step 6 of 6');
+                $title = Zurmo::t('ImportModule', 'Import Wizard - Import Data');
+                $progressBarAndStepsView = new ImportStepsAndProgressBarForWizardView(5);
                 $wrapperView  = new ImportSequentialProcessContainerView($sequenceView, $sequentialProcess->getAllStepsMessage(), $title);
                 $wrapperView->setCssClasses(array('DetailsView'));
-                $view = new ImportPageView(ZurmoDefaultAdminViewUtil::
-                                       makeStandardViewForCurrentUser($this, $wrapperView));
+                $view = new ImportPageView(ZurmoDefaultAdminViewUtil::makeTwoStandardViewsForCurrentUser($this,
+                                $progressBarAndStepsView, $wrapperView));
             }
             else
             {

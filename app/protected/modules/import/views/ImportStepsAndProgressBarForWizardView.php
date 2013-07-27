@@ -35,62 +35,18 @@
      ********************************************************************************/
 
     /**
-     * Base View for showing a  progress bar and 'steps' in that progress bar. For use with a wizard view such as reporting
-     * or workflow.
+     * Progress bar and steps for the import wizard
      */
-    abstract class StepsAndProgressBarForWizardView extends MetadataView
+    class ImportStepsAndProgressBarForWizardView extends StepsAndProgressBarForWizardView
     {
-        protected $zeroBasedStepIndex = 0;
-
-        /**
-         * @return array
-         */
-        abstract protected function getSpanLabels();
-
-        public function __construct($zeroBasedStepIndex = 0)
+        protected function getSpanLabels()
         {
-            assert('is_int($zeroIndexStep)');
-            $this->zeroBasedStepIndex = $zeroBasedStepIndex;
-        }
-
-        public function isUniqueToAPage()
-        {
-            return true;
-        }
-
-        protected function renderContent()
-        {
-            $width = $this->getSpanPercentWidthFromCount() * ($this->zeroBasedStepIndex + 1);
-            $content = ZurmoHtml::tag('div', array('class' => 'progress-bar',
-                                                   'style' => 'width:' . $width . '%; margin-left:0%'), '');
-            $content = ZurmoHtml::tag('div', array('class' => 'progress-back'), $content);
-            $spanContent = $this->getSpanContent();
-            return ZurmoHtml::tag('div', array('class' => 'progress'), $content . $spanContent);
-        }
-
-        protected function getSpanContent()
-        {
-            $width = $this->getSpanPercentWidthFromCount();
-            $content = null;
-            $first   = true;
-            foreach ($this->getSpanLabels() as $step => $label)
-            {
-                $htmlOptions          = array();
-                $htmlOptions['style'] = 'width:' . $width . '%';
-                if ($this->zeroBasedStepIndex === $step)
-                {
-                    $htmlOptions['class'] = 'current-step';
-                }
-                $content .= ZurmoHtml::tag('span', $htmlOptions, $label);
-                $first    = false;
-            }
-            return $content;
-        }
-
-        protected function getSpanPercentWidthFromCount()
-        {
-            $width  = 100 / count($this->getSpanLabels());
-            return $width;
+            return array(Zurmo::t('Core',         'Select Module'),
+                         Zurmo::t('ZurmoModule',  'Upload File'),
+                         Zurmo::t('ZurmoModule',  'Select Permissions'),
+                         Zurmo::t('ImportModule', 'Map Fields'),
+                         Zurmo::t('ImportModule', 'Analyze Data'),
+                         Zurmo::t('ImportModule', 'Import Data'));
         }
     }
 ?>

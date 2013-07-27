@@ -113,7 +113,7 @@
         {
             $route = Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/step6/',
                                            array('id' => $this->model->id));
-            return ZurmoHtml::link(ZurmoHtml::wrapLabel(Zurmo::t('ImportModule', 'Next')), $route);
+            return ZurmoHtml::link(ZurmoHtml::wrapLabel($this->renderNextPageLinkLabel()), $route);
         }
 
         protected function renderPreviousPageLinkContent()
@@ -145,6 +145,16 @@
                 }
             }
             return 0;
+        }
+
+        protected function renderPreviousPageLinkLabel()
+        {
+            return Zurmo::t('ImportModule', 'Map Fields');
+        }
+
+        protected function renderNextPageLinkLabel()
+        {
+            return Zurmo::t('ImportModule', 'Import Data');
         }
     }
 ?>
