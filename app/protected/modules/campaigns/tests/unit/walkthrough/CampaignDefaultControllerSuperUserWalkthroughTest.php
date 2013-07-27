@@ -501,7 +501,7 @@
                                                 'FrameView PortletFrameView MetadataView">') !== false);
             $this->assertTrue(strpos($content, '<div class="juiportlet-columns"> ') !== false);
             $this->assertTrue(strpos($content, '<ul class="juiportlet-columns-CampaignDetailsAndRelationsViewLeft' .
-                                                'BottomView juiportlet-widget-column1 ">') !== false);
+                                                'BottomView juiportlet-widget-column1 juiportlet-column juiportlet-column-no-split">') !== false);
             $this->assertTrue(strpos($content, '<li class="juiportlet-widget CampaignOverallMetricsView" id="Campaign' .
                                                 'DetailsAndRelationsViewLeftBottomView') !== false);
             $this->assertTrue(strpos($content, '<div class="juiportlet-widget-head">') !== false);
