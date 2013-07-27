@@ -395,14 +395,15 @@
 
             if((bool)$redirect)
             {
-                $redirectUrl = Yii::app()->createUrl('/' . $relationModuleId . '/default/details', array('id' => $relationModelId));
+                $isViewLocked = ZurmoDefaultViewUtil::getLockKeyForDetailsAndRelationsView('lockPortletsForDetailsAndRelationsView');
+                $redirectUrl  = Yii::app()->createUrl('/' . $relationModuleId . '/default/details', array('id' => $relationModelId));
                 $this->redirect(array('/' . $relationModuleId . '/defaultPortlet/modalRefresh',
                                         'portletId'            => $portletId,
                                         'uniqueLayoutId'       => $uniqueLayoutId,
                                         'redirectUrl'          => $redirectUrl,
                                         'portletParams'        => array(  'relationModuleId' => $relationModuleId,
                                                                           'relationModelId'  => $relationModelId),
-                                ));
+                                        'portletsAreRemovable' => !$isViewLocked));
             }
         }
 
