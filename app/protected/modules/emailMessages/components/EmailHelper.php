@@ -218,6 +218,7 @@
          * send immediately, consider using @sendImmediately
          * @param EmailMessage $emailMessage
          * @throws NotSupportedException
+         * @throws FailedToSaveModelException
          * @return boolean
          */
         public function send(EmailMessage $emailMessage)
@@ -233,7 +234,7 @@
             $saved                  = $emailMessage->save();
             if (!$saved)
             {
-                throw new NotSupportedException();
+                throw new FailedToSaveModelException();
             }
             return true;
         }
@@ -243,6 +244,7 @@
          * job.
          * @param EmailMessage $emailMessage
          * @throws NotSupportedException - if the emailMessage does not properly save.
+         * @throws FailedToSaveModelException
          * @return null
          */
         public function sendImmediately(EmailMessage $emailMessage)
@@ -257,7 +259,7 @@
             $saved = $emailMessage->save();
             if (!$saved)
             {
-                throw new NotSupportedException();
+                throw new FailedToSaveModelException();
             }
         }
 
@@ -295,7 +297,7 @@
             $saved = $emailMessage->save();
             if (!$saved)
             {
-                throw new NotSupportedException();
+                throw new FailedToSaveModelException();
             }
         }
 
