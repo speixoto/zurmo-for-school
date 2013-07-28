@@ -66,5 +66,10 @@
                 return Yii::app()->format->formatNumber((int)$model->{$attribute});
             }
         }
+        
+        public function renderValue($value)
+        {                       
+            return Yii::app()->format->formatNumber((int)$value);
+        }
     }
 ?>

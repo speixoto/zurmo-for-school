@@ -303,6 +303,7 @@
                 );
                 array_push($columns, $firstColumn);
             }
+            $grandTotals = $this->dataProvider->runQueryAndGrandTotalsData();
             foreach ($this->dataProvider->resolveDisplayAttributes() as $key => $displayAttribute)
             {
                 if (!$displayAttribute->queryOnly)
@@ -316,7 +317,11 @@
                     if (!isset($column['class']))
                     {
                         $column['class'] = 'DataColumn';
-                    }                    
+                    }                   
+                    if (isset($grandTotals[$displayAttribute->columnAliasName]))
+                    {                                                                        
+                        $column['footer'] = $columnAdapter->renderValue($grandTotals[$displayAttribute->columnAliasName]);
+                    }
                     array_push($columns, $column);
                 }
             }

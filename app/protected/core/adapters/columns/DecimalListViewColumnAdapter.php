@@ -49,5 +49,10 @@
         {
             return Yii::app()->numberFormatter->formatDecimal((float)$model->{$attribute});
         }
+        
+        public function renderValue($value) 
+        {
+            return Yii::app()->numberFormatter->formatDecimal((float)$value);
+        }
     }
 ?>

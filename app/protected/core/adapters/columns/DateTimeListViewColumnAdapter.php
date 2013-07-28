@@ -44,5 +44,10 @@
                 'type'  => 'raw',
             );
         }
+        
+        public function renderValue($value) 
+        {            
+            return DateTimeUtil::convertDbFormattedDateTimeToLocaleFormattedDisplay($value);
+        }
     }
 ?>
