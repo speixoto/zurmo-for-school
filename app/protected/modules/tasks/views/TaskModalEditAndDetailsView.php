@@ -33,36 +33,34 @@
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
-
+    /**
+     * Modal window for create/edit task
+     */
     class TaskModalEditAndDetailsView extends TaskEditAndDetailsView
     {
+         /**
+          * @return array
+          */
          public static function getDefaultMetadata()
          {
-
             $metadata = parent::getDefaultMetadata();
-
-//            $metadata['global']['toolbar']['elements'][0] = array('type'           => 'ModalSaveButton',
-//                                                                  'url'            => $url,
-//                                                                  'ajaxOptions'    => 'eval:static::resolveAjaxOptionsForSave("' .
-//                                                                                       $relationAttributeName . '","' .
-//                                                                                       $relationModelId . '","' .
-//                                                                                       $relationModuleId . '","' .
-//                                                                                       $uniqueLayoutId . '","' .
-//                                                                                       $modalId . '")',
-//                                                                  );
-
             $metadata['global']['toolbar']['elements'][1] = array('type'            => 'ModalCancelLink',
                                                                   'htmlOptions'     => 'eval:static::resolveHtmlOptionsForCancel()',
                                                                   );
             return $metadata;
-
          }
 
+         /**
+          * @return string
+          */
          protected function getNewModelTitleLabel()
          {
-             return '';
+             return null;
          }
 
+         /**
+          * @return array
+          */
          protected static function resolveAjaxOptionsForSave($relationAttributeName, $relationModelId, $relationModuleId, $uniqueLayoutId, $modalId)
          {
             return array(
@@ -77,21 +75,21 @@
                                     $(this).makeLargeLoadingSpinner(false, "#' . $modalId . '");
                                     console.log("success");
                                 }
-                               ',
-                'complete'  => 'function(XMLHttpRequest, textStatus)
-                                {
-
-                                }
-                                '
+                               '
             );
+        }
 
-         }
-
+        /**
+         * @return string
+         */
         protected static function getFormId()
         {
             return 'task-modal-edit-form';
         }
 
+        /**
+         * @return array
+         */
         protected static function resolveHtmlOptionsForCancel()
         {
             return array(
@@ -100,6 +98,10 @@
 
         }
 
+        /**
+         * Resolves ajax validation option for save button
+         * @return array
+         */
         protected function resolveActiveFormAjaxValidationOptions()
         {
             $relationAttributeName   = $_GET['modalTransferInformation']['relationAttributeName'];
@@ -117,24 +119,24 @@
                                                                                     ));
             $errorInProcess = CJavaScript::quote(Zurmo::t('Core', 'There was an error processing your request'));
             return array('enableAjaxValidation' => true,
-                'clientOptions' => array(
-                    'beforeValidate'    => 'js:$(this).beforeValidateAction',
-                    'afterValidate'     => 'js:function(form, data, hasError){
-                                                if(hasError)
-                                                {
-                                                    form.find(".attachLoading:first").removeClass("loading");
-                                                    form.find(".attachLoading:first").removeClass("loading-ajax-submit");
-                                                }
-                                                else
-                                                {
-                                                    js:saveTaskFromRelation("' . $url . '", "'. $errorInProcess . '","' . TasksUtil::getViewModalTitleForSelectingModel() . '");
-                                                }
-                                                return false;
-                                            }',
-                    'validateOnSubmit'  => true,
-                    'validateOnChange'  => false,
-                    'inputContainer'    => 'td'
-                )
+                        'clientOptions' => array(
+                            'beforeValidate'    => 'js:$(this).beforeValidateAction',
+                            'afterValidate'     => 'js:function(form, data, hasError){
+                                                        if(hasError)
+                                                        {
+                                                            form.find(".attachLoading:first").removeClass("loading");
+                                                            form.find(".attachLoading:first").removeClass("loading-ajax-submit");
+                                                        }
+                                                        else
+                                                        {
+                                                            js:saveTaskFromRelation("' . $url . '", "'. $errorInProcess . '","' . TasksUtil::getViewModalTitleForSelectingModel() . '");
+                                                        }
+                                                        return false;
+                                                    }',
+                            'validateOnSubmit'  => true,
+                            'validateOnChange'  => false,
+                            'inputContainer'    => 'td'
+                        )
             );
         }
     }

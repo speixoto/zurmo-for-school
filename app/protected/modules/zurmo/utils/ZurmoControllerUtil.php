@@ -85,7 +85,7 @@
             }
         }
 
-        public function saveModelFromPost($postData, $model, & $savedSuccessfully, & $modelToStringValue, $returnOnValidate)
+        public function saveModelFromPost($postData, $model, & $savedSuccessfully, & $modelToStringValue, $returnOnValidate = false)
         {
             $sanitizedPostData                 = PostUtil::sanitizePostByDesignerTypeForSavingModel(
                                                  $model, $postData);
@@ -163,6 +163,26 @@
 
         protected function afterSuccessfulSave($model)
         {
+        }
+
+        /**
+         * Validates post data in the ajax call
+         * @param RedBeanModel $model
+         * @param string $postVariableName
+         */
+        public function validateAjaxFromPost($model, $postVariableName)
+        {
+            $savedSuccessfully = false;
+            $modelToStringValue = null;
+            if(isset($_POST[$postVariableName]))
+            {
+                $postData         = $_POST[$postVariableName];
+                $model            = $this->saveModelFromPost($postData, $model, $savedSuccessfully,
+                                                                             $modelToStringValue, true);
+                $errorData        = ZurmoActiveForm::makeErrorsDataAndResolveForOwnedModelAttributes($model);
+                echo CJSON::encode($errorData);
+                Yii::app()->end(0, false);
+            }
         }
     }
 ?>

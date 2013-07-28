@@ -35,7 +35,7 @@
      ********************************************************************************/
 
     /**
-     * Class utilized by 'select' modal popup in the edit view
+     * Class utilized by 'select' modal popup of user in the task detail view
      */
     class TaskSelectFromRelatedListModalListLinkProvider extends SelectFromRelatedEditModalListLinkProvider
     {

@@ -40,16 +40,25 @@
      */
     class TaskCheckItemInlineEditView extends InlineEditView
     {
+        /**
+         * @return string
+         */
         public function getFormName()
         {
             return "task-check-item-inline-edit-form";
         }
 
+        /**
+         * @return string
+         */
         protected static function getFormId()
         {
             return "task-check-item-inline-edit-form";
         }
 
+        /**
+         * @return array
+         */
         public static function getDefaultMetadata()
         {
             $metadata = array(
@@ -144,16 +153,20 @@
 
         /**
          * Render form end html
-         * @return string
+         * @return null
          */
         protected function renderFormEndHtml()
         {
-            return '';
+            return null;
         }
 
+        /**
+         * Render modal container
+         * @return null
+         */
         protected function renderModalContainer()
         {
-            return '';
+            return null;
         }
     }
 ?>

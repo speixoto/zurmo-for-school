@@ -99,18 +99,16 @@
                 case 'owner':
                               $task->owner = $user;
                               $task->save();
-                              TasksUtil::sendNotificationOnTaskUpdate($task, Zurmo::t('TasksModule', 'The owner for the task #' . $task->id . ' is updated to ' . $user->getFullName()));
+                              TasksUtil::sendNotificationOnTaskUpdate($task, Zurmo::t('TasksModule', 'The owner for the TasksModuleSingularLowerCaseLabel #' . $task->id . ' is updated to ' . $user->getFullName()));
                               break;
 
                 case 'requestedByUser':
                               $origRequestedByUser = $task->requestedByUser;
-
                               $task->requestedByUser = $user;
                               $task->save();
                               $user = $task->requestedByUser;
                               $explicitReadWriteModelPermissions = ExplicitReadWriteModelPermissionsUtil::makeBySecurableItem($task);
                               TasksUtil::resolveExplicitPermissionsForRequestedByUser($task, $origRequestedByUser, $user, $explicitReadWriteModelPermissions);
-//                              TasksUtil::sendNotificationOnTaskUpdate($task, Zurmo::t('TasksModule', 'The requested by user for the task #' . $task->id . ' is updated to ' . $user->getFullName()));
                               break;
             }
             echo $this->getPermissionContent($task);
@@ -188,6 +186,9 @@
             return $ownedSecurableItemDetailsContent;
         }
 
+        /**
+         * Create task from related view
+         */
         public function actionModalCreateFromRelation()
         {
             $task             = new Task();
@@ -199,21 +200,12 @@
             {
                 if (isset($_POST['ajax']) && $_POST['ajax'] == 'task-modal-edit-form')
                 {
-                    $this->validateAjaxFromPost($task, 'Task');
+                    $controllerUtil   = static::getZurmoControllerUtil();
+                    $controllerUtil->validateAjaxFromPost($task, 'Task');
                     Yii::app()->getClientScript()->setToAjaxMode();
-                    //$task             = $this->attemptToSaveModelFromPost($task, null, false);
                     Yii::app()->end(0, true);
                 }
                 /*TODO Might have to remove RelatedModalEditAndDetailsLinkProvider*/
-    //                $relatedModalEditAndDetailsLinkProvider = new RelatedModalEditAndDetailsLinkProvider(
-    //                                                            $_GET['modalTransferInformation']['relationAttributeName'],
-    //                                                            $_GET['modalTransferInformation']['relationModelId'],
-    //                                                            $_GET['modalTransferInformation']['relationModuleId'],
-    //                                                            $_GET['modalTransferInformation']['redirectUrl'],
-    //                                                            $_GET['modalTransferInformation']['modalId'],
-    //                                                            $_GET['modalTransferInformation']['portletId'],
-    //                                                            $_GET['modalTransferInformation']['uniqueLayoutId']
-    //                                                         );
                 else
                 {
                     $cs = Yii::app()->getClientScript();
@@ -228,6 +220,14 @@
             }
         }
 
+        /**
+         * Saves task in the modal view
+         * @param string $relationAttributeName
+         * @param string $relationModelId
+         * @param string $relationModuleId
+         * @param string $portletId
+         * @param string $uniqueLayoutId
+         */
         public function actionModalSaveFromRelation($relationAttributeName, $relationModelId, $relationModuleId, $portletId, $uniqueLayoutId)
         {
             $modelClassName   = $this->getModule()->getPrimaryModelName();
@@ -236,13 +236,19 @@
                                                                                 (int)$relationModelId,
                                                                                 $relationModuleId);
             $task             = $this->attemptToSaveModelFromPost($activity, null, false);
-            //$redirectUrl      = Yii::app()->createUrl('/tasks/default/modalViewFromRelation', array('id' => $task->id));
             $this->actionModalViewFromRelation($task->id);
         }
 
+        /**
+         * Loads modal view from related view
+         * @param int $id
+         */
         public function actionModalViewFromRelation($id)
         {
             $task = Task::getById(intval($id));
+            ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($task);
+            AuditEvent::logAuditEvent('ZurmoModule', ZurmoModule::AUDIT_EVENT_ITEM_VIEWED, array(strval($task), get_class($this->getModule())), $task);
+            TasksUtil::markUserHasReadLatest($task, Yii::app()->user->userModel);
             echo ModalEditAndDetailsControllerUtil::setAjaxModeAndRenderModalEditAndDetailsView($this,'TaskDetailsView', $task, 'Details');
         }
 
@@ -256,22 +262,6 @@
                                                                 $this->attemptToSaveModelFromPost(
                                                                     $task, $redirectUrl), 'Edit')                                                  ));
             echo $view->render();
-        }
-
-        protected function validateAjaxFromPost($model, $postVariableName)
-        {
-            $savedSuccessfully = false;
-            $modelToStringValue = null;
-            if(isset($_POST[$postVariableName]))
-            {
-                $postData         = $_POST[$postVariableName];
-                $controllerUtil   = static::getZurmoControllerUtil();
-                $model            = $controllerUtil->saveModelFromPost($postData, $model, $savedSuccessfully,
-                                                                       $modelToStringValue, true);
-                $errorData = ZurmoActiveForm::makeErrorsDataAndResolveForOwnedModelAttributes($model);
-                echo CJSON::encode($errorData);
-                Yii::app()->end(0, false);
-            }
         }
     }
 ?>

@@ -50,7 +50,8 @@
                                     'routeModuleId'   => 'eval:$this->moduleId',
                                     'routeParameters' => 'eval:$this->getCreateLinkRouteParameters()',
                                     'ajaxOptions'     => 'eval:$this->resolveAjaxOptionsForSelectingModel()',
-                                    'uniqueLayoutId'  => 'eval:$this->uniqueLayoutId'
+                                    'uniqueLayoutId'  => 'eval:$this->uniqueLayoutId',
+                                    'modalContainerId'=> 'eval:$this->getModalContainerId()'
                                  ),
                         ),
                     ),
@@ -127,12 +128,20 @@
             return 'TasksModule';
         }
 
+        /**
+         * Resolves ajax options for selecting model
+         * @return array
+         */
         protected function resolveAjaxOptionsForSelectingModel()
         {
             $title = $this->getModalTitleForSelectingModel();
             return   ModalView::getAjaxOptionsForModalLink($title, $this->getModalContainerId());
         }
 
+        /**
+         * Gets modal title for create task modal window
+         * @return string
+         */
         protected function getModalTitleForSelectingModel()
         {
             $module              = Yii::app()->getModule('tasks');
@@ -141,16 +150,25 @@
                                       array('{moduleSingularLabel}' => $moduleSingularLabel));
         }
 
+        /**
+         * @return string
+         */
         protected function getModalContainerId()
         {
             return ModalLinkActionElement::RELATED_MODAL_CONTAINER_PREFIX . '-open-tasks';
         }
 
+        /**
+         * @return string
+         */
         protected function getViewModalContainerId()
         {
             return ModalLinkActionElement::RELATED_MODAL_CONTAINER_PREFIX . '-view-task';
         }
 
+        /**
+         * @return string
+         */
         protected function renderContent()
         {
             $content = parent::renderContent();
@@ -159,41 +177,20 @@
             return $content;
         }
 
+        /**
+         * @return string
+         */
         protected function renderModalContainer()
         {
             return ZurmoHtml::tag('div', array('id' => $this->getModalContainerId()), '');
         }
 
+        /**
+         * @return string
+         */
         protected function renderViewModalContainer()
         {
             return ZurmoHtml::tag('div', array('id' => $this->getViewModalContainerId()), '');
-        }
-
-        /*TODO this needs to be removed if modal refresh would not be called*/
-        protected function getCGridViewPagerParams()
-        {
-            $getData = GetUtil::getData();
-            if(isset($getData['uniqueLayoutId']))
-            {
-                unset($getData['uniqueLayoutId']);
-            }
-            if(isset($getData['redirectUrl']))
-            {
-                unset($getData['redirectUrl']);
-            }
-            if(isset($getData['portletParams']))
-            {
-                unset($getData['portletParams']);
-            }
-            return array(
-                    'firstPageLabel' => '<span>first</span>',
-                    'prevPageLabel'  => '<span>previous</span>',
-                    'nextPageLabel'  => '<span>next</span>',
-                    'lastPageLabel'  => '<span>last</span>',
-                    'class'          => 'SimpleListLinkPager',
-                    'paginationParams' => array_merge($getData, array('portletId' => $this->params['portletId'])),
-                    'route'         => 'defaultPortlet/details',
-                );
         }
 
         /**
@@ -204,12 +201,22 @@
             return array($this, 'resolveLinkString');
         }
 
+        /**
+         * Resolves view ajax options for selecting model
+         * @return array
+         */
         protected function resolveViewAjaxOptionsForSelectingModel()
         {
             $title = TasksUtil::getViewModalTitleForSelectingModel();
             return   ModalView::getAjaxOptionsForModalLink($title, $this->getViewModalContainerId());
         }
 
+        /**
+         * Resolves the link string for task detail modal view
+         * @param array $data
+         * @param int $row
+         * @return string
+         */
         public function resolveLinkString($data, $row)
         {
             $params = LabelUtil::getTranslationParamsForAllModules();

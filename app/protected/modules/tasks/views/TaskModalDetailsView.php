@@ -26,6 +26,9 @@
 
     class TaskModalDetailsView extends SecuredEditAndDetailsView
     {
+        /**
+         * @return array
+         */
         public static function getDefaultMetadata()
         {
             $metadata = array(

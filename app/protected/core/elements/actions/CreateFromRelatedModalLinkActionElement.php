@@ -33,35 +33,54 @@
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
-
+    /**
+     * Action element which renders create link on clicking of which opens a modal window
+     */
     class CreateFromRelatedModalLinkActionElement extends RelatedModalLinkActionElement
     {
-
+        /**
+         * Gets default label
+         * @return string
+         */
         protected function getDefaultLabel()
         {
             return Zurmo::t('Core', 'Create');
         }
 
+        /**
+         * Gets default route
+         * @return string
+         */
         protected function getDefaultRoute()
         {
             return Yii::app()->createUrl($this->getRouteModuleId() . '/' .
                         $this->controllerId . '/modalCreateFromRelation/', $this->getCreateLinkUrlParams());
         }
 
+        /**
+         * Gets route module id
+         * @return string
+         */
         protected function getRouteModuleId()
         {
             if (!isset($this->params['routeModuleId']))
             {
-                return array();
+                return null;
             }
             return $this->params['routeModuleId'];
         }
 
+        /**
+         * @return string
+         */
         public function getActionType()
         {
             return 'Create';
         }
 
+        /**
+         * @return array
+         */
         protected function getCreateLinkUrlParams()
         {
             return array(
@@ -69,6 +88,9 @@
             );
         }
 
+        /**
+         * @return array
+         */
         protected function getModalTransferInformation()
         {
             return array_merge(array(
@@ -78,11 +100,21 @@
             ), $this->getRouteParameters());
         }
 
+        /**
+         * @return string
+         */
         protected function getModalContainerId()
         {
-            return ModalLinkActionElement::RELATED_MODAL_CONTAINER_PREFIX . '-open-tasks';
+            if (!isset($this->params['modalContainerId']))
+            {
+                return array();
+            }
+            return $this->params['modalContainerId'];
         }
 
+        /**
+         * @return string
+         */
         protected function getPortletId()
         {
             if (!isset($this->params['portletId']))
@@ -92,6 +124,9 @@
             return $this->params['portletId'];
         }
 
+        /**
+         * @return string
+         */
         protected function getUniqueLayoutId()
         {
             if (!isset($this->params['uniqueLayoutId']))

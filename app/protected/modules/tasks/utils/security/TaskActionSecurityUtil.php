@@ -46,11 +46,9 @@
          * the model's related module.  If current user has access then
          * return link, otherwise return text.  If current user cannot Permission::READ
          * then return null.
-         * @param $attributeString
          * @param $model
          * @param $moduleClassName
-         * @param $linkRoute
-         * @param null $offset
+         * @param $linkContent
          * @return null|string
          */
         public static function resolveViewLinkToModelForCurrentUser(
