@@ -36,7 +36,7 @@
     class MarketingListMembersUtilTest extends ZurmoBaseTest
     {
         protected $super;
-                        
+
         public static function setUpBeforeClass()
         {
             parent::setUpBeforeClass();
@@ -47,9 +47,9 @@
         {
             parent::setUp();
             $this->super                = User::getByUsername('super');
-            Yii::app()->user->userModel = $this->super;                                   
+            Yii::app()->user->userModel = $this->super;
         }
-        
+
         public function testMakeSearchAttributeData()
         {
             $marketingListId            = 1;
@@ -187,46 +187,46 @@
             $this->assertCount(1, $sortAttributes);
             $this->assertEquals('createdDateTime', $sortAttributes['MarketingListMember']);
         }
-        
+
         public function testMakeReportDataProviderAndResolveAttributeName()
-        {                        
-            $contactReport = SavedReportTestHelper::makeSimpleContactRowsAndColumnsReport();            
+        {
+            $contactReport = SavedReportTestHelper::makeSimpleContactRowsAndColumnsReport();
             $contact1      = ContactTestHelper::createContactByNameForOwner('contact01', $this->super);
-            $contact2      = ContactTestHelper::createContactByNameForOwner('contact02', $this->super);            
-            
-            $attributeName      = null;            
+            $contact2      = ContactTestHelper::createContactByNameForOwner('contact02', $this->super);
+
+            $attributeName      = null;
             $reportDataProvider = MarketingListMembersUtil::makeReportDataProviderAndResolveAttributeName(
                                                         $contactReport->id, 1, $attributeName);
             $this->assertEquals('attribute1', $attributeName);
             $this->assertInstanceOf('RowsAndColumnsReportDataProvider', $reportDataProvider);
             $this->assertCount(1, $reportDataProvider->getData());
-            
-            $attributeName      = null;            
+
+            $attributeName      = null;
             $reportDataProvider = MarketingListMembersUtil::makeReportDataProviderAndResolveAttributeName(
                                                         $contactReport->id, 2, $attributeName);
             $this->assertEquals('attribute1', $attributeName);
             $this->assertInstanceOf('RowsAndColumnsReportDataProvider', $reportDataProvider);
             $this->assertCount(2, $reportDataProvider->getData());
         }
-        
+
         /**
          * @depends testMakeReportDataProviderAndResolveAttributeName
          */
         public function testGetContactIdsByReportDataProviderAndAttributeName()
-        {                        
+        {
             $contactReports     = SavedReport::getAll();
             $contactReport      = $contactReports[0];
             $contacts           = Contact::getAll();
-            $attributeName      = null;            
+            $attributeName      = null;
             $reportDataProvider = MarketingListMembersUtil::makeReportDataProviderAndResolveAttributeName(
-                                                        $contactReport->id, 1, $attributeName);            
+                                                        $contactReport->id, 1, $attributeName);
             $contactIds         = MarketingListMembersUtil::getContactIdsByReportDataProviderAndAttributeName(
                                                         $reportDataProvider, $attributeName);
-            $this->assertCount(1, $contactIds);            
-            
-            $attributeName      = null;            
+            $this->assertCount(1, $contactIds);
+
+            $attributeName      = null;
             $reportDataProvider = MarketingListMembersUtil::makeReportDataProviderAndResolveAttributeName(
-                                                        $contactReport->id, 2, $attributeName);            
+                                                        $contactReport->id, 2, $attributeName);
             $contactIds         = MarketingListMembersUtil::getContactIdsByReportDataProviderAndAttributeName(
                                                         $reportDataProvider, $attributeName);
             $this->assertCount(2, $contactIds);

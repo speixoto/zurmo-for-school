@@ -69,7 +69,7 @@
 
         protected static function generateCampaignItems($campaign, $pageSize)
         {
-            if($pageSize == null)
+            if ($pageSize == null)
             {
                 $pageSize = self::DEFAULT_CAMPAIGNITEMS_TO_CREATE_PAGE_SIZE;
             }
@@ -80,9 +80,9 @@
                     "= {$quote}marketinglistmember{$quote}.{$quote}contact_id{$quote} " .
                     "AND {$quote}campaignitem{$quote}.{$quote}campaign_id{$quote} = " . $campaign->id .
                     " where {$quote}marketinglistmember{$quote}.{$quote}marketinglist_id{$quote} = " .
-                    $campaign->marketingList->id . " and {$quote}campaignitem{$quote}.{$quote}id{$quote} IS NULL limit " . $pageSize;
+                    $campaign->marketingList->id . " and {$quote}campaignitem{$quote}.{$quote}id{$quote} IS NULL limit " . $pageSize; // Not Coding Standard
             $ids = R::getCol($sql);
-            foreach($ids as $contactId)
+            foreach ($ids as $contactId)
             {
                 $contacts[] = Contact::getById((int)$contactId);
             }
@@ -90,7 +90,7 @@
             {
                 //todo: if the return value is false, then we might need to catch that since it didn't go well.
                 CampaignItem::registerCampaignItemsByCampaign($campaign, $contacts);
-                if(count($ids) < $pageSize)
+                if (count($ids) < $pageSize)
                 {
                     return true;
                 }

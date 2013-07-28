@@ -90,7 +90,6 @@
             $this->assertEquals('securableitem1',       $fromTablesAndAliases[3]['onTableAliasName']);
         }
 
-
         /**
          * Running a report centered on notes, with a display attribute from notes and accounts.  Ordered by
          * created date time in notes.  Should produce proper query to order by notes.  This test just makes sure
