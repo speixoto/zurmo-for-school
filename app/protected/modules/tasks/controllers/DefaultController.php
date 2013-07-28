@@ -221,6 +221,36 @@
         }
 
         /**
+         * Create task from related view
+         */
+        public function actionModalCreate()
+        {
+            $task             = new Task();
+            if (RightsUtil::canUserAccessModule('TasksModule', Yii::app()->user->userModel))
+            {
+                if (isset($_POST['ajax']) && $_POST['ajax'] == 'task-modal-edit-form')
+                {
+                    $controllerUtil   = static::getZurmoControllerUtil();
+                    $controllerUtil->validateAjaxFromPost($task, 'Task');
+                    Yii::app()->getClientScript()->setToAjaxMode();
+                    Yii::app()->end(0, true);
+                }
+                /*TODO Might have to remove RelatedModalEditAndDetailsLinkProvider*/
+                else
+                {
+                    $cs = Yii::app()->getClientScript();
+                    $cs->registerScriptFile(
+                        Yii::app()->getAssetManager()->publish(
+                            Yii::getPathOfAlias('application.modules.tasks.elements.assets')
+                            ) . '/TaskUtils.js',
+                        CClientScript::POS_END
+                    );
+                    echo ModalEditAndDetailsControllerUtil::setAjaxModeAndRenderModalEditAndDetailsView($this,'TaskModalEditAndDetailsView', $task, 'Edit');
+                }
+            }
+        }
+
+        /**
          * Saves task in the modal view
          * @param string $relationAttributeName
          * @param string $relationModelId
@@ -236,6 +266,16 @@
                                                                                 (int)$relationModelId,
                                                                                 $relationModuleId);
             $task             = $this->attemptToSaveModelFromPost($activity, null, false);
+            $this->actionModalViewFromRelation($task->id);
+        }
+
+        /**
+         * Saves task in the modal view
+         */
+        public function actionModalSave()
+        {
+            $task             = new Task();
+            $task             = $this->attemptToSaveModelFromPost($task, null, false);
             $this->actionModalViewFromRelation($task->id);
         }
 

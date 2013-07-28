@@ -308,11 +308,87 @@
             }
         }
 
-        public static function getViewModalTitleForSelectingModel()
+        /**
+         * @return string
+         */
+        public static function getModalTitleForViewTask()
         {
             $params = LabelUtil::getTranslationParamsForAllModules();
             $title = Zurmo::t('TasksModule', 'View TasksModuleSingularLabel', $params);
             return $title;
+        }
+
+        /**
+         * Gets modal title for create task modal window
+         * @return string
+         */
+        public static function getModalTitleForCreateTask()
+        {
+            $params = LabelUtil::getTranslationParamsForAllModules();
+            $title = Zurmo::t('TasksModule', 'Create TasksModuleSingularLabel', $params);
+            return $title;
+        }
+
+        /**
+         * Resolves ajax options for create link
+         * @return array
+         */
+        public static function resolveAjaxOptionsForCreateMenuItem()
+        {
+            $title = self::getModalTitleForCreateTask();
+            return   ModalView::getAjaxOptionsForModalLink($title, self::getModalContainerId());
+        }
+
+        /**
+         * @return string
+         */
+        public static function getModalContainerId()
+        {
+            return ModalLinkActionElement::RELATED_MODAL_CONTAINER_PREFIX . '-open-tasks';
+        }
+
+        /**
+         * @return string
+         */
+        public static function getViewModalContainerId()
+        {
+            return ModalLinkActionElement::RELATED_MODAL_CONTAINER_PREFIX . '-view-task';
+        }
+
+        /**
+         * Resolves view ajax options for selecting model
+         * @return array
+         */
+        public static function resolveViewAjaxOptionsForSelectingModel()
+        {
+            $title = self::getModalTitleForViewTask();
+            return   ModalView::getAjaxOptionsForModalLink($title, self::getViewModalContainerId());
+        }
+
+        /**
+         * @return string
+         */
+        public static function renderModalContainer()
+        {
+            return ZurmoHtml::tag('div', array('id' => self::getModalContainerId()), '');
+        }
+
+        /**
+         * @return string
+         */
+        public static function renderViewModalContainer()
+        {
+            return ZurmoHtml::tag('div', array('id' => self::getViewModalContainerId()), '');
+        }
+
+        /**
+         * Resolves ajax options for selecting model
+         * @return array
+         */
+        public static function resolveAjaxOptionsForSelectingModel()
+        {
+            $title = self::getModalTitleForCreateTask();
+            return   ModalView::getAjaxOptionsForModalLink($title, self::getModalContainerId());
         }
     }
 ?>

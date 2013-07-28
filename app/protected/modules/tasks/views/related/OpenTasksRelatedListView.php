@@ -49,9 +49,9 @@
                                     'portletId'       => 'eval:$this->params["portletId"]',
                                     'routeModuleId'   => 'eval:$this->moduleId',
                                     'routeParameters' => 'eval:$this->getCreateLinkRouteParameters()',
-                                    'ajaxOptions'     => 'eval:$this->resolveAjaxOptionsForSelectingModel()',
+                                    'ajaxOptions'     => 'eval:TasksUtil::resolveAjaxOptionsForSelectingModel()',
                                     'uniqueLayoutId'  => 'eval:$this->uniqueLayoutId',
-                                    'modalContainerId'=> 'eval:$this->getModalContainerId()'
+                                    'modalContainerId'=> 'eval:TasksUtil::getModalContainerId()'
                                  ),
                         ),
                     ),
@@ -129,68 +129,13 @@
         }
 
         /**
-         * Resolves ajax options for selecting model
-         * @return array
-         */
-        protected function resolveAjaxOptionsForSelectingModel()
-        {
-            $title = $this->getModalTitleForSelectingModel();
-            return   ModalView::getAjaxOptionsForModalLink($title, $this->getModalContainerId());
-        }
-
-        /**
-         * Gets modal title for create task modal window
-         * @return string
-         */
-        protected function getModalTitleForSelectingModel()
-        {
-            $module              = Yii::app()->getModule('tasks');
-            $moduleSingularLabel = $module->getModuleLabelByTypeAndLanguage('Singular');
-            return Zurmo::t('Core', 'Create {moduleSingularLabel}',
-                                      array('{moduleSingularLabel}' => $moduleSingularLabel));
-        }
-
-        /**
-         * @return string
-         */
-        protected function getModalContainerId()
-        {
-            return ModalLinkActionElement::RELATED_MODAL_CONTAINER_PREFIX . '-open-tasks';
-        }
-
-        /**
-         * @return string
-         */
-        protected function getViewModalContainerId()
-        {
-            return ModalLinkActionElement::RELATED_MODAL_CONTAINER_PREFIX . '-view-task';
-        }
-
-        /**
          * @return string
          */
         protected function renderContent()
         {
             $content = parent::renderContent();
-            $content .= $this->renderModalContainer();
-            $content .= $this->renderViewModalContainer();
+            $content .= TasksUtil::renderViewModalContainer();
             return $content;
-        }
-
-        /**
-         * @return string
-         */
-        protected function renderModalContainer()
-        {
-            return ZurmoHtml::tag('div', array('id' => $this->getModalContainerId()), '');
-        }
-
-        /**
-         * @return string
-         */
-        protected function renderViewModalContainer()
-        {
-            return ZurmoHtml::tag('div', array('id' => $this->getViewModalContainerId()), '');
         }
 
         /**
@@ -199,16 +144,6 @@
         public function getLinkString($attributeString, $attribute)
         {
             return array($this, 'resolveLinkString');
-        }
-
-        /**
-         * Resolves view ajax options for selecting model
-         * @return array
-         */
-        protected function resolveViewAjaxOptionsForSelectingModel()
-        {
-            $title = TasksUtil::getViewModalTitleForSelectingModel();
-            return   ModalView::getAjaxOptionsForModalLink($title, $this->getViewModalContainerId());
         }
 
         /**
@@ -221,7 +156,7 @@
         {
             $params = LabelUtil::getTranslationParamsForAllModules();
             $title = Zurmo::t('TasksModule', $data->name, $params);
-            $ajaxOptions = $this->resolveViewAjaxOptionsForSelectingModel();
+            $ajaxOptions = TasksUtil::resolveViewAjaxOptionsForSelectingModel();
             $params = array('label' => $title, 'routeModuleId' => 'tasks', 'ajaxOptions' => $ajaxOptions);
             $viewFromRelatedModalLinkActionElement = new ViewFromRelatedModalLinkActionElement($this->controllerId, $this->moduleId, $data->id, $params);
             $linkContent = $viewFromRelatedModalLinkActionElement->render();

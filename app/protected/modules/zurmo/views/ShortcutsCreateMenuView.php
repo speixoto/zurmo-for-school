@@ -59,7 +59,9 @@
          */
         public function render()
         {
-            return $this->renderContent();
+            $content = TasksUtil::renderModalContainer();
+            $content .= $this->renderContent();
+            return $content;
         }
 
         public function renderMenu($menuId, $contentPrefix = null)

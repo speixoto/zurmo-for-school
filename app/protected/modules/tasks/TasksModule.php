@@ -75,7 +75,8 @@
                 'shortcutsCreateMenuItems' => array(
                     array(
                         'label'  => "eval:Zurmo::t('TasksModule', 'TasksModuleSingularLabel', \$translationParams)",
-                        'url'    => array('/tasks/default/create'),
+                        'url'    => Yii::app()->createUrl('tasks/default/modalCreate'),
+                        'ajaxLinkOptions' => "TasksUtil::resolveAjaxOptionsForCreateMenuItem()",
                         'right'  => self::RIGHT_CREATE_TASKS,
                         'mobile' => true,
                     ),
