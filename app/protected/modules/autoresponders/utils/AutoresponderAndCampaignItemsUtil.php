@@ -203,7 +203,7 @@
 
         protected static function resolveRecipient(EmailMessage $emailMessage, Contact $contact)
         {
-            if ($contact->primaryEmail->emailAddress !== null)
+            if ($contact->primaryEmail->emailAddress != null)
             {
                 $recipient                  = new EmailMessageRecipient();
                 $recipient->toAddress       = $contact->primaryEmail->emailAddress;

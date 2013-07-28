@@ -1154,7 +1154,7 @@
             $user = User::getByUsername('lastloginuser');
             $this->assertLessThanOrEqual(5, $user->lastLoginDateTime - $now);
         }
-        
+
         public function testTrimUsername()
         {
             $user = new User();
@@ -1162,11 +1162,11 @@
             $user->title->value       = 'Mr.';
             $user->firstName          = 'trim';
             $user->lastName           = 'username';
-            $user->setPassword('trimusername');            
+            $user->setPassword('trimusername');
             $this->assertTrue($user->save());
 
             $user = User::getByUsername('trimusername');
-            $this->assertEquals('trimusername', $user->username);            
+            $this->assertEquals('trimusername', $user->username);
         }
     }
 ?>

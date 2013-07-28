@@ -611,9 +611,9 @@
                                                                                             'CustomFromName',
                                                                                             'custom@from.com');
             $autoresponder              = AutoresponderTestHelper::createAutoresponder('subject 12',
-                                                                            'Unsubscribe: {{UNSUBSCRIBE_URL}},' .
+                                                                            'Unsubscribe: {{UNSUBSCRIBE_URL}},' . // Not Coding Standard
                                                                                 ' Manage: {{MANAGE_SUBSCRIPTIONS_URL}}',
-                                                                            'Unsubscribe: {{UNSUBSCRIBE_URL}},' .
+                                                                            'Unsubscribe: {{UNSUBSCRIBE_URL}},' . // Not Coding Standard
                                                                                 ' Manage: {{MANAGE_SUBSCRIPTIONS_URL}}',
                                                                             1,
                                                                             Autoresponder::OPERATION_SUBSCRIBE,

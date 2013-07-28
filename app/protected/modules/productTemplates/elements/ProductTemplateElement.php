@@ -62,7 +62,8 @@
          */
         protected function getModalTitleForSelectingModel()
         {
-            return Zurmo::t('ProductTemplatesModule', 'Catalog Item Search');
+            $params = LabelUtil::getTranslationParamsForAllModules();
+            return Zurmo::t('ProductTemplatesModule', 'ProductTemplatesModuleSingularLabel Search', $params);
         }
 
         /**
