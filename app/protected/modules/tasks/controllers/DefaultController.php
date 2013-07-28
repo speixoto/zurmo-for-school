@@ -196,28 +196,7 @@
                                                                                 $_GET['modalTransferInformation']['relationAttributeName'],
                                                                                 (int)$_GET['modalTransferInformation']['relationModelId'],
                                                                                 $_GET['modalTransferInformation']['relationModuleId']);
-            if (RightsUtil::canUserAccessModule('TasksModule', Yii::app()->user->userModel))
-            {
-                if (isset($_POST['ajax']) && $_POST['ajax'] == 'task-modal-edit-form')
-                {
-                    $controllerUtil   = static::getZurmoControllerUtil();
-                    $controllerUtil->validateAjaxFromPost($task, 'Task');
-                    Yii::app()->getClientScript()->setToAjaxMode();
-                    Yii::app()->end(0, true);
-                }
-                /*TODO Might have to remove RelatedModalEditAndDetailsLinkProvider*/
-                else
-                {
-                    $cs = Yii::app()->getClientScript();
-                    $cs->registerScriptFile(
-                        Yii::app()->getAssetManager()->publish(
-                            Yii::getPathOfAlias('application.modules.tasks.elements.assets')
-                            ) . '/TaskUtils.js',
-                        CClientScript::POS_END
-                    );
-                    echo ModalEditAndDetailsControllerUtil::setAjaxModeAndRenderModalEditAndDetailsView($this,'TaskModalEditAndDetailsView', $task, 'Edit');
-                }
-            }
+            $this->processTaskEdit($task);
         }
 
         /**
@@ -226,28 +205,7 @@
         public function actionModalCreate()
         {
             $task             = new Task();
-            if (RightsUtil::canUserAccessModule('TasksModule', Yii::app()->user->userModel))
-            {
-                if (isset($_POST['ajax']) && $_POST['ajax'] == 'task-modal-edit-form')
-                {
-                    $controllerUtil   = static::getZurmoControllerUtil();
-                    $controllerUtil->validateAjaxFromPost($task, 'Task');
-                    Yii::app()->getClientScript()->setToAjaxMode();
-                    Yii::app()->end(0, true);
-                }
-                /*TODO Might have to remove RelatedModalEditAndDetailsLinkProvider*/
-                else
-                {
-                    $cs = Yii::app()->getClientScript();
-                    $cs->registerScriptFile(
-                        Yii::app()->getAssetManager()->publish(
-                            Yii::getPathOfAlias('application.modules.tasks.elements.assets')
-                            ) . '/TaskUtils.js',
-                        CClientScript::POS_END
-                    );
-                    echo ModalEditAndDetailsControllerUtil::setAjaxModeAndRenderModalEditAndDetailsView($this,'TaskModalEditAndDetailsView', $task, 'Edit');
-                }
-            }
+            $this->processTaskEdit($task);
         }
 
         /**
@@ -258,14 +216,21 @@
          * @param string $portletId
          * @param string $uniqueLayoutId
          */
-        public function actionModalSaveFromRelation($relationAttributeName, $relationModelId, $relationModuleId, $portletId, $uniqueLayoutId)
+        public function actionModalSaveFromRelation($relationAttributeName, $relationModelId, $relationModuleId, $portletId, $uniqueLayoutId, $id)
         {
-            $modelClassName   = $this->getModule()->getPrimaryModelName();
-            $activity         = $this->resolveNewModelByRelationInformation( new $modelClassName(),
-                                                                                $relationAttributeName,
-                                                                                (int)$relationModelId,
-                                                                                $relationModuleId);
-            $task             = $this->attemptToSaveModelFromPost($activity, null, false);
+            if($id == null)
+            {
+                $task   = new Task();
+                $task   = $this->resolveNewModelByRelationInformation( new $task,
+                                                                        $relationAttributeName,
+                                                                        (int)$relationModelId,
+                                                                        $relationModuleId);
+            }
+            else
+            {
+                $task = Task::getById(intval($id));
+            }
+            $task   = $this->attemptToSaveModelFromPost($task, null, false);
             $this->actionModalViewFromRelation($task->id);
         }
 
@@ -292,16 +257,43 @@
             echo ModalEditAndDetailsControllerUtil::setAjaxModeAndRenderModalEditAndDetailsView($this,'TaskDetailsView', $task, 'Details');
         }
 
-        public function actionEdit($id, $redirectUrl = null)
+        /**
+         * Create task from related view
+         */
+        public function actionModalEditFromRelation($id)
         {
-            $task            = Task::getById(intval($id));
-            ControllerSecurityUtil::resolveAccessCanCurrentUserWriteModel($task);
-            $view            = new TasksPageView(ZurmoDefaultViewUtil::
-                                                        makeStandardViewForCurrentUser($this,
-                                                            $this->makeEditAndDetailsView(
-                                                                $this->attemptToSaveModelFromPost(
-                                                                    $task, $redirectUrl), 'Edit')                                                  ));
-            echo $view->render();
+            $task             = Task::getById(intval($id));
+            $this->processTaskEdit($task);
+        }
+
+        /**
+         * Process Task Edit
+         * @param Task $task
+         */
+        protected function processTaskEdit(Task $task)
+        {
+            if (RightsUtil::canUserAccessModule('TasksModule', Yii::app()->user->userModel))
+            {
+                if (isset($_POST['ajax']) && $_POST['ajax'] == 'task-modal-edit-form')
+                {
+                    $controllerUtil   = static::getZurmoControllerUtil();
+                    $controllerUtil->validateAjaxFromPost($task, 'Task');
+                    Yii::app()->getClientScript()->setToAjaxMode();
+                    Yii::app()->end(0, true);
+                }
+                /*TODO Might have to remove RelatedModalEditAndDetailsLinkProvider*/
+                else
+                {
+                    $cs = Yii::app()->getClientScript();
+                    $cs->registerScriptFile(
+                        Yii::app()->getAssetManager()->publish(
+                            Yii::getPathOfAlias('application.modules.tasks.elements.assets')
+                            ) . '/TaskUtils.js',
+                        CClientScript::POS_END
+                    );
+                    echo ModalEditAndDetailsControllerUtil::setAjaxModeAndRenderModalEditAndDetailsView($this,'TaskModalEditAndDetailsView', $task, 'Edit');
+                }
+            }
         }
     }
 ?>

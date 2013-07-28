@@ -49,7 +49,7 @@
                                     'portletId'       => 'eval:$this->params["portletId"]',
                                     'routeModuleId'   => 'eval:$this->moduleId',
                                     'routeParameters' => 'eval:$this->getCreateLinkRouteParameters()',
-                                    'ajaxOptions'     => 'eval:TasksUtil::resolveAjaxOptionsForSelectingModel()',
+                                    'ajaxOptions'     => 'eval:TasksUtil::resolveAjaxOptionsForEditModel("Create")',
                                     'uniqueLayoutId'  => 'eval:$this->uniqueLayoutId',
                                     'modalContainerId'=> 'eval:TasksUtil::getModalContainerId()'
                                  ),
@@ -57,7 +57,14 @@
                     ),
                     'rowMenu' => array(
                         'elements' => array(
-                            array('type' => 'EditLink'),
+                            array(  'type'            => 'EditModalLink',
+                                    'portletId'       => 'eval:$this->params["portletId"]',
+                                    'routeModuleId'   => 'eval:$this->moduleId',
+                                    'routeParameters' => 'eval:$this->getCreateLinkRouteParameters()',
+                                    'ajaxOptions'     => 'eval:TasksUtil::resolveAjaxOptionsForEditModel("Edit")',
+                                    'uniqueLayoutId'  => 'eval:$this->uniqueLayoutId',
+                                    'modalContainerId'=> 'eval:TasksUtil::getModalContainerId()'
+                                 ),
                             array('type' => 'CopyLink'),
                             array('type' => 'RelatedDeleteLink'),
                         ),
@@ -154,14 +161,9 @@
          */
         public function resolveLinkString($data, $row)
         {
-            $params = LabelUtil::getTranslationParamsForAllModules();
-            $title = Zurmo::t('TasksModule', $data->name, $params);
-            $ajaxOptions = TasksUtil::resolveViewAjaxOptionsForSelectingModel();
-            $params = array('label' => $title, 'routeModuleId' => 'tasks', 'ajaxOptions' => $ajaxOptions);
-            $viewFromRelatedModalLinkActionElement = new ViewFromRelatedModalLinkActionElement($this->controllerId, $this->moduleId, $data->id, $params);
-            $linkContent = $viewFromRelatedModalLinkActionElement->render();
-            $string      = TaskActionSecurityUtil::resolveViewLinkToModelForCurrentUser($data, $this->getActionModuleClassName(), $linkContent);
-            return $string;
+            $taskUtil    = new TasksUtil();
+            $content     = $taskUtil->getLinkForViewModal($data, $row, $this->controllerId, $this->moduleId, $this->getActionModuleClassName());
+            return $content;
         }
     }
 ?>

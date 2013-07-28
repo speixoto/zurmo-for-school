@@ -106,6 +106,7 @@
         {
             if(Yii::app()->request->getParam('modalTransferInformation', null) != null)
             {
+                $id = Yii::app()->request->getParam('id', null);
                 $relationAttributeName   = $_GET['modalTransferInformation']['relationAttributeName'];
                 $relationModelId         = $_GET['modalTransferInformation']['relationModelId'];
                 $relationModuleId        = $_GET['modalTransferInformation']['relationModuleId'];
@@ -114,10 +115,11 @@
                 $uniqueLayoutId          = $_GET['modalTransferInformation']['uniqueLayoutId'];
 
                 $url = Yii::app()->createUrl('tasks/default/modalSaveFromRelation', array('relationAttributeName' => $relationAttributeName,
-                                                                                          'relationModelId' => $relationModelId,
-                                                                                          'relationModuleId' => $relationModuleId,
-                                                                                          'portletId'   => $portletId,
-                                                                                          'uniqueLayoutId'  => $uniqueLayoutId
+                                                                                          'relationModelId'       => $relationModelId,
+                                                                                          'relationModuleId'      => $relationModuleId,
+                                                                                          'portletId'             => $portletId,
+                                                                                          'uniqueLayoutId'        => $uniqueLayoutId,
+                                                                                          'id'                    => $id
                                                                                         ));
             }
             else

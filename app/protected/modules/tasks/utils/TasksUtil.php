@@ -322,10 +322,17 @@
          * Gets modal title for create task modal window
          * @return string
          */
-        public static function getModalTitleForCreateTask()
+        public static function getModalTitleForCreateTask($renderType = "Create")
         {
             $params = LabelUtil::getTranslationParamsForAllModules();
-            $title = Zurmo::t('TasksModule', 'Create TasksModuleSingularLabel', $params);
+            if($renderType == "Create")
+            {
+                $title = Zurmo::t('TasksModule', 'Create TasksModuleSingularLabel', $params);
+            }
+            else
+            {
+                $title = Zurmo::t('TasksModule', 'Edit TasksModuleSingularLabel', $params);
+            }
             return $title;
         }
 
@@ -335,7 +342,7 @@
          */
         public static function resolveAjaxOptionsForCreateMenuItem()
         {
-            $title = self::getModalTitleForCreateTask();
+            $title = self::getModalTitleForCreateTask("Create");
             return   ModalView::getAjaxOptionsForModalLink($title, self::getModalContainerId());
         }
 
@@ -385,10 +392,31 @@
          * Resolves ajax options for selecting model
          * @return array
          */
-        public static function resolveAjaxOptionsForSelectingModel()
+        public static function resolveAjaxOptionsForEditModel($renderType)
         {
-            $title = self::getModalTitleForCreateTask();
+            $title = self::getModalTitleForCreateTask($renderType);
             return   ModalView::getAjaxOptionsForModalLink($title, self::getModalContainerId());
+        }
+
+        /**
+         * Get link for view task in modal mode
+         * @param array $data
+         * @param int $row
+         * @param string $controllerId
+         * @param string $moduleId
+         * @param array $params
+         * @param string $moduleClassName
+         * @return string
+         */
+        public function getLinkForViewModal($data, $row, $controllerId, $moduleId, $moduleClassName)
+        {
+            $ajaxOptions = TasksUtil::resolveViewAjaxOptionsForSelectingModel();
+            $title       = Zurmo::t('TasksModule', $data->name);
+            $params      = array('label' => $title, 'routeModuleId' => 'tasks', 'ajaxOptions' => $ajaxOptions);
+            $viewFromRelatedModalLinkActionElement = new ViewFromRelatedModalLinkActionElement($controllerId, $moduleId, $data->id, $params);
+            $linkContent = $viewFromRelatedModalLinkActionElement->render();
+            $string      = TaskActionSecurityUtil::resolveViewLinkToModelForCurrentUser($data, $moduleClassName, $linkContent);
+            return $string;
         }
     }
 ?>

@@ -34,21 +34,30 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    abstract class ModalLinkActionElement extends LinkActionElement
+    /**
+     * Override class for CButtonColumn in order to allow public access to renderDataCellContent
+     * @see CGridView class
+     */
+    class TaskModalButtonColumn extends ButtonColumn
     {
-        const RELATED_MODAL_CONTAINER_PREFIX = 'relatedModalContainer';
-
-        public function render()
+        /**
+         * Renders a link button.
+         * @param string $id the ID of the button
+         * @param array $button the button configuration which may contain 'label', 'url', 'imageUrl' and 'options' elements.
+         * See {@link buttons} for more details.
+         * @param integer $row the row number (zero-based)
+         * @param mixed $data the data object associated with the row
+         */
+        protected function renderButton($id,$button,$row,$data)
         {
-            return ZurmoHtml::ajaxLink($this->resolveLabelAndWrap(), $this->route, $this->getAjaxOptions(), $this->getHtmlOptions());
-        }
-
-        public function renderMenuItem()
-        {
-            return array('label'            => $this->getLabel(),
-                         'url'              => $this->route,
-                         'ajaxLinkOptions'  => $this->getAjaxOptions(),
-                         'linkOptions'      => $this->resolveHtmlOptionsForRenderingMenuItem());
+            if (isset($button['visible']) && !$this->evaluateExpression($button['visible'],array('row'=>$row,'data'=>$data)))
+                return;
+            $label=isset($button['label']) ? $button['label'] : $id;
+            $url=isset($button['url']) ? $this->evaluateExpression($button['url'],array('data'=>$data,'row'=>$row)) : '#';
+            $options=isset($button['options']) ? $button['options'] : array();
+            if(!isset($options['title']))
+                $options['title']=$label;
+            echo ZurmoHtml::ajaxLink($label, $url, $button['ajaxOptions'], $options);
         }
     }
 ?>

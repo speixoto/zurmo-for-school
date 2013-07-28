@@ -119,5 +119,58 @@
         {
             return 'TasksMyListConfigView';
         }
+
+        /**
+         * Override to handle security/access resolution on links.
+         */
+        public function getLinkString($attributeString, $attribute)
+        {
+            return array($this, 'resolveLinkString');
+        }
+
+        /**
+         * Resolves the link string for task detail modal view
+         * @param array $data
+         * @param int $row
+         * @return string
+         */
+        public function resolveLinkString($data, $row)
+        {
+            $taskUtil    = new TasksUtil();
+            $content     = $taskUtil->getLinkForViewModal($data, $row, $this->controllerId, $this->moduleId, $this->getActionModuleClassName());
+            return $content;
+        }
+
+        /**
+         * @return string
+         */
+        protected function renderContent()
+        {
+            $content = parent::renderContent();
+            $content .= TasksUtil::renderViewModalContainer();
+            return $content;
+        }
+
+        /**
+         * Override to handle security/access resolution on links.
+         */
+        protected function getCGridViewLastColumn()
+        {
+            $url  = 'Yii::app()->createUrl("tasks/default/modalEditFromRelation", array("id" => $data->id))';
+            return array(
+                'class'           => 'TaskModalButtonColumn',
+                'template'        => '{update}',
+                'buttons' => array(
+                    'update' => array(
+                        'url'             => $url,
+                        'imageUrl'        => false,
+                        'visible'         => 'ActionSecurityUtil::canCurrentUserPerformAction("Edit", $data)',
+                        'options'         => array('class' => 'pencil', 'title' => 'Update'),
+                        'label'           => '!',
+                        'ajaxOptions'     => TasksUtil::resolveAjaxOptionsForEditModel("Edit")
+                    ),
+                ),
+            );
+        }
     }
 ?>
