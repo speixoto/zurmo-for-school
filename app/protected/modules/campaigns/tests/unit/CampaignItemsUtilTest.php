@@ -953,9 +953,9 @@
                                                                                                 null);
             $campaign                   = CampaignTestHelper::createCampaign('campaign 15',
                                                                                 'subject 15',
-                                                                                'Unsubscribe: {{UNSUBSCRIBE_URL}},' .
+                                                                                'Unsubscribe: {{UNSUBSCRIBE_URL}},' . // Not Coding Standard
                                                                                 ' Manage: {{MANAGE_SUBSCRIPTIONS_URL}}',
-                                                                                'Unsubscribe: {{UNSUBSCRIBE_URL}},' .
+                                                                                'Unsubscribe: {{UNSUBSCRIBE_URL}},' . // Not Coding Standard
                                                                                 ' Manage: {{MANAGE_SUBSCRIPTIONS_URL}}',
                                                                                 'testFromName',
                                                                                 'test@zurmo.com',

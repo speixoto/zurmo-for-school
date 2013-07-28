@@ -94,11 +94,14 @@
                                 $(document).ready(function()
                                 {
                                     $('html').addClass('zurmo-embedded-form-active');
-                                    ga(function(tracker)
+                                    if (typeof ga !== 'undefined')
                                     {
-	                                    var googleWebTrackingId = tracker.get('clientId');
-	                                    $('#" . ContactExternalEditAndDetailsView::GOOGLE_WEB_TRACKING_ID_FIELD . "').val(googleWebTrackingId);
-                                    });
+                                        ga(function(tracker)
+                                        {
+                                            var googleWebTrackingId = tracker.get('clientId');
+                                            $('#" . ContactExternalEditAndDetailsView::GOOGLE_WEB_TRACKING_ID_FIELD . "').val(googleWebTrackingId);
+                                        });
+                                    }
                                 });");
             $excludeStyles                           = $contactWebForm->excludeStyles;
             $rawXHtml                                = $view->render();

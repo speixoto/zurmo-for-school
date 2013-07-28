@@ -1137,8 +1137,7 @@
                     $nextBean = $bean;
                     foreach ($modelClassNames as $nextModelClassName)
                     {
-
-                        if($nextModelClassName::getCanHaveBean())
+                        if ($nextModelClassName::getCanHaveBean())
                         {
                             $nextBean = self::findNextDerivativeBean($nextBean, $currentModelClassName, $nextModelClassName);
                             if ($nextBean === null)
