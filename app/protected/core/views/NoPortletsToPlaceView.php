@@ -39,10 +39,10 @@
      */
     class NoPortletsToPlaceView extends View
     {
-        public $cssClasses = array('splash-view');        
+        public $cssClasses = array('splash-view');
 
         protected function renderContent()
-        {                     
+        {
             $content = '<div class="general-issue-notice ' . $this->getIconName() . '">';
             $content .= $this->getMessageContent();
             $content .= '</div>';
@@ -53,7 +53,7 @@
         {
             return 'Portlet';
         }
-        
+
         protected function getMessageContent()
         {
             $message  = Zurmo::t('Core', 'There are no more portlets to add');

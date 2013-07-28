@@ -383,7 +383,7 @@
             $product->sellPrice         = $sellPrice;
             $product->type              = $productTemplate->type;
 
-            foreach($productTemplate->productCategories as $productCategory)
+            foreach ($productTemplate->productCategories as $productCategory)
             {
                 $product->productCategories->add($productCategory);
             }
@@ -393,7 +393,7 @@
             $product->save();
             ZurmoControllerUtil::updatePermissionsWithDefaultForModelByCurrentUser($product);
 
-            if((bool)$redirect)
+            if ((bool)$redirect)
             {
                 $isViewLocked = ZurmoDefaultViewUtil::getLockKeyForDetailsAndRelationsView('lockPortletsForDetailsAndRelationsView');
                 $redirectUrl  = Yii::app()->createUrl('/' . $relationModuleId . '/default/details', array('id' => $relationModelId));

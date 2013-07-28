@@ -805,7 +805,7 @@
                         {
                             $onTableAliasName = $castedDownModelClassName::getTableName($castedDownFurtherModelClassName);
                         }
-                        elseif($onTableAliasName == null)
+                        elseif ($onTableAliasName == null)
                         {
                             throw new NotSupportedException();
                         }
@@ -818,7 +818,7 @@
             }
             if (!$this->joinTablesAdapter->isTableInFromTables($attributeTableName))
             {
-                if($onTableAliasName == null)
+                if ($onTableAliasName == null)
                 {
                     $modelClassName   = static::resolveModelClassNameThatCanHaveTable($modelClassName, $castedDownModelClassName);
                     $onTableAliasName = $modelClassName::getTableName($modelClassName);
