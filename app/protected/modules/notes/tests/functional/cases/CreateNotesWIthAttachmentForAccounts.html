@@ -12,66 +12,121 @@
 <tr><td rowspan="1" colspan="3">New Test</td></tr>
 </thead><tbody>
 <tr>
-	<td>storeGlobal</td>
-	<td>javascript{Math.floor(Math.random()*11000)}</td>
-	<td>randomSuffix</td>
+  <td>setTimeout</td>
+  <td>45000</td>
+  <td></td>
 </tr>
 <tr>
-	<td>clickAndWait</td>
-	<td>//div[@id='MenuView']/ul/li[2]/a/span[2]</td>
-	<td></td>
+    <td>storeGlobal</td>
+    <td>javascript{Math.floor(Math.random()*11000)}</td>
+    <td>randomSuffix</td>
 </tr>
 <tr>
-	<td>clickAndWait</td>
-	<td>css=a.icon-create</td>
-	<td></td>
+    <td>open</td>
+    <td>index.php/accounts/default</td>
+    <td></td>
 </tr>
 <tr>
-	<td>type</td>
-	<td>id=Account_name</td>
-	<td>My Account ${randomSuffix}</td>
+  <td>waitForPageToLoad</td>
+  <td></td>
+  <td></td>
 </tr>
 <tr>
-	<td>clickAndWait</td>
-	<td>id=save</td>
-	<td></td>
+  <td>waitForCondition</td>
+  <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+  <td>30000</td>
 </tr>
 <tr>
-	<td>click</td>
-	<td>id=show-more-panels-link-yt3</td>
-	<td></td>
+    <td>open</td>
+    <td>index.php/accounts/default/create</td>
+    <td></td>
 </tr>
 <tr>
-	<td>type</td>
-	<td>id=Note_description</td>
-	<td>test</td>
+  <td>waitForPageToLoad</td>
+  <td></td>
+  <td></td>
 </tr>
 <tr>
-	<td>type</td>
-	<td>id=Note_files</td>
-	<td>C:\Inetpub\selenium\zurmo_bleeding\app\protected\modules\notes\tests\functional\files\testNotes.txt</td>
+  <td>waitForCondition</td>
+  <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+  <td>30000</td>
+</tr>
+<tr>
+    <td>type</td>
+    <td>id=Account_name</td>
+    <td>My Account ${randomSuffix}</td>
+</tr>
+<tr>
+    <td>clickAndWait</td>
+    <td>name=save</td>
+    <td></td>
+</tr>
+<tr>
+  <td>waitForPageToLoad</td>
+  <td></td>
+  <td></td>
+</tr>
+<tr>
+  <td>waitForCondition</td>
+  <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+  <td>30000</td>
+</tr>
+<tr>
+    <td>click</td>
+    <td>link=More Options</td>
+    <td></td>
+</tr>
+<tr>
+  <td>waitForCondition</td>
+  <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+  <td>30000</td>
+</tr>
+<tr>
+    <td>type</td>
+    <td>id=Note_description</td>
+    <td>test</td>
+</tr>
+<tr>
+  <td>setSpeed</td>
+  <td>3000</td>
+  <td></td>
+</tr>
+<tr>
+    <td>type</td>
+    <td>id=Note_files</td>
+    <td>C:\Inetpub\selenium\zurmo_bleeding\app\protected\modules\notes\tests\functional\files\testNotes.txt</td>
+</tr>
+<tr>
+  <td>waitForCondition</td>
+  <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+  <td>30000</td>
 </tr>
 
 <!-- assert whether delete button has appeared or not-->
 <tr>
-	<td>assertVisible</td>
-	<td>//div[@id='fileUploadyw1']/div[3]/table/tbody/tr/td[3]/button</td>
-	<td></td>
+    <td>waitForTextPresent</td>
+    <td>testNotes.txt</td>
+    <td></td>
 </tr>
 <tr>
-	<td>click</td>
-	<td>css=span.z-label</td>
-	<td></td>
+    <td>verifyTextPresent</td>
+    <td>testNotes.txt</td>
+    <td></td>
 </tr>
 <tr>
-	<td>click</td>
-	<td>id=save</td>
-	<td></td>
+    <td>click</td>
+    <td>name=save</td>
+    <td></td>
 </tr>
 <tr>
-	<td>assertVisible</td>
-	<td>link=testNotes.txt</td>
-	<td></td>
+  <td>waitForCondition</td>
+  <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+  <td>30000</td>
+</tr>
+<tr>
+    <td>waitForText</td>
+    <td>//div[@id='list-viewAccountLatestActivitiesForPortletView']/table/tbody/tr/td/div/span[3]/ul/li/a</td>
+    <td>testNotes.txt</td>
 </tr>
 </tbody></table>
 </body>

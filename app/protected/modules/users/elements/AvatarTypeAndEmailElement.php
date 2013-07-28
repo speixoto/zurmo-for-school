@@ -1,10 +1,10 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2012 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
-     * the terms of the GNU General Public License version 3 as published by the
+     * the terms of the GNU Affero General Public License version 3 as published by the
      * Free Software Foundation with the addition of the following permission added
      * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
      * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
@@ -12,16 +12,26 @@
      *
      * Zurmo is distributed in the hope that it will be useful, but WITHOUT
      * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-     * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+     * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
      * details.
      *
-     * You should have received a copy of the GNU General Public License along with
+     * You should have received a copy of the GNU Affero General Public License along with
      * this program; if not, see http://www.gnu.org/licenses or write to the Free
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
      *
-     * You can contact Zurmo, Inc. with a mailing address at 113 McHenry Road Suite 207,
-     * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
+     * You can contact Zurmo, Inc. with a mailing address at 27 North Wacker Drive
+     * Suite 370 Chicago, IL 60606. or at email address contact@zurmo.com.
+     *
+     * The interactive user interfaces in original and modified versions
+     * of this program must display Appropriate Legal Notices, as required under
+     * Section 5 of the GNU Affero General Public License version 3.
+     *
+     * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
+     * these Appropriate Legal Notices must retain the display of the Zurmo
+     * logo and Zurmo copyright notice. If the display of the logo is not reasonably
+     * feasible for technical reasons, the Appropriate Legal Notices must display the words
+     * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -29,9 +39,10 @@
      */
     class AvatarTypeAndEmailElement extends Element
     {
+        public $editableTemplate = '<td colspan="{colspan}">{content}{error}</td>';
+
         protected function renderControlEditable()
         {
-            $this->editableTemplate = '<td colspan="{colspan}">{content}{error}</td>';
             $content  = $this->renderAvatarTypeRadio              ($this->model, $this->form, 'avatarType');
             $content .= $this->renderCustomAvatarEmailAddressInput($this->model, $this->form, 'customAvatarEmailAddress');
             $this->renderScripts();
@@ -40,25 +51,24 @@
 
         protected function renderControlNonEditable()
         {
-            $this->nonEditableTemplate = '<td colspan="{colspan}">{content}</td>';
-            $avatarImage = $this->model->getAvatarImage(200);
+            $avatarImage = $this->model->getAvatarImage(110);
+            $content     = '<div class="gravatar-container">';
             if (Yii::app()->user->userModel->id == $this->model->id ||
                 RightsUtil::canUserAccessModule('UsersModule', Yii::app()->user->userModel))
             {
-                $content     = '<div class="gravatar-container">';
                 $span        = ZurmoHtml::tag('span',
                                       array('id'    => 'profile-picture-tooltip'),
-                                      Yii::t('Default', 'Click me to change the profile picture.'),
+                                      Zurmo::t('UsersModule', 'Change Profile Picture'),
                                       true);
                 $url         = Yii::app()->createUrl('/users/default/changeAvatar', array('id' => $this->model->id));
-                $modalTitle  = ModalView::getAjaxOptionsForModalLink(Yii::t('Default', 'Change Profile Picture') . ": " . strval($this->model));
+                $modalTitle  = ModalView::getAjaxOptionsForModalLink(Zurmo::t('UsersModule', 'Change Profile Picture') . ": " . strval($this->model));
                 $content    .= ZurmoHtml::ajaxLink($span . $avatarImage, $url, $modalTitle);
-                $content    .= '</div>';
             }
             else
             {
-                $content = $avatarImage;
+                $content .= $avatarImage;
             }
+            $content    .= '</div>';
             return $content;
         }
 
@@ -82,10 +92,10 @@
         private function resolveRadioOptions()
         {
             $primaryEmail = $this->model->primaryEmail;
-            $radioOptions = array(User::AVATAR_TYPE_DEFAULT       => Yii::t('Default', 'No Profile Picture'),
-                                  User::AVATAR_TYPE_PRIMARY_EMAIL => Yii::t('Default', 'Use gravatar with primary email ({primaryEmail})',
+            $radioOptions = array(User::AVATAR_TYPE_DEFAULT       => Zurmo::t('UsersModule', 'No Profile Picture'),
+                                  User::AVATAR_TYPE_PRIMARY_EMAIL => Zurmo::t('UsersModule', 'Use Gravatar with primary email ({primaryEmail})',
                                                                             array('{primaryEmail}' => $primaryEmail)),
-                                  User::AVATAR_TYPE_CUSTOM_EMAIL  => Yii::t('Default', 'Use gravatar with custom email'));
+                                  User::AVATAR_TYPE_CUSTOM_EMAIL  => Zurmo::t('UsersModule', 'Use Gravatar with custom email'));
             return $radioOptions;
         }
 
@@ -113,7 +123,7 @@
 
         protected static function renderTooltipContent()
         {
-            $title       = Yii::t('Default', 'Your Gravatar is an image that follows you from site to site appearing beside your ' .
+            $title       = Zurmo::t('UsersModule', 'Your Gravatar is an image that follows you from site to site appearing beside your ' .
                                              'name when you do things like comment or post on a blog.');
             $content     = '<span id="user-gravatar-tooltip" class="tooltip"  title="' . $title . '">';
             $content    .= '?</span>';

@@ -1,10 +1,10 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2012 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
-     * the terms of the GNU General Public License version 3 as published by the
+     * the terms of the GNU Affero General Public License version 3 as published by the
      * Free Software Foundation with the addition of the following permission added
      * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
      * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
@@ -12,16 +12,26 @@
      *
      * Zurmo is distributed in the hope that it will be useful, but WITHOUT
      * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-     * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+     * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
      * details.
      *
-     * You should have received a copy of the GNU General Public License along with
+     * You should have received a copy of the GNU Affero General Public License along with
      * this program; if not, see http://www.gnu.org/licenses or write to the Free
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
      *
-     * You can contact Zurmo, Inc. with a mailing address at 113 McHenry Road Suite 207,
-     * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
+     * You can contact Zurmo, Inc. with a mailing address at 27 North Wacker Drive
+     * Suite 370 Chicago, IL 60606. or at email address contact@zurmo.com.
+     *
+     * The interactive user interfaces in original and modified versions
+     * of this program must display Appropriate Legal Notices, as required under
+     * Section 5 of the GNU Affero General Public License version 3.
+     *
+     * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
+     * these Appropriate Legal Notices must retain the display of the Zurmo
+     * logo and Zurmo copyright notice. If the display of the logo is not reasonably
+     * feasible for technical reasons, the Appropriate Legal Notices must display the words
+     * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
     // KEEP these in alphabetical order.
@@ -29,6 +39,10 @@
     // KEEP all the language files up-to-date with each other.
     // DON'T MAKE A MESS!
     return array(
+        '<h2>Not so fast</h2><div class="large-icon"></div><p>Configure your email settings before you can send emails.</p>'
+            => '<h2>No tan rápido</h2></i><div class="large-icon"></div><p>Configurar los ajustes de email antes de enviar mensajes de correo electrónico.</p>',
+        '<h2>Not so fast</h2><div class="large-icon"></div><p>The administrator must first configure the system outbound email settings.</p>'
+            => '<h2>No tan rápido</h2></i><div class="large-icon"></div><p>El administrador debe configurar los ajustes del sistema de correo electrónico salientes.</p>',
         '<span class="email-from"><strong>From:</strong> {senderContent}</span>'
             => '<span class="email-de"><strong>De:</strong> {senderContent}</span>',
         '<span class="email-to"><strong>To:</strong> {recipientContent}</span>'
@@ -49,6 +63,10 @@
             => 'Elemento archivado inigualable',
         'At least one archived email message does not match any records in the system. <a href="{url}">Click here</a> to manually match them.'
             => 'Por lo menos un email mensaje archivado no han encontrado registros en el sistema. <a href="{url}">Haga clic aquí</a> para igualar manualmente.',
+        'Bcc'
+            => 'CCO',
+        'Bcc Recipients'
+            => 'Destinatarios CCO',
         'Body'
             => 'Cuerpo',
         'Cc'
@@ -57,10 +75,14 @@
             => 'Destinatarios de CC',
         'Clear Old Sent Notifications Email Job'
             => 'Eliminar mensajes de notificación viejos',
+        'Compose Email'
+            => 'Componer Email',
         'Could not connect to IMAP server.'
             => 'Verificación de la cuenta IMAP ha fallado.',
         'Create Emails'
             => 'Crear Emails',
+        'Currently in the {folderType} folder'
+            => 'Actualmente en la carpeta {folderType}',
         'Data Cleanup'
             => 'Limpieza de datos',
         'Delete Emails'
@@ -89,6 +111,8 @@
             => 'Cada minuto.',
         'Extra Mail Settings'
             => 'Configuración avanzada',
+        'Failed to connect to mailbox'
+            => 'Error al conectarse al buzón de correo',
         'Folder'
             => 'Carpeta',
         'From'
@@ -99,8 +123,6 @@
             => 'Nombre del remitente',
         'from: {senderContent}'
             => 'de: {senderContent}',
-        'Host'
-            => 'Nombre de host',
         'Html Content'
             => 'Contenido HTML',
         'Inbox'
@@ -133,14 +155,14 @@
             => 'Nombre',
         'Person Or Account'
             => 'Person Or Account', // Same Word Translated
-        'Port'
-            => 'Puerto',
         'Process Inbound Email Job'
             => 'Procesar el trabajo de email entrante',
         'Process Outbound Email Job'
             => 'Inicie el proceso de correo saliente',
         'Recipient info can\'t be extracted from email message'
             => 'Información del destinatario no se puede extraer del email',
+        'Recipients'
+            => 'Destinatarios',
         'Response from Server'
             => 'Respuesta del Servidor',
         'Select ContactsModuleSingularLabel'
@@ -149,8 +171,8 @@
             => 'Seleccionar ContactsModuleSingularLabel / LeadsModuleSingularLabel',
         'Select LeadsModuleSingularLabel'
             => 'Seleccionar LeadsModuleSingularLabel',
-        'Send a test email to'
-            => 'Enviar un mensaje de prueba a',
+        'Send'
+            => 'Enviar',
         'Send system notifications from'
             => 'Enviar notificaciones del sistema de',
         'Send Test Email'
@@ -163,8 +185,6 @@
             => 'Conexión SSL',
         'Successfully connected to IMAP server.'
             => 'Conectado correctamente al servidor IMAP.',
-        'Test Connection'
-            => 'Probar conexión',
         'Test IMAP connection'
             => 'Prueba conexión IMAP',
         'Test Message Results'
@@ -173,18 +193,26 @@
             => 'Los parámetros de prueba para la cuenta de email',
         'Text Content'
             => 'Mensaje',
+        'There is no primary email associated with {contactName}. Please add one to continue.'
+            => 'No hay ninguna principal de correo electrónico asociada a {contactName}. Por favor, añada una para continuar.',
+        'This field is required'
+            => 'Este campo es obligatorio',
         'This message sent from Zurmo'
             => 'Este mensaje enviado desde Zurmo',
         'To'
             => 'Para',
         'To Address'
             => 'Dirección de destino',
+        'To address cannot be blank'
+            => 'La dirección de destino no puede estar en blanco',
         'To Name'
             => 'Nombre del destinatario',
         'To Recipients'
             => 'Para destinatarios',
         'to: {recipientContent}'
             => 'Para: {recipientContent}',
+        'Type name or email'
+            => 'Escriba el nombre o dirección de correo electrónico',
         'Unmatched Archived Emails'
             => 'Inigualables Emails Archivados',
         'You do not have rights to access, create, or connect emails in the system'

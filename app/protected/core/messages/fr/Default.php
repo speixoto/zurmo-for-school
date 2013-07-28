@@ -1,10 +1,10 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2012 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
-     * the terms of the GNU General Public License version 3 as published by the
+     * the terms of the GNU Affero General Public License version 3 as published by the
      * Free Software Foundation with the addition of the following permission added
      * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
      * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
@@ -12,16 +12,26 @@
      *
      * Zurmo is distributed in the hope that it will be useful, but WITHOUT
      * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-     * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+     * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
      * details.
      *
-     * You should have received a copy of the GNU General Public License along with
+     * You should have received a copy of the GNU Affero General Public License along with
      * this program; if not, see http://www.gnu.org/licenses or write to the Free
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
      *
-     * You can contact Zurmo, Inc. with a mailing address at 113 McHenry Road Suite 207,
-     * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
+     * You can contact Zurmo, Inc. with a mailing address at 27 North Wacker Drive
+     * Suite 370 Chicago, IL 60606. or at email address contact@zurmo.com.
+     *
+     * The interactive user interfaces in original and modified versions
+     * of this program must display Appropriate Legal Notices, as required under
+     * Section 5 of the GNU Affero General Public License version 3.
+     *
+     * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
+     * these Appropriate Legal Notices must retain the display of the Zurmo
+     * logo and Zurmo copyright notice. If the display of the logo is not reasonably
+     * feasible for technical reasons, the Appropriate Legal Notices must display the words
+     * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
     // KEEP these in alphabetical order.
@@ -48,13 +58,19 @@
         'All'
             => 'Tous',
         'All Results'
-            => 'Tout exporter',
+            => 'Tous les résultats',
         'Altering configuration files.'
             => 'Modification des fichiers de configuration.',
         'and'
             => 'et',
         'Application is not in maintenance mode. Please edit perInstance.php file, and set "$maintenanceMode = true;"'
             => 'L\'application n\'est pas en mode maintenance. Dans le fichier perInstance.php file, voud devez modifer le paramètre pour que "$maintenanceMode = true;"',
+        'Apply'
+            => 'Appliquer',
+        'Are you sure you want to delete this {modelLabel}?'
+            => 'Voulez vous vraiment supprimer ce(tte) {modelLabel}?',
+        'Are you sure you want to unlink this {modelLabel}?'
+            => 'Voulez vous vraiment dissocier la relation avec ce(tte) {modelLabel}?',
         'Basic Search'
             => 'Recherche simple',
         'Basic Search Fields'
@@ -63,11 +79,17 @@
             => 'Avant',
         'Between'
             => 'Entre',
-        'Bulk insert failed. There was a row with an incorrect column quantity'
-            => 'Erreur avec l\'opération BULK INSERT.  Une ligne contient une mauvaise quantité de colonnes',
+        'Blue'
+            => 'Bleu',
+        'Brown'
+            => 'Brun',
+        'Bulk insert failed. There was a row with an incorrect column quantity.'
+            => 'Erreur avec l\'opération BULK INSERT.  Une ligne contient une mauvaise quantité de colonnes.',
         'by'
             => 'par',
         'Cancel'
+            => 'Annuler',
+        'Cancel Changes'
             => 'Annuler',
         'Cell Settings'
             => 'Paramètres des cellules',
@@ -81,6 +103,8 @@
             => 'Vérification terminée.',
         'Checking permissions, files, upgrade version....'
             => 'Vérification des permissions, dossiers, version mise à jour...',
+        'Cherry'
+            => 'Cerise',
         'Clear'
             => 'Effacer',
         'Clearing assets and runtime folders.'
@@ -91,6 +115,8 @@
             => 'Cliquez ici',
         'Close'
             => 'Fermer',
+        'Columns'
+            => 'Colonnes',
         'Copying files.'
             => 'Copie de fichiers.',
         'Could not extract upgrade "from version" in the manifest file.'
@@ -119,6 +145,8 @@
             => 'Valeur par défault',
         'Delete'
             => 'Supprimer',
+        'Deleting'
+            => 'Suppression en cours',
         'Detail View Only'
             => 'Vue détaillée uniquement',
         'Details'
@@ -133,6 +161,8 @@
             => 'Erreur',
         'Error during upgrade!'
             => 'Erreur lors de la mise à jour!',
+        'Exclusive Paper'
+            => 'Papief exclusif',
         'Export'
             => 'Exporter',
         'Fahrenheit'
@@ -153,12 +183,18 @@
             => 'firstDateTime doit être avant secondDateTime',
         'Float'
             => 'Float', // Same Word Translated
+        'French Stucco'
+            => 'Stuc français',
         'from'
             => 'de',
         'Full Name'
             => 'Nom complet',
         'Go to Details'
             => 'Au détails',
+        'Hidden Columns'
+            => 'Colonnes Masquées',
+        'Honey'
+            => 'Miel',
         'Hour'
             => 'Heure',
         'Info'
@@ -179,12 +215,22 @@
             => 'Dernière modification',
         'Last Modified Date and User'
             => 'Dernière modification',
+        'Light Noise'
+            => 'Bruit léger',
+        'Light Toast'
+            => 'Toast léger',
+        'Lime'
+            => 'Citron vert',
         'List'
             => 'Liste',
         'Loading'
             => 'Chargement en cours',
         'Loading UpgraderComponent.'
             => 'Téléchargement de UpgraderComponent.',
+        'Mass Delete'
+            => 'Suppression en masse',
+        'Mass Delete is not reversable.'
+            => 'La suppression en masse n\'est pas réversible.',
         'Mass Update'
             => 'Mise à jour globale',
         'Max upload size: {maxSize}'
@@ -202,7 +248,7 @@
         'Modified Date Time'
             => 'Dernière modification',
         'Module Name'
-            => 'Nom du Module',
+            => 'Etiquette de l\'onglet',
         'More Details'
             => 'Plus de détails',
         'More Options'
@@ -223,6 +269,8 @@
             => 'Aucun traitement d\'importation trouvé.',
         'No {moduleLabelPluralLowerCase} found'
             => 'Aucun résultat trouvé',
+        'Noise'
+            => 'Bruit',
         'None'
             => 'Aucun',
         'Not all files and folders are writeable by upgrade user. Please make these files or folders writeable:'
@@ -249,6 +297,8 @@
             => 'Paramètres du panneau',
         'Panel Title'
             => 'Titre du panneau',
+        'Paper'
+            => 'Papier',
         'Part 1 complete.'
             => 'Partie 1 complète.',
         'Please check if the file is a valid zip archive.'
@@ -277,10 +327,14 @@
             => 'Supprimer',
         'Removing upgrade files.'
             => 'Suppression des fichiers de mise à jour.',
+        'Reset'
+            => 'Relance',
         'Return to List'
             => 'Retour à la liste',
         'Row'
             => '[Ajouter une ligne]',
+        'Row Counter: {rowNumber} Serialized row data: {serializedRowData}'
+            => 'Row Counter: {rowNumber} Serialized row data: {serializedRowData}', // Same Word Translated
         'Running tasks after schema is updated.'
             => 'Tâches en cours d\'exécution (après la mise a jour du schéma).',
         'Running tasks before updating schema.'
@@ -299,6 +353,8 @@
             => 'Sélectionner',
         'Selected'
             => 'Sélectionnés',
+        'selected for removal.'
+            => 'sélectionneé(s) pour supprimer.',
         'selected for updating.'
             => 'sélectionnée(s).',
         'Serialized Data'
@@ -311,6 +367,8 @@
             => 'Commencer',
         'Start typing to search'
             => 'Tapez ici votre recherche',
+        'successfully deleted'
+            => 'supprimées avec succès',
         'Tab'
             => 'Onglet',
         'The file did not exist'
@@ -319,6 +377,8 @@
             => 'La structure n\'est pas valide. {error}',
         'There was an error during the extraction process of {zipFilePath}'
             => 'Une erreur s\'est produite lors de l\'extraction de {zipFilePath}',
+        'There was an error processing your request'
+            => 'Il y a une erreur.',
         'There was an error uploading the file.'
             => 'Erreur de téléchargement de fichier.',
         'There was an error with the web service.'
@@ -343,12 +403,16 @@
             => 'Demain',
         'total'
             => 'total', // Same Word Translated
+        'Turquoise'
+            => 'Turquoise', // Same Word Translated
         'Type'
             => 'Type', // Same Word Translated
         'Type to find a tag'
             => 'Tapez pour retrouver un nuage de mots-clefs',
         'Unknown'
             => 'Inconnu',
+        'Unlink'
+            => 'Dissocier',
         'Update'
             => 'Actualiser',
         'updated successfully.'
@@ -367,6 +431,10 @@
             => 'Utilisateur',
         'Users'
             => 'Utilisateurs',
+        'Violet'
+            => 'Violet', // Same Word Translated
+        'Visible Columns'
+            => 'Colonnes affichées',
         'Yes'
             => 'Oui',
         'Yesterday'

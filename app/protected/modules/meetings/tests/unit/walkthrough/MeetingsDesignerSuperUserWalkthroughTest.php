@@ -1,10 +1,10 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2012 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
-     * the terms of the GNU General Public License version 3 as published by the
+     * the terms of the GNU Affero General Public License version 3 as published by the
      * Free Software Foundation with the addition of the following permission added
      * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
      * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
@@ -12,16 +12,26 @@
      *
      * Zurmo is distributed in the hope that it will be useful, but WITHOUT
      * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-     * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+     * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
      * details.
      *
-     * You should have received a copy of the GNU General Public License along with
+     * You should have received a copy of the GNU Affero General Public License along with
      * this program; if not, see http://www.gnu.org/licenses or write to the Free
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
      *
-     * You can contact Zurmo, Inc. with a mailing address at 113 McHenry Road Suite 207,
-     * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
+     * You can contact Zurmo, Inc. with a mailing address at 27 North Wacker Drive
+     * Suite 370 Chicago, IL 60606. or at email address contact@zurmo.com.
+     *
+     * The interactive user interfaces in original and modified versions
+     * of this program must display Appropriate Legal Notices, as required under
+     * Section 5 of the GNU Affero General Public License version 3.
+     *
+     * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
+     * these Appropriate Legal Notices must retain the display of the Zurmo
+     * logo and Zurmo copyright notice. If the display of the logo is not reasonably
+     * feasible for technical reasons, the Appropriate Legal Notices must display the words
+     * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -34,6 +44,8 @@
     */
     class MeetingsDesignerSuperUserWalkthroughTest extends ZurmoWalkthroughBaseTest
     {
+        public static $activateDefaultLanguages = true;
+
         public static function setUpBeforeClass()
         {
             parent::setUpBeforeClass();
@@ -211,25 +223,25 @@
                                             'description'                       => 'This is Meeting Description',
                                             'owner'                             => array('id' => $superUserId),
                                             'explicitReadWriteModelPermissions' => array('type' => null),
-                                            'checkbox'                          => '1',
-                                            'currency'                          => array('value'   => 45,
+                                            'checkboxCstm'                      => '1',
+                                            'currencyCstm'                      => array('value'   => 45,
                                                                                          'currency' => array(
                                                                                          'id' => $baseCurrency->id)),
-                                            'date'                              => $date,
-                                            'datetime'                          => $datetime,
-                                            'decimal'                           => '123',
-                                            'picklist'                          => array('value'  => 'a'),
-                                            'multiselect'                       => array('values' => array('ff', 'rr')),
-                                            'tagcloud'                          => array('values' => array('writing', 'gardening')),
-                                            'countrylist'                       => array('value'  => 'bbbb'),
-                                            'statelist'                         => array('value'  => 'bbb1'),
-                                            'citylist'                          => array('value'  => 'bb1'),
-                                            'integer'                           => '12',
-                                            'phone'                             => '259-784-2169',
-                                            'radio'                             => array('value' => 'd'),
-                                            'text'                              => 'This is a test Text',
-                                            'textarea'                          => 'This is a test TextArea',
-                                            'url'                               => 'http://wwww.abc.com'),
+                                            'dateCstm'                          => $date,
+                                            'datetimeCstm'                      => $datetime,
+                                            'decimalCstm'                       => '123',
+                                            'picklistCstm'                      => array('value'  => 'a'),
+                                            'multiselectCstm'                   => array('values' => array('ff', 'rr')),
+                                            'tagcloudCstm'                      => array('values' => array('writing', 'gardening')),
+                                            'countrylistCstm'                   => array('value'  => 'bbbb'),
+                                            'statelistCstm'                     => array('value'  => 'bbb1'),
+                                            'citylistCstm'                      => array('value'  => 'bb1'),
+                                            'integerCstm'                       => '12',
+                                            'phoneCstm'                         => '259-784-2169',
+                                            'radioCstm'                         => array('value' => 'd'),
+                                            'textCstm'                          => 'This is a test Text',
+                                            'textareaCstm'                      => 'This is a test TextArea',
+                                            'urlCstm'                           => 'http://wwww.abc.com'),
                                       'ActivityItemForm' => array(
                                             'Account'     => array('id'  => $superAccount[0]->id),
                                             'contact'     => array('ids' => $superContactId1 . ',' . $superContactId2), // Not Coding Standard
@@ -254,30 +266,30 @@
             $this->assertEquals($meeting[0]->activityItems->count()           , 4);
             $this->assertEquals(0                                             , count($readWritePermitables));
             $this->assertEquals(0                                             , count($readOnlyPermitables));
-            $this->assertEquals($meeting[0]->checkbox                         , '1');
-            $this->assertEquals($meeting[0]->currency->value                  , 45);
-            $this->assertEquals($meeting[0]->currency->currency->id           , $baseCurrency->id);
-            $this->assertEquals($meeting[0]->date                             , $dateAssert);
-            $this->assertEquals($meeting[0]->datetime                         , $datetimeAssert);
-            $this->assertEquals($meeting[0]->decimal                          , '123');
-            $this->assertEquals($meeting[0]->picklist->value                  , 'a');
-            $this->assertEquals($meeting[0]->integer                          , 12);
-            $this->assertEquals($meeting[0]->phone                            , '259-784-2169');
-            $this->assertEquals($meeting[0]->radio->value                     , 'd');
-            $this->assertEquals($meeting[0]->text                             , 'This is a test Text');
-            $this->assertEquals($meeting[0]->textarea                         , 'This is a test TextArea');
-            $this->assertEquals($meeting[0]->url                              , 'http://wwww.abc.com');
-            $this->assertEquals($meeting[0]->countrylist->value               , 'bbbb');
-            $this->assertEquals($meeting[0]->statelist->value                 , 'bbb1');
-            $this->assertEquals($meeting[0]->citylist->value                  , 'bb1');
-            $this->assertContains('ff'                                        , $meeting[0]->multiselect->values);
-            $this->assertContains('rr'                                        , $meeting[0]->multiselect->values);
-            $this->assertContains('writing'                                   , $meeting[0]->tagcloud->values);
-            $this->assertContains('gardening'                                 , $meeting[0]->tagcloud->values);
+            $this->assertEquals($meeting[0]->checkboxCstm                     , '1');
+            $this->assertEquals($meeting[0]->currencyCstm->value              , 45);
+            $this->assertEquals($meeting[0]->currencyCstm->currency->id       , $baseCurrency->id);
+            $this->assertEquals($meeting[0]->dateCstm                         , $dateAssert);
+            $this->assertEquals($meeting[0]->datetimeCstm                     , $datetimeAssert);
+            $this->assertEquals($meeting[0]->decimalCstm                      , '123');
+            $this->assertEquals($meeting[0]->picklistCstm->value              , 'a');
+            $this->assertEquals($meeting[0]->integerCstm                      , 12);
+            $this->assertEquals($meeting[0]->phoneCstm                        , '259-784-2169');
+            $this->assertEquals($meeting[0]->radioCstm->value                 , 'd');
+            $this->assertEquals($meeting[0]->textCstm                         , 'This is a test Text');
+            $this->assertEquals($meeting[0]->textareaCstm                     , 'This is a test TextArea');
+            $this->assertEquals($meeting[0]->urlCstm                          , 'http://wwww.abc.com');
+            $this->assertEquals($meeting[0]->countrylistCstm->value           , 'bbbb');
+            $this->assertEquals($meeting[0]->statelistCstm->value             , 'bbb1');
+            $this->assertEquals($meeting[0]->citylistCstm->value              , 'bb1');
+            $this->assertContains('ff'                                        , $meeting[0]->multiselectCstm->values);
+            $this->assertContains('rr'                                        , $meeting[0]->multiselectCstm->values);
+            $this->assertContains('writing'                                   , $meeting[0]->tagcloudCstm->values);
+            $this->assertContains('gardening'                                 , $meeting[0]->tagcloudCstm->values);
 
             $metadata            = CalculatedDerivedAttributeMetadata::
                                    getByNameAndModelClassName('calcnumber', 'Meeting');
-            $testCalculatedValue = CalculatedNumberUtil::calculateByFormulaAndModel($metadata->getFormula(), $meeting[0]);
+            $testCalculatedValue = CalculatedNumberUtil::calculateByFormulaAndModelAndResolveFormat($metadata->getFormula(), $meeting[0]);
             $this->assertEquals(111                                           , $testCalculatedValue);
         }
 
@@ -290,7 +302,7 @@
 
             //Retrieve the meeting Id.
             $meeting = Meeting::getByName('myNewMeeting');
-            $this->assertEquals(2, $meeting[0]->tagcloud->values->count());
+            $this->assertEquals(2, $meeting[0]->tagcloudCstm->values->count());
 
             //Set the date and datetime variable values here.
             $date           = Yii::app()->dateFormatter->format(DateTimeUtil::getLocaleDateFormat(), time());
@@ -320,25 +332,25 @@
                                 'description'                       => 'This is Edit Meeting Description',
                                 'owner'                             => array('id' => $superUserId),
                                 'explicitReadWriteModelPermissions' => array('type' => $explicitReadWriteModelPermission),
-                                'checkbox'                          => '0',
-                                'currency'                          => array('value'   => 40,
+                                'checkboxCstm'                      => '0',
+                                'currencyCstm'                      => array('value'   => 40,
                                                                              'currency' => array(
                                                                              'id' => $baseCurrency->id)),
-                                'date'                              => $date,
-                                'datetime'                          => $datetime,
-                                'decimal'                           => '12',
-                                'picklist'                          => array('value'  => 'b'),
-                                'multiselect'                       => array('values' =>  array('gg', 'hh')),
-                                'tagcloud'                          => array('values' =>  array()),
-                                'countrylist'                       => array('value'  => 'aaaa'),
-                                'statelist'                         => array('value'  => 'aaa1'),
-                                'citylist'                          => array('value'  => 'ab1'),
-                                'integer'                           => '11',
-                                'phone'                             => '259-784-2069',
-                                'radio'                             => array('value' => 'e'),
-                                'text'                              => 'This is a test Edit Text',
-                                'textarea'                          => 'This is a test Edit TextArea',
-                                'url'                               => 'http://wwww.abc-edit.com'),
+                                'dateCstm'                          => $date,
+                                'datetimeCstm'                      => $datetime,
+                                'decimalCstm'                       => '12',
+                                'picklistCstm'                      => array('value'  => 'b'),
+                                'multiselectCstm'                   => array('values' =>  array('gg', 'hh')),
+                                'tagcloudCstm'                      => array('values' =>  array()),
+                                'countrylistCstm'                   => array('value'  => 'aaaa'),
+                                'statelistCstm'                     => array('value'  => 'aaa1'),
+                                'citylistCstm'                      => array('value'  => 'ab1'),
+                                'integerCstm'                       => '11',
+                                'phoneCstm'                         => '259-784-2069',
+                                'radioCstm'                         => array('value' => 'e'),
+                                'textCstm'                          => 'This is a test Edit Text',
+                                'textareaCstm'                      => 'This is a test Edit TextArea',
+                                'urlCstm'                           => 'http://wwww.abc-edit.com'),
                                 'ActivityItemForm' => array(
                                 'Account'     => array('id'  => $superAccount[0]->id),
                                 'contact'     => array('ids' => $activityItemFormContacts),
@@ -364,28 +376,28 @@
             $this->assertEquals($meeting[0]->activityItems->count()           , 5);
             $this->assertEquals(1                                             , count($readWritePermitables));
             $this->assertEquals(0                                             , count($readOnlyPermitables));
-            $this->assertEquals($meeting[0]->checkbox                         , '0');
-            $this->assertEquals($meeting[0]->currency->value                  , 40);
-            $this->assertEquals($meeting[0]->currency->currency->id           , $baseCurrency->id);
-            $this->assertEquals($meeting[0]->date                             , $dateAssert);
-            $this->assertEquals($meeting[0]->datetime                         , $datetimeAssert);
-            $this->assertEquals($meeting[0]->decimal                          , '12');
-            $this->assertEquals($meeting[0]->picklist->value                  , 'b');
-            $this->assertEquals($meeting[0]->integer                          , 11);
-            $this->assertEquals($meeting[0]->phone                            , '259-784-2069');
-            $this->assertEquals($meeting[0]->radio->value                     , 'e');
-            $this->assertEquals($meeting[0]->text                             , 'This is a test Edit Text');
-            $this->assertEquals($meeting[0]->textarea                         , 'This is a test Edit TextArea');
-            $this->assertEquals($meeting[0]->url                              , 'http://wwww.abc-edit.com');
-            $this->assertEquals($meeting[0]->countrylist->value               , 'aaaa');
-            $this->assertEquals($meeting[0]->statelist->value                 , 'aaa1');
-            $this->assertEquals($meeting[0]->citylist->value                  , 'ab1');
-            $this->assertContains('gg'                                        , $meeting[0]->multiselect->values);
-            $this->assertContains('hh'                                        , $meeting[0]->multiselect->values);
-            $this->assertEquals(0                                             , $meeting[0]->tagcloud->values->count());
+            $this->assertEquals($meeting[0]->checkboxCstm                     , '0');
+            $this->assertEquals($meeting[0]->currencyCstm->value              , 40);
+            $this->assertEquals($meeting[0]->currencyCstm->currency->id       , $baseCurrency->id);
+            $this->assertEquals($meeting[0]->dateCstm                         , $dateAssert);
+            $this->assertEquals($meeting[0]->datetimeCstm                     , $datetimeAssert);
+            $this->assertEquals($meeting[0]->decimalCstm                      , '12');
+            $this->assertEquals($meeting[0]->picklistCstm->value              , 'b');
+            $this->assertEquals($meeting[0]->integerCstm                      , 11);
+            $this->assertEquals($meeting[0]->phoneCstm                        , '259-784-2069');
+            $this->assertEquals($meeting[0]->radioCstm->value                 , 'e');
+            $this->assertEquals($meeting[0]->textCstm                         , 'This is a test Edit Text');
+            $this->assertEquals($meeting[0]->textareaCstm                     , 'This is a test Edit TextArea');
+            $this->assertEquals($meeting[0]->urlCstm                          , 'http://wwww.abc-edit.com');
+            $this->assertEquals($meeting[0]->countrylistCstm->value           , 'aaaa');
+            $this->assertEquals($meeting[0]->statelistCstm->value             , 'aaa1');
+            $this->assertEquals($meeting[0]->citylistCstm->value              , 'ab1');
+            $this->assertContains('gg'                                        , $meeting[0]->multiselectCstm->values);
+            $this->assertContains('hh'                                        , $meeting[0]->multiselectCstm->values);
+            $this->assertEquals(0                                             , $meeting[0]->tagcloudCstm->values->count());
             $metadata            = CalculatedDerivedAttributeMetadata::
                                    getByNameAndModelClassName('calcnumber', 'Meeting');
-            $testCalculatedValue = CalculatedNumberUtil::calculateByFormulaAndModel($metadata->getFormula(), $meeting[0]);
+            $testCalculatedValue = CalculatedNumberUtil::calculateByFormulaAndModelAndResolveFormat($metadata->getFormula(), $meeting[0]);
             $this->assertEquals(1                                             , $testCalculatedValue);
         }
 
@@ -427,25 +439,25 @@
                                 'description'                       => 'This is Edit Meeting Description',
                                 'owner'                             => array('id' => $superUserId),
                                 'explicitReadWriteModelPermissions' => array('type' => $explicitReadWriteModelPermission),
-                                'checkbox'                          => '0',
-                                'currency'                          => array('value'   => 40,
+                                'checkboxCstm'                      => '0',
+                                'currencyCstm'                      => array('value'   => 40,
                                                                              'currency' => array(
                                                                              'id' => $baseCurrency->id)),
-                                'date'                              => $date,
-                                'datetime'                          => $datetime,
-                                'decimal'                           => '12',
-                                'picklist'                          => array('value'  => 'b'),
-                                'multiselect'                       => array('values' =>  array('gg', 'hh')),
-                                'tagcloud'                          => array('values' =>  array('reading', 'surfing')),
-                                'countrylist'                       => array('value'  => 'aaaa'),
-                                'statelist'                         => array('value'  => 'aaa1'),
-                                'citylist'                          => array('value'  => 'ab1'),
-                                'integer'                           => '11',
-                                'phone'                             => '259-784-2069',
-                                'radio'                             => array('value' => 'e'),
-                                'text'                              => 'This is a test Edit Text',
-                                'textarea'                          => 'This is a test Edit TextArea',
-                                'url'                               => 'http://wwww.abc-edit.com'),
+                                'dateCstm'                          => $date,
+                                'datetimeCstm'                      => $datetime,
+                                'decimalCstm'                       => '12',
+                                'picklistCstm'                      => array('value'  => 'b'),
+                                'multiselectCstm'                   => array('values' =>  array('gg', 'hh')),
+                                'tagcloudCstm'                      => array('values' =>  array('reading', 'surfing')),
+                                'countrylistCstm'                   => array('value'  => 'aaaa'),
+                                'statelistCstm'                     => array('value'  => 'aaa1'),
+                                'citylistCstm'                      => array('value'  => 'ab1'),
+                                'integerCstm'                       => '11',
+                                'phoneCstm'                         => '259-784-2069',
+                                'radioCstm'                         => array('value' => 'e'),
+                                'textCstm'                          => 'This is a test Edit Text',
+                                'textareaCstm'                      => 'This is a test Edit TextArea',
+                                'urlCstm'                           => 'http://wwww.abc-edit.com'),
                                 'ActivityItemForm' => array(
                                 'Account'     => array('id'  => $superAccount[0]->id),
                                 'contact'     => array('ids' => $activityItemFormContacts),
@@ -471,29 +483,29 @@
             $this->assertEquals($meeting[0]->activityItems->count()           , 5);
             $this->assertEquals(1                                             , count($readWritePermitables));
             $this->assertEquals(0                                             , count($readOnlyPermitables));
-            $this->assertEquals($meeting[0]->checkbox                         , '0');
-            $this->assertEquals($meeting[0]->currency->value                  , 40);
-            $this->assertEquals($meeting[0]->currency->currency->id           , $baseCurrency->id);
-            $this->assertEquals($meeting[0]->date                             , $dateAssert);
-            $this->assertEquals($meeting[0]->datetime                         , $datetimeAssert);
-            $this->assertEquals($meeting[0]->decimal                          , '12');
-            $this->assertEquals($meeting[0]->picklist->value                  , 'b');
-            $this->assertEquals($meeting[0]->integer                          , 11);
-            $this->assertEquals($meeting[0]->phone                            , '259-784-2069');
-            $this->assertEquals($meeting[0]->radio->value                     , 'e');
-            $this->assertEquals($meeting[0]->text                             , 'This is a test Edit Text');
-            $this->assertEquals($meeting[0]->textarea                         , 'This is a test Edit TextArea');
-            $this->assertEquals($meeting[0]->url                              , 'http://wwww.abc-edit.com');
-            $this->assertEquals($meeting[0]->countrylist->value               , 'aaaa');
-            $this->assertEquals($meeting[0]->statelist->value                 , 'aaa1');
-            $this->assertEquals($meeting[0]->citylist->value                  , 'ab1');
-            $this->assertContains('gg'                                        , $meeting[0]->multiselect->values);
-            $this->assertContains('hh'                                        , $meeting[0]->multiselect->values);
-            $this->assertContains('reading'                                   , $meeting[0]->tagcloud->values);
-            $this->assertContains('surfing'                                   , $meeting[0]->tagcloud->values);
+            $this->assertEquals($meeting[0]->checkboxCstm                     , '0');
+            $this->assertEquals($meeting[0]->currencyCstm->value              , 40);
+            $this->assertEquals($meeting[0]->currencyCstm->currency->id       , $baseCurrency->id);
+            $this->assertEquals($meeting[0]->dateCstm                         , $dateAssert);
+            $this->assertEquals($meeting[0]->datetimeCstm                     , $datetimeAssert);
+            $this->assertEquals($meeting[0]->decimalCstm                      , '12');
+            $this->assertEquals($meeting[0]->picklistCstm->value              , 'b');
+            $this->assertEquals($meeting[0]->integerCstm                      , 11);
+            $this->assertEquals($meeting[0]->phoneCstm                        , '259-784-2069');
+            $this->assertEquals($meeting[0]->radioCstm->value                 , 'e');
+            $this->assertEquals($meeting[0]->textCstm                         , 'This is a test Edit Text');
+            $this->assertEquals($meeting[0]->textareaCstm                     , 'This is a test Edit TextArea');
+            $this->assertEquals($meeting[0]->urlCstm                          , 'http://wwww.abc-edit.com');
+            $this->assertEquals($meeting[0]->countrylistCstm->value               , 'aaaa');
+            $this->assertEquals($meeting[0]->statelistCstm->value                 , 'aaa1');
+            $this->assertEquals($meeting[0]->citylistCstm->value                  , 'ab1');
+            $this->assertContains('gg'                                        , $meeting[0]->multiselectCstm->values);
+            $this->assertContains('hh'                                        , $meeting[0]->multiselectCstm->values);
+            $this->assertContains('reading'                                   , $meeting[0]->tagcloudCstm->values);
+            $this->assertContains('surfing'                                   , $meeting[0]->tagcloudCstm->values);
             $metadata            = CalculatedDerivedAttributeMetadata::
                                    getByNameAndModelClassName('calcnumber', 'Meeting');
-            $testCalculatedValue = CalculatedNumberUtil::calculateByFormulaAndModel($metadata->getFormula(), $meeting[0]);
+            $testCalculatedValue = CalculatedNumberUtil::calculateByFormulaAndModelAndResolveFormat($metadata->getFormula(), $meeting[0]);
             $this->assertEquals(1                                             , $testCalculatedValue);
         }
 

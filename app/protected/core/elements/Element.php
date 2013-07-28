@@ -1,10 +1,10 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2012 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
-     * the terms of the GNU General Public License version 3 as published by the
+     * the terms of the GNU Affero General Public License version 3 as published by the
      * Free Software Foundation with the addition of the following permission added
      * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
      * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
@@ -12,16 +12,26 @@
      *
      * Zurmo is distributed in the hope that it will be useful, but WITHOUT
      * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-     * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+     * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
      * details.
      *
-     * You should have received a copy of the GNU General Public License along with
+     * You should have received a copy of the GNU Affero General Public License along with
      * this program; if not, see http://www.gnu.org/licenses or write to the Free
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
      *
-     * You can contact Zurmo, Inc. with a mailing address at 113 McHenry Road Suite 207,
-     * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
+     * You can contact Zurmo, Inc. with a mailing address at 27 North Wacker Drive
+     * Suite 370 Chicago, IL 60606. or at email address contact@zurmo.com.
+     *
+     * The interactive user interfaces in original and modified versions
+     * of this program must display Appropriate Legal Notices, as required under
+     * Section 5 of the GNU Affero General Public License version 3.
+     *
+     * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
+     * these Appropriate Legal Notices must retain the display of the Zurmo
+     * logo and Zurmo copyright notice. If the display of the logo is not reasonably
+     * feasible for technical reasons, the Appropriate Legal Notices must display the words
+     * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -33,15 +43,17 @@
      */
     abstract class Element
     {
-        protected $model;
-        protected $attribute;
-        protected $form;
-        protected $params;
-        //public $editableTemplate = '<th>{label}</th><td colspan="{colspan}">{content}{error}</td>';
-        //public $nonEditableTemplate = '<th>{label}</th><td colspan="{colspan}">{content}</td>';
+        public $params;
 
-        public $editableTemplate = '<th>{label}</th><td>{content}{error}</td>';
-        public $nonEditableTemplate = '<th>{label}</th><td>{content}</td>';
+        public $editableTemplate = '<th>{label}</th><td colspan="{colspan}">{content}{error}</td>';
+
+        public $nonEditableTemplate = '<th>{label}</th><td colspan="{colspan}">{content}</td>';
+
+        protected $model;
+
+        protected $attribute;
+
+        protected $form;
 
         /**
          * Constructs the element specifying the model and attribute.
@@ -110,6 +122,20 @@
         {
             return $this->form->error($this->model, $this->attribute,
                     array('inputID' => $this->getEditableInputId()));
+        }
+
+        /**
+         * For related models such as Email, Address, and CurrencyValue, a scoped error id is required.  This is because
+         * we treat those related attributes effectively on the base model for showing validation errors.
+         * @param string $inputNameIdPrefix
+         * @param string $attribute
+         * @return string
+         */
+        protected function renderScopedErrorId($inputNameIdPrefix, $attribute)
+        {
+            assert('is_string($inputNameIdPrefix)');
+            assert('is_string($attribute)');
+            return get_class($this->model) . '_' . $inputNameIdPrefix . '_' . $attribute;
         }
 
         /**
@@ -193,7 +219,7 @@
 
         public static function getDisplayName()
         {
-            return Yii::t("Default", get_class());
+            return Zurmo::t('Core', get_class());
         }
 
         public static function isReadOnly()
@@ -304,9 +330,30 @@
             return get_class($this->model);
         }
 
+        /**
+         * In some scenarios just the input Id needs a prefix and not the name.  Can be used to avoid invalid xhtml
+         * because then each id for an input is unique.  If you don't use this for prefix, you can use inputPrefix
+         * which is for both id and name.
+         * @see self::resolveInputPrefix();
+         * @return string representing the content of the input id prefix.
+         */
+        private function getInputForIdPrefix()
+        {
+            if (isset($this->params['inputIdPrefix']) && $this->params['inputIdPrefix'])
+            {
+                assert('(is_array($this->params["inputIdPrefix"]) && count($this->params["inputIdPrefix"]) > 0) ||
+                        (is_string($this->params["inputIdPrefix"]) && $this->params["inputIdPrefix"] != "")');
+                return $this->params['inputIdPrefix'];
+            }
+        }
+
         protected function resolveInputIdPrefix()
         {
-            $inputIdPrefix = $this->resolveInputPrefix();
+            $inputIdPrefix = $this->getInputForIdPrefix();
+            if ($inputIdPrefix == null)
+            {
+                $inputIdPrefix = $this->resolveInputPrefix();
+            }
             if (is_array($inputIdPrefix))
             {
                 if (count($inputIdPrefix) > 1)
@@ -325,25 +372,26 @@
             }
             elseif (!is_string($inputIdPrefix))
             {
-                throw notSupportedException();
+                throw new NotSupportedException();
             }
             return $inputIdPrefix;
         }
 
         protected function resolveInputNamePrefix()
         {
-            return static::resolveInputIdPrefixIntoString($this->resolveInputPrefix());
+            return static::resolveInputNamePrefixIntoString($this->resolveInputPrefix());
         }
 
-        public static function resolveInputIdPrefixIntoString($inputIdPrefix)
+        public static function resolveInputNamePrefixIntoString($inputNamePrefix)
         {
-            if (is_array($inputIdPrefix))
+            assert('is_string($inputNamePrefix) || is_array($inputNamePrefix)');
+            if (is_array($inputNamePrefix))
             {
-                if (count($inputIdPrefix) > 1)
+                if (count($inputNamePrefix) > 1)
                 {
                     $inputPrefixContent = null;
                     $firstPrefixPlaced  = false;
-                    foreach ($inputIdPrefix as $value)
+                    foreach ($inputNamePrefix as $value)
                     {
                         if (!$firstPrefixPlaced)
                         {
@@ -358,11 +406,42 @@
                     return $inputPrefixContent;
                 }
             }
+            elseif (!is_string($inputNamePrefix))
+            {
+                throw new NotSupportedException();
+            }
+            return $inputNamePrefix;
+        }
+
+        public static function resolveInputIdPrefixIntoString($inputIdPrefix)
+        {
+            assert('is_string($inputIdPrefix) || is_array($inputIdPrefix)');
+            if (is_array($inputIdPrefix))
+            {
+                if (count($inputIdPrefix) > 1)
+                {
+                    $inputPrefixContent = null;
+                    foreach ($inputIdPrefix as $value)
+                    {
+                        if ($inputPrefixContent != null)
+                        {
+                            $inputPrefixContent .= '_';
+                        }
+                        $inputPrefixContent .= $value;
+                    }
+                    return $inputPrefixContent;
+                }
+            }
             elseif (!is_string($inputIdPrefix))
             {
-                throw notSupportedException();
+                throw new NotSupportedException();
             }
             return $inputIdPrefix;
+        }
+
+        protected function getListViewGridId()
+        {
+            return ArrayUtil::getArrayValueWithExceptionIfNotFound($this->params, 'listViewGridId');
         }
     }
 ?>

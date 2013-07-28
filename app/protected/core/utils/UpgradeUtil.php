@@ -1,10 +1,10 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2012 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
-     * the terms of the GNU General Public License version 3 as published by the
+     * the terms of the GNU Affero General Public License version 3 as published by the
      * Free Software Foundation with the addition of the following permission added
      * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
      * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
@@ -12,16 +12,26 @@
      *
      * Zurmo is distributed in the hope that it will be useful, but WITHOUT
      * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-     * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+     * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
      * details.
      *
-     * You should have received a copy of the GNU General Public License along with
+     * You should have received a copy of the GNU Affero General Public License along with
      * this program; if not, see http://www.gnu.org/licenses or write to the Free
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
      *
-     * You can contact Zurmo, Inc. with a mailing address at 113 McHenry Road Suite 207,
-     * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
+     * You can contact Zurmo, Inc. with a mailing address at 27 North Wacker Drive
+     * Suite 370 Chicago, IL 60606. or at email address contact@zurmo.com.
+     *
+     * The interactive user interfaces in original and modified versions
+     * of this program must display Appropriate Legal Notices, as required under
+     * Section 5 of the GNU Affero General Public License version 3.
+     *
+     * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
+     * these Appropriate Legal Notices must retain the display of the Zurmo
+     * logo and Zurmo copyright notice. If the display of the logo is not reasonably
+     * feasible for technical reasons, the Appropriate Legal Notices must display the words
+     * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
     class UpgradeUtil
@@ -38,11 +48,11 @@
          * - Copy, add and remove files
          * @param MessageStreamer $messageStreamer
          */
-        public static function runPart1(MessageStreamer $messageStreamer)
+        public static function runPart1(MessageStreamer $messageStreamer, $doNotlAlterFiles = false)
         {
             try
             {
-                $messageStreamer->add(Yii::t('Default', 'Checking permissions, files, upgrade version....'));
+                $messageStreamer->add(Zurmo::t('Core', 'Checking permissions, files, upgrade version....'));
                 $messageLogger = new MessageLogger($messageStreamer);
 
                 self::setUpgradeState('zurmoUpgradeTimestamp', time());
@@ -55,32 +65,36 @@
                 self::setUpgradeState('zurmoUpgradeFolderPath', $upgradeExtractPath);
 
                 $configuration = self::checkManifestIfVersionIsOk($upgradeExtractPath);
-                $messageStreamer->add(Yii::t('Default', 'Check completed.'));
-                $messageStreamer->add(Yii::t('Default', 'Loading UpgraderComponent.'));
+                $messageStreamer->add(Zurmo::t('Core', 'Check completed.'));
+                $messageStreamer->add(Zurmo::t('Core', 'Loading UpgraderComponent.'));
                 self::loadUpgraderComponent($upgradeExtractPath, $messageLogger);
-                $messageStreamer->add(Yii::t('Default', 'UpgraderComponent loaded.'));
-                $messageStreamer->add(Yii::t('Default', 'Clearing cache.'));
+                $messageStreamer->add(Zurmo::t('Core', 'UpgraderComponent loaded.'));
+                $messageStreamer->add(Zurmo::t('Core', 'Clearing cache.'));
                 self::clearCache();
 
-                $messageStreamer->add(Yii::t('Default', 'Altering configuration files.'));
+                $messageStreamer->add(Zurmo::t('Core', 'Altering configuration files.'));
                 $pathToConfigurationFolder = COMMON_ROOT . DIRECTORY_SEPARATOR . 'protected' . DIRECTORY_SEPARATOR . 'config';
                 self::processBeforeConfigFiles();
                 self::processConfigFiles($pathToConfigurationFolder);
                 self::processAfterConfigFiles();
 
-                $messageStreamer->add(Yii::t('Default', 'Copying files.'));
-                self::processBeforeFiles();
-                self::processFiles($upgradeExtractPath, $configuration);
-                self::processAfterFiles();
+                if (!$doNotlAlterFiles)
+                {
+                    $messageStreamer->add(Zurmo::t('Core', 'Copying files.'));
+                    self::processBeforeFiles();
+                    self::processFiles($upgradeExtractPath, $configuration);
+                    self::processAfterFiles();
+                }
+
                 self::clearCache();
-                $messageStreamer->add(Yii::t('Default', 'Clearing cache.'));
-                $messageStreamer->add(Yii::t('Default', 'Part 1 complete.'));
+                $messageStreamer->add(Zurmo::t('Core', 'Clearing cache.'));
+                $messageStreamer->add(Zurmo::t('Core', 'Part 1 complete.'));
             }
             catch (CException $e)
             {
-                $messageStreamer->add(Yii::t('Default', 'Error during upgrade!'));
+                $messageStreamer->add(Zurmo::t('Core', 'Error during upgrade!'));
                 $messageStreamer->add($e->getMessage());
-                $messageStreamer->add(Yii::t('Default', 'Please fix error(s) and try again, or restore your database/files.'));
+                $messageStreamer->add(Zurmo::t('Core', 'Please fix error(s) and try again, or restore your database/files.'));
                 Yii::app()->end();
             }
         }
@@ -102,42 +116,42 @@
                 $messageLogger = new MessageLogger($messageStreamer);
 
                 self::isApplicationInUpgradeMode();
-                $messageStreamer->add(Yii::t('Default', 'Clearing cache.'));
+                $messageStreamer->add(Zurmo::t('Core', 'Clearing cache.'));
                 self::clearCache();
-                $messageStreamer->add(Yii::t('Default', 'Loading UpgraderComponent.'));
+                $messageStreamer->add(Zurmo::t('Core', 'Loading UpgraderComponent.'));
                 self::loadUpgraderComponent($upgradeExtractPath, $messageLogger);
-                $messageStreamer->add(Yii::t('Default', 'Clearing cache.'));
+                $messageStreamer->add(Zurmo::t('Core', 'Clearing cache.'));
                 self::clearCache();
-                $messageStreamer->add(Yii::t('Default', 'Running tasks before updating schema.'));
+                $messageStreamer->add(Zurmo::t('Core', 'Running tasks before updating schema.'));
                 self::processBeforeUpdateSchema();
-                $messageStreamer->add(Yii::t('Default', 'Clearing cache.'));
+                $messageStreamer->add(Zurmo::t('Core', 'Clearing cache.'));
                 self::clearCache();
-                $messageStreamer->add(Yii::t('Default', 'Updating schema.'));
+                $messageStreamer->add(Zurmo::t('Core', 'Updating schema.'));
                 self::processUpdateSchema($messageLogger);
-                $messageStreamer->add(Yii::t('Default', 'Clearing cache.'));
+                $messageStreamer->add(Zurmo::t('Core', 'Clearing cache.'));
                 self::clearCache();
-                $messageStreamer->add(Yii::t('Default', 'Running tasks after schema is updated.'));
+                $messageStreamer->add(Zurmo::t('Core', 'Running tasks after schema is updated.'));
                 self::processAfterUpdateSchema();
-                $messageStreamer->add(Yii::t('Default', 'Clearing cache.'));
+                $messageStreamer->add(Zurmo::t('Core', 'Clearing cache.'));
                 self::clearCache();
-                $messageStreamer->add(Yii::t('Default', 'Clearing assets and runtime folders.'));
+                $messageStreamer->add(Zurmo::t('Core', 'Clearing assets and runtime folders.'));
                 self::clearAssetsAndRunTimeItems();
-                $messageStreamer->add(Yii::t('Default', 'Clearing cache.'));
+                $messageStreamer->add(Zurmo::t('Core', 'Clearing cache.'));
                 self::clearCache();
-                $messageStreamer->add(Yii::t('Default', 'Processing final touches.'));
+                $messageStreamer->add(Zurmo::t('Core', 'Processing final touches.'));
                 self::processFinalTouches();
-                $messageStreamer->add(Yii::t('Default', 'Clearing cache.'));
+                $messageStreamer->add(Zurmo::t('Core', 'Clearing cache.'));
                 self::clearCache();
-                $messageStreamer->add(Yii::t('Default', 'Removing upgrade files.'));
+                $messageStreamer->add(Zurmo::t('Core', 'Removing upgrade files.'));
                 self::removeUpgradeFiles($upgradeExtractPath);
                 self::unsetUpgradeState();
-                $messageStreamer->add(Yii::t('Default', 'Upgrade process completed.'));
+                $messageStreamer->add(Zurmo::t('Core', 'Upgrade process completed.'));
             }
             catch (CException $e)
             {
-                $messageStreamer->add(Yii::t('Default', 'Error during upgrade!'));
+                $messageStreamer->add(Zurmo::t('Core', 'Error during upgrade!'));
                 $messageStreamer->add($e->getMessage());
-                $messageStreamer->add(Yii::t('Default', 'Please fix error(s) and try again, or restore your database/files.'));
+                $messageStreamer->add(Zurmo::t('Core', 'Please fix error(s) and try again, or restore your database/files.'));
                 Yii::app()->end();
             }
         }
@@ -151,7 +165,7 @@
         {
             if (isset(Yii::app()->maintenanceMode) && Yii::app()->maintenanceMode)
             {
-                $message = Yii::t('Default', 'Application is not in maintenance mode. Please edit perInstance.php file, and set "$maintenanceMode = true;"');
+                $message = Zurmo::t('Core', 'Application is not in maintenance mode. Please edit perInstance.php file, and set "$maintenanceMode = true;"');
                 throw new NotSupportedException($message);
             }
             return true;
@@ -168,7 +182,7 @@
             $nonWriteableFilesOrFolders = FileUtil::getNonWriteableFilesOrFolders(COMMON_ROOT);
             if (!empty($nonWriteableFilesOrFolders))
             {
-                $message = Yii::t('Default', 'Not all files and folders are writeable by upgrade user. Please make these files or folders writeable:');
+                $message = Zurmo::t('Core', 'Not all files and folders are writeable by upgrade user. Please make these files or folders writeable:');
                 foreach ($nonWriteableFilesOrFolders as $nonWriteableFileOrFolder)
                 {
                     $message .= $nonWriteableFileOrFolder . "\n";
@@ -188,7 +202,7 @@
             $isZipExtensionInstalled =  InstallUtil::checkZip();
             if (!$isZipExtensionInstalled)
             {
-                $message = Yii::t('Default', 'Zip PHP extension is required by upgrade process, please install it.');
+                $message = Zurmo::t('Core', 'Zip PHP extension is required by upgrade process, please install it.');
                 throw new NotSupportedException($message);
             }
             return true;
@@ -215,7 +229,7 @@
             $upgradePath = Yii::app()->getRuntimePath() . DIRECTORY_SEPARATOR . 'upgrade';
             if (!is_dir($upgradePath))
             {
-                $message = Yii::t('Default', 'Please upload upgrade zip file to runtime/upgrade folder.');
+                $message = Zurmo::t('Core', 'Please upload upgrade zip file to runtime/upgrade folder.');
                 throw new NotFoundException($message);
             }
 
@@ -233,7 +247,7 @@
             if ($numberOfZipFiles != 1)
             {
                 closedir($handle);
-                $message = Yii::t('Default', 'More then one zip file exists in runtime/upgrade folder. ' .
+                $message = Zurmo::t('Core', 'More then one zip file exists in runtime/upgrade folder. ' .
                                              'Please delete them all except the one that you want to use for the upgrade.');
                 throw new NotSupportedException($message);
             }
@@ -251,7 +265,7 @@
         {
             // Remove extracted files, if they already exists.
             $fileInfo = pathinfo($upgradeZipFilePath);
-            FileUtil::deleteDirectoryRecoursive($fileInfo['dirname'], false, array($fileInfo['basename'], 'index.html'));
+            FileUtil::deleteDirectoryRecursive($fileInfo['dirname'], false, array($fileInfo['basename'], 'index.html'));
 
             $isExtracted = false;
             $zip = new ZipArchive();
@@ -264,8 +278,8 @@
             }
             if (!$isExtracted)
             {
-                $message  = Yii::t('Default', 'There was an error during the extraction process of {zipFilePath}', array('{zipFilePath}' => $upgradeZipFilePath));
-                $message .= Yii::t('Default', 'Please check if the file is a valid zip archive.');
+                $message  = Zurmo::t('Core', 'There was an error during the extraction process of {zipFilePath}', array('{zipFilePath}' => $upgradeZipFilePath));
+                $message .= Zurmo::t('Core', 'Please check if the file is a valid zip archive.');
                 throw new NotSupportedException($message);
             }
             return $upgradeExtractPath . DIRECTORY_SEPARATOR . $fileInfo['filename'];
@@ -292,22 +306,22 @@
                     }
                     else
                     {
-                        $message  = Yii::t('Default', 'This upgrade is for Zurmo ({fromVersion} - {toVersion})',
+                        $message  = Zurmo::t('Core', 'This upgrade is for Zurmo ({fromVersion} - {toVersion})',
                             array ('{fromVersion}' => $upgradeFromVersionMatches[0], '{toVersion}' => $upgradeToVersionMatches[0]));
-                        $message .= Yii::t('Default', 'Installed Zurmo version is: {currentZurmoVersion}',
+                        $message .= Zurmo::t('Core', 'Installed Zurmo version is: {currentZurmoVersion}',
                             array('{currentZurmoVersion}' => $currentZurmoVersion));
                         throw new NotSupportedException($message);
                     }
                 }
                 else
                 {
-                    $message = Yii::t('Default', 'Could not extract upgrade "to version" in the manifest file.');
+                    $message = Zurmo::t('Core', 'Could not extract upgrade "to version" in the manifest file.');
                     throw new NotSupportedException($message);
                 }
             }
             else
             {
-                $message = Yii::t('Default', 'Could not extract upgrade "from version" in the manifest file.');
+                $message = Zurmo::t('Core', 'Could not extract upgrade "from version" in the manifest file.');
                 throw new NotSupportedException($message);
             }
         }
@@ -329,7 +343,7 @@
             }
             else
             {
-                $message = Yii::t('Default', 'Upgrade file is missing.');
+                $message = Zurmo::t('Core', 'Upgrade file is missing.');
                 throw new NotSupportedException($message);
             }
         }
@@ -436,7 +450,7 @@
 
         protected static function removeUpgradeFiles($upgradeExtractPath)
         {
-            FileUtil::deleteDirectoryRecoursive($upgradeExtractPath, true);
+            FileUtil::deleteDirectoryRecursive($upgradeExtractPath, true);
         }
 
         /**

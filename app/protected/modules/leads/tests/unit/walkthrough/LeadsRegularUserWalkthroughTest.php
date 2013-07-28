@@ -1,10 +1,10 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2012 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
-     * the terms of the GNU General Public License version 3 as published by the
+     * the terms of the GNU Affero General Public License version 3 as published by the
      * Free Software Foundation with the addition of the following permission added
      * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
      * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
@@ -12,16 +12,26 @@
      *
      * Zurmo is distributed in the hope that it will be useful, but WITHOUT
      * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-     * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+     * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
      * details.
      *
-     * You should have received a copy of the GNU General Public License along with
+     * You should have received a copy of the GNU Affero General Public License along with
      * this program; if not, see http://www.gnu.org/licenses or write to the Free
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
      *
-     * You can contact Zurmo, Inc. with a mailing address at 113 McHenry Road Suite 207,
-     * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
+     * You can contact Zurmo, Inc. with a mailing address at 27 North Wacker Drive
+     * Suite 370 Chicago, IL 60606. or at email address contact@zurmo.com.
+     *
+     * The interactive user interfaces in original and modified versions
+     * of this program must display Appropriate Legal Notices, as required under
+     * Section 5 of the GNU Affero General Public License version 3.
+     *
+     * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
+     * these Appropriate Legal Notices must retain the display of the Zurmo
+     * logo and Zurmo copyright notice. If the display of the logo is not reasonably
+     * feasible for technical reasons, the Appropriate Legal Notices must display the words
+     * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -88,7 +98,7 @@
 
             //actionModalList should fail
             $this->setGetArray(array(
-                'modalTransferInformation' => array('sourceIdFieldId' => 'x', 'sourceNameFieldId' => 'y')
+                'modalTransferInformation' => array('sourceIdFieldId' => 'x', 'sourceNameFieldId' => 'y', 'modalId' => 'z')
             ));
             $this->runControllerShouldResultInAccessFailureAndGetContent('leads/default/modalList');
 
@@ -145,7 +155,7 @@
 
             //actionModalList for Lead should not fail.
             $this->setGetArray(array(
-                'modalTransferInformation' => array('sourceIdFieldId' => 'x', 'sourceNameFieldId' => 'y')
+                'modalTransferInformation' => array('sourceIdFieldId' => 'x', 'sourceNameFieldId' => 'y', 'modalId' => 'z')
             ));
             $this->runControllerWithNoExceptionsAndGetContent('leads/default/modalList');
         }
@@ -591,6 +601,105 @@
             $this->setGetArray (array('id' => $lead->id));
             $content = $this->runControllerWithExitExceptionAndGetContent('leads/default/convert');
             $this->assertFalse(strpos($content, 'Conversion is set to require an account.  Currently you do not have access to the accounts module.') === false);
+        }
+
+         /**
+         * @deletes selected leads.
+         */
+        public function testRegularMassDeleteActionsForSelectedIds()
+        {
+            $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
+            $confused = User::getByUsername('confused');
+            $nobody = User::getByUsername('nobody');
+            $this->assertEquals(Right::DENY, $confused->getEffectiveRight('ZurmoModule', ZurmoModule::RIGHT_BULK_DELETE));
+            $confused->setRight('ZurmoModule', ZurmoModule::RIGHT_BULK_DELETE);
+            //Load MassDelete view for the 3 leads.
+            $leads = Contact::getAll();
+            $this->assertEquals(8, count($leads));
+
+            $lead1 = LeadTestHelper::createLeadbyNameForOwner('leadDelete1', $confused);
+            $lead2 = LeadTestHelper::createLeadbyNameForOwner('leadDelete2', $confused);
+            $lead3 = LeadTestHelper::createLeadbyNameForOwner('leadDelete3', $nobody);
+            $lead4 = LeadTestHelper::createLeadbyNameForOwner('leadDelete4', $confused);
+            $lead5 = LeadTestHelper::createLeadbyNameForOwner('leadDelete5', $confused);
+            $lead6 = LeadTestHelper::createLeadbyNameForOwner('leadDelete6', $nobody);
+
+            $selectedIds = $lead1->id . ',' . $lead2->id . ',' . $lead3->id ;    // Not Coding Standard
+            $this->setGetArray(array('selectedIds' => $selectedIds, 'selectAll' => ''));  // Not Coding Standard
+            $this->resetPostArray();
+            $content = $this->runControllerWithNoExceptionsAndGetContent('leads/default/massDelete');
+            $this->assertFalse(strpos($content, '<strong>3</strong>&#160;Leads selected for removal') === false);
+
+            //calculating leads after adding 4 new records
+            $leads = Contact::getAll();
+            $this->assertEquals(14, count($leads));
+            //Deleting 6 leads for pagination scenario
+            //Run Mass Delete using progress save for page1
+            $selectedIds = $lead1->id . ',' . $lead2->id . ',' . // Not Coding Standard
+                           $lead3->id . ',' . $lead4->id . ',' . // Not Coding Standard
+                           $lead5->id . ',' . $lead6->id;        // Not Coding Standard
+            $this->setGetArray(array(
+                'selectedIds' => $selectedIds,
+                'selectAll' => '',
+                'Contact_page' => 1));
+            $this->setPostArray(array('selectedRecordCount' => 6));
+            $content = $this->runControllerWithExitExceptionAndGetContent('leads/default/massDelete');
+            $leads = Contact::getAll();
+            $this->assertEquals(9, count($leads));
+
+            //Run Mass Delete using progress save for page2
+            $selectedIds = $lead1->id . ',' . $lead2->id . ',' . // Not Coding Standard
+                           $lead3->id . ',' . $lead4->id . ',' . // Not Coding Standard
+                           $lead5->id . ',' . $lead6->id;        // Not Coding Standard
+            $this->setGetArray(array(
+                'selectedIds' => $selectedIds,
+                'selectAll' => '',
+                'Contact_page' => 2));
+            $this->setPostArray(array('selectedRecordCount' => 6));
+            $content = $this->runControllerWithNoExceptionsAndGetContent('leads/default/massDeleteProgress');
+            $leads = Contact::getAll();
+            $this->assertEquals(8, count($leads));
+        }
+
+         /**
+         *Test Bug with mass delete and multiple pages when using select all
+         */
+        public function testRegularMassDeletePagesProperlyAndRemovesAllSelected()
+        {
+            $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
+            $confused = User::getByUsername('confused');
+            $nobody = User::getByUsername('nobody');
+
+            //Load MassDelete view for the 8 leads.
+            $leads = Contact::getAll();
+            $this->assertEquals(8, count($leads));
+             //Deleting all leads
+
+            //mass Delete pagination scenario
+            //Run Mass Delete using progress save for page1
+            $this->setGetArray(array(
+                'selectAll' => '1',
+                'Contact_page' => 1));
+            $this->setPostArray(array('selectedRecordCount' => 8));
+            $pageSize = Yii::app()->pagination->getForCurrentUserByType('massDeleteProgressPageSize');
+            $this->assertEquals(5, $pageSize);
+            $content = $this->runControllerWithExitExceptionAndGetContent('leads/default/massDelete');
+            $leads = Contact::getAll();
+            $this->assertEquals(3, count($leads));
+
+           //Run Mass Delete using progress save for page2
+            $this->setGetArray(array(
+                'selectAll' => '1',
+                'Contact_page' => 2));
+            $this->setPostArray(array('selectedRecordCount' => 8));
+            $pageSize = Yii::app()->pagination->getForCurrentUserByType('massDeleteProgressPageSize');
+            $this->assertEquals(5, $pageSize);
+            $content = $this->runControllerWithNoExceptionsAndGetContent('leads/default/massDeleteProgress');
+
+            $leads = Contact::getAll();
+            //BelinaLead1 was converted to a contact, so she is not removed
+            $this->assertFalse(strpos(serialize($leads), 'BelinaLead1') === false);
+            $this->assertEquals(1, count($leads));
         }
     }
 ?>

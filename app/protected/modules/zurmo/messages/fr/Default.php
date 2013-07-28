@@ -1,10 +1,10 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2012 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
-     * the terms of the GNU General Public License version 3 as published by the
+     * the terms of the GNU Affero General Public License version 3 as published by the
      * Free Software Foundation with the addition of the following permission added
      * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
      * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
@@ -12,16 +12,26 @@
      *
      * Zurmo is distributed in the hope that it will be useful, but WITHOUT
      * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-     * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+     * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
      * details.
      *
-     * You should have received a copy of the GNU General Public License along with
+     * You should have received a copy of the GNU Affero General Public License along with
      * this program; if not, see http://www.gnu.org/licenses or write to the Free
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
      *
-     * You can contact Zurmo, Inc. with a mailing address at 113 McHenry Road Suite 207,
-     * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
+     * You can contact Zurmo, Inc. with a mailing address at 27 North Wacker Drive
+     * Suite 370 Chicago, IL 60606. or at email address contact@zurmo.com.
+     *
+     * The interactive user interfaces in original and modified versions
+     * of this program must display Appropriate Legal Notices, as required under
+     * Section 5 of the GNU Affero General Public License version 3.
+     *
+     * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
+     * these Appropriate Legal Notices must retain the display of the Zurmo
+     * logo and Zurmo copyright notice. If the display of the logo is not reasonably
+     * feasible for technical reasons, the Appropriate Legal Notices must display the words
+     * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
     // KEEP these in alphabetical order.
@@ -125,10 +135,10 @@
             => 'sont obligatoires.',
         'Are you number one{spaceAndFirstName}? Find out how you size up to your colleagues on the Leaderboard.'
             => 'À vos marques! Prêt? Feu, partez!  Voyez comment vous concurrencez par rapport à vos collègues su le Leaderboard.',
-        'Are you sure you want to remove this group?'
-            => 'Êtes-vous sûr(e) de vouloir supprimer ce groupe?',
-        'Are you sure you want to remove this role?'
-            => 'Êtes-vous sûr(e) de vouloir supprimer ce rôle?',
+        'Are you sure you want to delete this group?'
+            => 'Voulez vous vraiment supprimer ce groupe?',
+        'Are you sure you want to delete this role?'
+            => 'Voulez vous vraiment supprimer ce rôle?',
         'Attachment'
             => 'Fichier',
         'Attachments'
@@ -147,10 +157,6 @@
             => 'par {ownerStringContent}',
         'Cache has been successfully cleaned.'
             => 'Nettoyage du cache réussi.',
-        'Cancel'
-            => 'Annuler',
-        'Cancel changes'
-            => 'Annuler',
         'Changes to active currencies saved successfully.'
             => 'Les changements de devises actives sont effectués.',
         'Changes to active languages saved successfully.'
@@ -167,14 +173,16 @@
             => 'Fermer',
         'Code'
             => 'Code', // Same Word Translated
+        'Comment'
+            => 'Commenter',
         'Configuration'
             => 'Configuration', // Same Word Translated
         'Configure'
             => 'Configurer',
         'Convert'
             => 'Convertir',
-        'Copyright &#169; Zurmo Inc., 2012. All Rights reserved.'
-            => 'Copyright &#169; Zurmo Inc., 2012. Tous droits réservés.',
+        'Copyright &#169; Zurmo Inc., 2013. All Rights reserved.'
+            => 'Copyright &#169; Zurmo Inc., 2013. Tous droits réservés.',
         'Could not remove relation.'
             => 'Impossible de supprimer la relation.',
         'Could not save relation.'
@@ -191,6 +199,10 @@
             => 'Créer Rôle',
         'Create Roles'
             => 'Créer Rôles',
+        'Created'
+            => 'Crée',
+        'created by {ownerStringContent}'
+            => 'crée par {ownerStringContent}',
         'Criteria Selected <span class="icon-clear">Z</span>'
             => 'Critère(s) Choisi(s) <span class="icon-clear">Z</span>',
         'Currencies: Create'
@@ -215,6 +227,8 @@
             => 'Nb. d\'éléments par page dans les listes portlets',
         'Data'
             => 'Donées',
+        'Database upgrade not completed. Please try again later.'
+            => 'La mise à jour de la base de données n\'a pas terminée. Veuillez vérifier plus tard.',
         'days'
             => 'jours',
         'Dead'
@@ -239,8 +253,12 @@
             => 'Outils de Développement',
         'Dr.'
             => 'Dr.', // Same Word Translated
+        'Due On'
+            => 'Échéance',
         'Edit charts on the dashboard by clicking the config icon in the top right of each portlet.'
             => 'Modifiez les graphiques du tableau de bord en cliquant sur l\'icône de configuration dans le coin supérieur droit de chaque portlet.',
+        'Email'
+            => 'Email', // Same Word Translated
         'Email Address'
             => 'Addresse e-mail',
         'Enable game notification popup'
@@ -301,6 +319,8 @@
             => 'ici',
         'Home'
             => 'Accueil',
+        'Host'
+            => 'Nom d\'hôte',
         'If there is new metadata to load using CustomManagement, use this option.'
             => 'Dans le cas où il y a  de nouvelles métadonnées à charger par CustomManagement, cliquez pour exécuter.',
         'In Progress'
@@ -481,6 +501,8 @@
             => 'Permis',
         'Please provide data.'
             => 'Veuillez fournir les données.',
+        'Please resolve the following issues for {modelString}:'
+            => 'Veuillez résoudre les problèmes suivants pour for {modelString}:',
         'Please use FireFox, Chrome, or Internet Explorer.'
             => 'Veuillez utiliser FireFox, Chrome, ou Internet Explorer.',
         'Policies'
@@ -489,12 +511,16 @@
             => 'Règles sauvegardées.',
         'Popup list page size'
             => 'Nb. d\'éléments de la liste pop-up',
+        'Port'
+            => 'Port', // Same Word Translated
+        'Post to Profile'
+            => 'Publier',
         'Postal Code'
             => 'Code Postal',
         'Primary Address'
             => 'Adresse principale',
         'Primary Email'
-            => 'E-mail primaire',
+            => 'E-mail principale',
         'Qualified'
             => 'Qualifié',
         'Rate to'
@@ -551,7 +577,7 @@
             => 'E-mail secondaire',
         'Securable Item'
             => 'Élément sécurisable',
-        'Security'
+        'Security Overview'
             => 'Sécurité',
         'See more search results by clicking the down arrow at the bottom of the screen.'
             => 'Cliquez sur la flèche vers le bas pour afficher plus de résultats de votre recherche.',
@@ -567,6 +593,8 @@
             => 'Selectionner un rôle',
         'Self-Generated'
             => 'Auto-généré',
+        'Send a test email to'
+            => 'Envoyer un message de test à',
         'Set your preferences, password, and contact details in your My Profile area.'
             => 'Modifiez vos préférences, mot de passe, et coordonnées dans la section Mon Profil.',
         'Settings'
@@ -607,18 +635,24 @@
             => 'Nb. d\'éléments de la sous-liste',
         'Successfully updated'
             => 'Mise à jour réussie',
+        'Summary'
+            => 'Sommaire',
         'Super Administrators'
             => 'Super Administrateur',
         'Tag Cloud fields allow you to tag records with values so that you can easily find them later.'
             => 'Les champs nuage de tags vous permet d\'associer des mots-clefs avec vos données pour les pouvoir retrouver facilement.',
         'Technology'
             => 'Technologie',
+        'Test Connection'
+            => 'Tester la connexion',
         'The currency rate web service says this currency code is invalid even though zurmo says it is valid. The rate could not be automatically updated.'
             => 'Le service de taux de change indique que le code de devise est invalide, bien que zurmo indique que le code est valide.  Le taux n\'a pas pu être mis à jour automatiquement.',
         'The currency rate web service was unavailable. The rate could not be automatically updated.'
             => 'Le service de taux de change n\'est pas disponible.  Le taux n\'a pas pu être mis à jour automatiquement.',
         'The currency was not removed because it is in use.'
             => 'Impossible de supprimer la devise car elle est actuellement utilisée.',
+        'The default value is {policyDefault}'
+            => 'La valeur par défaut est {policyDefault}',
         'The ID specified was invalid.'
             => 'ID invalide.',
         'The Import Wizard helps get your data into the system easily, find it under the config icon (that\'s the cog in the top right).'
@@ -659,6 +693,8 @@
             => 'Actualiser',
         'Update Custom Data'
             => 'Mettre à jour les données personnalisées',
+        'Updated'
+            => 'Actualisé',
         'Upload attachments to a record by clicking "More Options" when adding a note.'
             => 'Vous pouvez ajouter une pièce jointe a une Note en cliquant "Plus d\'options".',
         'User Membership'
@@ -667,6 +703,8 @@
             => 'Membres du groupe sauvegardé.',
         'Username'
             => 'Nom d\'utilisateur',
+        'Users'
+            => 'Users',
         'Value'
             => 'Valeur',
         'Values'
@@ -685,6 +723,8 @@
             => 'Aide',
         'Who can read and write'
             => 'Autorisation lecture/écriture',
+        'Who can read and write - Default'
+            => 'Autorisation lecture/écriture',
         'Word of Mouth'
             => 'Bouche à oreille',
         'Write'
@@ -701,6 +741,8 @@
             => 'Votre version de Yii est currentVersion et doit être acceptableVersion.',
         'ZurmoCRM'
             => 'ZurmoCRM', // Same Word Translated
+        '{modelString} is already connected to this record.'
+            => '{modelString} est déjà associé avec cette entrée.',
         '{url} (installed with Yii)'
             => '{url} (installé avec Yii)',
         '{url} (version {version} is installed)'

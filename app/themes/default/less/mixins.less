@@ -1,80 +1,287 @@
-.zButton, .z-button{
+// Zurmo is a customer relationship management program developed by
+// Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+//
+// Zurmo is free software; you can redistribute it and/or modify it under
+// the terms of the GNU Affero General Public License version 3 as published by the
+// Free Software Foundation with the addition of the following permission added
+// to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
+// IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
+// OF NON INFRINGEMENT OF THIRD PARTY RIGHTS.
+//
+// Zurmo is distributed in the hope that it will be useful, but WITHOUT
+// ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+// FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
+// details.
+//
+// You should have received a copy of the GNU Affero General Public License along with
+// this program; if not, see http://www.gnu.org/licenses or write to the Free
+// Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+// 02110-1301 USA.
+//
+// You can contact Zurmo, Inc. with a mailing address at 27 North Wacker Drive
+// Suite 370 Chicago, IL 60606. or at email address contact@zurmo.com.
+//
+// The interactive user interfaces in original and modified versions
+// of this program must display Appropriate Legal Notices, as required under
+// Section 5 of the GNU Affero General Public License version 3.
+//
+// In accordance with Section 7(b) of the GNU Affero General Public License version 3,
+// these Appropriate Legal Notices must retain the display of the Zurmo
+// logo and Zurmo copyright notice. If the display of the logo is not reasonably
+// feasible for technical reasons, the Appropriate Legal Notices must display the words
+// "Copyright Zurmo Inc. 2013. All rights reserved".
+
+.symbly( @size : 32px ) {
+    font-weight:normal;
+    font-size:@size;
+    font-family: "zurmo_gamification_symbly_rRg";
+}
+
+.t-shadow(@style){
+    -webkit-text-shadow: @style;
+       -moz-text-shadow: @style;
+         -o-text-shadow: @style;
+        -ms-text-shadow: @style;
+            text-shadow: @style;
+}
+
+.b-shadow(@style){
+    -webkit-box-shadow: @style;
+       -moz-box-shadow: @style;
+         -o-box-shadow: @style;
+        -ms-box-shadow: @style;
+            box-shadow: @style;
+}
+
+.ie-shadow(@color:0, @blur:0, @alpha:0){
+    /* http://www.useragentman.com/blog/2011/08/24/how-to-simulate-css3-box-shadow-in-ie7-8-without-javascript/ */
+    zoom: 1;
+    filter:progid:DXImageTransform.Microsoft.Shadow(Color=lighten(@color, @alpha), Strength=@blur, Direction=0),
+           progid:DXImageTransform.Microsoft.Shadow(Color=lighten(@color, @alpha), Strength=@blur, Direction=90),
+           progid:DXImageTransform.Microsoft.Shadow(Color=lighten(@color, @alpha), Strength=@blur, Direction=180),
+           progid:DXImageTransform.Microsoft.Shadow(Color=lighten(@color, @alpha), Strength=@blur, Direction=270);
+}
+
+.no-ie-shadow(){
+    filter: progid:DXImageTransform.Microsoft.Shadow(enabled = false);
+}
+
+.text-overflow(){
+    text-overflow: ellipsis;
+    -o-text-overflow: ellipsis;
+    -webkit-text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.radius(@style){
+    -webkit-border-radius:@style;
+    -moz-border-radius:@style;
+    -ms-border-radius:@style;
+    -o-border-radius:@style;
+    border-radius:@style;
+}
+
+.portlet-gradient(){
+    .b-shadow(inset 0 0 0 2px #ffffff );
+    #gradient > .vertical-three-colors( #ffffff, #f5f5f5, 80%, #f5f5f5 );
+}
+
+.box-sizing(){
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.border-box{
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.animateAll(@time: 0.5s){
+    -webkit-transition: all @time ease-out;
+       -moz-transition: all @time ease-out;
+         -o-transition: all @time ease-out;
+        -ms-transition: all @time ease-out;
+            transition: all @time ease-out;
+}
+
+.cf:before,
+.cf:after{
+    content:"";
+    display:table;
+}
+.cf:after{
+    clear:both;
+}
+.cf{
+    zoom:1;
+}
+
+.clearfix{
+    &:before{
+        content:"";
+        display:table;
+    }
+    &:after{
+        content:"";
+        display:table;
+        clear:both;
+    }
+    zoom:1;
+}
+
+.debug(){
+    background-color:rgba(255, 0, 0, 0.5);
+}
+
+.hide(){
+    display:none;
+}
+
+.smaller(){
+    font-size:11px;
+}
+
+.flyout{
+    border:1px solid #b6b6b6;
+    #gradient > .vertical( #f5f5f5, #ebebeb );
+    .b-shadow(~"inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12)");
+	white-space: nowrap;
+}
+
+.modal-view-toolbar a,
+.modal-view-toolbar input[type="submit"],
+.modal-view-toolbar input[type="button"],
+.form-toolbar a,
+.form-toolbar input[type="submit"],
+.form-toolbar input[type="button"],
+.zButton,
+.z-button,
+a.zButton,
+a.z-button,
+.white-button{
+    border-top:1px solid    rgba(200, 200, 200, 0.4);
+    border-left: 1px solid  rgba(185, 185, 185, 0.4);
+    border-right:1px solid  rgba(185, 185, 185, 0.4);
+    border-bottom:1px solid rgba(170, 170, 170, 0.4);
+    color:#666 !important;
+    .b-shadow(0 0 9px 5px rgba(153, 153, 153, 0.15));
+    .t-shadow( 0px 1px 0 rgba(255, 255, 255, 0.75) ) !important;
+    .radius( 3px );
+    overflow: hidden;
+    position: relative;
     cursor:pointer;
-    padding:0 15px 0 15px;
-    line-height:23px;
-    margin:0;
-    font-size:10px;
-    font-weight:bold;
     text-indent:0;
     display:inline-block;
-    border-top:1px solid rgba(230, 230, 230, 0.75);
-    border-left: 1px solid rgba(215, 215, 215, 0.75);
-    border-right:1px solid rgba(215, 215, 215, 0.75);
-    border-bottom:1px solid rgba(200, 200, 200, 0.75);
-    color:#656565;
-    .radius( 4px );
-    .b-shadow(0 0 9px 5px rgba(153, 153, 153, 0.15));
-    .t-shadow( 0px 1px 0 rgba(0,0, 0, 0.1) ) !important;
-    &:not(.attachLoading){
-    	 background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
+    ++.border-box;
+    .clearfix();
+    &.attachLoading.z-button{
+        color: #fff;
     }
-    &:hover{
-        color:@themeColor2 !important;
-        .t-shadow( rgba(255, 255, 255, 0.5) 0px 1px) !important;
+    &:not(.attachLoading) .z-label{
+        background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
     }
-    &:active{
-        color:#656565;
-        box-shadow: inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #FFF;
+}
+
+.white-button .z-label{
+    color:#666 !important;
+    .t-shadow( 0px 1px 0 rgba(255, 255, 255, 0.75) ) !important;
+    background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
+}
+
+.default-btn{
+    .zButton() !important;
+}
+
+/*
+.zButton:not(.attacheLoading),
+.z-button:not(.attachLoading){
+     background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
+}
+*/
+
+.green-button,
+.attachLoading{
+    color:#FFF;
+    cursor:pointer;
+}
+
+.z-label{
+    ++.border-box;
+    float:left;
+    font-weight:bold;
+    padding:0 25px;
+    line-height:25px;
+    display: inline-block;
+    .radius( 3px );
+    position:relative;
+    z-index:1;
+	white-space: nowrap;
+}
+
+.z-label-smaller{
+    padding:0 15px;
+}
+
+.zButton.loading, .z-button.loading{
+    .z-spinner{
+        display:inline-block;
+        position: absolute;
+        margin: 1px 0 0 4px;
     }
-    &.loading{
-    	.z-spinner{
-    		display:inline-block;
-    	}
-    	.z-label{
-    		//display:none;
-    	}
-    	.z-icon{
-    		display:none;
-    	}
+    .z-icon{
+        display:none;
     }
 }
 
 .z-spinner{
-	 width:23px;
-	 height:23px;
-	 display:none;
-	 float:left;
+    z-index:10;
+    width:23px;
+    height:23px;
+    display:none;
+    position:absolute;
+    left:0px;
 }
 
 .z-spinner.loading{
     display:block !important;
 }
 
-.z-icon:before{
-	/*empty*/
-}
-
-.z-label{
-	/*empty*/
-}
-
 .zLink, .z-link{
-    background:@themeColor;
-    padding:1px 4px;
-    .radius(2px);
+    padding:2px 4px;
+    .radius(3px);
     color:#fff !important;
-    &:hover{
-        color:#fff !important;
-        text-decoration:underline;
-    }
+    .smaller();
 }
+
+.zLink:hover, .z-link:hover{
+    color:#fff !important;
+    text-decoration:underline;
+}
+
+.z-action-link{
+   .smaller();
+   .opacity(50);
+   text-decoration: none;
+   &:hover{
+       .opacity(100);
+       text-decoration: none;
+   }
+}
+
+.z-action-link-active{
+    .opacity(100);    
+}
+
 
 // Gradients
 #gradient {
   .horizontal (@startColor: #555, @endColor: #333) {
     background-color: @endColor;
     background-repeat: repeat-x;
-    background-image: -khtml-gradient(linear, left top, right top, from(@startColor), to(@endColor)); // Konqueror
+    //background-image: -khtml-gradient(linear, left top, right top, from(@startColor), to(@endColor)); // Konqueror
     background-image: -moz-linear-gradient(left, @startColor, @endColor); // FF 3.6+
     background-image: -ms-linear-gradient(left, @startColor, @endColor); // IE10
     background-image: -webkit-gradient(linear, left top, right top, color-stop(0%, @startColor), color-stop(100%, @endColor)); // Safari 4+, Chrome 2+
@@ -86,7 +293,7 @@
   .vertical (@startColor: #555, @endColor: #333) {
     background-color: @endColor;
     background-repeat: repeat-x;
-    background-image: -khtml-gradient(linear, left top, left bottom, from(@startColor), to(@endColor)); // Konqueror
+    //background-image: -khtml-gradient(linear, left top, left bottom, from(@startColor), to(@endColor)); // Konqueror
     background-image: -moz-linear-gradient(top, @startColor, @endColor); // FF 3.6+
     background-image: -ms-linear-gradient(top, @startColor, @endColor); // IE10
     background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, @startColor), color-stop(100%, @endColor)); // Safari 4+, Chrome 2+
@@ -128,4 +335,13 @@
   -khtml-opacity: @opacity / 100;
     -moz-opacity: @opacity / 100;
          opacity: @opacity / 100;
+}
+
+.unstyle-panel{
+    border:none;
+    background: none;
+    .b-shadow(none);
+    padding: 0;
+    margin: 0;
+    .reset-filter();
 }

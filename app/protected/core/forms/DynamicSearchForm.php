@@ -1,10 +1,10 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2012 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
-     * the terms of the GNU General Public License version 3 as published by the
+     * the terms of the GNU Affero General Public License version 3 as published by the
      * Free Software Foundation with the addition of the following permission added
      * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
      * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
@@ -12,16 +12,26 @@
      *
      * Zurmo is distributed in the hope that it will be useful, but WITHOUT
      * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-     * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+     * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
      * details.
      *
-     * You should have received a copy of the GNU General Public License along with
+     * You should have received a copy of the GNU Affero General Public License along with
      * this program; if not, see http://www.gnu.org/licenses or write to the Free
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
      *
-     * You can contact Zurmo, Inc. with a mailing address at 113 McHenry Road Suite 207,
-     * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
+     * You can contact Zurmo, Inc. with a mailing address at 27 North Wacker Drive
+     * Suite 370 Chicago, IL 60606. or at email address contact@zurmo.com.
+     *
+     * The interactive user interfaces in original and modified versions
+     * of this program must display Appropriate Legal Notices, as required under
+     * Section 5 of the GNU Affero General Public License version 3.
+     *
+     * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
+     * these Appropriate Legal Notices must retain the display of the Zurmo
+     * logo and Zurmo copyright notice. If the display of the logo is not reasonably
+     * feasible for technical reasons, the Appropriate Legal Notices must display the words
+     * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -61,8 +71,8 @@
         public function attributeLabels()
         {
             return array_merge(parent::attributeLabels(), array(
-                               'dynamicClauses' => Yii::t('Default', 'Advanced Search Rows'),
-                               'dynamicStructure' => Yii::t('Default', 'Search Operator'),
+                               'dynamicClauses' => Zurmo::t('Core', 'Advanced Search Rows'),
+                               'dynamicStructure' => Zurmo::t('Core', 'Search Operator'),
             ));
         }
 
@@ -70,13 +80,15 @@
         {
             if (count($this->dynamicClauses) > 0)
             {
-                $formula = strtolower($this->$attribute);
-                if (!$this->validateParenthesis($formula))
+                if (null != $errorMessage = SQLOperatorUtil::
+                           resolveValidationForATemplateSqlStatementAndReturnErrorMessage($this->$attribute,
+                          count($this->dynamicClauses)))
                 {
-                    $errorContent = Yii::t('Default', 'Please fix your parenthesis.');
+                    $this->addError('dynamicStructure', $errorMessage);
                 }
                 else
                 {
+                    $formula = strtolower($this->dynamicStructure);
                     $formula = str_replace("(", "", $formula);
                     $formula = str_replace(")", "", $formula);
                     $arguments = preg_split("/or|and/", $formula);
@@ -88,46 +100,14 @@
                             !(intval($argument) > 0) ||
                             !(preg_match("/\./", $argument) === 0) )
                         {
-                            $errorContent = Yii::t('Default', 'Please use only integers lesser than {max}.', array('{max}' => count($this->dynamicClauses)));
+                            $errorContent = Zurmo::t('Core', 'Please use only integers lesser than {max}.', array('{max}' => count($this->dynamicClauses)));
                         }
                     }
                 }
                 if (isset($errorContent))
                 {
-                    $this->addError('dynamicStructure', Yii::t('Default', 'The structure is invalid. {error}', array('{error}' => $errorContent)));
+                    $this->addError('dynamicStructure', Zurmo::t('Core', 'The structure is invalid. {error}', array('{error}' => $errorContent)));
                 }
-            }
-        }
-
-        /*
-         * Function for validation of parenthesis in a formula
-         */
-        protected function  validateParenthesis($formula)
-        {
-            $val = 0;
-            for ($i = 0; $i <= strlen($formula); $i++)
-            {
-                $char = substr($formula, $i, 1);
-                if ($char === "(")
-                {
-                    $val += 1;
-                }
-                elseif ($char === ")")
-                {
-                    $val -= 1;
-                }
-                if ($val < 0)
-                {
-                    return false;
-                }
-            }
-            if ($val !== 0)
-            {
-                return false;
-            }
-            else
-            {
-                return true;
             }
         }
 
@@ -140,7 +120,7 @@
                     $structurePosition = $rowData['structurePosition'];
                     if ($rowData['attributeIndexOrDerivedType'] == null)
                     {
-                        $this->addError('dynamicClauses', Yii::t('Default', 'You must select a field for row {rowNumber}',
+                        $this->addError('dynamicClauses', Zurmo::t('Core', 'You must select a field for row {rowNumber}',
                         array('{rowNumber}' => $structurePosition)));
                     }
                     else
@@ -158,7 +138,7 @@
                         $metadata = $metadataAdapter->getAdaptedDataProviderMetadata();
                         if (count($metadata['clauses']) == 0)
                         {
-                            $this->addError('dynamicClauses', Yii::t('Default', 'You must select a value for row {rowNumber}',
+                            $this->addError('dynamicClauses', Zurmo::t('Core', 'You must select a value for row {rowNumber}',
                             array('{rowNumber}' => $structurePosition)));
                         }
                     }

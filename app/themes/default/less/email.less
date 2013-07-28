@@ -1,3 +1,36 @@
+// Zurmo is a customer relationship management program developed by
+// Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+//
+// Zurmo is free software; you can redistribute it and/or modify it under
+// the terms of the GNU Affero General Public License version 3 as published by the
+// Free Software Foundation with the addition of the following permission added
+// to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
+// IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
+// OF NON INFRINGEMENT OF THIRD PARTY RIGHTS.
+//
+// Zurmo is distributed in the hope that it will be useful, but WITHOUT
+// ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+// FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
+// details.
+//
+// You should have received a copy of the GNU Affero General Public License along with
+// this program; if not, see http://www.gnu.org/licenses or write to the Free
+// Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+// 02110-1301 USA.
+//
+// You can contact Zurmo, Inc. with a mailing address at 27 North Wacker Drive
+// Suite 370 Chicago, IL 60606. or at email address contact@zurmo.com.
+//
+// The interactive user interfaces in original and modified versions
+// of this program must display Appropriate Legal Notices, as required under
+// Section 5 of the GNU Affero General Public License version 3.
+//
+// In accordance with Section 7(b) of the GNU Affero General Public License version 3,
+// these Appropriate Legal Notices must retain the display of the Zurmo
+// logo and Zurmo copyright notice. If the display of the logo is not reasonably
+// feasible for technical reasons, the Appropriate Legal Notices must display the words
+// "Copyright Zurmo Inc. 2013. All rights reserved".
+
 #ArchivedEmailMatchingListView{
     .items{
         td{
@@ -13,13 +46,12 @@
     padding:0 !important;
     .lead-conversion-actions{
         padding-left:0;
-        //padding-right:0;
     }
     .wide.form{
         background: none !important;
         border:none !important;
         .b-shadow(none) !important;
-        padding-bottom: 15px;
+        padding-bottom: 0;
         margin-bottom: 0;
         > form{
             padding: 0;
@@ -28,7 +60,13 @@
             }
         }
     }
+    .overlay-label-field{
+        padding-bottom: 0;
+    }
     .matching-actions-and-content{
+        > div{
+            margin-top: 15px;
+        }
         form{
             padding-bottom: 0;
         }
@@ -36,11 +74,16 @@
     tr:hover{
         background:none !important;
     }
+    th{
+        height: auto !important;
+        line-height: 1 !important;
+        padding: 0 !important;
+    }
+    td{
+        padding-bottom: 15px;
+    }
     th, td{
         background:none !important;
-        height: auto !important;
-        line-height: inherit !important;
-        padding:0 !important;
         border:none !important;
     }
     .email-matching-summary-content{
@@ -57,8 +100,13 @@
         font-weight: 400 !important;
         strong{
             font-weight: bold;
-            color:#999;
         }
+    }
+    .email-from,
+    .email-to,
+    .email-subject{
+        line-height: 140%;
+        margin-bottom:2px;
     }
     .beforeOptOutCheckBox + .hasCheckBox{
         left:0 !important;
@@ -72,13 +120,15 @@
         }
     }
 }
+
 .email-matching-actions{
-    margin:15px 0 5px 0;
+    margin:5px 0 0 0 !important;
     display: block;
     a{
-        .zLink();
+        text-decoration: none;
     }
 }
+
 .email-matching-show-more,
 .email-matching-show-less{
     margin-top:10px;
@@ -90,13 +140,8 @@
     border-bottom: 1px solid #ccc;
 }
 
-.matching-actions-and-content{
-    border-top:1px solid #fff;
-}
-
 .icon-down-arrow{
     font-weight: normal;
-    color:#545454 !important;
     &:before{
         position: relative;
         color:#545454 !important;
@@ -106,9 +151,9 @@
         margin:0 4px 0 0;
     }
 }
+
 .icon-up-arrow{
     font-weight: normal;
-    color:#545454 !important;
     &:before{
         position: relative;
         color:#545454 !important;
@@ -119,11 +164,80 @@
     }
 }
 
-
 .expanded{
     #gradient > .vertical-three-colors( #ffffff, #f5f5f5, 80%, #f5f5f5, ~"!important" );
     > td{
         padding-bottom: 0 !important;
         .b-shadow(inset 0 0 0 2px #ffffff);
+    }
+}
+
+.active-panel{
+    .portlet-gradient();
+}
+
+/*Email Compose*/
+#CreateEmailMessageModalEditView{
+    .panel{
+        width:100%;
+    }
+    td{
+        padding-left: 0;
+    }
+    .more-panels-link{
+        display: block;
+        margin: 0 0 0 4%;
+        .smaller();
+        float: left;
+        position: relative;
+        top:6px;
+    }
+    div.overlay-label-field{
+        padding-bottom: 0;
+    }
+}
+.recipient{
+    ++.cf;
+    > label{
+        float: left;
+        width: 3%;
+        margin-top: 5px;
+    }
+    > div{
+        float: right;
+        width: 96%;
+    }
+}
+#cc-bcc-fields{
+    .recipient{
+        margin-top: 15px;
+    }
+}
+
+/*email modal*/
+#NoUserEmailConfigurationYetView{
+    ++.cf;
+    padding:0 0 30px 0;
+	.large-icon{
+		margin-top: 0;
+	}
+	.large-icon:after{
+		font-size: 220px;
+	}
+	p{
+		margin-top: 15px;
+	}
+}
+
+/*User email configuration*/
+.outbound-settings{
+    clear: left;
+    position: relative;
+    top:5px;
+    div{
+        margin-bottom: 10px;
+    }
+    label{
+        margin-bottom: 5px;
     }
 }

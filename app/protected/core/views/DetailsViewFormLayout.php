@@ -1,10 +1,10 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2012 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
-     * the terms of the GNU General Public License version 3 as published by the
+     * the terms of the GNU Affero General Public License version 3 as published by the
      * Free Software Foundation with the addition of the following permission added
      * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
      * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
@@ -12,16 +12,26 @@
      *
      * Zurmo is distributed in the hope that it will be useful, but WITHOUT
      * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-     * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+     * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
      * details.
      *
-     * You should have received a copy of the GNU General Public License along with
+     * You should have received a copy of the GNU Affero General Public License along with
      * this program; if not, see http://www.gnu.org/licenses or write to the Free
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
      *
-     * You can contact Zurmo, Inc. with a mailing address at 113 McHenry Road Suite 207,
-     * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
+     * You can contact Zurmo, Inc. with a mailing address at 27 North Wacker Drive
+     * Suite 370 Chicago, IL 60606. or at email address contact@zurmo.com.
+     *
+     * The interactive user interfaces in original and modified versions
+     * of this program must display Appropriate Legal Notices, as required under
+     * Section 5 of the GNU Affero General Public License version 3.
+     *
+     * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
+     * these Appropriate Legal Notices must retain the display of the Zurmo
+     * logo and Zurmo copyright notice. If the display of the logo is not reasonably
+     * feasible for technical reasons, the Appropriate Legal Notices must display the words
+     * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
     class DetailsViewFormLayout extends FormLayout
@@ -48,6 +58,8 @@
 
         protected $labelsHaveOwnCells = true;
 
+        public $alwaysShowErrorSummary = false;
+
         /**
          * Set the labels to have their own cells or not.
          * @param boolean $hasOwnCells
@@ -68,7 +80,7 @@
         public function render()
         {
             $content        = '';
-            if ($this->shouldRenderTabbedPanels())
+            if ($this->alwaysShowErrorSummary || $this->shouldRenderTabbedPanels())
             {
                 $content .= $this->errorSummaryContent;
             }
@@ -77,7 +89,7 @@
             {
                 $content .= $this->renderDivTagByPanelNumber($panelNumber);
                 $content .= $this->renderPanelHeaderByPanelNumberAndPanel($panelNumber, $panel);
-                $content .= '<table>';
+                $content .= $this->resolveStartingTableTagAndColumnQuantityClass($panel);
                 $content .= TableUtil::getColGroupContent(static::getMaximumColumnCountForAllPanels($this->metadata), $this->labelsHaveOwnCells);
                 $content .= '<tbody>';
 
@@ -96,9 +108,7 @@
                     }
                     if (!empty($cellsContent))
                     {
-                        $content .= '<tr>';
-                        $content .= $cellsContent;
-                        $content .= '</tr>';
+                        $this->resolveRowWrapperTag($content, $cellsContent);
                     }
                 }
                 $content .= $this->renderLastPanelRowsByPanelNumber($panelNumber);
@@ -114,6 +124,36 @@
             return $this->resolveFormLayoutContent($content);
         }
 
+        protected function resolveStartingTableTagAndColumnQuantityClass($panel)
+        {
+            assert('is_array($panel)');
+            if (static::getMaximumColumnCountForSpecificPanels($panel) == 2)
+            {
+                return '<table class="double-column">';
+            }
+            return '<table>';
+        }
+
+        /**
+         * If the cell content contains a <tr at the beginning, then assume we do not
+         * need to wrap or end with a tr
+         */
+        protected function resolveRowWrapperTag(& $content, $cellsContent)
+        {
+            assert('is_string($content) || $content == null');
+            assert('is_string($cellsContent)');
+            if (strpos($cellsContent, '<tr') === 0)
+            {
+                $content .= $cellsContent;
+            }
+            else
+            {
+                $content .= '<tr>';
+                $content .= $cellsContent;
+                $content .= '</tr>';
+            }
+        }
+
         protected function renderPanelHeaderByPanelNumberAndPanel($panelNumber, $panel)
         {
             if ($this->shouldRenderTabbedPanels())
@@ -122,11 +162,11 @@
                 $content = '<div id="' . $tabId . '">';
                 if (!empty($panel['title']))
                 {
-                    $tabTitle = Yii::t('Default', $panel['title']); //Attempt a final translation if available.
+                    $tabTitle = Zurmo::t('Core', $panel['title']); //Attempt a final translation if available.
                 }
                 else
                 {
-                    $tabTitle = Yii::t('Default', 'Tab'). ' ' . ($panelNumber + 1);
+                    $tabTitle = Zurmo::t('Core', 'Tab'). ' ' . ($panelNumber + 1);
                 }
                $this->addTabsContent('<li><a href="#' . $tabId . '">' . $tabTitle . '</a></li>');
                return $content;
@@ -135,7 +175,7 @@
             {
                 if (!empty($panel['title']))
                 {
-                    return '<div class="panelTitle">' . Yii::t('Default', $panel['title']) . '</div>'; //Attempt a final translation if available.
+                    return '<div class="panelTitle">' . Zurmo::t('Core', $panel['title']) . '</div>'; //Attempt a final translation if available.
                 }
             }
         }
@@ -160,10 +200,10 @@
                 $content .= '<tr>';
                 $content .= '<td  colspan = "' . $this->maxCellsPerRow . '">';
                 $content .= ZurmoHtml::link($this->getMorePanelsLinkLabel(),
-                                        $this->uniqueId, array('id' => 'show-more-panels-link-' . $this->uniqueId . ''));
+                                        $this->uniqueId, array('class' => 'more-panels-link', 'id' => 'show-more-panels-link-' . $this->uniqueId . ''));
                 $content .= ZurmoHtml::link($this->getLessPanelsLinkLabel(),
                                         $this->uniqueId,
-                                        array('id' => 'show-less-panels-link-' . $this->uniqueId . '',
+                                        array('class' => 'more-panels-link', 'id' => 'show-less-panels-link-' . $this->uniqueId . '',
                                               'style' => 'display:none;'));
                 $content .= '</td>';
                 $content .= '</tr>';
@@ -255,7 +295,7 @@
         {
             if ($this->morePanelsLinkLabel == null)
             {
-                Yii::t('Default', 'More Options');
+                Zurmo::t('Core', 'More Options');
             }
             else
             {
@@ -267,7 +307,7 @@
         {
             if ($this->lessPanelsLinkLabel == null)
             {
-                Yii::t('Default', 'Fewer Options');
+                Zurmo::t('Core', 'Fewer Options');
             }
             else
             {

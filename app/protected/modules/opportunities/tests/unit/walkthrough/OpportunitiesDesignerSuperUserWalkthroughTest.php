@@ -1,10 +1,10 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2012 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
-     * the terms of the GNU General Public License version 3 as published by the
+     * the terms of the GNU Affero General Public License version 3 as published by the
      * Free Software Foundation with the addition of the following permission added
      * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
      * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
@@ -12,16 +12,26 @@
      *
      * Zurmo is distributed in the hope that it will be useful, but WITHOUT
      * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-     * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+     * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
      * details.
      *
-     * You should have received a copy of the GNU General Public License along with
+     * You should have received a copy of the GNU Affero General Public License along with
      * this program; if not, see http://www.gnu.org/licenses or write to the Free
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
      *
-     * You can contact Zurmo, Inc. with a mailing address at 113 McHenry Road Suite 207,
-     * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
+     * You can contact Zurmo, Inc. with a mailing address at 27 North Wacker Drive
+     * Suite 370 Chicago, IL 60606. or at email address contact@zurmo.com.
+     *
+     * The interactive user interfaces in original and modified versions
+     * of this program must display Appropriate Legal Notices, as required under
+     * Section 5 of the GNU Affero General Public License version 3.
+     *
+     * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
+     * these Appropriate Legal Notices must retain the display of the Zurmo
+     * logo and Zurmo copyright notice. If the display of the logo is not reasonably
+     * feasible for technical reasons, the Appropriate Legal Notices must display the words
+     * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -35,6 +45,8 @@
     */
     class OpportunitiesDesignerSuperUserWalkthroughTest extends ZurmoWalkthroughBaseTest
     {
+        public static $activateDefaultLanguages = true;
+
         public static function setUpBeforeClass()
         {
             parent::setUpBeforeClass();
@@ -218,7 +230,7 @@
             $this->runControllerWithNoExceptionsAndGetContent('opportunities/default/details');
             $this->runControllerWithNoExceptionsAndGetContent('opportunities/default/list');
             $this->setGetArray(array(
-                'modalTransferInformation' => array('sourceIdFieldId' => 'x', 'sourceNameFieldId' => 'y')
+                'modalTransferInformation' => array('sourceIdFieldId' => 'x', 'sourceNameFieldId' => 'y', 'modalId' => 'z')
             ));
             $this->resetPostArray();
             $this->runControllerWithNoExceptionsAndGetContent('opportunities/default/modalList');
@@ -255,31 +267,30 @@
                             'amount'                            => array('value' => 298000,
                                                                          'currency' => array('id' => $baseCurrency->id)),
                             'account'                           => array('id' => $accountId),
-                            'probability'                       => '1',
                             'closeDate'                         => $date,
                             'stage'                             => array('value' => 'Prospecting'),
                             'source'                            => array('value' => 'Self-Generated'),
                             'description'                       => 'This is the Description',
                             'owner'                             => array('id' => $superUserId),
                             'explicitReadWriteModelPermissions' => array('type' => null),
-                            'checkbox'                          => '1',
-                            'currency'                          => array('value'    => 45,
+                            'checkboxCstm'                      => '1',
+                            'currencyCstm'                      => array('value'    => 45,
                                                                          'currency' => array('id' => $baseCurrency->id)),
-                            'date'                              => $date,
-                            'datetime'                          => $datetime,
-                            'decimal'                           => '123',
-                            'picklist'                          => array('value' => 'a'),
-                            'multiselect'                       => array('values' => array('ff', 'rr')),
-                            'tagcloud'                          => array('values' => array('writing', 'gardening')),
-                            'countrylist'                       => array('value'  => 'bbbb'),
-                            'statelist'                         => array('value'  => 'bbb1'),
-                            'citylist'                          => array('value'  => 'bb1'),
-                            'integer'                           => '12',
-                            'phone'                             => '259-784-2169',
-                            'radio'                             => array('value' => 'd'),
-                            'text'                              => 'This is a test Text',
-                            'textarea'                          => 'This is a test TextArea',
-                            'url'                               => 'http://wwww.abc.com')));
+                            'dateCstm'                          => $date,
+                            'datetimeCstm'                      => $datetime,
+                            'decimalCstm'                       => '123',
+                            'picklistCstm'                      => array('value' => 'a'),
+                            'multiselectCstm'                   => array('values' => array('ff', 'rr')),
+                            'tagcloudCstm'                      => array('values' => array('writing', 'gardening')),
+                            'countrylistCstm'                   => array('value'  => 'bbbb'),
+                            'statelistCstm'                     => array('value'  => 'bbb1'),
+                            'citylistCstm'                      => array('value'  => 'bb1'),
+                            'integerCstm'                       => '12',
+                            'phoneCstm'                         => '259-784-2169',
+                            'radioCstm'                         => array('value' => 'd'),
+                            'textCstm'                          => 'This is a test Text',
+                            'textareaCstm'                      => 'This is a test TextArea',
+                            'urlCstm'                           => 'http://wwww.abc.com')));
             $this->runControllerWithRedirectExceptionAndGetUrl('opportunities/default/create');
 
             //Check the details if they are saved properly for the custom fields.
@@ -296,37 +307,37 @@
             $this->assertEquals($opportunity->amount->value              , '298000');
             $this->assertEquals($opportunity->amount->currency->id       , $baseCurrency->id);
             $this->assertEquals($opportunity->account->id                , $accountId);
-            $this->assertEquals($opportunity->probability                , '1');
+            $this->assertEquals($opportunity->probability                , '10');
             $this->assertEquals($opportunity->stage->value               , 'Prospecting');
             $this->assertEquals($opportunity->source->value              , 'Self-Generated');
             $this->assertEquals($opportunity->description                , 'This is the Description');
             $this->assertEquals($opportunity->owner->id                  , $superUserId);
             $this->assertEquals(0                                        , count($readWritePermitables));
             $this->assertEquals(0                                        , count($readOnlyPermitables));
-            $this->assertEquals($opportunity->checkbox                   , '1');
-            $this->assertEquals($opportunity->currency->value            , 45);
-            $this->assertEquals($opportunity->currency->currency->id     , $baseCurrency->id);
-            $this->assertEquals($opportunity->date                       , $dateAssert);
-            $this->assertEquals($opportunity->datetime                   , $datetimeAssert);
-            $this->assertEquals($opportunity->decimal                    , '123');
-            $this->assertEquals($opportunity->picklist->value            , 'a');
-            $this->assertEquals($opportunity->integer                    , 12);
-            $this->assertEquals($opportunity->phone                      , '259-784-2169');
-            $this->assertEquals($opportunity->radio->value               , 'd');
-            $this->assertEquals($opportunity->text                       , 'This is a test Text');
-            $this->assertEquals($opportunity->textarea                   , 'This is a test TextArea');
-            $this->assertEquals($opportunity->url                        , 'http://wwww.abc.com');
-            $this->assertEquals($opportunity->countrylist->value         , 'bbbb');
-            $this->assertEquals($opportunity->statelist->value           , 'bbb1');
-            $this->assertEquals($opportunity->citylist->value            , 'bb1');
-            $this->assertContains('ff'                                   , $opportunity->multiselect->values);
-            $this->assertContains('rr'                                   , $opportunity->multiselect->values);
-            $this->assertContains('writing'                              , $opportunity->tagcloud->values);
-            $this->assertContains('gardening'                            , $opportunity->tagcloud->values);
+            $this->assertEquals($opportunity->checkboxCstm               , '1');
+            $this->assertEquals($opportunity->currencyCstm->value        , 45);
+            $this->assertEquals($opportunity->currencyCstm->currency->id , $baseCurrency->id);
+            $this->assertEquals($opportunity->dateCstm                   , $dateAssert);
+            $this->assertEquals($opportunity->datetimeCstm               , $datetimeAssert);
+            $this->assertEquals($opportunity->decimalCstm                , '123');
+            $this->assertEquals($opportunity->picklistCstm->value        , 'a');
+            $this->assertEquals($opportunity->integerCstm                , 12);
+            $this->assertEquals($opportunity->phoneCstm                  , '259-784-2169');
+            $this->assertEquals($opportunity->radioCstm->value           , 'd');
+            $this->assertEquals($opportunity->textCstm                   , 'This is a test Text');
+            $this->assertEquals($opportunity->textareaCstm               , 'This is a test TextArea');
+            $this->assertEquals($opportunity->urlCstm                    , 'http://wwww.abc.com');
+            $this->assertEquals($opportunity->countrylistCstm->value     , 'bbbb');
+            $this->assertEquals($opportunity->statelistCstm->value       , 'bbb1');
+            $this->assertEquals($opportunity->citylistCstm->value        , 'bb1');
+            $this->assertContains('ff'                                   , $opportunity->multiselectCstm->values);
+            $this->assertContains('rr'                                   , $opportunity->multiselectCstm->values);
+            $this->assertContains('writing'                              , $opportunity->tagcloudCstm->values);
+            $this->assertContains('gardening'                            , $opportunity->tagcloudCstm->values);
             $metadata            = CalculatedDerivedAttributeMetadata::
                                    getByNameAndModelClassName('calcnumber', 'Opportunity');
-            $testCalculatedValue = CalculatedNumberUtil::calculateByFormulaAndModel($metadata->getFormula(), $opportunity);
-            $this->assertEquals(1476                                     , $testCalculatedValue);
+            $testCalculatedValue = CalculatedNumberUtil::calculateByFormulaAndModelAndResolveFormat($metadata->getFormula(), $opportunity);
+            $this->assertEquals('1,476'                                    , $testCalculatedValue); // Not Coding Standard
         }
 
         /**
@@ -355,24 +366,23 @@
                                                 'closeDate__Date'    => array('value' => 'Today'),
                                                 'stage'              => array('value' => 'Prospecting'),
                                                 'source'             => array('value' => 'Self-Generated'),
-                                                'probability'        => '1',
-                                                'decimal'            => '123',
-                                                'integer'            => '12',
-                                                'phone'              => '259-784-2169',
-                                                'text'               => 'This is a test Text',
-                                                'textarea'           => 'This is a test TextArea',
-                                                'url'                => 'http://wwww.abc.com',
-                                                'checkbox'           => array('value'  =>  '1'),
-                                                'currency'           => array('value'  =>  45),
-                                                'picklist'           => array('value'  =>  'a'),
-                                                'multiselect'        => array('values' => array('ff', 'rr')),
-                                                'tagcloud'           => array('values' => array('writing', 'gardening')),
-                                                'countrylist'        => array('value'  => 'bbbb'),
-                                                'statelist'          => array('value'  => 'bbb1'),
-                                                'citylist'           => array('value'  => 'bb1'),
-                                                'radio'              => array('value'  =>  'd'),
-                                                'date__Date'         => array('type'   =>  'Today'),
-                                                'datetime__DateTime' => array('type'   =>  'Today')),
+                                                'decimalCstm'        => '123',
+                                                'integerCstm'        => '12',
+                                                'phoneCstm'          => '259-784-2169',
+                                                'textCstm'           => 'This is a test Text',
+                                                'textareaCstm'       => 'This is a test TextArea',
+                                                'urlCstm'            => 'http://wwww.abc.com',
+                                                'checkboxCstm'       => array('value'  =>  '1'),
+                                                'currencyCstm'       => array('value'  =>  45),
+                                                'picklistCstm'       => array('value'  =>  'a'),
+                                                'multiselectCstm'    => array('values' => array('ff', 'rr')),
+                                                'tagcloudCstm'       => array('values' => array('writing', 'gardening')),
+                                                'countrylistCstm'    => array('value'  => 'bbbb'),
+                                                'statelistCstm'      => array('value'  => 'bbb1'),
+                                                'citylistCstm'       => array('value'  => 'bb1'),
+                                                'radioCstm'          => array('value'  =>  'd'),
+                                                'dateCstm__Date'     => array('type'   =>  'Today'),
+                                                'datetimeCstm__DateTime' => array('type'   =>  'Today')),
                                      'ajax' =>  'list-view'));
             $content = $this->runControllerWithNoExceptionsAndGetContent('opportunities/default');
 
@@ -402,7 +412,7 @@
             $explicitReadWriteModelPermission = ExplicitReadWriteModelPermissionsUtil::MIXED_TYPE_EVERYONE_GROUP;
             $opportunity   = Opportunity::getByName('myNewOpportunity');
             $opportunityId = $opportunity[0]->id;
-            $this->assertEquals(2, $opportunity[0]->tagcloud->values->count());
+            $this->assertEquals(2, $opportunity[0]->tagcloudCstm->values->count());
 
             //Edit a new Opportunity based on the custom fields.
             $this->setGetArray(array('id' => $opportunityId));
@@ -412,32 +422,31 @@
                                                                          'currency'    => array(
                                                                              'id'      => $baseCurrency->id)),
                             'account'                           => array('id' => $accountId),
-                            'probability'                       => '2',
                             'closeDate'                         => $date,
                             'stage'                             => array('value' => 'Qualification'),
                             'source'                            => array('value' => 'Inbound Call'),
                             'description'                       => 'This is the Edit Description',
                             'owner'                             => array('id' => $superUserId),
                             'explicitReadWriteModelPermissions' => array('type' => $explicitReadWriteModelPermission),
-                            'checkbox'                          => '0',
-                            'currency'                          => array('value'       => 40,
+                            'checkboxCstm'                      => '0',
+                            'currencyCstm'                      => array('value'       => 40,
                                                                          'currency'    => array(
                                                                              'id' => $baseCurrency->id)),
-                            'decimal'                           => '12',
-                            'date'                              => $date,
-                            'datetime'                          => $datetime,
-                            'picklist'                          => array('value'  => 'b'),
-                            'multiselect'                       => array('values' =>  array('gg', 'hh')),
-                            'tagcloud'                          => array('values' =>  array()),
-                            'countrylist'                       => array('value'  => 'aaaa'),
-                            'statelist'                         => array('value'  => 'aaa1'),
-                            'citylist'                          => array('value'  => 'ab1'),
-                            'integer'                           => '11',
-                            'phone'                             => '259-784-2069',
-                            'radio'                             => array('value' => 'e'),
-                            'text'                              => 'This is a test Edit Text',
-                            'textarea'                          => 'This is a test Edit TextArea',
-                            'url'                               => 'http://wwww.abc-edit.com')));
+                            'decimalCstm'                       => '12',
+                            'dateCstm'                          => $date,
+                            'datetimeCstm'                      => $datetime,
+                            'picklistCstm'                      => array('value'  => 'b'),
+                            'multiselectCstm'                   => array('values' =>  array('gg', 'hh')),
+                            'tagcloudCstm'                      => array('values' =>  array()),
+                            'countrylistCstm'                   => array('value'  => 'aaaa'),
+                            'statelistCstm'                     => array('value'  => 'aaa1'),
+                            'citylistCstm'                      => array('value'  => 'ab1'),
+                            'integerCstm'                       => '11',
+                            'phoneCstm'                         => '259-784-2069',
+                            'radioCstm'                         => array('value' => 'e'),
+                            'textCstm'                          => 'This is a test Edit Text',
+                            'textareaCstm'                      => 'This is a test Edit TextArea',
+                            'urlCstm'                           => 'http://wwww.abc-edit.com')));
             $this->runControllerWithRedirectExceptionAndGetUrl('opportunities/default/edit');
 
             //Check the details if they are saved properly for the custom fields.
@@ -454,37 +463,37 @@
             $this->assertEquals($opportunity->amount->value              , '288000');
             $this->assertEquals($opportunity->amount->currency->id       , $baseCurrency->id);
             $this->assertEquals($opportunity->account->id                , $accountId);
-            $this->assertEquals($opportunity->probability                , '2');
+            $this->assertEquals($opportunity->probability                , '25');
             $this->assertEquals($opportunity->stage->value               , 'Qualification');
             $this->assertEquals($opportunity->source->value              , 'Inbound Call');
             $this->assertEquals($opportunity->description                , 'This is the Edit Description');
             $this->assertEquals($opportunity->owner->id                  , $superUserId);
             $this->assertEquals(1                                        , count($readWritePermitables));
             $this->assertEquals(0                                        , count($readOnlyPermitables));
-            $this->assertEquals($opportunity->checkbox                   , '0');
-            $this->assertEquals($opportunity->currency->value            , 40);
-            $this->assertEquals($opportunity->currency->currency->id     , $baseCurrency->id);
-            $this->assertEquals($opportunity->date                       , $dateAssert);
-            $this->assertEquals($opportunity->datetime                   , $datetimeAssert);
-            $this->assertEquals($opportunity->decimal                    , '12');
-            $this->assertEquals($opportunity->picklist->value            , 'b');
-            $this->assertEquals($opportunity->integer                    , 11);
-            $this->assertEquals($opportunity->phone                      , '259-784-2069');
-            $this->assertEquals($opportunity->radio->value               , 'e');
-            $this->assertEquals($opportunity->text                       , 'This is a test Edit Text');
-            $this->assertEquals($opportunity->textarea                   , 'This is a test Edit TextArea');
-            $this->assertEquals($opportunity->url                        , 'http://wwww.abc-edit.com');
-            $this->assertEquals($opportunity->date                       , $dateAssert);
-            $this->assertEquals($opportunity->datetime                   , $datetimeAssert);
-            $this->assertEquals($opportunity->countrylist->value         , 'aaaa');
-            $this->assertEquals($opportunity->statelist->value           , 'aaa1');
-            $this->assertEquals($opportunity->citylist->value            , 'ab1');
-            $this->assertContains('gg'                                   , $opportunity->multiselect->values);
-            $this->assertContains('hh'                                   , $opportunity->multiselect->values);
-            $this->assertEquals(0                                        , $opportunity->tagcloud->values->count());
+            $this->assertEquals($opportunity->checkboxCstm               , '0');
+            $this->assertEquals($opportunity->currencyCstm->value        , 40);
+            $this->assertEquals($opportunity->currencyCstm->currency->id , $baseCurrency->id);
+            $this->assertEquals($opportunity->dateCstm                   , $dateAssert);
+            $this->assertEquals($opportunity->datetimeCstm               , $datetimeAssert);
+            $this->assertEquals($opportunity->decimalCstm                , '12');
+            $this->assertEquals($opportunity->picklistCstm->value        , 'b');
+            $this->assertEquals($opportunity->integerCstm                , 11);
+            $this->assertEquals($opportunity->phoneCstm                  , '259-784-2069');
+            $this->assertEquals($opportunity->radioCstm->value           , 'e');
+            $this->assertEquals($opportunity->textCstm                   , 'This is a test Edit Text');
+            $this->assertEquals($opportunity->textareaCstm               , 'This is a test Edit TextArea');
+            $this->assertEquals($opportunity->urlCstm                    , 'http://wwww.abc-edit.com');
+            $this->assertEquals($opportunity->dateCstm                   , $dateAssert);
+            $this->assertEquals($opportunity->datetimeCstm               , $datetimeAssert);
+            $this->assertEquals($opportunity->countrylistCstm->value     , 'aaaa');
+            $this->assertEquals($opportunity->statelistCstm->value       , 'aaa1');
+            $this->assertEquals($opportunity->citylistCstm->value        , 'ab1');
+            $this->assertContains('gg'                                   , $opportunity->multiselectCstm->values);
+            $this->assertContains('hh'                                   , $opportunity->multiselectCstm->values);
+            $this->assertEquals(0                                        , $opportunity->tagcloudCstm->values->count());
             $metadata            = CalculatedDerivedAttributeMetadata::
                                    getByNameAndModelClassName('calcnumber', 'Opportunity');
-            $testCalculatedValue = CalculatedNumberUtil::calculateByFormulaAndModel($metadata->getFormula(), $opportunity);
+            $testCalculatedValue = CalculatedNumberUtil::calculateByFormulaAndModelAndResolveFormat($metadata->getFormula(), $opportunity);
             $this->assertEquals(132                                      , $testCalculatedValue);
         }
 
@@ -517,32 +526,31 @@
                                                                          'currency' => array(
                                                                          'id' => $baseCurrency->id)),
                             'account'                           => array('id' => $accountId),
-                            'probability'                       => '2',
                             'closeDate'                         => $date,
                             'stage'                             => array('value' => 'Qualification'),
                             'source'                            => array('value' => 'Inbound Call'),
                             'description'                       => 'This is the Edit Description',
                             'owner'                             => array('id' => $superUserId),
                             'explicitReadWriteModelPermissions' => array('type' => $explicitReadWriteModelPermission),
-                            'checkbox'                          => '0',
-                            'currency'                          => array('value'   => 40,
+                            'checkboxCstm'                      => '0',
+                            'currencyCstm'                      => array('value'   => 40,
                                                                          'currency' => array(
                                                                          'id' => $baseCurrency->id)),
-                            'decimal'                           => '12',
-                            'date'                              => $date,
-                            'datetime'                          => $datetime,
-                            'picklist'                          => array('value'  => 'b'),
-                            'multiselect'                       => array('values' =>  array('gg', 'hh')),
-                            'tagcloud'                          => array('values' =>  array('reading', 'surfing')),
-                            'countrylist'                       => array('value'  => 'aaaa'),
-                            'statelist'                         => array('value'  => 'aaa1'),
-                            'citylist'                          => array('value'  => 'ab1'),
-                            'integer'                           => '11',
-                            'phone'                             => '259-784-2069',
-                            'radio'                             => array('value' => 'e'),
-                            'text'                              => 'This is a test Edit Text',
-                            'textarea'                          => 'This is a test Edit TextArea',
-                            'url'                               => 'http://wwww.abc-edit.com')));
+                            'decimalCstm'                       => '12',
+                            'dateCstm'                          => $date,
+                            'datetimeCstm'                      => $datetime,
+                            'picklistCstm'                      => array('value'  => 'b'),
+                            'multiselectCstm'                   => array('values' =>  array('gg', 'hh')),
+                            'tagcloudCstm'                      => array('values' =>  array('reading', 'surfing')),
+                            'countrylistCstm'                   => array('value'  => 'aaaa'),
+                            'statelistCstm'                     => array('value'  => 'aaa1'),
+                            'citylistCstm'                      => array('value'  => 'ab1'),
+                            'integerCstm'                       => '11',
+                            'phoneCstm'                         => '259-784-2069',
+                            'radioCstm'                         => array('value' => 'e'),
+                            'textCstm'                          => 'This is a test Edit Text',
+                            'textareaCstm'                      => 'This is a test Edit TextArea',
+                            'urlCstm'                           => 'http://wwww.abc-edit.com')));
             $this->runControllerWithRedirectExceptionAndGetUrl('opportunities/default/edit');
 
             //Check the details if they are saved properly for the custom fields.
@@ -559,38 +567,38 @@
             $this->assertEquals($opportunity->amount->value              , '288000');
             $this->assertEquals($opportunity->amount->currency->id       , $baseCurrency->id);
             $this->assertEquals($opportunity->account->id                , $accountId);
-            $this->assertEquals($opportunity->probability                , '2');
+            $this->assertEquals($opportunity->probability                , '25');
             $this->assertEquals($opportunity->stage->value               , 'Qualification');
             $this->assertEquals($opportunity->source->value              , 'Inbound Call');
             $this->assertEquals($opportunity->description                , 'This is the Edit Description');
             $this->assertEquals($opportunity->owner->id                  , $superUserId);
             $this->assertEquals(1                                        , count($readWritePermitables));
             $this->assertEquals(0                                        , count($readOnlyPermitables));
-            $this->assertEquals($opportunity->checkbox                   , '0');
-            $this->assertEquals($opportunity->currency->value            , 40);
-            $this->assertEquals($opportunity->currency->currency->id     , $baseCurrency->id);
-            $this->assertEquals($opportunity->date                       , $dateAssert);
-            $this->assertEquals($opportunity->datetime                   , $datetimeAssert);
-            $this->assertEquals($opportunity->decimal                    , '12');
-            $this->assertEquals($opportunity->picklist->value            , 'b');
-            $this->assertEquals($opportunity->integer                    , 11);
-            $this->assertEquals($opportunity->phone                      , '259-784-2069');
-            $this->assertEquals($opportunity->radio->value               , 'e');
-            $this->assertEquals($opportunity->text                       , 'This is a test Edit Text');
-            $this->assertEquals($opportunity->textarea                   , 'This is a test Edit TextArea');
-            $this->assertEquals($opportunity->url                        , 'http://wwww.abc-edit.com');
-            $this->assertEquals($opportunity->date                       , $dateAssert);
-            $this->assertEquals($opportunity->datetime                   , $datetimeAssert);
-            $this->assertEquals($opportunity->countrylist->value         , 'aaaa');
-            $this->assertEquals($opportunity->statelist->value           , 'aaa1');
-            $this->assertEquals($opportunity->citylist->value            , 'ab1');
-            $this->assertContains('gg'                                   , $opportunity->multiselect->values);
-            $this->assertContains('hh'                                   , $opportunity->multiselect->values);
-            $this->assertContains('reading'                              , $opportunity->tagcloud->values);
-            $this->assertContains('surfing'                              , $opportunity->tagcloud->values);
+            $this->assertEquals($opportunity->checkboxCstm               , '0');
+            $this->assertEquals($opportunity->currencyCstm->value        , 40);
+            $this->assertEquals($opportunity->currencyCstm->currency->id , $baseCurrency->id);
+            $this->assertEquals($opportunity->dateCstm                   , $dateAssert);
+            $this->assertEquals($opportunity->datetimeCstm               , $datetimeAssert);
+            $this->assertEquals($opportunity->decimalCstm                , '12');
+            $this->assertEquals($opportunity->picklistCstm->value        , 'b');
+            $this->assertEquals($opportunity->integerCstm                , 11);
+            $this->assertEquals($opportunity->phoneCstm                  , '259-784-2069');
+            $this->assertEquals($opportunity->radioCstm->value           , 'e');
+            $this->assertEquals($opportunity->textCstm                   , 'This is a test Edit Text');
+            $this->assertEquals($opportunity->textareaCstm               , 'This is a test Edit TextArea');
+            $this->assertEquals($opportunity->urlCstm                    , 'http://wwww.abc-edit.com');
+            $this->assertEquals($opportunity->dateCstm                   , $dateAssert);
+            $this->assertEquals($opportunity->datetimeCstm               , $datetimeAssert);
+            $this->assertEquals($opportunity->countrylistCstm->value     , 'aaaa');
+            $this->assertEquals($opportunity->statelistCstm->value       , 'aaa1');
+            $this->assertEquals($opportunity->citylistCstm->value        , 'ab1');
+            $this->assertContains('gg'                                   , $opportunity->multiselectCstm->values);
+            $this->assertContains('hh'                                   , $opportunity->multiselectCstm->values);
+            $this->assertContains('reading'                              , $opportunity->tagcloudCstm->values);
+            $this->assertContains('surfing'                              , $opportunity->tagcloudCstm->values);
             $metadata            = CalculatedDerivedAttributeMetadata::
                                    getByNameAndModelClassName('calcnumber', 'Opportunity');
-            $testCalculatedValue = CalculatedNumberUtil::calculateByFormulaAndModel($metadata->getFormula(), $opportunity);
+            $testCalculatedValue = CalculatedNumberUtil::calculateByFormulaAndModelAndResolveFormat($metadata->getFormula(), $opportunity);
             $this->assertEquals(132                                      , $testCalculatedValue);
         }
 

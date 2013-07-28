@@ -1,10 +1,10 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2012 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
-     * the terms of the GNU General Public License version 3 as published by the
+     * the terms of the GNU Affero General Public License version 3 as published by the
      * Free Software Foundation with the addition of the following permission added
      * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
      * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
@@ -12,28 +12,44 @@
      *
      * Zurmo is distributed in the hope that it will be useful, but WITHOUT
      * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-     * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+     * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
      * details.
      *
-     * You should have received a copy of the GNU General Public License along with
+     * You should have received a copy of the GNU Affero General Public License along with
      * this program; if not, see http://www.gnu.org/licenses or write to the Free
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
      *
-     * You can contact Zurmo, Inc. with a mailing address at 113 McHenry Road Suite 207,
-     * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
+     * You can contact Zurmo, Inc. with a mailing address at 27 North Wacker Drive
+     * Suite 370 Chicago, IL 60606. or at email address contact@zurmo.com.
+     *
+     * The interactive user interfaces in original and modified versions
+     * of this program must display Appropriate Legal Notices, as required under
+     * Section 5 of the GNU Affero General Public License version 3.
+     *
+     * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
+     * these Appropriate Legal Notices must retain the display of the Zurmo
+     * logo and Zurmo copyright notice. If the display of the logo is not reasonably
+     * feasible for technical reasons, the Appropriate Legal Notices must display the words
+     * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
     /**
      * The base View for a module's list view.
      */
-    abstract class ListView extends ModelView
+    abstract class ListView extends ModelView implements ListViewInterface
     {
         protected $controllerId;
 
         protected $moduleId;
 
         protected $dataProvider;
+
+        /**
+         * Override and set to false if you want the viewToolbar to render during renderPortletHeadContent instead
+         * @var bool
+         */
+        protected $renderViewToolBarDuringRenderContent = true;
 
         /**
          * True/false to decide if each row in the list view widget
@@ -70,9 +86,11 @@
 
         private $listAttributesSelector;
 
+        private $kanbanBoard;
+
         /**
          * Constructs a list view specifying the controller as
-         * well as the model that will have its details displayed.
+         * well as the model that will have its details displayed.isDisplayAttributeACalculationOrModifier
          */
         public function __construct(
             $controllerId,
@@ -82,13 +100,15 @@
             $selectedIds,
             $gridIdSuffix = null,
             $gridViewPagerParams = array(),
-            $listAttributesSelector = null
+            $listAttributesSelector = null,
+            $kanbanBoard            = null
         )
         {
             assert('is_array($selectedIds)');
             assert('is_string($modelClassName)');
             assert('is_array($this->gridViewPagerParams)');
             assert('$listAttributesSelector == null || $listAttributesSelector instanceof ListAttributesSelector');
+            assert('$kanbanBoard === null || $kanbanBoard instanceof $kanbanBoard');
             $this->controllerId           = $controllerId;
             $this->moduleId               = $moduleId;
             $this->modelClassName         = $modelClassName;
@@ -99,6 +119,7 @@
             $this->gridViewPagerParams    = $gridViewPagerParams;
             $this->gridId                 = 'list-view';
             $this->listAttributesSelector = $listAttributesSelector;
+            $this->kanbanBoard            = $kanbanBoard;
         }
 
         /**
@@ -113,9 +134,13 @@
             $cClipWidget->beginClip("ListView");
             $cClipWidget->widget($this->getGridViewWidgetPath(), $this->getCGridViewParams());
             $cClipWidget->endClip();
-            $content = $this->renderViewToolBar();
+            $content     = null;
+            if ($this->renderViewToolBarDuringRenderContent)
+            {
+                $content .= $this->renderViewToolBar();
+            }
             $content .= $cClipWidget->getController()->clips['ListView'] . "\n";
-            if ($this->rowsAreSelectable)
+            if ($this->getRowsAreSelectable())
             {
                 $content .= ZurmoHtml::hiddenField($this->gridId . $this->gridIdSuffix . '-selectedIds', implode(",", $this->selectedIds)) . "\n"; // Not Coding Standard
             }
@@ -125,11 +150,35 @@
 
         protected function getGridViewWidgetPath()
         {
-            return 'application.core.widgets.ExtendedGridView';
+            if (Yii::app()->userInterface->isMobile())
+            {
+                $widget = 'application.core.widgets.StackedExtendedGridView';
+            }
+            elseif ($this->kanbanBoard === null || !$this->kanbanBoard->getIsActive())
+            {
+                $widget = 'application.core.widgets.ExtendedGridView';
+            }
+            elseif ($this->kanbanBoard->getIsActive())
+            {
+                $widget = $this->kanbanBoard->getGridViewWidgetPath();
+            }
+            else
+            {
+                throw new NotSupportedException();
+            }
+            return $widget;
         }
 
+        /**
+         * For a Kanban Board view, the rows are never selectable.
+         * @return bool
+         */
         public function getRowsAreSelectable()
         {
+            if ($this->kanbanBoard != null && $this->kanbanBoard->getIsActive())
+            {
+                return false;
+            }
             return $this->rowsAreSelectable;
         }
 
@@ -142,8 +191,7 @@
         {
             $columns = $this->getCGridViewColumns();
             assert('is_array($columns)');
-
-            return array(
+            $params = array(
                 'id' => $this->getGridViewId(),
                 'htmlOptions' => array(
                     'class' => 'cgrid-view'
@@ -156,12 +204,15 @@
                 'afterAjaxUpdate'      => $this->getCGridViewAfterAjaxUpdate(),
                 'columns'              => $columns,
                 'nullDisplay'          => '&#160;',
+                'pagerCssClass'        => static::getPagerCssClass(),
                 'showTableOnEmpty'     => $this->getShowTableOnEmpty(),
                 'emptyText'            => $this->getEmptyText(),
                 'template'             => static::getGridTemplate(),
-                'summaryText'          => $this->getSummaryText(),
-                'summaryCssClass'      => $this->getSummaryCssClass(),
+                'summaryText'          => static::getSummaryText(),
+                'summaryCssClass'      => static::getSummaryCssClass(),
+                'summaryCloneId'       => $this->getSummaryCloneId(),
             );
+            return $this->resolveCGridViewParamsForKanbanBoard($params);
         }
 
         protected static function getGridTemplate()
@@ -170,14 +221,24 @@
             return "{summary}\n{items}\n{pager}" . $preloader;
         }
 
+        protected static function getPagerCssClass()
+        {
+            return 'pager vertical';
+        }
+
         protected static function getSummaryText()
         {
-            return Yii::t('Default', '{count} result(s)');
+            return Zurmo::t('Core', '{count} result(s)');
         }
 
         protected static function getSummaryCssClass()
         {
             return 'summary';
+        }
+
+        public function getSummaryCloneId()
+        {
+            return  $this->getGridViewId() . "-summary-clone";
         }
 
         protected function getCGridViewPagerParams()
@@ -187,7 +248,7 @@
                         'nextPageLabel'    => '<span>next</span>',
                         'class'            => 'EndlessListLinkPager',
                         'paginationParams' => GetUtil::getData(),
-                        'route'            => $this->getGridViewActionRoute('list', $this->moduleId),
+                        'route'            => $this->getGridViewActionRoute($this->getListActionId(), $this->moduleId),
                     );
             if (empty($this->gridViewPagerParams))
             {
@@ -219,6 +280,19 @@
             return $this->gridId . $this->gridIdSuffix;
         }
 
+        protected function getCGridViewFirstColumn()
+        {
+            $checked = 'in_array($data->id, array(' . implode(',', $this->selectedIds) . '))'; // Not Coding Standard
+            $checkBoxHtmlOptions = array();
+            $firstColumn = array(
+                    'class'               => 'CheckBoxColumn',
+                    'checked'             => $checked,
+                    'id'                  => $this->gridId . $this->gridIdSuffix . '-rowSelector', // Always specify this as -rowSelector.
+                    'checkBoxHtmlOptions' => $checkBoxHtmlOptions,
+                );
+            return $firstColumn;
+        }
+
         /**
          * Get the meta data and merge with standard CGridView column elements
          * to create a column array that fits the CGridView columns API
@@ -226,16 +300,9 @@
          protected function getCGridViewColumns()
          {
             $columns = array();
-            if ($this->rowsAreSelectable)
+            if ($this->getRowsAreSelectable())
             {
-                $checked = 'in_array($data->id, array(' . implode(',', $this->selectedIds) . '))'; // Not Coding Standard
-                $checkBoxHtmlOptions = array();
-                $firstColumn = array(
-                    'class'               => 'CheckBoxColumn',
-                    'checked'             => $checked,
-                    'id'                  => $this->gridId . $this->gridIdSuffix . '-rowSelector', // Always specify this as -rowSelector.
-                    'checkBoxHtmlOptions' => $checkBoxHtmlOptions,
-                );
+                $firstColumn = $this->getCGridViewFirstColumn();
                 array_push($columns, $firstColumn);
             }
 
@@ -248,13 +315,7 @@
                     {
                         foreach ($cell['elements'] as $columnInformation)
                         {
-                            $columnClassName = $columnInformation['type'] . 'ListViewColumnAdapter';
-                            $columnAdapter  = new $columnClassName($columnInformation['attributeName'], $this, array_slice($columnInformation, 1));
-                            $column = $columnAdapter->renderGridViewData();
-                            if (!isset($column['class']))
-                            {
-                                $column['class'] = 'DataColumn';
-                            }
+                            $column = $this->processColumnInfoToFetchColumnData($columnInformation);
                             array_push($columns, $column);
                         }
                     }
@@ -297,13 +358,13 @@
 
         protected function getCGridViewBeforeAjaxUpdate()
         {
-            if ($this->rowsAreSelectable)
+            if ($this->getRowsAreSelectable())
             {
-                return 'js:function(id, options) { makeSmallLoadingSpinner(id, options); addListViewSelectedIdsToUrl(id, options); }';
+                return 'js:function(id, options) { $(this).makeSmallLoadingSpinner(true, "#" + id); addListViewSelectedIdsToUrl(id, options); }';
             }
             else
             {
-                return 'js:function(id, options) { makeSmallLoadingSpinner(id, options); }';
+                return 'js:function(id, options) { $(this).makeSmallLoadingSpinner(true, "#" + id); }';
             }
         }
 
@@ -336,7 +397,7 @@
                     ),
                     array(
                         'class'           => 'CLinkColumn',
-                        'header'          => Yii::t('Default', 'Name'),
+                        'header'          => Zurmo::t('Core', 'Name'),
                         'labelExpression' => '$data->name',
                         'urlExpression'   => 'Yii::app()->createUrl("/{$this->grid->getOwner()->getModule()->getId()}/{$this->grid->getOwner()->getId()}/details", array("id" => $data->id))',
                     )
@@ -351,7 +412,7 @@
 
         protected function getCGridViewSelectableRowsCount()
         {
-            if ($this->rowsAreSelectable)
+            if ($this->getRowsAreSelectable())
             {
                 return 2;
             }
@@ -405,7 +466,12 @@
             return '/' . $moduleId . '/' . $this->controllerId . '/' . $action;
         }
 
-        public function getLinkString($attributeString)
+        protected function getListActionId()
+        {
+            return 'list';
+        }
+
+        public function getLinkString($attributeString, $attribute)
         {
             $string  = 'ZurmoHtml::link(';
             $string .=  $attributeString . ', ';
@@ -467,6 +533,31 @@
         public function getControllerId()
         {
             return $this->controllerId;
+        }
+
+        private function resolveCGridViewParamsForKanbanBoard(array $params)
+        {
+            if (Yii::app()->userInterface->isMobile() || $this->kanbanBoard === null || !$this->kanbanBoard->getIsActive())
+            {
+                return $params;
+            }
+            $params = array_merge($params, $this->kanbanBoard->getGridViewParams());
+            return array_merge($params, $this->resolveExtraParamsForKanbanBoard());
+        }
+
+        /**
+         * Process input column information to fetch column data
+         */
+        protected function processColumnInfoToFetchColumnData($columnInformation)
+        {
+            $columnClassName = $columnInformation['type'] . 'ListViewColumnAdapter';
+            $columnAdapter   = new $columnClassName($columnInformation['attributeName'], $this, array_slice($columnInformation, 1));
+            $column = $columnAdapter->renderGridViewData();
+            if (!isset($column['class']))
+            {
+                $column['class'] = 'DataColumn';
+            }
+            return $column;
         }
     }
 ?>

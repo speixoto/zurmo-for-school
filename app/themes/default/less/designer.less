@@ -1,3 +1,71 @@
+// Zurmo is a customer relationship management program developed by
+// Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+//
+// Zurmo is free software; you can redistribute it and/or modify it under
+// the terms of the GNU Affero General Public License version 3 as published by the
+// Free Software Foundation with the addition of the following permission added
+// to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
+// IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
+// OF NON INFRINGEMENT OF THIRD PARTY RIGHTS.
+//
+// Zurmo is distributed in the hope that it will be useful, but WITHOUT
+// ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+// FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
+// details.
+//
+// You should have received a copy of the GNU Affero General Public License along with
+// this program; if not, see http://www.gnu.org/licenses or write to the Free
+// Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+// 02110-1301 USA.
+//
+// You can contact Zurmo, Inc. with a mailing address at 27 North Wacker Drive
+// Suite 370 Chicago, IL 60606. or at email address contact@zurmo.com.
+//
+// The interactive user interfaces in original and modified versions
+// of this program must display Appropriate Legal Notices, as required under
+// Section 5 of the GNU Affero General Public License version 3.
+//
+// In accordance with Section 7(b) of the GNU Affero General Public License version 3,
+// these Appropriate Legal Notices must retain the display of the Zurmo
+// logo and Zurmo copyright notice. If the display of the logo is not reasonably
+// feasible for technical reasons, the Appropriate Legal Notices must display the words
+// "Copyright Zurmo Inc. 2013. All rights reserved".
+
+.panel-buffer{
+    padding:15px;
+}
+.add-custom-field{
+    .panel-buffer{
+        height:30px;
+    }
+    .panel-buffer > div{
+        width: 100%;
+        float:left;
+    }
+    .hasDropDown{
+        margin-right:130px;
+        width:auto;
+    }
+    .configure-custom-field-button{
+        position: relative;
+        top: 1px;
+        &:before{
+            content: "n";
+            .symbly(16px);
+            margin-right:5px;
+            position:relative;
+            top:0px;
+        }
+    }
+}
+
+#attributeTypeNameButton{
+    margin:0 0 0 -115px;
+    float:right;
+    clear:right;
+}
+
+
 .lead-conversion-radiobutton{
 	display:block;
 	margin-bottom:10px;
@@ -11,6 +79,7 @@
     .wide.form{
     	padding:15px !important;
     	#gradient > .vertical(#ffffff, #F5F5F5);
+	    .border-box();
     }
     .hasCheckBox{
     	margin-left:0;
@@ -21,9 +90,9 @@
 }
 
 .designer-toolbar{
-    margin:15px 0 0 0;
+    margin:0;
     input[type="submit"]{
-        .zButton();
+        ++.z-button;
         margin-bottom:15px;
     }
     h3{
@@ -62,7 +131,7 @@
     border:1px solid #ccc;
     #gradient > .vertical(#f6f6f6, #ededed);
     .b-shadow(inset 0 1px 0 0 #ffffff);
-    color:@themeColor;
+    ++.themeColor;
     &.ui-state-disabled{
         color:#dcdcdc;
         #gradient > .vertical(#efefef, #ededed);
@@ -103,7 +172,6 @@
     padding: 10px 10px 10px 10px;
     width: 100% !important;
     min-height: 60px !important;
-    color:@themeColor !important;
     .t-shadow( rgba(255, 255, 255, 0.8) 0px 1px );
 }
 
@@ -122,7 +190,6 @@
     padding: 0px;
     width: 100%;
     height: 100%;
-    color:@themeColor !important;
     border:1px solid #ccc;
     #gradient > .vertical(#f6f6f6, #ededed);
     .b-shadow(inset 0 1px 0 0 #ffffff);
@@ -183,7 +250,7 @@
 }
 
 .sortable-row-list{
-    color:@themeColor !important;
+    ++.themeColor-important;
 }
 
 .layout-single-column {
@@ -214,15 +281,20 @@
     padding: 0;
     clear: both;
     min-height: 60px;
+    float: left;
+    width: 100%;
     > li {
         min-height: 60px;
         margin-bottom: 5px;
     }
 }
 
-#sortable-editable-dropdown-collection li {
-    height: auto;
-    font-size: 1em;
+#sortable-editable-dropdown-collection{
+    clear: left;
+    li {
+        height: auto;
+        font-size: 1em;
+    }
 }
 
 .ui-icon{
@@ -330,6 +402,12 @@
         background:#fbf9ee;
         color:#363636 ;
     }
+    .ui-state-highlight{
+	width: 100%;
+	min-height: 60px;
+	float: left;
+	display: block;
+    }
     .ui-state-highlight a,
     .ui-widget-content .ui-state-highlight a,
     .ui-widget-header .ui-state-highlight a{
@@ -366,7 +444,6 @@
     .ui-widget-header .ui-state-active{
         z-index:9999;
         color:#212121;
-         .b-shadow(0 0 1px 1px @themeColor);
     }
 }
 
@@ -390,7 +467,7 @@
         margin-right:3px;
         position:relative;
         top:1px;
-        color:@themeColor2;
+        ++.themeColor2;
     }
     .sortable{
         list-style: none;
@@ -405,8 +482,9 @@
         }
         .remove-sortable-item-link{
             position: absolute;
-            left: 6px;
-            top: 5px;
+            left: 3px;
+            //top: 3px;
+            line-height: 1;
             z-index: 100;
             span{
                 text-indent:-9999px;
@@ -414,10 +492,13 @@
             }
             &:after{
                 content:"_";
-                .symbly(20px);
+                .symbly(22px);
                 text-indent:0 !important;
                 color:#A7A7A7;
                 .t-shadow(0 1px 0 #fff);
+	            line-height: 1;
+	            position: relative;
+	            top: 1px;
             }
         }
     }
@@ -426,12 +507,6 @@
         //padding-top:16px;
         td{
             padding-left:0 !important;
-        }
-        #customFieldDataData_AddInputButton{
-            .zButton();
-            margin:15px 0 0 0;
-            float: left;
-            clear: both;
         }
     }
 }
@@ -456,4 +531,50 @@
 	table{
 		border-top:none !important;
 	}
+}
+
+#available-fields{
+    margin-top:15px;
+    border: 1px solid #DFDFDF;
+    border-collapse: collapse;
+    border-spacing: 1px;
+    margin-bottom:10px;
+    th{
+        font-weight:bold;
+        background: url(../images/table-items-header.png) left top repeat-x;
+    }
+    th, td{
+        border: 1px solid #DFDFDF;
+        vertical-align:middle;
+        padding:10px 5px !important;
+    }
+}
+
+
+/*Picklist Creation*/
+#picklist-values{
+    margin: 15px 0;
+    td{
+        padding-left: 0;
+        padding-bottom: 0;
+    }
+    .errorMessage{
+        margin-top:-5px;
+    }
+}
+#DropDownAttributeForm_customFieldDataData_em_{
+    margin-bottom: 10px;
+}
+#customFieldDataData_ul{
+    li{
+        position: relative;
+    }
+}
+
+#contactStatesData_AddInputButton,
+#customFieldDataData_AddInputButton{
+    ++.z-button;
+    margin:5px 0 0 0 !important;
+    float: left;
+    clear: both;
 }

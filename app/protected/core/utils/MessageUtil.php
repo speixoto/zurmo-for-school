@@ -1,10 +1,10 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2012 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
-     * the terms of the GNU General Public License version 3 as published by the
+     * the terms of the GNU Affero General Public License version 3 as published by the
      * Free Software Foundation with the addition of the following permission added
      * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
      * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
@@ -12,16 +12,26 @@
      *
      * Zurmo is distributed in the hope that it will be useful, but WITHOUT
      * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-     * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+     * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
      * details.
      *
-     * You should have received a copy of the GNU General Public License along with
+     * You should have received a copy of the GNU Affero General Public License along with
      * this program; if not, see http://www.gnu.org/licenses or write to the Free
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
      *
-     * You can contact Zurmo, Inc. with a mailing address at 113 McHenry Road Suite 207,
-     * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
+     * You can contact Zurmo, Inc. with a mailing address at 27 North Wacker Drive
+     * Suite 370 Chicago, IL 60606. or at email address contact@zurmo.com.
+     *
+     * The interactive user interfaces in original and modified versions
+     * of this program must display Appropriate Legal Notices, as required under
+     * Section 5 of the GNU Affero General Public License version 3.
+     *
+     * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
+     * these Appropriate Legal Notices must retain the display of the Zurmo
+     * logo and Zurmo copyright notice. If the display of the logo is not reasonably
+     * feasible for technical reasons, the Appropriate Legal Notices must display the words
+     * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -207,7 +217,7 @@
                     $messagesInMessageFile = require($messageFileName);
                     if (!is_array($messagesInMessageFile))
                     {
-                        $problems[] = "$shortFileName is not a valid message file.\n";
+                        $problems[] = "$messageFileName is not a valid message file.\n";
                         continue;
                     }
                     $messagesInMessageFile = array_keys($messagesInMessageFile);
@@ -301,7 +311,7 @@
         return $problems;
     }
 
-    function findFileNameToCategoryToMessage($path)
+    function findFileNameToCategoryToMessage($path, $forcedCategory = '')
     {
         assert('is_string($path)');
         assert('is_dir   ($path)');
@@ -322,7 +332,7 @@
                     pathinfo($entry, PATHINFO_EXTENSION) == 'php')
                 {
                     //Avoid any models in the framework/models folder and test models
-                    if ( strpos($path, '/framework') === false &&
+                    if ( strpos($path, '/core') === false &&
                          strpos($path, '/tests') === false &&
                          strpos($path, '/models') !== false &&
                          strpos($fullEntryName, '.php') !== false)
@@ -333,45 +343,43 @@
                             $modelReflectionClass->isSubclassOf('OwnedModel') &&
                             !$modelReflectionClass->isAbstract())
                         {
-                           $model              = new $modelClassName(false);
-                           $modelAttributes    = $model->attributeNames();
-                           $untranslatedLabels = $model->getUntranslatedAttributeLabels();
+                           $modelAttributes    = $modelClassName::getAttributeNames();
+                           $translatedLabels = $modelClassName::getTranslatedAttributeLabels(Yii::app()->language);
                            foreach ($modelAttributes as $attributeName)
                            {
-                                $attributeLabel = $model->getAttributeLabel($attributeName);
-                                if (isset($untranslatedLabels[$attributeName]))
+                                $attributeLabel = $modelClassName::getAnAttributeLabel($attributeName);
+                                if (isset($translatedLabels[$attributeName]))
                                 {
-                                    $translatedLabel = Yii::t('Default', $untranslatedLabels[$attributeName],
-                                                                         LabelUtil::getTranslationParamsForAllModules());
-                                    if ($untranslatedLabels[$attributeName] == $attributeLabel ||
+                                    $translatedLabel = $translatedLabels[$attributeName];
+                                    if ($translatedLabels[$attributeName] == $attributeLabel ||
                                        $translatedLabel != $attributeLabel)
                                     {
-                                        $fileNamesToCategoriesToMessages[$entry]['Default'][] = $attributeLabel;
+                                        $fileNamesToCategoriesToMessages[$fullEntryName]['Default'][] = $attributeLabel;
                                     }
                                     else
                                     {
-                                        $fileNamesToCategoriesToMessages[$entry]['Default'][] =
-                                        $untranslatedLabels[$attributeName];
+                                        $fileNamesToCategoriesToMessages[$fullEntryName]['Default'][] =
+                                        $translatedLabels[$attributeName];
                                     }
                                 }
                                 else
                                 {
-                                    $fileNamesToCategoriesToMessages[$entry]['Default'][] = $attributeLabel;
+                                    $fileNamesToCategoriesToMessages[$fullEntryName]['Default'][] = $attributeLabel;
                                 }
                                //Find attributes that are a CustomField relation. This means there is drop down values
                                //that will need to be translated.
-                               if ($model->isRelation($attributeName) &&
-                                   ($model->getRelationModelClassName($attributeName) == 'OwnedCustomField' ||
-                                   $model->getRelationModelClassName($attributeName) == 'CustomField' ||
-                                   $model->getRelationModelClassName($attributeName) == 'MultipleValuesCustomField' ||
-                                   $model->getRelationModelClassName($attributeName) == 'OwnedMultipleValuesCustomField'))
+                               if ($modelClassName::isRelation($attributeName) &&
+                                   ($modelClassName::getRelationModelClassName($attributeName) == 'OwnedCustomField' ||
+                                    $modelClassName::getRelationModelClassName($attributeName) == 'CustomField' ||
+                                    $modelClassName::getRelationModelClassName($attributeName) == 'MultipleValuesCustomField' ||
+                                    $modelClassName::getRelationModelClassName($attributeName) == 'OwnedMultipleValuesCustomField'))
                                 {
                                     $customFieldData = CustomFieldDataModelUtil::
                                                        getDataByModelClassNameAndAttributeName($modelClassName, $attributeName);
                                     $customFieldDataNames = unserialize($customFieldData->serializedData);
                                     foreach ($customFieldDataNames as $dataName)
                                     {
-                                        $fileNamesToCategoriesToMessages[$entry]['Default'][] = $dataName;
+                                        $fileNamesToCategoriesToMessages[$fullEntryName]['Default'][] = $dataName;
                                     }
                                 }
                            }
@@ -388,14 +396,14 @@
                             $labelsData = getSecurableModuleRightsPoliciesAndAuditEventLabels($moduleClassName);
                             if (!empty($labelsData))
                             {
-                                if (isset($fileNamesToCategoriesToMessages[$entry]['Default']))
+                                if (isset($fileNamesToCategoriesToMessages[$fullEntryName]['Default']))
                                 {
-                                    $fileNamesToCategoriesToMessages[$entry]['Default'] =
-                                    array_merge($fileNamesToCategoriesToMessages[$entry]['Default'], $labelsData);
+                                    $fileNamesToCategoriesToMessages[$fullEntryName]['Default'] =
+                                    array_merge($fileNamesToCategoriesToMessages[$fullEntryName]['Default'], $labelsData);
                                 }
                                 else
                                 {
-                                    $fileNamesToCategoriesToMessages[$entry]['Default'] = $labelsData;
+                                    $fileNamesToCategoriesToMessages[$fullEntryName]['Default'] = $labelsData;
                                 }
                             }
                         }
@@ -407,21 +415,21 @@
                             $states              = $stateModelClassName::getAll();
                             foreach ($states as $state)
                             {
-                                $fileNamesToCategoriesToMessages[$entry]['Default'][] = $state->name;
+                                $fileNamesToCategoriesToMessages[$fullEntryName]['Default'][] = $state->name;
                             }
                         }
                         //check for menu labels
                         if (!$moduleReflectionClass->isAbstract())
                         {
-                            if (isset($fileNamesToCategoriesToMessages[$entry]['Default']))
+                            if (isset($fileNamesToCategoriesToMessages[$fullEntryName]['Default']))
                             {
-                                $fileNamesToCategoriesToMessages[$entry]['Default'] =
-                                array_merge($fileNamesToCategoriesToMessages[$entry]['Default'],
+                                $fileNamesToCategoriesToMessages[$fullEntryName]['Default'] =
+                                array_merge($fileNamesToCategoriesToMessages[$fullEntryName]['Default'],
                                             getModuleMenuLabelNamesByModuleName($moduleClassName));
                             }
                             else
                             {
-                                $fileNamesToCategoriesToMessages[$entry]['Default'] =
+                                $fileNamesToCategoriesToMessages[$fullEntryName]['Default'] =
                                     getModuleMenuLabelNamesByModuleName($moduleClassName);
                             }
                         }
@@ -441,7 +449,7 @@
                                 {
                                     if (isset($panel['title']))
                                     {
-                                        $fileNamesToCategoriesToMessages[$entry]['Default'][] = $panel['title'];
+                                        $fileNamesToCategoriesToMessages[$fullEntryName]['Default'][] = $panel['title'];
                                     }
                                 }
                             }
@@ -456,15 +464,21 @@
                         {
                             foreach ($matches[1] as $index => $category)
                             {
-                                if (!isset($fileNamesToCategoriesToMessages[$entry][$category]))
+                                if ($forcedCategory
+                                    AND is_string($forcedCategory)
+                                    AND strlen($forcedCategory))
                                 {
-                                    $fileNamesToCategoriesToMessages[$entry][$category] = array();
+                                    $category = $forcedCategory;
+                                }
+                                if (!isset($fileNamesToCategoriesToMessages[$fullEntryName][$category]))
+                                {
+                                    $fileNamesToCategoriesToMessages[$fullEntryName][$category] = array();
                                 }
                                 //Remove extra lines caused by ' . ' which is used for line breaks in php. Minimum 3 spaces
                                 //will avoid catching 2 spaces between words which can be legitimate.
                                 $massagedString = preg_replace('/[\p{Z}\s]{3,}/u', ' ', $matches[2][$index]); // Not Coding Standard
                                 $massagedString = str_replace("' . '", '', $massagedString);
-                                $fileNamesToCategoriesToMessages[$entry][$category][] = $massagedString;
+                                $fileNamesToCategoriesToMessages[$fullEntryName][$category][] = $massagedString;
                                 if ($matches[2][$index] != $massagedString && strpos($matches[2][$index], "' .") === false)
                                 {
                                     echo 'The following message should be using proper line breaks: ' . $matches[2][$index] . "\n";
@@ -481,8 +495,8 @@
     function getSecurableModuleRightsPoliciesAndAuditEventLabels($moduleClassName)
     {
         assert('is_string($moduleClassName)');
-        $rightsNames     = $moduleClassName::getUntranslatedRightsLabels();
-        $policiesNames   = $moduleClassName::getUntranslatedPolicyLabels();
+        $rightsNames     = $moduleClassName::getTranslatedRightsLabels();
+        $policiesNames   = $moduleClassName::getTranslatedPolicyLabels();
         $auditEventNames = $moduleClassName::getAuditEventNames();
         $labelsData      = array_merge($rightsNames, $policiesNames);
         return             array_merge($labelsData, $auditEventNames);
@@ -492,6 +506,26 @@
     {
         $labels   = array();
         $metadata = $moduleClassName::getMetadata();
+        if (isset($metadata['global']['adminTabMenuItems']))
+        {
+            foreach ($metadata['global']['adminTabMenuItems'] as $menuItem)
+            {
+                if (isset($menuItem['items']))
+                {
+                    foreach ($menuItem['items'] as $subMenuItem)
+                    {
+                        if (!in_array($subMenuItem['label'], $labels))
+                        {
+                            $labels[] = $subMenuItem['label'];
+                        }
+                    }
+                }
+                if (!in_array($menuItem['label'], $labels))
+                {
+                    $labels[] = $menuItem['label'];
+                }
+            }
+        }
         if (isset($metadata['global']['tabMenuItems']))
         {
             foreach ($metadata['global']['tabMenuItems'] as $menuItem)

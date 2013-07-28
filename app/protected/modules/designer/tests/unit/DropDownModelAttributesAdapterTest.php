@@ -1,10 +1,10 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2012 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
-     * the terms of the GNU General Public License version 3 as published by the
+     * the terms of the GNU Affero General Public License version 3 as published by the
      * Free Software Foundation with the addition of the following permission added
      * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
      * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
@@ -12,16 +12,26 @@
      *
      * Zurmo is distributed in the hope that it will be useful, but WITHOUT
      * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-     * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+     * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
      * details.
      *
-     * You should have received a copy of the GNU General Public License along with
+     * You should have received a copy of the GNU Affero General Public License along with
      * this program; if not, see http://www.gnu.org/licenses or write to the Free
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
      *
-     * You can contact Zurmo, Inc. with a mailing address at 113 McHenry Road Suite 207,
-     * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
+     * You can contact Zurmo, Inc. with a mailing address at 27 North Wacker Drive
+     * Suite 370 Chicago, IL 60606. or at email address contact@zurmo.com.
+     *
+     * The interactive user interfaces in original and modified versions
+     * of this program must display Appropriate Legal Notices, as required under
+     * Section 5 of the GNU Affero General Public License version 3.
+     *
+     * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
+     * these Appropriate Legal Notices must retain the display of the Zurmo
+     * logo and Zurmo copyright notice. If the display of the logo is not reasonably
+     * feasible for technical reasons, the Appropriate Legal Notices must display the words
+     * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
     class DropDownModelAttributesAdapterTest extends ZurmoBaseTest
@@ -88,15 +98,15 @@
             $account = new Account();
 
             //First create a dependency
-            $mappingData = array(array('attributeName' => 'aaa'),
-                                 array('attributeName' => 'bbb',
+            $mappingData = array(array('attributeName' => 'aaaCstm'),
+                                 array('attributeName' => 'bbbCstm',
                                         'valuesToParentValues' =>
                                          array('b1' => 'a1',
                                                'b2' => 'a2',
                                                'b3' => 'a3',
                                                'b4' => 'a4'
                                          )),
-                                 array('attributeName' => 'ccc',
+                                 array('attributeName' => 'cccCstm',
                                         'valuesToParentValues' =>
                                          array('c1' => 'b1',
                                                'c2' => 'b2',
@@ -113,7 +123,7 @@
 
             //Change b3 to b3New
             $attributeForm                                    = AttributesFormFactory::
-                                                                createAttributeFormByAttributeName($account, 'bbb');
+                                                                createAttributeFormByAttributeName($account, 'bbbCstm');
             $attributeForm->customFieldDataDataExistingValues = array('b1', 'b2', 'b3', 'b4');
             $attributeForm->customFieldDataData               = array('b1', 'b2', 'b3New', 'b4');
             $modelAttributesAdapterClassName                  = $attributeForm::
@@ -133,15 +143,15 @@
             $metadata         = DropDownDependencyDerivedAttributeMetadata::getById($metadata->id);
             $unserializedData = unserialize($metadata->serializedMetadata);
 
-            $compareData      = array(array('attributeName' => 'aaa'),
-                                 array('attributeName' => 'bbb',
+            $compareData      = array(array('attributeName' => 'aaaCstm'),
+                                 array('attributeName' => 'bbbCstm',
                                         'valuesToParentValues' =>
                                          array('b1' => 'a1',
                                                'b2' => 'a2',
                                                'b3New' => 'a3',
                                                'b4' => 'a4'
                                          )),
-                                 array('attributeName' => 'ccc',
+                                 array('attributeName' => 'cccCstm',
                                         'valuesToParentValues' =>
                                          array('c1' => 'b1',
                                                'c2' => 'b2',
@@ -154,7 +164,7 @@
             //Now change a value for a dropdown that is the first level of the dependency. This will only change the
             //value when it is a parent value.
             $attributeForm                                    = AttributesFormFactory::
-                                                                createAttributeFormByAttributeName($account, 'aaa');
+                                                                createAttributeFormByAttributeName($account, 'aaaCstm');
             $attributeForm->customFieldDataDataExistingValues = array('a1', 'a2', 'a3', 'a4');
             $attributeForm->customFieldDataData               = array('a1', 'a2New', 'a3', 'a4');
             $modelAttributesAdapterClassName                  = $attributeForm::
@@ -174,15 +184,15 @@
             $metadata         = DropDownDependencyDerivedAttributeMetadata::getById($metadata->id);
             $unserializedData = unserialize($metadata->serializedMetadata);
 
-            $compareData      = array(array('attributeName' => 'aaa'),
-                                 array('attributeName' => 'bbb',
+            $compareData      = array(array('attributeName' => 'aaaCstm'),
+                                 array('attributeName' => 'bbbCstm',
                                         'valuesToParentValues' =>
                                          array('b1' => 'a1',
                                                'b2' => 'a2New',
                                                'b3New' => 'a3',
                                                'b4' => 'a4'
                                          )),
-                                 array('attributeName' => 'ccc',
+                                 array('attributeName' => 'cccCstm',
                                         'valuesToParentValues' =>
                                          array('c1' => 'b1',
                                                'c2' => 'b2',
@@ -194,7 +204,7 @@
 
             //Now change 2 values at once.
             $attributeForm                                    = AttributesFormFactory::
-                                                                createAttributeFormByAttributeName($account, 'ccc');
+                                                                createAttributeFormByAttributeName($account, 'cccCstm');
             $attributeForm->customFieldDataDataExistingValues = array('c1', 'c2', 'c3', 'c4');
             $attributeForm->customFieldDataData               = array('c1New', 'c2New', 'c3', 'c4');
             $modelAttributesAdapterClassName                  = $attributeForm::
@@ -214,15 +224,15 @@
             $metadata         = DropDownDependencyDerivedAttributeMetadata::getById($metadata->id);
             $unserializedData = unserialize($metadata->serializedMetadata);
 
-            $compareData      = array(array('attributeName' => 'aaa'),
-                                 array('attributeName' => 'bbb',
+            $compareData      = array(array('attributeName' => 'aaaCstm'),
+                                 array('attributeName' => 'bbbCstm',
                                         'valuesToParentValues' =>
                                          array('b1' => 'a1',
                                                'b2' => 'a2New',
                                                'b3New' => 'a3',
                                                'b4' => 'a4'
                                          )),
-                                 array('attributeName' => 'ccc',
+                                 array('attributeName' => 'cccCstm',
                                         'valuesToParentValues' =>
                                          array('c1New' => 'b1',
                                                'c2New' => 'b2',
@@ -243,7 +253,7 @@
 
             //Remove a1
             $attributeForm                                    = AttributesFormFactory::
-                                                                createAttributeFormByAttributeName($account, 'aaa');
+                                                                createAttributeFormByAttributeName($account, 'aaaCstm');
             $attributeForm->customFieldDataData               = array('a2New', 'a3', 'a4');
             $modelAttributesAdapterClassName                  = $attributeForm::
                                                                 getModelAttributeAdapterNameForSavingAttributeFormData();
@@ -263,15 +273,15 @@
                                 getByNameAndModelClassName('aName', 'Account');
             $unserializedData = unserialize($metadata->serializedMetadata);
 
-            $compareData      = array(array('attributeName' => 'aaa'),
-                                 array('attributeName' => 'bbb',
+            $compareData      = array(array('attributeName' => 'aaaCstm'),
+                                 array('attributeName' => 'bbbCstm',
                                         'valuesToParentValues' =>
                                          array('b1' => null,
                                                'b2' => 'a2New',
                                                'b3New' => 'a3',
                                                'b4' => 'a4'
                                          )),
-                                 array('attributeName' => 'ccc',
+                                 array('attributeName' => 'cccCstm',
                                         'valuesToParentValues' =>
                                          array('c1New' => 'b1',
                                                'c2New' => 'b2',
@@ -283,7 +293,7 @@
 
             //Remove b4
             $attributeForm                                    = AttributesFormFactory::
-                                                                createAttributeFormByAttributeName($account, 'bbb');
+                                                                createAttributeFormByAttributeName($account, 'bbbCstm');
             $attributeForm->customFieldDataData               = array('b1', 'b2', 'b3New');
             $modelAttributesAdapterClassName                  = $attributeForm::
                                                                 getModelAttributeAdapterNameForSavingAttributeFormData();
@@ -303,14 +313,14 @@
                                 getByNameAndModelClassName('aName', 'Account');
             $unserializedData = unserialize($metadata->serializedMetadata);
 
-            $compareData      = array(array('attributeName' => 'aaa'),
-                                 array('attributeName' => 'bbb',
+            $compareData      = array(array('attributeName' => 'aaaCstm'),
+                                 array('attributeName' => 'bbbCstm',
                                         'valuesToParentValues' =>
                                          array('b1' => null,
                                                'b2' => 'a2New',
                                                'b3New' => 'a3',
                                          )),
-                                 array('attributeName' => 'ccc',
+                                 array('attributeName' => 'cccCstm',
                                         'valuesToParentValues' =>
                                          array('c1New' => 'b1',
                                                'c2New' => 'b2',

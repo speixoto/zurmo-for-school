@@ -1,10 +1,10 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2012 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
-     * the terms of the GNU General Public License version 3 as published by the
+     * the terms of the GNU Affero General Public License version 3 as published by the
      * Free Software Foundation with the addition of the following permission added
      * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
      * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
@@ -12,16 +12,26 @@
      *
      * Zurmo is distributed in the hope that it will be useful, but WITHOUT
      * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-     * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+     * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
      * details.
      *
-     * You should have received a copy of the GNU General Public License along with
+     * You should have received a copy of the GNU Affero General Public License along with
      * this program; if not, see http://www.gnu.org/licenses or write to the Free
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
      *
-     * You can contact Zurmo, Inc. with a mailing address at 113 McHenry Road Suite 207,
-     * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
+     * You can contact Zurmo, Inc. with a mailing address at 27 North Wacker Drive
+     * Suite 370 Chicago, IL 60606. or at email address contact@zurmo.com.
+     *
+     * The interactive user interfaces in original and modified versions
+     * of this program must display Appropriate Legal Notices, as required under
+     * Section 5 of the GNU Affero General Public License version 3.
+     *
+     * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
+     * these Appropriate Legal Notices must retain the display of the Zurmo
+     * logo and Zurmo copyright notice. If the display of the logo is not reasonably
+     * feasible for technical reasons, the Appropriate Legal Notices must display the words
+     * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
     class Item extends CustomFieldsModel
@@ -35,6 +45,16 @@
         // value is not overwritten) so that on save the
         // changes can be written to the audit log.
         public $originalAttributeValues = array();
+
+        /**
+         * Should the model be audited. Override and set to false if you do not need to audit the Item.
+         * @var bool
+         */
+        protected $isAudited = true;
+
+        private $_workflowsToProcessAfterSave = array();
+
+        private $_processWorkflowOnSave = true;
 
         public function onCreated()
         {
@@ -71,7 +91,7 @@
             $this->isSetting = true;
             try
             {
-                if (!$this->isSaving)
+                if (!$this->isSaving && $this->isAudited)
                 {
                     AuditUtil::saveOriginalAttributeValue($this, $attributeName, $value);
                 }
@@ -87,7 +107,10 @@
 
         public function delete()
         {
-            AuditEvent::logAuditEvent('ZurmoModule', ZurmoModule::AUDIT_EVENT_ITEM_DELETED, strval($this), $this);
+            if ($this->isAudited)
+            {
+                AuditEvent::logAuditEvent('ZurmoModule', ZurmoModule::AUDIT_EVENT_ITEM_DELETED, strval($this), $this);
+            }
             return parent::delete();
         }
 
@@ -98,6 +121,38 @@
             return parent::save($runValidation, $attributeNames);
         }
 
+        public function addWorkflowToProcessAfterSave(Workflow $workflow)
+        {
+            $this->_workflowsToProcessAfterSave[] = $workflow;
+        }
+
+        public function getWorkflowsToProcessAfterSave()
+        {
+            return $this->_workflowsToProcessAfterSave;
+        }
+
+        public function setDoNotProcessWorkflowOnSave()
+        {
+            $this->_processWorkflowOnSave = false;
+        }
+
+        public function setProcessWorkflowOnSave()
+        {
+            $this->_processWorkflowOnSave = true;
+        }
+
+        public function shouldProcessWorkflowOnSave()
+        {
+            return $this->_processWorkflowOnSave;
+        }
+
+        protected static function getByNameOrEquivalent($attributeName, $value)
+        {
+            assert('is_string($attributeName)');
+            assert('is_string($value) && $value != ""');
+            return static::getSubset(null, null, null, $attributeName . " = '" . DatabaseCompatibilityUtil::escape($value) . "'");
+        }
+
         /**
          * Special handling of the import scenario. When you are importing a model, you can potentially set the
          * created/modified user/datetime which is normally not allowed since they are read-only attributes.  This
@@ -106,6 +161,7 @@
          */
         protected function beforeSave()
         {
+             $this->isNewModel = $this->id < 0;
              if (parent::beforeSave())
              {
                 if ($this->unrestrictedGet('id') < 0)
@@ -119,7 +175,6 @@
                         }
                     }
                 }
-                $this->isNewModel = $this->id < 0;
                 return true;
              }
              else
@@ -131,9 +186,13 @@
         protected function afterSave()
         {
             parent::afterSave();
-            $this->logAuditEventsListForCreatedAndModifed($this->isNewModel);
-            AuditUtil::clearRelatedModelsOriginalAttributeValues($this);
-            $this->originalAttributeValues = array();
+            if ($this->isAudited)
+            {
+                $this->logAuditEventsListForCreatedAndModifed($this->isNewModel);
+                AuditUtil::clearRelatedModelsOriginalAttributeValues($this);
+            }
+            $this->originalAttributeValues      = array();
+            $this->_workflowsToProcessAfterSave = array();
             $this->isNewModel = false; //reset.
         }
 
@@ -163,8 +222,10 @@
                     'modifiedDateTime',
                 ),
                 'relations' => array(
-                    'createdByUser'  => array(RedBeanModel::HAS_ONE,  'User'),
-                    'modifiedByUser' => array(RedBeanModel::HAS_ONE,  'User'),
+                    'createdByUser'  => array(RedBeanModel::HAS_ONE,  'User', RedBeanModel::NOT_OWNED,
+                                     RedBeanModel::LINK_TYPE_SPECIFIC, 'createdByUser'),
+                    'modifiedByUser' => array(RedBeanModel::HAS_ONE,  'User', RedBeanModel::NOT_OWNED,
+                                     RedBeanModel::LINK_TYPE_SPECIFIC, 'modifiedByUser'),
                 ),
                 'rules' => array(
                     array('createdDateTime',  'required'),
@@ -205,7 +266,7 @@
         {
             assert("\$this->isAttribute('$attributeName')");
             assert('$attributeName != "id"');
-            $attributeModelClassName = $this->getAttributeModelClassName($attributeName);
+            $attributeModelClassName = static::getAttributeModelClassName($attributeName);
             $metadata = static::getMetadata();
             if (isset($metadata[$attributeModelClassName]['noAudit']) &&
                 in_array($attributeName, $metadata[$attributeModelClassName]['noAudit']))
@@ -223,7 +284,7 @@
          */
         public function isAllowedToSetReadOnlyAttribute($attributeName)
         {
-            if ($this->getScenario() == 'importModel')
+            if ($this->getScenario() == 'importModel' || $this->getScenario() == 'searchModel')
             {
                 if ($this->unrestrictedGet('id') > 0)
                 {
@@ -247,6 +308,26 @@
         public static function getGamificationRulesType()
         {
             return null;
+        }
+
+        protected static function translatedAttributeLabels($language)
+        {
+            return array_merge(parent::translatedAttributeLabels($language), array(
+                'createdByUser'      => Zurmo::t('ZurmoModule', 'Created By User', array(), null, $language),
+                'createdDateTime'    => Zurmo::t('ZurmoModule', 'Created Date Time', array(), null, $language),
+                'modifiedByUser'     => Zurmo::t('ZurmoModule', 'Modified By User', array(), null, $language),
+                'modifiedDateTime'   => Zurmo::t('ZurmoModule', 'Modified Date Time', array(), null, $language),
+            ));
+        }
+
+        public static function getNonConfigurableAttributes()
+        {
+            $metadata = static::getDefaultMetadata();
+            if (isset($metadata[get_called_class()]['nonConfigurableAttributes']))
+            {
+                return $metadata[get_called_class()]['nonConfigurableAttributes'];
+            }
+            return array();
         }
     }
 ?>

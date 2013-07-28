@@ -1,10 +1,10 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2012 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
-     * the terms of the GNU General Public License version 3 as published by the
+     * the terms of the GNU Affero General Public License version 3 as published by the
      * Free Software Foundation with the addition of the following permission added
      * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
      * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
@@ -12,16 +12,26 @@
      *
      * Zurmo is distributed in the hope that it will be useful, but WITHOUT
      * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-     * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+     * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
      * details.
      *
-     * You should have received a copy of the GNU General Public License along with
+     * You should have received a copy of the GNU Affero General Public License along with
      * this program; if not, see http://www.gnu.org/licenses or write to the Free
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
      *
-     * You can contact Zurmo, Inc. with a mailing address at 113 McHenry Road Suite 207,
-     * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
+     * You can contact Zurmo, Inc. with a mailing address at 27 North Wacker Drive
+     * Suite 370 Chicago, IL 60606. or at email address contact@zurmo.com.
+     *
+     * The interactive user interfaces in original and modified versions
+     * of this program must display Appropriate Legal Notices, as required under
+     * Section 5 of the GNU Affero General Public License version 3.
+     *
+     * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
+     * these Appropriate Legal Notices must retain the display of the Zurmo
+     * logo and Zurmo copyright notice. If the display of the logo is not reasonably
+     * feasible for technical reasons, the Appropriate Legal Notices must display the words
+     * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
     class User extends Permitable
@@ -57,16 +67,17 @@
                 throw new BadPasswordException();
             }
             if (Right::ALLOW != $user->getEffectiveRight('UsersModule', UsersModule::RIGHT_LOGIN_VIA_WEB) &&
-                !Yii::app()->apiRequest->isApiRequest())
+                !ApiRequest::isApiRequest())
             {
                 throw new NoRightWebLoginException();
             }
 
             if (Right::ALLOW != $user->getEffectiveRight('UsersModule', UsersModule::RIGHT_LOGIN_VIA_WEB_API) &&
-                Yii::app()->apiRequest->isApiRequest())
+                ApiRequest::isApiRequest())
             {
                 throw new ApiNoRightWebApiLoginException();
             }
+            $user->login();
             return $user;
         }
 
@@ -117,6 +128,11 @@
             }
         }
 
+        protected static function getMixedInModelClassNames()
+        {
+            return array('Person');
+        }
+
         protected function linkBeans()
         {
             // Link the beans up the inheritance hierarchy, skipping
@@ -160,7 +176,7 @@
             $fullName = $this->getFullName();
             if ($fullName == '')
             {
-                return Yii::t('Default', '(Unnamed)');
+                return Zurmo::t('UsersModule', '(Unnamed)');
             }
             return $fullName;
         }
@@ -190,10 +206,15 @@
             unset($this->originalAttributeValues['hash']);
             assert('!isset($this->originalAttributeValues["hash"])');
             $saved = parent::save($runValidation, $attributeNames);
+
             if ($saved && $passwordChanged)
             {
                 AuditEvent::
                 logAuditEvent('UsersModule', UsersModule::AUDIT_EVENT_USER_PASSWORD_CHANGED, $this->username, $this);
+            }
+            if ($saved)
+            {
+                $this->setIsActive();
             }
             return $saved;
         }
@@ -353,9 +374,9 @@
         public function getAvatarImage($size = 250)
         {
             $avatarUrl = $this->getAvatarImageUrl($size);
-            return ZurmoHtml::image($avatarUrl, null, array('class'  => 'gravatar',
-                                                            'width'  => $size,
-                                                            'height' => $size));
+            return ZurmoHtml::image($avatarUrl, $this->getFullName(), array('class'  => 'gravatar',
+                                                                              'width'  => $size,
+                                                                              'height' => $size));
         }
 
         private function getAvatarImageUrl($size)
@@ -408,15 +429,28 @@
             return true;
         }
 
-        protected function untranslatedAttributeLabels()
+        protected static function translatedAttributeLabels($language)
         {
-            return array_merge(parent::untranslatedAttributeLabels(),
+            return array_merge(parent::translatedAttributeLabels($language),
                 array(
-                    'fullName' => 'Name',
-                    'timeZone' => 'Time Zone',
-                    'title'    => 'Salutation',
-                    'primaryEmail' => 'Email',
-                    'primaryAddress' => 'Address',
+                    'currency'          => Zurmo::t('ZurmoModule',         'Currency',          array(), null, $language),
+                    'emailAccounts'     => Zurmo::t('EmailMessagesModule', 'Email Accounts',    array(), null, $language),
+                    'emailBoxes'        => Zurmo::t('EmailMessagesModule', 'Email Boxes',       array(), null, $language),
+                    'emailSignatures'   => Zurmo::t('EmailMessagesModule', 'Email Signatures',  array(), null, $language),
+                    'fullName'          => Zurmo::t('ZurmoModule',         'Name',              array(), null, $language),
+                    'groups'            => Zurmo::t('ZurmoModule',         'Groups',            array(), null, $language),
+                    'hash'              => Zurmo::t('UsersModule',         'Hash',              array(), null, $language),
+                    'isActive'          => Zurmo::t('UsersModule',         'Is Active',         array(), null, $language),
+                    'language'          => Zurmo::t('ZurmoModule',         'Language',          array(), null, $language),
+                    'locale'            => Zurmo::t('ZurmoModule',         'Locale',            array(), null, $language),
+                    'manager'           => Zurmo::t('UsersModule',         'Manager',           array(), null, $language),
+                    'primaryEmail'      => Zurmo::t('ZurmoModule',         'Email',             array(), null, $language),
+                    'primaryAddress'    => Zurmo::t('ZurmoModule',         'Address',           array(), null, $language),
+                    'role'              => Zurmo::t('ZurmoModule',         'Role',              array(), null, $language),
+                    'timeZone'          => Zurmo::t('UsersModule',         'Time Zone',         array(), null, $language),
+                    'title'             => Zurmo::t('ZurmoModule',         'Salutation',        array(), null, $language),
+                    'username'          => Zurmo::t('UsersModule',         'Username',          array(), null, $language),
+                    'lastLoginDateTime' => Zurmo::t('UsersModule',         'Last Login',        array(), null, $language),
                 )
             );
         }
@@ -617,16 +651,23 @@
                 'members' => array(
                     'hash',
                     'language',
+                    'locale',
                     'timeZone',
                     'username',
-                    'serializedAvatarData'
+                    'serializedAvatarData',
+                    'isActive',
+                    'lastLoginDateTime',
                 ),
                 'relations' => array(
-                    'currency'   => array(RedBeanModel::HAS_ONE,             'Currency'),
-                    'groups'     => array(RedBeanModel::MANY_MANY,           'Group'),
-                    'manager'    => array(RedBeanModel::HAS_ONE,             'User'),
-                    'role'       => array(RedBeanModel::HAS_MANY_BELONGS_TO, 'Role'),
-                    'emailBoxes' => array(RedBeanModel::HAS_MANY,            'EmailBox'),
+                    'currency'          => array(RedBeanModel::HAS_ONE,             'Currency'),
+                    'groups'            => array(RedBeanModel::MANY_MANY,           'Group'),
+                    'manager'           => array(RedBeanModel::HAS_ONE,             'User',
+                                                    RedBeanModel::NOT_OWNED,            RedBeanModel::LINK_TYPE_SPECIFIC,  'manager'),
+                    'role'              => array(RedBeanModel::HAS_MANY_BELONGS_TO, 'Role'),
+                    'emailBoxes'        => array(RedBeanModel::HAS_MANY,            'EmailBox'),
+                    'emailAccounts'     => array(RedBeanModel::HAS_MANY,            'EmailAccount'),
+                    'emailSignatures'   => array(RedBeanModel::HAS_MANY,            'EmailSignature',
+                                                    RedBeanModel::OWNED),
                 ),
                 'foreignRelations' => array(
                     'Dashboard',
@@ -637,9 +678,11 @@
                     array('hash',     'length',  'min'   => 32, 'max' => 32),
                     array('language', 'type',    'type'  => 'string'),
                     array('language', 'length',  'max'   => 10),
+                    array('locale',   'type',    'type'  => 'string'),
+                    array('locale',   'length',  'max'   => 10),
                     array('timeZone', 'type',    'type'  => 'string'),
                     array('timeZone', 'length',  'max'   => 64),
-                    array('timeZone', 'default', 'value' => 'UTC'),
+                    array('timeZone', 'UserDefaultTimeZoneDefaultValueValidator'),
                     array('timeZone', 'ValidateTimeZone'),
                     array('username', 'required'),
                     array('username', 'unique'),
@@ -648,7 +691,11 @@
                     array('username', 'match',   'pattern' => '/^[^A-Z]+$/', // Not Coding Standard
                                                'message' => 'Username must be lowercase.'),
                     array('username', 'length',  'max'   => 64),
-                    array('serializedAvatarData',   'type',  'type' => 'string')
+                    array('username', 'filter', 'filter' => 'trim'),
+                    array('serializedAvatarData', 'type', 'type' => 'string'),
+                    array('isActive', 'readOnly'),
+                    array('isActive', 'boolean'),
+                    array('lastLoginDateTime',    'type', 'type' => 'datetime'),
                 ),
                 'elements' => array(
                 ),
@@ -666,9 +713,151 @@
             return $metadata;
         }
 
+        /**
+         * Check if user's email is unique.
+         * @return boolean
+         */
+        public function beforeValidate()
+        {
+            if (!parent::beforeValidate())
+            {
+                return false;
+            }
+
+            if (isset($this->primaryEmail) &&
+                isset($this->primaryEmail->emailAddress) &&
+                !$this->isUserEmailUnique($this->primaryEmail->emailAddress))
+            {
+                return false;
+            }
+            return true;
+        }
+
+        /**
+         * Check if user email is unique in system. Two users can't share same email address.
+         * @param string $email
+         * @return bool
+         */
+        public function isUserEmailUnique($email)
+        {
+            if (!$email)
+            {
+                return true;
+            }
+
+            $searchAttributeData['clauses'] = array(
+                1 => array(
+                    'attributeName'        => 'primaryEmail',
+                    'relatedAttributeName' => 'emailAddress',
+                    'operatorType'         => 'equals',
+                    'value'                => $email,
+                )
+            );
+
+            if ($this->id > 0)
+            {
+                $searchAttributeData['clauses'][2] = array(
+                    'attributeName'        => 'id',
+                    'operatorType'         => 'doesNotEqual',
+                    'value'                => $this->id,
+                );
+                $searchAttributeData['structure'] = '(1 AND 2)';
+            }
+            else
+            {
+                $searchAttributeData['structure'] = '1';
+            }
+
+            $joinTablesAdapter = new RedBeanModelJoinTablesQueryAdapter('User');
+            $where = RedBeanModelDataProvider::makeWhere('User', $searchAttributeData, $joinTablesAdapter);
+            $models = User::getSubset($joinTablesAdapter, null, null, $where, null);
+
+            if (count($models) > 0 && is_array($models))
+            {
+                // Todo: fix form element name below
+                $this->primaryEmail->addError('emailAddress', Zurmo::t('UsersModule', 'Email address already exists in system.'));
+                return false;
+            }
+            return true;
+        }
+
         public static function isTypeDeletable()
         {
             return true;
+        }
+
+        /**
+         * Currently user only supports a single email signature even though the architecture is setup to handle
+         * more than one.
+         * @return EmailSignature object
+         */
+        public function getEmailSignature()
+        {
+            if ($this->emailSignatures->count() == 0)
+            {
+                $emailSignature       = new EmailSignature();
+                $emailSignature->user = $this;
+                $this->emailSignatures->add($emailSignature);
+                $this->save();
+            }
+            else
+            {
+                $emailSignature = $this->emailSignatures[0];
+            }
+            return $emailSignature;
+        }
+
+        public function isDeletable()
+        {
+            $superAdminGroup = Group::getByName(Group::SUPER_ADMINISTRATORS_GROUP_NAME);
+            if ($superAdminGroup->users->count() == 1 && $superAdminGroup->contains($this))
+            {
+                return false;
+            }
+            return parent::isDeletable();
+        }
+
+        /**
+        * to change isActive attribute  properly during save
+        */
+        protected function setIsActive()
+        {
+            if ( Right::DENY == $this->getExplicitActualRight ('UsersModule', UsersModule::RIGHT_LOGIN_VIA_WEB) ||
+                Right::DENY == $this->getExplicitActualRight ('UsersModule', UsersModule::RIGHT_LOGIN_VIA_MOBILE) ||
+                Right::DENY == $this->getExplicitActualRight ('UsersModule', UsersModule::RIGHT_LOGIN_VIA_WEB_API))
+            {
+                $isActive = false;
+            }
+            else
+            {
+                $isActive = true;
+            }
+            if ($this->isActive != $isActive)
+            {
+               $this->unrestrictedSet('isActive', $isActive);
+               $this->save();
+            }
+        }
+
+        /**
+         * Overriding so when sorting by lastName it sorts bye firstName lastName
+         */
+        public static function getSortAttributesByAttribute($attribute)
+        {
+            if ($attribute == 'firstName')
+            {
+                return array('firstName', 'lastName');
+            }
+            return parent::getSortAttributesByAttribute($attribute);
+        }
+
+        protected function login()
+        {
+            if (!ApiRequest::isApiRequest())
+            {
+                $this->unrestrictedSet('lastLoginDateTime',  DateTimeUtil::convertTimestampToDbFormatDateTime(time()));
+                $this->save();
+            }
         }
     }
 ?>

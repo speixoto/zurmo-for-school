@@ -1,10 +1,10 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2012 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
-     * the terms of the GNU General Public License version 3 as published by the
+     * the terms of the GNU Affero General Public License version 3 as published by the
      * Free Software Foundation with the addition of the following permission added
      * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
      * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
@@ -12,16 +12,26 @@
      *
      * Zurmo is distributed in the hope that it will be useful, but WITHOUT
      * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-     * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+     * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
      * details.
      *
-     * You should have received a copy of the GNU General Public License along with
+     * You should have received a copy of the GNU Affero General Public License along with
      * this program; if not, see http://www.gnu.org/licenses or write to the Free
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
      *
-     * You can contact Zurmo, Inc. with a mailing address at 113 McHenry Road Suite 207,
-     * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
+     * You can contact Zurmo, Inc. with a mailing address at 27 North Wacker Drive
+     * Suite 370 Chicago, IL 60606. or at email address contact@zurmo.com.
+     *
+     * The interactive user interfaces in original and modified versions
+     * of this program must display Appropriate Legal Notices, as required under
+     * Section 5 of the GNU Affero General Public License version 3.
+     *
+     * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
+     * these Appropriate Legal Notices must retain the display of the Zurmo
+     * logo and Zurmo copyright notice. If the display of the logo is not reasonably
+     * feasible for technical reasons, the Appropriate Legal Notices must display the words
+     * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -55,6 +65,8 @@
             }
             $sort = new RedBeanSort($this->modelClassName);
             $sort->sortVar = $this->getId().'_sort';
+            $sort->setSortAttribute($sortAttribute);
+            $sort->setSortDescending($sortDescending);
             $this->setSort($sort);
         }
 
@@ -143,14 +155,13 @@
         public static function resolveSortAttributeColumnName($modelClassName, &$joinTablesAdapter, $sortAttribute)
         {
             assert('$sortAttribute === null || is_string($sortAttribute) && $sortAttribute != ""');
-            $model = new $modelClassName(false);
             $sortRelatedAttribute = null;
-            if ($model->isRelation($sortAttribute))
+            if ($modelClassName::isRelation($sortAttribute))
             {
-                $relationType = $model->getRelationType($sortAttribute);
+                $relationType = $modelClassName::getRelationType($sortAttribute);
                 //MANY_MANY not supported currently for sorting.
                 assert('$relationType != RedBeanModel::MANY_MANY');
-                $relationModelClassName = $model->getRelationModelClassName($sortAttribute);
+                $relationModelClassName = $modelClassName::getRelationModelClassName($sortAttribute);
                 $sortRelatedAttribute   = self::getSortAttributeName($relationModelClassName);
             }
             $modelAttributeToDataProviderAdapter = new RedBeanModelAttributeToDataProviderAdapter(
@@ -162,7 +173,7 @@
         /**
          * Each model has a sort attribute that is used to order the models if none is specified.
          */
-        protected static function getSortAttributeName($modelClassName)
+        public static function getSortAttributeName($modelClassName)
         {
             $metadata = $modelClassName::getMetadata();
             while (!isset($metadata[$modelClassName]['defaultSortAttribute']))
@@ -205,14 +216,15 @@
         }
 
         /**
-         * See the yii documentation. This function is made public for unit testing.
+         * See the yii documentation. This function is made public for unit testing.  Setting $selectDistinct to true
+         * since the count should always be on unique ids
          */
         public function calculateTotalItemCount()
         {
             $joinTablesAdapter = new RedBeanModelJoinTablesQueryAdapter($this->modelClassName);
             $where             = $this->makeWhere($this->modelClassName, $this->searchAttributeData, $joinTablesAdapter);
             $modelClassName    = $this->modelClassName;
-            return $modelClassName::getCount($joinTablesAdapter, $where, $this->modelClassName, $joinTablesAdapter->getSelectDistinct());
+            return $modelClassName::getCount($joinTablesAdapter, $where, $this->modelClassName, true);
         }
 
         /**

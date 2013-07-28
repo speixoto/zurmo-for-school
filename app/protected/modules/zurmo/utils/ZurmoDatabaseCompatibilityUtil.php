@@ -1,10 +1,10 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2012 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
-     * the terms of the GNU General Public License version 3 as published by the
+     * the terms of the GNU Affero General Public License version 3 as published by the
      * Free Software Foundation with the addition of the following permission added
      * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
      * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
@@ -12,16 +12,26 @@
      *
      * Zurmo is distributed in the hope that it will be useful, but WITHOUT
      * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-     * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+     * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
      * details.
      *
-     * You should have received a copy of the GNU General Public License along with
+     * You should have received a copy of the GNU Affero General Public License along with
      * this program; if not, see http://www.gnu.org/licenses or write to the Free
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
      *
-     * You can contact Zurmo, Inc. with a mailing address at 113 McHenry Road Suite 207,
-     * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
+     * You can contact Zurmo, Inc. with a mailing address at 27 North Wacker Drive
+     * Suite 370 Chicago, IL 60606. or at email address contact@zurmo.com.
+     *
+     * The interactive user interfaces in original and modified versions
+     * of this program must display Appropriate Legal Notices, as required under
+     * Section 5 of the GNU Affero General Public License version 3.
+     *
+     * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
+     * these Appropriate Legal Notices must retain the display of the Zurmo
+     * logo and Zurmo copyright notice. If the display of the logo is not reasonably
+     * feasible for technical reasons, the Appropriate Legal Notices must display the words
+     * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -575,6 +585,8 @@
                 declare allow_permissions, deny_permissions smallint default 0;
                 declare is_super_administrator, is_owner tinyint;
 
+                delete from __role_children_cache;
+
                 select named_group_contains_permitable(\'Super Administrators\', _permitable_id)
                 into is_super_administrator;
                 if is_super_administrator then
@@ -631,6 +643,7 @@
         // MySQL functions cannot be recursive so we have
         // to do recursive functions with procedures.
 
+        // Begin Not Coding Standard
         private static $storedProcedures = array(
 
             // Users - Rights
@@ -957,18 +970,46 @@
                               )
             begin
                 declare user_id int(11);
+                declare user_role_id int(11);
+                declare parent_role_id int(11);
                 declare exit handler for 1054, 1146 # Column, table doesn\'t exist.
                     begin                           # RedBean hasn\'t created it yet.
                         set allow_permissions = 0;
                     end;
 
+                select role_id into user_role_id from _user where permitable_id = _permitable_id;
                 set allow_permissions = 0;
                 select get_permitable_user_id(_permitable_id)
                 into   user_id;
                 if user_id is not null then
+                    call recursive_get_all_descendent_roles(_permitable_id, user_role_id);
                     call recursive_get_securableitem_propagated_allow_permissions_permit(_securableitem_id, _permitable_id, class_name, module_name, allow_permissions);
                 end if;
             end;',
+
+           //Transverse role tree to get all descendent roles
+            '
+            create procedure recursive_get_all_descendent_roles(in _permitable_id int(11), in parent_role_id int(11))
+            begin
+                declare child_role_id int(11);
+                declare no_more_records tinyint default 0;
+                declare child_role_ids cursor for
+                    select id
+                    from   role
+                    where  role_id = parent_role_id;
+                declare continue handler for not found
+                    set no_more_records = 1;
+
+                open child_role_ids;
+                fetch child_role_ids into child_role_id;
+                while no_more_records = 0 do
+                    INSERT IGNORE INTO __role_children_cache VALUES (_permitable_id, child_role_id);
+                    call recursive_get_all_descendent_roles(_permitable_id, child_role_id);
+                    fetch child_role_ids into child_role_id;
+                end while;
+                close child_role_ids;
+            end;
+            ',
 
             // Name abbreviated - max is 64. Should end '_for permitable'.
             'create procedure recursive_get_securableitem_propagated_allow_permissions_permit(
@@ -980,25 +1021,20 @@
                               )
             begin
                 declare user_allow_permissions, user_deny_permissions, user_propagated_allow_permissions tinyint;
-                declare user_role_id int(11);
                 declare exit handler for 1054, 1146 # Column, table doesn\'t exist.
                     begin                           # RedBean hasn\'t created it yet.
                         set allow_permissions = 0;
                     end;
 
                 set allow_permissions = 0;
-                select role_id
-                into   user_role_id
-                from   _user
-                where  permitable_id = _permitable_id;
 
                 begin
                     declare sub_role_id int(11);
                     declare no_more_records tinyint default 0;
                     declare sub_role_ids cursor for
-                        select id
-                        from   role
-                        where  role_id = user_role_id;
+                        select role_id
+                        from   __role_children_cache
+                        where  permitable_id = _permitable_id;
                     declare continue handler for not found
                         begin
                             set no_more_records = 1;
@@ -1148,16 +1184,16 @@
             end;',
 
             // Read Permissions (Munge)
-
+            #model_table_name can be person in the case of contact since person has ownedsecurableitem_id and not contact
             'create procedure rebuild(
                                 in model_table_name varchar(255),
                                 in munge_table_name varchar(255)
                               )
             begin
                 call recreate_tables(munge_table_name);
-                call rebuild_users  (munge_table_name);
-                call rebuild_groups (munge_table_name);
-                call rebuild_roles  (munge_table_name);
+                call rebuild_users  (model_table_name, munge_table_name);
+                call rebuild_groups (model_table_name, munge_table_name);
+                call rebuild_roles  (model_table_name, munge_table_name);
             end;',
 
             'create procedure recreate_tables(
@@ -1186,56 +1222,77 @@
             end;',
 
             'create procedure rebuild_users(
+                                in model_table_name varchar(255),
                                 in munge_table_name varchar(255)
                               )
             begin
-                declare _securableitem_id, __user_id, _permitable_id int(11);
-                declare no_more_records tinyint default 0;
-                declare securableitem_user_and_permitable_ids cursor for
-                    select securableitem_id, _user.id, permission.permitable_id
-                    from   permission, _user
-                    where  permission.permitable_id = _user.permitable_id;
-                declare continue handler for not found
-                    set no_more_records = 1;
-                declare exit handler for 1054, 1146 # Column, table doesn\'t exist.
-                    begin                           # RedBean hasn\'t created it yet.
-                    end;
-
-                open securableitem_user_and_permitable_ids;
-                fetch securableitem_user_and_permitable_ids into _securableitem_id, __user_id, _permitable_id;
-                while no_more_records = 0 do
-                    call rebuild_a_permitable(munge_table_name, _securableitem_id, __user_id, _permitable_id, "U");
+                set @select_statement  = concat("select permission.securableitem_id, _user.id, permission.permitable_id
+                                         from ", model_table_name, ", ownedsecurableitem, permission, _user
+                                         where ", model_table_name , ".ownedsecurableitem_id = ownedsecurableitem.id and
+                                         ownedsecurableitem.securableitem_id = permission.securableitem_id and
+                                         permission.permitable_id = _user.permitable_id");
+                set @rebuild_users_temp_table = CONCAT("create temporary table rebuild_temp_table as ", @select_statement);
+                prepare statement FROM @rebuild_users_temp_table;
+                execute statement;
+                deallocate prepare statement;
+                begin
+                    declare _securableitem_id, __user_id, _permitable_id int(11);
+                    declare no_more_records tinyint default 0;
+                    declare securableitem_user_and_permitable_ids cursor for
+                        select * from rebuild_temp_table;
+                    declare continue handler for not found
+                        set no_more_records = 1;
+                    declare exit handler for 1054, 1146 # Column, table doesn\'t exist.
+                        begin                           # RedBean hasn\'t created it yet.
+                        end;
+                    open securableitem_user_and_permitable_ids;
                     fetch securableitem_user_and_permitable_ids into _securableitem_id, __user_id, _permitable_id;
-                end while;
-                close securableitem_user_and_permitable_ids;
+                    while no_more_records = 0 do
+                        call rebuild_a_permitable(munge_table_name, _securableitem_id, __user_id, _permitable_id, "U");
+                        fetch securableitem_user_and_permitable_ids into _securableitem_id, __user_id, _permitable_id;
+                    end while;
+                    close securableitem_user_and_permitable_ids;
+                    drop temporary table if exists rebuild_temp_table;
+                end;
             end;',
 
             // This procedure is largely duplication of the previous
             // procedure, but because variable names cannot be used
             // in cursors there isn't much to be done about it.
             'create procedure rebuild_groups(
+                                in model_table_name varchar(255),
                                 in munge_table_name varchar(255)
                               )
             begin
-                declare _securableitem_id, __group_id, _permitable_id int(11);
-                declare no_more_records tinyint default 0;
-                declare securableitem_group_and_permitable_ids cursor for
-                    select securableitem_id, _group.id, permission.permitable_id
-                    from   permission, _group
-                    where  permission.permitable_id = _group.permitable_id;
-                declare continue handler for not found
-                    set no_more_records = 1;
-                declare exit handler for 1054, 1146 # Column, table doesn\'t exist.
-                    begin                           # RedBean hasn\'t created it yet.
-                    end;
-
-                open securableitem_group_and_permitable_ids;
-                fetch securableitem_group_and_permitable_ids into _securableitem_id, __group_id, _permitable_id;
-                while no_more_records = 0 do
-                    call rebuild_a_permitable(munge_table_name, _securableitem_id, __group_id, _permitable_id, "G");
+                set @select_statement  = concat("select permission.securableitem_id, _group.id, permission.permitable_id
+                                         from ", model_table_name ,", ownedsecurableitem, permission, _group
+                                         where
+                                         ", model_table_name, ".ownedsecurableitem_id = ownedsecurableitem.id AND
+                                         ownedsecurableitem.securableitem_id = permission.securableitem_id AND
+                                         permission.permitable_id = _group.permitable_id");
+                set @rebuild_groups_temp_table = CONCAT("create temporary table rebuild_temp_table as ", @select_statement);
+                prepare statement FROM @rebuild_groups_temp_table;
+                execute statement;
+                deallocate prepare statement;
+                begin
+                    declare _securableitem_id, __group_id, _permitable_id int(11);
+                    declare no_more_records tinyint default 0;
+                    declare securableitem_group_and_permitable_ids cursor for
+                        select * from rebuild_temp_table;
+                    declare continue handler for not found
+                        set no_more_records = 1;
+                    declare exit handler for 1054, 1146 # Column, table doesn\'t exist.
+                        begin                           # RedBean hasn\'t created it yet.
+                        end;
+                    open securableitem_group_and_permitable_ids;
                     fetch securableitem_group_and_permitable_ids into _securableitem_id, __group_id, _permitable_id;
-                end while;
-                close securableitem_group_and_permitable_ids;
+                    while no_more_records = 0 do
+                        call rebuild_a_permitable(munge_table_name, _securableitem_id, __group_id, _permitable_id, "G");
+                        fetch securableitem_group_and_permitable_ids into _securableitem_id, __group_id, _permitable_id;
+                    end while;
+                    close securableitem_group_and_permitable_ids;
+                    drop temporary table if exists rebuild_temp_table;
+                end;
             end;',
 
             'create procedure rebuild_a_permitable(
@@ -1320,31 +1377,38 @@
             end;',
 
             'create procedure rebuild_roles(
+                                in model_table_name varchar(255),
                                 in munge_table_name varchar(255)
                               )
             begin
-                call rebuild_roles_owned_securableitems                         (munge_table_name);
-                call rebuild_roles_securableitem_with_explicit_user_permissions (munge_table_name);
-                call rebuild_roles_securableitem_with_explicit_group_permissions(munge_table_name);
+                call rebuild_roles_owned_securableitems                         (model_table_name, munge_table_name);
+                call rebuild_roles_securableitem_with_explicit_user_permissions (model_table_name, munge_table_name);
+                call rebuild_roles_securableitem_with_explicit_group_permissions(model_table_name, munge_table_name);
             end;',
 
             'create procedure rebuild_roles_owned_securableitems(
+                                in model_table_name varchar(255),
                                 in munge_table_name varchar(255)
                               )
             begin
+                set @select_statement  = concat("select role_id, ownedsecurableitem.securableitem_id
+                                         from ", model_table_name, ", _user, ownedsecurableitem
+                                         where ", model_table_name, ".ownedsecurableitem_id = ownedsecurableitem.id AND
+                                         _user.id = ownedsecurableitem.owner__user_id and _user.role_id is not null");
+                set @rebuild_roles_temp_table = CONCAT("create temporary table rebuild_temp_table as ", @select_statement);
+                prepare statement FROM @rebuild_roles_temp_table;
+                execute statement;
+                deallocate prepare statement;
+                   begin
                 declare _role_id, _securableitem_id int(11);
                 declare no_more_records tinyint default 0;
                 declare role_and_securableitem_ids cursor for
-                    select role_id, securableitem_id
-                    from   _user, ownedsecurableitem
-                    where  _user.id = ownedsecurableitem.owner__user_id and
-                           role_id is not null;
+                    select * from rebuild_temp_table;
                 declare continue handler for not found
                     set no_more_records = 1;
                 declare exit handler for 1054, 1146 # Column, table doesn\'t exist.
                     begin                           # RedBean hasn\'t created it yet.
                     end;
-
                 open role_and_securableitem_ids;
                 fetch role_and_securableitem_ids into _role_id, _securableitem_id;
                 while no_more_records = 0 do
@@ -1352,64 +1416,85 @@
                     fetch role_and_securableitem_ids into _role_id, _securableitem_id;
                 end while;
                 close role_and_securableitem_ids;
+                drop temporary table if exists rebuild_temp_table;
+                end;
             end;',
 
             'create procedure rebuild_roles_securableitem_with_explicit_user_permissions(
+                                in model_table_name varchar(255),
                                 in munge_table_name varchar(255)
                               )
             begin
-                declare _role_id, _securableitem_id int(11);
-                declare no_more_records tinyint default 0;
-                declare role_and_securableitem_ids cursor for
-                    select role_id, securableitem_id
-                    from   permission, _user
-                    where  permission.permitable_id = _user.permitable_id and
-                           ((permissions & 1) = 1)                        and
-                           type = 1;
-                declare continue handler for not found
-                    set no_more_records = 1;
-                declare exit handler for 1054, 1146 # Column, table doesn\'t exist.
-                    begin                           # RedBean hasn\'t created it yet.
-                    end;
-
-                open role_and_securableitem_ids;
-                fetch role_and_securableitem_ids into _role_id, _securableitem_id;
-                while no_more_records = 0 do
-                    call increment_parent_roles_counts(munge_table_name, _securableitem_id, _role_id);
+                set @select_statement  = concat("select role_id, permission.securableitem_id
+                                         from ", model_table_name, ", ownedsecurableitem, permission, _user
+                                         where ", model_table_name, ".ownedsecurableitem_id = ownedsecurableitem.id AND
+                                         ownedsecurableitem.securableitem_id = permission.securableitem_id AND
+                                         permission.permitable_id = _user.permitable_id and
+                                         ((permission.permissions & 1) = 1) and permission.type = 1");
+                set @rebuild_roles_temp_table = CONCAT("create temporary table rebuild_temp_table as ", @select_statement);
+                prepare statement FROM @rebuild_roles_temp_table;
+                execute statement;
+                deallocate prepare statement;
+                begin
+                    declare _role_id, _securableitem_id int(11);
+                    declare no_more_records tinyint default 0;
+                    declare role_and_securableitem_ids cursor for
+                        select * from rebuild_temp_table;
+                    declare continue handler for not found
+                        set no_more_records = 1;
+                    declare exit handler for 1054, 1146 # Column, table doesn\'t exist.
+                        begin                           # RedBean hasn\'t created it yet.
+                        end;
+                    open role_and_securableitem_ids;
                     fetch role_and_securableitem_ids into _role_id, _securableitem_id;
-                end while;
-                close role_and_securableitem_ids;
+                    while no_more_records = 0 do
+                        call increment_parent_roles_counts(munge_table_name, _securableitem_id, _role_id);
+                        fetch role_and_securableitem_ids into _role_id, _securableitem_id;
+                    end while;
+                    close role_and_securableitem_ids;
+                    drop temporary table if exists rebuild_temp_table;
+                end;
             end;',
 
             'create procedure rebuild_roles_securableitem_with_explicit_group_permissions(
+                                in model_table_name varchar(255),
                                 in munge_table_name varchar(255)
                               )
             begin
-                declare _role_id, _securableitem_id int(11);
-                declare no_more_records tinyint default 0;
-                declare role_and_securableitem_ids cursor for
-                    select role.role_id, securableitem_id
-                    from   _user, _group, _group__user, permission, role
-                    where  _user.id = _group__user._user_id                and
-                           permission.permitable_id = _group.permitable_id and
-                           _group__user._group_id = _group.id              and
-                           _user.role_id = role.role_id                    and
-                           ((permissions & 1) = 1)                         and
-                           type = 1;
-                declare continue handler for not found
-                    set no_more_records = 1;
-                declare exit handler for 1054, 1146 # Column, table doesn\'t exist.
-                    begin                           # RedBean hasn\'t created it yet.
-                    end;
-
-                open role_and_securableitem_ids;
-                fetch role_and_securableitem_ids into _role_id, _securableitem_id;
-                while no_more_records = 0 do
-                    call increment_count              (munge_table_name, _securableitem_id, _role_id, "R");
-                    call increment_parent_roles_counts(munge_table_name, _securableitem_id, _role_id);
+                set @select_statement  =  concat("select role.role_id, permission.securableitem_id
+                                           from ", model_table_name, ", ownedsecurableitem, _user, _group, _group__user, permission, role
+                                           where ", model_table_name, ".ownedsecurableitem_id = ownedsecurableitem.id and
+                                           ownedsecurableitem.securableitem_id = permission.securableitem_id and
+                                           _user.id = _group__user._user_id                and
+                                           permission.permitable_id = _group.permitable_id and
+                                           _group__user._group_id = _group.id              and
+                                           _user.role_id = role.role_id                    and
+                                           ((permission.permissions & 1) = 1)              and
+                                           permission.type = 1");
+                set @rebuild_roles_temp_table = CONCAT("create temporary table rebuild_temp_table as ", @select_statement);
+                prepare statement FROM @rebuild_roles_temp_table;
+                execute statement;
+                deallocate prepare statement;
+                begin
+                    declare _role_id, _securableitem_id int(11);
+                    declare no_more_records tinyint default 0;
+                    declare role_and_securableitem_ids cursor for
+                        select * from rebuild_temp_table;
+                    declare continue handler for not found
+                        set no_more_records = 1;
+                    declare exit handler for 1054, 1146 # Column, table doesn\'t exist.
+                        begin                           # RedBean hasn\'t created it yet.
+                        end;
+                    open role_and_securableitem_ids;
                     fetch role_and_securableitem_ids into _role_id, _securableitem_id;
-                end while;
-                close role_and_securableitem_ids;
+                    while no_more_records = 0 do
+                        call increment_count              (munge_table_name, _securableitem_id, _role_id, "R");
+                        call increment_parent_roles_counts(munge_table_name, _securableitem_id, _role_id);
+                        fetch role_and_securableitem_ids into _role_id, _securableitem_id;
+                    end while;
+                    close role_and_securableitem_ids;
+                    drop temporary table if exists rebuild_temp_table;
+                end;
             end;',
 
             'create procedure increment_count(
@@ -1495,6 +1580,7 @@
             end;',
         );
 
+        // End Not Coding Standard
         public static function callFunction($sql)
         {
             try
@@ -1529,6 +1615,9 @@
             if (RedBeanDatabase::getDatabaseType() == 'mysql')
             {
                 self::dropStoredFunctionsAndProcedures();
+                R::exec('CREATE TABLE IF NOT EXISTS __role_children_cache(permitable_id int(11),
+                         role_id int(11), PRIMARY KEY (permitable_id, role_id),
+                         UNIQUE KEY (permitable_id, role_id));');
                 try
                 {
                     foreach (self::$storedFunctions as $sql)
@@ -1634,12 +1723,113 @@
                 }
                 catch (Exception $e)
                 {
-                    echo "Failed to drop {$row['routine_type']} {$row['routine_name']}.\n";
+                    if (isset($row))
+                    {
+                        echo "Failed to drop {$row['routine_type']} {$row['routine_name']}.\n";
+                    }
                     throw $e;
                 }
                 if (YII_DEBUG)
                 {
                     R::exec("drop procedure if exists write_log");
+                }
+            }
+            else
+            {
+                throw new NotSupportedException();
+            }
+        }
+
+        public static function createIndexes()
+        {
+            self::createUniqueIndex(
+                                    'messagesource',
+                                    'source_category_Index',
+                                    array(
+                                          'category',
+                                          'source(767)'
+                                          )
+                                    );
+            self::createUniqueIndex(
+                                    'messagetranslation',
+                                    'source_language_translation_Index',
+                                    array(
+                                          'messagesource_id',
+                                          'language',
+                                          'translation(767)'
+                                          )
+                                    );
+            self::createIndex('emailmessagerecipient',
+                              'remailmessage_Index',
+                              array('emailmessage_id'));
+        }
+
+        protected static function createUniqueIndex($tableName, $indexName, $columns = array())
+        {
+            assert('RedBeanDatabase::isSetup()');
+            assert('$tableName != ""');
+            assert('$indexName != ""');
+            assert('!empty($columns)');
+            if (RedBeanDatabase::getDatabaseType() == 'mysql')
+            {
+                try
+                {
+                    $rows = R::getAll("SHOW INDEX FROM $tableName");
+                    if (!empty($rows))
+                    {
+                        foreach ($rows as $row)
+                        {
+                            // Delete only first index in sequence
+                            if ($row['Key_name'] == $indexName && $row['Seq_in_index'] == '1')
+                            {
+                                R::exec("DROP INDEX $indexName ON $tableName");
+                            }
+                        }
+                    }
+                    $columnsString = implode(",", $columns); // Not Coding Standard
+                    R::exec("ALTER TABLE $tableName  ADD  UNIQUE INDEX $indexName ($columnsString);");
+                }
+                catch (Exception $e)
+                {
+                    echo "Failed to add $indexName on  $tableName.\n";
+                    throw $e;
+                }
+            }
+            else
+            {
+                throw new NotSupportedException();
+            }
+        }
+
+        protected static function createIndex($tableName, $indexName, $columns = array())
+        {
+            assert('RedBeanDatabase::isSetup()');
+            assert('$tableName != ""');
+            assert('$indexName != ""');
+            assert('!empty($columns)');
+            if (RedBeanDatabase::getDatabaseType() == 'mysql')
+            {
+                try
+                {
+                    $rows = R::getAll("SHOW INDEX FROM $tableName");
+                    if (!empty($rows))
+                    {
+                        foreach ($rows as $row)
+                        {
+                            // Delete only first index in sequence
+                            if ($row['Key_name'] == $indexName && $row['Seq_in_index'] == '1')
+                            {
+                                R::exec("DROP INDEX $indexName ON $tableName");
+                            }
+                        }
+                    }
+                    $columnsString = implode(",", $columns); // Not Coding Standard
+                    R::exec("ALTER TABLE $tableName  ADD INDEX $indexName ($columnsString);");
+                }
+                catch (Exception $e)
+                {
+                    echo "Failed to add $indexName on  $tableName.\n";
+                    throw $e;
                 }
             }
             else

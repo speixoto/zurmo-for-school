@@ -1,10 +1,10 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2012 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
-     * the terms of the GNU General Public License version 3 as published by the
+     * the terms of the GNU Affero General Public License version 3 as published by the
      * Free Software Foundation with the addition of the following permission added
      * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
      * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
@@ -12,16 +12,26 @@
      *
      * Zurmo is distributed in the hope that it will be useful, but WITHOUT
      * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-     * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+     * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
      * details.
      *
-     * You should have received a copy of the GNU General Public License along with
+     * You should have received a copy of the GNU Affero General Public License along with
      * this program; if not, see http://www.gnu.org/licenses or write to the Free
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
      *
-     * You can contact Zurmo, Inc. with a mailing address at 113 McHenry Road Suite 207,
-     * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
+     * You can contact Zurmo, Inc. with a mailing address at 27 North Wacker Drive
+     * Suite 370 Chicago, IL 60606. or at email address contact@zurmo.com.
+     *
+     * The interactive user interfaces in original and modified versions
+     * of this program must display Appropriate Legal Notices, as required under
+     * Section 5 of the GNU Affero General Public License version 3.
+     *
+     * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
+     * these Appropriate Legal Notices must retain the display of the Zurmo
+     * logo and Zurmo copyright notice. If the display of the logo is not reasonably
+     * feasible for technical reasons, the Appropriate Legal Notices must display the words
+     * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -98,12 +108,12 @@
                 array('importRulesType',     'required'),
                 array('rowColumnDelimiter',  'required'),
                 array('rowColumnEnclosure',  'required'),
-                array('fileUploadData',      'type', 'type' => 'string'),
+                array('fileUploadData',      'type', 'type' => 'array'),
                 array('rowColumnDelimiter',  'type', 'type' => 'string'),
                 array('rowColumnEnclosure',  'type', 'type' => 'string'),
 
                 array('firstRowIsHeaderRow', 'boolean'),
-                array('mappingData',         'type', 'type' => 'string'),
+                array('mappingData',         'type', 'type' => 'array'),
                 array('newPassword',         'validateMappingData', 'on'   => 'saveMappingData'),
             );
         }
@@ -111,13 +121,13 @@
         public function attributeLabels()
         {
             return array(
-                'importRulesType'                   => Yii::t('Default', 'Module To Import To'),
-                'fileUploadData'                    => Yii::t('Default', 'File Upload Data'),
-                'rowColumnDelimiter'                => Yii::t('Default', 'Delimiter'),
-                'rowColumnEnclosure'                => Yii::t('Default', 'Qualifier'),
-                'firstRowIsHeaderRow'               => Yii::t('Default', 'First Row is Header Row'),
-                'explicitReadWriteModelPermissions' => Yii::t('Default', 'Model Permissions'),
-                'mappingData'                       => Yii::t('Default', 'Mapping Data'),
+                'importRulesType'                   => Zurmo::t('ImportModule', 'Module To Import To'),
+                'fileUploadData'                    => Zurmo::t('ImportModule', 'File Upload Data'),
+                'rowColumnDelimiter'                => Zurmo::t('ImportModule', 'Delimiter'),
+                'rowColumnEnclosure'                => Zurmo::t('ImportModule', 'Qualifier'),
+                'firstRowIsHeaderRow'               => Zurmo::t('ImportModule', 'First Row is Header Row'),
+                'explicitReadWriteModelPermissions' => Zurmo::t('ImportModule', 'Model Permissions'),
+                'mappingData'                       => Zurmo::t('ImportModule', 'Mapping Data'),
             );
         }
 
@@ -166,11 +176,11 @@
             }
             if ($attributeMappedOrHasRulesMoreThanOnce)
             {
-                $this->addError('mappingData', Yii::t('Default', 'You can only map each field once.'));
+                $this->addError('mappingData', Zurmo::t('ImportModule', 'You can only map each field once.'));
             }
             if (!$atLeastOneAttributeMappedOrHasRules)
             {
-                $this->addError('mappingData', Yii::t('Default', 'You must map at least one of your import columns.'));
+                $this->addError('mappingData', Zurmo::t('ImportModule', 'You must map at least one of your import columns.'));
             }
             $mappedAttributeIndicesOrDerivedAttributeTypes = ImportMappingUtil::
                                                              getMappedAttributeIndicesOrDerivedAttributeTypesByMappingData(
@@ -192,7 +202,7 @@
                     }
                     $attributesLabelContent .= $attributeData['attributeLabel'];
                 }
-                $this->addError('mappingData', Yii::t('Default', 'All required fields must be mapped or added: {attributesLabelContent}',
+                $this->addError('mappingData', Zurmo::t('ImportModule', 'All required fields must be mapped or added: {attributesLabelContent}',
                                                       array('{attributesLabelContent}' => $attributesLabelContent)));
             }
             try
@@ -201,9 +211,37 @@
             }
             catch (ImportAttributeMappedMoreThanOnceException $e)
             {
-                $this->addError('mappingData', Yii::t('Default', 'The following field is mapped more than once. {message}',
+                $this->addError('mappingData', Zurmo::t('ImportModule', 'The following field is mapped more than once. {message}',
                                                array('{message}' => $e->getMessage())));
             }
+        }
+
+        /**
+         * Validation used when a file is uploaded on the import section.
+         * It validates that a column delimeter value was introduced on the form.
+         * @return bool If the value is not empty, returns true, otherwise returns false.
+         */
+        public function validateRowColumnDelimeterIsNotEmpty()
+        {
+            if (empty($this->rowColumnDelimiter))
+            {
+                return false;
+            }
+            return true;
+        }
+
+        /**
+         * Validation used when a file is uploaded on the import section.
+         * It validates that a column enclosure value was introduced on the form.
+         * @return bool If the value is not empty, returns true, otherwise returns false.
+         */
+        public function validateRowColumnEnclosureIsNotEmpty()
+        {
+            if (empty($this->rowColumnEnclosure))
+            {
+                return false;
+            }
+            return true;
         }
     }
 ?>

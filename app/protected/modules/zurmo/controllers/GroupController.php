@@ -1,10 +1,10 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2012 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
-     * the terms of the GNU General Public License version 3 as published by the
+     * the terms of the GNU Affero General Public License version 3 as published by the
      * Free Software Foundation with the addition of the following permission added
      * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
      * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
@@ -12,16 +12,26 @@
      *
      * Zurmo is distributed in the hope that it will be useful, but WITHOUT
      * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-     * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+     * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
      * details.
      *
-     * You should have received a copy of the GNU General Public License along with
+     * You should have received a copy of the GNU Affero General Public License along with
      * this program; if not, see http://www.gnu.org/licenses or write to the Free
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
      *
-     * You can contact Zurmo, Inc. with a mailing address at 113 McHenry Road Suite 207,
-     * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
+     * You can contact Zurmo, Inc. with a mailing address at 27 North Wacker Drive
+     * Suite 370 Chicago, IL 60606. or at email address contact@zurmo.com.
+     *
+     * The interactive user interfaces in original and modified versions
+     * of this program must display Appropriate Legal Notices, as required under
+     * Section 5 of the GNU Affero General Public License version 3.
+     *
+     * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
+     * these Appropriate Legal Notices must retain the display of the Zurmo
+     * logo and Zurmo copyright notice. If the display of the logo is not reasonably
+     * feasible for technical reasons, the Appropriate Legal Notices must display the words
+     * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
     class ZurmoGroupController extends ZurmoModuleController
@@ -38,14 +48,9 @@
             }
         }
 
-        public function filters()
+        public function resolveModuleClassNameForFilters()
         {
-            return array(
-                array(
-                    ZurmoBaseController::RIGHTS_FILTER_PATH,
-                    'moduleClassName' => 'GroupsModule',
-               ),
-            );
+            return 'GroupsModule';
         }
 
         public function resolveAndGetModuleId()
@@ -60,7 +65,7 @@
 
         public function actionList()
         {
-            $title           = Yii::t('Default', 'Groups');
+            $title           = Zurmo::t('ZurmoModule', 'Groups');
             $breadcrumbLinks = array(
                  $title,
             );
@@ -89,7 +94,7 @@
 
         public function actionCreate()
         {
-            $title           = Yii::t('Default', 'Create Group');
+            $title           = Zurmo::t('ZurmoModule', 'Create Group');
             $breadcrumbLinks = array($title);
             $titleBarAndCreateView = new GroupActionBarAndEditView($this->getId(), $this->getModule()->getId(),
                                                                    $this->attemptToSaveModelFromPost(new Group()));
@@ -101,7 +106,7 @@
         public function actionEdit($id)
         {
             $group               = Group::getById(intval($id));
-            $title           = Yii::t('Default', 'Edit');
+            $title           = Zurmo::t('ZurmoModule', 'Edit');
             $breadcrumbLinks = array(strval($group) => array('group/' . static::resolveBreadCrumbActionByGroup($group),  'id' => $id), $title);
             $this->resolveCanGroupBeEdited($group);
             $titleBarAndEditView = new GroupActionBarAndEditView($this->getId(),
@@ -120,10 +125,11 @@
                 $_GET['modalTransferInformation']['sourceModelId'],
                 static::getGroupsOrderedByNonDeletablesFirst(false),
                 $_GET['modalTransferInformation']['sourceIdFieldId'],
-                $_GET['modalTransferInformation']['sourceNameFieldId']
+                $_GET['modalTransferInformation']['sourceNameFieldId'],
+                $_GET['modalTransferInformation']['modalId']
             );
             Yii::app()->getClientScript()->setToAjaxMode();
-            $pageTitle           = Yii::t('Default', 'Select a Parent Group');
+            $pageTitle           = Zurmo::t('ZurmoModule', 'Select a Parent Group');
             $view                = new ModalView($this, $groupsModalTreeView);
             echo $view->render();
         }
@@ -142,7 +148,7 @@
         public function actionEditUserMembership($id)
         {
             $group              = Group::getById(intval($id));
-            $title           = Yii::t('Default', 'User Membership');
+            $title           = Zurmo::t('ZurmoModule', 'User Membership');
             $breadcrumbLinks = array(strval($group) => array('group/' . static::resolveBreadCrumbActionByGroup($group),  'id' => $id), $title);
             $membershipForm     = GroupUserMembershipFormUtil::makeFormFromGroup($group);
             $postVariableName   = get_class($membershipForm);
@@ -152,8 +158,9 @@
                 GroupUserMembershipFormUtil::setFormFromCastedPost($membershipForm, $castedPostData);
                 if (GroupUserMembershipFormUtil::setMembershipFromForm($membershipForm, $group))
                 {
+                        $this->clearCaches();
                         Yii::app()->user->setFlash('notification',
-                            Yii::t('Default', 'User Membership Saved Successfully.')
+                            Zurmo::t('ZurmoModule', 'User Membership Saved Successfully.')
                         );
                         $this->redirect(array($this->getId() . '/details', 'id' => $group->id));
                         Yii::app()->end(0, false);
@@ -173,24 +180,25 @@
         public function actionEditModulePermissions($id)
         {
             $group            = Group::getById(intval($id));
-            $title           = Yii::t('Default', 'Module Permissions');
+            $title           = Zurmo::t('ZurmoModule', 'Record Permissions');
             $breadcrumbLinks = array(strval($group) => array('group/' . static::resolveBreadCrumbActionByGroup($group),  'id' => $id), $title);
             $data             =  PermissionsUtil::getAllModulePermissionsDataByPermitable($group);
             $permissionsForm  = ModulePermissionsFormUtil::makeFormFromPermissionsData($data);
             $postVariableName = get_class($permissionsForm);
             if (isset($_POST[$postVariableName]))
             {
+                $this->clearCaches();
                 $castedPostData     = ModulePermissionsFormUtil::typeCastPostData(
                                         $_POST[$postVariableName]);
                 $readyToSetPostData = ModulePermissionsEditViewUtil::resolveWritePermissionsFromArray(
                                         $castedPostData);
                 if (ModulePermissionsFormUtil::setPermissionsFromCastedPost($readyToSetPostData, $group))
                 {
-                        Yii::app()->user->setFlash('notification',
-                            Yii::t('Default', 'Module Permissions Saved Successfully.')
-                        );
-                        $this->redirect(array($this->getId() . '/details', 'id' => $group->id));
-                        Yii::app()->end(0, false);
+                    Yii::app()->user->setFlash('notification',
+                        Zurmo::t('ZurmoModule', 'Record Permissions Saved Successfully.')
+                    );
+                    $this->redirect(array($this->getId() . '/details', 'id' => $group->id));
+                    Yii::app()->end(0, false);
                 }
             }
             $permissionsData     = GroupModulePermissionsDataToEditViewAdapater::resolveData($data);
@@ -214,7 +222,7 @@
         public function actionEditRights($id)
         {
             $group              = Group::getById(intval($id));
-            $title           = Yii::t('Default', 'Rights');
+            $title           = Zurmo::t('ZurmoModule', 'Rights');
             $breadcrumbLinks = array(strval($group) => array('group/' . static::resolveBreadCrumbActionByGroup($group),  'id' => $id), $title);
             $rightsData         = RightsUtil::getAllModuleRightsDataByPermitable($group);
             $rightsForm         = RightsFormUtil::makeFormFromRightsData($rightsData);
@@ -224,10 +232,10 @@
                 $castedPostData = RightsFormUtil::typeCastPostData($_POST[$postVariableName]);
                 if (RightsFormUtil::setRightsFromCastedPost($castedPostData, $group))
                 {
-                    PermissionsCache::forgetAll();
+                    $this->clearCaches();
                     $group->forget();
                     $group      = Group::getById(intval($id));
-                    Yii::app()->user->setFlash('notification', Yii::t('Default', 'Rights Saved Successfully.'));
+                    Yii::app()->user->setFlash('notification', Zurmo::t('ZurmoModule', 'Rights Saved Successfully.'));
                     $this->redirect(array($this->getId() . '/details', 'id' => $group->id));
                     Yii::app()->end(0, false);
                 }
@@ -252,7 +260,7 @@
         public function actionEditPolicies($id)
         {
             $group              = Group::getById(intval($id));
-            $title           = Yii::t('Default', 'Policies');
+            $title           = Zurmo::t('ZurmoModule', 'Policies');
             $breadcrumbLinks = array(strval($group) => array('group/' . static::resolveBreadCrumbActionByGroup($group),  'id' => $id), $title);
             $data               = PoliciesUtil::getAllModulePoliciesDataByPermitable($group);
             $policiesForm       = PoliciesFormUtil::makeFormFromPoliciesData($data);
@@ -265,9 +273,9 @@
                 {
                     if (PoliciesFormUtil::setPoliciesFromCastedPost($castedPostData, $group))
                     {
-                        PermissionsCache::forgetAll();
+                        $this->clearCaches();
                         Yii::app()->user->setFlash('notification',
-                            Yii::t('Default', 'Policies Saved Successfully.')
+                            Zurmo::t('ZurmoModule', 'Policies Saved Successfully.')
                         );
                         $this->redirect(array($this->getId() . '/details', 'id' => $group->id));
                         Yii::app()->end(0, false);
@@ -360,6 +368,13 @@
             $where    = Group::getTableName('Group') . ".name NOT IN( '" . Group::EVERYONE_GROUP_NAME . "', '" . Group::SUPER_ADMINISTRATORS_GROUP_NAME . "')";
             $orderBy  = Group::getTableName('Group') . '.name asc';
             return array_merge($groups, Group::getSubset(null, null, null, $where, $orderBy));
+        }
+
+        protected function clearCaches()
+        {
+            PermissionsCache::forgetAll();
+            RightsCache::forgetAll();
+            PoliciesCache::forgetAll();
         }
     }
 ?>

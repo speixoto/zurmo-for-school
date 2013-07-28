@@ -1,10 +1,10 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2012 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
-     * the terms of the GNU General Public License version 3 as published by the
+     * the terms of the GNU Affero General Public License version 3 as published by the
      * Free Software Foundation with the addition of the following permission added
      * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
      * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
@@ -12,16 +12,26 @@
      *
      * Zurmo is distributed in the hope that it will be useful, but WITHOUT
      * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-     * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+     * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
      * details.
      *
-     * You should have received a copy of the GNU General Public License along with
+     * You should have received a copy of the GNU Affero General Public License along with
      * this program; if not, see http://www.gnu.org/licenses or write to the Free
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
      *
-     * You can contact Zurmo, Inc. with a mailing address at 113 McHenry Road Suite 207,
-     * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
+     * You can contact Zurmo, Inc. with a mailing address at 27 North Wacker Drive
+     * Suite 370 Chicago, IL 60606. or at email address contact@zurmo.com.
+     *
+     * The interactive user interfaces in original and modified versions
+     * of this program must display Appropriate Legal Notices, as required under
+     * Section 5 of the GNU Affero General Public License version 3.
+     *
+     * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
+     * these Appropriate Legal Notices must retain the display of the Zurmo
+     * logo and Zurmo copyright notice. If the display of the logo is not reasonably
+     * feasible for technical reasons, the Appropriate Legal Notices must display the words
+     * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -68,7 +78,7 @@
             $stateMetadataAdapterClassName = null,
             $dataCollection = null)
         {
-            assert('is_int($pageSize)');
+            assert('is_int($pageSize) || $pageSize == null');
             assert('$stateMetadataAdapterClassName == null || is_string($stateMetadataAdapterClassName)');
             assert('$dataCollection instanceof SearchAttributesDataCollection || $dataCollection == null');
             $listModelClassName = get_class($searchModel->getModel());
@@ -79,10 +89,11 @@
             $searchAttributes          = $dataCollection->resolveSearchAttributesFromSourceData();
             $dataCollection->resolveAnyMixedAttributesScopeForSearchModelFromSourceData();
             $dataCollection->resolveSelectedListAttributesForSearchModelFromSourceData();
+            $dataCollection->resolveKanbanBoardOptionsForSearchModelFromSourceData();
             $sanitizedSearchAttributes = GetUtil::sanitizePostByDesignerTypeForSavingModel($searchModel,
                                                                                            $searchAttributes);
-            $sortAttribute             = SearchUtil::resolveSortAttributeFromGetArray($listModelClassName);
-            $sortDescending            = SearchUtil::resolveSortDescendingFromGetArray($listModelClassName);
+            $sortAttribute             = $dataCollection->resolveSortAttributeFromSourceData($listModelClassName);
+            $sortDescending            = $dataCollection->resolveSortDescendingFromSourceData($listModelClassName);
             $metadataAdapter           = new SearchDataProviderMetadataAdapter(
                 $searchModel,
                 Yii::app()->user->userModel->id,
@@ -90,6 +101,8 @@
             );
             $metadata                  = static::resolveDynamicSearchMetadata($searchModel, $metadataAdapter->getAdaptedMetadata(),
                                                                               $dataCollection);
+            $this->resolveKanbanBoardMetadataBeforeMakingDataProvider($searchModel, $metadata);
+            $this->resolveMetadataBeforeMakingDataProvider($metadata);
             return RedBeanModelDataProviderUtil::makeDataProvider(
                 $metadata,
                 $listModelClassName,
@@ -99,6 +112,22 @@
                 $pageSize,
                 $stateMetadataAdapterClassName
             );
+        }
+
+        protected function resolveKanbanBoardMetadataBeforeMakingDataProvider($searchForm, & $metadata)
+        {
+            if ($searchForm instanceof SearchForm)
+            {
+                if ($searchForm instanceof SearchForm && !Yii::app()->userInterface->isMobile() &&
+                   $searchForm->getKanbanBoard() != null && $searchForm->getKanbanBoard()->getIsActive())
+                {
+                    $searchForm->getKanbanBoard()->resolveVisibleValuesForAdaptedMetadata($metadata);
+                }
+            }
+        }
+
+        protected function resolveMetadataBeforeMakingDataProvider(& $metadata)
+        {
         }
 
         protected static function resolveDynamicSearchMetadata($searchModel, $metadata, SearchAttributesDataCollection $dataCollection)
@@ -200,16 +229,27 @@
             );
         }
 
+        protected static function resolveActiveAttributesFromPostForMassAction($actionId)
+        {
+            // TODO: @Shoaibi/@Jason: Low: Candidate for MassActionController
+            return Yii::app()->request->getPost(ucfirst($actionId), array());
+        }
+
         protected function resolveActiveAttributesFromMassEditPost()
         {
-            if (isset($_POST['MassEdit']))
-            {
-                return $_POST['MassEdit'];
-            }
-            else
-            {
-                return array();
-            }
+            // TODO: @Shoaibi/@Jason: Low: Deprecated, Better to use resolveActiveAttributesFromPostForMassAction directly inside main code with actionId
+            // trigger_error('Deprecated: Recommended to use resolveActiveAttributesFromPostForMassAction.');
+            return static::resolveActiveAttributesFromPostForMassAction('massEdit');
+        }
+
+        /**
+        for mass delete
+        */
+        protected function resolveActiveAttributesFromMassDeletePost()
+        {
+            // TODO: @Shoaibi/@Jason: Low: Deprecated, Better to use resolveActiveAttributesFromPostForMassAction directly inside main code with actionId
+            // trigger_error('Deprecated: Recommended to use resolveActiveAttributesFromPostForMassAction.');
+            return static::resolveActiveAttributesFromPostForMassAction('massDelete');
         }
 
         protected function makeMassEditView(
@@ -218,19 +258,42 @@
             $selectedRecordCount,
             $title)
         {
-            $alertMessage          = $this->getMassEditAlertMessage(get_class($model));
+            // TODO: @Shoaibi/@Jason: Low: Deprecated
+            // trigger_error('Deprecated');
+            $alertMessage          = static::getMassEditAlertMessage(get_class($model));
             $moduleName            = $this->getModule()->getPluralCamelCasedName();
             $moduleClassName       = $moduleName . 'Module';
-            $title                 = Yii::t('Default', 'Mass Update') . ': ' . $title;
+            $title                 = Zurmo::t('Core', 'Mass Update') . ': ' . $title;
             $massEditViewClassName = $moduleName . 'MassEditView';
             $view  = new $massEditViewClassName($this->getId(), $this->getModule()->getId(), $model, $activeAttributes,
                                                       $selectedRecordCount, $title, $alertMessage);
             return $view;
         }
 
-        protected function getSelectedRecordCountByResolvingSelectAllFromGet($dataProvider, $countEmptyStringAsElement = true)
+        /** for mass delete */
+        protected function makeMassDeleteView(
+            $model,
+            $activeAttributes,
+            $selectedRecordCount,
+            $title,
+            $massDeleteViewClassName = 'MassDeleteView'
+        )
         {
-            if ($_GET['selectAll'])
+            // TODO: @Shoaibi/@Jason: Low: Deprecated
+            // trigger_error('Deprecated');
+            $moduleName            = $this->getModule()->getPluralCamelCasedName();
+            $moduleClassName       = $moduleName . 'Module';
+            $title                 = Zurmo::t('Core', 'Mass Delete') . ': ' . $title;
+            $selectedIds = GetUtil::getData();
+            //TODO This call is not correct, $selectedIds is not required in Mass Delete View contructor
+            $view  = new $massDeleteViewClassName($this->getId(), $this->getModule()->getId(), $model, $activeAttributes,
+                                                      $selectedRecordCount, $title, null, $moduleClassName, $selectedIds);
+            return $view;
+        }
+
+        protected static function getSelectedRecordCountByResolvingSelectAllFromGet($dataProvider, $countEmptyStringAsElement = true)
+        {
+            if (Yii::app()->request->getQuery('selectAll'))
             {
                 return intval($dataProvider->calculateTotalItemCount());
             }
@@ -238,29 +301,48 @@
             {
                 if ($countEmptyStringAsElement)
                 {
-                    return count(explode(",", trim($_GET['selectedIds'], ', '))); // Not Coding Standard
+                    return count(explode(",", trim(Yii::app()->request->getQuery('selectedIds'), ', '))); // Not Coding Standard
                 }
                 else
                 {
-                    return count(array_filter(explode(",", trim($_GET['selectedIds'], " ,")))); // Not Coding Standard
+                    return count(array_filter(explode(",", trim(Yii::app()->request->getQuery('selectedIds'), " ,")))); // Not Coding Standard
                 }
             }
         }
 
-        protected function getMassEditProgressStartFromGet($getVariableName, $pageSize)
+        protected static function getMassActionProgressStartFromGet($pageVariableName, $pageSize)
         {
-            if ($_GET[$getVariableName . '_page'] == 1)
+            // TODO: @Shoaibi/@Jason: Low: Candidate for MassActionController
+            $page = Yii::app()->request->getQuery($pageVariableName);
+            if ($page == 1)
             {
                 return 1;
             }
-            elseif ($_GET[$getVariableName . '_page']>1)
+            elseif ($page > 1)
             {
-                return ((($_GET[$getVariableName . '_page'] - 1) * $pageSize) +1);
+                return ((($page - 1) * $pageSize) +1);
             }
             else
             {
                 throw new NotSupportedException();
             }
+        }
+
+        protected function getMassEditProgressStartFromGet($getVariableName, $pageSize)
+        {
+            // TODO: @Shoaibi/@Jason: Low: Deprecated
+            // trigger_error('Deprecated:  Recommended to use getMassActionProgressStartFromGet. Pay close attention to arguments.');
+            return static::getMassActionProgressStartFromGet($getVariableName . '_page', $pageSize);
+        }
+
+       /**
+        for Mass Delete
+        */
+        protected function getMassDeleteProgressStartFromGet($getVariableName, $pageSize)
+        {
+            // TODO: @Shoaibi/@Jason: Low: Deprecated
+            // trigger_error('Deprecated:  Recommended to use getMassActionProgressStartFromGet.  Pay close attention to arguments.');
+            return static::getMassActionProgressStartFromGet($getVariableName . '_page', $pageSize);
         }
 
         protected function attemptToValidateAjaxFromPost($model, $postVariableName)
@@ -269,22 +351,19 @@
             {
                 $model->setAttributes($_POST[$postVariableName]);
                 $model->validate();
-                $errorData = array();
-                foreach ($model->getErrors() as $attribute => $errors)
-                {
-                        $errorData[ZurmoHtml::activeId($model, $attribute)] = $errors;
-                }
+                $errorData = ZurmoActiveForm::makeErrorsDataAndResolveForOwnedModelAttributes($model);
                 echo CJSON::encode($errorData);
                 Yii::app()->end(0, false);
             }
         }
 
-        protected function getModelsToSave($modelClassName, $dataProvider, $selectedRecordCount, $page, $pageSize)
+        protected static function getModelsToUpdate($modelClassName, $dataProvider, $selectedRecordCount, $page, $pageSize)
         {
+            // TODO: @Shoaibi/@Jason: Low: Candidate for MassActionController
             if ($dataProvider === null)
             {
-                $modelsToSave = array();
-                $IdsToSave = explode(",", $_GET['selectedIds']); // Not Coding Standard
+                $modelsToUpdate = array();
+                $IdsToUpdate = explode(",", Yii::app()->request->getQuery('selectedIds')); // Not Coding Standard
                 if ($page == 1)
                 {
                     $start = 0;
@@ -305,24 +384,49 @@
                 {
                     $end = $pageSize * $page;
                 }
-                for ($i = $start; $i < $end; ++$i)
+                for ($i = $start; $i < $end; ++$i) // Not Coding Standard
                 {
-                    eval('$modelsToSave[] = ' . $modelClassName . '::getById(intval(' . $IdsToSave[$i] . '));');
-                    //$modelsToSave[] = $modelClassName::getById(intval($IdsToSave[$i]));
+                    $modelsToUpdate[] = $modelClassName::getById(intval($IdsToUpdate[$i]));
                 }
-                return $modelsToSave;
+                return $modelsToUpdate;
             }
             else
             {
-                return $dataProvider->getData();
+                $data = $dataProvider->getData();
+                return $data;
             }
         }
 
-        protected function getMassEditAlertMessage($postVariableName)
+        protected function getModelsToSave($modelClassName, $dataProvider, $selectedRecordCount, $page, $pageSize)
         {
-            if (!isset($_POST[$postVariableName]) && isset($_POST['save']))
+            // TODO: @Shoaibi/@Jason: Low: Deprecated
+            // trigger_error('Deprecated: Recommended to use getModelsToUpdate.');
+            return static::getModelsToUpdate($modelClassName, $dataProvider, $selectedRecordCount, $page, $pageSize);
+        }
+
+        /** for mass delete */
+        protected function getModelsToDelete($modelClassName, $dataProvider, $selectedRecordCount, $page, $pageSize)
+        {
+            // TODO: @Shoaibi/@Jason: Low: Deprecated
+            // trigger_error('Deprecated: Recommended to use getModelsToUpdate.');
+            return static::getModelsToUpdate($modelClassName, $dataProvider, $selectedRecordCount, $page, $pageSize);
+        }
+
+        protected static function getMassEditAlertMessage($postVariableName)
+        {
+            // TODO: @Shoaibi/@Jason: Low: Deprecated
+            // trigger_error('Deprecated: Recommended to use resolveMassEditAlertMessage.');
+            return static::resolveMassEditAlertMessage($postVariableName);
+        }
+
+        protected static function resolveMassEditAlertMessage($postVariableName)
+        {
+            // TODO: @Shoaibi/@Jason: Low: Candidate for MassActionController
+            $form = Yii::app()->request->getPost($postVariableName);
+            $save = Yii::app()->request->getPost('save');
+            if (!isset($form) && isset($save))
             {
-                    return Yii::t('Default', 'You must select at least one field to modify.');
+                return Zurmo::t('Core', 'You must select at least one field to modify.');
             }
         }
     }

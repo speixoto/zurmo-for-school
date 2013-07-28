@@ -1,10 +1,10 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2012 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
-     * the terms of the GNU General Public License version 3 as published by the
+     * the terms of the GNU Affero General Public License version 3 as published by the
      * Free Software Foundation with the addition of the following permission added
      * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
      * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
@@ -12,16 +12,26 @@
      *
      * Zurmo is distributed in the hope that it will be useful, but WITHOUT
      * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-     * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+     * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
      * details.
      *
-     * You should have received a copy of the GNU General Public License along with
+     * You should have received a copy of the GNU Affero General Public License along with
      * this program; if not, see http://www.gnu.org/licenses or write to the Free
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
      *
-     * You can contact Zurmo, Inc. with a mailing address at 113 McHenry Road Suite 207,
-     * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
+     * You can contact Zurmo, Inc. with a mailing address at 27 North Wacker Drive
+     * Suite 370 Chicago, IL 60606. or at email address contact@zurmo.com.
+     *
+     * The interactive user interfaces in original and modified versions
+     * of this program must display Appropriate Legal Notices, as required under
+     * Section 5 of the GNU Affero General Public License version 3.
+     *
+     * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
+     * these Appropriate Legal Notices must retain the display of the Zurmo
+     * logo and Zurmo copyright notice. If the display of the logo is not reasonably
+     * feasible for technical reasons, the Appropriate Legal Notices must display the words
+     * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
     class ImportDefaultController extends ZurmoBaseController
@@ -62,7 +72,7 @@
                 ImportWizardUtil::setFormByPostForStep1($importWizardForm, $_POST[get_class($importWizardForm)]);
                 $this->attemptToValidateImportWizardFormAndSave($importWizardForm, $import, 'step2');
             }
-            $title = Yii::t('Default', 'Import Wizard: Step 1 of 6');
+            $title = Zurmo::t('ImportModule', 'Import Wizard: Step 1 of 6');
             $importView = new ImportWizardImportRulesView($this->getId(),
                                                           $this->getModule()->getId(),
                                                           $importWizardForm, $title);
@@ -85,19 +95,19 @@
                 if ($importWizardForm->fileUploadData == null)
                 {
                     $importWizardForm->addError('fileUploadData',
-                    Yii::t('Default', 'A file must be uploaded in order to continue the import process.'));
+                    Zurmo::t('ImportModule', 'A file must be uploaded in order to continue the import process.'));
                 }
                 elseif (!ImportWizardUtil::importFileHasAtLeastOneImportRow($importWizardForm, $import))
                 {
                     if ($importWizardForm->firstRowIsHeaderRow)
                     {
                         $importWizardForm->addError('fileUploadData',
-                        Yii::t('Default', 'The file that has been uploaded only has a header row and no additional rows to import.'));
+                        Zurmo::t('ImportModule', 'The file that has been uploaded only has a header row and no additional rows to import.'));
                     }
                     else
                     {
                         $importWizardForm->addError('fileUploadData',
-                        Yii::t('Default', 'A file must be uploaded with at least one row to import.'));
+                        Zurmo::t('ImportModule', 'A file must be uploaded with at least one row to import.'));
                     }
                 }
                 else
@@ -114,7 +124,7 @@
                     $this->attemptToValidateImportWizardFormAndSave($importWizardForm, $import, $nextStep);
                 }
             }
-            $title = Yii::t('Default', 'Import Wizard: Step 2 of 6');
+            $title = Zurmo::t('ImportModule', 'Import Wizard: Step 2 of 6');
             $importView = new ImportWizardUploadFileView($this->getId(), $this->getModule()->getId(),
                                                          $importWizardForm, $title);
             $view       = new ImportPageView(ZurmoDefaultAdminViewUtil::
@@ -134,7 +144,7 @@
                 ImportWizardUtil::setFormByPostForStep3($importWizardForm, $_POST[get_class($importWizardForm)]);
                 $this->attemptToValidateImportWizardFormAndSave($importWizardForm, $import, 'step4');
             }
-            $title      = Yii::t('Default', 'Import Wizard: Step 3 of 6');
+            $title      = Zurmo::t('ImportModule', 'Import Wizard: Step 3 of 6');
             $importView = new ImportWizardSetModelPermissionsView($this->getId(),
                                                                   $this->getModule()->getId(),
                                                                   $importWizardForm, $title);
@@ -178,7 +188,7 @@
                 else
                 {
                     $importWizardForm->validate();
-                    $importWizardForm->addError('mappingData', Yii::t('Default',
+                    $importWizardForm->addError('mappingData', Zurmo::t('ImportModule',
                                                 'There are errors with some of your mapping rules. Please fix.'));
                 }
             }
@@ -212,7 +222,7 @@
                                                               $sample, $headerRow);
             $mappableAttributeIndicesAndDerivedTypes        = $importRulesClassName::
                                                               getMappableAttributeIndicesAndDerivedTypes();
-            $title                                          = Yii::t('Default', 'Import Wizard: Step 4 of 6');
+            $title                                          = Zurmo::t('ImportModule', 'Import Wizard: Step 4 of 6');
             $importView                                     = new ImportWizardMappingView($this->getId(),
                                                               $this->getModule()->getId(),
                                                               $importWizardForm,
@@ -276,7 +286,7 @@
             }
             if ($step == null)
             {
-                $title = Yii::t('Default', 'Import Wizard: Step 5 of 6');
+                $title = Zurmo::t('ImportModule', 'Import Wizard: Step 5 of 6');
                 $wrapperView  = new ImportSequentialProcessContainerView($sequenceView,
                                                                          $sequentialProcess->getAllStepsMessage(),
                                                                          $title);
@@ -344,7 +354,7 @@
             }
             if ($step == null)
             {
-                $title = Yii::t('Default', 'Import Wizard: Step 6 of 6');
+                $title = Zurmo::t('ImportModule', 'Import Wizard: Step 6 of 6');
                 $wrapperView  = new ImportSequentialProcessContainerView($sequenceView, $sequentialProcess->getAllStepsMessage(), $title);
                 $wrapperView->setCssClasses(array('DetailsView'));
                 $view = new ImportPageView(ZurmoDefaultAdminViewUtil::
@@ -479,13 +489,13 @@
             $import           = Import::getById((int)$id);
             $importWizardForm = ImportWizardUtil::makeFormByImport($import);
             $importWizardForm->setAttributes($_POST['ImportWizardForm']);
-            if (!$importWizardForm->validate(array('rowColumnDelimiter')))
+            if (!$importWizardForm->validateRowColumnDelimeterIsNotEmpty())
             {
-                $fileUploadData = array('error' => Yii::t('Default', 'Error: Invalid delimiter'));
+                $fileUploadData = array('error' => Zurmo::t('ImportModule', 'Error: Invalid delimiter'));
             }
-            elseif (!$importWizardForm->validate(array('rowColumnDelimiter')))
+            elseif (!$importWizardForm->validateRowColumnEnclosureIsNotEmpty())
             {
-                $fileUploadData = array('error' => Yii::t('Default', 'Error: Invalid qualifier'));
+                $fileUploadData = array('error' => Zurmo::t('ImportModule', 'Error: Invalid qualifier'));
             }
             else
             {
@@ -493,6 +503,7 @@
                 {
                     $uploadedFile = ImportUploadedFileUtil::getByNameCatchErrorAndEnsureFileIsACSV($filesVariableName);
                     assert('$uploadedFile instanceof CUploadedFile');
+                    ImportUploadedFileUtil::convertWindowsAndMacLineEndingsIntoUnixLineEndings($uploadedFile->getTempName());
                     $fileHandle  = fopen($uploadedFile->getTempName(), 'r');
                     if ($fileHandle !== false)
                     {
@@ -505,7 +516,7 @@
                                                                                       $importWizardForm->rowColumnEnclosure);
                             if (!$tableCreated)
                             {
-                                throw new FailedFileUploadException(Yii::t('Default', 'Failed to create temporary database table from CSV.'));
+                                throw new FailedFileUploadException(Zurmo::t('ImportModule', 'Failed to create temporary database table from CSV.'));
                             }
                         }
                         catch (BulkInsertFailedException $e)
@@ -523,20 +534,18 @@
                         ImportWizardUtil::setImportSerializedDataFromForm($importWizardForm, $import);
                         if (!$import->save())
                         {
-                            throw new FailedFileUploadException(Yii::t('Default', 'Import model failed to save.'));
+                            throw new FailedFileUploadException(Zurmo::t('ImportModule', 'Import model failed to save.'));
                         }
                     }
                     else
                     {
-                        throw new FailedFileUploadException(Yii::t('Default', 'Failed to open the uploaded file.'));
+                        throw new FailedFileUploadException(Zurmo::t('ImportModule', 'Failed to open the uploaded file.'));
                     }
-                    $fileUploadData['humanReadableSize'] = FileModelDisplayUtil::convertSizeToHumanReadableAndGet(
-                                                           $fileUploadData['size']);
                     $fileUploadData['id']                = $import->id;
                 }
                 catch (FailedFileUploadException $e)
                 {
-                    $fileUploadData = array('error' => Yii::t('Default', 'Error') . ' ' . $e->getMessage());
+                    $fileUploadData = array('error' => Zurmo::t('ImportModule', 'Error') . ' ' . $e->getMessage());
                     ImportWizardUtil::clearFileAndRelatedDataFromImport($import);
                 }
             }
@@ -575,7 +584,7 @@
                 }
                 else
                 {
-                    $messageView = new ErrorView(Yii::t('Default', 'There was an error processing this import.'));
+                    $messageView = new ErrorView(Zurmo::t('ImportModule', 'There was an error processing this import.'));
                     $view        = new ErrorPageView($messageView);
                     echo $view->render();
                     Yii::app()->end(0, false);

@@ -1,10 +1,10 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2012 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
-     * the terms of the GNU General Public License version 3 as published by the
+     * the terms of the GNU Affero General Public License version 3 as published by the
      * Free Software Foundation with the addition of the following permission added
      * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
      * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
@@ -12,21 +12,39 @@
      *
      * Zurmo is distributed in the hope that it will be useful, but WITHOUT
      * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-     * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+     * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
      * details.
      *
-     * You should have received a copy of the GNU General Public License along with
+     * You should have received a copy of the GNU Affero General Public License along with
      * this program; if not, see http://www.gnu.org/licenses or write to the Free
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
      *
-     * You can contact Zurmo, Inc. with a mailing address at 113 McHenry Road Suite 207,
-     * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
+     * You can contact Zurmo, Inc. with a mailing address at 27 North Wacker Drive
+     * Suite 370 Chicago, IL 60606. or at email address contact@zurmo.com.
+     *
+     * The interactive user interfaces in original and modified versions
+     * of this program must display Appropriate Legal Notices, as required under
+     * Section 5 of the GNU Affero General Public License version 3.
+     *
+     * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
+     * these Appropriate Legal Notices must retain the display of the Zurmo
+     * logo and Zurmo copyright notice. If the display of the logo is not reasonably
+     * feasible for technical reasons, the Appropriate Legal Notices must display the words
+     * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class Conversation extends OwnedSecurableItem implements MashableActivityInterface
+    /**
+     * Base model for working with a conversation
+     */
+    class Conversation extends OwnedSecurableItem implements MashableActivityInterface, MashableInboxInterface
     {
         public static function getMashableActivityRulesType()
+        {
+            return 'Conversation';
+        }
+
+        public static function getMashableInboxRulesType()
         {
             return 'Conversation';
         }
@@ -37,19 +55,48 @@
             return self::getSubset(null, null, null, "subject = '$subject'");
         }
 
+        protected static function translatedAttributeLabels($language)
+        {
+            return array_merge(parent::translatedAttributeLabels($language),
+                array(
+                    'description'        => Zurmo::t('ZurmoModule', 'Description',  array(), null, $language),
+                    'latestDateTime'     => Zurmo::t('ActivitiesModule', 'Latest Date Time',  array(), null, $language),
+                    'subject'            => Zurmo::t('ConversationsModule', 'Subject',  array(), null, $language),
+                    'ownerHasReadLatest' => Zurmo::t('ConversationsModule', 'Owner Has Read Latest',  array(), null, $language),
+                    'isClosed'           => Zurmo::t('ConversationsModule', 'Is Closed',  array(), null, $language),
+                    'comments'           => Zurmo::t('CommentsModule', 'Comments',  array(), null, $language),
+                    'conversationItems'  => Zurmo::t('ConversationsModule', 'Conversation Items',  array(), null, $language),
+                    'conversationParticipants' => Zurmo::t('ConversationsModule', 'Conversation Participants',  array(), null, $language),
+                    'files'              => Zurmo::t('ZurmoModule', 'Files',  array(), null, $language),
+                )
+            );
+        }
+
         public function __toString()
         {
             try
             {
                 if (trim($this->subject) == '')
                 {
-                    return Yii::t('Default', '(Unnamed)');
+                    return Zurmo::t('ConversationsModule', '(Unnamed)');
                 }
                 return $this->subject;
             }
             catch (AccessDeniedSecurityException $e)
             {
                 return '';
+            }
+        }
+
+        public function resolveIsClosedForNull()
+        {
+            if ($this->isClosed == true)
+            {
+                return 1;
+            }
+            else
+            {
+                return 0;
             }
         }
 
@@ -86,7 +133,7 @@
             );
             $searchAttributeData['structure'] = '((1 and 2) or (3 and 4))';
             $joinTablesAdapter = new RedBeanModelJoinTablesQueryAdapter('Conversation');
-            $where  = RedBeanModelDataProvider::makeWhere('Conversation', $searchAttributeData, $joinTablesAdapter);
+            $where             = RedBeanModelDataProvider::makeWhere('Conversation', $searchAttributeData, $joinTablesAdapter);
             return self::getCount($joinTablesAdapter, $where, null, true);
         }
 
@@ -115,12 +162,16 @@
                     'latestDateTime',
                     'subject',
                     'ownerHasReadLatest',
+                    'isClosed'
                 ),
                 'relations' => array(
-                    'comments'                 => array(RedBeanModel::HAS_MANY,  'Comment', RedBeanModel::OWNED, 'relatedModel'),
+                    'comments'                 => array(RedBeanModel::HAS_MANY,  'Comment', RedBeanModel::OWNED,
+                                                        RedBeanModel::LINK_TYPE_POLYMORPHIC, 'relatedModel'),
                     'conversationItems'        => array(RedBeanModel::MANY_MANY, 'Item'),
-                    'conversationParticipants' => array(RedBeanModel::HAS_MANY,  'ConversationParticipant', RedBeanModel::OWNED),
-                    'files'                    => array(RedBeanModel::HAS_MANY,  'FileModel', RedBeanModel::OWNED, 'relatedModel'),
+                    'conversationParticipants' => array(RedBeanModel::HAS_MANY,  'ConversationParticipant',
+                                                        RedBeanModel::OWNED),
+                    'files'                    => array(RedBeanModel::HAS_MANY,  'FileModel', RedBeanModel::OWNED,
+                                                        RedBeanModel::LINK_TYPE_POLYMORPHIC, 'relatedModel'),
                 ),
                 'rules' => array(
                     array('description',        'type',    'type' => 'string'),
@@ -131,6 +182,7 @@
                     array('subject',            'type',    'type' => 'string'),
                     array('subject',            'length',  'min'  => 3, 'max' => 255),
                     array('ownerHasReadLatest', 'boolean'),
+                    array('isClosed',           'boolean'),
                 ),
                 'elements' => array(
                     'conversationItems' => 'ConversationItem',
@@ -199,7 +251,7 @@
                             {
                                 //At this point the createdByUser is not populated yet in the comment, so we can
                                 //use the current user.
-                                if ($participant->person != Yii::app()->user->userModel)
+                                if ($participant->person->getClassId('Item') != Yii::app()->user->userModel->getClassId('Item'))
                                 {
                                     $this->conversationParticipants[$position]->hasReadLatest = false;
                                 }

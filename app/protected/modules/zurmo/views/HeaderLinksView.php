@@ -1,10 +1,10 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2012 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
-     * the terms of the GNU General Public License version 3 as published by the
+     * the terms of the GNU Affero General Public License version 3 as published by the
      * Free Software Foundation with the addition of the following permission added
      * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
      * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
@@ -12,16 +12,26 @@
      *
      * Zurmo is distributed in the hope that it will be useful, but WITHOUT
      * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-     * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+     * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
      * details.
      *
-     * You should have received a copy of the GNU General Public License along with
+     * You should have received a copy of the GNU Affero General Public License along with
      * this program; if not, see http://www.gnu.org/licenses or write to the Free
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
      *
-     * You can contact Zurmo, Inc. with a mailing address at 113 McHenry Road Suite 207,
-     * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
+     * You can contact Zurmo, Inc. with a mailing address at 27 North Wacker Drive
+     * Suite 370 Chicago, IL 60606. or at email address contact@zurmo.com.
+     *
+     * The interactive user interfaces in original and modified versions
+     * of this program must display Appropriate Legal Notices, as required under
+     * Section 5 of the GNU Affero General Public License version 3.
+     *
+     * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
+     * these Appropriate Legal Notices must retain the display of the Zurmo
+     * logo and Zurmo copyright notice. If the display of the logo is not reasonably
+     * feasible for technical reasons, the Appropriate Legal Notices must display the words
+     * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
     class HeaderLinksView extends View
@@ -34,55 +44,104 @@
 
         protected $applicationName;
 
-        public function __construct($settingsMenuItems, $userMenuItems, $notificationsUrl, $applicationName)
+        const USER_MENU_ID                              = 'user-header-menu';
+
+        const SETTINGS_MENU_ID                          = 'settings-header-menu';
+
+        const MERGED_MENU_ID                            = 'settings-header-menu';
+
+        const MERGE_USER_AND_SETTINGS_MENU_IF_MOBILE    = true;
+
+        public function __construct($settingsMenuItems, $userMenuItems, $applicationName)
         {
             assert('is_array($settingsMenuItems)');
             assert('is_array($userMenuItems)');
-            assert('is_string($notificationsUrl)');
             assert('is_string($applicationName) || $applicationName == null');
             $this->settingsMenuItems     = $settingsMenuItems;
             $this->userMenuItems         = $userMenuItems;
-            $this->notificationsUrl      = $notificationsUrl;
             $this->applicationName       = $applicationName;
         }
 
         protected function renderContent()
         {
-            $imagePath = Yii::app()->baseUrl . '/themes/default/images/';
             $homeUrl   = Yii::app()->createUrl('home/default');
-            $content   = '<div class="clearfix"><div id="corp-logo">';
-            $content  .= '<a href="' . $homeUrl . '"><img src="' . $imagePath . 'Zurmo_logo.png" alt="Zurmo Logo"/></a>';
+            $content   = '<div class="clearfix">';
+            $content  .= '<a href="#" id="nav-trigger" title="Toggle Navigation">&rsaquo;</a>';
+            $content  .= '<div id="corp-logo">';
+            if ($logoFileModelId = ZurmoConfigurationUtil::getByModuleName('ZurmoModule', 'logoFileModelId'))
+            {
+                $logoFileModel = FileModel::getById($logoFileModelId);
+                $logoFileSrc   = Yii::app()->getAssetManager()->getPublishedUrl(Yii::getPathOfAlias('application.runtime.uploads') .
+                                                                                DIRECTORY_SEPARATOR . $logoFileModel->name);
+            }
+            else
+            {
+                $logoFileSrc   = Yii::app()->themeManager->baseUrl . '/default/images/Zurmo_logo.png';
+            }
+            $logoHeight = ZurmoConfigurationFormAdapter::resolveLogoHeight();
+            $logoWidth  = ZurmoConfigurationFormAdapter::resolveLogoWidth();
+            if (Yii::app()->userInterface->isMobile())
+            {
+                $content   .= '<a href="' . $homeUrl . '"><img src="' . $logoFileSrc . '" alt="Zurmo Logo" /></a>'; //make sure width and height are NEVER defined
+            }
+            else
+            {
+                $content   .= '<a href="' . $homeUrl . '"><img src="' . $logoFileSrc . '" alt="Zurmo Logo" height="'
+                                . $logoHeight .'" width="' . $logoWidth .'" /></a>';
+            }
             if ($this->applicationName != null)
             {
                 $content  .= ZurmoHtml::tag('span', array(), $this->applicationName);
             }
             $content  .= '</div>';
-            $content  .= '<div id="user-toolbar" class="clearfix">';
-            $content  .= static::renderHeaderMenuContent(
-                            static::resolveUserMenuItemsWithTopLevelItem($this->userMenuItems),
-                            'user-header-menu');
-            $content  .= static::renderNotificationsLinkContent();
-            $content  .= static::renderHeaderMenuContent(
-                            static::resolveSettingsMenuItemsWithTopLevelItem($this->settingsMenuItems),
-                            'settings-header-menu');
-            $content  .= '</div></div>';
+            if (!empty($this->userMenuItems) && !empty($this->settingsMenuItems))
+            {
+                $content  .= '<div id="user-toolbar" class="clearfix">';
+                $content  .= static::renderHeaderMenus($this->userMenuItems, $this->settingsMenuItems);
+                $content  .= '</div>';
+            }
+            $content  .= '</div>';
             return $content;
+        }
+
+        protected static function renderHeaderMenus($userMenuItems, $settingsMenuItems)
+        {
+            $userMenuItemsWithTopLevel = static::resolveUserMenuItemsWithTopLevelItem($userMenuItems);
+            $settingsMenuItemsWithTopLevel = static::resolveSettingsMenuItemsWithTopLevelItem($settingsMenuItems);
+            return static::renderHeaderMenuContent($userMenuItemsWithTopLevel, self::USER_MENU_ID) .
+                static::renderHeaderMenuContent($settingsMenuItemsWithTopLevel, self::SETTINGS_MENU_ID);
         }
 
         protected static function resolveUserMenuItemsWithTopLevelItem($menuItems)
         {
             assert('is_array($menuItems)');
-            $finalMenuItems             = array(array('label' => Yii::app()->user->userModel->username, 'url' => null));
-            $finalMenuItems[0]['items'] = $menuItems;
-            return $finalMenuItems;
+            $topLevel = static::getUserMenuTopLevelItem();
+            return static::resolveMenuItemsWithTopLevelItem($topLevel, $menuItems);
         }
 
         protected static function resolveSettingsMenuItemsWithTopLevelItem($menuItems)
         {
             assert('is_array($menuItems)');
-            $finalMenuItems             = array(array('label' => Yii::t('Default', 'Settings'), 'url' => null));
-            $finalMenuItems[0]['items'] = $menuItems;
-            return $finalMenuItems;
+            $topLevel = static::getSettingsMenuTopLevel();
+            return static::resolveMenuItemsWithTopLevelItem($topLevel, $menuItems);
+        }
+
+        protected static function resolveMenuItemsWithTopLevelItem($topLevel, $menuItems)
+        {
+            assert('is_array($menuItems)');
+            assert('is_array($topLevel)');
+            $topLevel[0]['items'] = $menuItems;
+            return $topLevel;
+        }
+
+        protected static function getUserMenuTopLevelItem()
+        {
+            return array(array('label' => Yii::app()->user->userModel->username, 'url' => null));
+        }
+
+        protected static function getSettingsMenuTopLevel()
+        {
+            return array(array('label' => Zurmo::t('ZurmoModule', 'Settings'), 'url' => null));
         }
 
         protected static function renderHeaderMenuContent($menuItems, $menuId)
@@ -98,75 +157,10 @@
             $cClipWidget->widget('application.core.widgets.MbMenu', array(
                 'items'                   => $menuItems,
                 'htmlOptions' => array('id'     => $menuId,
-                                       'class'  => 'headerNav'),
+                                       'class'  => 'user-menu-item'),
             ));
             $cClipWidget->endClip();
             return $cClipWidget->getController()->clips['headerMenu'];
-        }
-
-        protected function renderNotificationsLinkContent()
-        {
-            $label    = Yii::t('Default', 'Notifications');
-            $content  = null;
-            $count    = Notification::getCountByUser(Yii::app()->user->userModel);
-            $imageSourceUrl = Yii::app()->baseUrl . '/themes/default/images/loading.gif';
-            // Begin Not Coding Standard
-            $content  .= "<a id=\"notifications-flyout-link\" href=\"#\" class=\"notifications-link unread\">";
-            $content  .= "<span id='notifications-link' class='tooltip'>" . $count ."</span></a>";
-            $content  .= ZurmoHtml::tag('div',
-                                    array('id' => 'notifications-flyout', 'style' => 'display:none;'),
-                                    CHtml::image($imageSourceUrl, Yii::t('Default', 'Loading')), 'div');
-            Yii::app()->clientScript->registerScript('notificationPopupLinkScript', "
-                $('#notifications-link').live('click', function()
-                {
-                    if ($('#notifications-flyout').css('display') == 'none')
-                    {
-                        $('#notifications-flyout').show();
-                        $.ajax({
-                            url 	 : '" . $this->notificationsUrl . "',
-                            type     : 'GET',
-                            dataType : 'html',
-                            success  : function(html)
-                            {
-                                jQuery('#notifications-flyout').html(html);
-                                $(document).bind('click',function (e)
-                                {
-                                    var container = $('#notifications-flyout');
-                                    if (container.has(e.target).length === 0 && e.target.id != 'notifications-link')
-                                    {
-                                        container.hide();
-                                    }
-                                });
-                            }
-                        });
-                    }
-                    else
-                    {
-                        $('#notifications-flyout').hide();
-                    }
-                });
-            ", CClientScript::POS_HEAD);
-            Yii::app()->clientScript->registerScript('deleteNotificationFromAjaxListViewScript', "
-                function deleteNotificationFromAjaxListView(element, modelId)
-                {
-                    $.ajax({
-                        url : '" . Yii::app()->createUrl('notifications/default/deleteFromAjax') . "?id=' + modelId,
-                        type : 'GET',
-                        dataType : 'json',
-                        success : function(data)
-                        {
-                            //remove row
-                            $(element).parent().remove();
-                        },
-                        error : function()
-                        {
-                            //todo: error call
-                        }
-                    });
-                }
-            ", CClientScript::POS_END);
-            // End Not Coding Standard
-            return $content;
         }
     }
 ?>

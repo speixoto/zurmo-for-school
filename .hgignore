@@ -3,6 +3,8 @@ UI Design/*
 .hgignore
 app/themes/default/fonts/Originals
 app/.settings
+ZurmoUI.sublime-project
+ZurmoUI.sublime-workspace
 
 app/assets
 developer/api/html
@@ -16,6 +18,7 @@ app/protected/tests/unit/timeit.dat
 app/protected/tests/unit/results.txt
 glob:testresults/functional/
 app/protected/tests/unit/update
+app/protected/tests/phpunit-profiler.xml
 glob:demodata.sql
 .buildpath
 .project
@@ -31,6 +34,7 @@ app/report
 .settings
 README.md
 
+.idea
 .idea/.name
 .idea/ZurmoUI.iml
 .idea/encodings.xml

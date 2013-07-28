@@ -1,10 +1,10 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2012 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
-     * the terms of the GNU General Public License version 3 as published by the
+     * the terms of the GNU Affero General Public License version 3 as published by the
      * Free Software Foundation with the addition of the following permission added
      * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
      * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
@@ -12,16 +12,26 @@
      *
      * Zurmo is distributed in the hope that it will be useful, but WITHOUT
      * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-     * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+     * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
      * details.
      *
-     * You should have received a copy of the GNU General Public License along with
+     * You should have received a copy of the GNU Affero General Public License along with
      * this program; if not, see http://www.gnu.org/licenses or write to the Free
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
      *
-     * You can contact Zurmo, Inc. with a mailing address at 113 McHenry Road Suite 207,
-     * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
+     * You can contact Zurmo, Inc. with a mailing address at 27 North Wacker Drive
+     * Suite 370 Chicago, IL 60606. or at email address contact@zurmo.com.
+     *
+     * The interactive user interfaces in original and modified versions
+     * of this program must display Appropriate Legal Notices, as required under
+     * Section 5 of the GNU Affero General Public License version 3.
+     *
+     * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
+     * these Appropriate Legal Notices must retain the display of the Zurmo
+     * logo and Zurmo copyright notice. If the display of the logo is not reasonably
+     * feasible for technical reasons, the Appropriate Legal Notices must display the words
+     * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
     // KEEP these in alphabetical order.
@@ -55,6 +65,12 @@
             => 'y',
         'Application is not in maintenance mode. Please edit perInstance.php file, and set "$maintenanceMode = true;"'
             => 'La aplicación no está en modo de mantenimiento. Por favor, modifique el archivo  perInstance.php y ajuste "$maintenanceMode = true;"',
+        'Apply'
+            => 'Aplicar',
+        'Are you sure you want to delete this {modelLabel}?'
+            => 'Está seguro que quiere eliminar esto {modelLabel}?',
+        'Are you sure you want to unlink this {modelLabel}?'
+            => '¿Está seguro que desea desvincular este {modelLabel}?',
         'Basic Search'
             => 'Búsqueda básica',
         'Basic Search Fields'
@@ -63,12 +79,18 @@
             => 'Antes',
         'Between'
             => 'Entre',
-        'Bulk insert failed. There was a row with an incorrect column quantity'
+        'Blue'
+            => 'Azul',
+        'Brown'
+            => 'Marrón',
+        'Bulk insert failed. There was a row with an incorrect column quantity.'
             => 'Error en la operación BULK INSERT. Una línea contiene una serie de columnas malas',
         'by'
             => 'de',
         'Cancel'
             => 'Cancelar',
+        'Cancel Changes'
+            => 'Cancelar cambios',
         'Cell Settings'
             => 'Configuración de las células',
         'Celsius'
@@ -81,6 +103,8 @@
             => 'Auditoría se ha completado.',
         'Checking permissions, files, upgrade version....'
             => 'Verificación de permisos, archivos, versión actualizada...',
+        'Cherry'
+            => 'Cereza',
         'Clear'
             => 'Borrar',
         'Clearing assets and runtime folders.'
@@ -91,6 +115,8 @@
             => 'Haga clic aquí',
         'Close'
             => 'Cerrar',
+        'Columns'
+            => 'Columnas',
         'Copying files.'
             => 'Copia de archivos.',
         'Could not extract upgrade "from version" in the manifest file.'
@@ -119,6 +145,8 @@
             => 'Valor predeterminado',
         'Delete'
             => 'Eliminar',
+        'Deleting'
+            => 'Eliminación en progreso',
         'Detail View Only'
             => 'Solo vista de detalles',
         'Details'
@@ -133,6 +161,8 @@
             => 'Error', // Same Word Translated
         'Error during upgrade!'
             => 'Error durante la actualización!',
+        'Exclusive Paper'
+            => 'Documento Exclusivo',
         'Export'
             => 'Exportar',
         'Fahrenheit'
@@ -153,12 +183,18 @@
             => 'firstDateTime debe ocurrir antes secondDateTime',
         'Float'
             => 'Float', // Same Word Translated
+        'French Stucco'
+            => 'Estuco francés',
         'from'
             => 'de',
         'Full Name'
             => 'Nombre completo',
         'Go to Details'
             => 'Ir a detalles',
+        'Hidden Columns'
+            => 'Columnas Ocultas',
+        'Honey'
+            => 'Miel',
         'Hour'
             => 'Hora',
         'Info'
@@ -179,12 +215,22 @@
             => 'Última Modificación',
         'Last Modified Date and User'
             => 'Última modificación fecha y usuario',
+        'Light Noise'
+            => 'Ruido de Luz',
+        'Light Toast'
+            => 'Light Toast', // Same Word Translated
+        'Lime'
+            => 'Lima',
         'List'
             => 'Lista',
         'Loading'
             => 'Cargando',
         'Loading UpgraderComponent.'
             => 'Cargando UpgraderComponent.',
+        'Mass Delete'
+            => 'Borrar en masa',
+        'Mass Delete is not reversable.'
+            => 'Borradar en masa no es reversible.',
         'Mass Update'
             => 'Actualización Global',
         'Max upload size: {maxSize}'
@@ -223,6 +269,8 @@
             => 'Ningún procesos de importación encontrado',
         'No {moduleLabelPluralLowerCase} found'
             => 'No se encontraron resultados',
+        'Noise'
+            => 'Ruido',
         'None'
             => 'Ninguno',
         'Not all files and folders are writeable by upgrade user. Please make these files or folders writeable:'
@@ -249,6 +297,8 @@
             => 'Configuración de panel',
         'Panel Title'
             => 'Título de panel',
+        'Paper'
+            => 'Papel',
         'Part 1 complete.'
             => 'Parte 1 es completa.',
         'Please check if the file is a valid zip archive.'
@@ -277,10 +327,14 @@
             => 'Eliminar',
         'Removing upgrade files.'
             => 'Archivos de actualización está quitando.',
+        'Reset'
+            => 'Renacimiento',
         'Return to List'
             => 'Volver al la lista',
         'Row'
             => 'Fila',
+        'Row Counter: {rowNumber} Serialized row data: {serializedRowData}'
+            => 'Row Counter: {rowNumber} Serialized row data: {serializedRowData}', // Same Word Translated
         'Running tasks after schema is updated.'
             => 'Ejecución de tareas después de que el esquema se ha actualizado.',
         'Running tasks before updating schema.'
@@ -299,6 +353,8 @@
             => 'Seleccionar',
         'Selected'
             => 'Seleccionado',
+        'selected for removal.'
+            => 'seleccionado para eliminación.',
         'selected for updating.'
             => 'seleccionado por actualización',
         'Serialized Data'
@@ -311,6 +367,8 @@
             => 'Empezar',
         'Start typing to search'
             => 'Escriba su búsqueda aquí',
+        'successfully deleted'
+            => 'eliminado con éxito',
         'Tab'
             => 'Tab', // Same Word Translated
         'The file did not exist'
@@ -319,6 +377,8 @@
             => 'La estructura no es válida. {error}',
         'There was an error during the extraction process of {zipFilePath}'
             => 'Se produjo un error durante el proceso de extracción de {zipFilePath}',
+        'There was an error processing your request'
+            => 'Hubo un error al procesar su pedido.',
         'There was an error uploading the file.'
             => 'Error al subir el archivo',
         'There was an error with the web service.'
@@ -343,12 +403,16 @@
             => 'Mañana',
         'total'
             => 'total', // Same Word Translated
+        'Turquoise'
+            => 'Turquesa',
         'Type'
             => 'Tipo',
         'Type to find a tag'
             => 'Escriba para encontrar una etiqueta',
         'Unknown'
             => 'Desconocido',
+        'Unlink'
+            => 'Desvincular',
         'Update'
             => 'Actualización',
         'updated successfully.'
@@ -367,6 +431,10 @@
             => 'Usuario',
         'Users'
             => 'Usuarios',
+        'Violet'
+            => 'Violeta',
+        'Visible Columns'
+            => 'Columnas Visibles',
         'Yes'
             => 'Sí',
         'Yesterday'

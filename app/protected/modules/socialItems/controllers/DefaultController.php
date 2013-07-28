@@ -1,10 +1,10 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2012 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
-     * the terms of the GNU General Public License version 3 as published by the
+     * the terms of the GNU Affero General Public License version 3 as published by the
      * Free Software Foundation with the addition of the following permission added
      * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
      * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
@@ -12,16 +12,26 @@
      *
      * Zurmo is distributed in the hope that it will be useful, but WITHOUT
      * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-     * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+     * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
      * details.
      *
-     * You should have received a copy of the GNU General Public License along with
+     * You should have received a copy of the GNU Affero General Public License along with
      * this program; if not, see http://www.gnu.org/licenses or write to the Free
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
      *
-     * You can contact Zurmo, Inc. with a mailing address at 113 McHenry Road Suite 207,
-     * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
+     * You can contact Zurmo, Inc. with a mailing address at 27 North Wacker Drive
+     * Suite 370 Chicago, IL 60606. or at email address contact@zurmo.com.
+     *
+     * The interactive user interfaces in original and modified versions
+     * of this program must display Appropriate Legal Notices, as required under
+     * Section 5 of the GNU Affero General Public License version 3.
+     *
+     * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
+     * these Appropriate Legal Notices must retain the display of the Zurmo
+     * logo and Zurmo copyright notice. If the display of the logo is not reasonably
+     * feasible for technical reasons, the Appropriate Legal Notices must display the words
+     * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
     class SocialItemsDefaultController extends ZurmoBaseController
@@ -32,13 +42,15 @@
          */
         public function actionInlineCreateSave($redirectUrl = null)
         {
+            $socialItem = new SocialItem();
+            $socialItem->setScenario('createPost');
             if (isset($_POST['ajax']) && $_POST['ajax'] === 'social-item-inline-edit-form')
             {
-                $this->actionInlineEditValidate(new SocialItem(), 'SocialItem');
+                $this->actionInlineEditValidate($socialItem, 'SocialItem');
             }
             $_POST['SocialItem']['explicitReadWriteModelPermissions']['type'] = ExplicitReadWriteModelPermissionsUtil::
                                                                                 MIXED_TYPE_EVERYONE_GROUP;
-            $this->attemptToSaveModelFromPost(new SocialItem(), $redirectUrl);
+            $this->attemptToSaveModelFromPost($socialItem, $redirectUrl);
         }
 
         public function actionPostGameNotificationToProfile($content)
@@ -62,11 +74,7 @@
                                              sanitizePostByDesignerTypeForSavingModel($model, $postFormData);
             $model->setAttributes($sanitizedPostData);
             $model->validate();
-            $errorData = array();
-            foreach ($model->getErrors() as $attribute => $errors)
-            {
-                    $errorData[ZurmoHtml::activeId($model, $attribute)] = $errors;
-            }
+            $errorData = ZurmoActiveForm::makeErrorsDataAndResolveForOwnedModelAttributes($model);
             echo CJSON::encode($errorData);
             Yii::app()->end(0, false);
         }
@@ -103,18 +111,19 @@
             $socialItem    = SocialItem::getById((int)$id);
             $uniquePageId  = SocialItemsUtil::makeUniquePageIdByModel($socialItem);
             $content       = ZurmoHtml::tag('span', array(),
-                                            ZurmoHtml::link(Yii::t('Default', 'Comment'), '#',
+                                            ZurmoHtml::link(Zurmo::t('SocialItemsModule', 'Comment'), '#',
                                                             array('class' => 'show-create-comment')));
             $inlineView    = new CommentForSocialItemInlineEditView($comment, 'default', 'comments', 'inlineCreateSave',
-                                                                    $urlParameters, $uniquePageId);
+                                                                    $urlParameters, $uniquePageId, $socialItem->id);
             $view          = new AjaxPageView($inlineView);
             echo $content . ZurmoHtml::tag('div', array('style' => 'display:none;'), $view->render());
         }
 
         public function actionDeleteViaAjax($id)
         {
-            $socialItem               = SocialItem::getById(intval($id));
-            if ($socialItem->owner->id  != Yii::app()->user->userModel->id &&
+            $socialItem = SocialItem::getById(intval($id));
+            if (!$socialItem->canUserDelete(Yii::app()->user->userModel) &&
+                $socialItem->owner->id  != Yii::app()->user->userModel->id &&
                 $socialItem->toUser->id != Yii::app()->user->userModel->id)
             {
                 $messageView = new AccessFailureAjaxView();

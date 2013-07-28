@@ -1,10 +1,10 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2012 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
-     * the terms of the GNU General Public License version 3 as published by the
+     * the terms of the GNU Affero General Public License version 3 as published by the
      * Free Software Foundation with the addition of the following permission added
      * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
      * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
@@ -12,16 +12,26 @@
      *
      * Zurmo is distributed in the hope that it will be useful, but WITHOUT
      * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-     * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+     * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
      * details.
      *
-     * You should have received a copy of the GNU General Public License along with
+     * You should have received a copy of the GNU Affero General Public License along with
      * this program; if not, see http://www.gnu.org/licenses or write to the Free
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
      *
-     * You can contact Zurmo, Inc. with a mailing address at 113 McHenry Road Suite 207,
-     * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
+     * You can contact Zurmo, Inc. with a mailing address at 27 North Wacker Drive
+     * Suite 370 Chicago, IL 60606. or at email address contact@zurmo.com.
+     *
+     * The interactive user interfaces in original and modified versions
+     * of this program must display Appropriate Legal Notices, as required under
+     * Section 5 of the GNU Affero General Public License version 3.
+     *
+     * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
+     * these Appropriate Legal Notices must retain the display of the Zurmo
+     * logo and Zurmo copyright notice. If the display of the logo is not reasonably
+     * feasible for technical reasons, the Appropriate Legal Notices must display the words
+     * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -87,7 +97,7 @@
 
             //actionModalList should fail.
             $this->setGetArray(array(
-                'modalTransferInformation' => array('sourceIdFieldId' => 'x', 'sourceNameFieldId' => 'y')
+                'modalTransferInformation' => array('sourceIdFieldId' => 'x', 'sourceNameFieldId' => 'y', 'modalId' => 'z')
             ));
             $this->runControllerShouldResultInAccessFailureAndGetContent('contacts/default/modalList');
 
@@ -142,7 +152,7 @@
 
             //actionModalList for Contact should not fail.
             $this->setGetArray(array(
-                'modalTransferInformation' => array('sourceIdFieldId' => 'x', 'sourceNameFieldId' => 'y')
+                'modalTransferInformation' => array('sourceIdFieldId' => 'x', 'sourceNameFieldId' => 'y', 'modalId' => 'z')
             ));
             $this->runControllerWithNoExceptionsAndGetContent('contacts/default/modalList');
 
@@ -508,6 +518,105 @@
             $this->assertTrue($parentGroup->save());
             $childGroup->users->remove($userInChildGroup);
             $this->assertTrue($childGroup->save());
+        }
+
+         /**
+         * @deletes selected contacts.
+         */
+        public function testRegularMassDeleteActionsForSelectedIds()
+        {
+            $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
+            $confused = User::getByUsername('confused');
+            $nobody = User::getByUsername('nobody');
+            $this->assertEquals(Right::DENY, $confused->getEffectiveRight('ZurmoModule', ZurmoModule::RIGHT_BULK_DELETE));
+            $confused->setRight('ZurmoModule', ZurmoModule::RIGHT_BULK_DELETE);
+            //Load MassDelete view for the 3 contacts.
+            $contacts = Contact::getAll();
+            $this->assertEquals(5, count($contacts));
+            $contact1 = ContactTestHelper::createContactByNameForOwner('contactDelete1', $confused);
+            $contact2 = ContactTestHelper::createContactByNameForOwner('contactDelete2', $confused);
+            $contact3 = ContactTestHelper::createContactByNameForOwner('contactDelete3', $nobody);
+            $contact4 = ContactTestHelper::createContactByNameForOwner('contactDelete4', $confused);
+            $contact5 = ContactTestHelper::createContactByNameForOwner('contactDelete5', $confused);
+            $contact6 = ContactTestHelper::createContactByNameForOwner('contactDelete6', $nobody);
+            $contact7 = ContactTestHelper::createContactByNameForOwner('contactDelete7', $confused);
+            $contact8 = ContactTestHelper::createContactByNameForOwner('contactDelete8', $confused);
+            $contact9 = ContactTestHelper::createContactByNameForOwner('contactDelete9', $nobody);
+            $pageSize = Yii::app()->pagination->getForCurrentUserByType('massDeleteProgressPageSize');
+            $this->assertEquals(5, $pageSize);
+            $selectedIds = $contact1->id . ',' . $contact2->id . ',' . $contact3->id ;    // Not Coding Standard
+            $this->setGetArray(array('selectedIds' => $selectedIds, 'selectAll' => ''));  // Not Coding Standard
+            $this->resetPostArray();
+            $content = $this->runControllerWithNoExceptionsAndGetContent('contacts/default/massDelete');
+            $this->assertFalse(strpos($content, '<strong>3</strong>&#160;Contacts selected for removal') === false);
+
+            //calculating contacts after adding 9 new records
+            $contacts = Contact::getAll();
+            $this->assertEquals(14, count($contacts));
+            //Deleting 6 contacts for pagination scenario
+            //Run Mass Delete using progress save for page1
+            $selectedIds = $contact1->id . ',' . $contact2->id . ',' . // Not Coding Standard
+                           $contact3->id . ',' . $contact4->id . ',' . // Not Coding Standard
+                           $contact5->id . ',' . $contact6->id;        // Not Coding Standard
+            $this->setGetArray(array(
+                'selectedIds' => $selectedIds, // Not Coding Standard
+                'selectAll' => '',
+                'Contact_page' => 1));
+            $this->setPostArray(array('selectedRecordCount' => 6));
+            $content = $this->runControllerWithExitExceptionAndGetContent('contacts/default/massDelete');
+            $contacts = Contact::getAll();
+            $this->assertEquals(9, count($contacts));
+
+            //Run Mass Delete using progress save for page2
+            $selectedIds = $contact1->id . ',' . $contact2->id . ',' . // Not Coding Standard
+                           $contact3->id . ',' . $contact4->id . ',' . // Not Coding Standard
+                           $contact5->id . ',' . $contact6->id;        // Not Coding Standard
+            $this->setGetArray(array(
+                'selectedIds' => $selectedIds, // Not Coding Standard
+                'selectAll' => '',
+                'Contact_page' => 2));
+            $this->setPostArray(array('selectedRecordCount' => 6));
+            $content = $this->runControllerWithNoExceptionsAndGetContent('contacts/default/massDeleteProgress');
+            $contacts = Contact::getAll();
+            $this->assertEquals(8, count($contacts));
+        }
+
+         /**
+         *Test Bug with mass delete and multiple pages when using select all
+         */
+        public function testRegularMassDeletePagesProperlyAndRemovesAllSelected()
+        {
+            $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
+            $confused = User::getByUsername('confused');
+            $billy = User::getByUsername('billy');
+
+            //Load MassDelete view for the 8 contacts.
+            $contacts = Contact::getAll();
+            $this->assertEquals(8, count($contacts));
+             //Deleting all contacts
+
+            //mass Delete pagination scenario
+            //Run Mass Delete using progress save for page1
+            $this->setGetArray(array(
+                'selectAll' => '1',
+                'Contact_page' => 1));
+            $this->setPostArray(array('selectedRecordCount' => 8));
+            $pageSize = Yii::app()->pagination->getForCurrentUserByType('massDeleteProgressPageSize');
+            $this->assertEquals(5, $pageSize);
+            $content = $this->runControllerWithExitExceptionAndGetContent('contacts/default/massDelete');
+            $contacts = Contact::getAll();
+            $this->assertEquals(3, count($contacts));
+
+           //Run Mass Delete using progress save for page2
+            $this->setGetArray(array(
+                'selectAll' => '1',
+                'Contact_page' => 2));
+            $this->setPostArray(array('selectedRecordCount' => 8));
+            $pageSize = Yii::app()->pagination->getForCurrentUserByType('massDeleteProgressPageSize');
+            $this->assertEquals(5, $pageSize);
+            $content = $this->runControllerWithNoExceptionsAndGetContent('contacts/default/massDeleteProgress');
+            $contacts = Contact::getAll();
+            $this->assertEquals(0, count($contacts));
         }
     }
 ?>

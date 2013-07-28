@@ -1,10 +1,10 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2012 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
-     * the terms of the GNU General Public License version 3 as published by the
+     * the terms of the GNU Affero General Public License version 3 as published by the
      * Free Software Foundation with the addition of the following permission added
      * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
      * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
@@ -12,16 +12,26 @@
      *
      * Zurmo is distributed in the hope that it will be useful, but WITHOUT
      * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-     * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+     * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
      * details.
      *
-     * You should have received a copy of the GNU General Public License along with
+     * You should have received a copy of the GNU Affero General Public License along with
      * this program; if not, see http://www.gnu.org/licenses or write to the Free
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
      *
-     * You can contact Zurmo, Inc. with a mailing address at 113 McHenry Road Suite 207,
-     * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
+     * You can contact Zurmo, Inc. with a mailing address at 27 North Wacker Drive
+     * Suite 370 Chicago, IL 60606. or at email address contact@zurmo.com.
+     *
+     * The interactive user interfaces in original and modified versions
+     * of this program must display Appropriate Legal Notices, as required under
+     * Section 5 of the GNU Affero General Public License version 3.
+     *
+     * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
+     * these Appropriate Legal Notices must retain the display of the Zurmo
+     * logo and Zurmo copyright notice. If the display of the logo is not reasonably
+     * feasible for technical reasons, the Appropriate Legal Notices must display the words
+     * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
     class LeadsDefaultController extends ZurmoModuleController
@@ -30,17 +40,22 @@
         {
             return array_merge(parent::filters(),
                 array(
-                    array(
+                   array(
                         ZurmoBaseController::RIGHTS_FILTER_PATH . ' + convert, saveConvertedContact',
                         'moduleClassName' => 'LeadsModule',
                         'rightName' => LeadsModule::RIGHT_CONVERT_LEADS,
                    ),
-                    array(
+                   array(
                         ZurmoBaseController::REQUIRED_ATTRIBUTES_FILTER_PATH . ' + create, edit',
                         'moduleClassName' => get_class($this->getModule()),
                         'viewClassName'   => 'LeadEditAndDetailsView',
                    ),
-                    array(
+                   array(
+                        ZurmoBaseController::REQUIRED_ATTRIBUTES_FILTER_PATH . ' + convert',
+                        'moduleClassName' => 'AccountsModule',
+                        'viewClassName'   => 'AccountConvertToView',
+                   ),
+                   array(
                         ZurmoModuleController::ZERO_MODELS_CHECK_FILTER_PATH . ' + list, index',
                         'controller'                    => $this,
                         'stateMetadataAdapterClassName' => 'LeadsStateMetadataAdapter'
@@ -73,12 +88,7 @@
             }
             else
             {
-                $mixedView = $this->makeActionBarSearchAndListView(
-                    $searchForm,
-                    $pageSize,
-                    LeadsModule::getModuleLabelByTypeAndLanguage('Plural'),
-                    $dataProvider
-                );
+                $mixedView = $this->makeActionBarSearchAndListView($searchForm, $dataProvider);
                 $view = new LeadsPageView(ZurmoDefaultViewUtil::
                                          makeStandardViewForCurrentUser($this, $mixedView));
             }
@@ -130,13 +140,31 @@
             }
             else
             {
-                $view = new LeadsPageView(ZurmoDefaultViewUtil::
-                                         makeStandardViewForCurrentUser($this,
-                                             $this->makeEditAndDetailsView(
-                                                $this->attemptToSaveModelFromPost($contact, $redirectUrl), 'Edit',
-                                                            'LeadTitleBarAndEditAndDetailsView')));
-                echo $view->render();
+                $this->processEdit($contact, $redirectUrl);
             }
+        }
+
+        public function actionCopy($id)
+        {
+            $copyToContact  = new Contact();
+            $postVariableName   = get_class($copyToContact);
+            if (!isset($_POST[$postVariableName]))
+            {
+                $contact        = Contact::getById((int)$id);
+                ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($contact);
+                ZurmoCopyModelUtil::copy($contact, $copyToContact);
+            }
+            $this->processEdit($copyToContact);
+        }
+
+        protected function processEdit(Contact $contact, $redirectUrl = null)
+        {
+            $view = new LeadsPageView(ZurmoDefaultViewUtil::
+                                     makeStandardViewForCurrentUser($this,
+                                         $this->makeEditAndDetailsView(
+                                            $this->attemptToSaveModelFromPost($contact, $redirectUrl), 'Edit',
+                                                        'LeadTitleBarAndEditAndDetailsView')));
+            echo $view->render();
         }
 
         /**
@@ -163,22 +191,23 @@
                 new LeadsSearchForm($contact),
                 $pageSize,
                 Yii::app()->user->userModel->id,
-                'LeadsStateMetadataAdapter');
-            $selectedRecordCount = $this->getSelectedRecordCountByResolvingSelectAllFromGet($dataProvider);
+                'LeadsStateMetadataAdapter',
+                'LeadsSearchView');
+            $selectedRecordCount = static::getSelectedRecordCountByResolvingSelectAllFromGet($dataProvider);
             $contact = $this->processMassEdit(
                 $pageSize,
                 $activeAttributes,
                 $selectedRecordCount,
                 'LeadsPageView',
                 $contact,
-                Yii::t('Default', 'Leads'),
+                Zurmo::t('LeadsModule', 'Leads'),
                 $dataProvider
             );
             $massEditView = $this->makeMassEditView(
                 $contact,
                 $activeAttributes,
                 $selectedRecordCount,
-                Yii::t('Default', 'Leads')
+                Zurmo::t('LeadsModule', 'Leads')
             );
             $view = new LeadsPageView(ZurmoDefaultViewUtil::
                                      makeStandardViewForCurrentUser($this, $massEditView));
@@ -198,15 +227,89 @@
                             'massEditProgressPageSize');
             $contact = new Contact(false);
             $dataProvider = $this->getDataProviderByResolvingSelectAllFromGet(
-                new LeadsSearchForm($contact),
-                $pageSize,
-                Yii::app()->user->userModel->id,
-                'LeadsStateMetadataAdapter'
-            );
+                            new LeadsSearchForm($contact),
+                            $pageSize,
+                            Yii::app()->user->userModel->id,
+                            'LeadsStateMetadataAdapter',
+                            'LeadsSearchView');
             $this->processMassEditProgressSave(
                 'Contact',
                 $pageSize,
-                Yii::t('Default', 'Leads'),
+                Zurmo::t('LeadsModule', 'Leads'),
+                $dataProvider
+            );
+        }
+
+        /**
+         * Action for displaying a mass delete form and also action when that form is first submitted.
+         * When the form is submitted, in the event that the quantity of models to delete is greater
+         * than the pageSize, then once the pageSize quantity has been reached, the user will be
+         * redirected to the makeMassDeleteProgressView.
+         * In the mass delete progress view, a javascript refresh will take place that will call a refresh
+         * action, usually makeMassDeleteProgressView.
+         * If there is no need for a progress view, then a flash message will be added and the user will
+         * be redirected to the list view for the model.  A flash message will appear providing information
+         * on the delete records.
+         * @see Controler->makeMassDeleteProgressView
+         * @see Controller->processMassDelete
+         * @see
+         */
+        public function actionMassDelete()
+        {
+            $pageSize = Yii::app()->pagination->resolveActiveForCurrentUserByType(
+                            'massDeleteProgressPageSize');
+            $contact = new Contact(false);
+
+            $activeAttributes = $this->resolveActiveAttributesFromMassDeletePost();
+            $dataProvider = $this->getDataProviderByResolvingSelectAllFromGet(
+                            new LeadsSearchForm($contact),
+                            $pageSize,
+                            Yii::app()->user->userModel->id,
+                            'LeadsStateMetadataAdapter',
+                            'LeadsSearchView');
+            $selectedRecordCount = static::getSelectedRecordCountByResolvingSelectAllFromGet($dataProvider);
+            $contact = $this->processMassDelete(
+                $pageSize,
+                $activeAttributes,
+                $selectedRecordCount,
+                'LeadsPageView',
+                $contact,
+                Zurmo::t('LeadsModule', 'Leads'),
+                $dataProvider
+            );
+            $massDeleteView = $this->makeMassDeleteView(
+                $contact,
+                $activeAttributes,
+                $selectedRecordCount,
+                Zurmo::t('LeadsModule', 'Leads')
+            );
+            $view = new LeadsPageView(ZurmoDefaultViewUtil::
+                                         makeStandardViewForCurrentUser($this, $massDeleteView));
+            echo $view->render();
+        }
+
+        /**
+         * Action called in the event that the mass delete quantity is larger than the pageSize.
+         * This action is called after the pageSize quantity has been delted and continues to be
+         * called until the mass delete action is complete.  For example, if there are 20 records to delete
+         * and the pageSize is 5, then this action will be called 3 times.  The first 5 are updated when
+         * the actionMassDelete is called upon the initial form submission.
+         */
+        public function actionMassDeleteProgress()
+        {
+            $pageSize = Yii::app()->pagination->resolveActiveForCurrentUserByType(
+                            'massDeleteProgressPageSize');
+            $contact = new Contact(false);
+            $dataProvider = $this->getDataProviderByResolvingSelectAllFromGet(
+                            new LeadsSearchForm($contact),
+                            $pageSize,
+                            Yii::app()->user->userModel->id,
+                            'LeadsStateMetadataAdapter',
+                            'LeadsSearchView');
+            $this->processMassDeleteProgress(
+                'Contact',
+                $pageSize,
+                Zurmo::t('LeadsModule', 'Leads'),
                 $dataProvider
             );
         }
@@ -230,7 +333,7 @@
             $userCanCreateAccount  = RightsUtil::doesUserHaveAllowByRightName('AccountsModule',
                                      AccountsModule::RIGHT_CREATE_ACCOUNTS, Yii::app()->user->userModel);
             LeadsControllerSecurityUtil::
-            resolveCanUserProperlyConvertLead($userCanAccessContacts, $userCanAccessAccounts, $convertToAccountSetting);
+                resolveCanUserProperlyConvertLead($userCanAccessContacts, $userCanAccessAccounts, $convertToAccountSetting);
             if (isset($_POST['AccountSelectForm']))
             {
                 $selectAccountForm->setAttributes($_POST['AccountSelectForm']);
@@ -242,10 +345,16 @@
             }
             elseif (isset($_POST['Account']))
             {
-                $account = LeadsUtil::AttributesToAccountWithNoPostData($contact, $account, $_POST['Account']);
+                $account = LeadsUtil::attributesToAccountWithNoPostData($contact, $account, $_POST['Account']);
                 $account->setAttributes($_POST['Account']);
                 if ($account->save())
                 {
+                    $explicitReadWriteModelPermissions = ExplicitReadWriteModelPermissionsUtil::makeBySecurableItem($contact);
+                    ExplicitReadWriteModelPermissionsUtil::resolveExplicitReadWriteModelPermissions($account, $explicitReadWriteModelPermissions);
+                    if (!$account->save())
+                    {
+                        throw new NotSupportedException();
+                    }
                     $this->actionSaveConvertedContact($contact, $account);
                 }
             }
@@ -258,7 +367,7 @@
             }
             else
             {
-                $account = LeadsUtil::AttributesToAccount($contact, $account);
+                $account = LeadsUtil::attributesToAccount($contact, $account);
             }
             $convertView = new LeadConvertView(
                 $this->getId(),
@@ -282,13 +391,13 @@
             if ($contact->save())
             {
                 Yii::app()->user->setFlash('notification',
-                    Yii::t('Default', 'LeadsModuleSingularLabel successfully converted.',
+                    Zurmo::t('LeadsModule', 'LeadsModuleSingularLabel successfully converted.',
                                            LabelUtil::getTranslationParamsForAllModules())
                 );
                 $this->redirect(array('/contacts/default/details', 'id' => $contact->id));
             }
             Yii::app()->user->setFlash('notification',
-                Yii::t('Default', 'LeadsModuleSingularLabel was not converted. An error occurred.')
+                Zurmo::t('LeadsModule', 'LeadsModuleSingularLabel was not converted. An error occurred.')
             );
             $this->redirect(array('default/details', 'id' => $contact->id));
             Yii::app()->end(0, false);
@@ -298,7 +407,8 @@
         {
             $modalListLinkProvider = new SelectFromRelatedEditModalListLinkProvider(
                                             $_GET['modalTransferInformation']['sourceIdFieldId'],
-                                            $_GET['modalTransferInformation']['sourceNameFieldId']
+                                            $_GET['modalTransferInformation']['sourceNameFieldId'],
+                                            $_GET['modalTransferInformation']['modalId']
             );
             echo ModalSearchListControllerUtil::setAjaxModeAndRenderModalSearchList($this, $modalListLinkProvider,
                                                 'LeadsStateMetadataAdapter');
@@ -346,7 +456,7 @@
 
         public function actionExport()
         {
-            $this->export();
+            $this->export('LeadsSearchView');
         }
     }
 ?>

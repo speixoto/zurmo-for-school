@@ -1,10 +1,10 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2012 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
-     * the terms of the GNU General Public License version 3 as published by the
+     * the terms of the GNU Affero General Public License version 3 as published by the
      * Free Software Foundation with the addition of the following permission added
      * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
      * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
@@ -12,16 +12,26 @@
      *
      * Zurmo is distributed in the hope that it will be useful, but WITHOUT
      * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-     * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+     * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
      * details.
      *
-     * You should have received a copy of the GNU General Public License along with
+     * You should have received a copy of the GNU Affero General Public License along with
      * this program; if not, see http://www.gnu.org/licenses or write to the Free
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
      *
-     * You can contact Zurmo, Inc. with a mailing address at 113 McHenry Road Suite 207,
-     * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
+     * You can contact Zurmo, Inc. with a mailing address at 27 North Wacker Drive
+     * Suite 370 Chicago, IL 60606. or at email address contact@zurmo.com.
+     *
+     * The interactive user interfaces in original and modified versions
+     * of this program must display Appropriate Legal Notices, as required under
+     * Section 5 of the GNU Affero General Public License version 3.
+     *
+     * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
+     * these Appropriate Legal Notices must retain the display of the Zurmo
+     * logo and Zurmo copyright notice. If the display of the logo is not reasonably
+     * feasible for technical reasons, the Appropriate Legal Notices must display the words
+     * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
     class BeginRequestBehavior extends CBehavior
@@ -29,62 +39,108 @@
         protected $allowedGuestUserRoutes = array(
                 'zurmo/default/unsupportedBrowser',
                 'zurmo/default/login',
+                'tracking/default/track',
+                'marketingLists/external/',
+                'contacts/external/',
                 'min/serve');
 
         public function attach($owner)
         {
-            if (Yii::app()->apiRequest->isApiRequest())
+            if (ApiRequest::isApiRequest())
             {
-                $owner->attachEventHandler('onBeginRequest', array($this, 'handleApplicationCache'));
-                $owner->detachEventHandler('onBeginRequest', array(Yii::app()->request, 'validateCsrfToken'));
-                $owner->attachEventHandler('onBeginRequest', array($this, 'handleImports'));
-
-                $owner->attachEventHandler('onBeginRequest', array($this, 'handleSetupDatabaseConnection'));
-                $owner->attachEventHandler('onBeginRequest', array($this, 'handleCheckAutoBuildCompleted'));
-                $owner->attachEventHandler('onBeginRequest', array($this, 'handleDisableGamification'));
-                $owner->attachEventHandler('onBeginRequest', array($this, 'handleBeginApiRequest'));
-                $owner->attachEventHandler('onBeginRequest', array($this, 'handleLibraryCompatibilityCheck'));
-                $owner->attachEventHandler('onBeginRequest', array($this, 'handleStartPerformanceClock'));
-
+                $this->attachApiRequestBehaviors($owner);
                 if (Yii::app()->isApplicationInstalled())
                 {
-                    $owner->attachEventHandler('onBeginRequest', array($this, 'handleClearCache'));
-                    $owner->attachEventHandler('onBeginRequest', array($this, 'handleLoadLanguage'));
-                    $owner->attachEventHandler('onBeginRequest', array($this, 'handleLoadTimeZone'));
-                    $owner->attachEventHandler('onBeginRequest', array($this, 'handleCheckAndUpdateCurrencyRates'));
-                    $owner->attachEventHandler('onBeginRequest', array($this, 'handleResolveCustomData'));
+                    $this->attachApiRequestBehaviorsForInstalledApplication($owner);
                 }
             }
             else
             {
-                $owner->attachEventHandler('onBeginRequest', array($this, 'handleApplicationCache'));
-                $owner->attachEventHandler('onBeginRequest', array($this, 'handleImports'));
-                $owner->attachEventHandler('onBeginRequest', array($this, 'handleLibraryCompatibilityCheck'));
-                $owner->attachEventHandler('onBeginRequest', array($this, 'handleStartPerformanceClock'));
-                $owner->attachEventHandler('onBeginRequest', array($this, 'handleBrowserCheck'));
-
+                $this->attachNonApiRequestBehaviors($owner);
                 if (!Yii::app()->isApplicationInstalled())
                 {
-                    $owner->attachEventHandler('onBeginRequest', array($this, 'handleInstanceFolderCheck'));
-                    $owner->attachEventHandler('onBeginRequest', array($this, 'handleInstallCheck'));
-                    //$owner->attachEventHandler('onBeginRequest', array($this, 'handleLoadLanguage'));
-                    //$owner->attachEventHandler('onBeginRequest', array($this, 'handleLoadTimeZone'));
+                    $this->attachNonApiRequestBehaviorsForNonInstalledApplication($owner);
                 }
                 else
                 {
-                    $owner->attachEventHandler('onBeginRequest', array($this, 'handleSetupDatabaseConnection'));
-                    $owner->attachEventHandler('onBeginRequest', array($this, 'handleCheckAutoBuildCompleted'));
-                    $owner->attachEventHandler('onBeginRequest', array($this, 'handleBeginRequest'));
-                    $owner->attachEventHandler('onBeginRequest', array($this, 'handleClearCache'));
-                    $owner->attachEventHandler('onBeginRequest', array($this, 'handleLoadLanguage'));
-                    $owner->attachEventHandler('onBeginRequest', array($this, 'handleLoadTimeZone'));
-                    $owner->attachEventHandler('onBeginRequest', array($this, 'handleUserTimeZoneConfirmed'));
-                    $owner->attachEventHandler('onBeginRequest', array($this, 'handleLoadActivitiesObserver'));
-                    $owner->attachEventHandler('onBeginRequest', array($this, 'handleLoadConversationsObserver'));
-                    $owner->attachEventHandler('onBeginRequest', array($this, 'handleLoadGamification'));
-                    $owner->attachEventHandler('onBeginRequest', array($this, 'handleCheckAndUpdateCurrencyRates'));
-                    $owner->attachEventHandler('onBeginRequest', array($this, 'handleResolveCustomData'));
+                    $this->attachNonApiRequestBehaviorsForInstalledApplication($owner);
                 }
+            }
+        }
+
+        protected function attachApiRequestBehaviors(CComponent $owner)
+        {
+            $owner->attachEventHandler('onBeginRequest', array($this, 'handleSentryLogs'));
+            $owner->attachEventHandler('onBeginRequest', array($this, 'handleApplicationCache'));
+            $owner->detachEventHandler('onBeginRequest', array(Yii::app()->request, 'validateCsrfToken'));
+            $owner->attachEventHandler('onBeginRequest', array($this, 'handleImports'));
+            $owner->attachEventHandler('onBeginRequest', array($this, 'handleSetupDatabaseConnection'));
+            $owner->attachEventHandler('onBeginRequest', array($this, 'handleCheckAutoBuildCompleted'));
+            $owner->attachEventHandler('onBeginRequest', array($this, 'handleDisableGamification'));
+            $owner->attachEventHandler('onBeginRequest', array($this, 'handleInitApiRequest'));
+            $owner->attachEventHandler('onBeginRequest', array($this, 'handleBeginApiRequest'));
+            $owner->attachEventHandler('onBeginRequest', array($this, 'handleLibraryCompatibilityCheck'));
+            $owner->attachEventHandler('onBeginRequest', array($this, 'handleStartPerformanceClock'));
+        }
+
+        protected function attachApiRequestBehaviorsForInstalledApplication(CComponent $owner)
+        {
+            $owner->attachEventHandler('onBeginRequest', array($this, 'handleClearCache'));
+            $owner->attachEventHandler('onBeginRequest', array($this, 'handleLoadLanguage'));
+            $owner->attachEventHandler('onBeginRequest', array($this, 'handleLoadTimeZone'));
+            $owner->attachEventHandler('onBeginRequest', array($this, 'handleLoadWorkflowsObserver'));
+            $owner->attachEventHandler('onBeginRequest', array($this, 'handleCheckAndUpdateCurrencyRates'));
+            $owner->attachEventHandler('onBeginRequest', array($this, 'handleResolveCustomData'));
+        }
+
+        protected function attachNonApiRequestBehaviors(CComponent $owner)
+        {
+            $owner->attachEventHandler('onBeginRequest', array($this, 'handleSentryLogs'));
+            $owner->attachEventHandler('onBeginRequest', array($this, 'handleApplicationCache'));
+            $owner->attachEventHandler('onBeginRequest', array($this, 'handleImports'));
+            $owner->attachEventHandler('onBeginRequest', array($this, 'handleLibraryCompatibilityCheck'));
+            $owner->attachEventHandler('onBeginRequest', array($this, 'handleStartPerformanceClock'));
+            $owner->attachEventHandler('onBeginRequest', array($this, 'handleBrowserCheck'));
+        }
+
+        protected function attachNonApiRequestBehaviorsForNonInstalledApplication(CComponent $owner)
+        {
+            $owner->attachEventHandler('onBeginRequest', array($this, 'handleInstanceFolderCheck'));
+            $owner->attachEventHandler('onBeginRequest', array($this, 'handleInstallCheck'));
+        }
+
+        protected function attachNonApiRequestBehaviorsForInstalledApplication(CComponent $owner)
+        {
+            $owner->attachEventHandler('onBeginRequest', array($this, 'handleSetupDatabaseConnection'));
+            $owner->attachEventHandler('onBeginRequest', array($this, 'handleCheckAutoBuildCompleted'));
+            $owner->attachEventHandler('onBeginRequest', array($this, 'handleBeginRequest'));
+            $owner->attachEventHandler('onBeginRequest', array($this, 'handleClearCache'));
+            $owner->attachEventHandler('onBeginRequest', array($this, 'handleLoadLanguage'));
+            $owner->attachEventHandler('onBeginRequest', array($this, 'handleLoadTimeZone'));
+            $owner->attachEventHandler('onBeginRequest', array($this, 'handleUserTimeZoneConfirmed'));
+            $owner->attachEventHandler('onBeginRequest', array($this, 'handleLoadActivitiesObserver'));
+            $owner->attachEventHandler('onBeginRequest', array($this, 'handleLoadConversationsObserver'));
+            $owner->attachEventHandler('onBeginRequest', array($this, 'handleLoadWorkflowsObserver'));
+            $owner->attachEventHandler('onBeginRequest', array($this, 'handleLoadGamification'));
+            $owner->attachEventHandler('onBeginRequest', array($this, 'handleCheckAndUpdateCurrencyRates'));
+            $owner->attachEventHandler('onBeginRequest', array($this, 'handleResolveCustomData'));
+            $owner->attachEventHandler('onBeginRequest', array($this, 'handlePublishLogoAssets'));
+        }
+
+        public function handleSentryLogs()
+        {
+            if (!YII_DEBUG && defined('SUBMIT_CRASH_TO_SENTRY') && SUBMIT_CRASH_TO_SENTRY)
+            {
+                Yii::import('application.extensions.sentrylog.RSentryLog');
+                $rSentryLog = Yii::createComponent(
+                    array('class' => 'RSentryLog', 'dsn' => Yii::app()->params['sentryDsn']));
+                // Have to invoke component init(), because it is not called automatically
+                $rSentryLog->init();
+                $component   = Yii::app()->getComponent('log');
+                $allRoutes   = $component->getRoutes();
+                $allRoutes[] = $rSentryLog;
+                $component->setRoutes($allRoutes);
+                Yii::app()->setComponent('log', $component);
             }
         }
 
@@ -97,12 +153,21 @@
         {
             if (MEMCACHE_ON)
             {
+                //Yii::import('application.core.components.ZurmoMemCache');
                 $memcacheServiceHelper = new MemcacheServiceHelper();
                 if ($memcacheServiceHelper->runCheckAndGetIfSuccessful())
                 {
-                    $cacheComponent = Yii::createComponent('CMemCache',
-                        array('servers' => Yii::app()->params['memcacheServers']));
+                    $cacheComponent = Yii::createComponent(array(
+                        'class'     => 'CMemCache',
+                        'keyPrefix' => ZURMO_TOKEN,
+                        'servers'   => Yii::app()->params['memcacheServers']));
                     Yii::app()->setComponent('cache', $cacheComponent);
+                }
+                // todo: Find better way to append this prefix for tests.
+                // We can't put this code only in BeginRequestTestBehavior, because for API tests we are using  BeginRequestBehavior
+                if (defined('IS_TEST'))
+                {
+                    ZurmoCache::setAdditionalStringForCachePrefix('Test');
                 }
             }
         }
@@ -113,25 +178,30 @@
         */
         public function handleImports($event)
         {
+            //Clears file cache so that everything is clean.
+            if (isset($_GET['clearCache']) && $_GET['clearCache'] == 1)
+            {
+                GeneralCache::forgetEntry('filesClassMap');
+            }
             try
             {
-                $filesToInclude = GeneralCache::getEntry('filesToInclude');
+                Yii::$classMap = GeneralCache::getEntry('filesClassMap');
             }
             catch (NotFoundException $e)
             {
                 $filesToInclude   = FileUtil::getFilesFromDir(Yii::app()->basePath . '/modules', Yii::app()->basePath . '/modules', 'application.modules');
-                $filesToIncludeFromFramework = FileUtil::getFilesFromDir(Yii::app()->basePath . '/core', Yii::app()->basePath . '/core', 'application.core');
+                $filesToIncludeFromCore = FileUtil::getFilesFromDir(Yii::app()->basePath . '/core', Yii::app()->basePath . '/core', 'application.core');
                 $totalFilesToIncludeFromModules = count($filesToInclude);
 
-                foreach ($filesToIncludeFromFramework as $key => $file)
+                foreach ($filesToIncludeFromCore as $key => $file)
                 {
                     $filesToInclude[$totalFilesToIncludeFromModules + $key] = $file;
                 }
-                GeneralCache::cacheEntry('filesToInclude', $filesToInclude);
-            }
-            foreach ($filesToInclude as $file)
-            {
-                Yii::import($file);
+                foreach ($filesToInclude as $file)
+                {
+                    Yii::import($file);
+                }
+                GeneralCache::cacheEntry('filesClassMap', Yii::$classMap);
             }
         }
 
@@ -154,7 +224,7 @@
         {
             if (!RedBeanDatabaseBuilderUtil::isAutoBuildStateValid())
             {
-                echo Yii::t('Default', 'Database upgrade not completed. Please try latter.');
+                echo Zurmo::t('ZurmoModule', 'Database upgrade not completed. Please try again later.');
                 Yii::app()->end(0, false);
             }
         }
@@ -226,6 +296,7 @@
                 $allowedTimeZoneConfirmBypassUrls = array (
                     Yii::app()->createUrl('users/default/confirmTimeZone'),
                     Yii::app()->createUrl('min/serve'),
+                    Yii::app()->createUrl('zurmo/default/logout'),
                 );
                 $reqestedUrl = Yii::app()->getRequest()->getUrl();
                 $isUrlAllowedToByPass = false;
@@ -252,11 +323,11 @@
             {
                 $allowedGuestUserUrls[] = Yii::app()->createUrl($allowedGuestUserRoute);
             }
-            $reqestedUrl = Yii::app()->getRequest()->getUrl();
+            $requestedUrl = Yii::app()->getRequest()->getUrl();
             $isUrlAllowedToGuests = false;
             foreach ($allowedGuestUserUrls as $url)
             {
-                if (strpos($reqestedUrl, $url) === 0)
+                if (strpos($requestedUrl, $url) === 0)
                 {
                     $isUrlAllowedToGuests = true;
                 }
@@ -279,24 +350,39 @@
                         $group = Group::getByName(Group::SUPER_ADMINISTRATORS_GROUP_NAME);
                         if (!$group->users->contains(Yii::app()->user->userModel))
                         {
-                            echo Yii::t('Default', 'Application is in maintenance mode. Please try again later.');
+                            echo Zurmo::t('ZurmoModule', 'Application is in maintenance mode. Please try again later.');
                             exit;
                         }
                         else
                         {
                             // Super Administrators can access all pages, but inform them that application is in maintenance mode.
-                            Yii::app()->user->setFlash('notification', Yii::t('Default', 'Application is in maintenance mode, and only Super Administrators can access it.'));
+                            Yii::app()->user->setFlash('notification', Zurmo::t('ZurmoModule', 'Application is in maintenance mode, and only Super Administrators can access it.'));
                         }
                     }
                 }
             }
         }
 
+        public function handleInitApiRequest($event)
+        {
+            $apiRequest = Yii::createComponent(
+                array('class' => 'application.modules.api.components.ApiRequest'));
+            $apiRequest->init();
+            Yii::app()->setComponent('apiRequest', $apiRequest);
+            Yii::app()->apiRequest->init();
+
+            $apiHelper = Yii::createComponent(
+                array('class' => 'application.modules.api.components.ZurmoApiHelper'));
+            //Have to invoke component init(), because it is not called automatically
+            $apiHelper->init();
+            Yii::app()->setComponent('apiHelper', $apiHelper);
+        }
+
         public function handleBeginApiRequest($event)
         {
             if (Yii::app()->isApplicationInMaintenanceMode())
             {
-                $message = Yii::t('Default', 'Application is in maintenance mode. Please try again later.');
+                $message = Zurmo::t('ZurmoModule', 'Application is in maintenance mode. Please try again later.');
                 $result = new ApiResult(ApiResponse::STATUS_FAILURE, null, $message, null);
                 Yii::app()->apiHelper->sendResponse($result);
                 exit;
@@ -319,7 +405,7 @@
 
                 if (!$isUrlAllowedToGuests)
                 {
-                    $message = Yii::t('Default', 'Sign in required.');
+                    $message = Zurmo::t('ZurmoModule', 'Sign in required.');
                     $result = new ApiResult(ApiResponse::STATUS_FAILURE, null, $message, null);
                     Yii::app()->apiHelper->sendResponse($result);
                     exit;
@@ -335,14 +421,14 @@
             $yiiVersion     =  YiiBase::getVersion();
             if ( $redBeanVersion != Yii::app()->params['redBeanVersion'])
             {
-                echo Yii::t('Default', 'Your RedBean version is currentVersion and it should be acceptableVersion.',
+                echo Zurmo::t('ZurmoModule', 'Your RedBean version is currentVersion and it should be acceptableVersion.',
                                 array(  'currentVersion' => $redBeanVersion,
                                         'acceptableVersion' => Yii::app()->params['redBeanVersion']));
                 Yii::app()->end(0, false);
             }
             if ( $yiiVersion != Yii::app()->params['yiiVersion'])
             {
-                echo Yii::t('Default', 'Your Yii version is currentVersion and it should be acceptableVersion.',
+                echo Zurmo::t('ZurmoModule', 'Your Yii version is currentVersion and it should be acceptableVersion.',
                                 array(  'currentVersion' => $yiiVersion,
                                         'acceptableVersion' => Yii::app()->params['yiiVersion']));
                 Yii::app()->end(0, false);
@@ -386,7 +472,7 @@
 
         public function handleLoadLanguage($event)
         {
-            if (!Yii::app()->apiRequest->isApiRequest())
+            if (!ApiRequest::isApiRequest())
             {
                 if (isset($_GET['lang']) && $_GET['lang'] != null)
                 {
@@ -424,13 +510,19 @@
         public function handleLoadActivitiesObserver($event)
         {
             $activitiesObserver = new ActivitiesObserver();
-            $activitiesObserver->init(); //runs init();
+            $activitiesObserver->init();
         }
 
         public function handleLoadConversationsObserver($event)
         {
             $conversationsObserver = new ConversationsObserver();
-            $conversationsObserver->init(); //runs init();
+            $conversationsObserver->init();
+        }
+
+        public function handleLoadWorkflowsObserver($event)
+        {
+            $workflowsObserver = new WorkflowsObserver();
+            $workflowsObserver->init();
         }
 
         public function handleLoadGamification($event)
@@ -442,6 +534,36 @@
         public function handleDisableGamification($event)
         {
             Yii::app()->gamificationObserver->enabled = false;
+        }
+
+        public function handlePublishLogoAssets($event)
+        {
+            if (null !== ZurmoConfigurationUtil::getByModuleName('ZurmoModule', 'logoFileModelId'))
+            {
+                $logoFileModelId        = ZurmoConfigurationUtil::getByModuleName('ZurmoModule', 'logoFileModelId');
+                $logoFileModel          = FileModel::getById($logoFileModelId);
+                $logoFileSrc            = Yii::app()->getAssetManager()->getPublishedUrl(Yii::getPathOfAlias('application.runtime.uploads') .
+                                                                                         DIRECTORY_SEPARATOR . $logoFileModel->name);
+                //logoFile is either not published or we have dangling url for asset
+                if ($logoFileSrc === false || file_exists($logoFileSrc) === false)
+                {
+                    //Logo file is not published in assets
+                    //Check if it exists in runtime/uploads
+                    if (file_exists(Yii::getPathOfAlias('application.runtime.uploads') .
+                                                        DIRECTORY_SEPARATOR . $logoFileModel->name) === false)
+                    {
+                        $logoFilePath    = sys_get_temp_dir() . DIRECTORY_SEPARATOR . $logoFileModel->name;
+                        file_put_contents($logoFilePath, $logoFileModel->fileContent->content, LOCK_EX);
+                        ZurmoConfigurationFormAdapter::publishLogo($logoFileModel->name, $logoFilePath);
+                    }
+                    else
+                    {
+                        //Logo File exist in runtime/uploads but not published
+                        Yii::app()->getAssetManager()->publish(Yii::getPathOfAlias('application.runtime.uploads') .
+                                                               DIRECTORY_SEPARATOR . $logoFileModel->name);
+                    }
+                }
+            }
         }
      }
 ?>

@@ -1,10 +1,10 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2012 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
-     * the terms of the GNU General Public License version 3 as published by the
+     * the terms of the GNU Affero General Public License version 3 as published by the
      * Free Software Foundation with the addition of the following permission added
      * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
      * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
@@ -12,16 +12,26 @@
      *
      * Zurmo is distributed in the hope that it will be useful, but WITHOUT
      * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-     * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+     * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
      * details.
      *
-     * You should have received a copy of the GNU General Public License along with
+     * You should have received a copy of the GNU Affero General Public License along with
      * this program; if not, see http://www.gnu.org/licenses or write to the Free
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
      *
-     * You can contact Zurmo, Inc. with a mailing address at 113 McHenry Road Suite 207,
-     * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
+     * You can contact Zurmo, Inc. with a mailing address at 27 North Wacker Drive
+     * Suite 370 Chicago, IL 60606. or at email address contact@zurmo.com.
+     *
+     * The interactive user interfaces in original and modified versions
+     * of this program must display Appropriate Legal Notices, as required under
+     * Section 5 of the GNU Affero General Public License version 3.
+     *
+     * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
+     * these Appropriate Legal Notices must retain the display of the Zurmo
+     * logo and Zurmo copyright notice. If the display of the logo is not reasonably
+     * feasible for technical reasons, the Appropriate Legal Notices must display the words
+     * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -98,6 +108,10 @@
             $accounts       = Account::getByName('superAccount');
             $superAccountId = $accounts[0]->id;
 
+            //Confirm no email notifications are sitting in the queue
+            $this->assertEquals(0, Yii::app()->emailHelper->getQueuedCount());
+            $this->assertEquals(0, Yii::app()->emailHelper->getSentCount());
+
             //Test creating conversation via POST, invite Mary
             $conversations = Conversation::getAll();
             $this->assertEquals(0, count($conversations));
@@ -120,7 +134,15 @@
             $this->assertEquals($mary, $conversations[0]->conversationParticipants->offsetGet(0)->person);
             $this->assertEquals(0,     $conversations[0]->conversationParticipants->offsetGet(0)->hasReadLatest);
 
+            //Confirm Mary got the email invite and it was correctly setup with a valid conversation id
+            $emailMessages = EmailMessage::getAllByFolderType(EmailFolder::TYPE_OUTBOX);
+            $this->assertEquals(1, count($emailMessages));
+            $this->assertfalse(strpos($emailMessages[0]->content->textContent,
+                                       'conversations/default/details?id=' . $conversations[0]->id . '">') === true);
+
             //Confirm Mary is the only one with explicit permissions on the conversation
+            $this->assertEquals(1, Yii::app()->emailHelper->getQueuedCount());
+            $this->assertEquals(0, Yii::app()->emailHelper->getSentCount());
             $explicitReadWriteModelPermissions = ExplicitReadWriteModelPermissionsUtil::
                                                  makeBySecurableItem($conversations[0]);
             $readWritePermitables              = $explicitReadWriteModelPermissions->getReadWritePermitables();
@@ -225,15 +247,7 @@
                                      'relatedModelRelationName'   => 'comments',
                                      'redirectUrl'                => 'someRedirect'));
             $this->setPostArray(array('Comment'          => array('description' => 'a ValidComment Name 2')));
-            try
-            {
-                $content = $this->runControllerWithRedirectExceptionAndGetContent('comments/default/inlineCreateSave');
-                $this->fail();
-            }
-            catch (AccessDeniedSecurityException $e)
-            {
-                //success.
-            }
+            $content = $this->runControllerWithAccessDeniedSecurityExceptionAndGetContent('comments/default/inlineCreateSave');
 
             //Add mary as a participant.
             $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
@@ -352,14 +366,14 @@
             $portlets     = Portlet::getAll();
             foreach ($portlets as $portlet)
             {
-                if ($portlet->viewType == 'AccountLatestActivtiesForPortlet')
+                if ($portlet->viewType == 'AccountLatestActivitiesForPortlet')
                 {
                     $portletToUse = $portlet;
                     break;
                 }
             }
             $this->assertNotNull($portletToUse);
-            $this->assertEquals('AccountLatestActivtiesForPortletView', get_class($portletToUse->getView()));
+            $this->assertEquals('AccountLatestActivitiesForPortletView', get_class($portletToUse->getView()));
 
             //Load the portlet details for latest activity
             $getData = array('id' => $superAccountId,
@@ -407,6 +421,10 @@
             $this->assertfalse(strpos($content, 'Conversations') === false);
             $this->setGetArray(array(
                 'type' => ConversationsSearchDataProviderMetadataAdapter::LIST_TYPE_PARTICIPANT));
+            $content = $this->runControllerWithNoExceptionsAndGetContent('conversations/default/list');
+            $this->assertfalse(strpos($content, 'Conversations') === false);
+            $this->setGetArray(array(
+                'type' => ConversationsSearchDataProviderMetadataAdapter::LIST_TYPE_CLOSED));
             $content = $this->runControllerWithNoExceptionsAndGetContent('conversations/default/list');
             $this->assertfalse(strpos($content, 'Conversations') === false);
         }
@@ -469,6 +487,87 @@
                                      'relatedModelRelationName' => 'comments'));
             $super   = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
             $content = $this->runControllerWithNoExceptionsAndGetContent('comments/default/ajaxListForRelatedModel');
+        }
+
+        /**
+         * @depends testCommentsAjaxListForRelatedModel
+         */
+        public function testClosingConversations()
+        {
+            if (!SECURITY_OPTIMIZED) //bug prevents this from running correctly
+            {
+                return;
+            }
+            $super                      = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
+            $conversation               = new Conversation();
+            $conversation->owner        = $super;
+            $conversation->subject      = "Test closed";
+            $conversation->description  = "This is just to make the isClosed column in conversations table";
+            $conversation->save();
+            $conversations              = Conversation::getAll();
+            $this->assertEquals(2, count($conversations));
+            $this->assertEquals($super->id, $conversations[0]->owner->id);
+            //Conversation is opened
+            $this->assertEquals(0, $conversations[0]->resolveIsClosedForNull());
+            $this->setGetArray(array('id' => $conversations[0]->id));
+            $this->runControllerWithNoExceptionsAndGetContent('conversations/default/changeIsClosed');
+            //Conversation is closed
+            $this->assertEquals(1, $conversations[0]->resolveIsClosedForNull());
+            $this->setGetArray(array('id' => $conversations[0]->id));
+            $this->runControllerWithNoExceptionsAndGetContent('conversations/default/changeIsClosed');
+            //Conversation is Re-opened
+            $this->assertEquals(0, $conversations[0]->resolveIsClosedForNull());
+        }
+
+        /**
+         * @depends testClosingConversations
+         */
+        public function testSendEmailInNewComment()
+        {
+            if (!SECURITY_OPTIMIZED) //bug prevents this from running correctly
+            {
+                return;
+            }
+            $super                                  = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
+            $steven                                 = User::getByUsername('steven');
+            $sally                                  = User::getByUsername('sally');
+            $mary                                   = User::getByUsername('mary');
+            $conversations                          = Conversation::getAll();
+            $this->assertEquals(2, count($conversations));
+            $this->assertEquals(0, $conversations[0]->comments->count());
+            foreach (EmailMessage::getAll() as $emailMessage)
+            {
+                $emailMessage->delete();
+            }
+            $initalQueued                           = 0;
+            $conversation                           = $conversations[0];
+            $conversationParticipant                = new ConversationParticipant();
+            $conversationParticipant->person        = $steven;
+            $conversation->conversationParticipants->add($conversationParticipant);
+            $conversationParticipant                = new ConversationParticipant();
+            $conversationParticipant->person        = $sally;
+            $conversation->conversationParticipants->add($conversationParticipant);
+            $conversationParticipant                = new ConversationParticipant();
+            $conversationParticipant->person        = $mary;
+            $conversation->conversationParticipants->add($conversationParticipant);
+            UserConfigurationFormAdapter::setValue($mary, true, 'turnOffEmailNotifications');
+            //Save a new comment
+            $this->setGetArray(array('relatedModelId'             => $conversation->id,
+                                     'relatedModelClassName'      => 'Conversation',
+                                     'relatedModelRelationName'   => 'comments',
+                                     'redirectUrl'                => 'someRedirect'));
+            $this->setPostArray(array('Comment'          => array('description' => 'a ValidComment Name')));
+            $content = $this->runControllerWithRedirectExceptionAndGetContent('comments/default/inlineCreateSave');
+            $this->assertEquals(1, $conversation->comments->count());
+            $this->assertEquals($initalQueued + 1, Yii::app()->emailHelper->getQueuedCount());
+            $this->assertEquals(0, Yii::app()->emailHelper->getSentCount());
+            $emailMessages                          = EmailMessage::getAll();
+            $emailMessage                           = $emailMessages[$initalQueued];
+            $this->assertEquals(2, count($emailMessage->recipients));
+            $this->assertContains('conversation', $emailMessage->subject);
+            $this->assertContains(strval($conversation), $emailMessage->subject);
+            $this->assertContains(strval($conversation->comments[0]), $emailMessage->content->htmlContent);
+            $this->assertContains(strval($conversation->comments[0]), $emailMessage->content->textContent);
         }
     }
 ?>

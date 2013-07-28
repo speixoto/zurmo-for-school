@@ -1,10 +1,10 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2012 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
-     * the terms of the GNU General Public License version 3 as published by the
+     * the terms of the GNU Affero General Public License version 3 as published by the
      * Free Software Foundation with the addition of the following permission added
      * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
      * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
@@ -12,16 +12,26 @@
      *
      * Zurmo is distributed in the hope that it will be useful, but WITHOUT
      * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-     * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+     * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
      * details.
      *
-     * You should have received a copy of the GNU General Public License along with
+     * You should have received a copy of the GNU Affero General Public License along with
      * this program; if not, see http://www.gnu.org/licenses or write to the Free
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
      *
-     * You can contact Zurmo, Inc. with a mailing address at 113 McHenry Road Suite 207,
-     * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
+     * You can contact Zurmo, Inc. with a mailing address at 27 North Wacker Drive
+     * Suite 370 Chicago, IL 60606. or at email address contact@zurmo.com.
+     *
+     * The interactive user interfaces in original and modified versions
+     * of this program must display Appropriate Legal Notices, as required under
+     * Section 5 of the GNU Affero General Public License version 3.
+     *
+     * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
+     * these Appropriate Legal Notices must retain the display of the Zurmo
+     * logo and Zurmo copyright notice. If the display of the logo is not reasonably
+     * feasible for technical reasons, the Appropriate Legal Notices must display the words
+     * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -29,6 +39,22 @@
      */
     class OwnedSecurableItem extends SecurableItem
     {
+        /**
+         * @var bool
+         */
+        private $treatCreatedByUserAsOwnerForPermissions = false;
+
+        /**
+         * Set when the createdByUser needs to operate like the owner. This can be when a user is creating a new model
+         * that he/she does not own.  The createdByUser still needs to be able to set permissions for example
+         * @param boolean $value
+         */
+        public function setTreatCreatedByUserAsOwnerForPermissions($value)
+        {
+            assert('is_bool($value)');
+            $this->treatCreatedByUserAsOwnerForPermissions = $value;
+        }
+
         protected function constructDerived($bean, $setDefaults)
         {
             assert('$bean === null || $bean instanceof RedBean_OODBBean');
@@ -45,6 +71,7 @@
                 {
                     throw new NoCurrentUserSecurityException();
                 }
+                AuditUtil::saveOriginalAttributeValue($this, 'owner', $currentUser);
                 $this->unrestrictedSet('owner', $currentUser);
             }
         }
@@ -60,13 +87,23 @@
                     throw new NoCurrentUserSecurityException();
                 }
             }
-            $owner = $this->unrestrictedGet('owner');
+            $owner         = $this->unrestrictedGet('owner');
+            $createdByUser = $this->unrestrictedGet('createdByUser');
             # If an owned securable item doesn't yet have an owner
             # then whoever is creating it has full access to it. If they
             # save it with the owner being someone else they are giving
             # it away and potentially lose access to it.
             if ($owner->id < 0 ||
                 $owner->isSame($permitable))
+            {
+                return Permission::ALL;
+            }
+            //If the record has not been created yet, then the created user should have full access
+            //Or if the record has not been created yet and doesn't have a createdByUser than any user can
+            //have full access
+            elseif (($this->id < 0 || $this->treatCreatedByUserAsOwnerForPermissions) &&
+                   (($createdByUser->id > 0 &&
+                    $createdByUser->isSame($permitable)) || $createdByUser->id < 0))
             {
                 return Permission::ALL;
             }
@@ -107,7 +144,7 @@
         {
             if ($attributeName == 'owner')
             {
-                self::checkPermissionsHasAnyOf(Permission::CHANGE_OWNER);
+                $this->checkPermissionsHasAnyOf(Permission::CHANGE_OWNER);
                 $this->isSetting = true;
                 try
                 {
@@ -138,7 +175,8 @@
                 {
                     ReadPermissionsOptimizationUtil::ownedSecurableItemCreated($this);
                 }
-                elseif (isset($this->originalAttributeValues['owner']))
+                elseif (isset($this->originalAttributeValues['owner']) &&
+                              $this->originalAttributeValues['owner'][1] > 0)
                 {
                     ReadPermissionsOptimizationUtil::ownedSecurableItemOwnerChanged($this,
                                                             User::getById($this->originalAttributeValues['owner'][1]));
@@ -165,7 +203,8 @@
             $metadata = parent::getDefaultMetadata();
             $metadata[__CLASS__] = array(
                 'relations' => array(
-                    'owner' => array(RedBeanModel::HAS_ONE, 'User'),
+                    'owner' => array(RedBeanModel::HAS_ONE, 'User', RedBeanModel::NOT_OWNED,
+                                     RedBeanModel::LINK_TYPE_SPECIFIC, 'owner'),
                 ),
                 'rules' => array(
                     array('owner', 'required'),
@@ -209,6 +248,13 @@
                                                          $quotedExtraSelectColumnNameAndAliases);
         }
 
+        /**
+         * @param User $user
+         * @param RedBeanModelJoinTablesQueryAdapter $joinTablesAdapter
+         * @param $where
+         * @param $selectDistinct
+         * @throws NotSupportedException
+         */
         public static function resolveReadPermissionsOptimizationToSqlQuery(User $user,
                                     RedBeanModelJoinTablesQueryAdapter $joinTablesAdapter,
                                     & $where,
@@ -219,18 +265,18 @@
             $modelClassName  = get_called_class();
             $moduleClassName = $modelClassName::getModuleClassName();
             //Currently only adds munge if the module is securable and this model supports it.
-            if (static::hasReadPermissionsOptimization() &&$moduleClassName != null &&
+            if (static::hasReadPermissionsOptimization() && $moduleClassName != null &&
                 is_subclass_of($moduleClassName, 'SecurableModule'))
             {
                 $permission = PermissionsUtil::getActualPermissionDataForReadByModuleNameForCurrentUser($moduleClassName);
+
                 if ($permission == Permission::NONE || $permission == Permission::DENY)
                 {
                     $quote                               = DatabaseCompatibilityUtil::getQuote();
                     $modelAttributeToDataProviderAdapter = new OwnedSecurableItemIdToDataProviderAdapter(
                                                                $modelClassName, null);
-                    $ownedTableAliasName = ModelDataProviderUtil::
-                                           resolveShouldAddFromTableAndGetAliasName( $modelAttributeToDataProviderAdapter,
-                                                                                     $joinTablesAdapter);
+                    $builder           = new ModelJoinBuilder($modelAttributeToDataProviderAdapter, $joinTablesAdapter);
+                    $ownedTableAliasName = $builder->resolveJoins();
                     $ownerColumnName = RedBeanModel::getForeignKeyName('OwnedSecurableItem', 'owner');
                     $mungeIds = ReadPermissionsOptimizationUtil::getMungeIdsByUser($user);
                     if ($where != null)
@@ -267,6 +313,15 @@
         public static function isTypeDeletable()
         {
             return false;
+        }
+
+        protected static function translatedAttributeLabels($language)
+        {
+            return array_merge(parent::translatedAttributeLabels($language),
+                array(
+                    'owner' => Zurmo::t('ZurmoModule', 'Owner', array(), null, $language),
+                )
+            );
         }
     }
 ?>

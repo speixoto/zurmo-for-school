@@ -1,10 +1,10 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2012 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
-     * the terms of the GNU General Public License version 3 as published by the
+     * the terms of the GNU Affero General Public License version 3 as published by the
      * Free Software Foundation with the addition of the following permission added
      * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
      * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
@@ -12,16 +12,26 @@
      *
      * Zurmo is distributed in the hope that it will be useful, but WITHOUT
      * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-     * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+     * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
      * details.
      *
-     * You should have received a copy of the GNU General Public License along with
+     * You should have received a copy of the GNU Affero General Public License along with
      * this program; if not, see http://www.gnu.org/licenses or write to the Free
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
      *
-     * You can contact Zurmo, Inc. with a mailing address at 113 McHenry Road Suite 207,
-     * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
+     * You can contact Zurmo, Inc. with a mailing address at 27 North Wacker Drive
+     * Suite 370 Chicago, IL 60606. or at email address contact@zurmo.com.
+     *
+     * The interactive user interfaces in original and modified versions
+     * of this program must display Appropriate Legal Notices, as required under
+     * Section 5 of the GNU Affero General Public License version 3.
+     *
+     * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
+     * these Appropriate Legal Notices must retain the display of the Zurmo
+     * logo and Zurmo copyright notice. If the display of the logo is not reasonably
+     * feasible for technical reasons, the Appropriate Legal Notices must display the words
+     * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
     class LeadConvertView extends GridView
@@ -103,7 +113,7 @@
             {
                 $gridSize = 2;
             }
-            $title = Yii::t('Default', 'LeadsModuleSingularLabel Conversion',
+            $title = Zurmo::t('LeadsModule', 'LeadsModuleSingularLabel Conversion',
                                                 LabelUtil::getTranslationParamsForAllModules()) . ': ' . $title;
             parent::__construct($gridSize, 1);
 
@@ -170,34 +180,34 @@
                     }
                 );
             ");
-            $createLink = ZurmoHtml::link(Yii::t('Default', 'Create AccountsModuleSingularLabel',
+            $createLink = ZurmoHtml::link(Zurmo::t('LeadsModule', 'Create AccountsModuleSingularLabel',
                             LabelUtil::getTranslationParamsForAllModules()), '#', array('class' => 'account-create-link'));
-            $selectLink = ZurmoHtml::link(Yii::t('Default', 'Select AccountsModuleSingularLabel',
+            $selectLink = ZurmoHtml::link(Zurmo::t('LeadsModule', 'Select AccountsModuleSingularLabel',
                             LabelUtil::getTranslationParamsForAllModules()), '#', array('class' => 'account-select-link'));
-            $skipLink   = ZurmoHtml::link(Yii::t('Default', 'Skip AccountsModuleSingularLabel',
+            $skipLink   = ZurmoHtml::link(Zurmo::t('LeadsModule', 'Skip AccountsModuleSingularLabel',
                             LabelUtil::getTranslationParamsForAllModules()), '#', array('class' => 'account-skip-link'));
             $content = $this->renderTitleContent();
             $content .= '<div class="lead-conversion-actions">';
             $content .= '<div id="account-select-title">';
             if ($this->userCanCreateAccount)
             {
-                $content .= $createLink .  '&#160;' . Yii::t('Default', 'or') . '&#160;';
+                $content .= $createLink .  '&#160;' . Zurmo::t('LeadsModule', 'or') . '&#160;';
             }
-            $content .= Yii::t('Default', 'Select AccountsModuleSingularLabel',
+            $content .= Zurmo::t('LeadsModule', 'Select AccountsModuleSingularLabel',
                                     LabelUtil::getTranslationParamsForAllModules()) . '&#160;';
 
             if ($this->convertToAccountSetting == LeadsModule::CONVERT_ACCOUNT_NOT_REQUIRED)
             {
-                $content .= Yii::t('Default', 'or') . '&#160;' . $skipLink;
+                $content .= Zurmo::t('LeadsModule', 'or') . '&#160;' . $skipLink;
             }
             $content .= '</div>';
             $content .= '<div id="account-create-title">';
-            $content .= Yii::t('Default', 'Create AccountsModuleSingularLabel',
+            $content .= Zurmo::t('LeadsModule', 'Create AccountsModuleSingularLabel',
                                     LabelUtil::getTranslationParamsForAllModules()) . '&#160;';
-            $content .= Yii::t('Default', 'or') . '&#160;' . $selectLink . '&#160;';
+            $content .= Zurmo::t('LeadsModule', 'or') . '&#160;' . $selectLink . '&#160;';
             if ($this->convertToAccountSetting == LeadsModule::CONVERT_ACCOUNT_NOT_REQUIRED)
             {
-                $content .= Yii::t('Default', 'or') . '&#160;' . $skipLink;
+                $content .= Zurmo::t('LeadsModule', 'or') . '&#160;' . $skipLink;
             }
             $content .= '</div>';
             if ($this->convertToAccountSetting == LeadsModule::CONVERT_ACCOUNT_NOT_REQUIRED)
@@ -205,10 +215,10 @@
                 $content .= '<div id="account-skip-title">';
                 if ($this->userCanCreateAccount)
                 {
-                    $content .= $createLink . '&#160;' . Yii::t('Default', 'or') . '&#160;';
+                    $content .= $createLink . '&#160;' . Zurmo::t('LeadsModule', 'or') . '&#160;';
                 }
-                $content .= $selectLink . '&#160;' . Yii::t('Default', 'or') . '&#160;';
-                $content .= Yii::t('Default', 'Skip AccountsModuleSingularLabel',
+                $content .= $selectLink . '&#160;' . Zurmo::t('LeadsModule', 'or') . '&#160;';
+                $content .= Zurmo::t('LeadsModule', 'Skip AccountsModuleSingularLabel',
                                         LabelUtil::getTranslationParamsForAllModules()) . '&#160;';
                 $content .= '</div>';
             }

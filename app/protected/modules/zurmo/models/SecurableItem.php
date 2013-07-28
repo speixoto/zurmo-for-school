@@ -1,10 +1,10 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2012 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
-     * the terms of the GNU General Public License version 3 as published by the
+     * the terms of the GNU Affero General Public License version 3 as published by the
      * Free Software Foundation with the addition of the following permission added
      * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
      * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
@@ -12,16 +12,26 @@
      *
      * Zurmo is distributed in the hope that it will be useful, but WITHOUT
      * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-     * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+     * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
      * details.
      *
-     * You should have received a copy of the GNU General Public License along with
+     * You should have received a copy of the GNU Affero General Public License along with
      * this program; if not, see http://www.gnu.org/licenses or write to the Free
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
      *
-     * You can contact Zurmo, Inc. with a mailing address at 113 McHenry Road Suite 207,
-     * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
+     * You can contact Zurmo, Inc. with a mailing address at 27 North Wacker Drive
+     * Suite 370 Chicago, IL 60606. or at email address contact@zurmo.com.
+     *
+     * The interactive user interfaces in original and modified versions
+     * of this program must display Appropriate Legal Notices, as required under
+     * Section 5 of the GNU Affero General Public License version 3.
+     *
+     * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
+     * these Appropriate Legal Notices must retain the display of the Zurmo
+     * logo and Zurmo copyright notice. If the display of the logo is not reasonably
+     * feasible for technical reasons, the Appropriate Legal Notices must display the words
+     * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
     class SecurableItem extends Item
@@ -135,7 +145,13 @@
         {
             if ($permitable instanceof User)
             {
-                return $this->recursiveGetPropagatedAllowPermissions($permitable);
+                $allowPermissions = Permission::NONE;
+                $descendentRoles = $this->getAllDescendentRoles($permitable->role);
+                foreach ($descendentRoles as $role)
+                {
+                    $allowPermissions |= $this->recursiveGetPropagatedAllowPermissions($role);
+                }
+                return $allowPermissions;
             }
             else
             {
@@ -143,20 +159,16 @@
             }
         }
 
-        protected function recursiveGetPropagatedAllowPermissions(User $user)
+        protected function recursiveGetPropagatedAllowPermissions($role)
         {
             if (!SECURITY_OPTIMIZED)
             {
                 // The slow way will remain here as documentation
                 // for what the optimized way is doing.
                 $propagatedPermissions = Permission::NONE;
-                foreach ($user->role->roles as $role)
+                foreach ($role->users as $userInRole)
                 {
-                    foreach ($role->users as $userInRole)
-                    {
-                        $propagatedPermissions |= $this->getEffectivePermissions($userInRole) |
-                                                  $this->recursiveGetPropagatedAllowPermissions($userInRole);
-                    }
+                    $propagatedPermissions |= $this->getEffectivePermissions($userInRole) ;
                 }
                 return $propagatedPermissions;
             }
@@ -167,6 +179,21 @@
                 // get_securableitem_propagated_allow_permissions_for_permitable.
                 throw new NotSupportedException();
             }
+        }
+
+        protected function getAllDescendentRoles($role)
+        {
+            $descendentRoles = array();
+            if (count($role->roles) > 0)
+            {
+                foreach ($role->roles as $childRole)
+                {
+                    $descendentRoles[] = $childRole;
+                    $descendentRoles = array_merge($descendentRoles,
+                                                   $this->getAllDescendentRoles($childRole));
+                }
+            }
+            return $descendentRoles;
         }
 
         public function getExplicitActualPermissions($permitable = null)
@@ -264,7 +291,7 @@
             assert("($permissions & ~Permission::ALL) == 0");
             assert('$permissions != Permission::NONE');
             assert('in_array($type, array(Permission::ALLOW, Permission::DENY))');
-            self::checkPermissionsHasAnyOf(Permission::CHANGE_PERMISSIONS);
+            $this->checkPermissionsHasAnyOf(Permission::CHANGE_PERMISSIONS);
             if ($this instanceof NamedSecurableItem)
             {
                 PermissionsCache::forgetAll();
@@ -300,7 +327,7 @@
             assert("($permissions & ~Permission::ALL) == 0");
             assert('$permissions != Permission::NONE');
             assert('in_array($type, array(Permission::ALLOW, Permission::DENY, Permission::ALLOW_DENY))');
-            self::checkPermissionsHasAnyOf(Permission::CHANGE_PERMISSIONS);
+            $this->checkPermissionsHasAnyOf(Permission::CHANGE_PERMISSIONS);
             if ($this instanceof NamedSecurableItem)
             {
                 PermissionsCache::forgetAll();
@@ -322,11 +349,19 @@
                     }
                 }
             }
+            if ($this instanceof NamedSecurableItem)
+            {
+                PermissionsCache::forgetAll();
+            }
+            else
+            {
+                PermissionsCache::forgetSecurableItem($this);
+            }
         }
 
         public function removeAllPermissions()
         {
-            self::checkPermissionsHasAnyOf(Permission::CHANGE_PERMISSIONS);
+            $this->checkPermissionsHasAnyOf(Permission::CHANGE_PERMISSIONS);
             PermissionsCache::forgetAll();
             $this->permissions->removeAll();
         }
@@ -337,9 +372,9 @@
                 !$this->isSetting &&
                 !$this->isValidating &&
                 // Anyone can get the id and owner, createdByUser, and modifiedByUser anytime.
-                !in_array($attributeName, array('id', 'owner', 'createByUser', 'modifiedByUser')))
+                !in_array($attributeName, array('id', 'owner', 'createdByUser', 'modifiedByUser')))
             {
-                self::checkPermissionsHasAnyOf(Permission::READ);
+                $this->checkPermissionsHasAnyOf(Permission::READ);
             }
             return parent::__get($attributeName);
         }
@@ -348,22 +383,22 @@
         {
             if ($attributeName == 'owner')
             {
-                self::checkPermissionsHasAnyOf(Permission::CHANGE_OWNER);
+                $this->checkPermissionsHasAnyOf(Permission::CHANGE_OWNER);
             }
             elseif ($attributeName == 'permissions')
             {
-                self::checkPermissionsHasAnyOf(Permission::CHANGE_PERMISSIONS);
+                $this->checkPermissionsHasAnyOf(Permission::CHANGE_PERMISSIONS);
             }
             else
             {
-                self::checkPermissionsHasAnyOf(Permission::WRITE);
+                $this->checkPermissionsHasAnyOf(Permission::WRITE);
             }
             parent::__set($attributeName, $value);
         }
 
         public function delete()
         {
-            self::checkPermissionsHasAnyOf(Permission::DELETE);
+            $this->checkPermissionsHasAnyOf(Permission::DELETE);
             return parent::delete();
         }
 

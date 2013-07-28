@@ -12,8 +12,8 @@
 <tr><td rowspan="1" colspan="3">Create Edit Delete Meetings For Contacts</td></tr>
 </thead><tbody>
 <tr>
-  <td>setSpeed</td>
-  <td>1000</td>
+  <td>setTimeout</td>
+  <td>45000</td>
   <td></td>
 </tr>
 <tr>
@@ -25,6 +25,11 @@
   <td>waitForPageToLoad</td>
   <td></td>
   <td></td>
+</tr>
+<tr>
+  <td>waitForCondition</td>
+  <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+  <td>30000</td>
 </tr>
 <tr>
   <td>verifyTextPresent</td>
@@ -47,7 +52,13 @@
   <td>\10</td>
 </tr>
 <tr>
-  <td>waitForTextPresent</td>
+  <td>waitForCondition</td>
+  <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+  <td>30000</td>
+</tr>
+<tr>
+  <td>waitForText</td>
+  <td>//div[@id='ContactsListView']/div/table/tbody/tr/td[2]/a</td>
   <td>Jinny Jane ${randomSuffix}</td>
   <td></td>
 </tr>
@@ -67,13 +78,18 @@
   <td></td>
 </tr>
 <tr>
+  <td>waitForCondition</td>
+  <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+  <td>30000</td>
+</tr>
+<tr>
   <td>waitForTextPresent</td>
   <td>Jinny Jane ${randomSuffix}</td>
   <td></td>
 </tr>
 <tr>
   <td>clickAndWait</td>
-  <td>//div[@id='UpcomingMeetingsForContactCalendarView']/div[1]/div/a</td>
+  <td>//div[@id='ContactDetailsAndRelationsView']/div[2]/div/ul[2]/li[1]/div[1]/div/div/a</td>
   <td></td>
 </tr>
 <tr>
@@ -159,8 +175,18 @@ This is kept pending for now as there is a need to figure out as to how to captu
   <td></td>
 </tr>
 <tr>
-  <td>waitForTextPresent</td>
-  <td>Account Search</td>
+  <td>waitForPageToLoad</td>
+  <td></td>
+  <td></td>
+</tr>
+<tr>
+  <td>waitForCondition</td>
+  <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+  <td>30000</td>
+</tr>
+<tr>
+  <td>waitForElementPresent</td>
+  <td>AccountsSearchForm_anyMixedAttributes</td>
   <td></td>
 </tr>
 <tr>
@@ -174,7 +200,17 @@ This is kept pending for now as there is a need to figure out as to how to captu
   <td>\10</td>
 </tr>
 <tr>
-  <td>waitForTextPresent</td>
+  <td>waitForCondition</td>
+  <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+  <td>30000</td>
+</tr>
+<tr>
+  <td>waitForText</td>
+  <td>//div[@id='list-viewmodal']/table/tbody/tr/td[1]/a</td>
+  <td>my account ${randomSuffix}</td>
+</tr>
+<tr>
+  <td>verifyTextPresent</td>
   <td>my account ${randomSuffix}</td>
   <td></td>
 </tr>
@@ -194,13 +230,13 @@ This is kept pending for now as there is a need to figure out as to how to captu
   <td></td>
 </tr>
 <tr>
-  <td>waitForTextPresent</td>
-  <td>Opportunity Search</td>
-  <td></td>
+  <td>waitForCondition</td>
+  <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+  <td>30000</td>
 </tr>
 <tr>
-  <td>waitForTextPresent</td>
-  <td>Advanced</td>
+  <td>waitForElementPresent</td>
+  <td>OpportunitiesSearchForm_anyMixedAttributes</td>
   <td></td>
 </tr>
 <tr>
@@ -214,7 +250,17 @@ This is kept pending for now as there is a need to figure out as to how to captu
   <td>\10</td>
 </tr>
 <tr>
-  <td>waitForTextPresent</td>
+  <td>waitForCondition</td>
+  <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+  <td>30000</td>
+</tr>
+<tr>
+  <td>waitForText</td>
+  <td>//div[@id='list-viewmodal']/table/tbody/tr/td[1]/a</td>
+  <td>Test Opportunity ${randomSuffix}</td>
+</tr>
+<tr>
+  <td>verifyTextPresent</td>
   <td>Test Opportunity ${randomSuffix}</td>
   <td></td>
 </tr>
@@ -239,13 +285,13 @@ This is kept pending for now as there is a need to figure out as to how to captu
   <td></td>
 </tr>
 <tr>
-  <td>waitForTextPresent</td>
-  <td>User Search</td>
-  <td></td>
+  <td>waitForCondition</td>
+  <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+  <td>30000</td>
 </tr>
 <tr>
-  <td>waitForTextPresent</td>
-  <td>Advanced</td>
+  <td>waitForElementPresent</td>
+  <td>UsersSearchForm_anyMixedAttributes</td>
   <td></td>
 </tr>
 <tr>
@@ -259,9 +305,9 @@ This is kept pending for now as there is a need to figure out as to how to captu
   <td>\10</td>
 </tr>
 <tr>
-  <td>waitForTextPresent</td>
-  <td>Sam Smith</td>
-  <td></td>
+    <td>waitForText</td>
+    <td>//div[@id='UsersModalListView']/div/table/tbody/tr/td/a</td>
+    <td>Sam Smith</td>
 </tr>
 <tr>
   <td>click</td>
@@ -284,19 +330,34 @@ This is kept pending for now as there is a need to figure out as to how to captu
   <td></td>
 </tr>
 <tr>
+  <td>waitForPageToLoad</td>
+  <td></td>
+  <td></td>
+</tr>
+<tr>
+  <td>waitForCondition</td>
+  <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+  <td>30000</td>
+</tr>
+<tr>
   <td>waitForTextPresent</td>
   <td>Jinny Jane ${randomSuffix}</td>
   <td></td>
 </tr>
 <tr>
   <td>click</td>
-  <td>//div[@id='UpcomingMeetingsForContactCalendarView']/div[2]/div/div/a[2]/span</td>
+  <td>//div[@id='UpcomingMeetingsForContactCalendarView']/div/div/div/a[2]/span</td>
   <td></td>
 </tr>
 <tr>
   <td>click</td>
-  <td>//div[@id='UpcomingMeetingsForContactCalendarView']/div[2]/div/table/tbody/tr[2]/td[3]/a</td>
+  <td>//div[@id='UpcomingMeetingsForContactCalendarView']/div/div/table/tbody/tr[2]/td[3]/a</td>
   <td></td>
+</tr>
+<tr>
+  <td>waitForCondition</td>
+  <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+  <td>30000</td>
 </tr>
 <tr>
   <td>waitForTextPresent</td>
@@ -307,6 +368,15 @@ This is kept pending for now as there is a need to figure out as to how to captu
   <td>clickAndWait</td>
   <td>//div[@id='days-meetings-list-view']/table/tbody/tr[1]/td/div/h3/span/a</td>
   <td></td>
+</tr>
+<td>waitForPageToLoad</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+  <td>waitForCondition</td>
+  <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+  <td>30000</td>
 </tr>
 <tr>
   <td>waitForTextPresent</td>
@@ -359,19 +429,39 @@ This is kept pending for now as there is a need to figure out as to how to captu
   <td></td>
 </tr>
 <tr>
+  <td>waitForPageToLoad</td>
+  <td></td>
+  <td></td>
+</tr>
+<tr>
+  <td>waitForCondition</td>
+  <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+  <td>30000</td>
+</tr>
+<tr>
   <td>waitForTextPresent</td>
   <td>Jinny Jane ${randomSuffix}</td>
   <td></td>
 </tr>
 <tr>
   <td>click</td>
-  <td>//div[@id='UpcomingMeetingsForContactCalendarView']/div[2]/div/div/a[2]/span</td>
+  <td>//div[@id='UpcomingMeetingsForContactCalendarView']/div/div/div/a[2]/span</td>
   <td></td>
 </tr>
 <tr>
   <td>click</td>
-  <td>//div[@id='UpcomingMeetingsForContactCalendarView']/div[2]/div/table/tbody/tr[2]/td[3]/a</td>
+  <td>//div[@id='UpcomingMeetingsForContactCalendarView']/div/div/table/tbody/tr[2]/td[3]/a</td>
   <td></td>
+</tr>
+<tr>
+<td>waitForPageToLoad</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+  <td>waitForCondition</td>
+  <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+  <td>30000</td>
 </tr>
 <tr>
   <td>waitForTextPresent</td>
@@ -382,6 +472,16 @@ This is kept pending for now as there is a need to figure out as to how to captu
   <td>clickAndWait</td>
   <td>//div[@id='days-meetings-list-view']/table/tbody/tr[1]/td/div/h3/span/a</td>
   <td></td>
+</tr>
+<tr>
+<td>waitForPageToLoad</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+  <td>waitForCondition</td>
+  <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+  <td>30000</td>
 </tr>
 <tr>
   <td>waitForTextPresent</td>
@@ -400,7 +500,7 @@ This is kept pending for now as there is a need to figure out as to how to captu
 </tr>
 <tr>
   <td>waitForConfirmation</td>
-  <td>Are you sure you want to remove this meeting?</td>
+  <td>Are you sure you want to delete this meeting?</td>
   <td></td>
 </tr>
 <tr>
@@ -417,6 +517,11 @@ This is kept pending for now as there is a need to figure out as to how to captu
   <td>waitForPageToLoad</td>
   <td></td>
   <td></td>
+</tr>
+<tr>
+  <td>waitForCondition</td>
+  <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+  <td>30000</td>
 </tr>
 <tr>
   <td>verifyTextPresent</td>
@@ -439,9 +544,14 @@ This is kept pending for now as there is a need to figure out as to how to captu
   <td>\10</td>
 </tr>
 <tr>
-  <td>waitForTextPresent</td>
+  <td>waitForCondition</td>
+  <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+  <td>30000</td>
+</tr>
+<tr>
+  <td>waitForText</td>
+  <td>//div[@id='ContactsListView']/div/table/tbody/tr/td[2]/a</td>
   <td>Jinny Jane ${randomSuffix}</td>
-  <td></td>
 </tr>
 <tr>
   <td>verifyTextPresent</td>
@@ -459,18 +569,23 @@ This is kept pending for now as there is a need to figure out as to how to captu
   <td></td>
 </tr>
 <tr>
+  <td>waitForCondition</td>
+  <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+  <td>30000</td>
+</tr>
+<tr>
   <td>waitForTextPresent</td>
   <td>Jinny Jane ${randomSuffix}</td>
   <td></td>
 </tr>
 <tr>
   <td>click</td>
-  <td>//div[@id='UpcomingMeetingsForContactCalendarView']/div[2]/div/div/a[2]/span</td>
+  <td>//div[@id='UpcomingMeetingsForContactCalendarView']/div/div/div/a[2]/span</td>
   <td></td>
 </tr>
 <tr>
   <td>click</td>
-  <td>//div[@id='UpcomingMeetingsForContactCalendarView']/div[2]/div/table/tbody/tr[2]/td[3]/a</td>
+  <td>//div[@id='UpcomingMeetingsForContactCalendarView']/div/div/table/tbody/tr[2]/td[3]/a</td>
   <td></td>
 </tr>
 <tr>

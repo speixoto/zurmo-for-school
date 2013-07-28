@@ -1,10 +1,10 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2012 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
-     * the terms of the GNU General Public License version 3 as published by the
+     * the terms of the GNU Affero General Public License version 3 as published by the
      * Free Software Foundation with the addition of the following permission added
      * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
      * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
@@ -12,21 +12,31 @@
      *
      * Zurmo is distributed in the hope that it will be useful, but WITHOUT
      * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-     * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+     * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
      * details.
      *
-     * You should have received a copy of the GNU General Public License along with
+     * You should have received a copy of the GNU Affero General Public License along with
      * this program; if not, see http://www.gnu.org/licenses or write to the Free
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
      *
-     * You can contact Zurmo, Inc. with a mailing address at 113 McHenry Road Suite 207,
-     * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
+     * You can contact Zurmo, Inc. with a mailing address at 27 North Wacker Drive
+     * Suite 370 Chicago, IL 60606. or at email address contact@zurmo.com.
+     *
+     * The interactive user interfaces in original and modified versions
+     * of this program must display Appropriate Legal Notices, as required under
+     * Section 5 of the GNU Affero General Public License version 3.
+     *
+     * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
+     * these Appropriate Legal Notices must retain the display of the Zurmo
+     * logo and Zurmo copyright notice. If the display of the logo is not reasonably
+     * feasible for technical reasons, the Appropriate Legal Notices must display the words
+     * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
     // Keep this on ALL THE TIME WHEN DEVELOPING. Turn it off in production.
-    // Check it in as true!
-    $debugOn = true;
+    // Check it in as false!
+    $debugOn = false;
 
     // Turn this on to use the application with the database unfrozen. Turn it off in production.
     // Check it in as true!
@@ -39,6 +49,10 @@
     // Turn this on to see RedBean queries. Turn it off in production.
     // Check it in as false!
     $redBeanDebugOn = false;
+
+    // Turn this on to save RedBean queries into file. Turn it off in production.
+    // Check it in as false!
+    $redBeanDebugLogToFileOn = false;
 
     // Turn this on to see extra query data such as total count, duplicate count, and duplicate queries
     // Check it in as false!
@@ -87,6 +101,9 @@
     // Works only in debug mode (when $debugOn = true).
     $xhtmlValidation = false;
 
+    // Should Crash reports be automatically submitted to Sentry
+    $submitCrashToSentry = true;
+
     // Set information related to function tests
     // 1. $seleniumServerPath is path to selenium server(selenium jar file)
     // 2. $testBaseUrl is url of website to be tested via selenium server. It can be local or remote
@@ -115,6 +132,7 @@
     define('SHOW_PERFORMANCE',       $performanceOn);
     define('SHOW_QUERY_DATA',        $queryDataOn);
     define('REDBEAN_DEBUG',          $redBeanDebugOn);
+    define('REDBEAN_DEBUG_TO_FILE',  $redBeanDebugLogToFileOn);
     define('SECURITY_OPTIMIZED',     $securityOptimized);
     define('AUDITING_OPTIMIZED',     $auditingOptimized);
     define('PHP_CACHING_ON',         $phpLevelCaching);
@@ -122,6 +140,7 @@
     define('DB_CACHING_ON',          $dbLevelCaching);
     define('MINIFY_SCRIPTS',         $minifyScripts);
     define('XHTML_VALIDATION',       $xhtmlValidation);
+    define('SUBMIT_CRASH_TO_SENTRY', $submitCrashToSentry);
 
     assert_options(ASSERT_ACTIVE,   $debugOn); // Don't even think about disabling asserts!
     assert_options(ASSERT_WARNING,  $debugOn);

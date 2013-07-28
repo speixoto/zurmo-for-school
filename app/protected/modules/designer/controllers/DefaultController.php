@@ -1,10 +1,10 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2012 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
-     * the terms of the GNU General Public License version 3 as published by the
+     * the terms of the GNU Affero General Public License version 3 as published by the
      * Free Software Foundation with the addition of the following permission added
      * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
      * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
@@ -12,23 +12,33 @@
      *
      * Zurmo is distributed in the hope that it will be useful, but WITHOUT
      * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-     * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+     * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
      * details.
      *
-     * You should have received a copy of the GNU General Public License along with
+     * You should have received a copy of the GNU Affero General Public License along with
      * this program; if not, see http://www.gnu.org/licenses or write to the Free
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
      *
-     * You can contact Zurmo, Inc. with a mailing address at 113 McHenry Road Suite 207,
-     * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
+     * You can contact Zurmo, Inc. with a mailing address at 27 North Wacker Drive
+     * Suite 370 Chicago, IL 60606. or at email address contact@zurmo.com.
+     *
+     * The interactive user interfaces in original and modified versions
+     * of this program must display Appropriate Legal Notices, as required under
+     * Section 5 of the GNU Affero General Public License version 3.
+     *
+     * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
+     * these Appropriate Legal Notices must retain the display of the Zurmo
+     * logo and Zurmo copyright notice. If the display of the logo is not reasonably
+     * feasible for technical reasons, the Appropriate Legal Notices must display the words
+     * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
     class DesignerDefaultController extends ZurmoBaseController
     {
         public function actionIndex()
         {
-            $title           = Yii::t('Default', 'Available Modules');
+            $title           = Zurmo::t('DesignerModule', 'Available Modules');
             $breadcrumbLinks = array(
                  $title,
             );
@@ -72,7 +82,7 @@
             $moduleClassName = $_GET['moduleClassName'];
             $module          = new $_GET['moduleClassName'](null, null);
             $title           = $moduleClassName::getModuleLabelByTypeAndLanguage('Plural') .
-                               ': ' . Yii::t('Default', 'Fields');
+                               ': ' . Zurmo::t('DesignerModule', 'Fields');
             $breadcrumbLinks = array($title);
             $overrideClassName = $moduleClassName . 'AttributesListView';
             $overrideClassFile = Yii::app()->getBasePath() . DIRECTORY_SEPARATOR . 'modules' . DIRECTORY_SEPARATOR .
@@ -91,12 +101,14 @@
                 $derivedAttributesAdapter = new DerivedAttributesAdapter(get_class($model));
                 $customAttributes         = array_merge($adapter->getCustomAttributes(),
                                                         $derivedAttributesAdapter->getAttributes());
+                $customAttributes = ArrayUtil::subValueSort($customAttributes, 'attributeLabel', 'asort');
+                $standardAttributes = ArrayUtil::subValueSort($adapter->getStandardAttributes(), 'attributeLabel', 'asort');
                 $canvasView = new StandardAndCustomAttributesListView(
                             $this->getId(),
                             $this->getModule()->getId(),
                             $module,
                             $moduleClassName::getModuleLabelByTypeAndLanguage('Plural'),
-                            $adapter->getStandardAttributes(),
+                            $standardAttributes,
                             $customAttributes,
                             $modelClassName
                 );
@@ -118,6 +130,7 @@
             if (!empty($_GET['attributeName']))
             {
                 $attributeForm = AttributesFormFactory::createAttributeFormByAttributeName($model, $_GET["attributeName"]);
+                $attributeForm->setScenario('updateAttribute');
             }
             else
             {
@@ -135,7 +148,7 @@
             }
             $title           = static::resolveAttributeEditTitle($attributeForm);
             $breadcrumbLinks = array(
-                    $moduleClassName::getModuleLabelByTypeAndLanguage('Plural') . ': ' . Yii::t('Default', 'Fields') =>
+                    $moduleClassName::getModuleLabelByTypeAndLanguage('Plural') . ': ' . Zurmo::t('DesignerModule', 'Fields') =>
                     array('default/attributesList',  'moduleClassName' => $_GET['moduleClassName']),
                 $title,
             );
@@ -157,11 +170,11 @@
         {
             if (empty($model->attributeName))
             {
-                return Yii::t('Default', 'Create Field') . ': ' . $model::getAttributeTypeDisplayName();
+                return Zurmo::t('DesignerModule', 'Create Field') . ': ' . $model::getAttributeTypeDisplayName();
             }
             else
             {
-                return Yii::t('Default', 'Edit Field')   . ': ' . strval($model);
+                return Zurmo::t('DesignerModule', 'Edit Field')   . ': ' . strval($model);
             }
         }
 
@@ -224,8 +237,9 @@
                     }
                 }
             }
+            $editableViewsCollection = ArrayUtil::subValueSort($editableViewsCollection, 'titleLabel', 'asort');
             $title           = $moduleClassName::getModuleLabelByTypeAndLanguage('Plural') .
-                               ': ' . Yii::t('Default', 'Layouts');
+                               ': ' . Zurmo::t('DesignerModule', 'Layouts');
             $breadcrumbLinks = array($title);
             $canvasView = new ActionBarAndModuleEditableMetadataCollectionView(
                         $this->getId(),
@@ -275,7 +289,7 @@
                     !PanelsDisplayTypeLayoutMetadataUtil::populateSaveableMetadataFromPostData($savableMetadata,
                         $_POST['LayoutPanelsTypeForm']))
                 {
-                    echo CJSON::encode(array('message' => Yii::t('Default', 'Invalid panel configuration type'), 'type' => 'error'));
+                    echo CJSON::encode(array('message' => Zurmo::t('DesignerModule', 'Invalid panel configuration type'), 'type' => 'error'));
                 }
                 elseif ($layoutMetadataAdapter->setMetadataFromLayout(ArrayUtil::getArrayValue($_POST, 'layout'), $savableMetadata))
                 {
@@ -292,9 +306,9 @@
                 }
                 Yii::app()->end(0, false);
             }
-            $title           = Yii::t('Default', 'Edit Layout') . ': ' . $designerRules->resolveDisplayNameByView($_GET['viewClassName']);
+            $title           = Zurmo::t('DesignerModule', 'Edit Layout') . ': ' . $designerRules->resolveDisplayNameByView($_GET['viewClassName']);
             $breadcrumbLinks = array(
-                    $moduleClassName::getModuleLabelByTypeAndLanguage('Plural') . ': ' . Yii::t('Default', 'Layouts') =>
+                    $moduleClassName::getModuleLabelByTypeAndLanguage('Plural') . ': ' . Zurmo::t('DesignerModule', 'Layouts') =>
                     array('default/moduleLayoutsList',  'moduleClassName' => $_GET['moduleClassName']),
                 $title,
             );
@@ -332,7 +346,7 @@
                 $this->actionModuleSave($moduleForm, $module);
             }
             $title           = $moduleClassName::getModuleLabelByTypeAndLanguage('Plural') .
-                               ': ' . Yii::t('Default', 'General');
+                               ': ' . Zurmo::t('DesignerModule', 'General');
             $breadcrumbLinks = array($title);
             $canvasView = new ActionBarAndModuleEditView(
                         $this->getId(),

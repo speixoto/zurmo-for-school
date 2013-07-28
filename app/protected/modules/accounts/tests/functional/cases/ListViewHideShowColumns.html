@@ -12,173 +12,28 @@
 <tr><td rowspan="1" colspan="3">New Test</td></tr>
 </thead><tbody>
 <tr>
-	<td>setSpeed</td>
-	<td>1000</td>
+	<td>setTimeout</td>
+	<td>45000</td>
 	<td></td>
 </tr>
 <tr>
 	<td>open</td>
-	<td>index.php/accounts/default</td>
+	<td>index.php/accounts/default?clearingSearch=1</td>
 	<td></td>
 </tr>
 <tr>
-	<td>click</td>
-	<td>id=select-list-attributes-link</td>
+	<td>waitForPageToLoad</td>
+	<td></td>
 	<td></td>
 </tr>
 <tr>
-	<td>assertText</td>
-	<td>css=#AccountsSearchForm_selectedListAttributes &gt; option[value=&quot;name&quot;]</td>
-	<td>Name</td>
-</tr>
-<tr>
-	<td>removeSelection</td>
-	<td>id=AccountsSearchForm_selectedListAttributes</td>
-	<td>label=Name</td>
-</tr>
-<tr>
-	<td>removeSelection</td>
-	<td>id=AccountsSearchForm_selectedListAttributes</td>
-	<td>label=Owner</td>
-</tr>
-<tr>
-	<td>click</td>
-	<td>id=yw2moveLeft</td>
-	<td></td>
-</tr>
-<tr>
-	<td>addSelection</td>
-	<td>id=AccountsSearchForm_selectedListAttributes</td>
-	<td>label=Owner</td>
-</tr>
-<tr>
-	<td>click</td>
-	<td>id=yw2moveLeft</td>
-	<td></td>
-</tr>
-<tr>
-	<td>click</td>
-	<td>css=#list-attributes-apply &gt; span.z-label</td>
-	<td></td>
+	<td>waitForCondition</td>
+	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+	<td>30000</td>
 </tr>
 <tr>
 	<td>assertTextNotPresent</td>
-	<td>Type</td>
-	<td></td>
-</tr>
-<tr>
-	<td>assertTextNotPresent</td>
-	<td>Owner</td>
-	<td></td>
-</tr>
-<tr>
-	<td>assertTextPresent</td>
-	<td>Name</td>
-	<td></td>
-</tr>
-<tr>
-	<td>click</td>
-	<td>id=select-list-attributes-link</td>
-	<td></td>
-</tr>
-<tr>
-	<td>click</td>
-	<td>id=yw2moveRight</td>
-	<td></td>
-</tr>
-<tr>
-	<td>click</td>
-	<td>css=#list-attributes-apply &gt; span.z-label</td>
-	<td></td>
-</tr>
-<tr>
-	<td>assertTextPresent</td>
-	<td>Name</td>
-	<td></td>
-</tr>
-<tr>
-	<td>assertTextPresent</td>
-	<td>Industry</td>
-	<td></td>
-</tr>
-<tr>
-	<td>assertTextPresent</td>
-	<td>Modified By User</td>
-	<td></td>
-</tr>
-<tr>
-	<td>assertTextPresent</td>
-	<td>Employees</td>
-	<td></td>
-</tr>
-<tr>
-	<td>assertTextPresent</td>
-	<td>Description</td>
-	<td></td>
-</tr>
-<tr>
-	<td>assertTextPresent</td>
-	<td>Modified Date Time</td>
-	<td></td>
-</tr>
-<tr>
-	<td>assertTextPresent</td>
-	<td>Office Fax</td>
-	<td></td>
-</tr>
-<tr>
-	<td>assertTextPresent</td>
-	<td>Office Phone</td>
-	<td></td>
-</tr>
-<tr>
-	<td>assertTextPresent</td>
-	<td>Primary Email</td>
-	<td></td>
-</tr>
-<tr>
-	<td>assertTextPresent</td>
-	<td>Secondary Email</td>
-	<td></td>
-</tr>
-<tr>
-	<td>assertTextPresent</td>
-	<td>Shipping Address</td>
-	<td></td>
-</tr>
-<tr>
-	<td>assertTextPresent</td>
-	<td>Website</td>
-	<td></td>
-</tr>
-<tr>
-	<td>assertTextPresent</td>
-	<td>Type</td>
-	<td></td>
-</tr>
-<tr>
-	<td>assertTextPresent</td>
-	<td>Owner</td>
-	<td></td>
-</tr>
-<tr>
-	<td>assertTextPresent</td>
-	<td>Annual Revenue</td>
-	<td></td>
-</tr>
-<tr>
-	<td>assertTextPresent</td>
-	<td>Billing Address</td>
-	<td></td>
-</tr>
-<tr>
-	<td>assertTextPresent</td>
-	<td>Created By User</td>
-	<td></td>
-</tr>
-<tr>
-	<td>assertTextPresent</td>
-	<td>Created Date Time</td>
+	<td>//a[id='clear-search-link' contains(text(), &quot;Criteria Selected&quot;)] </td>
 	<td></td>
 </tr>
 <tr>
@@ -192,91 +47,225 @@
 	<td></td>
 </tr>
 <tr>
-	<td>assertTextPresent</td>
+	<td>waitForCondition</td>
+	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+	<td>30000</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=select-list-attributes-link</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>css=#AccountsSearchForm_selectedListAttributes &gt; option[value=&quot;name&quot;]</td>
 	<td>Name</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=list-attributes-apply</td>
 	<td></td>
 </tr>
 <tr>
-	<td>assertTextPresent</td>
+	<td>waitForCondition</td>
+	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+	<td>30000</td>
+</tr>
+<tr>
+	<td>waitForText</td>
+	<td>//div[@id='AccountsListView']/div/table/thead/tr/th[2]/a</td>
+	<td>Name</td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>//div[@id='AccountsListView']/div/table/thead/tr/th[3]/a</td>
 	<td>Type</td>
-	<td></td>
 </tr>
 <tr>
-	<td>assertTextPresent</td>
+	<td>assertText</td>
+	<td>//div[@id='AccountsListView']/div/table/thead/tr/th[4]/a</td>
 	<td>Owner</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=select-list-attributes-link</td>
 	<td></td>
 </tr>
 <tr>
-	<td>assertTextNotPresent</td>
-	<td>Industry</td>
+	<td>removeSelection</td>
+	<td>id=AccountsSearchForm_selectedListAttributes_hidden</td>
+	<td>label=Annual Revenue</td>
+</tr>
+<tr>
+	<td>removeSelection</td>
+	<td>id=AccountsSearchForm_selectedListAttributes_hidden</td>
+	<td>label=Billing Address</td>
+</tr>
+<tr>
+	<td>removeSelection</td>
+	<td>id=AccountsSearchForm_selectedListAttributes_hidden</td>
+	<td>label=Created By User</td>
+</tr>
+<tr>
+	<td>removeSelection</td>
+	<td>id=AccountsSearchForm_selectedListAttributes_hidden</td>
+	<td>label=Created Date Time</td>
+</tr>
+<tr>
+	<td>removeSelection</td>
+	<td>id=AccountsSearchForm_selectedListAttributes_hidden</td>
+	<td>label=Description</td>
+</tr>
+<tr>
+	<td>removeSelection</td>
+	<td>id=AccountsSearchForm_selectedListAttributes_hidden</td>
+	<td>label=Employees</td>
+</tr>
+<tr>
+	<td>removeSelection</td>
+	<td>id=AccountsSearchForm_selectedListAttributes_hidden</td>
+	<td>label=Id</td>
+</tr>
+<tr>
+	<td>removeSelection</td>
+	<td>id=AccountsSearchForm_selectedListAttributes_hidden</td>
+	<td>label=Industry</td>
+</tr>
+<tr>
+	<td>removeSelection</td>
+	<td>id=AccountsSearchForm_selectedListAttributes_hidden</td>
+	<td>label=Modified By User</td>
+</tr>
+<tr>
+	<td>removeSelection</td>
+	<td>id=AccountsSearchForm_selectedListAttributes_hidden</td>
+	<td>label=Modified Date Time</td>
+</tr>
+<tr>
+	<td>removeSelection</td>
+	<td>id=AccountsSearchForm_selectedListAttributes_hidden</td>
+	<td>label=Office Fax</td>
+</tr>
+<tr>
+	<td>removeSelection</td>
+	<td>id=AccountsSearchForm_selectedListAttributes_hidden</td>
+	<td>label=Primary Email</td>
+</tr>
+<tr>
+	<td>removeSelection</td>
+	<td>id=AccountsSearchForm_selectedListAttributes_hidden</td>
+	<td>label=Secondary Email</td>
+</tr>
+<tr>
+	<td>removeSelection</td>
+	<td>id=AccountsSearchForm_selectedListAttributes_hidden</td>
+	<td>label=Shipping Address</td>
+</tr>
+<tr>
+	<td>removeSelection</td>
+	<td>id=AccountsSearchForm_selectedListAttributes_hidden</td>
+	<td>label=Website</td>
+</tr>
+<tr>
+	<td>addSelection</td>
+	<td>id=AccountsSearchForm_selectedListAttributes_hidden</td>
+	<td>label=Office Phone</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=yw2moveRight</td>
 	<td></td>
 </tr>
 <tr>
-	<td>assertTextNotPresent</td>
-	<td>Modified By User</td>
+	<td>addSelection</td>
+	<td>id=AccountsSearchForm_selectedListAttributes_hidden</td>
+	<td>label=Primary Email</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=yw2moveRight</td>
 	<td></td>
 </tr>
 <tr>
-	<td>assertTextNotPresent</td>
-	<td>Employees</td>
+	<td>click</td>
+	<td>id=list-attributes-apply</td>
 	<td></td>
 </tr>
 <tr>
-	<td>assertTextNotPresent</td>
-	<td>Description</td>
-	<td></td>
+	<td>waitForCondition</td>
+	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+	<td>30000</td>
 </tr>
 <tr>
-	<td>assertTextNotPresent</td>
-	<td>Modified Date Time</td>
-	<td></td>
-</tr>
-<tr>
-	<td>assertTextNotPresent</td>
-	<td>Office Fax</td>
-	<td></td>
-</tr>
-<tr>
-	<td>assertTextNotPresent</td>
+	<td>waitForText</td>
+	<td>//div[@id='AccountsListView']/div/table/thead/tr/th[6]/a</td>
 	<td>Primary Email</td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>//div[@id='AccountsListView']/div/table/thead/tr/th[2]/a</td>
+	<td>Name</td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>//div[@id='AccountsListView']/div/table/thead/tr/th[3]/a</td>
+	<td>Type</td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>//div[@id='AccountsListView']/div/table/thead/tr/th[4]/a</td>
+	<td>Owner</td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>//div[@id='AccountsListView']/div/table/thead/tr/th[5]/a</td>
+	<td>Office Phone</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=select-list-attributes-link</td>
 	<td></td>
 </tr>
 <tr>
-	<td>assertTextNotPresent</td>
-	<td>Secondary Email</td>
+	<td>click</td>
+	<td>id=list-attributes-reset</td>
 	<td></td>
 </tr>
 <tr>
-	<td>assertTextNotPresent</td>
-	<td>Shipping Address</td>
-	<td></td>
+	<td>waitForCondition</td>
+	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+	<td>30000</td>
 </tr>
 <tr>
-	<td>assertTextNotPresent</td>
-	<td>Website</td>
-	<td></td>
+	<td>waitForNotText</td>
+	<td>//div[@id='AccountsListView']/div/table/thead/tr/th[2]/a</td>
+	<td>Primary Email</td>
 </tr>
 <tr>
-	<td>assertTextNotPresent</td>
-	<td>Annual Revenue</td>
-	<td></td>
+	<td>waitForNotText</td>
+	<td>//div[@id='AccountsListView']/div/table/thead/tr/th[3]/a</td>
+	<td>Primary Email</td>
 </tr>
 <tr>
-	<td>assertTextNotPresent</td>
-	<td>Billing Address</td>
-	<td></td>
+	<td>waitForNotText</td>
+	<td>//div[@id='AccountsListView']/div/table/thead/tr/th[4]/a</td>
+	<td>Primary Email</td>
 </tr>
 <tr>
-	<td>assertTextNotPresent</td>
-	<td>Created By User</td>
-	<td></td>
+	<td>assertText</td>
+	<td>//div[@id='AccountsListView']/div/table/thead/tr/th[2]/a</td>
+	<td>Name</td>
 </tr>
 <tr>
-	<td>assertTextNotPresent</td>
-	<td>Created Date Time</td>
-	<td></td>
+	<td>assertText</td>
+	<td>//div[@id='AccountsListView']/div/table/thead/tr/th[3]/a</td>
+	<td>Type</td>
 </tr>
-
+<tr>
+	<td>assertText</td>
+	<td>//div[@id='AccountsListView']/div/table/thead/tr/th[4]/a</td>
+	<td>Owner</td>
+</tr>
 </tbody></table>
 </body>
 </html>

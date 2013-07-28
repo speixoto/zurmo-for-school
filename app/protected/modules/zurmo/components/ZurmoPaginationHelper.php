@@ -1,10 +1,10 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2012 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
-     * the terms of the GNU General Public License version 3 as published by the
+     * the terms of the GNU Affero General Public License version 3 as published by the
      * Free Software Foundation with the addition of the following permission added
      * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
      * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
@@ -12,16 +12,26 @@
      *
      * Zurmo is distributed in the hope that it will be useful, but WITHOUT
      * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-     * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+     * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
      * details.
      *
-     * You should have received a copy of the GNU General Public License along with
+     * You should have received a copy of the GNU Affero General Public License along with
      * this program; if not, see http://www.gnu.org/licenses or write to the Free
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
      *
-     * You can contact Zurmo, Inc. with a mailing address at 113 McHenry Road Suite 207,
-     * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
+     * You can contact Zurmo, Inc. with a mailing address at 27 North Wacker Drive
+     * Suite 370 Chicago, IL 60606. or at email address contact@zurmo.com.
+     *
+     * The interactive user interfaces in original and modified versions
+     * of this program must display Appropriate Legal Notices, as required under
+     * Section 5 of the GNU Affero General Public License version 3.
+     *
+     * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
+     * these Appropriate Legal Notices must retain the display of the Zurmo
+     * logo and Zurmo copyright notice. If the display of the logo is not reasonably
+     * feasible for technical reasons, the Appropriate Legal Notices must display the words
+     * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -73,9 +83,19 @@
         protected $_apiListPageSize;
 
         /**
-        * Default list page size for api calls.
-        */
-        protected $_unlimitedPageSize;
+         * When a mass delete must complete using a progress bar, this is how many are processed at once.
+         */
+        protected $_massDeleteProgressPageSize;
+
+        /**
+         * The report results list page size
+         */
+        protected $_reportResultsListPageSize;
+
+        /**
+         * The report results drill-down page size
+         */
+        protected $_reportResultsSubListPageSize;
 
         /**
          * This is set from the value in the application common config file. It is used as the final fall back
@@ -140,13 +160,30 @@
             $this->_autoCompleteListPageSize = $value;
         }
 
-        /**
-        * This is set from the value in the application common config file. It is used as the final fall back
+        /** This is set from the value in application common config file. It is used as the final fall back
         * if no other configuration settings are found.
         */
-        public function setUnlimitedPageSize($value)
+        public function setMassDeleteProgressPageSize($value)
         {
-            $this->_unlimitedPageSize = $value;
+            $this->_massDeleteProgressPageSize = $value;
+        }
+
+        /**
+         * This is set from the value in the application common config file. It is used as the final fall back
+         * if no other configuration settings are found.
+         */
+        public function setReportResultsListPageSize($value)
+        {
+            $this->_reportResultsListPageSize = $value;
+        }
+
+        /**
+         * This is set from the value in the application common config file. It is used as the final fall back
+         * if no other configuration settings are found.
+         */
+        public function setReportResultsSubListPageSize($value)
+        {
+            $this->_reportResultsSubListPageSize = $value;
         }
 
         /**
@@ -202,7 +239,6 @@
          * Also sets value as active state value by key.
          * @param $type - pagination type
          * @param $moduleName - optional. Module class name.
-         * @return $pageSize - integer.
          */
         public function setForCurrentUserByType($type, $value, $moduleName = null)
         {
@@ -292,7 +328,7 @@
         {
             return array('listPageSize', 'subListPageSize', 'modalListPageSize', 'massEditProgressPageSize',
                          'autoCompleteListPageSize', 'importPageSize', 'dashboardListPageSize', 'apiListPageSize',
-                         'unlimitedPageSize');
+                         'massDeleteProgressPageSize', 'reportResultsListPageSize', 'reportResultsSubListPageSize');
         }
     }
 ?>

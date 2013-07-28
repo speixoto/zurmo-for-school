@@ -1,3 +1,38 @@
+/*********************************************************************************
+ * Zurmo is a customer relationship management program developed by
+ * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+ *
+ * Zurmo is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Affero General Public License version 3 as published by the
+ * Free Software Foundation with the addition of the following permission added
+ * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
+ * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
+ * OF NON INFRINGEMENT OF THIRD PARTY RIGHTS.
+ *
+ * Zurmo is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
+ * details.
+ *
+ * You should have received a copy of the GNU Affero General Public License along with
+ * this program; if not, see http://www.gnu.org/licenses or write to the Free
+ * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+ * 02110-1301 USA.
+ *
+ * You can contact Zurmo, Inc. with a mailing address at 27 North Wacker Drive
+ * Suite 370 Chicago, IL 60606. or at email address contact@zurmo.com.
+ *
+ * The interactive user interfaces in original and modified versions
+ * of this program must display Appropriate Legal Notices, as required under
+ * Section 5 of the GNU Affero General Public License version 3.
+ *
+ * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
+ * these Appropriate Legal Notices must retain the display of the Zurmo
+ * logo and Zurmo copyright notice. If the display of the logo is not reasonably
+ * feasible for technical reasons, the Appropriate Legal Notices must display the words
+ * "Copyright Zurmo Inc. 2013. All rights reserved".
+ ********************************************************************************/
+
 /**
  * Clearform
  * Created by Truth <truth@truthanduntruth.com>
@@ -10,7 +45,7 @@
             form: 'form',
             bind: 'click',
             clear: "input[type!='submit'][type!='button'][type!='hidden'][type!='reset'][type!=checkbox], textarea, select",
-            clearCheckbox: "input[type=checkbox][class!='ignoreclearform']",
+            clearCheckbox: "input[type=checkbox][class!='ignore-clearform']",
             css: {},
             complete: function () {}
         };
@@ -29,7 +64,7 @@
     }
 })(jQuery);
 
-function attachLoadingOnSubmit(formId)
+$.fn.attachLoadingOnSubmit = function(formId)
 {
     if($('#' + formId).find(".attachLoading:first").hasClass("loading-ajax-submit"))
     {
@@ -40,38 +75,41 @@ function attachLoadingOnSubmit(formId)
         return false;
     }
     $('#' + formId).find(".attachLoading:first").addClass("loading");
-    attachLoadingSpinner(formId, true);
+    $(this).makeOrRemoveLoadingSpinner(true, $('#' + formId).find(".attachLoading:first"));
 
     return true;
-}
+};
 
-function detachLoadingOnSubmit(formId)
+$.fn.detachLoadingOnSubmit = function(formId)
 {
     $('#' + formId).find(".attachLoading:first").removeClass("loading");
     $('#' + formId).find(".attachLoading:first").removeClass("loading-ajax-submit");
-}
+};
 
-function beforeValidateAction(form)
+$.fn.beforeValidateAction = function(form)
 {
+    var context;
     if(form.find(".attachLoadingTarget").hasClass("loading") || form.find(".attachLoading:first").hasClass("loading"))
     {
         return false;
     }
     if(form.find(".attachLoadingTarget").length)
     {
-        form.find(".attachLoadingTarget").addClass("loading");
-        form.find(".attachLoadingTarget").addClass("loading-ajax-submit");
+        context = form.find(".attachLoadingTarget");
+        context.addClass("loading");
+        context.addClass("loading-ajax-submit");
     }
     else
     {
-        form.find(".attachLoading:first").addClass("loading");
-        form.find(".attachLoading:first").addClass("loading-ajax-submit");
+        context = form.find(".attachLoading:first");
+        context.addClass("loading");
+        context.addClass("loading-ajax-submit");
     }
-    attachLoadingSpinner(form.attr('id'), true);
+    $(this).makeOrRemoveLoadingSpinner(true, context);
     return true;
-}
+};
 
-function afterValidateAction(form, data, hasError)
+$.fn.afterValidateAction = function(form, data, hasError)
 {
     if(hasError)
     {
@@ -79,6 +117,7 @@ function afterValidateAction(form, data, hasError)
         {
             form.find(".attachLoadingTarget").removeClass("loading");
             form.find(".attachLoadingTarget").removeClass("loading-ajax-submit");
+            form.find(".attachLoadingTarget").removeClass("attachLoadingTarget");
         }
         else
         {
@@ -91,11 +130,11 @@ function afterValidateAction(form, data, hasError)
     {
         return true;
     }
-}
+};
 
-function afterValidateAjaxAction(form, data, hasError)
+$.fn.afterValidateAjaxAction = function(form, data, hasError)
 {
-    if(!afterValidateAction(form, data, hasError))
+    if(!$(this).afterValidateAction(form, data, hasError))
     {
         return false;
     }
@@ -103,48 +142,12 @@ function afterValidateAjaxAction(form, data, hasError)
         eval($(form).data('settings').afterValidateAjax);
     }
     return false;
-}
+};
 
-function searchByQueuedSearch(inputId)
+$.fn.searchByQueuedSearch = function(inputId)
 {
     if(basicSearchQueued == 0)
     {
         $('#' + inputId).closest('form').submit();
     }
-}
-
-function attachLoadingSpinner( id, state, color )
-{
-    var color;
-    
-    if ( color === 'dark' ){
-        color = '#999';
-    } else {
-        color = '#fff';
-    }
-    
-    if ( state === true )
-    {
-        $( '.z-spinner', '#' + id ).spin({
-            lines : 11, // The number of lines to draw
-            length : 2.3, // The length of each line
-            width : 2, // The line thickness
-            radius : 3, // The radius of the inner circle
-            rotate : 0, // The rotation offset
-            color : color, // #rgb or #rrggbb
-            speed : 2, // Rounds per second
-            trail : 37, // Afterglow percentage
-            shadow : false, // Whether to render a shadow
-            hwaccel : false, // Whether to use hardware acceleration
-            className : 'spinner', // The CSS class to assign to the spinner
-            zIndex : 2e9, // The z-index (defaults to 2000000000)
-            top : 4, // Top position relative to parent in px
-            left : 0 // Left position relative to parent in px
-        });
-    }
-    else
-    {
-        $( '.z-spinner', '#' + id ).spin(false);
-    }
-}
-
+};

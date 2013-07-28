@@ -1,10 +1,10 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2012 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
-     * the terms of the GNU General Public License version 3 as published by the
+     * the terms of the GNU Affero General Public License version 3 as published by the
      * Free Software Foundation with the addition of the following permission added
      * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
      * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
@@ -12,22 +12,32 @@
      *
      * Zurmo is distributed in the hope that it will be useful, but WITHOUT
      * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-     * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+     * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
      * details.
      *
-     * You should have received a copy of the GNU General Public License along with
+     * You should have received a copy of the GNU Affero General Public License along with
      * this program; if not, see http://www.gnu.org/licenses or write to the Free
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
      *
-     * You can contact Zurmo, Inc. with a mailing address at 113 McHenry Road Suite 207,
-     * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
+     * You can contact Zurmo, Inc. with a mailing address at 27 North Wacker Drive
+     * Suite 370 Chicago, IL 60606. or at email address contact@zurmo.com.
+     *
+     * The interactive user interfaces in original and modified versions
+     * of this program must display Appropriate Legal Notices, as required under
+     * Section 5 of the GNU Affero General Public License version 3.
+     *
+     * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
+     * these Appropriate Legal Notices must retain the display of the Zurmo
+     * logo and Zurmo copyright notice. If the display of the logo is not reasonably
+     * feasible for technical reasons, the Appropriate Legal Notices must display the words
+     * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
     /**
      * Broad data provider tests that touch across different modules in the zurmo application.
      */
-    class ModulesSearchWithDataProviderTest extends DataProviderBaseTest
+    class ModulesSearchWithDataProviderTest extends ZurmoBaseTest
     {
         public static function setUpBeforeClass()
         {
@@ -46,21 +56,21 @@
             Yii::app()->user->userModel = $super;
             //Test Model - Fake post with all custom attribute types that they adapt correct to metadata.
             $fakePostData = array(
-                'boolean'        => array('value' => ''),
-                'currencyValue'  => null,
-                'date'           => null,
-                'dateTime'       => null,
-                'float'          => null,
-                'integer'        => null,
+                'boolean'            => array('value' => ''),
+                'currencyValue'      => null,
+                'dateCstm'           => null,
+                'dateTimeCstm'       => null,
+                'floatCstm'          => null,
+                'integerCstm'        => null,
                 'dropDown'       => array('value' => array('')), //multi-select dropdown with no value present
-                'integer'        => null,
+                'integerCstm'        => null,
                 'multiDropDown'  => array('values' => array(0 => null)),
-                'phone'          => null,
+                'phoneCstm'          => null,
                 'radioDropDown'  => array('value' => null), //single select dropdown with no value present
-                'string'         => null,
+                'stringCstm'         => null,
                 'tagCloud'       => array('values' => null), //null vs array with null like multiDropDown condition above.
-                'textArea'       => null,
-                'url'            => null,
+                'textAreaCstm'       => null,
+                'urlCstm'            => null,
             );
             $metadataAdapter = new SearchDataProviderMetadataAdapter(new ModelToArrayAdapterTestItem(), $super->id, $fakePostData);
             $searchAttributeData = $metadataAdapter->getAdaptedMetadata();
@@ -77,82 +87,82 @@
             Yii::app()->user->userModel = $super;
             //Account Model - Fake post with all custom attribute types that they adapt correct to metadata.
             $fakePostData = array(
-                'checkBox'    => array('value' => '1'),
-                'currency'    => '108.45',
-                'date'        => '2007-07-01',
-                'dateTime'     => '2007-07-01 06:12:45',
-                'decimal'      => '45.6',
-                'dropDown'     => array('value' => '3'),
-                'integer'      => '67876',
+                'checkBoxCstm'    => array('value' => '1'),
+                'currencyCstm'    => '108.45',
+                'dateCstm'        => '2007-07-01',
+                'dateTimeCstm'    => '2007-07-01 06:12:45',
+                'decimalCstm'     => '45.6',
+                'dropDownCstm'    => array('value' => '3'),
+                'integerCstm'     => '67876',
                 //'multiSelect'  => '', //todo:
-                'phone'        => '123456',
-                'radio'        => array('value' => '2'),
-                'text'         => 'Some Text',
-                'textArea'     => 'Some description',
-                'url'          => 'somesite.com',
+                'phoneCstm'       => '123456',
+                'radioCstm'       => array('value' => '2'),
+                'textCstm'        => 'Some Text',
+                'textAreaCstm'    => 'Some description',
+                'urlCstm'         => 'somesite.com',
             );
             $metadataAdapter = new SearchDataProviderMetadataAdapter(new Account(), $super->id, $fakePostData);
             $searchAttributeData = $metadataAdapter->getAdaptedMetadata();
             $compareClauses = array(
                 1 => array(
-                    'attributeName' => 'checkBox',
+                    'attributeName' => 'checkBoxCstm',
                     'operatorType'  => 'equals',
                     'value'         => (bool)1,
                 ),
                 2 => array(
-                    'attributeName' => 'currency',
+                    'attributeName' => 'currencyCstm',
                     'operatorType'  => 'equals',
                     'value'         => (float)108.45,
                 ),
                 3 => array(
-                    'attributeName' => 'date',
+                    'attributeName' => 'dateCstm',
                     'operatorType'  => 'equals',
                     'value'         => '2007-07-01',
                 ),
                 4 => array(
-                    'attributeName' => 'dateTime',
+                    'attributeName' => 'dateTimeCstm',
                     'operatorType' => 'equals',
                     'value'        => '2007-07-01 06:12:45',
                 ),
                 5 => array(
-                    'attributeName' => 'decimal',
+                    'attributeName' => 'decimalCstm',
                     'operatorType' => 'equals',
                     'value'        => (float)45.6,
                 ),
                 6 => array(
-                    'attributeName'        => 'dropDown',
+                    'attributeName'        => 'dropDownCstm',
                     'relatedAttributeName' => 'value',
                     'operatorType'         => 'equals',
                     'value'                => '3',
                 ),
                 7 => array(
-                    'attributeName' => 'integer',
+                    'attributeName' => 'integerCstm',
                     'operatorType' => 'equals',
                     'value'        => (int)67876,
                 ),
                 8 => array(
-                    'attributeName' => 'phone',
+                    'attributeName' => 'phoneCstm',
                     'operatorType' => 'startsWith',
                     'value'        => '123456',
                 ),
                 9 => array(
-                    'attributeName'        => 'radio',
+                    'attributeName'        => 'radioCstm',
                     'relatedAttributeName' => 'value',
                     'operatorType'         => 'equals',
                     'value'                => '2',
                 ),
                 10 => array(
-                    'attributeName' => 'text',
+                    'attributeName' => 'textCstm',
                     'operatorType' => 'startsWith',
                     'value'        => 'Some Text',
                 ),
                 11 => array(
-                    'attributeName' => 'textArea',
+                    'attributeName' => 'textAreaCstm',
                     'operatorType' => 'contains',
                     'value'        => 'Some description',
                 ),
                 12 => array(
-                    'attributeName' => 'url',
+                    'attributeName' => 'urlCstm',
                     'operatorType' => 'contains',
                     'value'        => 'somesite.com',
                 ),
@@ -165,40 +175,34 @@
             $quote = DatabaseCompatibilityUtil::getQuote();
             $joinTablesAdapter = new RedBeanModelJoinTablesQueryAdapter('Account');
             $where = RedBeanModelDataProvider::makeWhere('Account', $searchAttributeData, $joinTablesAdapter);
-            $compareWhere     = "({$quote}account{$quote}.{$quote}checkbox{$quote} = 1)"                               .
-                                " and ({$quote}account{$quote}.{$quote}currency_currencyvalue_id{$quote} = 108.45)"                       .
-                                " and ({$quote}account{$quote}.{$quote}date{$quote} = '2007-07-01')"              .
-                                " and ({$quote}account{$quote}.{$quote}datetime{$quote} = '2007-07-01 06:12:45')" .
-                                " and ({$quote}account{$quote}.{$quote}decimal{$quote} = 45.6)" .
+            $compareWhere     = "({$quote}account{$quote}.{$quote}checkboxcstm{$quote} = 1)"                               .
+                                " and ({$quote}account{$quote}.{$quote}currencycstm_currencyvalue_id{$quote} = 108.45)"                       .
+                                " and ({$quote}account{$quote}.{$quote}datecstm{$quote} = '2007-07-01')"              .
+                                " and ({$quote}account{$quote}.{$quote}datetimecstm{$quote} = '2007-07-01 06:12:45')" .
+                                " and ({$quote}account{$quote}.{$quote}decimalcstm{$quote} = 45.6)" .
                                 " and ({$quote}customfield{$quote}.{$quote}value{$quote} = '3')" .
-                                " and ({$quote}account{$quote}.{$quote}integer{$quote} = 67876)" .
-                                " and ({$quote}account{$quote}.{$quote}phone{$quote} like '123456%')" .
+                                " and ({$quote}account{$quote}.{$quote}integercstm{$quote} = 67876)" .
+                                " and ({$quote}account{$quote}.{$quote}phonecstm{$quote} like '123456%')" .
                                 " and ({$quote}customfield1{$quote}.{$quote}value{$quote} = '2')" .
-                                " and ({$quote}account{$quote}.{$quote}text{$quote} like 'Some Text%')" .
-                                " and ({$quote}account{$quote}.{$quote}textarea{$quote} like '%Some description%')" .
-                                " and ({$quote}account{$quote}.{$quote}url{$quote} like '%somesite.com%')" .
+                                " and ({$quote}account{$quote}.{$quote}textcstm{$quote} like 'Some Text%')" .
+                                " and ({$quote}account{$quote}.{$quote}textareacstm{$quote} like '%Some description%')" .
+                                " and ({$quote}account{$quote}.{$quote}urlcstm{$quote} like '%somesite.com%')" .
                                 "";
             $this->assertEquals($compareWhere, $where);
             $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
-            $this->assertEquals(4, $joinTablesAdapter->getLeftTableJoinCount());
+            $this->assertEquals(2, $joinTablesAdapter->getLeftTableJoinCount());
             $leftTables = $joinTablesAdapter->getLeftTablesAndAliases();
-            $this->assertEquals('ownedcustomfield', $leftTables[0]['tableName']);
+            $this->assertEquals('customfield',      $leftTables[0]['tableName']);
             $this->assertEquals('customfield',      $leftTables[1]['tableName']);
-            $this->assertEquals('ownedcustomfield', $leftTables[2]['tableName']);
-            $this->assertEquals('customfield',      $leftTables[3]['tableName']);
 
             //Now test that the subsetSQL query produced is correct.
             $subsetSql = Account::makeSubsetOrCountSqlQuery('account', $joinTablesAdapter, 1, 5, $where, null);
             $compareSubsetSql  = "select {$quote}account{$quote}.{$quote}id{$quote} id ";
             $compareSubsetSql .= "from {$quote}account{$quote} ";
-            $compareSubsetSql .= "left join {$quote}ownedcustomfield{$quote} on ";
-            $compareSubsetSql .= "{$quote}ownedcustomfield{$quote}.{$quote}id{$quote} = {$quote}account{$quote}.{$quote}dropdown_ownedcustomfield_id{$quote} ";
             $compareSubsetSql .= "left join {$quote}customfield{$quote} on ";
-            $compareSubsetSql .= "{$quote}customfield{$quote}.{$quote}id{$quote} = {$quote}ownedcustomfield{$quote}.{$quote}customfield_id{$quote} ";
-            $compareSubsetSql .= "left join {$quote}ownedcustomfield{$quote} ownedcustomfield1 on ";
-            $compareSubsetSql .= "{$quote}ownedcustomfield1{$quote}.{$quote}id{$quote} = {$quote}account{$quote}.{$quote}radio_ownedcustomfield_id{$quote} ";
+            $compareSubsetSql .= "{$quote}customfield{$quote}.{$quote}id{$quote} = {$quote}account{$quote}.{$quote}dropdowncstm_customfield_id{$quote} ";
             $compareSubsetSql .= "left join {$quote}customfield{$quote} customfield1 on ";
-            $compareSubsetSql .= "{$quote}customfield1{$quote}.{$quote}id{$quote} = {$quote}ownedcustomfield1{$quote}.{$quote}customfield_id{$quote} ";
+            $compareSubsetSql .= "{$quote}customfield1{$quote}.{$quote}id{$quote} = {$quote}account{$quote}.{$quote}radiocstm_customfield_id{$quote} ";
             $compareSubsetSql .= "where " . $compareWhere . ' ';
             $compareSubsetSql .= 'limit 5 offset 1';
             $this->assertEquals($compareSubsetSql, $subsetSql);

@@ -1,10 +1,10 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2012 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
-     * the terms of the GNU General Public License version 3 as published by the
+     * the terms of the GNU Affero General Public License version 3 as published by the
      * Free Software Foundation with the addition of the following permission added
      * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
      * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
@@ -12,16 +12,26 @@
      *
      * Zurmo is distributed in the hope that it will be useful, but WITHOUT
      * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-     * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+     * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
      * details.
      *
-     * You should have received a copy of the GNU General Public License along with
+     * You should have received a copy of the GNU Affero General Public License along with
      * this program; if not, see http://www.gnu.org/licenses or write to the Free
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
      *
-     * You can contact Zurmo, Inc. with a mailing address at 113 McHenry Road Suite 207,
-     * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
+     * You can contact Zurmo, Inc. with a mailing address at 27 North Wacker Drive
+     * Suite 370 Chicago, IL 60606. or at email address contact@zurmo.com.
+     *
+     * The interactive user interfaces in original and modified versions
+     * of this program must display Appropriate Legal Notices, as required under
+     * Section 5 of the GNU Affero General Public License version 3.
+     *
+     * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
+     * these Appropriate Legal Notices must retain the display of the Zurmo
+     * logo and Zurmo copyright notice. If the display of the logo is not reasonably
+     * feasible for technical reasons, the Appropriate Legal Notices must display the words
+     * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -31,12 +41,12 @@
     {
         protected function renderEditable()
         {
-            throw NotSupportedException();
+            throw new NotSupportedException();
         }
 
         protected function renderControlEditable()
         {
-            throw NotSupportedException();
+            throw new NotSupportedException();
         }
 
         /**
@@ -74,23 +84,23 @@
         {
             if ($mission->status == Mission::STATUS_AVAILABLE)
             {
-                return ZurmoHtml::tag('span', array('class' => 'mission-status'), Yii::t('Default', 'Available'));
+                return ZurmoHtml::wrapLabel(Zurmo::t('MissionsModule', 'Available'), 'mission-status');
             }
             elseif ($mission->status == Mission::STATUS_TAKEN)
             {
-                return ZurmoHtml::tag('span', array('class' => 'mission-status'), Yii::t('Default', 'In Progress'));
+                return ZurmoHtml::wrapLabel(Zurmo::t('MissionsModule', 'In Progress'), 'mission-status');
             }
             elseif ($mission->status == Mission::STATUS_COMPLETED)
             {
-                return ZurmoHtml::tag('span', array('class' => 'mission-status'), Yii::t('Default', 'Awaiting Acceptance'));
+                return ZurmoHtml::wrapLabel(Zurmo::t('MissionsModule', 'Awaiting Acceptance'), 'mission-status');
             }
             elseif ($mission->status == Mission::STATUS_REJECTED)
             {
-                return ZurmoHtml::tag('span', array('class' => 'mission-status'), Yii::t('Default', 'Rejected'));
+                return ZurmoHtml::wrapLabel(Zurmo::t('MissionsModule', 'Rejected'), 'mission-status');
             }
             elseif ($mission->status == Mission::STATUS_ACCEPTED)
             {
-                return ZurmoHtml::tag('span', array('class' => 'mission-status'), Yii::t('Default', 'Accepted'));
+                return ZurmoHtml::wrapLabel(Zurmo::t('MissionsModule', 'Accepted'), 'mission-status');
             }
             else
             {
@@ -105,28 +115,28 @@
                !$mission->owner->isSame(Yii::app()->user->userModel))
             {
                 return self::renderAjaxStatusActionChangeLink(Mission::STATUS_TAKEN, $mission->id,
-                                                              Yii::t('Default', 'Start'), $updateDivId);
+                                                              Zurmo::t('MissionsModule', 'Start'), $updateDivId);
             }
             elseif ($mission->status == Mission::STATUS_TAKEN &&
                    $mission->takenByUser->isSame(Yii::app()->user->userModel))
             {
                 return self::renderAjaxStatusActionChangeLink(Mission::STATUS_COMPLETED, $mission->id,
-                                                              Yii::t('Default', 'Complete'), $updateDivId);
+                                                              Zurmo::t('MissionsModule', 'Complete'), $updateDivId);
             }
             elseif ($mission->status == Mission::STATUS_COMPLETED &&
                    $mission->owner->isSame(Yii::app()->user->userModel))
             {
                 $content  = self::renderAjaxStatusActionChangeLink(      Mission::STATUS_ACCEPTED, $mission->id,
-                                                                         Yii::t('Default', 'Accept'), $updateDivId);
+                                                                         Zurmo::t('MissionsModule', 'Accept'), $updateDivId);
                 $content .= ' ' . self::renderAjaxStatusActionChangeLink(Mission::STATUS_REJECTED, $mission->id,
-                                                                         Yii::t('Default', 'Reject'), $updateDivId);
+                                                                         Zurmo::t('MissionsModule', 'Reject'), $updateDivId);
                 return $content;
             }
             elseif ($mission->status == Mission::STATUS_REJECTED &&
                    $mission->takenByUser->isSame(Yii::app()->user->userModel))
             {
                 return self::renderAjaxStatusActionChangeLink(Mission::STATUS_COMPLETED, $mission->id,
-                                                              Yii::t('Default', 'Complete'), $updateDivId);
+                                                              Zurmo::t('MissionsModule', 'Complete'), $updateDivId);
             }
         }
 
@@ -138,18 +148,17 @@
             assert('is_string($updateDivId)');
             $url     =   Yii::app()->createUrl('missions/default/ajaxChangeStatus',
                                                array('status' => $newStatus, 'id' => $missionId));
-            $aContent                = ZurmoHtml::tag('span', array('class' => 'z-spinner'), null);
-            $aContent               .= ZurmoHtml::tag('span', array('class' => 'z-icon'), null);
-            $aContent               .= ZurmoHtml::tag('span', array('class' => 'z-label'), $label);
+            $aContent                = ZurmoHtml::wrapLink($label);
             return       ZurmoHtml::ajaxLink($aContent, $url,
                          array('type'       => 'GET',
                                'success'    => 'function(data){$("#' . $updateDivId . '").replaceWith(data)}'
                              ),
-                         array('class'      => 'mission-change-status-link attachLoading z-button ' .
+                         array('id'         => $newStatus . '-' . $updateDivId,
+                               'class'      => 'mission-change-status-link attachLoading z-button ' .
                                                self::resolveLinkSpecificCssClassNameByNewStatus($newStatus),
-                                'namespace' => 'update',
-                                'onclick'   => 'js:$(this).addClass("loading").addClass("loading-ajax-submit");
-                                                        attachLoadingSpinner($(this).attr("id"), true);'));
+                               'namespace'  => 'update',
+                               'onclick'    => 'js:$(this).addClass("loading").addClass("loading-ajax-submit");
+                                                        $(this).makeOrRemoveLoadingSpinner(true, "#" + $(this).attr("id"));'));
         }
 
         protected static function resolveLinkSpecificCssClassNameByNewStatus($status)
@@ -175,12 +184,12 @@
 
         protected function renderLabel()
         {
-            return Yii::t('Default', 'Status');
+            return Zurmo::t('MissionsModule', 'Status');
         }
 
         public static function getDisplayName()
         {
-            return Yii::t('Default', 'Status');
+            return Zurmo::t('MissionsModule', 'Status');
         }
 
         /**

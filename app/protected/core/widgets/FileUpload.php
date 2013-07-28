@@ -1,10 +1,10 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2012 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
-     * the terms of the GNU General Public License version 3 as published by the
+     * the terms of the GNU Affero General Public License version 3 as published by the
      * Free Software Foundation with the addition of the following permission added
      * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
      * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
@@ -12,16 +12,26 @@
      *
      * Zurmo is distributed in the hope that it will be useful, but WITHOUT
      * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-     * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+     * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
      * details.
      *
-     * You should have received a copy of the GNU General Public License along with
+     * You should have received a copy of the GNU Affero General Public License along with
      * this program; if not, see http://www.gnu.org/licenses or write to the Free
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
      *
-     * You can contact Zurmo, Inc. with a mailing address at 113 McHenry Road Suite 207,
-     * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
+     * You can contact Zurmo, Inc. with a mailing address at 27 North Wacker Drive
+     * Suite 370 Chicago, IL 60606. or at email address contact@zurmo.com.
+     *
+     * The interactive user interfaces in original and modified versions
+     * of this program must display Appropriate Legal Notices, as required under
+     * Section 5 of the GNU Affero General Public License version 3.
+     *
+     * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
+     * these Appropriate Legal Notices must retain the display of the Zurmo
+     * logo and Zurmo copyright notice. If the display of the logo is not reasonably
+     * feasible for technical reasons, the Appropriate Legal Notices must display the words
+     * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -31,6 +41,10 @@
      */
     class FileUpload extends ZurmoWidget
     {
+        const DOWNLOAD_TEMPLATE_ID  = 'template-download';
+
+        const UPLOAD_TEMPLATE_ID    = 'template-upload';
+
         public $scriptFile = array('jquery.fileupload.js',
                                    'jquery.fileupload-ui.js', 'jquery.tmpl.min.js', 'jquery.iframe-transport.js');
 
@@ -144,12 +158,12 @@
             if ($this->allowMultipleUpload)
             {
                 $sendAction = null;
-                $addLabel   = Yii::t('Default', 'Add Files');
+                $addLabel   = ZurmoHtml::tag('strong', array('class' => 'add-label'), Zurmo::t('Core', 'Add Files'));
             }
             else
             {
                 $sendAction = "\$('#{$this->formName}').find('.files > tbody').children().remove();";
-                $addLabel = Yii::t('Default', 'Add File');
+                $addLabel   = ZurmoHtml::tag('strong', array('class' => 'add-label'), Zurmo::t('Core', 'Add Files'));
             }
             // Begin Not Coding Standard
             $javaScript = <<<EOD
@@ -174,6 +188,7 @@ $(function () {
                 .appendTo($(this).find('.files')).fadeIn(function () {
                     // Fix for IE7 and lower:
                     $(this).show();
+                    $(this).makeOrRemoveTogglableSpinner(true, '#'+'fileUpload{$id}');
                 }).data('data', data);
             if ((that.options.autoUpload || data.autoUpload) &&
                     data.isValidated) {
@@ -193,6 +208,7 @@ $(function () {
     $('.fileupload-content').removeClass('ui-widget-content ui-corner-bottom');
     $('#fileUpload{$id}').bind('fileuploaddestroy', function (e, data) {
             {$this->afterDeleteAction}
+
     });
     $('#fileUpload{$id}').bind('fileuploadalways', function (e, data) {
         if (data == undefined || data.result == undefined ||
@@ -221,63 +237,62 @@ EOD;
             Yii::app()->getClientScript()->registerScript(__CLASS__ . '#' . $id, $javaScript);
 
             $htmlOptions = array('id' => $this->inputId);
-            echo '<div id="fileUpload' . $id . '">'                         . "\n";
-            echo '<div class="fileupload-buttonbar">'                       . "\n";
-            echo '<label class="fileinput-button">'                         . "\n";
-            echo '<span>' . $addLabel . '</span>'                           . "\n";
-            echo ZurmoHtml::fileField($this->inputName, null, $htmlOptions);
-            echo '</label>' . self::renderMaxSizeContent($this->maxSize, $this->showMaxSize) . "\n";
-            echo '</div><div class="clear"></div>'                          . "\n";
-            echo '<div class="fileupload-content">'                         . "\n";
-            echo '<table class="files"><tbody></tbody></table>'             . "\n";
-            echo '</div>'                                                   . "\n";
-            echo '</div>'                                                   . "\n";
-            echo $this->makeUploadRowScriptContent()                        . "\n";
-            echo $this->makeDownloadRowScriptContent()                      . "\n";
+            $html  = '<div id="fileUpload' . $id . '">';
+            $html .= '<div class="fileupload-buttonbar clearfix">';
+            $html .= '<div class="addfileinput-button"><span>Y</span>' . $addLabel;
+            $html .= ZurmoHtml::fileField($this->inputName, null, $htmlOptions);
+            $html .= '</div>' . self::renderMaxSizeContent($this->maxSize, $this->showMaxSize);
+            $html .= '</div><div class="fileupload-content"><table class="files"><tbody></tbody></table></div></div>';
+            $html .= $this->makeUploadRowScriptContent();
+            $html .= $this->makeDownloadRowScriptContent();
+            echo $html;
         }
 
-        private function makeDownloadRowScriptContent()
+        protected function makeDownloadRowScriptContent()
         {
-            $deleteLabel = '<!--Delete-->';
+            $deleteLabel = 'Delete';
+            $removeLabel = Zurmo::t('Core', 'Remove');
+            $templateId  = static::DOWNLOAD_TEMPLATE_ID;
 $scriptContent = <<<EOD
-<script id="template-download" type="text/x-jquery-tmpl">
-    <tr class="template-download{{if error}} ui-state-error{{/if}}">
+<script id="{$templateId}" type="text/x-jquery-tmpl">
+    <tr class="{$templateId}{{if error}} ui-state-error{{/if}}">
         {{if error}}
             <td class="error" colspan="4">\${error}</td>
         {{else}}
-            <input name="{$this->hiddenInputName}[]" type="hidden" value="\${id}"/>
-            <td class="name" colspan="4">\${name}</td>
-            <td class="size">\${size}</td>
-            <td class="delete">
-                <button data-url="{$this->deleteUrl}?id=\${id}">{$deleteLabel}</button>
+            <td class="name">
+                \${name} <span class="file-size">(\${size})</span>
+                <span class="upload-actions delete">
+                    <button class="icon-delete" title="{$removeLabel}" data-url="{$this->deleteUrl}?id=\${id}"><span><!--{$deleteLabel}--><span></button>
+                </span>
+                <input name="{$this->hiddenInputName}[]" type="hidden" value="\${id}"/>
             </td>
         {{/if}}
-
     </tr>
 </script>
-
 EOD;
             return $scriptContent;
             return $js;
         }
 
-        private function makeUploadRowScriptContent()
+        protected function makeUploadRowScriptContent()
         {
-            $startLabel  = Yii::t('Default', 'Start');
-            $cancelLabel = Yii::t('Default', 'Cancel');
+            $startLabel  = Zurmo::t('Core', 'Start');
+            $cancelLabel = Zurmo::t('Core', 'Cancel');
+            $templateId  = static::UPLOAD_TEMPLATE_ID;
 $scriptContent = <<<EOD
-<script id="template-upload" type="text/x-jquery-tmpl">
-    <tr class="template-upload{{if error}} ui-state-error{{/if}}">
-        <td class="preview"></td>
-        <td class="name" colspan="4">\${name}</td>
-        <td class="size">\${sizef}</td>
-        {{if error}}
-            <td class="error" colspan="2">\${error}</td>
-        {{else}}
-            <td class="progress"><div></div></td>
-            <td class="start"><button>{$startLabel}</button></td>
-        {{/if}}
-        <td class="cancel"><button>{$cancelLabel}</button></td>
+<script id="{$templateId}" type="text/x-jquery-tmpl">
+    <tr class="{$templateId}{{if error}} ui-state-error{{/if}}">
+        <td class="name">
+            <span class="z-spinner"></span>
+            \${name} <span class="file-size">(\${sizef})</span>
+            {{if error}}
+                <span class="upload-error">\${error}</span>
+            {{else}}
+                <span class="upload-actions cancel">
+                    <button class="cancel" title="{$cancelLabel}"><span>{$cancelLabel}</span></button>
+                </span>
+            {{/if}}
+        </td>
     </tr>
 </script>
 EOD;
@@ -292,8 +307,8 @@ EOD;
             {
                 return;
             }
-            $content = '&#160;' . Yii::t('Default', 'Max upload size: {maxSize}',
-                       array('{maxSize}' => FileModelDisplayUtil::convertSizeToHumanReadableAndGet($maxSize)));
+            $content = '<span class="max-upload-size">' . Zurmo::t('Core', 'Max upload size: {maxSize}',
+                       array('{maxSize}' => FileModelDisplayUtil::convertSizeToHumanReadableAndGet($maxSize))) . '</span>';
             return $content;
         }
     }

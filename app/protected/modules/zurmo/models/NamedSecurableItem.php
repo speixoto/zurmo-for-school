@@ -1,10 +1,10 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2012 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
-     * the terms of the GNU General Public License version 3 as published by the
+     * the terms of the GNU Affero General Public License version 3 as published by the
      * Free Software Foundation with the addition of the following permission added
      * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
      * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
@@ -12,20 +12,36 @@
      *
      * Zurmo is distributed in the hope that it will be useful, but WITHOUT
      * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-     * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+     * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
      * details.
      *
-     * You should have received a copy of the GNU General Public License along with
+     * You should have received a copy of the GNU Affero General Public License along with
      * this program; if not, see http://www.gnu.org/licenses or write to the Free
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
      *
-     * You can contact Zurmo, Inc. with a mailing address at 113 McHenry Road Suite 207,
-     * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
+     * You can contact Zurmo, Inc. with a mailing address at 27 North Wacker Drive
+     * Suite 370 Chicago, IL 60606. or at email address contact@zurmo.com.
+     *
+     * The interactive user interfaces in original and modified versions
+     * of this program must display Appropriate Legal Notices, as required under
+     * Section 5 of the GNU Affero General Public License version 3.
+     *
+     * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
+     * these Appropriate Legal Notices must retain the display of the Zurmo
+     * logo and Zurmo copyright notice. If the display of the logo is not reasonably
+     * feasible for technical reasons, the Appropriate Legal Notices must display the words
+     * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
     class NamedSecurableItem extends SecurableItem
     {
+        /**
+         * @see self::checkPermissionsHasAnyOf($requiredPermissions)
+         * @var bool
+         */
+        public $allowChangePermissionsRegardlessOfUser = false;
+
         /**
          * Given a name, check the cache if the model is cached and return. Otherwise check the database for the record,
          * cache and return this model.
@@ -41,7 +57,7 @@
             }
             catch (NotFoundException $e)
             {
-                $bean = R::findOne('namedsecurableitem', "name = '$name'");
+                $bean = R::findOne('namedsecurableitem', "name = :name ", array(':name' => $name));
                 assert('$bean === false || $bean instanceof RedBean_OODBBean');
                 if ($bean === false)
                 {
@@ -136,6 +152,31 @@
                 return $this->unrestrictedGet('name');
             }
             return parent::__get($attributeName);
+        }
+
+        /**
+         * Override to handle situation where the user should have permissions regardless of the permission afforded that
+         * user. This can happen if a user can modify groups, which would include modifying the NamedSecurableItems for the
+         * various modules, but does not have access to all those modules.
+         * @param $requiredPermissions
+         * @throws AccessDeniedSecurityException
+         */
+        protected function checkPermissionsHasAnyOf($requiredPermissions)
+        {
+            assert('is_int($requiredPermissions)');
+            $currentUser = Yii::app()->user->userModel;
+            $effectivePermissions = $this->getEffectivePermissions($currentUser);
+            if (($effectivePermissions & $requiredPermissions) == 0)
+            {
+                if ($this->allowChangePermissionsRegardlessOfUser)
+                {
+                    //Do nothing. Allow override permission.
+                }
+                else
+                {
+                    throw new AccessDeniedSecurityException($currentUser, $requiredPermissions, $effectivePermissions);
+                }
+            }
         }
     }
 ?>

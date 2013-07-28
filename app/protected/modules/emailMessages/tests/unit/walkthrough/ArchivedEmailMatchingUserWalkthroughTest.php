@@ -1,10 +1,10 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2012 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
-     * the terms of the GNU General Public License version 3 as published by the
+     * the terms of the GNU Affero General Public License version 3 as published by the
      * Free Software Foundation with the addition of the following permission added
      * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
      * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
@@ -12,16 +12,26 @@
      *
      * Zurmo is distributed in the hope that it will be useful, but WITHOUT
      * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-     * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+     * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
      * details.
      *
-     * You should have received a copy of the GNU General Public License along with
+     * You should have received a copy of the GNU Affero General Public License along with
      * this program; if not, see http://www.gnu.org/licenses or write to the Free
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
      *
-     * You can contact Zurmo, Inc. with a mailing address at 113 McHenry Road Suite 207,
-     * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
+     * You can contact Zurmo, Inc. with a mailing address at 27 North Wacker Drive
+     * Suite 370 Chicago, IL 60606. or at email address contact@zurmo.com.
+     *
+     * The interactive user interfaces in original and modified versions
+     * of this program must display Appropriate Legal Notices, as required under
+     * Section 5 of the GNU Affero General Public License version 3.
+     *
+     * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
+     * these Appropriate Legal Notices must retain the display of the Zurmo
+     * logo and Zurmo copyright notice. If the display of the logo is not reasonably
+     * feasible for technical reasons, the Appropriate Legal Notices must display the words
+     * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -33,6 +43,7 @@
         {
             parent::setUpBeforeClass();
             $super = SecurityTestHelper::createSuperAdmin();
+            ReadPermissionsOptimizationUtil::rebuild();
             $super->primaryEmail->emailAddress = 'super@supertest.com';
             if (!$super->save())
             {
@@ -44,6 +55,12 @@
             {
                 throw new NotSupportedException();
             }
+            $userCanDelete = UserTestHelper::createBasicUser('usercandelete');
+            $userCanDelete->primaryEmail->emailAddress = 'usercandelete@supertest.com';
+            if (!$userCanDelete->save())
+            {
+                throw new NotSupportedException();
+            }
             ContactsModule::loadStartingData();
         }
 
@@ -51,14 +68,12 @@
         {
             $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
             $this->runControllerWithNoExceptionsAndGetContent('emailMessages/default/matchingList');
-
             $message1             = EmailMessageTestHelper::createArchivedUnmatchedReceivedMessage($super);
             $message2             = EmailMessageTestHelper::createArchivedUnmatchedReceivedMessage($super);
             $message3             = EmailMessageTestHelper::createArchivedUnmatchedReceivedMessage($super);
             $contact              = ContactTestHelper::createContactByNameForOwner('gail', $super);
             $startingContactState = ContactsUtil::getStartingState();
             $startingLeadState    = LeadsUtil::getStartingState();
-
             //test validating selecting an existing contact
             $this->setGetArray(array('id' => $message1->id));
             $this->setPostArray(array('ajax' => 'select-contact-form-' . $message1->id,
@@ -96,6 +111,7 @@
             $this->runControllerWithNoExceptionsAndGetContent('emailMessages/default/completeMatch', true);
             $this->assertEquals('bob.message@zurmotest.com', $contact->primaryEmail->emailAddress);
             $this->assertTrue($message1->sender->personOrAccount->isSame($contact));
+            $this->assertEquals('Archived', $message1->folder);
 
             //test creating new contact and saving
             $this->assertEquals(1, Contact::getCount());
@@ -110,6 +126,7 @@
             $contacts = Contact::getByName('George Patton');
             $contact  = $contacts[0];
             $this->assertTrue($message2->sender->personOrAccount->isSame($contact));
+            $this->assertEquals('Archived', $message2->folder);
 
             //test creating new lead and saving
             $this->assertEquals(2, Contact::getCount());
@@ -124,6 +141,7 @@
             $contacts = Contact::getByName('Billy Kid');
             $contact  = $contacts[0];
             $this->assertTrue($message3->sender->personOrAccount->isSame($contact));
+            $this->assertEquals('Archived', $message3->folder);
         }
 
         /**
@@ -140,7 +158,12 @@
             $message3 = EmailMessageTestHelper::createArchivedUnmatchedReceivedMessage($nobody);
 
             //First check accessing where nobody can access
-            $this->runControllerWithExitExceptionAndGetContent('emailMessages/default/matchingList');
+            $content = $this->runControllerWithExitExceptionAndGetContent('emailMessages/default/matchingList');
+            $failureMessage = Zurmo::t('EmailMessagesModule', 'Matching archived emails requires access to either ContactsModulePluralLowerCaseLabel' .
+                ' or LeadsModulePluralLowerCaseLabel both of which you do not have. Please contact your administrator.',
+                LabelUtil::getTranslationParamsForAllModules());
+            $this->assertContains($failureMessage, $content);
+
             $this->setGetArray(array('id' => $message1->id));
             $this->runControllerWithNotSupportedExceptionAndGetContent ('emailMessages/default/completeMatch');
 
@@ -176,5 +199,18 @@
             $this->assertTrue($nobody->save());
             $this->runControllerWithNoExceptionsAndGetContent('emailMessages/default/matchingList');
         }
+
+        public function testDeleteAction()
+        {
+            $userCanDelete = $this->logoutCurrentUserLoginNewUserAndGetByUsername('usercandelete');
+            $userCanDelete->setRight('EmailMessagesModule', EmailMessagesModule::RIGHT_DELETE_EMAIL_MESSAGES);
+            $this->assertTrue($userCanDelete->save());
+            $userCanDelete->setRight('ContactsModule', ContactsModule::RIGHT_ACCESS_CONTACTS);
+            $userCanDelete->setRight('ContactsModule', ContactsModule::RIGHT_CREATE_CONTACTS);
+            $userCanDelete->setRight('LeadsModule', LeadsModule::RIGHT_ACCESS_LEADS);
+            $message1 = EmailMessageTestHelper::createArchivedUnmatchedReceivedMessage($userCanDelete);
+            $this->setGetArray(array('id' => $message1->id));
+            $this->runControllerWithNoExceptionsAndGetContent('emailMessages/default/delete', true);
+       }
     }
 ?>

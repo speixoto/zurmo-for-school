@@ -1,10 +1,10 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2012 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
-     * the terms of the GNU General Public License version 3 as published by the
+     * the terms of the GNU Affero General Public License version 3 as published by the
      * Free Software Foundation with the addition of the following permission added
      * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
      * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
@@ -12,16 +12,26 @@
      *
      * Zurmo is distributed in the hope that it will be useful, but WITHOUT
      * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-     * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+     * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
      * details.
      *
-     * You should have received a copy of the GNU General Public License along with
+     * You should have received a copy of the GNU Affero General Public License along with
      * this program; if not, see http://www.gnu.org/licenses or write to the Free
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
      *
-     * You can contact Zurmo, Inc. with a mailing address at 113 McHenry Road Suite 207,
-     * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
+     * You can contact Zurmo, Inc. with a mailing address at 27 North Wacker Drive
+     * Suite 370 Chicago, IL 60606. or at email address contact@zurmo.com.
+     *
+     * The interactive user interfaces in original and modified versions
+     * of this program must display Appropriate Legal Notices, as required under
+     * Section 5 of the GNU Affero General Public License version 3.
+     *
+     * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
+     * these Appropriate Legal Notices must retain the display of the Zurmo
+     * logo and Zurmo copyright notice. If the display of the logo is not reasonably
+     * feasible for technical reasons, the Appropriate Legal Notices must display the words
+     * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -59,10 +69,9 @@
                                 $this->getHelperValue(),
                                 $dropDownArray,
                                 $htmlOptions);
-            $content      .= '&#160;';
             $htmlOptions   = array(
                                 'id'       => $inputId,
-                                'readonly' => $this->getReadOnlyValue());
+                                'class'    => $this->resolveInputClassDisabled());
             $content      .= $this->form->textField($this->model, $this->attribute, $htmlOptions);
             return $content;
         }
@@ -83,7 +92,28 @@
          */
         protected function renderLabel()
         {
-            return $this->resolveNonActiveFormFormattedLabel($this->getFormattedAttributeLabel());
+            $defaultTooltip = $this->resolveAndRenderPolicyDefaultStringContent();
+            return $this->resolveNonActiveFormFormattedLabel($this->getFormattedAttributeLabel()) . $defaultTooltip;
+        }
+
+        /**
+         * Generate a tooltip to show the user the default value of a policy.
+         * If no default value is set, the function returns null.
+         * @return String The HTML code for the tooltip.
+         */
+        protected function resolveAndRenderPolicyDefaultStringContent()
+        {
+            $delimiter                      = FormModelUtil::DELIMITER;
+            list($moduleName, $policyName)  = explode($delimiter, $this->attribute);
+            $policyDefault                  = $moduleName::getPolicyDefault($this->getFormattedAttributeLabel());
+            if ($policyDefault != null)
+            {
+                $title    = Zurmo::t('ZurmoModule', 'The default value is {policyDefault}', array('{policyDefault}' => $policyDefault));
+                $content  = '<span class="tooltip policy-default-tooltip" title="' . $title . '">?</span>';
+                $qtip     = new ZurmoTip();
+                $qtip->addQTip(".policy-default-tooltip");
+                return $content;
+            }
         }
 
         protected function getNameForHelperInput()
@@ -104,8 +134,8 @@
         protected function getHelperDropDownArray()
         {
             return array(
-                ''          => Yii::t('Default', 'Not Set'),
-                PolicyIntegerAndStaticDropDownElement::HELPER_DROPDOWN_VALUE_YES => Yii::t('Default', 'Yes'),
+                ''          => Zurmo::t('ZurmoModule', 'Not Set'),
+                PolicyIntegerAndStaticDropDownElement::HELPER_DROPDOWN_VALUE_YES => Zurmo::t('ZurmoModule', 'Yes'),
             );
         }
 
@@ -122,12 +152,12 @@
             return $helperValue;
         }
 
-        protected function getReadOnlyValue()
+        protected function resolveInputClassDisabled()
         {
             if ($this->model->{$this->attribute} == null &&
             $this->getHelperValue() != PolicyIntegerAndStaticDropDownElement::HELPER_DROPDOWN_VALUE_YES)
             {
-                return 'readonly';
+                return 'disabled';
             }
             return null;
         }
@@ -146,7 +176,7 @@
             $inheritedAttributeName = $this->attribute . '__inherited';
             if ($this->model->{$inheritedAttributeName} != null)
             {
-                return Yii::t('Default', 'Inherited Value:') . '&#160;' . $this->model->{$inheritedAttributeName} . '<br/>';
+                return Zurmo::t('ZurmoModule', 'Inherited Value:') . '&#160;' . $this->model->{$inheritedAttributeName} . '<br/>';
             }
             return null;
         }

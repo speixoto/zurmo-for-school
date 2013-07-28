@@ -1,10 +1,10 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2012 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
-     * the terms of the GNU General Public License version 3 as published by the
+     * the terms of the GNU Affero General Public License version 3 as published by the
      * Free Software Foundation with the addition of the following permission added
      * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
      * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
@@ -12,105 +12,152 @@
      *
      * Zurmo is distributed in the hope that it will be useful, but WITHOUT
      * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-     * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+     * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
      * details.
      *
-     * You should have received a copy of the GNU General Public License along with
+     * You should have received a copy of the GNU Affero General Public License along with
      * this program; if not, see http://www.gnu.org/licenses or write to the Free
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
      *
-     * You can contact Zurmo, Inc. with a mailing address at 113 McHenry Road Suite 207,
-     * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
+     * You can contact Zurmo, Inc. with a mailing address at 27 North Wacker Drive
+     * Suite 370 Chicago, IL 60606. or at email address contact@zurmo.com.
+     *
+     * The interactive user interfaces in original and modified versions
+     * of this program must display Appropriate Legal Notices, as required under
+     * Section 5 of the GNU Affero General Public License version 3.
+     *
+     * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
+     * these Appropriate Legal Notices must retain the display of the Zurmo
+     * logo and Zurmo copyright notice. If the display of the logo is not reasonably
+     * feasible for technical reasons, the Appropriate Legal Notices must display the words
+     * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
     abstract class ReadPermissionsOptimizationUtil
     {
-        // $forcePhp is for use in tests only. So that the php version and
-        // the optimized version can be run in succession to compare them.
+        /**
+         * At some point if performance is a problem with rebuilding activity models, then the stored procedure
+         * needs to be refactored to somehow support more joins dynamically.
+         * @see https://www.pivotaltracker.com/story/show/38804909
+         * @param boolean $forcePhp
+         */
         public static function rebuild($forcePhp = false)
         {
+            //Forcing php way until we can fix failing tests here: AccountReadPermissionsOptimizationScenariosTest
+            $forcePhp = true;
             assert('is_bool($forcePhp)');
             foreach (self::getMungableModelClassNames() as $modelClassName)
             {
                 if (!SECURITY_OPTIMIZED || $forcePhp)
                 {
-                    // The slow way will remain here as documentation
-                    // for what the optimized way is doing.
-                    $mungeTableName  = self::getMungeTableName($modelClassName);
-                    self::recreateTable($mungeTableName);
-                    //Specifically call RedBeanModel to avoid the use of the security in OwnedSecurableItem since for
-                    //rebuild it needs to look at all models regardless of permissions of the current user.
-                    $modelCount = RedBeanModel::getCount(null, null, $modelClassName);
-                    $subset = intval($modelCount / 20);
-                    if ($subset < 100)
-                    {
-                        $subset = 100;
-                    }
-                    elseif ($subset > 1000)
-                    {
-                        $subset = 1000;
-                    }
-                    for ($i = 0; $i < $modelCount; $i += $subset)
-                    {
-                        //Specifically call RedBeanModel to avoid the use of the security in OwnedSecurableItem since for
-                        //rebuild it needs to look at all models regardless of permissions of the current user.
-                        $models = RedBeanModel::getSubset(null, $i, $subset, null, null, $modelClassName);
-                        foreach ($models as $model)
-                        {
-                            assert('$model instanceof SecurableItem');
-                            $securableItemId = $model->getClassId('SecurableItem');
-                            $users = User::getAll();
-                            foreach ($users as $user)
-                            {
-                                list($allowPermissions, $denyPermissions) = $model->getExplicitActualPermissions($user);
-                                $effectiveExplicitPermissions = $allowPermissions & ~$denyPermissions;
-                                if (($effectiveExplicitPermissions & Permission::READ) == Permission::READ)
-                                {
-                                    self::incrementCount($mungeTableName, $securableItemId, $user);
-                                }
-                            }
-                            $groups = Group::getAll();
-                            foreach ($groups as $group)
-                            {
-                                list($allowPermissions, $denyPermissions) = $model->getExplicitActualPermissions($group);
-                                $effectiveExplicitPermissions = $allowPermissions & ~$denyPermissions;
-                                if (($effectiveExplicitPermissions & Permission::READ) == Permission::READ)
-                                {
-                                    self::incrementCount($mungeTableName, $securableItemId, $group);
-                                    foreach ($group->users as $user)
-                                    {
-                                        if ($user->role->id > 0)
-                                        {
-                                            self::incrementParentRolesCounts($mungeTableName, $securableItemId, $user->role);
-                                        }
-                                    }
-                                    foreach ($group->groups as $subGroup)
-                                    {
-                                        self::processNestedGroupWhereParentHasReadPermissionOnSecurableItem(
-                                              $mungeTableName, $securableItemId, $subGroup);
-                                    }
-                                }
-                            }
-                            $roles = Role::getAll();
-                            foreach ($roles as $role)
-                            {
-                                $count = self::getRoleMungeCount($model, $role);
-                                assert('$count >= 0');
-                                if ($count > 0)
-                                {
-                                    self::setCount($mungeTableName, $securableItemId, $role, $count);
-                                }
-                            }
-                        }
-                    }
+                    self::rebuildViaSlowWay($modelClassName);
                 }
                 else
                 {
-                    $modelTableName = RedBeanModel::getTableName($modelClassName);
-                    $mungeTableName = self::getMungeTableName($modelClassName);
-                    ZurmoDatabaseCompatibilityUtil::
-                        callProcedureWithoutOuts("rebuild('$modelTableName', '$mungeTableName')");
+                    //models that extend activity are special and can only be done with the PHP process.  They cannot
+                    //be done using the stored procedure because it does not support the extra joins needed to determine
+                    //which securable items to look at.
+                    if (is_subclass_of($modelClassName, 'Activity'))
+                    {
+                        self::rebuildViaSlowWay($modelClassName);
+                    }
+                    else
+                    {
+                        $modelTableName = RedBeanModel::getTableName($modelClassName);
+                        $mungeTableName = self::getMungeTableName($modelClassName);
+                        if (!is_subclass_of($modelClassName, 'OwnedSecurableItem'))
+                        {
+                            throw new NotImplementedException($message, $code, $previous);
+                        }
+                        if (is_subclass_of($modelClassName, 'Person'))
+                        {
+                            if ($modelClassName != 'Contact')
+                            {
+                                throw new NotSupportedException();
+                            }
+                            else
+                            {
+                                $modelTableName = Person::getTableName('Person');
+                            }
+                        }
+                        ZurmoDatabaseCompatibilityUtil::
+                            callProcedureWithoutOuts("rebuild('$modelTableName', '$mungeTableName')");
+                    }
+                }
+            }
+        }
+
+        protected static function rebuildViaSlowWay($modelClassName)
+        {
+            // The slow way will remain here as documentation
+            // for what the optimized way is doing.
+            $mungeTableName  = self::getMungeTableName($modelClassName);
+            self::recreateTable($mungeTableName);
+            //Specifically call RedBeanModel to avoid the use of the security in OwnedSecurableItem since for
+            //rebuild it needs to look at all models regardless of permissions of the current user.
+            $modelCount = RedBeanModel::getCount(null, null, $modelClassName);
+            $subset = intval($modelCount / 20);
+            if ($subset < 100)
+            {
+                $subset = 100;
+            }
+            elseif ($subset > 1000)
+            {
+                $subset = 1000;
+            }
+            $users  = User::getAll();
+            $groups = Group::getAll();
+            $roles  = Role::getAll();
+            for ($i = 0; $i < $modelCount; $i += $subset)
+            {
+                //Specifically call RedBeanModel to avoid the use of the security in OwnedSecurableItem since for
+                //rebuild it needs to look at all models regardless of permissions of the current user.
+                $models = RedBeanModel::getSubset(null, $i, $subset, null, null, $modelClassName);
+                foreach ($models as $model)
+                {
+                    assert('$model instanceof SecurableItem');
+                    $securableItemId = $model->getClassId('SecurableItem');
+                    foreach ($users as $user)
+                    {
+                        list($allowPermissions, $denyPermissions) = $model->getExplicitActualPermissions($user);
+                        $effectiveExplicitPermissions = $allowPermissions & ~$denyPermissions;
+                        if (($effectiveExplicitPermissions & Permission::READ) == Permission::READ)
+                        {
+                            self::incrementCount($mungeTableName, $securableItemId, $user);
+                        }
+                    }
+
+                    foreach ($groups as $group)
+                    {
+                        list($allowPermissions, $denyPermissions) = $model->getExplicitActualPermissions($group);
+                        $effectiveExplicitPermissions = $allowPermissions & ~$denyPermissions;
+                        if (($effectiveExplicitPermissions & Permission::READ) == Permission::READ)
+                        {
+                            self::incrementCount($mungeTableName, $securableItemId, $group);
+                            foreach ($group->users as $user)
+                            {
+                                if ($user->role->id > 0)
+                                {
+                                    self::incrementParentRolesCounts($mungeTableName, $securableItemId, $user->role);
+                                }
+                            }
+                            foreach ($group->groups as $subGroup)
+                            {
+                                self::processNestedGroupWhereParentHasReadPermissionOnSecurableItem(
+                                      $mungeTableName, $securableItemId, $subGroup);
+                            }
+                        }
+                    }
+                    foreach ($roles as $role)
+                    {
+                        $count = self::getRoleMungeCount($model, $role);
+                        assert('$count >= 0');
+                        if ($count > 0)
+                        {
+                            self::setCount($mungeTableName, $securableItemId, $role, $count);
+                        }
+                    }
                 }
             }
         }
@@ -225,7 +272,7 @@
             $modelClassName = get_class($securableItem);
             assert('$modelClassName != "OwnedSecurableItem"');
             $mungeTableName = self::getMungeTableName($modelClassName);
-            $securableItemId = $securableItem->id;
+            $securableItemId = $securableItem->getClassId('SecurableItem');
             R::exec("delete from $mungeTableName
                      where       securableitem_id = $securableItemId");
         }

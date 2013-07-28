@@ -1,10 +1,10 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2012 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
-     * the terms of the GNU General Public License version 3 as published by the
+     * the terms of the GNU Affero General Public License version 3 as published by the
      * Free Software Foundation with the addition of the following permission added
      * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
      * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
@@ -12,16 +12,26 @@
      *
      * Zurmo is distributed in the hope that it will be useful, but WITHOUT
      * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-     * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+     * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
      * details.
      *
-     * You should have received a copy of the GNU General Public License along with
+     * You should have received a copy of the GNU Affero General Public License along with
      * this program; if not, see http://www.gnu.org/licenses or write to the Free
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
      *
-     * You can contact Zurmo, Inc. with a mailing address at 113 McHenry Road Suite 207,
-     * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
+     * You can contact Zurmo, Inc. with a mailing address at 27 North Wacker Drive
+     * Suite 370 Chicago, IL 60606. or at email address contact@zurmo.com.
+     *
+     * The interactive user interfaces in original and modified versions
+     * of this program must display Appropriate Legal Notices, as required under
+     * Section 5 of the GNU Affero General Public License version 3.
+     *
+     * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
+     * these Appropriate Legal Notices must retain the display of the Zurmo
+     * logo and Zurmo copyright notice. If the display of the logo is not reasonably
+     * feasible for technical reasons, the Appropriate Legal Notices must display the words
+     * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
     class MappingRuleFormAndElementTypeUtilTest extends ImportBaseTest
@@ -30,6 +40,12 @@
         {
             parent::setUpBeforeClass();
             SecurityTestHelper::createSuperAdmin();
+        }
+
+        public function setUp()
+        {
+            parent::setUp();
+            Yii::app()->user->userModel = User::getByUsername('super');
         }
 
         public function testMakeCollectionByAttributeImportRules()
@@ -220,36 +236,83 @@
 
         public function testMakeFormsAndElementTypesByMappingDataAndImportRulesType()
         {
-            Yii::app()->user->userModel = User::getByUsername('super');
             $mappingData = array(
-                           'column_0' => array('type' => 'importColumn', 'attributeIndexOrDerivedType' => 'string',
+                           'column_0' => array('type' => 'importColumn', 'attributeIndexOrDerivedType' => 'date',
                            'mappingRulesData' =>
-                           array('DefaultValueModelAttributeMappingRuleForm' => array('defaultValue' => 'abc'))),
-                           'column_1' => array('type' => 'importColumn', 'attributeIndexOrDerivedType' => 'lastName',
+                           array('DefaultValueModelAttributeMappingRuleForm' => array('defaultValue' => '2012-01-12'))),
+                           'column_1' => array('type' => 'importColumn', 'attributeIndexOrDerivedType' => 'dateTime',
+                           'mappingRulesData' =>
+                           array('DefaultValueModelAttributeMappingRuleForm' => array('defaultValue' => '2012-01-12 00:45'))),
+                           'column_2' => array('type' => 'importColumn', 'attributeIndexOrDerivedType' => 'lastName',
                            'mappingRulesData' =>
                            array('DefaultValueModelAttributeMappingRuleForm' => array('defaultValue' => 'def'))),
+                           'column_3' => array('type' => 'importColumn', 'attributeIndexOrDerivedType' => 'decimal',
+                           'mappingRulesData' =>
+                           array('DefaultValueModelAttributeMappingRuleForm' => array('defaultValue' => '1.45'))),
+                           'column_4' => array('type' => 'importColumn', 'attributeIndexOrDerivedType' => 'integer',
+                           'mappingRulesData' =>
+                           array('DefaultValueModelAttributeMappingRuleForm' => array('defaultValue' => 1))),
+                           'column_5' => array('type' => 'importColumn', 'attributeIndexOrDerivedType' => 'phone',
+                           'mappingRulesData' =>
+                           array('DefaultValueModelAttributeMappingRuleForm' => array('defaultValue' => '7844121541'))),
+                           'column_6' => array('type' => 'importColumn', 'attributeIndexOrDerivedType' => 'textArea',
+                           'mappingRulesData' =>
+                           array('DefaultValueModelAttributeMappingRuleForm' => array('defaultValue' => 'testTextArea'))),
+                           'column_7' => array('type' => 'importColumn', 'attributeIndexOrDerivedType' => 'url',
+                           'mappingRulesData' =>
+                           array('DefaultValueModelAttributeMappingRuleForm' => array('defaultValue' => 'http://www.test.com'))),
+                           'column_8' => array('type' => 'importColumn', 'attributeIndexOrDerivedType' => 'string',
+                           'mappingRulesData' =>
+                           array('DefaultValueModelAttributeMappingRuleForm' => array('defaultValue' => 'testString'))),
+                           'column_9' => array('type' => 'importColumn', 'attributeIndexOrDerivedType' => 'firstName',
+                           'mappingRulesData' =>
+                           array('DefaultValueModelAttributeMappingRuleForm' => array('defaultValue' => 'testfirstName'))),
             );
             $data = MappingRuleFormAndElementTypeUtil::
                     makeFormsAndElementTypesByMappingDataAndImportRulesType($mappingData, 'ImportModelTestItem');
-            $this->assertEquals(2, count($data));
-            $this->assertEquals('abc',  $data['column_0'][0]['mappingRuleForm']->defaultValue);
-            $this->assertEquals('Text', $data['column_0'][0]['elementType']);
-            $this->assertEquals('def',  $data['column_1'][0]['mappingRuleForm']->defaultValue);
-            $this->assertEquals('Text', $data['column_1'][0]['elementType']);
+            $this->assertEquals(10, count($data));
+            $this->assertEquals('2012-01-12',          $data['column_0'][0]['mappingRuleForm']->defaultValue);
+            $this->assertEquals('Date',                $data['column_0'][0]['elementType']);
+            $this->assertEquals('2012-01-12 00:45',    $data['column_1'][0]['mappingRuleForm']->defaultValue);
+            $this->assertEquals('DateTime',            $data['column_1'][0]['elementType']);
+            $this->assertEquals('def',                 $data['column_2'][0]['mappingRuleForm']->defaultValue);
+            $this->assertEquals('Text',                $data['column_2'][0]['elementType']);
+            $this->assertEquals('1.45',                $data['column_3'][0]['mappingRuleForm']->defaultValue);
+            $this->assertEquals('Decimal',             $data['column_3'][0]['elementType']);
+            $this->assertEquals(1,                     $data['column_4'][0]['mappingRuleForm']->defaultValue);
+            $this->assertEquals('Integer',             $data['column_4'][0]['elementType']);
+            $this->assertEquals('7844121541',          $data['column_5'][0]['mappingRuleForm']->defaultValue);
+            $this->assertEquals('Phone',               $data['column_5'][0]['elementType']);
+            $this->assertEquals('testTextArea',        $data['column_6'][0]['mappingRuleForm']->defaultValue);
+            $this->assertEquals('TextArea',            $data['column_6'][0]['elementType']);
+            $this->assertEquals('http://www.test.com', $data['column_7'][0]['mappingRuleForm']->defaultValue);
+            $this->assertEquals('Url',                 $data['column_7'][0]['elementType']);
+            $this->assertEquals('testString',          $data['column_8'][0]['mappingRuleForm']->defaultValue);
+            $this->assertEquals('Text',                $data['column_8'][0]['elementType']);
+            $this->assertEquals('testfirstName',       $data['column_9'][0]['mappingRuleForm']->defaultValue);
+            $this->assertEquals('Text',                $data['column_9'][0]['elementType']);
         }
 
         public function testValidateMappingRuleForms()
         {
-            Yii::app()->user->userModel = User::getByUsername('super');
             $stringDefaultValueMappingRuleForm   = new DefaultValueModelAttributeMappingRuleForm(
                                                    'ImportModelTestItem', 'string');
             $stringDefaultValueMappingRuleForm->defaultValue = 'abc';
-            $lastNameDefaultValueMappingRuleForm = new DefaultValueModelAttributeMappingRuleForm(
-                                                   'ImportModelTestItem', 'lastName');
+            $lastNameDefaultValueMappingRuleForm   = new DefaultValueModelAttributeMappingRuleForm(
+                                                     'ImportModelTestItem', 'lastName');
+            $numericalDefaultValueMappingRuleForm  = new DefaultValueModelAttributeMappingRuleForm(
+                                                     'ImportModelTestItem', 'numerical');
+            $precisionDefaultValueMappingRuleForm  = new DefaultValueModelAttributeMappingRuleForm(
+                                                     'ImportModelTestItem', 'decimal');
             //Validate true because scenario is not extra column
             $mappingRuleFormsData = array('column_0' => array(
-                                          array('mappingRuleForm' => $stringDefaultValueMappingRuleForm),
-                                          array('mappingRuleForm' => $lastNameDefaultValueMappingRuleForm)));
+                      array('mappingRuleForm' => $stringDefaultValueMappingRuleForm, 'elementType' => 'Text')),
+                      'column_1' => array(
+                      array('mappingRuleForm' => $lastNameDefaultValueMappingRuleForm, 'elementType' => 'Text')),
+                      'column_2' => array(
+                      array('mappingRuleForm' => $numericalDefaultValueMappingRuleForm, 'elementType' => 'Integer')),
+                      'column_3' => array(
+                      array('mappingRuleForm' => $precisionDefaultValueMappingRuleForm, 'elementType' => 'Decimal')));
             $validated = MappingRuleFormAndElementTypeUtil::validateMappingRuleForms($mappingRuleFormsData);
             $this->assertTrue($validated);
 
@@ -269,9 +332,142 @@
             $this->assertTrue($validated);
         }
 
+        public function testValidateMappingRuleFormForDateTimeNotRequired()
+        {
+            //Test as non-extra column
+            $dateTimeDefaultValueMappingRuleForm   = new DefaultValueModelAttributeMappingRuleForm(
+                                                         'ImportModelTestItem', 'dateTime');
+            $mappingRuleFormsData             = array();
+            $mappingRuleFormsData['column_0'] = array(
+                                                array('mappingRuleForm' => $dateTimeDefaultValueMappingRuleForm,
+                                                      'elementType'     => 'DateTime'));
+            $validated            = MappingRuleFormAndElementTypeUtil::validateMappingRuleForms($mappingRuleFormsData);
+            $this->assertTrue($validated);
+
+            //Now the scenario is extra column, so the lastName column will require validation.
+            $dateTimeDefaultValueMappingRuleForm    = new DefaultValueModelAttributeMappingRuleForm(
+                                                      'ImportModelTestItem', 'dateTime');
+            $dateTimeDefaultValueMappingRuleForm->setScenario('extraColumn');
+            $mappingRuleFormsData             = array();
+            $mappingRuleFormsData['column_0'] = array(
+                                                array('mappingRuleForm' => $dateTimeDefaultValueMappingRuleForm));
+            //Since it is not required, it will validate true.
+            $validated = MappingRuleFormAndElementTypeUtil::validateMappingRuleForms($mappingRuleFormsData);
+            $this->assertTrue($validated);
+            //Now we will test with validating an actual defaultValue that is valid
+            $dateTimeDefaultValueMappingRuleForm->defaultValue = '2013-03-19 01:00:00';
+            $validated = MappingRuleFormAndElementTypeUtil::validateMappingRuleForms($mappingRuleFormsData);
+            $this->assertTrue($validated);
+            //Now we will test with validating a defaultValue that is invalid
+            $dateTimeDefaultValueMappingRuleForm->defaultValue = 'something wrong';
+            $validated = MappingRuleFormAndElementTypeUtil::validateMappingRuleForms($mappingRuleFormsData);
+            $this->assertFalse($validated);
+        }
+
+        public function testValidateMappingRuleFormForDateTimeRequired()
+        {
+            //Test as non-extra column
+            $dateTimeDefaultValueMappingRuleForm   = new DefaultValueModelAttributeMappingRuleForm(
+                                                         'ImportModelTestItem5', 'requiredDateTime');
+            $mappingRuleFormsData             = array();
+            $mappingRuleFormsData['column_0'] = array(
+                                                array('mappingRuleForm' => $dateTimeDefaultValueMappingRuleForm,
+                                                      'elementType'     => 'DateTime'));
+            $validated            = MappingRuleFormAndElementTypeUtil::validateMappingRuleForms($mappingRuleFormsData);
+            $this->assertTrue($validated);
+
+            //Now the scenario is extra column, so the lastName column will require validation.
+            $dateTimeDefaultValueMappingRuleForm    = new DefaultValueModelAttributeMappingRuleForm(
+                                                          'ImportModelTestItem5', 'requiredDateTime');
+            $dateTimeDefaultValueMappingRuleForm->setScenario('extraColumn');
+            $mappingRuleFormsData             = array();
+            $mappingRuleFormsData['column_0'] = array(
+                                                array('mappingRuleForm' => $dateTimeDefaultValueMappingRuleForm));
+            //Since it is required, it should validate false
+            $validated = MappingRuleFormAndElementTypeUtil::validateMappingRuleForms($mappingRuleFormsData);
+            $this->assertFalse($validated);
+            //Now we will test with validating an actual defaultValue that is valid
+            $dateTimeDefaultValueMappingRuleForm->defaultValue = '2013-03-19 01:00:00';
+            $validated = MappingRuleFormAndElementTypeUtil::validateMappingRuleForms($mappingRuleFormsData);
+            $this->assertTrue($validated);
+            //Now we will test with validating a defaultValue that is invalid
+            $dateTimeDefaultValueMappingRuleForm->defaultValue = 'something wrong';
+            $validated = MappingRuleFormAndElementTypeUtil::validateMappingRuleForms($mappingRuleFormsData);
+            $this->assertFalse($validated);
+        }
+
+        /**
+         * The RedBeanModelCompareDateTimeValidator validator is ignored for import, so it should validate ok.
+         */
+        public function testValidateMappingRuleFormForDateTimeThatMustBeBeforeOtherDateTimeAndIsRequired()
+        {
+            //Test as non-extra column
+            $dateTimeDefaultValueMappingRuleForm   = new DefaultValueModelAttributeMappingRuleForm(
+                                                         'ImportModelTestItem5', 'startDateTime');
+            $mappingRuleFormsData             = array();
+            $mappingRuleFormsData['column_0'] = array(
+                                                array('mappingRuleForm' => $dateTimeDefaultValueMappingRuleForm,
+                                                      'elementType'     => 'DateTime'));
+            $validated            = MappingRuleFormAndElementTypeUtil::validateMappingRuleForms($mappingRuleFormsData);
+            $this->assertTrue($validated);
+
+            //Now the scenario is extra column, so the lastName column will require validation.
+            $dateTimeDefaultValueMappingRuleForm    = new DefaultValueModelAttributeMappingRuleForm(
+                                                          'ImportModelTestItem5', 'startDateTime');
+            $dateTimeDefaultValueMappingRuleForm->setScenario('extraColumn');
+            $mappingRuleFormsData             = array();
+            $mappingRuleFormsData['column_0'] = array(
+                                                array('mappingRuleForm' => $dateTimeDefaultValueMappingRuleForm));
+            //Since it is required, it should validate false
+            $validated = MappingRuleFormAndElementTypeUtil::validateMappingRuleForms($mappingRuleFormsData);
+            $this->assertFalse($validated);
+            //Now we will test with validating an actual defaultValue that is valid
+            $dateTimeDefaultValueMappingRuleForm->defaultValue = '2013-03-19 01:00:00';
+            $validated = MappingRuleFormAndElementTypeUtil::validateMappingRuleForms($mappingRuleFormsData);
+            $this->assertTrue($validated);
+            //Now we will test with validating a defaultValue that is invalid
+            $dateTimeDefaultValueMappingRuleForm->defaultValue = 'something wrong';
+            $validated = MappingRuleFormAndElementTypeUtil::validateMappingRuleForms($mappingRuleFormsData);
+            $this->assertFalse($validated);
+        }
+
+        /**
+         * The RedBeanModelCompareDateTimeValidator validator is ignored for import, so it should validate ok.
+         */
+        public function testValidateMappingRuleFormForDateTimeThatMustBeAfterOtherDateTimeAndIsNotRequired()
+        {
+            //Test as non-extra column
+            $dateTimeDefaultValueMappingRuleForm   = new DefaultValueModelAttributeMappingRuleForm(
+                                                         'ImportModelTestItem5', 'endDateTime');
+            $mappingRuleFormsData             = array();
+            $mappingRuleFormsData['column_0'] = array(
+                                                array('mappingRuleForm' => $dateTimeDefaultValueMappingRuleForm,
+                                                      'elementType'     => 'DateTime'));
+            $validated            = MappingRuleFormAndElementTypeUtil::validateMappingRuleForms($mappingRuleFormsData);
+            $this->assertTrue($validated);
+
+            //Now the scenario is extra column, so the lastName column will require validation.
+            $dateTimeDefaultValueMappingRuleForm    = new DefaultValueModelAttributeMappingRuleForm(
+                                                          'ImportModelTestItem5', 'endDateTime');
+            $dateTimeDefaultValueMappingRuleForm->setScenario('extraColumn');
+            $mappingRuleFormsData             = array();
+            $mappingRuleFormsData['column_0'] = array(
+                                                array('mappingRuleForm' => $dateTimeDefaultValueMappingRuleForm));
+            //Since it is not required, it should validate to true
+            $validated = MappingRuleFormAndElementTypeUtil::validateMappingRuleForms($mappingRuleFormsData);
+            $this->assertTrue($validated);
+            //Now we will test with validating an actual defaultValue that is valid
+            $dateTimeDefaultValueMappingRuleForm->defaultValue = '2013-03-19 01:00:00';
+            $validated = MappingRuleFormAndElementTypeUtil::validateMappingRuleForms($mappingRuleFormsData);
+            $this->assertTrue($validated);
+            //Now we will test with validating a defaultValue that is invalid
+            $dateTimeDefaultValueMappingRuleForm->defaultValue = 'something wrong';
+            $validated = MappingRuleFormAndElementTypeUtil::validateMappingRuleForms($mappingRuleFormsData);
+            $this->assertFalse($validated);
+        }
+
         public function testResolveAttributeIndexAndTheFormsAreUsingTheCorrectModelClassNameAndAttributeName()
         {
-            Yii::app()->user->userModel = User::getByUsername('super');
             $attributeImportRules = new EmailAttributeImportRules(new Email(), 'emailAddress');
             $collection           = MappingRuleFormAndElementTypeUtil::
                                     makeCollectionByAttributeImportRules($attributeImportRules,

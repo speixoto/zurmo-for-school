@@ -1,10 +1,10 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2012 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
-     * the terms of the GNU General Public License version 3 as published by the
+     * the terms of the GNU Affero General Public License version 3 as published by the
      * Free Software Foundation with the addition of the following permission added
      * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
      * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
@@ -12,16 +12,26 @@
      *
      * Zurmo is distributed in the hope that it will be useful, but WITHOUT
      * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-     * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+     * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
      * details.
      *
-     * You should have received a copy of the GNU General Public License along with
+     * You should have received a copy of the GNU Affero General Public License along with
      * this program; if not, see http://www.gnu.org/licenses or write to the Free
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
      *
-     * You can contact Zurmo, Inc. with a mailing address at 113 McHenry Road Suite 207,
-     * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
+     * You can contact Zurmo, Inc. with a mailing address at 27 North Wacker Drive
+     * Suite 370 Chicago, IL 60606. or at email address contact@zurmo.com.
+     *
+     * The interactive user interfaces in original and modified versions
+     * of this program must display Appropriate Legal Notices, as required under
+     * Section 5 of the GNU Affero General Public License version 3.
+     *
+     * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
+     * these Appropriate Legal Notices must retain the display of the Zurmo
+     * logo and Zurmo copyright notice. If the display of the logo is not reasonably
+     * feasible for technical reasons, the Appropriate Legal Notices must display the words
+     * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
     class AboutView extends View
@@ -40,27 +50,25 @@
             }
             // Begin Not Coding Standard
             $content  = '<div>
-                            <h1>Zurmo Open Source CRM</span></h1>';
+                            <h1>Zurmo Open Source CRM</h1>';
 
             $content .= '<div id="aboutText" class="clearfix">
                             <div id="leftCol">
                                 <div id="ZurmoLogo" class="zurmo-logo"></div>
-                                <div>
-                                    <p><strong>Zurmo</strong> is a <strong>Customer Relationship Management</strong> system by <strong>Zurmo Inc.</strong>
-                                </p>';
-
-            $content .= '<p>';
-            $content .= Yii::t('Default', 'Visit the <strong>Zurmo Open Source Project</strong> at {url}.',
+                                <div><p>';
+            $content .= Zurmo::t('ZurmoModule', '<strong>Zurmo</strong> is a <strong>Customer Relationship Management</strong> system by <strong>Zurmo Inc.</strong>');
+            $content .= '</p><p>';
+            $content .= Zurmo::t('ZurmoModule', 'Visit the <strong>Zurmo Open Source Project</strong> at {url}.',
                            array('{url}' => '<a href="http://www.zurmo.org">http://www.zurmo.org</a>'));
             $content .= '<br/>';
             $content .= '</p>';
             $content .= '<p>';
-            $content .= Yii::t('Default', 'Visit <strong>Zurmo Inc.</strong> at {url}.',
+            $content .= Zurmo::t('ZurmoModule', 'Visit <strong>Zurmo Inc.</strong> at {url}.',
                         array('{url}' => '<a href="http://www.zurmo.com">http://www.zurmo.com</a>'));
             $content .= '<br/>';
             $content .= '</p>';
             $content .= '<p>';
-            $content .= Yii::t('Default', '<strong>Zurmo</strong> is licensed under the GPLv3.  You can read the license <a href="http://www.zurmo.org/license">here</a>.');
+            $content .= Zurmo::t('ZurmoModule', '<strong>Zurmo</strong> is licensed under the AGPLv3.  You can read the license <a href="http://www.zurmo.org/license">here</a>.');
             $content .= '</p></div>
                             <div>
                                 <h3>Core Team</h3>
@@ -81,34 +89,34 @@
                                     <li>Richard Baldwin  - CRM Processes</li>
                                     <li>Camilo Calderón  - Documentation</li>
                                     <li>Nev Delap        - Infrastructure</li>
-                                    <li>Ramin Farmani    - Farsi Translation</li>
+                                    <li>Sergey Fayngold  - Language Infrastructure</li>
                                     <li>Evan Fazio       - Gamification</li>
                                     <li>Justin Ferguson  - Documentation</li>
                                     <li>Theresa Neil     - User Interface Design</li>
-                                    <li>Sérgio Peixoto   - Portugese Translation and Development</li>
+                                    <li>Sérgio Peixoto   - Portuguese Translation and Development</li>
                                     <li>Mandy Robinson   - Icons</li>
                                     <li>Hisateru Tanaka  - Japanese Translation</li>
                                     <li>Sacha Telgenhof  - Language Infrastructure</li>
-                                    <li>Holy Xing        - Chinese Translation</li>
+                                    <li>Subtle Patterns  - Background Textures</li>
                                 </ul>
                             </div>
                         </div>';
             $content .= '<div id="rightCol">';
             $content .= static::renderSocialLinksContent();
             $content .= '<div><h3>Application Info</h3><p>';
-            $content .= Yii::t('Default', 'This is <strong>version {zurmoVersion}</strong> of <strong>Zurmo</strong>.',
+            $content .= Zurmo::t('ZurmoModule', 'This is <strong>version {zurmoVersion}</strong> of <strong>Zurmo</strong>.',
                         array('{zurmoVersion}' => $zurmoVersion));
             $content .= '</p>';
             $content .= '<p>';
-            $content .= Yii::t('Default', '<strong>Zurmo</strong> uses the following great Open Source tools and frameworks:');
+            $content .= Zurmo::t('ZurmoModule', '<strong>Zurmo</strong> uses the following great Open Source tools and frameworks:');
             $content .= '<ul>';
             $content .= '<li>';
-            $content .= Yii::t('Default', '{url} (version {version} is installed)',
+            $content .= Zurmo::t('ZurmoModule', '{url} (version {version} is installed)',
                            array('{url}'     => '<a href="http://www.yiiframework.com">Yii Framework</a>',
                                  '{version}' => $yiiVersion));
             $content .= '</li>';
             $content .= '<li>';
-            $content .= Yii::t('Default', '{url} (version {version} is installed)',
+            $content .= Zurmo::t('ZurmoModule', '{url} (version {version} is installed)',
                            array('{url}'     => '<a href="http://www.redbeanphp.com">RedBeanPHP ORM</a>',
                                  '{version}' => $redBeanVersion));
             $content .= '</li>';
@@ -159,7 +167,7 @@
                 <p>
                     Zurmo Inc. <span>|</span>
                     <strong>Phone: </strong> (888) 435.2221 <span>|</span>
-                    <strong>Address: </strong> 113 McHenry Road Suite 207, Buffalo Grove IL 60089
+                    <strong>Address: </strong> 27 North Wacker Drive Suite 370, Chicago, IL 60606
                 </p>
             </div>';
 

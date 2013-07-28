@@ -1,10 +1,10 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2012 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
-     * the terms of the GNU General Public License version 3 as published by the
+     * the terms of the GNU Affero General Public License version 3 as published by the
      * Free Software Foundation with the addition of the following permission added
      * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
      * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
@@ -12,16 +12,26 @@
      *
      * Zurmo is distributed in the hope that it will be useful, but WITHOUT
      * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-     * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+     * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
      * details.
      *
-     * You should have received a copy of the GNU General Public License along with
+     * You should have received a copy of the GNU Affero General Public License along with
      * this program; if not, see http://www.gnu.org/licenses or write to the Free
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
      *
-     * You can contact Zurmo, Inc. with a mailing address at 113 McHenry Road Suite 207,
-     * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
+     * You can contact Zurmo, Inc. with a mailing address at 27 North Wacker Drive
+     * Suite 370 Chicago, IL 60606. or at email address contact@zurmo.com.
+     *
+     * The interactive user interfaces in original and modified versions
+     * of this program must display Appropriate Legal Notices, as required under
+     * Section 5 of the GNU Affero General Public License version 3.
+     *
+     * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
+     * these Appropriate Legal Notices must retain the display of the Zurmo
+     * logo and Zurmo copyright notice. If the display of the logo is not reasonably
+     * feasible for technical reasons, the Appropriate Legal Notices must display the words
+     * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
     abstract class ZurmoPortletController extends PortletController
@@ -143,11 +153,15 @@
          * @param string $relationAttributeName
          * @param string $relationModelId
          * @param string $relationModuleId
+         * @param null|string $relationModelClassName
          */
         public function actionSelectFromRelatedListSave($modelId, $portletId, $uniqueLayoutId,
-                                                        $relationAttributeName, $relationModelId, $relationModuleId)
+                                                        $relationAttributeName, $relationModelId, $relationModuleId, $relationModelClassName = null)
         {
-            $relationModelClassName = Yii::app()->getModule($relationModuleId)->getPrimaryModelName();
+            if ($relationModelClassName == null)
+            {
+                $relationModelClassName = Yii::app()->getModule($relationModuleId)->getPrimaryModelName();
+            }
             $relationModel          = $relationModelClassName::getById((int)$relationModelId);
             $modelClassName         = $this->getModule()->getPrimaryModelName();
             $model                  = $modelClassName::getById((int)$modelId);
@@ -156,34 +170,130 @@
             if (!$model->$relationAttributeName->contains($relationModel))
             {
                 $model->$relationAttributeName->add($relationModel);
+                if (!$model->save())
+                {
+                    $this->processSelectFromRelatedListSaveFails($model);
+                }
             }
-            $model->save();
+            else
+            {
+                $this->processSelectFromRelatedListSaveAlreadyConnected($model);
+            }
+            $isViewLocked = ZurmoDefaultViewUtil::getLockKeyForDetailsAndRelationsView('lockPortletsForDetailsAndRelationsView');
             $this->redirect(array('/' . $relationModuleId . '/defaultPortlet/modalRefresh',
-                                'id'             => $relationModelId,
-                                'portletId'      => $portletId,
-                                'uniqueLayoutId' => $uniqueLayoutId,
-                                'redirectUrl'    => $redirectUrl,
-                                'portletParams'  => array(  'relationModuleId' => $relationModuleId,
-                                                            'relationModelId'  => $relationModelId)));
+                                'id'                   => $relationModelId,
+                                'portletId'            => $portletId,
+                                'uniqueLayoutId'       => $uniqueLayoutId,
+                                'redirectUrl'          => $redirectUrl,
+                                'portletParams'        => array(  'relationModuleId' => $relationModuleId,
+                                                                  'relationModelId'  => $relationModelId),
+                                'portletsAreRemovable' => !$isViewLocked));
         }
 
-        public function actionMakeChartXML($portletId, $chartLibraryName)
+        protected function processSelectFromRelatedListSaveFails(RedBeanModel $model)
         {
-            $portlet = Portlet::getById(intval($portletId));
-            assert('$portlet->getView() instanceof ChartView');
-            $chartDataProviderType = $portlet->getView()->getChartDataProviderType();
-            $chartDataProvider     = ChartDataProviderFactory::createByType($chartDataProviderType);
-            ControllerSecurityUtil::resolveCanCurrentUserAccessModule(
-                                        $chartDataProvider->getModel()->getModuleClassName(), true);
-            $adapterClassName      = 'ChartDataProviderTo' . $chartLibraryName . 'ChartAdapter';
-            $fusionChart = $adapterClassName::makeChartByChartDataProvider($chartDataProvider,
-                                $portlet->getView()->getChartParams());
-            echo $fusionChart->getXML();
+            $header = Zurmo::t('ZurmoModule', 'Please resolve the following issues for {modelString}:',
+                                        array('{modelString}' => strval($model)));
+            echo CJSON::encode(array('message'     => ZurmoHtml::errorSummary(array($model), $header),
+                                     'messageType' => 'error'));
+            Yii::app()->end(0, false);
+        }
+
+        protected function processSelectFromRelatedListSaveAlreadyConnected(RedBeanModel $model)
+        {
+            echo CJSON::encode(array('message'     => Zurmo::t('ZurmoModule', '{modelString} is already connected to this record.',
+                                                                        array('{modelString}' => strval($model))),
+                                     'messageType' => 'message'));
+            Yii::app()->end(0, false);
         }
 
         public function resolveAndGetModuleId()
         {
             return $this->getModule()->getId();
+        }
+
+        public function actionAddList()
+        {
+            Yii::app()->getClientScript()->setToAjaxMode();
+            $view = new ModalView($this,
+                                    new DetailsPortletSelectionView(
+                                        $this->getId(),
+                                        $this->getModule()->getId(),
+                                        $_GET['modelId'], //dashboard id is model id
+                                        $_GET['uniqueLayoutId']
+                                        ));
+            echo $view->render();
+        }
+
+        /**
+         * Add portlet to first column, first position
+         * and if there are other portlets in the first
+         * column, shift their postion by 1 to accomodate
+         * the new portlet
+         *
+         */
+        public function actionAdd()
+        {
+            assert('!empty($_GET["uniqueLayoutId"])');
+            assert('!empty($_GET["portletType"])');
+            $isPortletAlreadyAdded = Portlet::doesPortletExistByViewTypeLayoutIdAndUser($_GET['portletType'], $_GET['uniqueLayoutId'], Yii::app()->user->userModel->id);
+            $maximumColumns = $this->resolveMaximumColumnsByLayoutId();
+
+            if ($isPortletAlreadyAdded === false)
+            {
+                $this->resetPortletsInColumnToAccomodateNewPortlet($maximumColumns);
+                Portlet::makePortletUsingViewType($_GET['portletType'], $_GET['uniqueLayoutId'], Yii::app()->user->userModel, intval($maximumColumns));
+            }
+
+            if (!empty($_GET['modelId']))
+            {
+                $dashboardId = $_GET['modelId'];
+            }
+            else
+            {
+                $dashboardId = '';
+            }
+
+            //Please see @link:AccountDetailsAndRelationsPortletViewTest
+            if (isset($_GET['redirect']))
+            {
+                return;
+            }
+            $this->redirect(array('/' . $this->resolveAndGetModuleId() . '/default/details', 'id' => $dashboardId));
+        }
+
+        /**
+         * Resolve maximum columns by layout id
+         * @return int
+         */
+        private function resolveMaximumColumnsByLayoutId()
+        {
+            $layoutTypes    = ConfigurableDetailsAndRelationsView::getLayoutTypesData();
+            $layoutType     = $layoutTypes[ConfigurableDetailsAndRelationsView::getDefaultLayoutType()];
+            $maximumColumns = substr($layoutType, 0, 1);
+            return $maximumColumns;
+        }
+
+        /**
+         * Reset portlet positions when a new portlet is added on the detail view
+         * @param int $maximumColumns
+         */
+        private function resetPortletsInColumnToAccomodateNewPortlet($maximumColumns)
+        {
+            $portletCollection = Portlet::getByLayoutIdAndUserSortedByColumnIdAndPosition($_GET['uniqueLayoutId'], Yii::app()->user->userModel->id, array());
+            $maximumIndexFromCollection = max(array_keys($portletCollection));
+            $maximumIterativeIndex = min($maximumIndexFromCollection, $maximumColumns);
+            if (!empty($portletCollection))
+            {
+                if ($maximumIterativeIndex > 1)
+                {
+                    foreach ($portletCollection[$maximumIterativeIndex] as $position => $portlet)
+                    {
+                        $portlet->position = $portlet->position + 1;
+                        $portlet->save();
+                    }
+                }
+            }
         }
     }
 ?>

@@ -12,6 +12,11 @@
 <tr><td rowspan="1" colspan="3">New Test</td></tr>
 </thead><tbody>
 <tr>
+    <td>setTimeout</td>
+    <td>45000</td>
+    <td></td>
+</tr>
+<tr>
 	<td>storeGlobal</td>
 	<td>javascript{Math.floor(Math.random()*11000)}</td>
 	<td>randomSuffix</td>
@@ -22,20 +27,46 @@
 	<td></td>
 </tr>
 <tr>
+    <td>waitForPageToLoad</td>
+    <td></td>
+    <td></td>
+</tr>
+<tr>
+    <td>waitForCondition</td>
+    <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+    <td>30000</td>
+</tr>
+<tr>
 	<td>type</td>
 	<td>id=SocialItem_description</td>
 	<td>Test Post ${randomSuffix}</td>
 </tr>
 <tr>
 	<td>click</td>
-	<td>css=span.z-label</td>
+	<td>//form[@id='social-item-inline-edit-form']/div/div/a/span[3]</td>
 	<td></td>
+</tr>
+<!--tr>
+    <td>waitForPageToLoad</td>
+    <td></td>
+    <td></td>
+</tr-->
+<tr>
+    <td>waitForCondition</td>
+    <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+    <td>30000</td>
 </tr>
 <tr>
-	<td>waitForTextPresent</td>
-	<td>Test Post ${randomSuffix}</td>
-	<td></td>
+    <td>waitForTextPresent</td>
+    <td>Test Post ${randomSuffix}</td>
+    <td></td>
 </tr>
+<!--tr>
+	<td>verifyTextPresent</td>
+	<td>//div[@id='list-viewAllSocialItemsForPortletView']/table/tbody/tr/td/div/div/div</td>
+	<td>Test Post ${randomSuffix}</td>
+	    <!--td></td>
+</tr-->
 </tbody></table>
 </body>
 </html>

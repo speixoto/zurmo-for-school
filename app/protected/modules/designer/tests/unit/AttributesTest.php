@@ -1,10 +1,10 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2012 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
-     * the terms of the GNU General Public License version 3 as published by the
+     * the terms of the GNU Affero General Public License version 3 as published by the
      * Free Software Foundation with the addition of the following permission added
      * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
      * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
@@ -12,20 +12,32 @@
      *
      * Zurmo is distributed in the hope that it will be useful, but WITHOUT
      * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-     * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+     * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
      * details.
      *
-     * You should have received a copy of the GNU General Public License along with
+     * You should have received a copy of the GNU Affero General Public License along with
      * this program; if not, see http://www.gnu.org/licenses or write to the Free
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
      *
-     * You can contact Zurmo, Inc. with a mailing address at 113 McHenry Road Suite 207,
-     * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
+     * You can contact Zurmo, Inc. with a mailing address at 27 North Wacker Drive
+     * Suite 370 Chicago, IL 60606. or at email address contact@zurmo.com.
+     *
+     * The interactive user interfaces in original and modified versions
+     * of this program must display Appropriate Legal Notices, as required under
+     * Section 5 of the GNU Affero General Public License version 3.
+     *
+     * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
+     * these Appropriate Legal Notices must retain the display of the Zurmo
+     * logo and Zurmo copyright notice. If the display of the logo is not reasonably
+     * feasible for technical reasons, the Appropriate Legal Notices must display the words
+     * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
     class AttributesTest extends ZurmoBaseTest
     {
+        public static $activateDefaultLanguages = true;
+
         public static function setUpBeforeClass()
         {
             parent::setUpBeforeClass();
@@ -38,10 +50,41 @@
             Yii::app()->user->userModel = User::getByUsername('super');
         }
 
+        public function testUsingReservedCharactersToMakeAnAttribute()
+        {
+            $attributeForm                    = new TextAreaAttributeForm();
+            $attributeForm->modelClassName    = 'Account';
+            $attributeForm->setScenario('createAttribute');
+            $attributeForm->attributeName     = 'test__wrong';
+            $attributeForm->attributeLabels   = array(
+                'de' => 'Test Text2 de',
+                'en' => 'Test Text2 en',
+                'es' => 'Test Text2 es',
+                'fr' => 'Test Text2 fr',
+                'it' => 'Test Text2 it',
+            );
+            $attributeForm->isAudited     = true;
+            $attributeForm->isRequired    = false;
+            $validated = $attributeForm->validate();
+            $this->assertFalse($validated);
+            $errors = array('attributeName' =>
+                        array('"test__wrong" field name contains reserved characters. Either __ or ___.'));
+            $this->assertEquals($errors, $attributeForm->getErrors());
+            $attributeForm->attributeName = 'test___still';
+            $validated = $attributeForm->validate();
+            $this->assertFalse($validated);
+            $errors = array('attributeName' =>
+                        array('"test___still" field name contains reserved characters. Either __ or ___.'));
+            $this->assertEquals($errors, $attributeForm->getErrors());
+            $attributeForm->attributeName = 'testRight';
+            $validated = $attributeForm->validate();
+            $this->assertTrue($validated);
+        }
+
         /**
          * Test if we don't receive error related to database rowsize limit
          */
-        public function testSetManyTextAreaFileds()
+        public function testSetManyTextAreaFields()
         {
             $super = User::getByUsername('super');
             Yii::app()->user->userModel = $super;
@@ -72,7 +115,7 @@
                     $this->fail();
                 }
                 $account = new Account();
-                $this->assertTrue ($account->isAttribute('testTextArea'. $i));
+                $this->assertTrue ($account->isAttribute('testTextArea'. $i . 'Cstm'));
             }
         }
 
@@ -114,9 +157,9 @@
                 $this->fail();
             }
 
-            $attributeForm = AttributesFormFactory::createAttributeFormByAttributeName(new Account(), $attributeName);
+            $attributeForm = AttributesFormFactory::createAttributeFormByAttributeName(new Account(), $attributeName . 'Cstm');
             $this->assertEquals('CheckBox',         $attributeForm->getAttributeTypeName());
-            $this->assertEquals($attributeName,     $attributeForm->attributeName);
+            $this->assertEquals($attributeName . 'Cstm',     $attributeForm->attributeName);
             $compareAttributeLabels = array(
                 'de' => 'Test Checkbox 2 de',
                 'en' => 'Test Checkbox 2 en',
@@ -165,9 +208,9 @@
                 $this->fail();
             }
 
-            $attributeForm = AttributesFormFactory::createAttributeFormByAttributeName(new Account(), 'testCurrency2');
+            $attributeForm = AttributesFormFactory::createAttributeFormByAttributeName(new Account(), 'testCurrency2Cstm');
             $this->assertEquals('CurrencyValue',   $attributeForm->getAttributeTypeName());
-            $this->assertEquals('testCurrency2',   $attributeForm->attributeName);
+            $this->assertEquals('testCurrency2Cstm',   $attributeForm->attributeName);
             $compareAttributeLabels = array(
                 'de' => 'Test Currency 2 de',
                 'en' => 'Test Currency 2 en',
@@ -223,9 +266,9 @@
                 $this->fail();
             }
 
-            $attributeForm = AttributesFormFactory::createAttributeFormByAttributeName(new Account(), $attributeName);
+            $attributeForm = AttributesFormFactory::createAttributeFormByAttributeName(new Account(), $attributeName . 'Cstm');
             $this->assertEquals('Date',        $attributeForm->getAttributeTypeName());
-            $this->assertEquals($attributeName,   $attributeForm->attributeName);
+            $this->assertEquals($attributeName . 'Cstm',   $attributeForm->attributeName);
             $compareAttributeLabels = array(
                 'de' => 'Test Date 2 de',
                 'en' => 'Test Date 2 en',
@@ -245,13 +288,13 @@
                 $yesterdayDateTime  = new DateTime(null, new DateTimeZone(Yii::app()->timeZoneHelper->getForCurrentUser()));
                 $yesterday          = Yii::app()->dateFormatter->format(DatabaseCompatibilityUtil::getDateFormat(),
                                         $yesterdayDateTime->getTimeStamp() - (60 * 60 *24));
-                $this->assertEquals($yesterday, $account->$attributeName);
+                $this->assertEquals($yesterday, $account->{$attributeName . 'Cstm'});
             }
             else
             {
                 $account = new Account();
                 $this->assertEquals(null,        $attributeForm->defaultValueCalculationType);
-                $this->assertEquals(null,        $account->$attributeName);
+                $this->assertEquals(null,        $account->{$attributeName . 'Cstm'});
             }
         }
 
@@ -302,9 +345,9 @@
                 $this->fail();
             }
 
-            $attributeForm = AttributesFormFactory::createAttributeFormByAttributeName(new Account(), $attributeName);
+            $attributeForm = AttributesFormFactory::createAttributeFormByAttributeName(new Account(), $attributeName . 'Cstm');
             $this->assertEquals('DateTime',         $attributeForm->getAttributeTypeName());
-            $this->assertEquals($attributeName,    $attributeForm->attributeName);
+            $this->assertEquals($attributeName . 'Cstm',    $attributeForm->attributeName);
             $compareAttributeLabels = array(
                 'de' => 'Test DateTime 2 de',
                 'en' => 'Test DateTime 2 en',
@@ -322,14 +365,14 @@
                 //Confirm default calculation loads correct default value for Account.
                 $account = new Account();
                 $nowDateTime        = new DateTime(null, new DateTimeZone(Yii::app()->timeZoneHelper->getForCurrentUser()));
-                $this->assertWithinTolerance($nowDateTime->getTimeStamp(), DateTimeUtil::convertDbFormatDateTimeToTimestamp($account->$attributeName), 1);
+                $this->assertWithinTolerance($nowDateTime->getTimeStamp(), DateTimeUtil::convertDbFormatDateTimeToTimestamp($account->{$attributeName . 'Cstm'}), 1);
             }
             else
             {
                 $this->assertEquals(null, $attributeForm->defaultValueCalculationType);
                 //Confirm default calculation loads correct default value (null) for Account.
                 $account = new Account();
-                $this->assertEquals(null, $account->$attributeName);
+                $this->assertEquals(null, $account->{$attributeName . 'Cstm'});
             }
         }
 
@@ -338,11 +381,11 @@
          */
         public function testChangeDefaultValueCalculationTypeToNullOnDateTimeAttribute()
         {
-            $attributeForm = AttributesFormFactory::createAttributeFormByAttributeName(new Account(), 'testDateTime2');
+            $attributeForm = AttributesFormFactory::createAttributeFormByAttributeName(new Account(), 'testDateTime2Cstm');
             $this->assertEquals(DateTimeCalculatorUtil::NOW,        $attributeForm->defaultValueCalculationType);
             //Change the defaultValueCalculationType back to null and confirm the default value is still null on new model.
             $attributeForm = new DateTimeAttributeForm();
-            $attributeForm->attributeName = 'testDateTime2';
+            $attributeForm->attributeName = 'testDateTime2Cstm';
             $attributeForm->attributeLabels  = array(
                 'de' => 'Test DateTime 2 de',
                 'en' => 'Test DateTime 2 en',
@@ -365,9 +408,9 @@
                 $this->fail();
             }
 
-            $attributeForm = AttributesFormFactory::createAttributeFormByAttributeName(new Account(), 'testDateTime2');
+            $attributeForm = AttributesFormFactory::createAttributeFormByAttributeName(new Account(), 'testDateTime2Cstm');
             $this->assertEquals('DateTime',         $attributeForm->getAttributeTypeName());
-            $this->assertEquals('testDateTime2',    $attributeForm->attributeName);
+            $this->assertEquals('testDateTime2Cstm',    $attributeForm->attributeName);
             $compareAttributeLabels = array(
                 'de' => 'Test DateTime 2 de',
                 'en' => 'Test DateTime 2 en',
@@ -381,7 +424,7 @@
             $this->assertEquals(null,               $attributeForm->defaultValueCalculationType);
             //Confirm default calculation loads correct default value (null) for Account.
             $account = new Account();
-            $this->assertEquals(null, $account->testDateTime2);
+            $this->assertEquals(null, $account->testDateTime2Cstm);
         }
 
         /**
@@ -440,9 +483,9 @@
                 $this->fail();
             }
 
-            $attributeForm = AttributesFormFactory::createAttributeFormByAttributeName(new Account(), $attributeName);
+            $attributeForm = AttributesFormFactory::createAttributeFormByAttributeName(new Account(), $attributeName . 'Cstm');
             $this->assertEquals('Decimal',        $attributeForm->getAttributeTypeName());
-            $this->assertEquals($attributeName,   $attributeForm->attributeName);
+            $this->assertEquals($attributeName . 'Cstm',   $attributeForm->attributeName);
             $compareAttributeLabels = array(
                 'de' => 'Test Decimal 2 de',
                 'en' => 'Test Decimal 2 en',
@@ -513,9 +556,9 @@
             }
 
             $account = new Account();
-            $attributeForm = AttributesFormFactory::createAttributeFormByAttributeName($account, 'testAirPlane');
+            $attributeForm = AttributesFormFactory::createAttributeFormByAttributeName($account, 'testAirPlaneCstm');
             $this->assertEquals('DropDown',       $attributeForm->getAttributeTypeName());
-            $this->assertEquals('testAirPlane',   $attributeForm->attributeName);
+            $this->assertEquals('testAirPlaneCstm',   $attributeForm->attributeName);
             $compareAttributeLabels = array(
                 'de' => 'Test Airplane 2 de',
                 'en' => 'Test Airplane 2 en',
@@ -624,9 +667,9 @@
                 $this->fail();
             }
 
-            $attributeForm = AttributesFormFactory::createAttributeFormByAttributeName(new Account(), $attributeName);
+            $attributeForm = AttributesFormFactory::createAttributeFormByAttributeName(new Account(), $attributeName . 'Cstm');
             $this->assertEquals('Integer',        $attributeForm->getAttributeTypeName());
-            $this->assertEquals($attributeName,   $attributeForm->attributeName);
+            $this->assertEquals($attributeName . 'Cstm',   $attributeForm->attributeName);
             $compareAttributeLabels = array(
                 'de' => 'Test Integer 2 de',
                 'en' => 'Test Integer 2 en',
@@ -692,9 +735,9 @@
                 $this->fail();
             }
 
-            $attributeForm = AttributesFormFactory::createAttributeFormByAttributeName(new Account(), $attributeName);
+            $attributeForm = AttributesFormFactory::createAttributeFormByAttributeName(new Account(), $attributeName . 'Cstm');
             $this->assertEquals('Integer',        $attributeForm->getAttributeTypeName());
-            $this->assertEquals($attributeName,   $attributeForm->attributeName);
+            $this->assertEquals($attributeName . 'Cstm',   $attributeForm->attributeName);
             $compareAttributeLabels = array(
                 'de' => 'Test Integer NoMinMax de',
                 'en' => 'Test Integer NoMinMax en',
@@ -776,9 +819,9 @@
             }
 
             $account       = new Account();
-            $attributeForm = AttributesFormFactory::createAttributeFormByAttributeName($account, $attributeName);
+            $attributeForm = AttributesFormFactory::createAttributeFormByAttributeName($account, $attributeName . 'Cstm');
             $this->assertEquals('MultiSelectDropDown', $attributeForm->getAttributeTypeName());
-            $this->assertEquals($attributeName,         $attributeForm->attributeName);
+            $this->assertEquals($attributeName . 'Cstm',         $attributeForm->attributeName);
             $compareAttributeLabels = array(
                 'de' => 'Test Hobbies 2 de',
                 'en' => 'Test Hobbies 2 en',
@@ -907,9 +950,9 @@
             }
 
             $account = new Account();
-            $attributeForm = AttributesFormFactory::createAttributeFormByAttributeName($account, $attributeName);
+            $attributeForm = AttributesFormFactory::createAttributeFormByAttributeName($account, $attributeName . 'Cstm');
             $this->assertEquals('TagCloud',     $attributeForm->getAttributeTypeName());
-            $this->assertEquals($attributeName, $attributeForm->attributeName);
+            $this->assertEquals($attributeName . 'Cstm', $attributeForm->attributeName);
             $compareAttributeLabels = array(
                 'de' => 'Test Languages 2 de',
                 'en' => 'Test Languages 2 en',
@@ -1017,9 +1060,9 @@
             }
 
             $account = new Account();
-            $attributeForm = AttributesFormFactory::createAttributeFormByAttributeName($account, 'testCountry');
+            $attributeForm = AttributesFormFactory::createAttributeFormByAttributeName($account, 'testCountryCstm');
             $this->assertEquals('DropDown',      $attributeForm->getAttributeTypeName());
-            $this->assertEquals('testCountry',   $attributeForm->attributeName);
+            $this->assertEquals('testCountryCstm',   $attributeForm->attributeName);
             $compareAttributeLabels = array(
                 'de' => 'Test Country 2 de',
                 'en' => 'Test Country 2 en',
@@ -1080,9 +1123,9 @@
             }
 
             $account = new Account();
-            $attributeForm = AttributesFormFactory::createAttributeFormByAttributeName($account, 'testState');
+            $attributeForm = AttributesFormFactory::createAttributeFormByAttributeName($account, 'testStateCstm');
             $this->assertEquals('DropDown',  $attributeForm->getAttributeTypeName());
-            $this->assertEquals('testState', $attributeForm->attributeName);
+            $this->assertEquals('testStateCstm', $attributeForm->attributeName);
             $compareAttributeLabels = array(
                 'de' => 'Test State 2 de',
                 'en' => 'Test State 2 en',
@@ -1165,9 +1208,9 @@
             }
 
             $account = new Account();
-            $attributeForm = AttributesFormFactory::createAttributeFormByAttributeName($account, 'testCity');
+            $attributeForm = AttributesFormFactory::createAttributeFormByAttributeName($account, 'testCityCstm');
             $this->assertEquals('DropDown',  $attributeForm->getAttributeTypeName());
-            $this->assertEquals('testCity', $attributeForm->attributeName);
+            $this->assertEquals('testCityCstm', $attributeForm->attributeName);
             $compareAttributeLabels = array(
                 'de' => 'Test City 2 de',
                 'en' => 'Test City 2 en',
@@ -1193,8 +1236,8 @@
                 'it' => 'Test Location Value 2 it',
             );
             $attributeForm->mappingData      = array(
-                                                    array('attributeName'        => 'testCountry'),
-                                                    array('attributeName'        => 'testState',
+                                                    array('attributeName'        => 'testCountrycstm'),
+                                                    array('attributeName'        => 'testStateCstm',
                                                           'valuesToParentValues' => array('aaa1' => 'aaaa',
                                                                                           'aaa2' => 'aaaa',
                                                                                           'aaa3' => 'aaaa',
@@ -1206,7 +1249,7 @@
                                                                                           'ccc3' => 'cccc'
                                                                                   )
                                                     ),
-                                                    array('attributeName'        => 'testCity',
+                                                    array('attributeName'        => 'testCityCstm',
                                                           'valuesToParentValues' => array('aa1' => 'aaa1',
                                                                                           'ab1' => 'aaa1',
                                                                                           'ac1' => 'aaa1',
@@ -1251,7 +1294,7 @@
                 $this->fail();
             }
 
-            $attributeForm = AttributesFormFactory::createAttributeFormByAttributeName(new Account(), $attributeName);
+            $attributeForm = AttributesFormFactory::createAttributeFormByAttributeName(new Account(), $attributeName );
             $this->assertEquals('DropDownDependency', $attributeForm->getAttributeTypeName());
             $this->assertEquals($attributeName,       $attributeForm->attributeName);
             $compareAttributeLabels = array(
@@ -1306,9 +1349,9 @@
             }
 
             $account = new Account();
-            $attributeForm = AttributesFormFactory::createAttributeFormByAttributeName($account, 'testEducation');
+            $attributeForm = AttributesFormFactory::createAttributeFormByAttributeName($account, 'testEducationCstm');
             $this->assertEquals('DropDown',              $attributeForm->getAttributeTypeName());
-            $this->assertEquals('testEducation',         $attributeForm->attributeName);
+            $this->assertEquals('testEducationCstm',         $attributeForm->attributeName);
             $compareAttributeLabels = array(
                 'de' => 'Test Education 2 de',
                 'en' => 'Test Education 2 en',
@@ -1369,9 +1412,9 @@
             }
 
             $account = new Account();
-            $attributeForm = AttributesFormFactory::createAttributeFormByAttributeName($account, 'testStream');
+            $attributeForm = AttributesFormFactory::createAttributeFormByAttributeName($account, 'testStreamCstm');
             $this->assertEquals('DropDown',     $attributeForm->getAttributeTypeName());
-            $this->assertEquals('testStream',   $attributeForm->attributeName);
+            $this->assertEquals('testStreamCstm',   $attributeForm->attributeName);
             $compareAttributeLabels = array(
                 'de' => 'Test Stream 2 de',
                 'en' => 'Test Stream 2 en',
@@ -1454,7 +1497,7 @@
                 'fr' => 'Test Calculated Value 2 fr',
                 'it' => 'Test Calculated Value 2 it',
             );
-            $attributeForm->formula          = 'testCurrency2 + testDecimal2';
+            $attributeForm->formula          = 'testCurrency2Cstm + testDecimal2Cstm';
 
             $modelAttributesAdapterClassName = $attributeForm::getModelAttributeAdapterNameForSavingAttributeFormData();
             $adapter = new $modelAttributesAdapterClassName(new Account());
@@ -1479,7 +1522,7 @@
                 'it' => 'Test Calculated Value 2 it',
             );
             $this->assertEquals($compareAttributeLabels,        $attributeForm->attributeLabels);
-            $this->assertEquals('testCurrency2 + testDecimal2', $attributeForm->formula);
+            $this->assertEquals('testCurrency2Cstm + testDecimal2Cstm', $attributeForm->formula);
         }
 
         /**
@@ -1537,9 +1580,9 @@
                 $this->fail();
             }
 
-            $attributeForm = AttributesFormFactory::createAttributeFormByAttributeName(new Account(), $attributeName);
+            $attributeForm = AttributesFormFactory::createAttributeFormByAttributeName(new Account(), $attributeName . 'Cstm');
             $this->assertEquals('Phone',          $attributeForm->getAttributeTypeName());
-            $this->assertEquals($attributeName,     $attributeForm->attributeName);
+            $this->assertEquals($attributeName . 'Cstm',     $attributeForm->attributeName);
             $compareAttributeLabels = array(
                 'de' => 'Test Phone 2 de',
                 'en' => 'Test Phone 2 en',
@@ -1604,8 +1647,8 @@
             }
 
             $account = new Account();
-            $attributeForm = AttributesFormFactory::createAttributeFormByAttributeName($account, 'testAirPlaneParts');
-            $this->assertEquals('testAirPlaneParts',    $attributeForm->attributeName);
+            $attributeForm = AttributesFormFactory::createAttributeFormByAttributeName($account, 'testAirPlanePartsCstm');
+            $this->assertEquals('testAirPlanePartsCstm',    $attributeForm->attributeName);
             $compareAttributeLabels = array(
                 'de' => 'Test Airplane Parts 2 de',
                 'en' => 'Test Airplane Parts 2 en',
@@ -1666,9 +1709,9 @@
                 $this->fail();
             }
 
-            $attributeForm = AttributesFormFactory::createAttributeFormByAttributeName(new Account(), $attributeName);
+            $attributeForm = AttributesFormFactory::createAttributeFormByAttributeName(new Account(), $attributeName . 'Cstm');
             $this->assertEquals('Text',        $attributeForm->getAttributeTypeName());
-            $this->assertEquals($attributeName,   $attributeForm->attributeName);
+            $this->assertEquals($attributeName . 'Cstm',   $attributeForm->attributeName);
             $compareAttributeLabels = array(
                 'de' => 'Test Text 2 de',
                 'en' => 'Test Text 2 en',
@@ -1734,9 +1777,9 @@
                 $this->fail();
             }
 
-            $attributeForm = AttributesFormFactory::createAttributeFormByAttributeName(new Account(), $attributeName);
+            $attributeForm = AttributesFormFactory::createAttributeFormByAttributeName(new Account(), $attributeName . 'Cstm');
             $this->assertEquals('TextArea',         $attributeForm->getAttributeTypeName());
-            $this->assertEquals($attributeName,     $attributeForm->attributeName);
+            $this->assertEquals($attributeName . 'Cstm',     $attributeForm->attributeName);
             $compareAttributeLabels = array(
                 'de' => 'Test Text Area 2 de',
                 'en' => 'Test Text Area 2 en',
@@ -1802,9 +1845,9 @@
                 $this->fail();
             }
 
-            $attributeForm = AttributesFormFactory::createAttributeFormByAttributeName(new Account(), $attributeName);
+            $attributeForm = AttributesFormFactory::createAttributeFormByAttributeName(new Account(), $attributeName . 'Cstm');
             $this->assertEquals('Url',                    $attributeForm->getAttributeTypeName());
-            $this->assertEquals($attributeName,           $attributeForm->attributeName);
+            $this->assertEquals($attributeName . 'Cstm',           $attributeForm->attributeName);
             $compareAttributeLabels = array(
                 'de' => 'Test Url 2 de',
                 'en' => 'Test Url 2 en',
@@ -1870,50 +1913,50 @@
         {
             $currencies = Currency::getAll();
             $account = new Account();
-            $account->name                              = 'my test account';
-            $account->owner                             = Yii::app()->user->userModel;
-            $account->testCheckBox2                     = 0;
-            $account->testCurrency2->value              = 728.89;
-            $account->testCurrency2->currency           = $currencies[0];
-            $account->testDate2                         = '2008-09-03';
-            $account->testDate3                         = '2008-09-02';
-            $account->testDateTime2                     = '2008-09-02 03:03:03';
-            $account->testDateTime3                     = '2008-09-01 03:03:03';
-            $account->testDecimal2                      = 45.67;
-            $account->testDecimal3                      = 31.05;
-            $account->testAirPlane->value               = 'A380'; //Dive Bomber
-            $account->testInteger2                      = 56;
-            $account->testInteger3                      = 21;
-            $account->testPhone2                        = '345345234';
-            $account->testPhone3                        = '345345221';
-            $account->testAirPlaneParts->value          = 'Seat'; // Wheel
-            $account->testText2                         = 'some test stuff';
-            $account->testText3                         = 'some test stuff 3';
-            $account->testTextArea2                     = 'some test text area stuff';
-            $account->testTextArea3                     = 'some test text area stuff 3';
-            $account->testUrl2                          = 'http://www.zurmo.com';
-            $account->testUrl3                          = 'http://www.zurmo.org';
-            $account->playMyFavoriteSong->value         = 'song2'; // song 3
-            $account->testCountry->value                = 'bbbb';
-            $account->testState->value                  = 'bbb2';
-            $account->testCity->value                   = 'bc2';
-            $account->testEducation->value              = 'cccc';
-            $account->testStream->value                 = 'ccc3';
+            $account->name                                  = 'my test account';
+            $account->owner                                 = Yii::app()->user->userModel;
+            $account->testCheckBox2Cstm                     = 0;
+            $account->testCurrency2Cstm->value              = 728.89;
+            $account->testCurrency2Cstm->currency           = $currencies[0];
+            $account->testDate2Cstm                         = '2008-09-03';
+            $account->testDate3Cstm                         = '2008-09-02';
+            $account->testDateTime2Cstm                     = '2008-09-02 03:03:03';
+            $account->testDateTime3Cstm                     = '2008-09-01 03:03:03';
+            $account->testDecimal2Cstm                      = 45.67;
+            $account->testDecimal3Cstm                      = 31.05;
+            $account->testAirPlaneCstm->value               = 'A380'; //Dive Bomber
+            $account->testInteger2Cstm                      = 56;
+            $account->testInteger3Cstm                      = 21;
+            $account->testPhone2Cstm                        = '345345234';
+            $account->testPhone3Cstm                        = '345345221';
+            $account->testAirPlanePartsCstm->value          = 'Seat'; // Wheel
+            $account->testText2Cstm                         = 'some test stuff';
+            $account->testText3Cstm                         = 'some test stuff 3';
+            $account->testTextArea2Cstm                     = 'some test text area stuff';
+            $account->testTextArea3Cstm                     = 'some test text area stuff 3';
+            $account->testUrl2Cstm                          = 'https://www.zurmo.com';
+            $account->testUrl3Cstm                          = 'www.zurmo.org';
+            $account->playMyFavoriteSongCstm->value         = 'song2'; // song 3
+            $account->testCountryCstm->value                = 'bbbb';
+            $account->testStateCstm->value                  = 'bbb2';
+            $account->testCityCstm->value                   = 'bc2';
+            $account->testEducationCstm->value              = 'cccc';
+            $account->testStreamCstm->value                 = 'ccc3';
 
             //Set value to Multiselect list.
             $customHobbyValue1                          = new CustomFieldValue();
             $customHobbyValue1->value                   = 'Reading';
-            $account->testHobbies1->values->add($customHobbyValue1);
+            $account->testHobbies1Cstm->values->add($customHobbyValue1);
             $customHobbyValue2                          = new CustomFieldValue();
             $customHobbyValue2->value                   = 'Singing';
-            $account->testHobbies2->values->add($customHobbyValue2);
+            $account->testHobbies2Cstm->values->add($customHobbyValue2);
             //Set value to Tagcloud.
             $customLanguageValue1                       = new CustomFieldValue();
             $customLanguageValue1->value                = 'English';
-            $account->testLanguages1->values->add($customLanguageValue1);
+            $account->testLanguages1Cstm->values->add($customLanguageValue1);
             $customLanguageValue2                       = new CustomFieldValue();
             $customLanguageValue2->value                = 'Spanish';
-            $account->testLanguages2->values->add($customLanguageValue2);
+            $account->testLanguages2Cstm->values->add($customLanguageValue2);
 
             unset($customHobbyValue1);
             unset($customHobbyValue2);
@@ -1926,107 +1969,108 @@
             $account->forget();
             unset($account);
             $account = Account::getById($accountId);
-            $this->assertEquals(0,                           $account->testCheckBox2);
-            $this->assertEquals(false,                       (bool)$account->testCheckBox2);
-            $this->assertEquals(728.89,                      $account->testCurrency2->value);
-            $this->assertEquals(1,                           $account->testCurrency2->rateToBase);
-            $this->assertEquals('2008-09-03',                $account->testDate2);
-            $this->assertEquals('2008-09-02 03:03:03',       $account->testDateTime2);
-            $this->assertEquals(45.67,                       $account->testDecimal2);
-            $this->assertEquals('A380',                      $account->testAirPlane->value);
-            $this->assertEquals(56,                          $account->testInteger2);
-            $this->assertEquals(345345234,                   $account->testPhone2);
-            $this->assertEquals('Seat',                      $account->testAirPlaneParts->value);
-            $this->assertEquals('some test stuff',           $account->testText2);
-            $this->assertEquals('some test text area stuff', $account->testTextArea2);
-            $this->assertEquals('http://www.zurmo.com',      $account->testUrl2);
-            $this->assertEquals('song2',                     $account->playMyFavoriteSong->value);
-            $this->assertContains('Writing',                 $account->testHobbies1->values);
-            $this->assertContains('Reading',                 $account->testHobbies1->values);
-            $this->assertContains('Singing',                 $account->testHobbies2->values);
-            $this->assertContains('English',                 $account->testLanguages1->values);
-            $this->assertContains('French',                  $account->testLanguages1->values);
-            $this->assertContains('Spanish',                 $account->testLanguages2->values);
-            $this->assertEquals('bbbb',                      $account->testCountry->value);
-            $this->assertEquals('bbb2',                      $account->testState->value);
-            $this->assertEquals('bc2',                       $account->testCity->value);
-            $this->assertEquals('cccc',                      $account->testEducation->value);
-            $this->assertEquals('ccc3',                      $account->testStream->value);
+            $this->assertEquals(0,                           $account->testCheckBox2Cstm);
+            $this->assertEquals(false,                       (bool)$account->testCheckBox2Cstm);
+            $this->assertEquals(728.89,                      $account->testCurrency2Cstm->value);
+            $this->assertEquals(1,                           $account->testCurrency2Cstm->rateToBase);
+            $this->assertEquals('2008-09-03',                $account->testDate2Cstm);
+            $this->assertEquals('2008-09-02 03:03:03',       $account->testDateTime2Cstm);
+            $this->assertEquals(45.67,                       $account->testDecimal2Cstm);
+            $this->assertEquals('A380',                      $account->testAirPlaneCstm->value);
+            $this->assertEquals(56,                          $account->testInteger2Cstm);
+            $this->assertEquals(345345234,                   $account->testPhone2Cstm);
+            $this->assertEquals('Seat',                      $account->testAirPlanePartsCstm->value);
+            $this->assertEquals('some test stuff',           $account->testText2Cstm);
+            $this->assertEquals('some test text area stuff', $account->testTextArea2Cstm);
+            $this->assertEquals('https://www.zurmo.com',     $account->testUrl2Cstm);
+            $this->assertEquals('http://www.zurmo.org',      $account->testUrl3Cstm);
+            $this->assertEquals('song2',                     $account->playMyFavoriteSongCstm->value);
+            $this->assertContains('Writing',                 $account->testHobbies1Cstm->values);
+            $this->assertContains('Reading',                 $account->testHobbies1Cstm->values);
+            $this->assertContains('Singing',                 $account->testHobbies2Cstm->values);
+            $this->assertContains('English',                 $account->testLanguages1Cstm->values);
+            $this->assertContains('French',                  $account->testLanguages1Cstm->values);
+            $this->assertContains('Spanish',                 $account->testLanguages2Cstm->values);
+            $this->assertEquals('bbbb',                      $account->testCountryCstm->value);
+            $this->assertEquals('bbb2',                      $account->testStateCstm->value);
+            $this->assertEquals('bc2',                       $account->testCityCstm->value);
+            $this->assertEquals('cccc',                      $account->testEducationCstm->value);
+            $this->assertEquals('ccc3',                      $account->testStreamCstm->value);
             $metadata              = CalculatedDerivedAttributeMetadata::
                                      getByNameAndModelClassName('testCalculatedValue', 'Account');
-            $testCalculatedValue   = CalculatedNumberUtil::calculateByFormulaAndModel($metadata->getFormula(), $account);
-            $this->assertEquals(774.56,                      (double)$testCalculatedValue);
+            $testCalculatedValue   = CalculatedNumberUtil::calculateByFormulaAndModelAndResolveFormat($metadata->getFormula(), $account);
+            $this->assertEquals('$774.56',                   $testCalculatedValue);
 
             unset($testCalculatedValue);
             $account->forget();
             unset($account);
             $account = Account::getById($accountId);
             //Switch values around to cover for any default value pollution on the assertions above.
-            $account->testCheckBox2                     = 1;
-            $account->testCurrency2->value              = 728.92;
-            $account->testCurrency2->currency           = $currencies[0];
-            $account->testDate2                         = '2008-09-04';
-            $account->testDateTime2                     = '2008-09-03 03:03:03';
-            $account->testDecimal2                      = 45.68;
-            $account->testAirPlane->value               = 'Dive Bomber';
-            $account->testInteger2                      = 57;
-            $account->testPhone2                        = '3453452344';
-            $account->testAirPlaneParts->value          = 'Wheel';
-            $account->testText2                         = 'some test stuff2';
-            $account->testTextArea2                     = 'some test text area stuff2';
-            $account->testUrl2                          = 'http://www.zurmo.org';
-            $account->playMyFavoriteSong->value         = 'song3';
-            $account->testCountry->value                = 'cccc';
-            $account->testState->value                  = 'ccc3';
-            $account->testCity->value                   = 'ca3';
-            $account->testEducation->value              = 'aaaa';
-            $account->testStream->value                 = 'aaa1';
+            $account->testCheckBox2Cstm                     = 1;
+            $account->testCurrency2Cstm->value              = 728.92;
+            $account->testCurrency2Cstm->currency           = $currencies[0];
+            $account->testDate2Cstm                         = '2008-09-04';
+            $account->testDateTime2Cstm                     = '2008-09-03 03:03:03';
+            $account->testDecimal2Cstm                      = 45.68;
+            $account->testAirPlaneCstm->value               = 'Dive Bomber';
+            $account->testInteger2Cstm                      = 57;
+            $account->testPhone2Cstm                        = '3453452344';
+            $account->testAirPlanePartsCstm->value          = 'Wheel';
+            $account->testText2Cstm                         = 'some test stuff2';
+            $account->testTextArea2Cstm                     = 'some test text area stuff2';
+            $account->testUrl2Cstm                          = 'http://www.zurmo.org';
+            $account->playMyFavoriteSongCstm->value         = 'song3';
+            $account->testCountryCstm->value                = 'cccc';
+            $account->testStateCstm->value                  = 'ccc3';
+            $account->testCityCstm->value                   = 'ca3';
+            $account->testEducationCstm->value              = 'aaaa';
+            $account->testStreamCstm->value                 = 'aaa1';
 
-            $account->testHobbies1->values->removeAll();
-            $account->testHobbies2->values->removeAll();
-            $account->testLanguages1->values->removeAll();
-            $account->testLanguages2->values->removeAll();
+            $account->testHobbies1Cstm->values->removeAll();
+            $account->testHobbies2Cstm->values->removeAll();
+            $account->testLanguages1Cstm->values->removeAll();
+            $account->testLanguages2Cstm->values->removeAll();
 
-            $this->assertEquals(0, $account->testHobbies1->values->count());
-            $this->assertEquals(0, $account->testHobbies2->values->count());
-            $this->assertEquals(0, $account->testLanguages1->values->count());
-            $this->assertEquals(0, $account->testLanguages2->values->count());
+            $this->assertEquals(0, $account->testHobbies1Cstm->values->count());
+            $this->assertEquals(0, $account->testHobbies2Cstm->values->count());
+            $this->assertEquals(0, $account->testLanguages1Cstm->values->count());
+            $this->assertEquals(0, $account->testLanguages2Cstm->values->count());
 
             //Set multiple value to Multiselect list.
             $customHobbyValue1                          = new CustomFieldValue();
             $customHobbyValue1->value                   = 'Writing';
-            $account->testHobbies1->values->add($customHobbyValue1);
+            $account->testHobbies1Cstm->values->add($customHobbyValue1);
             $customHobbyValue2                          = new CustomFieldValue();
             $customHobbyValue2->value                   = 'Reading';
-            $account->testHobbies1->values->add($customHobbyValue2);
+            $account->testHobbies1Cstm->values->add($customHobbyValue2);
 
             $customHobbyValue3                          = new CustomFieldValue();
             $customHobbyValue3->value                   = 'Singing';
-            $account->testHobbies2->values->add($customHobbyValue3);
+            $account->testHobbies2Cstm->values->add($customHobbyValue3);
             $customHobbyValue4                          = new CustomFieldValue();
             $customHobbyValue4->value                   = 'Surfing';
-            $account->testHobbies2->values->add($customHobbyValue4);
+            $account->testHobbies2Cstm->values->add($customHobbyValue4);
             $customHobbyValue5                          = new CustomFieldValue();
             $customHobbyValue5->value                   = 'Reading';
-            $account->testHobbies2->values->add($customHobbyValue5);
+            $account->testHobbies2Cstm->values->add($customHobbyValue5);
 
             //Set multiple value to Tagcloud.
             $customLanguageValue1                       = new CustomFieldValue();
             $customLanguageValue1->value                = 'English';
-            $account->testLanguages1->values->add($customLanguageValue1);
+            $account->testLanguages1Cstm->values->add($customLanguageValue1);
             $customLanguageValue2                       = new CustomFieldValue();
             $customLanguageValue2->value                = 'Danish';
-            $account->testLanguages1->values->add($customLanguageValue2);
+            $account->testLanguages1Cstm->values->add($customLanguageValue2);
             $customLanguageValue3                       = new CustomFieldValue();
             $customLanguageValue3->value                = 'Spanish';
-            $account->testLanguages1->values->add($customLanguageValue3);
+            $account->testLanguages1Cstm->values->add($customLanguageValue3);
 
             $customLanguageValue4                       = new CustomFieldValue();
             $customLanguageValue4->value                = 'French';
-            $account->testLanguages2->values->add($customLanguageValue4);
+            $account->testLanguages2Cstm->values->add($customLanguageValue4);
             $customLanguageValue5                       = new CustomFieldValue();
             $customLanguageValue5->value                = 'Spanish';
-            $account->testLanguages2->values->add($customLanguageValue5);
+            $account->testLanguages2Cstm->values->add($customLanguageValue5);
 
             $saved = $account->save();
             $this->assertTrue($saved);
@@ -2034,40 +2078,40 @@
             $account->forget();
             unset($account);
             $account = Account::getById($accountId);
-            $this->assertEquals(1,                            $account->testCheckBox2);
-            $this->assertEquals(true,                         (bool)$account->testCheckBox2);
-            $this->assertEquals(728.92,                       $account->testCurrency2->value);
-            $this->assertEquals(1,                            $account->testCurrency2->rateToBase);
-            $this->assertEquals('2008-09-04',                 $account->testDate2);
-            $this->assertEquals('2008-09-03 03:03:03',        $account->testDateTime2);
-            $this->assertEquals(45.68,                        $account->testDecimal2);
-            $this->assertEquals('Dive Bomber',                $account->testAirPlane->value);
-            $this->assertEquals(57,                           $account->testInteger2);
-            $this->assertEquals(3453452344,                   $account->testPhone2);
-            $this->assertEquals('Wheel',                      $account->testAirPlaneParts->value);
-            $this->assertEquals('some test stuff2',           $account->testText2);
-            $this->assertEquals('some test text area stuff2', $account->testTextArea2);
-            $this->assertEquals('http://www.zurmo.org',       $account->testUrl2);
-            $this->assertEquals('song3',                      $account->playMyFavoriteSong->value);
-            $this->assertEquals(2,                            $account->testHobbies1->values->count());
-            $this->assertEquals(3,                            $account->testHobbies2->values->count());
-            $this->assertEquals(3,                            $account->testLanguages1->values->count());
-            $this->assertEquals(2,                            $account->testLanguages2->values->count());
-            $this->assertContains('Writing',                  $account->testHobbies1->values);
-            $this->assertContains('Reading',                  $account->testHobbies1->values);
-            $this->assertContains('Singing',                  $account->testHobbies2->values);
-            $this->assertContains('Surfing',                  $account->testHobbies2->values);
-            $this->assertContains('Reading',                  $account->testHobbies2->values);
-            $this->assertContains('English',                  $account->testLanguages1->values);
-            $this->assertContains('Danish',                   $account->testLanguages1->values);
-            $this->assertContains('Spanish',                  $account->testLanguages1->values);
-            $this->assertContains('French',                   $account->testLanguages2->values);
-            $this->assertContains('Spanish',                  $account->testLanguages2->values);
-            $this->assertEquals('cccc',                       $account->testCountry->value);
-            $this->assertEquals('ccc3',                       $account->testState->value);
-            $this->assertEquals('ca3',                        $account->testCity->value);
-            $this->assertEquals('aaaa',                       $account->testEducation->value);
-            $this->assertEquals('aaa1',                       $account->testStream->value);
+            $this->assertEquals(1,                            $account->testCheckBox2Cstm);
+            $this->assertEquals(true,                         (bool)$account->testCheckBox2Cstm);
+            $this->assertEquals(728.92,                       $account->testCurrency2Cstm->value);
+            $this->assertEquals(1,                            $account->testCurrency2Cstm->rateToBase);
+            $this->assertEquals('2008-09-04',                 $account->testDate2Cstm);
+            $this->assertEquals('2008-09-03 03:03:03',        $account->testDateTime2Cstm);
+            $this->assertEquals(45.68,                        $account->testDecimal2Cstm);
+            $this->assertEquals('Dive Bomber',                $account->testAirPlaneCstm->value);
+            $this->assertEquals(57,                           $account->testInteger2Cstm);
+            $this->assertEquals(3453452344,                   $account->testPhone2Cstm);
+            $this->assertEquals('Wheel',                      $account->testAirPlanePartsCstm->value);
+            $this->assertEquals('some test stuff2',           $account->testText2Cstm);
+            $this->assertEquals('some test text area stuff2', $account->testTextArea2Cstm);
+            $this->assertEquals('http://www.zurmo.org',       $account->testUrl2Cstm);
+            $this->assertEquals('song3',                      $account->playMyFavoriteSongCstm->value);
+            $this->assertEquals(2,                            $account->testHobbies1Cstm->values->count());
+            $this->assertEquals(3,                            $account->testHobbies2Cstm->values->count());
+            $this->assertEquals(3,                            $account->testLanguages1Cstm->values->count());
+            $this->assertEquals(2,                            $account->testLanguages2Cstm->values->count());
+            $this->assertContains('Writing',                  $account->testHobbies1Cstm->values);
+            $this->assertContains('Reading',                  $account->testHobbies1Cstm->values);
+            $this->assertContains('Singing',                  $account->testHobbies2Cstm->values);
+            $this->assertContains('Surfing',                  $account->testHobbies2Cstm->values);
+            $this->assertContains('Reading',                  $account->testHobbies2Cstm->values);
+            $this->assertContains('English',                  $account->testLanguages1Cstm->values);
+            $this->assertContains('Danish',                   $account->testLanguages1Cstm->values);
+            $this->assertContains('Spanish',                  $account->testLanguages1Cstm->values);
+            $this->assertContains('French',                   $account->testLanguages2Cstm->values);
+            $this->assertContains('Spanish',                  $account->testLanguages2Cstm->values);
+            $this->assertEquals('cccc',                       $account->testCountryCstm->value);
+            $this->assertEquals('ccc3',                       $account->testStateCstm->value);
+            $this->assertEquals('ca3',                        $account->testCityCstm->value);
+            $this->assertEquals('aaaa',                       $account->testEducationCstm->value);
+            $this->assertEquals('aaa1',                       $account->testStreamCstm->value);
         }
 
         /**
@@ -2077,13 +2121,64 @@
         {
             $this->setAndGetTextAttribute('testTextSpecial', true);
             $account = new Account();
-            $account->testTextSpecial = 'asdasdasdasdasdasdasdasdasdasdsadasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdsadas' .
+            $account->testTextSpecialCstm = 'asdasdasdasdasdasdasdasdasdasdsadasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdsadas' .
                                         'asdasdasdasdasdasdasdasdasdasdsadasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdsadas' .
                                         'asdasdasdasdasdasdasdasdasdasdsadasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdsadas';
             $saved  = $account->save();
             $this->assertFalse($saved);
             $errors = $account->getErrors();
-            $this->assertEquals('Test Text 2 en is too long (maximum is 50 characters).', $errors['testTextSpecial'][0]);
+            $this->assertEquals('Test Text 2 en is too long (maximum is 50 characters).', $errors['testTextSpecialCstm'][0]);
+        }
+
+        public function testSetSameAttributeNameOnSameModelClassName()
+        {
+            $compareAttributeLabels = array(
+                'de' => 'sameattribute de',
+                'en' => 'sameattribute en',
+                'es' => 'sameattribute es',
+                'fr' => 'sameattribute fr',
+                'it' => 'sameattribute it',
+            );
+            $attributeForm = new TextAreaAttributeForm();
+            $attributeForm->attributeName       = 'same';
+            $attributeForm->attributeLabels     = $compareAttributeLabels;
+
+            $modelAttributesAdapterClassName    = $attributeForm::getModelAttributeAdapterNameForSavingAttributeFormData();
+            $adapter = new $modelAttributesAdapterClassName(new Account());
+            $adapter->setAttributeMetadataFromForm($attributeForm);
+
+            $attributeForm = new TextAreaAttributeForm();
+            $attributeForm->attributeName       = 'same';
+            $attributeForm->attributeLabels     = $compareAttributeLabels;
+            $attributeForm->modelClassName      = 'Account';
+            $attributeForm->setScenario('createAttribute');
+            $attributeForm->validate();
+            $this->assertContains('A field with this name is already used', $attributeForm->getError('attributeName'));
+        }
+
+        public function testSetSameAttributeNameOnDifferenteModelClassNames()
+        {
+            $compareAttributeLabels = array(
+                'de' => 'sameattribute de',
+                'en' => 'sameattribute en',
+                'es' => 'sameattribute es',
+                'fr' => 'sameattribute fr',
+                'it' => 'sameattribute it',
+            );
+            $attributeForm = new TextAreaAttributeForm();
+            $attributeForm->attributeName       = 'same';
+            $attributeForm->attributeLabels     = $compareAttributeLabels;
+
+            $modelAttributesAdapterClassName    = $attributeForm::getModelAttributeAdapterNameForSavingAttributeFormData();
+            $adapter = new $modelAttributesAdapterClassName(new Account());
+            $adapter->setAttributeMetadataFromForm($attributeForm);
+
+            $attributeForm = new TextAreaAttributeForm();
+            $attributeForm->attributeName       = 'same';
+            $attributeForm->attributeLabels     = $compareAttributeLabels;
+            $attributeForm->modelClassName      = 'Contact';
+            $attributeForm->setScenario('createAttribute');
+            $this->assertTrue($attributeForm->validate());
         }
     }
 ?>

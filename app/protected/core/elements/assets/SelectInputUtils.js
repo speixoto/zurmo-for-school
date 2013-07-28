@@ -27,8 +27,20 @@ function rebuildSelectInputFromInputs(id, inputCollectionName)
     {
         $('#' + id).val(selected);
     }
-    $('#' + id).removeData('dropkick');
-    $('#dk_container_' + id).remove();
-    $('#' + id).dropkick();
-    $('#' + id).dropkick('rebindToggle');
+}
+
+/**
+ * Rebuild the select input from an array of data and labels.  Respect the existing selected value if it is still
+ * available
+ * @param id
+ * @param inputCollectionName
+ */
+function rebuildSelectInputFromDataAndLabels(id, dataAndLabels)
+{
+    var selected      = $('#' + id).val();
+    $('#' + id).find('option').remove();
+    $.each(dataAndLabels, function(value, label){
+        $('#' + id).append("<option value='" + value + "'>" + label + "</option>");
+    });
+    $('#' + id).val(selected);
 }

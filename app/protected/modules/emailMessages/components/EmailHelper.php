@@ -1,10 +1,10 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2012 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
-     * the terms of the GNU General Public License version 3 as published by the
+     * the terms of the GNU Affero General Public License version 3 as published by the
      * Free Software Foundation with the addition of the following permission added
      * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
      * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
@@ -12,16 +12,26 @@
      *
      * Zurmo is distributed in the hope that it will be useful, but WITHOUT
      * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-     * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+     * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
      * details.
      *
-     * You should have received a copy of the GNU General Public License along with
+     * You should have received a copy of the GNU Affero General Public License along with
      * this program; if not, see http://www.gnu.org/licenses or write to the Free
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
      *
-     * You can contact Zurmo, Inc. with a mailing address at 113 McHenry Road Suite 207,
-     * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
+     * You can contact Zurmo, Inc. with a mailing address at 27 North Wacker Drive
+     * Suite 370 Chicago, IL 60606. or at email address contact@zurmo.com.
+     *
+     * The interactive user interfaces in original and modified versions
+     * of this program must display Appropriate Legal Notices, as required under
+     * Section 5 of the GNU Affero General Public License version 3.
+     *
+     * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
+     * these Appropriate Legal Notices must retain the display of the Zurmo
+     * logo and Zurmo copyright notice. If the display of the logo is not reasonably
+     * feasible for technical reasons, the Appropriate Legal Notices must display the words
+     * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -29,11 +39,13 @@
      */
     class EmailHelper extends CApplicationComponent
     {
+        const OUTBOUND_TYPE_SMTP = 'smtp';
+
         /**
          * Currently supports smtp.
          * @var string
          */
-        public $outboundType = 'smtp';
+        public $outboundType = self::OUTBOUND_TYPE_SMTP;
 
         /**
          * Outbound mail server host name. Example mail.someplace.com
@@ -66,6 +78,18 @@
         public $outboundSecurity;
 
         /**
+         * Name to use in the email sent
+         * @var string
+         */
+        public $fromName;
+
+        /**
+         * Address to use in the email sent
+         * @var string
+         */
+        public $fromAddress;
+
+        /**
          * Contains array of settings to load during initialization from the configuration table.
          * @see loadOutboundSettings
          * @var array
@@ -83,13 +107,13 @@
          * Fallback from address to use for sending out notifications.
          * @var string
          */
-        public $defaultFromAddress   = 'notifications@zurmoalerts.com';
+        public $defaultFromAddress;
 
         /**
          * Utilized when sending a test email nightly to check the status of the smtp server
          * @var string
          */
-        public $defaultTestToAddress = 'testJobEmail@zurmoalerts.com';
+        public $defaultTestToAddress;
 
         /**
          * Called once per page load, will load up outbound settings from the database if available.
@@ -99,16 +123,74 @@
         public function init()
         {
             $this->loadOutboundSettings();
+            $this->loadDefaultFromAndToAddresses();
+        }
+
+        /**
+         * Used to load defaultFromAddress and defaultTestToAddress
+         */
+        public function loadDefaultFromAndToAddresses()
+        {
+            $this->defaultFromAddress   = EmailHelper::resolveDefaultEmailAddress('notification');
+            $this->defaultTestToAddress = EmailHelper::resolveDefaultEmailAddress('testJobEmail');
         }
 
         protected function loadOutboundSettings()
         {
             foreach ($this->settingsToLoad as $keyName)
             {
-                if (null !== $keyValue = ZurmoConfigurationUtil::getByModuleName('EmailMessagesModule', $keyName))
+                if ($keyName == 'outboundPassword')
+                {
+                    $encryptedKeyValue = ZurmoConfigurationUtil::getByModuleName('EmailMessagesModule', $keyName);
+                    if ($encryptedKeyValue !== '' && $encryptedKeyValue !== null)
+                    {
+                        $keyValue = ZurmoPasswordSecurityUtil::decrypt($encryptedKeyValue);
+                    }
+                    else
+                    {
+                        $keyValue = null;
+                    }
+                }
+                else
+                {
+                    $keyValue = ZurmoConfigurationUtil::getByModuleName('EmailMessagesModule', $keyName);
+                }
+                if (null !== $keyValue)
                 {
                     $this->$keyName = $keyValue;
                 }
+            }
+        }
+
+        /**
+         * Load user's outbound settings from user's email account or the system settings
+         * @param User   $user
+         * @param string $name  EmailAccount name or null for default name
+         */
+        public function loadOutboundSettingsFromUserEmailAccount(User $user, $name = null)
+        {
+            $userEmailAccount = EmailAccount::getByUserAndName($user, $name);
+            if ($userEmailAccount->useCustomOutboundSettings)
+            {
+                $settingsToLoad = array_merge($this->settingsToLoad, array('fromName', 'fromAddress'));
+                foreach ($settingsToLoad as $keyName)
+                {
+                    if ($keyName == 'outboundPassword')
+                    {
+                        $keyValue = ZurmoPasswordSecurityUtil::decrypt($userEmailAccount->$keyName);
+                        $this->$keyName = $keyValue;
+                    }
+                    else
+                    {
+                        $this->$keyName = $userEmailAccount->$keyName;
+                    }
+                }
+            }
+            else
+            {
+                $this->loadOutboundSettings();
+                $this->fromName = strval($user);
+                $this->fromAddress = $this->resolveFromAddressByUser($user);
             }
         }
 
@@ -119,20 +201,32 @@
         {
             foreach ($this->settingsToLoad as $keyName)
             {
-                ZurmoConfigurationUtil::setByModuleName('EmailMessagesModule', $keyName, $this->$keyName);
+                if ($keyName == 'outboundPassword')
+                {
+                    $password = ZurmoPasswordSecurityUtil::encrypt($this->$keyName);
+                    ZurmoConfigurationUtil::setByModuleName('EmailMessagesModule', $keyName, $password);
+                }
+                else
+                {
+                    ZurmoConfigurationUtil::setByModuleName('EmailMessagesModule', $keyName, $this->$keyName);
+                }
             }
         }
 
         /**
          * Send an email message. This will queue up the email to be sent by the queue sending process. If you want to
          * send immediately, consider using @sendImmediately
-         * @param EmailMessage $email
+         * @param EmailMessage $emailMessage
+         * @throws NotSupportedException
+         * @throws FailedToSaveModelException
+         * @return boolean
          */
         public function send(EmailMessage $emailMessage)
         {
             if ($emailMessage->folder->type == EmailFolder::TYPE_OUTBOX ||
-               $emailMessage->folder->type == EmailFolder::TYPE_SENT ||
-               $emailMessage->folder->type == EmailFolder::TYPE_OUTBOX_ERROR)
+                $emailMessage->folder->type == EmailFolder::TYPE_SENT ||
+                $emailMessage->folder->type == EmailFolder::TYPE_OUTBOX_ERROR ||
+                $emailMessage->folder->type == EmailFolder::TYPE_OUTBOX_FAILURE)
             {
                 throw new NotSupportedException();
             }
@@ -140,7 +234,7 @@
             $saved                  = $emailMessage->save();
             if (!$saved)
             {
-                throw new NotSupportedException();
+                throw new FailedToSaveModelException();
             }
             return true;
         }
@@ -150,6 +244,7 @@
          * job.
          * @param EmailMessage $emailMessage
          * @throws NotSupportedException - if the emailMessage does not properly save.
+         * @throws FailedToSaveModelException
          * @return null
          */
         public function sendImmediately(EmailMessage $emailMessage)
@@ -164,13 +259,14 @@
             $saved = $emailMessage->save();
             if (!$saved)
             {
-                throw new NotSupportedException();
+                throw new FailedToSaveModelException();
             }
         }
 
         /**
          * Call this method to process all email Messages in the queue. This is typically called by a scheduled job
-         * or cron.  This will process all emails in a TYPE_OUTBOX folder or TYPE_OUTBOX_ERROR folder.
+         * or cron.  This will process all emails in a TYPE_OUTBOX folder or TYPE_OUTBOX_ERROR folder. If the message
+         * has already been sent 3 times then it will be moved to a failure folder.
          */
         public function sendQueued()
         {
@@ -182,9 +278,27 @@
             $queuedEmailMessages = EmailMessage::getAllByFolderType(EmailFolder::TYPE_OUTBOX_ERROR);
             foreach ($queuedEmailMessages as $emailMessage)
             {
-                $this->sendImmediately($emailMessage);
+                if ($emailMessage->sendAttempts < 3)
+                {
+                    $this->sendImmediately($emailMessage);
+                }
+                else
+                {
+                    $this->processMessageAsFailure($emailMessage);
+                }
             }
             return true;
+        }
+
+        protected function processMessageAsFailure(EmailMessage $emailMessage)
+        {
+            $emailMessage->folder = EmailFolder::getByBoxAndType($emailMessage->folder->emailBox,
+                                    EmailFolder::TYPE_OUTBOX_FAILURE);
+            $saved = $emailMessage->save();
+            if (!$saved)
+            {
+                throw new FailedToSaveModelException();
+            }
         }
 
         protected function populateMailer(Mailer $mailer, EmailMessage $emailMessage)
@@ -196,19 +310,14 @@
             $mailer->password = $this->outboundPassword;
             $mailer->security = $this->outboundSecurity;
             $mailer->Subject  = $emailMessage->subject;
-            if ($emailMessage->content->htmlContent == null && $emailMessage->content->textContent != null)
+            $mailer->headers  = unserialize($emailMessage->headers);
+            if (!empty($emailMessage->content->textContent))
             {
-                $mailer->body     = $emailMessage->content->textContent;
                 $mailer->altBody  = $emailMessage->content->textContent;
             }
-            elseif ($emailMessage->content->htmlContent != null && $emailMessage->content->textContent == null)
+            if (!empty($emailMessage->content->htmlContent))
             {
                 $mailer->body     = $emailMessage->content->htmlContent;
-            }
-            elseif ($emailMessage->content->htmlContent != null && $emailMessage->content->textContent != null)
-            {
-                $mailer->body     = $emailMessage->content->htmlContent;
-                $mailer->altBody  = $emailMessage->content->textContent;
             }
             $mailer->From = array($emailMessage->sender->fromAddress => $emailMessage->sender->fromName);
             foreach ($emailMessage->recipients as $recipient)
@@ -220,8 +329,8 @@
             {
                 foreach ($emailMessage->files as $file)
                 {
-                    $attachment = $mailer->attachDynamicContent($file->fileContent->content, $file->name, $file->type);
-                    $emailMessage->attach($attachment);
+                    $mailer->attachDynamicContent($file->fileContent->content, $file->name, $file->type);
+                    //$emailMessage->attach($attachment);
                 }
             }
         }
@@ -230,10 +339,14 @@
         {
             try
             {
-                $acceptedRecipients = $mailer->send();
-                if ($acceptedRecipients != $emailMessage->recipients->count())
+                $emailMessage->sendAttempts = $emailMessage->sendAttempts + 1;
+                $acceptedRecipients         = $mailer->send();
+                // Code below is quick fix, we need to think about better solution
+                // Here is related PT story: https://www.pivotaltracker.com/projects/380027#!/stories/45841753
+                //if ($acceptedRecipients != $emailMessage->recipients->count())
+                if ($acceptedRecipients <= 0)
                 {
-                    $content = Yii::t('Default', 'Response from Server') . "\n";
+                    $content = Zurmo::t('EmailMessagesModule', 'Response from Server') . "\n";
                     foreach ($mailer->getSendResponseLog() as $logMessage)
                     {
                         $content .= $logMessage . "\n";
@@ -274,52 +387,6 @@
         }
 
         /**
-         * When sending system notifications, it is necessary to use a 'user' who is a super administrator to send
-         * the notifications from.  This will resolve that information and retrieve the best user to use.
-         */
-        public function getUserToSendNotificationsAs()
-        {
-            $keyName      = 'UserIdToSendNotificationsAs';
-            $superGroup   = Group::getByName(Group::SUPER_ADMINISTRATORS_GROUP_NAME);
-            if (null != $userId = ZurmoConfigurationUtil::getByModuleName('EmailMessagesModule', $keyName))
-            {
-                try
-                {
-                    $user  = User::getById($userId);
-
-                    if ($user->groups->contains($superGroup))
-                    {
-                        return $user;
-                    }
-                }
-                catch (NotFoundException $e)
-                {
-                }
-            }
-            if ($superGroup->users->count() == 0)
-            {
-                throw new NotSupportedException();
-            }
-            return $superGroup->users->offsetGet(0);
-        }
-
-        /**
-         * @see getUserToSendNotificationsAs
-         * @param User $user
-         */
-        public function setUserToSendNotificationsAs(User $user)
-        {
-            assert('$user->id > 0');
-            $superGroup   = Group::getByName(Group::SUPER_ADMINISTRATORS_GROUP_NAME);
-            if (!$user->groups->contains($superGroup))
-            {
-                throw new NotSupportedException();
-            }
-            $keyName      = 'UserIdToSendNotificationsAs';
-            ZurmoConfigurationUtil::setByModuleName('EmailMessagesModule', $keyName, $user->id);
-        }
-
-        /**
          * @return integer count of how many emails are queued to go.  This means they are in either the TYPE_OUTBOX
          * folder or the TYPE_OUTBOX_ERROR folder.
          */
@@ -330,7 +397,7 @@
         }
 
         /**
-         * Given a user, attempt to get the user's emal address, but if it is not available, then return the default
+         * Given a user, attempt to get the user's email address, but if it is not available, then return the default
          * address.  @see EmailHelper::defaultFromAddress
          * @param User $user
          */
@@ -342,6 +409,14 @@
                 return $this->defaultFromAddress;
             }
             return $user->primaryEmail->emailAddress;
+        }
+
+        /*
+         * Resolving Default Email Addess For Email Testing
+         */
+        public static function resolveDefaultEmailAddress($defaultEmailAddress)
+        {
+            return $defaultEmailAddress . '@' . StringUtil::resolveCustomizedLabel() . 'alerts.com';
         }
     }
 ?>

@@ -1,10 +1,10 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2012 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
-     * the terms of the GNU General Public License version 3 as published by the
+     * the terms of the GNU Affero General Public License version 3 as published by the
      * Free Software Foundation with the addition of the following permission added
      * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
      * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
@@ -12,16 +12,26 @@
      *
      * Zurmo is distributed in the hope that it will be useful, but WITHOUT
      * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-     * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+     * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
      * details.
      *
-     * You should have received a copy of the GNU General Public License along with
+     * You should have received a copy of the GNU Affero General Public License along with
      * this program; if not, see http://www.gnu.org/licenses or write to the Free
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
      *
-     * You can contact Zurmo, Inc. with a mailing address at 113 McHenry Road Suite 207,
-     * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
+     * You can contact Zurmo, Inc. with a mailing address at 27 North Wacker Drive
+     * Suite 370 Chicago, IL 60606. or at email address contact@zurmo.com.
+     *
+     * The interactive user interfaces in original and modified versions
+     * of this program must display Appropriate Legal Notices, as required under
+     * Section 5 of the GNU Affero General Public License version 3.
+     *
+     * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
+     * these Appropriate Legal Notices must retain the display of the Zurmo
+     * logo and Zurmo copyright notice. If the display of the logo is not reasonably
+     * feasible for technical reasons, the Appropriate Legal Notices must display the words
+     * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -29,6 +39,8 @@
      */
     class ZurmoDynamicSearchSuperUserWalkthroughTest extends ZurmoWalkthroughBaseTest
     {
+        public static $activateDefaultLanguages = true;
+
         public static function setUpBeforeClass()
         {
             parent::setUpBeforeClass();
@@ -179,7 +191,7 @@
         {
             $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
             $this->createCheckBoxCustomFieldByModule('AccountsModule', 'checkbox');
-            $content = $this->insertSearchAttributeAndGetContent('checkbox');
+            $content = $this->insertSearchAttributeAndGetContent('checkboxCstm');
             $this->assertNotNull($content);
         }
 
@@ -187,7 +199,7 @@
         {
             $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
             $this->createCurrencyValueCustomFieldByModule('AccountsModule', 'currency');
-            $content = $this->insertSearchAttributeAndGetContent('currency');
+            $content = $this->insertSearchAttributeAndGetContent('currencyCstm');
             $this->assertNotNull($content);
         }
 
@@ -195,7 +207,7 @@
         {
             $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
             $this->createDateCustomFieldByModule('AccountsModule', 'date');
-            $content = $this->insertSearchAttributeAndGetContent('date__Date');
+            $content = $this->insertSearchAttributeAndGetContent('dateCstm__Date');
             $this->assertNotNull($content);
         }
 
@@ -203,7 +215,7 @@
         {
             $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
             $this->createDateTimeCustomFieldByModule('AccountsModule', 'datetime');
-            $content = $this->insertSearchAttributeAndGetContent('datetime__DateTime');
+            $content = $this->insertSearchAttributeAndGetContent('datetimeCstm__DateTime');
             $this->assertNotNull($content);
         }
 
@@ -211,7 +223,7 @@
         {
             $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
             $this->createDecimalCustomFieldByModule('AccountsModule', 'decimal');
-            $content = $this->insertSearchAttributeAndGetContent('decimal');
+            $content = $this->insertSearchAttributeAndGetContent('decimalCstm');
             $this->assertNotNull($content);
         }
 
@@ -219,7 +231,7 @@
         {
             $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
             $this->createDropDownCustomFieldByModule('AccountsModule', 'picklist');
-            $content = $this->insertSearchAttributeAndGetContent('picklist');
+            $content = $this->insertSearchAttributeAndGetContent('picklistCstm');
             $this->assertNotNull($content);
         }
 
@@ -227,7 +239,7 @@
         {
             $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
             $this->createDependentDropDownCustomFieldByModule('AccountsModule', 'countrylist');
-            $content = $this->insertSearchAttributeAndGetContent('countrylist');
+            $content = $this->insertSearchAttributeAndGetContent('countrylistCstm');
             $this->assertNotNull($content);
         }
 
@@ -235,7 +247,7 @@
         {
             $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
             $this->createMultiSelectDropDownCustomFieldByModule('AccountsModule', 'multiselect');
-            $content = $this->insertSearchAttributeAndGetContent('multiselect');
+            $content = $this->insertSearchAttributeAndGetContent('multiselectCstm');
             $this->assertNotNull($content);
         }
 
@@ -243,7 +255,7 @@
         {
             $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
             $this->createTagCloudCustomFieldByModule('AccountsModule', 'tagcloud');
-            $content = $this->insertSearchAttributeAndGetContent('tagcloud');
+            $content = $this->insertSearchAttributeAndGetContent('tagcloudCstm');
             $this->assertNotNull($content);
         }
 
@@ -282,7 +294,7 @@
         {
             $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
             $this->createIntegerCustomFieldByModule('AccountsModule', 'integer');
-            $content = $this->insertSearchAttributeAndGetContent('integer');
+            $content = $this->insertSearchAttributeAndGetContent('integerCstm');
             $this->assertNotNull($content);
         }
 
@@ -290,7 +302,7 @@
         {
             $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
             $this->createPhoneCustomFieldByModule('AccountsModule', 'phone');
-            $content = $this->insertSearchAttributeAndGetContent('phone');
+            $content = $this->insertSearchAttributeAndGetContent('phoneCstm');
             $this->assertNotNull($content);
         }
 
@@ -298,7 +310,7 @@
         {
             $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
             $this->createRadioDropDownCustomFieldByModule('AccountsModule', 'radio');
-            $content = $this->insertSearchAttributeAndGetContent('radio');
+            $content = $this->insertSearchAttributeAndGetContent('radioCstm');
             $this->assertNotNull($content);
         }
 
@@ -306,7 +318,7 @@
         {
             $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
             $this->createTextCustomFieldByModule('AccountsModule', 'text');
-            $content = $this->insertSearchAttributeAndGetContent('text');
+            $content = $this->insertSearchAttributeAndGetContent('textCstm');
             $this->assertNotNull($content);
         }
 
@@ -328,7 +340,7 @@
         {
             $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
             $this->createUrlCustomFieldByModule('AccountsModule', 'url');
-            $content = $this->insertSearchAttributeAndGetContent('url');
+            $content = $this->insertSearchAttributeAndGetContent('urlCstm');
             $this->assertNotNull($content);
         }
 

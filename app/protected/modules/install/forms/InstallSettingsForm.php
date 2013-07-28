@@ -1,10 +1,10 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2012 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
-     * the terms of the GNU General Public License version 3 as published by the
+     * the terms of the GNU Affero General Public License version 3 as published by the
      * Free Software Foundation with the addition of the following permission added
      * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
      * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
@@ -12,16 +12,26 @@
      *
      * Zurmo is distributed in the hope that it will be useful, but WITHOUT
      * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-     * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+     * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
      * details.
      *
-     * You should have received a copy of the GNU General Public License along with
+     * You should have received a copy of the GNU Affero General Public License along with
      * this program; if not, see http://www.gnu.org/licenses or write to the Free
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
      *
-     * You can contact Zurmo, Inc. with a mailing address at 113 McHenry Road Suite 207,
-     * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
+     * You can contact Zurmo, Inc. with a mailing address at 27 North Wacker Drive
+     * Suite 370 Chicago, IL 60606. or at email address contact@zurmo.com.
+     *
+     * The interactive user interfaces in original and modified versions
+     * of this program must display Appropriate Legal Notices, as required under
+     * Section 5 of the GNU Affero General Public License version 3.
+     *
+     * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
+     * these Appropriate Legal Notices must retain the display of the Zurmo
+     * logo and Zurmo copyright notice. If the display of the logo is not reasonably
+     * feasible for technical reasons, the Appropriate Legal Notices must display the words
+     * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -61,6 +71,8 @@
 
         public $scriptUrl = '';
 
+        public $submitCrashToSentry = true;
+
         public function rules()
         {
             return array(
@@ -70,6 +82,8 @@
                 array('databasePassword',      'required'),
                 array('databasePort',          'required'),
                 array('superUserPassword',     'required'),
+                array('hostInfo',              'required'),
+                array('scriptUrl',             'required'),
                 array('databaseHostname',      'type', 'type' => 'string'),
                 array('databaseAdminUsername', 'type', 'type' => 'string'),
                 array('databaseAdminPassword', 'type', 'type' => 'string'),
@@ -84,6 +98,7 @@
                 array('installDemoData',       'boolean'),
                 array('hostInfo',              'type', 'type' => 'string'),
                 array('scriptUrl',             'type', 'type' => 'string'),
+                array('submitCrashToSentry',   'boolean'),
             );
         }
 
@@ -113,7 +128,7 @@
                 {
                     if ($this->memcachePortNumber == null)
                     {
-                        $this->addError('memcachePortNumber', Yii::t( 'Default', 'Since you specified a memcache ' .
+                        $this->addError('memcachePortNumber', Zurmo::t('InstallModule', 'Since you specified a memcache ' .
                         'hostname, you must specify a port.'));
                         return;
                     }
@@ -121,22 +136,22 @@
                                                                            (int)$this->memcachePortNumber);
                     if ($memcacheResult !== true)
                     {
-                        $this->addError('memcacheHostname', Yii::t('Default', 'Error code:') . " " .
-                        $memcacheResult[0] . '<br/>Message: ' . $memcacheResult[1]);
+                        $this->addError('memcacheHostname', Zurmo::t('InstallModule', 'Error code:') . " " .
+                        $memcacheResult[0] . '<br/>Message(Memcached): ' . $memcacheResult[1]);
                         return;
                     }
                 }
 
                 if (!$this->hostInfo)
                 {
-                    $this->addError('hostInfo', Yii::t( 'Default', 'Please enter server ip or url.'));
+                    $this->addError('hostInfo', Zurmo::t('InstallModule', 'Please enter server IP or URL.'));
                     return;
                 }
                 else
                 {
                     if ((strpos($this->hostInfo, 'http://') === false) && (strpos($this->hostInfo, 'https://') === false))
                     {
-                        $this->addError('hostInfo', Yii::t( 'Default', 'Host Info must start with "http://" or "https://".'));
+                        $this->addError('hostInfo', Zurmo::t('InstallModule', 'Host Info must start with "http://" or "https://".'));
                         return;
                     }
                 }
@@ -145,7 +160,7 @@
                 {
                     if ($this->databaseAdminPassword == null)
                     {
-                        $this->addError('databaseAdminPassword', Yii::t( 'Default', 'Since you specified a database ' .
+                        $this->addError('databaseAdminPassword', Zurmo::t('InstallModule', 'Since you specified a database ' .
                         'admin username, you must enter a password'));
                         return;
                     }
@@ -156,7 +171,7 @@
                                                                       (int)$this->databasePort);
                     if ($connectionResult !== true)
                     {
-                        $this->addError('databaseAdminUsername', Yii::t('Default', 'Error code:') . " " .
+                        $this->addError('databaseAdminUsername', Zurmo::t('InstallModule', 'Error code:') . " " .
                         $connectionResult[0] . '<br/>Message: ' . $connectionResult[1]);
                         return;
                     }
@@ -168,7 +183,7 @@
                                                                              $this->databaseUsername);
                     if ($userExistsResult === true)
                     {
-                        $this->addError('databaseUsername', Yii::t('Default', 'You have specified an existing user. ' .
+                        $this->addError('databaseUsername', Zurmo::t('InstallModule', 'You have specified an existing user. ' .
                         'If you would like to use this user, then do not specify the database admin username and ' .
                         'password. Otherwise pick a database username that does not exist.'));
                         return;
@@ -181,7 +196,7 @@
                                                                              $this->databaseName);
                     if ($databaseExistsResult === true)
                     {
-                        $this->addError('databaseName', Yii::t('Default', 'You have specified an existing database. ' .
+                        $this->addError('databaseName', Zurmo::t('InstallModule', 'You have specified an existing database. ' .
                         'If you would like to use this database, then do not specify the database admin username and ' .
                         'password. Otherwise pick a database name that does not exist.'));
                         return;
@@ -194,7 +209,7 @@
                                                                              $this->databaseName);
                     if ($createDatabaseResult === false)
                     {
-                        $this->addError('databaseName', Yii::t('Default', 'There was a problem creating the database ' .
+                        $this->addError('databaseName', Zurmo::t('InstallModule', 'There was a problem creating the database ' .
                         'Error code:') . " " . $connectionResult[0] . '<br/>Message: ' . $connectionResult[1]);
                         return;
                     }
@@ -208,7 +223,7 @@
                                                                              $this->databasePassword);
                     if ($createUserResult === false)
                     {
-                        $this->addError('databaseUsername', Yii::t('Default', 'There was a problem creating the user ' .
+                        $this->addError('databaseUsername', Zurmo::t('InstallModule', 'There was a problem creating the user ' .
                         'Error code:') . " " . $connectionResult[0] . '<br/>Message: ' . $connectionResult[1]);
                         return;
                     }
@@ -222,7 +237,7 @@
                                                                              (int)$this->databasePort);
                     if ($connectionResult !== true)
                     {
-                        $this->addError('databaseUsername', Yii::t('Default', 'Error code:') . " " .
+                        $this->addError('databaseUsername', Zurmo::t('InstallModule', 'Error code:') . " " .
                         $connectionResult[0] . '<br/>Message: ' . $connectionResult[1]);
                         return;
                     }
@@ -234,9 +249,9 @@
                                                                              $this->databaseName);
                     if ($databaseExistsResult !== true)
                     {
-                        $this->addError('databaseName', Yii::t('Default', 'The database name specified does not ' .
+                        $this->addError('databaseName', Zurmo::t('InstallModule', 'The database name specified does not ' .
                         'exist or the user specified does not have access.') . '<br/>' .
-                        Yii::t('Default', 'Error code:') . " " . $databaseExistsResult[0] .
+                        Zurmo::t('InstallModule', 'Error code:') . " " . $databaseExistsResult[0] .
                         '<br/>Message: ' . $databaseExistsResult[1]);
                         return;
                     }
@@ -244,7 +259,7 @@
                     {
                         if ($this->removeExistingData == false)
                         {
-                        $this->addError('removeExistingData', Yii::t('Default', 'Since you specified an existing database ' .
+                        $this->addError('removeExistingData', Zurmo::t('InstallModule', 'Since you specified an existing database ' .
                         'you must check this box in order to proceed. THIS WILL REMOVE ALL EXISTING DATA.'));
                         return;
                         }

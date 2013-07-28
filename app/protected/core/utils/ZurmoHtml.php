@@ -1,10 +1,10 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2012 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
-     * the terms of the GNU General Public License version 3 as published by the
+     * the terms of the GNU Affero General Public License version 3 as published by the
      * Free Software Foundation with the addition of the following permission added
      * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
      * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
@@ -12,16 +12,26 @@
      *
      * Zurmo is distributed in the hope that it will be useful, but WITHOUT
      * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-     * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+     * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
      * details.
      *
-     * You should have received a copy of the GNU General Public License along with
+     * You should have received a copy of the GNU Affero General Public License along with
      * this program; if not, see http://www.gnu.org/licenses or write to the Free
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
      *
-     * You can contact Zurmo, Inc. with a mailing address at 113 McHenry Road Suite 207,
-     * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
+     * You can contact Zurmo, Inc. with a mailing address at 27 North Wacker Drive
+     * Suite 370 Chicago, IL 60606. or at email address contact@zurmo.com.
+     *
+     * The interactive user interfaces in original and modified versions
+     * of this program must display Appropriate Legal Notices, as required under
+     * Section 5 of the GNU Affero General Public License version 3.
+     *
+     * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
+     * these Appropriate Legal Notices must retain the display of the Zurmo
+     * logo and Zurmo copyright notice. If the display of the logo is not reasonably
+     * feasible for technical reasons, the Appropriate Legal Notices must display the words
+     * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -29,6 +39,16 @@
      */
     class ZurmoHtml extends CHtml
     {
+        /**
+         * Override CHtml::encode() to avoid double encode,
+         * because data are alredy encoded, when stored into database(using HtmlPurifier)
+         * @see CHtml::encode()
+         */
+        public static function encode($text)
+        {
+            return htmlspecialchars($text, ENT_QUOTES, Yii::app()->charset, false);
+        }
+
         /**
          * Override to handle relation model error summary information.  This information needs to be parsed properly
          * otherwise it will show up as 'Array' for the error text.
@@ -81,7 +101,7 @@
             {
                 if ($header === null)
                 {
-                    $header = '<p>' . Yii::t('yii', 'Please fix the following input errors:') . '</p>';
+                    $header = '<p>' . Zurmo::t('yii', 'Please fix the following input errors:') . '</p>';
                 }
                 if (!isset($htmlOptions['class']))
                 {
@@ -117,7 +137,22 @@
             {
                 $uncheck = '';
             }
-            $hiddenOptions = isset($htmlOptions['id']) ? array('id' => self::ID_PREFIX . $htmlOptions['id']) : array('id' => false);
+
+            if (isset($htmlOptions['id']))
+            {
+                if (isset($htmlOptions['ignoreIdPrefix']) && $htmlOptions['ignoreIdPrefix'])
+                {
+                    $hiddenOptions = array('id' => $htmlOptions['id']);
+                }
+                else
+                {
+                    $hiddenOptions = array('id' => self::ID_PREFIX . $htmlOptions['id']);
+                }
+            }
+            else
+            {
+                $hiddenOptions = array('id' => false);
+            }
             $hidden = $uncheck !== null ? self::hiddenField($name, $uncheck, $hiddenOptions) : '';
             return $hidden . self::radioButtonList($name, $selection, $data, $htmlOptions);
         }
@@ -152,7 +187,8 @@
                     $selectOption       =   str_replace("{bindId}", $htmlOptions['id'], $dataSelectOption[$value]);
                 }
                 $items[] = strtr($template, array('{input}'    =>  $option,
-                                                  '{label}'    =>  $label . $selectOption));
+                                                  '{label}'    =>  $label . $selectOption,
+                                                  '{value}'    =>  $value));
             }
             return implode($separator, $items);
         }
@@ -519,6 +555,114 @@ EOD;
                 $cs->registerScript($id, $js);
             }
             return self::tag('span', array('id' => $baseID), implode($separator, $items));
+        }
+
+        /**
+         * Override to support proper styling
+         * @see CHtml::activeDropDownList();
+         */
+        public static function activeDropDownList($model, $attribute, $data, $htmlOptions = array())
+        {
+            static::resolveNameID($model, $attribute, $htmlOptions);
+            $selection  = static::resolveValue($model, $attribute);
+            $options    = "\n" . static::listOptions($selection, $data, $htmlOptions);
+            static::clientChange('change', $htmlOptions);
+            if ($model->hasErrors($attribute))
+            {
+                static::addErrorCss($htmlOptions);
+            }
+            $multiSelectClass = null;
+            if (isset($htmlOptions['multiple']))
+            {
+                $multiSelectClass .= ' isMultiSelect';
+                if (substr($htmlOptions['name'], -2) !== '[]')
+                {
+                    $htmlOptions['name'] .= '[]';
+                }
+            }
+            $content  = static::tag('span', array('class' => 'select-arrow'), '');
+            $content .= static::tag('select', $htmlOptions, $options);
+            return static::tag('div', array('class' => 'hasDropDown' . $multiSelectClass), $content);
+        }
+
+        /**
+         *
+         * Override to support proper styling
+         * @see CHtml::dropDownList();
+         */
+        public static function dropDownList($name, $select, $data, $htmlOptions = array())
+        {
+            $htmlOptions['name'] = $name;
+            if (!isset($htmlOptions['id']))
+            {
+                $htmlOptions['id'] = static::getIdByName($name);
+            }
+            elseif ($htmlOptions['id'] === false)
+            {
+                unset($htmlOptions['id']);
+            }
+            $multiSelectClass = null;
+            if (isset($htmlOptions['multiple']))
+            {
+                $multiSelectClass .= ' isMultiSelect';
+            }
+            static::clientChange('change', $htmlOptions);
+            $options  = "\n" . static::listOptions($select, $data, $htmlOptions);
+            $content  = static::tag('span', array('class' => 'select-arrow'), '');
+            $content .= static::tag('select', $htmlOptions, $options);
+            return static::tag('div', array('class' => 'hasDropDown' . $multiSelectClass), $content);
+        }
+
+        /**
+         * Return a label wrapped in span
+         * @param $label label text
+         * @param $class class to be applied to span wrapper, defaults to z-label
+         * @return string wrapped label
+         */
+        public static function wrapLabel($label, $class = 'z-label')
+        {
+            return static::tag('span', array('class' => $class), $label);
+        }
+
+        /**
+         * Returns a link wrapped in standard tags
+         * @param $label link text
+         * @return string wrapped link
+         */
+        public static function wrapLink($label)
+        {
+            return static::span('z-spinner') . static::span('z-icon') . static::wrapLabel($label);
+        }
+
+        /**
+         * Return a span tag with specified class
+         * @param $class name of css class to apply
+         * @return string span tag
+         */
+        public static function span($class)
+        {
+            return static::tag('span', array('class' => $class), null);
+        }
+
+        /**
+         * @param string $innerContent
+         * @param string $content
+         * @param null|string $class
+         */
+        public static function resolveDivWrapperForContent($innerContent, & $content, $class = null)
+        {
+            if ($class != null)
+            {
+                $htmlOptions = array('class' => $class);
+            }
+            else
+            {
+                $htmlOptions = array();
+            }
+            if ($innerContent != null)
+            {
+                $content .= ZurmoHtml::tag('div', $htmlOptions, $innerContent);
+            }
         }
     }
 ?>

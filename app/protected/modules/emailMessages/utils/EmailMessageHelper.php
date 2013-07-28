@@ -1,10 +1,10 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2012 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
-     * the terms of the GNU General Public License version 3 as published by the
+     * the terms of the GNU Affero General Public License version 3 as published by the
      * Free Software Foundation with the addition of the following permission added
      * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
      * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
@@ -12,16 +12,26 @@
      *
      * Zurmo is distributed in the hope that it will be useful, but WITHOUT
      * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-     * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+     * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
      * details.
      *
-     * You should have received a copy of the GNU General Public License along with
+     * You should have received a copy of the GNU Affero General Public License along with
      * this program; if not, see http://www.gnu.org/licenses or write to the Free
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
      *
-     * You can contact Zurmo, Inc. with a mailing address at 113 McHenry Road Suite 207,
-     * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
+     * You can contact Zurmo, Inc. with a mailing address at 27 North Wacker Drive
+     * Suite 370 Chicago, IL 60606. or at email address contact@zurmo.com.
+     *
+     * The interactive user interfaces in original and modified versions
+     * of this program must display Appropriate Legal Notices, as required under
+     * Section 5 of the GNU Affero General Public License version 3.
+     *
+     * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
+     * these Appropriate Legal Notices must retain the display of the Zurmo
+     * logo and Zurmo copyright notice. If the display of the logo is not reasonably
+     * feasible for technical reasons, the Appropriate Legal Notices must display the words
+     * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
     class EmailMessageHelper
@@ -37,7 +47,7 @@
         public static function sendSystemEmail($subject, $recipients, $textContent = '', $htmlContent = '')
         {
             $emailMessage = new EmailMessage();
-            $emailMessage->owner   = Yii::app()->emailHelper->getUserToSendNotificationsAs();
+            $emailMessage->owner   = BaseJobControlUserConfigUtil::getUserToRunAs();
             $emailMessage->subject = $subject;
 
             $emailContent              = new EmailMessageContent();
@@ -85,22 +95,50 @@
             }
         }
 
-        public static function sendTestEmail(EmailHelper $emailHelper, User $userToSendMessagesFrom, $toAddress)
+        /**
+         * Send a test email from user.  Can use to determine if the SMTP settings are configured correctly.
+         * @param EmailHelper $emailHelper
+         * @param User $userToSendMessagesFrom
+         * @param string $toAddress
+         */
+        public static function sendTestEmailFromUser(EmailHelper $emailHelper, User $userToSendMessagesFrom, $toAddress)
         {
+            $from = array(
+                'address'   => $emailHelper->resolveFromAddressByUser($userToSendMessagesFrom),
+                'name'      => strval($userToSendMessagesFrom),
+            );
+            $emailMessage = static::sendTestEmail($emailHelper, $from, $toAddress);
+            return $emailMessage;
+        }
+
+        /**
+         * Send a test email.
+         * $from('name' => 'fromName', 'address' => 'fromAddress')
+         * @param EmailHelper $emailHelper
+         * @param Array $from
+         * @param string $toAddress
+         */
+        public static function sendTestEmail(EmailHelper $emailHelper, Array $from, $toAddress)
+        {
+            assert('is_string($from["name"])');
+            assert('is_string($from["address"])');
             $emailMessage              = new EmailMessage();
             $emailMessage->owner       = Yii::app()->user->userModel;
-            $emailMessage->subject     = Yii::t('Default', 'A test email from Zurmo');
+            $emailMessage->subject     = Zurmo::t('EmailMessagesModule', 'A test email from Zurmo',
+                                         LabelUtil::getTranslationParamsForAllModules());
             $emailContent              = new EmailMessageContent();
             $emailContent->textContent = EmailNotificationUtil::
                                             resolveNotificationTextTemplate(
-                                            Yii::t('Default', 'A test text message from Zurmo.'));
+                                            Zurmo::t('EmailMessagesModule', 'A test text message from Zurmo.',
+                                            LabelUtil::getTranslationParamsForAllModules()));
             $emailContent->htmlContent = EmailNotificationUtil::
                                             resolveNotificationHtmlTemplate(
-                                            Yii::t('Default', 'A test text message from Zurmo.'));
+                                            Zurmo::t('EmailMessagesModule', 'A test text message from Zurmo.',
+                                            LabelUtil::getTranslationParamsForAllModules()));
             $emailMessage->content     = $emailContent;
             $sender                    = new EmailMessageSender();
-            $sender->fromAddress       = $emailHelper->resolveFromAddressByUser($userToSendMessagesFrom);
-            $sender->fromName          = strval($userToSendMessagesFrom);
+            $sender->fromAddress       = $from['address'];
+            $sender->fromName          = $from['name'];
             $emailMessage->sender      = $sender;
             $recipient                 = new EmailMessageRecipient();
             $recipient->toAddress      = $toAddress;
@@ -110,11 +148,10 @@
             $box                       = EmailBox::resolveAndGetByName(EmailBox::NOTIFICATIONS_NAME);
             $emailMessage->folder      = EmailFolder::getByBoxAndType($box, EmailFolder::TYPE_DRAFT);
             $validated                 = $emailMessage->validate();
-            if (!$validated)
+            if ($validated)
             {
-                throw new NotSupportedException();
+                $emailHelper->sendImmediately($emailMessage);
             }
-            $emailHelper->sendImmediately($emailMessage);
             return $emailMessage;
         }
     }

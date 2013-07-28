@@ -1,10 +1,10 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2012 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
-     * the terms of the GNU General Public License version 3 as published by the
+     * the terms of the GNU Affero General Public License version 3 as published by the
      * Free Software Foundation with the addition of the following permission added
      * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
      * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
@@ -12,16 +12,26 @@
      *
      * Zurmo is distributed in the hope that it will be useful, but WITHOUT
      * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-     * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+     * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
      * details.
      *
-     * You should have received a copy of the GNU General Public License along with
+     * You should have received a copy of the GNU Affero General Public License along with
      * this program; if not, see http://www.gnu.org/licenses or write to the Free
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
      *
-     * You can contact Zurmo, Inc. with a mailing address at 113 McHenry Road Suite 207,
-     * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
+     * You can contact Zurmo, Inc. with a mailing address at 27 North Wacker Drive
+     * Suite 370 Chicago, IL 60606. or at email address contact@zurmo.com.
+     *
+     * The interactive user interfaces in original and modified versions
+     * of this program must display Appropriate Legal Notices, as required under
+     * Section 5 of the GNU Affero General Public License version 3.
+     *
+     * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
+     * these Appropriate Legal Notices must retain the display of the Zurmo
+     * logo and Zurmo copyright notice. If the display of the logo is not reasonably
+     * feasible for technical reasons, the Appropriate Legal Notices must display the words
+     * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -182,7 +192,28 @@
 
         /**
          * Helper method to run a controller action that is
-         * expected produce a redirect exception.
+         * expected produce a AccessDeniedSecurityException exception.
+         */
+        protected function runControllerWithAccessDeniedSecurityExceptionAndGetContent($route)
+        {
+            $_SERVER['REQUEST_URI'] = '/index.php';
+            $this->startOutputBuffer();
+            try
+            {
+                Yii::app()->runController($route);
+                $this->endPrintOutputBufferAndFail();
+            }
+            catch (AccessDeniedSecurityException $e)
+            {
+                $content = $this->endAndGetOutputBuffer();
+                $this->doApplicationScriptPathsAllExist();
+                return $content;
+            }
+        }
+
+        /**
+         * Helper method to run a controller action that is
+         * expected produce a NotSupported exception.
          */
         protected function runControllerWithNotSupportedExceptionAndGetContent($route)
         {
@@ -194,6 +225,27 @@
                 $this->endPrintOutputBufferAndFail();
             }
             catch (NotSupportedException $e)
+            {
+                $content = $this->endAndGetOutputBuffer();
+                $this->doApplicationScriptPathsAllExist();
+                return $content;
+            }
+        }
+
+        /**
+         * Helper method to run a controller action that is
+         * expected produce a NotFound exception.
+         */
+        protected function runControllerWithNotFoundExceptionAndGetContent($route)
+        {
+            $_SERVER['REQUEST_URI'] = '/index.php';
+            $this->startOutputBuffer();
+            try
+            {
+                Yii::app()->runController($route);
+                $this->endPrintOutputBufferAndFail();
+            }
+            catch (NotFoundException $e)
             {
                 $content = $this->endAndGetOutputBuffer();
                 $this->doApplicationScriptPathsAllExist();
@@ -266,66 +318,72 @@
         protected function createCheckBoxCustomFieldByModule($moduleClassName, $name)
         {
             $extraPostData = array( 'defaultValue' => '1', 'isAudited' => '1');
-            $this->createCustomAttributeWalkthroughSequence($moduleClassName, $name, 'CheckBox', $extraPostData);
+            $this->createCustomAttributeWalkthroughSequence($moduleClassName, $name, 'CheckBox', $extraPostData, null, true);
         }
 
         protected function createCurrencyValueCustomFieldByModule($moduleClassName, $name)
         {
             $extraPostData = array( 'isAudited' => '1', 'isRequired' => '1');
-            $this->createCustomAttributeWalkthroughSequence($moduleClassName, $name, 'CurrencyValue', $extraPostData);
+            $this->createCustomAttributeWalkthroughSequence($moduleClassName, $name, 'CurrencyValue', $extraPostData, null, true);
         }
 
         protected function createDateCustomFieldByModule($moduleClassName, $name)
         {
             $extraPostData = array( 'defaultValueCalculationType' => '', 'isAudited' => '1', 'isRequired' => '1');
-            $this->createCustomAttributeWalkthroughSequence($moduleClassName, $name, 'Date', $extraPostData);
+            $this->createCustomAttributeWalkthroughSequence($moduleClassName, $name, 'Date', $extraPostData, null, true);
+        }
+
+        protected function createDateNotRequiredCustomFieldByModule($moduleClassName, $name)
+        {
+            $extraPostData = array( 'defaultValueCalculationType' => '', 'isAudited' => '1');
+            $this->createCustomAttributeWalkthroughSequence($moduleClassName, $name, 'Date', $extraPostData, null, true);
         }
 
         protected function createDateTimeCustomFieldByModule($moduleClassName, $name)
         {
             $extraPostData = array( 'defaultValueCalculationType' => '', 'isAudited' => '1', 'isRequired' => '1');
-            $this->createCustomAttributeWalkthroughSequence($moduleClassName, $name, 'DateTime', $extraPostData);
+            $this->createCustomAttributeWalkthroughSequence($moduleClassName, $name, 'DateTime', $extraPostData, null, true);
         }
 
         protected function createDecimalCustomFieldByModule($moduleClassName, $name)
         {
             $extraPostData = array( 'defaultValue' => '123', 'isAudited' => '1', 'isRequired' => '1',
                                     'maxLength' => '18', 'precisionLength' => '2');
-            $this->createCustomAttributeWalkthroughSequence($moduleClassName, $name, 'Decimal', $extraPostData);
+            $this->createCustomAttributeWalkthroughSequence($moduleClassName, $name, 'Decimal', $extraPostData, null, true);
         }
 
         protected function createIntegerCustomFieldByModule($moduleClassName, $name)
         {
             $extraPostData = array( 'defaultValue' => '123', 'isAudited' => '1', 'isRequired' => '1',
                                     'maxLength' => '11', 'minValue' => '2', 'maxValue' => '400');
-            $this->createCustomAttributeWalkthroughSequence($moduleClassName, $name, 'Integer', $extraPostData);
+            $this->createCustomAttributeWalkthroughSequence($moduleClassName, $name, 'Integer', $extraPostData, null, true);
         }
 
         protected function createPhoneCustomFieldByModule($moduleClassName, $name)
         {
             $extraPostData = array( 'defaultValue' => '5423', 'isAudited' => '1', 'isRequired' => '1',
                                     'maxLength' => '20');
-            $this->createCustomAttributeWalkthroughSequence($moduleClassName, $name, 'Phone', $extraPostData);
+            $this->createCustomAttributeWalkthroughSequence($moduleClassName, $name, 'Phone', $extraPostData, null, true);
         }
 
         protected function createTextCustomFieldByModule($moduleClassName, $name)
         {
             $extraPostData = array( 'defaultValue' => 'aText', 'isAudited' => '1', 'isRequired' => '1',
                                     'maxLength' => '255');
-            $this->createCustomAttributeWalkthroughSequence($moduleClassName, $name, 'Text', $extraPostData);
+            $this->createCustomAttributeWalkthroughSequence($moduleClassName, $name, 'Text', $extraPostData, null, true);
         }
 
         protected function createTextAreaCustomFieldByModule($moduleClassName, $name)
         {
             $extraPostData = array( 'defaultValue' => 'aTextDesc', 'isAudited' => '1', 'isRequired' => '1');
-            $this->createCustomAttributeWalkthroughSequence($moduleClassName, $name, 'TextArea', $extraPostData);
+            $this->createCustomAttributeWalkthroughSequence($moduleClassName, $name, 'TextArea', $extraPostData, null, true);
         }
 
         protected function createUrlCustomFieldByModule($moduleClassName, $name)
         {
             $extraPostData = array( 'defaultValue' => 'http://www.zurmo.com', 'isAudited' => '1', 'isRequired' => '1',
                                     'maxLength' => '200');
-            $this->createCustomAttributeWalkthroughSequence($moduleClassName, $name, 'Url', $extraPostData);
+            $this->createCustomAttributeWalkthroughSequence($moduleClassName, $name, 'Url', $extraPostData, null, true);
         }
 
         protected function createDropDownCustomFieldByModule($moduleClassName, $name)
@@ -341,7 +399,7 @@
                                         'de' => array('aDe', 'bDe', 'cDe'),
                                     )
                                     );
-            $this->createCustomAttributeWalkthroughSequence($moduleClassName, $name, 'DropDown', $extraPostData);
+            $this->createCustomAttributeWalkthroughSequence($moduleClassName, $name, 'DropDown', $extraPostData, null, true);
         }
 
         protected function createDependentDropDownCustomFieldByModule($moduleClassName, $name)
@@ -368,7 +426,7 @@
                                                            'de' => $customFieldDataLabelsDe[$name],
                                                             )
                                        );
-            $this->createCustomAttributeWalkthroughSequence($moduleClassName, $name, 'DropDown', $extraPostData);
+            $this->createCustomAttributeWalkthroughSequence($moduleClassName, $name, 'DropDown', $extraPostData, null, true);
         }
 
         protected function createRadioDropDownCustomFieldByModule($moduleClassName, $name)
@@ -379,7 +437,7 @@
                                     'customFieldDataData' => array(
                                                 'd', 'e', 'f'
                                     ));
-            $this->createCustomAttributeWalkthroughSequence($moduleClassName, $name, 'RadioDropDown', $extraPostData);
+            $this->createCustomAttributeWalkthroughSequence($moduleClassName, $name, 'RadioDropDown', $extraPostData, null, true);
         }
 
         protected function createMultiSelectDropDownCustomFieldByModule($moduleClassName, $name)
@@ -390,7 +448,7 @@
                                     'customFieldDataData' => array(
                                                 'ff', 'gg', 'hh', 'rr'
                                     ));
-            $this->createCustomAttributeWalkthroughSequence($moduleClassName, $name, 'MultiSelectDropDown', $extraPostData);
+            $this->createCustomAttributeWalkthroughSequence($moduleClassName, $name, 'MultiSelectDropDown', $extraPostData, null, true);
         }
 
         protected function createTagCloudCustomFieldByModule($moduleClassName, $name)
@@ -403,34 +461,36 @@
                                                            'fr' => array('reading fr', 'writing fr', 'surfing fr', 'gardening fr'),
                                                            'de' => array('reading de', 'writing de', 'surfing de', 'gardening de'),
                                                             ));
-            $this->createCustomAttributeWalkthroughSequence($moduleClassName, $name, 'TagCloud', $extraPostData);
+            $this->createCustomAttributeWalkthroughSequence($moduleClassName, $name, 'TagCloud', $extraPostData, null, true);
         }
 
         protected function createCalculatedNumberCustomFieldByModule($moduleClassName, $name)
         {
-            $formulaForModule = array('AccountsModule'      => 'employees + annualRevenue',
-                                      'ContactsModule'      => 'decimal + integer',
-                                      'MeetingsModule'      => 'decimal - integer',
-                                      'NotesModule'         => 'decimal + integer',
-                                      'OpportunitiesModule' => 'decimal * integer',
-                                      'TasksModule'         => 'decimal * integer');
+            $formulaForModule = array('AccountsModule'          => 'employees + annualRevenue',
+                                      'ContactsModule'          => 'decimalCstm + integerCstm',
+                                      'MeetingsModule'          => 'decimalCstm - integerCstm',
+                                      'NotesModule'             => 'decimalCstm + integerCstm',
+                                      'OpportunitiesModule'     => 'decimalCstm * integerCstm',
+                                      'TasksModule'             => 'decimalCstm * integerCstm',
+                                      'ProductTemplatesModule'  => 'decimalCstm * integerCstm',
+                                      'ProductsModule'          => 'decimalCstm * integerCstm');
 
             $extraPostData = array('formula' => $formulaForModule[$moduleClassName]);
-            $this->createCustomAttributeWalkthroughSequence($moduleClassName, $name, 'CalculatedNumber', $extraPostData);
+            $this->createCustomAttributeWalkthroughSequence($moduleClassName, $name, 'CalculatedNumber', $extraPostData, null, true);
         }
 
         protected function createDropDownDependencyCustomFieldByModule($moduleClassName, $name)
         {
             $mappingData = array(
-                                array('attributeName' => 'countrylist'),
-                                array('attributeName' => 'statelist',
+                                array('attributeName' => 'countrylistCstm'),
+                                array('attributeName' => 'statelistCstm',
                                       'valuesToParentValues' => array('aaa1' => 'aaaa',
                                                                       'aaa2' => 'aaaa',
                                                                       'bbb1' => 'bbbb',
                                                                       'bbb2' => 'bbbb'
                                                               )
                                 ),
-                                array('attributeName'        => 'citylist',
+                                array('attributeName'        => 'citylistCstm',
                                       'valuesToParentValues' => array('aa1'  => 'aaa1',
                                                                       'ab1'  => 'aaa1',
                                                                       'aa2'  => 'aaa2',
@@ -445,7 +505,7 @@
                            );
 
             $extraPostData = array('mappingData' => $mappingData);
-            $this->createCustomAttributeWalkthroughSequence($moduleClassName, $name, 'DropDownDependency', $extraPostData);
+            $this->createCustomAttributeWalkthroughSequence($moduleClassName, $name, 'DropDownDependency', $extraPostData, null, true);
         }
 
         protected function createModuleEditBadValidationPostData()
@@ -488,7 +548,8 @@
                                                                     $name,
                                                                     $attributeTypeName,
                                                                     $extraPostData,
-                                                                    $attributeName = null)
+                                                                    $attributeName = null,
+                                                                    $isCustomField = false)
         {
             assert('$name[0] == strtolower($name[0])'); // Not Coding Standard
             assert('is_array($extraPostData)'); // Not Coding Standard
@@ -536,10 +597,14 @@
                 'fr' => $name . ' fr',
             );
 
+            if ($isCustomField)
+            {
+                $name = $name . 'Cstm';
+            }
             if ($attributeTypeName != "CalculatedNumber" && $attributeTypeName != "DropDownDependency")
             {
                 $this->assertEquals(
-                    $compareData, $newModel->getAttributeLabelsForAllSupportedLanguagesByAttributeName($name));
+                    $compareData, $newModel->getAttributeLabelsForAllActiveLanguagesByAttributeName($name));
             }
 
             if ($attributeTypeName != "CalculatedNumber" && $attributeTypeName != "DropDownDependency")
@@ -549,6 +614,140 @@
                                             'attributeTypeName'     => $attributeTypeName,
                                             'attributeName'         => $name));
                 $content = $this->runControllerWithRedirectExceptionAndGetContent('designer/default/attributeEdit');
+            }
+        }
+
+        private function buildAttributesArrayFromPostArray($postArray)
+        {
+            $testAttributes = array();
+            foreach ($postArray as $moduleClass => $values)
+            {
+                foreach ($values as $attribute => $value)
+                {
+                    if (is_array($value))
+                    {
+                        $testAttributes[$attribute] = $this->buildAttributesArrayFromPostArray(array('dummy' => $value));
+                    }
+                    else
+                    {
+                        $testAttributes[] = $attribute;
+                    }
+                }
+            }
+            return $testAttributes;
+        }
+
+        /**
+         * Uses postArray to check response field values.
+         *
+         * @param OwnedSecurableItem $model     Model to get values from
+         * @param array              $postArray Array of post values
+         * @return boolean
+         */
+        protected function checkCopyActionResponseAttributeValuesFromPostArray($model, $postArray, $linkClass = null)
+        {
+            return $this->checkCopyActionResponseAttributeValues(
+                $model,
+                $this->buildAttributesArrayFromPostArray($postArray),
+                $linkClass
+            );
+        }
+
+        /**
+         * Test if form fields have values from record.
+         *
+         * It supports selects, plain text fields and textareas.
+         *
+         * @param OwnedSecurableItem $model          Model to get values from
+         * @param array              $testAttributes Array of fields to test
+         * @return boolean
+         */
+        protected function checkCopyActionResponseAttributeValues($model, $testAttributes, $linkClass = null)
+        {
+            $class = get_class($model);
+            if (empty($linkClass))
+            {
+                $realm = strtolower($class);
+            }
+            else
+            {
+                $realm = rtrim(strtolower($linkClass), 's');
+            }
+            $this->setGetArray(array('id' => $model->id));
+            $this->resetPostArray();
+            $response = $this->runControllerWithNoExceptionsAndGetContent($realm.'s/default/copy');
+            return $this->checkResponseAgainstAttributeArray($response, $model, $class, $testAttributes, $linkClass);
+        }
+
+        private function checkResponseAgainstAttributeArray($response, $model, $class, $testAttributes, $linkClass = null)
+        {
+            $attributesValid = true;
+            $matchRulesBase = array();
+            $matchRulesBase[] = '/id="%testAttribute%".*?>%value%<\/t/';
+            $matchRulesBase[] = '/id="%testAttribute%".*?value="%value%"/';
+            $matchRulesBase[] = '/id="%testAttribute%">.*?<option value="%value%" selected="selected"/s';
+            foreach ($testAttributes as $relation => $testAttribute)
+            {
+                if (is_array($testAttribute))
+                {
+                    $attributesValid = $attributesValid && $this->checkResponseAgainstAttributeArray($response, $model->{$relation}, $class . '_' . $relation, $testAttribute, $linkClass);
+                }
+                else
+                {
+                    $matchResult = false;
+                    $matchRules  = str_replace(
+                        array('%testAttribute%', '%value%'),
+                        array($class . '_' . $testAttribute, str_replace('/', '\/', $model->{$testAttribute})),
+                        $matchRulesBase
+                    );
+                    foreach ($matchRules as $matchRule)
+                    {
+                        $matchResult = $matchResult || preg_match($matchRule, $response);
+                    }
+                    $this->assertTrue($matchResult, $class . '_' . $testAttribute . '==' . $model->{$testAttribute});
+                    $attributesValid = $attributesValid && $matchResult;
+                }
+            }
+            return (bool)$attributesValid;
+        }
+
+        /**
+         * Updates the model with values from post array.
+         *
+         * @param OwnedSecurableItem $model     Updated model
+         * @param array              $postArray Array of post values
+         */
+        protected function updateModelValuesFromPostArray($model, $postArray)
+        {
+            foreach ($postArray as $moduleClass => $attributeValues)
+            {
+                $this->assertInstanceOf($moduleClass, $model);
+                $model->setAttributes($attributeValues);
+            }
+        }
+
+        /**
+         * Checks if the model has values from post array.
+         *
+         * @param OwnedSecurableItem $model     Updated model
+         * @param array              $postArray Array of post values
+         */
+        protected function assertModelHasValuesFromPostArray($model, $postArray)
+        {
+            foreach ($postArray as $moduleClass => $attributeValues)
+            {
+                $this->assertInstanceOf($moduleClass, $model);
+                foreach ($attributeValues as $attribute => $attributeValue)
+                {
+                    if (is_array($attributeValue))
+                    {
+                        $this->assertModelHasValuesFromPostArray($model->{$attribute}, array(get_class($model->{$attribute}) => $attributeValue));
+                    }
+                    else
+                    {
+                        $this->assertEquals($attributeValue, $model->{$attribute});
+                    }
+                }
             }
         }
     }

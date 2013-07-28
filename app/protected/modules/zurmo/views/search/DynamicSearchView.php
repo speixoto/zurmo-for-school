@@ -1,10 +1,10 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2012 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
-     * the terms of the GNU General Public License version 3 as published by the
+     * the terms of the GNU Affero General Public License version 3 as published by the
      * Free Software Foundation with the addition of the following permission added
      * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
      * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
@@ -12,16 +12,26 @@
      *
      * Zurmo is distributed in the hope that it will be useful, but WITHOUT
      * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-     * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+     * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
      * details.
      *
-     * You should have received a copy of the GNU General Public License along with
+     * You should have received a copy of the GNU Affero General Public License along with
      * this program; if not, see http://www.gnu.org/licenses or write to the Free
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
      *
-     * You can contact Zurmo, Inc. with a mailing address at 113 McHenry Road Suite 207,
-     * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
+     * You can contact Zurmo, Inc. with a mailing address at 27 North Wacker Drive
+     * Suite 370 Chicago, IL 60606. or at email address contact@zurmo.com.
+     *
+     * The interactive user interfaces in original and modified versions
+     * of this program must display Appropriate Legal Notices, as required under
+     * Section 5 of the GNU Affero General Public License version 3.
+     *
+     * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
+     * these Appropriate Legal Notices must retain the display of the Zurmo
+     * logo and Zurmo copyright notice. If the display of the logo is not reasonably
+     * feasible for technical reasons, the Appropriate Legal Notices must display the words
+     * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -53,7 +63,7 @@
             return array(
                         'validateOnSubmit'  => true,
                         'validateOnChange'  => false,
-                        'beforeValidate'    => 'js:beforeValidateAction',
+                        'beforeValidate'    => 'js:$(this).beforeValidateAction',
                         'afterValidate'     => 'js:afterDynamicSearchValidateAjaxAction',
                         'afterValidateAjax' => $this->renderConfigSaveAjax($this->getSearchFormId()),
                     );
@@ -73,10 +83,10 @@
                     });
                     $('#" . $this->getRowCounterInputId() . "').val(0);
                     $('#" . $this->getStructureInputId() . "').val('');
-                    $('.search-view-1').hide();
+                    $(this).closest('form').find('.search-view-1').hide();
                     $('.select-list-attributes-view').hide();
                     resolveClearLinkPrefixLabelAndVisibility('" . $this->getSearchFormId() . "');
-                    rebuildDynamicSearchRowNumbersAndStructureInput('" . $this->getSearchFormId() . "')
+                    rebuildDynamicSearchRowNumbersAndStructureInput('" . $this->getSearchFormId() . "');
             ";
         }
 
@@ -105,7 +115,7 @@
 
         protected function renderConfigSaveAjax($formName)
         {
-            return     "$('.search-view-1').hide();
+            return     "$(this).closest('form').find('.search-view-1').hide();
                         $('.select-list-attributes-view').hide();
                         $('#" . $formName . "').find('.attachLoading:first').removeClass('loading');
                         $('#" . $formName . "').find('.attachLoading:first').removeClass('loading-ajax-submit');
@@ -223,21 +233,19 @@
             $content              = ZurmoHtml::hiddenField($hiddenInputName, $rowCount, $idInputHtmlOptions);
             // Begin Not Coding Standard
             $addFieldLabelContent = $this->getAddFieldLabelContent();
-            $aContent             = ZurmoHtml::tag('span', array('class' => 'z-spinner'), null);
-            $aContent            .= ZurmoHtml::tag('span', array('class' => 'z-icon'), null);
-            $aContent            .= ZurmoHtml::tag('span', array('class' => 'z-label'), $addFieldLabelContent);
+            $aContent             = ZurmoHtml::wrapLink($addFieldLabelContent);
             $content             .= ZurmoHtml::ajaxLink($aContent, $ajaxOnChangeUrl,
                                     array('type' => 'GET',
                                           'data' => 'js:\'rowNumber=\' + $(\'#rowCounter-' . $this->getSearchFormId(). '\').val()',
                                           'beforeSend' => 'js:function(){
-                                            attachLoadingSpinner("' . $this->getSearchFormId() . '", true, "dark");
+                                            $(this).makeOrRemoveLoadingSpinner(true, "#' . $this->getSearchFormId() . '", "dark");
                                             }',
                                           'success' => 'js:function(data){
                                             $(\'#' . $this->getRowCounterInputId(). '\').val(parseInt($(\'#' . $this->getRowCounterInputId() . '\').val()) + 1)
                                             $(\'#addExtraAdvancedSearchRowButton-' . $this->getSearchFormId() . '\').parent().before(data);
                                             rebuildDynamicSearchRowNumbersAndStructureInput("' . $this->getSearchFormId() . '");
                                             resolveClearLinkPrefixLabelAndVisibility("' . $this->getSearchFormId() . '");
-                                            attachLoadingSpinner("' . $this->getSearchFormId() . '", false);
+                                            $(this).makeOrRemoveLoadingSpinner(false, "#' . $this->getSearchFormId() . '");
                                           }'),
                                     array('id' => 'addExtraAdvancedSearchRowButton-' . $this->getSearchFormId(), 'namespace' => 'add'));
             // End Not Coding Standard
@@ -250,7 +258,7 @@
 
         protected function getAddFieldLabelContent()
         {
-            return ZurmoHtml::tag('span', array(), Yii::t('Default', 'Add criteria'));
+            return Zurmo::t('ZurmoModule', 'Add criteria');
         }
 
         protected function renderAfterFormLayout($form)
@@ -274,12 +282,13 @@
          */
         protected function renderDynamicClausesValidationHelperContent($form)
         {
-            $htmlOptions = array('id'   => get_class($this->model) . '_dynamicClauses',
-                                 'name' => 'dynamicClausesValidationHelper',
-                                 'value' => 'notUsed');
+            $htmlOptionsForInput = array('id'   => get_class($this->model) . '_dynamicClausesNotUsed',
+                                         'name' => 'dynamicClausesValidationHelper',
+                                         'value' => 'notUsed');
+            $htmlOptionsForError = array('id'   => get_class($this->model) . '_dynamicClauses');
             $content  = '<div style="display:none;">';
-            $content .= $form->hiddenField($this->model, 'dynamicClauses', $htmlOptions);
-            $content .= $form->error($this->model, 'dynamicClauses', $htmlOptions);
+            $content .= $form->hiddenField($this->model, 'dynamicClauses', $htmlOptionsForInput);
+            $content .= $form->error($this->model, 'dynamicClauses', $htmlOptionsForError);
             $content .= '</div>';
             return $content;
         }
@@ -304,14 +313,14 @@
             {
                 $style3 = 'display:none;';
             }
-            $content  = ZurmoHtml::link(Yii::t('Default', 'Modify Structure'), '#',
+            $content  = ZurmoHtml::link(Zurmo::t('ZurmoModule', 'Modify Structure'), '#',
                             array('id'    => 'show-dynamic-search-structure-div-link-' . $this->getSearchFormId() . '',
                                   'style' => $style1));
             $content .= ZurmoHtml::tag('div',
                             array('id'    => 'show-dynamic-search-structure-div-' . $this->getSearchFormId(),
                                   'class' => 'has-lang-label',
                                   'style' => $style2), $this->renderStructureInputContent($form));
-            $content  = ZurmoHtml::tag('span', array('id'    => 'show-dynamic-search-structure-wrapper-' . $this->getSearchFormId(),
+            $content  = ZurmoHtml::tag('div', array('id'    => 'show-dynamic-search-structure-wrapper-' . $this->getSearchFormId(),
                                                      'style' => $style3), $content);
             return $content;
         }
@@ -322,7 +331,7 @@
                                          'name'  => $this->getStructureInputName(),
                                          'class' => 'dynamic-search-structure-input');
             $content             = $form->textField($this->model, 'dynamicStructure', $idInputHtmlOptions);
-            $content            .= ZurmoHtml::tag('span', array(), Yii::t('Default', 'Search Operator'));
+            $content            .= ZurmoHtml::tag('span', array(), Zurmo::t('ZurmoModule', 'Search Operator'));
             $content            .= $form->error($this->model, 'dynamicStructure');
             return $content;
         }
@@ -334,6 +343,10 @@
 
         protected function getClearSearchLabelPrefixContent()
         {
+            if (Yii::app()->userInterface->isMobile())
+            {
+                return parent::getClearSearchLabelPrefixContent();
+            }
             $criteriaCount = count($this->model->dynamicClauses);
             if ($this->model->anyMixedAttributes != null)
             {
@@ -354,7 +367,11 @@
 
         protected function getClearSearchLabelContent()
         {
-            return Yii::t('Default', 'Criteria Selected <span class="icon-clear">Z</span>');
+            if (Yii::app()->userInterface->isMobile())
+            {
+                return parent::getClearSearchLabelContent();
+            }
+            return Zurmo::t('ZurmoModule', 'Criteria Selected <span class="icon-clear">Z</span>');
         }
 
         protected function getClearSearchLinkStartingStyle()

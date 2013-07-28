@@ -1,10 +1,10 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2012 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
-     * the terms of the GNU General Public License version 3 as published by the
+     * the terms of the GNU Affero General Public License version 3 as published by the
      * Free Software Foundation with the addition of the following permission added
      * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
      * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
@@ -12,16 +12,26 @@
      *
      * Zurmo is distributed in the hope that it will be useful, but WITHOUT
      * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-     * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+     * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
      * details.
      *
-     * You should have received a copy of the GNU General Public License along with
+     * You should have received a copy of the GNU Affero General Public License along with
      * this program; if not, see http://www.gnu.org/licenses or write to the Free
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
      *
-     * You can contact Zurmo, Inc. with a mailing address at 113 McHenry Road Suite 207,
-     * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
+     * You can contact Zurmo, Inc. with a mailing address at 27 North Wacker Drive
+     * Suite 370 Chicago, IL 60606. or at email address contact@zurmo.com.
+     *
+     * The interactive user interfaces in original and modified versions
+     * of this program must display Appropriate Legal Notices, as required under
+     * Section 5 of the GNU Affero General Public License version 3.
+     *
+     * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
+     * these Appropriate Legal Notices must retain the display of the Zurmo
+     * logo and Zurmo copyright notice. If the display of the logo is not reasonably
+     * feasible for technical reasons, the Appropriate Legal Notices must display the words
+     * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -33,6 +43,8 @@
      */
     abstract class ModelElement extends Element implements ElementActionTypeInterface
     {
+        const MODAL_CONTAINER_PREFIX = 'modalContainer';
+
         /**
          * Override in child element with a specific moduleId
          */
@@ -70,6 +82,12 @@
          * for which the details link is calling.
          */
         protected static $nonEditableActionType = 'Details';
+
+        public function setIdAttributeId($idAttributeId)
+        {
+            assert('is_string($idAttributeId)');
+            $this->idAttributeId = $idAttributeId;
+        }
 
         protected function renderControlEditable()
         {
@@ -117,20 +135,7 @@
          */
         protected function renderTextField($idInputName)
         {
-            $script = "
-                function clearIdFromAutoCompleteField(value, id)
-                {
-                    if (value == '')
-                    {
-                        $('#' + id).val('');
-                    }
-                }
-            ";
-            Yii::app()->clientScript->registerScript(
-                'clearIdFromAutoCompleteField',
-                $script,
-                CClientScript::POS_END
-            );
+            $this->registerScriptForAutoCompleteTextField();
             $cClipWidget = new CClipWidget();
             $cClipWidget->beginClip("ModelElement");
             $cClipWidget->widget('zii.widgets.jui.CJuiAutoComplete', array(
@@ -138,18 +143,50 @@
                 'id'      => $this->getIdForTextField(),
                 'value'   => $this->getName(),
                 'source'  => Yii::app()->createUrl($this->resolveModuleId() . '/' . $this->getAutoCompleteControllerId()
-                                                        . '/' . static::$autoCompleteActionId),
+                                                   . '/' . static::$autoCompleteActionId, $this->getAutoCompleteUrlParams()),
                 'options' => array(
-                    'select' => 'js:function(event, ui){ jQuery("#' . $idInputName . '").val(ui.item["id"]);}', // Not Coding Standard
-                    'appendTo'       => 'js:$("#' . $this->getIdForTextField() . '").parent().parent()'
+                    'select'   => $this->getOnSelectOptionForAutoComplete($idInputName), // Not Coding Standard
+                    'appendTo' => 'js:$("#' . $this->getIdForTextField() . '").parent().parent()',
+                    'search'   => 'js: function(event, ui)
+                                  {
+                                       var context = $("#' . $this->getIdForTextField() . '").parent();
+                                       $(".model-select-icon", context).fadeOut(100);
+                                       $(this).makeOrRemoveTogglableSpinner(true, context);
+                                  }',
+                    'open'     => 'js: function(event, ui)
+                                  {
+                                       var context = $("#' . $this->getIdForTextField() . '").parent();
+                                       $(".model-select-icon", context).fadeIn(250);
+                                       $(this).makeOrRemoveTogglableSpinner(false, context);
+                                  }',
+                    'close'    => 'js: function(event, ui)
+                                  {
+                                       var context = $("#' . $this->getIdForTextField() . '").parent();
+                                       $(".model-select-icon", context).fadeIn(250);
+                                       $(this).makeOrRemoveTogglableSpinner(false, context);
+                                  }',
+                    'response' => 'js: function(event, ui)
+                                  {
+                                       if (ui.content.length < 1)
+                                       {
+                                           var context = $("#' . $this->getIdForTextField() . '").parent();
+                                           $(".model-select-icon", context).fadeIn(250);
+                                           $(this).makeOrRemoveTogglableSpinner(false, context);
+                                       }
+                                  }'
                 ),
                 'htmlOptions' => array(
                     'disabled' => $this->getDisabledValue(),
                     'onblur' => 'clearIdFromAutoCompleteField($(this).val(), \'' . $idInputName . '\');'
-                    )
+                )
             ));
             $cClipWidget->endClip();
             return $cClipWidget->getController()->clips['ModelElement'];
+        }
+
+        protected function getAutoCompleteUrlParams()
+        {
+            return array();
         }
 
         protected function getAutoCompleteControllerId()
@@ -165,10 +202,9 @@
         protected function renderSelectLink()
         {
             $id = $this->getIdForSelectLink();
-            $content = ZurmoHtml::ajaxLink('<span></span>',
-                Yii::app()->createUrl($this->resolveModuleId() . '/' . $this->getSelectLinkControllerId() . '/'. static::$modalActionId .'/', array(
-                'modalTransferInformation' => $this->getModalTransferInformation(),
-                )),
+            $content = ZurmoHtml::ajaxLink('<span class="model-select-icon"></span><span class="z-spinner"></span>',
+                Yii::app()->createUrl($this->resolveModuleId() . '/' . $this->getSelectLinkControllerId() . '/'.
+                                      static::$modalActionId .'/', $this->getSelectLinkUrlParams()),
                 $this->resolveAjaxOptionsForSelectingModel($id),
                 array(
                 'id'        => $id,
@@ -179,19 +215,31 @@
             return $content;
         }
 
+        protected function getSelectLinkUrlParams()
+        {
+            return array(
+                'modalTransferInformation' => $this->getModalTransferInformation(),
+            );
+        }
+
         protected function resolveAjaxOptionsForSelectingModel($formId)
         {
             assert('is_string($formId)');
             $title = $this->getModalTitleForSelectingModel();
-            return   ModalView::getAjaxOptionsForModalLink($title);
+            return   ModalView::getAjaxOptionsForModalLink($title, $this->getModalContainerId());
         }
 
         protected function getModalTitleForSelectingModel()
         {
             $module              = Yii::app()->getModule(static::$moduleId);
             $moduleSingularLabel = $module->getModuleLabelByTypeAndLanguage('Singular');
-            return Yii::t('Default', '{moduleSingularLabel} Search',
+            return Zurmo::t('Core', '{moduleSingularLabel} Search',
                                       array('{moduleSingularLabel}' => $moduleSingularLabel));
+        }
+
+        protected function getModalContainerId()
+        {
+            return self::MODAL_CONTAINER_PREFIX . '-' . $this->form->id;
         }
 
         protected function getSelectLinkControllerId()
@@ -313,11 +361,16 @@
          */
         protected function getModalTransferInformation()
         {
-            return array(
+            return array_merge(array(
                     'sourceIdFieldId' => $this->getIdForHiddenField(),
                     'sourceNameFieldId' => $this->getIdForTextField(),
-                    'sourceModelId'     => $this->model->id,
-            );
+                    'modalId'           => $this->getModalContainerId(),
+            ), $this->resolveSourceModelIdForModalTransferInformation());
+        }
+
+        protected function resolveSourceModelIdForModalTransferInformation()
+        {
+            return array('sourceModelId' => $this->model->id);
         }
 
         protected function getSelectLinkStartingStyle()
@@ -333,7 +386,7 @@
         }
 
         /**
-         * Determines correct column span based on params 'wide' value
+         * Determines if a link should be shown
          */
         protected function showLinkOnNonEditable()
         {
@@ -388,6 +441,37 @@
         public static function getNonEditableActionType()
         {
             return static::$nonEditableActionType;
+        }
+
+        /**
+         * Registers scripts for autocomplete text field
+         */
+        protected function registerScriptForAutoCompleteTextField()
+        {
+           $script = "
+                function clearIdFromAutoCompleteField(value, id)
+                {
+                    if (value == '')
+                    {
+                        $('#' + id).val('');
+                    }
+                }
+            ";
+            Yii::app()->clientScript->registerScript(
+                'clearIdFromAutoCompleteField',
+                $script,
+                CClientScript::POS_END
+            );
+        }
+
+        /**
+         * Gets on select option for the automcomplete text field
+         * @param string $idInputName
+         * @return string
+         */
+        protected function getOnSelectOptionForAutoComplete($idInputName)
+        {
+            return 'js:function(event, ui){ jQuery("#' . $idInputName . '").val(ui.item["id"]).trigger("change");}';
         }
     }
 ?>

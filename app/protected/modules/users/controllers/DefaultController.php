@@ -1,10 +1,10 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2012 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
-     * the terms of the GNU General Public License version 3 as published by the
+     * the terms of the GNU Affero General Public License version 3 as published by the
      * Free Software Foundation with the addition of the following permission added
      * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
      * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
@@ -12,20 +12,33 @@
      *
      * Zurmo is distributed in the hope that it will be useful, but WITHOUT
      * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-     * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+     * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
      * details.
      *
-     * You should have received a copy of the GNU General Public License along with
+     * You should have received a copy of the GNU Affero General Public License along with
      * this program; if not, see http://www.gnu.org/licenses or write to the Free
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
      *
-     * You can contact Zurmo, Inc. with a mailing address at 113 McHenry Road Suite 207,
-     * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
+     * You can contact Zurmo, Inc. with a mailing address at 27 North Wacker Drive
+     * Suite 370 Chicago, IL 60606. or at email address contact@zurmo.com.
+     *
+     * The interactive user interfaces in original and modified versions
+     * of this program must display Appropriate Legal Notices, as required under
+     * Section 5 of the GNU Affero General Public License version 3.
+     *
+     * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
+     * these Appropriate Legal Notices must retain the display of the Zurmo
+     * logo and Zurmo copyright notice. If the display of the logo is not reasonably
+     * feasible for technical reasons, the Appropriate Legal Notices must display the words
+     * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
     class UsersDefaultController extends ZurmoModuleController
     {
+        const EMAIL_CONFIGURATION_FILTER_PATH =
+              'application.modules.emailMessages.controllers.filters.EmailConfigurationCheckControllerFilter';
+
         /**
          * Override to exclude modalSearchList and autoComplete
          * since these are available to all users regardless
@@ -39,7 +52,7 @@
             $filters = array();
             $filters[] = array(
                     ZurmoBaseController::RIGHTS_FILTER_PATH .
-                    ' - modalList, autoComplete, details, profile, edit, auditEventsModalList, changePassword, configurationEdit, securityDetails, ' .
+                    ' - modalList, autoComplete, details, profile, edit, auditEventsModalList, changePassword, configurationEdit, emailConfiguration, securityDetails, ' .
                         'autoCompleteForMultiSelectAutoComplete, confirmTimeZone, changeAvatar',
                     'moduleClassName' => 'UsersModule',
                     'rightName' => UsersModule::getAccessRight(),
@@ -54,6 +67,10 @@
                 'moduleClassName' => 'ZurmoModule',
                 'rightName' => ZurmoModule::RIGHT_BULK_WRITE,
             );
+            $filters[] = array(
+                        self::EMAIL_CONFIGURATION_FILTER_PATH . ' + emailConfiguration',
+                         'controller' => $this,
+            );
             return $filters;
         }
 
@@ -63,13 +80,15 @@
                                               'listPageSize', get_class($this->getModule()));
             $user                           = new User(false);
             $searchForm                     = new UsersSearchForm($user);
+            $listAttributesSelector         = new ListAttributesSelector('UsersListView', get_class($this->getModule()));
+            $searchForm->setListAttributesSelector($listAttributesSelector);
             $dataProvider = $this->resolveSearchDataProvider(
                 $searchForm,
                 $pageSize,
                 null,
                 'UsersSearchView'
             );
-            $title           = Yii::t('Default', 'Users');
+            $title           = Zurmo::t('UsersModule', 'Users');
             $breadcrumbLinks = array(
                  $title,
             );
@@ -83,12 +102,7 @@
             }
             else
             {
-                $mixedView = $this->makeActionBarSearchAndListView(
-                    $searchForm,
-                    $pageSize,
-                    UsersModule::getModuleLabelByTypeAndLanguage('Plural'),
-                    $dataProvider
-                );
+                $mixedView = $this->makeActionBarSearchAndListView($searchForm, $dataProvider, 'UsersActionBarForSearchAndListView');
                 $view = new UsersPageView(ZurmoDefaultAdminViewUtil::
                                          makeViewWithBreadcrumbsForCurrentUser($this, $mixedView, $breadcrumbLinks, 'UserBreadCrumbView'));
             }
@@ -119,7 +133,7 @@
         public function actionDetails($id)
         {
             $user = User::getById(intval($id));
-            $title           = Yii::t('Default', 'Profile');
+            $title           = Zurmo::t('UsersModule', 'Profile');
             $breadcrumbLinks = array(strval($user) => array('default/details',  'id' => $id), $title);
             AuditEvent::logAuditEvent('ZurmoModule', ZurmoModule::AUDIT_EVENT_ITEM_VIEWED, array(strval($user), 'UsersModule'), $user);
             $params = array(
@@ -133,8 +147,7 @@
             $detailsAndRelationsView = new UserDetailsAndRelationsView($this->getId(),
                                                                        $this->getModule()->getId(),
                                                                        $params);
-            $view = new UsersPageView(ZurmoDefaultAdminViewUtil::
-                                         makeViewWithBreadcrumbsForCurrentUser($this, $detailsAndRelationsView, $breadcrumbLinks, 'UserBreadCrumbView'));
+            $view = new UsersPageView($this->resolveZurmoDefaultOrAdminView($detailsAndRelationsView, $breadcrumbLinks, 'UserBreadCrumbView'));
             echo $view->render();
         }
 
@@ -146,7 +159,7 @@
 
         public function actionCreate()
         {
-            $title           = Yii::t('Default', 'Create User');
+            $title           = Zurmo::t('UsersModule', 'Create User');
             $breadcrumbLinks = array($title);
             $user             = new User();
             $user->language   = Yii::app()->language;
@@ -168,7 +181,7 @@
             UserAccessUtil::resolveCanCurrentUserAccessAction(intval($id));
             $user            = User::getById(intval($id));
             $user->setScenario('editUser');
-            $title           = Yii::t('Default', 'Details');
+            $title           = Zurmo::t('UsersModule', 'Details');
             $breadcrumbLinks = array(strval($user) => array('default/details',  'id' => $id), $title);
             $this->attemptToValidateAjaxFromPost($user, 'User');
             if ($user == Yii::app()->user->userModel)
@@ -189,8 +202,7 @@
             {
                 $redirectUrlParams = null;
             }
-            $view = new UsersPageView(ZurmoDefaultAdminViewUtil::
-                                         makeViewWithBreadcrumbsForCurrentUser($this,
+            $view = new UsersPageView($this->resolveZurmoDefaultOrAdminView(
                                              $this->makeTitleBarAndEditView(
                                                 $this->attemptToSaveModelFromPost($user, $redirectUrlParams),
                                                     'UserActionBarAndEditView'), $breadcrumbLinks, 'UserBreadCrumbView'));
@@ -201,14 +213,13 @@
         {
             UserAccessUtil::resolveCanCurrentUserAccessAction(intval($id));
             $user = User::getById(intval($id));
-            $title           = Yii::t('Default', 'Change Password');
+            $title           = Zurmo::t('UsersModule', 'Change Password');
             $breadcrumbLinks = array(strval($user) => array('default/details',  'id' => $id), $title);
             $user->setScenario('changePassword');
             $userPasswordForm = new UserPasswordForm($user);
             $userPasswordForm->setScenario('changePassword');
             $this->attemptToValidateAjaxFromPost($userPasswordForm, 'UserPasswordForm');
-            $view = new UsersPageView(ZurmoDefaultAdminViewUtil::
-                                         makeViewWithBreadcrumbsForCurrentUser($this,
+            $view = new UsersPageView($this->resolveZurmoDefaultOrAdminView(
                                              $this->makeTitleBarAndEditView(
                                                 $this->attemptToSaveModelFromPost($userPasswordForm),
                                                 'UserActionBarAndChangePasswordView'), $breadcrumbLinks, 'UserBreadCrumbView'));
@@ -232,9 +243,8 @@
                     }
                 }
             }
-            $title                         = Yii::t('Default', 'Confirm your time zone');
+            $title                         = Zurmo::t('UsersModule', 'Confirm your time zone');
             $timeZoneView                  = new UserTimeZoneConfirmationView($this->getId(),
-
                                                                  $this->getModule()->getId(),
                                                                  $confirmTimeZoneForm,
                                                                  $title);
@@ -319,10 +329,12 @@
             $user = new User(false);
             $activeAttributes = $this->resolveActiveAttributesFromMassEditPost();
             $dataProvider = $this->getDataProviderByResolvingSelectAllFromGet(
-                new UsersSearchForm($user),
-                $pageSize,
-                Yii::app()->user->userModel->id);
-            $selectedRecordCount = $this->getSelectedRecordCountByResolvingSelectAllFromGet($dataProvider);
+                            new UsersSearchForm($user),
+                            $pageSize,
+                            Yii::app()->user->userModel->id,
+                            null,
+                            'UsersSearchView');
+            $selectedRecordCount = static::getSelectedRecordCountByResolvingSelectAllFromGet($dataProvider);
             $user = $this->processMassEdit(
                 $pageSize,
                 $activeAttributes,
@@ -356,10 +368,11 @@
                             'massEditProgressPageSize');
             $user = new User(false);
             $dataProvider = $this->getDataProviderByResolvingSelectAllFromGet(
-                new UsersSearchForm($user),
-                $pageSize,
-                Yii::app()->user->userModel->id
-            );
+                            new UsersSearchForm($user),
+                            $pageSize,
+                            Yii::app()->user->userModel->id,
+                            null,
+                           'UsersSearchView');
             $this->processMassEditProgressSave(
                 'User',
                 $pageSize,
@@ -377,7 +390,8 @@
         {
             $modalListLinkProvider = new SelectFromRelatedEditModalListLinkProvider(
                                             $_GET['modalTransferInformation']['sourceIdFieldId'],
-                                            $_GET['modalTransferInformation']['sourceNameFieldId']
+                                            $_GET['modalTransferInformation']['sourceNameFieldId'],
+                                            $_GET['modalTransferInformation']['modalId']
             );
             echo ModalSearchListControllerUtil::setAjaxModeAndRenderModalSearchList($this, $modalListLinkProvider);
         }
@@ -386,7 +400,7 @@
         {
             UserAccessUtil::resolveCanCurrentUserAccessAction(intval($id));
             $user = User::getById(intval($id));
-            $title           = Yii::t('Default', 'Security');
+            $title           = Zurmo::t('UsersModule', 'Security Overview');
             $breadcrumbLinks = array(strval($user) => array('default/details',  'id' => $id), $title);
             $modulePermissionsData =  PermissionsUtil::getAllModulePermissionsDataByPermitable($user);
             $modulePermissionsForm = ModulePermissionsFormUtil::makeFormFromPermissionsData($modulePermissionsData);
@@ -418,8 +432,7 @@
                 $policiesViewMetadata,
                 $groupMembershipViewData
             );
-            $view = new UsersPageView(ZurmoDefaultAdminViewUtil::
-                                         makeViewWithBreadcrumbsForCurrentUser($this, $securityDetailsView, $breadcrumbLinks, 'UserBreadCrumbView'));
+            $view = new UsersPageView($this->resolveZurmoDefaultOrAdminView($securityDetailsView, $breadcrumbLinks, 'UserBreadCrumbView'));
             echo $view->render();
         }
 
@@ -427,7 +440,7 @@
         {
             UserAccessUtil::resolveCanCurrentUserAccessAction(intval($id));
             $user = User::getById(intval($id));
-            $title           = Yii::t('Default', 'Configuration');
+            $title           = Zurmo::t('UsersModule', 'Configuration');
             $breadcrumbLinks = array(strval($user) => array('default/details',  'id' => $id), $title);
             $configurationForm = UserConfigurationFormAdapter::makeFormFromUserConfigurationByUser($user);
             $postVariableName   = get_class($configurationForm);
@@ -445,7 +458,7 @@
                         UserConfigurationFormAdapter::setConfigurationFromFormForCurrentUser($configurationForm);
                     }
                     Yii::app()->user->setFlash('notification',
-                        Yii::t('Default', 'User configuration saved successfully.')
+                        Zurmo::t('UsersModule', 'User configuration saved successfully.')
                     );
                     $this->redirect(array($this->getId() . '/details', 'id' => $user->id));
                 }
@@ -457,8 +470,49 @@
                                     $configurationForm
             );
             $titleBarAndEditView->setCssClasses(array('AdministrativeArea'));
-            $view = new UsersPageView(ZurmoDefaultAdminViewUtil::
-                                         makeViewWithBreadcrumbsForCurrentUser($this, $titleBarAndEditView, $breadcrumbLinks, 'UserBreadCrumbView'));
+            $view = new UsersPageView($this->resolveZurmoDefaultOrAdminView($titleBarAndEditView, $breadcrumbLinks, 'UserBreadCrumbView'));
+            echo $view->render();
+        }
+
+        public function actionEmailConfiguration($id, $redirectUrl = null)
+        {
+            UserAccessUtil::resolveCanCurrentUserAccessAction(intval($id));
+            $user  = User::getById(intval($id));
+            $title = Zurmo::t('UsersModule', 'Email Configuration');
+            $breadcrumbLinks = array(strval($user) => array('default/details',  'id' => $id), $title);
+            $emailAccount = EmailAccount::resolveAndGetByUserAndName($user);
+            $userEmailConfigurationForm = new UserEmailConfigurationForm($emailAccount);
+            $userEmailConfigurationForm->emailSignatureHtmlContent = $user->getEmailSignature()->htmlContent;
+            $postVariableName           = get_class($userEmailConfigurationForm);
+
+            if (isset($_POST[$postVariableName]))
+            {
+                $userEmailConfigurationForm->setAttributes($_POST[$postVariableName]);
+                if ($userEmailConfigurationForm->validate())
+                {
+                    $userEmailConfigurationForm->save();
+                    Yii::app()->user->setFlash('notification',
+                        Zurmo::t('UsersModule', 'User email configuration saved successfully.')
+                    );
+
+                    if ($redirectUrl != null)
+                    {
+                        $this->redirect($redirectUrl);
+                    }
+                    else
+                    {
+                        $this->redirect(array($this->getId() . '/details', 'id' => $user->id));
+                    }
+                }
+            }
+            $titleBarAndEditView = new UserActionBarAndEmailConfigurationEditView(
+                                    $this->getId(),
+                                    $this->getModule()->getId(),
+                                    $user,
+                                    $userEmailConfigurationForm
+            );
+            $titleBarAndEditView->setCssClasses(array('AdministrativeArea'));
+            $view = new UsersPageView($this->resolveZurmoDefaultOrAdminView($titleBarAndEditView, $breadcrumbLinks, 'UserBreadCrumbView'));
             echo $view->render();
         }
 
@@ -469,7 +523,7 @@
 
         public function actionExport()
         {
-            $this->export();
+            $this->export('UsersSearchView');
         }
 
         /**
@@ -492,6 +546,29 @@
                 );
             }
             echo CJSON::encode($autoCompleteResults);
+        }
+
+        /**
+         * Depending on the user interface, the user views should utilize the admin or regular view.  This especially
+         * important for mobile, since for mobile there are no admin views available yet.
+         * @param $containedView
+         * @param $breadcrumbLinks
+         * @param $breadcrumbViewClassName
+         * @return GridView
+         */
+        protected function resolveZurmoDefaultOrAdminView(View $containedView, $breadcrumbLinks, $breadcrumbViewClassName)
+        {
+            assert('is_array($breadcrumbLinks)');
+            assert('is_string($breadcrumbViewClassName)');
+            if (Yii::app()->userInterface->isMobile())
+            {
+                return ZurmoDefaultViewUtil::makeStandardViewForCurrentUser($this, $containedView);
+            }
+            else
+            {
+                return ZurmoDefaultAdminViewUtil::
+                    makeViewWithBreadcrumbsForCurrentUser($this, $containedView, $breadcrumbLinks, $breadcrumbViewClassName);
+            }
         }
     }
 ?>
