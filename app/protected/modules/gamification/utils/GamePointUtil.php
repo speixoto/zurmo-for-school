@@ -62,12 +62,14 @@
             }
         }
 
-        public static function getUserLeaderboardData($type)
+        public static function getUserLeaderboardData($type, $startingRank = 1, $offset = null, $count = null)
         {
             assert('is_string($type)');
-            $sql             = static::makeUserLeaderboardSqlQuery($type);
+            assert('$offset  === null || is_integer($offset)  && $offset  >= 0');
+            assert('$count   === null || is_integer($count)   && $count   >= 1');
+            $sql             = static::makeUserLeaderboardSqlQuery($type, $offset, $count);
             $rows            = R::getAll($sql);
-            $rank            = 1;
+            $rank            = $startingRank;
             $leaderboardData = array();
             foreach ($rows as $row)
             {
@@ -81,15 +83,28 @@
             return $leaderboardData;
         }
 
-        protected static function makeUserLeaderboardSqlQuery($type)
+        public static function getUserLeaderboardCount($type)
+        {
+            $sql = self::makeUserLeaderboardCountSqlQuery($type);
+            $count = R::getCell($sql);
+            if ($count === null)
+            {
+                $count = 0;
+            }
+            return $count;
+        }
+
+        protected static function makeUserLeaderboardSqlQuery($type, $offset = null, $count = null)
         {
             assert('is_string($type)');
+            assert('$offset  === null || is_integer($offset)  && $offset  >= 0');
+            assert('$count   === null || is_integer($count)   && $count   >= 1');
             $quote                     = DatabaseCompatibilityUtil::getQuote();
             $where                     = null;
             $selectDistinct            = false;
             $orderBy                   = "points desc";
             $joinTablesAdapter         = new RedBeanModelJoinTablesQueryAdapter('GamePointTransaction');
-            static::resolveLeaderboardWhereClausesByType($type, $joinTablesAdapter, $where);
+            static::resolveLeaderboardWhereClausesByType($type, $where);
             $selectQueryAdapter        = new RedBeanModelSelectQueryAdapter($selectDistinct);
             $selectQueryAdapter->addClause('_user', 'id', 'userid');
             $selectQueryAdapter->addSummationClause('gamepointtransaction', 'value', 'points');
@@ -98,13 +113,29 @@
             $joinTablesAdapter->addFromTableAndGetAliasName('_user', 'id', 'permitable', 'permitable_id');
             $groupBy                   = "{$quote}_user{$quote}.{$quote}id{$quote}";
             $sql                       = SQLQueryUtil::makeQuery('gamepointtransaction', $selectQueryAdapter,
-                                                                 $joinTablesAdapter, null, null, $where, $orderBy, $groupBy);
+                                         $joinTablesAdapter, $offset, $count, $where, $orderBy, $groupBy);
             return $sql;
         }
 
-        protected static function resolveLeaderboardWhereClausesByType($type,
-                                                                       RedBeanModelJoinTablesQueryAdapter $joinTablesAdapter,
-                                                                       & $where)
+        protected static function makeUserLeaderboardCountSqlQuery($type)
+        {
+            assert('is_string($type)');
+            $quote                     = DatabaseCompatibilityUtil::getQuote();
+            $where                     = null;
+            $selectDistinct            = true;
+            $joinTablesAdapter         = new RedBeanModelJoinTablesQueryAdapter('GamePointTransaction');
+            static::resolveLeaderboardWhereClausesByType($type, $where);
+            $selectQueryAdapter        = new RedBeanModelSelectQueryAdapter($selectDistinct);
+            $selectQueryAdapter->addCountClause('_user', 'id');
+            $joinTablesAdapter->addFromTableAndGetAliasName('gamepoint', 'gamepoint_id', 'gamepointtransaction');
+            $joinTablesAdapter->addFromTableAndGetAliasName('permitable', 'person_item_id', 'gamepoint', 'item_id');
+            $joinTablesAdapter->addFromTableAndGetAliasName('_user', 'id', 'permitable', 'permitable_id');
+            $sql                       = SQLQueryUtil::makeQuery('gamepointtransaction', $selectQueryAdapter,
+                $joinTablesAdapter, null, null, $where);
+            return $sql;
+        }
+
+        protected static function resolveLeaderboardWhereClausesByType($type, & $where)
         {
             if ($type == static::LEADERBOARD_TYPE_OVERALL)
             {
