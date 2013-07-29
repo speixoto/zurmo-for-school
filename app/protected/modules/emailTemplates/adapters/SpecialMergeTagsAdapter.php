@@ -39,13 +39,12 @@
      */
     class SpecialMergeTagsAdapter
     {
-        // TODO: @Shoaibi: Critical: Tests
         protected static $specialAttributesResolver = array (
-                                'modelUrl'      => 'resolveModelUrlByModel',
-                                'baseUrl'       => 'resolveBaseUrl',
-                                'companyName'   => 'resolveCompanyName',
-                                'currentYear'   => 'resolveCurrentYear',
-                                'lastYear'      => 'resolveLastYear',
+                                'modelUrl'          => 'resolveModelUrlByModel',
+                                'baseUrl'           => 'resolveBaseUrl',
+                                'applicationName'   => 'resolveApplicationName',
+                                'currentYear'       => 'resolveCurrentYear',
+                                'lastYear'          => 'resolveLastYear',
                                 );
 
         public static function isSpecialMergeTag($attributeName, $timeQualifier)
@@ -73,7 +72,7 @@
             return Yii::app()->getBaseUrl(true);
         }
 
-        protected static function resolveCompanyName()
+        protected static function resolveApplicationName()
         {
             return ZurmoConfigurationUtil::getByModuleName('ZurmoModule', 'applicationName');
         }
