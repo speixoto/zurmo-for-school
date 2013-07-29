@@ -43,7 +43,7 @@
 
         protected function checkService()
         {
-            $IMAPInstalled =  AutoBuildOptimizedInstallUtil::checkIMAP();
+            $IMAPInstalled =  InstallUtil::checkIMAP();
             if ($IMAPInstalled)
             {
                 $this->message  = Zurmo::t('InstallModule', 'IMAP extension is loaded.');

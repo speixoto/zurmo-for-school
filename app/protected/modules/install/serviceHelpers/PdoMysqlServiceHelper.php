@@ -41,7 +41,7 @@
     {
         protected function checkService()
         {
-            $passed = AutoBuildOptimizedInstallUtil::isPdoMysqlInstalled();
+            $passed = InstallUtil::isPdoMysqlInstalled();
             if ($passed)
             {
                 $this->message = Zurmo::t('InstallModule', 'pdo_mysql is installed.');

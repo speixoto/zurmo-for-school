@@ -55,7 +55,7 @@
         {
             $passed = true;
             $logBinValue = null;
-            if (!AutoBuildOptimizedInstallUtil::checkDatabaseLogBinValue('mysql',
+            if (!InstallUtil::checkDatabaseLogBinValue('mysql',
                                                        $this->form->databaseHostname,
                                                        $this->form->databaseUsername,
                                                        $this->form->databasePassword,
@@ -65,7 +65,7 @@
             {
                 $logBinTrustFunctionCreatorsValue = null;
 
-                if (!AutoBuildOptimizedInstallUtil::checkDatabaseLogBinTrustFunctionCreatorsValue(
+                if (!InstallUtil::checkDatabaseLogBinTrustFunctionCreatorsValue(
                                                        'mysql',
                                                        $this->form->databaseHostname,
                                                        $this->form->databaseUsername,

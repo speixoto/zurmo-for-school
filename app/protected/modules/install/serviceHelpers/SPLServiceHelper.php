@@ -42,7 +42,7 @@
     {
         protected function checkService()
         {
-            $SPLInstalled =  AutoBuildOptimizedInstallUtil::checkSPL();
+            $SPLInstalled =  InstallUtil::checkSPL();
             if ($SPLInstalled)
             {
                 $this->message  = Zurmo::t('InstallModule', 'SPL extension is loaded.');

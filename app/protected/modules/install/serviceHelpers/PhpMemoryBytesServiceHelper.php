@@ -44,7 +44,7 @@
         protected function checkService()
         {
             $actualMemoryBytes = null;
-            $memoryBytesPassed = AutoBuildOptimizedInstallUtil::checkPhpMaxMemorySetting($this->minimumMemoryRequireBytes,
+            $memoryBytesPassed = InstallUtil::checkPhpMaxMemorySetting($this->minimumMemoryRequireBytes,
                                                                        $actualMemoryBytes);
             if ($memoryBytesPassed)
             {

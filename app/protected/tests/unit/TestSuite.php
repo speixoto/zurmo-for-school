@@ -123,14 +123,14 @@
                     echo "Temp directory: " . sys_get_temp_dir() . "\n\n"; // Not Coding Standard
                     exit;
                 }
-                AutoBuildOptimizedInstallUtil::connectToDatabaseWithConnectionString(Yii::app()->db->connectionString,
+                InstallUtil::connectToDatabaseWithConnectionString(Yii::app()->db->connectionString,
                                                                    Yii::app()->db->username,
                                                                    Yii::app()->db->password);
                 echo "Auto building database schema...\n";
-                AutoBuildOptimizedInstallUtil::dropAllTables();
-                Yii::app()->user->userModel = AutoBuildOptimizedInstallUtil::createSuperUser('super', 'super');
+                InstallUtil::dropAllTables();
+                Yii::app()->user->userModel = InstallUtil::createSuperUser('super', 'super');
                 $messageLogger = new MessageLogger();
-                AutoBuildOptimizedInstallUtil::autoBuildDatabase($messageLogger);
+                InstallUtil::autoBuildDatabase($messageLogger);
                 $messageLogger->printMessages();
                 ReadPermissionsOptimizationUtil::rebuild();
                 assert('RedBeanDatabase::isSetup()');
@@ -149,7 +149,7 @@
                 {
                     echo 'Dumping schema using system command. Output: ' . $systemOutput . "\n\n";
                 }
-                AutoBuildOptimizedInstallUtil::close();
+                InstallUtil::close();
                 echo "Database closed.\n";
                 assert('!RedBeanDatabase::isSetup()');
             }

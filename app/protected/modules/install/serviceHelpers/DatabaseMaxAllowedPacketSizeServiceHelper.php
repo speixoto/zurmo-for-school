@@ -54,7 +54,7 @@
         {
             $passed = true;
             $actualBytes = null;
-            if (!AutoBuildOptimizedInstallUtil::checkDatabaseMaxAllowedPacketsSize('mysql',
+            if (!InstallUtil::checkDatabaseMaxAllowedPacketsSize('mysql',
                                                                $this->form->databaseHostname,
                                                                $this->form->databaseUsername,
                                                                $this->form->databasePassword,

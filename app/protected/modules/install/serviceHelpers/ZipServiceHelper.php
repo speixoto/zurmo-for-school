@@ -43,7 +43,7 @@
 
         protected function checkService()
         {
-            $zipInstalled =  AutoBuildOptimizedInstallUtil::checkZip();
+            $zipInstalled =  InstallUtil::checkZip();
             if ($zipInstalled)
             {
                 $this->message  = Zurmo::t('InstallModule', 'Zip extension is loaded.');

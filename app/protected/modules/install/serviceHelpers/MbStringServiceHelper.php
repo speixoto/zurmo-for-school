@@ -41,7 +41,7 @@
     {
         protected function checkService()
         {
-            $passed = AutoBuildOptimizedInstallUtil::isMbStringInstalled();
+            $passed = InstallUtil::isMbStringInstalled();
             if ($passed)
             {
                 $this->message = Zurmo::t('InstallModule', 'Mbstring is installed.');

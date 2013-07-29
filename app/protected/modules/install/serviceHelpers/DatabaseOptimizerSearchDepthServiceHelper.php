@@ -53,7 +53,7 @@
         {
             $passed = true;
             $optimizerSearchDepth = null;
-            if (!AutoBuildOptimizedInstallUtil::checkDatabaseOptimizerSearchDepthValue('mysql',
+            if (!InstallUtil::checkDatabaseOptimizerSearchDepthValue('mysql',
                                                                $this->form->databaseHostname,
                                                                $this->form->databaseUsername,
                                                                $this->form->databasePassword,

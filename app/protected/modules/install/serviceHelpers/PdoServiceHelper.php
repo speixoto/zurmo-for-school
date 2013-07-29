@@ -41,7 +41,7 @@
     {
         protected function checkService()
         {
-            $passed = AutoBuildOptimizedInstallUtil::isPdoInstalled();
+            $passed = InstallUtil::isPdoInstalled();
             if ($passed)
             {
                 $this->message = Zurmo::t('InstallModule', 'pdo is installed.');

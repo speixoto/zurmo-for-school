@@ -132,7 +132,7 @@
                         'hostname, you must specify a port.'));
                         return;
                     }
-                    $memcacheResult = AutoBuildOptimizedInstallUtil::checkMemcacheConnection($this->memcacheHostname,
+                    $memcacheResult = InstallUtil::checkMemcacheConnection($this->memcacheHostname,
                                                                            (int)$this->memcachePortNumber);
                     if ($memcacheResult !== true)
                     {

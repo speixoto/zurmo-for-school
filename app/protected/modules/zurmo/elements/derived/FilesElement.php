@@ -84,7 +84,7 @@
                 'formName'             => $this->form->id,
                 'allowMultipleUpload'  => true,
                 'existingFiles'        => $existingFilesInformation,
-                'maxSize'              => (int)AutoBuildOptimizedInstallUtil::getMaxAllowedFileSize(),
+                'maxSize'              => (int)InstallUtil::getMaxAllowedFileSize(),
                 'showMaxSize'          => $this->getShowMaxSize(),
                 'id'                   => $this->getId(),
             ));

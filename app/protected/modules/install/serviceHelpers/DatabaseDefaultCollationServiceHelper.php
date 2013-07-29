@@ -54,7 +54,7 @@
         {
             $passed = true;
             $databaseDefaultCollation = null;
-            if (!AutoBuildOptimizedInstallUtil::checkDatabaseDefaultCollation('mysql',
+            if (!InstallUtil::checkDatabaseDefaultCollation('mysql',
                                                           $this->form->databaseHostname,
                                                           $this->form->databaseName,
                                                           $this->form->databaseUsername,

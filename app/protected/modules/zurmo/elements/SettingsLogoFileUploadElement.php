@@ -68,7 +68,7 @@
                 'hiddenInputName'      => 'logoFileName',
                 'formName'             => $this->form->id,
                 'existingFiles'        => $existingFilesInformation,
-                'maxSize'              => (int)AutoBuildOptimizedInstallUtil::getMaxAllowedFileSize(),
+                'maxSize'              => (int)InstallUtil::getMaxAllowedFileSize(),
                 'beforeUploadAction'   => null,
                 'afterDeleteAction'    => null
             ));

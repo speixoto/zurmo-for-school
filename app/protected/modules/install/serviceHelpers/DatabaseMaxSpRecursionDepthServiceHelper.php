@@ -54,7 +54,7 @@
         {
             $passed = true;
             $maxSpRecursionDepth = null;
-            if (!AutoBuildOptimizedInstallUtil::checkDatabaseMaxSpRecursionDepth('mysql',
+            if (!InstallUtil::checkDatabaseMaxSpRecursionDepth('mysql',
                                                                $this->form->databaseHostname,
                                                                $this->form->databaseUsername,
                                                                $this->form->databasePassword,

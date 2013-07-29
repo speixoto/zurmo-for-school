@@ -608,23 +608,13 @@
             assert('count(ZurmoRedBean::getCol("show tables")) == 0');
         }
 
-        /**
-         * Auto builds the database.  Must manually set AuditEvent first to avoid issues building the AuditEvent
-         * table. This is because AuditEvent is specially optimized during this build process to reduce how
-         * long this takes to do.
-         */
         public static function autoBuildDatabase(& $messageLogger)
         {
-            $rootModels   = array();
-            $rootModels[] = 'AuditEvent';
-            foreach (Module::getModuleObjects() as $module)
-            {
-                $moduleAndDependenciesRootModelNames = $module->getRootModelNamesIncludingDependencies();
-                $rootModels = array_merge($rootModels, array_diff($moduleAndDependenciesRootModelNames, $rootModels));
-            }
             ZurmoDatabaseCompatibilityUtil::createStoredFunctionsAndProcedures();
-            RedBeanDatabaseBuilderUtil::autoBuildModels($rootModels, $messageLogger);
-            ZurmoDatabaseCompatibilityUtil::createIndexes();
+            $messageLogger->addInfoMessage(Zurmo::t('InstallModule','Searching for models'));
+            $rootModels = PathUtil::getAllCanHaveBeanModelClassNames();
+            $messageLogger->addInfoMessage(Zurmo::t('InstallModule', 'Models catalog built.'));
+            RedBeanModelsToTablesAdapter::generateTablesFromModelClassNames($rootModels, $messageLogger);
         }
 
         /**
@@ -884,12 +874,13 @@
 
         /**
          * Given an installSettingsForm, run the install including the schema creation and default data load. This is
-         * used by the interactice install and the command line install.
+         * used by the interactive install and the command line install.
          * @param object $form
          * @param object $messageStreamer
          */
         public static function runInstallation($form, & $messageStreamer)
         {
+            Yii::app()->params['isFreshInstall']    = true;
             assert('$form instanceof InstallSettingsForm');
             assert('$messageStreamer instanceof MessageStreamer');
 
@@ -906,18 +897,17 @@
             }
 
             $messageStreamer->add(Zurmo::t('InstallModule', 'Connecting to Database.'));
-            static::connectToDatabase( $form->databaseType,
-                                            $form->databaseHostname,
-                                            $form->databaseName,
-                                            $form->databaseUsername,
-                                            $form->databasePassword,
-                                            $form->databasePort);
+            static::connectToDatabase($form->databaseType,
+                                        $form->databaseHostname,
+                                        $form->databaseName,
+                                        $form->databaseUsername,
+                                        $form->databasePassword,
+                                        $form->databasePort);
             ForgetAllCacheUtil::forgetAllCaches();
             $messageStreamer->add(Zurmo::t('InstallModule', 'Dropping existing tables.'));
             static::dropAllTables();
             $messageStreamer->add(Zurmo::t('InstallModule', 'Creating super user.'));
-            static::createSuperUser(   'super',
-                                            $form->superUserPassword);
+
             $messageLogger = new MessageLogger($messageStreamer);
             Yii::app()->custom->runBeforeInstallationAutoBuildDatabase($messageLogger);
             $messageStreamer->add(Zurmo::t('InstallModule', 'Starting database schema creation.'));
@@ -928,7 +918,7 @@
             static::autoBuildDatabase($messageLogger);
             $endTime = microtime(true);
             $messageStreamer->add(Zurmo::t('InstallModule', 'Total autobuild time: {formattedTime} seconds.',
-                                  array('{formattedTime}' => number_format(($endTime - $startTime), 3))));
+                array('{formattedTime}' => number_format(($endTime - $startTime), 3))));
             if (SHOW_QUERY_DATA)
             {
                 $messageStreamer->add(PageView::getTotalAndDuplicateQueryCountContent());
@@ -942,21 +932,24 @@
             $messageStreamer->add(Zurmo::t('InstallModule', 'Writing Configuration File.'));
 
             static::writeConfiguration(INSTANCE_ROOT,
-                                            $form->databaseType,
-                                            $form->databaseHostname,
-                                            $form->databaseName,
-                                            $form->databaseUsername,
-                                            $form->databasePassword,
-                                            $form->databasePort,
-                                            $form->memcacheHostname,
-                                            (int)$form->memcachePortNumber,
-                                            true,
-                                            Yii::app()->language,
-                                            $perInstanceFilename,
-                                            $debugFilename,
-                                            $form->hostInfo,
-                                            $form->scriptUrl,
-                                            $form->submitCrashToSentry);
+                                        $form->databaseType,
+                                        $form->databaseHostname,
+                                        $form->databaseName,
+                                        $form->databaseUsername,
+                                        $form->databasePassword,
+                                        $form->databasePort,
+                                        $form->memcacheHostname,
+                                        (int)$form->memcachePortNumber,
+                                        true,
+                                        Yii::app()->language,
+                                        $perInstanceFilename,
+                                        $debugFilename,
+                                        $form->hostInfo,
+                                        $form->scriptUrl,
+                                        $form->submitCrashToSentry);
+            static::setZurmoTokenAndWriteToPerInstanceFile(INSTANCE_ROOT);
+            ZurmoPasswordSecurityUtil::setPasswordSaltAndWriteToPerInstanceFile(INSTANCE_ROOT);
+            static::createSuperUser('super', $form->superUserPassword);
             $messageStreamer->add(Zurmo::t('InstallModule', 'Setting up default data.'));
             DefaultDataUtil::load($messageLogger);
             Yii::app()->custom->runAfterInstallationDefaultDataLoad($messageLogger);
@@ -977,9 +970,6 @@
                 $rules                      = new EnableMinifyNotificationRules();
                 NotificationsUtil::submit($message, $rules);
             }
-
-            static::setZurmoTokenAndWriteToPerInstanceFile(INSTANCE_ROOT);
-            ZurmoPasswordSecurityUtil::setPasswordSaltAndWriteToPerInstanceFile(INSTANCE_ROOT);
             $messageStreamer->add(Zurmo::t('InstallModule', 'Installation Complete.'));
         }
 

@@ -48,7 +48,7 @@
 
     DESCRIPTION
       This command runs an update on the database schema. It calls the
-      AutoBuildOptimizedInstallUtil::runAutoBuildFromUpdateSchemaCommand.
+      InstallUtil::runAutoBuildFromUpdateSchemaCommand.
 
     PARAMETERS
      * username: username to log in as and run the import processes. Typically 'super'.
@@ -87,7 +87,7 @@ EOD;
             $messageStreamer->setExtraRenderBytes(0);
             $messageStreamer->add(Zurmo::t('Commands', 'Starting schema update process.'));
             $messageLogger = new MessageLogger($messageStreamer);
-            AutoBuildOptimizedInstallUtil::runAutoBuildFromUpdateSchemaCommand($messageLogger);
+            InstallUtil::runAutoBuildFromUpdateSchemaCommand($messageLogger);
             $messageStreamer->add(Zurmo::t('Commands', 'Autobuild complete, rebuilding read permissions.'));
             if (SHOW_QUERY_DATA)
             {

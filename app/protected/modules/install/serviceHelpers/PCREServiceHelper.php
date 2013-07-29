@@ -42,7 +42,7 @@
     {
         protected function checkService()
         {
-            $PCREInstalled =  AutoBuildOptimizedInstallUtil::checkPCRE();
+            $PCREInstalled =  InstallUtil::checkPCRE();
             if ($PCREInstalled)
             {
                 $this->message  = Zurmo::t('InstallModule', 'PCRE extension is loaded.');
