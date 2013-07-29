@@ -424,7 +424,7 @@
         protected function registerRemoveActionScript()
         {
             $script = '
-                $(".remove-dynamic-row-link").live("click", function()
+                $(".remove-dynamic-row-link, .remove-action-row-link").live("click", function()
                 {
                     $("#' . self::ACTION_TYPE_NAME . '").val("").removeAttr("disabled");
                     size = $(this).parent().parent().parent().find("li").size();
