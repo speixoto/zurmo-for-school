@@ -163,27 +163,10 @@
                     $polyTypeFieldName        = strtolower($this->linkName) . '_type';
                     $bean->$polyTypeFieldName = $this->bean->getMeta('type');
                     $bean->$polyIdFieldName   = $this->bean->id;
-                    if (!RedBeanDatabase::isFrozen())
-                    {
-                        $tableName  = RedBeanModel::getTableName($this->modelClassName);
-                        RedBeanColumnTypeOptimizer::optimize($tableName, $polyIdFieldName, 'id');
-                    }
                 }
                 else
                 {
-                    // TODO: @Shoaibi/@Jason: Critical: This adds the non-prefix version of column
                     ZurmoRedBeanLinkManager::link($bean, $this->bean, $this->resolveLinkNameForCasing());
-                    /*
-                     // TODO: @Shoaibi/@Jason: Critical: We don't need this anymore.
-                    if (!RedBeanDatabase::isFrozen())
-                    {
-                        $tableName        = RedBeanModel::getTableName($this->modelClassName);
-                        $columnName       = RedBeanModel::getTableName($this->relatedModelClassName) . '_id';
-                        $columnName       = ZurmoRedBeanLinkManager::
-                                            resolveColumnPrefix($this->resolveLinkNameForCasing()) . $columnName;
-                        RedBeanColumnTypeOptimizer::optimize($tableName, $columnName, 'id');
-                    }
-                    */
                 }
                 ZurmoRedBean::store($bean);
             }

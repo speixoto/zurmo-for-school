@@ -66,7 +66,6 @@
             try
             {
                 ZurmoRedBean::setup($dsn, $username, $password);
-                ZurmoRedBean::$redbean->addEventListener("update",       new RedBeanBeforeUpdateHintManager(ZurmoRedBean::$toolbox));
                 if (SHOW_QUERY_DATA)
                 {
                     Yii::app()->performance->setRedBeanQueryLogger(ZurmoRedBeanPluginQueryLogger::

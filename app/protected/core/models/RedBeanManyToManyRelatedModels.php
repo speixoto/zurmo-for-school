@@ -108,14 +108,6 @@
             {
                 $tableName = $this->getTableName($bean);
                 ZurmoRedBean::associate($this->bean, $bean, null, $tableName);
-                if (!RedBeanDatabase::isFrozen())
-                {
-                    foreach (array($this->bean->getMeta("type"), $bean->getMeta("type")) as $type)
-                    {
-                        $columnName = "{$type}_id";
-                        RedBeanColumnTypeOptimizer::optimize($tableName, $columnName, 'id');
-                    }
-                }
             }
             $this->deferredRelateBeans = array();
             foreach ($this->deferredUnrelateBeans as $bean)

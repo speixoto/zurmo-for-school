@@ -1919,16 +1919,6 @@
                                     {
                                         ZurmoRedBeanLinkManager::link($bean, $relatedBean, $linkName);
                                     }
-                                    /*
-                                     * // TODO: @Shoaibi: Critical: run tests with this enabled and disabled
-                                     * // TODO: @Shoaibi/@Jason: Critical: We don't need this anymore.
-                                    if (!RedBeanDatabase::isFrozen())
-                                    {
-                                        $tableName  = self::getTableName(static::getAttributeModelClassName($relationName));
-                                        $columnName = self::getForeignKeyName(get_class($this), $relationName);
-                                        RedBeanColumnTypeOptimizer::optimize($tableName, $columnName, 'id');
-                                    }
-                                    */
                                 }
                             }
                         }
@@ -1937,12 +1927,6 @@
                         {
                             ZurmoRedBean::store($bean);
                             assert('$bean->id > 0');
-                            if (!RedBeanDatabase::isFrozen())
-                            {
-                                static::resolveMixinsOnSaveForEnsuringColumnsAreCorrectlyFormed($baseModelClassName,
-                                                                                                $modelClassName);
-                                $baseModelClassName = $modelClassName;
-                            }
                         }
                         $this->modified = false;
                         $this->afterSave();
@@ -1962,23 +1946,6 @@
             {
                 $this->isSaving = false;
                 throw $e;
-            }
-        }
-
-        /**
-         * Resolve that the id columns are properly formed as integers.
-         * @param string or null $baseModelClassName
-         * @param string $modelClassName
-         */
-        protected static function resolveMixinsOnSaveForEnsuringColumnsAreCorrectlyFormed($baseModelClassName, $modelClassName)
-        {
-            assert('$baseModelClassName == null || is_string($baseModelClassName)');
-            assert('is_string($modelClassName)');
-            if ($baseModelClassName !== null)
-            {
-                $tableName  = self::getTableName($modelClassName);
-                $columnName = self::getTableName($baseModelClassName) . '_id';
-                RedBeanColumnTypeOptimizer::optimize($tableName, $columnName, 'id');
             }
         }
 
@@ -2055,21 +2022,13 @@
 
         protected function linkBeans()
         {
-            $baseModelClassName = null;
             $baseBean = null;
             foreach ($this->modelClassNameToBean as $modelClassName => $bean)
             {
                 if ($baseBean !== null)
                 {
                     ZurmoRedBeanLinkManager::link($bean, $baseBean);
-                    if (!RedBeanDatabase::isFrozen())
-                    {
-                        $tableName  = self::getTableName($modelClassName);
-                        $columnName = self::getTableName($baseModelClassName) . '_id';
-                        RedBeanColumnTypeOptimizer::optimize($tableName, $columnName, 'id');
-                    }
                 }
-                $baseModelClassName = $modelClassName;
                 $baseBean = $bean;
             }
         }

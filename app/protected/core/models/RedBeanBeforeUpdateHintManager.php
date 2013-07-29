@@ -34,6 +34,7 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
+    // TODO: @Shoaibi/@Jason: Critical: No longer used?
     class RedBeanBeforeUpdateHintManager implements RedBean_Observer
     {
         public function onEvent($type, $info)
