@@ -406,32 +406,6 @@
   <td>ConversationItemForm_Opportunity_name</td>
   <td>Test Opportunity ${randomSuffix}</td>
 </tr>
-<!--Add user to conversation-->
-<!--tr>
-  <td>type</td>
-  <td>token-input-ConversationParticipantsForm_item_ids</td>
-  <td>Sal</td>
-</tr>
-<tr>
-    <td>keyUp</td>
-    <td>token-input-ConversationParticipantsForm_item_ids</td>
-    <td>\10</td>
-</tr>
-<tr>
-  <td>waitForCondition</td>
-  <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
-  <td>30000</td>
-</tr>
-<tr>
-  <td>waitForText</td>
-  <td>//div[@id='list-viewmodal']/table/tbody/tr[1]/td/a</td>
-  <td>Sally Smith</td>
-</tr>
-<tr>
-  <td>click</td>
-  <td>//div[@id='list-viewmodal']/table/tbody/tr[1]/td/a</td>
-  <td></td>
-</tr-->
 <tr>
 	<td>clickAndWait</td>
 	<td>save</td>
@@ -463,6 +437,12 @@
 	<td></td>
 </tr>
 <tr>
+	<td>setSpeed</td>
+	<td>3000</td>
+	<td></td>
+</tr>
+<!--Add user to conversation-->
+<tr>
 	<td>type</td>
 	<td>id=token-input-ConversationParticipantsForm_item_ids</td>
 	<td>jil</td>
@@ -480,6 +460,11 @@
 <tr>
 	<td>assertTextPresent</td>
 	<td>Jill Smith</td>
+	<td></td>
+</tr>
+<tr>
+	<td>setSpeed</td>
+	<td>0</td>
 	<td></td>
 </tr>
 </tbody></table>
