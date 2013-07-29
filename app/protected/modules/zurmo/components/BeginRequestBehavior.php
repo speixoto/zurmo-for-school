@@ -75,7 +75,6 @@
             $owner->detachEventHandler('onBeginRequest', array(Yii::app()->request, 'validateCsrfToken'));
             $owner->attachEventHandler('onBeginRequest', array($this, 'handleImports'));
             $owner->attachEventHandler('onBeginRequest', array($this, 'handleSetupDatabaseConnection'));
-            $owner->attachEventHandler('onBeginRequest', array($this, 'handleCheckAutoBuildCompleted'));
             $owner->attachEventHandler('onBeginRequest', array($this, 'handleDisableGamification'));
             $owner->attachEventHandler('onBeginRequest', array($this, 'handleInitApiRequest'));
             $owner->attachEventHandler('onBeginRequest', array($this, 'handleBeginApiRequest'));
@@ -112,7 +111,6 @@
         protected function attachNonApiRequestBehaviorsForInstalledApplication(CComponent $owner)
         {
             $owner->attachEventHandler('onBeginRequest', array($this, 'handleSetupDatabaseConnection'));
-            $owner->attachEventHandler('onBeginRequest', array($this, 'handleCheckAutoBuildCompleted'));
             $owner->attachEventHandler('onBeginRequest', array($this, 'handleBeginRequest'));
             $owner->attachEventHandler('onBeginRequest', array($this, 'handleClearCache'));
             $owner->attachEventHandler('onBeginRequest', array($this, 'handleLoadLanguage'));
@@ -216,15 +214,6 @@
             if (!$instanceFoldersServiceHelper->runCheckAndGetIfSuccessful())
             {
                 echo $instanceFoldersServiceHelper->getMessage();
-                Yii::app()->end(0, false);
-            }
-        }
-
-        public function handleCheckAutoBuildCompleted($event)
-        {
-            if (!RedBeanDatabaseBuilderUtil::isAutoBuildStateValid())
-            {
-                echo Zurmo::t('ZurmoModule', 'Database upgrade not completed. Please try again later.');
                 Yii::app()->end(0, false);
             }
         }

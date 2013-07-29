@@ -48,7 +48,7 @@
 
     DESCRIPTION
       This command runs an update on the database schema. It calls the
-      RedBeanDatabaseBuilderUtil::autoBuildModels.
+      AutoBuildOptimizedInstallUtil::runAutoBuildFromUpdateSchemaCommand.
 
     PARAMETERS
      * username: username to log in as and run the import processes. Typically 'super'.
