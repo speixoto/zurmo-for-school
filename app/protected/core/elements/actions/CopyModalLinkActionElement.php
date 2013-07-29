@@ -34,9 +34,9 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
     /**
-     * Action element which renders edit link on clicking of which opens a modal window
+     * Action element which renders copy link on clicking of which opens a modal window
      */
-    class EditModalLinkActionElement extends ModalLinkActionElement
+    class CopyModalLinkActionElement extends ModalLinkActionElement
     {
         /**
          * Gets default label
@@ -44,7 +44,7 @@
          */
         protected function getDefaultLabel()
         {
-            return Zurmo::t('Core', 'Edit');
+            return Zurmo::t('Core', 'Clone');
         }
 
         /**
@@ -54,7 +54,7 @@
         protected function getDefaultRoute()
         {
             return Yii::app()->createUrl($this->getRouteModuleId() . '/' .
-                        $this->controllerId . '/modalEditFromRelation', array_merge(array('id' => $this->modelId),
+                        $this->controllerId . '/modalCopyFromRelation', array_merge(array('id' => $this->modelId, 'action' => 'copy'),
                                                                                        $this->getCreateLinkUrlParams()));
         }
 
@@ -76,7 +76,7 @@
          */
         public function getActionType()
         {
-            return 'Create';
+            return 'Edit';
         }
 
         /**

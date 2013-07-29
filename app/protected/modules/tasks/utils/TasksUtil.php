@@ -329,6 +329,10 @@
             {
                 $title = Zurmo::t('TasksModule', 'Create TasksModuleSingularLabel', $params);
             }
+            elseif($renderType == "Copy")
+            {
+                $title = Zurmo::t('TasksModule', 'Copy TasksModuleSingularLabel', $params);
+            }
             else
             {
                 $title = Zurmo::t('TasksModule', 'Edit TasksModuleSingularLabel', $params);

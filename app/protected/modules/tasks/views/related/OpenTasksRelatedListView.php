@@ -65,7 +65,14 @@
                                     'uniqueLayoutId'  => 'eval:$this->uniqueLayoutId',
                                     'modalContainerId'=> 'eval:TasksUtil::getModalContainerId()'
                                  ),
-                            array('type' => 'CopyLink'),
+                            array(  'type'            => 'CopyModalLink',
+                                    'portletId'       => 'eval:$this->params["portletId"]',
+                                    'routeModuleId'   => 'eval:$this->moduleId',
+                                    'routeParameters' => 'eval:$this->getCreateLinkRouteParameters()',
+                                    'ajaxOptions'     => 'eval:TasksUtil::resolveAjaxOptionsForEditModel("Copy")',
+                                    'uniqueLayoutId'  => 'eval:$this->uniqueLayoutId',
+                                    'modalContainerId'=> 'eval:TasksUtil::getModalContainerId()'
+                                 ),
                             array('type' => 'RelatedDeleteLink'),
                         ),
                     ),

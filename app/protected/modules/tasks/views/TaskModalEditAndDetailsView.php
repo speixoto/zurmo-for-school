@@ -104,9 +104,9 @@
          */
         protected function resolveActiveFormAjaxValidationOptions()
         {
+            $id = Yii::app()->request->getParam('id', null);
             if(Yii::app()->request->getParam('modalTransferInformation', null) != null)
             {
-                $id = Yii::app()->request->getParam('id', null);
                 $relationAttributeName   = $_GET['modalTransferInformation']['relationAttributeName'];
                 $relationModelId         = $_GET['modalTransferInformation']['relationModelId'];
                 $relationModuleId        = $_GET['modalTransferInformation']['relationModuleId'];
@@ -114,17 +114,27 @@
                 $portletId               = $_GET['modalTransferInformation']['portletId'];
                 $uniqueLayoutId          = $_GET['modalTransferInformation']['uniqueLayoutId'];
 
-                $url = Yii::app()->createUrl('tasks/default/modalSaveFromRelation', array('relationAttributeName' => $relationAttributeName,
+                $action                  = Yii::app()->request->getParam('action', null);
+                if($action == null)
+                {
+                    $params = array('id' => $id);
+                }
+                else
+                {
+                    $params = array('id' => null);
+                }
+                $url = Yii::app()->createUrl('tasks/default/modalSaveFromRelation',
+                                                                        array_merge(array('relationAttributeName' => $relationAttributeName,
                                                                                           'relationModelId'       => $relationModelId,
                                                                                           'relationModuleId'      => $relationModuleId,
                                                                                           'portletId'             => $portletId,
-                                                                                          'uniqueLayoutId'        => $uniqueLayoutId,
-                                                                                          'id'                    => $id
+                                                                                          'uniqueLayoutId'        => $uniqueLayoutId
+                                                                                          ), $params
                                                                                         ));
             }
             else
             {
-                $url = Yii::app()->createUrl('tasks/default/modalSave');
+                $url = Yii::app()->createUrl('tasks/default/modalSave', array('id' => $id));
             }
             $errorInProcess = CJavaScript::quote(Zurmo::t('Core', 'There was an error processing your request'));
             return array('enableAjaxValidation' => true,

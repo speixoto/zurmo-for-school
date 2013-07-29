@@ -237,11 +237,35 @@
         /**
          * Saves task in the modal view
          */
-        public function actionModalSave()
+        public function actionModalSave($id)
         {
-            $task             = new Task();
+            if($id == null)
+            {
+                $task             = new Task();
+            }
+            else
+            {
+                $task = Task::getById(intval($id));
+            }
             $task             = $this->attemptToSaveModelFromPost($task, null, false);
             $this->actionModalViewFromRelation($task->id);
+        }
+
+        /**
+         * Clone task
+         * @param int $id
+         * @param string $redirectUrl
+         */
+        public function actionModalCopyFromRelation($id)
+        {
+            $copyToTask   = new Task();
+            if (!isset($_POST['Task']))
+            {
+                $task = Task::getById((int)$id);
+                ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($task);
+                ActivityCopyModelUtil::copy($task, $copyToTask);
+            }
+            $this->processTaskEdit($copyToTask);
         }
 
         /**
