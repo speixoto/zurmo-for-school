@@ -274,7 +274,7 @@
                 $attributeIndexOrDerivedType = $this->mappingData[$columnName]['attributeIndexOrDerivedType'];
                 $attributeImportRules = AttributeImportRulesFactory::makeByImportRulesTypeAndAttributeIndexOrDerivedType(
                                         $this->importRulesType, $attributeIndexOrDerivedType);
-                $content .= ZurmoHtml::tag('span', array('class' => 'icon-import-mapping'), '');
+                $content .= ZurmoHtml::tag('span', array('class' => 'icon-import-mapping'), '&darr;');
                 $content .= $attributeImportRules->getDisplayLabel();
             }
             return $content;

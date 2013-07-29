@@ -83,15 +83,17 @@
             elseif($type == self::STATUS_WARN)
             {
                 $label = Zurmo::t('ImportModule', 'Warning');
-                $stage = ' stage-false';
+                $stage = '';
             }
             elseif($type == self::STATUS_SKIP)
             {
                 $label = Zurmo::t('ImportModule', 'Skip');
-                $stage = '';
+                $stage = ' stage-false';
             }
 
-            $pill = '<div class="email-recipient-stage-status' . $stage . '"><i>●</i>' . ZurmoHtml::tag('span', array(), $label) . '</div>';
+            //@todo Jason: need a refactor here and in markeign email recipients to generate these 2 divs:continuum and clearfix
+            $pill = '<div class="continuum"><div class="clearfix"><div class="import-item-stage-status' . $stage . '"><i>●</i>' .
+                    ZurmoHtml::tag('span', array(), $label) . '</div></div></div>';
 
             return $pill;
         }
