@@ -129,7 +129,6 @@
                     }
                 ');
             }
-
         }
 
         protected function registerSubscribeContactsAjaxScript()

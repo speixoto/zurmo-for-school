@@ -40,11 +40,11 @@
     class UsersSearchWithDataProviderTest extends ZurmoBaseTest
     {
         private $user1;
-        
+
         private $user2;
-        
+
         private $user3;
-        
+
         private $super;
 
         public static function setUpBeforeClass()
@@ -53,14 +53,14 @@
             SecurityTestHelper::createSuperAdmin();
             $super                              = User::getByUsername('super');
             Yii::app()->user->userModel         = $super;
-                        
+
             $user1                              = new User();
             $user1->username                    = 'user1';
             $user1->firstName                   = 'abel';
             $user1->lastName                    = 'zitabina';
             $user1->setPassword('myuser');
             $user1->save();
-            
+
             $user2                              = new User();
             $user2->username                    = 'user2';
             $user2->firstName                   = 'zitabina';
@@ -74,10 +74,10 @@
             $user3->lastName                    = 'abel';
             $user3->setPassword('myuser');
             $user3->save();
-                        
         }
-        
-        public function setUp() {
+
+        public function setUp()
+        {
             parent::setUp();
             $this->super                        = User::getByUsername('super');
             Yii::app()->user->userModel         = $this->super;
@@ -87,7 +87,7 @@
         }
 
         public function testDefaultFullnameOrderOnUsers()
-        {                                   
+        {
             $searchAttributeData        = array();
             $dataProvider               = new RedBeanModelDataProvider('User', null, false, $searchAttributeData);
             $data                       = $dataProvider->getData();
@@ -96,28 +96,28 @@
             $this->assertEquals($this->super, $data[2]);
             $this->assertEquals($this->user1, $data[3]);
         }
-        
+
         /**
          * @depends testDefaultFullnameOrderOnUsers
          */
         public function testFirstNameOrderOnUsers()
         {
             $searchAttributeData                = array();
-            $dataProvider                       = new RedBeanModelDataProvider('User', 'firstName', false, $searchAttributeData);            
+            $dataProvider                       = new RedBeanModelDataProvider('User', 'firstName', false, $searchAttributeData);
             $data                               = $dataProvider->getData();
             $this->assertEquals($this->user3, $data[0]);
             $this->assertEquals($this->user1, $data[1]);
             $this->assertEquals($this->super, $data[2]);
             $this->assertEquals($this->user2, $data[3]);
         }
-        
+
         /**
          * @depends testDefaultFullnameOrderOnUsers
          */
         public function testLastNameOrderOnUsers()
         {
             $searchAttributeData                = array();
-            $dataProvider                       = new RedBeanModelDataProvider('User', 'lastName', false, $searchAttributeData);             
+            $dataProvider                       = new RedBeanModelDataProvider('User', 'lastName', false, $searchAttributeData);
             $data                               = $dataProvider->getData();
             $this->assertTrue($this->user3->id == $data[0]->id || $this->user3->id == $data[1]->id);
             $this->assertTrue($this->user2->id == $data[1]->id || $this->user2->id == $data[0]->id);

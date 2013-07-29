@@ -34,37 +34,23 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class ZurmoPasswordSecurityUtilTest extends ZurmoBaseTest
+    /**
+     * Report rules to be used with the MarketingList Model.
+     */
+    class MarketingListsReportRules extends SecuredReportRules
     {
-        public function testEncryptAndDecrypt()
-        {
-            // No need to encrypt empty string
-            $encryptedString = ZurmoPasswordSecurityUtil::encrypt('', 'someKey');
-            $this->assertEquals('', $encryptedString);
-
-            // No need to decrypt empty string
-            $decryptedString = ZurmoPasswordSecurityUtil::decrypt('', 'someKey');
-            $this->assertEquals('', $decryptedString);
-
-            $string = '357';
-            $salt = "123";
-            $encryptedString = ZurmoPasswordSecurityUtil::encrypt($string, $salt);
-            $this->assertTrue($string != $encryptedString);
-            $decryptedString = ZurmoPasswordSecurityUtil::decrypt($encryptedString, $salt);
-            $this->assertEquals($string, $decryptedString);
-
-            // Ensure that data will not be decrypted with random salt
-            $decryptedString = ZurmoPasswordSecurityUtil::decrypt($encryptedString, '567');
-            $this->assertTrue($string != $decryptedString);
-        }
-
         /**
-         * In the event that the value is not properly encrypted it will just return an empty string
+         * @return array
          */
-        public function testDecryptWithMalformedEncryptedValue()
+        public static function getDefaultMetadata()
         {
-            $decryptedString = ZurmoPasswordSecurityUtil::decrypt('aweaweawe', 'someKey');
-            $this->assertEquals('', $decryptedString);
+            $metadata = array(
+                'MarketingList' => array(
+                    'nonReportable' =>
+                    array(),
+                )
+            );
+            return array_merge(parent::getDefaultMetadata(), $metadata);
         }
     }
 ?>
