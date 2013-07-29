@@ -41,7 +41,7 @@
      * GridView widgets in Yii.
      */
     abstract class ListViewColumnAdapter
-    {
+    {        
         protected $attribute;
 
         protected $view;
@@ -68,7 +68,7 @@
         
         public function renderValue($value)
         {
-            throw NotImplementedException();
+            return $value;
         }
 
         /**

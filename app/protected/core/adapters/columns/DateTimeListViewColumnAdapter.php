@@ -35,14 +35,19 @@
      ********************************************************************************/
 
     class DateTimeListViewColumnAdapter extends TextListViewColumnAdapter
-    {
+    {               
         public function renderGridViewData()
         {
             return array(
                 'name'  => $this->attribute,
-                'value' => 'DateTimeUtil::convertDbFormattedDateTimeToLocaleFormattedDisplay($data->' . $this->attribute . ')',
+                'value' => array($this, 'renderDataCellContent'),
                 'type'  => 'raw',
             );
+        }
+                
+        public function renderDataCellContent($data, $row) 
+        {                      
+           echo $this->renderValue($data->{$this->attribute});
         }
         
         public function renderValue($value) 

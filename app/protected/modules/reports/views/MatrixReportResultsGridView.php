@@ -94,23 +94,24 @@
             {
                 $columnClassName  = $this->resolveColumnClassNameForListViewColumnAdapter($displayAttribute);
                 $attributeName    = MatrixReportDataProvider::resolveHeaderColumnAliasName(
-                                    $displayAttribute->columnAliasName);
+                                    $displayAttribute->columnAliasName);                
                 $params           = $this->resolveParamsForColumnElement($displayAttribute);
                 $columnAdapter    = new $columnClassName($attributeName, $this, $params);
                 $column           = $columnAdapter->renderGridViewData();
                 $column['header'] = $displayAttribute->label;
                 $column['class']  = 'YAxisHeaderColumn';
                 array_push($columns, $column);
-            }
-
+            }            
+            $grandTotals    = $this->dataProvider->runQueryAndGrandTotalsData();              
             for ($i = 0; $i < $this->dataProvider->getXAxisGroupByDataValuesCount(); $i++)
-            {
+            {                
+                $grandTotalsRow = $grandTotals[$i];
                 foreach ($this->dataProvider->resolveDisplayAttributes() as $displayAttribute)
                 {
                     if (!$displayAttribute->queryOnly)
                     {
                         $columnClassName  = $this->resolveColumnClassNameForListViewColumnAdapter($displayAttribute);
-                        $attributeName    = MatrixReportDataProvider::resolveColumnAliasName($attributeKey);
+                        $attributeName    = MatrixReportDataProvider::resolveColumnAliasName($attributeKey);                        
                         $params           = $this->resolveParamsForColumnElement($displayAttribute);
                         $columnAdapter    = new $columnClassName($attributeName, $this, $params);
                         $column           = $columnAdapter->renderGridViewData();
@@ -119,10 +120,15 @@
                         {
                             $column['class'] = 'DataColumn';
                         }
+                        if (isset($grandTotalsRow[$displayAttribute->columnAliasName]))
+                        {                                                                        
+                            $column['footer'] = $columnAdapter->renderValue($grandTotalsRow[$displayAttribute->columnAliasName]);
+                        }
+                        //TODO: @sergio: FIx when there is columns with no data. $grandTotalsRow should pass to next.
                         array_push($columns, $column);
                         $attributeKey++;
                     }
-                }
+                }                
             }
             return $columns;
         }

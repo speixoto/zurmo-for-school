@@ -119,7 +119,7 @@
         {
             return $this->report->getGroupBys();
         }
-
+            
         /**
          * See the yii documentation. This function is made public for unit testing.
          * @return int|string
@@ -343,7 +343,7 @@
                 return null;
             }
             $rows = $this->getGrandTotalsRowsData();            
-            return $rows[0];
+            return $rows;
         }
                 
         /**
@@ -365,7 +365,7 @@
          * @return array
          */
         protected function getRowsData($sql)
-        {
+        {            
             assert('is_string($sql)');
             if ($this->_rowsData == null)
             {
@@ -376,7 +376,7 @@
         
         protected function getGrandTotalsRowsData()
         {
-            $sql = $this->makeSqlQueryForGrandTotals();            
+            $sql = $this->makeSqlQueryForGrandTotals();              
             return R::getAll($sql);
         }
 
@@ -472,7 +472,7 @@
             $builder->makeQueryContent($this->getDisplayAttributesForGrandTotals());            
             $where                  = $this->makeFiltersContent($joinTablesAdapter);
             $orderBy                = null;
-            $groupBy                = null;
+            $groupBy                = $this->makeGroupBysContentForGrandTotals($joinTablesAdapter);
             $offset                 = null;
             $limit                  = null;                   
             return                    SQLQueryUtil::makeQuery($modelClassName::getTableName($modelClassName),
@@ -524,7 +524,16 @@
             $builder = new GroupBysReportQueryBuilder($joinTablesAdapter);
             return $builder->makeQueryContent($this->resolveGroupBys());
         }
-
+        
+        /**
+         * @param RedBeanModelJoinTablesQueryAdapter $joinTablesAdapter
+         * @return null|string
+         */
+        protected function makeGroupBysContentForGrandTotals(RedBeanModelJoinTablesQueryAdapter $joinTablesAdapter)
+        {
+            return null;
+        }
+                
         /**
          * @param RedBeanModelJoinTablesQueryAdapter $joinTablesAdapter
          * @return null|string

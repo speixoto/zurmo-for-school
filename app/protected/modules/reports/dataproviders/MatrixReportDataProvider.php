@@ -42,6 +42,8 @@
         const HEADER_COLUMN_ALIAS_SUFFIX = 'Header';
 
         public static $maximumGroupsCount = 400;
+        
+        protected $haveGrandTotals = true;
 
         /**
          * Resolved to include the groupBys as query only display attributes
@@ -140,6 +142,22 @@
                 }
             }
             return $this->resolvedDisplayAttributes;
+        }
+        
+        protected function getDisplayAttributesForGrandTotals()
+        {
+            $displayAttributes = $this->resolveDisplayAttributes();
+            foreach ($displayAttributes as $key => $displayAttribute)
+            {
+                foreach ($this->getXAxisGroupBys() as $groupBy)
+                {                    
+                    if ($displayAttribute->attributeIndexOrDerivedType == $groupBy->attributeIndexOrDerivedType)
+                    {
+                        unset($displayAttributes[$key]);
+                    }
+                }
+            }        
+            return $displayAttributes;            
         }
 
         /**
@@ -248,7 +266,7 @@
             }
             return $displayAttributes;
         }
-
+                
         /**
          * @param array $data
          * @param array $indexedXAxisGroupByDataValues
@@ -636,6 +654,18 @@
         {
             $builder = new GroupBysReportQueryBuilder($joinTablesAdapter);
             return $builder->makeQueryContent($this->getYAxisGroupBys());
+        }
+        
+        protected function makeGroupBysContentForGrandTotals(RedBeanModelJoinTablesQueryAdapter $joinTablesAdapter)
+        {
+            $builder = new GroupBysReportQueryBuilder($joinTablesAdapter);
+            return $builder->makeQueryContent($this->getXAxisGroupBys());
+        }
+        
+        protected function getGrandTotalsRowsData() 
+        {
+            $rows = parent::getGrandTotalsRowsData();                        
+            return $rows;
         }
     }
 ?>
