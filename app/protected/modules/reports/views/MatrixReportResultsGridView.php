@@ -124,7 +124,6 @@
                         {                                                                        
                             $column['footer'] = $columnAdapter->renderValue($grandTotalsRow[$displayAttribute->columnAliasName]);
                         }
-                        //TODO: @sergio: FIx when there is columns with no data. $grandTotalsRow should pass to next.
                         array_push($columns, $column);
                         $attributeKey++;
                     }

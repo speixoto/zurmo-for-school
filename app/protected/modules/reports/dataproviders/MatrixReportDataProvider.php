@@ -147,16 +147,6 @@
         protected function getDisplayAttributesForGrandTotals()
         {
             $displayAttributes = $this->resolveDisplayAttributes();
-            foreach ($displayAttributes as $key => $displayAttribute)
-            {
-                foreach ($this->getXAxisGroupBys() as $groupBy)
-                {                    
-                    if ($displayAttribute->attributeIndexOrDerivedType == $groupBy->attributeIndexOrDerivedType)
-                    {
-                        unset($displayAttributes[$key]);
-                    }
-                }
-            }        
             return $displayAttributes;            
         }
 
@@ -333,7 +323,7 @@
             $this->addDefaultColumnNamesAndValuesToReportResultsRowData($resultsData[$idByOffset],
                                                                         $xAxisGroupByDataValuesCount);
             foreach ($rows as $row)
-            {
+            {                
                 $currentYAxisDisplayAttributesUniqueIndex = $this->resolveYAxisDisplayAttributesUniqueIndex(
                                                             $row, $displayAttributesThatAreYAxisGroupBys);
                 if ($previousYAxisDisplayAttributesUniqueIndex != $currentYAxisDisplayAttributesUniqueIndex)
@@ -663,9 +653,72 @@
         }
         
         protected function getGrandTotalsRowsData() 
+        {       
+                        
+            $headerDataRows = $this->getXAxisGroupByDataValues();                                                 
+            $headingColumns = array();
+            $this->resolveHeadingColumns($headerDataRows, $headingColumns);                                                                                                                                                           
+            $totalRowsData                  = parent::getGrandTotalsRowsData();                        
+            $adjustedTotalsRowsData         = array();            
+            $totalRow                       = array_shift($totalRowsData);   
+            $keys                           = array_reverse(array_keys($totalRow));
+            $keysColumnArray                = array();
+            $headingsDepth                  = count($headerDataRows);       
+            for ($i=0; $i < $headingsDepth; $i++)
+            {
+                $keysColumnArray[]         = $keys[$i];
+            }
+            $keys = array_reverse($keysColumnArray);            
+            foreach ($headingColumns as $column)
+            {
+                $dontPassColumn   = true;
+                $i                = 0;
+                foreach ($column as $row)
+                {
+                    $dontPassColumn = $dontPassColumn && ($row == $totalRow[$keys[$i++]]);                    
+                }
+                if ($dontPassColumn)
+                {
+                    $adjustedTotalsRowsData[] = $totalRow;
+                    $totalRow                 = array_shift($totalRowsData);    
+                }
+                else
+                {
+                    $newRow = array();
+                    foreach ($keys as $key)
+                    {
+                        $rewRow[$key] = null;                        
+                    }
+                    $adjustedTotalsRowsData[] = $newRow;
+                }
+            }                        
+            return $adjustedTotalsRowsData;
+        }
+        
+        
+        /**
+         * Transform the headerDataRows in headingColumns
+         * @param Array $headerDataRows
+         * @param Array $headingColumns
+         * @param Array|null $prefix
+         */
+        private function resolveHeadingColumns($headerDataRows, & $headingColumns, $prefix = array())
         {
-            $rows = parent::getGrandTotalsRowsData();                        
-            return $rows;
+            if (empty($headerDataRows))
+            {                
+                $headingColumns[] = $prefix;
+            }
+            else
+            {
+                $row = array_shift($headerDataRows);  
+                $tempPrefix = $prefix;
+                foreach ($row as $groupByValue)
+                {                                        
+                    $tempPrefix[] = $groupByValue;
+                    $this->resolveHeadingColumns($headerDataRows, $headingColumns, $tempPrefix);
+                    $tempPrefix = $prefix;
+                }                          
+            }
         }
     }
 ?>
