@@ -64,7 +64,6 @@
             {
                 try
                 {
-                    //todo: we need columeName... to pass here
                     $sanitizer = ImportSanitizerUtilFactory::make($sanitizerUtilType,
                                                                   $modelClassName, $attributeName,
                                                                   $columnName, $columnMappingData);
