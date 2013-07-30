@@ -7407,8 +7407,9 @@ td {
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
 }
+.items > thead > tr > td,
 .items > tbody > tr > td,
-.items > thead > tr > td {
+.items > tfoot > tr > td {
   border: 1px solid #DFDFDF;
   border-right: none;
   border-left: none;
@@ -7416,8 +7417,9 @@ td {
   padding: 10px 5px;
   word-wrap: break-word;
 }
+.items > thead > tr > th,
 .items > tbody > tr > th,
-.items > thead > tr > th {
+.items > tfoot > tr > th {
   font-weight: bold !important;
   height: 35px;
   line-height: 35px;
@@ -17609,7 +17611,8 @@ a.user-link {
   padding-left: 5px !important;
   border-left: none !important;
 }
-.ReportResultsGridView #report-results-grid-view > .items tbody td:first-child {
+.ReportResultsGridView #report-results-grid-view > .items tbody td:first-child,
+.ReportResultsGridView #report-results-grid-view > .items tfoot td:first-child {
   border-left: none !important;
 }
 .ReportResultsGridView #report-results-grid-view > .items .expanded-row td,
@@ -17640,6 +17643,9 @@ a.user-link {
 }
 .ReportResultsGridView .icon-empty:before {
   content: "V";
+}
+.ReportResultsGridView tfoot td {
+  font-weight: bold;
 }
 #MatrixReportResultsGridView #report-results-grid-view > .items th,
 #MatrixReportResultsGridView #report-results-grid-view td {

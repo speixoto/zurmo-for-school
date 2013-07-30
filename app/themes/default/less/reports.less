@@ -535,8 +535,10 @@
                 padding-left:5px !important;
                 border-left:none !important;
             }
-            tbody td:first-child{
-                border-left:none !important;
+            tbody, tfoot{
+	            td:first-child{
+		            border-left:none !important;
+	            }
             }
             .expanded-row{
                 td, th{
@@ -559,6 +561,9 @@
     }
 	.icon-empty:before{
 		content:"V";
+	}
+	tfoot td{
+		font-weight: bold;
 	}
 }
 

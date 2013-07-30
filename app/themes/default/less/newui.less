@@ -1959,27 +1959,27 @@ caption, th, td {
 	border-spacing: 1px;
 	margin: 0 -100% 0 0;
 	.box-sizing();
+	> thead,
 	> tbody,
-	> thead{
-		> tr > td{
-			border: 1px solid #DFDFDF;
-			border-right:none;
-			border-left:none;
-			vertical-align:middle;
-			padding:10px 5px;
-			word-wrap: break-word;
-		//word-break: break-all;
-		}
-	}
-	> tbody,
-	> thead{
-		> tr > th{
-			font-weight:bold !important;
-			height:35px;
-			line-height: 35px;
-			background: url(../images/table-items-header.png) left top repeat-x;
-			padding:0 5px;
-			white-space: nowrap;
+	> tfoot{
+		> tr{
+			> td{
+				border: 1px solid #DFDFDF;
+				border-right:none;
+				border-left:none;
+				vertical-align:middle;
+				padding:10px 5px;
+				word-wrap: break-word;
+				//word-break: break-all;
+			}
+			> th{
+				font-weight:bold !important;
+				height:35px;
+				line-height: 35px;
+				background: url(../images/table-items-header.png) left top repeat-x;
+				padding:0 5px;
+				white-space: nowrap;
+			}
 		}
 	}
 	tr:hover{
@@ -1994,7 +1994,7 @@ caption, th, td {
 			#gradient > .vertical(#f9f9f9, #f4f4f4);
 		}
 		th:first-child{
-		//border-left:1px solid #DFDFDF;
+			//border-left:1px solid #DFDFDF;
 		}
 	}
 	> tbody{
