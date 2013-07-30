@@ -102,18 +102,18 @@
 
             $label    = Zurmo::t('ImportModule', 'Created');
             $count    = ZurmoHtml::tag('strong', array(), $this->modelsCreated);
-            $led      = ZurmoHtml::tag('i', array('class' => 'led state-true'), '●');
-            $content .= ZurmoHtml::tag('li', array(), $led . $count . $label );
+            $led      = ZurmoHtml::tag('i', array('class' => 'led state-true'), '');
+            $content .= ZurmoHtml::tag('li', array(), $count . $label . $led );
 
             $label    = Zurmo::t('ImportModule', 'Updated');
             $count    = ZurmoHtml::tag('strong', array(), $this->modelsUpdated);
-            $led      = ZurmoHtml::tag('i', array('class' => 'led'), '●');
-            $content .= ZurmoHtml::tag('li', array(), $led . $count . $label );
+            $led      = ZurmoHtml::tag('i', array('class' => 'led'), '');
+            $content .= ZurmoHtml::tag('li', array(), $count . $label . $led );
 
             $label    = Zurmo::t('ImportModule', 'Skipped');
             $count    = ZurmoHtml::tag('strong', array(), $this->rowsWithErrors);
-            $led      = ZurmoHtml::tag('i', array('class' => 'led state-false'), '●');
-            $content .= ZurmoHtml::tag('li', array(), $led . $count . $label );
+            $led      = ZurmoHtml::tag('i', array('class' => 'led state-false'), '');
+            $content .= ZurmoHtml::tag('li', array(), $count . $label . $led );
 
             $content .= '</ul>';
             return $content;

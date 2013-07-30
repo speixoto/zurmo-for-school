@@ -930,6 +930,16 @@ table.configuration-list{
 	.drillDownContent{
 		min-height: 0;
 	}
+	.pager{
+		.b-shadow(none);
+		border-left: 1px solid #DFDFDF;
+		border-right: 1px solid #DFDFDF;
+		li{
+			border-bottom: 1px solid #DFDFDF;
+		}
+
+		border-top: none;
+	}
 }
 
 #ImportWizardDataAnalysisCompleteView{
@@ -1079,6 +1089,7 @@ table.configuration-list{
     line-height:150%;
 	list-style: none;
     li{
+	    text-align: center;
 	    position: relative;
         margin:0 1% 3px 1%;
 	    width: 31%;
@@ -1096,13 +1107,30 @@ table.configuration-list{
 	    }
     }
 	.led{
-		float: right;
+		//float: right;
+		display: block;
+		margin-top: 5px;
+		width: 100%;
+		height: 2px;
+		background: #ffd900;
+		.b-shadow(0 1px 0 0 #f3f3f3);
+		&.state-true{
+			background: #97c43d;
+			.b-shadow(0 1px 0 0 #f3f3f3);
+		}
+		&.state-false{
+			background: #c43d53;
+			.b-shadow(0 1px 0 0 #f3f3f3);
+		}
 	}
 }
 
 .import-results-toolbar{
 	border:1px solid #DFDFDF;
 	border-bottom: none;
+	.ui-buttonset{
+		padding-top: 10px;
+	}
 }
 
 .ui-progressbar{
