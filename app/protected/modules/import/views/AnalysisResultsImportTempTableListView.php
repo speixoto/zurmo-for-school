@@ -39,23 +39,11 @@
      */
     class AnalysisResultsImportTempTableListView extends ImportTempTableListView
     {
-        /**
-         * @var ImportAnalysisResultsConfigurationForm
-         */
-        protected $configurationForm;
-
-        public function __construct( $controllerId, $moduleId, ImportDataProvider $dataProvider, $mappingData, $importRulesType,
-                                     ImportAnalysisResultsConfigurationForm $configurationForm, $gridIdSuffix = null)
-        {
-            parent::__construct($controllerId, $moduleId, $dataProvider, $mappingData, $importRulesType, $gridIdSuffix);
-            $this->configurationForm = $configurationForm;
-        }
-
         protected function resolveSecondColumn()
         {
             return $secondColumn = array(
-                'class' => 'DataColumn',
-                'type'  => 'raw',
+                'class'               => 'DataColumn',
+                'type' => 'raw',
                 'value' => 'ImportTempTableListView::resolveAnalysisStatusLabel($data)'
             );
         }
@@ -65,71 +53,17 @@
             return 'default/step5';
         }
 
+        protected function getResultsFilterRadioElementClassName()
+        {
+            return 'ImportAnalysisResultsFilterRadioElement';
+        }
+
         /**
          * @return array
          */
         protected function getCGridViewParams()
         {
             return array_merge(parent::getCGridViewParams(), array('expandableContentType' => self::EXPANDABLE_ANALYSIS_CONTENT_TYPE));
-        }
-
-        protected function renderConfigurationForm()
-        {
-            $formName   = 'import-analysis-results-configuration-form';
-            $clipWidget = new ClipWidget();
-            list($form, $formStart) = $clipWidget->renderBeginWidget(
-                'ZurmoActiveForm',
-                array(
-                    'id' => $formName,
-                )
-            );
-            $content  = $formStart;
-            $content .= $this->renderConfigurationFormLayout($form);
-            $formEnd  = $clipWidget->renderEndWidget();
-            $content .= $formEnd;
-            $this->registerConfigurationFormLayoutScripts($form);
-            return $content;
-        }
-
-        protected function renderConfigurationFormLayout($form)
-        {
-            assert('$form instanceof ZurmoActiveForm');
-            $content      = null;
-            $content .= '<div class="horizontal-line filter-portlet-model-bar import-analysis-results-toolbar">';
-            $element = new ImportAnalysisResultsFilterRadioElement($this->configurationForm, 'filteredByStatus', $form);
-            $element->editableTemplate =  '<div id="ImportAnalysisResultsConfigurationForm_filteredByStatus_area">{content}</div>';
-            $content .= $element->render();
-            $content .= '</div>' . "\n";
-            return $content;
-        }
-
-        protected function registerConfigurationFormLayoutScripts($form)
-        {
-            assert('$form instanceof ZurmoActiveForm');
-            $uniquePageId= 'xxxx'; //todo: figure this out. since this is wrong and the update wont work. look at mashable since we need to trigger similarlly.
-            $url       = Yii::app()->createUrl($this->getDefaultRoute());
-            $urlScript = 'js:$.param.querystring("' . $url . '", "' .
-                         $this->dataProvider->getPagination()->pageVar . '=1")'; // Not Coding Standard
-            $ajaxSubmitScript = ZurmoHtml::ajax(array(
-                    'type'       => 'GET',
-                    'data'       => 'js:$("#' . $form->getId() . '").serialize()',
-                    'url'        =>  $urlScript,
-                    'update'     => '#' . $uniquePageId,
-                    'beforeSend' => 'js:function(){$(this).makeSmallLoadingSpinner(true, "#' .
-                                    $this->getGridViewId() . '"); $("#' .
-                                    $form->getId() . '").parent().children(".cgrid-view").addClass("loading");}',
-                    'complete'   => 'js:function()
-                    {               $("#' . $form->getId() . '").parent().children(".cgrid-view").removeClass("loading");
-                    }'
-            ));
-            Yii::app()->clientScript->registerScript($uniquePageId, "
-            $('#ImportAnalysisResultsConfigurationForm_filteredByStatus_area').buttonset();
-            $('#ImportAnalysisResultsConfigurationForm_filteredByStatus_area').change(function()
-                {
-                    " . $ajaxSubmitScript . "
-                }
-            );
-            ");
         }
     }
 ?>

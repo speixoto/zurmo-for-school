@@ -78,43 +78,37 @@
             if($type == self::STATUS_CLEAN)
             {
                 $label = Zurmo::t('ImportModule', 'Ok');
-                $stage = ' stage-true';
             }
             elseif($type == self::STATUS_WARN)
             {
                 $label = Zurmo::t('ImportModule', 'Warning');
-                $stage = '';
             }
             elseif($type == self::STATUS_SKIP)
             {
                 $label = Zurmo::t('ImportModule', 'Skip');
-                $stage = ' stage-false';
             }
-
-            //@todo Jason: need a refactor here and in markeign email recipients to generate these 2 divs:continuum and clearfix
-            $pill = '<div class="continuum"><div class="clearfix"><div class="import-item-stage-status' . $stage . '"><i>●</i>' .
-                    ZurmoHtml::tag('span', array(), $label) . '</div></div></div>';
-
-            return $pill;
+            return $label;
         }
 
-        public static function getStatusLabelByTypeForRadioElement($type)
+        public static function getStatusLabelAndVisualIdentifierContentByType($type)
         {
             assert('is_int($type)');
+            $label = static::getStatusLabelByType($type);
             if($type == self::STATUS_CLEAN)
             {
-                $label = Zurmo::t('ImportModule', 'Ok');
+                $stageContent = ' stage-true';
             }
             elseif($type == self::STATUS_WARN)
             {
-                $label = Zurmo::t('ImportModule', 'Warning');
+                $stageContent = null;
             }
             elseif($type == self::STATUS_SKIP)
             {
-                $label = Zurmo::t('ImportModule', 'Skip');
+                $stageContent = ' stage-false';
             }
-
-            return $label;
+            $content = ZurmoHtml::tag('div', array('class' => "import-item-stage-status" . $stageContent),
+                                      '<i>&#9679;</i>' . ZurmoHtml::tag('span', array(), $label));
+            return ZurmoHtml::wrapAndRenderContinuumButtonContent($content);
         }
 
         protected static function resolveAttributeNameByRules(AttributeImportRules $attributeImportRules)

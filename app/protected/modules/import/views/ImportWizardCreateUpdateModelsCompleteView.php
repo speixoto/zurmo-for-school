@@ -122,13 +122,13 @@
         protected function renderAfterFormLayout($form)
         {
             $view = new ImportResultsImportTempTableListView($this->controllerId, $this->moduleId, $this->dataProvider,
-                    $this->mappingData, $this->model->importRulesType, $this->resolveConfigurationForm());
+                    $this->mappingData, $this->model->importRulesType, $this->resolveConfigurationForm(), $form, $this->model->id);
             return $view->render();
         }
 
         protected function resolveConfigurationForm()
         {
-            $configurationForm = new ImportAnalysisResultsConfigurationForm();
+            $configurationForm = new ImportResultsConfigurationForm();
             $this->resolveConfigFormFromRequest($configurationForm);
             return $configurationForm;
         }

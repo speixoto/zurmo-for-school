@@ -44,21 +44,26 @@
 
         private $excludeFirstRow;
 
-        private $filterByStatus;
+        private $filteredByStatus;
+
+        private $filteredByAnalysisStatus;
 
         public function getTableName()
         {
             return $this->tableName;
         }
 
-        public function __construct($tableName, $excludeFirstRow = false, array $config = array(), $filterByStatus = null)
+        public function __construct($tableName, $excludeFirstRow = false, array $config = array(), $filteredByStatus = null,
+                                    $filteredByAnalysisStatus = null)
         {
             assert('is_string($tableName) && $tableName != ""');
             assert('is_bool($excludeFirstRow)');
-            assert('is_int($filterByStatus) || $filterByStatus == null');
-            $this->tableName       = $tableName;
-            $this->excludeFirstRow = $excludeFirstRow;
-            $this->filterByStatus  = $filterByStatus;
+            assert('is_int($filteredByStatus) || $filteredByStatus == null');
+            assert('is_int($filteredByAnalysisStatus) || $filteredByAnalysisStatus == null');
+            $this->tableName              = $tableName;
+            $this->excludeFirstRow        = $excludeFirstRow;
+            $this->filteredByStatus         = $filteredByStatus;
+            $this->filteredByAnalysisStatus = $filteredByAnalysisStatus;
             foreach ($config as $key => $value)
             {
                 $this->$key = $value;
@@ -152,13 +157,21 @@
                 }
                 $where .= 'id != 1';
             }
-            if ($this->filterByStatus)
+            if ($this->filteredByStatus)
             {
                 if ($where != null)
                 {
                     $where .= ' and ';
                 }
-                $where .= 'status = ' . $this->filterByStatus;
+                $where .= 'status = ' . $this->filteredByStatus;
+            }
+            if ($this->filteredByAnalysisStatus)
+            {
+                if ($where != null)
+                {
+                    $where .= ' and ';
+                }
+                $where .= 'analysisstatus = ' . $this->filteredByAnalysisStatus;
             }
         }
     }

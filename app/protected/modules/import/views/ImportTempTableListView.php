@@ -63,16 +63,27 @@
          */
         protected $importRulesType;
 
+        /**
+         * @var ImportResultsConfigurationForm
+         */
+        protected $configurationForm;
+
+        protected $importId;
+
+        abstract protected function resolveSecondColumn();
+
         abstract protected function getDefaultRoute();
+
+        abstract protected function getResultsFilterRadioElementClassName();
 
         public static function resolveAnalysisStatusLabel($data)
         {
-            return ImportDataAnalyzer::getStatusLabelByType((int)$data->analysisStatus);
+            return ImportDataAnalyzer::getStatusLabelAndVisualIdentifierContentByType((int)$data->analysisStatus);
         }
 
         public static function resolveResultStatusLabel($data)
         {
-            return ImportRowDataResultsUtil::getStatusLabelByType((int)$data->status);
+            return ImportRowDataResultsUtil::getStatusLabelAndVisualIdentifierContentByType((int)$data->status);
         }
 
         protected static function resolveHeaderLabelByColumnNameAndLabel($columnName, $label)
@@ -108,14 +119,20 @@
          * @param ImportDataProvider $dataProvider
          * @param $mappingData
          * @param $importRulesType
+         * @param ImportResultsConfigurationForm $configurationForm
+         * @param array $importId
          * @param null $gridIdSuffix
          */
-        public function __construct( $controllerId, $moduleId, ImportDataProvider $dataProvider, $mappingData, $importRulesType, $gridIdSuffix = null)
+        public function __construct( $controllerId, $moduleId, ImportDataProvider $dataProvider, $mappingData, $importRulesType,
+                                     ImportResultsConfigurationForm $configurationForm, ZurmoActiveForm $zurmoActiveForm, $importId, $gridIdSuffix = null)
         {
             parent::__construct($controllerId, $moduleId, 'NotUsed', $dataProvider, array(), false, $gridIdSuffix);
             $this->rowsAreSelectable = false;
             $this->mappingData       = $mappingData;
             $this->importRulesType   = $importRulesType;
+            $this->configurationForm = $configurationForm;
+            $this->zurmoActiveForm   = $zurmoActiveForm;
+            $this->importId          = $importId;
             $this->gridId            = 'import-temp-table-list-view';
         }
 
@@ -148,13 +165,6 @@
         protected static function getPagerCssClass()
         {
             return 'pager horizontal';
-        }
-
-        /**
-         * Override as needed.
-         */
-        protected function renderConfigurationForm()
-        {
         }
 
         /**
@@ -257,15 +267,6 @@
             return $columns;
         }
 
-        protected function resolveSecondColumn()
-        {
-            return $secondColumn = array(
-                'class'               => 'DataColumn',
-                'type' => 'raw',
-                'value' => 'ImportTempTableListView::resolveAnalysisStatusLabel($data)'
-            );
-        }
-
         protected function resolveHeaderColumnContent($columnName, $label)
         {
             $content  = static::resolveHeaderLabelByColumnNameAndLabel($columnName, $label);
@@ -308,6 +309,58 @@
         protected function rowsAreExpandable()
         {
             return true;
+        }
+
+        protected function getUniquePageId()
+        {
+            return get_called_class();
+        }
+
+        protected function renderConfigurationForm()
+        {
+            $content = $this->renderConfigurationFormLayout($this->zurmoActiveForm);
+            $this->registerConfigurationFormLayoutScripts($this->zurmoActiveForm);
+            return $content;
+        }
+
+        protected function renderConfigurationFormLayout($form)
+        {
+            assert('$form instanceof ZurmoActiveForm');
+            $elementClassName = $this->getResultsFilterRadioElementClassName();
+            $content      = null;
+            $content .= '<div class="horizontal-line filter-portlet-model-bar import-results-toolbar">';
+            $element = new $elementClassName($this->configurationForm, 'filteredByStatus', $form);
+            $element->editableTemplate =  '<div id="ImportResultsConfigurationForm_filteredByStatus_area">{content}</div>';
+            $content .= $element->render();
+            $content .= '</div>' . "\n";
+            return $content;
+        }
+
+        protected function registerConfigurationFormLayoutScripts($form)
+        {
+            assert('$form instanceof ZurmoActiveForm');
+            $url       = Yii::app()->createUrl($this->moduleId . '/' . $this->getDefaultRoute());
+            $urlScript = 'js:$.param.querystring("' . $url . '", "' .
+                         $this->dataProvider->getPagination()->pageVar . '=1&id=' .
+                         $this->importId . '&step=complete&ajax=' . $this->gridId. '&pageSize=' . $this->dataProvider->getPagination()->getPageSize() . '")';
+            $ajaxSubmitScript = ZurmoHtml::ajax(array(
+                    'type'       => 'GET',
+                    'url'        =>  $urlScript,
+                    'beforeSend' => 'js:function(){$(this).makeSmallLoadingSpinner(true, "#' .
+                                    $this->getGridViewId() . '"); $("#' .
+                                    $this->getUniquePageId() . '").find(".cgrid-view").addClass("loading");}',
+                    'success'    => 'js:function(data){
+                                    $("#' . $this->getUniquePageId() . '").replaceWith(data);
+                    }',
+            ));
+            Yii::app()->clientScript->registerScript($this->getUniquePageId(), "
+            $('#ImportResultsConfigurationForm_filteredByStatus_area').buttonset();
+            $('#ImportResultsConfigurationForm_filteredByStatus_area').change(function()
+                {
+                    " . $ajaxSubmitScript . "
+                }
+            );
+            ");
         }
     }
 ?>

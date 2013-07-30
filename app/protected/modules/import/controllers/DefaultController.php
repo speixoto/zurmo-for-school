@@ -249,9 +249,10 @@
          */
         public function actionStep5($id, $step = null, $pageSize = null)
         {
-            if (isset($_GET['nextParams']))
+            $getData              = GetUtil::getData();
+            if (isset($getData['nextParams']))
             {
-                $nextParams = $_GET['nextParams'];
+                $nextParams = $getData['nextParams'];
             }
             else
             {
@@ -259,7 +260,6 @@
             }
             assert('$step == null || is_string($step)');
             assert('$nextParams == null || is_array($nextParams)');
-
             $import               = Import::getById((int)$id);
             $importWizardForm     = ImportWizardUtil::makeFormByImport($import);
             $unserializedData     = unserialize($import->serializedData);
@@ -268,9 +268,10 @@
                 $pageSize = Yii::app()->pagination->resolveActiveForCurrentUserByType('importPageSize');
             }
             $config               = array('pagination' => array('pageSize' => $pageSize));
+            $filteredByStatus       = $this->resolveFilteredByStatus();
             $dataProvider         = new ImportDataProvider($import->getTempTableName(),
                                                            (bool)$importWizardForm->firstRowIsHeaderRow,
-                                                           $config);
+                                                           $config, null, $filteredByStatus);
             $sequentialProcess    = new ImportDataAnalysisSequentialProcess($import, $dataProvider);
             $sequentialProcess->run($step, $nextParams);
             $route                = $this->getModule()->getId() . '/' . $this->getId() . '/step5';
@@ -281,24 +282,39 @@
                                                                   makeColumnNamesAndAttributeIndexOrDerivedTypeLabels(
                                                                   $unserializedData['mappingData'],
                                                                   $unserializedData['importRulesType']);
-                $dataAnalysisCompleteView = new ImportWizardDataAnalysisCompleteView($this->getId(),
-                                                $this->getModule()->getId(),
-                                                $importWizardForm,
-                                                $columnNamesAndAttributeIndexOrDerivedTypeLabels,
-                                                $dataProvider,
-                                                $unserializedData['mappingData']);
+                if(isset($getData['ajax']) && $getData['ajax'] == 'import-temp-table-list-view')
+                {
+                    $resolvedView = new AnalysisResultsImportTempTableListView(
+                                        $this->getId(),
+                                        $this->getModule()->getId(),
+                                        $dataProvider,
+                                        $unserializedData['mappingData'],
+                                        $importWizardForm->importRulesType,
+                                        ImportWizardDataAnalysisCompleteView::resolveConfigurationForm(),
+                                        new ZurmoActiveForm(),
+                                        $import->id);
+                }
+                else
+                {
+                    $dataAnalysisCompleteView = new ImportWizardDataAnalysisCompleteView($this->getId(),
+                                                    $this->getModule()->getId(),
+                                                    $importWizardForm,
+                                                    $columnNamesAndAttributeIndexOrDerivedTypeLabels,
+                                                    $dataProvider,
+                                                    $unserializedData['mappingData']);
+                    $resolvedView = new ContainedViewCompleteSequentialProcessView($dataAnalysisCompleteView);
+                }
 
-                $sequenceView = new ContainedViewCompleteSequentialProcessView($dataAnalysisCompleteView);
             }
             else
             {
-                $sequenceView = SequentialProcessViewFactory::makeBySequentialProcess($sequentialProcess, $route);
+                $resolvedView = SequentialProcessViewFactory::makeBySequentialProcess($sequentialProcess, $route);
             }
             if ($step == null)
             {
                 $title                   = Zurmo::t('ImportModule', 'Import Wizard - Analyze Data');
                 $progressBarAndStepsView = new ImportStepsAndProgressBarForWizardView(4);
-                $wrapperView  = new ImportSequentialProcessContainerView($sequenceView,
+                $wrapperView  = new ImportSequentialProcessContainerView($resolvedView,
                                                                          $sequentialProcess->getAllStepsMessage(),
                                                                          $title);
                 $wrapperView->setCssClasses(array('DetailsView'));
@@ -307,9 +323,22 @@
             }
             else
             {
-                $view        = new AjaxPageView($sequenceView);
+                $view        = new AjaxPageView($resolvedView);
             }
             echo $view->render();
+        }
+
+        protected function resolveFilteredByStatus()
+        {
+            $getData = GetUtil::getData();
+            if(isset($getData['ImportResultsConfigurationForm']) &&
+               !empty($getData['ImportResultsConfigurationForm']['filteredByStatus']) &&
+                $getData['ImportResultsConfigurationForm']['filteredByStatus'] !=
+                ImportResultsConfigurationForm::FILTERED_BY_ALL)
+            {
+                return $getData['ImportResultsConfigurationForm']['filteredByStatus'];
+            }
+            return null;
         }
 
         protected function resolveResettingPageOnCompletion(ImportDataProvider $dataProvider)
@@ -329,9 +358,10 @@
          */
         public function actionStep6($id, $step = null, $pageSize = null)
         {
-            if (isset($_GET['nextParams']))
+            $getData              = GetUtil::getData();
+            if (isset($getData['nextParams']))
             {
-                $nextParams = $_GET['nextParams'];
+                $nextParams = $getData['nextParams'];
             }
             else
             {
@@ -350,9 +380,10 @@
                 $pageSize             = Yii::app()->pagination->resolveActiveForCurrentUserByType('importPageSize');
             }
             $config               = array('pagination' => array('pageSize' => $pageSize));
+            $filteredByStatus       = $this->resolveFilteredByStatus();
             $dataProvider         = new ImportDataProvider($import->getTempTableName(),
                                                            (bool)$importWizardForm->firstRowIsHeaderRow,
-                                                           $config);
+                                                           $config, $filteredByStatus);
             $sequentialProcess    = new ImportCreateUpdateModelsSequentialProcess($import, $dataProvider);
             Yii::app()->gameHelper->muteScoringModelsOnSave();
             $sequentialProcess->run($step, $nextParams);
@@ -364,25 +395,40 @@
                 $this->resolveResettingPageOnCompletion($dataProvider);
                 $importingIntoModelClassName = $unserializedData['importRulesType'] . 'ImportRules';
                 Yii::app()->gameHelper->triggerImportEvent($importingIntoModelClassName::getModelClassName());
-                $importCompleteView          = $this->makeImportCompleteView($import, $importWizardForm, $dataProvider, true, $passedInPageSize);
-                $sequenceView                = new ContainedViewCompleteSequentialProcessView($importCompleteView);
+                if(isset($getData['ajax']) && $getData['ajax'] == 'import-temp-table-list-view')
+                {
+                    $resolvedView = new ImportResultsImportTempTableListView(
+                                        $this->getId(),
+                                        $this->getModule()->getId(),
+                                        $dataProvider,
+                                        $unserializedData['mappingData'],
+                                        $importWizardForm->importRulesType,
+                                        ImportWizardDataAnalysisCompleteView::resolveConfigurationForm(),
+                                        new ZurmoActiveForm(),
+                                        $import->id);
+                }
+                else
+                {
+                    $importCompleteView          = $this->makeImportCompleteView($import, $importWizardForm, $dataProvider, true, $passedInPageSize);
+                    $resolvedView                = new ContainedViewCompleteSequentialProcessView($importCompleteView);
+                }
             }
             else
             {
-                $sequenceView = SequentialProcessViewFactory::makeBySequentialProcess($sequentialProcess, $route);
+                $resolvedView = SequentialProcessViewFactory::makeBySequentialProcess($sequentialProcess, $route);
             }
             if ($step == null)
             {
                 $title = Zurmo::t('ImportModule', 'Import Wizard - Import Data');
                 $progressBarAndStepsView = new ImportStepsAndProgressBarForWizardView(5);
-                $wrapperView  = new ImportSequentialProcessContainerView($sequenceView, $sequentialProcess->getAllStepsMessage(), $title);
+                $wrapperView  = new ImportSequentialProcessContainerView($resolvedView, $sequentialProcess->getAllStepsMessage(), $title);
                 $wrapperView->setCssClasses(array('DetailsView'));
                 $view = new ImportPageView(ZurmoDefaultAdminViewUtil::makeTwoStandardViewsForCurrentUser($this,
                                 $progressBarAndStepsView, $wrapperView));
             }
             else
             {
-                $view        = new AjaxPageView($sequenceView);
+                $view        = new AjaxPageView($resolvedView);
             }
             echo $view->render();
         }

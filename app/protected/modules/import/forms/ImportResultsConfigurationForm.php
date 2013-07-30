@@ -37,7 +37,7 @@
     /**
      * Form to help manage import analysis results display options including filtering by clean, warn, and skip statuses
      */
-    class ImportAnalysisResultsConfigurationForm extends CFormModel
+    class ImportResultsConfigurationForm extends CFormModel
     {
         /**
          * Value to be used to signal that the filtering is for all statuses

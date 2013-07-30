@@ -67,6 +67,13 @@
             $this->mappingData  = $mappingData;
         }
 
+        public static function resolveConfigurationForm()
+        {
+            $configurationForm = new ImportResultsConfigurationForm();
+            static::resolveConfigFormFromRequest($configurationForm);
+            return $configurationForm;
+        }
+
         /**
          * Override to handle the form layout for this view.
          * @param $form If the layout is editable, then pass a $form otherwise it can
@@ -86,18 +93,11 @@
         protected function renderAfterFormLayout($form)
         {
             $view = new AnalysisResultsImportTempTableListView($this->controllerId, $this->moduleId, $this->dataProvider,
-                        $this->mappingData, $this->model->importRulesType, $this->resolveConfigurationForm());
+                        $this->mappingData, $this->model->importRulesType, static::resolveConfigurationForm(), $form, $this->model->id);
             return $view->render();
         }
 
-        protected function resolveConfigurationForm()
-        {
-            $configurationForm = new ImportAnalysisResultsConfigurationForm();
-            $this->resolveConfigFormFromRequest($configurationForm);
-            return $configurationForm;
-        }
-
-        protected function resolveConfigFormFromRequest(& $configurationForm)
+        protected static function resolveConfigFormFromRequest(& $configurationForm)
         {
             $excludeFromRestore = array();
             if (isset($_GET[get_class($configurationForm)]))
