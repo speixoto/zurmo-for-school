@@ -45,6 +45,8 @@
             SecurityTestHelper::createSuperAdmin();
             $super = User::getByUsername('super');
             Yii::app()->user->userModel = $super;
+            //Setup test data owned by the super user.
+            $account = AccountTestHelper::createAccountByNameForOwner('superAccount', $super);
         }
 
         public function testInlineCreateCommentFromAjax()
@@ -139,6 +141,62 @@
             $this->assertFalse(strpos($content, 'Completed On') > 0);
             $task   = Task::getById($taskId);
             $this->assertFalse((bool)$task->completed);
+        }
+
+        public function testSuperUserModalAllDefaultFromRelationAction()
+        {
+            $super              = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
+
+            $accountId          = self::getModelIdByModelNameAndName('Account', 'superAccount');
+            $this->setGetArray(array('modalTransferInformation' => array(
+                                      'relationAttributeName'   => 'Account',
+                                      'relationModelId'         => $accountId,
+                                      'relationModuleId'        => 'accounts',
+                                      'modalId'                 => 'relatedModalContainer-open-tasks',
+                                      'portletId'               => '12',
+                                      'uniqueLayoutId'          => 'AccountDetailsAndRelationsView_12'
+                                    )));
+            $this->runControllerWithNoExceptionsAndGetContent('tasks/default/modalCreateFromRelation');
+            $tasks              = Task::getAll();
+            $this->assertEquals(1, count($tasks));
+            $this->setGetArray(array(
+                                      'relationAttributeName'   => 'Account',
+                                      'relationModelId'         => $accountId,
+                                      'relationModuleId'        => 'accounts',
+                                      'portletId'               => '12',
+                                      'uniqueLayoutId'          => 'AccountDetailsAndRelationsView_12'
+                                    ));
+            $this->setPostArray(array(
+                                       'Task'   => array('name'       => 'Task for test cases'),
+                                       'ActivityItemForm' => array('Account' => array('id' => $accountId))
+            ));
+
+            $content = $this->runControllerWithNoExceptionsAndGetContent('tasks/default/modalSaveFromRelation');
+            $this->assertTrue(strpos($content, 'View Task') > 0);
+            $tasks              = Task::getAll();
+            $this->assertEquals(2, count($tasks));
+
+            $this->setGetArray(array(
+                                    'id'                       => $tasks[1]->id,
+                                    'modalTransferInformation' =>array(
+                                                                            'modalId'                 => 'relatedModalContainer-open-tasks'
+                                                                      )
+                                    )
+                              );
+            $content = $this->runControllerWithNoExceptionsAndGetContent('tasks/default/modalViewFromRelation');
+            $this->assertTrue(strpos($content, 'Task for test cases') > 0);
+
+            $this->setGetArray(array(
+                                    'id'  => $tasks[1]->id
+                              ));
+            $content = $this->runControllerWithNoExceptionsAndGetContent('tasks/default/modalEditFromRelation');
+
+            $this->setGetArray(array(
+                                    'id'  => $tasks[1]->id
+                              ));
+            unset($_POST['Task']);
+            $content = $this->runControllerWithNoExceptionsAndGetContent('tasks/default/modalCopyFromRelation');
+            $this->assertTrue(strpos($content, 'Task for test cases') > 0);
         }
    }
 ?>

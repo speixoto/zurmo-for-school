@@ -202,5 +202,23 @@
             $this->assertEquals($explicitReadWriteModelPermissions->getReadWritePermitablesCount(), 1);
             $this->assertEquals($explicitReadWriteModelPermissions->getReadWritePermitablesToRemoveCount(), 1);
         }
+
+        public function testGetModalTitleForViewTask()
+        {
+            $title = TasksUtil::getModalTitleForViewTask();
+            $this->assertEquals('View Task',$title);
+        }
+
+        public function testGetModalTitleForCreateTask()
+        {
+            $title = TasksUtil::getModalTitleForCreateTask();
+            $this->assertEquals('Create Task',$title);
+
+            $title = TasksUtil::getModalTitleForCreateTask("Edit");
+            $this->assertEquals('Edit Task',$title);
+
+            $title = TasksUtil::getModalTitleForCreateTask("Copy");
+            $this->assertEquals('Copy Task',$title);
+        }
     }
 ?>

@@ -200,7 +200,7 @@
         }
 
         /**
-         * Create task from related view
+         * Create task from top menu
          */
         public function actionModalCreate()
         {
@@ -216,7 +216,7 @@
          * @param string $portletId
          * @param string $uniqueLayoutId
          */
-        public function actionModalSaveFromRelation($relationAttributeName, $relationModelId, $relationModuleId, $portletId, $uniqueLayoutId, $id)
+        public function actionModalSaveFromRelation($relationAttributeName, $relationModelId, $relationModuleId, $portletId, $uniqueLayoutId, $id = null)
         {
             if($id == null)
             {
