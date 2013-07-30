@@ -44,7 +44,12 @@
          */
         public static function getDefaultMetadata()
         {
-            $metadata = array();
+            $metadata = array(
+                'Task' => array(
+                    'cannotTrigger' =>
+                        array('files', 'notificationSubscribers')
+                    ),
+            );
             return array_merge(parent::getDefaultMetadata(), $metadata);
         }
     }

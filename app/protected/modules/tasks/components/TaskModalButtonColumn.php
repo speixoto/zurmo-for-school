@@ -41,7 +41,7 @@
     class TaskModalButtonColumn extends ButtonColumn
     {
         /**
-         * Renders a link button.
+         * Renders an ajaxlink button.
          * @param string $id the ID of the button
          * @param array $button the button configuration which may contain 'label', 'url', 'imageUrl' and 'options' elements.
          * See {@link buttons} for more details.
