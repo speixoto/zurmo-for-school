@@ -107,7 +107,7 @@
          */
         protected function renderNextPageLinkContent()
         {
-            return ZurmoHtml::linkButton(ZurmoHtml::wrapLabel($this->renderNextPageLinkLabel()));
+            return ZurmoHtml::linkButton(ZurmoHtml::wrapLabel($this->renderNextPageLinkLabel()), array('class' => 'green-button'));
         }
 
         protected function renderNextPageLinkLabel()

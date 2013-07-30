@@ -586,47 +586,47 @@ a#customFieldDataData_AddInputButton.attachLoading.z-button,
 a.ModalGameNotification a.attachLoading.z-button {
   color: #fff;
 }
-.modal-view-toolbar a:not(.attachLoading) .z-label,
-.modal-view-toolbar input[type="submit"]:not(.attachLoading) .z-label,
-.modal-view-toolbar input[type="button"]:not(.attachLoading) .z-label,
-.form-toolbar a:not(.attachLoading) .z-label,
-.form-toolbar input[type="submit"]:not(.attachLoading) .z-label,
-.form-toolbar input[type="button"]:not(.attachLoading) .z-label,
-.zButton:not(.attachLoading) .z-label,
-.z-button:not(.attachLoading) .z-label,
-a.zButton:not(.attachLoading) .z-label,
-a.z-button:not(.attachLoading) .z-label,
-.white-button:not(.attachLoading) .z-label,
-.search-form-tools input[type="submit"]:not(.attachLoading) .z-label,
-a.search-form-tools input[type="submit"]:not(.attachLoading) .z-label,
-#progressBar-links a:not(.attachLoading) .z-label,
-a#progressBar-links a:not(.attachLoading) .z-label,
-#InstallPageView .AppContainer a:not(.attachLoading) .z-label,
-a#InstallPageView .AppContainer a:not(.attachLoading) .z-label,
-#InstallPageView #install-form input[type="submit"]:not(.attachLoading) .z-label,
-a#InstallPageView #install-form input[type="submit"]:not(.attachLoading) .z-label,
-.configuration-list li a:not(.attachLoading) .z-label,
-a.configuration-list li a:not(.attachLoading) .z-label,
-table.configuration-list td:last-child a:not(.attachLoading) .z-label,
-atable.configuration-list td:last-child a:not(.attachLoading) .z-label,
-.multiselect-holder input[type="button"]:not(.attachLoading) .z-label,
-a.multiselect-holder input[type="button"]:not(.attachLoading) .z-label,
-.EmailTestingButton:not(.attachLoading) .z-label,
-a.EmailTestingButton:not(.attachLoading) .z-label,
-.file-upload-box .ui-icon-plusthick:not(.attachLoading) .z-label,
-a.file-upload-box .ui-icon-plusthick:not(.attachLoading) .z-label,
-.ui-datepicker .ui-datepicker-current:not(.attachLoading) .z-label,
-a.ui-datepicker .ui-datepicker-current:not(.attachLoading) .z-label,
-.ui-datepicker .ui-datepicker-close:not(.attachLoading) .z-label,
-a.ui-datepicker .ui-datepicker-close:not(.attachLoading) .z-label,
-.designer-toolbar input[type="submit"]:not(.attachLoading) .z-label,
-a.designer-toolbar input[type="submit"]:not(.attachLoading) .z-label,
-#contactStatesData_AddInputButton:not(.attachLoading) .z-label,
-#customFieldDataData_AddInputButton:not(.attachLoading) .z-label,
-a#contactStatesData_AddInputButton:not(.attachLoading) .z-label,
-a#customFieldDataData_AddInputButton:not(.attachLoading) .z-label,
-.ModalGameNotification a:not(.attachLoading) .z-label,
-a.ModalGameNotification a:not(.attachLoading) .z-label {
+.modal-view-toolbar a:not(.attachLoading):not(.green-button) .z-label,
+.modal-view-toolbar input[type="submit"]:not(.attachLoading):not(.green-button) .z-label,
+.modal-view-toolbar input[type="button"]:not(.attachLoading):not(.green-button) .z-label,
+.form-toolbar a:not(.attachLoading):not(.green-button) .z-label,
+.form-toolbar input[type="submit"]:not(.attachLoading):not(.green-button) .z-label,
+.form-toolbar input[type="button"]:not(.attachLoading):not(.green-button) .z-label,
+.zButton:not(.attachLoading):not(.green-button) .z-label,
+.z-button:not(.attachLoading):not(.green-button) .z-label,
+a.zButton:not(.attachLoading):not(.green-button) .z-label,
+a.z-button:not(.attachLoading):not(.green-button) .z-label,
+.white-button:not(.attachLoading):not(.green-button) .z-label,
+.search-form-tools input[type="submit"]:not(.attachLoading):not(.green-button) .z-label,
+a.search-form-tools input[type="submit"]:not(.attachLoading):not(.green-button) .z-label,
+#progressBar-links a:not(.attachLoading):not(.green-button) .z-label,
+a#progressBar-links a:not(.attachLoading):not(.green-button) .z-label,
+#InstallPageView .AppContainer a:not(.attachLoading):not(.green-button) .z-label,
+a#InstallPageView .AppContainer a:not(.attachLoading):not(.green-button) .z-label,
+#InstallPageView #install-form input[type="submit"]:not(.attachLoading):not(.green-button) .z-label,
+a#InstallPageView #install-form input[type="submit"]:not(.attachLoading):not(.green-button) .z-label,
+.configuration-list li a:not(.attachLoading):not(.green-button) .z-label,
+a.configuration-list li a:not(.attachLoading):not(.green-button) .z-label,
+table.configuration-list td:last-child a:not(.attachLoading):not(.green-button) .z-label,
+atable.configuration-list td:last-child a:not(.attachLoading):not(.green-button) .z-label,
+.multiselect-holder input[type="button"]:not(.attachLoading):not(.green-button) .z-label,
+a.multiselect-holder input[type="button"]:not(.attachLoading):not(.green-button) .z-label,
+.EmailTestingButton:not(.attachLoading):not(.green-button) .z-label,
+a.EmailTestingButton:not(.attachLoading):not(.green-button) .z-label,
+.file-upload-box .ui-icon-plusthick:not(.attachLoading):not(.green-button) .z-label,
+a.file-upload-box .ui-icon-plusthick:not(.attachLoading):not(.green-button) .z-label,
+.ui-datepicker .ui-datepicker-current:not(.attachLoading):not(.green-button) .z-label,
+a.ui-datepicker .ui-datepicker-current:not(.attachLoading):not(.green-button) .z-label,
+.ui-datepicker .ui-datepicker-close:not(.attachLoading):not(.green-button) .z-label,
+a.ui-datepicker .ui-datepicker-close:not(.attachLoading):not(.green-button) .z-label,
+.designer-toolbar input[type="submit"]:not(.attachLoading):not(.green-button) .z-label,
+a.designer-toolbar input[type="submit"]:not(.attachLoading):not(.green-button) .z-label,
+#contactStatesData_AddInputButton:not(.attachLoading):not(.green-button) .z-label,
+#customFieldDataData_AddInputButton:not(.attachLoading):not(.green-button) .z-label,
+a#contactStatesData_AddInputButton:not(.attachLoading):not(.green-button) .z-label,
+a#customFieldDataData_AddInputButton:not(.attachLoading):not(.green-button) .z-label,
+.ModalGameNotification a:not(.attachLoading):not(.green-button) .z-label,
+a.ModalGameNotification a:not(.attachLoading):not(.green-button) .z-label {
   background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
 }
 .white-button .z-label {
@@ -681,7 +681,7 @@ a.ModalGameNotification a:not(.attachLoading) .z-label {
 .default-btn.attachLoading.z-button {
   color: #fff;
 }
-.default-btn:not(.attachLoading) .z-label {
+.default-btn:not(.attachLoading):not(.green-button) .z-label {
   background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
 }
 /*
@@ -1190,8 +1190,8 @@ body.blue .zButton:not(.attachLoading):active .z-label,
 body.blue .z-button:not(.attachLoading):active .z-label,
 body.blue .toolbar-mbmenu .options-menu > li > a:not(.attachLoading):hover .z-label,
 body.blue .portlet-toolbar a:not(.attachLoading):not(.simple-link):hover .z-label,
-body.blue .form-toolbar a:not(.attachLoading):hover .z-label,
-body.blue .form-toolbar a:not(.z-button):hover .z-label,
+body.blue .form-toolbar a:not(.attachLoading):not(.green-button):hover .z-label,
+body.blue .form-toolbar a:not(.z-button):not(.green-button):hover .z-label,
 body.blue .configuration-list li a:hover .z-label,
 body.blue .white-button:hover .z-label,
 body.blue .white-button:hover .z-label {
@@ -1765,8 +1765,8 @@ body.brown .zButton:not(.attachLoading):active .z-label,
 body.brown .z-button:not(.attachLoading):active .z-label,
 body.brown .toolbar-mbmenu .options-menu > li > a:not(.attachLoading):hover .z-label,
 body.brown .portlet-toolbar a:not(.attachLoading):not(.simple-link):hover .z-label,
-body.brown .form-toolbar a:not(.attachLoading):hover .z-label,
-body.brown .form-toolbar a:not(.z-button):hover .z-label,
+body.brown .form-toolbar a:not(.attachLoading):not(.green-button):hover .z-label,
+body.brown .form-toolbar a:not(.z-button):not(.green-button):hover .z-label,
 body.brown .configuration-list li a:hover .z-label,
 body.brown .white-button:hover .z-label,
 body.brown .white-button:hover .z-label {
@@ -2340,8 +2340,8 @@ body.lime .zButton:not(.attachLoading):active .z-label,
 body.lime .z-button:not(.attachLoading):active .z-label,
 body.lime .toolbar-mbmenu .options-menu > li > a:not(.attachLoading):hover .z-label,
 body.lime .portlet-toolbar a:not(.attachLoading):not(.simple-link):hover .z-label,
-body.lime .form-toolbar a:not(.attachLoading):hover .z-label,
-body.lime .form-toolbar a:not(.z-button):hover .z-label,
+body.lime .form-toolbar a:not(.attachLoading):not(.green-button):hover .z-label,
+body.lime .form-toolbar a:not(.z-button):not(.green-button):hover .z-label,
 body.lime .configuration-list li a:hover .z-label,
 body.lime .white-button:hover .z-label,
 body.lime .white-button:hover .z-label {
@@ -2915,8 +2915,8 @@ body.cherry .zButton:not(.attachLoading):active .z-label,
 body.cherry .z-button:not(.attachLoading):active .z-label,
 body.cherry .toolbar-mbmenu .options-menu > li > a:not(.attachLoading):hover .z-label,
 body.cherry .portlet-toolbar a:not(.attachLoading):not(.simple-link):hover .z-label,
-body.cherry .form-toolbar a:not(.attachLoading):hover .z-label,
-body.cherry .form-toolbar a:not(.z-button):hover .z-label,
+body.cherry .form-toolbar a:not(.attachLoading):not(.green-button):hover .z-label,
+body.cherry .form-toolbar a:not(.z-button):not(.green-button):hover .z-label,
 body.cherry .configuration-list li a:hover .z-label,
 body.cherry .white-button:hover .z-label,
 body.cherry .white-button:hover .z-label {
@@ -3490,8 +3490,8 @@ body.turquoise .zButton:not(.attachLoading):active .z-label,
 body.turquoise .z-button:not(.attachLoading):active .z-label,
 body.turquoise .toolbar-mbmenu .options-menu > li > a:not(.attachLoading):hover .z-label,
 body.turquoise .portlet-toolbar a:not(.attachLoading):not(.simple-link):hover .z-label,
-body.turquoise .form-toolbar a:not(.attachLoading):hover .z-label,
-body.turquoise .form-toolbar a:not(.z-button):hover .z-label,
+body.turquoise .form-toolbar a:not(.attachLoading):not(.green-button):hover .z-label,
+body.turquoise .form-toolbar a:not(.z-button):not(.green-button):hover .z-label,
 body.turquoise .configuration-list li a:hover .z-label,
 body.turquoise .white-button:hover .z-label,
 body.turquoise .white-button:hover .z-label {
@@ -4065,8 +4065,8 @@ body.violet .zButton:not(.attachLoading):active .z-label,
 body.violet .z-button:not(.attachLoading):active .z-label,
 body.violet .toolbar-mbmenu .options-menu > li > a:not(.attachLoading):hover .z-label,
 body.violet .portlet-toolbar a:not(.attachLoading):not(.simple-link):hover .z-label,
-body.violet .form-toolbar a:not(.attachLoading):hover .z-label,
-body.violet .form-toolbar a:not(.z-button):hover .z-label,
+body.violet .form-toolbar a:not(.attachLoading):not(.green-button):hover .z-label,
+body.violet .form-toolbar a:not(.z-button):not(.green-button):hover .z-label,
 body.violet .configuration-list li a:hover .z-label,
 body.violet .white-button:hover .z-label,
 body.violet .white-button:hover .z-label {
@@ -4640,8 +4640,8 @@ body.honey .zButton:not(.attachLoading):active .z-label,
 body.honey .z-button:not(.attachLoading):active .z-label,
 body.honey .toolbar-mbmenu .options-menu > li > a:not(.attachLoading):hover .z-label,
 body.honey .portlet-toolbar a:not(.attachLoading):not(.simple-link):hover .z-label,
-body.honey .form-toolbar a:not(.attachLoading):hover .z-label,
-body.honey .form-toolbar a:not(.z-button):hover .z-label,
+body.honey .form-toolbar a:not(.attachLoading):not(.green-button):hover .z-label,
+body.honey .form-toolbar a:not(.z-button):not(.green-button):hover .z-label,
 body.honey .configuration-list li a:hover .z-label,
 body.honey .white-button:hover .z-label,
 body.honey .white-button:hover .z-label {
@@ -12222,7 +12222,7 @@ table.configuration-list td:last-child a .z-label:before {
 .AppContent.ImportWizardView #addExtraColumnButton.attachLoading.z-button {
   color: #fff;
 }
-.AppContent.ImportWizardView #addExtraColumnButton:not(.attachLoading) .z-label {
+.AppContent.ImportWizardView #addExtraColumnButton:not(.attachLoading):not(.green-button) .z-label {
   background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
 }
 .AppContent.ImportWizardView .required-fields {
@@ -12250,10 +12250,7 @@ table.configuration-list td:last-child a .z-label:before {
   padding: 0;
 }
 #ImportWizardMappingView h3 {
-  margin: 15px 0 0 15px;
-}
-#ImportWizardMappingView .required-fields {
-  margin: 5px 0 0 15px;
+  margin: 0;
 }
 #ImportWizardMappingView table {
   border-left: 1px solid #DFDFDF;
@@ -12331,6 +12328,9 @@ table.configuration-list td:last-child a .z-label:before {
 }
 #import-temp-table-list-view table {
   border-bottom: 1px solid #CCCCCC;
+}
+#import-temp-table-list-view .drillDownContent {
+  min-height: 0;
 }
 #ImportWizardDataAnalysisCompleteView > div {
   margin: 0;
@@ -13055,7 +13055,7 @@ div.wide.form .errorMessage {
 .addfileinput-button span.attachLoading.z-button {
   color: #fff;
 }
-.addfileinput-button span:not(.attachLoading) .z-label {
+.addfileinput-button span:not(.attachLoading):not(.green-button) .z-label {
   background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
 }
 .addfileinput-button input {

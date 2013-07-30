@@ -113,7 +113,7 @@
         {
             $route = Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/step6/',
                                            array('id' => $this->model->id));
-            return ZurmoHtml::link(ZurmoHtml::wrapLabel($this->renderNextPageLinkLabel()), $route);
+            return ZurmoHtml::link(ZurmoHtml::wrapLabel($this->renderNextPageLinkLabel()), $route, array('class' => 'green-button'));
         }
 
         protected function renderPreviousPageLinkContent()
