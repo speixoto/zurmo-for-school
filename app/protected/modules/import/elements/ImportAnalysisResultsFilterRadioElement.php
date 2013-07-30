@@ -89,9 +89,9 @@
         protected function getArray()
         {
             $data = array(ImportAnalysisResultsConfigurationForm::FILTERED_BY_ALL => Zurmo::t('Core', 'All'));
-            $data[ImportDataAnalyzer::STATUS_CLEAN] = ImportDataAnalyzer::getStatusLabelByType(ImportDataAnalyzer::STATUS_CLEAN);
-            $data[ImportDataAnalyzer::STATUS_WARN]  = ImportDataAnalyzer::getStatusLabelByType(ImportDataAnalyzer::STATUS_WARN);
-            $data[ImportDataAnalyzer::STATUS_SKIP]  = ImportDataAnalyzer::getStatusLabelByType(ImportDataAnalyzer::STATUS_SKIP);
+            $data[ImportDataAnalyzer::STATUS_CLEAN] = ImportDataAnalyzer::getStatusLabelByTypeForRadioElement(ImportDataAnalyzer::STATUS_CLEAN);
+            $data[ImportDataAnalyzer::STATUS_WARN]  = ImportDataAnalyzer::getStatusLabelByTypeForRadioElement(ImportDataAnalyzer::STATUS_WARN);
+            $data[ImportDataAnalyzer::STATUS_SKIP]  = ImportDataAnalyzer::getStatusLabelByTypeForRadioElement(ImportDataAnalyzer::STATUS_SKIP);
             return $data;
         }
     }

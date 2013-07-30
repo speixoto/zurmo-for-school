@@ -125,12 +125,24 @@
         {
             $groupData = $this->dataProvider->getCountDataByGroupByColumnName('analysisStatus');
             $content  = null;
-            $content .= Zurmo::t('ImportModule', 'Ok');
-            $content .= self::findCountByGroupDataAndStatus($groupData, ImportDataAnalyzer::STATUS_CLEAN);
-            $content .= Zurmo::t('ImportModule', 'Warning');
-            $content .= self::findCountByGroupDataAndStatus($groupData, ImportDataAnalyzer::STATUS_WARN);
-            $content .= Zurmo::t('ImportModule', 'Skip');
-            $content .= self::findCountByGroupDataAndStatus($groupData, ImportDataAnalyzer::STATUS_SKIP);
+            $content .= '<ul class="import-summary">';
+
+            $label    = Zurmo::t('ImportModule', 'Ok');
+            $count    = ZurmoHtml::tag('strong', array(), self::findCountByGroupDataAndStatus($groupData, ImportDataAnalyzer::STATUS_CLEAN));
+            $led      = ZurmoHtml::tag('i', array('class' => 'led state-true'), '●');
+            $content .= ZurmoHtml::tag('li', array(), $led . $count . $label );
+
+            $label    = Zurmo::t('ImportModule', 'Warning');
+            $count    = ZurmoHtml::tag('strong', array(), self::findCountByGroupDataAndStatus($groupData, ImportDataAnalyzer::STATUS_WARN));
+            $led      = ZurmoHtml::tag('i', array('class' => 'led'), '●');
+            $content .= ZurmoHtml::tag('li', array(), $led . $count . $label );
+
+            $label    = Zurmo::t('ImportModule', 'Skip');
+            $count    = ZurmoHtml::tag('strong', array(), self::findCountByGroupDataAndStatus($groupData, ImportDataAnalyzer::STATUS_SKIP));
+            $led      = ZurmoHtml::tag('i', array('class' => 'led state-false'), '●');
+            $content .= ZurmoHtml::tag('li', array(), $led . $count . $label );
+
+            $content .= '</ul>';
             return $content;
         }
 

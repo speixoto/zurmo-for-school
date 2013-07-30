@@ -95,7 +95,7 @@
         {
             assert('$form instanceof ZurmoActiveForm');
             $content      = null;
-            $content .= '<div class="horizontal-line import-analysis-results-toolbar">';
+            $content .= '<div class="horizontal-line filter-portlet-model-bar import-analysis-results-toolbar">';
             $element = new ImportAnalysisResultsFilterRadioElement($this->configurationForm, 'filteredByStatus', $form);
             $element->editableTemplate =  '<div id="ImportAnalysisResultsConfigurationForm_filteredByStatus_area">{content}</div>';
             $content .= $element->render();

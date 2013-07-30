@@ -54,17 +54,17 @@
         /**
          * @var int
          */
-        protected $modelsCreated    = 0;
+        protected $modelsCreated  = 0;
 
         /**
          * @var int
          */
-        protected $modelsUpdated    = 0;
+        protected $modelsUpdated  = 0;
 
         /**
          * @var int
          */
-        protected $rowsWithErrors   = 0;
+        protected $rowsWithErrors = 0;
 
         public function __construct($controllerId, $moduleId, ImportWizardForm $model, ImportDataProvider $dataProvider,
                                     array $mappingData, $modelsCreated = 0, $modelsUpdated = 0, $rowsWithErrors = 0)
@@ -74,7 +74,7 @@
             assert('is_int($rowsWithErrors)');
             parent::__construct($controllerId, $moduleId, $model);
             $this->dataProvider             = $dataProvider;
-            $this->mappingData  = $mappingData;
+            $this->mappingData              = $mappingData;
             $this->modelsCreated            = $modelsCreated;
             $this->modelsUpdated            = $modelsUpdated;
             $this->rowsWithErrors           = $rowsWithErrors;
@@ -98,12 +98,24 @@
         protected function renderStatusGroupsContent()
         {
             $content  = null;
-            $content .= Zurmo::t('ImportModule', 'Created');
-            $content .= $this->modelsCreated;
-            $content .= Zurmo::t('ImportModule', 'Updated');
-            $content .= $this->modelsUpdated;
-            $content .= Zurmo::t('ImportModule', 'Skipped');
-            $content .= $this->rowsWithErrors;
+            $content .= '<ul class="import-summary">';
+
+            $label    = Zurmo::t('ImportModule', 'Created');
+            $count    = ZurmoHtml::tag('strong', array(), $this->modelsCreated);
+            $led      = ZurmoHtml::tag('i', array('class' => 'led state-true'), '●');
+            $content .= ZurmoHtml::tag('li', array(), $led . $count . $label );
+
+            $label    = Zurmo::t('ImportModule', 'Updated');
+            $count    = ZurmoHtml::tag('strong', array(), $this->modelsUpdated);
+            $led      = ZurmoHtml::tag('i', array('class' => 'led'), '●');
+            $content .= ZurmoHtml::tag('li', array(), $led . $count . $label );
+
+            $label    = Zurmo::t('ImportModule', 'Skipped');
+            $count    = ZurmoHtml::tag('strong', array(), $this->rowsWithErrors);
+            $led      = ZurmoHtml::tag('i', array('class' => 'led state-false'), '●');
+            $content .= ZurmoHtml::tag('li', array(), $led . $count . $label );
+
+            $content .= '</ul>';
             return $content;
         }
 

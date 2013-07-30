@@ -944,9 +944,6 @@ table.configuration-list{
             }
         }
     }
-    .attributesContainer{
-        padding-bottom: 0;
-    }
 }
 
 #ImportWizardImportRulesView{
@@ -964,15 +961,19 @@ table.configuration-list{
 }
 
 .process-container-view{
-    padding:15px 15px 0 15px;
+    //padding:15px 15px 0 15px;
 }
 
 #sequenceProcess{
-	padding:15px 0 0 0;
+	//padding:15px 0 0 0;
+}
+
+.progressbar-container{
+	padding: 15px;
 }
 
 .process-message{
-	margin-left: 15px;
+	padding: 0 15px 15px 15px;
 }
 
 #ImportSequentialProcessContainerView{
@@ -995,7 +996,7 @@ table.configuration-list{
 		}
 	}
     h3, h3 + span{
-        margin-bottom:15px;
+        margin:0;
         display:block;
         position:relative;
     }
@@ -1073,16 +1074,18 @@ table.configuration-list{
 }
 
 .import-summary{
-    margin:20px 0 15px 0;
+	width: 60%;
+    margin:20px auto 0 auto;
     line-height:150%;
 	list-style: none;
     li{
-        margin:0 15px 3px 0;
-	    width: 20%;
+	    position: relative;
+        margin:0 1% 3px 1%;
+	    width: 31%;
 	    float: left;
 	    background: #f0f0f0;
 	    .radius(3px);
-	    padding:10px 30px 10px 10px;
+	    padding:10px 10px 10px 10px;
 	    ++.border-box;
 	    .b-shadow(~'inset 0 0 0 1px rgba(204, 204, 204, 0.3) , 1px 1px 1px 0px rgba(153, 153, 153, 0.0)');
 	    > strong{
@@ -1092,8 +1095,15 @@ table.configuration-list{
 		    margin-bottom: 5px;
 	    }
     }
+	.led{
+		float: right;
+	}
 }
 
+.import-analysis-results-toolbar{
+	border:1px solid #DFDFDF;
+	border-bottom: none;
+}
 
 .ui-progressbar{
      //background: url(../images/ajax-loader.gif) left top no-repeat;

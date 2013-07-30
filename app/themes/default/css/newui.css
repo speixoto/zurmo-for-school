@@ -12345,9 +12345,6 @@ table.configuration-list td:last-child a .z-label:before {
 #ImportWizardDataAnalysisCompleteView > div #edit-form:after {
   display: none;
 }
-#ImportWizardDataAnalysisCompleteView .attributesContainer {
-  padding-bottom: 0;
-}
 #ImportWizardImportRulesView .radio-input {
   margin-bottom: 10px !important;
 }
@@ -12359,14 +12356,11 @@ table.configuration-list td:last-child a .z-label:before {
   display: block;
   margin-bottom: 20px;
 }
-.process-container-view {
-  padding: 15px 15px 0 15px;
-}
-#sequenceProcess {
-  padding: 15px 0 0 0;
+.progressbar-container {
+  padding: 15px;
 }
 .process-message {
-  margin-left: 15px;
+  padding: 0 15px 15px 15px;
 }
 #ImportSequentialProcessContainerView > div {
   float: left;
@@ -12392,7 +12386,7 @@ table.configuration-list td:last-child a .z-label:before {
 }
 #ImportSequentialProcessContainerView h3,
 #ImportSequentialProcessContainerView h3 + span {
-  margin-bottom: 15px;
+  margin: 0;
   display: block;
   position: relative;
 }
@@ -12470,13 +12464,15 @@ table.configuration-list td:last-child a .z-label:before {
   margin-top: 5px;
 }
 .import-summary {
-  margin: 20px 0 15px 0;
+  width: 60%;
+  margin: 20px auto 0 auto;
   line-height: 150%;
   list-style: none;
 }
 .import-summary li {
-  margin: 0 15px 3px 0;
-  width: 20%;
+  position: relative;
+  margin: 0 1% 3px 1%;
+  width: 31%;
   float: left;
   background: #f0f0f0;
   -webkit-border-radius: 3px;
@@ -12484,7 +12480,7 @@ table.configuration-list td:last-child a .z-label:before {
   -ms-border-radius: 3px;
   -o-border-radius: 3px;
   border-radius: 3px;
-  padding: 10px 30px 10px 10px;
+  padding: 10px 10px 10px 10px;
   -webkit-box-shadow: inset 0 0 0 1px rgba(204, 204, 204, 0.3) , 1px 1px 1px 0px rgba(153, 153, 153, 0.0);
   -moz-box-shadow: inset 0 0 0 1px rgba(204, 204, 204, 0.3) , 1px 1px 1px 0px rgba(153, 153, 153, 0.0);
   -o-box-shadow: inset 0 0 0 1px rgba(204, 204, 204, 0.3) , 1px 1px 1px 0px rgba(153, 153, 153, 0.0);
@@ -12496,6 +12492,13 @@ table.configuration-list td:last-child a .z-label:before {
   font-weight: bold;
   font-size: 26px;
   margin-bottom: 5px;
+}
+.import-summary .led {
+  float: right;
+}
+.import-analysis-results-toolbar {
+  border: 1px solid #DFDFDF;
+  border-bottom: none;
 }
 #SequentialProcessView .process-container-view {
   margin: 0;
@@ -18411,6 +18414,32 @@ a + .autoresponder-stats {
 .email-recipient-stage-status span {
   font-size: 10px;
   font-weight: bold;
+}
+.led {
+  font-weight: bold;
+  line-height: 1;
+  color: #ffd900;
+  -webkit-text-shadow: 0 0 5px #ffd900;
+  -moz-text-shadow: 0 0 5px #ffd900;
+  -o-text-shadow: 0 0 5px #ffd900;
+  -ms-text-shadow: 0 0 5px #ffd900;
+  text-shadow: 0 0 5px #ffd900;
+}
+.led.state-true {
+  color: #97c43d;
+  -webkit-text-shadow: 0 0 5px #97c43d;
+  -moz-text-shadow: 0 0 5px #97c43d;
+  -o-text-shadow: 0 0 5px #97c43d;
+  -ms-text-shadow: 0 0 5px #97c43d;
+  text-shadow: 0 0 5px #97c43d;
+}
+.led.state-false {
+  color: #c43d53;
+  -webkit-text-shadow: 0 0 5px #c43d53;
+  -moz-text-shadow: 0 0 5px #c43d53;
+  -o-text-shadow: 0 0 5px #c43d53;
+  -ms-text-shadow: 0 0 5px #c43d53;
+  text-shadow: 0 0 5px #c43d53;
 }
 .CampaignItemsRelatedListView .icon-empty:before {
   content: "f";

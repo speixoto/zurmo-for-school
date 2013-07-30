@@ -82,16 +82,25 @@
             assert('is_int($type)');
             if($type == self::UPDATED)
             {
-                return Zurmo::t('ImportModule', 'Updated');
+                $label = Zurmo::t('ImportModule', 'Updated');
+                $stage = ' stage-true';
             }
             elseif($type == self::CREATED)
             {
-                return Zurmo::t('ImportModule', 'Created');
+                $label = Zurmo::t('ImportModule', 'Created');
+                $stage = '';
             }
             elseif($type == self::ERROR)
             {
-                return Zurmo::t('ImportModule', 'Skipped');
+                $label = Zurmo::t('ImportModule', 'Skipped');
+                $stage = ' stage-false';
             }
+
+            //@todo Jason: need a refactor here and in markeign email recipients to generate these 2 divs:continuum and clearfix
+            $pill = '<div class="continuum"><div class="clearfix"><div class="import-item-stage-status' . $stage . '"><i>●</i>' .
+                ZurmoHtml::tag('span', array(), $label) . '</div></div></div>';
+
+            return $pill;
         }
 
         /**

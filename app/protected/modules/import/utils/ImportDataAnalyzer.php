@@ -98,6 +98,25 @@
             return $pill;
         }
 
+        public static function getStatusLabelByTypeForRadioElement($type)
+        {
+            assert('is_int($type)');
+            if($type == self::STATUS_CLEAN)
+            {
+                $label = Zurmo::t('ImportModule', 'Ok');
+            }
+            elseif($type == self::STATUS_WARN)
+            {
+                $label = Zurmo::t('ImportModule', 'Warning');
+            }
+            elseif($type == self::STATUS_SKIP)
+            {
+                $label = Zurmo::t('ImportModule', 'Skip');
+            }
+
+            return $label;
+        }
+
         protected static function resolveAttributeNameByRules(AttributeImportRules $attributeImportRules)
         {
             $attributeNames       = $attributeImportRules->getRealModelAttributeNames();

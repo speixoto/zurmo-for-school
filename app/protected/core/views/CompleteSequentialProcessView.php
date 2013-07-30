@@ -45,7 +45,7 @@
         protected function registerScripts()
         {
             $script   = '$(\'#' . $this->getProgressBarId() . '\').parent().hide();';
-            $script  .= '$(".all-steps-message").hide();';
+            $script  .= '$(".progressbar-container").hide();';
             Yii::app()->clientScript->registerScript('sequentialProcess', $script);
         }
     }

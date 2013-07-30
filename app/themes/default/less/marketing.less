@@ -453,6 +453,21 @@ a + .autoresponder-stats{
 	}
 }
 
+.led{
+	font-weight: bold;
+	line-height: 1;
+	color: #ffd900;
+	.t-shadow(0 0 5px #ffd900);
+	&.state-true{
+		color: #97c43d;
+		.t-shadow(0 0 5px #97c43d);
+	}
+	&.state-false{
+		color: #c43d53;
+		.t-shadow(0 0 5px #c43d53);
+	}
+}
+
 .CampaignItemsRelatedListView{
 	.icon-empty:before{
 		//display: none;
