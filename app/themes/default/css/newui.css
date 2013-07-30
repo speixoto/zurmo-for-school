@@ -288,7 +288,8 @@ a.ModalGameNotification a,
 #business-card-buttons > div,
 #business-card-buttons a,
 #sliding-panel-toggle,
-.mini-button {
+.mini-button,
+#login-box {
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
@@ -5008,7 +5009,6 @@ section {
 }
 /*=Login*/
 #LoginView {
-  min-width: 900px;
   height: 100%;
   margin: 30px;
   -webkit-box-shadow: 0 0 12px 5px rgba(153, 153, 153, 0.3);
@@ -5086,8 +5086,8 @@ section {
   left: 6px;
 }
 #login-box {
-  width: 500px;
-  margin: 150px auto 0 -250px;
+  max-width: 475px;
+  margin: 150px auto 0 -237px;
   height: 200px;
   position: relative;
   left: 50%;
@@ -19957,5 +19957,21 @@ div.special-pager .hidden.next:after {
     padding: 0;
     padding: 0 0 0 0;
     background: none;
+  }
+}
+@media all and (max-width: 601px) and (max-height: 451px) {
+  #login-box {
+    max-width: 475px;
+    margin: 60px auto 0 -237px;
+    height: auto !important;
+    position: relative;
+    left: 50%;
+    padding: 10px 10px 10px 10px;
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: 5px;
+  }
+  #LoginLogo {
+    height: 120px;
+    background-position: 50% 35px;
   }
 }
