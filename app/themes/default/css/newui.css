@@ -12496,7 +12496,7 @@ table.configuration-list td:last-child a .z-label:before {
 .import-summary .led {
   float: right;
 }
-.import-analysis-results-toolbar {
+.import-results-toolbar {
   border: 1px solid #DFDFDF;
   border-bottom: none;
 }

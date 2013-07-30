@@ -35,17 +35,19 @@
      ********************************************************************************/
 
     /**
-     * Element for displaying available analysis statuses to filter analysis results on
+     * Base class for filtering on import results
      */
-    class ImportAnalysisResultsFilterRadioElement extends Element
+    abstract class ImportResultsFilterRadioElement extends Element
     {
+        abstract protected function getArray();
+
         /**
          * Renders the setting as a radio list.
          * @return A string containing the element's content.
          */
         protected function renderControlEditable()
         {
-            assert('$this->model instanceof ImportAnalysisResultsConfigurationForm');
+            assert('$this->model instanceof ImportResultsConfigurationForm');
             $content = $this->form->radioButtonList(
                 $this->model,
                 $this->attribute,
@@ -84,15 +86,6 @@
                 'template'  => '{input}{label}',
             );
             return $htmlOptions;
-        }
-
-        protected function getArray()
-        {
-            $data = array(ImportAnalysisResultsConfigurationForm::FILTERED_BY_ALL => Zurmo::t('Core', 'All'));
-            $data[ImportDataAnalyzer::STATUS_CLEAN] = ImportDataAnalyzer::getStatusLabelByTypeForRadioElement(ImportDataAnalyzer::STATUS_CLEAN);
-            $data[ImportDataAnalyzer::STATUS_WARN]  = ImportDataAnalyzer::getStatusLabelByTypeForRadioElement(ImportDataAnalyzer::STATUS_WARN);
-            $data[ImportDataAnalyzer::STATUS_SKIP]  = ImportDataAnalyzer::getStatusLabelByTypeForRadioElement(ImportDataAnalyzer::STATUS_SKIP);
-            return $data;
         }
     }
 ?>
