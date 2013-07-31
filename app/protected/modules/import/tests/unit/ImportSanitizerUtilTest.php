@@ -681,7 +681,7 @@
             $this->assertFalse($importSanitizeResultsUtil->shouldSaveModel());
             $messages = $importSanitizeResultsUtil->getMessages();
             $this->assertEquals(1, count($messages));
-            $compareMessage = 'ImportModelTestItem - A full name value is required but missing.';
+            $compareMessage = 'ImportModelTestItem - Full name value required, but missing.';
             $this->assertEquals($compareMessage, $messages[0]);
 
             //Test a non-required FullName with no value, but a valid default value
@@ -744,7 +744,7 @@
             $this->assertFalse($importSanitizeResultsUtil->shouldSaveModel());
             $messages = $importSanitizeResultsUtil->getMessages();
             $this->assertEquals(1, count($messages));
-            $compareMessage = 'ImportModelTestItem - Last name specified is too long.';
+            $compareMessage = 'ImportModelTestItem - Last Name specified is too long.';
             $this->assertEquals($compareMessage, $messages[0]);
 
             //Test a non-required FullName with a value that is too long and a specified default value. The specified
@@ -763,7 +763,7 @@
             $this->assertFalse($importSanitizeResultsUtil->shouldSaveModel());
             $messages = $importSanitizeResultsUtil->getMessages();
             $this->assertEquals(1, count($messages));
-            $compareMessage = 'ImportModelTestItem - Last name specified is too long.';
+            $compareMessage = 'ImportModelTestItem - Last Name specified is too long.';
             $this->assertEquals($compareMessage, $messages[0]);
 
             //A first name that is too large, but the last name is ok.
@@ -781,7 +781,7 @@
             $this->assertFalse($importSanitizeResultsUtil->shouldSaveModel());
             $messages = $importSanitizeResultsUtil->getMessages();
             $this->assertEquals(1, count($messages));
-            $compareMessage = 'ImportModelTestItem - First name specified is too long.';
+            $compareMessage = 'ImportModelTestItem - First Name specified is too long.';
             $this->assertEquals($compareMessage, $messages[0]);
         }
 
@@ -1058,7 +1058,7 @@
             $this->assertTrue($importSanitizeResultsUtil->shouldSaveModel());
             $messages = $importSanitizeResultsUtil->getMessages();
             $this->assertEquals(1, count($messages));
-            $compareMessage = 'ImportModelTestItem - Has One The id specified did not match any existing records.';
+            $compareMessage = 'ImportModelTestItem - Has One Id specified did not match any existing records.';
             $this->assertEquals($compareMessage, $messages[0]);
 
             //Test a non-required related model with no value.
@@ -1167,7 +1167,7 @@
             $this->assertFalse($importSanitizeResultsUtil->shouldSaveModel());
             $messages = $importSanitizeResultsUtil->getMessages();
             $this->assertEquals(1, count($messages));
-            $compareMessage = 'ImportModelTestItem - Id The id specified did not match any existing records.';
+            $compareMessage = 'ImportModelTestItem - Id Id specified did not match any existing records.';
             $this->assertEquals($compareMessage, $messages[0]);
 
             //Test the id attribute with no value.
@@ -1551,7 +1551,7 @@
             $this->assertFalse($importSanitizeResultsUtil->shouldSaveModel());
             $messages = $importSanitizeResultsUtil->getMessages();
             $this->assertEquals(1, count($messages));
-            $compareMessage = 'ImportModelTestItem - Owner This id is required and was not specified.';
+            $compareMessage = 'ImportModelTestItem - Owner Id is required and was not specified.';
             $this->assertEquals($compareMessage, $messages[0]);
 
             //Test a required string with no value, but a valid default value, a user id.

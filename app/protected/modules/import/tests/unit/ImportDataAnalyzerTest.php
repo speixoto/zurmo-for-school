@@ -492,7 +492,7 @@
             $compareData['column_4']   = array();
             $compareData['column_4'][] = 'Is an invalid date format. This value will be skipped during import.';
             $compareData['column_6']   = array();
-            $compareData['column_6'][] = 'notpresent is new. This value will be added upon import';
+            $compareData['column_6'][] = 'notpresent is new. This value will be added upon import.';
             $compareData['column_8']   = array();
             $compareData['column_8'][] = 'Is an invalid user value. This value will be skipped during import.';
             $compareData['column_9']   = array();
@@ -524,7 +524,7 @@
             $compareData['column_5']   = array();
             $compareData['column_5'][] = 'Is an invalid date time format. This value will be skipped during import.';
             $compareData['column_6']   = array();
-            $compareData['column_6'][] = 'neverpresent is new. This value will be added upon import';
+            $compareData['column_6'][] = 'neverpresent is new. This value will be added upon import.';
             $compareData['column_8']   = array();
             $compareData['column_8'][] = 'Is an invalid user value. This value will be skipped during import.';
             $compareData['column_10']   = array();
@@ -546,9 +546,9 @@
             $compareData['column_18']   = array();
             $compareData['column_18'][] = 'Is an existing record and will be updated.';
             $compareData['column_24']   = array();
-            $compareData['column_24'][] = 'Multi 5 is new. This value will be added upon import';
+            $compareData['column_24'][] = 'Multi 5 is new. This value will be added upon import.';
             $compareData['column_25']   = array();
-            $compareData['column_25'][] = 'Cloud 5 is new. This value will be added upon import';
+            $compareData['column_25'][] = 'Cloud 5 is new. This value will be added upon import.';
             $this->assertEquals($compareData, unserialize($data[6]->serializedAnalysisMessages));
             $this->assertEquals(ImportDataAnalyzer::STATUS_SKIP, $data[6]->analysisStatus);
 
@@ -584,15 +584,15 @@
             $compareData['column_22']   = array();
             $compareData['column_22'][] = 'Is invalid.';
             $compareData['column_24']   = array();
-            $compareData['column_24'][] = 'Multi 4 is new. This value will be added upon import';
+            $compareData['column_24'][] = 'Multi 4 is new. This value will be added upon import.';
             $compareData['column_25']   = array();
-            $compareData['column_25'][] = 'Cloud 4 is new. This value will be added upon import';
+            $compareData['column_25'][] = 'Cloud 4 is new. This value will be added upon import.';
             $this->assertEquals($compareData, unserialize($data[7]->serializedAnalysisMessages));
             $this->assertEquals(ImportDataAnalyzer::STATUS_SKIP, $data[7]->analysisStatus);
 
             $compareData = array();
             $compareData['column_3']   = array();
-            $compareData['column_3'][] = 'Is an invalid check box value. This will be set to false upon import';
+            $compareData['column_3'][] = 'Is an invalid check box value. This will be set to false upon import.';
             $compareData['column_5']   = array();
             $compareData['column_5'][] = 'Is an invalid date time format. This value will be skipped during import.';
             $compareData['column_8']   = array();
@@ -618,11 +618,11 @@
             $compareData['column_21']   = array();
             $compareData['column_21'][] = 'Is invalid.';
             $compareData['column_24']   = array();
-            $compareData['column_24'][] = 'Multi 4 is new. This value will be added upon import';
-            $compareData['column_24'][] = 'Multi 5 is new. This value will be added upon import';
+            $compareData['column_24'][] = 'Multi 4 is new. This value will be added upon import.';
+            $compareData['column_24'][] = 'Multi 5 is new. This value will be added upon import.';
             $compareData['column_25']   = array();
-            $compareData['column_25'][] = 'Cloud 4 is new. This value will be added upon import';
-            $compareData['column_25'][] = 'Cloud 5 is new. This value will be added upon import';
+            $compareData['column_25'][] = 'Cloud 4 is new. This value will be added upon import.';
+            $compareData['column_25'][] = 'Cloud 5 is new. This value will be added upon import.';
             $this->assertEquals($compareData, unserialize($data[8]->serializedAnalysisMessages));
             $this->assertEquals(ImportDataAnalyzer::STATUS_SKIP, $data[8]->analysisStatus);
 
@@ -648,7 +648,7 @@
             $compareData['column_18']   = array();
             $compareData['column_18'][] = 'Was not found and this row will be skipped during import.';
             $compareData['column_19']   = array();
-            $compareData['column_19'][] = 'Is an invalid url. This value will be cleared during import.';
+            $compareData['column_19'][] = 'Is an invalid URL. This value will be cleared during import.';
             $compareData['column_23']   = array();
             $compareData['column_23'][] = 'Is too long.';
             $this->assertEquals($compareData, unserialize($data[9]->serializedAnalysisMessages));
@@ -656,7 +656,7 @@
 
             $compareData = array();
             $compareData['column_3']   = array();
-            $compareData['column_3'][] = 'Is an invalid check box value. This will be set to false upon import';
+            $compareData['column_3'][] = 'Is an invalid check box value. This will be set to false upon import.';
             $compareData['column_7']   = array();
             $compareData['column_7'][] = 'Is an invalid user value. This value will be skipped during import.';
             $compareData['column_8']   = array();
@@ -684,7 +684,7 @@
 
             $compareData = array();
             $compareData['column_0']   = array();
-            $compareData['column_0'][] = 'Is too short. Minimum length is 3';
+            $compareData['column_0'][] = 'Is too short. Minimum length is 3.';
             $compareData['column_0'][] = 'Is  required.';
             $compareData['column_9']   = array();
             $compareData['column_9'][] = 'Is  required.';
@@ -768,13 +768,13 @@
 
             $compareData = array();
             $compareData['column_0']   = array();
-            $compareData['column_0'][] = 'Is too short. Minimum length is 3';
+            $compareData['column_0'][] = 'Is too short. Minimum length is 3.';
             $this->assertEquals($compareData, unserialize($data[2]->serializedAnalysisMessages));
             $this->assertEquals(ImportDataAnalyzer::STATUS_SKIP, $data[2]->analysisStatus);
 
             $compareData = array();
             $compareData['column_0']   = array();
-            $compareData['column_0'][] = 'Is too short. Minimum length is 3';
+            $compareData['column_0'][] = 'Is too short. Minimum length is 3.';
             $compareData['column_1']   = array();
             $compareData['column_1'][] = 'Is too short.';
             $this->assertEquals($compareData, unserialize($data[3]->serializedAnalysisMessages));

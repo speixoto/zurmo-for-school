@@ -97,7 +97,7 @@
             }
             catch (NotFoundException $e)
             {
-                throw new InvalidValueToSanitizeException(Zurmo::t('ProductTemplatesModule', 'The sell price formula type specified is invalid.'));
+                throw new InvalidValueToSanitizeException(Zurmo::t('ProductTemplatesModule', 'Sell Price Formula type specified is invalid.'));
             }
         }
     }

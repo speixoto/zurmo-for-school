@@ -98,7 +98,7 @@
             $acceptableValues = BooleanSanitizerUtil::getAcceptableValues();
             if (!in_array(strtolower($rowBean->{$this->columnName}), $acceptableValues))
             {
-                $label = Zurmo::t('ImportModule', 'Is an invalid check box value. This will be set to false upon import');
+                $label = Zurmo::t('ImportModule', 'Is an invalid check box value. This will be set to false upon import.');
                 $this->analysisMessages[] = $label;
             }
         }

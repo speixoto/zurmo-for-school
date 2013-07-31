@@ -69,7 +69,7 @@
                 $dropDownValues       = ArrayUtil::resolveArrayToLowerCase($dropDownValues);
                 if (!in_array(strtolower($rowBean->{$this->columnName}), $dropDownValues))
                 {
-                    $label = Zurmo::t('ImportModule', '{value} is new. This value will be added upon import',
+                    $label = Zurmo::t('ImportModule', '{value} is new. This value will be added upon import.',
                                       array('{value}' => $rowBean->{$this->columnName}));
                     $this->analysisMessages[]         = $label;
                     $this->missingCustomFieldValues[] = $rowBean->{$this->columnName};

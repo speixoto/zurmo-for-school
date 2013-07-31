@@ -51,6 +51,7 @@
          * @param mixed $value
          * @return mixed|sanitized
          * @throws InvalidValueToSanitizeException
+         * @throws NotSupportedException
          */
         public function sanitizeValue($value)
         {
@@ -76,7 +77,7 @@
                 }
                 catch (NotFoundException $e)
                 {
-                    throw new InvalidValueToSanitizeException(Zurmo::t('ImportModule', 'The id specified did not match any existing records.'));
+                    throw new InvalidValueToSanitizeException(Zurmo::t('ImportModule', 'Id specified did not match any existing records.'));
                 }
                 return $relationModel;
             }
@@ -87,7 +88,7 @@
                 {
                     return $value;
                 }
-                throw new InvalidValueToSanitizeException(Zurmo::t('ImportModule', 'This id is required and was not specified.'));
+                throw new InvalidValueToSanitizeException(Zurmo::t('ImportModule', 'Id is required and was not specified.'));
             }
         }
     }

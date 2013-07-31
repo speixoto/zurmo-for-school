@@ -43,7 +43,6 @@
     {
         /**
          * @param RedBean_OODBBean $rowBean
-         * @param string $columnName
          */
         public function analyzeByRow(RedBean_OODBBean $rowBean)
         {
@@ -71,7 +70,7 @@
                 }
                 else
                 {
-                    throw new InvalidValueToSanitizeException(Zurmo::t('ImportModule', 'A full name value is required but missing.'));
+                    throw new InvalidValueToSanitizeException(Zurmo::t('ImportModule', 'Full name value required, but missing.'));
                 }
             }
             return $value;

@@ -48,7 +48,7 @@
                 strtolower($rowBean->{$this->columnName}) != strtolower(UserStatusUtil::ACTIVE) &&
                 strtolower($rowBean->{$this->columnName}) == strtolower(UserStatusUtil::INACTIVE))
             {
-                $label = Zurmo::t('ImportModule', 'Status value is invalid. This status will be set to active upon import.');
+                $label = Zurmo::t('ImportModule', 'Status value is invalid. This value will be set to active upon import.');
                 $this->analysisMessages[] = $label;
             }
         }
@@ -89,7 +89,7 @@
             }
             catch (NotFoundException $e)
             {
-                throw new InvalidValueToSanitizeException(Zurmo::t('ProductTemplatesModule', 'The price frequency specified is invalid.'));
+                throw new InvalidValueToSanitizeException(Zurmo::t('ProductTemplatesModule', 'Price Frequency specified is invalid.'));
             }
         }
     }

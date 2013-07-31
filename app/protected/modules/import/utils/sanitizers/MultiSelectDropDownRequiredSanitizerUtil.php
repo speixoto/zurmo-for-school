@@ -90,7 +90,7 @@
                 {
                     return $value;
                 }
-                throw new InvalidValueToSanitizeException(Zurmo::t('ImportModule', 'Multi-Select Pick list value required, but missing.'));
+                throw new InvalidValueToSanitizeException(Zurmo::t('ImportModule', 'Pick list value required, but missing.'));
             }
         }
     }

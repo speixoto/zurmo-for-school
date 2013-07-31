@@ -55,7 +55,7 @@
             $minimumLength = $this->getMinimumLength();
             if (strlen($rowBean->{$this->columnName}) < $minimumLength)
             {
-                $label = Zurmo::t('ImportModule', 'Is too short. Minimum length is {minimumLength}',
+                $label = Zurmo::t('ImportModule', 'Is too short. Minimum length is {minimumLength}.',
                                   array('{minimumLength}' => $minimumLength));
                 $this->shouldSkipRow      = true;
                 $this->analysisMessages[] = $label;

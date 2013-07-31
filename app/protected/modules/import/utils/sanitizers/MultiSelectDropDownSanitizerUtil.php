@@ -55,7 +55,7 @@
                 {
                     if (!in_array(strtolower($aValue), $lowerCaseDropDownValues))
                     {
-                        $label = Zurmo::t('ImportModule', '{value} is new. This value will be added upon import',
+                        $label = Zurmo::t('ImportModule', '{value} is new. This value will be added upon import.',
                                           array('{value}' => $aValue));
                         $this->analysisMessages[]         = $label;
                         $this->missingCustomFieldValues[] = $aValue;

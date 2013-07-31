@@ -546,14 +546,14 @@
 
             //Confirm the messages are as expected.
             $compareMessages = array(
-                'ImportModelTestItem - Last name specified is too long.',
+                'ImportModelTestItem - Last Name specified is too long.',
                 'ImportModelTestItem - Last Name - Last Name cannot be blank.',
             );
             $this->assertEquals($compareMessages, unserialize(current($beansWithErrors)->serializedMessages));
 
             $compareMessages = array(
                 'ImportModelTestItem - String This field is required and neither a value nor a default value was specified.',
-                'ImportModelTestItem - A full name value is required but missing.',
+                'ImportModelTestItem - Full name value required, but missing.',
                 'ImportModelTestItem - Last Name - Last Name cannot be blank.',
                 'ImportModelTestItem - String - String cannot be blank.',
             );
