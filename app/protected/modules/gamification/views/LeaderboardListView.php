@@ -117,7 +117,7 @@
 
         public function getTableColumnGroup()
         {
-            return array('10%', '80%', '10%');
+            return array('50px', 'auto', '60px');
         }
     }
 ?>

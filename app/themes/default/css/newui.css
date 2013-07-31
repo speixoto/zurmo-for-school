@@ -15204,24 +15204,22 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
   filter: none;
   -ms-filter: none;
 }
-#LeaderboardView .items td:first-child,
-#LeaderboardView .items th:first-child {
-  padding-left: 15px;
+#LeaderboardListView .pager {
+  border: 1px solid #dfdfdf;
+  border-top: none;
 }
-#LeaderboardView .user-label img {
+.user-label img {
   margin-right: 10px;
   width: 24px;
   height: 24px;
   display: inline-block;
-  float: left;
 }
-#LeaderboardView .user-label span {
-  line-height: 24px;
+.user-label span {
+  line-height: 30px;
   display: inline-block;
-  float: left;
 }
-#LeaderboardView .ranking {
-  float: none;
+.UserLeaderboardRankingForPortletView .ranking {
+  float: right;
 }
 .icon-leaderboard-weekly:before {
   content: "x";
@@ -15284,7 +15282,6 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
   font-size: 11px;
 }
 .ranking {
-  float: right;
   margin-right: 5px;
   display: block;
   color: #fff;

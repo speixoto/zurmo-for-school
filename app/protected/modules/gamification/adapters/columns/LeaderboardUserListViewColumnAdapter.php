@@ -54,8 +54,8 @@
             $userUrl     = Yii::app()->createUrl('/users/default/details', array('id' => $data['userId']));
             $user        = User::getById($data['userId']);
             $avatarImage = $user->getAvatarImage(24);
-            return ZurmoHtml::tag('span', array('class' => 'user-label'),
-                        ZurmoHtml::link($avatarImage . '<span>' . $data['userLabel'] . '</span>', $userUrl));
+            $userLabel = ZurmoHtml::tag('span', array(), $data['userLabel']);
+            return ZurmoHtml::link($avatarImage . $userLabel, $userUrl, array('class' => 'user-label'));
         }
     }
 ?>

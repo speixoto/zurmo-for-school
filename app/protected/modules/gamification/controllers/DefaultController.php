@@ -64,8 +64,8 @@
                 throw new NotSupportedException();
             }
             $metadata = array(); //can put the typing information here easily. from the type.
-            $pageSize                       = Yii::app()->pagination->resolveActiveForCurrentUserByType(
-                                              'listPageSize', get_class($this->getModule()));
+            $pageSize                         = Yii::app()->pagination->resolveActiveForCurrentUserByType(
+                                                'listPageSize', get_class($this->getModule()));
             $gameLevel                        = new GameLevel(false);
             $dataProvider = RedBeanModelDataProviderUtil::makeDataProvider( $metadata,
                                                                             get_class($gameLevel),
