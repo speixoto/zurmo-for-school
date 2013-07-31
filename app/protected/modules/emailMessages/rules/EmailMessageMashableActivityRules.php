@@ -200,9 +200,10 @@
                     }
                     else
                     {
-                        $castedDownModel = self::castDownItem($recipient->personOrAccount);
+
                         try
                         {
+                            $castedDownModel = self::castDownItem($recipient->personOrAccount);
                             if (strval($castedDownModel) != null)
                                         {
                                             $params          = array('label' => strval($castedDownModel), 'wrapLabel' => false);
@@ -215,6 +216,11 @@
                         }
                         catch (AccessDeniedSecurityException $e)
                         {
+                            $existingModels[] = $recipient->toAddress . ' ' . $recipient->toName;
+                        }
+                        catch (NotSupportedException $e)
+                        {
+                            //If the personOrAccount no longer exists or something else isn't right with the model
                             $existingModels[] = $recipient->toAddress . ' ' . $recipient->toName;
                         }
                     }
