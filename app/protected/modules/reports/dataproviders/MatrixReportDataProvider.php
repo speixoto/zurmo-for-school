@@ -655,13 +655,12 @@
         protected function getGrandTotalsRowsData() 
         {       
                         
-            $headerDataRows = $this->getXAxisGroupByDataValues();                                                 
+            $headerDataRows = $this->getXAxisGroupByDataValues();             
             $headingColumns = array();
             $this->resolveHeadingColumns($headerDataRows, $headingColumns);                                                                                                                                                           
             $totalRowsData                  = parent::getGrandTotalsRowsData();                        
-            $adjustedTotalsRowsData         = array();            
-            $totalRow                       = array_shift($totalRowsData);   
-            $keys                           = array_reverse(array_keys($totalRow));
+            $adjustedTotalsRowsData         = array();                        
+            $keys                           = array_reverse(array_keys($totalRowsData[0]));
             $keysColumnArray                = array();
             $headingsDepth                  = count($headerDataRows);       
             for ($i=0; $i < $headingsDepth; $i++)
@@ -671,27 +670,30 @@
             $keys = array_reverse($keysColumnArray);            
             foreach ($headingColumns as $column)
             {
-                $dontPassColumn   = true;
-                $i                = 0;
-                foreach ($column as $row)
+                $totalRow = null;
+                foreach ($totalRowsData as $key => $totalRowData)
                 {
-                    $dontPassColumn = $dontPassColumn && ($row == $totalRow[$keys[$i++]]);                    
-                }
-                if ($dontPassColumn)
+                    $found = true;
+                    $i                = 0;
+                    foreach ($column as $row)
+                    {
+                        $found = $found && ($row == $totalRowData[$keys[$i++]]);                    
+                    }
+                    if ($found)
+                    {
+                        $totalRow = $totalRowData;
+                        array_slice($totalRowsData, $key);
+                    }
+                }                
+                if (isset($totalRow))
                 {
-                    $adjustedTotalsRowsData[] = $totalRow;
-                    $totalRow                 = array_shift($totalRowsData);    
+                    $adjustedTotalsRowsData[] = $totalRow;                    
                 }
                 else
-                {
-                    $newRow = array();
-                    foreach ($keys as $key)
-                    {
-                        $rewRow[$key] = null;                        
-                    }
-                    $adjustedTotalsRowsData[] = $newRow;
+                {                    
+                    $adjustedTotalsRowsData[] = array();
                 }
-            }                        
+            }                    
             return $adjustedTotalsRowsData;
         }
         
@@ -710,7 +712,7 @@
             }
             else
             {
-                $row = array_shift($headerDataRows);  
+                $row = array_shift($headerDataRows);                                  
                 $tempPrefix = $prefix;
                 foreach ($row as $groupByValue)
                 {                                        
