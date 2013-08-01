@@ -19965,6 +19965,207 @@ div.special-pager .hidden.next:after {
 .mini-button .show {
   display: block;
 }
+.pillbox {
+  position: relative;
+  z-index: 9999;
+  font-size: 11px;
+  border: 1px solid #b7b7b7;
+  border-top-color: #e7e7e7;
+  border-left-color: #d7d7d7;
+  border-right-color: #d7d7d7;
+  border-radius: 4px;
+  margin: 0 0 30px 0;
+  -webkit-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
+  -moz-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
+  -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
+  -ms-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
+  box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
+  background: url(../images/view-toolbar-gradient.png) left bottom repeat-x;
+  display: inline-block;
+}
+.pillbox .split-button,
+.pillbox .default-button {
+  position: relative;
+  padding: 0 5px;
+  display: inline-block;
+  float: left;
+}
+.pillbox .split-button + .default-button,
+.pillbox .default-button + .default-button,
+.pillbox .split-button + .split-button,
+.pillbox .default-button + .split-button {
+  border-left: 1px solid #bababa;
+}
+.pillbox .split-button i,
+.pillbox .default-button i {
+  font-style: normal;
+  line-height: 30px;
+  margin-right: 3px;
+}
+.pillbox .split-button .button-label,
+.pillbox .default-button .button-label {
+  font-weight: bold;
+  padding: 0;
+  line-height: 30px;
+  display: inline-block;
+  white-space: nowrap;
+}
+.pillbox .split-button .unread-count,
+.pillbox .default-button .unread-count {
+  margin-left: 3px;
+}
+.pillbox .split-button .button-action:hover span,
+.pillbox .default-button .button-action:hover span,
+.pillbox .split-button .button-action:hover i,
+.pillbox .default-button .button-action:hover i {
+  color: #7cb830;
+}
+.pillbox .split-button .button-trigger,
+.pillbox .default-button .button-trigger {
+  display: inline-block;
+  line-height: 30px;
+  margin-left: 2px;
+  text-align: center;
+}
+.pillbox .split-button .button-trigger:hover i,
+.pillbox .default-button .button-trigger:hover i {
+  color: #7cb830;
+  -webkit-text-shadow: 0 0 8px #7cb830;
+  -moz-text-shadow: 0 0 8px #7cb830;
+  -o-text-shadow: 0 0 8px #7cb830;
+  -ms-text-shadow: 0 0 8px #7cb830;
+  text-shadow: 0 0 8px #7cb830;
+}
+.pillbox .split-button .button-trigger:hover + .button-actions,
+.pillbox .default-button .button-trigger:hover + .button-actions {
+  display: block;
+}
+.pillbox .split-button .button-trigger .icon-trigger,
+.pillbox .default-button .button-trigger .icon-trigger {
+  color: #656565;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  font-weight: normal;
+  font-size: 14px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  margin: 0 0 0 0;
+  vertical-align: middle;
+  position: relative;
+  line-height: 1;
+  padding: 2px 4px 2px 5px;
+  border-left: 1px solid #e7e7e7;
+  -webkit-box-shadow: inset 1px 0 0 0 #ffffff;
+  -moz-box-shadow: inset 1px 0 0 0 #ffffff;
+  -o-box-shadow: inset 1px 0 0 0 #ffffff;
+  -ms-box-shadow: inset 1px 0 0 0 #ffffff;
+  box-shadow: inset 1px 0 0 0 #ffffff;
+  -webkit-text-shadow: 0 2px 0 #ffffff;
+  -moz-text-shadow: 0 2px 0 #ffffff;
+  -o-text-shadow: 0 2px 0 #ffffff;
+  -ms-text-shadow: 0 2px 0 #ffffff;
+  text-shadow: 0 2px 0 #ffffff;
+}
+.pillbox .split-button .button-trigger .icon-trigger:after,
+.pillbox .default-button .button-trigger .icon-trigger:after {
+  content: "÷";
+}
+.pillbox .default-button {
+  padding: 0 5px 0 5px;
+}
+.pillbox .icon-ww {
+  color: #656565;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  font-weight: normal;
+  font-size: 24px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  padding: 0;
+  margin: 0;
+  vertical-align: middle;
+  position: relative;
+  top: -2px;
+}
+.pillbox .icon-ww:after {
+  content: "n";
+}
+.pillbox > div:nth-child(1) .icon-ww:after {
+  content: "Y";
+}
+.pillbox > div:nth-child(2) .icon-ww:after {
+  content: '\00A7';
+}
+.pillbox > div:nth-child(3) .icon-ww:after {
+  content: "O";
+}
+.pillbox > div:nth-child(4) .icon-ww:after {
+  content: "Q";
+}
+.pillbox > div:nth-child(5) .icon-ww:after {
+  content: '\00A5';
+}
+.pillbox > div:nth-child(6) .icon-ww:after {
+  content: "n";
+}
+.pillbox .button-actions {
+  display: none;
+  list-style: none;
+  position: absolute;
+  top: 38px;
+  right: -10px;
+  min-width: 100px;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  -ms-border-radius: 2px;
+  -o-border-radius: 2px;
+  border-radius: 2px;
+  white-space: nowrap;
+  border: 1px solid #444;
+  background: #252525;
+  -webkit-box-shadow: 0 0 10px 2px rgba(53, 53, 53, 0.5);
+  -moz-box-shadow: 0 0 10px 2px rgba(53, 53, 53, 0.5);
+  -o-box-shadow: 0 0 10px 2px rgba(53, 53, 53, 0.5);
+  -ms-box-shadow: 0 0 10px 2px rgba(53, 53, 53, 0.5);
+  box-shadow: 0 0 10px 2px rgba(53, 53, 53, 0.5);
+}
+.pillbox .button-actions:before {
+  content: "";
+  display: block;
+  position: absolute;
+  top: -8px;
+  right: 15px;
+  width: 13px;
+  height: 8px;
+  background: url(../images/tip.png) right top no-repeat;
+}
+.pillbox .button-actions li {
+  line-height: 100%;
+}
+.pillbox .button-actions li:first-child {
+  border-top: none;
+}
+.pillbox .button-actions li:last-child {
+  border-bottom: none;
+}
+.pillbox .button-actions .divider {
+  border-top: 1px solid #181818;
+  border-bottom: 1px solid #323232;
+  margin: 5px 0;
+}
+.pillbox .button-actions a {
+  color: #EFEFEF;
+  font-size: 11px;
+  font-weight: normal;
+  display: block;
+  padding: 6px 10px 6px 10px;
+  margin: 0;
+  -webkit-text-shadow: none;
+  -moz-text-shadow: none;
+  -o-text-shadow: none;
+  -ms-text-shadow: none;
+  text-shadow: none;
+}
 /*********************************************************************************
  * Zurmo is a customer relationship management program developed by
  * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.

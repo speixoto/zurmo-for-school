@@ -393,3 +393,169 @@ div.special-pager{
 		display:block;
 	}
 }
+
+.pillbox{
+	position: relative;
+	z-index: 9999;
+	.smaller();
+	border:1px solid #b7b7b7;
+	border-top-color: #e7e7e7;
+	border-left-color:#d7d7d7;
+	border-right-color:#d7d7d7;
+	border-radius:4px;
+	margin:0 0 30px 0;
+	.b-shadow(0 0 9px 5px rgba(153, 153, 153, 0.12));
+	background:url(../images/view-toolbar-gradient.png) left bottom repeat-x;
+	display: inline-block;
+
+	.split-button,
+	.default-button{
+		position: relative;
+		padding:0 5px;
+		display: inline-block;
+		float: left;
+		+ .default-button,
+		+ .split-button{
+			border-left: 1px solid #bababa;
+		}
+
+		i{
+			font-style: normal;
+			line-height:30px;
+			margin-right: 3px;
+		}
+
+		.button-label{
+			font-weight:bold;
+			padding:0;
+			line-height:30px;
+			display: inline-block;
+			white-space: nowrap;
+		}
+
+		.unread-count{
+			margin-left: 3px;
+		}
+
+		.button-action{
+			&:hover{
+				span, i{
+					color: #7cb830;
+				}
+			}
+		}
+
+		.button-trigger{
+			display: inline-block;
+			line-height:30px;
+			margin-left: 2px;
+			text-align: center;
+			&:hover{
+				i{
+					color: #7cb830;
+					.t-shadow(0 0 8px #7cb830);
+				}
+			}
+			&:hover + .button-actions{
+				display: block;
+			}
+			.icon-trigger{
+				color: #656565;
+				.box-sizing();
+				.symbly(14px);
+				margin:0 0 0 0;
+				vertical-align:middle;
+				position:relative;
+				line-height: 1;
+				padding: 2px 4px 2px 5px;
+				border-left:1px solid #e7e7e7;
+				.b-shadow(inset 1px 0 0 0 #fff);
+				.t-shadow(0 2px 0 #fff);
+				&:after{
+					content: "÷";
+				}
+			}
+		}
+	}
+
+	.default-button{
+		padding:0 5px 0 5px;
+	}
+
+	.icon-ww{
+		color: #656565;
+		.box-sizing();
+		.symbly(24px);
+		padding:0;
+		margin:0;
+		vertical-align:middle;
+		position:relative;
+		top:-2px;
+		&:after{
+			content: "n";
+		}
+	}
+
+	> div:nth-child(1){ .icon-ww:after{ content:"Y"; } }
+	> div:nth-child(2){ .icon-ww:after{ content:'\00A7'; } }
+	> div:nth-child(3){ .icon-ww:after{ content:"O"; } }
+	> div:nth-child(4){ .icon-ww:after{ content:"Q"; } }
+	> div:nth-child(5){ .icon-ww:after{ content:'\00A5'; } }
+	> div:nth-child(6){ .icon-ww:after{ content:"n"; } }
+
+
+
+
+	.button-actions{
+		display: none;
+		list-style: none;
+		position: absolute;
+		top: 38px;
+		right:-10px;
+		min-width: 100px;
+		.radius(2px);
+		//border:1px solid #b6b6b6;
+		//#gradient > .vertical( #f5f5f5, #ebebeb );
+		//.b-shadow(~"inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12)");
+		white-space: nowrap;
+		border:1px solid #444;
+		background: #252525;
+		.b-shadow(~"0 0 10px 2px rgba(53, 53, 53, 0.5)");
+		&:before{
+			content: "";
+			display: block;
+			position: absolute;
+			top:-8px;
+			right:15px;
+			width:13px;
+			height: 8px;
+			background: url(../images/tip.png) right top no-repeat;
+		}
+		li{
+			line-height: 100%;
+
+		}
+		li:first-child{
+			border-top:none;
+		}
+		li:last-child{
+			border-bottom:none;
+		}
+		.divider{
+			border-top:1px solid darken(#252525, 5%);
+			border-bottom: 1px solid lighten(#252525, 5%);
+			margin:5px 0;
+		}
+		a{
+
+			color:#EFEFEF;
+			.smaller();
+			font-weight:normal;
+			display:block;
+			padding:6px 10px 6px 10px;
+			margin:0;
+			.t-shadow(none);
+		}
+	}
+
+}
