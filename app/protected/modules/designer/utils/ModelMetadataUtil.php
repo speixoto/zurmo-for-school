@@ -69,11 +69,11 @@
             assert('is_bool($isAudited)');
             assert('$mixedRule === null || is_array($mixedRule)');
             $metadata   = $modelClassName::getMetadata();
-            $memberName = self::resolveName($memberName);
             assert('isset($metadata[$modelClassName])');
             if (!isset   (             $metadata[$modelClassName]['members']) ||
                 !in_array($memberName, $metadata[$modelClassName]['members']))
             {
+                $memberName = self::resolveName($memberName);
                 $metadata[$modelClassName]['members'][] = $memberName;
             }
             static::resolveAddOrRemoveNoAuditInformation($isAudited, $metadata[$modelClassName], $memberName);
