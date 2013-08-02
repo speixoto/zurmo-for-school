@@ -47,11 +47,7 @@
             $metadata = array(
                 'global' => array(
                     'toolbar' => array(
-                        'elements' => array(
-                            array('type'          => 'MashableInboxCreate',
-                                  'htmlOptions'   => array('class' => 'icon-create'),
-                            ),
-                        ),
+                        'elements' => array(),
                     ),
                 ),
             );
@@ -78,20 +74,6 @@
         {
 
             $content = '<nav class="pillbox clearfix">
-                            <div class="split-button">
-                                <a href="#" class="button-action">
-                                    <i class="icon-ww"></i>
-                                    <span class="button-label">Create</span>
-                                </a>
-                                <a href="#" class="button-trigger">
-                                    <i class="icon-trigger"></i>
-                                </a>
-                                <ul class="button-actions">
-                                    <li><a href="#">Conversation</a></li>
-                                    <li><a href="#">Mission</a></li>
-                                </ul>
-                            </div>
-
                             <div class="default-button">
                                 <a href="#" class="button-action">
                                     <i class="icon-ww"></i>
@@ -259,7 +241,7 @@
                               'unread'          => $unreadCount);
             $element  = new MashableInboxModelActionElement($this->controllerId, $this->moduleId, null, $params);
             $content  = $element->render();
-            
+
             $combinedInboxesModels = MashableUtil::getModelDataForCurrentUserByInterfaceName('MashableInboxInterface');
             foreach ($combinedInboxesModels as $modelClassName => $modelLabel)
             {
@@ -268,15 +250,15 @@
                 {
                     $activeClass = "active";
                 }
-                $unreadCount = MashableUtil::getUnreadCountForCurrentUserByModelClassName($modelClassName);                        
+                $unreadCount = MashableUtil::getUnreadCountForCurrentUserByModelClassName($modelClassName);
                 $params   = array('label'           => $modelLabel,
                                   'modelClassName'  => $modelClassName,
                                   'htmlOptions'     => array('class' => 'icon-' . strtolower($modelClassName) . ' '  . $activeClass),
                                   'unread'          => $unreadCount);
                 $element  = new MashableInboxModelActionElement($this->controllerId, $this->moduleId, null, $params);
                 $content .= $element->render();
-            }                        
-            
+            }
+
             return $content;
         }
 
