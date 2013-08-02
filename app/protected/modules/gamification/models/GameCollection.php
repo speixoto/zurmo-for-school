@@ -35,41 +35,10 @@
      ********************************************************************************/
 
     /**
-     * Model for game levels.
+     * Model for game collections.
      */
-    class GameLevel extends Item
+    class GameCollection extends Item
     {
-        /**
-         * Used to define the level type as being general, which means it is a total of all point groups
-         * @var String
-         */
-        const TYPE_GENERAL            = 'General';
-
-        /**
-         * @var String
-         */
-        const TYPE_SALES              = 'Sales';
-
-        /**
-         * @var String
-         */
-        const TYPE_NEW_BUSINESS       = 'NewBusiness';
-
-        /**
-         * @var String
-         */
-        const TYPE_ACCOUNT_MANAGEMENT = 'AccountManagement';
-
-        /**
-         * @var String
-         */
-        const TYPE_COMMUNICATION      = 'Communication';
-
-        /**
-         * @var String
-         */
-        const TYPE_TIME_MANAGEMENT      = 'TimeManagement';
-
         public function __toString()
         {
             if (trim($this->type) == '')
@@ -80,10 +49,12 @@
         }
 
         /**
-         * Given a point type and Item (Either User or Person),  try to find an existing model. If the model does
-         * not exist, create it and populate the Item and type. @return The found or created model.
+         * Given a collection type and Item (Either User or Person),  try to find an existing model. If the model does
+         * not exist, create it and populate the Item and type.
          * @param string $type
          * @param Item $person
+         * @return The found or created model.
+         * @throws NotSupportedException
          */
         public static function resolveByTypeAndPerson($type, Item $person)
         {
@@ -105,8 +76,8 @@
                 ),
             );
             $searchAttributeData['structure'] = '1 and 2';
-            $joinTablesAdapter = new RedBeanModelJoinTablesQueryAdapter('GameLevel');
-            $where  = RedBeanModelDataProvider::makeWhere('GameLevel', $searchAttributeData, $joinTablesAdapter);
+            $joinTablesAdapter = new RedBeanModelJoinTablesQueryAdapter('GameCollection');
+            $where  = RedBeanModelDataProvider::makeWhere('GameCollection', $searchAttributeData, $joinTablesAdapter);
             $models = self::getSubset($joinTablesAdapter, null, null, $where, null);
             if (count($models) > 1)
             {
@@ -114,11 +85,11 @@
             }
             if (count($models) == 0)
             {
-                $gameLevel = new GameLevel();
-                $gameLevel->type   = $type;
-                $gameLevel->person = $person;
-                $gameLevel->value  = 1;
-                return $gameLevel;
+                $gameCollection = new GameCollection();
+                $gameCollection->type   = $type;
+                $gameCollection->person = $person;
+                //todo: populate some baseline serializedData array?
+                return $gameCollection;
             }
             return $models[0];
         }
@@ -127,13 +98,13 @@
          * Given an  Item (Either User or Person),  try to find an existing model for each type. If the model does
          * not exist, create it and populate the Item and type. @return models found or created indexed by type.
          * @param Item $person
-         * @param array $levelTypes - Level types
+         * @param array $collectionTypes - Collection types
          */
-        public static function resolvePersonAndAvailableTypes(Item $person, $levelTypes)
+        public static function resolvePersonAndAvailableTypes(Item $person, $collectionTypes)
         {
             assert('$person->id > 0');
             assert('$person instanceof Contact || $person instanceof User');
-            assert('is_array($levelTypes)');
+            assert('is_array($collectionTypes)');
             $searchAttributeData = array();
             $searchAttributeData['clauses'] = array(
                 1 => array(
@@ -144,11 +115,11 @@
                 ),
             );
             $searchAttributeData['structure'] = '1';
-            $joinTablesAdapter = new RedBeanModelJoinTablesQueryAdapter('GameLevel');
-            $where  = RedBeanModelDataProvider::makeWhere('GameLevel', $searchAttributeData, $joinTablesAdapter);
+            $joinTablesAdapter = new RedBeanModelJoinTablesQueryAdapter('GameCollection');
+            $where  = RedBeanModelDataProvider::makeWhere('GameCollection', $searchAttributeData, $joinTablesAdapter);
             $models = self::getSubset($joinTablesAdapter, null, null, $where, null);
             $modelsByType = array();
-            foreach ($levelTypes as $type)
+            foreach ($collectionTypes as $type)
             {
                 $modelFound = false;
                 foreach ($models as $model)
@@ -162,11 +133,11 @@
                 }
                 if (!$modelFound)
                 {
-                    $gameLevel           = new GameLevel();
-                    $gameLevel->type     = $type;
-                    $gameLevel->person   = $person;
-                    $gameLevel->value    = 1;
-                    $modelsByType[$type] = $gameLevel;
+                    $gameCollection           = new GameCollection();
+                    $gameCollection->type     = $type;
+                    $gameCollection->person   = $person;
+                    //todo: populate some baseline serializedData array?
+                    $modelsByType[$type] = $gameCollection;
                 }
             }
             return $modelsByType;
@@ -188,21 +159,18 @@
             $metadata[__CLASS__] = array(
                 'members' => array(
                     'type',
-                    'value',
+                    'serializedData',
                 ),
                 'relations' => array(
                     'person' => array(RedBeanModel::HAS_ONE, 'Item', RedBeanModel::NOT_OWNED,
                                       RedBeanModel::LINK_TYPE_SPECIFIC, 'person'),
                 ),
                 'rules' => array(
-                    array('type',          'required'),
-                    array('type',          'type',    'type' => 'string'),
-                    array('type',          'length',  'min'  => 3, 'max' => 64),
-                    array('value',         'type',    'type' => 'integer'),
-                    array('value',         'default', 'value' => 1),
-                    array('value',         'numerical', 'min' => 1),
-                    array('value',         'required'),
-                    array('person',        'required'),
+                    array('type',           'required'),
+                    array('type',           'type',    'type' => 'string'),
+                    array('type',           'length',  'min'  => 3, 'max' => 64),
+                    array('serializedData', 'type', 'type' => 'string'),
+                    array('person',         'required'),
                 ),
                 'elements' => array(
                     'person' => 'Person',
@@ -210,7 +178,7 @@
                 'defaultSortAttribute' => 'type',
                 'noAudit' => array(
                     'type',
-                    'value',
+                    'serializedData',
                     'person',
                 ),
             );
@@ -223,50 +191,13 @@
         }
 
         /**
-         * Add specified value.
-         */
-        public function addValue($value)
-        {
-            assert('is_int($value)');
-            $this->value = $this->value + $value;
-        }
-
-        /**
-         * Given a user and a gameLevel, process the bonus points, if applicable for the badge. This will also
-         * process grade change points for the given badge.
-         * @param GameBadge $gameBadge
-         * @param User $user
-         */
-        public static function processBonusPointsOnLevelChange(GameLevel $gameLevel, User $user)
-        {
-            assert('$gameLevel->id > 0');
-            $gameLevelRulesClassName = $gameLevel->type . 'GameLevelRules';
-            $gamePoint = null;
-            if ($gameLevelRulesClassName::hasBonusPointsOnLevelChange())
-            {
-                $type           = $gameLevelRulesClassName::getLevelBonusPointType();
-                $gamePoint      = GamePoint::resolveToGetByTypeAndPerson($type, $user);
-                $value          = $gameLevelRulesClassName::getLevelBonusPointValue($gameLevel->value);
-            }
-            if ($gamePoint != null && $value > 0)
-            {
-                $gamePoint->addValue($value);
-                $saved          = $gamePoint->save();
-                if (!$saved)
-                {
-                    throw new NotSupportedException();
-                }
-            }
-        }
-
-        /**
          * Returns the display name for the model class.
          * @param null | string $language
          * @return dynamic label name based on module.
          */
         protected static function getLabel($language = null)
         {
-            return Zurmo::t('GamificationModule', 'Game Level', array(), null, $language);
+            return Zurmo::t('GamificationModule', 'Game Collection', array(), null, $language);
         }
 
         /**
@@ -276,7 +207,7 @@
          */
         protected static function getPluralLabel($language = null)
         {
-            return Zurmo::t('GamificationModule', 'Game Levels', array(), null, $language);
+            return Zurmo::t('GamificationModule', 'Game Collections', array(), null, $language);
         }
     }
 ?>

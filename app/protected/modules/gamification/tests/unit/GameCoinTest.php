@@ -34,50 +34,53 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * Module for managing the gamification of Zurmo
-     */
-    class GamificationModule extends Module
+    class GameCoinTest extends ZurmoBaseTest
     {
-        public function getDependencies()
+        public static function setUpBeforeClass()
         {
-            return array('configuration', 'zurmo');
+            parent::setUpBeforeClass();
+            SecurityTestHelper::createSuperAdmin();
         }
 
-        public function getRootModelNames()
+        public function setUp()
         {
-            return array('GameScore', 'GamePoint', 'GameLevel', 'GamePointTransaction', 'GameBadge', 'GameNotification',
-                         'GameCoin', 'GameCollection');
+            parent::setUp();
+            Yii::app()->user->userModel = User::getByUsername('super');
         }
 
-        public static function getDefaultMetadata()
+        public function testCreateAndGetGameCoinById()
         {
-            $metadata = array();
-            $metadata['global'] = array(
-                'userHeaderMenuItems' => array(
-                        array(
-                            'label' => "eval:Zurmo::t('GamificationModule', 'Leaderboard')",
-                            'url' => array('/gamification/default/leaderboard'),
-                            'order' => 2,
-                        ),
-                ),
-            );
-            return $metadata;
+            $user = UserTestHelper::createBasicUser('Steven');
+            $gameCoin             = new GameCoin();
+            $gameCoin->person     = $user;
+            $gameCoin->value      = 10;
+            $this->assertTrue($gameCoin->save());
+            $id = $gameCoin->id;
+            unset($gameCoin);
+            $gameCoin = GameCoin::getById($id);
+            $this->assertEquals(10,          $gameCoin->value);
+            $this->assertEquals($user,       $gameCoin->person);
+            $gameCoin->addValue(10);
+            $this->assertEquals(20, $gameCoin->value);
+            $this->assertEquals('20 coins', strval($gameCoin));
         }
 
-        public static function getDemoDataMakerClassNames()
+        /**
+         * @depends testCreateAndGetGameCoinById
+         */
+        public function testResolveByPerson()
         {
-            return array('GamificationDemoDataMaker');
-        }
+            Yii::app()->user->userModel = User::getByUsername('steven');
+            $gameCoin                  = GameCoin::resolveByPerson(Yii::app()->user->userModel);
+            $this->assertEquals(20,                             $gameCoin->value);
+            $this->assertEquals(Yii::app()->user->userModel,    $gameCoin->person);
+            $this->assertTrue($gameCoin->id > 0);
 
-        protected static function getSingularModuleLabel($language)
-        {
-            return Zurmo::t('GamificationModule', 'Gamification', array(), null, $language);
-        }
-
-        protected static function getPluralModuleLabel($language)
-        {
-            return static::getSingularModuleLabel($language);
+            Yii::app()->user->userModel = User::getByUsername('super');
+            $gameCoin = GameCoin::resolveByPerson(Yii::app()->user->userModel);
+            $this->assertEquals(0, $gameCoin->value);
+            $this->assertEquals(Yii::app()->user->userModel,    $gameCoin->person);
+            $this->assertTrue($gameCoin->id < 0);
         }
     }
 ?>
