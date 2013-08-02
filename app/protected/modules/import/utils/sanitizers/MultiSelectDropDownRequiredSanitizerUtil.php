@@ -62,7 +62,7 @@
                 return $value;
             }
             assert('$value == null || $value instanceof OwnedMultipleValuesCustomField');
-            if ($this->mappingRuleData['defaultValue'] != null)
+            if (isset($this->mappingRuleData['defaultValue']) && $this->mappingRuleData['defaultValue'] != null)
             {
                 try
                 {
