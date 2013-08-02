@@ -124,11 +124,15 @@
             $user->currency                                 = $currencies[0];
             $user->manager                                  = $users[0];
 
-            //Custom attribute
-            $attributeLabels  = array('en' => 'test label en');
-            ModelMetadataUtil::addOrUpdateMember('EmailTemplateModelTestItem', 'custom', $attributeLabels,
-                null, null, null, null, null, false, false, 'Text', array(), null);
-
+            //Custom attribute                                             
+            $attributeForm                                  = new TextAttributeForm();
+            $attributeForm->attributeName                   = 'custom';
+            $attributeForm->attributeLabels                 = array('en' => 'test label en');            
+            $modelAttributesAdapterClassName                = 
+                    $attributeForm::getModelAttributeAdapterNameForSavingAttributeFormData();
+            $adapter = new $modelAttributesAdapterClassName(new EmailTemplateModelTestItem());            
+            $adapter->setAttributeMetadataFromForm($attributeForm);            
+            
             $model                                          = new EmailTemplateModelTestItem();
             $model->string                                  = 'abc';
             $model->firstName                               = 'James';
@@ -156,7 +160,7 @@
             $model->multiDropDown->values->add($multiDropDownCustomFieldValue3);
             $model->tagCloud->values->add($tagCustomFieldValue1);
             $model->tagCloud->values->add($tagCustomFieldValue2);
-            $model->customCstm                              = 'text custom';
+            $model->customCstm                              = 'text custom';            
             $saved                                          = $model->save();
             assert('$saved'); // Not Coding Standard
             self::$emailTemplate                            = $model;
