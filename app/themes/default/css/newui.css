@@ -19973,6 +19973,10 @@ div.special-pager .hidden.next:after {
   border-top-color: #e7e7e7;
   border-left-color: #d7d7d7;
   border-right-color: #d7d7d7;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -ms-border-radius: 4px;
+  -o-border-radius: 4px;
   border-radius: 4px;
   margin: 0 0 30px 0;
   -webkit-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
@@ -19983,10 +19987,17 @@ div.special-pager .hidden.next:after {
   background: url(../images/view-toolbar-gradient.png) left bottom repeat-x;
   display: inline-block;
 }
+.pillbox .split-button:last-child .button-trigger {
+  -webkit-border-radius: 0 4px 4px 0;
+  -moz-border-radius: 0 4px 4px 0;
+  -ms-border-radius: 0 4px 4px 0;
+  -o-border-radius: 0 4px 4px 0;
+  border-radius: 0 4px 4px 0;
+}
 .pillbox .split-button,
 .pillbox .default-button {
   position: relative;
-  padding: 0 5px;
+  padding: 0 0 0 5px;
   display: inline-block;
   float: left;
 }
@@ -20025,7 +20036,21 @@ div.special-pager .hidden.next:after {
   display: inline-block;
   line-height: 30px;
   margin-left: 2px;
+  padding-right: 4px;
   text-align: center;
+}
+.pillbox .split-button .button-trigger:hover,
+.pillbox .default-button .button-trigger:hover {
+  background-color: #ffffff ;
+  background-repeat: no-repeat ;
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ffffff), color-stop(50%, #dddddd), to(#ffffff)) ;
+  background-image: -webkit-linear-gradient(#ffffff, #dddddd 50%, #ffffff) ;
+  background-image: -moz-linear-gradient(top, #ffffff, #dddddd 50%, #ffffff) ;
+  background-image: -ms-linear-gradient(#ffffff, #dddddd 50%, #ffffff) ;
+  background-image: -o-linear-gradient(#ffffff, #dddddd 50%, #ffffff) ;
+  background-image: linear-gradient(#ffffff, #dddddd 50%, #ffffff) ;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#ffffff', GradientType=0);
+  border-left: 1px solid #e7e7e7;
 }
 .pillbox .split-button .button-trigger:hover i,
 .pillbox .default-button .button-trigger:hover i {
@@ -20035,6 +20060,12 @@ div.special-pager .hidden.next:after {
   -o-text-shadow: 0 0 8px #7cb830;
   -ms-text-shadow: 0 0 8px #7cb830;
   text-shadow: 0 0 8px #7cb830;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  -o-box-shadow: none;
+  -ms-box-shadow: none;
+  box-shadow: none;
+  border-left: none;
 }
 .pillbox .split-button .button-trigger:hover + .button-actions,
 .pillbox .default-button .button-trigger:hover + .button-actions {
@@ -20129,15 +20160,19 @@ div.special-pager .hidden.next:after {
   -ms-box-shadow: 0 0 10px 2px rgba(53, 53, 53, 0.5);
   box-shadow: 0 0 10px 2px rgba(53, 53, 53, 0.5);
 }
+.pillbox .button-actions:hover,
+.pillbox .button-actions.stayOpen {
+  display: block;
+}
 .pillbox .button-actions:before {
   content: "";
   display: block;
   position: absolute;
-  top: -8px;
+  top: -15px;
   right: 15px;
-  width: 13px;
-  height: 8px;
-  background: url(../images/tip.png) right top no-repeat;
+  width: 80%;
+  height: 15px;
+  background: url(../images/tip.png) right bottom no-repeat;
 }
 .pillbox .button-actions li {
   line-height: 100%;
@@ -20151,7 +20186,7 @@ div.special-pager .hidden.next:after {
 .pillbox .button-actions .divider {
   border-top: 1px solid #181818;
   border-bottom: 1px solid #323232;
-  margin: 5px 0;
+  margin: 5px 5px;
 }
 .pillbox .button-actions a {
   color: #EFEFEF;
@@ -20159,12 +20194,24 @@ div.special-pager .hidden.next:after {
   font-weight: normal;
   display: block;
   padding: 6px 10px 6px 10px;
-  margin: 0;
+  margin: 1px;
   -webkit-text-shadow: none;
   -moz-text-shadow: none;
   -o-text-shadow: none;
   -ms-text-shadow: none;
   text-shadow: none;
+}
+.pillbox .button-actions a:hover {
+  color: #fff;
+  background-color: #537b20;
+  background-repeat: repeat-x;
+  background-image: -moz-linear-gradient(top, #7cb830, #537b20);
+  background-image: -ms-linear-gradient(top, #7cb830, #537b20);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #7cb830), color-stop(100%, #537b20));
+  background-image: -webkit-linear-gradient(top, #7cb830, #537b20);
+  background-image: -o-linear-gradient(top, #7cb830, #537b20);
+  background-image: linear-gradient(top, #7cb830, #537b20);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#7cb830', endColorstr='#537b20', GradientType=0);
 }
 /*********************************************************************************
  * Zurmo is a customer relationship management program developed by

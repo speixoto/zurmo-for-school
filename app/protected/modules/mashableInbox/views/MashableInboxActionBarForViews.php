@@ -154,7 +154,16 @@
                                     <li><a href="#">Separated link</a></li>
                                 </ul>
                             </div>
-                        </nav>';
+                        </nav>
+
+                        <script>
+                            $(".button-trigger").click(
+                                function(){
+                                    $(".button-actions", $(this).parent()).show().addClass("stay-open");
+                                }
+                            );
+                        </script>
+                        ';
 
 
 
