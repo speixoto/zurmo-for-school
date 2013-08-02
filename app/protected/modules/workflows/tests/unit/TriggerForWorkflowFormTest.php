@@ -34,64 +34,16 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class ZurmoHttpRequest extends CHttpRequest
+    class TriggerForWorkflowFormTest extends WorkflowBaseTest
     {
-        public $tokenEnabledRoutes = array();
-
-        const EXTERNAL_REQUEST_TOKEN = 'externalRequestToken';
-
-        public function validateCsrfToken($event)
+        public function testValidateValueForUserNameIdAttributeWhenOperatorIsChanged()
         {
-            if (!$this->isTrustedRequest())
-            {
-                return parent::validateCsrfToken($event);
-            }
-            else
-            {
-                return true;
-            }
-        }
-
-        protected function isTrustedRequest()
-        {
-            $safeUrls       = array();
-            foreach ($this->tokenEnabledRoutes as $tokenEnabledRoute)
-            {
-                $safeUrls[] = Yii::app()->createUrl($tokenEnabledRoute);
-            }
-            $requestedUrl = Yii::app()->getRequest()->getUrl();
-            foreach ($safeUrls as $url)
-            {
-                if (strpos($requestedUrl, $url) === 0)
-                {
-                    $externalRequestToken = Yii::app()->getRequest()->getPost(self::EXTERNAL_REQUEST_TOKEN);
-                    if ($externalRequestToken === ZURMO_TOKEN)
-                    {
-                        return true;
-                    }
-                }
-            }
-            return false;
-        }
-
-        public static function isExternalRequest()
-        {
-            try
-            {
-                $url = Yii::app()->getRequest()->getUrl();
-            }
-            catch (CException $e)
-            {
-                $url = '';
-            }
-            if (strpos($url, '/external/') !== false)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            $trigger     = new TriggerForWorkflowForm('AccountsModule', 'Account', Workflow::TYPE_ON_SAVE);
+            $trigger->attributeIndexOrDerivedType = 'owner__User';
+            $trigger->setOperator(OperatorRules::TYPE_CHANGES);
+            $validated   = $trigger->validateValue();
+            $this->assertTrue($validated);
+            $this->assertCount(0, $trigger->getErrors());
         }
     }
 ?>
