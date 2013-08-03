@@ -264,7 +264,7 @@
             {
                 Yii::app()->gameHelper->muteScoringModelsOnSave();
                 $messageLogger = new MessageLogger();
-                RedBeanModelsToTablesAdapter::generateTablesFromModelClassNames(array('User', $modelClassName), $messageLogger);
+                RedBeanModelsToTablesAdapter::generateTablesFromModelClassNames(array($modelClassName), $messageLogger);
                 Yii::app()->gameHelper->unmuteScoringModelsOnSave();
                 if ($messageLogger->isErrorMessagePresent())
                 {
