@@ -57,6 +57,8 @@
                     'value',
                 ),
                 'relations' => array(
+                    'multipleValuesCustomField' => array(RedBeanModel::HAS_ONE, 'MultipleValuesCustomField',
+                                                    RedBeanModel::NOT_OWNED),
                 ),
                 'rules' => array(
                     array('value', 'type', 'type' => 'string'),

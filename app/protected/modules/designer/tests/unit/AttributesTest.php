@@ -2171,7 +2171,7 @@
                 'it' => 'sameattribute it',
             );
             $attributeForm = new TextAreaAttributeForm();
-            $attributeForm->attributeName       = 'same';
+            $attributeForm->attributeName       = 'same2';
             $attributeForm->attributeLabels     = $compareAttributeLabels;
 
             $modelAttributesAdapterClassName    = $attributeForm::getModelAttributeAdapterNameForSavingAttributeFormData();
@@ -2179,7 +2179,7 @@
             $adapter->setAttributeMetadataFromForm($attributeForm);
 
             $attributeForm = new TextAreaAttributeForm();
-            $attributeForm->attributeName       = 'same';
+            $attributeForm->attributeName       = 'same2';
             $attributeForm->attributeLabels     = $compareAttributeLabels;
             $attributeForm->modelClassName      = 'Contact';
             $attributeForm->setScenario('createAttribute');
