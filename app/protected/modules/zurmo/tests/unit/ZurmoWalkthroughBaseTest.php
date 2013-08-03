@@ -613,6 +613,9 @@
                 $this->setGetArray(array(   'moduleClassName'       => $moduleClassName,
                                             'attributeTypeName'     => $attributeTypeName,
                                             'attributeName'         => $name));
+                // if we don't do this attributeName from POST will override and result in duplicate columns.
+                // Frontend also doesn't send attributeName in POST on edit.
+                unset($_POST[$formName]['attributeName']);
                 $content = $this->runControllerWithRedirectExceptionAndGetContent('designer/default/attributeEdit');
             }
         }
