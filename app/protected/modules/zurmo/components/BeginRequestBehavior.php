@@ -99,7 +99,10 @@
             $owner->attachEventHandler('onBeginRequest', array($this, 'handleImports'));
             $owner->attachEventHandler('onBeginRequest', array($this, 'handleLibraryCompatibilityCheck'));
             $owner->attachEventHandler('onBeginRequest', array($this, 'handleStartPerformanceClock'));
-            $owner->attachEventHandler('onBeginRequest', array($this, 'handleBrowserCheck'));
+            if (!Yii::app()->getRequest()->isExternalRequest())
+            {
+                $owner->attachEventHandler('onBeginRequest', array($this, 'handleBrowserCheck'));
+            }
         }
 
         protected function attachNonApiRequestBehaviorsForNonInstalledApplication(CComponent $owner)
