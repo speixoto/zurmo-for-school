@@ -14480,6 +14480,7 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
 .AttributeEditView .sortable .remove-sortable-item-link {
   position: absolute;
   left: 3px;
+  top: 0;
   line-height: 1;
   z-index: 100;
 }
