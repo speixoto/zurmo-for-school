@@ -138,7 +138,7 @@
             $(document).ready(loadGoogleMap);
             ";
             // Register the javascripts
-            Yii::app()->getClientScript()->registerScript("GoogleMapScript". $containerId, $mapScript, CClientScript::POS_READY);
+            Yii::app()->getClientScript()->registerScript("GoogleMapScript". $containerId, $mapScript, CClientScript::POS_END);
         }
     }
 ?>
