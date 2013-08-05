@@ -9466,6 +9466,10 @@ div.wide.form label.hasCheckBox {
   width: 600px;
   height: 400px;
 }
+.mapCanvasPortlet {
+  width: 100%;
+  height: 400px;
+}
 /*=tasks portelt*/
 .OpenTasksRelatedListView .button-column,
 .OpenTasksRelatedListView .checkbox-column {
