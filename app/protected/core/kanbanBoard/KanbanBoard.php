@@ -210,7 +210,22 @@
                          'kanban-background-football' => Zurmo::t('Core', 'Football'),
                          'kanban-background-tennis'   => Zurmo::t('Core', 'Tennis'),
                          'kanban-background-motor'    => Zurmo::t('Core', 'Motor Sport'),
-                         'kanban-background-yoga'     => Zurmo::t('Core', 'Yoga'));
+                         'kanban-background-yoga'     => Zurmo::t('Core', 'Yoga'),
+                         'kanban-background5'         => 5,
+                         'kanban-background6'         => 6);
+        }
+
+        public function getThemeColorNamesAndUnlockedAtLevel()
+        {
+            $data = array(  ''                             => 1,
+                            'kanban-background-football'   => 1,
+                            'kanban-background-tennis'     => 1,
+                            'kanban-background-motor'      => 1,
+                            'kanban-background-yoga'       => 1,
+                            'kanban-background5'           => 3,
+                            'kanban-background6'           => 15,
+            );
+            return $data;
         }
 
         public function setClearSticky()

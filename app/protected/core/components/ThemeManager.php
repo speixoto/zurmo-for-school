@@ -116,7 +116,15 @@
                           'honey'      => Zurmo::t('Core', 'Honey'),
                           'lime'       => Zurmo::t('Core', 'Lime'),
                           'turquoise'  => Zurmo::t('Core', 'Turquoise'),
-                          'violet'     => Zurmo::t('Core', 'Violet'));
+                          'violet'     => Zurmo::t('Core', 'Violet'),
+                          'theme7'     => 2,
+                          'theme8'     => 3,
+                          'theme9'     => 4,
+                          'theme10'    => 7,
+                          'theme11'    => 9,
+                          'theme12'    => 12,
+                          'theme13'    => 15,
+            );
             return $data;
         }
 
@@ -127,7 +135,52 @@
                           'light-noise-diagonal'  => Zurmo::t('Core', 'Light Noise'),
                           'light-toast'           => Zurmo::t('Core', 'Light Toast'),
                           'diagonal-noise'        => Zurmo::t('Core', 'Noise'),
-                          'paper'                 => Zurmo::t('Core', 'Paper'));
+                          'paper'                 => Zurmo::t('Core', 'Paper'),
+                          'background7'     => 2,
+                          'background8'     => 5,
+                          'background9'     => 7,
+                          'background10'    => 9,
+                          'background11'    => 11,
+                          'background12'    => 13,
+            );
+            return $data;
+        }
+
+        public function getThemeColorNamesAndUnlockedAtLevel()
+        {
+            $data = array(  'blue'       => 1,
+                            'brown'      => 1,
+                            'cherry'     => 1,
+                            'honey'      => 1,
+                            'lime'       => 1,
+                            'turquoise'  => 1,
+                            'violet'     => 1,
+                            'theme7'     => 4,
+                            'theme8'     => 6,
+                            'theme9'     => 8,
+                            'theme10'    => 10,
+                            'theme11'    => 12,
+                            'theme12'    => 14,
+                            'theme13'    => 16,
+            );
+            return $data;
+        }
+
+        public function getBackgroundTextureNamesAndUnlockedAtLevel()
+        {
+            $data = array('exclusive-paper'      => 1,
+                          'french-stucco'        => 1,
+                          'light-noise-diagonal' => 1,
+                          'light-toast'          => 1,
+                          'diagonal-noise'       => 1,
+                          'paper'                => 1,
+                          'background7'          => 2,
+                          'background8'          => 3,
+                          'background9'          => 4,
+                          'background10'         => 7,
+                          'background11'         => 9,
+                          'background12'         => 12,
+            );
             return $data;
         }
     }
