@@ -65,7 +65,7 @@
                 // we don't skip if running under updateSchema as we might have multiple requests to update same table.
                 return;
             }
-            $needsCreateTable   = true;
+            $needsCreateTable   = false;
             $existingFields     = array();
             $existingIndexes    = array();
             $messageLogger->addInfoMessage(Zurmo::t('Core', 'Creating/Updating schema for {{tableName}}',
@@ -76,12 +76,15 @@
                 {
                     $existingFields     = ZurmoRedBean::$writer->getColumnsWithDetails($tableName);
                     $existingIndexes    = ZurmoRedBean::$writer->getIndexes($tableName);
-                    $needsCreateTable   = false;
                 }
                 catch (RedBean_Exception_SQL $e)
                 {
                     //42S02 - Table does not exist.
-                    if (!in_array($e->getSQLState(), array('42S02')))
+                    if (in_array($e->getSQLState(), array('42S02')))
+                    {
+                        $needsCreateTable   = true;
+                    }
+                    else
                     {
                         throw $e;
                     }
