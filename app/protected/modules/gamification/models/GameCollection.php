@@ -85,10 +85,11 @@
             }
             if (count($models) == 0)
             {
+                $gameCollectionRules = GameCollectionRulesFactory::createByType($type);
                 $gameCollection = new GameCollection();
                 $gameCollection->type   = $type;
                 $gameCollection->person = $person;
-                //todo: populate some baseline serializedData array?
+                $gameCollection->serializedData = serialize($gameCollectionRules::makeDefaultData());
                 return $gameCollection;
             }
             return $models[0];
@@ -133,10 +134,11 @@
                 }
                 if (!$modelFound)
                 {
+                    $gameCollectionRules      = GameCollectionRulesFactory::createByType($type);
                     $gameCollection           = new GameCollection();
                     $gameCollection->type     = $type;
                     $gameCollection->person   = $person;
-                    //todo: populate some baseline serializedData array?
+                    $gameCollection->serializedData = serialize($gameCollectionRules::makeDefaultData());
                     $modelsByType[$type] = $gameCollection;
                 }
             }
