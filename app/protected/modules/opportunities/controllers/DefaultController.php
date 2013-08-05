@@ -89,7 +89,7 @@
             echo $view->render();
         }
 
-        public function actionDetails($id)
+        public function actionDetails($id, $kanbanBoard = false)
         {
             $opportunity = static::getModelAndCatchNotFoundAndDisplayError('Opportunity', intval($id));
             ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($opportunity);
@@ -98,8 +98,19 @@
             $detailsAndRelationsView = $this->makeDetailsAndRelationsView($opportunity, 'OpportunitiesModule',
                                                                           'OpportunityDetailsAndRelationsView',
                                                                           Yii::app()->request->getRequestUri(), $breadCrumbView);
-            $view = new OpportunitiesPageView(ZurmoDefaultViewUtil::
-                                         makeStandardViewForCurrentUser($this, $detailsAndRelationsView));
+            
+            if (isset($_GET['kanbanBoard']) && $_GET['kanbanBoard'] == 0 || !isset($_GET['kanbanBoard']))
+            {
+                $view = new OpportunitiesPageView(ZurmoDefaultViewUtil::
+                                             makeStandardViewForCurrentUser($this, $detailsAndRelationsView));
+            }
+            else
+            {
+                $kanbanColumn = new KanbanColumn(false);
+                $kanbanBoard  = new KanbanBoard($kanbanColumn, 'type');
+                $listView     = new TasksRelatedForAccountKanbanListView($this->getId(), $this->getModule()->getId(),
+                                                                            'Task', $dataProvider, array(), null, array(), null, $kanbanBoard);
+            }
             echo $view->render();
         }
 

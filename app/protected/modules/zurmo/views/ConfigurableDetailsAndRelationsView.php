@@ -100,17 +100,16 @@
                 if ($isViewLocked === false)
                 {
                     $url = $this->resolveLockPortletUrl((int)$getData['id'], '1');
-                    $link = ZurmoHtml::link('<!--' . Zurmo::t('Core', 'Lock') . '-->', $url, array('class' => 'icon-unlock',
-                                                                                                    'title' => $unlockTitle));
+                    $link = $this->renderActionBarLinksBeforeLockIcon() . ZurmoHtml::link('<!--' . Zurmo::t('Core', 'Lock') . '-->', $url, array('class' => 'icon-unlock', 'title' => $unlockTitle)) . $this->renderActionBarLinksAfterLockIcon();
                     $content = parent::renderActionElementBar($renderedInForm) . $link;
                 }
                 else
                 {
                     $url = $this->resolveLockPortletUrl((int)$getData['id'], '0');
-                    $link = ZurmoHtml::link('<!--' . Zurmo::t('Core', 'Unlock') . '-->', $url, array('class' => 'icon-lock',
-                                                                                                      'title' => $lockTitle));
+                    $link = $this->renderActionBarLinksBeforeLockIcon() . ZurmoHtml::link('<!--' . Zurmo::t('Core', 'Unlock') . '-->', $url, array('class' => 'icon-lock', 'title' => $lockTitle)) . $this->renderActionBarLinksAfterLockIcon();
                     $content = $link;
                 }
+
                 $toolbarContent = ZurmoHtml::tag('div', array('class' => 'view-toolbar'), $content);
             }
             $toolbarContent = ZurmoHtml::tag('div', array('class' => 'view-toolbar-container widgets-lock clearfix '), $toolbarContent);
@@ -197,6 +196,24 @@
         public static function getDefaultLayoutType()
         {
             return '75,25'; // Not Coding Standard
+        }
+
+        /**
+         * Render action bar link before lock icons
+         * @return string|null
+         */
+        protected function renderActionBarLinksBeforeLockIcon()
+        {
+            return null;
+        }
+
+        /**
+         * Render action bar link after lock icons
+         * @return string|null
+         */
+        protected function renderActionBarLinksAfterLockIcon()
+        {
+            return null;
         }
     }
 ?>
