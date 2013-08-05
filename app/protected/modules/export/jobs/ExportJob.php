@@ -85,33 +85,48 @@
                     }
 
                     $unserializedData = unserialize($exportItem->serializedData);
-                    if ($unserializedData instanceOf RedBeanModelDataProvider)
+                    if ($unserializedData instanceOf RedBeanModelDataProvider ||
+                        $unserializedData instanceOf ReportDataProvider)
                     {
                         $formattedData = $unserializedData->getData();
                     }
                     else
                     {
                         $formattedData = array();
-                        foreach ($unserializedData as $idToExport)
+                        foreach ($unserializedData as $idsToExport)
                         {
-                            $model = call_user_func(array($exportItem->modelClassName, 'getById'), intval($idToExport));
+                            $model = call_user_func(array($exportItem->modelClassName, 'getById'), intval($idsToExport));
                             $formattedData[] = $model;
                         }
                     }
-
                     if ($exportItem->exportFileType == 'csv')
                     {
                         $headerData = array();
-                        foreach ($formattedData as $model)
+                        if($unserializedData instanceOf ReportDataProvider)
                         {
-                            if (ControllerSecurityUtil::doesCurrentUserHavePermissionOnSecurableItem($model, Permission::READ))
+                            foreach ($formattedData as $reportResultsRowData)
                             {
-                                $modelToExportAdapter  = new ModelToExportAdapter($model);
+                                $reportToExportAdapter  = new ReportToExportAdapter($reportResultsRowData, $unserializedData->getReport());
                                 if (count($headerData) == 0)
                                 {
-                                    $headerData        = $modelToExportAdapter->getHeaderData();
+                                    $headerData = $reportToExportAdapter->getHeaderData();
                                 }
-                                $data[]                = $modelToExportAdapter->getData();
+                                $data[] = $reportToExportAdapter->getData();
+                            }
+                        }
+                        else
+                        {
+                            foreach ($formattedData as $model)
+                            {
+                                if (ControllerSecurityUtil::doesCurrentUserHavePermissionOnSecurableItem($model, Permission::READ))
+                                {
+                                    $modelToExportAdapter  = new ModelToExportAdapter($model);
+                                    if (count($headerData) == 0)
+                                    {
+                                        $headerData        = $modelToExportAdapter->getHeaderData();
+                                    }
+                                    $data[]                = $modelToExportAdapter->getData();
+                                }
                             }
                         }
                         $output                       = ExportItemToCsvFileUtil::export($data, $headerData);
