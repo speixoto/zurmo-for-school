@@ -97,7 +97,8 @@
         protected function getStageDropDownArray()
         {
             $customFieldData            = CustomFieldData::getByName('ProductStages');
-            $customFieldIndexedData     = CustomFieldDataUtil::getDataIndexedByDataAndTranslatedLabelsByLanguage($customFieldData, 'en');
+            $customFieldIndexedData     = CustomFieldDataUtil::getDataIndexedByDataAndTranslatedLabelsByLanguage($customFieldData,
+                                                                                                                    Yii::app()->language);
             $data                       = array_merge(array(ProductsConfigurationForm::FILTERED_BY_ALL_STAGES
                                                                             => Zurmo::t('ProductsModule', 'All')), $customFieldIndexedData);
             return $data;
