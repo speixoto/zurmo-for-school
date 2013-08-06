@@ -11443,6 +11443,9 @@ div.hasHalfs > div input {
 .juiportlet-column-no-split {
   width: 100%;
 }
+.juiportlet-column-no-split .juiportlet-widget {
+  margin-right: 0 !important;
+}
 .juiportlet-column-split-left-75 {
   width: 65%;
 }
