@@ -36,12 +36,16 @@
 
     class MapPortletAddressView extends View implements PortletViewInterface,RelatedPortletViewInterface
     {
-	protected $params;
+	    protected $params;
+
         protected $viewData;
+
         protected $uniqueLayoutId;
+
         protected $geoCodeQueryData;
+
         protected $containerIdSuffix;
-            
+
         public function __construct($viewData, $params, $uniqueLayoutId)
         {
             assert('is_array($viewData) || $viewData == null');
@@ -58,7 +62,7 @@
             $this->geoCodeQueryData = $this->resolveAddressData();
             $this->containerIdSuffix = $uniqueLayoutId;
         }
-                
+
         private function resolveControllerId()
         {
             return 'default';
@@ -73,7 +77,7 @@
         {
             return array();
         }
-        
+
         public static function getPortletRulesType()
         {
             return 'Detail';
@@ -83,14 +87,14 @@
         {
             return 'MapsModule';
         }
-        
+
         protected function resolveAddressData()
         {
             $modalMapAddressData = array('query'     => $this->params['relationModel']->primaryAddress,
                                          'latitude'  => '',
                                          'longitude' => '');
             return $modalMapAddressData;
-			
+
 	}
 
         public static function getMetadata()
@@ -108,9 +112,15 @@
             $title  = Zurmo::t('MapsModule', 'Map For '.$this->params['relationModel']);
             return $title;
         }
-        
+
         public function renderContent()
         {
+            if(!$this->shouldRenderMap())
+            {
+                $emptyLabel = Zurmo::t('ZurmoModule', 'No address found');
+                return ZurmoHtml::tag('span', array('class' => 'empty'),
+                            ZurmoHtml::tag('span', array('class' => 'icon-empty'), '') . $emptyLabel);
+            }
             $mapCanvasContainerId = $this->getMapCanvasContainerId();
             $cClipWidget          = new CClipWidget();
             $cClipWidget->beginClip("Map");
@@ -119,21 +129,21 @@
             $cClipWidget->endClip();
             return $cClipWidget->getController()->clips['Map'];
         }
-        
-        
+
+
         public function renderPortletHeadContent()
         {
             return false;
         }
 
-	public static function canUserConfigure()
+	    public static function canUserConfigure()
         {
             return false;
         }
-        
+
         public static function hasRollupSwitch()
         {
-            return true;
+            return false;
         }
 
         public static function getAllowedOnPortletViewClassNames()
@@ -145,7 +155,7 @@
         {
             return false;
         }
-        
+
         public function isUniqueToAPage()
         {
             return true;
@@ -154,6 +164,15 @@
         public function getMapCanvasContainerId()
         {
             return 'map-canvas' . $this->containerIdSuffix;
+        }
+
+        protected function shouldRenderMap()
+        {
+            if($this->params['relationModel']->primaryAddress->makeAddress() == null)
+            {
+                return false;
+            }
+            return true;
         }
     }
 ?>

@@ -34,9 +34,9 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class MapForAccountAddressView extends MapPortletAddressView 
+    class MapForAccountAddressView extends MapPortletAddressView
     {
-        
+
         public function __construct($viewData, $params, $uniqueLayoutId)
         {
             parent::__construct($viewData, $params, $uniqueLayoutId);
@@ -50,11 +50,19 @@
                                          'longitude' => '');
             return $modalMapAddressData;
     }
-        
+
         public static function getAllowedOnPortletViewClassNames()
         {
             return array('AccountDetailsAndRelationsView');
         }
 
+        protected function shouldRenderMap()
+        {
+            if($this->params['relationModel']->billingAddress->makeAddress() == null)
+            {
+                return false;
+            }
+            return true;
+        }
     }
 ?>
