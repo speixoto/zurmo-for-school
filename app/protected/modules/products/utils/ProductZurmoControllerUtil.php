@@ -68,7 +68,7 @@
          * @param RedBeanModel $product
          * @return string
          */
-        public function resolveStageDefaultValue(& $product)
+        public function resolveStageDefaultValue($product)
         {
            $customFieldData    = CustomFieldData::getByName('ProductStages');
            $dropDownArray      = unserialize($customFieldData->serializedData);
