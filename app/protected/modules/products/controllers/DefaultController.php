@@ -374,7 +374,7 @@
             $product->name              = $productTemplate->name;
             $product->description       = $productTemplate->description;
             $product->quantity          = 1;
-            $product->stage->value      = Product::OPEN_STAGE;
+            //$product->stage->value      = Product::OPEN_STAGE;
             $product->productTemplate   = $productTemplate;
             $sellPrice                  = new CurrencyValue();
             $sellPrice->value           = $productTemplate->sellPrice->value;
@@ -383,6 +383,12 @@
             $product->sellPrice         = $sellPrice;
             $product->type              = $productTemplate->type;
 
+            $controllerUtil             = static::getZurmoControllerUtil();
+            $attributeForm              = AttributesFormFactory::createAttributeFormByAttributeName(new Product(), 'stage');
+            $defaultValue               = ZurmoHtml::resolveValue($attributeForm, 'defaultValueOrder');
+
+            $defaultStageLabel          = $controllerUtil->resolveStageDefaultValue($defaultValue);
+            $product->stage->value      = $defaultStageLabel;
             foreach ($productTemplate->productCategories as $productCategory)
             {
                 $product->productCategories->add($productCategory);

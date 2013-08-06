@@ -62,5 +62,23 @@
                                                                $postData[$this->productCategoryFormName]);
             }
         }
+
+        /**
+         * Resolve stage default value
+         */
+        public function resolveStageDefaultValue($defaultValue)
+        {
+           $customFieldData    = CustomFieldData::getByName('ProductStages');
+           $stageDataArray     = unserialize($customFieldData->serializedData);
+           if($defaultValue == null)
+           {
+               $defaultLabel       = CustomFieldDataUtil::getTranslatedLabelByValue($customFieldData, $stageDataArray[0], 'en');
+           }
+           else
+           {
+               $defaultLabel       = CustomFieldDataUtil::getTranslatedLabelByValue($customFieldData, $stageDataArray[intval($defaultValue)], 'en');
+           }
+           return $defaultLabel;
+        }
     }
 ?>
