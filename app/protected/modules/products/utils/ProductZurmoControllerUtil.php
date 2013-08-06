@@ -65,18 +65,20 @@
 
         /**
          * Resolve stage default value
+         * @param RedBeanModel $product
+         * @return string
          */
-        public function resolveStageDefaultValue($defaultValue)
+        public function resolveStageDefaultValue($product)
         {
            $customFieldData    = CustomFieldData::getByName('ProductStages');
            $stageDataArray     = unserialize($customFieldData->serializedData);
-           if($defaultValue == null)
+           if($product->stage->value == null)
            {
                $defaultLabel       = CustomFieldDataUtil::getTranslatedLabelByValue($customFieldData, $stageDataArray[0], 'en');
            }
            else
            {
-               $defaultLabel       = CustomFieldDataUtil::getTranslatedLabelByValue($customFieldData, $stageDataArray[intval($defaultValue)], 'en');
+               $defaultLabel       = CustomFieldDataUtil::getTranslatedLabelByValue($customFieldData, $product->stage->value, 'en');
            }
            return $defaultLabel;
         }
