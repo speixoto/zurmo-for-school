@@ -971,6 +971,7 @@
                 NotificationsUtil::submit($message, $rules);
             }
             $messageStreamer->add(Zurmo::t('InstallModule', 'Installation Complete.'));
+            Yii::app()->params['isFreshInstall']    = false;
         }
 
         /**
