@@ -101,7 +101,7 @@
         {
             $metadata = array(
                 'perUser' => array(
-                    'title' => "eval:Zurmo::t('MapsModule', 'Map For Address')",
+                    'title' => "eval:Zurmo::t('MapsModule', 'Google Map')",
                 ),
             );
             return $metadata;
@@ -109,7 +109,7 @@
 
         public function getTitle()
         {
-            $title  = Zurmo::t('MapsModule', 'Map For '.$this->params['relationModel']);
+            $title  = Zurmo::t('MapsModule', 'Google Map');
             return $title;
         }
 
