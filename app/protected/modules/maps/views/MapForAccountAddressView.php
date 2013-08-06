@@ -34,47 +34,35 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * Module to manage exports
-     */
-    class ExportModule extends SecurableModule
+    class MapForAccountAddressView extends MapPortletAddressView
     {
-        const RIGHT_ACCESS_EXPORT = 'Access Export Tool';
 
-        // Used to determine if data will be exported directly in browser
-        // or to be exported via asynchronous via background job.
-        public static $asynchronusThreshold = 100;
-
-        public static function getTranslatedRightsLabels()
+        public function __construct($viewData, $params, $uniqueLayoutId)
         {
-            $labels                                    = array();
-            $labels[self::RIGHT_ACCESS_EXPORT]  = Zurmo::t('ExportModule', 'Access Export Tool');
-            return $labels;
+            parent::__construct($viewData, $params, $uniqueLayoutId);
+            $this->geoCodeQueryData = $this->resolveAddressData();
         }
 
-        public function getDependencies()
+        protected function resolveAddressData()
         {
-           return array('zurmo');
+            $modalMapAddressData = array('query'     => $this->params['relationModel']->billingAddress,
+                                         'latitude'  => '',
+                                         'longitude' => '');
+            return $modalMapAddressData;
+    }
+
+        public static function getAllowedOnPortletViewClassNames()
+        {
+            return array('AccountDetailsAndRelationsView');
         }
 
-        public function getRootModelNames()
+        protected function shouldRenderMap()
         {
-            return array('ExportItem', 'ExportFileModel');
-        }
-
-        public static function getAccessRight()
-        {
-            return self::RIGHT_ACCESS_EXPORT;
-        }
-
-        protected static function getSingularModuleLabel($language)
-        {
-            return Zurmo::t('ExportModule', 'Export', array(), null, $language);
-        }
-
-        protected static function getPluralModuleLabel($language)
-        {
-            return Zurmo::t('ExportModule', 'Exports', array(), null, $language);
+            if($this->params['relationModel']->billingAddress->makeAddress() == null)
+            {
+                return false;
+            }
+            return true;
         }
     }
 ?>
