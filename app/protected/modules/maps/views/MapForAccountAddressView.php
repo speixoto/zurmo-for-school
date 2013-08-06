@@ -34,36 +34,35 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    Yii::import('application.modules.gamification.controllers.DefaultController', true);
-    class GamificationDemoController extends GamificationDefaultController
+    class MapForAccountAddressView extends MapPortletAddressView
     {
-        /**
-         * Special method to load each type of game notification.  New badge, badge grade change, and level up.
-         */
-        public function actionLoadGameNotificationsSampler()
+
+        public function __construct($viewData, $params, $uniqueLayoutId)
         {
-            if (Yii::app()->user->userModel->username != 'super')
+            parent::__construct($viewData, $params, $uniqueLayoutId);
+            $this->geoCodeQueryData = $this->resolveAddressData();
+        }
+
+        protected function resolveAddressData()
+        {
+            $modalMapAddressData = array('query'     => $this->params['relationModel']->billingAddress,
+                                         'latitude'  => '',
+                                         'longitude' => '');
+            return $modalMapAddressData;
+    }
+
+        public static function getAllowedOnPortletViewClassNames()
+        {
+            return array('AccountDetailsAndRelationsView');
+        }
+
+        protected function shouldRenderMap()
+        {
+            if($this->params['relationModel']->billingAddress->makeAddress() == null)
             {
-                throw new NotSupportedException();
+                return false;
             }
-            //Level up notification
-            $gameNotification           = new GameNotification();
-            $gameNotification->user     = Yii::app()->user->userModel;
-            $gameNotification->setLevelChangeByNextLevelValue(2);
-            $saved                      = $gameNotification->save();
-
-            //New badge notification
-            $gameNotification           = new GameNotification();
-            $gameNotification->user     = Yii::app()->user->userModel;
-            $gameNotification->setNewBadgeByType('LoginUser');
-            $saved                      = $gameNotification->save();
-
-            //Badge grade up notification
-            $gameNotification           = new GameNotification();
-            $gameNotification->user     = Yii::app()->user->userModel;
-            $gameNotification->setBadgeGradeChangeByTypeAndNewGrade('LoginUser', 5);
-            $saved                      = $gameNotification->save();
-            echo "Demo data has been loaded. Go back to the application.";
+            return true;
         }
     }
 ?>
