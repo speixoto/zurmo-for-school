@@ -36,6 +36,11 @@
 
     class ZurmoMySqlQueryWriter extends RedBean_QueryWriter_MySQL
     {
+        public function doesTableExist($tableName)
+        {
+            $result     = $this->adapter->get("SHOW TABLES LIKE '$tableName'");
+            return (count($result) > 0);
+        }
         public function getColumnsWithDetails($tableName)
         {
             $columns    = array();

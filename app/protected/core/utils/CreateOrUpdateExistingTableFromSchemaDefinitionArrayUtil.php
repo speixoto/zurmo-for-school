@@ -65,27 +65,15 @@
                 // we don't skip if running under updateSchema as we might have multiple requests to update same table.
                 return;
             }
-            $needsCreateTable   = true;
-            $existingFields     = array();
-            $existingIndexes    = array();
+
             $messageLogger->addInfoMessage(Zurmo::t('Core', 'Creating/Updating schema for {{tableName}}',
-                                                                                array('{{tableName}}' => $tableName)));
-            if (!isset(Yii::app()->params['isFreshInstall']) || !Yii::app()->params['isFreshInstall'])
+                                                                        array('{{tableName}}' => $tableName)));
+            $needsCreateTable   = true;
+            // only check for table existence if we are not on fresh install
+            if ((!isset(Yii::app()->params['isFreshInstall']) || !Yii::app()->params['isFreshInstall']) &&
+                                                                ZurmoRedBean::$writer->doesTableExist($tableName))
             {
-                try
-                {
-                    $existingFields     = ZurmoRedBean::$writer->getColumnsWithDetails($tableName);
-                    $existingIndexes    = ZurmoRedBean::$writer->getIndexes($tableName);
-                    $needsCreateTable   = false;
-                }
-                catch (RedBean_Exception_SQL $e)
-                {
-                    //42S02 - Table does not exist.
-                    if (!in_array($e->getSQLState(), array('42S02')))
-                    {
-                        throw $e;
-                    }
-                }
+                $needsCreateTable = false;
             }
 
             if ($needsCreateTable)
@@ -94,6 +82,8 @@
             }
             else
             {
+                $existingFields     = ZurmoRedBean::$writer->getColumnsWithDetails($tableName);
+                $existingIndexes    = ZurmoRedBean::$writer->getIndexes($tableName);
                 $query  = static::resolveAlterTableQuery($tableName,
                                                             $columnsAndIndexes,
                                                             $existingFields,
