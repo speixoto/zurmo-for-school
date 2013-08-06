@@ -94,13 +94,14 @@
             $opportunity = static::getModelAndCatchNotFoundAndDisplayError('Opportunity', intval($id));
             ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($opportunity);
             AuditEvent::logAuditEvent('ZurmoModule', ZurmoModule::AUDIT_EVENT_ITEM_VIEWED, array(strval($opportunity), 'OpportunitiesModule'), $opportunity);
-            $breadCrumbView          = StickySearchUtil::resolveBreadCrumbViewForDetailsControllerAction($this, 'OpportunitiesSearchView', $opportunity);
-            $detailsAndRelationsView = $this->makeDetailsAndRelationsView($opportunity, 'OpportunitiesModule',
+            $getData                 = GetUtil::getData();
+            $isKanbanBoardInRequest  = ArrayUtil::getArrayValue($getData, 'kanbanBoard');
+            if ($isKanbanBoardInRequest == 0 || $isKanbanBoardInRequest == null)
+            {
+                $breadCrumbView = StickySearchUtil::resolveBreadCrumbViewForDetailsControllerAction($this, 'OpportunitiesSearchView', $opportunity);
+                $detailsAndRelationsView = $this->makeDetailsAndRelationsView($opportunity, 'OpportunitiesModule',
                                                                           'OpportunityDetailsAndRelationsView',
                                                                           Yii::app()->request->getRequestUri(), $breadCrumbView);
-            
-            if (isset($_GET['kanbanBoard']) && $_GET['kanbanBoard'] == 0 || !isset($_GET['kanbanBoard']))
-            {
                 $view = new OpportunitiesPageView(ZurmoDefaultViewUtil::
                                              makeStandardViewForCurrentUser($this, $detailsAndRelationsView));
             }
@@ -108,8 +109,10 @@
             {
                 $kanbanColumn = new KanbanColumn(false);
                 $kanbanBoard  = new KanbanBoard($kanbanColumn, 'type');
-                $listView     = new TasksRelatedForAccountKanbanListView($this->getId(), $this->getModule()->getId(),
-                                                                            'Task', $dataProvider, array(), null, array(), null, $kanbanBoard);
+                $params['relationModel'] = $opportunity;
+                $listView     = new TasksForOpportunityKanbanView($this->getId(),
+                                                                  $this->getModule()->getId(),
+                                                                  'Task', $dataProvider, $params, null, array(), $kanbanBoard);
             }
             echo $view->render();
         }

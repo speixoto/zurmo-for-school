@@ -61,6 +61,12 @@
          */
         const GRID_VIEW_TYPE_STACKED = 2;
 
+        /**
+         * Signal to use Kanban
+         * @var integer
+         */
+        const GRID_VIEW_TYPE_KANBAN = 3;
+
         public function __construct($viewData, $params, $uniqueLayoutId)
         {
             assert('isset($params["controllerId"])');

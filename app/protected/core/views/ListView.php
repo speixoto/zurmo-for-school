@@ -86,7 +86,7 @@
 
         private $listAttributesSelector;
 
-        private $kanbanBoard;
+        protected $kanbanBoard;
 
         /**
          * Constructs a list view specifying the controller as

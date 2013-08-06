@@ -34,8 +34,32 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class TasksRelatedForAccountKanbanListView extends SecuredListView
+    class TasksForOpportunityKanbanView extends SecuredRelatedListView
     {
+        public function __construct(
+            $controllerId,
+            $moduleId,
+            $modelClassName,
+            $dataProvider,
+            $params,
+            $gridIdSuffix = null,
+            $gridViewPagerParams = array(),
+            $kanbanBoard            = null
+        )
+        {
+            assert('is_string($modelClassName)');
+            assert('is_array($this->gridViewPagerParams)');
+            assert('$kanbanBoard === null || $kanbanBoard instanceof $kanbanBoard');
+            $this->controllerId           = $controllerId;
+            $this->moduleId               = $moduleId;
+            $this->modelClassName         = $modelClassName;
+            $this->dataProvider           = $dataProvider;
+            $this->gridIdSuffix           = $gridIdSuffix;
+            $this->gridViewPagerParams    = $gridViewPagerParams;
+            $this->gridId                 = 'kanban-view';
+            $this->kanbanBoard            = $kanbanBoard;
+        }
+
         public static function getDefaultMetadata()
         {
             $metadata = parent::getDefaultMetadata();
@@ -69,6 +93,11 @@
         {
             $columns = array();
             return $columns;
+        }
+
+        protected function getRelationAttributeName()
+        {
+            return 'Opportunity';
         }
     }
 ?>
