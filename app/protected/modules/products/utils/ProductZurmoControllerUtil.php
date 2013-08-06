@@ -68,19 +68,14 @@
          * @param RedBeanModel $product
          * @return string
          */
-        public function resolveStageDefaultValue($product)
+        public function resolveStageDefaultValue(& $product)
         {
            $customFieldData    = CustomFieldData::getByName('ProductStages');
-           $stageDataArray     = unserialize($customFieldData->serializedData);
+           $dropDownArray      = unserialize($customFieldData->serializedData);
            if($product->stage->value == null)
            {
-               $defaultLabel       = CustomFieldDataUtil::getTranslatedLabelByValue($customFieldData, $stageDataArray[0], 'en');
+               $product->stage->value = $dropDownArray[0];
            }
-           else
-           {
-               $defaultLabel       = CustomFieldDataUtil::getTranslatedLabelByValue($customFieldData, $product->stage->value, 'en');
-           }
-           return $defaultLabel;
         }
     }
 ?>

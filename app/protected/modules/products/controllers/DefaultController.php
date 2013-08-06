@@ -382,8 +382,7 @@
             $product->sellPrice         = $sellPrice;
             $product->type              = $productTemplate->type;
             $controllerUtil             = static::getZurmoControllerUtil();
-            $defaultStageLabel          = $controllerUtil->resolveStageDefaultValue($product);
-            $product->stage->value      = $defaultStageLabel;
+            $controllerUtil->resolveStageDefaultValue($product);
             foreach ($productTemplate->productCategories as $productCategory)
             {
                 $product->productCategories->add($productCategory);
