@@ -96,11 +96,13 @@
          */
         protected function getArray()
         {
-            $data = array(ProductsConfigurationForm::FILTERED_BY_ALL_STAGES => Zurmo::t('ProductsModule', 'All'),
-                          ProductsConfigurationForm::OPEN_STAGE             => Zurmo::t('ProductsModule', 'Open'),
-                          ProductsConfigurationForm::LOST_STAGE             => Zurmo::t('ProductsModule', 'Lost'),
-                          ProductsConfigurationForm::WON_STAGE              => Zurmo::t('ProductsModule', 'Won'));
-
+            $customFieldData    = CustomFieldData::getByName('ProductStages');
+            $stageDataArray     = unserialize($customFieldData->serializedData);
+            $data           = array(ProductsConfigurationForm::FILTERED_BY_ALL_STAGES => Zurmo::t('ProductsModule', 'All'));
+            foreach($stageDataArray as $stage)
+            {
+                $data[ $stage ] = $stage;
+            }
             return $data;
         }
     }
