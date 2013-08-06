@@ -79,11 +79,12 @@
             {
                 foreach ($exportItems as $exportItem)
                 {
+                    Yii::app()->performance->startMemoryUsageMarker();
+                    $startTime = Yii::app()->performance->startClock();
                     if (isset($exportItem->exportFileModel))
                     {
                         //continue;
                     }
-
                     $unserializedData = unserialize($exportItem->serializedData);
                     if ($unserializedData instanceOf RedBeanModelDataProvider ||
                         $unserializedData instanceOf ReportDataProvider)
@@ -102,6 +103,7 @@
                     if ($exportItem->exportFileType == 'csv')
                     {
                         $headerData = array();
+                        $data       = array();
                         if($unserializedData instanceOf ReportDataProvider)
                         {
                             foreach ($formattedData as $reportResultsRowData)
@@ -116,6 +118,7 @@
                         }
                         else
                         {
+
                             foreach ($formattedData as $model)
                             {
                                 if (ControllerSecurityUtil::doesCurrentUserHavePermissionOnSecurableItem($model, Permission::READ))
@@ -126,6 +129,16 @@
                                         $headerData        = $modelToExportAdapter->getHeaderData();
                                     }
                                     $data[]                = $modelToExportAdapter->getData();
+                                    unset($modelToExportAdapter);
+                                }
+
+                                //Avoid endless memory hogging, by forgetting validator data. Clears memory
+                                foreach ($model->attributeNames() as $attributeName)
+                                {
+                                    if($model->isRelation($attributeName) && $model->{$attributeName} instanceof RedBeanModel)
+                                    {
+                                        $model->{$attributeName}->forgetValidators();
+                                    }
                                 }
                             }
                         }
@@ -138,7 +151,6 @@
                         $exportFileModel->type        = 'application/octet-stream';
                         $exportFileModel->size        = strlen($output);
                         $saved                        = $exportFileModel->save();
-
                         if ($saved)
                         {
                             $exportItem->isCompleted = 1;
@@ -156,6 +168,17 @@
                             NotificationsUtil::submit($message, $rules);
                         }
                     }
+                    $memoryUsageIncrease = Yii::app()->performance->getMemoryMarkerUsage();
+                    $endTime             = Yii::app()->performance->endClockAndGet();
+
+                    $this->getMessageLogger()->addInfoMessage(
+                        Zurmo::t('ExportModule',
+                            'Memory in use: {memoryInUse} Memory Increase: {memoryUsageIncrease} Processing Time: {processingTime}',
+                                array('{memoryInUse}'         => Yii::app()->performance->getMemoryUsage(),
+                                    '{memoryUsageIncrease}' => $memoryUsageIncrease,
+                                    '{processingTime}'      => number_format(($endTime - $startTime), 3))));
+                    unset($formattedData);
+                    unset($unserializedData);
                 }
             }
             else
