@@ -130,6 +130,11 @@
                                                 'size'     => filesize($filePath)));
         }
 
+        public static function getDependentTestModelClassNames()
+        {
+            return array();
+        }
+
         public function setup()
         {
         }

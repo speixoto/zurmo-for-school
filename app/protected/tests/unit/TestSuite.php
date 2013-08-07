@@ -44,42 +44,44 @@
 
     class TestSuite
     {
+        protected static $dependentTestModelClassNames = array();
+
         public static function suite()
         {
             global $argv, $freeze;
 
             PhpUnitServiceUtil::checkVersion();
-            $usage = "\n"                                                                                                    .
-                     "  Usage: phpunit [phpunit options] TestSuite.php <All|Framework|Misc|moduleName|TestClassName> [custom options]\n" .
-                     "\n"                                                                                                    .
-                     "    All                     Run all tests.\n"                                                           .
-                     "    Framework               Run the tests in app/protected/extensions/framework/tests/unit.\n"          .
-                     "    Misc                    Run the tests in app/protected/tests/unit.\n"                               .
-                     "    moduleName              Run the tests in app/protected/modules/moduleName/tests/unit.\n"            .
-                     "    TestClassName           Run the tests in TestClassName.php, wherever that happens to be.\n"         .
-                     "\n"                                                                                                    .
-                     "  Custom Options:\n"                                                                                   .
-                     "\n"                                                                                                    .
-                     "    --only-walkthroughs     For the specified test, only includes tests under a walkthroughs directory.\n" .
-                     "    --exclude-walkthroughs  For the specified test, exclude tests under a walkthroughs directory.\n"       .
-                     "    --only-benchmarks       For the specified test, only includes tests under a benchmarks directory.\n" .
-                     "    --exclude-benchmarks    For the specified test, exclude tests under a benchmarks directory.\n"      .
-                     "    --reuse-schema          Reload a previously auto build database. (Will auto build if there is no\n" .
-                     "                            previous one. The auto built schema is dumped to the system temp dir in\n"  .
-                     "                            autobuild.sql.)\n"                                                          .
-                     "    --no-freeze             Don't auto build and freeze the database.\n"                                .
-                     "\n"                                                                                                    .
-                     "  Examples:\n"                                                                                         .
-                     "\n"                                                                                                    .
-                     "    phpunit --verbose TestSuite.php accounts (Run the tests in the Accounts module.)\n"                . // Not Coding Standard
-                     "    phpunit TestSuite.php RedBeanModelTest   (Run the tests in RedBeanModelTest.php.)\n"               .
-                     "\n"                                                                                                    .
-                     "  Note:\n"                                                                                             .
-                     "\n"                                                                                                    .
-                     "    Framework and Misc tests run only when -no-freeze is specified.\n"                                 .
-                     "\n"                                                                                                    .
-                     "    To run specific tests use the phpunit --filter <regex> option.\n"                                  . // Not Coding Standard
-                     "    phpunit has its own options. Check phpunit --help.\n\n";                                             // Not Coding Standard
+            $usage = PHP_EOL                                                                                                    .
+                "  Usage: phpunit [phpunit options] TestSuite.php <All|Framework|Misc|moduleName|TestClassName> [custom options]" . PHP_EOL .
+                PHP_EOL                                                                                                    .
+                "    All                     Run all tests." . PHP_EOL                                                    .
+                "    Framework               Run the tests in app/protected/extensions/framework/tests/unit." . PHP_EOL          .
+                "    Misc                    Run the tests in app/protected/tests/unit." . PHP_EOL                               .
+                "    moduleName              Run the tests in app/protected/modules/moduleName/tests/unit." . PHP_EOL            .
+                "    TestClassName           Run the tests in TestClassName.php, wherever that happens to be." . PHP_EOL         .
+                PHP_EOL                                                                                                    .
+                "  Custom Options:" . PHP_EOL                                                                                   .
+                PHP_EOL                                                                                                    .
+                "    --only-walkthroughs     For the specified test, only includes tests under a walkthroughs directory." . PHP_EOL .
+                "    --exclude-walkthroughs  For the specified test, exclude tests under a walkthroughs directory." . PHP_EOL       .
+                "    --only-benchmarks       For the specified test, only includes tests under a benchmarks directory." . PHP_EOL .
+                "    --exclude-benchmarks    For the specified test, exclude tests under a benchmarks directory." . PHP_EOL      .
+                "    --reuse-schema          Reload a previously auto build database. (Will auto build if there is no" . PHP_EOL .
+                "                            previous one. The auto built schema is dumped to the system temp dir in" . PHP_EOL  .
+                "                            autobuild.sql.)" . PHP_EOL                                                          .
+                "    --no-freeze             Don't auto build and freeze the database." . PHP_EOL                                .
+                PHP_EOL                                                                                                    .
+                "  Examples:" . PHP_EOL                                                                                         .
+                PHP_EOL                                                                                                    .
+                "    phpunit --verbose TestSuite.php accounts (Run the tests in the Accounts module.)" . PHP_EOL                . // Not Coding Standard
+                "    phpunit TestSuite.php RedBeanModelTest   (Run the tests in RedBeanModelTest.php.)" . PHP_EOL               .
+                PHP_EOL                                                                                                    .
+                "  Note:" . PHP_EOL                                                                                             .
+                PHP_EOL                                                                                                    .
+                "    Framework and Misc tests run only when -no-freeze is specified." . PHP_EOL                                 .
+                PHP_EOL                                                                                                    .
+                "    To run specific tests use the phpunit --filter <regex> option." . PHP_EOL                                  . // Not Coding Standard
+                "    phpunit has its own options. Check phpunit --help." . PHP_EOL . PHP_EOL;                                             // Not Coding Standard
 
             $onlyWalkthroughs     =  self::customOptionSet('--only-walkthroughs',     $argv);
             $excludeWalkthroughs  =  self::customOptionSet('--exclude-walkthroughs',  $argv);
@@ -90,7 +92,7 @@
 
             if ($freeze == true && FORCE_NO_FREEZE == true)
             {
-                echo "\n\nBecause forceNoFreeze is set to TRUE in debugTest, you cannot run unit tests in frozen mode\n\n"; // Not Coding Standard
+                echo PHP_EOL . PHP_EOL . "Because forceNoFreeze is set to TRUE in debugTest, you cannot run unit tests in frozen mode" . PHP_EOL . PHP_EOL; // Not Coding Standard
                 exit;
             }
 
@@ -103,7 +105,7 @@
             if ($onlyWalkthroughs && $onlyBenchmarks)
             {
                 echo $usage;
-                echo "It doesn't have sense to select both \"--only-walkthroughs\" and \"--only-benchmarks\" options. \n\n";
+                echo "It doesn't have sense to select both \"--only-walkthroughs\" and \"--only-benchmarks\" options. " . PHP_EOL . PHP_EOL;
                 exit;
             }
 
@@ -111,48 +113,6 @@
             $includeUnitTests     = !$onlyWalkthroughs && !$onlyBenchmarks;
             $includeWalkthroughs  = !$excludeWalkthroughs && !$onlyBenchmarks;
             $includeBenchmarks    = !$excludeBenchmarks && !$onlyWalkthroughs;
-
-            echo "Testing with database: '"  . Yii::app()->db->connectionString . '\', ' .
-                              'username: \'' . Yii::app()->db->username         . "'.\n";
-
-            if ($freeze && !$reuse)
-            {
-                if (!is_writable(sys_get_temp_dir()))
-                {
-                    echo "\n\nTemp directory must be writable to store reusable schema\n"; // Not Coding Standard
-                    echo "Temp directory: " . sys_get_temp_dir() . "\n\n"; // Not Coding Standard
-                    exit;
-                }
-                InstallUtil::connectToDatabaseWithConnectionString(Yii::app()->db->connectionString,
-                                                                   Yii::app()->db->username,
-                                                                   Yii::app()->db->password);
-                echo "Auto building database schema...\n";
-                InstallUtil::dropAllTables();
-                Yii::app()->user->userModel = InstallUtil::createSuperUser('super', 'super');
-                $messageLogger = new MessageLogger();
-                InstallUtil::autoBuildDatabase($messageLogger);
-                $messageLogger->printMessages();
-                ReadPermissionsOptimizationUtil::rebuild();
-                assert('RedBeanDatabase::isSetup()');
-
-                echo "Saving auto built schema...\n";
-                $schemaFile = sys_get_temp_dir() . '/autobuilt.sql';
-                $success = preg_match("/;dbname=([^;]+)/", Yii::app()->db->connectionString, $matches); // Not Coding Standard
-                assert('$success == 1');
-                $databaseName = $matches[1];
-
-                $systemOutput = system('mysqldump -u' . Yii::app()->db->username .
-                                       ' -p' . Yii::app()->db->password .
-                                       ' ' . $databaseName            .
-                                       " > $schemaFile");
-                if ($systemOutput != null)
-                {
-                    echo 'Dumping schema using system command. Output: ' . $systemOutput . "\n\n";
-                }
-                InstallUtil::close();
-                echo "Database closed.\n";
-                assert('!RedBeanDatabase::isSetup()');
-            }
 
             $suite = new PHPUnit_Framework_TestSuite();
             $suite->setName("$whatToTest Tests");
@@ -187,9 +147,59 @@
             if ($suite->count() == 0)
             {
                 echo $usage;
-                echo "  No tests found for '$whatToTest'.\n\n";
+                echo "  No tests found for '$whatToTest'." . PHP_EOL . PHP_EOL;
                 exit;
             }
+            echo "Testing with database: '"  . Yii::app()->db->connectionString . '\', ' .
+                                                'username: \'' . Yii::app()->db->username         . "'." . PHP_EOL;
+
+            if ($freeze && !$reuse)
+            {
+                if (!is_writable(sys_get_temp_dir()))
+                {
+                    echo PHP_EOL .PHP_EOL . "Temp directory must be writable to store reusable schema" . PHP_EOL; // Not Coding Standard
+                    echo "Temp directory: " . sys_get_temp_dir() .  PHP_EOL . PHP_EOL; // Not Coding Standard
+                    exit;
+                }
+                static::setupDatabaseConnection();
+                echo "Auto building database schema..." . PHP_EOL;
+                InstallUtil::dropAllTables();
+                Yii::app()->user->userModel = InstallUtil::createSuperUser('super', 'super');
+                $messageLogger = new MessageLogger();
+                InstallUtil::autoBuildDatabase($messageLogger);
+                $messageLogger->printMessages();
+                ReadPermissionsOptimizationUtil::rebuild();
+                assert('RedBeanDatabase::isSetup()');
+
+                echo "Saving auto built schema..." . PHP_EOL;
+                $schemaFile = sys_get_temp_dir() . '/autobuilt.sql';
+                $success = preg_match("/;dbname=([^;]+)/", Yii::app()->db->connectionString, $matches); // Not Coding Standard
+                assert('$success == 1');
+                $databaseName = $matches[1];
+
+                $systemOutput = system('mysqldump -u' . Yii::app()->db->username .
+                                        ' -p' . Yii::app()->db->password .
+                                        ' ' . $databaseName            .
+                                        " > $schemaFile");
+                if ($systemOutput != null)
+                {
+                    echo 'Dumping schema using system command. Output: ' . $systemOutput . PHP_EOL . PHP_EOL;
+                }
+            }
+
+            if (!empty(static::$dependentTestModelClassNames))
+            {
+                static::setupDatabaseConnection();
+                echo PHP_EOL . "Autobuilding required test models." . PHP_EOL;
+                $messageLogger = new MessageLogger();
+                RedBeanModelsToTablesAdapter::generateTablesFromModelClassNames(static::$dependentTestModelClassNames,
+                                                                                $messageLogger);
+                $messageLogger->printMessages();
+                ReadPermissionsOptimizationUtil::rebuild();
+                echo "Autobuild of test models complete." . PHP_EOL . PHP_EOL;
+            }
+            static::closeDatabaseConnection();
+
             return $suite;
         }
 
@@ -240,6 +250,7 @@
                                 $whatToTest == $className)
                             {
                                 $suite->addTestSuite(new PHPUnit_Framework_TestSuite($className));
+                                static::resolveDependentTestModelClassNamesForClass($className);
                             }
                         }
                     }
@@ -248,6 +259,37 @@
                 {
                     $parentSuite->addTestSuite($suite);
                 }
+            }
+        }
+
+        protected static function resolveDependentTestModelClassNamesForClass($className)
+        {
+            $dependentTestModelClassNames = $className::getDependentTestModelClassNames();
+            if (!empty($dependentTestModelClassNames))
+            {
+                $dependentTestModelClassNames = CMap::mergeArray(static::$dependentTestModelClassNames,
+                    $dependentTestModelClassNames);
+                static::$dependentTestModelClassNames = array_unique($dependentTestModelClassNames);
+            }
+        }
+
+        protected static function setupDatabaseConnection($force = false)
+        {
+            if (!RedBeanDatabase::isSetup() || $force)
+            {
+                InstallUtil::connectToDatabaseWithConnectionString(Yii::app()->db->connectionString,
+                    Yii::app()->db->username,
+                    Yii::app()->db->password);
+            }
+        }
+
+        protected static function closeDatabaseConnection()
+        {
+            if (RedBeanDatabase::isSetup())
+            {
+                InstallUtil::close();
+                echo "Database closed." . PHP_EOL;
+                assert('!RedBeanDatabase::isSetup()');
             }
         }
     }

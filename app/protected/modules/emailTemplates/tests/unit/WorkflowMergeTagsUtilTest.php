@@ -43,8 +43,6 @@
 
         protected static $content;
 
-        public static $freeze = false;
-
         protected $invalidTags;
 
         protected $mergeTagsUtil;
@@ -52,13 +50,6 @@
         public static function setUpBeforeClass()
         {
             parent::setUpBeforeClass();
-            // We need to unfreeze here as we are working with custom field values
-            self::$freeze                                         = false;
-            if (RedBeanDatabase::isFrozen())
-            {
-                RedBeanDatabase::unfreeze();
-                self::$freeze                                     = true;
-            }
             SecurityTestHelper::createSuperAdmin();
             SecurityTestHelper::createUsers();
             self::$super = User::getByUsername('super');
@@ -125,14 +116,14 @@
             $user1->currency                                    = $currencies[0];
             $user1->manager                                     = $users[0];
 
-            //Custom attribute                                             
+            //Custom attribute
             $attributeForm                                  = new TextAttributeForm();
             $attributeForm->attributeName                   = 'custom';
-            $attributeForm->attributeLabels                 = array('en' => 'test label en');            
-            $modelAttributesAdapterClassName                = 
+            $attributeForm->attributeLabels                 = array('en' => 'test label en');
+            $modelAttributesAdapterClassName                =
                     $attributeForm::getModelAttributeAdapterNameForSavingAttributeFormData();
-            $adapter = new $modelAttributesAdapterClassName(new EmailTemplateModelTestItem());            
-            $adapter->setAttributeMetadataFromForm($attributeForm);                                    
+            $adapter = new $modelAttributesAdapterClassName(new EmailTemplateModelTestItem());
+            $adapter->setAttributeMetadataFromForm($attributeForm);
 
             $model                                              = new EmailTemplateModelTestItem();
             $model->string                                      = 'abc';
@@ -248,13 +239,9 @@
                 'Jackson 1122334455';
         }
 
-        public static function tearDownAfterClass()
+        public static function getDependentTestModelClassNames()
         {
-            if (self::$freeze)
-            {
-                RedBeanDatabase::freeze();
-            }
-            parent::tearDownAfterClass();
+            return array('EmailTemplateModelTestItem');
         }
 
         public function setUp()
