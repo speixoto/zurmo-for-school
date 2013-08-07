@@ -77,11 +77,11 @@
         public static function translatedAttributeLabels($language)
         {
             return array_merge(parent::translatedAttributeLabels($language), array(
-                'cost'                  => Zurmo::t('GameRewardsModule', 'Price Frequency', array(), null, $language),
+                'cost'                  => Zurmo::t('GameRewardsModule', 'Cost in Coins', array(), null, $language),
                 'description'           => Zurmo::t('ZurmoModule',       'Description', array(), null, $language),
                 'expirationDateTime'    => Zurmo::t('GameRewardsModule', 'Expiration Date Time', array(), null, $language),
                 'name'                  => Zurmo::t('ZurmoModule',       'Name',  array(), null, $language),
-                'quantity'              => Zurmo::t('ZurmoModule',       'Quantity', array(), null, $language),
+                'quantity'              => Zurmo::t('ZurmoModule',       'Quantity Available', array(), null, $language),
                 'transactions'          => Zurmo::t('GameRewardsModule', 'Game Reward Transactions', array(), null, $language),
                 ));
         }
@@ -101,7 +101,8 @@
                     'quantity',
                 ),
                 'relations' => array(
-                    'transactions' => array(RedBeanModel::HAS_MANY, 'GameRewardTransaction', RedBeanModel::OWNED),
+                    'transactions' => array(RedBeanModel::HAS_MANY, 'GameRewardTransaction', RedBeanModel::OWNED,
+                                            RedBeanModel::LINK_TYPE_SPECIFIC, 'transactions'),
                 ),
                 'rules' => array(
                     array('cost',           'numerical',  'min' => 1),

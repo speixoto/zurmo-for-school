@@ -146,7 +146,7 @@
          * @param boolean $portletsAreMovable
          * @param boolean $portletsAreRemovable
          */
-        private function resolvePortletConfigurableParams(& $portletsAreMovable, & $portletsAreRemovable)
+        protected function resolvePortletConfigurableParams(& $portletsAreMovable, & $portletsAreRemovable)
         {
             assert('is_bool($portletsAreMovable)');
             assert('is_bool($portletsAreRemovable)');

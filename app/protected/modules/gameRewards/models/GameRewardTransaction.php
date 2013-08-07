@@ -60,7 +60,9 @@
                 ),
                 'relations' => array(
                     'person' => array(RedBeanModel::HAS_ONE, 'Item', RedBeanModel::NOT_OWNED,
-                                      RedBeanModel::LINK_TYPE_SPECIFIC, 'person')
+                                      RedBeanModel::LINK_TYPE_SPECIFIC, 'person'),
+                    'reward' => array(RedBeanModel::HAS_ONE, 'GameReward', RedBeanModel::NOT_OWNED,
+                                          RedBeanModel::LINK_TYPE_SPECIFIC, 'transactions'),
                 ),
                 'rules' => array(
 
