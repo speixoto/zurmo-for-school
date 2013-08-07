@@ -58,6 +58,7 @@
             $this->gridViewPagerParams    = $gridViewPagerParams;
             $this->gridId                 = 'kanban-view';
             $this->kanbanBoard            = $kanbanBoard;
+            $this->params                 = $params;
         }
 
         public static function getDefaultMetadata()
@@ -98,6 +99,39 @@
         protected function getRelationAttributeName()
         {
             return 'Opportunity';
+        }
+
+        public static function getModuleClassName()
+        {
+            return 'TasksModule';
+        }
+
+        protected function getCGridViewPagerParams()
+        {
+            return array(
+                    'firstPageLabel'    => '<span>first</span>',
+                    'prevPageLabel'     => '<span>previous</span>',
+                    'nextPageLabel'     => '<span>next</span>',
+                    'lastPageLabel'     => '<span>last</span>',
+                    'class'             => 'SimpleListLinkPager',
+                    'paginationParams'  => GetUtil::getData(),
+                    'route'             => 'default/details',
+                );
+        }
+
+        protected function makeSearchAttributeData()
+        {
+            $searchAttributeData = array();
+            $searchAttributeData['clauses'] = array(
+                1 => array(
+                    'attributeName'        => 'activityItems',
+                    'relatedAttributeName' => 'id',
+                    'operatorType'         => 'equals',
+                    'value'                => (int)$this->params['relationModel']->getClassId('Item'),
+                )
+            );
+            $searchAttributeData['structure'] = '1';
+            return $searchAttributeData;
         }
     }
 ?>

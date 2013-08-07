@@ -34,18 +34,18 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class KanbanColumn extends RedBeanModel
+    class KanbanItem extends RedBeanModel
     {
         /*
          * Constants for task status
          */
-        const KANBAN_TYPE_SOMEDAY               = 1;
+        const TYPE_SOMEDAY               = 1;
 
-        const KANBAN_TYPE_TODO                  = 2;
+        const TYPE_TODO                  = 2;
 
-        const KANBAN_TYPE_IN_PROGRESS           = 3;
+        const TYPE_IN_PROGRESS           = 3;
 
-        const KANBAN_TYPE_COMPLETED             = 4;
+        const TYPE_COMPLETED             = 4;
 
         /**
          * @return string
@@ -95,7 +95,7 @@
                     'order'
                 ),
                 'relations' => array(
-                    'kanbanItem'                => array(RedBeanModel::HAS_ONE, 'Item'),
+                    'kanbanRelatedItem'         => array(RedBeanModel::HAS_ONE, 'Item'),
                     'task'                      => array(RedBeanModel::HAS_ONE, 'Task')
                 ),
                 'rules' => array(
@@ -103,8 +103,8 @@
                     array('order', 'type', 'type' => 'integer'),
                 ),
                 'elements' => array(
-                    'kanbanItem' => 'Item',
-                    'task'       => 'Task'
+                    'kanbanRelatedItem' => 'Item',
+                    'task'              => 'Task'
                 ),
                 'defaultSortAttribute' => 'order',
                 'noAudit' => array(
@@ -150,7 +150,7 @@
          */
         public static function getGamificationRulesType()
         {
-            return 'TaskGamification';
+            return null;
         }
 
         /**

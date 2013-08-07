@@ -107,12 +107,15 @@
             }
             else
             {
-                $kanbanColumn = new KanbanColumn(false);
-                $kanbanBoard  = new KanbanBoard($kanbanColumn, 'type');
+                $kanbanItem   = new KanbanItem();
+                $kanbanBoard  = new TaskKanbanBoard($kanbanItem, 'type');
+                $kanbanBoard->setIsActive();
                 $params['relationModel'] = $opportunity;
                 $listView     = new TasksForOpportunityKanbanView($this->getId(),
                                                                   $this->getModule()->getId(),
-                                                                  'Task', $dataProvider, $params, null, array(), $kanbanBoard);
+                                                                  'Task', null, $params, null, array(), $kanbanBoard);
+                $view         = new OpportunitiesPageView(ZurmoDefaultViewUtil::
+                                                            makeStandardViewForCurrentUser($this, $listView));
             }
             echo $view->render();
         }

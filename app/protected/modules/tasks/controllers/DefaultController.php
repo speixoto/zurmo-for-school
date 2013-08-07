@@ -241,13 +241,13 @@
         {
             if($id == null)
             {
-                $task             = new Task();
+                $task = new Task();
             }
             else
             {
                 $task = Task::getById(intval($id));
             }
-            $task             = $this->attemptToSaveModelFromPost($task, null, false);
+            $task     = $this->attemptToSaveModelFromPost($task, null, false);
             $this->actionModalViewFromRelation($task->id);
         }
 
