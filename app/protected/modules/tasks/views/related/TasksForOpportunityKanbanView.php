@@ -133,5 +133,16 @@
             $searchAttributeData['structure'] = '1';
             return $searchAttributeData;
         }
+
+        /**
+         * Override to handle security/access resolution on links.
+         */
+        public function getLinkString($attributeString, $attribute)
+        {
+            $string  = 'ActionSecurityUtil::resolveLinkToModelForCurrentUser("' . $attributeString . '", ';
+            $string .= '$data, "' . $this->getActionModuleClassName() . '", ';
+            $string .= '"' . $this->getGridViewActionRoute('details') . '", (int)$offset)';
+            return $string;
+        }
     }
 ?>

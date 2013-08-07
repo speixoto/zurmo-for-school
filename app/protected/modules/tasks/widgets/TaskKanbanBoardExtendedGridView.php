@@ -39,58 +39,6 @@
      */
     class TaskKanbanBoardExtendedGridView extends KanbanBoardExtendedGridView
     {
-        public static $maxCount = 50;
-
-        /**
-         * Renders the table body.
-         */
-        public function renderTableBody()
-        {
-            $data        = $this->dataProvider->getData();
-            $modelsCount = count($data);
-            $columnsData = $this->resolveDataIntoKanbanColumns();
-            $width       = 100 / count($columnsData);
-            echo "<tbody>";
-            echo "<tr><td id=\"kanban-holder\" class='". $this->selectedTheme . "'>";
-            if ($modelsCount > static::$maxCount)
-            {
-                $this->renderOverMaxCountText();
-            }
-            elseif ($modelsCount > 0)
-            {
-                $counter = 0;
-                echo "<div id=\"kanban-board\" class=\"clearfix\">";
-                foreach ($columnsData as $attributeValue => $attributeValueAndData)
-                {
-                    echo '<div class="kanban-column" style="width:'.$width.'%;">'; // Not Coding Standard
-                    echo "<div data-value='" . $attributeValue . "' class='droppable-dynamic-rows-container'>";
-                    //Add header label
-                    echo ZurmoHtml::tag('div', array('class' => 'column-header'), $this->resolveGroupByColumnHeaderLabel($attributeValue));
-                    $listItems = '';
-                    foreach ($attributeValueAndData as $row)
-                    {
-                        $listItems .= ZurmoHtml::tag('li',
-                                                      array('class' => 'kanban-card item-to-place',
-                                                            'data-id' => $this->dataProvider->data[$row]->id),
-                                                      ZurmoHtml::tag('div', array(), $this->renderCardDetailsContent($row)));
-                    }
-                    echo ZurmoHtml::tag('ul', array(), $listItems);
-                    $dropZone =  ZurmoHtml::tag('div', array('class' => 'drop-zone'), '');
-                    echo ZurmoHtml::tag('div', array('class' => 'drop-zone-container'), $dropZone);
-                    echo "</div>";
-                    echo "</div>";
-                    $counter++;
-                }
-                echo "</div>";
-            }
-            else
-            {
-                $this->renderEmptyText();
-            }
-            echo "</td></tr>";
-            echo "</tbody>";
-        }
-
         /**
          * @return array
          */
@@ -159,7 +107,8 @@
             $cardDetails = null;
             foreach ($this->cardColumns as $cardData)
             {
-                $content      = $this->evaluateExpression($cardData['value'], array('data' => $this->dataProvider->data[$row],
+                $columnValue  = $cardData['value'];
+                $content      = $this->evaluateExpression($columnValue, array('data' => $this->dataProvider->data[$row],
                                                                                     'offset' => ($this->getOffset() + $row)));
                 $cardDetails .= ZurmoHtml::tag('span', array('class' => $cardData['class']), $content);
             }
