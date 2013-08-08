@@ -50,6 +50,17 @@
             return false;
         }
 
+        /**
+         * @param string $language
+         * @return array
+         */
+        public static function translatedAttributeLabels($language)
+        {
+            return array_merge(parent::translatedAttributeLabels($language), array(
+                'redemptionDateTime'    => Zurmo::t('GameRewardsModule', 'Redemption Date', array(), null, $language),
+            ));
+        }
+
         public static function getDefaultMetadata()
         {
             $metadata = parent::getDefaultMetadata();
