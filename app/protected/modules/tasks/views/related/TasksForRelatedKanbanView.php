@@ -100,8 +100,10 @@
             $cClipWidget->widget($this->getGridViewWidgetPath(), $this->getCGridViewParams());
             $cClipWidget->endClip();
             $content     = $this->renderTitleContent();
-            $content .= $this->renderViewToolBar();
-            $content .= $cClipWidget->getController()->clips['ListView'] . "\n";
+            $content    .= $this->renderViewToolBar();
+            $content    .= TasksUtil::renderViewModalContainer();
+
+            $content    .= $cClipWidget->getController()->clips['ListView'] . "\n";
             if ($this->getRowsAreSelectable())
             {
                 $content .= ZurmoHtml::hiddenField($this->gridId . $this->gridIdSuffix . '-selectedIds', implode(",", $this->selectedIds)) . "\n"; // Not Coding Standard
@@ -177,10 +179,20 @@
          */
         public function getLinkString($attributeString, $attribute)
         {
-            $string  = 'ActionSecurityUtil::resolveLinkToModelForCurrentUser("' . $attributeString . '", ';
-            $string .= '$data, "' . $this->getActionModuleClassName() . '", ';
-            $string .= '"' . $this->getGridViewActionRoute('modalViewFromRelation', 'tasks') . '", (int)$offset)';
-            return $string;
+            return array($this, 'resolveLinkString');
+        }
+
+        /**
+         * Resolves the link string for task detail modal view
+         * @param array $data
+         * @param int $row
+         * @return string
+         */
+        public function resolveLinkString($data, $row)
+        {
+            $taskUtil    = new TasksUtil();
+            $content     = $taskUtil->getLinkForViewModal($data, $row, $this->controllerId, $this->moduleId, $this->getActionModuleClassName());
+            return $content;
         }
 
         protected function getGridViewActionRoute($action, $moduleId = null)
@@ -205,6 +217,29 @@
         public function getTitle()
         {
             return $this->getKanbanBoardTitle();
+        }
+
+        /**
+         * Render a toolbar above the form layout. This includes buttons and/or
+         * links to go to different views or process actions such as save or delete
+         * @param boolean $renderedInForm
+         * @return A string containing the element's content.
+         *
+         */
+        protected function renderActionElementBar($renderedInForm)
+        {
+            $getData        = GetUtil::getData();
+            $isKanbanActive = $getData['kanbanBoard'];
+            $toolbarContent = null;
+            $content        = null;
+            if(isset($getData['kanbanBoard']) && $getData['kanbanBoard'] == 1)
+            {
+               $link    = $link    = ZurmoDefaultViewUtil::renderActionBarLinksForKanbanBoard($this->controllerId, $this->moduleId, (int)$this->params['relationModel']->id);
+               $content = parent::renderActionElementBar($renderedInForm) . $link;
+            }
+
+            $toolbarContent = ZurmoHtml::tag('div', array('class' => 'view-toolbar'), $content);
+            return $toolbarContent;
         }
     }
 ?>

@@ -106,7 +106,7 @@
             else
             {
                 $kanbanItem   = new KanbanItem();
-                $kanbanBoard  = new TaskKanbanBoard($kanbanItem, 'type');
+                $kanbanBoard  = new TaskKanbanBoard($kanbanItem, 'type', $account, get_class($account));
                 $kanbanBoard->setIsActive();
                 $params['relationModel']    = $account;
                 $params['relationModuleId'] = $this->getModule()->getId();

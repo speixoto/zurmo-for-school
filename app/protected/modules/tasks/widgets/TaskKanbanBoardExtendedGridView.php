@@ -39,6 +39,10 @@
      */
     class TaskKanbanBoardExtendedGridView extends KanbanBoardExtendedGridView
     {
+        public $relatedModelId;
+
+        public $relatedModelClassName;
+
         /**
          * @return array
          */
@@ -46,15 +50,24 @@
         {
             $columnsData = $this->makeColumnsDataAndStructure();
             $rowCount = 1;
+
             foreach ($this->dataProvider->data as $row => $data)
             {
-                //Create KanbanItem here
-                $kanbanItem                     = new KanbanItem();
-                $kanbanItem->type               = $this->resolveKanbanItemTypeForTaskStatus($data->status);
-                $kanbanItem->task               = $data;
-                $kanbanItem->kanbanRelatedItem  = $data->activityItems->offsetGet(0);
-                $kanbanItem->order              = $rowCount;
-                $kanbanItem->save();
+                $results = KanbanItem::getKanbanItemForTask($data->id);
+                if(count($results) == 0)
+                {
+                    //Create KanbanItem here
+                    $kanbanItem                     = new KanbanItem();
+                    $kanbanItem->type               = $this->resolveKanbanItemTypeForTaskStatus($data->status);
+                    $kanbanItem->task               = $data;
+                    $kanbanItem->kanbanRelatedItem  = $data->activityItems->offsetGet(0);
+                    $kanbanItem->order              = $rowCount;
+                    $kanbanItem->save();
+                }
+                else
+                {
+                    $kanbanItem = $results[0];
+                }
                 if (isset($columnsData[$kanbanItem->type]))
                 {
                     $columnsData[$kanbanItem->type][] = $row;

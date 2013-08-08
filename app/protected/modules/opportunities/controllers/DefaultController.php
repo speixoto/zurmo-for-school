@@ -108,7 +108,7 @@
             else
             {
                 $kanbanItem   = new KanbanItem();
-                $kanbanBoard  = new TaskKanbanBoard($kanbanItem, 'type');
+                $kanbanBoard  = new TaskKanbanBoard($kanbanItem, 'type', $opportunity, get_class($opportunity));
                 $kanbanBoard->setIsActive();
                 $params['relationModel'] = $opportunity;
                 $listView     = new TasksForAccountKanbanView($this->getId(),

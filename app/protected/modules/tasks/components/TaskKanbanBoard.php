@@ -39,17 +39,23 @@
      */
     class TaskKanbanBoard extends KanbanBoard
     {
+        protected $relatedModel;
+
+        protected $relatedModelClassName;
+
         /**
          * @param RedBeanModel $model
          * @param string $groupByAttribute
          * @throws NotSupportedException
          */
-        public function __construct(RedBeanModel $model, $groupByAttribute)
+        public function __construct(RedBeanModel $model, $groupByAttribute, $relatedModel, $relatedModelClassName)
         {
             $this->model            = $model;
             $this->groupByAttribute = $groupByAttribute;
             $this->groupByDataAndTranslatedLabels = $this->resolveGroupByDataAndTranslatedLabels();
             $this->groupByAttributeVisibleValues  = array_keys($this->groupByDataAndTranslatedLabels);
+            $this->relatedModel                   = $relatedModel;
+            $this->relatedModelClassName          = $relatedModelClassName;
         }
 
         /**
@@ -71,6 +77,19 @@
         public static function getGridViewWidgetPath()
         {
             return 'application.modules.tasks.widgets.TaskKanbanBoardExtendedGridView';
+        }
+
+        /**
+         * @return array
+         */
+        public function getGridViewParams()
+        {
+            return array('groupByAttribute'               => $this->groupByAttribute,
+                         'groupByAttributeVisibleValues'  => $this->groupByAttributeVisibleValues,
+                         'groupByDataAndTranslatedLabels' => $this->groupByDataAndTranslatedLabels,
+                         'selectedTheme'                  => $this->getSelectedTheme(),
+                         'relatedModelId'                 => $this->relatedModel->id,
+                         'relatedModelClassName'         => $this->relatedModelClassName);
         }
 }
 ?>

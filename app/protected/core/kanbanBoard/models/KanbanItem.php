@@ -95,7 +95,7 @@
                     'order'
                 ),
                 'relations' => array(
-                    'kanbanRelatedItem'         => array(RedBeanModel::HAS_ONE, 'Item'),
+                    'kanbanRelatedItem'         => array(RedBeanModel::HAS_ONE, 'Item', RedBeanModel::OWNED, RedBeanModel::LINK_TYPE_SPECIFIC, 'kanbanrelateditem'),
                     'task'                      => array(RedBeanModel::HAS_ONE, 'Task')
                 ),
                 'rules' => array(
@@ -174,6 +174,16 @@
         {
             $typeArray = self::getStatusDropDownArray();
             return $typeArray[$type];
+        }
+
+        /**
+         * Get the row count in a given table.
+         * @param string $tableName
+         * @return integer
+         */
+        public static function getKanbanItemForTask($taskId)
+        {
+            return self::getSubset(null, null, null, 'task_id = "' . $taskId . '"');
         }
     }
 ?>
