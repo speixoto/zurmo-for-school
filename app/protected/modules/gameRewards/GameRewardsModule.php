@@ -71,6 +71,9 @@
                         'right'            => self::RIGHT_ACCESS_GAME_REWARDS,
                     ),
                 ),
+                'globalSearchAttributeNames' => array(
+                    'name',
+                ),
             );
             return $metadata;
         }
@@ -108,6 +111,11 @@
         protected static function getPluralModuleLabel($language)
         {
             return Zurmo::t('GamificationModule', 'Game Rewards', array(), null, $language);
+        }
+
+        public static function modelsAreNeverGloballySearched()
+        {
+            return true;
         }
     }
 ?>

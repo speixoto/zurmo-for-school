@@ -34,16 +34,12 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    abstract class GameRewardTransactionsRelatedListView extends SecuredRelatedListView
+    class GameRewardsModalListView extends ModalListView
     {
         public static function getDefaultMetadata()
         {
             $metadata = array(
-                'perUser' => array(
-                    'title' => "eval:Zurmo::t('GameRewardsModule', 'Transactions')",
-                ),
                 'global' => array(
-                    'gridViewType' => RelatedListView::GRID_VIEW_TYPE_NORMAL,
                     'panels' => array(
                         array(
                             'rows' => array(
@@ -51,25 +47,7 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'person', 'type' => 'PersonCastedAsItem'),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'quantity', 'type' => 'Integer'),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'redemptionDateTime', 'type' => 'DateTime'),
+                                                array('attributeName' => 'name', 'type' => 'Text', 'isLink' => true),
                                             ),
                                         ),
                                     )
@@ -80,22 +58,6 @@
                 ),
             );
             return $metadata;
-        }
-
-        public static function getModuleClassName()
-        {
-            return 'GameRewardsModule';
-        }
-
-        public function getModelClassName()
-        {
-            return 'GameRewardTransaction';
-        }
-
-        protected function getEmptyText()
-        {
-            $moduleLabel     = Zurmo::t('GameRewardsModule', 'Transactions');
-            return Zurmo::t('Core', 'No {moduleLabelPluralLowerCase} found', array('{moduleLabelPluralLowerCase}' => $moduleLabel));
         }
     }
 ?>

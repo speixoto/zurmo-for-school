@@ -56,7 +56,7 @@
             $metadata[__CLASS__] = array(
                 'members' => array(
                     'quantity',
-                    'createdDateTime',
+                    'redemptionDateTime',
                 ),
                 'relations' => array(
                     'person' => array(RedBeanModel::HAS_ONE, 'Item', RedBeanModel::NOT_OWNED,
@@ -66,20 +66,20 @@
                 ),
                 'rules' => array(
 
-                    array('createdDateTime',  'required'),
-                    array('createdDateTime',  'readOnly'),
-                    array('createdDateTime',  'type', 'type' => 'datetime'),
+                    array('redemptionDateTime',  'required'),
+                    array('redemptionDateTime',  'readOnly'),
+                    array('redemptionDateTime',  'type', 'type' => 'datetime'),
                     array('person',           'required'),
                     array('quantity',         'type',    'type' => 'integer'),
                     array('quantity',         'default', 'value' => 0),
                 ),
                 'elements' => array(
-                    'createdDateTime'  => 'DateTime',
+                    'redemptionDateTime'  => 'DateTime',
                     'person'           => 'Person',
                 ),
-                'defaultSortAttribute' => 'createdDateTime',
+                'defaultSortAttribute' => 'redemptionDateTime',
                 'noAudit' => array(
-                    'createdDateTime',
+                    'redemptionDateTime',
                     'person',
                     'quantity'
                 ),
@@ -89,7 +89,7 @@
 
         public function onCreated()
         {
-            $this->unrestrictedSet('createdDateTime',  DateTimeUtil::convertTimestampToDbFormatDateTime(time()));
+            $this->unrestrictedSet('redemptionDateTime',  DateTimeUtil::convertTimestampToDbFormatDateTime(time()));
         }
 
         /**

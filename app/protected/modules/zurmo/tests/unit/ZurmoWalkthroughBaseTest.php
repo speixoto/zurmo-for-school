@@ -655,28 +655,27 @@
 
         /**
          * Test if form fields have values from record.
-         *
          * It supports selects, plain text fields and textareas.
-         *
-         * @param OwnedSecurableItem $model          Model to get values from
-         * @param array              $testAttributes Array of fields to test
-         * @return boolean
+         * @param $model
+         * @param $testAttributes
+         * @param null $linkClass
+         * @return bool
          */
         protected function checkCopyActionResponseAttributeValues($model, $testAttributes, $linkClass = null)
         {
-            $class = get_class($model);
+            $moduleClassName = $model::getModuleClassName();
             if (empty($linkClass))
             {
-                $realm = strtolower($class);
+                $controllerId = $moduleClassName::getDirectoryName();
             }
             else
             {
-                $realm = rtrim(strtolower($linkClass), 's');
+                $realm = strtolower($linkClass);
             }
             $this->setGetArray(array('id' => $model->id));
             $this->resetPostArray();
-            $response = $this->runControllerWithNoExceptionsAndGetContent($realm.'s/default/copy');
-            return $this->checkResponseAgainstAttributeArray($response, $model, $class, $testAttributes, $linkClass);
+            $response = $this->runControllerWithNoExceptionsAndGetContent($controllerId . '/default/copy');
+            return $this->checkResponseAgainstAttributeArray($response, $model, get_class($model), $testAttributes, $linkClass);
         }
 
         private function checkResponseAgainstAttributeArray($response, $model, $class, $testAttributes, $linkClass = null)
