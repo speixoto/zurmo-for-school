@@ -61,12 +61,6 @@
          */
         const GRID_VIEW_TYPE_STACKED = 2;
 
-        /**
-         * Signal to use Kanban
-         * @var integer
-         */
-        const GRID_VIEW_TYPE_KANBAN = 3;
-
         public function __construct($viewData, $params, $uniqueLayoutId)
         {
             assert('isset($params["controllerId"])');
@@ -176,13 +170,13 @@
         protected function getCGridViewPagerParams()
         {
             return array(
-                    'firstPageLabel' => '<span>first</span>',
-                    'prevPageLabel'  => '<span>previous</span>',
-                    'nextPageLabel'  => '<span>next</span>',
-                    'lastPageLabel'  => '<span>last</span>',
-                    'class'          => 'SimpleListLinkPager',
-                    'paginationParams' => array_merge(GetUtil::getData(), array('portletId' => $this->params['portletId'])),
-                    'route'         => 'defaultPortlet/details',
+                    'firstPageLabel'    => '<span>first</span>',
+                    'prevPageLabel'     => '<span>previous</span>',
+                    'nextPageLabel'     => '<span>next</span>',
+                    'lastPageLabel'     => '<span>last</span>',
+                    'class'             => 'SimpleListLinkPager',
+                    'paginationParams'  => array_merge(GetUtil::getData(), array('portletId' => $this->params['portletId'])),
+                    'route'             => 'defaultPortlet/details',
                 );
         }
 

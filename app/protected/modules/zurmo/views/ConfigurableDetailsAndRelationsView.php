@@ -90,24 +90,34 @@
          */
         protected function renderActionElementBar($renderedInForm)
         {
-            $getData = GetUtil::getData();
+            $getData        = GetUtil::getData();
+            $isKanbanActive = $getData['kanbanBoard'];
             $toolbarContent = '';
             if (Yii::app()->userInterface->isMobile() === false)
             {
                 $isViewLocked     = ZurmoDefaultViewUtil::getLockKeyForDetailsAndRelationsView('lockPortletsForDetailsAndRelationsView');
                 $lockTitle        = Zurmo::t('Core', 'Unlock to edit this screen\'s layout');
                 $unlockTitle      = Zurmo::t('Core', 'Lock and prevent layout changes to this screen');
-                if ($isViewLocked === false)
+
+                if(isset($getData['kanbanBoard']) && $getData['kanbanBoard'] == 1)
                 {
-                    $url = $this->resolveLockPortletUrl((int)$getData['id'], '1');
-                    $link = $this->renderActionBarLinksBeforeLockIcon() . ZurmoHtml::link('<!--' . Zurmo::t('Core', 'Lock') . '-->', $url, array('class' => 'icon-unlock', 'title' => $unlockTitle)) . $this->renderActionBarLinksAfterLockIcon();
+                    $link    = $this->renderActionBarLinksForKanbanBoard();
                     $content = parent::renderActionElementBar($renderedInForm) . $link;
                 }
                 else
                 {
-                    $url = $this->resolveLockPortletUrl((int)$getData['id'], '0');
-                    $link = $this->renderActionBarLinksBeforeLockIcon() . ZurmoHtml::link('<!--' . Zurmo::t('Core', 'Unlock') . '-->', $url, array('class' => 'icon-lock', 'title' => $lockTitle)) . $this->renderActionBarLinksAfterLockIcon();
-                    $content = $link;
+                    if ($isViewLocked === false)
+                    {
+                        $url = $this->resolveLockPortletUrl((int)$getData['id'], '1');
+                        $link = ZurmoHtml::link('<!--' . Zurmo::t('Core', 'Lock') . '-->', $url, array('class' => 'icon-unlock', 'title' => $unlockTitle));
+                        $content = parent::renderActionElementBar($renderedInForm) . $link;
+                    }
+                    else
+                    {
+                        $url = $this->resolveLockPortletUrl((int)$getData['id'], '0');
+                        $link = ZurmoHtml::link('<!--' . Zurmo::t('Core', 'Unlock') . '-->', $url, array('class' => 'icon-lock', 'title' => $lockTitle));
+                        $content = $link;
+                    }
                 }
 
                 $toolbarContent = ZurmoHtml::tag('div', array('class' => 'view-toolbar'), $content);
@@ -199,21 +209,13 @@
         }
 
         /**
-         * Render action bar link before lock icons
-         * @return string|null
+         * Render action bar links before lock icon
+         * @return type
          */
-        protected function renderActionBarLinksBeforeLockIcon()
+        protected function renderActionBarLinksForKanbanBoard()
         {
-            return null;
-        }
-
-        /**
-         * Render action bar link after lock icons
-         * @return string|null
-         */
-        protected function renderActionBarLinksAfterLockIcon()
-        {
-            return null;
+            $detailsAndRelationsViewTypesToggleLinkActionElement = new DetailsAndRelationsViewTypesToggleLinkActionElement($this->controllerId, $this->moduleId, $this->modelId);
+            return $detailsAndRelationsViewTypesToggleLinkActionElement->render();
         }
     }
 ?>

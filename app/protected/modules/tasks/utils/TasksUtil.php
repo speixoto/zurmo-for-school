@@ -422,5 +422,16 @@
             $string      = TaskActionSecurityUtil::resolveViewLinkToModelForCurrentUser($data, $moduleClassName, $linkContent);
             return $string;
         }
+
+        /**
+         * Resolve status for task
+         * @param int $statusId
+         * @return string
+         */
+        public static function resolveStatusForTask($statusId)
+        {
+            $dropDownArray = Task::getStatusDropDownArray();
+            return $dropDownArray[$statusId];
+        }
     }
 ?>

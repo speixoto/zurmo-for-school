@@ -111,7 +111,7 @@
                 $kanbanBoard  = new TaskKanbanBoard($kanbanItem, 'type');
                 $kanbanBoard->setIsActive();
                 $params['relationModel'] = $opportunity;
-                $listView     = new TasksForOpportunityKanbanView($this->getId(),
+                $listView     = new TasksForAccountKanbanView($this->getId(),
                                                                   $this->getModule()->getId(),
                                                                   'Task', null, $params, null, array(), $kanbanBoard);
                 $view         = new OpportunitiesPageView(ZurmoDefaultViewUtil::

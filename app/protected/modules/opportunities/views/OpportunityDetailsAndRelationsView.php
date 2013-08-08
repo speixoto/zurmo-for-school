@@ -88,15 +88,5 @@
             );
             return $metadata;
         }
-
-        /**
-         * Render action bar links before lock icon
-         * @return type
-         */
-        protected function renderActionBarLinksBeforeLockIcon()
-        {
-            $detailsAndRelationsViewTypesToggleLinkActionElement = new DetailsAndRelationsViewTypesToggleLinkActionElement($this->controllerId, $this->moduleId, $this->modelId);
-            return $detailsAndRelationsViewTypesToggleLinkActionElement->render();
-        }
     }
 ?>

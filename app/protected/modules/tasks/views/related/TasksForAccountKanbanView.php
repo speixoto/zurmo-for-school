@@ -34,11 +34,17 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class TasksForOpportunityKanbanView extends TasksForRelatedKanbanView
+    class TasksForAccountKanbanView extends TasksForRelatedKanbanView
     {
         protected function getRelationAttributeName()
         {
-            return 'Opportunity';
+            return 'Account';
+        }
+
+        protected function getKanbanBoardTitle()
+        {
+            $account = $this->params['relationModel'];
+            return $account->name;
         }
     }
 ?>

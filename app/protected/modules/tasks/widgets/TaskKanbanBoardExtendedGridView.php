@@ -107,9 +107,9 @@
             $cardDetails = null;
             foreach ($this->cardColumns as $cardData)
             {
-                $columnValue  = $cardData['value'];
-                $content      = $this->evaluateExpression($columnValue, array('data' => $this->dataProvider->data[$row],
-                                                                                    'offset' => ($this->getOffset() + $row)));
+                $data         = $this->dataProvider->data[$row];
+                $offset       = $this->getOffset() + $row;
+                $content      = $this->evaluateExpression($cardData['value'], array('data' => $data, 'offset' => $offset));
                 $cardDetails .= ZurmoHtml::tag('span', array('class' => $cardData['class']), $content);
             }
             //$userUrl      = Yii::app()->createUrl('/users/default/details', array('id' => $this->dataProvider->data[$row]->owner->id));

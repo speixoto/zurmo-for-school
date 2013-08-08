@@ -319,5 +319,26 @@
                 }
             }
         }
+
+        /**
+         * Should support in addition to custome field as well
+         * @param string $id
+         * @param string $attribute
+         * @param string $value
+         * @throws NotSupportedException
+         * @throws FailedToSaveModelException
+         */
+        public function actionUpdateAttributeValue($id, $attribute, $value)
+        {
+            $modelClassName = $this->getModule()->getPrimaryModelName();
+            $model          = $modelClassName::getById(intval($id));
+            ControllerSecurityUtil::resolveAccessCanCurrentUserWriteModel($model);
+            $model->{$attribute}->value = $value;
+            $saved                      = $model->save();
+            if (!$saved)
+            {
+                throw new FailedToSaveModelException();
+            }
+        }
     }
 ?>
