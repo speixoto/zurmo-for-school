@@ -53,8 +53,8 @@
 
             foreach ($this->dataProvider->data as $row => $data)
             {
-                $results = KanbanItem::getKanbanItemForTask($data->id);
-                if(count($results) == 0)
+                $kanbanItems = KanbanItem::getKanbanItemForTask($data->id);
+                if(count($kanbanItems) == 0)
                 {
                     //Create KanbanItem here
                     $kanbanItem                     = new KanbanItem();
@@ -66,7 +66,7 @@
                 }
                 else
                 {
-                    $kanbanItem = $results[0];
+                    $kanbanItem = $kanbanItems[0];
                 }
                 if (isset($columnsData[$kanbanItem->type]))
                 {
