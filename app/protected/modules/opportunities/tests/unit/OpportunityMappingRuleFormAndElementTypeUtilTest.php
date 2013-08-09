@@ -42,6 +42,11 @@
             SecurityTestHelper::createSuperAdmin();
         }
 
+        public static function getDependentTestModelClassNames()
+        {
+            return array('ImportModelTestItem');
+        }
+
         public function testMakeCollectionByAttributeImportRules()
         {
             //Opportunity
