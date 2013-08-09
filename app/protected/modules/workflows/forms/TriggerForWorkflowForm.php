@@ -485,7 +485,7 @@
                 $this->getAttribute() != null) ||
                 ($this->getAttribute() == null &&
                     $this->getAttributeAndRelationData()) == 2 &&
-                    $modelClassName::isOwnedRelation($this->getPenultimateRelation()))
+                    $modelClassName::isOwnedRelation($this->getResolvedRealAttributeNameForPenultimateRelation()))
             {
                 return true;
             }
@@ -502,7 +502,7 @@
                 $this->getAttribute() != null) ||
                 ($this->getAttribute() == null &&
                     $this->getAttributeAndRelationData()) == 2 &&
-                    $modelClassName::isOwnedRelation($this->getPenultimateRelation()))
+                    $modelClassName::isOwnedRelation($this->getResolvedRealAttributeNameForPenultimateRelation()))
             {
                 return true;
             }
