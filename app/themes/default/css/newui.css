@@ -15964,6 +15964,9 @@ a.close-ModalGameNotification.simple-link {
 .UserSocialItemsForPortletView .empty {
   display: none;
 }
+#UsersPageView .juiportlet-columns {
+  padding-right: 20px;
+}
 #UserDetailsView {
   padding: 0 20px 20px 0;
 }
