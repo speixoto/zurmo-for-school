@@ -462,9 +462,8 @@
         private function resolveAndValidateValueData(Array $rules, & $passedValidation, $ruleAttributeName)
         {
             $modelToWorkflowAdapter = $this->makeResolvedAttributeModelRelationsAndAttributesToWorkflowAdapter();
-            $rules                = array_merge($rules,
-                $modelToWorkflowAdapter->getTriggerRulesByAttribute(
-                    $this->getResolvedAttribute(), $ruleAttributeName));
+            $rules                = array_merge($rules, $modelToWorkflowAdapter->getTriggerRulesByAttribute(
+                                    $this->getResolvedAttribute(), $ruleAttributeName));
             $validators           = $this->createValueValidatorsByRules($rules);
             foreach ($validators as $validator)
             {
