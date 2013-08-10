@@ -340,5 +340,22 @@
                 throw new FailedToSaveModelException();
             }
         }
+
+        public function actionUpdateItemsSortInKanbanView()
+        {
+            //print_r($_GET['items']);
+            $getData = GetUtil::getData();
+            $counter = 1;
+            foreach($getData['items'] as $itemId)
+            {
+                  //ToDo: Ask Jason, it shud be refereatial problem
+//                $kanbanItem        = KanbanItem::getKanbanItemForTask(intval($itemId));
+//                $kanbanItem->order = $counter;
+//                $kanbanItem->save();
+                $sql = "update kanbanitem set sortorder = '" . $counter . "' where task_id = " . $itemId;
+                R::exec($sql);
+                $counter++;
+            }
+        }
     }
 ?>

@@ -92,7 +92,7 @@
             $metadata[__CLASS__] = array(
                 'members' => array(
                     'type',
-                    'order'
+                    'sortOrder'
                 ),
                 'relations' => array(
                     'kanbanRelatedItem'         => array(RedBeanModel::HAS_ONE, 'Item', RedBeanModel::OWNED, RedBeanModel::LINK_TYPE_SPECIFIC, 'kanbanrelateditem'),
@@ -100,13 +100,13 @@
                 ),
                 'rules' => array(
                     array('type', 'type', 'type' => 'integer'),
-                    array('order', 'type', 'type' => 'integer'),
+                    array('sortOrder', 'type', 'type' => 'integer'),
                 ),
                 'elements' => array(
                     'kanbanRelatedItem' => 'Item',
                     'task'              => 'Task'
                 ),
-                'defaultSortAttribute' => 'order',
+                'defaultSortAttribute' => 'sortOrder',
                 'noAudit' => array(
 
                 ),
@@ -122,7 +122,7 @@
             return array_merge(parent::translatedAttributeLabels($language),
                 array(
                     'type'          => Zurmo::t('TasksModule', 'Type', array(), null, $language),
-                    'order'         => Zurmo::t('TasksModule', 'Order',  array(), null, $language),
+                    'sortOrder'         => Zurmo::t('TasksModule', 'Order',  array(), null, $language),
                     'kanbanItem'    => Zurmo::t('TasksModule', 'Kanban Item',  array(), null, $language),
                     'task'          => Zurmo::t('TasksModule', 'Task', array(), null, $language)
                 )
@@ -183,7 +183,56 @@
          */
         public static function getKanbanItemForTask($taskId)
         {
-            return self::getSubset(null, null, null, 'task_id = "' . $taskId . '"');
+            assert('is_int($taskId)');
+            $searchAttributeData = array();
+            $searchAttributeData['clauses'] = array(
+                1 => array(
+                    'attributeName'             => 'task',
+                    'operatorType'              => 'equals',
+                    'value'                     => intval($taskId),
+                )
+            );
+            $searchAttributeData['structure'] = '1';
+            $joinTablesAdapter                = new RedBeanModelJoinTablesQueryAdapter(get_called_class());
+            $where  = RedBeanModelDataProvider::makeWhere(get_called_class(), $searchAttributeData, $joinTablesAdapter);
+            $models = self::getSubset($joinTablesAdapter, null, null, $where, null);
+            if (count($models) == 0)
+            {
+                return null;
+            }
+            elseif (count($models) > 1)
+            {
+                throw new NotSupportedException();
+            }
+            else
+            {
+                return $models[0];
+            }
+        }
+
+        public static function getMaximumSortOrderByType($taskType)
+        {
+            assert('is_int($taskType)');
+            $searchAttributeData = array();
+            $searchAttributeData['clauses'] = array(
+                1 => array(
+                    'attributeName'             => 'type',
+                    'operatorType'              => 'equals',
+                    'value'                     => intval($taskType),
+                )
+            );
+            $searchAttributeData['structure'] = '1';
+            $joinTablesAdapter                = new RedBeanModelJoinTablesQueryAdapter(get_called_class());
+            $where  = RedBeanModelDataProvider::makeWhere(get_called_class(), $searchAttributeData, $joinTablesAdapter);
+            $models = self::getSubset($joinTablesAdapter, null, null, $where, 'sortOrder DESC');
+            if (count($models) == 0)
+            {
+                return 1;
+            }
+            elseif (count($models) >= 1)
+            {
+                return intval($models[0]->sortOrder) + 1;
+            }
         }
     }
 ?>

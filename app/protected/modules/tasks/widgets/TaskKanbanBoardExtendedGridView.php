@@ -43,38 +43,57 @@
 
         public $relatedModelClassName;
 
+        public $columnsData;
+
         /**
          * @return array
          */
         protected function resolveDataIntoKanbanColumns()
         {
             $columnsData = $this->makeColumnsDataAndStructure();
-            $rowCount = 1;
+
+            $kanbanItemsArray = array();
 
             foreach ($this->dataProvider->data as $row => $data)
             {
-                $kanbanItems = KanbanItem::getKanbanItemForTask($data->id);
-                if(count($kanbanItems) == 0)
+                $kanbanItem  = KanbanItem::getKanbanItemForTask($data->id);
+                if($kanbanItem == null)
                 {
                     //Create KanbanItem here
                     $kanbanItem                     = new KanbanItem();
                     $kanbanItem->type               = $this->resolveKanbanItemTypeForTaskStatus($data->status);
                     $kanbanItem->task               = $data;
                     $kanbanItem->kanbanRelatedItem  = $data->activityItems->offsetGet(0);
-                    $kanbanItem->order              = $rowCount;
+                    $sortOrder = KanbanItem::getMaximumSortOrderByType($kanbanItem->type);
+                    $kanbanItem->sortOrder          = $sortOrder;
                     $kanbanItem->save();
                 }
-                else
-                {
-                    $kanbanItem = $kanbanItems[0];
-                }
-                if (isset($columnsData[$kanbanItem->type]))
-                {
-                    $columnsData[$kanbanItem->type][] = $row;
-                }
-                $rowCount++;
+
+                $kanbanItemsArray[$kanbanItem->type][intval($kanbanItem->sortOrder)] = $kanbanItem->task;
             }
-            return $columnsData;
+
+            foreach($kanbanItemsArray as $type => $kanbanData)
+            {
+                ksort($kanbanData, SORT_NUMERIC);
+                foreach($kanbanData as $sort => $item)
+                {
+                    if (isset($this->columnsData[$type]))
+                    {
+                        $this->columnsData[$type][] = $item;
+                    }
+                }
+            }
+            $this->registerKanbanColumnScripts();
+            return $this->columnsData;
+        }
+
+        protected function resolveOrderByType($columnsData, $type)
+        {
+            if (isset($columnsData[$type]))
+            {
+                return count($columnsData[$type]) + 1;
+            }
+            return 1;
         }
 
         /**
@@ -87,7 +106,7 @@
             {
                 $columnsData[$value] = array();
             }
-            return $columnsData;
+            $this->columnsData = $columnsData;
         }
 
         protected static function getTaskStatusMappingToKanbanItemTypeArray()
@@ -115,12 +134,11 @@
          * @param array $row
          * @return string
          */
-        protected function renderCardDetailsContent($row)
+        protected function renderCardDetailsContentForTask($data, $row)
         {
             $cardDetails = null;
             foreach ($this->cardColumns as $cardData)
             {
-                $data         = $this->dataProvider->data[$row];
                 $offset       = $this->getOffset() + $row;
                 $content      = $this->evaluateExpression($cardData['value'], array('data' => $data, 'offset' => $offset));
                 $cardDetails .= ZurmoHtml::tag('span', array('class' => $cardData['class']), $content);
@@ -129,6 +147,77 @@
             /*$cardDetails .= ZurmoHtml::link($this->dataProvider->data[$row]->owner->getAvatarImage(20), $userUrl,
                                             array('class' => 'opportunity-owner'));*/
             return $cardDetails;
+        }
+
+        protected function createUlTagForKanbanColumn($listItems, $counter = null)
+        {
+            return ZurmoHtml::tag('ul id="task-sortable-rows-' . $counter . '"' , array(), $listItems);
+        }
+
+        protected function registerScripts()
+        {
+            //parent::registerScripts();
+
+            $taskSortableScript = "
+                        var fixHelper = function(e, ui) {
+                            ui.children().each(function() {
+                                $(this).width($(this).width());
+                            });
+                            return ui;
+                        };";
+
+            Yii::app()->clientScript->registerScript('task-sortable-data-helper', $taskSortableScript);
+        }
+
+        protected function registerKanbanColumnScripts()
+        {
+            //parent::registerScripts();
+
+            $taskSortableScript = "";
+
+            for($count=0; $count < count($this->columnsData); $count++)
+            {
+                 $taskSortableScript .= "$('#task-sortable-rows-" . $count . "').sortable({
+                                            forcePlaceholderSize: true,
+                                            forceHelperSize: true,
+                                            items: 'li',
+                                            update : function () {
+                                                serial = $('#task-sortable-rows-" . $count . "').sortable('serialize', {key: 'items[]', attribute: 'id'});
+                                                $.ajax({
+                                                    'url': '" . Yii::app()->createUrl('tasks/default/updateItemsSortInKanbanView') . "',
+                                                    'type': 'get',
+                                                    'data': serial,
+                                                    'success': function(data){
+                                                    },
+                                                    'error': function(request, status, error){
+                                                        alert('We are unable to set the sort order at this time.  Please try again in a few minutes.');
+                                                    }
+                                                });
+                                            },
+                                            helper: fixHelper
+                                        }).disableSelection();
+                                    ";
+            }
+
+            Yii::app()->clientScript->registerScript('task-sortable-data', $taskSortableScript);
+        }
+
+        protected function createKanbanRowForKanbanColumn($data, $row)
+        {
+            return ZurmoHtml::tag('li', array('class' => $this->getRowClassForKanbanColumn(),
+                                                'id' => 'items_' . $data->id),
+                                                      ZurmoHtml::tag('div', array(), $this->renderCardDetailsContentForTask($data, $row)));
+        }
+
+        protected function getListItemsByAttributeValueAndData($attributeValueAndData)
+        {
+            $listItems = '';
+            foreach ($attributeValueAndData as $key => $data)
+            {
+                $listItems .= $this->createKanbanRowForKanbanColumn($data, $key + 1);
+            }
+
+            return $listItems;
         }
     }
 ?>

@@ -55,8 +55,11 @@
         {
             $htmlOptions             = $this->getEditableHtmlOptions();
             $errorInProcess          = Zurmo::t('Core', 'There is error in processing your request');
-            $url                     = Yii::app()->createUrl('tasks/default/updateStatusViaAjax', array('id' => $this->model->id));
-            $htmlOptions['onChange'] = 'javascript:updateTaskStatus($(this).val(),\'' . $url . '\', \'' . $errorInProcess . '\')';
+            if($this->model->id > 0)
+            {
+                $url                     = Yii::app()->createUrl('tasks/default/updateStatusViaAjax', array('id' => $this->model->id));
+                $htmlOptions['onChange'] = 'javascript:updateTaskStatus($(this).val(),\'' . $url . '\', \'' . $errorInProcess . '\')';
+            }
             return $htmlOptions;
         }
     }
