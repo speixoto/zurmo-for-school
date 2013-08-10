@@ -34,27 +34,11 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * Report rules to be used with the Product Templates module.
-     */
-    class ProductTemplatesReportRules extends SecuredReportRules
+    class ProductTemplateTypesStaticDropDownForWizardModelElement extends StaticDropDownForWizardElement
     {
-        /**
-         * @return array
-         */
-        public static function getDefaultMetadata()
+        public function getDropDownArray()
         {
-            $metadata = array(
-                'ProductTemplate' => array(
-                    'nonReportable' =>
-                        array('productTemplates', 'productTemplate'),
-                    'availableOperatorsTypes' =>
-                        array('type' => ModelAttributeToOperatorTypeUtil::AVAILABLE_OPERATORS_TYPE_DROPDOWN),
-                    'filterValueElementTypes' =>
-                        array('type' => 'ProductTemplateTypesStaticDropDownForWizardModel'),
-                )
-            );
-            return array_merge(parent::getDefaultMetadata(), $metadata);
+            return ProductTemplateElementUtil::getProductTemplateTypeDropdownArray();
         }
     }
 ?>
