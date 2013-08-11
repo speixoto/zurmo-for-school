@@ -34,27 +34,35 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * Report rules to be used with the Product Templates module.
-     */
-    class ProductTemplatesReportRules extends SecuredReportRules
+    class MapForAccountAddressView extends MapPortletAddressView
     {
-        /**
-         * @return array
-         */
-        public static function getDefaultMetadata()
+
+        public function __construct($viewData, $params, $uniqueLayoutId)
         {
-            $metadata = array(
-                'ProductTemplate' => array(
-                    'nonReportable' =>
-                        array('productTemplates', 'productTemplate'),
-                    'availableOperatorsTypes' =>
-                        array('type' => ModelAttributeToOperatorTypeUtil::AVAILABLE_OPERATORS_TYPE_DROPDOWN),
-                    'filterValueElementTypes' =>
-                        array('type' => 'ProductTemplateTypesStaticDropDownForWizardModel'),
-                )
-            );
-            return array_merge(parent::getDefaultMetadata(), $metadata);
+            parent::__construct($viewData, $params, $uniqueLayoutId);
+            $this->geoCodeQueryData = $this->resolveAddressData();
+        }
+
+        protected function resolveAddressData()
+        {
+            $modalMapAddressData = array('query'     => $this->params['relationModel']->billingAddress,
+                                         'latitude'  => '',
+                                         'longitude' => '');
+            return $modalMapAddressData;
+    }
+
+        public static function getAllowedOnPortletViewClassNames()
+        {
+            return array('AccountDetailsAndRelationsView');
+        }
+
+        protected function shouldRenderMap()
+        {
+            if($this->params['relationModel']->billingAddress->makeAddress() == null)
+            {
+                return false;
+            }
+            return true;
         }
     }
 ?>

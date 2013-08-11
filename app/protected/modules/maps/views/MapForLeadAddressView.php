@@ -34,27 +34,18 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * Report rules to be used with the Product Templates module.
-     */
-    class ProductTemplatesReportRules extends SecuredReportRules
+    class MapForLeadAddressView extends MapPortletAddressView 
     {
-        /**
-         * @return array
-         */
-        public static function getDefaultMetadata()
+        
+        public function __construct($viewData, $params, $uniqueLayoutId)
         {
-            $metadata = array(
-                'ProductTemplate' => array(
-                    'nonReportable' =>
-                        array('productTemplates', 'productTemplate'),
-                    'availableOperatorsTypes' =>
-                        array('type' => ModelAttributeToOperatorTypeUtil::AVAILABLE_OPERATORS_TYPE_DROPDOWN),
-                    'filterValueElementTypes' =>
-                        array('type' => 'ProductTemplateTypesStaticDropDownForWizardModel'),
-                )
-            );
-            return array_merge(parent::getDefaultMetadata(), $metadata);
+            parent::__construct($viewData, $params, $uniqueLayoutId);
         }
+        
+        public static function getAllowedOnPortletViewClassNames()
+        {
+            return array('LeadDetailsAndRelationsView');
+        }
+
     }
 ?>

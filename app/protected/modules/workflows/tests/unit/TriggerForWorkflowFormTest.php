@@ -34,27 +34,27 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * Report rules to be used with the Product Templates module.
-     */
-    class ProductTemplatesReportRules extends SecuredReportRules
+    class TriggerForWorkflowFormTest extends WorkflowBaseTest
     {
-        /**
-         * @return array
-         */
-        public static function getDefaultMetadata()
+        public function testValidateValueForUserNameIdAttributeWhenOperatorIsChanged()
         {
-            $metadata = array(
-                'ProductTemplate' => array(
-                    'nonReportable' =>
-                        array('productTemplates', 'productTemplate'),
-                    'availableOperatorsTypes' =>
-                        array('type' => ModelAttributeToOperatorTypeUtil::AVAILABLE_OPERATORS_TYPE_DROPDOWN),
-                    'filterValueElementTypes' =>
-                        array('type' => 'ProductTemplateTypesStaticDropDownForWizardModel'),
-                )
-            );
-            return array_merge(parent::getDefaultMetadata(), $metadata);
+            $trigger     = new TriggerForWorkflowForm('AccountsModule', 'Account', Workflow::TYPE_ON_SAVE);
+            $trigger->attributeIndexOrDerivedType = 'owner__User';
+            $trigger->setOperator(OperatorRules::TYPE_CHANGES);
+            $validated   = $trigger->validate();
+            $this->assertTrue($validated);
+            $this->assertCount(0, $trigger->getErrors());
+        }
+
+        public function testValidateAttributeWithUniqueValidator()
+        {
+            $trigger     = new TriggerForWorkflowForm('AccountsModule', 'Account', Workflow::TYPE_ON_SAVE);
+            $trigger->attributeIndexOrDerivedType = 'owner___username';
+            $trigger->setOperator(OperatorRules::TYPE_CHANGES);
+            $trigger->value = 'jason';
+            $validated   = $trigger->validate();
+            $this->assertTrue($validated);
+            $this->assertCount(0, $trigger->getErrors());
         }
     }
 ?>

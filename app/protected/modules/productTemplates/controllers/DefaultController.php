@@ -53,7 +53,7 @@
             $filters = array_merge(array(
                                         array(
                                             ZurmoBaseController::RIGHTS_FILTER_PATH .
-                                            ' - modalList,details,autoCompleteAllProductCategoriesForMultiSelectAutoComplete', // Not Coding Standard
+                                            ' - modalList, selectFromRelatedList, details, autoCompleteAllProductCategoriesForMultiSelectAutoComplete', // Not Coding Standard
                                             'moduleClassName' => get_class($this->getModule()),
                                             'rightName' => ProductTemplatesModule::getAccessRight(),
                                         ),
@@ -430,8 +430,7 @@
                                                     $relationModuleId,
                                                     $stateMetadataAdapterClassName = null)
         {
-            $portlet = Portlet::getById((int)$portletId);
-
+            $portlet               = Portlet::getById((int)$portletId);
             $modalListLinkProvider = new ProductTemplateSelectFromRelatedListModalListLinkProvider(
                                             $relationAttributeName,
                                             (int)$relationModelId,
