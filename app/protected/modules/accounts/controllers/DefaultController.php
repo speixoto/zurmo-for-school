@@ -57,6 +57,7 @@
 
         public function actionList()
         {
+            throw new FailedToSaveModelException();
             $pageSize                       = Yii::app()->pagination->resolveActiveForCurrentUserByType(
                                               'listPageSize', get_class($this->getModule()));
             $account                        = new Account(false);

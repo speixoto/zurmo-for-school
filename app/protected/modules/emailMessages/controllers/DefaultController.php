@@ -656,7 +656,7 @@
             return $selectForm;
         }
 
-        public function actionDelete($id, $redirectUrl = null)
+        public function actionDelete($id, $redirectUrl = null, $redirect = true)
         {
             $emailMessage = EmailMessage::getById(intval($id));
             if ($redirectUrl == null)
@@ -665,7 +665,10 @@
             }
             ControllerSecurityUtil::resolveAccessCanCurrentUserDeleteModel($emailMessage);
             $emailMessage->delete();
-            $this->redirect($redirectUrl);
+            if($redirect)
+            {
+                $this->redirect($redirectUrl);
+            }
         }
 
         protected static function getZurmoControllerUtil()
