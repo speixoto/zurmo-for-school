@@ -34,40 +34,13 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * Display email message content.
-     */
-    class EmailMessageCcRecipientsElement extends Element implements DerivedElementInterface
+    class EmailMessageDeleteLinkActionElement extends DeleteLinkActionElement
     {
-        protected function renderControlNonEditable()
+        protected function resolveConfirmAlertInHtmlOptions($htmlOptions)
         {
-            assert('$this->model instanceof EmailMessage');
-            return Yii::app()->format->html(EmailMessageMashableActivityRules::
-                        getRecipientsContent($this->model->recipients, EmailMessageRecipient::TYPE_CC));
-        }
-
-        protected function renderControlEditable()
-        {
-            return $this->renderControlNonEditable();
-        }
-
-        protected function renderError()
-        {
-        }
-
-        protected function renderLabel()
-        {
-            return Zurmo::t('EmailMessagesModule', 'Cc');
-        }
-
-        public static function getDisplayName()
-        {
-            return Zurmo::t('EmailMessagesModule', 'Cc Recipients');
-        }
-
-        public static function getModelAttributeNames()
-        {
-            return array();
+            $htmlOptions['confirm'] = Zurmo::t('Core', 'Are you sure you want to delete this {modelLabel}?',
+                                      array('{modelLabel}' => EmailMessagesModule::getModuleLabelByTypeAndLanguage('SingularLowerCase')));
+            return $htmlOptions;
         }
     }
 ?>
