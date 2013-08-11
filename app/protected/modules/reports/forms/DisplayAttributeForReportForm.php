@@ -278,12 +278,13 @@
             }
             if ($this->isALinkableAttribute())
             {
-                $modelClassName = get_class($modelToReportAdapter->getModel());
+                $modelClassName  = get_class($modelToReportAdapter->getModel());
+                $moduleClassName = $modelToReportAdapter->getModuleClassName();
                 if (isset($relationModelClassName))
                 {
                     $modelClassName = $relationModelClassName;
                 }                                
-                return ReportResultsGridUtil::makeStringForMultipleLinks($value, $modelClassName);
+                return ReportResultsGridUtil::makeStringForMultipleLinks($value, $modelClassName, $moduleClassName);
             }
             return $translatedValue;
         }

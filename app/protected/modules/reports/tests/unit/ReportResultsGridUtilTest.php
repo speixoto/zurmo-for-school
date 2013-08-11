@@ -34,42 +34,38 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class IntegerForReportListViewColumnAdapter extends IntegerListViewColumnAdapter
-    {
-        public function renderGridViewData()
+    class ReportResultsGridUtilTest extends ZurmoBaseTest
+    {               
+        public $user;
+        
+        public static function setUpBeforeClass()
         {
-            return array(
-                'name'  => $this->attribute,
-                'value' => array($this, 'renderDataCellContent'),
-                'type'  => 'raw',
-            );
+            parent::setUpBeforeClass();
+            SecurityTestHelper::createSuperAdmin();            
+            ContactsModule::loadStartingData();
         }
 
-        public function renderDataCellContent($data, $row) 
-        {                               
-            assert('$data instanceof ReportResultsRowData');
-            if (null === $displayAttributeKey = $data::resolveKeyByAttributeName($this->attribute))
-            {
-                return $data->{$this->attribute};
-            }
-            $displayAttributes = $data->getDisplayAttributes();
-            $displayAttribute  = $displayAttributes[$displayAttributeKey];
-            $realAttributeName = $displayAttribute->getResolvedAttribute();
-            if ($data->getModel($this->attribute) instanceof RedBeanModel &&
-                $data->getModel($this->attribute)->isAttributeFormattedAsProbability($realAttributeName))
-            {
-                $resolvedValue = NumberUtil::divisionForZero($data->{$this->attribute}, 100);
-                return Yii::app()->numberFormatter->formatPercentage($resolvedValue);
-            }
-            else
-            {
-                return $this->renderValue($data->{$this->attribute});
-            }
+        public function setup()
+        {
+            parent::setUp();
+            $this->user = User::getByUsername('super');
+            Yii::app()->user->userModel = $this->user;
         }
-        
-        public function renderValue($value)
-        {                       
-            return Yii::app()->format->formatNumber((int)$value);
+                
+        public function testMakeStringForMultipleLinks()
+        {
+            $account1 = AccountTestHelper::createAccountByNameForOwner('account1', $this->user);
+            $result   = ReportResultsGridUtil::makeStringForMultipleLinks('account1', 'Account', 'AccountsModule');
+            $this->assertContains   ('a target="new"', $result);
+            $this->assertNotContains('tooltip',        $result);
+            
+            $account2 = AccountTestHelper::createAccountByNameForOwner('account1', $this->user);            
+            $result   = ReportResultsGridUtil::makeStringForMultipleLinks('account1', 'Account', 'AccountsModule');
+            $this->assertContains('<span class="tooltip">2</span>', $result);
+            
+            $result   = ReportResultsGridUtil::makeStringForMultipleLinks('account1', 'Account', 'AccountsModule', false);
+            $this->assertContains   ('a target="new"', $result);
+            $this->assertNotContains('tooltip',        $result);
         }
     }
 ?>

@@ -40,15 +40,13 @@
      */
     class ReportExplicitReadWriteModelPermissionsElement extends ExplicitReadWriteModelPermissionsElement    
     {
-
         protected function resolveSelectedType()
         {
             $resolveSelectedType = parent::resolveSelectedType();
             if ($resolveSelectedType === null)
             {
                 $selectedType = UserConfigurationFormAdapter::resolveAndGetDefaultPermissionSetting(
-                                                                                        Yii::app()->user->userModel);
-                echo $selectedType;
+                                                                    Yii::app()->user->userModel);
                 return $this->resolveUserPermissionConfigurationToPermissionType($selectedType);
             }
             return $resolveSelectedType;
@@ -70,7 +68,7 @@
             if ($resolvedSelectedGroup === null)
             {
                 return UserConfigurationFormAdapter::resolveAndGetValue(Yii::app()->user->userModel,
-                'defaultPermissionGroupSetting', false);
+                            'defaultPermissionGroupSetting', false);
             }
             return $resolvedSelectedGroup;            
         }
