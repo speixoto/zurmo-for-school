@@ -264,12 +264,15 @@
 
         protected static function resolveDependentTestModelClassNamesForClass($className)
         {
-            $dependentTestModelClassNames = $className::getDependentTestModelClassNames();
-            if (!empty($dependentTestModelClassNames))
+            if (@class_exists($className)) // some class definitions are wrapped inside if blocks
             {
-                $dependentTestModelClassNames = CMap::mergeArray(static::$dependentTestModelClassNames,
-                    $dependentTestModelClassNames);
-                static::$dependentTestModelClassNames = array_unique($dependentTestModelClassNames);
+                $dependentTestModelClassNames = $className::getDependentTestModelClassNames();
+                if (!empty($dependentTestModelClassNames))
+                {
+                    $dependentTestModelClassNames = CMap::mergeArray(static::$dependentTestModelClassNames,
+                        $dependentTestModelClassNames);
+                    static::$dependentTestModelClassNames = array_unique($dependentTestModelClassNames);
+                }
             }
         }
 
