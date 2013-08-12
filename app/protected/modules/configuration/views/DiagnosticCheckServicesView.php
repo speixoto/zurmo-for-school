@@ -34,35 +34,26 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class ConfigurationDefaultController extends ZurmoBaseController
+    /**
+     * View used after an installation to run the diagnostic and show the results
+     */
+    class DiagnosticCheckServicesView extends CheckServicesView
     {
-        public function filters()
+        protected function renderIntroductionContent()
         {
-            return array_merge(parent::filters(),
-                array(
-                    array(
-                        ZurmoBaseController::RIGHTS_FILTER_PATH,
-                        'moduleClassName' => 'ZurmoModule',
-                        'rightName' => ZurmoModule::RIGHT_ACCESS_ADMINISTRATION,
-                   ),
-               )
-            );
+            $content  = Zurmo::t('InstallModule', 'Below you will find the results of the system check.');
+            return $content;
         }
 
-        public function actionIndex()
+        protected function renderActionBarContent()
         {
-            $view = new ConfigurationPageView(ZurmoDefaultAdminViewUtil::
-                                                  makeStandardViewForCurrentUser($this, new ConfigureModulesView()));
-            echo $view->render();
-        }
-
-        public function actionRunDiagnostic()
-        {
-            $serviceCheckResultsDataForDisplay = CheckServicesUtil::checkServicesAfterInstallationAndGetResultsDataForDisplay();
-            $checkServicesView = new DiagnosticCheckServicesView($this->getId(), $this->getModule()->getId(),
-                                      $serviceCheckResultsDataForDisplay);
-            $view = new ConfigurationPageView(ZurmoDefaultAdminViewUtil::makeStandardViewForCurrentUser($this, $checkServicesView));
-            echo $view->render();
+            $failedIndexId   = CheckServicesUtil::CHECK_FAILED;
+            $requiredIndexId = ServiceHelper::REQUIRED_SERVICE;
+            $currentPageUrl  = Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/runDiagnostic/');
+            $content = '<br/><br/>';
+            $content .= ZurmoHtml::link(ZurmoHtml::wrapLabel(Zurmo::t('InstallModule', 'Recheck System')),
+                        $currentPageUrl, array('class' => 'z-button'));
+            return $content;
         }
     }
 ?>

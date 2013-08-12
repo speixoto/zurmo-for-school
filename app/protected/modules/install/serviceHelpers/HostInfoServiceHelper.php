@@ -34,35 +34,47 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class ConfigurationDefaultController extends ZurmoBaseController
+    /**
+     * Checks if the host info and script url match the current installation
+     */
+    class HostInfoServiceHelper extends ServiceHelper
     {
-        public function filters()
+        protected function checkService()
         {
-            return array_merge(parent::filters(),
-                array(
-                    array(
-                        ZurmoBaseController::RIGHTS_FILTER_PATH,
-                        'moduleClassName' => 'ZurmoModule',
-                        'rightName' => ZurmoModule::RIGHT_ACCESS_ADMINISTRATION,
-                   ),
-               )
-            );
-        }
-
-        public function actionIndex()
-        {
-            $view = new ConfigurationPageView(ZurmoDefaultAdminViewUtil::
-                                                  makeStandardViewForCurrentUser($this, new ConfigureModulesView()));
-            echo $view->render();
-        }
-
-        public function actionRunDiagnostic()
-        {
-            $serviceCheckResultsDataForDisplay = CheckServicesUtil::checkServicesAfterInstallationAndGetResultsDataForDisplay();
-            $checkServicesView = new DiagnosticCheckServicesView($this->getId(), $this->getModule()->getId(),
-                                      $serviceCheckResultsDataForDisplay);
-            $view = new ConfigurationPageView(ZurmoDefaultAdminViewUtil::makeStandardViewForCurrentUser($this, $checkServicesView));
-            echo $view->render();
+            $hostInfoIsIncorrect = true;
+            $ScriptUrlIsCorrect  = true;
+            if(Yii::app()->request->getHostInfo() != Yii::app()->request->getRealHostInfo())
+            {
+                $hostInfoIsIncorrect = false;
+            }
+            if(Yii::app()->request->getScriptUrl() != Yii::app()->request->getRealScriptUrl())
+            {
+                $ScriptUrlIsCorrect = false;
+            }
+            if ($hostInfoIsIncorrect && $ScriptUrlIsCorrect)
+            {
+                $this->message  = Zurmo::t('InstallModule', 'Host Info and Script Url are configured correctly.');
+                return true;
+            }
+            else
+            {
+                $this->message  = Zurmo::t('InstallModule', 'Host Info/Script Url is incorrectly configured.');
+                if (!$hostInfoIsIncorrect)
+                {
+                    $this->message .= "\n" . Zurmo::t('InstallModule', 'Configured host:  {hostInfo}',
+                                                      array('{hostInfo}' => Yii::app()->request->getHostInfo()));
+                    $this->message .= "\n" . Zurmo::t('InstallModule', 'Real host:  {hostInfo}',
+                                                      array('{hostInfo}' => Yii::app()->request->getRealHostInfo()));
+                }
+                if (!$ScriptUrlIsCorrect)
+                {
+                    $this->message .= "\n" . Zurmo::t('InstallModule', 'Configured script url:  {scriptUrl}',
+                                                      array('{scriptUrl}' => Yii::app()->request->getScriptUrl()));
+                    $this->message .= "\n" . Zurmo::t('InstallModule', 'Real script url:  {scriptUrl}',
+                                                      array('{scriptUrl}' => Yii::app()->request->getRealScriptUrl()));
+                }
+                return false;
+            }
         }
     }
 ?>
