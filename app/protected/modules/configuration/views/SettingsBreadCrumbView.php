@@ -34,31 +34,19 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class DevelopmentMenuView extends ConfigureModulesMenuView
+    /**
+     * View that renders the settings breadcrumb content
+     */
+    class SettingsBreadCrumbView extends BreadCrumbView
     {
-        public function getTitle()
+        protected function getHomeLinkLabel()
         {
-            return '<h1>' . Zurmo::t('ZurmoModule', 'Developer Tools') . '</h1>';
+            return Zurmo::t('ConfigurationModule', 'Settings Home');
         }
 
-        protected function getCategoryData()
+        protected function getHomeUrl()
         {
-            $categories = array();
-            $categories['misc'][] = array('titleLabel'          => Zurmo::t('ZurmoModule', 'Clear Cache'),
-                                                'descriptionLabel'    => Zurmo::t('ZurmoModule', 'In the case where you have reloaded the database, some cached items ' .
-                                                                         'might still exist. This is a way to clear that cache.'),
-                                                'route'               => 'zurmo/development?clearCache=1' // Not Coding Standard
-                                            );
-            $categories['misc'][] = array('titleLabel'          => Zurmo::t('ZurmoModule', 'Update Custom Data'),
-                                                'descriptionLabel'    => Zurmo::t('ZurmoModule', 'If there is new metadata to load using CustomManagement, use this option.'),
-                                                'route'               => 'zurmo/development?resolveCustomData=1' // Not Coding Standard
-                                            );
-            $categories['misc'][] = array('titleLabel'          => Zurmo::t('ZurmoModule', 'System Check'),
-                                                'descriptionLabel'    => Zurmo::t('ZurmoModule', 'Make sure the application is properly configured.'),
-                                                'route'               => 'configuration/default/runDiagnostic' // Not Coding Standard
-                                            );
-            $this->setLinkText(Zurmo::t('ZurmoModule', 'Run'));
-            return $categories;
+            return Yii::app()->createUrl('configuration/default/index');
         }
     }
 ?>

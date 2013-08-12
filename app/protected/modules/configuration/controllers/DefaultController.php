@@ -58,10 +58,14 @@
 
         public function actionRunDiagnostic()
         {
+            $breadcrumbLinks = array(
+                Zurmo::t('ZurmoModule', 'Developer Tools') => array('/zurmo/development'),
+                Zurmo::t('InstallModule', 'System Diagnostics'),
+            );
             $serviceCheckResultsDataForDisplay = CheckServicesUtil::checkServicesAfterInstallationAndGetResultsDataForDisplay();
             $checkServicesView = new DiagnosticCheckServicesView($this->getId(), $this->getModule()->getId(),
                                       $serviceCheckResultsDataForDisplay);
-            $view = new ConfigurationPageView(ZurmoDefaultAdminViewUtil::makeStandardViewForCurrentUser($this, $checkServicesView));
+            $view = new ConfigurationPageView(ZurmoDefaultAdminViewUtil::makeViewWithBreadcrumbsForCurrentUser($this, $checkServicesView, $breadcrumbLinks, 'SettingsBreadCrumbView'));
             echo $view->render();
         }
     }
