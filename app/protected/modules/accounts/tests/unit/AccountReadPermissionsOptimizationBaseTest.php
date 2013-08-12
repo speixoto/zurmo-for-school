@@ -66,9 +66,9 @@
         {
             while (true)
             {
-                $accounts = Account::getSubset(0, 50); // Nuke 50 at a time to
-                if (count($accounts) == 0)             // avoid memory issues when
-                {                                      // we get to the big numbers.
+                $accounts = Account::getSubset(null, 0, 50);    // Nuke 50 at a time to
+                if (count($accounts) == 0)                      // avoid memory issues when
+                {                                               // we get to the big numbers.
                     break;
                 }
                 foreach ($accounts as $account)
