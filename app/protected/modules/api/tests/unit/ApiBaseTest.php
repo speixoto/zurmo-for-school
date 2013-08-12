@@ -40,12 +40,11 @@
     class ApiBaseTest extends ZurmoBaseTest
     {
         protected $serverUrl = '';
-        protected $freeze = false;
 
         public static function setUpBeforeClass()
         {
             parent::setUpBeforeClass();
-            $super = SecurityTestHelper::createSuperAdmin();
+            SecurityTestHelper::createSuperAdmin();
         }
 
         public function setUp()
@@ -55,22 +54,6 @@
             {
                 $this->serverUrl = Yii::app()->params['testApiUrl'];
             }
-            $freeze = false;
-            if (RedBeanDatabase::isFrozen())
-            {
-                RedBeanDatabase::unfreeze();
-                $freeze = true;
-            }
-            $this->freeze = $freeze;
-        }
-
-        public function teardown()
-        {
-            if ($this->freeze)
-            {
-                RedBeanDatabase::freeze();
-            }
-            parent::teardown();
         }
 
         protected function isApiTestUrlConfigured()

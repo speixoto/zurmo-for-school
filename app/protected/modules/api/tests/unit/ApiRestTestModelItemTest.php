@@ -63,6 +63,11 @@
             assert('$save'); // Not Coding Standard
         }
 
+        public static function getDependentTestModelClassNames()
+        {
+            return array('ApiTestModelItem', 'ApiTestModelItem2', 'ApiTestModelItem3', 'ApiTestModelItem4');
+        }
+
         public function testApiServerUrl()
         {
             if (!$this->isApiTestUrlConfigured())
