@@ -89,7 +89,7 @@
         {
             $columns        = array();
             $attributeKey   = 0;
-
+            $isFirstRow     = true;
             foreach ($this->dataProvider->getDisplayAttributesThatAreYAxisGroupBys() as $displayAttribute)
             {
                 $columnClassName  = $this->resolveColumnClassNameForListViewColumnAdapter($displayAttribute);
@@ -100,7 +100,13 @@
                 $column           = $columnAdapter->renderGridViewData();
                 $column['header'] = $displayAttribute->label;
                 $column['class']  = 'YAxisHeaderColumn';
+                if ($isFirstRow)
+                {
+                    $column['footer'] = Zurmo::t('ReportsModule', 'Total');
+                    $column['footerHtmlOptions'] = array('colSpan' => $this->dataProvider->getYAxisGroupByDataValuesCount());
+                }
                 array_push($columns, $column);
+                $isFirstRow = false;
             }            
             $grandTotals    = $this->dataProvider->runQueryAndGrandTotalsData();              
             for ($i = 0; $i < $this->dataProvider->getXAxisGroupByDataValuesCount(); $i++)

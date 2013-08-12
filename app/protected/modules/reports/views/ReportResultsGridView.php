@@ -303,8 +303,9 @@
                 );
                 array_push($columns, $firstColumn);
             }
-            $grandTotals = $this->dataProvider->runQueryAndGrandTotalsData();
+            $grandTotals    = $this->dataProvider->runQueryAndGrandTotalsData();
             $grandTotalsRow = $grandTotals[0];
+            $isFirstRow     = true;
             foreach ($this->dataProvider->resolveDisplayAttributes() as $key => $displayAttribute)
             {
                 if (!$displayAttribute->queryOnly)
@@ -318,12 +319,17 @@
                     if (!isset($column['class']))
                     {
                         $column['class'] = 'DataColumn';
-                    }                   
+                    } 
+                    if (isset($grandTotalsRow) && $isFirstRow)
+                    {
+                        $column['footer'] = Zurmo::t('ReportsModule', 'Total');
+                    }
                     if (isset($grandTotalsRow[$displayAttribute->columnAliasName]))
-                    {                                                                        
+                    {                                                                    
                         $column['footer'] = $columnAdapter->renderValue($grandTotalsRow[$displayAttribute->columnAliasName]);
                     }
                     array_push($columns, $column);
+                    $isFirstRow = false;
                 }
             }
             return $columns;
