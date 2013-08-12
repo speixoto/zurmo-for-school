@@ -42,8 +42,13 @@
         protected function renderControlNonEditable()
         {
             assert('$this->model instanceof EmailMessage');
-            return Yii::app()->format->html(EmailMessageMashableActivityRules::
-                        getRecipientsContent($this->model->recipients, EmailMessageRecipient::TYPE_CC));
+            $recipientsContent = EmailMessageMashableActivityRules::
+                                 getRecipientsContent($this->model->recipients, EmailMessageRecipient::TYPE_CC);
+            if($recipientsContent == null && $this->form != null)
+            {
+                $recipientsContent = '&nbsp;';
+            }
+            return Yii::app()->format->html($recipientsContent);
         }
 
         protected function renderControlEditable()
