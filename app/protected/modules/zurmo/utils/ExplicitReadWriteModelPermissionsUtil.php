@@ -325,7 +325,6 @@
                     }
                 }
             }
-            $securableItem->setTreatCurrentUserAsOwnerForPermissions(false);
             if ($saveSecurableItem)
             {
                 $setBackToProcess     = false;
@@ -339,8 +338,10 @@
                 {
                     $securableItem->setProcessWorkflowOnSave();
                 }
+                $securableItem->setTreatCurrentUserAsOwnerForPermissions(false);
                 return $saved;
             }
+            $securableItem->setTreatCurrentUserAsOwnerForPermissions(false);
             return true;
         }
 
