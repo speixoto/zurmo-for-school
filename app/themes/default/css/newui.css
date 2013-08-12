@@ -19427,7 +19427,7 @@ a + .autoresponder-stats {
   box-sizing: border-box;
   position: relative;
 }
-.business-card {
+div.showing-panel {
   display: block;
 }
 .business-card .gravatar {
