@@ -50,16 +50,18 @@
          */
         public static function generateOrUpdateTableBySchemaDefinition(array $schemaDefinition, & $messageLogger)
         {
-            $isValidSchema  = static::validateSchemaDefinition($schemaDefinition);
-            if (!$isValidSchema)
+            $schemaValidation  = static::validateSchemaDefinition($schemaDefinition);
+            $tableName          = key($schemaDefinition);
+            if (!$schemaValidation['isValid'])
             {
-                $errorMessage   = Zurmo::t('Core', 'Invalid Schema definition received.');
+                $errorMessage   = Zurmo::t('Core', 'Invalid Schema definition received for {{tableName}}.',
+                                            array('{{tableName}}' => $tableName));
+                $errorMessage   .= ' ' . $schemaValidation['message'];
                 $messageLogger->addErrorMessage($errorMessage);
                 throw new CException($errorMessage);
             }
 
             $columnsAndIndexes  = reset($schemaDefinition);
-            $tableName          = key($schemaDefinition);
             if (ProcessedTableCache::isProcessed($tableName, static::CACHE_KEY) && Yii::app()->params['isFreshInstall'])
             {
                 // we don't skip if running under updateSchema as we might have multiple requests to update same table.
@@ -121,69 +123,107 @@
             {
                 $columnsAndIndexes = reset($schemaDefinition);
                 $tableName          = key($schemaDefinition);
-                if (is_string($tableName) && count($columnsAndIndexes) == 2 &&
-                                            isset($columnsAndIndexes['columns'], $columnsAndIndexes['indexes']))
+                if (!is_string($tableName))
                 {
-                    if(static::validateColumnDefinitionsFromSchema($columnsAndIndexes['columns']))
-                    {
-                        return static::validateIndexDefinitionsFromSchema($columnsAndIndexes['indexes'],
-                                                                            $columnsAndIndexes['columns']);
-                    }
+                    return static::returnSchemaValidationResult(
+                                                        Zurmo::t('Core', 'Table name: {{tableName}} is not string',
+                                                                    array('{{tableName}}' => $tableName)));
                 }
+                if (count($columnsAndIndexes) != 2)
+                {
+                    return static::returnSchemaValidationResult(
+                                            Zurmo::t('Core', 'Table schema should always contain 2 sub-definitions'));
+                }
+                if (!isset($columnsAndIndexes['columns'], $columnsAndIndexes['indexes']))
+                {
+                    return static::returnSchemaValidationResult(
+                                                Zurmo::t('Core', 'Table schema is either missing columns or indexes'));
+                }
+                $columnValidation = static::validateColumnDefinitionsFromSchema($columnsAndIndexes['columns']);
+                if (!$columnValidation['isValid'])
+                {
+                    return $columnValidation;
+                }
+                return static::validateIndexDefinitionsFromSchema($columnsAndIndexes['indexes'],
+                                                                    $columnsAndIndexes['columns']);
             }
-            return false;
+            return static::returnSchemaValidationResult(
+                                                Zurmo::t('Core', 'More than one table definitions defined in schema'));
         }
 
         protected static function validateColumnDefinitionsFromSchema(array $columns)
         {
-            $valid  = true;
-            if (empty($columns))
-            {
-                return false;
-            }
             $keys   = array('name', 'type', 'unsigned', 'notNull', 'collation', 'default');
             foreach ($columns as $column)
             {
                 if (count($column) != 6)
                 {
-                    $valid = false;
-                    break;
+                    return static::returnSchemaValidationResult(
+                                        Zurmo::t('Core', 'Column: {{columnName}} definition should always have 6 clauses',
+                                                    array('{{columnName}}' => $column['name'])));
                 }
                 foreach ($keys as $key)
                 {
                     if (!ArrayUtil::isValidArrayIndex($key, $column))
                     {
-                        $valid = false;
-                        break;
+                        return static::returnSchemaValidationResult(
+                                                            Zurmo::t('Core', 'Column: {{columnName}} missing {{key}} clause',
+                                                                    array('{{columnName}}' => $column['name'],
+                                                                        '{{key}}' => $key)));
                     }
                 }
             }
-            return $valid;
+            return static::returnSchemaValidationResult(null, true);
         }
 
         protected static function validateIndexDefinitionsFromSchema(array $indexes, array $columns)
         {
-            $valid  = true;
             $columnNames = RedBeanModelMemberToColumnNameUtil::resolveColumnNamesArrayFromColumnSchemaDefinition($columns);
             foreach ($indexes as $indexName => $index)
             {
-                if (!is_string($indexName) || count($index) != 2 || !ArrayUtil::isValidArrayIndex('columns', $index) ||
-                                    !ArrayUtil::isValidArrayIndex('unique', $index) || !is_array($index['columns']))
+                if (!is_string($indexName))
                 {
-                    $valid = false;
-                    break;
+                    return static::returnSchemaValidationResult(
+                                                        Zurmo::t('Core', 'Index Name: {{indexName}} is not a string',
+                                                            array('{{indexName}}' => $indexName)));
+                }
+                if (count($index) != 2)
+                {
+                    return static::returnSchemaValidationResult(
+                                                Zurmo::t('Core', 'Index: {{indexName}} does not have 2 clauses',
+                                                    array('{{indexName}}' => $indexName)));
+                }
+                if (!ArrayUtil::isValidArrayIndex('columns', $index))
+                {
+                    return static::returnSchemaValidationResult(
+                                    Zurmo::t('Core', 'Index: {{indexName}} does not have indexed column names',
+                                        array('{{indexName}}' => $indexName)));
+                }
+                if (!ArrayUtil::isValidArrayIndex('unique', $index))
+                {
+                    return static::returnSchemaValidationResult(
+                                Zurmo::t('Core', 'Index: {{indexName}} does not have index uniqueness clause defined',
+                                    array('{{indexName}}' => $indexName)));
+                }
+                if (!is_array($index['columns']))
+                {
+                    return static::returnSchemaValidationResult(
+                                            Zurmo::t('Core', 'Index: {{indexName}} column definition is not an array',
+                                                array('{{indexName}}' => $indexName)));
                 }
                 foreach($index['columns'] as $column)
                 {
                     list($column) = explode('(', $column);
                     if (!in_array($column, $columnNames))
                     {
-                        $valid = false;
-                        break;
+                        return static::returnSchemaValidationResult(
+                            Zurmo::t('Core', 'Index: {{indexName}} column: {{columnName}} does not exist' .
+                                                ' in current schema definition provided',
+                                            array('{{indexName}}' => $indexName, '{{columnName}}' => $column)));
                     }
                 }
             }
-            return $valid;
+            return static::returnSchemaValidationResult(null, true);
         }
 
         protected static function resolveAlterQueryForColumn($column)
@@ -379,6 +419,11 @@
                 $clause = 'ADD ' . $clause;
             }
             return $clause;
+        }
+
+        protected static function returnSchemaValidationResult($message, $isValid = false)
+        {
+            return compact('isValid', 'message');
         }
     }
 ?>
