@@ -115,15 +115,15 @@
             assert('is_string($groupLabel) && $groupLabel != ""');
             assert('is_array($groupData)');
             assert('is_string($checkResultLabel) && $checkResultLabel != ""');
-            $content  = '<table>' . "\n";
-            $content .= '<colgroup><col/><col style="width:100px;" /></colgroup>' . "\n";
-            $content .= '<tr><td>' . $groupLabel . '</td><td></td></tr>' . "\n";
+            $content  = '<table>';
+            $content .= '<colgroup><col/><col style="width:100px;" /></colgroup>';
+            $content .= '<tr><td>' . $groupLabel . '</td><td></td></tr>';
             foreach ($groupData as $serviceDisplayData)
             {
-                $content .= '<tr><td>' . Yii::app()->format->formatNtext($serviceDisplayData['message']) . '</td>' . "\n";
-                $content .= '<td>' . $checkResultLabel . '</td></tr>' . "\n";
+                $content .= '<tr><td>' . Yii::app()->format->formatNtext($serviceDisplayData['message']) . '</td>';
+                $content .= '<td>' . $checkResultLabel . '</td></tr>';
             }
-            $content .= '</table>' . "\n";
+            $content .= '</table>';
             return $content;
         }
 
