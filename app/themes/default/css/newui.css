@@ -7919,7 +7919,7 @@ body div.form-toolbar a.simple-link:not(.z-button) span.z-label {
 body div.form-toolbar a.simple-link:not(.z-button) span.z-label:before {
   content: "" !important;
 }
-a.simple-link {
+.zurmo body a.simple-link {
   background: none !important;
   background-image: none !important;
   -webkit-box-shadow: none  !important;
@@ -7939,7 +7939,7 @@ a.simple-link {
   font-size: 11px;
   font-weight: normal;
 }
-a.simple-link:before {
+.zurmo body a.simple-link:before {
   content: "" !important;
 }
 .normal-size {
