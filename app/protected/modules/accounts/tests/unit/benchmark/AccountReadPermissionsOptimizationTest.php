@@ -434,8 +434,6 @@
         //public function testAShootLoadOfAccounts() // Uncomment to run.
         public function disabled_testAShootLoadOfAccounts() // Uncomment to check in.
         {
-            $freezeAfterFirst20 = false;
-
             $super = User::getByUsername('super');
 
             foreach (array(20, 50, 100, 200, 500, 1000, 10000, 100000, 200000) as $shootLoad)
@@ -513,12 +511,6 @@
 
                 echo "Done.\n";
                 echo "\n-------------------------------\n";
-
-                if ($freezeAfterFirst20 && !RedBeanDatabase::isFrozen())
-                {
-                    echo "Freezing database...\n";
-                    RedBeanDatabase::freeze();
-                }
             }
         }
     }

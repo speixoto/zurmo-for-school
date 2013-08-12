@@ -105,7 +105,7 @@
         }
 
         /**
-         * This test can be used by any frozen running test to test out boolean values in the database, that they
+         * This test can be used by any test to test out boolean values in the database, that they
          * save and change correctly.
          * @depends testCreateAndGetAccountById
          */
