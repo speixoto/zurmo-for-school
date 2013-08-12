@@ -103,8 +103,6 @@
 
         protected function renderActionBarContent()
         {
-            $failedIndexId   = CheckServicesUtil::CHECK_FAILED;
-            $requiredIndexId = ServiceHelper::REQUIRED_SERVICE;
             $currentPageUrl  = Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/runDiagnostic/');
             $content = '<br/><br/>';
             $content .= ZurmoHtml::link(ZurmoHtml::wrapLabel(Zurmo::t('InstallModule', 'Recheck System')),

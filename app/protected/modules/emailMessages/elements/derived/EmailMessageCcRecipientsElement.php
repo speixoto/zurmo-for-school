@@ -57,7 +57,7 @@
 
         protected function renderLabel()
         {
-            return Zurmo::t('EmailMessagesModule', 'Cc');
+            return $this->resolveNonActiveFormFormattedLabel(Zurmo::t('EmailMessagesModule', 'Cc'));
         }
 
         public static function getDisplayName()

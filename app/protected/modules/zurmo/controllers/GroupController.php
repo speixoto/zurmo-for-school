@@ -398,7 +398,7 @@
             }
             else
             {
-                return '/editPolicies';
+                return 'editPolicies';
             }
         }
     }
