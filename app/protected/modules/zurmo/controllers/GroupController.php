@@ -85,11 +85,11 @@
             $action = $this->resolveActionToGoToAfterSave($group);
             if (!$group->isEveryone && !$group->isSuperAdministrators)
             {
-                $this->redirect(array($this->getId() . '/' . $action, 'id' => $id));
+                $this->redirect(array($this->getId() . $action, 'id' => $id));
             }
             else
             {
-                $this->redirect(array($this->getId() . '/' . $action, 'id' => $id));
+                $this->redirect(array($this->getId() . $action, 'id' => $id));
             }
         }
 
@@ -164,7 +164,7 @@
                             Zurmo::t('ZurmoModule', 'User Membership Saved Successfully.')
                         );
                         $action = $this->resolveActionToGoToAfterSave($group);
-                        $this->redirect(array($this->getId() . '/' . $action, 'id' => $group->id));
+                        $this->redirect(array($this->getId() . $action, 'id' => $group->id));
                         Yii::app()->end(0, false);
                 }
             }
@@ -200,7 +200,7 @@
                         Zurmo::t('ZurmoModule', 'Record Permissions Saved Successfully.')
                     );
                     $action = $this->resolveActionToGoToAfterSave($group);
-                    $this->redirect(array($this->getId() . '/' . $action, 'id' => $group->id));
+                    $this->redirect(array($this->getId() . $action, 'id' => $group->id));
                     Yii::app()->end(0, false);
                 }
             }
@@ -240,7 +240,7 @@
                     $group      = Group::getById(intval($id));
                     Yii::app()->user->setFlash('notification', Zurmo::t('ZurmoModule', 'Rights Saved Successfully.'));
                     $action = $this->resolveActionToGoToAfterSave($group);
-                    $this->redirect(array($this->getId() . '/' . $action, 'id' => $group->id));
+                    $this->redirect(array($this->getId() . $action, 'id' => $group->id));
                     Yii::app()->end(0, false);
                 }
             }
@@ -282,7 +282,7 @@
                             Zurmo::t('ZurmoModule', 'Policies Saved Successfully.')
                         );
                         $action = $this->resolveActionToGoToAfterSave($group);
-                        $this->redirect(array($this->getId() . '/' . $action, 'id' => $group->id));
+                        $this->redirect(array($this->getId() . $action, 'id' => $group->id));
                         Yii::app()->end(0, false);
                     }
                 }
@@ -327,7 +327,7 @@
                         if ($redirectUrlParams == null)
                         {
                             $action    = $this->resolveActionToGoToAfterSave($model);
-                            $urlParams = array($this->getId() . '/' . $action, 'id' => $model->id);
+                            $urlParams = array($this->getId() . $action, 'id' => $model->id);
                         }
                         $this->redirect($urlParams);
                     }
@@ -394,7 +394,7 @@
         {
             if (!$group->isEveryone && !$group->isSuperAdministrators)
             {
-                return 'edit';
+                return '/edit';
             }
             else
             {
