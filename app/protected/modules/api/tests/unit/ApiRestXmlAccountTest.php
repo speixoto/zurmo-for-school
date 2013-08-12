@@ -37,7 +37,7 @@
     /**
     * Test Account related API functions.
     */
-    class ApiRestXmlAccountTesta extends ApiRestTest
+    class ApiRestXmlAccountTest extends ApiRestTest
     {
         public function testApiServerUrl()
         {

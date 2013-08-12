@@ -39,8 +39,6 @@
     */
     class RedBeanModelToApiDataUtilTest extends ZurmoBaseTest
     {
-        public $freeze = false;
-
         public static function setUpBeforeClass()
         {
             parent::setUpBeforeClass();
@@ -66,25 +64,9 @@
             assert('$save'); // Not Coding Standard
         }
 
-        public function setUp()
+        public static function getDependentTestModelClassNames()
         {
-            parent::setUp();
-            $freeze = false;
-            if (RedBeanDatabase::isFrozen())
-            {
-                RedBeanDatabase::unfreeze();
-                $freeze = true;
-            }
-            $this->freeze = $freeze;
-        }
-
-        public function teardown()
-        {
-            if ($this->freeze)
-            {
-                RedBeanDatabase::freeze();
-            }
-            parent::teardown();
+            return array('ApiTestModelItem', 'ApiTestModelItem2', 'ApiTestModelItem3', 'ApiTestModelItem4');
         }
 
         public function testGetDataWithNoRelationsSet()
