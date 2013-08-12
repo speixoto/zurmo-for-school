@@ -540,6 +540,13 @@
 		            border-left:none !important;
 	            }
             }
+	        tfoot td{
+		        font-weight: bold;
+		        .products-portlet-totals();
+		        display: table-cell;
+		        border-color:transparent !important;
+		        border-bottom: none !important;
+	        }
             .expanded-row{
                 td, th{
                     #gradient > .vertical( #222, #333 );
@@ -558,13 +565,12 @@
     }
     .items{
         overflow-x: hidden;
+
     }
 	.icon-empty:before{
 		content:"V";
 	}
-	tfoot td{
-		font-weight: bold;
-	}
+
 }
 
 #MatrixReportResultsGridView #report-results-grid-view{

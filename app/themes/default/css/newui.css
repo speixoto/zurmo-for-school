@@ -17626,6 +17626,17 @@ a.user-link {
 .ReportResultsGridView #report-results-grid-view > .items tfoot td:first-child {
   border-left: none !important;
 }
+.ReportResultsGridView #report-results-grid-view > .items tfoot td {
+  display: block;
+  padding: 10px;
+  border-top: 1px solid #DFDFDF;
+  background: #111111 url(../images/dark-texture-table-footer.png) left top repeat-x !important;
+  color: #FFF;
+  font-weight: bold;
+  display: table-cell;
+  border-color: transparent !important;
+  border-bottom: none !important;
+}
 .ReportResultsGridView #report-results-grid-view > .items .expanded-row td,
 .ReportResultsGridView #report-results-grid-view > .items .expanded-row th {
   background-color: #333333;
@@ -17654,9 +17665,6 @@ a.user-link {
 }
 .ReportResultsGridView .icon-empty:before {
   content: "V";
-}
-.ReportResultsGridView tfoot td {
-  font-weight: bold;
 }
 #MatrixReportResultsGridView #report-results-grid-view > .items th,
 #MatrixReportResultsGridView #report-results-grid-view td {
