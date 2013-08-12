@@ -55,5 +55,14 @@
                                                   makeStandardViewForCurrentUser($this, new ConfigureModulesView()));
             echo $view->render();
         }
+
+        public function actionRunDiagnostic()
+        {
+            $serviceCheckResultsDataForDisplay = CheckServicesUtil::checkServicesAfterInstallationAndGetResultsDataForDisplay();
+            $checkServicesView = new DiagnosticCheckServicesView($this->getId(), $this->getModule()->getId(),
+                                      $serviceCheckResultsDataForDisplay);
+            $view = new ConfigurationPageView(ZurmoDefaultAdminViewUtil::makeStandardViewForCurrentUser($this, $checkServicesView));
+            echo $view->render();
+        }
     }
 ?>

@@ -35,39 +35,25 @@
      ********************************************************************************/
 
     /**
-     * Display email message content.
+     * View used after an installation to run the diagnostic and show the results
      */
-    class EmailMessageCcRecipientsElement extends Element implements DerivedElementInterface
+    class DiagnosticCheckServicesView extends CheckServicesView
     {
-        protected function renderControlNonEditable()
+        protected function renderIntroductionContent()
         {
-            assert('$this->model instanceof EmailMessage');
-            return Yii::app()->format->html(EmailMessageMashableActivityRules::
-                        getRecipientsContent($this->model->recipients, EmailMessageRecipient::TYPE_CC));
+            $content  = Zurmo::t('InstallModule', 'Below you will find the results of the system check.');
+            return $content;
         }
 
-        protected function renderControlEditable()
+        protected function renderActionBarContent()
         {
-            return $this->renderControlNonEditable();
-        }
-
-        protected function renderError()
-        {
-        }
-
-        protected function renderLabel()
-        {
-            return Zurmo::t('EmailMessagesModule', 'Cc');
-        }
-
-        public static function getDisplayName()
-        {
-            return Zurmo::t('EmailMessagesModule', 'Cc Recipients');
-        }
-
-        public static function getModelAttributeNames()
-        {
-            return array();
+            $failedIndexId   = CheckServicesUtil::CHECK_FAILED;
+            $requiredIndexId = ServiceHelper::REQUIRED_SERVICE;
+            $currentPageUrl  = Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/runDiagnostic/');
+            $content = '<br/><br/>';
+            $content .= ZurmoHtml::link(ZurmoHtml::wrapLabel(Zurmo::t('InstallModule', 'Recheck System')),
+                        $currentPageUrl, array('class' => 'z-button'));
+            return $content;
         }
     }
 ?>

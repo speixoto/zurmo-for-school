@@ -48,12 +48,11 @@
 
         protected function renderControlEditable()
         {
-            throw new NotImplementedException();
+            return $this->renderControlNonEditable();
         }
 
         protected function renderError()
         {
-            throw new NotImplementedException();
         }
 
         protected function renderLabel()
