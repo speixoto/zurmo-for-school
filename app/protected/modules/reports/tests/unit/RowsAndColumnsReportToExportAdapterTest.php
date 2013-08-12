@@ -545,9 +545,17 @@
                 
         public function testViaSelectAndViaModelTogether()
         {
-            //TODO: @sergio: Ask jason whats the purpose of this test
             $reportModelTestItem = new ReportModelTestItem();
+            $reportModelTestItem->string = 'string';
+            $reportModelTestItem->lastName = 'lastName';
+            $reportModelTestItem->integer = 9000;
+            $reportModelTestItem->boolean = true;
+            $this->assertTrue($reportModelTestItem->save());
+            
             $report              = new Report();
+            $report->setType(Report::TYPE_SUMMATION);
+            $report->setModuleClassName('ReportsTestModule');
+            $report->setFiltersStructure('');
 
             //viaSelect attribute
             $displayAttribute1 = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
@@ -555,24 +563,23 @@
             $displayAttribute1->attributeIndexOrDerivedType = 'integer__Minimum';
             $displayAttribute1->madeViaSelectInsteadOfViaModel = true;
             $this->assertTrue($displayAttribute1->columnAliasName == 'col0');
+            $report->addDisplayAttribute($displayAttribute1);
 
             //viaModel attribute
             $reportModelTestItem->boolean = true;
             $displayAttribute2    = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
-                                     Report::TYPE_ROWS_AND_COLUMNS);
+                                     Report::TYPE_SUMMATION);
             $displayAttribute2->setModelAliasUsingTableAliasName('model1');
             $displayAttribute2->attributeIndexOrDerivedType = 'boolean';
-
-            $reportResultsRowData = new ReportResultsRowData(array(
-                                        $displayAttribute1, $displayAttribute2), 4);
-            $reportResultsRowData->addSelectedColumnNameAndValue('col0', 9000);
-            $reportResultsRowData->addModelAndAlias($reportModelTestItem,  'model1');
-
+            $report->addDisplayAttribute($displayAttribute2);
+            
+            $dataProvider       = new SummationReportDataProvider($report);
             $adapter            = ReportToExportAdapterFactory::createReportToExportAdapter($report, $dataProvider); 
             $compareHeaderData  = array('Integer -(Min)', 'Boolean');
-            $compareRowData     = array(9000, true);
+            $compareRowData     = array(array(9000, true));
             $this->assertEquals($compareHeaderData, $adapter->getHeaderData());
-            $this->assertEquals($compareRowData, $adapter->getData());
+            $this->assertEquals($compareRowData, $adapter->getData());            
+            $reportModelTestItem->delete();
         }
     }
 ?>
