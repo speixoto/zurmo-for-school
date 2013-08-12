@@ -41,12 +41,6 @@
         {
             parent::setUpBeforeClass();
             SecurityTestHelper::createSuperAdmin();
-            if (!RedBeanDatabase::isFrozen())
-            {
-                // TODO: @Shoaibi: High: get rid of this for God's sake.
-                $campaignItem = CampaignItemTestHelper::createCampaignItem(0);
-                $campaignItem->delete();
-            }
         }
 
         public function setUp()
