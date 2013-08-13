@@ -127,7 +127,7 @@
             $filter->value                         = 'a value';
             $filter->operator                      = OperatorRules::TYPE_EQUALS;
             $content                               = $builder->makeQueryContent(array($filter));
-            $this->assertEquals("(({$q}reportmodeltestitem{$q}.{$q}reportmodeltestitem7_id{$q} = 'a value'))", $content);
+            $this->assertEquals("(({$q}reportmodeltestitem{$q}.{$q}likecontactstate_reportmodeltestitem7_id{$q} = 'a value'))", $content);
             $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(0, $joinTablesAdapter->getLeftTableJoinCount());
         }
@@ -181,7 +181,7 @@
             $filter->value                         = 'a value';
             $filter->operator                      = OperatorRules::TYPE_EQUALS;
             $content                               = $builder->makeQueryContent(array($filter));
-            $this->assertEquals("(({$q}reportmodeltestitem{$q}.{$q}reportmodeltestitem7_id{$q} = 'a value'))", $content);
+            $this->assertEquals("(({$q}reportmodeltestitem{$q}.{$q}likecontactstate_reportmodeltestitem7_id{$q} = 'a value'))", $content);
             $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(1, $joinTablesAdapter->getLeftTableJoinCount());
         }

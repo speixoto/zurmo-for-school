@@ -36,8 +36,6 @@
 
     class CalculatedNumberForReportListViewColumnAdapterTest extends ZurmoBaseTest
     {
-        public $freeze = false;
-
         public static function setUpBeforeClass()
         {
             parent::setUpBeforeClass();
@@ -61,6 +59,11 @@
             $adapter->setAttributeMetadataFromForm($attributeForm);
         }
 
+        public static function getDependentTestModelClassNames()
+        {
+            return array('ReportModelTestItem10', 'ReportModelTestItem11');
+        }
+
         public function setup()
         {
             parent::setUp();
@@ -69,22 +72,6 @@
             ModelRelationsAndAttributesToSummableReportAdapter::forgetAll();
             ModelRelationsAndAttributesToRowsAndColumnsReportAdapter::forgetAll();
             ModelRelationsAndAttributesToMatrixReportAdapter::forgetAll();
-            $freeze = false;
-            if (RedBeanDatabase::isFrozen())
-            {
-                RedBeanDatabase::unfreeze();
-                $freeze = true;
-            }
-            $this->freeze = $freeze;
-        }
-
-        public function teardown()
-        {
-            if ($this->freeze)
-            {
-                RedBeanDatabase::freeze();
-            }
-            parent::teardown();
         }
 
         public function testResolveValueOnBaseModelAndRelatedModel()
