@@ -38,13 +38,14 @@
     {
         public function render()
         {
-            return ZurmoHtml::ajaxLink($this->resolveLabelAndWrap(), $this->route, $this->resolveAjaxOptions(), $this->resolveHtmlOptionsForRendering());
+//            return ZurmoHtml::ajaxLink($this->resolveLabelAndWrap(), $this->route, $this->resolveAjaxOptions(), $this->resolveHtmlOptionsForRendering());
+            return ZurmoHtml::link($this->resolveLabelAndWrap(), '#', $this->resolveHtmlOptionsForRendering());
         }
 
-        protected function resolveAjaxOptions()
+        /*protected function resolveAjaxOptions()
         {
             $targetStatus = Task::TASK_STATUS_AWAITING_ACCEPTANCE;
-            $type         = $this->params['sourceType'];
+            $type         = TasksUtil::resolveKanbanItemTypeForTask($this->modelId);
             return array(
                 'type'      => 'post',
                 'data'      => 'js:{"targetStatus":"' . $targetStatus . '", "task_id":"' . $this->modelId . '"}',
@@ -61,7 +62,7 @@
                                 }
                                '
             );
-        }
+        }*/
 
         protected function getDefaultRoute()
         {
@@ -76,6 +77,11 @@
         protected function getDefaultLabel()
         {
             return Zurmo::t('Core', 'Finish');
+        }
+
+        protected function resolveHtmlOptionsForRendering()
+        {
+            return array('class' => 'task-finish-action');
         }
     }
 ?>

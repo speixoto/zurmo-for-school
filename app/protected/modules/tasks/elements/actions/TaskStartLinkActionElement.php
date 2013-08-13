@@ -38,13 +38,14 @@
     {
         public function render()
         {
-            return ZurmoHtml::ajaxLink($this->resolveLabelAndWrap(), $this->route, $this->resolveAjaxOptions(), $this->resolveHtmlOptionsForRendering());
+            //return ZurmoHtml::ajaxLink($this->resolveLabelAndWrap(), $this->route, $this->resolveAjaxOptions(), $this->resolveHtmlOptionsForRendering());
+            return ZurmoHtml::link($this->resolveLabelAndWrap(), '#', $this->resolveHtmlOptionsForRendering());
         }
 
-        protected function resolveAjaxOptions()
+        /*protected function resolveAjaxOptions()
         {
             $targetStatus = Task::TASK_STATUS_IN_PROGRESS;
-            $type         = $this->params['sourceType'];
+            $type         = TasksUtil::resolveKanbanItemTypeForTask($this->modelId);
             return array(
                 'type'      => 'get',
                 'data'      => 'js:{"targetStatus":"' . $targetStatus . '",
@@ -53,18 +54,17 @@
                                     "relatedModuleId":"' . $this->moduleId . '"}',
                 'beforeSend'=> 'function(xhr)
                                 {
-                                    $(this).makeLargeLoadingSpinner(true, "#task-sortable-rows-' . $type . '");
+
                                 }',
                 'success'   => 'function(data, textStatus, xmlReq)
                                 {
                                     $("#items_" + "' . $this->modelId . '").remove();
-                                    $(this).makeLargeLoadingSpinner(false, "#task-sortable-rows-' . $type . '");
                                     $("#task-sortable-rows-" + "' . $targetStatus . '").append("Hello");
                                     console.log("success");
                                 }
                                '
             );
-        }
+        }*/
 
         protected function getDefaultRoute()
         {
@@ -79,6 +79,11 @@
         protected function getDefaultLabel()
         {
             return Zurmo::t('Core', 'Start');
+        }
+
+        protected function resolveHtmlOptionsForRendering()
+        {
+            return array('class' => 'task-start-action');
         }
     }
 ?>

@@ -473,5 +473,17 @@
             $data = self::getTaskStatusMappingToKanbanItemTypeArray();
             return $data[$status];
         }
+
+        public static function resolveKanbanItemTypeForTask($taskId)
+        {
+            $task = Task::getById($taskId);
+            $status = intval($task->status);
+            if($status == null)
+            {
+                return KanbanItem::TYPE_TODO;
+            }
+            $data = self::getTaskStatusMappingToKanbanItemTypeArray();
+            return $data[$status];
+        }
     }
 ?>

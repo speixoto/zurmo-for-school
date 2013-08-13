@@ -137,7 +137,9 @@
         protected function registerScripts()
         {
             //parent::registerScripts();
-
+            Yii::app()->clientScript->registerScriptFile(
+                Yii::app()->getAssetManager()->publish(
+                    Yii::getPathOfAlias('application.modules.tasks.widgets.assets')) . '/TaskKanbanUtils.js', ClientScript::POS_END);
             $taskSortableScript = "
                         var fixHelper = function(e, ui) {
                             ui.children().each(function() {

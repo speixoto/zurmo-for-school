@@ -348,10 +348,10 @@
             }
         }
 
-        public function actionUpdateStatusInKanbanView($targetStatus, $taskId, $controllerId, $moduleId)
+        public function actionUpdateStatusInKanbanView($targetStatus, $taskId, $relatedControllerId, $relatedModuleId)
         {
            $route = Yii::app()->createUrl('tasks/default/updateStatusInKanbanView');
-           $buttonContent = TasksUtil::resolveActionButtonForTaskByStatus(intval($targetStatus), $controllerId, $moduleId, $taskId);
+           $buttonContent = TasksUtil::resolveActionButtonForTaskByStatus(intval($targetStatus), $relatedControllerId, $relatedModuleId, $taskId);
 
            //Run update queries for update task staus and update type and sort order in kanban column
 //           $this->processStatusUpdateViaAjax($taskId, $targetStatus);
