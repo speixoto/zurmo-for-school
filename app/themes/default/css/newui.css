@@ -17626,6 +17626,7 @@ a.user-link {
 .ReportResultsGridView #report-results-grid-view > .items tfoot td:first-child {
   border-left: none !important;
 }
+.ReportResultsGridView #report-results-grid-view > .items .total-column,
 .ReportResultsGridView #report-results-grid-view > .items tfoot td {
   display: block;
   padding: 10px;
@@ -17633,9 +17634,10 @@ a.user-link {
   background: #111111 url(../images/dark-texture-table-footer.png) left top repeat-x !important;
   color: #FFF;
   font-weight: bold;
+  background-color: #3d3d3d !important;
   display: table-cell;
   border-color: transparent !important;
-  border-bottom: none !important;
+  border: none !important;
 }
 .ReportResultsGridView #report-results-grid-view > .items .expanded-row td,
 .ReportResultsGridView #report-results-grid-view > .items .expanded-row th {
