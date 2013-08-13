@@ -34,25 +34,11 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * Workflow rules to be used with the Products module.
-     */
-    class ProductsWorkflowRules extends SecuredWorkflowRules
+    class ProductTemplateStatusStaticDropDownForWizardModelElement extends StaticDropDownForWizardElement
     {
-        /**
-         * @return array
-         */
-        public static function getDefaultMetadata()
+        public function getDropDownArray()
         {
-            $metadata = array(
-                'Product' => array(
-                    'availableOperatorsTypes' =>
-                        array('type' => ModelAttributeToOperatorTypeUtil::AVAILABLE_OPERATORS_TYPE_DROPDOWN),
-                    'triggerValueElementTypes' =>
-                        array('type' => 'ProductTemplateTypeStaticDropDownForWizardModel'),
-                )
-            );
-            return array_merge(parent::getDefaultMetadata(), $metadata);
+            return ProductTemplateElementUtil::getProductTemplateStatusDropdownArray();
         }
     }
 ?>

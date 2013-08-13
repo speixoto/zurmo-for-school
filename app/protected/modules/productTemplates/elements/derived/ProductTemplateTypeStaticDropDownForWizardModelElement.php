@@ -34,7 +34,7 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class ProductTemplateTypesStaticDropDownForWizardModelElement extends StaticDropDownForWizardElement
+    class ProductTemplateTypeStaticDropDownForWizardModelElement extends StaticDropDownForWizardElement
     {
         public function getDropDownArray()
         {
