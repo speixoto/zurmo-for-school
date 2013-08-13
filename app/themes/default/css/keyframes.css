@@ -47,6 +47,9 @@
 	unicode-range: U+00-FFFF; /*http://www.tamasoft.co.jp/en/general-info/unicode.html*/
 }
 
+@-webkit-keyframes slideCollectionDown {
+	100% { -webkit-transform:translate(0, 0%); }
+}
 
 @-webkit-keyframes slideCollectionUp {
 	100% { -webkit-transform:translate(0, -50%); }
