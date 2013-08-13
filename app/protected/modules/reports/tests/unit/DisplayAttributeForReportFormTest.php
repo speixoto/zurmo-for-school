@@ -261,7 +261,8 @@
                                 Report::TYPE_SUMMATION);
             $displayAttribute->attributeIndexOrDerivedType = 'name';
             //Make a tooltip for multiple results
-            $this->assertEquals('account name<span id="report-multiple-link-AccountsModule-2" class="tooltip">2</span>',                    
+            $this->assertEquals('<span id="report-multiple-link-AccountsModule-' . $account2->id . '">account name' . 
+                                    '<span class="tooltip">2</span></span>',                    
                                 $displayAttribute->resolveValueAsLabelForHeaderCell('account name'));
         }
 

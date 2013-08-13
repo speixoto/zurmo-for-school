@@ -141,13 +141,15 @@
             {
                 if (!$displayAttribute->queryOnly)
                 {
-                    $columnClassName  = $this->resolveColumnClassNameForListViewColumnAdapter($displayAttribute);
-                    $attributeName    = MatrixReportDataProvider::resolveTotalColumnAliasName(
-                                                $displayAttribute->columnAliasName);                           
-                    $params           = $this->resolveParamsForColumnElement($displayAttribute);
-                    $columnAdapter    = new $columnClassName($attributeName, $this, $params);
-                    $column           = $columnAdapter->renderGridViewData();
-                    $column['header'] = Zurmo::t('ReportsModule', 'Total') . ' ' . $displayAttribute->label;
+                    $columnClassName                = $this->resolveColumnClassNameForListViewColumnAdapter($displayAttribute);
+                    $attributeName                  = MatrixReportDataProvider::resolveTotalColumnAliasName(
+                                                            $displayAttribute->columnAliasName);                           
+                    $params                         = $this->resolveParamsForColumnElement($displayAttribute);
+                    $columnAdapter                  = new $columnClassName($attributeName, $this, $params);
+                    $column                         = $columnAdapter->renderGridViewData();
+                    $column['header']               = Zurmo::t('ReportsModule', 'Total') . ' ' . $displayAttribute->label;
+                    $column['htmlOptions']          = array('class' => 'total-column');
+                    $column['headerHtmlOptions']    = array('class' => 'total-column');
                     if (!isset($column['class']))
                     {
                         $column['class'] = 'DataColumn';
