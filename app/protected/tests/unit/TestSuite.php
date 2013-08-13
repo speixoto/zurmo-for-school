@@ -40,13 +40,15 @@
     require_once('../testRoots.php');
     require_once('../bootstrap.php');
 
+    $freeze = true; // TODO - figure out the correct was to pass information like this into tests.
+
     class TestSuite
     {
         protected static $dependentTestModelClassNames = array();
 
         public static function suite()
         {
-            global $argv;
+            global $argv, $freeze;
 
             PhpUnitServiceUtil::checkVersion();
             $usage = PHP_EOL                                                                                                    .
@@ -133,7 +135,7 @@
             echo "Testing with database: '"  . Yii::app()->db->connectionString . '\', ' .
                                                 'username: \'' . Yii::app()->db->username         . "'." . PHP_EOL;
 
-            if (!$reuse)
+            if ($freeze && !$reuse)
             {
                 if (!is_writable(sys_get_temp_dir()))
                 {
