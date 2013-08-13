@@ -83,6 +83,13 @@
          */
         protected static $nonEditableActionType = 'Details';
 
+        protected $hideSelectLinkWhenDisabled = true;
+
+        public function doNotHideSelectLinkWhenDisabled()
+        {
+            $this->hideSelectLinkWhenDisabled = false;
+        }
+
         public function setIdAttributeId($idAttributeId)
         {
             assert('is_string($idAttributeId)');
@@ -135,20 +142,7 @@
          */
         protected function renderTextField($idInputName)
         {
-            $script = "
-                function clearIdFromAutoCompleteField(value, id)
-                {
-                    if (value == '')
-                    {
-                        $('#' + id).val('');
-                    }
-                }
-            ";
-            Yii::app()->clientScript->registerScript(
-                'clearIdFromAutoCompleteField',
-                $script,
-                CClientScript::POS_END
-            );
+            $this->registerScriptForAutoCompleteTextField();
             $cClipWidget = new CClipWidget();
             $cClipWidget->beginClip("ModelElement");
             $cClipWidget->widget('zii.widgets.jui.CJuiAutoComplete', array(
@@ -158,7 +152,7 @@
                 'source'  => Yii::app()->createUrl($this->resolveModuleId() . '/' . $this->getAutoCompleteControllerId()
                                                    . '/' . static::$autoCompleteActionId, $this->getAutoCompleteUrlParams()),
                 'options' => array(
-                    'select'   => 'js:function(event, ui){ jQuery("#' . $idInputName . '").val(ui.item["id"]).trigger("change");}', // Not Coding Standard
+                    'select'   => $this->getOnSelectOptionForAutoComplete($idInputName), // Not Coding Standard
                     'appendTo' => 'js:$("#' . $this->getIdForTextField() . '").parent().parent()',
                     'search'   => 'js: function(event, ui)
                                   {
@@ -388,7 +382,7 @@
 
         protected function getSelectLinkStartingStyle()
         {
-            if ($this->getDisabledValue() == 'disabled')
+            if ($this->getDisabledValue() == 'disabled' && $this->hideSelectLinkWhenDisabled)
             {
                 return 'display:none';
             }
@@ -454,6 +448,37 @@
         public static function getNonEditableActionType()
         {
             return static::$nonEditableActionType;
+        }
+
+        /**
+         * Registers scripts for autocomplete text field
+         */
+        protected function registerScriptForAutoCompleteTextField()
+        {
+           $script = "
+                function clearIdFromAutoCompleteField(value, id)
+                {
+                    if (value == '')
+                    {
+                        $('#' + id).val('');
+                    }
+                }
+            ";
+            Yii::app()->clientScript->registerScript(
+                'clearIdFromAutoCompleteField',
+                $script,
+                CClientScript::POS_END
+            );
+        }
+
+        /**
+         * Gets on select option for the automcomplete text field
+         * @param string $idInputName
+         * @return string
+         */
+        protected function getOnSelectOptionForAutoComplete($idInputName)
+        {
+            return 'js:function(event, ui){ jQuery("#' . $idInputName . '").val(ui.item["id"]).trigger("change");}';
         }
     }
 ?>

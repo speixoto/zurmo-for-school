@@ -92,12 +92,29 @@
                 return          ZurmoHtml::tag('h1', array(), $content);
             }
         }
-        
+
         /**
          * used for customizing label in UI
          */
         public static function resolveCustomizedLabel()
         {
             return strtolower(preg_replace('/[^\da-z]/i', '', Yii::app()->label));
+        }
+
+        /**
+         * used to add a new line to content.
+         * @param $content
+         * @param $isHtmlContent
+         */
+        public static function prependNewLine(& $content, $isHtmlContent)
+        {
+            if ($isHtmlContent)
+            {
+                $content = ZurmoHtml::tag('br') . $content;
+            }
+            else
+            {
+                $content = PHP_EOL . $content;
+            }
         }
     }
