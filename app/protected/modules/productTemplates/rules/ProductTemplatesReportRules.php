@@ -45,6 +45,10 @@
         public static function getDefaultMetadata()
         {
             $metadata = array(
+                'ProductCategory' => array(
+                    'nonReportable' =>
+                    array('products', 'productTemplates', 'productCatalogs', 'productCategory', 'productCategories'),
+                ),
                 'ProductTemplate' => array(
                     'nonReportable' =>
                         array('productTemplates', 'productTemplate'),
