@@ -56,7 +56,7 @@
             $sanitizerUtilTypes        = ContactStateAttributeImportRules::getSanitizerUtilTypesInProcessingOrder();
             $sanitizedValue            = ImportSanitizerUtil::
                                          sanitizeValueBySanitizerTypes(
-                                         $sanitizerUtilTypes, 'Contact', null, null,
+                                         $sanitizerUtilTypes, 'Contact', null, null, 'column_0',
                                          $columnMappingData, $importSanitizeResultsUtil);
             $this->assertNull($sanitizedValue);
             $this->assertFalse($importSanitizeResultsUtil->shouldSaveModel());
@@ -73,7 +73,7 @@
             $sanitizerUtilTypes        = ContactStateAttributeImportRules::getSanitizerUtilTypesInProcessingOrder();
             $sanitizedValue            = ImportSanitizerUtil::
                                          sanitizeValueBySanitizerTypes(
-                                         $sanitizerUtilTypes, 'Contact', null, $contactStates[5]->id,
+                                         $sanitizerUtilTypes, 'Contact', null, $contactStates[5]->id, 'column_0',
                                          $columnMappingData, $importSanitizeResultsUtil);
             $this->assertEquals($contactStates[5], $sanitizedValue);
             $this->assertTrue($importSanitizeResultsUtil->shouldSaveModel());
@@ -88,7 +88,7 @@
             $sanitizerUtilTypes        = ContactStateAttributeImportRules::getSanitizerUtilTypesInProcessingOrder();
             $sanitizedValue            = ImportSanitizerUtil::
                                          sanitizeValueBySanitizerTypes(
-                                         $sanitizerUtilTypes, 'Contact', null, null,
+                                         $sanitizerUtilTypes, 'Contact', null, null, 'column_0',
                                          $columnMappingData, $importSanitizeResultsUtil);
             $this->assertEquals($contactStates[4], $sanitizedValue);
             $this->assertTrue($importSanitizeResultsUtil->shouldSaveModel());
@@ -103,7 +103,7 @@
             $sanitizerUtilTypes        = ContactStateAttributeImportRules::getSanitizerUtilTypesInProcessingOrder();
             $sanitizedValue            = ImportSanitizerUtil::
                                          sanitizeValueBySanitizerTypes(
-                                         $sanitizerUtilTypes, 'Contact', null, 'somethingnotright',
+                                         $sanitizerUtilTypes, 'Contact', null, 'somethingnotright', 'column_0',
                                          $columnMappingData, $importSanitizeResultsUtil);
             $this->assertFalse($importSanitizeResultsUtil->shouldSaveModel());
             $messages = $importSanitizeResultsUtil->getMessages();
@@ -120,7 +120,7 @@
             $sanitizedValue            = ImportSanitizerUtil::
                                          sanitizeValueBySanitizerTypes(
                                          $sanitizerUtilTypes, 'Contact', null, $contactStates[1]->id,
-                                         $columnMappingData, $importSanitizeResultsUtil);
+                                         'column_0', $columnMappingData, $importSanitizeResultsUtil);
             $this->assertFalse($importSanitizeResultsUtil->shouldSaveModel());
             $messages = $importSanitizeResultsUtil->getMessages();
             $this->assertEquals(1, count($messages));
