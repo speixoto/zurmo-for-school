@@ -47,10 +47,10 @@
 
         protected function getMessageContent()
         {
-            return Zurmo::t('GameRewardsModule', '<h2>"As we must Account for every idle word, so must we Account for every idle ' .
-                                     'silence."</h2><i>- Benjamin Franklin</i></i><div class="large-icon"></div><p>Be the first to create an Account and, ' .
-                                     'as Ben would say, "So must we Account for every company, organization, or ' .
-                                     'customer we interact with."</p>');
+            return Zurmo::t('GameRewardsModule', '<h2>"For every disciplined effort there is a multiple reward.' .
+                                     '"</h2><i>- Jim Rohn</i></i><div class="large-icon"></div><p>Reward your users ' .
+                                     'for their discipline in adopting and using the system by creating gifts they ' .
+                                     'can redeem with their points."</p>');
         }
     }
 ?>
