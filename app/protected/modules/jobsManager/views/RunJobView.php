@@ -76,30 +76,22 @@
             $content  = '<div>';
             $content .= ZurmoHtml::tag('h1', array(), $this->getJobLabel());
             $content .= '<div class="left-column full-width">';
-            $content .= '</div>';
             $content .= '<div id="complete-table" style="display:none;">';
-            $content .= '<table><tr><td>';
-            $content .= Zurmo::t('JobsManagerModule', 'The job has completed running.');
-            $content .= '<br/><br/>';
+            $content .= ZurmoHtml::tag('h3', array(), Zurmo::t('JobsManagerModule', 'The job has completed running.'));
             $content .= ZurmoHtml::link(ZurmoHtml::wrapLabel(Zurmo::t('JobsManagerModule', 'Run Job Again')),
                         $runAgainUrl, array('class' => 'z-button'));
             $content .= ZurmoHtml::link(ZurmoHtml::wrapLabel(Zurmo::t('JobsManagerModule', 'Job Manager')),
                         $jobManagerUrl, array('class' => 'z-button'));
-            $content .= '<br/><br/>';
-            $content .= '</td></tr></table>';
             $content .= '</div>';
-            $content .= '<div id="progress-table">';
-            $content .= '<table><tr><td class="progress-bar">';
+            $content .= '<div id="progress-table" class="progress-bar">';
             $content .= Zurmo::t('JobsManagerModule', 'Job is running. Please wait.');
             $content .= '<br/>';
             $content .= $progressBarImageContent;
-            $content .= '<br/>';
-            $content .= '</td></tr></table>';
             $content .= '</div>';
-            $content .= Zurmo::t('JobsManagerModule', 'Job Output:');
             $content .= '<div id="logging-table">';
+            $content .= ZurmoHtml::tag('h3', array(), Zurmo::t('JobsManagerModule', 'Job Output:'));
+            $content .= ZurmoHtml::tag('ol', array(), '');
             $content .= '</div>';
-            $content .= '</td></tr></table>';
             $content .= '</div>';
             $content .= '</div>';
             return $content;
