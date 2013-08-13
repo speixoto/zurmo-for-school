@@ -44,6 +44,11 @@
             SecurityTestHelper::createSuperAdmin();
         }
 
+        public static function getDependentTestModelClassNames()
+        {
+            return array ('TestSimplestModel');
+        }
+
         public function testCreateAddAndSaveAndRemoveByIndexRelatedModels()
         {
             Yii::app()->user->userModel = User::getByUsername('super');
@@ -165,9 +170,10 @@
         public function testSomethingOpaqueThatICantThinkHowToDescribe()
         {
             $model1 = new TestSimplestModel();
-            $model1->save();
+            $this->assertTrue($model1->save());
             $model2 = new TestSimplestManyRelationModel();
             $model2->relation->add($model1);
+            $this->assertTrue($model1->save());
         }
     }
 ?>

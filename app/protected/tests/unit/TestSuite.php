@@ -40,15 +40,13 @@
     require_once('../testRoots.php');
     require_once('../bootstrap.php');
 
-    $freeze = true; // TODO - figure out the correct was to pass information like this into tests.
-
     class TestSuite
     {
         protected static $dependentTestModelClassNames = array();
 
         public static function suite()
         {
-            global $argv, $freeze;
+            global $argv;
 
             PhpUnitServiceUtil::checkVersion();
             $usage = PHP_EOL                                                                                                    .
@@ -69,16 +67,11 @@
                 "    --reuse-schema          Reload a previously auto build database. (Will auto build if there is no" . PHP_EOL .
                 "                            previous one. The auto built schema is dumped to the system temp dir in" . PHP_EOL  .
                 "                            autobuild.sql.)" . PHP_EOL                                                          .
-                "    --no-freeze             Don't auto build and freeze the database." . PHP_EOL                                .
                 PHP_EOL                                                                                                    .
                 "  Examples:" . PHP_EOL                                                                                         .
                 PHP_EOL                                                                                                    .
                 "    phpunit --verbose TestSuite.php accounts (Run the tests in the Accounts module.)" . PHP_EOL                . // Not Coding Standard
                 "    phpunit TestSuite.php RedBeanModelTest   (Run the tests in RedBeanModelTest.php.)" . PHP_EOL               .
-                PHP_EOL                                                                                                    .
-                "  Note:" . PHP_EOL                                                                                             .
-                PHP_EOL                                                                                                    .
-                "    Framework and Misc tests run only when -no-freeze is specified." . PHP_EOL                                 .
                 PHP_EOL                                                                                                    .
                 "    To run specific tests use the phpunit --filter <regex> option." . PHP_EOL                                  . // Not Coding Standard
                 "    phpunit has its own options. Check phpunit --help." . PHP_EOL . PHP_EOL;                                             // Not Coding Standard
@@ -88,13 +81,6 @@
             $onlyBenchmarks       =  self::customOptionSet('--only-benchmarks',       $argv);
             $excludeBenchmarks    =  self::customOptionSet('--exclude-benchmarks',    $argv);
             $reuse                =  self::customOptionSet('--reuse-schema',          $argv);
-            $freeze               = !self::customOptionSet('--no-freeze',             $argv);
-
-            if ($freeze == true && FORCE_NO_FREEZE == true)
-            {
-                echo PHP_EOL . PHP_EOL . "Because forceNoFreeze is set to TRUE in debugTest, you cannot run unit tests in frozen mode" . PHP_EOL . PHP_EOL; // Not Coding Standard
-                exit;
-            }
 
             if ($argv[count($argv) - 2] != 'TestSuite.php')
             {
@@ -116,10 +102,7 @@
 
             $suite = new PHPUnit_Framework_TestSuite();
             $suite->setName("$whatToTest Tests");
-            if (!$freeze)
-            {
-                self::buildAndAddSuiteFromDirectory($suite, 'Framework', COMMON_ROOT . '/protected/core/tests/unit', $whatToTest, true, false, $includeBenchmarks);
-            }
+            self::buildAndAddSuiteFromDirectory($suite, 'Framework', COMMON_ROOT . '/protected/core/tests/unit', $whatToTest, true, false, $includeBenchmarks);
             $moduleDirectoryName = COMMON_ROOT . '/protected/modules';
             if (is_dir($moduleDirectoryName))
             {
@@ -134,15 +117,12 @@
                     }
                 }
             }
-            if (!$freeze)
-            {
-                self::buildAndAddSuiteFromDirectory($suite, 'Misc',            COMMON_ROOT . '/protected/tests/unit',                     $whatToTest, $includeUnitTests, $includeWalkthroughs, $includeBenchmarks);
-                self::buildAndAddSuiteFromDirectory($suite, 'Commands',        COMMON_ROOT . '/protected/commands/tests/unit',             $whatToTest, $includeUnitTests, $includeWalkthroughs, $includeBenchmarks);
+            self::buildAndAddSuiteFromDirectory($suite, 'Misc',            COMMON_ROOT . '/protected/tests/unit',                     $whatToTest, $includeUnitTests, $includeWalkthroughs, $includeBenchmarks);
+            self::buildAndAddSuiteFromDirectory($suite, 'Commands',        COMMON_ROOT . '/protected/commands/tests/unit',             $whatToTest, $includeUnitTests, $includeWalkthroughs, $includeBenchmarks);
 ////////////////////////////////////////////////////////////////////////////////
 // Temporary - See Readme.txt in the notSupposedToBeHere directory.
-                self::buildAndAddSuiteFromDirectory($suite, 'BadDependencies', COMMON_ROOT . '/protected/tests/unit/notSupposedToBeHere', $whatToTest, $includeUnitTests, $includeWalkthroughs, $includeBenchmarks);
+            self::buildAndAddSuiteFromDirectory($suite, 'BadDependencies', COMMON_ROOT . '/protected/tests/unit/notSupposedToBeHere', $whatToTest, $includeUnitTests, $includeWalkthroughs, $includeBenchmarks);
 ////////////////////////////////////////////////////////////////////////////////
-            }
 
             if ($suite->count() == 0)
             {
@@ -153,7 +133,7 @@
             echo "Testing with database: '"  . Yii::app()->db->connectionString . '\', ' .
                                                 'username: \'' . Yii::app()->db->username         . "'." . PHP_EOL;
 
-            if ($freeze && !$reuse)
+            if (!$reuse)
             {
                 if (!is_writable(sys_get_temp_dir()))
                 {
