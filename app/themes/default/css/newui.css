@@ -17719,6 +17719,7 @@ a.user-link {
   display: table-cell;
   border-color: transparent !important;
   border: none !important;
+  border-left: 1px solid #3d3d3d !important;
 }
 .ReportResultsGridView #report-results-grid-view > .items .expanded-row td,
 .ReportResultsGridView #report-results-grid-view > .items .expanded-row th {
