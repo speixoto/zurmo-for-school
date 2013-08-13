@@ -101,11 +101,8 @@
             $resolvedLeaderboardData = array();
             foreach($leaderboardData as $userId => $data)
             {
-                $sql .= 'where ' . $where . ' ';
-            }
-            $sql .= 'group by ' . $groupbyColumnName;
-            return ZurmoRedBean::getAll($sql);
-        }
+                $data['userId']            = $userId;
+                $resolvedLeaderboardData[] = $data;
 
             }
             return $resolvedLeaderboardData;
