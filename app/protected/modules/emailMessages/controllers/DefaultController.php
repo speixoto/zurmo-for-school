@@ -402,6 +402,7 @@
                     {
                         throw new FailedToSaveModelException();
                     }
+                    ZurmoControllerUtil::updatePermissionsWithDefaultForModelByCurrentUser($emailMessage);
                 }
             }
             else
@@ -520,6 +521,7 @@
                 EmailMessageUtil::resolveEmailMessageFromPostData($postData, $emailMessageForm, Yii::app()->user->userModel);
                 $this->actionValidateCreateEmailMessage($postData, $emailMessageForm);
                 $this->attemptToSaveModelFromPost($emailMessageForm, null, false);
+                ZurmoControllerUtil::updatePermissionsWithDefaultForModelByCurrentUser($emailMessageForm->getModel());
             }
             else
             {
@@ -554,32 +556,7 @@
             }
             return $personOrAccount;
         }
-
-        /**
-         * Override to process the security on the email message to match a related model if present.
-         * (non-PHPdoc)
-         * @see ZurmoBaseController::actionAfterSuccessfulModelSave()
-         */
-        protected function actionAfterSuccessfulModelSave($model, $modelToStringValue, $redirectUrlParams = null)
-        {
-            if($model instanceof CreateEmailMessageForm)
-            {
-                $emailMessage          = $model->getModel();
-                $relatedId             = ArrayUtil::getArrayValue(GetUtil::getData(), 'relatedId');
-                $relatedModelClassName = ArrayUtil::getArrayValue(GetUtil::getData(), 'relatedModelClassName');
-                if ($relatedId != null &&
-                    $relatedModelClassName != null &&
-                    is_subclass_of($relatedModelClassName, 'OwnedSecurableItem'))
-                {
-                    $relatedModel                      = $relatedModelClassName::getById((int)$relatedId);
-                    $explicitReadWriteModelPermissions = ExplicitReadWriteModelPermissionsUtil::makeBySecurableItem($relatedModel);
-                    ExplicitReadWriteModelPermissionsUtil::resolveExplicitReadWriteModelPermissions($emailMessage,
-                        $explicitReadWriteModelPermissions);
-                }
-            }
-            parent::actionAfterSuccessfulModelSave($model, $modelToStringValue, $redirectUrlParams);
-        }
-
+        
         protected function actionValidateCreateEmailMessage($postData, CreateEmailMessageForm $emailMessageForm)
         {
             if (isset($postData['ajax']) && $postData['ajax'] == 'edit-form')

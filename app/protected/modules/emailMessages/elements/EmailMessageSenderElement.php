@@ -43,7 +43,12 @@
         {
             assert('$this->model->{$this->attribute} instanceof EmailMessageSender');
             $sender = $this->model->{$this->attribute};
-            return Yii::app()->format->html(EmailMessageMashableActivityRules::getSenderContent($sender));
+            $senderContent = EmailMessageMashableActivityRules::getSenderContent($sender);
+            if($senderContent == null && $this->form != null)
+            {
+                $senderContent = '&nbsp;';
+            }
+            return Yii::app()->format->html($senderContent);
         }
 
         protected function renderControlEditable()
@@ -57,7 +62,7 @@
 
         protected function renderLabel()
         {
-            return Zurmo::t('EmailMessagesModule', 'From');
+            return $this->resolveNonActiveFormFormattedLabel(Zurmo::t('EmailMessagesModule', 'From'));
         }
     }
 ?>

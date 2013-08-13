@@ -39,6 +39,62 @@
      */
     class DiagnosticCheckServicesView extends CheckServicesView
     {
+
+
+        protected function renderContent()
+        {
+            $failedIndexId   = CheckServicesUtil::CHECK_FAILED;
+            $passedIndexId   = CheckServicesUtil::CHECK_PASSED;
+            $warningIndexId  = CheckServicesUtil::CHECK_WARNING;
+            $requiredIndexId = ServiceHelper::REQUIRED_SERVICE;
+            $optionalIndexId = ServiceHelper::OPTIONAL_SERVICE;
+
+            $content  = '<div>';
+            $content .= ZurmoHtml::tag('h1', array(), Zurmo::t('InstallModule', 'System Diagnostics'));
+            $content .= '<div class="left-column full-width">';
+            $content .= ZurmoHtml::tag('h3', array(), $this->renderIntroductionContent());
+
+
+            if (count($this->checkResultsDisplayData[$failedIndexId]) > 0)
+            {
+                if (count($this->checkResultsDisplayData[$failedIndexId][$requiredIndexId]) > 0)
+                {
+                    $content .= $this->renderServiceGroupDisplayByServiceDataAndCheckResult(
+                        ZurmoHtml::tag('h4', array(), Zurmo::t('InstallModule', 'Failed Required Services')),
+                        $this->checkResultsDisplayData[$failedIndexId][$requiredIndexId],
+                        '<span class="fail">' . Zurmo::t('InstallModule', 'FAIL') . '</span>');
+                }
+                if (count($this->checkResultsDisplayData[$failedIndexId][$optionalIndexId]) > 0)
+                {
+                    $content .= $this->renderServiceGroupDisplayByServiceDataAndCheckResult(
+                        ZurmoHtml::tag('h4', array(), Zurmo::t('InstallModule', 'Failed Optional Services')),
+                        $this->checkResultsDisplayData[$failedIndexId][$optionalIndexId],
+                        '<span class="warning">' . Zurmo::t('InstallModule', 'FAIL') . '</span>');
+                }
+            }
+            if (count($this->checkResultsDisplayData[$warningIndexId]) > 0)
+            {
+                $content .= $this->renderServiceGroupDisplayByServiceDataAndCheckResult(
+                    ZurmoHtml::tag('h4', array(), Zurmo::t('InstallModule', 'Service Status Partially Known')),
+                    $this->checkResultsDisplayData[$warningIndexId],
+                    '<span class="warning">' . Zurmo::t('InstallModule', 'WARNING') . '</span>');
+            }
+
+            if (count($this->checkResultsDisplayData[$passedIndexId]) > 0)
+            {
+                $content .= $this->renderServiceGroupDisplayByServiceDataAndCheckResult(
+                    ZurmoHtml::tag('h4', array(), Zurmo::t('InstallModule', 'Correctly Installed Services')),
+                    $this->checkResultsDisplayData[$passedIndexId],
+                    '<span class="pass">' . Zurmo::t('InstallModule', 'PASS') . '</span>');
+            }
+
+
+            $content .= $this->renderActionBarContent();
+            $content .= '</div>';
+            $content .= '</div>';
+            return $content;
+        }
+
         protected function renderIntroductionContent()
         {
             $content  = Zurmo::t('InstallModule', 'Below you will find the results of the system check.');
@@ -47,8 +103,6 @@
 
         protected function renderActionBarContent()
         {
-            $failedIndexId   = CheckServicesUtil::CHECK_FAILED;
-            $requiredIndexId = ServiceHelper::REQUIRED_SERVICE;
             $currentPageUrl  = Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/runDiagnostic/');
             $content = '<br/><br/>';
             $content .= ZurmoHtml::link(ZurmoHtml::wrapLabel(Zurmo::t('InstallModule', 'Recheck System')),

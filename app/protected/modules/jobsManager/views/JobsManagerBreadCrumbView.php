@@ -34,11 +34,14 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class ProductTemplateTypesStaticDropDownForWizardModelElement extends StaticDropDownForWizardElement
+    /**
+     * View that renders the jobs manager breadcrumb content
+     */
+    class JobsManagerBreadCrumbView extends BreadCrumbView
     {
-        public function getDropDownArray()
+        protected function getHomeLinkLabel()
         {
-            return ProductTemplateElementUtil::getProductTemplateTypeDropdownArray();
+            return Zurmo::t('JobsManagerModule', 'JobsManager Home');
         }
     }
 ?>

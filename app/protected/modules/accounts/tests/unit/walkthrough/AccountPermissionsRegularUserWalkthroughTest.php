@@ -268,6 +268,17 @@
 
             $nobody  = $this->logoutCurrentUserLoginNewUserAndGetByUsername('nobody');
 
+            //First set the read/write as owner only.
+            $this->setGetArray(array('id' => $account->id));
+            $postData = array('type' => '');
+            $this->setPostArray(array('Account' =>
+            array('owner' => array('id' => $nobody->id), 'explicitReadWriteModelPermissions' => $postData)));
+            //Make sure the redirect is to the details view and not the list view.
+            $this->runControllerWithRedirectExceptionAndGetContent('accounts/default/edit'); // Not Coding Standard
+
+            $accountId = $account->id;
+            $account->forget();
+            $account   = Account::getById($accountId);
 
             $this->setGetArray(array('id' => $account->id));
             $postData = array('type' => ExplicitReadWriteModelPermissionsUtil::MIXED_TYPE_EVERYONE_GROUP);
@@ -275,6 +286,10 @@
             array('owner' => array('id' => $super->id), 'explicitReadWriteModelPermissions' => $postData)));
             //Make sure the redirect is to the details view and not the list view.
             $this->runControllerWithRedirectExceptionAndGetContent('accounts/default/edit'); // Not Coding Standard
+            //Make sure user can still go to details view
+            $this->setGetArray(array('id' => $account->id));
+            $this->resetPostArray();
+            $content = $this->runControllerWithNoExceptionsAndGetContent('accounts/default/details');
         }
     }
 ?>
