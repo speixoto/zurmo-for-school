@@ -62,6 +62,17 @@
             }
         }
 
+        public static function getUserLeaderboardCount($type)
+        {
+            $sql = self::makeUserLeaderboardCountSqlQuery($type);
+            $count = ZurmoRedBean::getCell($sql);
+            if ($count === null)
+            {
+                $count = 0;
+            }
+            return $count;
+        }
+
         public static function getUserLeaderboardData($type)
         {
             assert('is_string($type)');
