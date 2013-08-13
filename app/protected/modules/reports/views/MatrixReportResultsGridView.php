@@ -147,7 +147,7 @@
                     $params                         = $this->resolveParamsForColumnElement($displayAttribute);
                     $columnAdapter                  = new $columnClassName($attributeName, $this, $params);
                     $column                         = $columnAdapter->renderGridViewData();
-                    $column['header']               = Zurmo::t('ReportsModule', 'Total') . ' ' . $displayAttribute->label;
+                    $column['header']               = $displayAttribute->label;
                     $column['htmlOptions']          = array('class' => 'total-column');
                     $column['headerHtmlOptions']    = array('class' => 'total-column');
                     if (!isset($column['class']))

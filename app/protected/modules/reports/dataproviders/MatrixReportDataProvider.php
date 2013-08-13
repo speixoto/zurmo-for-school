@@ -245,6 +245,10 @@
                 $lastSpanCount = count($groupByValues) * $lastSpanCount;
             }
             $headerData['rows'] = array_reverse($headerData['rows']);
+            if ($this->haveGrandTotals)
+            {
+                $headerData['renderTotalColumn'] = true;
+            }
             return $headerData;
         }
 
