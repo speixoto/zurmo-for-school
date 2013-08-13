@@ -34,21 +34,13 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class JobsManagerTitleBarAndListView extends GridView
+    class EmailMessageDeleteLinkActionElement extends DeleteLinkActionElement
     {
-        protected $cssClasses =  array( 'AdministrativeArea', 'TableOfContentsView' );
-
-        public function __construct(
-            $controllerId,
-            $moduleId,
-            $monitorJobData,
-            $jobsData,
-            $messageBoxContent = null,
-            $showRunJobLink = false)
+        protected function resolveConfirmAlertInHtmlOptions($htmlOptions)
         {
-            parent::__construct(1, 1);
-            $this->setView(new JobsCollectionView($controllerId, $moduleId, $monitorJobData, $jobsData,
-                                                  $messageBoxContent, $showRunJobLink), 0, 0);
+            $htmlOptions['confirm'] = Zurmo::t('Core', 'Are you sure you want to delete this {modelLabel}?',
+                                      array('{modelLabel}' => EmailMessagesModule::getModuleLabelByTypeAndLanguage('SingularLowerCase')));
+            return $htmlOptions;
         }
     }
 ?>

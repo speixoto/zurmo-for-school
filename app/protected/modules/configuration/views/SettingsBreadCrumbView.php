@@ -34,21 +34,19 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class JobsManagerTitleBarAndListView extends GridView
+    /**
+     * View that renders the settings breadcrumb content
+     */
+    class SettingsBreadCrumbView extends BreadCrumbView
     {
-        protected $cssClasses =  array( 'AdministrativeArea', 'TableOfContentsView' );
-
-        public function __construct(
-            $controllerId,
-            $moduleId,
-            $monitorJobData,
-            $jobsData,
-            $messageBoxContent = null,
-            $showRunJobLink = false)
+        protected function getHomeLinkLabel()
         {
-            parent::__construct(1, 1);
-            $this->setView(new JobsCollectionView($controllerId, $moduleId, $monitorJobData, $jobsData,
-                                                  $messageBoxContent, $showRunJobLink), 0, 0);
+            return Zurmo::t('ConfigurationModule', 'Settings Home');
+        }
+
+        protected function getHomeUrl()
+        {
+            return Yii::app()->createUrl('configuration/default/index');
         }
     }
 ?>

@@ -34,21 +34,14 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class JobsManagerTitleBarAndListView extends GridView
+    /**
+     * View that renders the jobs manager breadcrumb content
+     */
+    class JobsManagerBreadCrumbView extends BreadCrumbView
     {
-        protected $cssClasses =  array( 'AdministrativeArea', 'TableOfContentsView' );
-
-        public function __construct(
-            $controllerId,
-            $moduleId,
-            $monitorJobData,
-            $jobsData,
-            $messageBoxContent = null,
-            $showRunJobLink = false)
+        protected function getHomeLinkLabel()
         {
-            parent::__construct(1, 1);
-            $this->setView(new JobsCollectionView($controllerId, $moduleId, $monitorJobData, $jobsData,
-                                                  $messageBoxContent, $showRunJobLink), 0, 0);
+            return Zurmo::t('JobsManagerModule', 'JobsManager Home');
         }
     }
 ?>

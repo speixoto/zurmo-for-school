@@ -35,64 +35,72 @@
      ********************************************************************************/
 
     /**
-     * View for installation. Final view after everything has been installed
+     * View for running a job from the browser.
      */
-    class InstallCompleteView extends View
+    class RunJobView extends View
     {
         private $controllerId;
 
         private $moduleId;
 
-        public function __construct($controllerId, $moduleId)
+        private $type;
+
+        private $timeLimit;
+
+        public function __construct($controllerId, $moduleId, $type, $timeLimit)
         {
             assert('is_string($controllerId) && $controllerId != ""');
             assert('is_string($moduleId) && $moduleId != ""');
+            assert('is_string($type)');
+            assert('is_int($timeLimit)');
             $this->controllerId = $controllerId;
             $this->moduleId     = $moduleId;
+            $this->type         = $type;
+            $this->timeLimit    = $timeLimit;
+        }
+
+        protected function getJobLabel()
+        {
+            $jobClassName = $this->type . 'Job';
+            return $jobClassName::getDisplayName();
         }
 
         protected function renderContent()
         {
             $imagePath = Yii::app()->themeManager->baseUrl . '/default/images/ajax-loader.gif';
             $progressBarImageContent = ZurmoHtml::image($imagePath, 'Progress Bar');
-            $cs = Yii::app()->getClientScript();
-            $cs->registerScriptFile($cs->getCoreScriptUrl() . '/jquery.min.js', CClientScript::POS_END);
-            $demoDataUrl = Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/installDemoData/');
-            $loginUrl = Yii::app()->createUrl('zurmo/default');
-
-            $content  = '<div class="MetadataView">';
-            $content .= '<table><tr><td>';
-            $content .= '<div id="demo-data-table" style="display:none;">';
-            $content .= '<table><tr><td>';
-            $content .= Zurmo::t('InstallModule', 'The next step is to install the demo data.');
-            $content .= '<br/><br/>';
-            $content .= ZurmoHtml::link(ZurmoHtml::wrapLabel(Zurmo::t('InstallModule', 'Click Here to install the demo data')),
-                                        $demoDataUrl, array('class' => 'z-button'));
-            $content .= '</td></tr></table>';
+            $runAgainUrl  = Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/runJob/',
+                            array('type' => $this->type, 'timeLimit' => $this->timeLimit));
+            $jobManagerUrl  = Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/list/',
+                            array('showRunJobLink' => true));
+            $content  = '<div>';
+            $content .= ZurmoHtml::tag('h1', array(), $this->getJobLabel());
+            $content .= '<div class="left-column full-width">';
             $content .= '</div>';
             $content .= '<div id="complete-table" style="display:none;">';
             $content .= '<table><tr><td>';
-            $content .= Zurmo::t('InstallModule', 'Congratulations! The installation of Zurmo is complete.');
-            $content .= '<br/>';
-            $content .= '<br/>';
-            $content .= Zurmo::t('InstallModule', 'Click below to go to the login page. The username is <b>super</b>');
+            $content .= Zurmo::t('JobsManagerModule', 'The job has completed running.');
             $content .= '<br/><br/>';
-            $content .= ZurmoHtml::link(ZurmoHtml::wrapLabel(Zurmo::t('InstallModule', 'Sign in')),
-                                        $loginUrl, array('class' => 'z-button'));
+            $content .= ZurmoHtml::link(ZurmoHtml::wrapLabel(Zurmo::t('JobsManagerModule', 'Run Job Again')),
+                        $runAgainUrl, array('class' => 'z-button'));
+            $content .= ZurmoHtml::link(ZurmoHtml::wrapLabel(Zurmo::t('JobsManagerModule', 'Job Manager')),
+                        $jobManagerUrl, array('class' => 'z-button'));
+            $content .= '<br/><br/>';
             $content .= '</td></tr></table>';
             $content .= '</div>';
             $content .= '<div id="progress-table">';
             $content .= '<table><tr><td class="progress-bar">';
-            $content .= Zurmo::t('InstallModule', 'Installation in progress. Please wait.');
+            $content .= Zurmo::t('JobsManagerModule', 'Job is running. Please wait.');
             $content .= '<br/>';
             $content .= $progressBarImageContent;
             $content .= '<br/>';
             $content .= '</td></tr></table>';
             $content .= '</div>';
-            $content .= Zurmo::t('InstallModule', 'Installation Output:');
+            $content .= Zurmo::t('JobsManagerModule', 'Job Output:');
             $content .= '<div id="logging-table">';
             $content .= '</div>';
             $content .= '</td></tr></table>';
+            $content .= '</div>';
             $content .= '</div>';
             return $content;
         }
