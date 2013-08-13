@@ -19974,10 +19974,9 @@ div.special-pager .hidden.next:after {
 #game-dashboard #dashboard {
   width: 1200px;
   height: 600px;
-  position: fixed;
+  position: absolute;
   left: 50%;
-  top: 50%;
-  margin: -290px auto auto -600px;
+  margin: 50px auto auto -600px;
   -webkit-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12), 0 0 1px 0 #ccc;
   -moz-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12), 0 0 1px 0 #ccc;
   -o-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12), 0 0 1px 0 #ccc;
