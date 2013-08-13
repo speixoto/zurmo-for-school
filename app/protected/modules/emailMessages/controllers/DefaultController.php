@@ -519,7 +519,7 @@
             {
                 EmailMessageUtil::resolveEmailMessageFromPostData($postData, $emailMessageForm, Yii::app()->user->userModel);
                 $this->actionValidateCreateEmailMessage($postData, $emailMessageForm);
-                $this->attemptToSaveModelFromPost($emailMessageForm, null, false);
+                $this->attemptToSaveModelFromPost($emailMessageForm);
             }
             else
             {
