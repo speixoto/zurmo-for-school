@@ -61,7 +61,9 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'name', 'type' => 'Text'),
+                                                array('attributeName' => 'name', 
+                                                      'type'          => 'Text', 
+                                                      'htmlOptions'   => array('encode' => true)),
                                             ),
                                         ),
                                     )
