@@ -82,21 +82,21 @@
             return true;
         }
 
-        public static function optimizeTableNonImportColumns($tableName)
+        protected static function optimizeTableNonImportColumns($tableName)
         {
-            $bean                 = R::dispense($tableName);
+            $bean         = ZurmoRedBean::dispense($tableName);
             $bean->analysisStatus = '2147483647'; //Creates an integer todo: optimize to status SET
             $bean->status         = '2147483647'; //Creates an integer todo: optimize to status SET
             while (strlen($bean->serializedAnalysisMessages) < '1024')
             {
                 $bean->serializedAnalysisMessages .= chr(rand(ord('a'), ord('z')));
             }
-            while (strlen($bean->serializedMessages) < '1024')
+            while (strlen($bean->serializedmessages) < '1024')
             {
-                $bean->serializedMessages .= chr(rand(ord('a'), ord('z')));
+                $bean->serializedmessages .= chr(rand(ord('a'), ord('z')));
             }
-            R::store($bean);
-            R::trash($bean);
+            ZurmoRedBean::store($bean);
+            ZurmoRedBean::trash($bean);
         }
 
         protected static function optimizeTableImportColumnsAndGetColumnNames($fileHandle, $tableName, $delimiter, $enclosure)
@@ -108,6 +108,7 @@
             assert('$enclosure != null && is_string($enclosure)');
             $maxValues = array();
             $columns   = array();
+
             while (($data = fgetcsv($fileHandle, 0, $delimiter, $enclosure)) !== false)
             {
                 if (count($data) > 1 || (count($data) == 1 && trim($data['0']) != ''))
@@ -120,6 +121,11 @@
                         }
                     }
                 }
+            }
+            if(count($maxValues) > 99)
+            {
+                throw new TooManyColumnsFailedException(
+                            Zurmo::t('ImportModule', 'The file has too many columns. The maximum is 100'));
             }
             if (count($maxValues) > 0)
             {
@@ -176,19 +182,6 @@
             {
                 DatabaseCompatibilityUtil::bulkInsert($tableName, $importArray, $columns, $bulkQuantity);
             }
-        }
-
-        protected static function optimizeTableNonImportColumns($tableName)
-        {
-            $bean         = ZurmoRedBean::dispense($tableName);
-            $bean->status = '2147483647'; //Creates an integer todo: optimize to status SET
-            $s            = chr(rand(ord('A'), ord('Z')));
-            while (strlen($bean->serializedmessages) < '1024')
-            {
-                $bean->serializedmessages .= chr(rand(ord('a'), ord('z')));
-            }
-            ZurmoRedBean::store($bean);
-            ZurmoRedBean::trash($bean);
         }
 
         /**
