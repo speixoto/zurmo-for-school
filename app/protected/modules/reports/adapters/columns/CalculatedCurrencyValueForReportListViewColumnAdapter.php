@@ -54,7 +54,7 @@
         
         public function renderDataCellContent($data, $row) 
         {                      
-           echo $this->renderValue($data->{$this->attribute});
+           return $this->renderValue($data->{$this->attribute});
         }
         
         public function renderValue($value) 
