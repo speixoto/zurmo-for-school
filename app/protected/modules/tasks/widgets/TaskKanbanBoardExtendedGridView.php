@@ -61,7 +61,7 @@
                 {
                     //Create KanbanItem here
                     $kanbanItem                     = new KanbanItem();
-                    $kanbanItem->type               = $this->resolveKanbanItemTypeForTaskStatus($data->status);
+                    $kanbanItem->type               = TasksUtil::resolveKanbanItemTypeForTaskStatus($data->status);
                     $kanbanItem->task               = $data;
                     $kanbanItem->kanbanRelatedItem  = $data->activityItems->offsetGet(0);
                     $sortOrder = KanbanItem::getMaximumSortOrderByType($kanbanItem->type);
@@ -109,27 +109,6 @@
             $this->columnsData = $columnsData;
         }
 
-        protected static function getTaskStatusMappingToKanbanItemTypeArray()
-        {
-            return array(
-                            Task::TASK_STATUS_NEW                   => KanbanItem::TYPE_TODO,
-                            Task::TASK_STATUS_IN_PROGRESS           => KanbanItem::TYPE_IN_PROGRESS,
-                            Task::TASK_STATUS_AWAITING_ACCEPTANCE   => KanbanItem::TYPE_COMPLETED,
-                            Task::TASK_STATUS_REJECTED              => KanbanItem::TYPE_IN_PROGRESS,
-                            Task::TASK_STATUS_COMPLETED             => KanbanItem::TYPE_COMPLETED
-                        );
-        }
-
-        protected function resolveKanbanItemTypeForTaskStatus($status)
-        {
-            if($status == null)
-            {
-                return KanbanItem::TYPE_TODO;
-            }
-            $data = self::getTaskStatusMappingToKanbanItemTypeArray();
-            return $data[$status];
-        }
-
         /**
          * @param array $row
          * @return string
@@ -151,6 +130,7 @@
 
         protected function createUlTagForKanbanColumn($listItems, $counter = null)
         {
+            //return ZurmoHtml::tag('ul id="task-sortable-rows-' . $counter . '" class="connectedSortable"' , array(), $listItems);
             return ZurmoHtml::tag('ul id="task-sortable-rows-' . $counter . '"' , array(), $listItems);
         }
 
@@ -171,38 +151,41 @@
 
         protected function registerKanbanColumnScripts()
         {
-            //parent::registerScripts();
-
             $taskSortableScript = "";
-
+            $columnDataKeys = array_keys($this->columnsData);
             for($count=0; $count < count($this->columnsData); $count++)
             {
-                 $taskSortableScript .= "$('#task-sortable-rows-" . $count . "').sortable({
-                                            forcePlaceholderSize: true,
-                                            forceHelperSize: true,
-                                            items: 'li',
-                                            update : function () {
-                                                serial = $('#task-sortable-rows-" . $count . "').sortable('serialize', {key: 'items[]', attribute: 'id'});
-                                                $.ajax({
-                                                    'url': '" . Yii::app()->createUrl('tasks/default/updateItemsSortInKanbanView') . "',
-                                                    'type': 'get',
-                                                    'data': serial,
-                                                    'success': function(data){
-                                                    },
-                                                    'error': function(request, status, error){
-                                                        alert('We are unable to set the sort order at this time.  Please try again in a few minutes.');
-                                                    }
-                                                });
-                                            },
-                                            helper: fixHelper
-                                        }).disableSelection();
-                                    ";
+                 $type = $columnDataKeys[$count];
+                 if($type != KanbanItem::TYPE_COMPLETED)
+                 {
+                     $taskSortableScript .= "$('#task-sortable-rows-" . $count . "').sortable({
+                                                forcePlaceholderSize: true,
+                                                forceHelperSize: true,
+                                                items: 'li',
+                                                //connectWith: '.connectedSortable',
+                                                update : function () {
+                                                    serial = $('#task-sortable-rows-" . $count . "').sortable('serialize', {key: 'items[]', attribute: 'id'});
+                                                    $.ajax({
+                                                        'url': '" . Yii::app()->createUrl('tasks/default/updateItemsSortInKanbanView', array('type'=> $type)) . "',
+                                                        'type': 'get',
+                                                        'data': serial,
+                                                        'success': function(data){
+                                                        },
+                                                        'error': function(request, status, error){
+                                                            alert('We are unable to set the sort order at this time.  Please try again in a few minutes.');
+                                                        }
+                                                    });
+                                                },
+                                                helper: fixHelper
+                                            }).disableSelection();
+                                        ";
+                 }
             }
 
             Yii::app()->clientScript->registerScript('task-sortable-data', $taskSortableScript);
         }
 
-        protected function createKanbanRowForKanbanColumn($data, $row)
+        protected function createTaskItemForKanbanColumn($data, $row)
         {
             return ZurmoHtml::tag('li', array('class' => $this->getRowClassForKanbanColumn(),
                                                 'id' => 'items_' . $data->id),
@@ -214,10 +197,21 @@
             $listItems = '';
             foreach ($attributeValueAndData as $key => $data)
             {
-                $listItems .= $this->createKanbanRowForKanbanColumn($data, $key + 1);
+                $listItems .= $this->createTaskItemForKanbanColumn($data, $key + 1);
             }
 
             return $listItems;
         }
+
+//        protected static function getKanbanItemTypeToTaskStatusMappingToKanbanItemTypeArray()
+//        {
+//            return array(
+//                            Task::TASK_STATUS_NEW                   => KanbanItem::TYPE_TODO,
+//                            Task::TASK_STATUS_IN_PROGRESS           => KanbanItem::TYPE_IN_PROGRESS,
+//                            Task::TASK_STATUS_AWAITING_ACCEPTANCE   => KanbanItem::TYPE_COMPLETED,
+//                            Task::TASK_STATUS_REJECTED              => KanbanItem::TYPE_IN_PROGRESS,
+//                            Task::TASK_STATUS_COMPLETED             => KanbanItem::TYPE_COMPLETED
+//                        );
+//        }
     }
 ?>

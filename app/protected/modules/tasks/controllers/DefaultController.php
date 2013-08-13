@@ -154,23 +154,7 @@
          */
         public function actionUpdateStatusViaAjax($id, $status)
         {
-            $task         = Task::getById(intval($id));
-            $task->status = intval($status);
-            if(intval($status) == Task::TASK_STATUS_COMPLETED)
-            {
-                $task->completedDateTime = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
-                $task->completed         = true;
-                $task->save();
-                echo '<p>' . Zurmo::t('TasksModule', 'Completed On') . ': ' . DateTimeUtil::convertDbFormattedDateTimeToLocaleFormattedDisplay($task->completedDateTime) . '</p>';
-            }
-            else
-            {
-                $task->completedDateTime = null;
-                $task->completed         = false;
-                $task->save();
-            }
-
-            TasksUtil::sendNotificationOnTaskUpdate($task, Zurmo::t('TasksModule', 'The status for the task #' . $task->id . ' has been updated to ' . Task::getStatusDisplayName(intval($status))));
+            $this->processStatusUpdateViaAjax($id, $status);
         }
 
         /**
@@ -343,19 +327,60 @@
 
         public function actionUpdateItemsSortInKanbanView()
         {
-            //print_r($_GET['items']);
             $getData = GetUtil::getData();
             $counter = 1;
             foreach($getData['items'] as $itemId)
             {
                   //ToDo: Ask Jason, it shud be refereatial problem
-//                $kanbanItem        = KanbanItem::getKanbanItemForTask(intval($itemId));
+                $kanbanItem        = KanbanItem::getKanbanItemForTask(intval($itemId));
 //                $kanbanItem->order = $counter;
 //                $kanbanItem->save();
-                $sql = "update kanbanitem set sortorder = '" . $counter . "' where task_id = " . $itemId;
+                if($getData['type'] == $kanbanItem->type)
+                {
+                    $sql = "update kanbanitem set sortorder = '" . $counter . "' where task_id = " . $itemId;
+                }
+                else
+                {
+                    $sql = "update kanbanitem set sortorder = '" . $counter . "', type = '" . $getData['type'] . "' where task_id = " . $itemId;
+                }
                 R::exec($sql);
                 $counter++;
             }
+        }
+
+        public function actionUpdateStatusInKanbanView($targetStatus, $taskId, $controllerId, $moduleId)
+        {
+           $route = Yii::app()->createUrl('tasks/default/updateStatusInKanbanView');
+           $buttonContent = TasksUtil::resolveActionButtonForTaskByStatus(intval($targetStatus), $controllerId, $moduleId, $taskId);
+
+           //Run update queries for update task staus and update type and sort order in kanban column
+//           $this->processStatusUpdateViaAjax($taskId, $targetStatus);
+//           $type = TasksUtil::resolveKanbanItemTypeForTaskStatus($targetStatus);
+//           $sortOrder = KanbanItem::getMaximumSortOrderByType($type);
+//           $sql = "update kanbanitem set sortorder = '" . $sortOrder . "' where task_id = " . $taskId;
+//           R::exec($sql);
+           echo $buttonContent;
+        }
+
+        protected function processStatusUpdateViaAjax($id, $status)
+        {
+            $task         = Task::getById(intval($id));
+            $task->status = intval($status);
+            if(intval($status) == Task::TASK_STATUS_COMPLETED)
+            {
+                $task->completedDateTime = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
+                $task->completed         = true;
+                $task->save();
+                echo '<p>' . Zurmo::t('TasksModule', 'Completed On') . ': ' . DateTimeUtil::convertDbFormattedDateTimeToLocaleFormattedDisplay($task->completedDateTime) . '</p>';
+            }
+            else
+            {
+                $task->completedDateTime = null;
+                $task->completed         = false;
+                $task->save();
+            }
+
+            TasksUtil::sendNotificationOnTaskUpdate($task, Zurmo::t('TasksModule', 'The status for the task #' . $task->id . ' has been updated to ' . Task::getStatusDisplayName(intval($status))));
         }
     }
 ?>

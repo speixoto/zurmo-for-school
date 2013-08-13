@@ -126,9 +126,11 @@
          */
         protected function getCardColumns()
         {
+            $controllerId = $this->controllerId;
+            $moduleId     = $this->moduleId;
             return array('name'                 => array('value'  => $this->getLinkString('$data->name', 'name'), 'class' => 'task-name'),
                          'requestedByUser'      => array('value'  => $this->getRelatedLinkString('$data->requestedByUser', 'requestedByUser', 'users'), 'class'  => 'requestedByUser-name'),
-                         'status'               => array('value' => 'TasksUtil::resolveStatusForTask(intval($data->status))', 'class' => 'task-status')
+                         'status'               => array('value' => 'TasksUtil::resolveActionButtonForTaskByStatus(intval($data->status), "' . $controllerId . '", "' . $moduleId . '", $data->id)', 'class' => 'task-status')
                         );
         }
 

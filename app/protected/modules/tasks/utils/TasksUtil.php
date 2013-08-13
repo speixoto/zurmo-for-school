@@ -428,10 +428,50 @@
          * @param int $statusId
          * @return string
          */
-        public static function resolveStatusForTask($statusId)
+        public static function resolveActionButtonForTaskByStatus($statusId, $controllerId, $moduleId, $modelId)
         {
-            $dropDownArray = Task::getStatusDropDownArray();
-            return $dropDownArray[$statusId];
+            $type = self::resolveKanbanItemTypeForTaskStatus(intval($statusId));
+            $route = Yii::app()->createUrl('tasks/default/updateStatusInKanbanView');
+            switch(intval($statusId))
+            {
+                case Task::TASK_STATUS_NEW :
+                     $element = new TaskStartLinkActionElement($controllerId, $moduleId, $modelId,
+                                                                                            array('route' => $route));
+                    break;
+                case Task::TASK_STATUS_IN_PROGRESS :
+
+                     $element = new TaskFinishLinkActionElement($controllerId, $moduleId, $modelId,
+                                                                                            array('route' => $route));
+                    break;
+                default:
+                     $element = new TaskStartLinkActionElement($controllerId, $moduleId, $modelId,
+                                                                                            array('route' => $route));
+                    break;
+            }
+            return $element->render();
+//            $dropDownArray = Task::getStatusDropDownArray();
+//            return $dropDownArray[$statusId];
+        }
+
+        public static function getTaskStatusMappingToKanbanItemTypeArray()
+        {
+            return array(
+                            Task::TASK_STATUS_NEW                   => KanbanItem::TYPE_TODO,
+                            Task::TASK_STATUS_IN_PROGRESS           => KanbanItem::TYPE_IN_PROGRESS,
+                            Task::TASK_STATUS_AWAITING_ACCEPTANCE   => KanbanItem::TYPE_COMPLETED,
+                            Task::TASK_STATUS_REJECTED              => KanbanItem::TYPE_IN_PROGRESS,
+                            Task::TASK_STATUS_COMPLETED             => KanbanItem::TYPE_COMPLETED
+                        );
+        }
+
+        public static function resolveKanbanItemTypeForTaskStatus($status)
+        {
+            if($status == null)
+            {
+                return KanbanItem::TYPE_TODO;
+            }
+            $data = self::getTaskStatusMappingToKanbanItemTypeArray();
+            return $data[$status];
         }
     }
 ?>
