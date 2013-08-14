@@ -231,7 +231,7 @@
         }
 
         /**
-         * @param $startingStateId
+         * @param int $startingStateId
          */
         public static function setStartingStateById($startingStateId)
         {

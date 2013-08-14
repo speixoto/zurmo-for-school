@@ -43,7 +43,7 @@
         protected $states;
 
         /**
-         * @param $modelClassName
+         * @param string $modelClassName
          * @param $attributeName
          */
         public function __construct($modelClassName, $attributeName)

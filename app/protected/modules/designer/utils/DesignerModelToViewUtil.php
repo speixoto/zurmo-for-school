@@ -41,8 +41,8 @@
     class DesignerModelToViewUtil
     {
         /**
-         * @param $viewClassName
-         * @param $modelClassName
+         * @param string $viewClassName
+         * @param string $modelClassName
          * @return ModelAttributesAdapter|ModelFormAttributesAdapter
          */
         public static function getModelAttributesAdapter($viewClassName, $modelClassName)
@@ -57,8 +57,8 @@
         }
 
         /**
-         * @param $modelForViewClassName
-         * @param $modelClassName
+         * @param string $modelForViewClassName
+         * @param string $modelClassName
          * @return ModelAttributesAdapter|ModelFormAttributesAdapter
          */
         public static function getModelAttributesAdapterByModelForViewClassName($modelForViewClassName, $modelClassName)

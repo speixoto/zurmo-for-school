@@ -40,9 +40,9 @@
     class AttributesLayoutAdapterUtil
     {
         /**
-         * @param $attributeCollection
+         * @param array $attributeCollection
          * @param DesignerRules $designerRules
-         * @param $editableMetadata
+         * @param array $editableMetadata
          * @return AttributesLayoutAdapter
          */
         public static function makeAttributesLayoutAdapter(
@@ -66,8 +66,8 @@
         }
 
         /**
-         * @param $viewClassName
-         * @param $modelClassName
+         * @param string $viewClassName
+         * @param string $modelClassName
          * @param DesignerRules $designerRules
          * @return AttributesLayoutAdapter
          */

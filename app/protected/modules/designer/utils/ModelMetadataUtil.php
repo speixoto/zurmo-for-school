@@ -50,17 +50,17 @@
         }
 
         /**
-         * @param $modelClassName
-         * @param $memberName
-         * @param $attributeLabels
+         * @param string $modelClassName
+         * @param string $memberName
+         * @param array $attributeLabels
          * @param $defaultValue
          * @param $maxLength
          * @param $minValue
          * @param $maxValue
          * @param $precision
-         * @param $isRequired
-         * @param $isAudited
-         * @param $elementType
+         * @param bool $isRequired
+         * @param bool $isAudited
+         * @param bool $elementType
          * @param array $partialTypeRule
          * @param array $mixedRule
          */

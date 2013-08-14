@@ -48,7 +48,7 @@
         /**
          * @param $defaultValue
          * @param $customFieldDataData
-         * @return mixed|null
+         * @return array mixed|null
          */
         public static function getDefaultValueOrderFromDefaultValue(
             $defaultValue, $customFieldDataData)

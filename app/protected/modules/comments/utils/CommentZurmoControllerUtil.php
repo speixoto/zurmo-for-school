@@ -45,7 +45,7 @@
 
         /**
          * @param $relatedModel
-         * @param $relationName
+         * @param string $relationName
          */
         public function __construct($relatedModel, $relationName)
         {

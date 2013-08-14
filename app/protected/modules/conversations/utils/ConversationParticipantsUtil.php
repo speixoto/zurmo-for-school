@@ -144,8 +144,8 @@
         }
 
         /**
-         * @param $conversation
-         * @param $people
+         * @param Conversation $conversation
+         * @param array $people
          */
         public static function resolveEmailInvitesByPeople($conversation, $people)
         {
@@ -269,7 +269,7 @@
         }
 
         /**
-         * @param $id
+         * @param int $id
          * @return mixed
          */
         public static function getUrlToConversationDetailAndRelationsView($id)
