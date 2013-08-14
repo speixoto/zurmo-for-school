@@ -34,21 +34,47 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class JobsManagerTitleBarAndListView extends GridView
+    /**
+     * Checks if the host info and script url match the current installation
+     */
+    class HostInfoServiceHelper extends ServiceHelper
     {
-        protected $cssClasses =  array( 'AdministrativeArea', 'TableOfContentsView' );
-
-        public function __construct(
-            $controllerId,
-            $moduleId,
-            $monitorJobData,
-            $jobsData,
-            $messageBoxContent = null,
-            $showRunJobLink = false)
+        protected function checkService()
         {
-            parent::__construct(1, 1);
-            $this->setView(new JobsCollectionView($controllerId, $moduleId, $monitorJobData, $jobsData,
-                                                  $messageBoxContent, $showRunJobLink), 0, 0);
+            $hostInfoIsIncorrect = true;
+            $ScriptUrlIsCorrect  = true;
+            if(Yii::app()->request->getHostInfo() != Yii::app()->request->getRealHostInfo())
+            {
+                $hostInfoIsIncorrect = false;
+            }
+            if(Yii::app()->request->getScriptUrl() != Yii::app()->request->getRealScriptUrl())
+            {
+                $ScriptUrlIsCorrect = false;
+            }
+            if ($hostInfoIsIncorrect && $ScriptUrlIsCorrect)
+            {
+                $this->message  = Zurmo::t('InstallModule', 'Host Info and Script Url are configured correctly.');
+                return true;
+            }
+            else
+            {
+                $this->message  = Zurmo::t('InstallModule', 'Host Info/Script Url is incorrectly configured.');
+                if (!$hostInfoIsIncorrect)
+                {
+                    $this->message .= "\n" . Zurmo::t('InstallModule', 'Configured host:  {hostInfo}',
+                                                      array('{hostInfo}' => Yii::app()->request->getHostInfo()));
+                    $this->message .= "\n" . Zurmo::t('InstallModule', 'Real host:  {hostInfo}',
+                                                      array('{hostInfo}' => Yii::app()->request->getRealHostInfo()));
+                }
+                if (!$ScriptUrlIsCorrect)
+                {
+                    $this->message .= "\n" . Zurmo::t('InstallModule', 'Configured script url:  {scriptUrl}',
+                                                      array('{scriptUrl}' => Yii::app()->request->getScriptUrl()));
+                    $this->message .= "\n" . Zurmo::t('InstallModule', 'Real script url:  {scriptUrl}',
+                                                      array('{scriptUrl}' => Yii::app()->request->getRealScriptUrl()));
+                }
+                return false;
+            }
         }
     }
 ?>

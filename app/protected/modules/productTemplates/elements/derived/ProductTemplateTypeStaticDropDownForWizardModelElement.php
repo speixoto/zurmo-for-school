@@ -34,21 +34,11 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class JobsManagerTitleBarAndListView extends GridView
+    class ProductTemplateTypeStaticDropDownForWizardModelElement extends StaticDropDownForWizardElement
     {
-        protected $cssClasses =  array( 'AdministrativeArea', 'TableOfContentsView' );
-
-        public function __construct(
-            $controllerId,
-            $moduleId,
-            $monitorJobData,
-            $jobsData,
-            $messageBoxContent = null,
-            $showRunJobLink = false)
+        public function getDropDownArray()
         {
-            parent::__construct(1, 1);
-            $this->setView(new JobsCollectionView($controllerId, $moduleId, $monitorJobData, $jobsData,
-                                                  $messageBoxContent, $showRunJobLink), 0, 0);
+            return ProductTemplateElementUtil::getProductTemplateTypeDropdownArray();
         }
     }
 ?>
