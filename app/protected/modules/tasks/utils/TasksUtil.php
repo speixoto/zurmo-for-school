@@ -443,14 +443,20 @@
                      $element = new TaskFinishLinkActionElement($controllerId, $moduleId, $modelId,
                                                                                             array('route' => $route));
                     break;
+                case Task::TASK_STATUS_AWAITING_ACCEPTANCE :
+
+                     $acceptLinkElement = new TaskAcceptLinkActionElement($controllerId, $moduleId, $modelId,
+                                                                                            array('route' => $route));
+                     $rejectLinkElement = new TaskRejectLinkActionElement($controllerId, $moduleId, $modelId,
+                                                                                            array('route' => $route));
+                     return $acceptLinkElement->render() . $rejectLinkElement->render();
                 default:
                      $element = new TaskStartLinkActionElement($controllerId, $moduleId, $modelId,
                                                                                             array('route' => $route));
                     break;
             }
             return $element->render();
-//            $dropDownArray = Task::getStatusDropDownArray();
-//            return $dropDownArray[$statusId];
+
         }
 
         public static function getTaskStatusMappingToKanbanItemTypeArray()
@@ -458,8 +464,8 @@
             return array(
                             Task::TASK_STATUS_NEW                   => KanbanItem::TYPE_TODO,
                             Task::TASK_STATUS_IN_PROGRESS           => KanbanItem::TYPE_IN_PROGRESS,
-                            Task::TASK_STATUS_AWAITING_ACCEPTANCE   => KanbanItem::TYPE_COMPLETED,
-                            Task::TASK_STATUS_REJECTED              => KanbanItem::TYPE_IN_PROGRESS,
+                            Task::TASK_STATUS_AWAITING_ACCEPTANCE   => KanbanItem::TYPE_IN_PROGRESS,
+                            Task::TASK_STATUS_REJECTED              => KanbanItem::TYPE_TODO,
                             Task::TASK_STATUS_COMPLETED             => KanbanItem::TYPE_COMPLETED
                         );
         }

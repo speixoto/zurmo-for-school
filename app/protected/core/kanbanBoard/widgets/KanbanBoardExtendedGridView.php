@@ -117,7 +117,7 @@
 //                    {
                         $listItems = $this->getListItemsByAttributeValueAndData($attributeValueAndData);
                     //}
-                    echo $this->createUlTagForKanbanColumn($listItems, $counter);
+                    echo $this->createUlTagForKanbanColumn($listItems, $attributeValue);
                     $dropZone =  ZurmoHtml::tag('div', array('class' => 'drop-zone'), '');
                     echo ZurmoHtml::tag('div', array('class' => 'drop-zone-container'), $dropZone);
                     echo "</div>";
@@ -274,7 +274,7 @@
             return $cardDetails;
         }
 
-        protected function createUlTagForKanbanColumn($listItems, $counter = null)
+        protected function createUlTagForKanbanColumn($listItems, $attributeValue = null)
         {
             return ZurmoHtml::tag('ul', array(), $listItems);
         }

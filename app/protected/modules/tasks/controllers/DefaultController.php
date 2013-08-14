@@ -348,18 +348,19 @@
             }
         }
 
-        public function actionUpdateStatusInKanbanView($targetStatus, $taskId, $relatedControllerId, $relatedModuleId)
+        public function actionUpdateStatusInKanbanView($targetStatus, $taskId)
         {
            $route = Yii::app()->createUrl('tasks/default/updateStatusInKanbanView');
-           $buttonContent = TasksUtil::resolveActionButtonForTaskByStatus(intval($targetStatus), $relatedControllerId, $relatedModuleId, $taskId);
-
            //Run update queries for update task staus and update type and sort order in kanban column
-//           $this->processStatusUpdateViaAjax($taskId, $targetStatus);
-//           $type = TasksUtil::resolveKanbanItemTypeForTaskStatus($targetStatus);
-//           $sortOrder = KanbanItem::getMaximumSortOrderByType($type);
-//           $sql = "update kanbanitem set sortorder = '" . $sortOrder . "' where task_id = " . $taskId;
-//           R::exec($sql);
-           echo $buttonContent;
+           $this->processStatusUpdateViaAjax($taskId, $targetStatus);
+           $targetKanbanType = TasksUtil::resolveKanbanItemTypeForTaskStatus(intval($targetStatus));
+           $sourceKanbanType = TasksUtil::resolveKanbanItemTypeForTask(intval($taskId));
+           if($sourceKanbanType != $targetKanbanType)
+           {
+                $sortOrder = KanbanItem::getMaximumSortOrderByType($targetKanbanType);
+                $sql = "update kanbanitem set sortorder = '" . $sortOrder . "', type = '" . $targetKanbanType . "' where task_id = " . $taskId;
+                R::exec($sql);
+           }
         }
 
         protected function processStatusUpdateViaAjax($id, $status)

@@ -128,18 +128,14 @@
             return $cardDetails;
         }
 
-        protected function createUlTagForKanbanColumn($listItems, $counter = null)
+        protected function createUlTagForKanbanColumn($listItems, $attributeValue = null)
         {
             //return ZurmoHtml::tag('ul id="task-sortable-rows-' . $counter . '" class="connectedSortable"' , array(), $listItems);
-            return ZurmoHtml::tag('ul id="task-sortable-rows-' . $counter . '"' , array(), $listItems);
+            return ZurmoHtml::tag('ul id="task-sortable-rows-' . $attributeValue . '"' , array(), $listItems);
         }
 
         protected function registerScripts()
         {
-            //parent::registerScripts();
-            Yii::app()->clientScript->registerScriptFile(
-                Yii::app()->getAssetManager()->publish(
-                    Yii::getPathOfAlias('application.modules.tasks.widgets.assets')) . '/TaskKanbanUtils.js', ClientScript::POS_END);
             $taskSortableScript = "
                         var fixHelper = function(e, ui) {
                             ui.children().each(function() {
@@ -160,7 +156,19 @@
                  $type = $columnDataKeys[$count];
                  if($type != KanbanItem::TYPE_COMPLETED)
                  {
-                     $taskSortableScript .= "$('#task-sortable-rows-" . $count . "').sortable({
+                     $taskSortableScript .= $this->registerKanbanColumnSortableScript($count, $type);
+                 }
+            }
+
+            Yii::app()->clientScript->registerScript('task-sortable-data', $taskSortableScript);
+            $url = Yii::app()->createUrl('tasks/default/updateStatusInKanbanView', array());
+            $this->registerKanbanColumnStartActionScript(Zurmo::t('TasksModule', 'Finish'), Task::TASK_STATUS_IN_PROGRESS, $url);
+            $this->registerKanbanColumnFinishActionScript(Zurmo::t('TasksModule', 'Accept'), Zurmo::t('TasksModule', 'Reject'), Task::TASK_STATUS_AWAITING_ACCEPTANCE, $url);
+        }
+
+        protected function registerKanbanColumnSortableScript($count, $type)
+        {
+            return "$('#task-sortable-rows-" . $count . "').sortable({
                                                 forcePlaceholderSize: true,
                                                 forceHelperSize: true,
                                                 items: 'li',
@@ -181,10 +189,66 @@
                                                 helper: fixHelper
                                             }).disableSelection();
                                         ";
-                 }
-            }
+        }
 
-            Yii::app()->clientScript->registerScript('task-sortable-data', $taskSortableScript);
+        protected function registerKanbanColumnStartActionScript($label, $targetStatus, $url)
+        {
+            $script = "$('.task-start-action').click(
+                                                    function()
+                                                    {
+                                                        var element = $(this).parent().parent().parent();
+                                                        var ulelement = $(element).parent();
+                                                        var id = $(element).attr('id');
+                                                        var ulid = $(ulelement).attr('id');
+                                                        var ulidParts = ulid.split('-');
+                                                        var idParts = id.split('_');
+                                                        var taskId = parseInt(idParts[1]);
+                                                        var columnType = parseInt(ulidParts[3]);
+                                                        $('#task-sortable-rows-" . KanbanItem::TYPE_IN_PROGRESS . "').append(element);
+                                                        $('#task-sortable-rows-' + columnType).remove('#' + id);
+                                                        var addedElement = $('#task-sortable-rows-" . KanbanItem::TYPE_IN_PROGRESS . " #' + id + ' .task-start-action');
+                                                        $(addedElement).find('.z-label').html('" . $label . "');
+                                                        $(addedElement).removeClass('task-start-action').addClass('task-finish-action');
+                                                        $.ajax(
+                                                            {
+                                                                type : 'GET',
+                                                                data : {'targetStatus':" . $targetStatus . ", 'taskId':taskId},
+                                                                url  : '" . $url . "'
+                                                            }
+                                                        );
+                                                    }
+                                                );";
+
+            Yii::app()->clientScript->registerScript('start-action-script', $script);
+        }
+
+        protected function registerKanbanColumnFinishActionScript($labelAccept, $labelReject, $targetStatus, $url)
+        {
+            $script = "$('.task-finish-action').click(
+                                                    function()
+                                                    {
+                                                        var element = $(this).parent().parent().parent();
+                                                        var ulelement = $(element).parent();
+                                                        var id = $(element).attr('id');
+                                                        var idParts = id.split('_');
+                                                        var taskId = parseInt(idParts[1]);
+                                                        var rejectLinkElement = $(this).clone();
+                                                        var parent = $(this).parent();
+                                                        $(this).find('.z-label').html('" . $labelAccept . "');
+                                                        $(this).removeClass('task-finish-action').addClass('task-accept-action');
+                                                        $(rejectLinkElement).appendTo($(parent));
+                                                        $(rejectLinkElement).find('.z-label').html('" . $labelReject . "');
+                                                        $.ajax(
+                                                            {
+                                                                type : 'GET',
+                                                                data : {'targetStatus':" . Task::TASK_STATUS_AWAITING_ACCEPTANCE . ", 'taskId':taskId},
+                                                                url  : '" . $url . "'
+                                                            }
+                                                        );
+                                                    }
+                                                );";
+
+            Yii::app()->clientScript->registerScript('finish-action-script', $script);
         }
 
         protected function createTaskItemForKanbanColumn($data, $row)
