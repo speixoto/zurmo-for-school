@@ -74,7 +74,7 @@
             return false;
         }
 
-        public static function isExternalRequest()
+        public function isExternalRequest()
         {
             try
             {
@@ -85,6 +85,42 @@
                 $url = '';
             }
             if (strpos($url, '/external/') !== false)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public function isContextiveExternalRequest()
+        {
+            try
+            {
+                $url = Yii::app()->getRequest()->getUrl();
+            }
+            catch (CException $e)
+            {
+                $url = '';
+            }
+            if (strpos($url, '/contextiveExternal/') !== false)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public function isAnExternalRequestVariant()
+        {
+            if ($this->isExternalRequest())
+            {
+                return true;
+            }
+            elseif ($this->isContextiveExternalRequest())
             {
                 return true;
             }
