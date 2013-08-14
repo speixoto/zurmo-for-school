@@ -40,7 +40,7 @@
     abstract class CampaignsUtil
     {
         /**
-         * @param null $pageSize
+         * @param null $pageSize | int $pageSize
          * @return bool
          */
         public static function markProcessedCampaignsAsCompleted($pageSize = null)

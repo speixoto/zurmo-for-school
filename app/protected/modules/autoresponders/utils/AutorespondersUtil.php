@@ -40,7 +40,7 @@
     class AutorespondersUtil
     {
         /**
-         * @param $marketingListId
+         * @param int $marketingListId
          * @return array
          */
         public static function makeSearchAttributeData($marketingListId)

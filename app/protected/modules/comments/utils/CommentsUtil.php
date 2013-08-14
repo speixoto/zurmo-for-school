@@ -43,7 +43,7 @@
          * @param RedBeanModel $relatedModel
          * @param Comment $comment
          * @param $senderPerson
-         * @param $peopleToSendNotification
+         * @param array $peopleToSendNotification
          */
         public static function sendNotificationOnNewComment(RedBeanModel $relatedModel, Comment $comment, $senderPerson, $peopleToSendNotification)
         {

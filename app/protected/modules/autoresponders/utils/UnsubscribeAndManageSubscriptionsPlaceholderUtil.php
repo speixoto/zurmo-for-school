@@ -63,11 +63,13 @@
         }
 
         /**
-         * @param $content
-         * @param $isHtmlContent
+         * @param string $content
+         * @param bool $isHtmlContent
          */
         public static function setContentByType($content, $isHtmlContent)
         {
+            assert('is_string($content)');
+            assert('is_bool($isHtmlContent)');
             $key        = static::resolveConfigKeyByContentType($isHtmlContent);
             ZurmoConfigurationUtil::setByModuleName(static::CONFIG_MODULE_NAME, $key, $content);
         }
