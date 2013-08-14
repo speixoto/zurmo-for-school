@@ -154,6 +154,7 @@
 		right: 5px;
 		bottom: 5px;
 		.smaller();
+		text-decoration: underline;
 	}
 }
 
@@ -162,13 +163,19 @@
 	width: 85px;
 	height: 85px;
 	line-height: 85px;
-	font-size: 36px;
-	font-style: italic;
-	background: gold;
+	#gradient > .vertical-three-colors( #f5e488, #e1cb56, 80%, #b6a107 );
+	.b-shadow(~"inset 0 0 10px rgba(0, 0, 0, 0.5), 0 -1px 0 0 rgba(0, 0, 0, 0.1)");
+	.t-shadow(~"0 -1px 0 rgba(0, 0, 0, 0.2)");
 	.radius(50%);
 	margin:0 auto 7px auto;
+	.symbly(72px);
+	cursor: default;
+	color: #b67700;
+	.animateAll(1s);
+	-webkit-transform:rotateY(0deg);
 	&:hover{
-		-webkit-animation: spinCoin 1s infinite;
+		-webkit-animation: spinCoin 1s linear infinite;
+		//-webkit-transform:rotateY(360deg);
 	}
 }
 
@@ -303,6 +310,9 @@
 	width: 285px;
 	height: 100%;
 	float: left;
+	h3{
+		margin-top: 5px;
+	}
 	.collection-badge{
 		float: left;
 		display: inline-block;
@@ -318,6 +328,7 @@
 	> div{
 		.animateAll(.25s);
 		-webkit-transform:translate(0, 0%);
+		&.open-panel,
 		&:hover{
 			-webkit-transform:translate(0, -50%);
 			width: 525px;
@@ -356,14 +367,21 @@
 			.symbly(34px);
 			line-height: 1;
 			margin:0 0 0 -2px;
+			color: #7cb830;
 		}
 		.have-it-not{
 			.opacity(50);
-			color: #7cb830;
+
 		}
-		.total-completed{
-			float: right;
-		}
+	}
+	.total-completed{
+		position: relative;
+		top: -3px;
+		font-size: 14px;
+		font-weight: bold;
+		position: relative;
+		text-align: center;
+		line-height: 34px;
 	}
 }
 //to show an open panel
@@ -377,7 +395,26 @@
 .collection-items{
 	margin-top: 25px;
 	position: relative;
+
+	.num-collected{
+		width: 20px;
+		height: 20px;
+		line-height: 20px;
+		text-align: center;
+		display: block;
+		position: absolute;
+		top: -6px;
+		left: -10px;
+		color: #fff;
+		.smaller();
+		font-weight: bold;
+		background:#7cb830;
+		.radius(50%);
+		.b-shadow(~"inset 0 0 1px rgba(0, 0, 0, 0.3), 0 -1px 0 0 rgba(90, 142, 44, 0.9)");
+	}
+
 	.collection-item{
+		position: relative;
 		display: inline-block;
 		float: left;
 		margin-right: 15px;
@@ -386,7 +423,6 @@
 			width: auto;
 		}
 	}
-
 	.collection-item-redeemed{
 		position: absolute;
 		right: 0;
@@ -396,6 +432,18 @@
 		img{
 			max-width: 100px;
 			height: auto;
+		}
+		.num-collected{
+			width: 24px;
+			height: 24px;
+			line-height: 24px;
+		}
+		a{
+			font-size: 12px;
+			display: block;
+			text-align: center;
+			margin-bottom: -10px;
+			text-decoration: underline !important;
 		}
 	}
 }

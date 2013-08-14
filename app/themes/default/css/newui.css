@@ -20133,24 +20133,52 @@ div.special-pager .hidden.next:after {
   right: 5px;
   bottom: 5px;
   font-size: 11px;
+  text-decoration: underline;
 }
 #z-coin {
   display: block;
   width: 85px;
   height: 85px;
   line-height: 85px;
-  font-size: 36px;
-  font-style: italic;
-  background: gold;
+  background-color: #b6a107 ;
+  background-repeat: no-repeat ;
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#f5e488), color-stop(80%, #e1cb56), to(#b6a107)) ;
+  background-image: -webkit-linear-gradient(#f5e488, #e1cb56 80%, #b6a107) ;
+  background-image: -moz-linear-gradient(top, #f5e488, #e1cb56 80%, #b6a107) ;
+  background-image: -ms-linear-gradient(#f5e488, #e1cb56 80%, #b6a107) ;
+  background-image: -o-linear-gradient(#f5e488, #e1cb56 80%, #b6a107) ;
+  background-image: linear-gradient(#f5e488, #e1cb56 80%, #b6a107) ;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f5e488', endColorstr='#b6a107', GradientType=0);
+  -webkit-box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5), 0 -1px 0 0 rgba(0, 0, 0, 0.1);
+  -moz-box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5), 0 -1px 0 0 rgba(0, 0, 0, 0.1);
+  -o-box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5), 0 -1px 0 0 rgba(0, 0, 0, 0.1);
+  -ms-box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5), 0 -1px 0 0 rgba(0, 0, 0, 0.1);
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5), 0 -1px 0 0 rgba(0, 0, 0, 0.1);
+  -webkit-text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.2);
+  -moz-text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.2);
+  -o-text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.2);
+  -ms-text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.2);
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.2);
   -webkit-border-radius: 50%;
   -moz-border-radius: 50%;
   -ms-border-radius: 50%;
   -o-border-radius: 50%;
   border-radius: 50%;
   margin: 0 auto 7px auto;
+  font-weight: normal;
+  font-size: 72px;
+  font-family: "zurmo_gamification_symbly_rRg";
+  cursor: default;
+  color: #b67700;
+  -webkit-transition: all 1s ease-out;
+  -moz-transition: all 1s ease-out;
+  -o-transition: all 1s ease-out;
+  -ms-transition: all 1s ease-out;
+  transition: all 1s ease-out;
+  -webkit-transform: rotateY(0deg);
 }
 #z-coin:hover {
-  -webkit-animation: spinCoin 1s infinite;
+  -webkit-animation: spinCoin 1s linear infinite;
 }
 /*Leaderboard*/
 #leaderboard {
@@ -20301,6 +20329,9 @@ div.special-pager .hidden.next:after {
   height: 100%;
   float: left;
 }
+.collection-panel h3 {
+  margin-top: 5px;
+}
 .collection-panel .collection-badge {
   float: left;
   display: inline-block;
@@ -20341,6 +20372,7 @@ div.special-pager .hidden.next:after {
   -ms-box-shadow: inset 0 0 1px 0 #cccccc;
   box-shadow: inset 0 0 1px 0 #cccccc;
 }
+.collection-panel > div.open-panel,
 .collection-panel > div:hover {
   -webkit-transform: translate(0, -50%);
   width: 525px;
@@ -20371,22 +20403,52 @@ div.special-pager .hidden.next:after {
   font-family: "zurmo_gamification_symbly_rRg";
   line-height: 1;
   margin: 0 0 0 -2px;
+  color: #7cb830;
 }
 .collection-panel .number-collected .have-it-not {
   filter: alpha(opacity=50);
   -khtml-opacity: 0.5;
   -moz-opacity: 0.5;
   opacity: 0.5;
-  color: #7cb830;
 }
-.collection-panel .number-collected .total-completed {
-  float: right;
+.collection-panel .total-completed {
+  top: -3px;
+  font-size: 14px;
+  font-weight: bold;
+  position: relative;
+  text-align: center;
+  line-height: 34px;
 }
 .collection-items {
   margin-top: 25px;
   position: relative;
 }
+.collection-items .num-collected {
+  width: 20px;
+  height: 20px;
+  line-height: 20px;
+  text-align: center;
+  display: block;
+  position: absolute;
+  top: -6px;
+  left: -10px;
+  color: #fff;
+  font-size: 11px;
+  font-weight: bold;
+  background: #7cb830;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  -ms-border-radius: 50%;
+  -o-border-radius: 50%;
+  border-radius: 50%;
+  -webkit-box-shadow: inset 0 0 1px rgba(0, 0, 0, 0.3), 0 -1px 0 0 rgba(90, 142, 44, 0.9);
+  -moz-box-shadow: inset 0 0 1px rgba(0, 0, 0, 0.3), 0 -1px 0 0 rgba(90, 142, 44, 0.9);
+  -o-box-shadow: inset 0 0 1px rgba(0, 0, 0, 0.3), 0 -1px 0 0 rgba(90, 142, 44, 0.9);
+  -ms-box-shadow: inset 0 0 1px rgba(0, 0, 0, 0.3), 0 -1px 0 0 rgba(90, 142, 44, 0.9);
+  box-shadow: inset 0 0 1px rgba(0, 0, 0, 0.3), 0 -1px 0 0 rgba(90, 142, 44, 0.9);
+}
 .collection-items .collection-item {
+  position: relative;
   display: inline-block;
   float: left;
   margin-right: 15px;
@@ -20405,6 +20467,18 @@ div.special-pager .hidden.next:after {
 .collection-items .collection-item-redeemed img {
   max-width: 100px;
   height: auto;
+}
+.collection-items .collection-item-redeemed .num-collected {
+  width: 24px;
+  height: 24px;
+  line-height: 24px;
+}
+.collection-items .collection-item-redeemed a {
+  font-size: 12px;
+  display: block;
+  text-align: center;
+  margin-bottom: -10px;
+  text-decoration: underline !important;
 }
 /*********************************************************************************
  * Zurmo is a customer relationship management program developed by
