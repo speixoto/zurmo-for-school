@@ -130,10 +130,15 @@
             assert('is_string($jobLabelHeaderContent)');
             $content  = '<table>';
             $content .= '<colgroup>';
-            $content .= '<col style="width:40%" /><col style="width:20%" /><col style="width:30%" />';
-            $content .= '<col style="width:10%" />';
             if($this->showRunJobLink)
             {
+                $content .= '<col style="width:40%" /><col style="width:20%" /><col style="width:20%" />';
+                $content .= '<col style="width:10%" />';
+                $content .= '<col style="width:10%" />';
+            }
+            else
+            {
+                $content .= '<col style="width:40%" /><col style="width:20%" /><col style="width:30%" />';
                 $content .= '<col style="width:10%" />';
             }
             $content .= '</colgroup>';
@@ -154,13 +159,14 @@
                 $content .=          '&#160;' . ZurmoHtml::encode($jobData['label']) . '</td>';
                 $content .= '<td>' . $jobData['lastCompletedRunEncodedContent'] . '</td>';
                 $content .= '<td>' . ZurmoHtml::encode($jobData['statusContent']) . '</td>';
-                $content .= '<td>' . $this->resolveActionContentByStatus($type, $jobData['status']) . '</td>';
+                $content .= '<td class="button-column-right">' . $this->resolveActionContentByStatus($type, $jobData['status']) . '</td>';
                 if($this->showRunJobLink)
                 {
                     $runJobLink = ZurmoHtml::link(ZurmoHtml::wrapLabel(Zurmo::t('ZurmoModule', 'Run')),
                                     Yii::app()->createUrl(
-                                        $this->moduleId . '/' . $this->controllerId . '/runJob', array('type' => $type)));
-                    $content .= '<td>' . $runJobLink . '</td>';
+                                        $this->moduleId . '/' . $this->controllerId . '/runJob', array('type' => $type)),
+                                    array('class' => 'z-button run-button'));
+                    $content .= '<td class="button-column-right">' . $runJobLink . '</td>';
                 }
                 $content .= '</tr>';
             }

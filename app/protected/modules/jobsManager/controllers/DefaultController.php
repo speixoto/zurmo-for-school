@@ -150,8 +150,8 @@
             $view = new JobsManagerPageView(ZurmoDefaultAdminViewUtil::
                         makeViewWithBreadcrumbsForCurrentUser($this, $runJobView, $breadcrumbLinks, 'JobsManagerBreadCrumbView'));
             echo $view->render();
-            $template = ZurmoHtml::script("$('#logging-table').prepend('{message}<br/>');");
-            JobsManagerUtil::runFromJobManagerCommandOrBrowser($type, (int)$timeLimit, $messageLoggerClassName, $template, "<br>");
+            $template = ZurmoHtml::script("$('#logging-table ol').append('<li>{message}</li>');");
+            JobsManagerUtil::runFromJobManagerCommandOrBrowser($type, (int)$timeLimit, $messageLoggerClassName, $template);
             echo ZurmoHtml::script('$("#progress-table").hide(); $("#complete-table").show();');
         }
     }

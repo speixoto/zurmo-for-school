@@ -62,6 +62,8 @@
                 throw new NotSupportedException();
             }
             ContactsModule::loadStartingData();
+            $everyoneGroup        = Group::getByName(Group::EVERYONE_GROUP_NAME);
+            assert($everyoneGroup->save()); // Not Coding Standard
         }
 
         public function testSuperUserCompleteMatchVariations()
