@@ -178,15 +178,17 @@
         {
             assert('is_string($name)');
             $sortDescending =  SearchUtil::resolveSortDescendingFromGetArray($name);
-
-            if ($sortDescending === false)
+            if (!isset($sortDescending))
             {
-                if (empty($this->model->sortDescending))
+                if (!empty($this->model->sortDescending))
+                {
+                    $sortDescending = true;
+                }
+                else
                 {
                     $sortDescending = false;
                 }
             }
-
             return $sortDescending;
         }
     }
