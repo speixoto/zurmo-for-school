@@ -196,7 +196,7 @@
             $report->addDisplayAttribute($displayAttribute);
             $reportDataProvider = new MatrixReportDataProvider($report);
             $count = $reportDataProvider->calculateTotalItemCount();
-            $this->assertEquals(0, $count);
+            $this->assertEquals(1, $count);
         }
 
         public function testCalculateTotalGroupingsCount()

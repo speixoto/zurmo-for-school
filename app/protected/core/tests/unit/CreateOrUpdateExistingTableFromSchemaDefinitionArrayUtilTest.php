@@ -36,9 +36,8 @@
 
     class CreateOrUpdateExistingTableFromSchemaDefinitionArrayUtilTest extends BaseTest
     {
+        // TODO: @Shoaibi: High: Add coverage for more validation exception
         protected static $messageLogger;
-
-        public $freeze = false;
 
         public static function setUpBeforeClass()
         {
@@ -49,30 +48,9 @@
             static::$messageLogger = new MessageLogger();
         }
 
-        public function setup()
-        {
-            parent::setUp();
-            $freeze = false;
-            if (RedBeanDatabase::isFrozen())
-            {
-                RedBeanDatabase::unfreeze();
-                $freeze = true;
-            }
-            $this->freeze = $freeze;
-        }
-
-        public function tearDown()
-        {
-            if ($this->freeze)
-            {
-                RedBeanDatabase::freeze();
-            }
-            parent::teardown();
-        }
-
         /**
          * @expectedException CException
-         * @expectedMessage Invalid Schema definition received.
+         * @expectedMessage Invalid Schema definition received for . More than one table definitions defined in schema
          */
         public function testGenerateOrUpdateTableBySchemaDefinitionWithEmptySchemaDefinition()
         {
@@ -85,7 +63,7 @@
         /**
          * @depends testGenerateOrUpdateTableBySchemaDefinitionWithEmptySchemaDefinition
          * @expectedException CException
-         * @expectedMessage Invalid Schema definition received.
+         * @expectedMessage Invalid Schema definition received for 0. Table name: 0 is not string
          */
         public function testGenerateOrUpdateTableBySchemaDefinitionWithNoTableName()
         {
@@ -110,7 +88,7 @@
         /**
          * @depends testGenerateOrUpdateTableBySchemaDefinitionWithNoTableName
          * @expectedException CException
-         * @expectedMessage Invalid Schema definition received.
+         * @expectedMessage Invalid Schema definition received for tableName. More than one table definitions defined in schema
          */
         public function testGenerateOrUpdateTableBySchemaDefinitionWithTwoValuesInSchema()
         {
@@ -149,7 +127,7 @@
         /**
          * @depends testGenerateOrUpdateTableBySchemaDefinitionWithTwoValuesInSchema
          * @expectedException CException
-         * @expectedMessage Invalid Schema definition received.
+         * @expectedMessage Invalid Schema definition received for tableName. Table schema should always contain 2 sub-definitions
          */
         public function testGenerateOrUpdateTableBySchemaDefinitionWithNoColumnsKey()
         {
@@ -163,24 +141,26 @@
 
         /**
          * @depends testGenerateOrUpdateTableBySchemaDefinitionWithNoColumnsKey
-         * @expectedException CException
-         * @expectedMessage Invalid Schema definition received.
          */
         public function testGenerateOrUpdateTableBySchemaDefinitionWithNoColumns()
         {
-            $schema     = array('tableName' =>  array(
+            $schema     = array('tableWithNoColumns' =>  array(
                                         'columns'   => array(),
                                         'indexes'   => array(),
                                     ),
                                     );
             CreateOrUpdateExistingTableFromSchemaDefinitionArrayUtil::generateOrUpdateTableBySchemaDefinition($schema,
                                                                                                 static::$messageLogger);
+            $processedTables    = CreateOrUpdateExistingTableFromSchemaDefinitionArrayUtil::resolveProcessedTables();
+            $this->assertNotEmpty($processedTables);
+            $this->assertCount(1, $processedTables);
+            $this->assertEquals('tableWithNoColumns', $processedTables[0]);
         }
 
         /**
          * @depends testGenerateOrUpdateTableBySchemaDefinitionWithNoColumns
          * @expectedException CException
-         * @expectedMessage Invalid Schema definition received.
+         * @expectedMessage Invalid Schema definition received for tableName. Table schema should always contain 2 sub-definitions
          */
         public function testGenerateOrUpdateTableBySchemaDefinitionWithNoIndexesKey()
         {
@@ -224,14 +204,15 @@
                                                                                                 static::$messageLogger);
             $processedTables    = CreateOrUpdateExistingTableFromSchemaDefinitionArrayUtil::resolveProcessedTables();
             $this->assertNotEmpty($processedTables);
-            $this->assertCount(1, $processedTables);
-            $this->assertEquals('tableName1', $processedTables[0]);
+            $this->assertCount(2, $processedTables);
+            $this->assertEquals('tableWithNoColumns', $processedTables[0]);
+            $this->assertEquals('tableName1', $processedTables[1]);
         }
 
         /**
          * @depends testGenerateOrUpdateTableBySchemaDefinitionWithNoIndexes
          * @expectedException CException
-         * @expectedMessage Invalid Schema definition received.
+         * @expectedMessage Invalid Schema definition received for tableName2. Column: hash definition should always have 6 clauses
          */
         public function testGenerateOrUpdateTableBySchemaDefinitionWithColumnsMissingKeys()
         {
@@ -254,7 +235,7 @@
         /**
          * @depends testGenerateOrUpdateTableBySchemaDefinitionWithColumnsMissingKeys
          * @expectedException CException
-         * @expectedMessage Invalid Schema definition received.
+         * @expectedMessage Invalid Schema definition received for tableName2. Column: hash missing notNull clause
          */
         public function testGenerateOrUpdateTableBySchemaDefinitionWithColumnsHavingExtraKeys()
         {
@@ -279,7 +260,7 @@
         /**
          * @depends testGenerateOrUpdateTableBySchemaDefinitionWithColumnsHavingExtraKeys
          * @expectedException CException
-         * @expectedMessage Invalid Schema definition received.
+         * @expectedMessage Invalid Schema definition received for tableName2. Index Name: 0 is not a string
          */
         public function testGenerateOrUpdateTableBySchemaDefinitionWithIndexesHavingIntegerKeys()
         {
@@ -309,7 +290,7 @@
         /**
          * @depends testGenerateOrUpdateTableBySchemaDefinitionWithIndexesHavingIntegerKeys
          * @expectedException CException
-         * @expectedMessage Invalid Schema definition received.
+         * @expectedMessage Invalid Schema definition received for tableName2. Index: indexName does not have 2 clauses
          */
         public function testGenerateOrUpdateTableBySchemaDefinitionWithIndexesHavingMoreThanTwoItems()
         {
@@ -340,7 +321,7 @@
         /**
          * @depends testGenerateOrUpdateTableBySchemaDefinitionWithIndexesHavingMoreThanTwoItems
          * @expectedException CException
-         * @expectedMessage Invalid Schema definition received.
+         * @expectedMessage Invalid Schema definition received for tableName2. Index: indexName does not have indexed column names
          */
         public function testGenerateOrUpdateTableBySchemaDefinitionWithIndexesHavingNoColumnsKey()
         {
@@ -371,7 +352,7 @@
         /**
          * @depends testGenerateOrUpdateTableBySchemaDefinitionWithIndexesHavingNoColumnsKey
          * @expectedException CException
-         * @expectedMessage Invalid Schema definition received.
+         * @expectedMessage Invalid Schema definition received for tableName2. Index: indexName does not have index uniqueness clause defined
          */
         public function testGenerateOrUpdateTableBySchemaDefinitionWithUIndexesHavingNoUniqueKey()
         {
@@ -388,7 +369,7 @@
                 ),
                 'indexes' => array(
                     'indexName' => array(
-                        'unique' => false,
+                        'columns' => array(),
                         'third' => 1,
                     )
                 ),
@@ -401,7 +382,7 @@
         /**
          * @depends testGenerateOrUpdateTableBySchemaDefinitionWithUIndexesHavingNoUniqueKey
          * @expectedException CException
-         * @expectedMessage Invalid Schema definition received.
+         * @expectedMessage Invalid Schema definition received for tableName2. Index: indexName column definition is not an array
          */
         public function testGenerateOrUpdateTableBySchemaDefinitionWithIndexColumnKeyNotBeingArray()
         {
@@ -431,7 +412,7 @@
         /**
          * @depends testGenerateOrUpdateTableBySchemaDefinitionWithIndexColumnKeyNotBeingArray
          * @expectedException CException
-         * @expectedMessage Invalid Schema definition received.
+         * @expectedMessage Invalid Schema definition received for tableName2. Index: indexName column: hasha does not exist in current schema definition provided
          */
         public function testGenerateOrUpdateTableBySchemaDefinitionWithIndexColumnNotFound()
         {
@@ -586,8 +567,10 @@
                                                                                                 static::$messageLogger);
             $processedTables    = CreateOrUpdateExistingTableFromSchemaDefinitionArrayUtil::resolveProcessedTables();
             $this->assertNotEmpty($processedTables);
-            $this->assertCount(2, $processedTables);
-            $this->assertEquals('tableName3', $processedTables[1]);
+            $this->assertCount(3, $processedTables);
+            $this->assertEquals('tableWithNoColumns', $processedTables[0]);
+            $this->assertEquals('tableName1', $processedTables[1]);
+            $this->assertEquals('tableName3', $processedTables[2]);
         }
 
         /**
@@ -695,8 +678,10 @@
                                                                                                 static::$messageLogger);
             $processedTables    = CreateOrUpdateExistingTableFromSchemaDefinitionArrayUtil::resolveProcessedTables();
             $this->assertNotEmpty($processedTables);
-            $this->assertCount(2, $processedTables);
-            $this->assertEquals('tableName3', $processedTables[1]);
+            $this->assertCount(3, $processedTables);
+            $this->assertEquals('tableWithNoColumns', $processedTables[0]);
+            $this->assertEquals('tableName1', $processedTables[1]);
+            $this->assertEquals('tableName3', $processedTables[2]);
         }
 
         /**
@@ -792,8 +777,10 @@
                                                                                                 static::$messageLogger);
             $processedTables    = CreateOrUpdateExistingTableFromSchemaDefinitionArrayUtil::resolveProcessedTables();
             $this->assertNotEmpty($processedTables);
-            $this->assertCount(2, $processedTables);
-            $this->assertEquals('tableName3', $processedTables[1]);
+            $this->assertCount(3, $processedTables);
+            $this->assertEquals('tableWithNoColumns', $processedTables[0]);
+            $this->assertEquals('tableName1', $processedTables[1]);
+            $this->assertEquals('tableName3', $processedTables[2]);
             // we do not need try-catch here as if there was an exception it would have been thrown already.
             $existingFields     = ZurmoRedBean::$writer->getColumnsWithDetails('tableName3');
             $this->assertNotEmpty($existingFields);
