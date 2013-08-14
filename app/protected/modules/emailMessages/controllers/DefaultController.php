@@ -401,8 +401,7 @@
                     if (!$emailMessage->save())
                     {
                         throw new FailedToSaveModelException();
-                    }
-                    ZurmoControllerUtil::updatePermissionsWithDefaultForModelByCurrentUser($emailMessage);
+                    }                    
                 }
             }
             else
@@ -410,6 +409,7 @@
                 static::attemptToMatchAndSaveLeadOrContact($emailMessage, 'Contact', (int)$id);
                 static::attemptToMatchAndSaveLeadOrContact($emailMessage, 'Lead', (int)$id);
             }
+            ZurmoControllerUtil::updatePermissionsWithDefaultForModelByCurrentUser($emailMessage);
         }
 
         protected static function attemptToMatchAndSaveLeadOrContact($emailMessage, $type, $emailMessageId)

@@ -12401,6 +12401,7 @@ table.configuration-list td:last-child a .z-label:before {
   margin-right: 5px;
 }
 #JobsCollectionView table {
+  table-layout: auto;
   border-top: 1px solid #DFDFDF;
 }
 #JobsCollectionView table:first-child {
