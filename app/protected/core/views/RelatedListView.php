@@ -176,7 +176,8 @@
                     'lastPageLabel'  => '<span>last</span>',
                     'class'          => 'SimpleListLinkPager',
                     'paginationParams' => array_merge(GetUtil::getData(),
-                                            array('portletId'   => $this->params['portletId'])),
+                                            array('portletId'   => $this->params['portletId'],
+                                                  'redirectUrl' => $this->params['redirectUrl'])),
                     'route'         => 'defaultPortlet/details',
                 );
         }
