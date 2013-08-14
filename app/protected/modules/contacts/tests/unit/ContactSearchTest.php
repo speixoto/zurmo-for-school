@@ -53,7 +53,7 @@
             );
 
             $contactStates = ContactState::getAll();
-            $lastContactState  = $contactStates[count($contactStates) - 1];            
+            $lastContactState  = $contactStates[count($contactStates) - 1];      
 
             foreach ($contactData as $key => $firstName)
             {
