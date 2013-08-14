@@ -53,7 +53,7 @@
             );
 
             $contactStates = ContactState::getAll();
-            $lastContactState  = $contactStates[count($contactStates) - 1];      
+            $lastContactState  = $contactStates[count($contactStates) - 1];
 
             foreach ($contactData as $key => $firstName)
             {
@@ -133,14 +133,14 @@
             $this->assertEquals(1, count($data));
             $this->assertEquals($firstContactState, $data[0]->state);
         }
-        
+
         public function testGetContactsByAnyEmailAddress()
         {
             parent::setUpBeforeClass();
             $user = SecurityTestHelper::createSuperAdmin();
             $loaded = ContactsModule::loadStartingData();
             assert($loaded);
-            
+
             $super = User::getByUsername('super');
             Yii::app()->user->userModel = $super;
             $contactStates = ContactState::getAll();
@@ -149,14 +149,16 @@
             $contact = new Contact();
             $contact->title->value = 'Mr.';
             $contact->firstName    = 'test';
-            $contact->lastName     = 'tribus';
+            $contact->lastName     = 'contact';
             $contact->owner        = $super;
             $contact->state        = $firstContactState;
             $contact->primaryEmail = new Email();
-            $contact->primaryEmail->emailAddress = 'zurmoTribus@test.com';
+            $contact->primaryEmail->emailAddress = 'zurmo@test.com';
+            $contact->secondaryEmail = new Email();
+            $contact->secondaryEmail->emailAddress = 'zurmo2@test.com';
             $this->assertTrue($contact->save());
-            $data = ContactSearch::getContactsByAnyEmailAddress('zurmoTribus@test.com');            
-            $this->assertEquals(1, count($data));            
+            $data = ContactSearch::getContactsByAnyEmailAddress('zurmo@test.com');
+            $this->assertEquals(1, count($data));
         }
     }
 ?>
