@@ -20169,7 +20169,7 @@ div.special-pager .hidden.next:after {
   font-size: 72px;
   font-family: "zurmo_gamification_symbly_rRg";
   cursor: default;
-  color: #b67700;
+  color: rgba(0, 0, 0, 0.5);
   -webkit-transition: all 1s ease-out;
   -moz-transition: all 1s ease-out;
   -o-transition: all 1s ease-out;
@@ -20393,6 +20393,7 @@ div.special-pager .hidden.next:after {
   box-shadow: 0 0 5px 0 #aaaaaa;
 }
 .collection-panel .number-collected {
+  visibility: hidden;
   margin: -2px 0 0 0;
   white-space: nowrap;
 }
@@ -20446,6 +20447,12 @@ div.special-pager .hidden.next:after {
   -o-box-shadow: inset 0 0 1px rgba(0, 0, 0, 0.3), 0 -1px 0 0 rgba(90, 142, 44, 0.9);
   -ms-box-shadow: inset 0 0 1px rgba(0, 0, 0, 0.3), 0 -1px 0 0 rgba(90, 142, 44, 0.9);
   box-shadow: inset 0 0 1px rgba(0, 0, 0, 0.3), 0 -1px 0 0 rgba(90, 142, 44, 0.9);
+}
+.collection-items .missing {
+  filter: alpha(opacity=15);
+  -khtml-opacity: 0.15;
+  -moz-opacity: 0.15;
+  opacity: 0.15;
 }
 .collection-items .collection-item {
   position: relative;
