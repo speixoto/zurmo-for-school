@@ -57,14 +57,14 @@
             $model                         = new $modelClassName(false);
             $adapter                       = new ModelNumberOrCurrencyAttributesAdapter($model);
             $attributeDataNumerOrCurrency  = $adapter->getAttributes();           
-            $title          = Zurmo::t('DesignerModule', 'Create a formula that is evaluated based on other fiels. ' .
+            $title          = Zurmo::t('DesignerModule', 'Create a formula that is evaluated based on other fields. ' .
                                                          'The formula can be a math expression calculated from number ' .
-                                                         'fields, as an example, you can use an expression like ' . 
-                                                         '(field1 * field2) / field3. The formula can also be an if ' .
+                                                         'fields, for example, you can use an expression like ' . 
+                                                         '(field1 * field2) / field3. The formula can also include an if ' .
                                                          'statement, use the IF(condition;trueValue;falseValue) syntax. ' .
-                                                         'In condition, and values you can use strings, string fields, ' .
+                                                         'Within the condition and values you can use strings, string fields, ' .
                                                          'number fields or math expressions. In the condition you can ' .
-                                                         'use the operators <,>,=,!=,<= and >=. An example of an if ' .
+                                                         'use the operators <,>,==,!=,<= and >=. An example of an if ' .
                                                          'statement is IF(field1 == field4;field2/365;0)');
             $spanContent    = '<span id="formula-tooltip" class="tooltip" title="' . $title . '">?</span>';
             $content        = null;                   
