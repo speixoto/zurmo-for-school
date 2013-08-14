@@ -428,6 +428,7 @@ table.configuration-list{
         margin-right:5px;
     }
     table{
+	    table-layout:auto;
         border-top:1px solid #DFDFDF;
         &:first-child{
             border-top:none;
@@ -470,6 +471,45 @@ table.configuration-list{
 .jobHasNeverRun{
     color:#b38b01;
 }
+
+.button-column-right{
+	text-align: right !important;
+}
+
+.run-button{
+	span{
+		&:before{
+			content: "";
+			margin-right:0px;
+		}
+		&:after{
+			content: "7";
+			.symbly(18px);
+			margin-left:5px;
+			position:relative;
+			top:1px;
+			font-weight: normal !important;
+		}
+	}
+}
+
+#logging-table,
+#complete-table{
+	margin-bottom: 15px;
+	h3{
+		margin-bottom: 8px;
+	}
+	a{
+		margin-right: 15px;
+	}
+	ol{
+		list-style: decimal inside;
+	}
+	li{
+		margin-bottom: 5px;
+	}
+}
+
 
 /*Languages*/
 #LanguagesCollectionView{
@@ -1117,4 +1157,17 @@ table.configuration-list{
 	padding: 15px;
 	white-space: normal;
 	word-break: break-all;
+}
+
+/*Diagnostics*/
+#DiagnosticCheckServicesView{
+	table{
+		margin-top: 15px;
+	}
+	.fail,
+	.warning,
+	.pass{
+		display: block;
+		text-align: center;
+	}
 }

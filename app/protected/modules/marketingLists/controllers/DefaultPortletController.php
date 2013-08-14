@@ -84,7 +84,7 @@
                                       $reportDataProvider, $attributeName);
                 $pageCount = $reportDataProvider->getPagination()->getPageCount();
                 $subscriberInformation = $this->addNewSubscribers($marketingListId, $contactIds);
-                if($pageCount == $page || $pageCount == 0)
+                if ($pageCount == $page || $pageCount == 0)
                 {
                     $subscriberInformation = array('subscribedCount' => $subscribedCount + $subscriberInformation['subscribedCount'],
                                                    'skippedCount'    => $skippedCount    + $subscriberInformation['skippedCount']);
@@ -109,7 +109,6 @@
                 $message = $this->renderCompleteMessageBySubscriberInformation($subscriberInformation);
                 echo CJSON::encode(array('message' => $message, 'type' => 'message'));
             }
-
         }
 
         protected function renderCompleteMessageBySubscriberInformation(array $subscriberInformation)

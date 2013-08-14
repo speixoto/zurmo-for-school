@@ -31,13 +31,15 @@
 
         public static function getListBreadcrumbLinks()
         {
-            $title = Zurmo::t('ProductTemplatesModule', 'Catalog Items');
+            $params = LabelUtil::getTranslationParamsForAllModules();
+            $title = Zurmo::t('ProductTemplatesModule', 'ProductTemplatesModulePluralLabel', $params);
             return array($title);
         }
 
         public static function getDetailsAndEditBreadcrumbLinks()
         {
-            return array(Zurmo::t('ProductTemplatesModule', 'Catalog Items') => array('default/list'));
+            $params = LabelUtil::getTranslationParamsForAllModules();
+            return array(Zurmo::t('ProductTemplatesModule', 'ProductTemplatesModulePluralLabel', $params) => array('default/list'));
         }
 
         public function filters()
@@ -51,7 +53,7 @@
             $filters = array_merge(array(
                                         array(
                                             ZurmoBaseController::RIGHTS_FILTER_PATH .
-                                            ' - modalList,details,autoCompleteAllProductCategoriesForMultiSelectAutoComplete', // Not Coding Standard
+                                            ' - modalList, selectFromRelatedList, details, autoCompleteAllProductCategoriesForMultiSelectAutoComplete', // Not Coding Standard
                                             'moduleClassName' => get_class($this->getModule()),
                                             'rightName' => ProductTemplatesModule::getAccessRight(),
                                         ),
@@ -246,7 +248,8 @@
          */
         public function actionMassDelete()
         {
-            $title           = Zurmo::t('ProductTemplatesModule', 'Mass Delete Catalog Items');
+            $params          = LabelUtil::getTranslationParamsForAllModules();
+            $title           = Zurmo::t('ProductTemplatesModule', 'Mass Delete ProductTemplatesModulePluralLabel', $params);
             $breadcrumbLinks = array(
                  $title,
             );
@@ -268,13 +271,14 @@
                                                             $selectedRecordCount,
                                                             'ProductTemplatesPageView',
                                                             $productTemplate,
-                                                            Zurmo::t('ProductTemplatesModule', 'Catalog Items'),
+                                                            Zurmo::t('ProductTemplatesModule', 'ProductTemplatesModulePluralLabel', $params),
                                                             $dataProvider
                                                         );
 
             if ($productTemplate === false)
             {
-                Yii::app()->user->setFlash('notification', Zurmo::t('ProductTemplatesModule', 'One of the catalog item selected is  associated to products in the system hence could not be deleted'));
+                Yii::app()->user->setFlash('notification', Zurmo::t('ProductTemplatesModule',
+                'One of the ProductTemplatesModuleSingularLowerCaseLabel selected is  associated to products in the system hence could not be deleted', $params));
                 $this->redirect(Zurmo::app()->request->getUrlReferrer());
             }
             else
@@ -283,7 +287,7 @@
                     $productTemplate,
                     $activeAttributes,
                     $selectedRecordCount,
-                    Zurmo::t('ProductTemplatesModule', 'Catalog Items'),
+                    Zurmo::t('ProductTemplatesModule', 'ProductTemplatesModulePluralLabel', $params),
                     'ProductTemplatesMassDeleteView'
                 );
                 $view = new ProductTemplatesPageView(ZurmoDefaultViewUtil::
@@ -426,8 +430,7 @@
                                                     $relationModuleId,
                                                     $stateMetadataAdapterClassName = null)
         {
-            $portlet = Portlet::getById((int)$portletId);
-
+            $portlet               = Portlet::getById((int)$portletId);
             $modalListLinkProvider = new ProductTemplateSelectFromRelatedListModalListLinkProvider(
                                             $relationAttributeName,
                                             (int)$relationModelId,
