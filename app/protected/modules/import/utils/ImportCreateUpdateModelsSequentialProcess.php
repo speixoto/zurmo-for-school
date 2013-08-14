@@ -52,7 +52,7 @@
 
         /**
          * @param Import $import
-         * @param $dataProvider
+         * @param AnalyzerSupportedDataProvider $dataProvider
          */
         public function __construct(Import $import, $dataProvider)
         {

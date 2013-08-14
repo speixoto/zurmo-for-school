@@ -39,6 +39,8 @@
         /**
          * Based on the current theme, retrieve the email notification template for html content and replace the
          * content tags with the appropriate strings
+         * @param string $bodyContent
+         * @return string
          */
         public static function resolveNotificationHtmlTemplate($bodyContent)
         {
@@ -86,6 +88,8 @@
         /**
          * Based on the current theme, retrieve the email notification template for text content and replace the
          * content tags with the appropriate strings
+         * @param string $bodyContent
+         * @return string
          */
         public static function resolveNotificationTextTemplate($bodyContent)
         {

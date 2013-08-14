@@ -47,12 +47,12 @@
         protected static $baseQueryStringArray;
 
         /**
-         * @param $tracking
-         * @param $content
-         * @param $modelId
+         * @param bool $tracking
+         * @param string $content
+         * @param int $modelId
          * @param $modelType
-         * @param $personId
-         * @param $marketingListId
+         * @param int $personId
+         * @param int $marketingListId
          * @param bool $isHtmlContent
          * @return bool
          */
@@ -154,6 +154,11 @@
         }
 
         // this should be protected but we use it in EmailBounceJob so it has to be public.
+        /**
+         * @param array $queryStringArray
+         * @return bool | array
+         * @throws FailedToSaveModelException
+         */
         public static function createOrUpdateActivity($queryStringArray)
         {
             $activity = static::resolveExistingActivity($queryStringArray);
@@ -377,12 +382,12 @@ PTN;
         }
 
         /**
-         * @param $content
-         * @param $personId
-         * @param $marketingListId
-         * @param $modelId
+         * @param string $content
+         * @param int $personId
+         * @param int $marketingListId
+         * @param int $modelId
          * @param $modelType
-         * @param $isHtmlContent
+         * @param bool $isHtmlContent
          * @param bool $replaceExisting
          * @param bool $preview
          */

@@ -38,8 +38,8 @@
     {
         /**
          * @param $emailTemplateType
-         * @param $language
-         * @param $content
+         * @param string $language
+         * @param string $content
          * @return ContactMergeTagsUtil|WorkflowMergeTagsUtil
          * @throws NotSupportedException
          */

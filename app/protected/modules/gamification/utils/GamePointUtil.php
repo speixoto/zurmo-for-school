@@ -63,7 +63,7 @@
         }
 
         /**
-         * @param $type
+         * @param string $type
          * @return array
          */
         public static function getUserLeaderboardData($type)

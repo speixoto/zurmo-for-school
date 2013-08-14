@@ -53,7 +53,8 @@
          */
         public static function getContentByType($isHtmlContent, $returnDefault = true)
         {
-            $key        = static::resolveConfigKeyByContentType($isHtmlContent);
+            assert('is_bool($isHtmlContent)');
+            $key        = static::resolveConfigKeyByContentType((bool) $isHtmlContent);
             $content    = ZurmoConfigurationUtil::getByModuleName(static::CONFIG_MODULE_NAME, $key);
             if (empty($content) && $returnDefault)
             {
@@ -70,13 +71,14 @@
         {
             assert('is_string($content)');
             assert('is_bool($isHtmlContent)');
-            $key        = static::resolveConfigKeyByContentType((boolean) $isHtmlContent);
+            $key        = static::resolveConfigKeyByContentType((bool) $isHtmlContent);
             ZurmoConfigurationUtil::setByModuleName(static::CONFIG_MODULE_NAME, $key, $content);
         }
 
         protected static function resolveConfigKeyByContentType($isHtmlContent)
         {
-            if ($isHtmlContent)
+            assert('is_bool($isHtmlContent)');
+            if ((bool) $isHtmlContent)
             {
                 return static::CONFIG_KEY_RICH_TEXT;
             }

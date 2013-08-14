@@ -54,13 +54,13 @@
          * @param string $memberName
          * @param array $attributeLabels
          * @param $defaultValue
-         * @param $maxLength
-         * @param $minValue
-         * @param $maxValue
-         * @param $precision
+         * @param int $maxLength
+         * @param int $minValue
+         * @param int $maxValue
+         * @param int $precision
          * @param bool $isRequired
          * @param bool $isAudited
-         * @param bool $elementType
+         * @param string $elementType
          * @param array $partialTypeRule
          * @param array $mixedRule
          */
@@ -107,6 +107,13 @@
         /**
          * Updating existing relation attributes and add new has_one relations that are owned only.
          * Currently does not support setting the default value.
+         * @param string $modelClassName
+         * @param string $relationName
+         * @param array $attributeLabels
+         * @param string $elementType
+         * @param bool $isRequired
+         * @param bool $isAudited
+         * @param string $relationModelClassName
          */
         public static function addOrUpdateRelation($modelClassName,
                                               $relationName,
@@ -146,14 +153,14 @@
         }
 
         /**
-         * @param $modelClassName
-         * @param $relationName
-         * @param $attributeLabels
+         * @param string $modelClassName
+         * @param string $relationName
+         * @param array $attributeLabels
          * @param $defaultValue
-         * @param $isRequired
-         * @param $isAudited
-         * @param $elementType
-         * @param $customFieldDataName
+         * @param bool $isRequired
+         * @param bool $isAudited
+         * @param string $elementType
+         * @param string $customFieldDataName
          * @param null $customFieldDataData
          * @param null $customFieldDataLabels
          * @param string $relationModelClassName

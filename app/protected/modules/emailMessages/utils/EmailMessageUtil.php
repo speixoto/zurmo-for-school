@@ -246,8 +246,8 @@
         }
 
         /**
-         * @param $htmlContent
-         * @param $textContent
+         * @param string $htmlContent
+         * @param string $textContent
          * @return mixed
          */
         public static function resolveTextContent($htmlContent, $textContent)

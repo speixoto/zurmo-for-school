@@ -42,7 +42,7 @@
     {
         /**
          * @param ImportDataProvider $dataProvider
-         * @param $url
+         * @param string $url
          * @return string
          */
         public static function renderPagerAndHeaderTextContent(ImportDataProvider $dataProvider, $url)
