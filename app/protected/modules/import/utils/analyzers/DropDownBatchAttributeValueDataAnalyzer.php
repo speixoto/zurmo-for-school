@@ -45,6 +45,10 @@
 
         protected $missingDropDownInstructions;
 
+        /**
+         * @param $modelClassName
+         * @param $attributeName
+         */
         public function __construct($modelClassName, $attributeName)
         {
             parent:: __construct($modelClassName, $attributeName);

@@ -218,6 +218,13 @@
                          'type'                        => 'importColumn');
         }
 
+        /**
+         * @param $attributeName
+         * @param $currency
+         * @param null $defaultValue
+         * @param int $rateToBase
+         * @return array
+         */
         public static function makeCurrencyColumnMappingData($attributeName, $currency, $defaultValue = null, $rateToBase = 1)
         {
             return array('attributeIndexOrDerivedType' => $attributeName,
@@ -231,6 +238,12 @@
                                  array('id' => $currency->id)));
         }
 
+        /**
+         * @param $attributeName
+         * @param null $defaultValue
+         * @param string $format
+         * @return array
+         */
         public static function makeDateColumnMappingData($attributeName, $defaultValue = null,
                                                              $format = 'MM-dd-yyyy')
         {
@@ -241,6 +254,12 @@
                           'ValueFormatMappingRuleForm'               => array('format' => $format)));
         }
 
+        /**
+         * @param $attributeName
+         * @param null $defaultValue
+         * @param string $format
+         * @return array
+         */
         public static function makeDateTimeColumnMappingData($attributeName, $defaultValue = null,
                                                              $format = 'MM-dd-yyyy hh:mm')
         {
@@ -251,6 +270,12 @@
                           'ValueFormatMappingRuleForm'               => array('format' => $format)));
         }
 
+        /**
+         * @param $attributeName
+         * @param null $defaultValue
+         * @param null $importInstructionsData
+         * @return array
+         */
         public static function makeDropDownColumnMappingData($attributeName, $defaultValue = null,
                                                              $importInstructionsData = null)
         {
@@ -266,6 +291,12 @@
                          'importInstructionsData'      => $importInstructionsData);
         }
 
+        /**
+         * @param $attributeName
+         * @param null $defaultValue
+         * @param null $importInstructionsData
+         * @return array
+         */
         public static function makeMultiSelectDropDownColumnMappingData($attributeName, $defaultValue = null,
                                                                         $importInstructionsData = null)
         {
@@ -281,6 +312,12 @@
                          'importInstructionsData'      => $importInstructionsData);
         }
 
+        /**
+         * @param $attributeName
+         * @param null $defaultValue
+         * @param null $importInstructionsData
+         * @return array
+         */
         public static function makeTagCloudColumnMappingData($attributeName, $defaultValue = null,
                                                                              $importInstructionsData = null)
         {
@@ -296,6 +333,11 @@
                          'importInstructionsData'      => $importInstructionsData);
         }
 
+        /**
+         * @param $attributeName
+         * @param null $defaultValue
+         * @return array
+         */
         public static function makeEmailColumnMappingData($attributeName, $defaultValue = null)
         {
             return array('attributeIndexOrDerivedType' => $attributeName,
@@ -305,6 +347,11 @@
                              array('defaultValue' => $defaultValue)));
         }
 
+        /**
+         * @param $attributeName
+         * @param null $defaultValue
+         * @return array
+         */
         public static function makeFloatColumnMappingData($attributeName, $defaultValue = null)
         {
             return array('attributeIndexOrDerivedType' => $attributeName,
@@ -323,6 +370,11 @@
                              array('defaultValue' => $defaultValue)));
         }
 
+        /**
+         * @param $attributeName
+         * @param $type
+         * @return array
+         */
         public static function makeHasOneColumnMappingData($attributeName,
                                                            $type = RelatedModelValueTypeMappingRuleForm::ZURMO_MODEL_ID)
         {
@@ -332,6 +384,11 @@
                          'RelatedModelValueTypeMappingRuleForm' => array('type' => $type)));
         }
 
+        /**
+         * @param $derivedAttributeName
+         * @param $type
+         * @return array
+         */
         public static function makeModelDerivedColumnMappingData($derivedAttributeName,
                                                                  $type = IdValueTypeMappingRuleForm::EXTERNAL_SYSTEM_ID)
         {
@@ -342,6 +399,11 @@
                          'DefaultModelNameIdDerivedAttributeMappingRuleForm'  => array('defaultModelId' => null)));
         }
 
+        /**
+         * @param $attributeName
+         * @param null $defaultValue
+         * @return array
+         */
         public static function makeStringColumnMappingData($attributeName, $defaultValue = null)
         {
             return array('attributeIndexOrDerivedType' => $attributeName,
@@ -351,12 +413,21 @@
                              array('defaultValue' => $defaultValue)));
         }
 
+        /**
+         * @param $attributeName
+         * @return array
+         */
         public static function makeTextAreaColumnMappingData($attributeName)
         {
             return array('attributeIndexOrDerivedType' => $attributeName,
                          'type'                        => 'importColumn');
         }
 
+        /**
+         * @param $attributeName
+         * @param null $defaultValue
+         * @return array
+         */
         public static function makeUrlColumnMappingData($attributeName, $defaultValue = null)
         {
             return array('attributeIndexOrDerivedType' => $attributeName,

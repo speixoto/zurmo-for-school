@@ -39,12 +39,31 @@
      */
     class ModelMetadataUtil
     {
+        /**
+         * @param $name
+         * @return string
+         */
         public static function resolveName($name)
         {
             assert('is_string($name)');
             return $name . 'Cstm'; // . 'Custom';
         }
 
+        /**
+         * @param $modelClassName
+         * @param $memberName
+         * @param $attributeLabels
+         * @param $defaultValue
+         * @param $maxLength
+         * @param $minValue
+         * @param $maxValue
+         * @param $precision
+         * @param $isRequired
+         * @param $isAudited
+         * @param $elementType
+         * @param array $partialTypeRule
+         * @param array $mixedRule
+         */
         public static function addOrUpdateMember($modelClassName,
                                                  $memberName,
                                                  $attributeLabels,
@@ -126,6 +145,21 @@
             $modelClassName::setMetadata($metadata);
         }
 
+        /**
+         * @param $modelClassName
+         * @param $relationName
+         * @param $attributeLabels
+         * @param $defaultValue
+         * @param $isRequired
+         * @param $isAudited
+         * @param $elementType
+         * @param $customFieldDataName
+         * @param null $customFieldDataData
+         * @param null $customFieldDataLabels
+         * @param string $relationModelClassName
+         * @param bool $owned
+         * @throws NotSupportedException
+         */
         public static function addOrUpdateCustomFieldRelation($modelClassName,
                                                               $relationName,
                                                               $attributeLabels,
@@ -354,6 +388,10 @@
             $metadata[$modelClassName]['rules'] = array_values($metadata[$modelClassName]['rules']);
         }
 
+        /**
+         * @param $modelClassName
+         * @param $attributeName
+         */
         public static function removeAttribute($modelClassName,
                                                $attributeName)
         {

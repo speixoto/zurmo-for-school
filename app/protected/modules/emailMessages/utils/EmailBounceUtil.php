@@ -39,6 +39,11 @@
      */
     class EmailBounceUtil
     {
+        /**
+         * @param $headerTags
+         * @param $textBody
+         * @return array|bool
+         */
         public static function resolveCustomHeadersFromTextBody($headerTags, $textBody)
         {
             $headers    = array();

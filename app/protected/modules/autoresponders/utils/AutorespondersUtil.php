@@ -39,6 +39,10 @@
      */
     class AutorespondersUtil
     {
+        /**
+         * @param $marketingListId
+         * @return array
+         */
         public static function makeSearchAttributeData($marketingListId)
         {
             assert('is_int($marketingListId)');

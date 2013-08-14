@@ -45,11 +45,22 @@
             throw new NotImplementedException();
         }
 
+        /**
+         * @param string $modelClassName
+         * @param array $attributeName
+         * @throws NotImplementedException
+         */
         public static function makeSqlAttributeValueDataAnalyzer($modelClassName, $attributeName)
         {
             throw new NotImplementedException();
         }
 
+        /**
+         * @param string $modelClassName
+         * @param array $attributeName
+         * @return mixed
+         * @throws NotSupportedException
+         */
         public static function makeBatchAttributeValueDataAnalyzer($modelClassName, $attributeName)
         {
             assert('is_string($modelClassName)');

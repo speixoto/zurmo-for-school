@@ -31,6 +31,10 @@
     {
         const EXTERNAL_SCRIPT_FILE_NAME = 'ExternalScripts.js';
 
+        /**
+         * @param View $containedView
+         * @return GridView
+         */
         public static function makeExternalViewForCurrentUser(View $containedView)
         {
             $horizontalGridView = new GridView(1, 1);
@@ -41,6 +45,11 @@
             return $verticalGridView;
         }
 
+        /**
+         * @param $rawXHtml
+         * @param bool $excludeStyles
+         * @return array
+         */
         public static function resolveHeadTag($rawXHtml, $excludeStyles = false)
         {
             $dom        = new DOMDocument();
@@ -73,6 +82,10 @@
             return $headBody;
         }
 
+        /**
+         * @param $rawXHtml
+         * @return array
+         */
         public static function resolveHtmlAndScriptInBody($rawXHtml)
         {
             $dom            = new DOMDocument();
@@ -91,6 +104,10 @@
             return $htmlAndScriptTagsInBody;
         }
 
+        /**
+         * @param $bodyContent
+         * @return array
+         */
         public static function resolveScriptTagsInBody(&$bodyContent)
         {
             $scriptTagNodes = $bodyContent->getElementsByTagName('script');
@@ -117,6 +134,10 @@
             return $scriptTags;
         }
 
+        /**
+         * @param $rawXHtml
+         * @return string
+         */
         public static function resolveAndCombineScripts($rawXHtml)
         {
             $dom = new DOMDocument();
@@ -146,6 +167,10 @@
             return $rawXHtml;
         }
 
+        /**
+         * @param $path
+         * @return string
+         */
         public static function getContentsFromSource($path)
         {
             $scriptFileContents = file_get_contents($path);
@@ -156,6 +181,9 @@
             return $scriptFileContents;
         }
 
+        /**
+         * @param $dom
+         */
         public static function removeScriptTagSrcNodes(&$dom)
         {
             $scriptTags   = $dom->getElementsByTagName('script');

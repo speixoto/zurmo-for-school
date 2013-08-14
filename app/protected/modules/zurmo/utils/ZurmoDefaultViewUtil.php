@@ -372,12 +372,20 @@
             }
         }
 
+        /**
+         * @param $key
+         * @param $value
+         */
         public static function setLockKeyForDetailsAndRelationsView($key, $value)
         {
             assert('is_bool($value)');
             Yii::app()->user->setState($key, $value);
         }
 
+        /**
+         * @param $key
+         * @return mixed
+         */
         public static function getLockKeyForDetailsAndRelationsView($key)
         {
             return Yii::app()->user->getState($key);

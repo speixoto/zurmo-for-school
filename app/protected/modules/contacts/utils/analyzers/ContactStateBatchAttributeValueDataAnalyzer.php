@@ -42,6 +42,10 @@
     {
         protected $states;
 
+        /**
+         * @param $modelClassName
+         * @param $attributeName
+         */
         public function __construct($modelClassName, $attributeName)
         {
             parent:: __construct($modelClassName, $attributeName);
@@ -50,6 +54,10 @@
             $this->states = ArrayUtil::resolveArrayToLowerCase($states);
         }
 
+        /**
+         * @param AnalyzerSupportedDataProvider $dataProvider
+         * @param string $columnName
+         */
         public function runAndMakeMessages(AnalyzerSupportedDataProvider $dataProvider, $columnName)
         {
             assert('is_string($columnName)');

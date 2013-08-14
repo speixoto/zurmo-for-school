@@ -40,6 +40,10 @@
     class ContactStateSqlAttributeValueDataAnalyzer extends SqlAttributeValueDataAnalyzer
                                                 implements DataAnalyzerInterface
     {
+        /**
+         * @param AnalyzerSupportedDataProvider $dataProvider
+         * @param string $columnName
+         */
         public function runAndMakeMessages(AnalyzerSupportedDataProvider $dataProvider, $columnName)
         {
             assert('is_string($columnName)');

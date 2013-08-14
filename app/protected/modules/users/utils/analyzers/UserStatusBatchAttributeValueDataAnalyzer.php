@@ -40,12 +40,20 @@
     class UserStatusBatchAttributeValueDataAnalyzer extends BatchAttributeValueDataAnalyzer
                                                       implements DataAnalyzerInterface
     {
+        /**
+         * @param $modelClassName
+         * @param $attributeName
+         */
         public function __construct($modelClassName, $attributeName)
         {
             parent:: __construct($modelClassName, $attributeName);
             assert('$attributeName == null');
         }
 
+        /**
+         * @param AnalyzerSupportedDataProvider $dataProvider
+         * @param string $columnName
+         */
         public function runAndMakeMessages(AnalyzerSupportedDataProvider $dataProvider, $columnName)
         {
             assert('is_string($columnName)');

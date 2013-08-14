@@ -42,12 +42,20 @@
     {
         protected $dropDownValues;
 
+        /**
+         * @param $modelClassName
+         * @param $attributeName
+         */
         public function __construct($modelClassName, $attributeName)
         {
             parent:: __construct($modelClassName, $attributeName);
             $this->dropDownValues = ProductTemplateElementUtil::getProductTemplateTypeDropdownArray();
         }
 
+        /**
+         * @param AnalyzerSupportedDataProvider $dataProvider
+         * @param string $columnName
+         */
         public function runAndMakeMessages(AnalyzerSupportedDataProvider $dataProvider, $columnName)
         {
             assert('is_string($columnName)');

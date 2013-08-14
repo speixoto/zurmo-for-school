@@ -54,6 +54,10 @@
          */
         protected $sanitizableColumnNames;
 
+        /**
+         * @param Import $import
+         * @param $dataProvider
+         */
         public function __construct(Import $import, $dataProvider)
         {
             assert('$dataProvider instanceof AnalyzerSupportedDataProvider');

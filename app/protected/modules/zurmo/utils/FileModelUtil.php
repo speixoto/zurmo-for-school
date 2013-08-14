@@ -90,6 +90,11 @@
             return $file;
         }
 
+        /**
+         * @param $model
+         * @param $relationName
+         * @param $postDataVariableName
+         */
         public static function resolveModelsHasManyFilesFromPost(& $model, $relationName, $postDataVariableName)
         {
             assert('$model instanceof RedBeanModel');

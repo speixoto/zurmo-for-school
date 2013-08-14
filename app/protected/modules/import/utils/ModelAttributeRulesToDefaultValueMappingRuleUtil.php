@@ -40,6 +40,15 @@
      */
     class ModelAttributeRulesToDefaultValueMappingRuleUtil
     {
+        /**
+         * @param $modelClassName
+         * @param $attributeName
+         * @param $ruleAttributeName
+         * @param bool $requiredRuleIsApplicable
+         * @param bool $treatDateTimeAsDate
+         * @param bool $readOnlyRuleIsApplicable
+         * @return array
+         */
         public static function getApplicableRulesByModelClassNameAndAttributeName($modelClassName, $attributeName,
                                                                                   $ruleAttributeName,
                                                                                   $requiredRuleIsApplicable = false,

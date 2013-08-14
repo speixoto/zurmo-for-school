@@ -173,6 +173,10 @@
             return $leadStatesData;
         }
 
+        /**
+         * @param ContactState $state
+         * @return bool
+         */
         public static function isStateALead(ContactState $state)
         {
             assert('$state->id > 0');
@@ -187,6 +191,10 @@
             }
         }
 
+        /**
+         * @param $stateName
+         * @return bool
+         */
         public static function isStateALeadByStateName($stateName)
         {
             assert('is_string($stateName)');

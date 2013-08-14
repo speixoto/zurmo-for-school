@@ -41,6 +41,12 @@
      */
     class RelatedItemRelationToModelElementUtil
     {
+        /**
+         * @param $modelClassName
+         * @param $user
+         * @param $canAccess
+         * @return string
+         */
         public static function resolveModelElementTypeByActionSecurity($modelClassName, $user, & $canAccess)
         {
             assert('is_string($modelClassName)');

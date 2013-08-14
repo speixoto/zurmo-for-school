@@ -62,6 +62,10 @@
             }
         }
 
+        /**
+         * @param $type
+         * @return array
+         */
         public static function getUserLeaderboardData($type)
         {
             assert('is_string($type)');
@@ -145,6 +149,10 @@
             }
         }
 
+        /**
+         * @param User $user
+         * @return array
+         */
         public static function getUserRankingData(User $user)
         {
             $weeklyData  = self::getUserLeaderboardData(GamePointUtil::LEADERBOARD_TYPE_WEEKLY);

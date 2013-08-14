@@ -84,6 +84,10 @@
             return $interfaceModelClassNames;
         }
 
+        /**
+         * @param $modelClassName
+         * @return int
+         */
         public static function getUnreadCountForCurrentUserByModelClassName($modelClassName)
         {
             $mashableInboxRules = static::createMashableInboxRulesByModel($modelClassName);
@@ -107,6 +111,12 @@
             return ZurmoHtml::wrapLabel($unreadCount, 'unread-inbox-count');
         }
 
+        /**
+         * @param $modelClassNames
+         * @param $filteredBy
+         * @param string $searchTerm
+         * @return array
+         */
         public static function getSearchAttributeMetadataForMashableInboxByModelClassName($modelClassNames, $filteredBy, $searchTerm = '')
         {
             $modelClassNamesAndSearchAttributeData = array();
@@ -130,6 +140,10 @@
             return $modelClassNamesAndSearchAttributeData;
         }
 
+        /**
+         * @param $modelClassNames
+         * @return array
+         */
         public static function getSortAttributesByMashableInboxModelClassNames($modelClassNames)
         {
             assert('is_array($modelClassNames)');
@@ -143,6 +157,10 @@
             return $modelClassNamesAndSortAttributes;
         }
 
+        /**
+         * @param RedBeanModel $model
+         * @return string
+         */
         public static function renderSummaryContent(RedBeanModel $model)
         {
             $mashableInboxRules                 = static::createMashableInboxRulesByModel(get_class($model));
@@ -170,6 +188,11 @@
             return $mashableInboxRules->getModelCreationTimeContent($model);
         }
 
+        /**
+         * @param $template
+         * @param $data
+         * @return string
+         */
         public static function resolveContentTemplate($template, $data)
         {
             assert('is_string($template)');
@@ -182,6 +205,12 @@
             return strtr($template, $preparedContent);
         }
 
+        /**
+         * @param $firstMetadata
+         * @param $secondMetadata
+         * @param bool $isAnd
+         * @return mixed
+         */
         public static function mergeMetadata($firstMetadata, $secondMetadata, $isAnd = true)
         {
             if ($firstMetadata == null && $secondMetadata == null)
@@ -216,6 +245,10 @@
             return $firstMetadata;
         }
 
+        /**
+         * @param MashableInboxForm $mashableInboxForm
+         * @param $modelClassName
+         */
         public static function saveSelectedOptionsAsStickyData(MashableInboxForm $mashableInboxForm, $modelClassName)
         {
             assert('strlen($modelClassName) > 0 || ($modelClassName === null)');
@@ -224,6 +257,10 @@
                                                         array('optionForModel', 'filteredBy', 'searchTerm')));
         }
 
+        /**
+         * @param $modelClassName
+         * @return MashableInboxForm
+         */
         public static function restoreSelectedOptionsAsStickyData($modelClassName)
         {
             assert('strlen($modelClassName) > 0 || ($modelClassName === null)');
@@ -234,6 +271,11 @@
             return $mashableInboxForm;
         }
 
+        /**
+         * @param $moduleClassName
+         * @param $modelClassName
+         * @return string
+         */
         public static function resolveKeyByModuleAndModel($moduleClassName, $modelClassName)
         {
             assert('strlen($moduleClassName) > 0');

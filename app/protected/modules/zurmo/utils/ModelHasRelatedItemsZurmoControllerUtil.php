@@ -43,6 +43,10 @@
 
         protected $relatedItemsFormName;
 
+        /**
+         * @param $relatedItemsRelationName
+         * @param $relatedItemsFormName
+         */
         public function __construct($relatedItemsRelationName, $relatedItemsFormName)
         {
             assert('is_string($relatedItemsRelationName)');

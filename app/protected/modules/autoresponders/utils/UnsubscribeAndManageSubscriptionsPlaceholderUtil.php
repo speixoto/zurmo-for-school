@@ -46,6 +46,11 @@
 
         const MANAGE_SUBSCRIPTIONS_URL_PLACEHOLDER  = '{{MANAGE_SUBSCRIPTIONS_URL}}';
 
+        /**
+         * @param $isHtmlContent
+         * @param bool $returnDefault
+         * @return configuration|string
+         */
         public static function getContentByType($isHtmlContent, $returnDefault = true)
         {
             $key        = static::resolveConfigKeyByContentType($isHtmlContent);
@@ -57,6 +62,10 @@
             return $content;
         }
 
+        /**
+         * @param $content
+         * @param $isHtmlContent
+         */
         public static function setContentByType($content, $isHtmlContent)
         {
             $key        = static::resolveConfigKeyByContentType($isHtmlContent);

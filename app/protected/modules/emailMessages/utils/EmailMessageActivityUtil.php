@@ -46,6 +46,16 @@
 
         protected static $baseQueryStringArray;
 
+        /**
+         * @param $tracking
+         * @param $content
+         * @param $modelId
+         * @param $modelType
+         * @param $personId
+         * @param $marketingListId
+         * @param bool $isHtmlContent
+         * @return bool
+         */
         public static function resolveContentForTrackingAndFooter($tracking, & $content, $modelId, $modelType, $personId,
                                                                             $marketingListId, $isHtmlContent = false)
         {
@@ -61,6 +71,13 @@
             return true;
         }
 
+        /**
+         * @param $hash
+         * @param bool $validateQueryStringArray
+         * @param bool $validateForTracking
+         * @return array
+         * @throws NotSupportedException
+         */
         public static function resolveQueryStringArrayForHash($hash, $validateQueryStringArray = true,
                                                                                             $validateForTracking = true)
         {
@@ -359,6 +376,16 @@ PTN;
                                                                     $modelType, $isHtmlContent, $replaceExisting, false);
         }
 
+        /**
+         * @param $content
+         * @param $personId
+         * @param $marketingListId
+         * @param $modelId
+         * @param $modelType
+         * @param $isHtmlContent
+         * @param bool $replaceExisting
+         * @param bool $preview
+         */
         public static function resolveUnsubscribeAndManageSubscriptionPlaceholders(& $content, $personId,
                                                                                       $marketingListId, $modelId,
                                                                                       $modelType, $isHtmlContent,
@@ -544,6 +571,10 @@ PTN;
             }
         }
 
+        /**
+         * @param $modelType
+         * @return string
+         */
         public static function resolveModelClassNameByModelType($modelType)
         {
             return $modelType . 'Activity';

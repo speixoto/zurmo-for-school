@@ -43,6 +43,10 @@
 
         protected $relationName;
 
+        /**
+         * @param $relatedModel
+         * @param $relationName
+         */
         public function __construct($relatedModel, $relationName)
         {
             assert('is_string($relationName)');

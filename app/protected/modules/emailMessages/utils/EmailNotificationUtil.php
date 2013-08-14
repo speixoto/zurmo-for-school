@@ -130,6 +130,12 @@
             }
         }
 
+        /**
+         * @param User $senderPerson
+         * @param array $recipients
+         * @param string $subject
+         * @param EmailMessageContent $content
+         */
         public static function resolveAndSendEmail($senderPerson, $recipients, $subject, $content)
         {
             assert('$senderPerson instanceof User');

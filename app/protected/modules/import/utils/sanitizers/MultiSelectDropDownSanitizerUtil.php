@@ -127,6 +127,10 @@
             return static::makeOwnedMultiSelectCustomField($resolvedValuesToUse, $customFieldData);
         }
 
+        /**
+         * @param $value
+         * @return array
+         */
         public static function getCustomFieldValuesFromValueString($value)
         {
             assert('is_string($value)');

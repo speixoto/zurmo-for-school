@@ -36,6 +36,9 @@
 
     class UserAccessUtil
     {
+        /**
+         * @param $userId
+         */
         public static function resolveCanCurrentUserAccessAction($userId)
         {
             if (Yii::app()->user->userModel->id == $userId ||

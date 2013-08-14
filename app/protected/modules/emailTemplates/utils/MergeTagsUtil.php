@@ -71,6 +71,13 @@
             $this->content  = $content;
         }
 
+        /**
+         * @param $model
+         * @param array $invalidTags
+         * @param null $language
+         * @param bool $errorOnFirstMissing
+         * @return bool
+         */
         public function resolveMergeTagsArrayToAttributes($model, & $invalidTags = array(), $language = null, $errorOnFirstMissing = false)
         {
             if (!$language)
@@ -88,6 +95,13 @@
             }
         }
 
+        /**
+         * @param $model
+         * @param array $invalidTags
+         * @param null $language
+         * @param bool $errorOnFirstMissing
+         * @return bool
+         */
         public function resolveMergeTags($model, & $invalidTags = array(), $language = null, $errorOnFirstMissing = false)
         {
             if (!$this->extractMergeTagsPlaceHolders() ||

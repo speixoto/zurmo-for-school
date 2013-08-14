@@ -79,6 +79,10 @@
          */
         private   $instructionsData;
 
+        /**
+         * @param $modelClassName
+         * @param $attributeName
+         */
         public function __construct($modelClassName, $attributeName)
         {
             assert('is_string($modelClassName)');

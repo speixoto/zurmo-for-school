@@ -41,6 +41,9 @@
     {
         protected $relatedUser;
 
+        /**
+         * @param $relatedUser
+         */
         public function __construct($relatedUser)
         {
             assert('$relatedUser == null || ($relatedUser instanceof User && $relatedUser->id > 0)');

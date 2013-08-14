@@ -157,6 +157,11 @@
                                          array('id' => $modelId));
         }
 
+        /**
+         * @param $moduleName
+         * @param RedBeanModel $model
+         * @param $count
+         */
         public static function resolveNewRecentlyViewedModel($moduleName, RedBeanModel $model, $count)
         {
             assert('strlen($moduleName) > 0 && is_int($model->id)');
@@ -188,6 +193,10 @@
                     setForCurrentUserByModuleName('ZurmoModule', 'recentlyViewed', serialize($recentlyViewed));
         }
 
+        /**
+         * @param $moduleName
+         * @param RedBeanModel $model
+         */
         public static function deleteModelFromRecentlyViewed($moduleName, RedBeanModel $model)
         {
             if (!isset($model) || !isset($moduleName))

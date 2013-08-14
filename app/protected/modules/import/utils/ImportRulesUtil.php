@@ -39,6 +39,11 @@
      */
     class ImportRulesUtil
     {
+        /**
+         * @param $importRulesType
+         * @return string
+         * @throws NotSupportedException
+         */
         public static function getImportRulesClassNameByType($importRulesType)
         {
             assert('is_string($importRulesType)');
@@ -50,6 +55,10 @@
             return $importRulesClassName;
         }
 
+        /**
+         * @param $importRulesType
+         * @return mixed
+         */
         public static function makeImportRulesByType($importRulesType)
         {
             assert('is_string($importRulesType)');

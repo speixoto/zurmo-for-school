@@ -161,16 +161,28 @@
             return $this->status;
         }
 
+        /**
+         * @param $tableName
+         * @return int
+         */
         public static function getCreatedCount($tableName)
         {
             return ImportDatabaseUtil::getCount($tableName, "status = " . ImportRowDataResultsUtil::CREATED);
         }
 
+        /**
+         * @param $tableName
+         * @return int
+         */
         public static function getUpdatedCount($tableName)
         {
             return ImportDatabaseUtil::getCount($tableName, "status = " . ImportRowDataResultsUtil::UPDATED);
         }
 
+        /**
+         * @param $tableName
+         * @return int
+         */
         public static function getErrorCount($tableName)
         {
             return ImportDatabaseUtil::getCount($tableName, "status = " . ImportRowDataResultsUtil::ERROR);
