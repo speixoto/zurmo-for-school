@@ -46,8 +46,8 @@
         protected $missingDropDownInstructions;
 
         /**
-         * @param $modelClassName
-         * @param $attributeName
+         * @param string $modelClassName
+         * @param string $attributeName
          */
         public function __construct($modelClassName, $attributeName)
         {

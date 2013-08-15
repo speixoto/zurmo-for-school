@@ -128,7 +128,7 @@
         }
 
         /**
-         * @param $value
+         * @param string $value
          * @return array
          */
         public static function getCustomFieldValuesFromValueString($value)

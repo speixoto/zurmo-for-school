@@ -40,9 +40,9 @@
     class MarketingListMembersUtil
     {
         /**
-         * @param $marketingListId
-         * @param $filterBySubscriptionType
-         * @param $filterBySearchTerm
+         * @param int $marketingListId
+         * @param string $filterBySubscriptionType
+         * @param string $filterBySearchTerm
          * @return array
          */
         public static function makeSearchAttributeData($marketingListId, $filterBySubscriptionType, $filterBySearchTerm)
@@ -152,7 +152,7 @@
 
         /**
          * @param $id
-         * @param $pageSize
+         * @param int $pageSize
          * @param $attributeName
          * @return MatrixReportDataProvider|RowsAndColumnsReportDataProvider|SummationReportDataProvider
          */
@@ -185,7 +185,7 @@
 
         /**
          * @param RowsAndColumnsReportDataProvider $reportDataProvider
-         * @param $attributeName
+         * @param string $attributeName
          * @return array
          */
         public static function getContactIdsByReportDataProviderAndAttributeName(

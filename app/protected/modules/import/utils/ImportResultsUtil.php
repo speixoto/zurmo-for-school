@@ -98,7 +98,7 @@
         }
 
         /**
-         * @param $messages
+         * @param string $messages
          * @return null|string
          */
         public static function convertSerializedMessagesToDisplayReadyString($messages)

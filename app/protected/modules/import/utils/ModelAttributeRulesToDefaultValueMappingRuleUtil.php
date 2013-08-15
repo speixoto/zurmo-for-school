@@ -41,9 +41,9 @@
     class ModelAttributeRulesToDefaultValueMappingRuleUtil
     {
         /**
-         * @param $modelClassName
-         * @param $attributeName
-         * @param $ruleAttributeName
+         * @param string $modelClassName
+         * @param string $attributeName
+         * @param string $ruleAttributeName
          * @param bool $requiredRuleIsApplicable
          * @param bool $treatDateTimeAsDate
          * @param bool $readOnlyRuleIsApplicable

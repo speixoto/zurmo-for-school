@@ -38,7 +38,7 @@
     {
         /**
          * Create the MashableInboxRules for the model
-         * @param type $modelClassName
+         * @param string $modelClassName
          * @return MashableInboxRules
          */
         public static function createMashableInboxRulesByModel($modelClassName)
@@ -54,6 +54,9 @@
         /**
          * @param String $interfaceClassName The name of the interface to check model implementation
          * @return Array Contains the modelClassNames of models that implements the interface
+         * @param string $interfaceClassName
+         * @param bool $includeHavingRelatedItems
+         * @return array
          */
         public static function getModelDataForCurrentUserByInterfaceName($interfaceClassName, $includeHavingRelatedItems = true)
         {
@@ -85,7 +88,7 @@
         }
 
         /**
-         * @param $modelClassName
+         * @param string $modelClassName
          * @return int
          */
         public static function getUnreadCountForCurrentUserByModelClassName($modelClassName)
@@ -112,8 +115,8 @@
         }
 
         /**
-         * @param $modelClassNames
-         * @param $filteredBy
+         * @param array $modelClassNames
+         * @param string $filteredBy
          * @param string $searchTerm
          * @return array
          */
@@ -141,7 +144,7 @@
         }
 
         /**
-         * @param $modelClassNames
+         * @param array $modelClassNames
          * @return array
          */
         public static function getSortAttributesByMashableInboxModelClassNames($modelClassNames)
@@ -189,8 +192,8 @@
         }
 
         /**
-         * @param $template
-         * @param $data
+         * @param string $template
+         * @param array $data
          * @return string
          */
         public static function resolveContentTemplate($template, $data)
@@ -206,8 +209,8 @@
         }
 
         /**
-         * @param $firstMetadata
-         * @param $secondMetadata
+         * @param array $firstMetadata
+         * @param array $secondMetadata
          * @param bool $isAnd
          * @return mixed
          */
@@ -247,7 +250,7 @@
 
         /**
          * @param MashableInboxForm $mashableInboxForm
-         * @param $modelClassName
+         * @param string $modelClassName
          */
         public static function saveSelectedOptionsAsStickyData(MashableInboxForm $mashableInboxForm, $modelClassName)
         {
@@ -258,7 +261,7 @@
         }
 
         /**
-         * @param $modelClassName
+         * @param string $modelClassName
          * @return MashableInboxForm
          */
         public static function restoreSelectedOptionsAsStickyData($modelClassName)
@@ -272,8 +275,8 @@
         }
 
         /**
-         * @param $moduleClassName
-         * @param $modelClassName
+         * @param string $moduleClassName
+         * @param string $modelClassName
          * @return string
          */
         public static function resolveKeyByModuleAndModel($moduleClassName, $modelClassName)

@@ -219,8 +219,8 @@
         }
 
         /**
-         * @param $attributeName
-         * @param $currency
+         * @param string $attributeName
+         * @param string $currency
          * @param null $defaultValue
          * @param int $rateToBase
          * @return array
@@ -239,7 +239,7 @@
         }
 
         /**
-         * @param $attributeName
+         * @param string $attributeName
          * @param null $defaultValue
          * @param string $format
          * @return array
@@ -255,7 +255,7 @@
         }
 
         /**
-         * @param $attributeName
+         * @param string $attributeName
          * @param null $defaultValue
          * @param string $format
          * @return array
@@ -271,7 +271,7 @@
         }
 
         /**
-         * @param $attributeName
+         * @param string $attributeName
          * @param null $defaultValue
          * @param null $importInstructionsData
          * @return array
@@ -292,7 +292,7 @@
         }
 
         /**
-         * @param $attributeName
+         * @param string $attributeName
          * @param null $defaultValue
          * @param null $importInstructionsData
          * @return array
@@ -313,7 +313,7 @@
         }
 
         /**
-         * @param $attributeName
+         * @param string $attributeName
          * @param null $defaultValue
          * @param null $importInstructionsData
          * @return array
@@ -334,7 +334,7 @@
         }
 
         /**
-         * @param $attributeName
+         * @param string $attributeName
          * @param null $defaultValue
          * @return array
          */
@@ -348,7 +348,7 @@
         }
 
         /**
-         * @param $attributeName
+         * @param string $attributeName
          * @param null $defaultValue
          * @return array
          */
@@ -371,7 +371,7 @@
         }
 
         /**
-         * @param $attributeName
+         * @param string $attributeName
          * @param $type
          * @return array
          */
@@ -385,7 +385,7 @@
         }
 
         /**
-         * @param $derivedAttributeName
+         * @param string $derivedAttributeName
          * @param $type
          * @return array
          */
@@ -400,7 +400,7 @@
         }
 
         /**
-         * @param $attributeName
+         * @param string $attributeName
          * @param null $defaultValue
          * @return array
          */
@@ -414,7 +414,7 @@
         }
 
         /**
-         * @param $attributeName
+         * @param string $attributeName
          * @return array
          */
         public static function makeTextAreaColumnMappingData($attributeName)
@@ -424,7 +424,7 @@
         }
 
         /**
-         * @param $attributeName
+         * @param string $attributeName
          * @param null $defaultValue
          * @return array
          */

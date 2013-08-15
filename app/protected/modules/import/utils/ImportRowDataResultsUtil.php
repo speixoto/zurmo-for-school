@@ -162,7 +162,7 @@
         }
 
         /**
-         * @param $tableName
+         * @param string $tableName
          * @return int
          */
         public static function getCreatedCount($tableName)
@@ -171,7 +171,7 @@
         }
 
         /**
-         * @param $tableName
+         * @param string $tableName
          * @return int
          */
         public static function getUpdatedCount($tableName)
@@ -180,7 +180,7 @@
         }
 
         /**
-         * @param $tableName
+         * @param string $tableName
          * @return int
          */
         public static function getErrorCount($tableName)

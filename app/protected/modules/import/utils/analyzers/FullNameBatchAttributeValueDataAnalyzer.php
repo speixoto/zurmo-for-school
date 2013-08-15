@@ -71,8 +71,8 @@
         protected $lastNameMinLength;
 
         /**
-         * @param $modelClassName
-         * @param $attributeName
+         * @param string $modelClassName
+         * @param string $attributeName
          */
         public function __construct($modelClassName, $attributeName)
         {
@@ -91,6 +91,8 @@
 
         /**
          * @see DataAnalyzerInterface::runAndMakeMessages()
+         * @param AnalyzerSupportedDataProvider $dataProvider
+         * @param string $columnName
          */
         public function runAndMakeMessages(AnalyzerSupportedDataProvider $dataProvider, $columnName)
         {

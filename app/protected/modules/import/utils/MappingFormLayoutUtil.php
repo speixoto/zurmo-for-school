@@ -54,10 +54,10 @@
         protected $mappableAttributeIndicesAndDerivedTypesForExtraColumns;
 
         /**
-         * @param $mappingFormModelClassName
-         * @param $form
-         * @param $mappableAttributeIndicesAndDerivedTypesForImportColumns
-         * @param $mappableAttributeIndicesAndDerivedTypesForExtraColumns
+         * @param string $mappingFormModelClassName
+         * @param ZurmoActiveForm $form
+         * @param array $mappableAttributeIndicesAndDerivedTypesForImportColumns
+         * @param array $mappableAttributeIndicesAndDerivedTypesForExtraColumns
          */
         public function __construct($mappingFormModelClassName, $form,
                                     $mappableAttributeIndicesAndDerivedTypesForImportColumns,
@@ -91,10 +91,10 @@
         }
 
         /**
-         * @param $columnName
-         * @param $columnType
-         * @param $attributeIndexOrDerivedType
-         * @param $ajaxOnChangeUrl
+         * @param string $columnName
+         * @param string $columnType
+         * @param string $attributeIndexOrDerivedType
+         * @param string $ajaxOnChangeUrl
          * @return string
          */
         public function renderAttributeAndColumnTypeContent  ($columnName,
@@ -168,8 +168,8 @@
         }
 
         /**
-         * @param $columnName
-         * @param $headerValue
+         * @param string $columnName
+         * @param string $headerValue
          * @return string
          */
         public function renderHeaderColumnContent($columnName, $headerValue)
@@ -181,8 +181,8 @@
         }
 
         /**
-         * @param $columnName
-         * @param $sampleValue
+         * @param string $columnName
+         * @param string $sampleValue
          * @return string
          */
         public function renderImportColumnContent($columnName, $sampleValue)
@@ -195,11 +195,11 @@
         }
 
         /**
-         * @param $columnName
-         * @param $attributeIndexOrDerivedType
-         * @param $importRulesType
-         * @param $columnType
-         * @param $mappingRuleFormsAndElementTypes
+         * @param string $columnName
+         * @param string $attributeIndexOrDerivedType
+         * @param string $importRulesType
+         * @param string $columnType
+         * @param array $mappingRuleFormsAndElementTypes
          * @return string
          */
         public function renderMappingRulesElements($columnName,
@@ -307,7 +307,7 @@
         }
 
         /**
-         * @param $columnName
+         * @param string $columnName
          * @return string
          */
         public static function resolveSampleColumnIdByColumnName($columnName)

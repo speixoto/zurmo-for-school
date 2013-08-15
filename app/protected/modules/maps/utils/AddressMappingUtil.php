@@ -82,7 +82,7 @@
         }
 
         /**
-         * @param $value
+         * @param int $value
          * @return string
          */
         public static function sanitizeLatitudeOrLongitude($value)

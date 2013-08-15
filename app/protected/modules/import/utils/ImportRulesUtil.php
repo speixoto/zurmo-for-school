@@ -40,7 +40,7 @@
     class ImportRulesUtil
     {
         /**
-         * @param $importRulesType
+         * @param string $importRulesType
          * @return string
          * @throws NotSupportedException
          */
@@ -56,7 +56,7 @@
         }
 
         /**
-         * @param $importRulesType
+         * @param string $importRulesType
          * @return mixed
          */
         public static function makeImportRulesByType($importRulesType)
