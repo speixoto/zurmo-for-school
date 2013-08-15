@@ -173,6 +173,10 @@
             {
                 $sortDescending = SearchUtil::isSortDescending($_GET[$getArrayPrefixName . '_sort']);
             }
+            else
+            {
+                return null;
+            }
             return $sortDescending;
         }
 

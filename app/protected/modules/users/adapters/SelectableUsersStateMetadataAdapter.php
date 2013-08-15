@@ -35,33 +35,53 @@
      ********************************************************************************/
 
     /**
-     * View when a user first comes to the marketing dashboard. Provides an overview of how marketing works
+     * Adapter class to filter only selectable users. This means the users that are selectable in the user interface
+     * See attribute hideFromSelecting in User.
      */
-    class MarketingDashboardIntroView extends IntroView
-    {        
-        protected function renderIntroContent()
-        {         
-            $content  = '<h1>' . Zurmo::t('MarketingModule', 'How does Email Marketing work in Zurmo?', LabelUtil::getTranslationParamsForAllModules()). '</h1>';
-            $content .= '<div id="marketing-intro-steps" class="module-intro-steps clearfix">';
-            $content .= '<div class="third"><h3>' . Zurmo::t('Core', 'Step') . '<strong>1<span>➜</span></strong></h3>';
-            $content .= '<p><strong>' . Zurmo::t('MarketingModule', 'Group') . '</strong>';
-            $content .= Zurmo::t('MarketingModule', 'Group together the email recipients into a list, use different lists for different purposes');
-            $content .= '</p>';
-            $content .= '</div>';
-            $content .= '<div class="third"><h3>' . Zurmo::t('Core', 'Step') . '<strong>2<span>➜</span></strong></h3>';
-            $content .= '<p><strong>' . Zurmo::t('MarketingModule', 'Create') . '</strong>';
-            $content .= Zurmo::t('MarketingModule', 'Create the template for the email you are going to send, import and use either full, ' .
-                        'rich HTML templates or plain text');
-            $content .= '</p>';
-            $content .= '</div>';
-            $content .= '<div class="third"><h3>' . Zurmo::t('Core', 'Step') . '<strong>3<span>➜</span></strong></h3>';
-            $content .= '<p><strong>' . Zurmo::t('MarketingModule', 'Launch') . '</strong>';
-            $content .= Zurmo::t('MarketingModule', 'Create a campaign where you can schedule your email to go out, pick the List(s) of recipients, ' .
-                        'add and schedule autoresponders and track your overall campaign performance');
-            $content .= '</p>';
-            $content .= '</div>';
-            $content .= '</div>';         
-            return $content;
+    class SelectableUsersStateMetadataAdapter implements StateMetadataAdapterInterface
+    {
+        protected $metadata;
+
+        public static function getStateAttributeName()
+        {
+            throw new NotImplementedException();
+        }
+
+        public function __construct(array $metadata)
+        {
+            assert('isset($metadata["clauses"])');
+            assert('isset($metadata["structure"])');
+            $this->metadata = $metadata;
+        }
+
+        /**
+         * Creates where clauses and adds structure information
+         * to existing DataProvider metadata.
+         */
+        public function getAdaptedDataProviderMetadata()
+        {
+            $metadata             = $this->metadata;
+            $clauseCount          = count($metadata['clauses']);
+            $startingCount        = $clauseCount + 1;
+            $startingCountPlusOne = $startingCount + 1;
+            $metadata['clauses'][$startingCount] = array(
+                'attributeName'        => 'hideFromSelecting',
+                'operatorType'         => 'equals',
+                'value'                => 0);
+            $metadata['clauses'][$startingCountPlusOne] = array(
+                'attributeName'        => 'hideFromSelecting',
+                'operatorType'         => 'isNull',
+                'value'                => null);
+            $structure = $startingCount . ' or ' . $startingCountPlusOne;
+            if (empty($metadata['structure']))
+            {
+                $metadata['structure'] = '(' . $structure . ')';
+            }
+            else
+            {
+                $metadata['structure'] = '(' . $metadata['structure'] . ') and (' . $structure . ')';
+            }
+            return $metadata;
         }
     }
 ?>

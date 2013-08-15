@@ -34,7 +34,7 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class MarketingIntroLinkActionElement extends LinkActionElement
+    class ProductIntroLinkActionElement extends LinkActionElement
     {
         public function getActionType()
         {
@@ -42,11 +42,10 @@
         }
 
         public function render()
-        {            
-            if ($this->moduleId == 'marketing' && $this->controllerId == 'default' &&
-               (Yii::app()->controller->action->id == 'dashboardDetails' ||
+        {
+            if (Yii::app()->controller->action->id == 'list' ||
                 Yii::app()->controller->action->id == null ||
-                Yii::app()->controller->action->id == 'index'))
+                Yii::app()->controller->action->id == 'index')
             {
                 $items          = array($this->renderMenuItem());
                 $clipName       = get_class($this);
@@ -80,7 +79,7 @@
 
         protected function getDefaultLabel()
         {
-            return Zurmo::t('MarketingModule', 'Screen Options');
+            return Zurmo::t('ProductsModule', 'Screen Options');
         }
 
         protected function getDefaultRoute()
@@ -130,6 +129,6 @@
         protected function getModuleName()
         {
             return $this->params['moduleName'];
-        }       
+        }     
     }
 ?>

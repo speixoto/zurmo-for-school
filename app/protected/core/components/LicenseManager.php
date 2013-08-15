@@ -35,33 +35,24 @@
      ********************************************************************************/
 
     /**
-     * View when a user first comes to the marketing dashboard. Provides an overview of how marketing works
+     * Helper class for managing licenses
      */
-    class MarketingDashboardIntroView extends IntroView
-    {        
-        protected function renderIntroContent()
-        {         
-            $content  = '<h1>' . Zurmo::t('MarketingModule', 'How does Email Marketing work in Zurmo?', LabelUtil::getTranslationParamsForAllModules()). '</h1>';
-            $content .= '<div id="marketing-intro-steps" class="module-intro-steps clearfix">';
-            $content .= '<div class="third"><h3>' . Zurmo::t('Core', 'Step') . '<strong>1<span>➜</span></strong></h3>';
-            $content .= '<p><strong>' . Zurmo::t('MarketingModule', 'Group') . '</strong>';
-            $content .= Zurmo::t('MarketingModule', 'Group together the email recipients into a list, use different lists for different purposes');
-            $content .= '</p>';
-            $content .= '</div>';
-            $content .= '<div class="third"><h3>' . Zurmo::t('Core', 'Step') . '<strong>2<span>➜</span></strong></h3>';
-            $content .= '<p><strong>' . Zurmo::t('MarketingModule', 'Create') . '</strong>';
-            $content .= Zurmo::t('MarketingModule', 'Create the template for the email you are going to send, import and use either full, ' .
-                        'rich HTML templates or plain text');
-            $content .= '</p>';
-            $content .= '</div>';
-            $content .= '<div class="third"><h3>' . Zurmo::t('Core', 'Step') . '<strong>3<span>➜</span></strong></h3>';
-            $content .= '<p><strong>' . Zurmo::t('MarketingModule', 'Launch') . '</strong>';
-            $content .= Zurmo::t('MarketingModule', 'Create a campaign where you can schedule your email to go out, pick the List(s) of recipients, ' .
-                        'add and schedule autoresponders and track your overall campaign performance');
-            $content .= '</p>';
-            $content .= '</div>';
-            $content .= '</div>';         
-            return $content;
+    class LicenseManager extends CApplicationComponent
+    {
+        public function resolveValidationOnCreateOrEditUser(User $user, UserStatus $userStatus)
+        {
+        }
+
+        public function resolveUserIdentityAuthenticationForError(LoginForm $form, UserIdentity $identity)
+        {
+        }
+
+        public function resolveUserIdentityApiAuthenticationForError(UserIdentity $identity)
+        {
+        }
+
+        public function checkAndUpdateLicenseInfo()
+        {
         }
     }
 ?>
