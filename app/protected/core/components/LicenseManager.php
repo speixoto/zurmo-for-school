@@ -35,71 +35,24 @@
      ********************************************************************************/
 
     /**
-     * Display the contact selection including leads. No state filter will be applied unless the current user
-     * has a security restriction.  This is a
-     * combination of a type-ahead input text field
-     * and a selection button which renders a modal list view
-     * to search on contact.  Also includes a hidden input for the user
-     * id.
+     * Helper class for managing licenses
      */
-    class AllStatesContactElement extends ContactElement
+    class LicenseManager extends CApplicationComponent
     {
-        protected static $moduleId = 'contacts';
-
-        protected static $autoCompleteActionId = 'autoCompleteAllContacts';
-
-        protected static $modalActionId = 'modalListAllContacts';
-
-        protected function renderLabel()
+        public function resolveValidationOnCreateOrEditUser(User $user, UserStatus $userStatus)
         {
-            $label = Zurmo::t('LeadsModule', 'ContactsModuleSingularLabel or LeadsModuleSingularLabel',
-                                                LabelUtil::getTranslationParamsForAllModules());
-            if ($this->form === null)
-            {
-                return Yii::app()->format->text($label);
-            }
-            $id = $this->getIdForHiddenField();
-            return $this->form->labelEx($this->model, $this->attribute, array('for' => $id, 'label' => $label));
         }
 
-        protected function makeNonEditableLinkUrl()
+        public function resolveUserIdentityAuthenticationForError(LoginForm $form, UserIdentity $identity)
         {
-            if(LeadsUtil::isStateALead($this->resolveState()))
-            {
-                $moduleId = 'leads';
-            }
-            else
-            {
-                $moduleId = static::$moduleId;
-            }
-            return Yii::app()->createUrl($moduleId . '/' . $this->controllerId .
-                                         '/details/', array('id' => $this->model->{$this->attribute}->id));
         }
 
-        protected function resolveState()
+        public function resolveUserIdentityApiAuthenticationForError(UserIdentity $identity)
         {
-            if($this->model instanceof Contact)
-            {
-                return $this->model->state;
-            }
-            elseif($this->model instanceof RelatedItemForm)
-            {
-                return $this->model->Contact->state;
-            }
-            else
-            {
-                throw new NotSupportedException();
-            }
         }
 
-        protected function getAutoCompleteControllerId()
+        public function checkAndUpdateLicenseInfo()
         {
-            return 'variableContactState';
-        }
-
-        protected function getSelectLinkControllerId()
-        {
-            return 'variableContactState';
         }
     }
 ?>

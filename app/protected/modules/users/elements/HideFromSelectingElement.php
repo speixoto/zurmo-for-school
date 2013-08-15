@@ -35,71 +35,36 @@
      ********************************************************************************/
 
     /**
-     * Display the contact selection including leads. No state filter will be applied unless the current user
-     * has a security restriction.  This is a
-     * combination of a type-ahead input text field
-     * and a selection button which renders a modal list view
-     * to search on contact.  Also includes a hidden input for the user
-     * id.
+     * Display a checkbox to hide/show a user from being selectable as a user in the user interface
      */
-    class AllStatesContactElement extends ContactElement
+    class HideFromSelectingElement extends CheckBoxElement
     {
-        protected static $moduleId = 'contacts';
-
-        protected static $autoCompleteActionId = 'autoCompleteAllContacts';
-
-        protected static $modalActionId = 'modalListAllContacts';
-
         protected function renderLabel()
         {
-            $label = Zurmo::t('LeadsModule', 'ContactsModuleSingularLabel or LeadsModuleSingularLabel',
-                                                LabelUtil::getTranslationParamsForAllModules());
-            if ($this->form === null)
-            {
-                return Yii::app()->format->text($label);
-            }
-            $id = $this->getIdForHiddenField();
-            return $this->form->labelEx($this->model, $this->attribute, array('for' => $id, 'label' => $label));
+            $content  = parent::renderLabel();
+            $content .= $this->renderTooltipContentForEnableDesktopNotifications();
+            return $content;
         }
 
-        protected function makeNonEditableLinkUrl()
+        protected static function renderTooltipContentForEnableDesktopNotifications()
         {
-            if(LeadsUtil::isStateALead($this->resolveState()))
-            {
-                $moduleId = 'leads';
-            }
-            else
-            {
-                $moduleId = static::$moduleId;
-            }
-            return Yii::app()->createUrl($moduleId . '/' . $this->controllerId .
-                                         '/details/', array('id' => $this->model->{$this->attribute}->id));
-        }
+            $title       = Zurmo::t('UsersModule',
+                            'Check this box if the user should not be selectable. ' .
+                            'An example is the user would not be selectable as an owner of ' .
+                            'a record or selected as a recipient while composing email.');
+            $content     = ZurmoHtml::tag('span',
+                                          array('id'    => 'user-hide-from-selecting-tooltip',
+                                                'class' => 'tooltip',
+                                                'title' => $title,
+                                               ),
+                                          '?');
+            $qtip        = new ZurmoTip(array('options' => array('position' => array('my' => 'bottom right', 'at' => 'top left'),
+                                                                 'hide'     => array('event' => 'unfocus'),
+                                                                 'show'     => array('event' => 'click')
 
-        protected function resolveState()
-        {
-            if($this->model instanceof Contact)
-            {
-                return $this->model->state;
-            }
-            elseif($this->model instanceof RelatedItemForm)
-            {
-                return $this->model->Contact->state;
-            }
-            else
-            {
-                throw new NotSupportedException();
-            }
-        }
-
-        protected function getAutoCompleteControllerId()
-        {
-            return 'variableContactState';
-        }
-
-        protected function getSelectLinkControllerId()
-        {
-            return 'variableContactState';
+                )));
+            $qtip->addQTip("#user-hide-from-selecting-tooltip");
+            return $content;
         }
     }
 ?>

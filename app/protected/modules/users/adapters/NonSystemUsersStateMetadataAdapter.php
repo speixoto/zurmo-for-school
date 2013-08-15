@@ -35,71 +35,53 @@
      ********************************************************************************/
 
     /**
-     * Display the contact selection including leads. No state filter will be applied unless the current user
-     * has a security restriction.  This is a
-     * combination of a type-ahead input text field
-     * and a selection button which renders a modal list view
-     * to search on contact.  Also includes a hidden input for the user
-     * id.
+     * Adapter class to filter only non system users.
+     * See attribute isSystemUser in User.
      */
-    class AllStatesContactElement extends ContactElement
+    class NonSystemUsersStateMetadataAdapter implements StateMetadataAdapterInterface
     {
-        protected static $moduleId = 'contacts';
+        protected $metadata;
 
-        protected static $autoCompleteActionId = 'autoCompleteAllContacts';
-
-        protected static $modalActionId = 'modalListAllContacts';
-
-        protected function renderLabel()
+        public static function getStateAttributeName()
         {
-            $label = Zurmo::t('LeadsModule', 'ContactsModuleSingularLabel or LeadsModuleSingularLabel',
-                                                LabelUtil::getTranslationParamsForAllModules());
-            if ($this->form === null)
-            {
-                return Yii::app()->format->text($label);
-            }
-            $id = $this->getIdForHiddenField();
-            return $this->form->labelEx($this->model, $this->attribute, array('for' => $id, 'label' => $label));
+            throw new NotImplementedException();
         }
 
-        protected function makeNonEditableLinkUrl()
+        public function __construct(array $metadata)
         {
-            if(LeadsUtil::isStateALead($this->resolveState()))
+            assert('isset($metadata["clauses"])');
+            assert('isset($metadata["structure"])');
+            $this->metadata = $metadata;
+        }
+
+        /**
+         * Creates where clauses and adds structure information
+         * to existing DataProvider metadata.
+         */
+        public function getAdaptedDataProviderMetadata()
+        {
+            $metadata             = $this->metadata;
+            $clauseCount          = count($metadata['clauses']);
+            $startingCount        = $clauseCount + 1;
+            $startingCountPlusOne = $startingCount + 1;
+            $metadata['clauses'][$startingCount] = array(
+                'attributeName'        => 'isSystemUser',
+                'operatorType'         => 'equals',
+                'value'                => 0);
+            $metadata['clauses'][$startingCountPlusOne] = array(
+                'attributeName'        => 'isSystemUser',
+                'operatorType'         => 'isNull',
+                'value'                => null);
+            $structure = $startingCount . ' or ' . $startingCountPlusOne;
+            if (empty($metadata['structure']))
             {
-                $moduleId = 'leads';
+                $metadata['structure'] = '(' . $structure . ')';
             }
             else
             {
-                $moduleId = static::$moduleId;
+                $metadata['structure'] = '(' . $metadata['structure'] . ') and (' . $structure . ')';
             }
-            return Yii::app()->createUrl($moduleId . '/' . $this->controllerId .
-                                         '/details/', array('id' => $this->model->{$this->attribute}->id));
-        }
-
-        protected function resolveState()
-        {
-            if($this->model instanceof Contact)
-            {
-                return $this->model->state;
-            }
-            elseif($this->model instanceof RelatedItemForm)
-            {
-                return $this->model->Contact->state;
-            }
-            else
-            {
-                throw new NotSupportedException();
-            }
-        }
-
-        protected function getAutoCompleteControllerId()
-        {
-            return 'variableContactState';
-        }
-
-        protected function getSelectLinkControllerId()
-        {
-            return 'variableContactState';
+            return $metadata;
         }
     }
 ?>
