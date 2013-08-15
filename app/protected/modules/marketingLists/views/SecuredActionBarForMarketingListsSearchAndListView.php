@@ -35,33 +35,44 @@
      ********************************************************************************/
 
     /**
-     * View when a user first comes to the marketing dashboard. Provides an overview of how marketing works
+     * Action bar view for the marketingLists search and list user interface. Provides buttons like create, and links to
+     * queues.
      */
-    class MarketingDashboardIntroView extends IntroView
-    {        
-        protected function renderIntroContent()
-        {         
-            $content  = '<h1>' . Zurmo::t('MarketingModule', 'How does Email Marketing work in Zurmo?', LabelUtil::getTranslationParamsForAllModules()). '</h1>';
-            $content .= '<div id="marketing-intro-steps" class="module-intro-steps clearfix">';
-            $content .= '<div class="third"><h3>' . Zurmo::t('Core', 'Step') . '<strong>1<span>➜</span></strong></h3>';
-            $content .= '<p><strong>' . Zurmo::t('MarketingModule', 'Group') . '</strong>';
-            $content .= Zurmo::t('MarketingModule', 'Group together the email recipients into a list, use different lists for different purposes');
-            $content .= '</p>';
-            $content .= '</div>';
-            $content .= '<div class="third"><h3>' . Zurmo::t('Core', 'Step') . '<strong>2<span>➜</span></strong></h3>';
-            $content .= '<p><strong>' . Zurmo::t('MarketingModule', 'Create') . '</strong>';
-            $content .= Zurmo::t('MarketingModule', 'Create the template for the email you are going to send, import and use either full, ' .
-                        'rich HTML templates or plain text');
-            $content .= '</p>';
-            $content .= '</div>';
-            $content .= '<div class="third"><h3>' . Zurmo::t('Core', 'Step') . '<strong>3<span>➜</span></strong></h3>';
-            $content .= '<p><strong>' . Zurmo::t('MarketingModule', 'Launch') . '</strong>';
-            $content .= Zurmo::t('MarketingModule', 'Create a campaign where you can schedule your email to go out, pick the List(s) of recipients, ' .
-                        'add and schedule autoresponders and track your overall campaign performance');
-            $content .= '</p>';
-            $content .= '</div>';
-            $content .= '</div>';         
-            return $content;
+    class SecuredActionBarForMarketingListsSearchAndListView extends SecuredActionBarForSearchAndListView
+    {
+        /**
+         * @return array
+         */
+        public static function getDefaultMetadata()
+        {
+            $metadata = array(
+                'global' => array(
+                    'toolbar' => array(
+                        'elements' => array(
+                            array('type'  => 'MarketingCreateLink',
+                                'htmlOptions' => array('class' => 'icon-create'),
+                            ),
+                            array(
+                                'type'            => 'MarketingDashboardLink',
+                                'htmlOptions'     => array( 'class' => 'icon-marketing-dashboard' )
+                            ),
+                            array(
+                                'type'            => 'MarketingListsLink',
+                                'htmlOptions'     => array( 'class' => 'icon-marketing-lists' )
+                            ),
+                            array(
+                                'type'            => EmailTemplatesForMarketingLinkActionElement::getType(),
+                                'htmlOptions'     => array( 'class' => 'icon-email-templates', )
+                            ),
+                            array(
+                                'type'            => 'CampaignsLink',
+                                'htmlOptions'     => array( 'class' => 'icon-marketing-campaigns' )
+                            ),
+                        ),
+                    ),                    
+                ),
+            );
+            return $metadata;
         }
     }
 ?>

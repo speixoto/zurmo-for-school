@@ -34,15 +34,20 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class CategoriesActionBarAndTreeListView extends GridView
+    class ProductCategoriesActionBarAndTreeListView extends GridView
     {
-        public function __construct($controllerId, $moduleId, $categories, $activeActionElementType = null)
+        public function __construct($controllerId, $moduleId, $categories, $activeActionElementType = null,
+                                    IntroView $introView = null)
         {
             assert('$controllerId != null');
             assert('$moduleId != null');
             assert('is_array($categories)');
             parent::__construct(2, 1);
-            $this->setView(new ActionBarForCategoriesTreeListView ($controllerId, $moduleId, $activeActionElementType), 0, 0);
+            $actionBarView = new ActionBarForProductCategoriesTreeListView ($controllerId, 
+                                                                            $moduleId, 
+                                                                            $activeActionElementType,
+                                                                            $introView);            
+            $this->setView($actionBarView, 0, 0);            
             $categoriesTreeListView = new ProductCategoriesTreeListView($controllerId, $moduleId, $categories);
             $categoriesTreeListView->setCssClasses(array('DetailsView'));
             $this->setView($categoriesTreeListView, 1, 0);

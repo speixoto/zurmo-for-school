@@ -35,48 +35,18 @@
      ********************************************************************************/
 
     /**
-     * Renders an action bar specifically for the listview.
+     * Base class for creating an ActionBar view.
      */
-    class ActionBarForCategoriesTreeListView extends ActionBarForSecurityTreeListView
+    abstract class ActionBarConfigurableMetadataView extends ConfigurableMetadataView
     {
-        public static function getDefaultMetadata()
-        {
-            $metadata = array(
-                'global' => array(
-                    'toolbar' => array(
-                        'elements' => array(
-                            array('type'          => 'ProductCreateLink',
-                                'htmlOptions'     => array('class' => 'icon-create'),
-                            ),
-                            array(
-                                'type'            => 'ProductsLink',
-                                'htmlOptions'     => array( 'class' => 'icon-products' )
-                            ),
-                            array(
-                                'type'            => 'ProductTemplatesLink',
-                                'htmlOptions'     => array( 'class' => 'icon-catalog-items' )
-                            ),
-                            array(
-                                'type'            => 'ProductCategoriesLink',
-                                'htmlOptions'     => array( 'class' => 'icon-product-categories' )
-                            ),
-                        ),
-                    ),
-                ),
-            );
-            return $metadata;
-        }
+        protected $controllerId;
 
-        protected function makeModel()
-        {
-            return new ProductCategory(false);
-        }
+        protected $moduleId;
 
-        protected function shouldRenderToolBarElement($element, $elementInformation)
-        {
-            assert('$element instanceof ActionElement');
-            assert('is_array($elementInformation)');
-            return true;
-        }
+        /**
+         * Used to identify the active action for the action bar elements
+         * @var mixed null or string
+         */
+        protected $activeActionElementType;        
     }
 ?>

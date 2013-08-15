@@ -35,28 +35,58 @@
      ********************************************************************************/
 
     /**
-     * Action bar view for the marketing search and list user interface. Provides buttons like create, and links to
-     * queues.
+     * Renders an action bar specifically for the listview.
      */
-    class SecuredActionBarForMarketingSearchAndListView extends SecuredActionBarForMarketingListsSearchAndListView
+    class ActionBarForProductCategoriesTreeListView extends ActionBarForSecurityTreeListView
     {
-        /**
-         * @return array
-         */
         public static function getDefaultMetadata()
         {
-            $metadata = parent::getDefaultMetadata();
-            $metadata['global']['secondToolbar'] = array(
+            $metadata = array(
+                'global' => array(
+                    'toolbar' => array(
                         'elements' => array(
-                            array('type'        => 'MarketingIntroLink',                                
+                            array('type'          => 'ProductCreateLink',
+                                'htmlOptions'     => array('class' => 'icon-create'),
+                            ),
+                            array(
+                                'type'            => 'ProductsLink',
+                                'htmlOptions'     => array( 'class' => 'icon-products' )
+                            ),
+                            array(
+                                'type'            => 'ProductTemplatesLink',
+                                'htmlOptions'     => array( 'class' => 'icon-catalog-items' )
+                            ),
+                            array(
+                                'type'            => 'ProductCategoriesLink',
+                                'htmlOptions'     => array( 'class' => 'icon-product-categories' )
+                            ),
+                        ),
+                    ),
+                    'secondToolbar' => array(
+                        'elements' => array(
+                            array('type'        => 'ProductIntroLink',                                
                                   'panelId'     => 'eval:$this->introView->getPanelId()',
                                   'checked'     => 'eval:!$this->introView->isIntroViewDismissed()',
                                   'moduleName'  => 'eval:$this->introView->getModuleName()',
                                   'htmlOptions' => array('class' => 'icon-intro-change-this'), //todo: need new class name
                             ),
                         ),
-                    );               
+                    ),
+                ),
+            );
             return $metadata;
+        }
+
+        protected function makeModel()
+        {
+            return new ProductCategory(false);
+        }
+
+        protected function shouldRenderToolBarElement($element, $elementInformation)
+        {
+            assert('$element instanceof ActionElement');
+            assert('is_array($elementInformation)');
+            return true;
         }
     }
 ?>

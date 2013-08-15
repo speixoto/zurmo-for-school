@@ -477,5 +477,11 @@
 
             return '';
         }
+        
+        public function actionToggleDismissIntroView($moduleName, $panelId)
+        {
+            $value = (bool) ZurmoConfigurationUtil::getForCurrentUserByModuleName($moduleName, $panelId);
+            ZurmoConfigurationUtil::setForCurrentUserByModuleName($moduleName, $panelId, !$value);
+        }
     }
 ?>
