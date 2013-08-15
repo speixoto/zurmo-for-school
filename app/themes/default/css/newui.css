@@ -288,7 +288,8 @@ a.ModalGameNotification a,
 #business-card-buttons > div,
 #business-card-buttons a,
 #sliding-panel-toggle,
-.mini-button {
+.mini-button,
+#login-box {
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
@@ -5085,7 +5086,6 @@ section {
 }
 /*=Login*/
 #LoginView {
-  min-width: 900px;
   height: 100%;
   margin: 30px;
   -webkit-box-shadow: 0 0 12px 5px rgba(153, 153, 153, 0.3);
@@ -5163,8 +5163,8 @@ section {
   left: 6px;
 }
 #login-box {
-  width: 500px;
-  margin: 150px auto 0 -250px;
+  max-width: 475px;
+  margin: 150px auto 0 -237px;
   height: 200px;
   position: relative;
   left: 50%;
@@ -5573,7 +5573,7 @@ section {
   content: "÷";
   font-weight: normal !important;
   font-size: 12px !important;
-  font-family: "ZurmoGamificationSymblyReguRg" !important;
+  font-family: "zurmo_gamification_symbly_rRg" !important;
   color: #ddd;
   position: relative;
   top: 0;
@@ -5613,7 +5613,7 @@ section {
   color: #ddd;
   font-weight: normal;
   font-size: 26px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   line-height: 1;
   display: inline-block;
   vertical-align: middle;
@@ -5668,62 +5668,62 @@ body > .ui-autocomplete {
   content: "P";
   font-weight: normal;
   font-size: 20px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   margin-right: 8px;
 }
 .autocomplete-icon-ContactsModule:before {
   content: "y";
   font-weight: normal;
   font-size: 22px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   margin-right: 8px;
 }
 .autocomplete-icon-LeadsModule:before {
   content: ".";
   font-weight: normal;
   font-size: 20px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   margin-right: 8px;
 }
 .autocomplete-icon-OpportunitiesModule:before {
   content: "9";
   font-weight: normal;
   font-size: 20px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   margin-right: 8px;
 }
 .autocomplete-icon-TasksModule:before {
   content: "4";
   font-weight: normal;
   font-size: 20px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   margin-right: 8px;
 }
 .autocomplete-icon-NotesModule:before {
   content: "3";
   font-weight: normal;
   font-size: 20px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   margin-right: 8px;
 }
 .autocomplete-icon-MeetingsModule:before {
   content: "U";
   font-weight: normal;
   font-size: 20px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   margin-right: 8px;
 }
 .autocomplete-icon-UsersModule:before {
   font-weight: normal;
   font-size: 20px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   margin-right: 8px;
   content: "e";
 }
 .autocomplete-icon-AllResults:before {
   font-weight: normal;
   font-size: 20px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   margin-right: 8px;
   content: "k";
 }
@@ -5888,7 +5888,7 @@ body > .ui-autocomplete {
   content: "÷";
   font-weight: normal;
   font-size: 16px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   margin-left: 10px;
 }
 #ShortcutsMenu ul {
@@ -5909,7 +5909,7 @@ body > .ui-autocomplete {
   font-size: 24px;
   font-weight: normal;
   font-size: 30px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
 }
 .AppNavigation {
   width: 170px;
@@ -6179,7 +6179,7 @@ body > .ui-autocomplete {
   font-style: normal;
   font-weight: normal;
   font-size: 24px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   -webkit-text-shadow: none !important;
   -moz-text-shadow: none !important;
   -o-text-shadow: none !important;
@@ -6489,7 +6489,7 @@ form .view-toolbar-container,
   content: "÷";
   font-weight: normal;
   font-size: 14px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   margin-left: 10px;
   position: relative;
   top: 1px;
@@ -6610,7 +6610,7 @@ form .view-toolbar-container,
 .icon-edit:before {
   font-weight: normal;
   font-size: 24px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   padding: 0 0 0 0;
   margin: 0 6px 0 -30px;
   -moz-box-sizing: border-box;
@@ -6628,7 +6628,7 @@ form .view-toolbar-container,
   content: "Y";
   font-weight: normal;
   font-size: 24px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   padding: 0 0 0 0;
   margin: 0 6px 0 -30px;
   -moz-box-sizing: border-box;
@@ -6642,7 +6642,7 @@ form .view-toolbar-container,
   content: "Y";
   font-weight: normal;
   font-size: 24px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   padding: 0 0 0 0;
   margin: 0 6px 0 -30px;
   -moz-box-sizing: border-box;
@@ -6659,7 +6659,7 @@ form .view-toolbar-container,
   content: "F";
   font-weight: normal;
   font-size: 24px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   padding: 0 0 0 0;
   margin: 0 6px 0 -30px;
   -moz-box-sizing: border-box;
@@ -6677,7 +6677,7 @@ form .view-toolbar-container,
   content: "E";
   font-weight: normal;
   font-size: 24px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   padding: 0 0 0 0;
   margin: 0 6px 0 -30px;
   -moz-box-sizing: border-box;
@@ -6693,7 +6693,7 @@ form .view-toolbar-container,
   content: "/";
   font-weight: normal;
   font-size: 24px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   padding: 0 0 0 0;
   margin: 0 6px 0 -30px;
   -moz-box-sizing: border-box;
@@ -6709,7 +6709,7 @@ form .view-toolbar-container,
   content: "(";
   font-weight: normal;
   font-size: 24px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   padding: 0 0 0 0;
   margin: 0 6px 0 -30px;
   -moz-box-sizing: border-box;
@@ -6724,7 +6724,7 @@ form .view-toolbar-container,
   content: 'T';
   font-weight: normal;
   font-size: 24px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   padding: 0 0 0 0;
   margin: 0 6px 0 -30px;
   -moz-box-sizing: border-box;
@@ -6740,7 +6740,7 @@ form .view-toolbar-container,
   content: "n";
   font-weight: normal;
   font-size: 24px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   padding: 0 0 0 0;
   margin: 0 6px 0 -30px;
   -moz-box-sizing: border-box;
@@ -6756,7 +6756,7 @@ form .view-toolbar-container,
   content: "2";
   font-weight: normal;
   font-size: 24px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   padding: 0 0 0 0;
   margin: 0 6px 0 -30px;
   -moz-box-sizing: border-box;
@@ -6771,7 +6771,7 @@ form .view-toolbar-container,
   content: '\2014';
   font-weight: normal;
   font-size: 22px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   padding: 0 0 0 0;
   margin: 0 6px 0 -30px;
   -moz-box-sizing: border-box;
@@ -6785,7 +6785,7 @@ form .view-toolbar-container,
   content: "c";
   font-weight: normal;
   font-size: 24px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   padding: 0 0 0 0;
   margin: 0 6px 0 -30px;
   -moz-box-sizing: border-box;
@@ -6799,7 +6799,7 @@ form .view-toolbar-container,
   content: "d";
   font-weight: normal;
   font-size: 24px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   padding: 0 0 0 0;
   margin: 0 6px 0 -30px;
   -moz-box-sizing: border-box;
@@ -6813,7 +6813,7 @@ form .view-toolbar-container,
   content: "y";
   font-weight: normal;
   font-size: 24px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   padding: 0 0 0 0;
   margin: 0 6px 0 -30px;
   -moz-box-sizing: border-box;
@@ -6827,7 +6827,7 @@ form .view-toolbar-container,
   content: "E";
   font-weight: normal;
   font-size: 24px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   padding: 0 0 0 0;
   margin: 0 6px 0 -30px;
   -moz-box-sizing: border-box;
@@ -6841,7 +6841,7 @@ form .view-toolbar-container,
   content: "u";
   font-weight: normal;
   font-size: 24px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   padding: 0 0 0 0;
   margin: 0 6px 0 -30px;
   -moz-box-sizing: border-box;
@@ -6855,7 +6855,7 @@ form .view-toolbar-container,
   content: "x";
   font-weight: normal;
   font-size: 24px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   padding: 0 0 0 0;
   margin: 0 6px 0 -30px;
   -moz-box-sizing: border-box;
@@ -6869,7 +6869,7 @@ form .view-toolbar-container,
   content: "—";
   font-weight: normal;
   font-size: 24px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   padding: 0 0 0 0;
   margin: 0 6px 0 -30px;
   -moz-box-sizing: border-box;
@@ -6883,7 +6883,7 @@ form .view-toolbar-container,
   content: "8";
   font-weight: normal;
   font-size: 24px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   padding: 0 0 0 0;
   margin: 0 6px 0 -30px;
   -moz-box-sizing: border-box;
@@ -6897,7 +6897,7 @@ form .view-toolbar-container,
   content: "7";
   font-weight: normal;
   font-size: 24px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   padding: 0 0 0 0;
   margin: 0 6px 0 -30px;
   -moz-box-sizing: border-box;
@@ -6911,7 +6911,7 @@ form .view-toolbar-container,
   content: "0";
   font-weight: normal;
   font-size: 24px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   padding: 0 0 0 0;
   margin: 0 6px 0 -30px;
   -moz-box-sizing: border-box;
@@ -6925,7 +6925,7 @@ form .view-toolbar-container,
   content: "C";
   font-weight: normal;
   font-size: 24px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   padding: 0 0 0 0;
   margin: 0 6px 0 -30px;
   -moz-box-sizing: border-box;
@@ -6939,7 +6939,7 @@ form .view-toolbar-container,
   content: "e";
   font-weight: normal;
   font-size: 24px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   padding: 0 0 0 0;
   margin: 0 6px 0 -30px;
   -moz-box-sizing: border-box;
@@ -6953,7 +6953,7 @@ form .view-toolbar-container,
   content: "J";
   font-weight: normal;
   font-size: 24px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   padding: 0 0 0 0;
   margin: 0 6px 0 -30px;
   -moz-box-sizing: border-box;
@@ -6967,7 +6967,7 @@ form .view-toolbar-container,
   content: "I";
   font-weight: normal;
   font-size: 24px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   padding: 0 0 0 0;
   margin: 0 6px 0 -30px;
   -moz-box-sizing: border-box;
@@ -6981,7 +6981,7 @@ form .view-toolbar-container,
   content: "n";
   font-weight: normal;
   font-size: 24px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   padding: 0 0 0 0;
   margin: 0 6px 0 -30px;
   -moz-box-sizing: border-box;
@@ -6995,7 +6995,7 @@ form .view-toolbar-container,
   content: "F";
   font-weight: normal;
   font-size: 24px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   padding: 0 0 0 0;
   margin: 0 6px 0 -30px;
   -moz-box-sizing: border-box;
@@ -7010,7 +7010,7 @@ form .view-toolbar-container,
   content: "w";
   font-weight: normal;
   font-size: 24px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   padding: 0 0 0 0;
   margin: 0 6px 0 -30px;
   -moz-box-sizing: border-box;
@@ -7024,7 +7024,7 @@ form .view-toolbar-container,
   content: "b";
   font-weight: normal;
   font-size: 24px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   padding: 0 0 0 0;
   margin: 0 6px 0 -30px;
   -moz-box-sizing: border-box;
@@ -7038,7 +7038,7 @@ form .view-toolbar-container,
   content: "O";
   font-weight: normal;
   font-size: 24px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   padding: 0 0 0 0;
   margin: 0 6px 0 -30px;
   -moz-box-sizing: border-box;
@@ -7052,7 +7052,7 @@ form .view-toolbar-container,
   content: "l";
   font-weight: normal;
   font-size: 24px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   padding: 0 0 0 0;
   margin: 0 6px 0 -30px;
   -moz-box-sizing: border-box;
@@ -7067,7 +7067,7 @@ form .view-toolbar-container,
   content: "Q";
   font-weight: normal;
   font-size: 24px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   padding: 0 0 0 0;
   margin: 0 6px 0 -30px;
   -moz-box-sizing: border-box;
@@ -7081,7 +7081,7 @@ form .view-toolbar-container,
   content: "e";
   font-weight: normal;
   font-size: 24px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   padding: 0 0 0 0;
   margin: 0 6px 0 -30px;
   -moz-box-sizing: border-box;
@@ -7095,7 +7095,7 @@ form .view-toolbar-container,
   content: '\00A5';
   font-weight: normal;
   font-size: 24px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   padding: 0 0 0 0;
   margin: 0 6px 0 -30px;
   -moz-box-sizing: border-box;
@@ -7109,7 +7109,7 @@ form .view-toolbar-container,
   content: '\00A7';
   font-weight: normal;
   font-size: 26px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   padding: 0 0 0 0;
   margin: 0 6px 0 -30px;
   -moz-box-sizing: border-box;
@@ -7123,7 +7123,7 @@ form .view-toolbar-container,
   content: '\20AC';
   font-weight: normal;
   font-size: 24px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   padding: 0 0 0 0;
   margin: 0 6px 0 -30px;
   -moz-box-sizing: border-box;
@@ -7137,7 +7137,7 @@ form .view-toolbar-container,
   content: '\0071';
   font-weight: normal;
   font-size: 28px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   padding: 0 0 0 0;
   margin: 0 6px 0 -30px;
   -moz-box-sizing: border-box;
@@ -7151,7 +7151,7 @@ form .view-toolbar-container,
   content: '\00A5';
   font-weight: normal;
   font-size: 22px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   padding: 0 0 0 0;
   margin: 0 6px 0 -30px;
   -moz-box-sizing: border-box;
@@ -7165,7 +7165,7 @@ form .view-toolbar-container,
   content: '\2039';
   font-weight: normal;
   font-size: 25px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   padding: 0 0 0 0;
   margin: 0 6px 0 -30px;
   -moz-box-sizing: border-box;
@@ -7179,7 +7179,7 @@ form .view-toolbar-container,
   content: '\0022';
   font-weight: normal;
   font-size: 24px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   padding: 0 0 0 0;
   margin: 0 6px 0 -30px;
   -moz-box-sizing: border-box;
@@ -7193,7 +7193,7 @@ form .view-toolbar-container,
   content: '\00B6';
   font-weight: normal;
   font-size: 25px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   padding: 0 0 0 0;
   margin: 0 6px 0 -30px;
   -moz-box-sizing: border-box;
@@ -7207,7 +7207,7 @@ form .view-toolbar-container,
   content: '\003E';
   font-weight: normal;
   font-size: 24px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   padding: 0 0 0 0;
   margin: 0 6px 0 -30px;
   -moz-box-sizing: border-box;
@@ -7221,7 +7221,7 @@ form .view-toolbar-container,
   content: '\00AC';
   font-weight: normal;
   font-size: 27px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   padding: 0 0 0 0;
   margin: 0 6px 0 -30px;
   -moz-box-sizing: border-box;
@@ -7235,7 +7235,7 @@ form .view-toolbar-container,
   content: '\00D7';
   font-weight: normal;
   font-size: 26px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   padding: 0 0 0 0;
   margin: 0 6px 0 -30px;
   -moz-box-sizing: border-box;
@@ -7249,7 +7249,7 @@ form .view-toolbar-container,
   content: '\2018';
   font-weight: normal;
   font-size: 24px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   padding: 0 0 0 0;
   margin: 0 6px 0 -30px;
   -moz-box-sizing: border-box;
@@ -7263,7 +7263,7 @@ form .view-toolbar-container,
   content: '\2019';
   font-weight: normal;
   font-size: 24px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   padding: 0 0 0 0;
   margin: 0 6px 0 -30px;
   -moz-box-sizing: border-box;
@@ -7277,7 +7277,7 @@ form .view-toolbar-container,
   content: '\201D';
   font-weight: normal;
   font-size: 24px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   padding: 0 0 0 0;
   margin: 0 6px 0 -30px;
   -moz-box-sizing: border-box;
@@ -7290,7 +7290,7 @@ form .view-toolbar-container,
 .icon-kanban-board-view-type:before {
   font-weight: normal;
   font-size: 26px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   padding: 0 0 0 0;
   margin: 0 6px 0 -30px;
   -moz-box-sizing: border-box;
@@ -7303,7 +7303,7 @@ form .view-toolbar-container,
 .icon-grid-view-type:before {
   font-weight: normal;
   font-size: 26px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   padding: 0 0 0 0;
   margin: 0 6px 0 -30px;
   -moz-box-sizing: border-box;
@@ -7317,7 +7317,7 @@ form .view-toolbar-container,
 .icon-marketing-campaigns:before {
   font-weight: normal;
   font-size: 28px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   padding: 0 0 0 0;
   margin: 0 6px 0 -30px;
   -moz-box-sizing: border-box;
@@ -7331,7 +7331,7 @@ form .view-toolbar-container,
 .icon-webforms:before {
   font-weight: normal;
   font-size: 24px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   padding: 0 0 0 0;
   margin: 0 6px 0 -30px;
   -moz-box-sizing: border-box;
@@ -7345,7 +7345,7 @@ form .view-toolbar-container,
 .icon-webforms-entries:before {
   font-weight: normal;
   font-size: 24px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   padding: 0 0 0 0;
   margin: 0 6px 0 -30px;
   -moz-box-sizing: border-box;
@@ -7601,7 +7601,7 @@ tr.even {
   margin-top: -2px;
   font-weight: normal;
   font-size: 24px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   visibility: hidden;
 }
 .juiportlet-widget .empty {
@@ -7634,7 +7634,7 @@ td.empty {
   content: "j";
   font-weight: normal;
   font-size: 24px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   padding: 0 0 0 0;
   margin: 0 6px 0 -30px;
   -moz-box-sizing: border-box;
@@ -7647,7 +7647,7 @@ td.empty {
   content: "z";
   font-weight: normal;
   font-size: 24px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   padding: 0 0 0 0;
   margin: 0 6px 0 -30px;
   -moz-box-sizing: border-box;
@@ -7796,7 +7796,7 @@ td.empty {
   content: "T";
   font-weight: normal;
   font-size: 24px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   margin-left: -20px;
   font-style: normal;
   position: absolute;
@@ -7875,7 +7875,7 @@ td.empty {
   content: "Y";
   font-weight: normal;
   font-size: 24px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   padding: 0 0 0 0;
   margin: 0 6px 0 -30px;
   -moz-box-sizing: border-box;
@@ -7891,7 +7891,7 @@ td.empty {
   content: "—";
   font-weight: normal;
   font-size: 24px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   padding: 0 0 0 0;
   margin: 0 6px 0 -30px;
   -moz-box-sizing: border-box;
@@ -7907,7 +7907,7 @@ td.empty {
   content: "!";
   font-weight: normal;
   font-size: 24px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   padding: 0 0 0 0;
   margin: 0 6px 0 -30px;
   -moz-box-sizing: border-box;
@@ -7965,7 +7965,7 @@ body div.form-toolbar a.simple-link:not(.z-button) span.z-label {
 body div.form-toolbar a.simple-link:not(.z-button) span.z-label:before {
   content: "" !important;
 }
-a.simple-link {
+.zurmo body a.simple-link {
   background: none !important;
   background-image: none !important;
   -webkit-box-shadow: none  !important;
@@ -7985,7 +7985,7 @@ a.simple-link {
   font-size: 11px;
   font-weight: normal;
 }
-a.simple-link:before {
+.zurmo body a.simple-link:before {
   content: "" !important;
 }
 .normal-size {
@@ -8323,7 +8323,7 @@ div.wide.form label.hasCheckBox {
   content: "Y";
   font-weight: normal;
   font-size: 24px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   position: relative;
   top: 1px;
   left: -5px;
@@ -8342,7 +8342,7 @@ div.wide.form label.hasCheckBox {
   content: 'j';
   font-weight: normal;
   font-size: 300px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   line-height: 52%;
 }
 .zero-components-view .Contact .large-icon:after,
@@ -8350,7 +8350,7 @@ div.wide.form label.hasCheckBox {
   content: "y";
   font-weight: normal;
   font-size: 300px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   line-height: 50%;
 }
 .zero-components-view .Account .large-icon:after,
@@ -8358,7 +8358,7 @@ div.wide.form label.hasCheckBox {
   content: "P";
   font-weight: normal;
   font-size: 300px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   line-height: 65%;
 }
 .zero-components-view .Lead .large-icon:after,
@@ -8366,7 +8366,7 @@ div.wide.form label.hasCheckBox {
   content: ".";
   font-weight: normal;
   font-size: 300px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   line-height: 65%;
 }
 .zero-components-view .Opportunity .large-icon:after,
@@ -8374,7 +8374,7 @@ div.wide.form label.hasCheckBox {
   content: "9";
   font-weight: normal;
   font-size: 300px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   line-height: 80%;
 }
 .zero-components-view .Conversation .large-icon:after,
@@ -8382,7 +8382,7 @@ div.wide.form label.hasCheckBox {
   content: "b";
   font-weight: normal;
   font-size: 230px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   line-height: 90%;
 }
 .zero-components-view .Mission .large-icon:after,
@@ -8390,7 +8390,7 @@ div.wide.form label.hasCheckBox {
   content: "Q";
   font-weight: normal;
   font-size: 230px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   line-height: 80%;
 }
 .zero-components-view .EmailMessage .large-icon:after,
@@ -8398,7 +8398,7 @@ div.wide.form label.hasCheckBox {
   content: "g";
   font-weight: normal;
   font-size: 325px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   line-height: 52%;
 }
 .zero-components-view .EmailTemplate .large-icon:after,
@@ -8406,7 +8406,7 @@ div.wide.form label.hasCheckBox {
   content: '\00B6';
   font-weight: normal;
   font-size: 325px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   line-height: 52%;
 }
 .zero-components-view .MarketingList .large-icon:after,
@@ -8414,7 +8414,7 @@ div.wide.form label.hasCheckBox {
   content: '\0022';
   font-weight: normal;
   font-size: 300px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   line-height: 52%;
 }
 .zero-components-view .Campaign .large-icon:after,
@@ -8422,7 +8422,7 @@ div.wide.form label.hasCheckBox {
   content: '\002C';
   font-weight: normal;
   font-size: 300px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   line-height: 52%;
 }
 .zero-components-view .Product .large-icon:after,
@@ -8430,7 +8430,7 @@ div.wide.form label.hasCheckBox {
   content: '\003E';
   font-weight: normal;
   font-size: 300px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   line-height: 52%;
 }
 .zero-components-view .ProductTemplate .large-icon:after,
@@ -8438,7 +8438,7 @@ div.wide.form label.hasCheckBox {
   content: '\00AC';
   font-weight: normal;
   font-size: 300px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   line-height: 52%;
 }
 .zero-components-view .ProductCategory .large-icon:after,
@@ -8446,7 +8446,7 @@ div.wide.form label.hasCheckBox {
   content: '\00D7';
   font-weight: normal;
   font-size: 300px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   line-height: 52%;
 }
 .zero-components-view .ContactWebForm .large-icon:after,
@@ -8454,7 +8454,7 @@ div.wide.form label.hasCheckBox {
   content: '\003C';
   font-weight: normal;
   font-size: 300px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   line-height: 52%;
 }
 .highlight-create-button {
@@ -8717,7 +8717,7 @@ div.wide.form label.hasCheckBox {
   content: "÷";
   font-weight: normal;
   font-size: 14px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   position: relative;
   top: 1px;
   margin-left: 5px;
@@ -8727,7 +8727,7 @@ div.wide.form label.hasCheckBox {
   content: "÷";
   font-weight: normal;
   font-size: 14px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   position: relative;
   top: 1px;
   margin-left: 5px;
@@ -8875,7 +8875,7 @@ div.wide.form label.hasCheckBox {
 #clear-search-link .icon-clear {
   font-weight: normal;
   font-size: 16px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
 }
 .mp-divider {
   padding: 0 2px;
@@ -8920,7 +8920,7 @@ div.wide.form label.hasCheckBox {
   display: block;
   font-weight: normal;
   font-size: 24px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   color: #a7a7a7 !important;
 }
 .dynamic-search-row .dynamic-search-row-number-label {
@@ -9309,7 +9309,7 @@ div.wide.form label.hasCheckBox {
   content: "Y";
   font-weight: normal;
   font-size: 26px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   color: #8b8b8b;
   text-align: center;
 }
@@ -9357,7 +9357,7 @@ div.wide.form label.hasCheckBox {
   content: "U";
   font-weight: normal;
   font-size: 24px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   color: #8b8b8b;
   text-align: center;
   vertical-align: bottom;
@@ -9480,7 +9480,7 @@ div.wide.form label.hasCheckBox {
   content: "K";
   font-weight: normal;
   font-size: 26px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   line-height: 12px;
   position: absolute;
   left: 0;
@@ -9510,6 +9510,10 @@ div.wide.form label.hasCheckBox {
 }
 .mapcanvas {
   width: 600px;
+  height: 400px;
+}
+.mapCanvasPortlet {
+  width: 100%;
   height: 400px;
 }
 /*=tasks portelt*/
@@ -9690,7 +9694,7 @@ div.wide.form label.hasCheckBox {
   content: "÷";
   font-weight: normal;
   font-size: 14px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   top: 0;
   margin-left: 5px;
 }
@@ -9873,7 +9877,7 @@ div.wide.form label.hasCheckBox {
   content: "Y";
   font-weight: normal;
   font-size: 24px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   padding: 0 0 0 0;
   margin: 0 6px 0 -30px;
   -moz-box-sizing: border-box;
@@ -9904,7 +9908,7 @@ div.wide.form label.hasCheckBox {
   content: "÷";
   font-weight: normal;
   font-size: 14px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   margin-left: 5px;
 }
 #inline-edit-form > table label {
@@ -10095,7 +10099,7 @@ div.radio-input .hasDropDown {
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#e8e8e8', endColorstr='#f5f5f5', GradientType=0);
   font-weight: normal;
   font-size: 14px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
 }
 .BreadCrumbView #StickyListMenu ul {
   display: none;
@@ -10293,14 +10297,14 @@ div.hasHalfs > div input {
   content: "n";
   font-weight: normal;
   font-size: 24px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
 }
 .edit-portlet-menu > li > a:after,
 .edit-row-menu > li > a:after {
   content: "÷";
   font-weight: normal;
   font-size: 12px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   position: relative;
   top: -2px;
   left: 2px;
@@ -10408,7 +10412,7 @@ div.hasHalfs > div input {
   content: "6";
   font-weight: normal;
   font-size: 18px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
 }
 .pager .endless-list-pager .hidden {
   display: none;
@@ -10549,7 +10553,7 @@ div.hasHalfs > div input {
   color: #666 !important;
   font-weight: normal;
   font-size: 42px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   line-height: 28px;
 }
 .LatestActivitiesForPortletView {
@@ -10615,7 +10619,7 @@ div.hasHalfs > div input {
   content: "÷";
   font-weight: normal;
   font-size: 14px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   position: relative;
   top: 1px;
   margin-left: 5px;
@@ -10685,7 +10689,7 @@ div.hasHalfs > div input {
   color: #666 !important;
   font-weight: normal;
   font-size: 42px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   line-height: 28px;
 }
 .LatestActivitiesListView .Task:after,
@@ -10696,7 +10700,7 @@ div.hasHalfs > div input {
   color: #666 !important;
   font-weight: normal;
   font-size: 42px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   line-height: 28px;
 }
 .LatestActivitiesListView .Meeting:after,
@@ -10707,7 +10711,7 @@ div.hasHalfs > div input {
   color: #666 !important;
   font-weight: normal;
   font-size: 42px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   line-height: 28px;
 }
 .LatestActivitiesListView .EmailMessage:after,
@@ -10718,7 +10722,7 @@ div.hasHalfs > div input {
   color: #666 !important;
   font-weight: normal;
   font-size: 42px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   line-height: 28px;
 }
 .LatestActivitiesListView .Conversation,
@@ -10733,7 +10737,7 @@ div.hasHalfs > div input {
   color: #666 !important;
   font-weight: normal;
   font-size: 42px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   line-height: 28px;
 }
 .LatestActivitiesListView .Mission:after,
@@ -10744,7 +10748,7 @@ div.hasHalfs > div input {
   color: #666 !important;
   font-weight: normal;
   font-size: 42px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   line-height: 28px;
 }
 #MashableInboxForm_filteredBy_area,
@@ -11201,16 +11205,24 @@ div.hasHalfs > div input {
   background-image: linear-gradient(0deg, #969696, #afafaf) !important;
 }
 /*=About*/
+#RunJobView,
+#DiagnosticCheckServicesView,
 #AboutView {
   position: relative;
 }
+#RunJobView #ZurmoLogo,
+#DiagnosticCheckServicesView #ZurmoLogo,
 #AboutView #ZurmoLogo {
   width: 300px;
 }
+#RunJobView #ZurmoLogo strong,
+#DiagnosticCheckServicesView #ZurmoLogo strong,
 #AboutView #ZurmoLogo strong {
   float: right;
   margin-top: 26px;
 }
+#RunJobView h1,
+#DiagnosticCheckServicesView h1,
 #AboutView h1 {
   text-indent: 15px;
   font-size: 15px;
@@ -11232,6 +11244,8 @@ div.hasHalfs > div input {
   box-shadow: inset 0 1px 0 0 #ffffff;
   border-bottom: 1px solid #ccc;
 }
+#RunJobView > div,
+#DiagnosticCheckServicesView > div,
 #AboutView > div {
   margin-right: 0;
   margin-bottom: 20px;
@@ -11251,9 +11265,13 @@ div.hasHalfs > div input {
   background-image: linear-gradient(#ffffff, #f5f5f5 80%, #f5f5f5) ;
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#f5f5f5', GradientType=0);
 }
+#RunJobView #aboutText,
+#DiagnosticCheckServicesView #aboutText,
 #AboutView #aboutText {
   position: relative;
 }
+#RunJobView #leftCol,
+#DiagnosticCheckServicesView #leftCol,
 #AboutView #leftCol {
   padding: 15px 0 50px 15px;
   width: 65%;
@@ -11262,9 +11280,13 @@ div.hasHalfs > div input {
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
 }
+#RunJobView #leftCol > div,
+#DiagnosticCheckServicesView #leftCol > div,
 #AboutView #leftCol > div {
   margin-bottom: 20px;
 }
+#RunJobView #rightCol,
+#DiagnosticCheckServicesView #rightCol,
 #AboutView #rightCol {
   float: right;
   width: 30%;
@@ -11273,12 +11295,16 @@ div.hasHalfs > div input {
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
 }
+#RunJobView #rightCol > div,
+#DiagnosticCheckServicesView #rightCol > div,
 #AboutView #rightCol > div {
   padding: 8px 10px;
   background: #F4F4F4;
   margin-bottom: 15px;
   float: left;
 }
+#RunJobView #aboutContactDetails,
+#DiagnosticCheckServicesView #aboutContactDetails,
 #AboutView #aboutContactDetails {
   width: 100%;
   float: left;
@@ -11288,19 +11314,31 @@ div.hasHalfs > div input {
   position: absolute;
   bottom: 0;
 }
+#RunJobView #aboutContactDetails span,
+#DiagnosticCheckServicesView #aboutContactDetails span,
 #AboutView #aboutContactDetails span {
   margin: 0 10px;
 }
+#RunJobView p,
+#DiagnosticCheckServicesView p,
 #AboutView p,
+#RunJobView ul,
+#DiagnosticCheckServicesView ul,
 #AboutView ul {
   font-size: 12px;
   line-height: 21px;
   font-weight: normal;
 }
+#RunJobView p a,
+#DiagnosticCheckServicesView p a,
 #AboutView p a,
+#RunJobView ul a,
+#DiagnosticCheckServicesView ul a,
 #AboutView ul a {
   text-decoration: underline !important;
 }
+#RunJobView ul,
+#DiagnosticCheckServicesView ul,
 #AboutView ul {
   margin-top: 4px;
   padding-left: 20px;
@@ -11400,7 +11438,7 @@ div.hasHalfs > div input {
   content: "P";
   font-weight: normal;
   font-size: 36px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   margin-right: 15px;
   position: relative;
   top: 0;
@@ -11409,7 +11447,7 @@ div.hasHalfs > div input {
   content: "y";
   font-weight: normal;
   font-size: 36px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   margin-right: 15px;
   position: relative;
   top: 1px;
@@ -11418,7 +11456,7 @@ div.hasHalfs > div input {
   content: "9";
   font-weight: normal;
   font-size: 36px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   margin-right: 15px;
   position: relative;
   top: 1px;
@@ -11427,7 +11465,7 @@ div.hasHalfs > div input {
   content: ".";
   font-weight: normal;
   font-size: 36px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   margin-right: 15px;
   position: relative;
   top: 1px;
@@ -11453,7 +11491,7 @@ div.hasHalfs > div input {
   content: "!";
   font-weight: normal;
   font-size: 20px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   position: relative;
   right: -10px;
   top: 1px;
@@ -11484,6 +11522,9 @@ div.hasHalfs > div input {
 }
 .juiportlet-column-no-split {
   width: 100%;
+}
+.juiportlet-column-no-split .juiportlet-widget {
+  margin-right: 0 !important;
 }
 .juiportlet-column-split-left-75 {
   width: 65%;
@@ -11600,7 +11641,7 @@ div.hasHalfs > div input {
   content: "9";
   font-weight: normal;
   font-size: 45px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   padding: 0 0 0 0;
   margin: 0 6px 0 -30px;
   -moz-box-sizing: border-box;
@@ -11618,7 +11659,7 @@ div.hasHalfs > div input {
   content: "e";
   font-weight: normal;
   font-size: 45px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   padding: 0 0 0 0;
   margin: 0 6px 0 -30px;
   -moz-box-sizing: border-box;
@@ -11634,7 +11675,7 @@ div.hasHalfs > div input {
   content: "4";
   font-weight: normal;
   font-size: 45px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   padding: 0 0 0 0;
   margin: 0 6px 0 -30px;
   -moz-box-sizing: border-box;
@@ -11650,7 +11691,7 @@ div.hasHalfs > div input {
   content: '\00A5';
   font-weight: normal;
   font-size: 45px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   padding: 0 0 0 0;
   margin: 0 6px 0 -30px;
   -moz-box-sizing: border-box;
@@ -11663,7 +11704,7 @@ div.hasHalfs > div input {
   content: '\003E';
   font-weight: normal;
   font-size: 45px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   padding: 0 0 0 0;
   margin: 0 6px 0 -30px;
   -moz-box-sizing: border-box;
@@ -11679,7 +11720,7 @@ div.hasHalfs > div input {
   content: 'u';
   font-weight: normal;
   font-size: 45px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   padding: 0 0 0 0;
   margin: 0 6px 0 -30px;
   -moz-box-sizing: border-box;
@@ -11692,7 +11733,7 @@ div.hasHalfs > div input {
   content: 'Q';
   font-weight: normal;
   font-size: 45px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   padding: 0 0 0 0;
   margin: 0 6px 0 -30px;
   -moz-box-sizing: border-box;
@@ -11705,7 +11746,7 @@ div.hasHalfs > div input {
   content: '.';
   font-weight: normal;
   font-size: 45px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   padding: 0 0 0 0;
   margin: 0 6px 0 -30px;
   -moz-box-sizing: border-box;
@@ -11718,7 +11759,7 @@ div.hasHalfs > div input {
   content: 'P';
   font-weight: normal;
   font-size: 45px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   padding: 0 0 0 0;
   margin: 0 6px 0 -30px;
   -moz-box-sizing: border-box;
@@ -11731,7 +11772,7 @@ div.hasHalfs > div input {
   content: "e";
   font-weight: normal;
   font-size: 45px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   padding: 0 0 0 0;
   margin: 0 6px 0 -30px;
   -moz-box-sizing: border-box;
@@ -11744,7 +11785,7 @@ div.hasHalfs > div input {
   content: '\00AC';
   font-weight: normal;
   font-size: 45px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   padding: 0 0 0 0;
   margin: 0 6px 0 -30px;
   -moz-box-sizing: border-box;
@@ -11766,7 +11807,7 @@ div.hasHalfs > div input {
 .juiportlet-widget.ContactsForAccountRelatedListView h3:before {
   font-weight: normal;
   font-size: 32px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   color: #7A7A7A;
   line-height: 100%;
   position: absolute;
@@ -11962,7 +12003,7 @@ div.hasHalfs > div input {
   content: "z";
   font-weight: normal;
   font-size: 21px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   margin-right: 6px;
 }
 .back-to-app-menu-item a:hover span,
@@ -12075,7 +12116,7 @@ div.hasHalfs > div input {
   content: "n";
   font-weight: normal;
   font-size: 20px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   color: #666;
   margin-right: 5px;
   position: relative;
@@ -12116,7 +12157,7 @@ table.configuration-list td:last-child a .z-label:before {
   content: "n";
   font-weight: normal;
   font-size: 20px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   color: #666;
   margin-right: 5px;
   position: relative;
@@ -12132,7 +12173,7 @@ table.configuration-list td:last-child a .z-label:before {
   content: "7";
   font-weight: normal;
   font-size: 18px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   margin-left: 5px;
   position: relative;
   top: 1px;
@@ -12195,7 +12236,7 @@ table.configuration-list td:last-child a .z-label:before {
   margin: 0 0 15px 0 !important;
   font-weight: normal;
   font-size: 22px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
   padding: 0 15px;
   line-height: 25px;
@@ -12406,6 +12447,7 @@ table.configuration-list td:last-child a .z-label:before {
   margin-right: 5px;
 }
 #JobsCollectionView table {
+  table-layout: auto;
   border-top: 1px solid #DFDFDF;
 }
 #JobsCollectionView table:first-child {
@@ -12430,6 +12472,43 @@ table.configuration-list td:last-child a .z-label:before {
 }
 .jobHasNeverRun {
   color: #b38b01;
+}
+.button-column-right {
+  text-align: right !important;
+}
+.run-button span:before {
+  content: "";
+  margin-right: 0px;
+}
+.run-button span:after {
+  content: "7";
+  font-weight: normal;
+  font-size: 18px;
+  font-family: "zurmo_gamification_symbly_rRg";
+  margin-left: 5px;
+  position: relative;
+  top: 1px;
+  font-weight: normal !important;
+}
+#logging-table,
+#complete-table {
+  margin-bottom: 15px;
+}
+#logging-table h3,
+#complete-table h3 {
+  margin-bottom: 8px;
+}
+#logging-table a,
+#complete-table a {
+  margin-right: 15px;
+}
+#logging-table ol,
+#complete-table ol {
+  list-style: decimal inside;
+}
+#logging-table li,
+#complete-table li {
+  margin-bottom: 5px;
 }
 /*Languages*/
 #LanguagesCollectionView {
@@ -12642,7 +12721,7 @@ table.configuration-list td:last-child a .z-label:before {
   content: "n";
   font-weight: normal;
   font-size: 24px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   padding: 0 0 0 0;
   margin: 0 6px 0 -30px;
   -moz-box-sizing: border-box;
@@ -13087,6 +13166,16 @@ table.configuration-list td:last-child a .z-label:before {
   white-space: normal;
   word-break: break-all;
 }
+/*Diagnostics*/
+#DiagnosticCheckServicesView table {
+  margin-top: 15px;
+}
+#DiagnosticCheckServicesView .fail,
+#DiagnosticCheckServicesView .warning,
+#DiagnosticCheckServicesView .pass {
+  display: block;
+  text-align: center;
+}
 .available-portlets {
   padding: 20px;
   list-style: none;
@@ -13111,7 +13200,7 @@ table.configuration-list td:last-child a .z-label:before {
 .available-portlets span {
   font-weight: normal;
   font-size: 24px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   line-height: 11px;
   border: none;
   margin-right: 6px;
@@ -13196,7 +13285,7 @@ table.configuration-list td:last-child a .z-label:before {
   content: "j";
   font-weight: normal;
   font-size: 24px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   margin-right: 10px;
   position: relative;
   top: 1px;
@@ -13342,7 +13431,7 @@ div.wide.form .errorMessage {
   content: "Y";
   font-weight: normal;
   font-size: 20px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
 }
 .add-label {
   font-weight: normal !important;
@@ -13527,7 +13616,7 @@ div.wide.form .errorMessage {
   box-shadow: 0 0 2px 0 rgba(153, 153, 153, 0.15);
   font-weight: normal;
   font-size: 36px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   font-size: 24px;
   padding: 0 6px !important;
   margin: 0 5px 0 0 !important;
@@ -14052,7 +14141,7 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
   content: "n";
   font-weight: normal;
   font-size: 16px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   margin-right: 5px;
   position: relative;
   top: 0px;
@@ -14316,7 +14405,7 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
   content: "_";
   font-weight: normal;
   font-size: 22px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   text-indent: 0;
   display: block;
   float: right;
@@ -14328,7 +14417,7 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
   content: "S";
   font-weight: normal;
   font-size: 22px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   text-indent: 0;
   display: block;
   float: right;
@@ -14340,7 +14429,7 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
   content: "Y";
   font-weight: normal;
   font-size: 22px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   text-indent: 0;
   display: block;
   float: right;
@@ -14355,7 +14444,7 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
   content: ")";
   font-weight: normal;
   font-size: 22px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   text-indent: 0;
   display: block;
   float: right;
@@ -14370,7 +14459,7 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
   content: "n";
   font-weight: normal;
   font-size: 22px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   text-indent: 0;
   display: block;
   float: right;
@@ -14506,7 +14595,7 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
   content: "o";
   font-weight: normal;
   font-size: 22px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   margin-right: 3px;
   position: relative;
   top: 1px;
@@ -14526,6 +14615,7 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
 .AttributeEditView .sortable .remove-sortable-item-link {
   position: absolute;
   left: 3px;
+  top: 0;
   line-height: 1;
   z-index: 100;
 }
@@ -14537,7 +14627,7 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
   content: "_";
   font-weight: normal;
   font-size: 22px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   text-indent: 0 !important;
   color: #A7A7A7;
   -webkit-text-shadow: 0 1px 0 #ffffff;
@@ -15153,7 +15243,7 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
   content: "x";
   font-weight: normal;
   font-size: 24px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   padding: 0 0 0 0;
   margin: 0 6px 0 -30px;
   -moz-box-sizing: border-box;
@@ -15167,7 +15257,7 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
   content: ":";
   font-weight: normal;
   font-size: 24px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   padding: 0 0 0 0;
   margin: 0 6px 0 -30px;
   -moz-box-sizing: border-box;
@@ -15181,7 +15271,7 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
   content: ";";
   font-weight: normal;
   font-size: 24px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   padding: 0 0 0 0;
   margin: 0 6px 0 -30px;
   -moz-box-sizing: border-box;
@@ -15309,7 +15399,7 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
 .badge .badge-icon {
   font-weight: normal;
   font-size: 50px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   display: block;
   text-align: center;
   -webkit-text-shadow: 0 1px 0 rgba(255, 255, 255, 0.9);
@@ -16002,6 +16092,9 @@ a.close-ModalGameNotification.simple-link {
 .UserSocialItemsForPortletView .empty {
   display: none;
 }
+#UsersPageView .juiportlet-columns {
+  padding-right: 20px;
+}
 #UserDetailsView {
   padding: 0 20px 20px 0;
 }
@@ -16176,7 +16269,7 @@ a.dashboard-link .z-label {
 .hide-welcome span {
   font-weight: normal;
   font-size: 26px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   line-height: 9px;
   border: none;
   margin-right: 5px;
@@ -16373,7 +16466,7 @@ a.dashboard-link .z-label {
 .conversation-related-Account > div:before {
   font-weight: normal;
   font-size: 20px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   content: "P";
   font-weight: normal !important;
   position: absolute;
@@ -16397,7 +16490,7 @@ a.dashboard-link .z-label {
 .conversation-related-Opportunity > div:before {
   font-weight: normal;
   font-size: 21px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   content: "9";
   font-weight: normal !important;
   position: absolute;
@@ -16697,7 +16790,7 @@ a.dashboard-link .z-label {
 .icon-attachment {
   font-weight: normal;
   font-size: 18px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   float: left;
   margin-left: -15px;
 }
@@ -17079,7 +17172,7 @@ a.user-link {
   content: "6";
   font-weight: normal;
   font-size: 18px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   top: 1px;
   margin: 0 4px 0 0;
 }
@@ -17092,7 +17185,7 @@ a.user-link {
   content: "5";
   font-weight: normal;
   font-size: 18px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   top: 1px;
   margin: 0 4px 0 0;
 }
@@ -17416,7 +17509,7 @@ a.user-link {
   display: block;
   font-weight: normal;
   font-size: 24px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   color: #a7a7a7 !important;
   filter: alpha(opacity=0);
   -khtml-opacity: 0;
@@ -17455,6 +17548,10 @@ a.user-link {
 }
 .dynamic-row .z-button {
   margin-left: 0;
+}
+.remove-action-row-link {
+  position: relative;
+  top: -9px;
 }
 .dynamic-row.clone {
   padding: 15px;
@@ -17735,7 +17832,7 @@ a.user-link {
   text-align: left;
   font-weight: normal;
   font-size: 18px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   position: relative;
   left: 5px;
 }
@@ -17856,21 +17953,21 @@ a.user-link {
   content: "j";
   font-weight: normal;
   font-size: 250px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   line-height: 60%;
 }
 .SavedReport .large-icon:after {
   content: "V";
   font-weight: normal;
   font-size: 320px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   line-height: 55%;
 }
 .SavedWorkflow .large-icon:after {
   content: '\20AC';
   font-weight: normal;
   font-size: 330px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   line-height: 55%;
 }
 .FilterIconOrSomethingElse .large-icon:after,
@@ -17878,21 +17975,21 @@ a.user-link {
   content: '\00A9';
   font-weight: normal;
   font-size: 300px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   line-height: 30%;
 }
 .ZeroGroupBys .large-icon:after {
   content: '\002A';
   font-weight: normal;
   font-size: 300px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   line-height: 30%;
 }
 .ZeroDisplayAttributes .large-icon:after {
   content: '\00AB';
   font-weight: normal;
   font-size: 300px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   line-height: 30%;
 }
 .WorkflowRulesOrder .large-icon:after,
@@ -17900,35 +17997,35 @@ a.user-link {
   content: '\2039';
   font-weight: normal;
   font-size: 300px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   line-height: 30%;
 }
 .ZeroDrillDownDisplayAttributes .large-icon:after {
   content: '\00BB';
   font-weight: normal;
   font-size: 300px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   line-height: 30%;
 }
 .ZeroTriggers .large-icon:after {
   content: '\007E';
   font-weight: normal;
   font-size: 300px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   line-height: 30%;
 }
 .ZeroActions .large-icon:after {
   content: '\00A3';
   font-weight: normal;
   font-size: 300px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   line-height: 30%;
 }
 .ZeroEmailMessages .large-icon:after {
   content: '\00A5';
   font-weight: normal;
   font-size: 235px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   line-height: 30%;
 }
 .NoTimeTrigger .large-icon:after,
@@ -17936,7 +18033,7 @@ a.user-link {
   content: 'q';
   font-weight: normal;
   font-size: 235px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   line-height: 30%;
 }
 #ReportResultsSQLView {
@@ -17992,7 +18089,7 @@ a.user-link {
   display: block;
   font-weight: normal;
   font-size: 24px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   color: #a7a7a7 !important;
   filter: alpha(opacity=0);
   -khtml-opacity: 0;
@@ -18140,7 +18237,7 @@ a.user-link {
   content: "j";
   font-weight: normal;
   font-size: 200px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   line-height: 60%;
 }
 .workflow-order-container p,
@@ -18558,7 +18655,7 @@ a.user-link {
   top: 2px;
   font-weight: normal;
   font-size: 18px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   cursor: pointer;
 }
 #marketing-list-member-select-contact-or-report-form .close-flyout:hover {
@@ -18877,7 +18974,7 @@ a + .autoresponder-stats {
 .hide-marketing-intro span {
   font-weight: normal;
   font-size: 26px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   line-height: 9px;
   border: none;
   margin-right: 5px;
@@ -18998,7 +19095,7 @@ a + .autoresponder-stats {
 #MarketingIntroLinkActionElement .parent > a > span {
   font-weight: normal;
   font-size: 24px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   position: relative;
   top: 2px;
 }
@@ -19290,7 +19387,7 @@ a + .autoresponder-stats {
   text-align: left;
   font-weight: normal;
   font-size: 12px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
 }
 .kanban-card .closing-date i:after {
   content: "z";
@@ -19494,7 +19591,7 @@ a + .autoresponder-stats {
   box-sizing: border-box;
   position: relative;
 }
-.business-card {
+div.showing-panel {
   display: block;
 }
 .business-card .gravatar {
@@ -19549,7 +19646,7 @@ a + .autoresponder-stats {
   content: "W";
   font-weight: normal;
   font-size: 20px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   padding-right: 3px;
   color: #111;
 }
@@ -19557,7 +19654,7 @@ a + .autoresponder-stats {
   content: '\2018';
   font-weight: normal;
   font-size: 21px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   padding-right: 3px;
   color: #111;
 }
@@ -19565,7 +19662,7 @@ a + .autoresponder-stats {
   content: "g";
   font-weight: normal;
   font-size: 18px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   padding-right: 5px;
   color: #111;
 }
@@ -19573,7 +19670,7 @@ a + .autoresponder-stats {
   content: "L";
   font-weight: normal;
   font-size: 20px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   padding-right: 3px;
   color: #111;
 }
@@ -19646,7 +19743,7 @@ a + .autoresponder-stats {
   font-style: normal;
   font-weight: normal;
   font-size: 22px;
-  font-family: "ZurmoGamificationSymblyReguRg";
+  font-family: "zurmo_gamification_symbly_rRg";
   line-height: 1;
   color: #656565;
 }
@@ -20213,6 +20310,434 @@ div.special-pager .hidden.next:after {
   background-image: linear-gradient(top, #7cb830, #537b20);
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#7cb830', endColorstr='#537b20', GradientType=0);
 }
+#game-dashboard {
+  position: relative;
+  z-index: 100;
+}
+#game-dashboard * {
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+#game-dashboard #overlay {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.65);
+}
+#game-dashboard #dashboard {
+  width: 1200px;
+  height: 600px;
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  margin: -290px auto auto -600px;
+  -webkit-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12), 0 0 1px 0 #ccc;
+  -moz-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12), 0 0 1px 0 #ccc;
+  -o-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12), 0 0 1px 0 #ccc;
+  -ms-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12), 0 0 1px 0 #ccc;
+  box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12), 0 0 1px 0 #ccc;
+  background-color: #f5f5f5 ;
+  background-repeat: no-repeat ;
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ffffff), color-stop(80%, #f5f5f5), to(#f5f5f5)) ;
+  background-image: -webkit-linear-gradient(#ffffff, #f5f5f5 80%, #f5f5f5) ;
+  background-image: -moz-linear-gradient(top, #ffffff, #f5f5f5 80%, #f5f5f5) ;
+  background-image: -ms-linear-gradient(#ffffff, #f5f5f5 80%, #f5f5f5) ;
+  background-image: -o-linear-gradient(#ffffff, #f5f5f5 80%, #f5f5f5) ;
+  background-image: linear-gradient(#ffffff, #f5f5f5 80%, #f5f5f5) ;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#f5f5f5', GradientType=0);
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
+  border-radius: 5px;
+  overflow: hidden;
+}
+#game-dashboard #dashboard > div {
+  padding: 15px;
+}
+#game-dashboard ul {
+  list-style: none;
+}
+#game-dashboard h2 {
+  margin-bottom: 15px;
+}
+/*User Card*/
+#user-card {
+  height: 84%;
+  width: 20%;
+  float: left;
+  border-right: 1px solid #ccc;
+  text-align: center;
+}
+#user-card h3 {
+  margin: 15px 0;
+}
+#user-card ul {
+  font-size: 14px;
+  font-weight: bold;
+}
+#user-card ul li {
+  line-height: 1.75;
+}
+#mini-stats-card {
+  margin-top: 10px;
+  background: rgba(240, 240, 240, 0.9);
+  -webkit-box-shadow: inset 0 0 1px rgba(0, 0, 0, 0.2);
+  -moz-box-shadow: inset 0 0 1px rgba(0, 0, 0, 0.2);
+  -o-box-shadow: inset 0 0 1px rgba(0, 0, 0, 0.2);
+  -ms-box-shadow: inset 0 0 1px rgba(0, 0, 0, 0.2);
+  box-shadow: inset 0 0 1px rgba(0, 0, 0, 0.2);
+  zoom: 1;
+}
+#mini-stats-card:before {
+  content: "";
+  display: table;
+}
+#mini-stats-card:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+#mini-stats-card .level {
+  padding: 10px;
+}
+#mini-stats-card strong {
+  font-size: 36px;
+  line-height: 1;
+  display: block;
+}
+#mini-stats-card strong + span {
+  display: block;
+  font-size: 14px;
+  font-weight: bold;
+  color: #999;
+  margin: 0 0 10px 0;
+}
+#mini-stats-card .percentHolder {
+  text-align: left;
+  margin-bottom: 5px;
+}
+#mini-stats-card .percentHolder + span {
+  font-weight: bold;
+}
+#mini-stats-card .num-badges,
+#mini-stats-card .num-collections {
+  padding: 5px;
+  float: left;
+  width: 50%;
+  border-top: 1px solid #fff;
+}
+#mini-stats-card .num-badges {
+  border-right: 1px solid #ffffff;
+}
+/*Badges*/
+#achievements-list {
+  overflow-y: scroll;
+  height: 84%;
+  width: 30%;
+  float: left;
+  border-right: 1px solid #ccc;
+}
+#achievements-list li {
+  zoom: 1;
+}
+#achievements-list li:before {
+  content: "";
+  display: table;
+}
+#achievements-list li:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+#achievements-list li + li {
+  padding-top: 20px;
+}
+#achievements-list .badge {
+  float: left;
+  margin-right: 15px;
+}
+#achievements-list .badge-grade {
+  right: auto;
+  left: -8px;
+}
+#achievements-list h3,
+#achievements-list p {
+  margin-bottom: 5px;
+}
+#achievements-list p {
+  line-height: 1.4;
+}
+#achievements-list p + span {
+  font-size: 11px;
+  color: #aaa;
+}
+/*Coins*/
+#z-coins {
+  width: 15%;
+  height: 25%;
+  float: left;
+  border-right: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
+  position: relative;
+  text-align: center;
+}
+#z-coins a {
+  position: absolute;
+  right: 5px;
+  bottom: 5px;
+  font-size: 11px;
+}
+#z-coin {
+  display: block;
+  width: 85px;
+  height: 85px;
+  line-height: 85px;
+  font-size: 36px;
+  font-style: italic;
+  background: gold;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  -ms-border-radius: 50%;
+  -o-border-radius: 50%;
+  border-radius: 50%;
+  margin: 0 auto 7px auto;
+}
+#z-coin:hover {
+  -webkit-animation: spinCoin 1s infinite;
+}
+/*Leaderboard*/
+#leaderboard {
+  width: 35%;
+  height: 25%;
+  float: left;
+  border-bottom: 1px solid #ccc;
+}
+.leaderboard-rank {
+  float: left;
+  width: 120px;
+  margin-right: 15px;
+  padding: 10px;
+  text-align: center;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -ms-border-radius: 4px;
+  -o-border-radius: 4px;
+  border-radius: 4px;
+  background-color: #f5f5f5 ;
+  background-repeat: no-repeat ;
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ffffff), color-stop(80%, #f5f5f5), to(#f5f5f5)) ;
+  background-image: -webkit-linear-gradient(#ffffff, #f5f5f5 80%, #f5f5f5) ;
+  background-image: -moz-linear-gradient(top, #ffffff, #f5f5f5 80%, #f5f5f5) ;
+  background-image: -ms-linear-gradient(#ffffff, #f5f5f5 80%, #f5f5f5) ;
+  background-image: -o-linear-gradient(#ffffff, #f5f5f5 80%, #f5f5f5) ;
+  background-image: linear-gradient(#ffffff, #f5f5f5 80%, #f5f5f5) ;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#f5f5f5', GradientType=0);
+  -webkit-box-shadow: inset 0 0 1px rgba(0, 0, 0, 0.2), 0 -1px 0 0 rgba(0, 0, 0, 0.1);
+  -moz-box-shadow: inset 0 0 1px rgba(0, 0, 0, 0.2), 0 -1px 0 0 rgba(0, 0, 0, 0.1);
+  -o-box-shadow: inset 0 0 1px rgba(0, 0, 0, 0.2), 0 -1px 0 0 rgba(0, 0, 0, 0.1);
+  -ms-box-shadow: inset 0 0 1px rgba(0, 0, 0, 0.2), 0 -1px 0 0 rgba(0, 0, 0, 0.1);
+  box-shadow: inset 0 0 1px rgba(0, 0, 0, 0.2), 0 -1px 0 0 rgba(0, 0, 0, 0.1);
+}
+.leaderboard-rank:last-child {
+  margin-right: 0;
+}
+.leaderboard-rank strong,
+.leaderboard-rank span {
+  display: block;
+}
+.leaderboard-rank strong {
+  font-size: 24px;
+  line-height: 1.5;
+}
+.leaderboard-rank span {
+  font-size: 16px;
+  font-weight: bold;
+  color: #999;
+}
+/*Stats*/
+#stats {
+  width: 50%;
+  height: 59%;
+  float: left;
+}
+.stat-row {
+  width: 70%;
+  padding: 0 0 30px 0;
+  white-space: nowrap;
+}
+.stat-row h3 {
+  width: 35%;
+  text-align: right;
+  display: inline-block;
+}
+.stat-row .stat-level,
+.stat-row .stat-points {
+  float: none;
+  display: inline-block;
+  width: 5%;
+  text-align: center;
+}
+.stat-row .stat-level {
+  font-weight: bold;
+}
+.stat-row .stat-points {
+  width: 10%;
+  position: relative;
+  top: -8px;
+}
+.stat-row .stat-points em {
+  position: absolute;
+  top: 14px;
+  left: 0;
+  text-align: center;
+  font-size: 11px;
+  width: 100%;
+  font-style: normal;
+}
+.stat-row .percentHolder {
+  width: 45%;
+  float: right;
+}
+/*Collections*/
+#collections {
+  width: 100%;
+  height: 16%;
+  float: left;
+  border-top: 1px solid #ccc;
+  padding: 0 !important;
+  position: relative;
+  z-index: 100;
+}
+#carousel-wrapper {
+  width: 92%;
+  height: 100%;
+  float: left;
+}
+#carousel {
+  height: 100%;
+  position: relative;
+}
+.nav-button {
+  width: 4%;
+  height: 100%;
+  text-align: center;
+  line-height: 96px;
+  font-size: 30px;
+  float: left;
+  display: block;
+  -webkit-text-shadow: 0 -1px 0 #ffffff;
+  -moz-text-shadow: 0 -1px 0 #ffffff;
+  -o-text-shadow: 0 -1px 0 #ffffff;
+  -ms-text-shadow: 0 -1px 0 #ffffff;
+  text-shadow: 0 -1px 0 #ffffff;
+  -webkit-box-shadow: 0 0 4px 0 #cccccc;
+  -moz-box-shadow: 0 0 4px 0 #cccccc;
+  -o-box-shadow: 0 0 4px 0 #cccccc;
+  -ms-box-shadow: 0 0 4px 0 #cccccc;
+  box-shadow: 0 0 4px 0 #cccccc;
+  background-color: #f5f5f5 ;
+  background-repeat: no-repeat ;
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ffffff), color-stop(80%, #f5f5f5), to(#f5f5f5)) ;
+  background-image: -webkit-linear-gradient(#ffffff, #f5f5f5 80%, #f5f5f5) ;
+  background-image: -moz-linear-gradient(top, #ffffff, #f5f5f5 80%, #f5f5f5) ;
+  background-image: -ms-linear-gradient(#ffffff, #f5f5f5 80%, #f5f5f5) ;
+  background-image: -o-linear-gradient(#ffffff, #f5f5f5 80%, #f5f5f5) ;
+  background-image: linear-gradient(#ffffff, #f5f5f5 80%, #f5f5f5) ;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#f5f5f5', GradientType=0);
+  position: relative;
+  z-index: 10;
+}
+.collection-panel {
+  position: relative;
+  width: 350px;
+  height: 100%;
+  float: left;
+}
+.collection-panel .badge {
+  margin: 0;
+  float: left;
+  margin-right: 15px;
+}
+.collection-panel > div {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 200%;
+  padding: 15px 15px;
+  background-color: #f5f5f5 ;
+  background-repeat: no-repeat ;
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ffffff), color-stop(80%, #f5f5f5), to(#f5f5f5)) ;
+  background-image: -webkit-linear-gradient(#ffffff, #f5f5f5 80%, #f5f5f5) ;
+  background-image: -moz-linear-gradient(top, #ffffff, #f5f5f5 80%, #f5f5f5) ;
+  background-image: -ms-linear-gradient(#ffffff, #f5f5f5 80%, #f5f5f5) ;
+  background-image: -o-linear-gradient(#ffffff, #f5f5f5 80%, #f5f5f5) ;
+  background-image: linear-gradient(#ffffff, #f5f5f5 80%, #f5f5f5) ;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#f5f5f5', GradientType=0);
+  -webkit-box-shadow: inset 0 0 1px 0 #cccccc;
+  -moz-box-shadow: inset 0 0 1px 0 #cccccc;
+  -o-box-shadow: inset 0 0 1px 0 #cccccc;
+  -ms-box-shadow: inset 0 0 1px 0 #cccccc;
+  box-shadow: inset 0 0 1px 0 #cccccc;
+}
+.collection-panel > div:hover {
+  -webkit-animation-name: slideCollectionUp;
+  -webkit-animation-duration: .25s;
+  -webkit-animation-timing-function: linear;
+  -webkit-animation-delay: 0;
+  -webkit-animation-iteration-count: 1;
+  -webkit-animation-direction: alternate;
+  -webkit-animation-play-state: running;
+  -webkit-animation-fill-mode: forwards;
+  z-index: 100;
+  -webkit-box-shadow: 0 0 5px 0 #aaaaaa;
+  -moz-box-shadow: 0 0 5px 0 #aaaaaa;
+  -o-box-shadow: 0 0 5px 0 #aaaaaa;
+  -ms-box-shadow: 0 0 5px 0 #aaaaaa;
+  box-shadow: 0 0 5px 0 #aaaaaa;
+}
+.collection-panel .number-collected {
+  margin: 10px 0;
+}
+.collection-panel .number-collected .have-it,
+.collection-panel .number-collected .have-it-not {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  -ms-border-radius: 50%;
+  -o-border-radius: 50%;
+  border-radius: 50%;
+  background: green;
+}
+.collection-panel .number-collected .have-it-not {
+  background: #ccc;
+  filter: alpha(opacity=50);
+  -khtml-opacity: 0.5;
+  -moz-opacity: 0.5;
+  opacity: 0.5;
+}
+.collection-panel .number-collected .total-completed {
+  float: right;
+}
+.collection-items {
+  margin-top: 30px;
+}
+.collection-items .collection-item {
+  width: 40px;
+  height: 40px;
+  background: pink;
+  display: inline-block;
+  float: left;
+  margin-right: 10px;
+}
 /*********************************************************************************
  * Zurmo is a customer relationship management program developed by
  * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
@@ -20310,5 +20835,21 @@ div.special-pager .hidden.next:after {
     padding: 0;
     padding: 0 0 0 0;
     background: none;
+  }
+}
+@media all and (max-width: 601px) and (max-height: 451px) {
+  #login-box {
+    max-width: 475px;
+    margin: 60px auto 0 -237px;
+    height: auto !important;
+    position: relative;
+    left: 50%;
+    padding: 10px 10px 10px 10px;
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: 5px;
+  }
+  #LoginLogo {
+    height: 120px;
+    background-position: 50% 35px;
   }
 }

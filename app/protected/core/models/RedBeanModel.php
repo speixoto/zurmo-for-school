@@ -1126,8 +1126,7 @@
                     $nextBean = $bean;
                     foreach ($modelClassNames as $nextModelClassName)
                     {
-
-                        if($nextModelClassName::getCanHaveBean())
+                        if ($nextModelClassName::getCanHaveBean())
                         {
                             $nextBean = self::findNextDerivativeBean($nextBean, $currentModelClassName, $nextModelClassName);
                             if ($nextBean === null)
@@ -1735,6 +1734,18 @@
                 }
             }
             return $validators;
+        }
+
+        /**
+         * Method to call to clear out validators from memory. Can help with performance. Used by async export
+         * for example.
+         */
+        public function forgetValidators()
+        {
+            if(!empty($this->validators))
+            {
+                $this->validators = array();
+            }
         }
 
         /**

@@ -168,7 +168,7 @@
             $effectivePermissions = $this->getEffectivePermissions($currentUser);
             if (($effectivePermissions & $requiredPermissions) == 0)
             {
-                if($this->allowChangePermissionsRegardlessOfUser)
+                if ($this->allowChangePermissionsRegardlessOfUser)
                 {
                     //Do nothing. Allow override permission.
                 }
