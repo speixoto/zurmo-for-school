@@ -24,17 +24,21 @@
 		margin:50px auto auto -600px;
 		//background: rgba(255, 255, 255, 0.9);
 
-		border:1px solid #d7d7d7;
-		.b-shadow(~"inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12), 0 0 1px 0 #ccc");
-		#gradient > .vertical-three-colors( #5ec0b9, #348c7f, 80%, #348c7f );
-		//background: #48cd84;
+		//border:1px solid #fff;
+		//.b-shadow(~"inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12), 0 0 1px 0 #ccc");
 
-		color:#a3fff8 !important;
+		.b-shadow(~"inset 0 0 0 2px #f5f5f5");
+
+
+		#gradient > .vertical-three-colors( #ffffff, #f5f5f5, 80%, #f5f5f5 );
+
+		//#gradient > .vertical-three-colors( #5ec0b9, #348c7f, 80%, #348c7f );
+		//color:#a3fff8 !important;
 
 		.radius(5px);
 		overflow:hidden;
 		> div{
-			padding: 15px;
+			padding:10px 15px 15px 15px;
 			//border:none !important;
 			//#gradient > .vertical( #f5f5f5, #ebebeb );
 			//.b-shadow(~"inset 0 0 0 1px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12)");
@@ -43,8 +47,8 @@
 			}
 		}
 		h2, h3{
-			.t-shadow(0 -1px 0 #5ec0b9);
-			color: #fff !important;
+			//.t-shadow(0 -1px 0 #5ec0b9);
+			//color: #fff !important;
 		}
 	}
 	
@@ -53,12 +57,13 @@
 	}
 
 	h2{
-		margin-bottom: 15px;
+		margin-bottom: 10px;
 	}
 }
 
 /*User Card*/
 #user-card{
+	padding: 0 !important;
 	height: 84%;
 	width: 20%;
 	float: left;
@@ -84,9 +89,10 @@
 	img{
 		max-width: 100%;
 		height: auto;
-		border: 1px solid #f5f5f5;
-		padding: 4px;
-		background:#fff;
+		//border: 1px solid #f5f5f5;
+		//padding: 4px;
+		//background:#fff;
+		.radius(5px 0 0 0);
 	}
 }
 
@@ -285,12 +291,27 @@
 	border-top:1px solid #fff;
 	border-bottom:1px solid #ccc;
 	border-left:1px solid #fff;
+	&:hover{
+		border-top:1px solid #7cb830;
+	}
+}
+
+#stats-wrapper{
+	width: 70%;
+	border: 1px solid #d7d7d7;
+	border-bottom: none;
+	overflow: scroll;
+	max-height: 295px;
 }
 
 .stat-row{
-	width: 70%;
-	padding:0 0 30px 0;
+	width: 100%;
+	padding:10px 12px 10px 5px;
 	white-space: nowrap;
+	border-bottom: 1px solid #d7d7d7;
+	&:nth-child(even){
+		background: rgba(0, 0, 0, 0.05);
+	}
 	h3{
 		width: 35%;
 		text-align: right;
@@ -310,6 +331,7 @@
 		width: 10%;
 		position: relative;
 		top: -8px;
+		font-weight: 800;
 		em{
 			position: absolute;
 			top: 14px;
@@ -318,6 +340,8 @@
 			.smaller();
 			width: 100%;
 			font-style: normal;
+			font-weight: 100;
+			color: #000;
 		}
 	}
 	.percentHolder{
