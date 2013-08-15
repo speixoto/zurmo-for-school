@@ -55,5 +55,24 @@
         {
             return AutoresponderOrCampaignBatchSizeConfigUtil::getBatchSize();
         }
+
+        /**
+         * Not pretty, but gets the job done. Solves memory leak problem.
+         * @param AutoresponderItem or CampaignItem $item
+         */
+        protected function runGarbageCollection($item)
+        {
+            $item->contact->primaryEmail->forgetValidators();
+            $item->contact->forgetValidators();
+            $item->emailMessage->content->forgetValidators();
+            $item->emailMessage->sender->forgetValidators();
+            $item->emailMessage->forgetValidators();
+
+            unset($item->emailMessage->content);
+            unset($item->emailMessage->sender);
+            unset($item->emailMessage);
+            unset($item->contact->primaryEmail);
+            unset($item->contact);
+        }
     }
 ?>

@@ -84,27 +84,16 @@
         }
 
         /**
-         * Not pretty, but gets the job done. Solves memory leak problem. Eventually refactor to share with autoresponder
-         * method and and somehow make this generic.
+         * Not pretty, but gets the job done. Solves memory leak problem.
          * @param CampaignItem $campaignItem
          */
         protected function runGarbageCollection(CampaignItem $campaignItem)
         {
-            $campaignItem->contact->primaryEmail->forgetValidators();
-            $campaignItem->contact->forgetValidators();
             $campaignItem->campaign->marketingList->forgetValidators();
             $campaignItem->campaign->forgetValidators();
-            $campaignItem->emailMessage->content->forgetValidators();
-            $campaignItem->emailMessage->sender->forgetValidators();
-            $campaignItem->emailMessage->forgetValidators();
-
-            unset($campaignItem->emailMessage->content);
-            unset($campaignItem->emailMessage->sender);
-            unset($campaignItem->emailMessage);
-            unset($campaignItem->contact->primaryEmail);
-            unset($campaignItem->contact);
             unset($campaignItem->campaign->marketingList);
             unset($campaignItem->campaign);
+            parent::runGarbageCollection($campaignItem);
         }
     }
 ?>
