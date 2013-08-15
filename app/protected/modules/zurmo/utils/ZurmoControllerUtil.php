@@ -40,9 +40,9 @@
     class ZurmoControllerUtil
     {
         public static function updatePermissionsWithDefaultForModelByUser(SecurableItem $model, User $user)
-        {
-            if ($model instanceof SecurableItem && count($model->permissions) === 0 && !Yii::app()->request->isPostRequest)
-            {
+        {                        
+            if ($model instanceof SecurableItem && count($model->permissions) === 0)
+            {                
                 $defaultPermission  = UserConfigurationFormAdapter::resolveAndGetDefaultPermissionSetting(
                                                                                         $user);
                 $nonEveryoneGroup   = UserConfigurationFormAdapter::resolveAndGetValue($user,
@@ -75,7 +75,7 @@
             {
                 return ExplicitReadWriteModelPermissionsUtil::MIXED_TYPE_EVERYONE_GROUP;
             }
-            else if ($defaultPermission == UserConfigurationForm::DEFAULT_PERMISSIONS_SETTING_OWNER_AND_USERS_IN_GROUP)
+            elseif ($defaultPermission == UserConfigurationForm::DEFAULT_PERMISSIONS_SETTING_OWNER_AND_USERS_IN_GROUP)
             {
                 return ExplicitReadWriteModelPermissionsUtil::MIXED_TYPE_NONEVERYONE_GROUP;
             }

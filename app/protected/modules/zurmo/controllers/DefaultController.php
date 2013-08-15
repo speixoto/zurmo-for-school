@@ -456,6 +456,11 @@
             echo $modalView->render();
         }
 
+        public function actionAjaxUpdateSlidingPanelShowingByDefault($portletId, $shouldSlideToSecondPanel)
+        {
+            SlidingPanelsUtil::setShouldSlideToSecondPanelForCurrentUser($portletId, (bool)$shouldSlideToSecondPanel);
+        }
+
         protected function getSortAttributeFromSavedSearchData($savedSearch)
         {
             $unserializedData = unserialize($savedSearch->serializedData);

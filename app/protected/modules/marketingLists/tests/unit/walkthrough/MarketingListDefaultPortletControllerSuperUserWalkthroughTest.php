@@ -201,7 +201,7 @@
 
             $content                    = $this->runControllerWithNoExceptionsAndGetContent('marketingLists/defaultPortlet/subscribeContacts');
             $contentArray               = CJson::decode($content);
-            $percent                    = round((2 / $contactCount) * 100,0) ;
+            $percent                    = round((2 / $contactCount) * 100,0) ; // Not Coding Standard
             $this->assertNotEmpty($contentArray);
             $this->assertArrayHasKey('type', $contentArray);
             $this->assertArrayHasKey('message', $contentArray);
@@ -227,7 +227,6 @@
             $this->assertArrayHasKey('message', $contentArray);
             $this->assertEquals("0 subscribed. {$contactCount} skipped, already in the list.", $contentArray['message']);
             $this->assertEquals('message', $contentArray['type']);
-
         }
     }
 ?>

@@ -46,8 +46,10 @@
         {
             $metadata = array(
                 'Autoresponder' => array(
-                    'nonReportable' =>
-                    array('autoresponders', 'autoresponder'),
+                    'nonReportable' => array('files'),
+                ),
+                'AutoresponderItem' => array(
+                    'nonReportable' => array('autoresponderItemActivities', 'emailMessage'),
                 )
             );
             return array_merge(parent::getDefaultMetadata(), $metadata);
