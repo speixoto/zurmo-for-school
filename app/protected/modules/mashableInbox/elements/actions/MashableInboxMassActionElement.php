@@ -53,7 +53,7 @@
             $menuItems   = $this->getMenuItems();
             $cClipWidget = new CClipWidget();
             $cClipWidget->beginClip("ActionMenu");
-            $cClipWidget->widget('application.core.widgets.MbMenu', array(
+            $cClipWidget->widget('application.core.widgets.DividedMenu', array(
                 'htmlOptions' => array('id' => 'MashableInboxMassActionMenu'),
                 'items'       => array($menuItems),
             ));
@@ -120,14 +120,16 @@
                 $selectedName = $this->getListViewGridId() . '-' . $massOption;
                 $items[]      = array('label' => $massOptionParams['label'],
                                       'url'   => '#',
-                                      'itemOptions' => array( 'id'   => $selectedName));
+                                      'itemOptions' => array('id' => $selectedName));
                 $script .= $this->getScriptForOptionAction($selectedName, $massOption, $massOptionParams['isActionForAll']);
             }
             Yii::app()->clientScript->registerScript(
                                             $this->getListViewGridId() . 'ScriptForMashableInboxMassAction',
                                             $script);
-            $menuItems      = array('label' => $this->getLabel(), 'url' => null,
-                                    'items' => $items);
+            $menuItems      = array('label'       => $this->getLabel(), 
+                                    'url'         => null,
+                                    'itemOptions' => array('iconClass' => 'icon-options'),
+                                    'items'       => $items);
             return $menuItems;
         }
 

@@ -49,7 +49,7 @@
             $menuItems   = $this->renderMenuItem();
             $cClipWidget = new CClipWidget();
             $cClipWidget->beginClip("ActionMenu");
-            $cClipWidget->widget('application.core.widgets.MbMenu', array(
+            $cClipWidget->widget('application.core.widgets.DividedMenu', array(
                 'items'       => array($menuItems),
             ));
             $cClipWidget->endClip();
@@ -60,8 +60,9 @@
         {
             return array('label'               => $this->getMenuHeader(), 
                          'url'                 => $this->getDefaultRoute(),
-                         'itemOptions'         => $this->getHtmlOptions(),
-                         'dynamicLabelContent' => $this->getUnreadCount(),
+                         'htmlOptions'         => $this->getHtmlOptions(),
+                         'itemOptions'         => array('iconClass' => $this->getIconClass()),                         
+                         'dynamicLabel'        => $this->getUnreadCount(),
                          'items'               => $this->getMenuItems());
         }
 
@@ -74,10 +75,8 @@
             $mashableUtilRules  = MashableUtil::createMashableInboxRulesByModel($this->getModelClassName());
             if ($mashableUtilRules->shouldRenderCreateAction)
             {
-                return array(array('label'  => Zurmo::t('MashableInboxModule', 'List'),
-                                   'url'    => $this->getDefaultRoute()),
-                            array('label'  => $this->getDefaultLabel(),
-                                   'url'    => $this->getRouteForItem($this->getModelClassName())));
+                return array(array('label'     => $this->getDefaultLabel(),                                   
+                                   'url'       => $this->getRouteForItem($this->getModelClassName())));
             }            
         }
 
@@ -124,6 +123,15 @@
                 return null;
             }            
             return ZurmoHtml::wrapLabel($this->params['unread'], 'unread-count');
+        }
+        
+        protected function getIconClass()
+        {
+            if (!isset($this->params['iconClass']))
+            {
+                return null;
+            }
+            return $this->params['iconClass'];
         }
     }
 ?>

@@ -149,11 +149,11 @@
 
 
 
-            $content .= '<div class="view-toolbar-container clearfix"><div class="view-toolbar">';
+            $content .= '<nav class="pillbox clearfix">';
             $content .= $this->renderActionElementBar(false);
             $content .= $this->renderMashableInboxModelsToolbar();
             $content .= $this->renderMassActionElement();
-            $content .= '</div></div>';
+            $content .= '</nav>';
             $content .= $this->renderMashableInboxForm();
             $content .= $this->listView->render();
             return $content;
@@ -237,8 +237,9 @@
             $label                 = Zurmo::t('MashableInboxModule', 'Combined');
             $params   = array('label'           => $label,
                               'modelClassName'  => null,
-                              'htmlOptions'     => array('class' => 'icon-combined '  . $activeClass),
-                              'unread'          => $unreadCount);
+                              'htmlOptions'     => array('class' => $activeClass),
+                              'unread'          => $unreadCount,
+                              'iconClass'       => 'icon-combined');
             $element  = new MashableInboxModelActionElement($this->controllerId, $this->moduleId, null, $params);
             $content  = $element->render();
 
@@ -250,11 +251,12 @@
                 {
                     $activeClass = "active";
                 }
-                $unreadCount = MashableUtil::getUnreadCountForCurrentUserByModelClassName($modelClassName);
+                $unreadCount = MashableUtil::getUnreadCountForCurrentUserByModelClassName($modelClassName);                
                 $params   = array('label'           => $modelLabel,
                                   'modelClassName'  => $modelClassName,
-                                  'htmlOptions'     => array('class' => 'icon-' . strtolower($modelClassName) . ' '  . $activeClass),
-                                  'unread'          => $unreadCount);
+                                  'htmlOptions'     => array('class' => $activeClass),
+                                  'unread'          => $unreadCount,
+                                  'iconClass'      => 'icon-' . strtolower($modelClassName));
                 $element  = new MashableInboxModelActionElement($this->controllerId, $this->moduleId, null, $params);
                 $content .= $element->render();
             }
