@@ -275,8 +275,11 @@ a.ModalGameNotification a,
 .email-template-combined-content .big-spinner,
 .email-template-content .big-spinner,
 .autoresponder-stats,
+.module-intro-steps > div,
 #marketing-intro-steps > div,
+.module-intro-steps h3,
 #marketing-intro-steps h3,
+.module-intro-steps p,
 #marketing-intro-steps p,
 .continuum > div,
 .import-item-stage-status,
@@ -1009,6 +1012,7 @@ body.blue .configuration-list td:last-child a:hover span:before,
 body.blue .addfileinput-button:hover span,
 body.blue .available-portlets span,
 body.blue .hide-welcome span,
+body.blue .hide-module-intro span,
 body.blue .hide-marketing-intro span,
 body.blue #kanban-board-options-link:hover,
 body.blue #more-search-link:hover,
@@ -1027,8 +1031,7 @@ body.blue .portlet-toolbar .icon-create:hover,
 body.blue .portlet-toolbar a:hover,
 body.blue .portlet-toolbar .icon-create:before,
 body.blue #filter-latest-activities-link:hover,
-body.blue .badge-message h3,
-body.blue #marketing-list-member-select-contact-or-report-form a.close-flyout:hover {
+body.blue .badge-message h3 {
   color: #7cb830 !important;
 }
 body.blue #InstallAccessFailurePageView a,
@@ -1584,6 +1587,7 @@ body.brown .configuration-list td:last-child a:hover span:before,
 body.brown .addfileinput-button:hover span,
 body.brown .available-portlets span,
 body.brown .hide-welcome span,
+body.brown .hide-module-intro span,
 body.brown .hide-marketing-intro span,
 body.brown #kanban-board-options-link:hover,
 body.brown #more-search-link:hover,
@@ -1602,8 +1606,7 @@ body.brown .portlet-toolbar .icon-create:hover,
 body.brown .portlet-toolbar a:hover,
 body.brown .portlet-toolbar .icon-create:before,
 body.brown #filter-latest-activities-link:hover,
-body.brown .badge-message h3,
-body.brown #marketing-list-member-select-contact-or-report-form a.close-flyout:hover {
+body.brown .badge-message h3 {
   color: #b88f30 !important;
 }
 body.brown #InstallAccessFailurePageView a,
@@ -2159,6 +2162,7 @@ body.lime .configuration-list td:last-child a:hover span:before,
 body.lime .addfileinput-button:hover span,
 body.lime .available-portlets span,
 body.lime .hide-welcome span,
+body.lime .hide-module-intro span,
 body.lime .hide-marketing-intro span,
 body.lime #kanban-board-options-link:hover,
 body.lime #more-search-link:hover,
@@ -2177,8 +2181,7 @@ body.lime .portlet-toolbar .icon-create:hover,
 body.lime .portlet-toolbar a:hover,
 body.lime .portlet-toolbar .icon-create:before,
 body.lime #filter-latest-activities-link:hover,
-body.lime .badge-message h3,
-body.lime #marketing-list-member-select-contact-or-report-form a.close-flyout:hover {
+body.lime .badge-message h3 {
   color: #bcc98e !important;
 }
 body.lime #InstallAccessFailurePageView a,
@@ -2734,6 +2737,7 @@ body.cherry .configuration-list td:last-child a:hover span:before,
 body.cherry .addfileinput-button:hover span,
 body.cherry .available-portlets span,
 body.cherry .hide-welcome span,
+body.cherry .hide-module-intro span,
 body.cherry .hide-marketing-intro span,
 body.cherry #kanban-board-options-link:hover,
 body.cherry #more-search-link:hover,
@@ -2752,8 +2756,7 @@ body.cherry .portlet-toolbar .icon-create:hover,
 body.cherry .portlet-toolbar a:hover,
 body.cherry .portlet-toolbar .icon-create:before,
 body.cherry #filter-latest-activities-link:hover,
-body.cherry .badge-message h3,
-body.cherry #marketing-list-member-select-contact-or-report-form a.close-flyout:hover {
+body.cherry .badge-message h3 {
   color: #933140 !important;
 }
 body.cherry #InstallAccessFailurePageView a,
@@ -3309,6 +3312,7 @@ body.turquoise .configuration-list td:last-child a:hover span:before,
 body.turquoise .addfileinput-button:hover span,
 body.turquoise .available-portlets span,
 body.turquoise .hide-welcome span,
+body.turquoise .hide-module-intro span,
 body.turquoise .hide-marketing-intro span,
 body.turquoise #kanban-board-options-link:hover,
 body.turquoise #more-search-link:hover,
@@ -3327,8 +3331,7 @@ body.turquoise .portlet-toolbar .icon-create:hover,
 body.turquoise .portlet-toolbar a:hover,
 body.turquoise .portlet-toolbar .icon-create:before,
 body.turquoise #filter-latest-activities-link:hover,
-body.turquoise .badge-message h3,
-body.turquoise #marketing-list-member-select-contact-or-report-form a.close-flyout:hover {
+body.turquoise .badge-message h3 {
   color: #44bbcc !important;
 }
 body.turquoise #InstallAccessFailurePageView a,
@@ -3884,6 +3887,7 @@ body.violet .configuration-list td:last-child a:hover span:before,
 body.violet .addfileinput-button:hover span,
 body.violet .available-portlets span,
 body.violet .hide-welcome span,
+body.violet .hide-module-intro span,
 body.violet .hide-marketing-intro span,
 body.violet #kanban-board-options-link:hover,
 body.violet #more-search-link:hover,
@@ -3902,8 +3906,7 @@ body.violet .portlet-toolbar .icon-create:hover,
 body.violet .portlet-toolbar a:hover,
 body.violet .portlet-toolbar .icon-create:before,
 body.violet #filter-latest-activities-link:hover,
-body.violet .badge-message h3,
-body.violet #marketing-list-member-select-contact-or-report-form a.close-flyout:hover {
+body.violet .badge-message h3 {
   color: #91a1dc !important;
 }
 body.violet #InstallAccessFailurePageView a,
@@ -4459,6 +4462,7 @@ body.honey .configuration-list td:last-child a:hover span:before,
 body.honey .addfileinput-button:hover span,
 body.honey .available-portlets span,
 body.honey .hide-welcome span,
+body.honey .hide-module-intro span,
 body.honey .hide-marketing-intro span,
 body.honey #kanban-board-options-link:hover,
 body.honey #more-search-link:hover,
@@ -4477,8 +4481,7 @@ body.honey .portlet-toolbar .icon-create:hover,
 body.honey .portlet-toolbar a:hover,
 body.honey .portlet-toolbar .icon-create:before,
 body.honey #filter-latest-activities-link:hover,
-body.honey .badge-message h3,
-body.honey #marketing-list-member-select-contact-or-report-form a.close-flyout:hover {
+body.honey .badge-message h3 {
   color: #abbc42 !important;
 }
 body.honey #InstallAccessFailurePageView a,
@@ -7404,8 +7407,9 @@ td {
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
 }
+.items > thead > tr > td,
 .items > tbody > tr > td,
-.items > thead > tr > td {
+.items > tfoot > tr > td {
   border: 1px solid #DFDFDF;
   border-right: none;
   border-left: none;
@@ -7413,8 +7417,9 @@ td {
   padding: 10px 5px;
   word-wrap: break-word;
 }
+.items > thead > tr > th,
 .items > tbody > tr > th,
-.items > thead > tr > th {
+.items > tfoot > tr > th {
   font-weight: bold !important;
   height: 35px;
   line-height: 35px;
@@ -11156,19 +11161,23 @@ div.hasHalfs > div input {
   background-image: linear-gradient(0deg, #969696, #afafaf) !important;
 }
 /*=About*/
+#RunJobView,
 #DiagnosticCheckServicesView,
 #AboutView {
   position: relative;
 }
+#RunJobView #ZurmoLogo,
 #DiagnosticCheckServicesView #ZurmoLogo,
 #AboutView #ZurmoLogo {
   width: 300px;
 }
+#RunJobView #ZurmoLogo strong,
 #DiagnosticCheckServicesView #ZurmoLogo strong,
 #AboutView #ZurmoLogo strong {
   float: right;
   margin-top: 26px;
 }
+#RunJobView h1,
 #DiagnosticCheckServicesView h1,
 #AboutView h1 {
   text-indent: 15px;
@@ -11191,6 +11200,7 @@ div.hasHalfs > div input {
   box-shadow: inset 0 1px 0 0 #ffffff;
   border-bottom: 1px solid #ccc;
 }
+#RunJobView > div,
 #DiagnosticCheckServicesView > div,
 #AboutView > div {
   margin-right: 0;
@@ -11211,10 +11221,12 @@ div.hasHalfs > div input {
   background-image: linear-gradient(#ffffff, #f5f5f5 80%, #f5f5f5) ;
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#f5f5f5', GradientType=0);
 }
+#RunJobView #aboutText,
 #DiagnosticCheckServicesView #aboutText,
 #AboutView #aboutText {
   position: relative;
 }
+#RunJobView #leftCol,
 #DiagnosticCheckServicesView #leftCol,
 #AboutView #leftCol {
   padding: 15px 0 50px 15px;
@@ -11224,10 +11236,12 @@ div.hasHalfs > div input {
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
 }
+#RunJobView #leftCol > div,
 #DiagnosticCheckServicesView #leftCol > div,
 #AboutView #leftCol > div {
   margin-bottom: 20px;
 }
+#RunJobView #rightCol,
 #DiagnosticCheckServicesView #rightCol,
 #AboutView #rightCol {
   float: right;
@@ -11237,6 +11251,7 @@ div.hasHalfs > div input {
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
 }
+#RunJobView #rightCol > div,
 #DiagnosticCheckServicesView #rightCol > div,
 #AboutView #rightCol > div {
   padding: 8px 10px;
@@ -11244,6 +11259,7 @@ div.hasHalfs > div input {
   margin-bottom: 15px;
   float: left;
 }
+#RunJobView #aboutContactDetails,
 #DiagnosticCheckServicesView #aboutContactDetails,
 #AboutView #aboutContactDetails {
   width: 100%;
@@ -11254,24 +11270,30 @@ div.hasHalfs > div input {
   position: absolute;
   bottom: 0;
 }
+#RunJobView #aboutContactDetails span,
 #DiagnosticCheckServicesView #aboutContactDetails span,
 #AboutView #aboutContactDetails span {
   margin: 0 10px;
 }
+#RunJobView p,
 #DiagnosticCheckServicesView p,
 #AboutView p,
+#RunJobView ul,
 #DiagnosticCheckServicesView ul,
 #AboutView ul {
   font-size: 12px;
   line-height: 21px;
   font-weight: normal;
 }
+#RunJobView p a,
 #DiagnosticCheckServicesView p a,
 #AboutView p a,
+#RunJobView ul a,
 #DiagnosticCheckServicesView ul a,
 #AboutView ul a {
   text-decoration: underline !important;
 }
+#RunJobView ul,
 #DiagnosticCheckServicesView ul,
 #AboutView ul {
   margin-top: 4px;
@@ -12381,6 +12403,7 @@ table.configuration-list td:last-child a .z-label:before {
   margin-right: 5px;
 }
 #JobsCollectionView table {
+  table-layout: auto;
   border-top: 1px solid #DFDFDF;
 }
 #JobsCollectionView table:first-child {
@@ -12405,6 +12428,43 @@ table.configuration-list td:last-child a .z-label:before {
 }
 .jobHasNeverRun {
   color: #b38b01;
+}
+.button-column-right {
+  text-align: right !important;
+}
+.run-button span:before {
+  content: "";
+  margin-right: 0px;
+}
+.run-button span:after {
+  content: "7";
+  font-weight: normal;
+  font-size: 18px;
+  font-family: "zurmo_gamification_symbly_rRg";
+  margin-left: 5px;
+  position: relative;
+  top: 1px;
+  font-weight: normal !important;
+}
+#logging-table,
+#complete-table {
+  margin-bottom: 15px;
+}
+#logging-table h3,
+#complete-table h3 {
+  margin-bottom: 8px;
+}
+#logging-table a,
+#complete-table a {
+  margin-right: 15px;
+}
+#logging-table ol,
+#complete-table ol {
+  list-style: decimal inside;
+}
+#logging-table li,
+#complete-table li {
+  margin-bottom: 5px;
 }
 /*Languages*/
 #LanguagesCollectionView {
@@ -17764,8 +17824,23 @@ a.user-link {
   padding-left: 5px !important;
   border-left: none !important;
 }
-.ReportResultsGridView #report-results-grid-view > .items tbody td:first-child {
+.ReportResultsGridView #report-results-grid-view > .items tbody td:first-child,
+.ReportResultsGridView #report-results-grid-view > .items tfoot td:first-child {
   border-left: none !important;
+}
+.ReportResultsGridView #report-results-grid-view > .items .total-column,
+.ReportResultsGridView #report-results-grid-view > .items tfoot td {
+  display: block;
+  padding: 10px;
+  border-top: 1px solid #DFDFDF;
+  background: #111111 url(../images/dark-texture-table-footer.png) left top repeat-x !important;
+  color: #FFF;
+  font-weight: bold;
+  background-color: #3d3d3d !important;
+  display: table-cell;
+  border-color: transparent !important;
+  border: none !important;
+  border-left: 1px solid #3d3d3d !important;
 }
 .ReportResultsGridView #report-results-grid-view > .items .expanded-row td,
 .ReportResultsGridView #report-results-grid-view > .items .expanded-row th {
@@ -18825,14 +18900,24 @@ a + .autoresponder-stats {
 		}*/
 
 }
+.module-intro-content,
 #marketing-intro-content {
   margin-bottom: 30px;
 }
+.module-intro-examples h3 {
+  margin-bottom: 10px;
+}
+.module-intro-examples ol {
+  padding-left: 15px;
+  line-height: 175%;
+}
+.module-intro-steps,
 #marketing-intro-steps {
   float: left;
   width: 100%;
   margin: 30px 0 15px 0;
 }
+.module-intro-steps > div,
 #marketing-intro-steps > div {
   float: left;
   margin-left: 2%;
@@ -18860,9 +18945,11 @@ a + .autoresponder-stats {
   box-shadow: inset 0 1px 1px 0 rgba(200, 200, 200, 0.4), 0 1px 0 0 #111;
   padding: 1px 0 0 0;
 }
+.module-intro-steps > div:first-child,
 #marketing-intro-steps > div:first-child {
   margin-left: 0;
 }
+.module-intro-steps h3,
 #marketing-intro-steps h3 {
   color: #fff;
   font-size: 14px;
@@ -18881,11 +18968,13 @@ a + .autoresponder-stats {
   width: 85px;
   border-right: 1px solid #282828;
 }
+.module-intro-steps h3 strong,
 #marketing-intro-steps h3 strong {
   display: block;
   font-size: 50px;
   line-height: 1;
 }
+.module-intro-steps h3 span,
 #marketing-intro-steps h3 span {
   color: #fff;
   display: inline-block;
@@ -18894,6 +18983,7 @@ a + .autoresponder-stats {
   line-height: 50px;
   margin-top: -5px;
 }
+.module-intro-steps p,
 #marketing-intro-steps p {
   min-height: 149px;
   padding: 10px 10px 10px 10px;
@@ -18903,15 +18993,27 @@ a + .autoresponder-stats {
   border-left: 1px solid #333333;
   color: #ececec;
 }
+.module-intro-steps p strong,
 #marketing-intro-steps p strong {
   color: #fff;
   display: block;
   font-size: 14px;
   line-height: 22px;
 }
+.module-intro-steps span,
 #marketing-intro-steps span {
   display: block;
 }
+#products-intro-steps img {
+  float: left;
+  margin: 10px 15px 10px 10px;
+  opacity: 0.83;
+}
+#products-intro-steps .third p {
+  border-left: none !important;
+  padding-top: 0;
+}
+.hide-module-intro,
 .hide-marketing-intro {
   display: block;
   clear: both;
@@ -18924,6 +19026,7 @@ a + .autoresponder-stats {
   float: right;
   margin-bottom: 30px;
 }
+.hide-module-intro span,
 .hide-marketing-intro span {
   font-weight: normal;
   font-size: 26px;
@@ -18934,8 +19037,54 @@ a + .autoresponder-stats {
   outline: none !important;
   display: inline-block;
 }
+.hide-module-intro span:before,
 .hide-marketing-intro span:before {
   content: "•";
+}
+.catalog-item-description .icon,
+.product-description .icon,
+.catalog-description .icon {
+  position: relative;
+  margin: 0px 15px 0 0;
+  display: inline-block;
+  height: 100%;
+}
+.catalog-item-description .icon:before,
+.product-description .icon:before,
+.catalog-description .icon:before {
+  content: '\00CE';
+  font-weight: normal;
+  font-size: 145px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  line-height: 60px;
+  position: absolute;
+  top: 10px;
+  -webkit-text-shadow: 0 -1px 0 #000000;
+  -moz-text-shadow: 0 -1px 0 #000000;
+  -o-text-shadow: 0 -1px 0 #000000;
+  -ms-text-shadow: 0 -1px 0 #000000;
+  text-shadow: 0 -1px 0 #000000;
+}
+.catalog-item-description p {
+  margin-left: 95px;
+}
+.catalog-item-description .icon:before {
+  content: '\00CF';
+  font-size: 160px;
+}
+.product-description p {
+  margin-left: 110px;
+}
+.product-description .icon:before {
+  left: 10px;
+  content: '\0027';
+  font-size: 160px;
+}
+.products .product-description {
+  color: #fff !important;
+}
+.producttemplates .catalog-item-description .icon:before {
+  color: #fff !important;
 }
 /*Continuum*/
 .email-recipient-name {
@@ -19056,28 +19205,51 @@ a + .autoresponder-stats {
 .no-autoresponders-found .icon-notice:before {
   content: "g7";
 }
+#ProductIntroLinkActionElement ul,
 #MarketingIntroLinkActionElement ul {
   right: 0;
 }
+#ProductIntroLinkActionElement ul li,
 #MarketingIntroLinkActionElement ul li {
   padding: 0 5px 5px 5px;
 }
+#ProductIntroLinkActionElement ul li .hasCheckBox,
 #MarketingIntroLinkActionElement ul li .hasCheckBox {
   display: inline-block;
   margin-right: 5px;
   position: relative;
   top: 4px;
 }
+#ProductIntroLinkActionElement .parent,
+#MarketingIntroLinkActionElement .parent {
+  /*> a > span:after{
+			content:"n";
+			.symbly(24px);
+			position: relative;
+			top: 2px;
+		}*/
+
+}
+#ProductIntroLinkActionElement .parent a,
 #MarketingIntroLinkActionElement .parent a {
   padding-left: 10px;
 }
+#ProductIntroLinkActionElement .parent > a > span,
 #MarketingIntroLinkActionElement .parent > a > span {
+  text-indent: -9999px;
+  display: inline-block;
+  width: 0;
+}
+#ProductIntroLinkActionElement .parent > a:before,
+#MarketingIntroLinkActionElement .parent > a:before {
+  content: "n";
   font-weight: normal;
   font-size: 24px;
   font-family: "zurmo_gamification_symbly_rRg";
   position: relative;
   top: 2px;
 }
+#ProductIntroLinkActionElement .parent a:after,
 #MarketingIntroLinkActionElement .parent a:after {
   margin-left: 2px;
   top: 0;

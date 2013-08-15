@@ -34,23 +34,37 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class CategoriesActionBarAndTreeListView extends GridView
+    /**
+     * Display a checkbox to hide/show a user from being selectable as a user in the user interface
+     */
+    class HideFromSelectingElement extends CheckBoxElement
     {
-        public function __construct($controllerId, $moduleId, $categories, $activeActionElementType = null)
+        protected function renderLabel()
         {
-            assert('$controllerId != null');
-            assert('$moduleId != null');
-            assert('is_array($categories)');
-            parent::__construct(2, 1);
-            $this->setView(new ActionBarForCategoriesTreeListView ($controllerId, $moduleId, $activeActionElementType), 0, 0);
-            $categoriesTreeListView = new ProductCategoriesTreeListView($controllerId, $moduleId, $categories);
-            $categoriesTreeListView->setCssClasses(array('DetailsView'));
-            $this->setView($categoriesTreeListView, 1, 0);
+            $content  = parent::renderLabel();
+            $content .= $this->renderTooltipContentForEnableDesktopNotifications();
+            return $content;
         }
 
-        public function isUniqueToAPage()
+        protected static function renderTooltipContentForEnableDesktopNotifications()
         {
-            return true;
+            $title       = Zurmo::t('UsersModule',
+                            'Check this box if the user should not be selectable. ' .
+                            'An example is the user would not be selectable as an owner of ' .
+                            'a record or selected as a recipient while composing email.');
+            $content     = ZurmoHtml::tag('span',
+                                          array('id'    => 'user-hide-from-selecting-tooltip',
+                                                'class' => 'tooltip',
+                                                'title' => $title,
+                                               ),
+                                          '?');
+            $qtip        = new ZurmoTip(array('options' => array('position' => array('my' => 'bottom right', 'at' => 'top left'),
+                                                                 'hide'     => array('event' => 'unfocus'),
+                                                                 'show'     => array('event' => 'click')
+
+                )));
+            $qtip->addQTip("#user-hide-from-selecting-tooltip");
+            return $content;
         }
     }
 ?>

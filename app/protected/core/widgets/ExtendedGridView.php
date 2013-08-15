@@ -216,6 +216,22 @@
         }
 
         /**
+         * Overridden CBaseListView::renderKeys()
+         * Sets absolute url for contextive external requests
+         */
+        public function renderKeys()
+        {
+            echo CHtml::openTag('div',array(
+                'class'=>'keys',
+                'style'=>'display:none',
+                'title'=>Yii::app()->getRequest()->resolveAndGetUrl(),
+            ));
+            foreach($this->dataProvider->getKeys() as $key)
+                echo "<span>".CHtml::encode($key)."</span>";
+            echo "</div>\n";
+        }
+
+        /**
          * Renders the table header.
          */
         public function renderTableHeader()

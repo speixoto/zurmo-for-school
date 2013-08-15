@@ -62,6 +62,8 @@
                 throw new NotSupportedException();
             }
             ContactsModule::loadStartingData();
+            $everyoneGroup        = Group::getByName(Group::EVERYONE_GROUP_NAME);
+            assert($everyoneGroup->save()); // Not Coding Standard
         }
 
         public function testSuperUserCompleteMatchVariations()
@@ -101,7 +103,7 @@
                                     'officePhone'       => '456765421',
                                     'state'             => array('id' => $startingLeadState->id)))));
             $this->runControllerWithExitExceptionAndGetContent('emailMessages/default/completeMatch');
-
+            
             //test selecting existing contact and saving
             $this->assertNull($contact->primaryEmail->emailAddress);
             $this->setGetArray(array('id' => $message1->id));
@@ -112,6 +114,13 @@
             $this->assertEquals('bob.message@zurmotest.com', $contact->primaryEmail->emailAddress);
             $this->assertTrue($message1->sender->personOrAccount->isSame($contact));
             $this->assertEquals('Archived', $message1->folder);
+            
+            //Test the default permission was setted            
+            $everyoneGroup        = Group::getByName(Group::EVERYONE_GROUP_NAME);
+            $explicitReadWriteModelPermissions = ExplicitReadWriteModelPermissionsUtil::
+                                                    makeBySecurableItem($message1);
+            $readWritePermitables = $explicitReadWriteModelPermissions->getReadWritePermitables();            
+            $this->assertEquals($everyoneGroup, $readWritePermitables[$everyoneGroup->id]);
 
             //test creating new contact and saving
             $this->assertEquals(1, Contact::getCount());
@@ -127,6 +136,12 @@
             $contact  = $contacts[0];
             $this->assertTrue($message2->sender->personOrAccount->isSame($contact));
             $this->assertEquals('Archived', $message2->folder);
+            
+            //Test the default permission was setted
+            $explicitReadWriteModelPermissions = ExplicitReadWriteModelPermissionsUtil::
+                                                    makeBySecurableItem($message2);
+            $readWritePermitables = $explicitReadWriteModelPermissions->getReadWritePermitables();            
+            $this->assertEquals($everyoneGroup, $readWritePermitables[$everyoneGroup->id]);
 
             //test creating new lead and saving
             $this->assertEquals(2, Contact::getCount());
@@ -142,6 +157,12 @@
             $contact  = $contacts[0];
             $this->assertTrue($message3->sender->personOrAccount->isSame($contact));
             $this->assertEquals('Archived', $message3->folder);
+            
+            //Test the default permission was setted
+            $explicitReadWriteModelPermissions = ExplicitReadWriteModelPermissionsUtil::
+                                                    makeBySecurableItem($message3);
+            $readWritePermitables = $explicitReadWriteModelPermissions->getReadWritePermitables();            
+            $this->assertEquals($everyoneGroup, $readWritePermitables[$everyoneGroup->id]);
         }
 
         /**

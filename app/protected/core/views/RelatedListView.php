@@ -133,8 +133,10 @@
         protected function makeDataProviderBySearchAttributeData($searchAttributeData)
         {
             assert('is_array($searchAttributeData)');
-            $pageSize = Yii::app()->pagination->resolveActiveForCurrentUserByType('subListPageSize');
-            return new RedBeanModelDataProvider( $this->modelClassName, null, false,
+            $pageSize       = Yii::app()->pagination->resolveActiveForCurrentUserByType('subListPageSize');
+            $sortAttribute  = SearchUtil::resolveSortAttributeFromGetArray($this->modelClassName);
+            $sortDescending =  SearchUtil::resolveSortDescendingFromGetArray($this->modelClassName);
+            return new RedBeanModelDataProvider( $this->modelClassName, $sortAttribute, $sortDescending,
                                                                 $searchAttributeData, array(
                                                                     'pagination' => array(
                                                                         'pageSize' => $pageSize,
