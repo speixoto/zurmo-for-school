@@ -672,6 +672,7 @@
             ZurmoDatabaseCompatibilityUtil::createStoredFunctionsAndProcedures();
             RedBeanDatabaseBuilderUtil::autoBuildModels($rootModels, $messageLogger);
             ZurmoDatabaseCompatibilityUtil::createIndexes();
+            StarredUtil::createStarredTables();
         }
 
         /**

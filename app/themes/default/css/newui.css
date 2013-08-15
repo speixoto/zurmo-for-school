@@ -1029,8 +1029,7 @@ body.blue .portlet-toolbar .icon-create:hover,
 body.blue .portlet-toolbar a:hover,
 body.blue .portlet-toolbar .icon-create:before,
 body.blue #filter-latest-activities-link:hover,
-body.blue .badge-message h3,
-body.blue #marketing-list-member-select-contact-or-report-form a.close-flyout:hover {
+body.blue .badge-message h3 {
   color: #7cb830 !important;
 }
 body.blue #InstallAccessFailurePageView a,
@@ -1605,8 +1604,7 @@ body.brown .portlet-toolbar .icon-create:hover,
 body.brown .portlet-toolbar a:hover,
 body.brown .portlet-toolbar .icon-create:before,
 body.brown #filter-latest-activities-link:hover,
-body.brown .badge-message h3,
-body.brown #marketing-list-member-select-contact-or-report-form a.close-flyout:hover {
+body.brown .badge-message h3 {
   color: #b88f30 !important;
 }
 body.brown #InstallAccessFailurePageView a,
@@ -2181,8 +2179,7 @@ body.lime .portlet-toolbar .icon-create:hover,
 body.lime .portlet-toolbar a:hover,
 body.lime .portlet-toolbar .icon-create:before,
 body.lime #filter-latest-activities-link:hover,
-body.lime .badge-message h3,
-body.lime #marketing-list-member-select-contact-or-report-form a.close-flyout:hover {
+body.lime .badge-message h3 {
   color: #bcc98e !important;
 }
 body.lime #InstallAccessFailurePageView a,
@@ -2757,8 +2754,7 @@ body.cherry .portlet-toolbar .icon-create:hover,
 body.cherry .portlet-toolbar a:hover,
 body.cherry .portlet-toolbar .icon-create:before,
 body.cherry #filter-latest-activities-link:hover,
-body.cherry .badge-message h3,
-body.cherry #marketing-list-member-select-contact-or-report-form a.close-flyout:hover {
+body.cherry .badge-message h3 {
   color: #933140 !important;
 }
 body.cherry #InstallAccessFailurePageView a,
@@ -3333,8 +3329,7 @@ body.turquoise .portlet-toolbar .icon-create:hover,
 body.turquoise .portlet-toolbar a:hover,
 body.turquoise .portlet-toolbar .icon-create:before,
 body.turquoise #filter-latest-activities-link:hover,
-body.turquoise .badge-message h3,
-body.turquoise #marketing-list-member-select-contact-or-report-form a.close-flyout:hover {
+body.turquoise .badge-message h3 {
   color: #44bbcc !important;
 }
 body.turquoise #InstallAccessFailurePageView a,
@@ -3909,8 +3904,7 @@ body.violet .portlet-toolbar .icon-create:hover,
 body.violet .portlet-toolbar a:hover,
 body.violet .portlet-toolbar .icon-create:before,
 body.violet #filter-latest-activities-link:hover,
-body.violet .badge-message h3,
-body.violet #marketing-list-member-select-contact-or-report-form a.close-flyout:hover {
+body.violet .badge-message h3 {
   color: #91a1dc !important;
 }
 body.violet #InstallAccessFailurePageView a,
@@ -4485,8 +4479,7 @@ body.honey .portlet-toolbar .icon-create:hover,
 body.honey .portlet-toolbar a:hover,
 body.honey .portlet-toolbar .icon-create:before,
 body.honey #filter-latest-activities-link:hover,
-body.honey .badge-message h3,
-body.honey #marketing-list-member-select-contact-or-report-form a.close-flyout:hover {
+body.honey .badge-message h3 {
   color: #abbc42 !important;
 }
 body.honey #InstallAccessFailurePageView a,
@@ -7417,8 +7410,9 @@ td {
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
 }
+.items > thead > tr > td,
 .items > tbody > tr > td,
-.items > thead > tr > td {
+.items > tfoot > tr > td {
   border: 1px solid #DFDFDF;
   border-right: none;
   border-left: none;
@@ -7426,8 +7420,9 @@ td {
   padding: 10px 5px;
   word-wrap: break-word;
 }
+.items > thead > tr > th,
 .items > tbody > tr > th,
-.items > thead > tr > th {
+.items > tfoot > tr > th {
   font-weight: bold !important;
   height: 35px;
   line-height: 35px;
@@ -17712,8 +17707,23 @@ a.user-link {
   padding-left: 5px !important;
   border-left: none !important;
 }
-.ReportResultsGridView #report-results-grid-view > .items tbody td:first-child {
+.ReportResultsGridView #report-results-grid-view > .items tbody td:first-child,
+.ReportResultsGridView #report-results-grid-view > .items tfoot td:first-child {
   border-left: none !important;
+}
+.ReportResultsGridView #report-results-grid-view > .items .total-column,
+.ReportResultsGridView #report-results-grid-view > .items tfoot td {
+  display: block;
+  padding: 10px;
+  border-top: 1px solid #DFDFDF;
+  background: #111111 url(../images/dark-texture-table-footer.png) left top repeat-x !important;
+  color: #FFF;
+  font-weight: bold;
+  background-color: #3d3d3d !important;
+  display: table-cell;
+  border-color: transparent !important;
+  border: none !important;
+  border-left: 1px solid #3d3d3d !important;
 }
 .ReportResultsGridView #report-results-grid-view > .items .expanded-row td,
 .ReportResultsGridView #report-results-grid-view > .items .expanded-row th {
