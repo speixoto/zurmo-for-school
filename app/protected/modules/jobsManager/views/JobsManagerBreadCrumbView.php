@@ -34,51 +34,14 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class AutoresponderOrCampaignMailFooterContentUtil
+    /**
+     * View that renders the jobs manager breadcrumb content
+     */
+    class JobsManagerBreadCrumbView extends BreadCrumbView
     {
-        const CONFIG_KEY_PLAIN                      = 'AutoresponderOrCampaignFooterPlainText';
-
-        const CONFIG_KEY_RICH_TEXT                  = 'AutoresponderOrCampaignFooterRichText';
-
-        const CONFIG_MODULE_NAME                    = 'AutorespondersModule';
-
-        const UNSUBSCRIBE_URL_PLACEHOLDER           = '{{UNSUBSCRIBE_URL}}';
-
-        const MANAGE_SUBSCRIPTIONS_URL_PLACEHOLDER  = '{{MANAGE_SUBSCRIPTIONS_URL}}';
-
-        public static function getContentByType($isHtmlContent, $returnDefault = true)
+        protected function getHomeLinkLabel()
         {
-            $key        = static::resolveConfigKeyByContentType($isHtmlContent);
-            $content    = ZurmoConfigurationUtil::getByModuleName(static::CONFIG_MODULE_NAME, $key);
-            if (empty($content) && $returnDefault)
-            {
-                $content = static::resolveDefaultValue();
-            }
-            return $content;
-        }
-
-        public static function setContentByType($content, $isHtmlContent)
-        {
-            $key        = static::resolveConfigKeyByContentType($isHtmlContent);
-            ZurmoConfigurationUtil::setByModuleName(static::CONFIG_MODULE_NAME, $key, $content);
-        }
-
-        protected static function resolveConfigKeyByContentType($isHtmlContent)
-        {
-            if ($isHtmlContent)
-            {
-                return static::CONFIG_KEY_RICH_TEXT;
-            }
-            else
-            {
-                return static::CONFIG_KEY_PLAIN;
-            }
-        }
-
-        protected static function resolveDefaultValue()
-        {
-            $content     = static::UNSUBSCRIBE_URL_PLACEHOLDER . ' | ' . static::MANAGE_SUBSCRIPTIONS_URL_PLACEHOLDER;
-            return $content;
+            return Zurmo::t('JobsManagerModule', 'JobsManager Home');
         }
     }
 ?>

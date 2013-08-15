@@ -31,7 +31,8 @@
 
         public static function getListBreadcrumbLinks()
         {
-            $title = Zurmo::t('ProductsModule', 'Products');
+            $params = LabelUtil::getTranslationParamsForAllModules();
+            $title = Zurmo::t('ProductsModule', 'ProductsModulePluralLabel', $params);
             return array($title);
         }
 
@@ -114,7 +115,8 @@
 
         public function actionCreate()
         {
-            $title                  = Zurmo::t('ProductsModule', 'Create Product');
+            $params                 = LabelUtil::getTranslationParamsForAllModules();
+            $title                  = Zurmo::t('ProductsModule', 'Create ProductsModuleSingularLabel', $params);
             $breadcrumbLinks        = array($title);
             $editAndDetailsView     = $this->makeEditAndDetailsView(
                                             $this->attemptToSaveModelFromPost(new Product()), 'Edit');
@@ -231,7 +233,8 @@
          */
         public function actionMassDelete()
         {
-            $title           = Zurmo::t('ProductTemplatesModule', 'Mass Delete Products');
+            $params          = LabelUtil::getTranslationParamsForAllModules();
+            $title           = Zurmo::t('ProductTemplatesModule', 'Mass Delete ProductsModulePluralLabel', $params);
             $breadcrumbLinks = array(
                  $title,
             );
@@ -347,8 +350,6 @@
                                         break;
             }
             $product->save();
-            header('Content-type: application/json');
-            die();
         }
 
         /**
@@ -363,7 +364,7 @@
          * @param string $relationModelClassName
          */
         public function actionCreateProductFromProductTemplate($relationModuleId, $portletId, $uniqueLayoutId, $id,
-                                $relationModelId, $relationAttributeName, $relationModelClassName = null)
+                                $relationModelId, $relationAttributeName, $relationModelClassName = null, $redirect = true)
         {
             if ($relationModelClassName == null)
             {
@@ -374,7 +375,6 @@
             $product->name              = $productTemplate->name;
             $product->description       = $productTemplate->description;
             $product->quantity          = 1;
-            $product->stage->value      = Product::OPEN_STAGE;
             $product->productTemplate   = $productTemplate;
             $sellPrice                  = new CurrencyValue();
             $sellPrice->value           = $productTemplate->sellPrice->value;
@@ -382,23 +382,29 @@
             $product->priceFrequency    = $productTemplate->priceFrequency;
             $product->sellPrice         = $sellPrice;
             $product->type              = $productTemplate->type;
-
-            foreach($productTemplate->productCategories as $productCategory)
+            $controllerUtil             = static::getZurmoControllerUtil();
+            $controllerUtil->resolveStageDefaultValue($product);
+            foreach ($productTemplate->productCategories as $productCategory)
             {
                 $product->productCategories->add($productCategory);
             }
-
-            $relationModel              = $relationModelClassName::getById((int)$relationModelId);
-            $product->$relationAttributeName = $relationModel;
+            $relationModel                      = $relationModelClassName::getById((int)$relationModelId);
+            $product->$relationAttributeName    = $relationModel;
             $product->save();
-            $redirectUrl = Yii::app()->createUrl('/' . $relationModuleId . '/default/details', array('id' => $relationModelId));
-            $this->redirect(array('/' . $relationModuleId . '/defaultPortlet/modalRefresh',
-                                    'portletId'            => $portletId,
-                                    'uniqueLayoutId'       => $uniqueLayoutId,
-                                    'redirectUrl'          => $redirectUrl,
-                                    'portletParams'        => array(  'relationModuleId' => $relationModuleId,
-                                                                      'relationModelId'  => $relationModelId),
-                            ));
+            ZurmoControllerUtil::updatePermissionsWithDefaultForModelByCurrentUser($product);
+
+            if ((bool)$redirect)
+            {
+                $isViewLocked = ZurmoDefaultViewUtil::getLockKeyForDetailsAndRelationsView('lockPortletsForDetailsAndRelationsView');
+                $redirectUrl  = Yii::app()->createUrl('/' . $relationModuleId . '/default/details', array('id' => $relationModelId));
+                $this->redirect(array('/' . $relationModuleId . '/defaultPortlet/modalRefresh',
+                                        'portletId'            => $portletId,
+                                        'uniqueLayoutId'       => $uniqueLayoutId,
+                                        'redirectUrl'          => $redirectUrl,
+                                        'portletParams'        => array(  'relationModuleId' => $relationModuleId,
+                                                                          'relationModelId'  => $relationModelId),
+                                        'portletsAreRemovable' => !$isViewLocked));
+            }
         }
 
         /**
