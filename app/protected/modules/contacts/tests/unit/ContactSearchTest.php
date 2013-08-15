@@ -136,11 +136,6 @@
 
         public function testGetContactsByAnyEmailAddress()
         {
-            parent::setUpBeforeClass();
-            $user = SecurityTestHelper::createSuperAdmin();
-            $loaded = ContactsModule::loadStartingData();
-            assert($loaded);
-
             $super = User::getByUsername('super');
             Yii::app()->user->userModel = $super;
             $contactStates = ContactState::getAll();
