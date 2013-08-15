@@ -19977,20 +19977,22 @@ div.special-pager .hidden.next:after {
   position: absolute;
   left: 50%;
   margin: 50px auto auto -600px;
+  border: 1px solid #d7d7d7;
   -webkit-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12), 0 0 1px 0 #ccc;
   -moz-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12), 0 0 1px 0 #ccc;
   -o-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12), 0 0 1px 0 #ccc;
   -ms-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12), 0 0 1px 0 #ccc;
   box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12), 0 0 1px 0 #ccc;
-  background-color: #f5f5f5 ;
+  background-color: #348c7f ;
   background-repeat: no-repeat ;
-  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ffffff), color-stop(80%, #f5f5f5), to(#f5f5f5)) ;
-  background-image: -webkit-linear-gradient(#ffffff, #f5f5f5 80%, #f5f5f5) ;
-  background-image: -moz-linear-gradient(top, #ffffff, #f5f5f5 80%, #f5f5f5) ;
-  background-image: -ms-linear-gradient(#ffffff, #f5f5f5 80%, #f5f5f5) ;
-  background-image: -o-linear-gradient(#ffffff, #f5f5f5 80%, #f5f5f5) ;
-  background-image: linear-gradient(#ffffff, #f5f5f5 80%, #f5f5f5) ;
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#f5f5f5', GradientType=0);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#5ec0b9), color-stop(80%, #348c7f), to(#348c7f)) ;
+  background-image: -webkit-linear-gradient(#5ec0b9, #348c7f 80%, #348c7f) ;
+  background-image: -moz-linear-gradient(top, #5ec0b9, #348c7f 80%, #348c7f) ;
+  background-image: -ms-linear-gradient(#5ec0b9, #348c7f 80%, #348c7f) ;
+  background-image: -o-linear-gradient(#5ec0b9, #348c7f 80%, #348c7f) ;
+  background-image: linear-gradient(#5ec0b9, #348c7f 80%, #348c7f) ;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#5ec0b9', endColorstr='#348c7f', GradientType=0);
+  color: #a3fff8 !important;
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
   -ms-border-radius: 5px;
@@ -20000,6 +20002,22 @@ div.special-pager .hidden.next:after {
 }
 #game-dashboard #dashboard > div {
   padding: 15px;
+}
+#game-dashboard #dashboard > div:hover {
+  -webkit-box-shadow: inset 0 5px 0 0 #7cb830, inset 0 6px 0 0 #fff;
+  -moz-box-shadow: inset 0 5px 0 0 #7cb830, inset 0 6px 0 0 #fff;
+  -o-box-shadow: inset 0 5px 0 0 #7cb830, inset 0 6px 0 0 #fff;
+  -ms-box-shadow: inset 0 5px 0 0 #7cb830, inset 0 6px 0 0 #fff;
+  box-shadow: inset 0 5px 0 0 #7cb830, inset 0 6px 0 0 #fff;
+}
+#game-dashboard #dashboard h2,
+#game-dashboard #dashboard h3 {
+  -webkit-text-shadow: 0 -1px 0 #5ec0b9;
+  -moz-text-shadow: 0 -1px 0 #5ec0b9;
+  -o-text-shadow: 0 -1px 0 #5ec0b9;
+  -ms-text-shadow: 0 -1px 0 #5ec0b9;
+  text-shadow: 0 -1px 0 #5ec0b9;
+  color: #fff !important;
 }
 #game-dashboard ul {
   list-style: none;
@@ -20013,26 +20031,33 @@ div.special-pager .hidden.next:after {
   width: 20%;
   float: left;
   border-right: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
   text-align: center;
 }
 #user-card h3 {
-  margin: 15px 0;
+  margin: 0 0 10px 0;
 }
 #user-card ul {
-  font-size: 14px;
   font-weight: bold;
 }
 #user-card ul li {
-  line-height: 1.75;
+  line-height: 1.15;
+}
+#user-card ul i {
+  font-style: normal;
+  margin-right: 3px;
+  color: #7cb830;
+  font-size: 16px;
+}
+#user-card img {
+  max-width: 100%;
+  height: auto;
+  border: 1px solid #f5f5f5;
+  padding: 4px;
+  background: #fff;
 }
 #mini-stats-card {
-  margin-top: 10px;
-  background: rgba(240, 240, 240, 0.9);
-  -webkit-box-shadow: inset 0 0 1px rgba(0, 0, 0, 0.2);
-  -moz-box-shadow: inset 0 0 1px rgba(0, 0, 0, 0.2);
-  -o-box-shadow: inset 0 0 1px rgba(0, 0, 0, 0.2);
-  -ms-box-shadow: inset 0 0 1px rgba(0, 0, 0, 0.2);
-  box-shadow: inset 0 0 1px rgba(0, 0, 0, 0.2);
+  margin-top: 20px;
   zoom: 1;
 }
 #mini-stats-card:before {
@@ -20044,19 +20069,43 @@ div.special-pager .hidden.next:after {
   display: table;
   clear: both;
 }
+#mini-stats-card > div {
+  background-color: #f1f1f1;
+  background-repeat: repeat-x;
+  background-image: -moz-linear-gradient(top, #f5f5f5, #f1f1f1);
+  background-image: -ms-linear-gradient(top, #f5f5f5, #f1f1f1);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #f5f5f5), color-stop(100%, #f1f1f1));
+  background-image: -webkit-linear-gradient(top, #f5f5f5, #f1f1f1);
+  background-image: -o-linear-gradient(top, #f5f5f5, #f1f1f1);
+  background-image: linear-gradient(top, #f5f5f5, #f1f1f1);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f5f5f5', endColorstr='#f1f1f1', GradientType=0);
+}
 #mini-stats-card .level {
+  -webkit-border-radius: 4px 4px 0 0;
+  -moz-border-radius: 4px 4px 0 0;
+  -ms-border-radius: 4px 4px 0 0;
+  -o-border-radius: 4px 4px 0 0;
+  border-radius: 4px 4px 0 0;
+  position: relative;
+  z-index: 3;
   padding: 10px;
+  -webkit-box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.23);
+  -moz-box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.23);
+  -o-box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.23);
+  -ms-box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.23);
+  box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.23);
 }
 #mini-stats-card strong {
   font-size: 36px;
   line-height: 1;
   display: block;
+  color: #7cb830;
+  font-weight: bold;
 }
 #mini-stats-card strong + span {
   display: block;
   font-size: 14px;
   font-weight: bold;
-  color: #999;
   margin: 0 0 10px 0;
 }
 #mini-stats-card .percentHolder {
@@ -20068,13 +20117,48 @@ div.special-pager .hidden.next:after {
 }
 #mini-stats-card .num-badges,
 #mini-stats-card .num-collections {
+  -webkit-border-radius: 0 0 0 4px;
+  -moz-border-radius: 0 0 0 4px;
+  -ms-border-radius: 0 0 0 4px;
+  -o-border-radius: 0 0 0 4px;
+  border-radius: 0 0 0 4px;
+  -webkit-box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.25);
+  -moz-box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.25);
+  -o-box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.25);
+  -ms-box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.25);
+  box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.25);
+  background-color: #e1e1e1;
+  background-repeat: repeat-x;
+  background-image: -moz-linear-gradient(top, #e5e5e5, #e1e1e1);
+  background-image: -ms-linear-gradient(top, #e5e5e5, #e1e1e1);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #e5e5e5), color-stop(100%, #e1e1e1));
+  background-image: -webkit-linear-gradient(top, #e5e5e5, #e1e1e1);
+  background-image: -o-linear-gradient(top, #e5e5e5, #e1e1e1);
+  background-image: linear-gradient(top, #e5e5e5, #e1e1e1);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#e5e5e5', endColorstr='#e1e1e1', GradientType=0);
+  position: relative;
+  z-index: 1;
+  text-align: center;
   padding: 5px;
-  float: left;
-  width: 50%;
-  border-top: 1px solid #fff;
+  float: right;
+  width: 45%;
+  margin: 0;
+  font-weight: bold;
+}
+#mini-stats-card .num-badges strong,
+#mini-stats-card .num-collections strong {
+  font-size: 24px;
+  display: block;
+  font-weight: bold;
 }
 #mini-stats-card .num-badges {
-  border-right: 1px solid #ffffff;
+  -webkit-border-radius: 0 0 4px 0;
+  -moz-border-radius: 0 0 4px 0;
+  -ms-border-radius: 0 0 4px 0;
+  -o-border-radius: 0 0 4px 0;
+  border-radius: 0 0 4px 0;
+  float: right;
+  margin-right: 5%;
 }
 /*Badges*/
 #achievements-list {
@@ -20082,7 +20166,9 @@ div.special-pager .hidden.next:after {
   height: 84%;
   width: 30%;
   float: left;
+  border-left: 1px solid #fff;
   border-right: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
 }
 #achievements-list li {
   zoom: 1;
@@ -20123,6 +20209,7 @@ div.special-pager .hidden.next:after {
   width: 15%;
   height: 25%;
   float: left;
+  border-left: 1px solid #fff;
   border-right: 1px solid #ccc;
   border-bottom: 1px solid #ccc;
   position: relative;
@@ -20140,25 +20227,11 @@ div.special-pager .hidden.next:after {
   width: 85px;
   height: 85px;
   line-height: 85px;
-  background-color: #b6a107 ;
-  background-repeat: no-repeat ;
-  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#f5e488), color-stop(80%, #e1cb56), to(#b6a107)) ;
-  background-image: -webkit-linear-gradient(#f5e488, #e1cb56 80%, #b6a107) ;
-  background-image: -moz-linear-gradient(top, #f5e488, #e1cb56 80%, #b6a107) ;
-  background-image: -ms-linear-gradient(#f5e488, #e1cb56 80%, #b6a107) ;
-  background-image: -o-linear-gradient(#f5e488, #e1cb56 80%, #b6a107) ;
-  background-image: linear-gradient(#f5e488, #e1cb56 80%, #b6a107) ;
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f5e488', endColorstr='#b6a107', GradientType=0);
-  -webkit-box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5), 0 -1px 0 0 rgba(0, 0, 0, 0.1);
-  -moz-box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5), 0 -1px 0 0 rgba(0, 0, 0, 0.1);
-  -o-box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5), 0 -1px 0 0 rgba(0, 0, 0, 0.1);
-  -ms-box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5), 0 -1px 0 0 rgba(0, 0, 0, 0.1);
-  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5), 0 -1px 0 0 rgba(0, 0, 0, 0.1);
-  -webkit-text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.2);
-  -moz-text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.2);
-  -o-text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.2);
-  -ms-text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.2);
-  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.2);
+  -webkit-text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.4);
+  -moz-text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.4);
+  -o-text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.4);
+  -ms-text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.4);
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.4);
   -webkit-border-radius: 50%;
   -moz-border-radius: 50%;
   -ms-border-radius: 50%;
@@ -20169,7 +20242,8 @@ div.special-pager .hidden.next:after {
   font-size: 72px;
   font-family: "zurmo_gamification_symbly_rRg";
   cursor: default;
-  color: rgba(0, 0, 0, 0.5);
+  color: #e2b321;
+  background: url(../images/coin.png) left top no-repeat;
   -webkit-transition: all 1s ease-out;
   -moz-transition: all 1s ease-out;
   -o-transition: all 1s ease-out;
@@ -20186,11 +20260,13 @@ div.special-pager .hidden.next:after {
   height: 25%;
   float: left;
   border-bottom: 1px solid #ccc;
+  border-left: 1px solid #fff;
 }
 .leaderboard-rank {
   float: left;
-  width: 120px;
-  margin-right: 15px;
+  overflow: visible;
+  width: 32%;
+  margin-right: 2%;
   padding: 10px;
   text-align: center;
   -webkit-border-radius: 4px;
@@ -20234,6 +20310,9 @@ div.special-pager .hidden.next:after {
   width: 50%;
   height: 59%;
   float: left;
+  border-top: 1px solid #fff;
+  border-bottom: 1px solid #ccc;
+  border-left: 1px solid #fff;
 }
 .stat-row {
   width: 70%;
@@ -20278,7 +20357,7 @@ div.special-pager .hidden.next:after {
   width: 100%;
   height: 16%;
   float: left;
-  border-top: 1px solid #ccc;
+  border-top: 1px solid #fff;
   padding: 0 !important;
   position: relative;
   z-index: 100;
@@ -20297,7 +20376,7 @@ div.special-pager .hidden.next:after {
   height: 100%;
   text-align: center;
   line-height: 96px;
-  font-size: 30px;
+  font-size: 22px;
   float: left;
   display: block;
   -webkit-text-shadow: 0 -1px 0 #ffffff;
@@ -20376,21 +20455,12 @@ div.special-pager .hidden.next:after {
 .collection-panel > div:hover {
   -webkit-transform: translate(0, -50%);
   width: 525px;
-  /*-webkit-animation-name: slideCollectionUp;
-			-webkit-animation-duration: .25s;
-			-webkit-animation-timing-function: linear;
-			-webkit-animation-delay: 0;
-			-webkit-animation-iteration-count: 1;
-			-webkit-animation-direction: alternate;
-			-webkit-animation-play-state: running;
-			-webkit-animation-fill-mode: forwards;*/
-
   z-index: 100;
-  -webkit-box-shadow: 0 0 5px 0 #aaaaaa;
-  -moz-box-shadow: 0 0 5px 0 #aaaaaa;
-  -o-box-shadow: 0 0 5px 0 #aaaaaa;
-  -ms-box-shadow: 0 0 5px 0 #aaaaaa;
-  box-shadow: 0 0 5px 0 #aaaaaa;
+  -webkit-box-shadow: 0 0 5px 0 #aaa, inset 0 5px 0 0 #7cb830, inset 0 6px 0 0 #fff;
+  -moz-box-shadow: 0 0 5px 0 #aaa, inset 0 5px 0 0 #7cb830, inset 0 6px 0 0 #fff;
+  -o-box-shadow: 0 0 5px 0 #aaa, inset 0 5px 0 0 #7cb830, inset 0 6px 0 0 #fff;
+  -ms-box-shadow: 0 0 5px 0 #aaa, inset 0 5px 0 0 #7cb830, inset 0 6px 0 0 #fff;
+  box-shadow: 0 0 5px 0 #aaa, inset 0 5px 0 0 #7cb830, inset 0 6px 0 0 #fff;
 }
 .collection-panel .number-collected {
   visibility: hidden;
@@ -20449,10 +20519,11 @@ div.special-pager .hidden.next:after {
   box-shadow: inset 0 0 1px rgba(0, 0, 0, 0.3), 0 -1px 0 0 rgba(90, 142, 44, 0.9);
 }
 .collection-items .missing {
-  filter: alpha(opacity=15);
-  -khtml-opacity: 0.15;
-  -moz-opacity: 0.15;
-  opacity: 0.15;
+  filter: alpha(opacity=50);
+  -khtml-opacity: 0.5;
+  -moz-opacity: 0.5;
+  opacity: 0.5;
+  -webkit-filter: grayscale(100%);
 }
 .collection-items .collection-item {
   position: relative;
@@ -20479,6 +20550,7 @@ div.special-pager .hidden.next:after {
   width: 24px;
   height: 24px;
   line-height: 24px;
+  z-index: 9999;
 }
 .collection-items .collection-item-redeemed a {
   font-size: 12px;
@@ -20486,6 +20558,17 @@ div.special-pager .hidden.next:after {
   text-align: center;
   margin-bottom: -10px;
   text-decoration: underline !important;
+}
+.collection-items .collection-item-redeemed .z-button {
+  position: relative;
+  margin-bottom: 15px;
+  z-index: 1;
+}
+.collection-items .collection-item-redeemed .z-button + .num-collected {
+  float: left;
+  position: absolute;
+  left: -8px;
+  top: -8px;
 }
 /*********************************************************************************
  * Zurmo is a customer relationship management program developed by

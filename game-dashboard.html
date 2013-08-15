@@ -984,6 +984,34 @@ jQuery(function ($) {
     juiPortlets.init('UserDetailsAndRelationsViewLeftBottomView', 'users', '/Zurmo/app/index.php/users/defaultPortlet/SaveLayout', 'YII_CSRF_TOKEN', '8a2ec0448da78df4b2ec6e46e8d564a09b20f69b', '.juiportlet-columns-UserDetailsAndRelationsViewLeftBottomView', '', '', 'This portlet will be removed, ok?');
     $(".badge-icon").qtip({'position': {'my': 'bottom right', 'at': 'top left'}});
     juiPortlets.init('UserDetailsAndRelationsViewRightBottomView', 'users', '/Zurmo/app/index.php/users/defaultPortlet/SaveLayout', 'YII_CSRF_TOKEN', '8a2ec0448da78df4b2ec6e46e8d564a09b20f69b', '.juiportlet-columns-UserDetailsAndRelationsViewRightBottomView', '', '', 'This portlet will be removed, ok?');
+
+
+
+
+
+
+
+
+
+
+    $(".collection-item img").qtip(
+        {
+            position: {
+                my: 'bottom center',
+                at: 'top center'
+            },
+            content: {
+                attr: 'data-tooltip' // Tell qTip2 to look inside this attr for it's content
+            }
+        }
+    );
+
+
+
+
+
+
+
 });
 /*]]>*/
 </script>
@@ -1001,11 +1029,11 @@ jQuery(function ($) {
 
             <!--start #user-card-->
             <div id="user-card">
-                <img src="http://zurmo.com/img/ray.png" />
-                <h3>Ray Stoekicht</h3>
+                <img src="http://www.biography.com/imported/images/Biography/Images/Profiles/O/Barack-Obama-12782369-2-402.jpg" />
+                <h3>Barack M. Obama</h3>
                 <ul>
-                    <li>5 Days login streak</li>
-                    <li>3 Won deals streak</li>
+                    <li><i>&#x2714;</i>5 Days login streak</li>
+                    <li><i>&#x2714;</i>3 Won deals streak</li>
                 </ul>
                 <div id="mini-stats-card">
                     <div class="level">
@@ -1018,8 +1046,8 @@ jQuery(function ($) {
                         </span>
                         <span>44% to Level 5</span>
                     </div>
-                    <div class="num-badges">10 Badges</div>
-                    <div class="num-collections">8 Collections</div>
+                    <div class="num-badges"><strong>10</strong>Badges</div>
+                    <div class="num-collections"><strong>8</strong>Collections</div>
                 </div>
             </div>
             <!--end #user-card-->
@@ -1213,7 +1241,8 @@ jQuery(function ($) {
                                 </div>
                                 <div class="collection-items clearfix">
                                     <div class="collection-item">
-                                        <img src="/Zurmo/app/themes/default/images/Popcorn-47x64.png" />
+                                        <img src="/Zurmo/app/themes/default/images/Popcorn-47x64.png"
+                                             class="qtip-shadow" data-tooltip="Popcorn.." />
                                         <span class="num-collected">x4</span>
                                     </div>
                                     <div class="collection-item"><img src="/Zurmo/app/themes/default/images/Anaglyph_glasses-123x86.png" /></div>
@@ -1223,7 +1252,7 @@ jQuery(function ($) {
                                     <div class="collection-item-redeemed">
                                         <img src="/Zurmo/app/themes/default/images/Camera-128x104.png" />
                                         <span class="num-collected">x2</span>
-                                        <a href="redeem">redeem</a>
+                                        <a href="redeem">complete</a>
                                     </div>
                                 </div>
                             </div>
@@ -1251,9 +1280,13 @@ jQuery(function ($) {
                                     <div class="collection-item"><img src="/Zurmo/app/themes/default/images/Camera-128x104.png" /></div>
                                     <div class="collection-item"><img src="/Zurmo/app/themes/default/images/Admit_one-121x127.png" /></div>
                                     <div class="collection-item-redeemed">
-                                        <img src="/Zurmo/app/themes/default/images/Camera-128x104.png" />
+                                        <a href="" class="z-button _green-button">
+                                            <span class="z-label">Complete</span>
+                                        </a>
                                         <span class="num-collected">x4</span>
-                                        <a href="redeem">redeem</a>
+
+                                        <!--<img src="/Zurmo/app/themes/default/images/Camera-128x104.png" />
+                                        <a href="redeem">redeem</a>-->
                                     </div>
                                 </div>
                             </div>
