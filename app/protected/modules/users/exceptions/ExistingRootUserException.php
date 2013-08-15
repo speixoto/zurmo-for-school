@@ -34,23 +34,10 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class CategoriesActionBarAndTreeListView extends GridView
+    /**
+     * Exception thrown an additional root user is attempted to be set.  Only one root user is supported
+     */
+    class ExistingRootUserException extends CException
     {
-        public function __construct($controllerId, $moduleId, $categories, $activeActionElementType = null)
-        {
-            assert('$controllerId != null');
-            assert('$moduleId != null');
-            assert('is_array($categories)');
-            parent::__construct(2, 1);
-            $this->setView(new ActionBarForCategoriesTreeListView ($controllerId, $moduleId, $activeActionElementType), 0, 0);
-            $categoriesTreeListView = new ProductCategoriesTreeListView($controllerId, $moduleId, $categories);
-            $categoriesTreeListView->setCssClasses(array('DetailsView'));
-            $this->setView($categoriesTreeListView, 1, 0);
-        }
-
-        public function isUniqueToAPage()
-        {
-            return true;
-        }
     }
 ?>

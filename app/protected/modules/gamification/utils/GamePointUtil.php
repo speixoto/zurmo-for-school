@@ -85,7 +85,7 @@
         {
             assert('is_string($type)');
             $quote                     = DatabaseCompatibilityUtil::getQuote();
-            $where                     = null;
+            $where                     = '_user.hidefromleaderboard IS NULL OR _user.hidefromleaderboard = 0';
             $selectDistinct            = false;
             $orderBy                   = "points desc";
             $joinTablesAdapter         = new RedBeanModelJoinTablesQueryAdapter('GamePointTransaction');

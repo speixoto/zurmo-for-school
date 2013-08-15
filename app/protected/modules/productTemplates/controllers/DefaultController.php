@@ -103,10 +103,11 @@
                 $view       = new ProductTemplatesPageView($mixedView);
             }
             else
-            {
+            {                
+                $introView        = new ProductsIntroView('ProductsModule');
                 $mixedView  = $this->makeActionBarSearchAndListView($searchForm, $dataProvider,
                                     'SecuredActionBarForProductsSearchAndListView',
-                                    null, $activeActionElementType);
+                                    null, $activeActionElementType, $introView);
                 $view       = new ProductTemplatesPageView(ProductDefaultViewUtil::
                                                                makeViewWithBreadcrumbsForCurrentUser(
                                                                     $this, $mixedView, $breadcrumbLinks, 'ProductBreadCrumbView'));

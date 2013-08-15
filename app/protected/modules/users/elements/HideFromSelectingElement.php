@@ -35,48 +35,36 @@
      ********************************************************************************/
 
     /**
-     * Renders an action bar specifically for the listview.
+     * Display a checkbox to hide/show a user from being selectable as a user in the user interface
      */
-    class ActionBarForCategoriesTreeListView extends ActionBarForSecurityTreeListView
+    class HideFromSelectingElement extends CheckBoxElement
     {
-        public static function getDefaultMetadata()
+        protected function renderLabel()
         {
-            $metadata = array(
-                'global' => array(
-                    'toolbar' => array(
-                        'elements' => array(
-                            array('type'          => 'ProductCreateLink',
-                                'htmlOptions'     => array('class' => 'icon-create'),
-                            ),
-                            array(
-                                'type'            => 'ProductsLink',
-                                'htmlOptions'     => array( 'class' => 'icon-products' )
-                            ),
-                            array(
-                                'type'            => 'ProductTemplatesLink',
-                                'htmlOptions'     => array( 'class' => 'icon-catalog-items' )
-                            ),
-                            array(
-                                'type'            => 'ProductCategoriesLink',
-                                'htmlOptions'     => array( 'class' => 'icon-product-categories' )
-                            ),
-                        ),
-                    ),
-                ),
-            );
-            return $metadata;
+            $content  = parent::renderLabel();
+            $content .= $this->renderTooltipContentForEnableDesktopNotifications();
+            return $content;
         }
 
-        protected function makeModel()
+        protected static function renderTooltipContentForEnableDesktopNotifications()
         {
-            return new ProductCategory(false);
-        }
+            $title       = Zurmo::t('UsersModule',
+                            'Check this box if the user should not be selectable. ' .
+                            'An example is the user would not be selectable as an owner of ' .
+                            'a record or selected as a recipient while composing email.');
+            $content     = ZurmoHtml::tag('span',
+                                          array('id'    => 'user-hide-from-selecting-tooltip',
+                                                'class' => 'tooltip',
+                                                'title' => $title,
+                                               ),
+                                          '?');
+            $qtip        = new ZurmoTip(array('options' => array('position' => array('my' => 'bottom right', 'at' => 'top left'),
+                                                                 'hide'     => array('event' => 'unfocus'),
+                                                                 'show'     => array('event' => 'click')
 
-        protected function shouldRenderToolBarElement($element, $elementInformation)
-        {
-            assert('$element instanceof ActionElement');
-            assert('is_array($elementInformation)');
-            return true;
+                )));
+            $qtip->addQTip("#user-hide-from-selecting-tooltip");
+            return $content;
         }
     }
 ?>
