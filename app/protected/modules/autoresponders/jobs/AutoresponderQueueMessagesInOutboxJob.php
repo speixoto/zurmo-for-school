@@ -73,6 +73,7 @@
                     $this->errorMessage = $e->getMessage();
                     return false;
                 }
+                $this->runGarbageCollection($autoresponderItem);
             }
             return true;
         }
@@ -80,6 +81,19 @@
         protected function processAutoresponderItemInQueue(AutoresponderItem $autoresponderItem)
         {
             AutoresponderItemsUtil::processDueItem($autoresponderItem);
+        }
+
+        /**
+         * Not pretty, but gets the job done. Solves memory leak problem.
+         * @param AutoresponderItem $autoresponderItem
+         */
+        protected function runGarbageCollection(AutoresponderItem $autoresponderItem)
+        {
+            $autoresponderItem->autoresponder->marketingList->forgetValidators();
+            $autoresponderItem->autoresponder->forgetValidators();
+            unset($autoresponderItem->autoresponder->marketingList);
+            unset($autoresponderItem->autoresponder);
+            parent::runGarbageCollection($autoresponderItem);
         }
     }
 ?>

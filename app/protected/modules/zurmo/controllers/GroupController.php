@@ -81,14 +81,15 @@
 
         public function actionDetails($id)
         {
-            $group = Group::getById(intval($id));
+            $group  = Group::getById(intval($id));
+            $action = $this->resolveActionToGoToAfterSave($group);
             if (!$group->isEveryone && !$group->isSuperAdministrators)
             {
-                $this->redirect(array($this->getId() . '/edit', 'id' => $id));
+                $this->redirect(array($this->getId() . '/' . $action, 'id' => $id));
             }
             else
             {
-                $this->redirect(array($this->getId() . '/editPolicies', 'id' => $id));
+                $this->redirect(array($this->getId() . '/' . $action, 'id' => $id));
             }
         }
 
@@ -166,7 +167,8 @@
                         Yii::app()->user->setFlash('notification',
                             Zurmo::t('ZurmoModule', 'User Membership Saved Successfully.')
                         );
-                        $this->redirect(array($this->getId() . '/details', 'id' => $group->id));
+                        $action = $this->resolveActionToGoToAfterSave($group);
+                        $this->redirect(array($this->getId() . '/' . $action, 'id' => $group->id));
                         Yii::app()->end(0, false);
                 }
             }
@@ -201,7 +203,8 @@
                     Yii::app()->user->setFlash('notification',
                         Zurmo::t('ZurmoModule', 'Record Permissions Saved Successfully.')
                     );
-                    $this->redirect(array($this->getId() . '/details', 'id' => $group->id));
+                    $action = $this->resolveActionToGoToAfterSave($group);
+                    $this->redirect(array($this->getId() . '/' . $action, 'id' => $group->id));
                     Yii::app()->end(0, false);
                 }
             }
@@ -240,7 +243,8 @@
                     $group->forget();
                     $group      = Group::getById(intval($id));
                     Yii::app()->user->setFlash('notification', Zurmo::t('ZurmoModule', 'Rights Saved Successfully.'));
-                    $this->redirect(array($this->getId() . '/details', 'id' => $group->id));
+                    $action = $this->resolveActionToGoToAfterSave($group);
+                    $this->redirect(array($this->getId() . '/' . $action, 'id' => $group->id));
                     Yii::app()->end(0, false);
                 }
             }
@@ -281,7 +285,8 @@
                         Yii::app()->user->setFlash('notification',
                             Zurmo::t('ZurmoModule', 'Policies Saved Successfully.')
                         );
-                        $this->redirect(array($this->getId() . '/details', 'id' => $group->id));
+                        $action = $this->resolveActionToGoToAfterSave($group);
+                        $this->redirect(array($this->getId() . '/' . $action, 'id' => $group->id));
                         Yii::app()->end(0, false);
                     }
                 }
@@ -320,7 +325,15 @@
                     $model->setAttributes($_POST[$postVariableName]);
                     if ($model->save())
                     {
-                        $this->redirectAfterSaveModel($model->id, $redirectUrlParams);
+                        Yii::app()->user->setFlash('notification',
+                            Zurmo::t('ZurmoModule', 'Group Saved Successfully.')
+                        );
+                        if ($redirectUrlParams == null)
+                        {
+                            $action    = $this->resolveActionToGoToAfterSave($model);
+                            $urlParams = array($this->getId() . '/' . $action, 'id' => $model->id);
+                        }
+                        $this->redirect($urlParams);
                     }
                 }
             }
@@ -379,6 +392,18 @@
             PermissionsCache::forgetAll();
             RightsCache::forgetAll();
             PoliciesCache::forgetAll();
+        }
+
+        protected function resolveActionToGoToAfterSave(Group $group)
+        {
+            if (!$group->isEveryone && !$group->isSuperAdministrators)
+            {
+                return 'edit';
+            }
+            else
+            {
+                return 'editPolicies';
+            }
         }
     }
 ?>

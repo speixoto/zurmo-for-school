@@ -716,7 +716,7 @@
                     array('username', 'match',   'pattern' => '/^[^A-Z]+$/', // Not Coding Standard
                                                'message' => 'Username must be lowercase.'),
                     array('username', 'length',  'max'   => 64),
-                    array('username', 'filter', 'filter'=>'trim'),
+                    array('username', 'filter', 'filter' => 'trim'),
                     array('serializedAvatarData', 'type', 'type' => 'string'),
                     array('isActive', 'readOnly'),
                     array('isActive', 'boolean'),
@@ -943,9 +943,9 @@
          */
         public static function getSortAttributesByAttribute($attribute)
         {
-            if ($attribute == 'lastName')
+            if ($attribute == 'firstName')
             {
-                return array('firstName', $attribute);
+                return array('firstName', 'lastName');
             }
             return parent::getSortAttributesByAttribute($attribute);
         }

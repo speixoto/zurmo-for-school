@@ -34,12 +34,20 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class EmailMessageDetailsView extends DetailsView
+    class EmailMessageEditAndDetailsView extends SecuredEditAndDetailsView
     {
         public static function getDefaultMetadata()
         {
             $metadata = array(
                 'global' => array(
+                    'toolbar' => array(
+                        'elements' => array(
+                            array('type'  => 'SaveButton',    'renderType' => 'Edit'),
+                            array('type'  => 'CancelLink',    'renderType' => 'Edit'),
+                            array('type' => 'EditLink',       'renderType' => 'Details'),
+                            array('type' => 'EmailMessageDeleteLink', 'renderType' => 'Details'),
+                        ),
+                    ),
                     'derivedAttributeTypes' => array(
                         'EmailMessageToRecipients',
                         'EmailMessageCcRecipients',
@@ -56,7 +64,7 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'sentDateTime', 'type' => 'DateTime'),
+                                                array('attributeName' => 'sentDateTime', 'type' => 'ReadOnlyDateTime'),
                                             ),
                                         ),
                                     )
@@ -132,16 +140,9 @@
             return $metadata;
         }
 
-        public function getTitle()
+        public static function getModuleClassName()
         {
-            if ($this->model->id > 0)
-            {
-                return strval($this->model);
-            }
-            else
-            {
-                throw new NotSupportedException();
-            }
+            return 'EmailMessagesModule';
         }
     }
 ?>

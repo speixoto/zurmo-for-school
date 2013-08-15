@@ -500,7 +500,7 @@
             echo $view->render();
         }
 
-        public function actionEmailConfiguration($id,$redirectUrl = null)
+        public function actionEmailConfiguration($id, $redirectUrl = null)
         {
             UserAccessUtil::resolveCanCurrentUserAccessAction(intval($id));
             $user  = User::getById(intval($id));
@@ -523,7 +523,7 @@
                         Zurmo::t('UsersModule', 'User email configuration saved successfully.')
                     );
 
-                    if($redirectUrl != null)
+                    if ($redirectUrl != null)
                     {
                         $this->redirect($redirectUrl);
                     }

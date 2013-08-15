@@ -32,10 +32,14 @@
             SecurityTestHelper::createSuperAdmin();
             $super = User::getByUsername('super');
             Yii::app()->user->userModel = $super;
+            //Make sure everyone group is created
+            $group = Group::getByName(Group::EVERYONE_GROUP_NAME);
+            $group->save();
 
             //Setup test data owned by the super user.
             $account = AccountTestHelper::createAccountByNameForOwner('superAccount', $super);
-            $contact = ContactTestHelper::createContactWithAccountByNameForOwner('superContact', $super, $account);
+            ContactTestHelper::createContactWithAccountByNameForOwner('superContact', $super, $account);
+            ProductTestHelper::createProductStagesIfDoesNotExist();
             ProductTestHelper::createProductByNameForOwner("My Product 1", $super);
             //Setup test data owned by the super user.
             ProductTemplateTestHelper::createProductTemplateByName('My Product Template');

@@ -121,7 +121,7 @@
                         $("#" + flashBarId).jnotifyAddMessage(
                         {
                             text: data.message,
-                            permanent: false,
+                            permanent: true,
                             showIcon: true,
                             type: data.type,
                             removeExisting: true
@@ -129,7 +129,6 @@
                     }
                 ');
             }
-
         }
 
         protected function registerSubscribeContactsAjaxScript()

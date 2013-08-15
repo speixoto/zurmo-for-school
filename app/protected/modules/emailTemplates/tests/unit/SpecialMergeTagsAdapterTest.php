@@ -58,6 +58,9 @@
             $this->assertFalse(SpecialMergeTagsAdapter::isSpecialMergeTag('modelUrl', 'something'));
         }
 
+        /**
+         * @depends testIsSpecialMergeTag
+         */
         public function testResolveModelUrl()
         {
             $contact = ContactTestHelper::createContactByNameForOwner('contact 01', Yii::app()->user->userModel);
@@ -67,15 +70,31 @@
             $this->assertTrue(strpos($resolvedModelUrl, $expectedSuffix) !== false);
         }
 
-        public function testResolveCompanyName()
+        /**
+         * @depends testResolveModelUrl
+         */
+        public function testResolveBaseUrl()
         {
-            ZurmoConfigurationUtil::setByModuleName('ZurmoModule', 'applicationName', 'Demo App');
-            $resolvedCompanyName    = SpecialMergeTagsAdapter::resolve('companyName', null);
-            $expectedCompanyName    = ZurmoConfigurationUtil::getByModuleName('ZurmoModule', 'applicationName');
-            $this->assertNotNull($resolvedCompanyName);
-            $this->assertEquals($expectedCompanyName, $resolvedCompanyName);
+            $resolvedBaseUrl    = SpecialMergeTagsAdapter::resolve('baseUrl', null);
+            $this->assertNotNull($resolvedBaseUrl);
+            $this->assertTrue(strpos($resolvedBaseUrl, 'localhost') === 0);
         }
 
+        /**
+         * @depends testResolveBaseUrl
+         */
+        public function testResolveApplicationName()
+        {
+            ZurmoConfigurationUtil::setByModuleName('ZurmoModule', 'applicationName', 'Demo App');
+            $resolvedApplicationName    = SpecialMergeTagsAdapter::resolve('applicationName', null);
+            $expectedApplicationName    = ZurmoConfigurationUtil::getByModuleName('ZurmoModule', 'applicationName');
+            $this->assertNotNull($resolvedApplicationName);
+            $this->assertEquals($expectedApplicationName, $resolvedApplicationName);
+        }
+
+        /**
+         * @depends testResolveApplicationName
+         */
         public function testResolveCurrentYear()
         {
             $resolvedCurrentYear    = SpecialMergeTagsAdapter::resolve('currentYear', null);
@@ -84,6 +103,9 @@
             $this->assertEquals($expectedCurrentYear, $resolvedCurrentYear);
         }
 
+        /**
+         * @depends testResolveCurrentYear
+         */
         public function testResolveLastYear()
         {
             $resolvedLastYear        = SpecialMergeTagsAdapter::resolve('lastYear', null);
