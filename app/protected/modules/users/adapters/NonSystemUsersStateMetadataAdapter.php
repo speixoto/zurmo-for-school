@@ -35,60 +35,53 @@
      ********************************************************************************/
 
     /**
-    * ZurmoAPiController is responsible for login and logout actions.
-    */
-    class ZurmoApiController extends ZurmoModuleApiController
+     * Adapter class to filter only non system users.
+     * See attribute isSystemUser in User.
+     */
+    class NonSystemUsersStateMetadataAdapter implements StateMetadataAdapterInterface
     {
-        public function actionLogin()
+        protected $metadata;
+
+        public static function getStateAttributeName()
         {
-            try
+            throw new NotImplementedException();
+        }
+
+        public function __construct(array $metadata)
+        {
+            assert('isset($metadata["clauses"])');
+            assert('isset($metadata["structure"])');
+            $this->metadata = $metadata;
+        }
+
+        /**
+         * Creates where clauses and adds structure information
+         * to existing DataProvider metadata.
+         */
+        public function getAdaptedDataProviderMetadata()
+        {
+            $metadata             = $this->metadata;
+            $clauseCount          = count($metadata['clauses']);
+            $startingCount        = $clauseCount + 1;
+            $startingCountPlusOne = $startingCount + 1;
+            $metadata['clauses'][$startingCount] = array(
+                'attributeName'        => 'isSystemUser',
+                'operatorType'         => 'equals',
+                'value'                => 0);
+            $metadata['clauses'][$startingCountPlusOne] = array(
+                'attributeName'        => 'isSystemUser',
+                'operatorType'         => 'isNull',
+                'value'                => null);
+            $structure = $startingCount . ' or ' . $startingCountPlusOne;
+            if (empty($metadata['structure']))
             {
-                $identity = new UserIdentity(Yii::app()->apiRequest->getUsername(), Yii::app()->apiRequest->getPassword());
-                $identity->authenticate();
-            }
-            catch (Exception $e)
-            {
-                $message = Zurmo::t('ZurmoModule', 'An error occured during login. Please try again.');
-                throw new ApiException($message);
-            }
-            if ($identity->errorCode == UserIdentity::ERROR_NONE)
-            {
-                Yii::app()->licenseManager->resolveUserIdentityApiAuthenticationForError($identity);
-                Yii::app()->user->login($identity);
-                $data['sessionId'] = Yii::app()->getSession()->getSessionID();
-                $data['token'] = Yii::app()->session['token'];
-                $session = Yii::app()->getSession();
-                $result = new ApiResult(ApiResponse::STATUS_SUCCESS, $data, null, null);
-                Yii::app()->apiHelper->sendResponse($result);
+                $metadata['structure'] = '(' . $structure . ')';
             }
             else
             {
-                $message = Zurmo::t('ZurmoModule', 'Invalid username or password.');
-                throw new ApiException($message);
+                $metadata['structure'] = '(' . $metadata['structure'] . ') and (' . $structure . ')';
             }
-        }
-
-        public function actionLogout()
-        {
-            Yii::app()->user->logout();
-            if (Yii::app()->user->isGuest)
-            {
-                $result = new ApiResult(ApiResponse::STATUS_SUCCESS, null, null, null);
-                Yii::app()->apiHelper->sendResponse($result);
-            }
-            else
-            {
-                $message = Zurmo::t('ZurmoModule', 'Sign out failed.');
-                throw new ApiException($message);
-            }
-        }
-
-        public function actionError()
-        {
-            if ($error = Yii::app()->errorHandler->error)
-            {
-                throw new ApiException($error);
-            }
+            return $metadata;
         }
     }
 ?>

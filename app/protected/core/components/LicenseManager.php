@@ -35,60 +35,24 @@
      ********************************************************************************/
 
     /**
-    * ZurmoAPiController is responsible for login and logout actions.
-    */
-    class ZurmoApiController extends ZurmoModuleApiController
+     * Helper class for managing licenses
+     */
+    class LicenseManager extends CApplicationComponent
     {
-        public function actionLogin()
+        public function resolveValidationOnCreateOrEditUser(User $user, UserStatus $userStatus)
         {
-            try
-            {
-                $identity = new UserIdentity(Yii::app()->apiRequest->getUsername(), Yii::app()->apiRequest->getPassword());
-                $identity->authenticate();
-            }
-            catch (Exception $e)
-            {
-                $message = Zurmo::t('ZurmoModule', 'An error occured during login. Please try again.');
-                throw new ApiException($message);
-            }
-            if ($identity->errorCode == UserIdentity::ERROR_NONE)
-            {
-                Yii::app()->licenseManager->resolveUserIdentityApiAuthenticationForError($identity);
-                Yii::app()->user->login($identity);
-                $data['sessionId'] = Yii::app()->getSession()->getSessionID();
-                $data['token'] = Yii::app()->session['token'];
-                $session = Yii::app()->getSession();
-                $result = new ApiResult(ApiResponse::STATUS_SUCCESS, $data, null, null);
-                Yii::app()->apiHelper->sendResponse($result);
-            }
-            else
-            {
-                $message = Zurmo::t('ZurmoModule', 'Invalid username or password.');
-                throw new ApiException($message);
-            }
         }
 
-        public function actionLogout()
+        public function resolveUserIdentityAuthenticationForError(LoginForm $form, UserIdentity $identity)
         {
-            Yii::app()->user->logout();
-            if (Yii::app()->user->isGuest)
-            {
-                $result = new ApiResult(ApiResponse::STATUS_SUCCESS, null, null, null);
-                Yii::app()->apiHelper->sendResponse($result);
-            }
-            else
-            {
-                $message = Zurmo::t('ZurmoModule', 'Sign out failed.');
-                throw new ApiException($message);
-            }
         }
 
-        public function actionError()
+        public function resolveUserIdentityApiAuthenticationForError(UserIdentity $identity)
         {
-            if ($error = Yii::app()->errorHandler->error)
-            {
-                throw new ApiException($error);
-            }
+        }
+
+        public function checkAndUpdateLicenseInfo()
+        {
         }
     }
 ?>

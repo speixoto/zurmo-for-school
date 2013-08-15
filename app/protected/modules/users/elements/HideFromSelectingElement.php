@@ -35,60 +35,36 @@
      ********************************************************************************/
 
     /**
-    * ZurmoAPiController is responsible for login and logout actions.
-    */
-    class ZurmoApiController extends ZurmoModuleApiController
+     * Display a checkbox to hide/show a user from being selectable as a user in the user interface
+     */
+    class HideFromSelectingElement extends CheckBoxElement
     {
-        public function actionLogin()
+        protected function renderLabel()
         {
-            try
-            {
-                $identity = new UserIdentity(Yii::app()->apiRequest->getUsername(), Yii::app()->apiRequest->getPassword());
-                $identity->authenticate();
-            }
-            catch (Exception $e)
-            {
-                $message = Zurmo::t('ZurmoModule', 'An error occured during login. Please try again.');
-                throw new ApiException($message);
-            }
-            if ($identity->errorCode == UserIdentity::ERROR_NONE)
-            {
-                Yii::app()->licenseManager->resolveUserIdentityApiAuthenticationForError($identity);
-                Yii::app()->user->login($identity);
-                $data['sessionId'] = Yii::app()->getSession()->getSessionID();
-                $data['token'] = Yii::app()->session['token'];
-                $session = Yii::app()->getSession();
-                $result = new ApiResult(ApiResponse::STATUS_SUCCESS, $data, null, null);
-                Yii::app()->apiHelper->sendResponse($result);
-            }
-            else
-            {
-                $message = Zurmo::t('ZurmoModule', 'Invalid username or password.');
-                throw new ApiException($message);
-            }
+            $content  = parent::renderLabel();
+            $content .= $this->renderTooltipContentForEnableDesktopNotifications();
+            return $content;
         }
 
-        public function actionLogout()
+        protected static function renderTooltipContentForEnableDesktopNotifications()
         {
-            Yii::app()->user->logout();
-            if (Yii::app()->user->isGuest)
-            {
-                $result = new ApiResult(ApiResponse::STATUS_SUCCESS, null, null, null);
-                Yii::app()->apiHelper->sendResponse($result);
-            }
-            else
-            {
-                $message = Zurmo::t('ZurmoModule', 'Sign out failed.');
-                throw new ApiException($message);
-            }
-        }
+            $title       = Zurmo::t('UsersModule',
+                            'Check this box if the user should not be selectable. ' .
+                            'An example is the user would not be selectable as an owner of ' .
+                            'a record or selected as a recipient while composing email.');
+            $content     = ZurmoHtml::tag('span',
+                                          array('id'    => 'user-hide-from-selecting-tooltip',
+                                                'class' => 'tooltip',
+                                                'title' => $title,
+                                               ),
+                                          '?');
+            $qtip        = new ZurmoTip(array('options' => array('position' => array('my' => 'bottom right', 'at' => 'top left'),
+                                                                 'hide'     => array('event' => 'unfocus'),
+                                                                 'show'     => array('event' => 'click')
 
-        public function actionError()
-        {
-            if ($error = Yii::app()->errorHandler->error)
-            {
-                throw new ApiException($error);
-            }
+                )));
+            $qtip->addQTip("#user-hide-from-selecting-tooltip");
+            return $content;
         }
     }
 ?>
