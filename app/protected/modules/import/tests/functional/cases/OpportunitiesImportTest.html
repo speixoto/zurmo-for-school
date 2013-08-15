@@ -73,7 +73,7 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>link=Next</td>
+	<td>link=Upload File</td>
 	<td></td>
 </tr>
 <tr>
@@ -94,7 +94,7 @@
 <tr>
 	<td>type</td>
 	<td>id=ImportWizardForm_file</td>
-	<td>C:\Inetpub\selenium\zurmo_bleeding\app\protected\modules\import\tests\functional\files\importOpportunitiesTest.csv</td>
+	<td>C:\xampp\htdocs\zurmoimport\app\protected\modules\import\tests\functional\files\importOpportunitiesTest.csv</td>
 </tr>
 <tr>
 	<td>waitForCondition</td>
@@ -103,7 +103,7 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>link=Next</td>
+	<td>link=Select Permissions</td>
 	<td></td>
 </tr>
 <tr>
@@ -113,7 +113,7 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>link=Next</td>
+	<td>link=Map Fields</td>
 	<td></td>
 </tr>
 <tr>
@@ -532,8 +532,23 @@
 	<td></td>
 </tr>
 <tr>
+	<td>assertText</td>
+	<td>//form[@id='edit-form']/div[2]/div/ul/li[1]/strong</td>
+	<td>3</td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>//form[@id='edit-form']/div[2]/div/ul/li[2]/strong</td>
+	<td>0</td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>//form[@id='edit-form']/div[2]/div/ul/li[3]/strong</td>
+	<td>0</td>
+</tr>
+<tr>
 	<td>clickAndWait</td>
-	<td>link=Next</td>
+	<td>link=Import Data</td>
 	<td></td>
 </tr>
 <tr>
@@ -552,9 +567,19 @@
 	<td></td>
 </tr>
 <tr>
-	<td>assertTextPresent</td>
-	<td>Rows with errors: 0</td>
-	<td></td>
+	<td>assertText</td>
+	<td>//form[@id='edit-form']/div[2]/div/ul/li[1]/strong</td>
+	<td>3</td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>//form[@id='edit-form']/div[2]/div/ul/li[2]/strong</td>
+	<td>0</td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>//form[@id='edit-form']/div[2]/div/ul/li[3]/strong</td>
+	<td>0</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>

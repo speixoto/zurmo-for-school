@@ -1,6 +1,6 @@
 {
 DisplayStrings = (
-/lessequal
+/guilsinglleft
 );
 customParameters = (
 {
@@ -11539,32 +11539,8 @@ width = 600;
 unicode = 00BB;
 },
 {
-glyphname = guillemotleft;
-lastChange = "2013-03-19 20:51:11 -0300";
-layers = (
-{
-layerId = "2B2FE4A8-39A2-493B-A970-B9343EE81639";
-name = Regular;
-width = 600;
-}
-);
-unicode = 00AB;
-},
-{
-glyphname = guillemotright;
-lastChange = "2013-03-19 20:51:12 -0300";
-layers = (
-{
-layerId = "2B2FE4A8-39A2-493B-A970-B9343EE81639";
-name = Regular;
-width = 600;
-}
-);
-unicode = 00BB;
-},
-{
 glyphname = guilsinglleft;
-lastChange = "2013-01-22 13:49:33 -0300";
+lastChange = "2013-07-29 13:15:55 -0300";
 layers = (
 {
 layerId = "2B2FE4A8-39A2-493B-A970-B9343EE81639";
@@ -13498,7 +13474,7 @@ closed = 1;
 nodes = (
 "69.9279 147.71 LINE",
 "76.999 140.639 LINE",
-"409.361 473.001 LINE",
+"409.361 473 LINE",
 "402.29 480.072 LINE"
 );
 },
@@ -13927,7 +13903,7 @@ nodes = (
 "411.978 256.414 LINE",
 "414.806 253.586 LINE",
 "523.83 362.61 LINE",
-"521.001 365.438 LINE"
+"521 365.438 LINE"
 );
 },
 {

@@ -150,6 +150,7 @@ a.EmailTestingButton,
 .AppContent.ImportWizardView #addExtraColumnButton .EmailTestingButton,
 .AppContent.ImportWizardView #addExtraColumnButton a.EmailTestingButton,
 .AppContent.ImportWizardView #addExtraColumnButton,
+.import-summary li,
 .file-upload-box .ui-icon-plusthick,
 a.file-upload-box .ui-icon-plusthick,
 .default-btn .file-upload-box .ui-icon-plusthick,
@@ -281,7 +282,8 @@ a.ModalGameNotification a,
 .module-intro-steps p,
 #marketing-intro-steps p,
 .continuum > div,
-.continuum .email-recipient-stage-status,
+.import-item-stage-status,
+.email-recipient-stage-status,
 #kanban-board,
 #kanban-board .drop-zone-container,
 #kanban-board .drop-zone,
@@ -616,47 +618,47 @@ a#customFieldDataData_AddInputButton.attachLoading.z-button,
 a.ModalGameNotification a.attachLoading.z-button {
   color: #fff;
 }
-.modal-view-toolbar a:not(.attachLoading) .z-label,
-.modal-view-toolbar input[type="submit"]:not(.attachLoading) .z-label,
-.modal-view-toolbar input[type="button"]:not(.attachLoading) .z-label,
-.form-toolbar a:not(.attachLoading) .z-label,
-.form-toolbar input[type="submit"]:not(.attachLoading) .z-label,
-.form-toolbar input[type="button"]:not(.attachLoading) .z-label,
-.zButton:not(.attachLoading) .z-label,
-.z-button:not(.attachLoading) .z-label,
-a.zButton:not(.attachLoading) .z-label,
-a.z-button:not(.attachLoading) .z-label,
-.white-button:not(.attachLoading) .z-label,
-.search-form-tools input[type="submit"]:not(.attachLoading) .z-label,
-a.search-form-tools input[type="submit"]:not(.attachLoading) .z-label,
-#progressBar-links a:not(.attachLoading) .z-label,
-a#progressBar-links a:not(.attachLoading) .z-label,
-#InstallPageView .AppContainer a:not(.attachLoading) .z-label,
-a#InstallPageView .AppContainer a:not(.attachLoading) .z-label,
-#InstallPageView #install-form input[type="submit"]:not(.attachLoading) .z-label,
-a#InstallPageView #install-form input[type="submit"]:not(.attachLoading) .z-label,
-.configuration-list li a:not(.attachLoading) .z-label,
-a.configuration-list li a:not(.attachLoading) .z-label,
-table.configuration-list td:last-child a:not(.attachLoading) .z-label,
-atable.configuration-list td:last-child a:not(.attachLoading) .z-label,
-.multiselect-holder input[type="button"]:not(.attachLoading) .z-label,
-a.multiselect-holder input[type="button"]:not(.attachLoading) .z-label,
-.EmailTestingButton:not(.attachLoading) .z-label,
-a.EmailTestingButton:not(.attachLoading) .z-label,
-.file-upload-box .ui-icon-plusthick:not(.attachLoading) .z-label,
-a.file-upload-box .ui-icon-plusthick:not(.attachLoading) .z-label,
-.ui-datepicker .ui-datepicker-current:not(.attachLoading) .z-label,
-a.ui-datepicker .ui-datepicker-current:not(.attachLoading) .z-label,
-.ui-datepicker .ui-datepicker-close:not(.attachLoading) .z-label,
-a.ui-datepicker .ui-datepicker-close:not(.attachLoading) .z-label,
-.designer-toolbar input[type="submit"]:not(.attachLoading) .z-label,
-a.designer-toolbar input[type="submit"]:not(.attachLoading) .z-label,
-#contactStatesData_AddInputButton:not(.attachLoading) .z-label,
-#customFieldDataData_AddInputButton:not(.attachLoading) .z-label,
-a#contactStatesData_AddInputButton:not(.attachLoading) .z-label,
-a#customFieldDataData_AddInputButton:not(.attachLoading) .z-label,
-.ModalGameNotification a:not(.attachLoading) .z-label,
-a.ModalGameNotification a:not(.attachLoading) .z-label {
+.modal-view-toolbar a:not(.attachLoading):not(.green-button) .z-label,
+.modal-view-toolbar input[type="submit"]:not(.attachLoading):not(.green-button) .z-label,
+.modal-view-toolbar input[type="button"]:not(.attachLoading):not(.green-button) .z-label,
+.form-toolbar a:not(.attachLoading):not(.green-button) .z-label,
+.form-toolbar input[type="submit"]:not(.attachLoading):not(.green-button) .z-label,
+.form-toolbar input[type="button"]:not(.attachLoading):not(.green-button) .z-label,
+.zButton:not(.attachLoading):not(.green-button) .z-label,
+.z-button:not(.attachLoading):not(.green-button) .z-label,
+a.zButton:not(.attachLoading):not(.green-button) .z-label,
+a.z-button:not(.attachLoading):not(.green-button) .z-label,
+.white-button:not(.attachLoading):not(.green-button) .z-label,
+.search-form-tools input[type="submit"]:not(.attachLoading):not(.green-button) .z-label,
+a.search-form-tools input[type="submit"]:not(.attachLoading):not(.green-button) .z-label,
+#progressBar-links a:not(.attachLoading):not(.green-button) .z-label,
+a#progressBar-links a:not(.attachLoading):not(.green-button) .z-label,
+#InstallPageView .AppContainer a:not(.attachLoading):not(.green-button) .z-label,
+a#InstallPageView .AppContainer a:not(.attachLoading):not(.green-button) .z-label,
+#InstallPageView #install-form input[type="submit"]:not(.attachLoading):not(.green-button) .z-label,
+a#InstallPageView #install-form input[type="submit"]:not(.attachLoading):not(.green-button) .z-label,
+.configuration-list li a:not(.attachLoading):not(.green-button) .z-label,
+a.configuration-list li a:not(.attachLoading):not(.green-button) .z-label,
+table.configuration-list td:last-child a:not(.attachLoading):not(.green-button) .z-label,
+atable.configuration-list td:last-child a:not(.attachLoading):not(.green-button) .z-label,
+.multiselect-holder input[type="button"]:not(.attachLoading):not(.green-button) .z-label,
+a.multiselect-holder input[type="button"]:not(.attachLoading):not(.green-button) .z-label,
+.EmailTestingButton:not(.attachLoading):not(.green-button) .z-label,
+a.EmailTestingButton:not(.attachLoading):not(.green-button) .z-label,
+.file-upload-box .ui-icon-plusthick:not(.attachLoading):not(.green-button) .z-label,
+a.file-upload-box .ui-icon-plusthick:not(.attachLoading):not(.green-button) .z-label,
+.ui-datepicker .ui-datepicker-current:not(.attachLoading):not(.green-button) .z-label,
+a.ui-datepicker .ui-datepicker-current:not(.attachLoading):not(.green-button) .z-label,
+.ui-datepicker .ui-datepicker-close:not(.attachLoading):not(.green-button) .z-label,
+a.ui-datepicker .ui-datepicker-close:not(.attachLoading):not(.green-button) .z-label,
+.designer-toolbar input[type="submit"]:not(.attachLoading):not(.green-button) .z-label,
+a.designer-toolbar input[type="submit"]:not(.attachLoading):not(.green-button) .z-label,
+#contactStatesData_AddInputButton:not(.attachLoading):not(.green-button) .z-label,
+#customFieldDataData_AddInputButton:not(.attachLoading):not(.green-button) .z-label,
+a#contactStatesData_AddInputButton:not(.attachLoading):not(.green-button) .z-label,
+a#customFieldDataData_AddInputButton:not(.attachLoading):not(.green-button) .z-label,
+.ModalGameNotification a:not(.attachLoading):not(.green-button) .z-label,
+a.ModalGameNotification a:not(.attachLoading):not(.green-button) .z-label {
   background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
 }
 .white-button .z-label {
@@ -711,7 +713,7 @@ a.ModalGameNotification a:not(.attachLoading) .z-label {
 .default-btn.attachLoading.z-button {
   color: #fff;
 }
-.default-btn:not(.attachLoading) .z-label {
+.default-btn:not(.attachLoading):not(.green-button) .z-label {
   background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
 }
 /*
@@ -1220,8 +1222,8 @@ body.blue .zButton:not(.attachLoading):active .z-label,
 body.blue .z-button:not(.attachLoading):active .z-label,
 body.blue .toolbar-mbmenu .options-menu > li > a:not(.attachLoading):hover .z-label,
 body.blue .portlet-toolbar a:not(.attachLoading):not(.simple-link):hover .z-label,
-body.blue .form-toolbar a:not(.attachLoading):hover .z-label,
-body.blue .form-toolbar a:not(.z-button):hover .z-label,
+body.blue .form-toolbar a:not(.attachLoading):not(.green-button):hover .z-label,
+body.blue .form-toolbar a:not(.z-button):not(.green-button):hover .z-label,
 body.blue .configuration-list li a:hover .z-label,
 body.blue .white-button:hover .z-label,
 body.blue .white-button:hover .z-label {
@@ -1795,8 +1797,8 @@ body.brown .zButton:not(.attachLoading):active .z-label,
 body.brown .z-button:not(.attachLoading):active .z-label,
 body.brown .toolbar-mbmenu .options-menu > li > a:not(.attachLoading):hover .z-label,
 body.brown .portlet-toolbar a:not(.attachLoading):not(.simple-link):hover .z-label,
-body.brown .form-toolbar a:not(.attachLoading):hover .z-label,
-body.brown .form-toolbar a:not(.z-button):hover .z-label,
+body.brown .form-toolbar a:not(.attachLoading):not(.green-button):hover .z-label,
+body.brown .form-toolbar a:not(.z-button):not(.green-button):hover .z-label,
 body.brown .configuration-list li a:hover .z-label,
 body.brown .white-button:hover .z-label,
 body.brown .white-button:hover .z-label {
@@ -2370,8 +2372,8 @@ body.lime .zButton:not(.attachLoading):active .z-label,
 body.lime .z-button:not(.attachLoading):active .z-label,
 body.lime .toolbar-mbmenu .options-menu > li > a:not(.attachLoading):hover .z-label,
 body.lime .portlet-toolbar a:not(.attachLoading):not(.simple-link):hover .z-label,
-body.lime .form-toolbar a:not(.attachLoading):hover .z-label,
-body.lime .form-toolbar a:not(.z-button):hover .z-label,
+body.lime .form-toolbar a:not(.attachLoading):not(.green-button):hover .z-label,
+body.lime .form-toolbar a:not(.z-button):not(.green-button):hover .z-label,
 body.lime .configuration-list li a:hover .z-label,
 body.lime .white-button:hover .z-label,
 body.lime .white-button:hover .z-label {
@@ -2945,8 +2947,8 @@ body.cherry .zButton:not(.attachLoading):active .z-label,
 body.cherry .z-button:not(.attachLoading):active .z-label,
 body.cherry .toolbar-mbmenu .options-menu > li > a:not(.attachLoading):hover .z-label,
 body.cherry .portlet-toolbar a:not(.attachLoading):not(.simple-link):hover .z-label,
-body.cherry .form-toolbar a:not(.attachLoading):hover .z-label,
-body.cherry .form-toolbar a:not(.z-button):hover .z-label,
+body.cherry .form-toolbar a:not(.attachLoading):not(.green-button):hover .z-label,
+body.cherry .form-toolbar a:not(.z-button):not(.green-button):hover .z-label,
 body.cherry .configuration-list li a:hover .z-label,
 body.cherry .white-button:hover .z-label,
 body.cherry .white-button:hover .z-label {
@@ -3520,8 +3522,8 @@ body.turquoise .zButton:not(.attachLoading):active .z-label,
 body.turquoise .z-button:not(.attachLoading):active .z-label,
 body.turquoise .toolbar-mbmenu .options-menu > li > a:not(.attachLoading):hover .z-label,
 body.turquoise .portlet-toolbar a:not(.attachLoading):not(.simple-link):hover .z-label,
-body.turquoise .form-toolbar a:not(.attachLoading):hover .z-label,
-body.turquoise .form-toolbar a:not(.z-button):hover .z-label,
+body.turquoise .form-toolbar a:not(.attachLoading):not(.green-button):hover .z-label,
+body.turquoise .form-toolbar a:not(.z-button):not(.green-button):hover .z-label,
 body.turquoise .configuration-list li a:hover .z-label,
 body.turquoise .white-button:hover .z-label,
 body.turquoise .white-button:hover .z-label {
@@ -4095,8 +4097,8 @@ body.violet .zButton:not(.attachLoading):active .z-label,
 body.violet .z-button:not(.attachLoading):active .z-label,
 body.violet .toolbar-mbmenu .options-menu > li > a:not(.attachLoading):hover .z-label,
 body.violet .portlet-toolbar a:not(.attachLoading):not(.simple-link):hover .z-label,
-body.violet .form-toolbar a:not(.attachLoading):hover .z-label,
-body.violet .form-toolbar a:not(.z-button):hover .z-label,
+body.violet .form-toolbar a:not(.attachLoading):not(.green-button):hover .z-label,
+body.violet .form-toolbar a:not(.z-button):not(.green-button):hover .z-label,
 body.violet .configuration-list li a:hover .z-label,
 body.violet .white-button:hover .z-label,
 body.violet .white-button:hover .z-label {
@@ -4670,8 +4672,8 @@ body.honey .zButton:not(.attachLoading):active .z-label,
 body.honey .z-button:not(.attachLoading):active .z-label,
 body.honey .toolbar-mbmenu .options-menu > li > a:not(.attachLoading):hover .z-label,
 body.honey .portlet-toolbar a:not(.attachLoading):not(.simple-link):hover .z-label,
-body.honey .form-toolbar a:not(.attachLoading):hover .z-label,
-body.honey .form-toolbar a:not(.z-button):hover .z-label,
+body.honey .form-toolbar a:not(.attachLoading):not(.green-button):hover .z-label,
+body.honey .form-toolbar a:not(.z-button):not(.green-button):hover .z-label,
 body.honey .configuration-list li a:hover .z-label,
 body.honey .white-button:hover .z-label,
 body.honey .white-button:hover .z-label {
@@ -7384,21 +7386,16 @@ td {
   font-weight: normal;
   text-align: left;
 }
-#list-view {
+#list-view,
+#import-temp-table-list-view {
   overflow-x: auto;
   position: relative;
   background: -webkit-linear-gradient(left, #ffffff 30%, rgba(255, 255, 255, 0)), -webkit-linear-gradient(left, rgba(255, 255, 255, 0), #ffffff 70%) 100%, -webkit-radial-gradient(0 50%, farthest-side, rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0)), -webkit-radial-gradient(100% 50%, farthest-side, rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0)) 100% 0;
   background-repeat: no-repeat;
-  background-size: 40px 100%,
-		40px 100%,
-		20px 100%,
-		20px 100%;
+  background-size: 40px 100%, 40px 100%, 20px 100%, 20px 100%;
   /* Opera doesn't support this in the shorthand */
 
-  background-attachment: local,
-		local,
-		scroll,
-		scroll;
+  background-attachment: local, local, scroll, scroll;
 }
 .items {
   width: 100%;
@@ -12832,7 +12829,7 @@ table.configuration-list td:last-child a .z-label:before {
 .AppContent.ImportWizardView #addExtraColumnButton.attachLoading.z-button {
   color: #fff;
 }
-.AppContent.ImportWizardView #addExtraColumnButton:not(.attachLoading) .z-label {
+.AppContent.ImportWizardView #addExtraColumnButton:not(.attachLoading):not(.green-button) .z-label {
   background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
 }
 .AppContent.ImportWizardView .required-fields {
@@ -12860,10 +12857,7 @@ table.configuration-list td:last-child a .z-label:before {
   padding: 0;
 }
 #ImportWizardMappingView h3 {
-  margin: 15px 0 0 15px;
-}
-#ImportWizardMappingView .required-fields {
-  margin: 5px 0 0 15px;
+  margin: 0;
 }
 #ImportWizardMappingView table {
   border-left: 1px solid #DFDFDF;
@@ -12901,7 +12895,7 @@ table.configuration-list td:last-child a .z-label:before {
 #ImportWizardMappingView .mapping-rules th,
 #ImportWizardMappingView .mapping-rules input,
 #ImportWizardMappingView .mapping-rules label {
-  margin: 0 !important;
+  margin: 0;
 }
 #ImportWizardMappingView .mapping-rules td,
 #ImportWizardMappingView .mapping-rules th {
@@ -12916,6 +12910,16 @@ table.configuration-list td:last-child a .z-label:before {
 #ImportWizardMappingView .mapping-rules label {
   line-height: 26px;
 }
+#ImportWizardMappingView .mapping-rules th:first-child {
+  padding-left: 0 !important;
+}
+.mapping-rules.multiple table {
+  width: 49% !important;
+  float: left !important;
+}
+.mapping-rules.multiple table + table {
+  float: right !important;
+}
 .remove-extra-column-link {
   display: inline-block;
   position: relative;
@@ -12928,6 +12932,38 @@ table.configuration-list td:last-child a .z-label:before {
 #sequential-process-spinner .z-spinner {
   display: block;
   margin: -1px 10px 0 0;
+}
+#import-temp-table-list-view {
+  text-align: center;
+}
+#import-temp-table-list-view table {
+  table-layout: auto;
+  border-bottom: 1px solid #CCCCCC;
+}
+#import-temp-table-list-view tr:first-child th {
+  line-height: 1;
+  padding: 5px;
+  text-align: center;
+}
+#import-temp-table-list-view td {
+  text-align: center;
+  vertical-align: middle;
+}
+#import-temp-table-list-view .drillDownContent {
+  min-height: 0;
+}
+#import-temp-table-list-view .pager {
+  -webkit-box-shadow: inset 0 -1px 0 #dfdfdf;
+  -moz-box-shadow: inset 0 -1px 0 #dfdfdf;
+  -o-box-shadow: inset 0 -1px 0 #dfdfdf;
+  -ms-box-shadow: inset 0 -1px 0 #dfdfdf;
+  box-shadow: inset 0 -1px 0 #dfdfdf;
+  border-top: none;
+  border-left: 1px solid #DFDFDF;
+  border-right: 1px solid #DFDFDF;
+}
+#import-temp-table-list-view .pager li {
+  border-bottom: 1px solid #DFDFDF;
 }
 #ImportWizardDataAnalysisCompleteView > div {
   margin: 0;
@@ -12942,9 +12978,6 @@ table.configuration-list td:last-child a .z-label:before {
 #ImportWizardDataAnalysisCompleteView > div #edit-form:after {
   display: none;
 }
-#ImportWizardDataAnalysisCompleteView .attributesContainer {
-  padding-bottom: 0;
-}
 #ImportWizardImportRulesView .radio-input {
   margin-bottom: 10px !important;
 }
@@ -12956,14 +12989,11 @@ table.configuration-list td:last-child a .z-label:before {
   display: block;
   margin-bottom: 20px;
 }
-.process-container-view {
-  padding: 15px 15px 0 15px;
-}
-#sequenceProcess {
-  padding: 15px 0 0 0;
+.progressbar-container {
+  padding: 15px;
 }
 .process-message {
-  margin-left: 15px;
+  padding: 0 15px 15px 15px;
 }
 #ImportSequentialProcessContainerView > div {
   float: left;
@@ -12982,14 +13012,14 @@ table.configuration-list td:last-child a .z-label:before {
   width: 100%;
 }
 #ImportSequentialProcessContainerView td {
-  padding: 0;
+  padding: 5px !important;
 }
 #ImportSequentialProcessContainerView td h3 {
   margin: 0 !important;
 }
 #ImportSequentialProcessContainerView h3,
 #ImportSequentialProcessContainerView h3 + span {
-  margin-bottom: 15px;
+  margin: 0;
   display: block;
   position: relative;
 }
@@ -13023,12 +13053,11 @@ table.configuration-list td:last-child a .z-label:before {
   border-bottom: 1px solid #DFDFDF !important;
 }
 #ImportWizardCreateUpdateModelsCompleteView table tr:first-child th {
-  padding: 0 0 0 15px !important;
   font-weight: bold !important;
 }
 #ImportWizardCreateUpdateModelsCompleteView td {
   text-align: left;
-  padding: 10px 15px !important;
+  padding: 5px !important;
   font-weight: normal !important;
 }
 #ImportWizardCreateUpdateModelsCompleteView th {
@@ -13040,12 +13069,86 @@ table.configuration-list td:last-child a .z-label:before {
 #ImportWizardCreateUpdateModelsCompleteView h3 {
   margin: 0 0 10px 0 !important;
 }
+#import-temp-table-list-view-rowDrillDown {
+  width: 30px;
+}
+.icon-import-mapping {
+  display: block;
+  font-weight: bold;
+  padding: 3px 0 5px 0;
+}
+.import-notifications {
+  text-align: left;
+  padding: 7px 5px 5px 40px;
+}
+.import-notifications li + li {
+  margin-top: 5px;
+}
 .import-summary {
-  margin: 0 0 15px 15px;
+  width: 60%;
+  margin: 20px auto 0 auto;
   line-height: 150%;
+  list-style: none;
 }
 .import-summary li {
-  margin-bottom: 3px;
+  text-align: center;
+  position: relative;
+  margin: 0 1% 3px 1%;
+  width: 31%;
+  float: left;
+  background: #f0f0f0;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  -ms-border-radius: 3px;
+  -o-border-radius: 3px;
+  border-radius: 3px;
+  padding: 10px 10px 10px 10px;
+  -webkit-box-shadow: inset 0 0 0 1px rgba(204, 204, 204, 0.3) , 1px 1px 1px 0px rgba(153, 153, 153, 0.0);
+  -moz-box-shadow: inset 0 0 0 1px rgba(204, 204, 204, 0.3) , 1px 1px 1px 0px rgba(153, 153, 153, 0.0);
+  -o-box-shadow: inset 0 0 0 1px rgba(204, 204, 204, 0.3) , 1px 1px 1px 0px rgba(153, 153, 153, 0.0);
+  -ms-box-shadow: inset 0 0 0 1px rgba(204, 204, 204, 0.3) , 1px 1px 1px 0px rgba(153, 153, 153, 0.0);
+  box-shadow: inset 0 0 0 1px rgba(204, 204, 204, 0.3) , 1px 1px 1px 0px rgba(153, 153, 153, 0.0);
+}
+.import-summary li > strong {
+  display: block;
+  font-weight: bold;
+  font-size: 26px;
+  margin-bottom: 5px;
+}
+.import-summary .led {
+  display: block;
+  margin-top: 5px;
+  width: 100%;
+  height: 2px;
+  background: #ffd900;
+  -webkit-box-shadow: 0 1px 0 0 #f3f3f3;
+  -moz-box-shadow: 0 1px 0 0 #f3f3f3;
+  -o-box-shadow: 0 1px 0 0 #f3f3f3;
+  -ms-box-shadow: 0 1px 0 0 #f3f3f3;
+  box-shadow: 0 1px 0 0 #f3f3f3;
+}
+.import-summary .led.state-true {
+  background: #97c43d;
+  -webkit-box-shadow: 0 1px 0 0 #f3f3f3;
+  -moz-box-shadow: 0 1px 0 0 #f3f3f3;
+  -o-box-shadow: 0 1px 0 0 #f3f3f3;
+  -ms-box-shadow: 0 1px 0 0 #f3f3f3;
+  box-shadow: 0 1px 0 0 #f3f3f3;
+}
+.import-summary .led.state-false {
+  background: #c43d53;
+  -webkit-box-shadow: 0 1px 0 0 #f3f3f3;
+  -moz-box-shadow: 0 1px 0 0 #f3f3f3;
+  -o-box-shadow: 0 1px 0 0 #f3f3f3;
+  -ms-box-shadow: 0 1px 0 0 #f3f3f3;
+  box-shadow: 0 1px 0 0 #f3f3f3;
+}
+.import-results-toolbar {
+  border: 1px solid #DFDFDF;
+  border-bottom: none;
+}
+.import-results-toolbar .ui-buttonset {
+  padding-top: 10px;
 }
 #SequentialProcessView .process-container-view {
   margin: 0;
@@ -13054,12 +13157,29 @@ table.configuration-list td:last-child a .z-label:before {
 #ImportErrorsListView {
   margin-bottom: 15px;
 }
-#ImportErrorsListView > #list-view {
+#ImportErrorsListView #list-view {
+  -webkit-box-shadow: none !important;
+  -moz-box-shadow: none !important;
+  -o-box-shadow: none !important;
+  -ms-box-shadow: none !important;
+  box-shadow: none !important;
+  border: none;
+  background: none;
   -webkit-box-shadow: none;
   -moz-box-shadow: none;
   -o-box-shadow: none;
   -ms-box-shadow: none;
   box-shadow: none;
+  padding: 0;
+  margin: 0;
+  filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
+}
+#ImportErrorsListView .items {
+  table-layout: fixed;
+}
+#ImportErrorsListView tr td:first-child,
+#ImportErrorsListView tr th:first-child {
+  width: 35px !important;
 }
 /*Theme Chooser*/
 .color-swatch,
@@ -13595,7 +13715,7 @@ div.wide.form .errorMessage {
 .addfileinput-button span.attachLoading.z-button {
   color: #fff;
 }
-.addfileinput-button span:not(.attachLoading) .z-label {
+.addfileinput-button span:not(.attachLoading):not(.green-button) .z-label {
   background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
 }
 .addfileinput-button input {
@@ -15179,24 +15299,22 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
   filter: none;
   -ms-filter: none;
 }
-#LeaderboardView .items td:first-child,
-#LeaderboardView .items th:first-child {
-  padding-left: 15px;
+#LeaderboardListView .pager {
+  border: 1px solid #dfdfdf;
+  border-top: none;
 }
-#LeaderboardView .user-label img {
+.user-label img {
   margin-right: 10px;
   width: 24px;
   height: 24px;
   display: inline-block;
-  float: left;
 }
-#LeaderboardView .user-label span {
-  line-height: 24px;
+.user-label span {
+  line-height: 30px;
   display: inline-block;
-  float: left;
 }
-#LeaderboardView .ranking {
-  float: none;
+.UserLeaderboardRankingForPortletView .ranking {
+  float: right;
 }
 .icon-leaderboard-weekly:before {
   content: "x";
@@ -15259,7 +15377,6 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
   font-size: 11px;
 }
 .ranking {
-  float: right;
   margin-right: 5px;
   display: block;
   color: #fff;
@@ -18996,7 +19113,12 @@ a + .autoresponder-stats {
   -ms-box-shadow: inset 0 0 1px 1px #efefef;
   box-shadow: inset 0 0 1px 1px #efefef;
 }
-.continuum .email-recipient-stage-status {
+.import-item-stage-status,
+.email-recipient-stage-status {
+  text-align: center;
+  float: left;
+  margin-left: 2%;
+  font-size: 11px;
   width: auto;
   font-weight: 700;
   position: relative;
@@ -19008,23 +19130,7 @@ a + .autoresponder-stats {
   display: inline-block;
   border-left: 1px solid #bababa;
 }
-.continuum .email-recipient-stage-status:first-child {
-  border-left: none;
-}
-.continuum .email-recipient-stage-status span {
-  font-size: 10px;
-  font-weight: bold;
-}
-.email-recipient-stage-status {
-  float: right;
-  text-align: center;
-  width: 12.5%;
-  float: left;
-  margin-left: 2%;
-  font-size: 11px;
-  font-weight: bold;
-  line-height: 20px;
-}
+.import-item-stage-status.stage-true i,
 .email-recipient-stage-status.stage-true i {
   color: #97c43d;
   -webkit-text-shadow: 0 0 5px #97c43d;
@@ -19033,6 +19139,7 @@ a + .autoresponder-stats {
   -ms-text-shadow: 0 0 5px #97c43d;
   text-shadow: 0 0 5px #97c43d;
 }
+.import-item-stage-status.stage-false i,
 .email-recipient-stage-status.stage-false i {
   color: #c43d53;
   -webkit-text-shadow: 0 0 5px #c43d53;
@@ -19041,6 +19148,7 @@ a + .autoresponder-stats {
   -ms-text-shadow: 0 0 5px #c43d53;
   text-shadow: 0 0 5px #c43d53;
 }
+.import-item-stage-status i,
 .email-recipient-stage-status i {
   font-weight: bold;
   line-height: 1;
@@ -19051,6 +19159,41 @@ a + .autoresponder-stats {
   -o-text-shadow: 0 0 5px #ffd900;
   -ms-text-shadow: 0 0 5px #ffd900;
   text-shadow: 0 0 5px #ffd900;
+}
+.import-item-stage-status:first-child,
+.email-recipient-stage-status:first-child {
+  border-left: none;
+}
+.import-item-stage-status span,
+.email-recipient-stage-status span {
+  font-size: 10px;
+  font-weight: bold;
+}
+.led {
+  font-weight: bold;
+  line-height: 1;
+  color: #ffd900;
+  -webkit-text-shadow: 0 0 5px #ffd900;
+  -moz-text-shadow: 0 0 5px #ffd900;
+  -o-text-shadow: 0 0 5px #ffd900;
+  -ms-text-shadow: 0 0 5px #ffd900;
+  text-shadow: 0 0 5px #ffd900;
+}
+.led.state-true {
+  color: #97c43d;
+  -webkit-text-shadow: 0 0 5px #97c43d;
+  -moz-text-shadow: 0 0 5px #97c43d;
+  -o-text-shadow: 0 0 5px #97c43d;
+  -ms-text-shadow: 0 0 5px #97c43d;
+  text-shadow: 0 0 5px #97c43d;
+}
+.led.state-false {
+  color: #c43d53;
+  -webkit-text-shadow: 0 0 5px #c43d53;
+  -moz-text-shadow: 0 0 5px #c43d53;
+  -o-text-shadow: 0 0 5px #c43d53;
+  -ms-text-shadow: 0 0 5px #c43d53;
+  text-shadow: 0 0 5px #c43d53;
 }
 .CampaignItemsRelatedListView .icon-empty:before {
   content: "f";

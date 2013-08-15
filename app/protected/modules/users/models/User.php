@@ -482,22 +482,30 @@
             assert('is_string($rightName)');
             assert('$moduleName != ""');
             assert('$rightName  != ""');
+                $identifier = $this->id . $moduleName . $rightName . 'ActualRight';
                 if (!SECURITY_OPTIMIZED)
                 {
                     // The slow way will remain here as documentation
                     // for what the optimized way is doing.
-                    if (Group::getByName(Group::SUPER_ADMINISTRATORS_GROUP_NAME)->contains($this))
+                    try
                     {
-                        $actualRight = Right::ALLOW;
+                        return RightsCache::getEntry($identifier);
                     }
-                    else
+                    catch (NotFoundException $e)
                     {
-                        $actualRight = parent::getActualRight($moduleName, $rightName);
+                        if (Group::getByName(Group::SUPER_ADMINISTRATORS_GROUP_NAME)->contains($this))
+                        {
+                            $actualRight = Right::ALLOW;
+                        }
+                        else
+                        {
+                            $actualRight = parent::getActualRight($moduleName, $rightName);
+                        }
+                        RightsCache::cacheEntry($identifier, $actualRight);
                     }
                 }
                 else
                 {
-                    $identifier = $this->id . $moduleName . $rightName . 'ActualRight';
                     try
                     {
                         return RightsCache::getEntry($identifier);

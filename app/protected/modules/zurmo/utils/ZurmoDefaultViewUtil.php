@@ -114,6 +114,18 @@
             return static::makeStandardViewForCurrentUser($controller, $gridView);
         }
 
+        public static function makeTwoStandardViewsForCurrentUser(CController $controller,
+                                                                  View $containedView,
+                                                                  View $secondContainedView,
+                                                                  $cssClasses = array())
+        {
+            $gridView = new GridView(2, 1);
+            $gridView->setCssClasses($cssClasses);
+            $gridView->setView($containedView, 0, 0);
+            $gridView->setView($secondContainedView, 1, 0);
+            return static::makeStandardViewForCurrentUser($controller, $gridView);
+        }
+
         /**
          * Given a controller and contained view, construct the gridview
          * used by the zurmo page view.
