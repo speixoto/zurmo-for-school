@@ -112,8 +112,7 @@
                 $params['relationModuleId'] = $this->getModule()->getId();
                 $params['redirectUrl']      = null;
                 $listView     = new TasksForAccountKanbanView($this->getId(),
-                                                                  $this->getModule()->getId(),
-                                                                  'Task', null, $params, null, array(), $kanbanBoard);
+                                                                  'tasks', 'Task', null, $params, null, array(), $kanbanBoard);
                 $view         = new AccountsPageView(ZurmoDefaultViewUtil::
                                                             makeStandardViewForCurrentUser($this, $listView));
             }

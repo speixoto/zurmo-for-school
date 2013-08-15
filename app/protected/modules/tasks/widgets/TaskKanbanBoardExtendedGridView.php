@@ -164,6 +164,8 @@
             $url = Yii::app()->createUrl('tasks/default/updateStatusInKanbanView', array());
             $this->registerKanbanColumnStartActionScript(Zurmo::t('TasksModule', 'Finish'), Task::TASK_STATUS_IN_PROGRESS, $url);
             $this->registerKanbanColumnFinishActionScript(Zurmo::t('TasksModule', 'Accept'), Zurmo::t('TasksModule', 'Reject'), Task::TASK_STATUS_AWAITING_ACCEPTANCE, $url);
+            $this->registerKanbanColumnAcceptActionScript('', Task::TASK_STATUS_COMPLETED, $url);
+            $this->registerKanbanColumnRejectActionScript(Zurmo::t('TasksModule', 'Start'), Task::TASK_STATUS_NEW, $url);
         }
 
         protected function registerKanbanColumnSortableScript($count, $type)
@@ -193,31 +195,7 @@
 
         protected function registerKanbanColumnStartActionScript($label, $targetStatus, $url)
         {
-            $script = "$('.task-start-action').click(
-                                                    function()
-                                                    {
-                                                        var element = $(this).parent().parent().parent();
-                                                        var ulelement = $(element).parent();
-                                                        var id = $(element).attr('id');
-                                                        var ulid = $(ulelement).attr('id');
-                                                        var ulidParts = ulid.split('-');
-                                                        var idParts = id.split('_');
-                                                        var taskId = parseInt(idParts[1]);
-                                                        var columnType = parseInt(ulidParts[3]);
-                                                        $('#task-sortable-rows-" . KanbanItem::TYPE_IN_PROGRESS . "').append(element);
-                                                        $('#task-sortable-rows-' + columnType).remove('#' + id);
-                                                        var addedElement = $('#task-sortable-rows-" . KanbanItem::TYPE_IN_PROGRESS . " #' + id + ' .task-start-action');
-                                                        $(addedElement).find('.z-label').html('" . $label . "');
-                                                        $(addedElement).removeClass('task-start-action').addClass('task-finish-action');
-                                                        $.ajax(
-                                                            {
-                                                                type : 'GET',
-                                                                data : {'targetStatus':" . $targetStatus . ", 'taskId':taskId},
-                                                                url  : '" . $url . "'
-                                                            }
-                                                        );
-                                                    }
-                                                );";
+            $script = $this->registerButtonActionScript('task-start-action', KanbanItem::TYPE_IN_PROGRESS, $label, 'task-finish-action', $url, $targetStatus);
 
             Yii::app()->clientScript->registerScript('start-action-script', $script);
         }
@@ -269,15 +247,56 @@
             return $listItems;
         }
 
-//        protected static function getKanbanItemTypeToTaskStatusMappingToKanbanItemTypeArray()
-//        {
-//            return array(
-//                            Task::TASK_STATUS_NEW                   => KanbanItem::TYPE_TODO,
-//                            Task::TASK_STATUS_IN_PROGRESS           => KanbanItem::TYPE_IN_PROGRESS,
-//                            Task::TASK_STATUS_AWAITING_ACCEPTANCE   => KanbanItem::TYPE_COMPLETED,
-//                            Task::TASK_STATUS_REJECTED              => KanbanItem::TYPE_IN_PROGRESS,
-//                            Task::TASK_STATUS_COMPLETED             => KanbanItem::TYPE_COMPLETED
-//                        );
-//        }
+        protected function registerButtonActionScript($buttonClass, $targetKanbanItemType, $label, $targetButtonClass, $url, $targetStatus)
+        {
+            return "$('." . $buttonClass . "').click(
+                                                    function()
+                                                    {
+                                                        var element = $(this).parent().parent().parent();
+                                                        var ulelement = $(element).parent();
+                                                        var id = $(element).attr('id');
+                                                        var ulid = $(ulelement).attr('id');
+                                                        var ulidParts = ulid.split('-');
+                                                        var idParts = id.split('_');
+                                                        var taskId = parseInt(idParts[1]);
+                                                        var columnType = parseInt(ulidParts[3]);
+                                                        $('#task-sortable-rows-" . $targetKanbanItemType . "').append(element);
+                                                        $('#task-sortable-rows-' + columnType).remove('#' + id);
+                                                        if(" . $targetStatus . " != " . Task::TASK_STATUS_COMPLETED . ")
+                                                        {
+                                                            var addedElement = $('#task-sortable-rows-" . $targetKanbanItemType . " #' + id + ' ." . $buttonClass . "');
+                                                            $(addedElement).find('.z-label').html('" . $label . "');
+                                                            $(addedElement).removeClass('" . $buttonClass . "').addClass('" . $targetButtonClass . "');
+                                                            if('" . $buttonClass . "' == 'task-reject-action')
+                                                            {
+                                                                $('#task-sortable-rows-" . $targetKanbanItemType . " #' + id + ' .task-accept-action').remove();
+                                                            }
+                                                        }
+                                                        else
+                                                        {
+                                                            $('#task-sortable-rows-" . $targetKanbanItemType . " #' + id + ' .task-status').remove();
+                                                        }
+                                                        $.ajax(
+                                                        {
+                                                            type : 'GET',
+                                                            data : {'targetStatus':" . $targetStatus . ", 'taskId':taskId},
+                                                            url  : '" . $url . "'
+                                                        }
+                                                        );
+                                                    }
+                                                );";
+        }
+
+        protected function registerKanbanColumnAcceptActionScript($label, $targetStatus, $url)
+        {
+            $script = $this->registerButtonActionScript('task-accept-action', KanbanItem::TYPE_COMPLETED, $label, 'task-complete-action', $url,$targetStatus);
+            Yii::app()->clientScript->registerScript('accept-action-script', $script);
+        }
+
+        protected function registerKanbanColumnRejectActionScript($label, $targetStatus, $url)
+        {
+            $script = $this->registerButtonActionScript('task-reject-action', KanbanItem::TYPE_TODO, $label, 'task-start-action', $url, $targetStatus);
+            Yii::app()->clientScript->registerScript('reject-action-script', $script);
+        }
     }
 ?>

@@ -134,16 +134,7 @@
          */
         public function actionAddSubscriber($id)
         {
-            $task = Task::getById(intval($id));
-            $user = Yii::app()->user->userModel;
-            $notificationSubscriber = new NotificationSubscriber();
-            $notificationSubscriber->person = $user;
-            $notificationSubscriber->hasReadLatest = false;
-            $task->notificationSubscribers->add($notificationSubscriber);
-            $task->save();
-
-            TasksUtil::sendNotificationOnTaskUpdate($task, Zurmo::t('TasksModule', $user->getFullName() . ' has subscribed for the task #' . $task->id));
-
+            $task    = $this->processSubscriptionRequest($id);
             $content = TasksUtil::getTaskSubscriberData($task);
             echo $content;
         }
@@ -350,17 +341,17 @@
 
         public function actionUpdateStatusInKanbanView($targetStatus, $taskId)
         {
-           $route = Yii::app()->createUrl('tasks/default/updateStatusInKanbanView');
-           //Run update queries for update task staus and update type and sort order in kanban column
-           $this->processStatusUpdateViaAjax($taskId, $targetStatus);
+           $route            = Yii::app()->createUrl('tasks/default/updateStatusInKanbanView');
            $targetKanbanType = TasksUtil::resolveKanbanItemTypeForTaskStatus(intval($targetStatus));
            $sourceKanbanType = TasksUtil::resolveKanbanItemTypeForTask(intval($taskId));
            if($sourceKanbanType != $targetKanbanType)
            {
-                $sortOrder = KanbanItem::getMaximumSortOrderByType($targetKanbanType);
-                $sql = "update kanbanitem set sortorder = '" . $sortOrder . "', type = '" . $targetKanbanType . "' where task_id = " . $taskId;
-                R::exec($sql);
+              $sortOrder = KanbanItem::getMaximumSortOrderByType($targetKanbanType);
+              $sql       = "update kanbanitem set sortorder = '" . $sortOrder . "', type = '" . $targetKanbanType . "' where task_id = " . $taskId;
+              R::exec($sql);
            }
+           //Run update queries for update task staus and update type and sort order in kanban column
+           $this->processStatusUpdateViaAjax($taskId, $targetStatus);
         }
 
         protected function processStatusUpdateViaAjax($id, $status)
@@ -382,6 +373,25 @@
             }
 
             TasksUtil::sendNotificationOnTaskUpdate($task, Zurmo::t('TasksModule', 'The status for the task #' . $task->id . ' has been updated to ' . Task::getStatusDisplayName(intval($status))));
+        }
+
+        /**
+         * Update owner or requested by user for task
+         * @param int $id
+         */
+        protected function processSubscriptionRequest($id)
+        {
+            $task = Task::getById(intval($id));
+            $user = Yii::app()->user->userModel;
+            $notificationSubscriber = new NotificationSubscriber();
+            $notificationSubscriber->person = $user;
+            $notificationSubscriber->hasReadLatest = false;
+            $task->notificationSubscribers->add($notificationSubscriber);
+            $task->save();
+
+            TasksUtil::sendNotificationOnTaskUpdate($task, Zurmo::t('TasksModule', $user->getFullName() . ' has subscribed for the task #' . $task->id));
+
+            return $task;
         }
     }
 ?>

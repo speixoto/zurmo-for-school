@@ -104,15 +104,16 @@
          */
         protected function resolveActiveFormAjaxValidationOptions()
         {
-            $id = Yii::app()->request->getParam('id', null);
-            if(Yii::app()->request->getParam('modalTransferInformation', null) != null)
+            $id             = Yii::app()->request->getParam('id', null);
+            $getData        = GetUtil::getData();
+            if(GetUtil::resolveParamFromRequest('modalTransferInformation', null) != null)
             {
-                $relationAttributeName   = $_GET['modalTransferInformation']['relationAttributeName'];
-                $relationModelId         = $_GET['modalTransferInformation']['relationModelId'];
-                $relationModuleId        = $_GET['modalTransferInformation']['relationModuleId'];
-                $modalId                 = $_GET['modalTransferInformation']['modalId'];
-                $portletId               = $_GET['modalTransferInformation']['portletId'];
-                $uniqueLayoutId          = $_GET['modalTransferInformation']['uniqueLayoutId'];
+                $relationAttributeName   = GetUtil::resolveModalTransferInformationParamFromRequest('relationAttributeName', null);
+                $relationModelId         = GetUtil::resolveModalTransferInformationParamFromRequest('relationModelId', null);
+                $relationModuleId        = GetUtil::resolveModalTransferInformationParamFromRequest('relationModuleId', null);
+                $modalId                 = GetUtil::resolveModalTransferInformationParamFromRequest('modalId', null);
+                $portletId               = GetUtil::resolveModalTransferInformationParamFromRequest('portletId', null);
+                $uniqueLayoutId          = GetUtil::resolveModalTransferInformationParamFromRequest('uniqueLayoutId', null);
 
                 $action                  = Yii::app()->request->getParam('action', null);
                 if($action == null)

@@ -450,6 +450,8 @@
                      $rejectLinkElement = new TaskRejectLinkActionElement($controllerId, $moduleId, $modelId,
                                                                                             array('route' => $route));
                      return $acceptLinkElement->render() . $rejectLinkElement->render();
+                case Task::TASK_STATUS_COMPLETED :
+                     return null;
                 default:
                      $element = new TaskStartLinkActionElement($controllerId, $moduleId, $modelId,
                                                                                             array('route' => $route));
@@ -484,6 +486,7 @@
         {
             $task = Task::getById($taskId);
             $status = intval($task->status);
+            print $status;
             if($status == null)
             {
                 return KanbanItem::TYPE_TODO;

@@ -40,5 +40,11 @@
         {
             return 'Opportunity';
         }
+
+        protected function getKanbanBoardTitle()
+        {
+            $opportunity = $this->params['relationModel'];
+            return $opportunity->name;
+        }
     }
 ?>
