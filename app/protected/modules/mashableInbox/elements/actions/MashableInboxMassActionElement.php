@@ -127,7 +127,7 @@
                                             $this->getListViewGridId() . 'ScriptForMashableInboxMassAction',
                                             $script);
             $menuItems      = array('label'       => $this->getLabel(), 
-                                    'url'         => null,
+                                    'url'         => null,                                    
                                     'itemOptions' => array('iconClass' => 'icon-options'),
                                     'items'       => $items);
             return $menuItems;

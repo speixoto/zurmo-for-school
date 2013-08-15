@@ -43,12 +43,16 @@
                     if (count($items) > 1)
                     {
                         throw new NotSupportedException;
-                    }                                      
-                    $class = 'default-button';
-                    if (count($items[0]['items']))
+                    }                             
+                    if ($this->isButtonDivided($items[0]))
                     {
                         $class = 'split-button';
                     }
+                    else
+                    {
+                        $class = 'default-button';
+                    }
+                                        
                     if(empty($this->htmlOptions['class']))
                     {
                         $this->htmlOptions['class'] = $class;
@@ -109,7 +113,14 @@
                 if(isset($item['items']) && count($item['items']))
                 {                           
                     $label = ZurmoHtml::tag('i', array('class' => 'icon-trigger'), null);                    
-                    echo ZurmoHtml::link($spanForTrigger . $label, null, array('class' => 'button-trigger'));                            				
+                    if (isset($spanForTrigger))
+                    {
+                        echo ZurmoHtml::link($spanForTrigger . $label, null, array('class' => 'button-action-trigger'));                            				
+                    }
+                    else
+                    {
+                        echo ZurmoHtml::link($label, null, array('class' => 'button-trigger'));                            				
+                    }    
                     echo ZurmoHtml::openTag('ul', array('class' => 'button-actions'));
                     foreach ($item['items'] as $item)
                     {
@@ -130,13 +141,23 @@
         protected function registerScripts()
         {
             $script = "
-                    $('.button-trigger').click(
+                
+                    $('.button-triggerm, .button-action-trigger').click(
                                 function(){
                                     $('.button-actions', $(this).parent()).show().addClass('stay-open');
                                 }
-                            );
+                            );                    
                 ";
              Yii::app()->clientScript->registerScript('DividedMenu', $script);
-        }                
+        }          
+        
+        protected function isButtonDivided($item)
+        {
+            if (count($item['items']) && isset($item['url']))
+            {
+                return true;
+            }
+            return false;
+        }
     }
 ?>
