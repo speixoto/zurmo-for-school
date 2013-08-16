@@ -34,51 +34,16 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class ByTimeWorkflowInQueueJobTest extends WorkflowBaseTest
+    /**
+     * Class used by an autoresponder to show the duration data. For example send the first autoresponder 4 hours after
+     * someone subscribves
+     */
+    class AutoresponderFromOperationDurationElement extends DurationElement
     {
-        public $freeze = false;
+        protected $intervalAttributeName = 'fromOperationDurationInterval';
 
-        public function setup()
-        {
-            parent::setUp();
-            $freeze = false;
-            if (RedBeanDatabase::isFrozen())
-            {
-                RedBeanDatabase::unfreeze();
-                $freeze = true;
-            }
-            $this->freeze = $freeze;
-        }
+        protected $signAttributeName     = null;
 
-        public function teardown()
-        {
-            if ($this->freeze)
-            {
-                RedBeanDatabase::freeze();
-            }
-            parent::teardown();
-        }
-
-        public function testRun()
-        {
-            $model       = WorkflowTestHelper::createWorkflowModelTestItem('Green', '514');
-            $timeTrigger = array('attributeIndexOrDerivedType' => 'string',
-                                 'operator'                    => OperatorRules::TYPE_EQUALS,
-                                 'value'                       => '514',
-                                 'durationInterval'             => '5');
-            $actions     = array(array('type' => ActionForWorkflowForm::TYPE_UPDATE_SELF,
-                                       ActionForWorkflowForm::ACTION_ATTRIBUTES =>
-                                            array('string' => array('shouldSetValue'    => '1',
-                                                  'type'   => WorkflowActionAttributeForm::TYPE_STATIC,
-                                                  'value'  => 'jason'))));
-            $savedWorkflow         = WorkflowTestHelper::createByTimeSavedWorkflow($timeTrigger, array(), $actions);
-            WorkflowTestHelper::createExpiredByTimeWorkflowInQueue($model, $savedWorkflow);
-
-            $this->assertEquals(1, count(ByTimeWorkflowInQueue::getAll()));
-            $job = new ByTimeWorkflowInQueueJob();
-            $this->assertTrue($job->run());
-            $this->assertEquals(0, count(ByTimeWorkflowInQueue::getAll()));
-            $this->assertEquals('jason', $model->string);
-        }
+        protected $typeAttributeName     = 'fromOperationDurationType';
     }
 ?>

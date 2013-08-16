@@ -99,7 +99,7 @@
                                                                RedBeanModel $model,
                                                                User $triggeredByUser)
         {
-            if ($emailMessage->sendAfterDurationSeconds == 0)
+            if ($emailMessage->sendAfterDurationInterval == 0)
             {
                 $helper = new WorkflowEmailMessageProcessingHelper($emailMessage, $model, $triggeredByUser);
                 $helper->process();
@@ -109,8 +109,8 @@
                 $emailMessageData                        = SavedWorkflowToWorkflowAdapter::
                                                            makeArrayFromEmailMessageForWorkflowFormAttributesData(array($emailMessage));
                 $workflowMessageInQueue                  = new WorkflowMessageInQueue();
-                $workflowMessageInQueue->processDateTime = DateTimeUtil::convertTimestampToDbFormatDateTime(time() +
-                                                           $emailMessage->sendAfterDurationSeconds);
+                $workflowMessageInQueue->processDateTime =
+                    DateTimeUtil::convertTimestampToDbFormatDateTime($emailMessage->resolveNewTimeStampForDuration(time()));
                 $workflowMessageInQueue->savedWorkflow   = SavedWorkflow::getById((int)$workflow->getId());
                 $workflowMessageInQueue->modelClassName  = get_class($model);
                 $workflowMessageInQueue->modelItem       = $model;

@@ -35,17 +35,15 @@
      ********************************************************************************/
 
     /**
-     * Class used by a time trigger in workflow to show the duration data. For example the closeDate was 4 hours from now.
-     * 4 hours from now is the duration period.
+     * Class used by an email message in workflow to show the duration data. For example send the email message
+     * 4 hours after the workflow runs
      */
-    class TimeTriggerDurationStaticDropDownElement extends DataFromFormStaticDropDownFormElement
+    class EmailMessageSendAfterDurationElement extends DurationElement
     {
-        /**
-         * @return string
-         */
-        protected function getDataAndLabelsModelPropertyName()
-        {
-            return 'getDurationValuesAndLabels';
-        }
+        protected $intervalAttributeName = 'sendAfterDurationInterval';
+
+        protected $signAttributeName     = null;
+
+        protected $typeAttributeName     = 'sendAfterDurationType';
     }
 ?>

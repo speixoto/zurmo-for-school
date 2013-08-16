@@ -35,13 +35,55 @@
      ********************************************************************************/
 
     /**
-     * Element for displaying the autoresponder seconds from operation options.
+     * Form to work with duration enabled attributes
      */
-    class AutoresponderSecondsFromOperationElement extends StaticDropDownFormElement
+    abstract class DurationEnabledWorkflowActionAttributeForm extends WorkflowActionAttributeForm
     {
-        protected function getDropDownArray()
+        /**
+         * @var integer.
+         */
+        public $durationInterval;
+
+        /**
+         * @var string
+         */
+        public $durationSign = TimeDurationUtil::DURATION_SIGN_POSITIVE;
+
+        /**
+         * @var string
+         */
+        public $durationType = TimeDurationUtil::DURATION_TYPE_DAY;
+
+        /**
+         * @return array
+         */
+        public function rules()
         {
-            return Autoresponder::getIntervalDropDownArray();
+            return array_merge(parent::rules(), array(
+                array('durationInterval', 'type', 'type' => 'integer'),
+                array('durationInterval', 'numerical', 'min' => 0),
+                array('durationSign',     'type', 'type' => 'string'),
+                array('durationType',     'type', 'type' => 'string'),
+            ));
+        }
+
+        /**
+         * @return array
+         */
+        public function attributeLabels()
+        {
+            return array_merge(parent::attributeLabels(), array('durationInterval' => Zurmo::t('Core', 'Interval')));
+        }
+
+        /**
+         * @param integer $initialTimeStamp
+         * @return integer timestamp based on durationInterval, durationSign, and durationType
+         */
+        public function resolveNewTimeStampForDuration($initialTimeStamp)
+        {
+            assert('is_int($initialTimeStamp)');
+            return TimeDurationUtil::resolveNewTimeStampForDuration($initialTimeStamp, (int)$this->durationInterval,
+                $this->durationSign, $this->durationType);
         }
     }
 ?>
