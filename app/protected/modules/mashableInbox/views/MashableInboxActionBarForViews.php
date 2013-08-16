@@ -238,10 +238,13 @@
             $label                 = Zurmo::t('MashableInboxModule', 'Combined');
             $params   = array('label'           => $label,
                               'modelClassName'  => null,
-                              'htmlOptions'     => array('class' => $activeClass),
                               'unread'          => $unreadCount,
+                              'htmlOptions'     => array('class' => $activeClass),
                               'iconClass'       => 'icon-combined');
-            $element  = new MashableInboxModelActionElement($this->controllerId, $this->moduleId, null, $params);
+            $element  = new MashableInboxModelActionElement($this->controllerId, 
+                                                            $this->moduleId, 
+                                                            null, 
+                                                            $params);
             $content  = $element->render();
 
             $combinedInboxesModels = MashableUtil::getModelDataForCurrentUserByInterfaceName('MashableInboxInterface');

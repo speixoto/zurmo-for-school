@@ -186,10 +186,10 @@
                                                             data  = JSON.parse(data);
                                                             total = 0;
                                                             for (var key in data) {
-                                                                $('li.icon-' + key).find('span.unread-count').html(data[key]);
+                                                                $('i.icon-' + key).siblings('span.unread-count').html(data[key]);
                                                                 total += data[key];
                                                             }
-                                                            $('li.icon-combined').find('span.unread-count').html(total);
+                                                            $('i.icon-combined').siblings('span.unread-count').html(total);
                                                             $('span.unread-inbox-count').html(total);
                                                         }",
                 ));

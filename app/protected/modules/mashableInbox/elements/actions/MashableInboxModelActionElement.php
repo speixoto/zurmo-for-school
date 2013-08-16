@@ -51,6 +51,7 @@
             $cClipWidget->beginClip("ActionMenu");
             $cClipWidget->widget('application.core.widgets.DividedMenu', array(
                 'items'       => array($menuItems),
+                'htmlOptions' => $this->getHtmlOptions(),
             ));
             $cClipWidget->endClip();
             return $cClipWidget->getController()->clips['ActionMenu'];
@@ -59,8 +60,7 @@
         public function renderMenuItem()
         {
             return array('label'               => $this->getMenuHeader(), 
-                         'url'                 => $this->getDefaultRoute(),
-                         'htmlOptions'         => $this->getHtmlOptions(),
+                         'url'                 => $this->getDefaultRoute(),                 
                          'itemOptions'         => array('iconClass' => $this->getIconClass()),                         
                          'dynamicLabel'        => $this->getUnreadCount(),
                          'items'               => $this->getMenuItems());

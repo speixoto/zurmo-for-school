@@ -124,7 +124,20 @@
                     echo ZurmoHtml::openTag('ul', array('class' => 'button-actions'));
                     foreach ($item['items'] as $item)
                     {
-                        echo ZurmoHtml::openTag('li');
+                        
+                        $options=isset($item['itemOptions']) ? $item['itemOptions'] : array();
+			$class=array();
+			if($item['active'] && $this->activeCssClass!='')
+				$class[]=$this->activeCssClass;			
+			if($class!==array())
+			{
+				if(empty($options['class']))
+					$options['class']=implode(' ',$class);
+				else
+					$options['class'].=' '.implode(' ',$class);
+			}
+                        
+                        echo ZurmoHtml::openTag('li', $options);
                         echo $this->renderMenuItem($item);
                         echo ZurmoHtml::closeTag('li');
                     }
