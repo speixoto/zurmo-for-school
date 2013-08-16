@@ -269,11 +269,11 @@
             else
             {
                 $cs->registerCssFile($themeBaseUrl . '/css/newui.css');
-                if (file_exists($themeBaseUrl . '/css/commercial.css'))
+                if (file_exists("themes/$themeName/css/commercial.css"))
                 {
                     $cs->registerCssFile($themeBaseUrl . '/css/commercial.css');
                 }
-                if (file_exists($themeBaseUrl . '/css/custom.css'))
+                if (file_exists("themes/$themeName/css/custom.css"))
                 {
                     $cs->registerCssFile($themeBaseUrl . '/css/custom.css');
                 }
