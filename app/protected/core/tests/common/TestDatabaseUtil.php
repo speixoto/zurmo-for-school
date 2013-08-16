@@ -44,7 +44,7 @@
             {
                 if ($tableName != 'log')
                 {
-                    ZurmoRedBean::exec("drop table $tableName");
+                    ZurmoRedBean::dropTableByTableName($tableName);
                 }
             }
         }

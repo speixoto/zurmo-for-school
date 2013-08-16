@@ -68,15 +68,6 @@
             }
         }
 
-        /**
-         * Drops the named table.
-         */
-        public static function dropTable($tableName)
-        {
-            assert('is_string($tableName) && $tableName != ""');
-            ZurmoRedBean::exec("drop table $tableName;");
-        }
-
         public static function escape($value)
         {
             return ZurmoRedBean::$adapter->escape($value);

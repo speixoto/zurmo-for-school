@@ -104,14 +104,6 @@
             $this->assertEquals('concat(column1, column2)', $res);
         }
 
-        public function testDropTable()
-        {
-            ZurmoRedBean::exec("create table temptable (temptable_id int(11) unsigned not null)");
-            DatabaseCompatibilityUtil::dropTable('temptable');
-            $tables = DatabaseCompatibilityUtil::getAllTableNames();
-            $this->assertFalse(in_array('temptable', $tables));
-        }
-
         public function testGetAllTableNames()
         {
             ZurmoRedBean::exec("create table temptable (temptable_id int(11) unsigned not null)");

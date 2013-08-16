@@ -595,19 +595,6 @@
             return $user;
         }
 
-        /**
-         * Drops all the tables in the databaes.
-         */
-        public static function dropAllTables()
-        {
-            $tableNames = ZurmoRedBean::getCol('show tables');
-            foreach ($tableNames as $tableName)
-            {
-                ZurmoRedBean::exec("drop table $tableName");
-            }
-            assert('count(ZurmoRedBean::getCol("show tables")) == 0');
-        }
-
         public static function autoBuildDatabase(& $messageLogger)
         {
             ZurmoDatabaseCompatibilityUtil::createStoredFunctionsAndProcedures();
@@ -905,7 +892,7 @@
                                         $form->databasePort);
             ForgetAllCacheUtil::forgetAllCaches();
             $messageStreamer->add(Zurmo::t('InstallModule', 'Dropping existing tables.'));
-            static::dropAllTables();
+            ZurmoRedBean::$writer->wipeAll();
             $messageStreamer->add(Zurmo::t('InstallModule', 'Creating super user.'));
 
             $messageLogger = new MessageLogger($messageStreamer);

@@ -40,5 +40,16 @@
         {
             return 'ZurmoRedBeanSetup';
         }
+
+        /**
+         * Drops a table by the given table name.
+         * @param string $tableName
+         */
+        public static function dropTableByTableName($tableName)
+        {
+            assert('$tableName == strtolower($tableName)');
+            static::exec("drop table if exists $tableName");
+        }
+
     }
 ?>

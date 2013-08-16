@@ -41,7 +41,7 @@
             parent::setUpBeforeClass();
             // we are using some hardcoded Ids, we need fresh tables so these Ids are what we expect, rebuild:
             ForgetAllCacheUtil::forgetAllCaches();
-            InstallUtil::dropAllTables();
+            ZurmoRedBean::$writer->wipeAll();
             InstallUtil::autoBuildDatabase(new MessageLogger());
 
             // This is setting up users and groups to match Jason's

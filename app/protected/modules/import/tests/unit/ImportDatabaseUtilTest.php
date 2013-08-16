@@ -222,7 +222,7 @@
             $this->assertEquals(4, count($tempTableData));
             if (RedBeanDatabase::isFrozen())
             {
-                ImportDatabaseUtil::dropTableByTableName($testTableName);
+                ZurmoRedBean::dropTableByTableName($testTableName);
                 $sql = 'select * from ' . $testTableName;
                 ZurmoRedBean::getAll($sql);
             }

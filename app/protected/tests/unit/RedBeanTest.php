@@ -295,7 +295,7 @@
                                                 Yii::app()->db->username,
                                                 Yii::app()->db->password);
 
-            ZurmoRedBean::exec("drop table if exists bean");                   // Not Coding Standard
+            ZurmoRedBean::dropTableByTableName("bean");                   // Not Coding Standard
             $bean = ZurmoRedBean::dispense("bean");                            // Not Coding Standard
             $bean->setMeta("hint",array("prop"=>"datetime"));           // Not Coding Standard
             $bean->prop = "2010-01-01 10:00:00";                    // Not Coding Standard

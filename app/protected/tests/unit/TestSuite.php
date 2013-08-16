@@ -145,7 +145,7 @@
                 }
                 static::setupDatabaseConnection();
                 echo "Auto building database schema..." . PHP_EOL;
-                InstallUtil::dropAllTables();
+                ZurmoRedBean::$writer->wipeAll();
                 Yii::app()->user->userModel = InstallUtil::createSuperUser('super', 'super');
                 $messageLogger = new MessageLogger();
                 InstallUtil::autoBuildDatabase($messageLogger);

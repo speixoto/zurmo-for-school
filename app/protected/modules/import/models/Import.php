@@ -107,8 +107,7 @@
             {
                 return false;
             }
-            $sql = 'Drop table if exists ' . $this->getTempTableName();
-            ZurmoRedBean::exec($sql);
+            ZurmoRedBean::dropTableByTableName($this->getTempTableName());
             return true;
         }
     }

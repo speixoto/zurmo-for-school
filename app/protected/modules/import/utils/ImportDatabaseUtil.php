@@ -70,7 +70,7 @@
                 RedBeanDatabase::unfreeze();
                 $freezeWhenComplete = true;
             }
-            ZurmoRedBean::exec("drop table if exists $tableName");
+            ZurmoRedBean::dropTableByTableName($tableName);
             $columns = self::optimizeTableImportColumnsAndGetColumnNames($fileHandle, $tableName, $delimiter, $enclosure);
             rewind($fileHandle);
             self::convertCsvIntoRowsInTable($fileHandle, $tableName, $delimiter, $enclosure, $columns);
@@ -182,16 +182,6 @@
             {
                 DatabaseCompatibilityUtil::bulkInsert($tableName, $importArray, $columns, $bulkQuantity);
             }
-        }
-
-        /**
-         * Drops a table by the given table name.
-         * @param string $tableName
-         */
-        public static function dropTableByTableName($tableName)
-        {
-            assert('$tableName == strtolower($tableName)');
-            ZurmoRedBean::exec("drop table if exists $tableName");
         }
 
         /**
