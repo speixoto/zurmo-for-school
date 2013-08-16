@@ -94,22 +94,24 @@
                                                                                     static::$messageLogger);
             $this->assertNotEmpty($resolvedIndexes);
             $this->assertCount(2, $resolvedIndexes);
-            $this->assertArrayHasKey('index_name_one_Index', $resolvedIndexes);
-            $this->assertCount(2, $resolvedIndexes['index_name_one_Index']);
-            $this->assertArrayHasKey('columns', $resolvedIndexes['index_name_one_Index']);
-            $this->assertArrayHasKey('unique', $resolvedIndexes['index_name_one_Index']);
-            $this->assertCount(1, $resolvedIndexes['index_name_one_Index']['columns']);
-            $this->assertEquals('memberone', $resolvedIndexes['index_name_one_Index']['columns'][0]);
-            $this->assertFalse($resolvedIndexes['index_name_one_Index']['unique']);
+            $firstIndexKey  = key($resolvedIndexes);
+            $secondIndexKey = key($resolvedIndexes);
+            $this->assertArrayHasKey('indexNameOne', $resolvedIndexes);
+            $this->assertCount(2, $resolvedIndexes['indexNameOne']);
+            $this->assertArrayHasKey('columns', $resolvedIndexes['indexNameOne']);
+            $this->assertArrayHasKey('unique', $resolvedIndexes['indexNameOne']);
+            $this->assertCount(1, $resolvedIndexes['indexNameOne']['columns']);
+            $this->assertEquals('memberone', $resolvedIndexes['indexNameOne']['columns'][0]);
+            $this->assertFalse($resolvedIndexes['indexNameOne']['unique']);
 
-            $this->assertArrayHasKey('unique_index_name_two_Index', $resolvedIndexes);
-            $this->assertCount(2, $resolvedIndexes['unique_index_name_two_Index']);
-            $this->assertArrayHasKey('columns', $resolvedIndexes['unique_index_name_two_Index']);
-            $this->assertArrayHasKey('unique', $resolvedIndexes['unique_index_name_two_Index']);
-            $this->assertCount(2, $resolvedIndexes['unique_index_name_two_Index']['columns']);
-            $this->assertEquals('memberone', $resolvedIndexes['unique_index_name_two_Index']['columns'][0]);
-            $this->assertEquals('membertwo', $resolvedIndexes['unique_index_name_two_Index']['columns'][1]);
-            $this->assertTrue($resolvedIndexes['unique_index_name_two_Index']['unique']);
+            $this->assertArrayHasKey('indexNameTwo', $resolvedIndexes);
+            $this->assertCount(2, $resolvedIndexes['indexNameTwo']);
+            $this->assertArrayHasKey('columns', $resolvedIndexes['indexNameTwo']);
+            $this->assertArrayHasKey('unique', $resolvedIndexes['indexNameTwo']);
+            $this->assertCount(2, $resolvedIndexes['indexNameTwo']['columns']);
+            $this->assertEquals('memberone', $resolvedIndexes['indexNameTwo']['columns'][0]);
+            $this->assertEquals('membertwo', $resolvedIndexes['indexNameTwo']['columns'][1]);
+            $this->assertTrue($resolvedIndexes['indexNameTwo']['unique']);
         }
     }
 ?>

@@ -45,7 +45,7 @@
          * @param string $filePath
          * @return $fileModel or false on failure
          */
-        public static function makeByFilePathAndName($filePath, $fileName)
+        public static function makeByFilePathAndName($filePath, $fileName, $fileModelClassName = 'FileModel')
         {
             assert('is_string($filePath) && $filePath !=""');
             assert('is_string($fileName) && $fileName !=""');
@@ -56,7 +56,7 @@
             }
             $fileContent          = new FileContent();
             $fileContent->content = $contents;
-            $file                 = new FileModel();
+            $file                 = new $fileModelClassName();
             $file->fileContent    = $fileContent;
             $file->name           = $fileName;
             $file->type           = ZurmoFileHelper::getMimeType($filePath);
@@ -73,12 +73,12 @@
          * If the file is empty, an exception is thrown otherwise the fileModel is returned.
          * @param object $uploadedFile CUploadedFile
          */
-        public static function makeByUploadedFile($uploadedFile)
+        public static function makeByUploadedFile($uploadedFile, $fileModelClassName = 'FileModel')
         {
             assert('$uploadedFile instanceof CUploadedFile');
             $fileContent          = new FileContent();
             $fileContent->content = file_get_contents($uploadedFile->getTempName());
-            $file                 = new FileModel();
+            $file                 = new $fileModelClassName();
             $file->fileContent    = $fileContent;
             $file->name           = $uploadedFile->getName();
             $file->type           = $uploadedFile->getType();
@@ -101,7 +101,7 @@
                 $newFileModelsIndexedById = array();
                 foreach ($_POST[$postDataVariableName] as $notUsed => $fileModelId)
                 {
-                    $fileModel = FileModel::getById((int)$fileModelId);
+                    $fileModel = $relationModelClassName::getById((int)$fileModelId);
                     $newFileModelsIndexedById[$fileModel->id] = $fileModel;
                 }
                 if ($model->{$relationName}->count() > 0)
@@ -136,11 +136,11 @@
          * @param integer $fileModelId
          * @return $fileModel or false on failure
          */
-        public static function makeByExistingFileModelId($fileModelId)
+        public static function makeByExistingFileModelId($fileModelId, $fileModelClassName = 'FileModel')
         {
             assert('is_int($fileModelId) || (is_string($fileModelId) && !empty($fileModelId))');
-            $existingFileModel      = FileModel::getById($fileModelId);
-            $file                   = new FileModel();
+            $existingFileModel      = $fileModelClassName::getById($fileModelId);
+            $file                   = new $fileModelClassName();
             // TODO: @Shoaibi/@Jason: High: Following should also clone FileContent as its HAS_ONE.
             ZurmoCopyModelUtil::copy($existingFileModel, $file);
             $fileContent            = new FileContent();

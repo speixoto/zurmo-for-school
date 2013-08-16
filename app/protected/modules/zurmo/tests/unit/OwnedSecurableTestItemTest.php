@@ -41,37 +41,43 @@
             parent::setUpBeforeClass();
             ZurmoDatabaseCompatibilityUtil::dropStoredFunctionsAndProcedures();
             SecurityTestHelper::createSuperAdmin();
+            //do the rebuild to ensure the tables get created properly.
+            ReadPermissionsOptimizationUtil::rebuild();
+            //Manually build the test model munge tables.
+            ReadPermissionsOptimizationUtil::recreateTable(ReadPermissionsOptimizationUtil::getMungeTableName('OwnedSecurableTestItem'));
+        }
+
+        public static function getDependentTestModelClassNames()
+        {
+            return array('OwnedSecurableTestItem');
         }
 
         public function testSavingTwiceWithAModelThatHasACurrencyValueAsARelation()
         {
-            if (!RedBeanDatabase::isFrozen())
-            {
-                Yii::app()->user->userModel = User::getByUsername('super');
-                $testItem = new OwnedSecurableTestItem();
-                $testItem->member = 'test';
-                $saved = $testItem->save();
-                $this->assertTrue($saved);
+            Yii::app()->user->userModel = User::getByUsername('super');
+            $testItem = new OwnedSecurableTestItem();
+            $testItem->member = 'test';
+            $saved = $testItem->save();
+            $this->assertTrue($saved);
 
-                //Because OwnedSecurableTestItem as a relatedCurrency, there are some strange issues with saving again.
-                //It creates currency validation issues for any of the related users like owner, modifiedUser etc.
-                //Need to investigate further to fix.
+            //Because OwnedSecurableTestItem as a relatedCurrency, there are some strange issues with saving again.
+            //It creates currency validation issues for any of the related users like owner, modifiedUser etc.
+            //Need to investigate further to fix.
 
-                //$testItem->forget();
-                //$testItem = OwnedSecurableTestItem::getById($testItem->id);
+            //$testItem->forget();
+            //$testItem = OwnedSecurableTestItem::getById($testItem->id);
 
-               //Save again immediately after.
-                $validated = $testItem->validate();
-               // echo "<pre>";
-               // print_r($testItem->getErrors());
-               // echo "</pre>";
-                $this->assertTrue($validated);
-                $saved = $testItem->save();
-                $this->assertTrue($saved);
+           //Save again immediately after.
+            $validated = $testItem->validate();
+           // echo "<pre>";
+           // print_r($testItem->getErrors());
+           // echo "</pre>";
+            $this->assertTrue($validated);
+            $saved = $testItem->save();
+            $this->assertTrue($saved);
 
-                //Reset count of test items to 0.
-                $testItem->delete();
-            }
+            //Reset count of test items to 0.
+            $testItem->delete();
         }
     }
 ?>

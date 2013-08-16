@@ -54,6 +54,8 @@
                 ),
                 'rules' => array(
                     array('member', 'required'),
+                    array('member', 'type', 'type' => 'string'),
+                    array('member', 'length', 'max' => 255),
                 ),
                 'relations' => array(
                     'currencyValue'    => array(RedBeanModel::HAS_ONE,   'CurrencyValue',    RedBeanModel::OWNED),

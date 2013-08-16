@@ -234,7 +234,7 @@
             {
                 $count++;
             }
-            if ($group->group->id > 0 && !(!RedBeanDatabase::isFrozen() && $group->group->isSame($group))) // Prevent cycles in database auto build.
+            if ($group->group->id > 0 && !$group->group->isSame($group)) // Prevent cycles in database auto build.
             {
                 $count += self::getGroupMungeCount($securableItem, $group->group);
             }
@@ -415,13 +415,13 @@
 
         public static function groupBeingDeleted($group) // Call being methods before the destructive operation.
         {
-            if ($group->group->id > 0 && !(!RedBeanDatabase::isFrozen() && $group->group->isSame($group))) // Prevent cycles in database auto build.
+            if ($group->group->id > 0 && !$group->group->isSame($group)) // Prevent cycles in database auto build.
             {
                 self::groupBeingRemovedFromGroup($group);
             }
             foreach ($group->groups as $childGroup)
             {
-                if (!RedBeanDatabase::isFrozen() && $group->isSame($childGroup)) // Prevent cycles in database auto build.
+                if ($group->isSame($childGroup)) // Prevent cycles in database auto build.
                 {
                     continue;
                 }
@@ -443,7 +443,7 @@
         protected static function groupAddedOrRemovedFromGroup($isAdd, Group $group)
         {
             assert('is_bool($isAdd)');
-            if (!RedBeanDatabase::isFrozen() && $group->group->isSame($group)) // Prevent cycles in database auto build.
+            if ($group->group->isSame($group)) // Prevent cycles in database auto build.
             {
                 return;
             }
@@ -501,7 +501,7 @@
             }
             foreach ($group->groups as $childGroup)
             {
-                if (!RedBeanDatabase::isFrozen() && $group->isSame($childGroup)) // Prevent cycles in database auto build.
+                if ($group->isSame($childGroup)) // Prevent cycles in database auto build.
                 {
                     continue;
                 }
@@ -514,7 +514,7 @@
         {
             $parentGroups = array();
             $parentGroup = $group->group;
-            while ($parentGroup->id > 0 && !(!RedBeanDatabase::isFrozen() && $parentGroup->isSame($parentGroup->group))) // Prevent cycles in database auto build.
+            while ($parentGroup->id > 0 && !$parentGroup->isSame($parentGroup->group)) // Prevent cycles in database auto build.
             {
                 $parentGroups[] = $parentGroup;
                 $parentGroup = $parentGroup->group;
@@ -562,7 +562,7 @@
         protected static function roleParentSetOrRemoved($isSet, Role $role)
         {
             assert('is_bool($isSet)');
-            if (!RedBeanDatabase::isFrozen() && $role->role->isSame($role)) // Prevent cycles in database auto build.
+            if ($role->role->isSame($role)) // Prevent cycles in database auto build.
             {
                 return;
             }
@@ -681,7 +681,7 @@
             $users = array();
             foreach ($role->roles as $childRole)
             {
-                if (!RedBeanDatabase::isFrozen() && $role->isSame($childRole)) // Prevent cycles in database auto build.
+                if ($role->isSame($childRole)) // Prevent cycles in database auto build.
                 {
                     continue;
                 }
@@ -766,7 +766,7 @@
             if ($group->group->id > 0 )
             {
                 $groupMungeIds[] = 'G' . $group->group->id;
-                if (!RedBeanDatabase::isFrozen() && $group->isSame($group->group))
+                if ($group->isSame($group->group))
                 {
                     //Do Nothing. Prevent cycles in database auto build.
                 }
@@ -913,7 +913,7 @@
         {
             assert('is_string($mungeTableName) && $mungeTableName != ""');
             assert('is_int($securableItemId) && $securableItemId > 0');
-            if (!RedBeanDatabase::isFrozen() && $role->role->isSame($role)) // Prevent cycles in database auto build.
+            if ($role->role->isSame($role)) // Prevent cycles in database auto build.
             {
                 return;
             }
@@ -928,7 +928,7 @@
         {
             assert('is_string($mungeTableName) && $mungeTableName != ""');
             assert('is_int($securableItemId) && $securableItemId > 0');
-            if (!RedBeanDatabase::isFrozen() && $role->role->isSame($role)) // Prevent cycles in database auto build.
+            if ($role->role->isSame($role)) // Prevent cycles in database auto build.
             {
                 return;
             }
@@ -942,7 +942,7 @@
         protected static function decrementParentRolesCountsForAllSecurableItems($mungeTableName, Role $role)
         {
             assert('is_string($mungeTableName) && $mungeTableName != ""');
-            if (!RedBeanDatabase::isFrozen() && $role->role->isSame($role)) // Prevent cycles in database auto build.
+            if ($role->role->isSame($role)) // Prevent cycles in database auto build.
             {
                 return;
             }

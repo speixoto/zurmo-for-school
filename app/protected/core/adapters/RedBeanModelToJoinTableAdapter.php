@@ -98,8 +98,8 @@
             foreach($columns as $column)
             {
                 $columnName             = $column['name'];
-                $indexName              = RedBeanModelMemberIndexMetadataAdapter::resolveIndexName($columnName, false);
-                $indexes[$indexName]   = array('columns'     => array($columnName),
+                $indexName              = RedBeanModelMemberIndexMetadataAdapter::resolveRandomIndexName($columnName, false);
+                $indexes[$indexName]    = array('columns'     => array($columnName),
                                                 'unique'      => false,
                                             );
                 if (!empty($compositeIndexKey))
@@ -109,7 +109,7 @@
                 $compositeIndexKey  .= $columnName;
                 $compositeIndexValues['columns'][] = $columnName;
             }
-            $indexName              = RedBeanModelMemberIndexMetadataAdapter::resolveIndexName($compositeIndexKey, true);
+            $indexName              = RedBeanModelMemberIndexMetadataAdapter::resolveRandomIndexName($compositeIndexKey, true);
             $indexes[$indexName]    = $compositeIndexValues;
             return $indexes;
         }

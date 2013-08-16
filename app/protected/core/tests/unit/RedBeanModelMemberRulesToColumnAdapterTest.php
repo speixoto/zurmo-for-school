@@ -768,13 +768,13 @@
             $uniqueIndex = RedBeanModelMemberRulesToColumnAdapter::resolveUniqueIndexesFromValidator($modelClassName);
             $this->assertNotEmpty($uniqueIndex);
             $this->assertCount(1, $uniqueIndex);
-            $this->assertArrayHasKey('attributeName', $uniqueIndex);
-            $this->assertCount(2, $uniqueIndex['attributeName']);
-            $this->assertArrayHasKey('members', $uniqueIndex['attributeName']);
-            $this->assertArrayHasKey('unique', $uniqueIndex['attributeName']);
-            $this->assertCount(1, $uniqueIndex['attributeName']['members']);
-            $this->assertEquals('attributeName', $uniqueIndex['attributeName']['members'][0]);
-            $this->assertTrue($uniqueIndex['attributeName']['unique']);
+            $indexName  = key($uniqueIndex);
+            $this->assertCount(2, $uniqueIndex[$indexName]);
+            $this->assertArrayHasKey('members', $uniqueIndex[$indexName]);
+            $this->assertArrayHasKey('unique', $uniqueIndex[$indexName]);
+            $this->assertCount(1, $uniqueIndex[$indexName]['members']);
+            $this->assertEquals('attributeName', $uniqueIndex[$indexName]['members'][0]);
+            $this->assertTrue($uniqueIndex[$indexName]['unique']);
         }
 
         protected static function calculateMinByMaxAndSigned($max, $signed = false)

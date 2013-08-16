@@ -47,10 +47,9 @@
         public function testResolveIndexNameNonUnique()
         {
             $indexName          = 'ThisIsAnIndex';
-            $resolvedIndexName  = RedBeanModelMemberIndexMetadataAdapter::resolveIndexName($indexName);
+            $resolvedIndexName  = RedBeanModelMemberIndexMetadataAdapter::resolveRandomIndexName($indexName);
             $this->assertNotEmpty($resolvedIndexName);
             $this->assertNotEquals($indexName, $resolvedIndexName);
-            $this->assertEquals('this_is_an_index_Index', $resolvedIndexName);
         }
 
         /**
@@ -59,10 +58,10 @@
         public function testResolveIndexNameUnique()
         {
             $indexName          = 'ThisIsAUniqueIndex';
-            $resolvedIndexName  = RedBeanModelMemberIndexMetadataAdapter::resolveIndexName($indexName, true);
+            $resolvedIndexName  = RedBeanModelMemberIndexMetadataAdapter::resolveRandomIndexName($indexName, true);
             $this->assertNotEmpty($resolvedIndexName);
             $this->assertNotEquals($indexName, $resolvedIndexName);
-            $this->assertEquals('unique_this_is_a_unique_index_Index', $resolvedIndexName);
+            $this->assertTrue(strpos($resolvedIndexName, 'unique_') === 0);
         }
 
         /**
@@ -70,9 +69,8 @@
          */
         public function testResolveWithEmptyMetadata()
         {
-            $indexName      = "ThisIsAnIndex";
             $indexMetadata  = array();
-            $resolved       = RedBeanModelMemberIndexMetadataAdapter::resolve($indexName, $indexMetadata);
+            $resolved       = RedBeanModelMemberIndexMetadataAdapter::resolve($indexMetadata);
             $this->assertFalse($resolved);
         }
 
@@ -81,9 +79,8 @@
          */
         public function testResolveWithEmptyMembers()
         {
-            $indexName      = "ThisIsAnIndex";
             $indexMetadata  = array('columns' => array());
-            $resolved       = RedBeanModelMemberIndexMetadataAdapter::resolve($indexName, $indexMetadata);
+            $resolved       = RedBeanModelMemberIndexMetadataAdapter::resolve($indexMetadata);
             $this->assertFalse($resolved);
         }
 
@@ -92,9 +89,8 @@
          */
         public function testResolveWithNonArrayMembers()
         {
-            $indexName      = "ThisIsAnIndex";
             $indexMetadata  = array('columns' => 1234);
-            $resolved       = RedBeanModelMemberIndexMetadataAdapter::resolve($indexName, $indexMetadata);
+            $resolved       = RedBeanModelMemberIndexMetadataAdapter::resolve($indexMetadata);
             $this->assertFalse($resolved);
         }
 
@@ -103,11 +99,9 @@
          */
         public function testResolveWithUniqueNotSet()
         {
-            $indexName      = "ThisIsAnIndex";
             $indexMetadata  = array('members' => array('memberOne'));
-            $resolved       = RedBeanModelMemberIndexMetadataAdapter::resolve($indexName, $indexMetadata);
+            $resolved       = RedBeanModelMemberIndexMetadataAdapter::resolve($indexMetadata);
             $this->assertTrue($resolved);
-            $this->assertEquals('this_is_an_index_Index', $indexName);
             $this->assertNotEmpty($indexMetadata);
             $this->assertArrayHasKey('columns', $indexMetadata);
             $this->assertCount(1, $indexMetadata['columns']);
@@ -121,11 +115,9 @@
          */
         public function testResolve()
         {
-            $indexName      = "ThisIsAUniqueIndex";
             $indexMetadata  = array('members' => array('memberOne', 'memberTwo'), 'unique' => true);
-            $resolved       = RedBeanModelMemberIndexMetadataAdapter::resolve($indexName, $indexMetadata);
+            $resolved       = RedBeanModelMemberIndexMetadataAdapter::resolve($indexMetadata);
             $this->assertTrue($resolved);
-            $this->assertEquals('unique_this_is_a_unique_index_Index', $indexName);
             $this->assertNotEmpty($indexMetadata);
             $this->assertArrayHasKey('columns', $indexMetadata);
             $this->assertCount(2, $indexMetadata['columns']);

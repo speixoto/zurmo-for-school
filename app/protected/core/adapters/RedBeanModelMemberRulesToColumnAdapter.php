@@ -279,7 +279,8 @@
 
         protected static function registerUniqueIndexByMemberName($member, $modelClassName)
         {
-            static::$uniqueIndexes[$modelClassName][$member] = array('members' => array($member), 'unique' => true);
+            $indexName  = RedBeanModelMemberIndexMetadataAdapter::resolveRandomIndexName($member, true);
+            static::$uniqueIndexes[$modelClassName][$indexName] = array('members' => array($member), 'unique' => true);
         }
     }
 ?>

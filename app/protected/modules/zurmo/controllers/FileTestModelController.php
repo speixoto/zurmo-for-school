@@ -34,32 +34,9 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class OwnedSecurableTestItem2 extends OwnedSecurableItem
+    require_once('FileModelController.php'); // TODO: @Shoaibi/@Jason: High: Yii::import doesn't work, and why do we need this?
+    class ZurmoFileTestModelController extends ZurmoFileModelController
     {
-        public static function getDefaultMetadata()
-        {
-            $metadata = parent::getDefaultMetadata();
-            $metadata[__CLASS__] = array(
-                'members' => array(
-                    'member',
-                ),
-                'rules' => array(
-                    array('member', 'required'),
-                    array('member', 'type', 'type' => 'string'),
-                    array('member', 'length', 'max' => 255),
-                ),
-            );
-            return $metadata;
-        }
-
-        public static function getModuleClassName()
-        {
-            return 'ZurmoModule';
-        }
-
-        public static function hasReadPermissionsOptimization()
-        {
-            return true;
-        }
+        const FILE_MODEL_CLASS_NAME = 'FileTestModel';
     }
 ?>

@@ -454,14 +454,7 @@
             RedBeanDatabase::setup(Yii::app()->db->connectionString,
                                    Yii::app()->db->username,
                                    Yii::app()->db->password);
-            if (Yii::app()->isApplicationInstalled())
-            {
-                if (!FORCE_NO_FREEZE)
-                {
-                    RedBeanDatabase::freeze();
-                }
-            }
-            else
+            if (!Yii::app()->isApplicationInstalled())
             {
                 throw new NotSupportedException();
             }

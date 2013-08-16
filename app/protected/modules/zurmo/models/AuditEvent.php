@@ -110,7 +110,7 @@
                         deleteModelFromRecentlyViewed($modelClassName::getModuleClassName(),
                                                       $model);
             }
-            if (!AuditEvent::$isTableOptimized && (!AUDITING_OPTIMIZED || !RedBeanDatabase::isFrozen()))
+            if (!AuditEvent::$isTableOptimized && !AUDITING_OPTIMIZED)
             {
                 $auditEvent = new AuditEvent();
                 $auditEvent->dateTime       = DateTimeUtil::convertTimestampToDbFormatDateTime(time());

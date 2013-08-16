@@ -39,13 +39,13 @@
      */
     abstract class RedBeanModelMemberIndexMetadataAdapter
     {
+        const MAX_INDEX_NAME_LENGTH = 40;
         /**
          * Provided indexName and metadata is resolved to match the requirements of schema definition
-         * @param string $indexName passed by reference
          * @param array $indexMetadata passed by reference, array containing index definition
          * @return bool whether or not we were able to resolve index correctly
          */
-        public static function resolve(& $indexName, array & $indexMetadata)
+        public static function resolve(array & $indexMetadata)
         {
             if (empty($indexMetadata['members']) || !is_array($indexMetadata['members']))
             {
@@ -56,7 +56,6 @@
             {
                 $unique = $indexMetadata['unique'];
             }
-            $indexName      = static::resolveIndexName($indexName, $unique);
             $indexMembers   = $indexMetadata['members'];
             $indexMembers   = array_map(function($indexMember)
                                         {
@@ -70,19 +69,18 @@
         }
 
         /**
-         * Resolved an index name with proper prefix and suffix
-         * @param string $indexName
-         * @param bool $unique
+         * Resolved a random index name
          * @return string
          */
-        public static function resolveIndexName($indexName, $unique = false)
+        public static function resolveRandomIndexName($indexName, $unique = false)
         {
             $prefix = null;
             if ($unique)
             {
                 $prefix = 'unique_';
             }
-            return $prefix . StringUtil::uncamelize($indexName) . '_Index';
+            $indexName          = $prefix . substr(strrev($indexName), 0, static::MAX_INDEX_NAME_LENGTH);
+            return strval($indexName);
         }
     }
 ?>

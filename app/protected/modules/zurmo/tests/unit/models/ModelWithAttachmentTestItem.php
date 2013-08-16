@@ -44,7 +44,7 @@
                     'member',
                 ),
                 'relations' => array(
-                    'files' => array(RedBeanModel::HAS_MANY,  'FileModel', RedBeanModel::OWNED),
+                    'files' => array(RedBeanModel::HAS_MANY,  'FileTestModel', RedBeanModel::OWNED),
                 ),
                 'rules' => array(
                     array('member', 'type',  'type' => 'string'),

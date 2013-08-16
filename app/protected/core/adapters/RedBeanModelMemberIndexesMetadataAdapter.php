@@ -54,7 +54,7 @@
             $indexes                        = array();
             foreach($indexesMetadata as $indexName => $indexMetadata)
             {
-                $indexResolved = RedBeanModelMemberIndexMetadataAdapter::resolve($indexName, $indexMetadata);
+                $indexResolved = RedBeanModelMemberIndexMetadataAdapter::resolve($indexMetadata);
                 if ($indexResolved)
                 {
                     $indexes[$indexName]  = $indexMetadata;

@@ -221,7 +221,7 @@
                     ),
                 ),
                 'indexes' => array(
-                            'unique_username_Index' => array(
+                            'unique_emanresu' => array(
                                 'columns' => array('username'),
                                 'unique' => true
                             )

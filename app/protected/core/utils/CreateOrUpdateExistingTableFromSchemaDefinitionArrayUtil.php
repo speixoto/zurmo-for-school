@@ -181,11 +181,21 @@
             $columnNames = RedBeanModelMemberToColumnNameUtil::resolveColumnNamesArrayFromColumnSchemaDefinition($columns);
             foreach ($indexes as $indexName => $index)
             {
+                $indexNameLength = strlen($indexName);
                 if (!is_string($indexName))
                 {
                     return static::returnSchemaValidationResult(
                                                         Zurmo::t('Core', 'Index Name: {{indexName}} is not a string',
                                                             array('{{indexName}}' => $indexName)));
+                }
+                if ($indexNameLength > 64)
+                {
+                    return static::returnSchemaValidationResult(
+                            Zurmo::t('Core',
+                                'Index Name: {{indexName}} is {{length}} characters, {{over}} characters over limit(64).',
+                                array('{{indexName}}' => $indexName,
+                                        '{{length}}' => $indexNameLength,
+                                        '{{over}}' => $indexNameLength - 64)));
                 }
                 if (count($index) != 2)
                 {
