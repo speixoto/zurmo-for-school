@@ -79,27 +79,7 @@
         public static function getAllTableNames()
         {
             assert('RedBeanDatabase::isSetup()');
-            if (RedBeanDatabase::getDatabaseType() == 'sqlite')
-            {
-                return ZurmoRedBean::getCol('select name from sqlite_master where type = \'table\' order by name;');
-            }
-            elseif (RedBeanDatabase::getDatabaseType() == 'pgsql')
-            {
-                return ZurmoRedBean::getCol("
-                    select relname from pg_catalog.pg_class
-                         left join pg_catalog.pg_namespace n on n.oid = pg_catalog.pg_class.relnamespace
-                    where pg_catalog.pg_class.relkind in ('r', '') and
-                          n.nspname <> 'pg_catalog'               and
-                          n.nspname <> 'information_schema'       and
-                          n.nspname !~ '^pg_toast'                and
-                          pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid)
-                    order by lower(relname);
-                ");
-            }
-            else
-            {
-                return ZurmoRedBean::getCol('show tables;');
-            }
+            return ZurmoRedBean::$writer->getTables();
         }
 
         /**
@@ -968,9 +948,8 @@
                 throw new NotSupportedException();
             }
             $databaseName = RedBeanDatabase::getDatabaseNameFromDsnString(Yii::app()->db->connectionString);
-            $sql       = "show tables";
             $totalCount = 0;
-            $rows       = ZurmoRedBean::getAll($sql);
+            $rows       = static::getAllTableNames();
             $columnName = 'Tables_in_' . $databaseName;
             foreach ($rows as $row)
             {

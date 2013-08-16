@@ -63,13 +63,13 @@
             $this->assertTrue($import2->save());
             ImportTestHelper::createTempTableByFileNameAndTableName('importAnalyzerTest.csv', $import2->getTempTableName());
             $this->assertEquals(2, count(Import::getAll()));
-            $row = ZurmoRedBean::getRow('show tables like "' . $import->getTempTableName(). '"');
-            $this->assertNotEmpty($row);
+            $tableExists = ZurmoRedBean::$writer->doesTableExist($import->getTempTableName());
+            $this->assertTrue($tableExists);
 
             $job = new ImportCleanupJob();
             $this->assertTrue($job->run());
-            $row = ZurmoRedBean::getRow('show tables like "' . $import->getTempTableName(). '"');
-            $this->assertEmpty($row);
+            $tableExists = ZurmoRedBean::$writer->doesTableExist($import->getTempTableName());
+            $this->assertFalse($tableExists);
             $imports = Import::getAll();
             $this->assertEquals(1, count($imports));
             $this->assertEquals($import2->id, $imports[0]->id);
