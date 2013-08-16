@@ -947,16 +947,10 @@
             {
                 throw new NotSupportedException();
             }
-            $databaseName = RedBeanDatabase::getDatabaseNameFromDsnString(Yii::app()->db->connectionString);
             $totalCount = 0;
-            $rows       = static::getAllTableNames();
-            $columnName = 'Tables_in_' . $databaseName;
-            foreach ($rows as $row)
+            foreach (static::getAllTableNames() as $tableName)
             {
-                $tableName  = $row[$columnName];
-                $tableSql   = "select count(*) count from " . $tableName;
-                $row        = ZurmoRedBean::getRow($tableSql);
-                $totalCount = $totalCount + $row['count'];
+                $totalCount += ZurmoRedBean::$writer->count($tableName);
             }
             return $totalCount;
         }

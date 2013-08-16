@@ -106,7 +106,7 @@
 
         public function testGetAllTableNames()
         {
-            ZurmoRedBean::exec("create table temptable (temptable_id int(11) unsigned not null)");
+            ZurmoRedBean::exec("create table if not exists temptable (temptable_id int(11) unsigned not null)");
             $tables = DatabaseCompatibilityUtil::getAllTableNames();
             $this->assertTrue(in_array('temptable', $tables));
         }
@@ -710,7 +710,7 @@
                 $this->assertEquals('LONGBLOB', $databaseColumnType);
 
                 $databaseColumnType = DatabaseCompatibilityUtil::mapHintTypeIntoDatabaseColumnType('boolean');
-                $this->assertEquals('TINYINT(1)', $databaseColumnType);
+                $this->assertEquals('TINYINT(1) UNSIGNED', $databaseColumnType);
 
                 $databaseColumnType = DatabaseCompatibilityUtil::mapHintTypeIntoDatabaseColumnType('date');
                 $this->assertEquals('DATE', $databaseColumnType);
