@@ -324,5 +324,15 @@
                 )
             );
         }
+
+        /**
+         * Should model have read permission subscription table or not.
+         * This feature is used to track of created/deleted models, so we can easily sync Zurmo with Google Apps or Outlook
+         * @return bool
+         */
+        public static function hasReadPermissionsSubscriptionOptimization()
+        {
+            return false;
+        }
     }
 ?>
