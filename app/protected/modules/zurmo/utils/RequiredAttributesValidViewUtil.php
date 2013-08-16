@@ -56,8 +56,8 @@
     class RequiredAttributesValidViewUtil
     {
         /**
-         * @param $moduleClassName
-         * @param $viewClassName
+         * @param String $moduleClassName
+         * @param String $viewClassName
          * @throws NotSupportedException
          */
         public static function setAsMissingRequiredAttributes($moduleClassName, $viewClassName)
@@ -83,8 +83,8 @@
         }
 
         /**
-         * @param $moduleClassName
-         * @param $viewClassName
+         * @param String $moduleClassName
+         * @param String $viewClassName
          * @throws NotSupportedException
          */
         public static function removeAttributeAsMissingRequiredAttribute($moduleClassName, $viewClassName)
@@ -117,8 +117,8 @@
         }
 
         /**
-         * @param $moduleClassName
-         * @param $viewClassName
+         * @param String $moduleClassName
+         * @param String $viewClassName
          */
         public static function setAsContainingRequiredAttributes($moduleClassName, $viewClassName)
         {
@@ -129,8 +129,8 @@
         }
 
         /**
-         * @param $moduleClassName
-         * @param $viewClassName
+         * @param String $moduleClassName
+         * @param String $viewClassName
          * @return bool
          */
         public static function isViewMissingRequiredAttributes($moduleClassName, $viewClassName)
@@ -147,8 +147,8 @@
         }
 
         /**
-         * @param $moduleClassName
-         * @param $viewClassName
+         * @param String $moduleClassName
+         * @param String $viewClassName
          * @return string
          */
         public static function resolveValidView($moduleClassName, $viewClassName)
@@ -168,8 +168,8 @@
         }
 
         /**
-         * @param $modelClassName
-         * @param $attributeName
+         * @param string $modelClassName
+         * @param string $attributeName
          */
         public static function resolveToSetAsMissingRequiredAttributesByModelClassName($modelClassName, $attributeName)
         {
@@ -213,8 +213,8 @@
         }
 
         /**
-         * @param $modelClassName
-         * @param $attributeName
+         * @param string $modelClassName
+         * @param string $attributeName
          */
         public static function resolveToRemoveAttributeAsMissingRequiredAttribute($modelClassName, $attributeName)
         {

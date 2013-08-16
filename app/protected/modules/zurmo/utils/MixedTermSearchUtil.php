@@ -42,7 +42,7 @@
     {
         /**
          * @param Module $module
-         * @param $partialTerm
+         * @param string $partialTerm
          * @return array
          */
         public static function getGlobalSearchAttributeByModuleAndPartialTerm(Module $module, $partialTerm)

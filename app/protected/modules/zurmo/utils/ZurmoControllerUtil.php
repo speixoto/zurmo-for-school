@@ -94,10 +94,10 @@
         }
 
         /**
-         * @param $postData
+         * @param array $postData
          * @param $model
-         * @param $savedSuccessfully
-         * @param $modelToStringValue
+         * @param bool $savedSuccessfully
+         * @param string $modelToStringValue
          * @return OwnedSecurableItem
          */
         public function saveModelFromPost($postData, $model, & $savedSuccessfully, & $modelToStringValue)
@@ -109,9 +109,9 @@
 
         /**
          * @param $sanitizedData
-         * @param $model
-         * @param $savedSuccessfully
-         * @param $modelToStringValue
+         * @param object $model
+         * @param bool $savedSuccessfully
+         * @param string $modelToStringValue
          * @return OwnedSecurableItem
          */
         public function saveModelFromSanitizedData($sanitizedData, $model, & $savedSuccessfully, & $modelToStringValue)

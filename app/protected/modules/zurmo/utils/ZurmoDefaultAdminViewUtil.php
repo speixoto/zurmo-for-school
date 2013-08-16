@@ -44,7 +44,7 @@
         /**
          * @param CController $controller
          * @param View $containedView
-         * @param $breadcrumbLinks
+         * @param array $breadcrumbLinks
          * @param $breadcrumbViewClassName
          * @param array $cssClasses
          * @return GridView

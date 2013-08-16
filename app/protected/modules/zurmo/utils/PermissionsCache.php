@@ -111,7 +111,7 @@
         /**
          * @param SecurableItem $securableItem
          * @param Permitable $permitable
-         * @param $combinedPermissions
+         * @param int $combinedPermissions
          */
         public static function cacheCombinedPermissions(SecurableItem $securableItem, Permitable $permitable, $combinedPermissions)
         {
@@ -185,7 +185,7 @@
         /**
          * Given the name of a named securable item, return the cached entry if available.
          * @param string $namedSecurableItemName
-         * @param object $permitable
+         * @param Permitable $permitable
          * @throws NotFoundException
          */
         public static function getNamedSecurableItemActualPermissions($namedSecurableItemName, $permitable)

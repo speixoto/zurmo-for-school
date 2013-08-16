@@ -43,6 +43,7 @@
         /**
          *
          * @param string $filePath
+         * @param string $fileName
          * @return $fileModel or false on failure
          */
         public static function makeByFilePathAndName($filePath, $fileName)

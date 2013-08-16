@@ -42,8 +42,8 @@
     class RelatedItemRelationToModelElementUtil
     {
         /**
-         * @param $modelClassName
-         * @param $user
+         * @param string $modelClassName
+         * @param User $user
          * @param $canAccess
          * @return string
          */

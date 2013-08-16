@@ -41,7 +41,7 @@
     {
         /**
          * @param DynamicSearchForm $searchForm
-         * @param $viewClassName
+         * @param string $viewClassName
          * @param null $stickySearchData
          * @return A|SavedSearch
          */
@@ -156,9 +156,9 @@
         }
 
         /**
-         * @param $key
+         * @param string $key
          * @param SearchAttributesDataCollection $dataCollection
-         * @param $stickyData
+         * @param array $stickyData
          */
         public static function setDataByKeyAndDataCollection($key, SearchAttributesDataCollection $dataCollection, $stickyData)
         {
@@ -217,7 +217,7 @@
         }
 
         /**
-         * @param $stickyData
+         * @param array $stickyData
          * @param SavedDynamicSearchForm $model
          */
         public static function resolveSearchFormByStickyDataAndModel($stickyData, SavedDynamicSearchForm $model)

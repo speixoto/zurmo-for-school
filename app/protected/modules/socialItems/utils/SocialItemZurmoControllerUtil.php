@@ -42,7 +42,7 @@
         protected $relatedUser;
 
         /**
-         * @param $relatedUser
+         * @param User $relatedUser
          */
         public function __construct($relatedUser)
         {
@@ -54,6 +54,11 @@
          * Handles when a user posts to another user's profile social feed.  Sets the toUser in that case.
          * (non-PHPdoc)
          * @see ZurmoControllerUtil::saveModelFromPost()
+         * @param array $postData
+         * @param object $model
+         * @param bool $savedSucessfully
+         * @param $modelToStringValue
+         * @return OwnedSecurableItem
          */
         public function saveModelFromPost($postData, $model, & $savedSucessfully, & $modelToStringValue)
         {

@@ -37,7 +37,7 @@
     class UserAccessUtil
     {
         /**
-         * @param $userId
+         * @param int $userId
          */
         public static function resolveCanCurrentUserAccessAction($userId)
         {

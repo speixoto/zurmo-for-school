@@ -125,7 +125,7 @@
         }
 
         /**
-         * @param $moduleClassName
+         * @param string $moduleClassName
          * @param bool $fromAjax
          */
         public static function resolveCanCurrentUserAccessModule($moduleClassName, $fromAjax = false)

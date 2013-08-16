@@ -49,7 +49,7 @@
         }
 
         /**
-         * @param $user
+         * @param User $user
          * @return array|mixed
          */
         public static function resolveByCacheAndGetVisibleAndOrderedTabMenuByUser($user)
@@ -121,7 +121,7 @@
         }
 
         /**
-         * @param $user
+         * @param User $user
          * @return string
          */
         public static function getAdminMenuViewItemsCacheIdentifierByUser($user)
@@ -312,7 +312,7 @@
         }
 
         /**
-         * @param $moduleClassName
+         * @param string $moduleClassName
          * @param $user
          * @return menu
          */
@@ -339,7 +339,7 @@
         }
 
         /**
-         * @param $moduleClassName
+         * @param string $moduleClassName
          * @param $user
          * @return menu
          */

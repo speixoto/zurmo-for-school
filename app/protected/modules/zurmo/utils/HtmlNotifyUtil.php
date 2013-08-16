@@ -40,7 +40,7 @@
     class HtmlNotifyUtil
     {
         /**
-         * @param $message
+         * @param string $message
          * @return string
          */
         public static function renderHighlightBoxByMessage($message)
@@ -53,7 +53,7 @@
         }
 
         /**
-         * @param $message
+         * @param string $message
          * @return string
          */
         public static function renderAlertBoxByMessage($message)
@@ -67,7 +67,7 @@
         }
 
         /**
-         * @param $message
+         * @param string $message
          * @return string
          */
         public static function renderWarningBoxByMessage($message)

@@ -59,7 +59,7 @@
         }
 
         /**
-         * @param $auditableModel
+         * @param object $auditableModel
          * @param $attributeName
          * @param $value
          */

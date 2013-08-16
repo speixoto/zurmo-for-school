@@ -78,7 +78,7 @@
         protected static function resolveConfigKeyByContentType($isHtmlContent)
         {
             assert('is_bool($isHtmlContent)');
-            if ((bool) $isHtmlContent)
+            if ($isHtmlContent)
             {
                 return static::CONFIG_KEY_RICH_TEXT;
             }

@@ -44,8 +44,8 @@
         protected $relatedItemsFormName;
 
         /**
-         * @param $relatedItemsRelationName
-         * @param $relatedItemsFormName
+         * @param string $relatedItemsRelationName
+         * @param string $relatedItemsFormName
          */
         public function __construct($relatedItemsRelationName, $relatedItemsFormName)
         {

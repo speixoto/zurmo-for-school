@@ -45,6 +45,8 @@
          * Get the content for displaying recently viewed information via an ajax call.
          * @see RecentlyViewedView
          * @param User $user
+         * @param int $count
+         * @return null|string
          */
         public static function getRecentlyViewedAjaxContentByUser(User $user, $count)
         {
@@ -76,6 +78,8 @@
          * Get the recently viewed models as items which include a link and a moduleClassName.
          * @see RecentlyViewedView
          * @param User $user
+         * @param int $count
+         * @return array
          */
         public static function getRecentlyViewedItemsByUser(User $user, $count)
         {
@@ -108,6 +112,7 @@
         /**
          * Given a user and a count, get a tail of recent audit events for that user limited by the count.
          * @param User $user
+         * @param int $count
          */
         protected static function getRecentlyViewedAuditEventsByUser(User $user, $count)
         {
@@ -118,6 +123,8 @@
         /**
          * Given an AuditEvent, build a route to the event's model's details action.
          * @param AuditEvent $auditEvent
+         * @param string $moduleClassName
+         * @return mixed
          */
         protected static function getRouteByAuditEvent(AuditEvent $auditEvent, $moduleClassName)
         {
@@ -160,7 +167,7 @@
         /**
          * @param $moduleName
          * @param RedBeanModel $model
-         * @param $count
+         * @param int $count
          */
         public static function resolveNewRecentlyViewedModel($moduleName, RedBeanModel $model, $count)
         {

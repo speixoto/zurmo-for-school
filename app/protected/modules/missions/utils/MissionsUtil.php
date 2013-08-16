@@ -118,7 +118,7 @@
         }
 
         /**
-         * @param $type
+         * @param int $type
          * @return string
          * @throws NotSupportedException
          */
@@ -149,8 +149,8 @@
 
         /**
          * @param Mission $mission
-         * @param $type
-         * @param $pageSize
+         * @param int $type
+         * @param int $pageSize
          * @return RedBeanModelDataProvider'
          */
         public static function makeDataProviderByType(Mission $mission, $type, $pageSize)

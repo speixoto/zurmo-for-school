@@ -249,6 +249,10 @@
             self::ownedSecurableItemOwnerChanged($ownedSecurableItem);
         }
 
+        /**
+         * @param OwnedSecurableItem $ownedSecurableItem
+         * @param User $oldUser
+         */
         public static function ownedSecurableItemOwnerChanged(OwnedSecurableItem $ownedSecurableItem, User $oldUser = null)
         {
             $modelClassName = get_class($ownedSecurableItem);
@@ -814,7 +818,7 @@
 
         /**
          * @param Group $group
-         * @param $groupMungeIds
+         * @param array $groupMungeIds
          */
         public static function getAllUpstreamGroupsRecursively(Group $group, & $groupMungeIds)
         {

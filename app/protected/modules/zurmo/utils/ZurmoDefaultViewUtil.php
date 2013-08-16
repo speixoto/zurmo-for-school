@@ -53,7 +53,7 @@
          * used by the designer page view.
          * @param CController $controller
          * @param View $containedView
-         * @param $breadcrumbLinks
+         * @param array $breadcrumbLinks
          * @param $breadcrumbViewClassName
          * @param array $cssClasses
          * @return GridView
@@ -78,7 +78,7 @@
 
          * @param CController $controller
          * @param View $containedView
-         * @param $breadcrumbLinks
+         * @param array $breadcrumbLinks
          * @param $breadcrumbViewClassName
          * @param array $cssClasses
          * @return GridView
@@ -91,7 +91,7 @@
          * @param CController $controller
          * @param View $containedView
          * @param View $secondContainedView
-         * @param $breadcrumbLinks
+         * @param array $breadcrumbLinks
          * @param $breadcrumbViewClassName
          * @param array $cssClasses
          * @return GridView
@@ -374,7 +374,7 @@
 
         /**
          * @param $key
-         * @param $value
+         * @param bool $value
          */
         public static function setLockKeyForDetailsAndRelationsView($key, $value)
         {

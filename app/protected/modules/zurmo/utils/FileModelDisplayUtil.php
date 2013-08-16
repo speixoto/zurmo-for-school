@@ -88,7 +88,7 @@
 
         /**
          * @param $model
-         * @param $filesRelationName
+         * @param string $filesRelationName
          * @param bool $showHeaderLabel
          * @return null|string
          */

@@ -55,7 +55,7 @@
         }
 
         /**
-         * @param $attributeString
+         * @param string $attributeString
          * @return string
          */
         public function getLinkString($attributeString)

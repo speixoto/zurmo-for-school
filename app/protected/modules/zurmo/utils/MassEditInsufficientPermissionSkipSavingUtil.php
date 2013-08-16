@@ -84,8 +84,8 @@
         }
 
         /**
-         * @param $skipCount
-         * @param $modelClassName
+         * @param int $skipCount
+         * @param string $modelClassName
          * @return string
          * @throws NotSupportedException
          */
