@@ -83,7 +83,7 @@
                 'leftSideDisplayLabel'   => Zurmo::t('Core', 'Hidden Columns'),
                 'rightSideId'            => $this->getEditableInputId(SearchForm::SELECTED_LIST_ATTRIBUTES),
                 'rightSideName'          => $this->getEditableInputName(SearchForm::SELECTED_LIST_ATTRIBUTES),
-                'rightSideValue'         => $this->model->getListAttributesSelector()->getSelected(),
+                'rightSideValue'         => array(),
                 'rightSideData'          => $this->model->getListAttributesSelector()->getSelectedListAttributesNamesAndLabelsAndAll(),
                 'rightSideDisplayLabel'  => Zurmo::t('Core', 'Visible Columns'),
                 'formId'                 => $this->form->getId(),

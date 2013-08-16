@@ -257,7 +257,7 @@ Page Title
 </html>
 HTML;
             $originalContent    = $content;
-            $result             = static::resolveContent($content);
+            $result             = static::resolveContent($content);            
             $this->assertTrue($result);
             $this->assertNotEquals($originalContent, $content);
             $this->assertTrue(strpos($content, '<p>Sample Content With Links</p>') !== false);
@@ -266,7 +266,7 @@ HTML;
             $this->assertTrue(strpos($content, '/tracking/default/track?id=') !== false);
             $this->assertEquals(2, substr_count($content, '/tracking/default/track?id='));
             $this->assertTrue(strpos($content, '/marketingLists/external/') !== false);
-            $this->assertEquals(2, substr_count($content, '/marketingLists/external/'));
+            $this->assertEquals(2, substr_count($content, '/marketingLists/external/'));            
         }
 
         /**
@@ -330,14 +330,20 @@ HTML;
             $this->assertNotEquals($originalContent, $content);
             $this->assertEquals(19, substr_count($content, '/tracking/default/track?id='));
             $this->assertTrue(strpos($content, '<p>Sample Content With Links</p>') !== false);
-            $this->assertTrue(strpos($content, 'http://www.zurmo1.com') === false);
+            $this->assertTrue(strpos($content, 'http://www.zurmo1.com') !== false);
+            $this->assertEquals(1, substr_count($content, 'http://www.zurmo1.com'));
             $this->assertTrue(strpos($content, 'http://www.zurmo2.com') !== false);
             $this->assertEquals(1, substr_count($content, 'http://www.zurmo2.com'));
-            $this->assertTrue(strpos($content, 'http://www.zurmo3.com') === false);
-            $this->assertTrue(strpos($content, 'http://www.zurmo4.com') === false);
-            $this->assertTrue(strpos($content, 'http://www.zurmo5.com') === false);
-            $this->assertTrue(strpos($content, 'http://www.zurmo6.com') === false);
-            $this->assertTrue(strpos($content, 'http://www.zurmo7.com') === false);
+            $this->assertTrue(strpos($content, 'http://www.zurmo3.com') !== false);
+            $this->assertEquals(1, substr_count($content, 'http://www.zurmo3.com'));
+            $this->assertTrue(strpos($content, 'http://www.zurmo4.com') !== false);
+            $this->assertEquals(1, substr_count($content, 'http://www.zurmo4.com'));
+            $this->assertTrue(strpos($content, 'http://www.zurmo5.com') !== false);
+            $this->assertEquals(1, substr_count($content, 'http://www.zurmo5.com'));
+            $this->assertTrue(strpos($content, 'http://www.zurmo6.com') !== false);
+            $this->assertEquals(1, substr_count($content, 'http://www.zurmo6.com'));
+            $this->assertTrue(strpos($content, 'http://www.zurmo7.com') !== false);
+            $this->assertEquals(1, substr_count($content, 'http://www.zurmo7.com'));
             $this->assertTrue(strpos($content, 'http://www.zurmo.org') === false);
             $this->assertTrue(strpos($content, "SourceForge") !== false);
             $this->assertTrue(strpos($content, " href='http://www.sourceforge1.org'") === false);
@@ -452,7 +458,7 @@ HTML;
 
         public function testTextContentGetsCustomFooterAppended()
         {
-            AutoresponderOrCampaignMailFooterContentUtil::setContentByType('PlainTextFooter', false);
+            UnsubscribeAndManageSubscriptionsPlaceholderUtil::setContentByType('PlainTextFooter', false);
             $content    = 'This is some text content';
             $result     = static::resolveContent($content, true, false);
             $this->assertTrue($result);
@@ -466,7 +472,7 @@ HTML;
          */
         public function testHtmlContentGetsCustomFooterAppended()
         {
-            AutoresponderOrCampaignMailFooterContentUtil::setContentByType('RichTextFooter', true);
+            UnsubscribeAndManageSubscriptionsPlaceholderUtil::setContentByType('RichTextFooter', true);
             $content    = 'This is some html content';
             $result     = static::resolveContent($content, true, true);
             $this->assertTrue($result);

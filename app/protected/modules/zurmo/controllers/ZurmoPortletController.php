@@ -61,13 +61,20 @@
             ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($model, true);
             $portlet         = Portlet::getById(intval($_GET['portletId']));
 
+            if(null != $redirectUrl = ArrayUtil::getArrayValue($_GET, 'redirectUrl'))
+            {
+                $redirectUrl = $redirectUrl;
+            }
+            else
+            {
+                $redirectUrl = Yii::app()->request->getRequestUri();
+            }
             $portlet->params = array(
                     'controllerId' => 'default',
                     'relationModuleId' => $this->getModule()->getId(),
                     'relationModel'    => $model,
-                    'redirectUrl'      => Yii::app()->request->getRequestUri(),
+                    'redirectUrl'      => $redirectUrl,
             );
-
             $portletView = $portlet->getView();
             if (!RightsUtil::canUserAccessModule($portletView::getModuleClassName(), Yii::app()->user->userModel))
             {
@@ -153,6 +160,7 @@
          * @param string $relationAttributeName
          * @param string $relationModelId
          * @param string $relationModuleId
+         * @param null|string $relationModelClassName
          */
         public function actionSelectFromRelatedListSave($modelId, $portletId, $uniqueLayoutId,
                                                         $relationAttributeName, $relationModelId, $relationModuleId, $relationModelClassName = null)
@@ -178,6 +186,7 @@
             {
                 $this->processSelectFromRelatedListSaveAlreadyConnected($model);
             }
+            $isViewLocked = ZurmoDefaultViewUtil::getLockKeyForDetailsAndRelationsView('lockPortletsForDetailsAndRelationsView');
             $this->redirect(array('/' . $relationModuleId . '/defaultPortlet/modalRefresh',
                                 'id'                   => $relationModelId,
                                 'portletId'            => $portletId,
@@ -185,7 +194,7 @@
                                 'redirectUrl'          => $redirectUrl,
                                 'portletParams'        => array(  'relationModuleId' => $relationModuleId,
                                                                   'relationModelId'  => $relationModelId),
-                                'portletsAreRemovable' => false));
+                                'portletsAreRemovable' => !$isViewLocked));
         }
 
         protected function processSelectFromRelatedListSaveFails(RedBeanModel $model)

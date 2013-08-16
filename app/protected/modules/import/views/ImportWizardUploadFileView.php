@@ -71,5 +71,15 @@
         {
             return $this->getPreviousPageLinkContentByControllerAction('step1');
         }
+
+        protected function renderPreviousPageLinkLabel()
+        {
+            return Zurmo::t('Core', 'Select Module');
+        }
+
+        protected function renderNextPageLinkLabel()
+        {
+            return Zurmo::t('ZurmoModule', 'Select Permissions');
+        }
     }
 ?>

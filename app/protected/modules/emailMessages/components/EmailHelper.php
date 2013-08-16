@@ -107,13 +107,13 @@
          * Fallback from address to use for sending out notifications.
          * @var string
          */
-        public $defaultFromAddress   = 'notifications@zurmoalerts.com';
+        public $defaultFromAddress;
 
         /**
          * Utilized when sending a test email nightly to check the status of the smtp server
          * @var string
          */
-        public $defaultTestToAddress = 'testJobEmail@zurmoalerts.com';
+        public $defaultTestToAddress;
 
         /**
          * Called once per page load, will load up outbound settings from the database if available.
@@ -123,6 +123,16 @@
         public function init()
         {
             $this->loadOutboundSettings();
+            $this->loadDefaultFromAndToAddresses();
+        }
+
+        /**
+         * Used to load defaultFromAddress and defaultTestToAddress
+         */
+        public function loadDefaultFromAndToAddresses()
+        {
+            $this->defaultFromAddress   = EmailHelper::resolveDefaultEmailAddress('notification');
+            $this->defaultTestToAddress = EmailHelper::resolveDefaultEmailAddress('testJobEmail');
         }
 
         protected function loadOutboundSettings()
@@ -208,6 +218,7 @@
          * send immediately, consider using @sendImmediately
          * @param EmailMessage $emailMessage
          * @throws NotSupportedException
+         * @throws FailedToSaveModelException
          * @return boolean
          */
         public function send(EmailMessage $emailMessage)
@@ -223,7 +234,7 @@
             $saved                  = $emailMessage->save();
             if (!$saved)
             {
-                throw new NotSupportedException();
+                throw new FailedToSaveModelException();
             }
             return true;
         }
@@ -233,6 +244,7 @@
          * job.
          * @param EmailMessage $emailMessage
          * @throws NotSupportedException - if the emailMessage does not properly save.
+         * @throws FailedToSaveModelException
          * @return null
          */
         public function sendImmediately(EmailMessage $emailMessage)
@@ -247,7 +259,7 @@
             $saved = $emailMessage->save();
             if (!$saved)
             {
-                throw new NotSupportedException();
+                throw new FailedToSaveModelException();
             }
         }
 
@@ -285,7 +297,7 @@
             $saved = $emailMessage->save();
             if (!$saved)
             {
-                throw new NotSupportedException();
+                throw new FailedToSaveModelException();
             }
         }
 
@@ -299,19 +311,13 @@
             $mailer->security = $this->outboundSecurity;
             $mailer->Subject  = $emailMessage->subject;
             $mailer->headers  = unserialize($emailMessage->headers);
-            if ($emailMessage->content->htmlContent == null && $emailMessage->content->textContent != null)
+            if (!empty($emailMessage->content->textContent))
             {
-                $mailer->body     = $emailMessage->content->textContent;
                 $mailer->altBody  = $emailMessage->content->textContent;
             }
-            elseif ($emailMessage->content->htmlContent != null && $emailMessage->content->textContent == null)
+            if (!empty($emailMessage->content->htmlContent))
             {
                 $mailer->body     = $emailMessage->content->htmlContent;
-            }
-            elseif ($emailMessage->content->htmlContent != null && $emailMessage->content->textContent != null)
-            {
-                $mailer->body     = $emailMessage->content->htmlContent;
-                $mailer->altBody  = $emailMessage->content->textContent;
             }
             $mailer->From = array($emailMessage->sender->fromAddress => $emailMessage->sender->fromName);
             foreach ($emailMessage->recipients as $recipient)
@@ -403,6 +409,14 @@
                 return $this->defaultFromAddress;
             }
             return $user->primaryEmail->emailAddress;
+        }
+
+        /*
+         * Resolving Default Email Addess For Email Testing
+         */
+        public static function resolveDefaultEmailAddress($defaultEmailAddress)
+        {
+            return $defaultEmailAddress . '@' . StringUtil::resolveCustomizedLabel() . 'alerts.com';
         }
     }
 ?>

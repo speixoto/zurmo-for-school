@@ -89,8 +89,30 @@
             return $searchAttributeData;
         }
 
+        public function resolveSearchAttributeDataForAllLatestActivities($searchAttributeData)
+        {
+            assert('is_array($searchAttributeData)');
+            $box                 = EmailBox::resolveAndGetByName(EmailBox::NOTIFICATIONS_NAME);
+            $searchAttributeData = parent::resolveSearchAttributeDataForAllLatestActivities($searchAttributeData);
+            $clausesCount = count($searchAttributeData['clauses']);
+            $searchAttributeData['clauses'][$clausesCount + 1] = array(
+                'attributeName'        => 'folder',
+                    'relatedModelData'  => array(
+                        'attributeName' => 'emailBox',
+                        'operatorType'  => 'doesNotEqual',
+                        'value'         => $box->id),
+            );
+            if ($searchAttributeData['structure'] != null)
+            {
+                $searchAttributeData['structure'] .= ' and ';
+            }
+            $searchAttributeData['structure'] .=  ($clausesCount + 1);
+            return $searchAttributeData;
+        }
+
         public function getLatestActivitiesOrderByAttributeName()
         {
+            assert('is_array($searchAttributeData)');
             return 'modifiedDateTime';
         }
 
@@ -178,9 +200,10 @@
                     }
                     else
                     {
-                        $castedDownModel = self::castDownItem($recipient->personOrAccount);
+
                         try
                         {
+                            $castedDownModel = self::castDownItem($recipient->personOrAccount);
                             if (strval($castedDownModel) != null)
                                         {
                                             $params          = array('label' => strval($castedDownModel), 'wrapLabel' => false);
@@ -193,6 +216,11 @@
                         }
                         catch (AccessDeniedSecurityException $e)
                         {
+                            $existingModels[] = $recipient->toAddress . ' ' . $recipient->toName;
+                        }
+                        catch (NotSupportedException $e)
+                        {
+                            //If the personOrAccount no longer exists or something else isn't right with the model
                             $existingModels[] = $recipient->toAddress . ' ' . $recipient->toName;
                         }
                     }

@@ -56,6 +56,15 @@
             return self::makeModel($bean);
         }
 
+        /**
+         * Added fallback for system users to never be able to login
+         * @param $username
+         * @param $password
+         * @return An
+         * @throws NoRightWebLoginException
+         * @throws BadPasswordException
+         * @throws ApiNoRightWebApiLoginException
+         */
         public static function authenticate($username, $password)
         {
             assert('is_string($username)');
@@ -74,6 +83,14 @@
 
             if (Right::ALLOW != $user->getEffectiveRight('UsersModule', UsersModule::RIGHT_LOGIN_VIA_WEB_API) &&
                 ApiRequest::isApiRequest())
+            {
+                throw new ApiNoRightWebApiLoginException();
+            }
+            if($user->isSystemUser && !ApiRequest::isApiRequest())
+            {
+                throw new NoRightWebLoginException();
+            }
+            if($user->isSystemUser && ApiRequest::isApiRequest())
             {
                 throw new ApiNoRightWebApiLoginException();
             }
@@ -441,6 +458,10 @@
                     'groups'            => Zurmo::t('ZurmoModule',         'Groups',            array(), null, $language),
                     'hash'              => Zurmo::t('UsersModule',         'Hash',              array(), null, $language),
                     'isActive'          => Zurmo::t('UsersModule',         'Is Active',         array(), null, $language),
+                    'isRootUser'        => Zurmo::t('UsersModule',         'Is Root User',      array(), null, $language),
+                    'hideFromSelecting' => Zurmo::t('UsersModule',         'Hide from selecting', array(), null, $language),
+                    'hideFromLeaderboard' => Zurmo::t('UsersModule',       'Hide from leaderboard', array(), null, $language),
+                    'isSystemUser'      => Zurmo::t('UsersModule',         'Is System User',    array(), null, $language),
                     'language'          => Zurmo::t('ZurmoModule',         'Language',          array(), null, $language),
                     'locale'            => Zurmo::t('ZurmoModule',         'Locale',            array(), null, $language),
                     'manager'           => Zurmo::t('UsersModule',         'Manager',           array(), null, $language),
@@ -461,22 +482,30 @@
             assert('is_string($rightName)');
             assert('$moduleName != ""');
             assert('$rightName  != ""');
+                $identifier = $this->id . $moduleName . $rightName . 'ActualRight';
                 if (!SECURITY_OPTIMIZED)
                 {
                     // The slow way will remain here as documentation
                     // for what the optimized way is doing.
-                    if (Group::getByName(Group::SUPER_ADMINISTRATORS_GROUP_NAME)->contains($this))
+                    try
                     {
-                        $actualRight = Right::ALLOW;
+                        return RightsCache::getEntry($identifier);
                     }
-                    else
+                    catch (NotFoundException $e)
                     {
-                        $actualRight = parent::getActualRight($moduleName, $rightName);
+                        if (Group::getByName(Group::SUPER_ADMINISTRATORS_GROUP_NAME)->contains($this))
+                        {
+                            $actualRight = Right::ALLOW;
+                        }
+                        else
+                        {
+                            $actualRight = parent::getActualRight($moduleName, $rightName);
+                        }
+                        RightsCache::cacheEntry($identifier, $actualRight);
                     }
                 }
                 else
                 {
-                    $identifier = $this->id . $moduleName . $rightName . 'ActualRight';
                     try
                     {
                         return RightsCache::getEntry($identifier);
@@ -657,6 +686,10 @@
                     'serializedAvatarData',
                     'isActive',
                     'lastLoginDateTime',
+                    'isRootUser',
+                    'hideFromSelecting',
+                    'isSystemUser',
+                    'hideFromLeaderboard'
                 ),
                 'relations' => array(
                     'currency'          => array(RedBeanModel::HAS_ONE,             'Currency'),
@@ -691,9 +724,16 @@
                     array('username', 'match',   'pattern' => '/^[^A-Z]+$/', // Not Coding Standard
                                                'message' => 'Username must be lowercase.'),
                     array('username', 'length',  'max'   => 64),
+                    array('username', 'filter', 'filter' => 'trim'),
                     array('serializedAvatarData', 'type', 'type' => 'string'),
                     array('isActive', 'readOnly'),
                     array('isActive', 'boolean'),
+                    array('isRootUser',          'readOnly'),
+                    array('isRootUser',          'boolean'),
+                    array('hideFromSelecting',   'boolean'),
+                    array('isSystemUser',        'readOnly'),
+                    array('isSystemUser',        'boolean'),
+                    array('hideFromLeaderboard', 'boolean'),
                     array('lastLoginDateTime',    'type', 'type' => 'datetime'),
                 ),
                 'elements' => array(
@@ -780,6 +820,56 @@
             return true;
         }
 
+        public static function getActiveUserCount()
+        {
+            $searchAttributeData['clauses'] = array(
+                1 => array(
+                    'attributeName'        => 'isActive',
+                    'operatorType'         => 'equals',
+                    'value'                => true,
+                ),
+                2 => array(
+                    'attributeName'        => 'isRootUser',
+                    'operatorType'         => 'equals',
+                    'value'                => 0,
+                ),
+                3 => array(
+                    'attributeName'        => 'isRootUser',
+                    'operatorType'         => 'isNull',
+                    'value'                => null,
+                ),
+                4 => array(
+                    'attributeName'        => 'isSystemUser',
+                    'operatorType'         => 'equals',
+                    'value'                => 0,
+                ),
+                5 => array(
+                    'attributeName'        => 'isSystemUser',
+                    'operatorType'         => 'isNull',
+                    'value'                => null,
+                )
+            );
+            $searchAttributeData['structure'] = '1 and (2 or 3) and (4 or 5)';
+            $joinTablesAdapter = new RedBeanModelJoinTablesQueryAdapter('User');
+            $where = RedBeanModelDataProvider::makeWhere('User', $searchAttributeData, $joinTablesAdapter);
+            return User::getCount($joinTablesAdapter, $where, null);
+        }
+
+        public static function getRootUserCount()
+        {
+            $searchAttributeData['clauses'] = array(
+                1 => array(
+                    'attributeName'        => 'isRootUser',
+                    'operatorType'         => 'equals',
+                    'value'                => true,
+                ),
+            );
+            $searchAttributeData['structure'] = '1';
+            $joinTablesAdapter = new RedBeanModelJoinTablesQueryAdapter('User');
+            $where = RedBeanModelDataProvider::makeWhere('User', $searchAttributeData, $joinTablesAdapter);
+            return User::getCount($joinTablesAdapter, $where, null);
+        }
+
         public static function isTypeDeletable()
         {
             return true;
@@ -817,6 +907,24 @@
         }
 
         /**
+         * Sets the user as the root user only if there is not an existing root user.  There is only one root user allowed
+         * @throws NotSupportedException
+         */
+        public function setIsRootUser()
+        {
+            if(User::getRootUserCount() > 0)
+            {
+                throw new ExistingRootUserException();
+            }
+            $this->unrestrictedSet('isRootUser', true);
+        }
+
+        public function setIsSystemUser()
+        {
+            $this->unrestrictedSet('isSystemUser', true);
+        }
+
+        /**
         * to change isActive attribute  properly during save
         */
         protected function setIsActive()
@@ -843,9 +951,9 @@
          */
         public static function getSortAttributesByAttribute($attribute)
         {
-            if ($attribute == 'lastName')
+            if ($attribute == 'firstName')
             {
-                return array('firstName', $attribute);
+                return array('firstName', 'lastName');
             }
             return parent::getSortAttributesByAttribute($attribute);
         }

@@ -621,10 +621,20 @@
                     self::resolveLinkTypeAndRelationLinkName($metadata[$modelClassName]['relations'][$relationName],
                                                              $linkType,
                                                              $relationLinkName);
-                   $linkName               = self::makeCasedLinkName($metadata[$modelClassName]['relations'][$relationName][0],
+                    $linkName               = self::makeCasedLinkName($metadata[$modelClassName]['relations'][$relationName][0],
                                                                      $linkType, $relationLinkName);
-                   $columnName             = $relatedModelTableName . '_id';
-                   $columnName             = ZurmoRedBeanLinkManager::resolveColumnPrefix($linkName) . $columnName;
+                    if($metadata[$modelClassName]['relations'][$relationName][0] == self::HAS_MANY ||
+                       $metadata[$modelClassName]['relations'][$relationName][0] == self::HAS_ONE_BELONGS_TO)
+                    {
+
+                        $columnName = self::getTableName($modelClassName) . '_id';
+                    }
+                    else
+                    {
+                        $columnName = $relatedModelTableName . '_id';
+                    }
+                    $columnName             = ZurmoRedBeanLinkManager::resolveColumnPrefix($linkName) . $columnName;
+
                     return $columnName;
                 }
             }
@@ -667,7 +677,8 @@
             assert('is_int($relationType)');
             assert('is_int($linkType)');
             assert('is_string($relationLinkName) || $relationLinkName == null');
-            if ($relationType == self::HAS_ONE && $linkType == self::LINK_TYPE_SPECIFIC)
+            if (($relationType == self::HAS_ONE || $relationType == self::HAS_MANY ||
+                 $relationType == self::HAS_ONE_BELONGS_TO) && $linkType == self::LINK_TYPE_SPECIFIC)
             {
                 return strtolower($relationLinkName);
             }
@@ -1126,12 +1137,15 @@
                     $nextBean = $bean;
                     foreach ($modelClassNames as $nextModelClassName)
                     {
-                        $nextBean = self::findNextDerivativeBean($nextBean, $currentModelClassName, $nextModelClassName);
-                        if ($nextBean === null)
+                        if ($nextModelClassName::getCanHaveBean())
                         {
-                            break;
+                            $nextBean = self::findNextDerivativeBean($nextBean, $currentModelClassName, $nextModelClassName);
+                            if ($nextBean === null)
+                            {
+                                break;
+                            }
+                            $currentModelClassName = $nextModelClassName;
                         }
-                        $currentModelClassName = $nextModelClassName;
                     }
                 }
                 if ($nextBean !== null)
@@ -1731,6 +1745,18 @@
                 }
             }
             return $validators;
+        }
+
+        /**
+         * Method to call to clear out validators from memory. Can help with performance. Used by async export
+         * for example.
+         */
+        public function forgetValidators()
+        {
+            if(!empty($this->validators))
+            {
+                $this->validators = array();
+            }
         }
 
         /**

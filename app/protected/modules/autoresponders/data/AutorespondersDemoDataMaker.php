@@ -37,7 +37,7 @@
     /**
      * Class that builds demo autoresponders.
      */
-    class AutorespondersDemoDataMaker extends DemoDataMaker
+    class AutorespondersDemoDataMaker extends MarketingDemoDataMaker
     {
         protected $index;
 
@@ -101,6 +101,7 @@
             $model->fromOperationDurationType        = TimeDurationUtil::DURATION_TYPE_DAY;
             $model->operationType           = $this->seedData['operationType'][$this->index];
             $model->enableTracking          = (rand() % 2);
+            $this->populateMarketingModelWithFiles($model);
         }
     }
 ?>

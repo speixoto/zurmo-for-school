@@ -70,6 +70,22 @@
                                 'listViewGridId'  => 'eval:$this->listViewGridId',
                                 'pageVarName'     => 'eval:$this->pageVarName'
                             ),
+                            array(
+                                'type'  => 'ExportLink',
+                                'htmlOptions' => array('class' => 'icon-export'),
+                                'listViewGridId' => 'eval:$this->listViewGridId',
+                                'pageVarName' => 'eval:$this->pageVarName'
+                            ),
+                        ),
+                    ),
+                    'secondToolbar' => array(
+                        'elements' => array(
+                            array('type'        => 'ProductIntroLink',                                
+                                  'panelId'     => 'eval:$this->introView->getPanelId()',
+                                  'checked'     => 'eval:!$this->introView->isIntroViewDismissed()',
+                                  'moduleName'  => 'eval:$this->introView->getModuleName()',
+                                  'htmlOptions' => array('class' => 'icon-intro-change-this'), //todo: need new class name
+                            ),
                         ),
                     ),
                 ),
