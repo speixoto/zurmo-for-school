@@ -70,7 +70,7 @@
                 RedBeanDatabase::unfreeze();
                 $freezeWhenComplete = true;
             }
-            ZurmoRedBean::dropTableByTableName($tableName);
+            ZurmoRedBean::$writer->dropTableByTableName($tableName);
             $columns = self::optimizeTableImportColumnsAndGetColumnNames($fileHandle, $tableName, $delimiter, $enclosure);
             rewind($fileHandle);
             self::convertCsvIntoRowsInTable($fileHandle, $tableName, $delimiter, $enclosure, $columns);

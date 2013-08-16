@@ -107,7 +107,7 @@
             {
                 return false;
             }
-            ZurmoRedBean::dropTableByTableName($this->getTempTableName());
+            ZurmoRedBean::$writer->dropTableByTableName($this->getTempTableName());
             return true;
         }
     }

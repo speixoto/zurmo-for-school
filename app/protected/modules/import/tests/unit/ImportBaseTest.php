@@ -38,10 +38,10 @@
     {
         public static function tearDownAfterClass()
         {
-            ZurmoRedBean::dropTableByTableName('testimporttable');
-            ZurmoRedBean::dropTableByTableName('testimporttable2');
-            ZurmoRedBean::dropTableByTableName('testimporttable3');
-            ZurmoRedBean::dropTableByTableName('testimporttable4');
+            ZurmoRedBean::$writer->dropTableByTableName('testimporttable');
+            ZurmoRedBean::$writer->dropTableByTableName('testimporttable2');
+            ZurmoRedBean::$writer->dropTableByTableName('testimporttable3');
+            ZurmoRedBean::$writer->dropTableByTableName('testimporttable4');
             parent::tearDownAfterClass();
         }
 

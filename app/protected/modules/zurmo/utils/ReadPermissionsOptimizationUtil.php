@@ -822,7 +822,7 @@
         public static function recreateTable($mungeTableName)
         {
             assert('is_string($mungeTableName) && $mungeTableName  != ""');
-            ZurmoRedBean::dropTableByTableName($mungeTableName);
+            ZurmoRedBean::$writer->dropTableByTableName($mungeTableName);
             ZurmoRedBean::exec("create table $mungeTableName (
                         securableitem_id int(11)     unsigned not null,
                         munge_id         varchar(12)          not null,

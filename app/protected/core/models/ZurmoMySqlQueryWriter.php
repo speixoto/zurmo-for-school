@@ -74,5 +74,15 @@
             }
             return $indexes;
         }
+
+        /**
+         * Drops a table by the given table name.
+         * @param string $tableName
+         */
+        public function dropTableByTableName($tableName)
+        {
+            assert('$tableName == strtolower($tableName)');
+            $this->adapter->exec("drop table if exists $tableName");
+        }
     }
 ?>

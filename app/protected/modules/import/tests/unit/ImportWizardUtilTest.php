@@ -181,7 +181,7 @@
             $importWizardForm->firstRowIsHeaderRow = true;
             $this->assertFalse(ImportWizardUtil::
                               importFileHasAtLeastOneImportRow($importWizardForm, $import));
-            ZurmoRedBean::dropTableByTableName($import->getTempTableName());
+            ZurmoRedBean::$writer->dropTableByTableName($import->getTempTableName());
         }
 
         /**

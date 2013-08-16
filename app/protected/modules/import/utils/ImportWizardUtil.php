@@ -216,7 +216,7 @@
             $newUnserializedData['importRulesType'] = $unserializedData['importRulesType'];
             if ($import->save())
             {
-                ZurmoRedBean::dropTableByTableName($import->getTempTableName());
+                ZurmoRedBean::$writer->dropTableByTableName($import->getTempTableName());
                 return true;
             }
             return false;
