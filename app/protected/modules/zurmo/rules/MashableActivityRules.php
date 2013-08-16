@@ -81,6 +81,17 @@
         }
 
         /**
+         * Override if you need to filter specifically for showing all latest activities that are not filtered by
+         * a related model
+         * @param $searchAttributeData
+         * @return mixed
+         */
+        public function resolveSearchAttributeDataForAllLatestActivities($searchAttributeData)
+        {
+            return $searchAttributeData;
+        }
+
+        /**
          * Override to customize summary content.
          * @param string $ownedByFilter
          * @param string $viewModuleClassName

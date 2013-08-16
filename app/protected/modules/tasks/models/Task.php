@@ -233,5 +233,10 @@
             $statusArray = self::getStatusDropDownArray();
             return $statusArray[$status];
         }
+
+        public static function hasReadPermissionsSubscriptionOptimization()
+        {
+            return true;
+        }
     }
 ?>

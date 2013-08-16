@@ -182,7 +182,8 @@
             assert('is_string($importRulesType)');
             assert('$columnType == "importColumn" || $columnType == "extraColumn"');
             assert('is_array($mappingRuleFormsAndElementTypes) || $mappingRuleFormsAndElementTypes == null');
-            $content = '<div id="' . self::getMappingRulesDivIdByColumnName($columnName) . '" class="mapping-rules">';
+            $content                      = null;
+            $multipleMappingRulesCssClass = null;
             if ($attributeIndexOrDerivedType != null)
             {
                 if ($mappingRuleFormsAndElementTypes == null)
@@ -196,6 +197,10 @@
                                                            $attributeImportRules,
                                                            $attributeIndexOrDerivedType,
                                                            $columnType);
+                }
+                if(count($mappingRuleFormsAndElementTypes) > 1)
+                {
+                    $multipleMappingRulesCssClass = ' multiple';
                 }
                 foreach ($mappingRuleFormsAndElementTypes as $notUsed => $ruleFormAndElementType)
                 {
@@ -223,7 +228,9 @@
                     $content .= '</tr></tbody></table>';
                 }
             }
-            $content .= '</div>';
+
+            $content = ZurmoHtml::tag('div', array('id' => self::getMappingRulesDivIdByColumnName($columnName),
+                                                   'class' => 'mapping-rules' . $multipleMappingRulesCssClass), $content);
             return $content;
         }
 

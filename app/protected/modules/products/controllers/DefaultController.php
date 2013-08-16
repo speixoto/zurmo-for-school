@@ -88,10 +88,11 @@
                 $view       = new ProductsPageView($mixedView);
             }
             else
-            {
+            {                
+                $introView        = new ProductsIntroView(get_class($this->getModule()));
                 $mixedView  = $this->makeActionBarSearchAndListView($searchForm, $dataProvider,
                                    'SecuredActionBarForProductsSearchAndListView',
-                                    null, $activeActionElementType);
+                                    null, $activeActionElementType, $introView);
                 $view       = new ProductsPageView(ZurmoDefaultViewUtil::
                                                     makeViewWithBreadcrumbsForCurrentUser(
                                                         $this, $mixedView, $breadcrumbLinks, 'ProductBreadCrumbView'));
@@ -374,7 +375,6 @@
             $product->name              = $productTemplate->name;
             $product->description       = $productTemplate->description;
             $product->quantity          = 1;
-            $product->stage->value      = Product::OPEN_STAGE;
             $product->productTemplate   = $productTemplate;
             $sellPrice                  = new CurrencyValue();
             $sellPrice->value           = $productTemplate->sellPrice->value;
@@ -382,12 +382,12 @@
             $product->priceFrequency    = $productTemplate->priceFrequency;
             $product->sellPrice         = $sellPrice;
             $product->type              = $productTemplate->type;
-
+            $controllerUtil             = static::getZurmoControllerUtil();
+            $controllerUtil->resolveStageDefaultValue($product);
             foreach ($productTemplate->productCategories as $productCategory)
             {
                 $product->productCategories->add($productCategory);
             }
-
             $relationModel                      = $relationModelClassName::getById((int)$relationModelId);
             $product->$relationAttributeName    = $relationModel;
             $product->save();

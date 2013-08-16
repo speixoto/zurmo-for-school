@@ -39,28 +39,31 @@
      */
     class SellPriceFormulaTypeSanitizerUtil extends SanitizerUtil
     {
-        public static function supportsSqlAttributeValuesDataAnalysis()
+        /**
+         * @param RedBean_OODBBean $rowBean
+         */
+        public function analyzeByRow(RedBean_OODBBean $rowBean)
         {
-            return false;
+            if ($rowBean->{$this->columnName} != null &&
+                strtolower($rowBean->{$this->columnName}) != strtolower(UserStatusUtil::ACTIVE) &&
+                strtolower($rowBean->{$this->columnName}) == strtolower(UserStatusUtil::INACTIVE))
+            {
+                $label = Zurmo::t('ImportModule', 'Status value is invalid. This status will be set to active upon import.');
+                $this->analysisMessages[] = $label;
+            }
         }
 
-        public static function getBatchAttributeValueDataAnalyzerType()
-        {
-            return 'SellPriceFormulaType';
-        }
 
         /**
          * Given a user status, attempt to resolve it as a valid status.  If the status is invalid, a
          * InvalidValueToSanitizeException will be thrown.
-         * @param string $modelClassName
-         * @param string $attributeName
          * @param mixed $value
-         * @param array $mappingRuleData
+         * @return sanitized value
+         * @throws InvalidValueToSanitizeException
          */
-        public static function sanitizeValue($modelClassName, $attributeName, $value, $mappingRuleData)
+        public function sanitizeValue($value)
         {
-            assert('is_string($modelClassName)');
-            assert('$mappingRuleData == null');
+            assert('$this->attributeName == null');
             if ($value == null)
             {
                 return $value;
@@ -94,7 +97,7 @@
             }
             catch (NotFoundException $e)
             {
-                throw new InvalidValueToSanitizeException(Zurmo::t('ProductTemplatesModule', 'The sell price formula type specified is invalid.'));
+                throw new InvalidValueToSanitizeException(Zurmo::t('ProductTemplatesModule', 'Sell Price Formula type specified is invalid.'));
             }
         }
     }

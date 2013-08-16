@@ -234,5 +234,10 @@
                 return intval($models[0]->sortOrder) + 1;
             }
         }
+
+        public static function hasReadPermissionsSubscriptionOptimization()
+        {
+            return true;
+        }
     }
 ?>

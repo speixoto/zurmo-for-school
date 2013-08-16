@@ -115,6 +115,9 @@
             'gamificationObserver' => array(
                 'class' => 'application.modules.gamification.observers.GamificationObserver',
             ),
+            'licenseManager' => array(
+                'class' => 'application.core.components.LicenseManager',
+            ),
             'messages' => array(
                 'class' => 'application.core.components.ZurmoMessageSource',
             ),

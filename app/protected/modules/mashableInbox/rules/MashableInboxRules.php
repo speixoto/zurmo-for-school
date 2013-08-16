@@ -137,7 +137,7 @@
             return $moduleClassName::getPluralCamelCasedName() . 'ZeroModelsYetView';
         }
 
-        public function getListView($option, $filteredBy = MashableInboxForm::FILTERED_BY_ALL, $searchTerm = null)
+        public function getListView($option, $filteredBy = MashableInboxForm::FILTERED_BY_ALL, $searchTerm = null, $starred = false)
         {
             $modelClassName             = $this->getModelClassName();
             $orderBy                    = $this->getMachableInboxOrderByAttributeName();
@@ -149,10 +149,15 @@
             $metadata                   = MashableUtil::mergeMetadata(
                                                     $metadataByOptionAndFilter,
                                                     $this->getSearchAttributeData($searchTerm));
+            $dataProviderClassName      = 'RedBeanModelDataProvider';
+            if($starred)
+            {
+                $dataProviderClassName      = 'StarredModelDataProvider';
+            }
             $dataProvider = RedBeanModelDataProviderUtil::makeDataProvider(
                 $metadata,
                 $modelClassName,
-                'RedBeanModelDataProvider',
+                $dataProviderClassName,
                 $orderBy,
                 true,
                 $pageSize

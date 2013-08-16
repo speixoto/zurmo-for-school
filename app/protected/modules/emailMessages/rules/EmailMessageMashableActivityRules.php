@@ -89,8 +89,30 @@
             return $searchAttributeData;
         }
 
+        public function resolveSearchAttributeDataForAllLatestActivities($searchAttributeData)
+        {
+            assert('is_array($searchAttributeData)');
+            $box                 = EmailBox::resolveAndGetByName(EmailBox::NOTIFICATIONS_NAME);
+            $searchAttributeData = parent::resolveSearchAttributeDataForAllLatestActivities($searchAttributeData);
+            $clausesCount = count($searchAttributeData['clauses']);
+            $searchAttributeData['clauses'][$clausesCount + 1] = array(
+                'attributeName'        => 'folder',
+                    'relatedModelData'  => array(
+                        'attributeName' => 'emailBox',
+                        'operatorType'  => 'doesNotEqual',
+                        'value'         => $box->id),
+            );
+            if ($searchAttributeData['structure'] != null)
+            {
+                $searchAttributeData['structure'] .= ' and ';
+            }
+            $searchAttributeData['structure'] .=  ($clausesCount + 1);
+            return $searchAttributeData;
+        }
+
         public function getLatestActivitiesOrderByAttributeName()
         {
+            assert('is_array($searchAttributeData)');
             return 'modifiedDateTime';
         }
 

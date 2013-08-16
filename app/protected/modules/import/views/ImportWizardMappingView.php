@@ -264,5 +264,15 @@
             }
             return $this->getPreviousPageLinkContentByControllerAction($previousStep);
         }
+
+        protected function renderPreviousPageLinkLabel()
+        {
+            return Zurmo::t('ZurmoModule', 'Select Permissions');
+        }
+
+        protected function renderNextPageLinkLabel()
+        {
+            return Zurmo::t('ImportModule', 'Analysis Data');
+        }
     }
 ?>
