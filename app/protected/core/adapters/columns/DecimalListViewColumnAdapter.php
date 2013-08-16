@@ -40,14 +40,19 @@
         {
             return array(
                 'name'  => $this->attribute,
-                'value' => 'DecimalListViewColumnAdapter::renderNonEditableStatically($data, "' . $this->attribute . '")',
+                'value' => array($this, 'renderDataCellContent'),
                 'type'  => 'raw',
             );
         }
-
-        public static function renderNonEditableStatically($model, $attribute)
+                
+        public function renderDataCellContent($data, $row) 
+        {                      
+            return $this->renderValue($data->{$this->attribute});
+        }
+        
+        public function renderValue($value) 
         {
-            return Yii::app()->numberFormatter->formatDecimal((float)$model->{$attribute});
+            return Yii::app()->numberFormatter->formatDecimal((float)$value);
         }
     }
 ?>

@@ -118,7 +118,7 @@
                 $uniquePageId  = get_called_class();
                 $latestActivitiesConfigurationForm = $this->makeLatestActivitiesConfigurationForm();
                 $latestActivitiesConfigurationForm->mashableModelClassNamesAndDisplayLabels =
-                    $mashableModelClassNamesAndDisplayLabels;
+                                                     $mashableModelClassNamesAndDisplayLabels;
                 $this->resolveLatestActivitiesConfigFormFromRequest($latestActivitiesConfigurationForm);
                 $latestActivitiesViewClassName = $this->getLatestActivitiesViewClassName();
                 $dataProvider = $this->getDataProvider($uniquePageId, $latestActivitiesConfigurationForm);

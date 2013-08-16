@@ -186,13 +186,18 @@
 
         public function actionAuditEventsModalList($id)
         {
-            $modelClassName = $this->getModule()->getPrimaryModelName();
-            $model = $modelClassName::getById((int)$id);
+            $model = $this->resolveModelForAuditEventsModalList($id);
             ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($model);
             $searchAttributeData = AuditEventsListControllerUtil::makeModalSearchAttributeDataByAuditedModel($model);
             $dataProvider = AuditEventsListControllerUtil::makeDataProviderBySearchAttributeData($searchAttributeData);
             Yii::app()->getClientScript()->setToAjaxMode();
             echo AuditEventsListControllerUtil::renderList($this, $dataProvider);
+        }
+
+        protected function resolveModelForAuditEventsModalList($id)
+        {
+            $modelClassName = $this->getModule()->getPrimaryModelName();
+            return $modelClassName::getById((int)$id);
         }
 
         protected function getModelName()
@@ -226,7 +231,8 @@
             {
                 throw new NotSupportedException();
             }
-            $stateMetadataAdapterClassName = $this->getModule()->getStateMetadataAdapterClassName();
+
+            $stateMetadataAdapterClassName = $this->resolveStateMetadataAdapterClassNameForExport();
             $dataProvider = $this->getDataProviderByResolvingSelectAllFromGet(
                 $searchForm,
                 $pageSize,
@@ -334,6 +340,11 @@
                 );
             }
             $this->redirect(array($this->getId() . '/index'));
+        }
+
+        protected function resolveStateMetadataAdapterClassNameForExport()
+        {
+            return $this->getModule()->getStateMetadataAdapterClassName();
         }
 
         protected static function getModelAndCatchNotFoundAndDisplayError($modelClassName, $id)

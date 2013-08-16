@@ -287,6 +287,7 @@
             $workflowMessageInQueue = WorkflowTestHelper::createExpiredWorkflowMessageInQueue($model, $savedWorkflow, serialize($emailMessage));
             $workflow               = new Workflow();
             $workflow->setModuleClassName('WorkflowsTestModule');
+            $workflow->setType(Workflow::TYPE_ON_SAVE);
             $emailMessageForWorkflowForm = WorkflowEmailMessagesUtil::
                                                 makeEmailMessageForWorkflowFormByQueueModelAndWorkflow(
                                                 $workflowMessageInQueue, $workflow);

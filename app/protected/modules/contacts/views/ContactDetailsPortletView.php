@@ -93,7 +93,7 @@
         {
             return 'default';
         }
-
+        
         /**
          * Module Id for the link to models from rows in the grid view.
          */

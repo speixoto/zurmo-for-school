@@ -51,17 +51,19 @@
             $fullNameSql = DatabaseCompatibilityUtil::concat(array('person.firstname',
                                                                    '\' \'',
                                                                    'person.lastname'));
-             $where = "      (person.firstname      like lower('$partialName%') or "    .
-                      "       person.lastname       like lower('$partialName%') or "    .
-                      "       $fullNameSql like lower('$partialName%')) ";
+             $where  = '(_user.hidefromselecting IS NULL OR _user.hidefromselecting = 0) and ';
+             $where .= "      (person.firstname      like lower('$partialName%') or "    .
+                       "       person.lastname       like lower('$partialName%') or "    .
+                       "       $fullNameSql like lower('$partialName%')) ";
             return User::getSubset($joinTablesAdapter, null, $pageSize,
                                             $where, "person.firstname, person.lastname");
         }
 
-        public static function getUsersByEmailAddress($emailAddress, $operatorType = null)
+        public static function getUsersByEmailAddress($emailAddress, $operatorType = null, $filterOutHideFromSelecting = false)
         {
             assert('is_string($emailAddress)');
             assert('$operatorType == null || is_string($operatorType)');
+            assert('is_bool($filterOutHideFromSelecting)');
             if ($operatorType == null)
             {
               $operatorType = 'equals';
@@ -75,6 +77,22 @@
                             'value'                => $emailAddress,
                     ),
             );
+            if($filterOutHideFromSelecting)
+            {
+                $metadata['clauses'][2] = array(
+                    'attributeName'        => 'hideFromSelecting',
+                    'operatorType'         => 'equals',
+                    'value'                => 0);
+                $metadata['clauses'][3] = array(
+                    'attributeName'        => 'hideFromSelecting',
+                    'operatorType'         => 'isNull',
+                    'value'                => null);
+                $metadata['structure'] = '(1 and (2 or 3))';
+            }
+            else
+            {
+                $metadata['structure'] = '(1)';
+            }
             $metadata['structure'] = '(1)';
             $joinTablesAdapter   = new RedBeanModelJoinTablesQueryAdapter('User');
             $where  = RedBeanModelDataProvider::makeWhere('User', $metadata, $joinTablesAdapter);

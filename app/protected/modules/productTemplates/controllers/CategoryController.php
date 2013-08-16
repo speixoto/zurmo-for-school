@@ -74,12 +74,15 @@
 
         public function actionList()
         {
-            $breadcrumbLinks                = static::getListBreadcrumbLinks();
-            $actionBarAndTreeView           = new CategoriesActionBarAndTreeListView(
+            $activeActionElementType        = 'ProductCategoriesLink';
+            $breadcrumbLinks                = static::getListBreadcrumbLinks();            
+            $introView                      = new ProductsIntroView('ProductsModule');
+            $actionBarAndTreeView           = new ProductCategoriesActionBarAndTreeListView(
                                                                                         $this->getId(),
                                                                                         $this->getModule()->getId(),
                                                                                         ProductCategory::getAll('name'),
-                                                                                        'ProductCategoriesLink'
+                                                                                        $activeActionElementType,
+                                                                                        $introView
                                                );
             $view                           = new ProductCategoriesPageView(ProductDefaultViewUtil::
                                                     makeViewWithBreadcrumbsForCurrentUser(

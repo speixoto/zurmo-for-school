@@ -226,7 +226,7 @@
         public function resolveValueAsLabelForHeaderCell($value)
         {
             $tContent             = null;
-            $translatedValue      = $value;
+            $translatedValue      = $value;            
             $resolvedAttribute    = $this->getResolvedAttribute();
             $displayElementType   = $this->getDisplayElementType();
             $modelToReportAdapter = $this->makeResolvedAttributeModelRelationsAndAttributesToReportAdapter();
@@ -275,6 +275,16 @@
             if ($translatedValue === null)
             {
                 $translatedValue = '';
+            }
+            if ($this->isALinkableAttribute())
+            {
+                $modelClassName  = get_class($modelToReportAdapter->getModel());
+                $moduleClassName = $modelToReportAdapter->getModuleClassName();
+                if (isset($relationModelClassName))
+                {
+                    $modelClassName = $relationModelClassName;
+                }                                
+                return ReportResultsGridUtil::makeStringForMultipleLinks($value, $modelClassName, $moduleClassName);
             }
             return $translatedValue;
         }

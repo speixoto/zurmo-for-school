@@ -74,6 +74,10 @@
             return false;
         }
 
+        /**
+         * @return bool, true if external controller is requested
+         * Used for Web Forms and Google Apps Contextual Gadget
+         */
         public function isExternalRequest()
         {
             try
@@ -94,6 +98,10 @@
             }
         }
 
+        /**
+         * @return bool, true if contextive external controller is requested
+         * Used for Google Apps Contextual Gadget
+         */
         public function isContextiveExternalRequest()
         {
             try
@@ -114,6 +122,10 @@
             }
         }
 
+        /**
+         * @return bool, true if external or contextive external controller is requested
+         * Used for Web Forms and Google Apps Contextual Gadget
+         */
         public function isAnExternalRequestVariant()
         {
             if ($this->isExternalRequest())
@@ -128,6 +140,18 @@
             {
                 return false;
             }
+        }
+
+        /**
+         * Appends host info if contextive external controller is requested
+         */
+        public function resolveAndGetUrl()
+        {
+            if ($this->isContextiveExternalRequest())
+            {
+                return $this->getHostInfo() . $this->getUrl();
+            }
+            return $this->getUrl();
         }
 
         /**
