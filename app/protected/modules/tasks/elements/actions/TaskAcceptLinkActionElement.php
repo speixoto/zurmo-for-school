@@ -33,7 +33,9 @@
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
-
+    /**
+     * Accept button in kanban view for the task
+     */
     class TaskAcceptLinkActionElement extends LinkActionElement
     {
         public function render()

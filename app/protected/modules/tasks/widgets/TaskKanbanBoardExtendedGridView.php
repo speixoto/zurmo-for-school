@@ -87,6 +87,12 @@
             return $this->columnsData;
         }
 
+        /**
+         * Resolve order by type
+         * @param array $columnsData
+         * @param int $type
+         * @return int
+         */
         protected function resolveOrderByType($columnsData, $type)
         {
             if (isset($columnsData[$type]))
@@ -128,12 +134,20 @@
             return $cardDetails;
         }
 
+        /**
+         * Creates ul tag for kanban column
+         * @param array $listItems
+         * @param string $attributeValue
+         * @return string
+         */
         protected function createUlTagForKanbanColumn($listItems, $attributeValue = null)
         {
-            //return ZurmoHtml::tag('ul id="task-sortable-rows-' . $counter . '" class="connectedSortable"' , array(), $listItems);
             return ZurmoHtml::tag('ul id="task-sortable-rows-' . $attributeValue . '"' , array(), $listItems);
         }
 
+        /**
+         * Override script registration
+         */
         protected function registerScripts()
         {
             $taskSortableScript = "
@@ -147,6 +161,9 @@
             Yii::app()->clientScript->registerScript('task-sortable-data-helper', $taskSortableScript);
         }
 
+        /**
+         * Register Kanban Column Scripts
+         */
         protected function registerKanbanColumnScripts()
         {
             $taskSortableScript = "";
@@ -168,6 +185,12 @@
             $this->registerKanbanColumnRejectActionScript(Zurmo::t('TasksModule', 'Start'), Task::TASK_STATUS_NEW, $url);
         }
 
+        /**
+         * Registers kanban column sortable script
+         * @param int $count
+         * @param int $type
+         * @return string
+         */
         protected function registerKanbanColumnSortableScript($count, $type)
         {
             return "$('#task-sortable-rows-" . $count . "').sortable({
@@ -193,6 +216,12 @@
                                         ";
         }
 
+        /**
+         * Registers kanban column start action script
+         * @param string $label
+         * @param int $targetStatus
+         * @param string $url
+         */
         protected function registerKanbanColumnStartActionScript($label, $targetStatus, $url)
         {
             $script = $this->registerButtonActionScript('task-start-action', KanbanItem::TYPE_IN_PROGRESS, $label, 'task-finish-action', $url, $targetStatus);
@@ -200,6 +229,12 @@
             Yii::app()->clientScript->registerScript('start-action-script', $script);
         }
 
+        /**
+         * Registers kanban column finish action script
+         * @param string $label
+         * @param int $targetStatus
+         * @param string $url
+         */
         protected function registerKanbanColumnFinishActionScript($labelAccept, $labelReject, $targetStatus, $url)
         {
             $script = "$('.task-finish-action').click(
@@ -229,6 +264,12 @@
             Yii::app()->clientScript->registerScript('finish-action-script', $script);
         }
 
+        /**
+         * Creates task item for kanban column
+         * @param array $data
+         * @param int $row
+         * @return string
+         */
         protected function createTaskItemForKanbanColumn($data, $row)
         {
             return ZurmoHtml::tag('li', array('class' => $this->getRowClassForKanbanColumn(),
@@ -236,6 +277,11 @@
                                                       ZurmoHtml::tag('div', array(), $this->renderCardDetailsContentForTask($data, $row)));
         }
 
+        /**
+         * Get list items by attribute value and data
+         * @param array $attributeValueAndData
+         * @return array
+         */
         protected function getListItemsByAttributeValueAndData($attributeValueAndData)
         {
             $listItems = '';
@@ -247,6 +293,16 @@
             return $listItems;
         }
 
+        /**
+         * Register button action script
+         * @param string $buttonClass
+         * @param int $targetKanbanItemType
+         * @param string $label
+         * @param string $targetButtonClass
+         * @param string $url
+         * @param int $targetStatus
+         * @return string
+         */
         protected function registerButtonActionScript($buttonClass, $targetKanbanItemType, $label, $targetButtonClass, $url, $targetStatus)
         {
             return "$('." . $buttonClass . "').click(
@@ -287,12 +343,24 @@
                                                 );";
         }
 
+        /**
+         * Register kanban column accept action script
+         * @param string $label
+         * @param int $targetStatus
+         * @param string $url
+         */
         protected function registerKanbanColumnAcceptActionScript($label, $targetStatus, $url)
         {
             $script = $this->registerButtonActionScript('task-accept-action', KanbanItem::TYPE_COMPLETED, $label, 'task-complete-action', $url,$targetStatus);
             Yii::app()->clientScript->registerScript('accept-action-script', $script);
         }
 
+        /**
+         * Register kanban column reject action script
+         * @param string $label
+         * @param int $targetStatus
+         * @param string $url
+         */
         protected function registerKanbanColumnRejectActionScript($label, $targetStatus, $url)
         {
             $script = $this->registerButtonActionScript('task-reject-action', KanbanItem::TYPE_TODO, $label, 'task-start-action', $url, $targetStatus);

@@ -35,7 +35,7 @@
      ********************************************************************************/
 
     /**
-     * Override class for CButtonColumn in order to allow public access to renderDataCellContent
+     * Override class for ButtonColumn for ajaxlink button
      * @see CGridView class
      */
     class TaskModalButtonColumn extends ButtonColumn

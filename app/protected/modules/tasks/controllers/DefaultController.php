@@ -316,6 +316,9 @@
             }
         }
 
+        /**
+         * Update items sort in kanban view
+         */
         public function actionUpdateItemsSortInKanbanView()
         {
             $getData = GetUtil::getData();
@@ -339,6 +342,11 @@
             }
         }
 
+        /**
+         * Update task status in kanban view
+         * @param int $targetStatus
+         * @param int $taskId
+         */
         public function actionUpdateStatusInKanbanView($targetStatus, $taskId)
         {
            $route            = Yii::app()->createUrl('tasks/default/updateStatusInKanbanView');
@@ -354,6 +362,11 @@
            $this->processStatusUpdateViaAjax($taskId, $targetStatus);
         }
 
+        /**
+         * Process status update via ajax
+         * @param int $id
+         * @param int $status
+         */
         protected function processStatusUpdateViaAjax($id, $status)
         {
             $task         = Task::getById(intval($id));

@@ -39,8 +39,14 @@
      */
     class TaskKanbanBoard extends KanbanBoard
     {
+        /**
+         * @var object
+         */
         protected $relatedModel;
 
+        /**
+         * @var string
+         */
         protected $relatedModelClassName;
 
         /**
@@ -89,7 +95,7 @@
                          'groupByDataAndTranslatedLabels' => $this->groupByDataAndTranslatedLabels,
                          'selectedTheme'                  => $this->getSelectedTheme(),
                          'relatedModelId'                 => $this->relatedModel->id,
-                         'relatedModelClassName'         => $this->relatedModelClassName);
+                         'relatedModelClassName'          => $this->relatedModelClassName);
         }
 }
 ?>

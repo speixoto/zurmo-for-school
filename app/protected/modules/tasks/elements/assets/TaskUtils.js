@@ -1,3 +1,6 @@
+/**
+ * Transfer user modal value on selecting user in the form
+ */
 function transferUserModalValues(dialogId, data, url, attribute, errorInProcess)
 {
     var userId;
@@ -59,6 +62,9 @@ function updateTaskStatus(status, url, errorInProcess)
     );
 }
 
+/**
+ * Save task for a relation
+ */
 function saveTaskFromRelation(url, errorInProcess, viewTitle)
 {
     $.ajax(

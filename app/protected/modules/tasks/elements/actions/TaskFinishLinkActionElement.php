@@ -33,36 +33,15 @@
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
-
+    /**
+     * Finish button in kanban view for the task
+     */
     class TaskFinishLinkActionElement extends LinkActionElement
     {
         public function render()
         {
-//            return ZurmoHtml::ajaxLink($this->resolveLabelAndWrap(), $this->route, $this->resolveAjaxOptions(), $this->resolveHtmlOptionsForRendering());
             return ZurmoHtml::link($this->resolveLabelAndWrap(), '#', $this->resolveHtmlOptionsForRendering());
         }
-
-        /*protected function resolveAjaxOptions()
-        {
-            $targetStatus = Task::TASK_STATUS_AWAITING_ACCEPTANCE;
-            $type         = TasksUtil::resolveKanbanItemTypeForTask($this->modelId);
-            return array(
-                'type'      => 'post',
-                'data'      => 'js:{"targetStatus":"' . $targetStatus . '", "task_id":"' . $this->modelId . '"}',
-                'beforeSend'=> 'function(xhr)
-                                {
-                                    $(this).makeLargeLoadingSpinner(true, "#task-sortable-rows-' . $type . '");
-                                }',
-                'success'   => 'function(data, textStatus, xmlReq)
-                                {
-                                    $("#items_" + "' . $this->modelId . '").remove();
-                                    $(this).makeLargeLoadingSpinner(false, "#task-sortable-rows-' . $type . '");
-                                    $("#task-sortable-rows-" + "' . $targetStatus . '").append("Hello");
-                                    console.log("success");
-                                }
-                               '
-            );
-        }*/
 
         protected function getDefaultRoute()
         {

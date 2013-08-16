@@ -33,7 +33,9 @@
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
-
+    /**
+     * Kanban view for tasks related to account
+     */
     class TasksForAccountKanbanView extends TasksForRelatedKanbanView
     {
         protected function getRelationAttributeName()

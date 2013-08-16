@@ -33,7 +33,9 @@
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
-
+    /**
+     * Kanban view for tasks related to account/contact/lead/opportunity
+     */
     abstract class TasksForRelatedKanbanView extends SecuredRelatedListView
     {
         /**
@@ -42,6 +44,9 @@
          */
         protected $renderViewToolBarDuringRenderContent = true;
 
+        /**
+         * @return array
+         */
         public static function getDefaultMetadata()
         {
             $metadata = array(
@@ -62,6 +67,17 @@
             return $metadata;
         }
 
+        /**
+         * Constructor for the view
+         * @param string $controllerId
+         * @param string $moduleId
+         * @param string $modelClassName
+         * @param object $dataProvider
+         * @param array $params
+         * @param string $gridIdSuffix
+         * @param array $gridViewPagerParams
+         * @param object $kanbanBoard
+         */
         public function __construct(
             $controllerId,
             $moduleId,
@@ -143,11 +159,19 @@
             return $columns;
         }
 
+        /**
+         * Gets module class name for the view
+         * @return string
+         */
         public static function getModuleClassName()
         {
             return 'TasksModule';
         }
 
+        /**
+         * Gets params related to the pagination in the grid view
+         * @return array
+         */
         protected function getCGridViewPagerParams()
         {
             return array(
@@ -161,6 +185,10 @@
                 );
         }
 
+        /**
+         * Makes search attribute data
+         * @return array
+         */
         protected function makeSearchAttributeData()
         {
             $searchAttributeData = array();
@@ -197,25 +225,27 @@
             return $content;
         }
 
-        protected function getGridViewActionRoute($action, $moduleId = null)
-        {
-            if ($moduleId == null)
-            {
-                $moduleId = $this->moduleId;
-            }
-            return '/' . $moduleId . '/' . $this->controllerId . '/' . $action;
-        }
-
+        /**
+         * Gets relation attribute name
+         * @return null
+         */
         protected function getRelationAttributeName()
         {
             return null;
         }
 
+        /**
+         * @return null
+         */
         public function renderPortletHeadContent()
         {
             return null;
         }
 
+        /**
+         * Gets title for kanban board
+         * @return string
+         */
         public function getTitle()
         {
             return $this->getKanbanBoardTitle();

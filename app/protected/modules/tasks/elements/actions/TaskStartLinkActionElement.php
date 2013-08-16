@@ -33,38 +33,15 @@
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
-
+    /**
+     * Start button in kanban view for the task
+     */
     class TaskStartLinkActionElement extends LinkActionElement
     {
         public function render()
         {
-            //return ZurmoHtml::ajaxLink($this->resolveLabelAndWrap(), $this->route, $this->resolveAjaxOptions(), $this->resolveHtmlOptionsForRendering());
             return ZurmoHtml::link($this->resolveLabelAndWrap(), '#', $this->resolveHtmlOptionsForRendering());
         }
-
-        /*protected function resolveAjaxOptions()
-        {
-            $targetStatus = Task::TASK_STATUS_IN_PROGRESS;
-            $type         = TasksUtil::resolveKanbanItemTypeForTask($this->modelId);
-            return array(
-                'type'      => 'get',
-                'data'      => 'js:{"targetStatus":"' . $targetStatus . '",
-                                    "taskId":"' . $this->modelId . '",
-                                    "relatedControllerId":"' . $this->controllerId . '",
-                                    "relatedModuleId":"' . $this->moduleId . '"}',
-                'beforeSend'=> 'function(xhr)
-                                {
-
-                                }',
-                'success'   => 'function(data, textStatus, xmlReq)
-                                {
-                                    $("#items_" + "' . $this->modelId . '").remove();
-                                    $("#task-sortable-rows-" + "' . $targetStatus . '").append("Hello");
-                                    console.log("success");
-                                }
-                               '
-            );
-        }*/
 
         protected function getDefaultRoute()
         {
